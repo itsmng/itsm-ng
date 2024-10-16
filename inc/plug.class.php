@@ -31,23 +31,24 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class Plug
-class Plug extends CommonDropdown {
+class Plug extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Plug', 'Plugs', $nb);
+    }
 
+    public function cleanDBonPurge()
+    {
 
-   static function getTypeName($nb = 0) {
-      return _n('Plug', 'Plugs', $nb);
-   }
-
-   function cleanDBonPurge() {
-
-      $this->deleteChildrenAndRelationsFromDb(
-         [
-            Pdu_Plug::class,
+        $this->deleteChildrenAndRelationsFromDb(
+            [
+              Pdu_Plug::class,
          ]
-      );
-   }
+        );
+    }
 }

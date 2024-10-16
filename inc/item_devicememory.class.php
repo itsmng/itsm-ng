@@ -36,7 +36,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -44,37 +44,36 @@ if (!defined('GLPI_ROOT')) {
  **/
 class Item_DeviceMemory extends Item_Devices
 {
+    public static $itemtype_2 = 'DeviceMemory';
+    public static $items_id_2 = 'devicememories_id';
 
-   static public $itemtype_2 = 'DeviceMemory';
-   static public $items_id_2 = 'devicememories_id';
-
-   static protected $notable = false;
+    protected static $notable = false;
 
 
-   static function getSpecificities($specif = '')
-   {
+    public static function getSpecificities($specif = '')
+    {
 
-      return [
-         'size'   => [
-            'long name'  => sprintf(
-               __('%1$s (%2$s)'),
-               __('Size'),
-               __('Mio')
-            ),
-            'short name' => __('Size'),
-            'size'       => 10,
-            'id'         => 20,
-            'autocomplete' => true,
-            'formContent' => [
-               'type' => 'number',
-               'min' => 0,
-            ]
-         ],
-         'serial' => parent::getSpecificities('serial'),
-         'otherserial' => parent::getSpecificities('otherserial'),
-         'locations_id' => parent::getSpecificities('locations_id'),
-         'states_id' => parent::getSpecificities('states_id'),
-         'busID'  => parent::getSpecificities('busID')
-      ];
-   }
+        return [
+           'size'   => [
+              'long name'  => sprintf(
+                  __('%1$s (%2$s)'),
+                  __('Size'),
+                  __('Mio')
+              ),
+              'short name' => __('Size'),
+              'size'       => 10,
+              'id'         => 20,
+              'autocomplete' => true,
+              'formContent' => [
+                 'type' => 'number',
+                 'min' => 0,
+              ]
+           ],
+           'serial' => parent::getSpecificities('serial'),
+           'otherserial' => parent::getSpecificities('otherserial'),
+           'locations_id' => parent::getSpecificities('locations_id'),
+           'states_id' => parent::getSpecificities('states_id'),
+           'busID'  => parent::getSpecificities('busID')
+        ];
+    }
 }

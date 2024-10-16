@@ -30,19 +30,20 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryComputerTypeCollection extends RuleDictionnaryDropdownCollection {
+class RuleDictionnaryComputerTypeCollection extends RuleDictionnaryDropdownCollection
+{
+    // From RuleCollection
+    //public $rule_class_name = 'RuleDictionnaryComputerType';
 
-   // From RuleCollection
-   //public $rule_class_name = 'RuleDictionnaryComputerType';
+    public $item_table  = "glpi_computertypes";
+    public $menu_option = "type.computer";
 
-   public $item_table  = "glpi_computertypes";
-   public $menu_option = "type.computer";
-
-   /**
-    * @see RuleCollection::getTitle()
-   **/
-   function getTitle() {
-      return __('Dictionnary of computer types');
-   }
+    /**
+     * @see RuleCollection::getTitle()
+    **/
+    public function getTitle()
+    {
+        return __('Dictionnary of computer types');
+    }
 
 }

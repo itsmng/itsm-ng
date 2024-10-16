@@ -47,67 +47,68 @@ use Glpi\System\Requirement\DbEngine;
 use Glpi\System\Requirement\DbTimezones;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * @since 9.5.0
  */
-class RequirementsManager {
+class RequirementsManager
+{
+    /**
+     * Returns core requirement list.
+     *
+     * @param \DBmysql $db  DB instance (if null BD requirements will not be returned).
+     *
+     * @return RequirementsList
+     */
+    public function getCoreRequirementList(\DBmysql $db = null): RequirementsList
+    {
+        $requirements = [];
 
-   /**
-    * Returns core requirement list.
-    *
-    * @param \DBmysql $db  DB instance (if null BD requirements will not be returned).
-    *
-    * @return RequirementsList
-    */
-   public function getCoreRequirementList(\DBmysql $db = null): RequirementsList {
-      $requirements = [];
+        $requirements[] = new PhpVersion(ITSM_VERSION);
 
-      $requirements[] = new PhpVersion(ITSM_VERSION);
+        $requirements[] = new SessionsConfiguration();
 
-      $requirements[] = new SessionsConfiguration();
+        $requirements[] = new MemoryLimit(64 * 1024 * 1024);
 
-      $requirements[] = new MemoryLimit(64 * 1024 *1024);
+        $requirements[] = new MysqliMysqlnd();
+        $requirements[] = new Extension('ctype');
+        $requirements[] = new Extension('fileinfo');
+        $requirements[] = new Extension('json');
+        $requirements[] = new Extension('mbstring');
+        $requirements[] = new Extension('iconv');
+        $requirements[] = new Extension('zlib');
+        $requirements[] = new Extension('curl');
+        $requirements[] = new Extension('gd');
+        $requirements[] = new Extension('simplexml');
+        $requirements[] = new Extension('intl');
+        $requirements[] = new Extension('ldap', true); // to sync/connect from LDAP
+        $requirements[] = new Extension('apcu', true); // to enhance perfs
+        $requirements[] = new Extension('Zend OPcache', true); // to enhance perfs
+        $requirements[] = new Extension('xmlrpc', true); // for XMLRPC API
+        $requirements[] = new Extension('exif', true); // for security reasons (images checks)
+        $requirements[] = new Extension('sodium', true); // to enhance performances on encrypt/decrypt (fallback to polyfill)
 
-      $requirements[] = new MysqliMysqlnd();
-      $requirements[] = new Extension('ctype');
-      $requirements[] = new Extension('fileinfo');
-      $requirements[] = new Extension('json');
-      $requirements[] = new Extension('mbstring');
-      $requirements[] = new Extension('iconv');
-      $requirements[] = new Extension('zlib');
-      $requirements[] = new Extension('curl');
-      $requirements[] = new Extension('gd');
-      $requirements[] = new Extension('simplexml');
-      $requirements[] = new Extension('intl');
-      $requirements[] = new Extension('ldap', true); // to sync/connect from LDAP
-      $requirements[] = new Extension('apcu', true); // to enhance perfs
-      $requirements[] = new Extension('Zend OPcache', true); // to enhance perfs
-      $requirements[] = new Extension('xmlrpc', true); // for XMLRPC API
-      $requirements[] = new Extension('exif', true); // for security reasons (images checks)
-      $requirements[] = new Extension('sodium', true); // to enhance performances on encrypt/decrypt (fallback to polyfill)
+        if ($db instanceof \DBmysql) {
+            $requirements[] = new DbEngine($db);
+            $requirements[] = new DbTimezones($db);
+        }
 
-      if ($db instanceof \DBmysql) {
-         $requirements[] = new DbEngine($db);
-         $requirements[] = new DbTimezones($db);
-      }
+        global $PHPLOGGER;
+        $requirements[] = new LogsWriteAccess($PHPLOGGER);
 
-      global $PHPLOGGER;
-      $requirements[] = new LogsWriteAccess($PHPLOGGER);
+        foreach (Variables::getDataDirectories() as $directory) {
+            if ($directory === GLPI_LOG_DIR) {
+                continue; // Specifically checked by LogsWriteAccess requirement
+            }
+            $requirements[] = new DirectoryWriteAccess($directory);
+        }
 
-      foreach (Variables::getDataDirectories() as $directory) {
-         if ($directory === GLPI_LOG_DIR) {
-            continue; // Specifically checked by LogsWriteAccess requirement
-         }
-         $requirements[] = new DirectoryWriteAccess($directory);
-      }
+        $requirements[] = new ProtectedWebAccess(Variables::getDataDirectories());
 
-      $requirements[] = new ProtectedWebAccess(Variables::getDataDirectories());
+        $requirements[] = new SeLinux();
 
-      $requirements[] = new SeLinux();
-
-      return new RequirementsList($requirements);
-   }
+        return new RequirementsList($requirements);
+    }
 }

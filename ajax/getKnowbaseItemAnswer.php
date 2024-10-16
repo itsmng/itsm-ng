@@ -34,7 +34,7 @@
  * @since 9.2
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 header('Content-type: application/json');
 Html::header_nocache();
@@ -42,7 +42,7 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (isset($_POST['knowbaseitems_id'])) {
-   $kbitem = new KnowbaseItem;
-   $kbitem->getFromDB(intval($_POST['knowbaseitems_id']));
-   $kbitem->showFull();
+    $kbitem = new KnowbaseItem();
+    $kbitem->getFromDB(intval($_POST['knowbaseitems_id']));
+    $kbitem->showFull();
 }

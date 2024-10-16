@@ -31,15 +31,15 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class CartridgeItemType
-class CartridgeItemType extends CommonDropdown {
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Cartridge type', 'Cartridge types', $nb);
-   }
+class CartridgeItemType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Cartridge type', 'Cartridge types', $nb);
+    }
 
 }

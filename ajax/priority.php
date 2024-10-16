@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 // Send UTF8 Headers
 header("Content-Type: text/html; charset=UTF-8");
@@ -42,14 +42,14 @@ if (isset($_POST["urgency"])
     && isset($_POST["impact"])
     && isset($_POST["priority"])) {
 
-   $priority = Ticket::computePriority($_POST["urgency"], $_POST["impact"]);
+    $priority = Ticket::computePriority($_POST["urgency"], $_POST["impact"]);
 
-   if ($_POST["priority"]) {
-      echo "<script type='text/javascript' >\n";
-      echo Html::jsSetDropdownValue($_POST["priority"], $priority);
-      echo "\n</script>";
+    if ($_POST["priority"]) {
+        echo "<script type='text/javascript' >\n";
+        echo Html::jsSetDropdownValue($_POST["priority"], $priority);
+        echo "\n</script>";
 
-   } else {
-      echo Ticket::getPriorityName($priority);
-   }
+    } else {
+        echo Ticket::getPriorityName($priority);
+    }
 }

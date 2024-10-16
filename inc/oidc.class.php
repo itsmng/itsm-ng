@@ -42,10 +42,9 @@ if (!defined('GLPI_ROOT')) {
  **/
 class Oidc extends CommonDBTM
 {
+    public static $_user_data;
 
-    static $_user_data;
-
-    static function auth()
+    public static function auth()
     {
 
         global $DB, $CFG_GLPI;
@@ -74,14 +73,14 @@ class Oidc extends CommonDBTM
         }
         if (isset($_REQUEST['redirect'])) {
             if (isset($_SERVER['HTTPS'])) {
-               $redirect = 'https://';
+                $redirect = 'https://';
             } else {
-               $redirect = 'http://';
+                $redirect = 'http://';
             }
-            $redirect .= $_SERVER['SERVER_NAME'] 
+            $redirect .= $_SERVER['SERVER_NAME']
                . $CFG_GLPI['root_doc'] . '/front/oidc.php?redirect=' . $_REQUEST['redirect'];
             $oidc->setRedirectURL($redirect);
-         }
+        }
         $oidc->setHttpUpgradeInsecureRequests(false);
         try {
             $oidc->authenticate();
@@ -109,11 +108,12 @@ class Oidc extends CommonDBTM
         $newUser = true;
 
         if (isset($user_array["name"])) {
-            foreach ($iterators as $iterator)
+            foreach ($iterators as $iterator) {
                 if ($user_array['name'] == $iterator['name']) {
                     $ID = $iterator['id'];
                     $newUser = false;
                 }
+            }
 
             $user = new User();
             if ($newUser) {
@@ -125,11 +125,12 @@ class Oidc extends CommonDBTM
                 $ID = $user->add($input);
             }
         } else {
-            foreach ($iterators as $iterator)
+            foreach ($iterators as $iterator) {
                 if ($user_array['sub'] == $iterator['name']) {
                     $ID = $iterator['id'];
                     $newUser = false;
                 }
+            }
 
             $user = new User();
             if ($newUser) {
@@ -142,8 +143,9 @@ class Oidc extends CommonDBTM
             }
         }
 
-        if (!$user->getFromDB($ID))
+        if (!$user->getFromDB($ID)) {
             die;
+        }
 
         $request = $DB->request('glpi_oidc_mapping');
         while ($data = $request->next()) {
@@ -172,39 +174,46 @@ class Oidc extends CommonDBTM
      *
      * @return void
      */
-    static function addUserData($user_array, $id)
+    public static function addUserData($user_array, $id)
     {
         global $DB;
 
         $criteria = "SELECT * FROM glpi_oidc_mapping";
         $iterators = $DB->request($criteria);
 
-        while ($data = $iterators->next())
+        while ($data = $iterators->next()) {
             $result[] = $data;
+        }
 
         if (isset($result)) {
-            if (isset($user_array[$result[0]["name"]]))
+            if (isset($user_array[$result[0]["name"]])) {
                 $DB->updateOrInsert("glpi_users", ['name' => $DB->escape($user_array[$result[0]["name"]])], ['id' => $id]);
+            }
 
-            if (isset($user_array[$result[0]["given_name"]]))
+            if (isset($user_array[$result[0]["given_name"]])) {
                 $DB->updateOrInsert("glpi_users", ['firstname' => $DB->escape($user_array[$result[0]["given_name"]])], ['id' => $id]);
+            }
 
-            if (isset($user_array[$result[0]["family_name"]]))
+            if (isset($user_array[$result[0]["family_name"]])) {
                 $DB->updateOrInsert("glpi_users", ['realname' => $DB->escape($user_array[$result[0]["family_name"]])], ['id' => $id]);
+            }
 
-            if (isset($user_array[$result[0]["picture"]]))
+            if (isset($user_array[$result[0]["picture"]])) {
                 $DB->updateOrInsert("glpi_users", ['picture' => $DB->escape($user_array[$result[0]["picture"]])], ['id' => $id]);
+            }
 
             if (isset($user_array[$result[0]["email"]])) {
                 $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '" . $user_array[$result[0]["email"]] . "');";
                 $DB->queryOrDie($querry);
             }
 
-            if (isset($user_array[$result[0]["locale"]]))
+            if (isset($user_array[$result[0]["locale"]])) {
                 $DB->updateOrInsert("glpi_users", ['language' => $DB->escape($user_array[$result[0]["locale"]])], ['id' => $id]);
+            }
 
-            if (isset($user_array[$result[0]["phone_number"]]))
+            if (isset($user_array[$result[0]["phone_number"]])) {
                 $DB->updateOrInsert("glpi_users", ['phone' => $DB->escape($user_array[$result[0]["phone_number"]])], ['id' => $id]);
+            }
 
             $DB->updateOrInsert("glpi_users", ['date_mod' => $_SESSION["glpi_currenttime"]], ['id' => $id]);
 
@@ -243,7 +252,9 @@ class Oidc extends CommonDBTM
         while ($data = $request->next()) {
             $user_id = $data['id'];
 
-            if ($data['user_id'] == $id) $find = true;
+            if ($data['user_id'] == $id) {
+                $find = true;
+            }
         }
 
         if (!isset($find)) {
@@ -258,7 +269,7 @@ class Oidc extends CommonDBTM
      *
      * @return void
      */
-    static function showFormUserConfig()
+    public static function showFormUserConfig()
     {
         global $DB, $CFG_GLPI;
 

@@ -31,16 +31,16 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Mandatory fields for change template class
 /// since version 0.83
-class ChangeTemplateMandatoryField extends ITILTemplateMandatoryField {
-
-   // From CommonDBChild
-   static public $itemtype  = 'ChangeTemplate';
-   static public $items_id  = 'changetemplates_id';
-   static public $itiltype = 'Change';
+class ChangeTemplateMandatoryField extends ITILTemplateMandatoryField
+{
+    // From CommonDBChild
+    public static $itemtype  = 'ChangeTemplate';
+    public static $items_id  = 'changetemplates_id';
+    public static $itiltype = 'Change';
 
 }

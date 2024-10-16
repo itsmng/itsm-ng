@@ -31,136 +31,149 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class DevicePowerSupply
-class DevicePowerSupply extends CommonDevice {
+class DevicePowerSupply extends CommonDevice
+{
+    protected static $forward_entity_to = ['Item_DevicePowerSupply', 'Infocom'];
 
-   static protected $forward_entity_to = ['Item_DevicePowerSupply', 'Infocom'];
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Power supply', 'Power supplies', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Power supply', 'Power supplies', $nb);
-   }
 
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
-
-      return array_merge(
-         parent::getAdditionalFields(),
-         [
-            __('ATX') => [
-               'name'  => 'is_atx',
-               'type'  => 'checkbox',
-               'value' => $this->fields['is_atx']
-            ],
-            __('Power') => [
-               'name'  => 'power',
-               'type'  => 'text',
-               'value' => $this->fields['power']
-            ],
-            _n('Model', 'Models', 1) => [
-               'name'  => 'devicepowersupplymodels_id',
-               'type'  => 'select',
-               'values' => getOptionForItems('DevicePowerSupplyModel'),
-               'value' => $this->fields['devicepowersupplymodels_id'],
-               'actions' => getItemActionButtons(['info', 'add'], 'DevicePowerSupplyModel')
-            ]
+        return array_merge(
+            parent::getAdditionalFields(),
+            [
+              __('ATX') => [
+                 'name'  => 'is_atx',
+                 'type'  => 'checkbox',
+                 'value' => $this->fields['is_atx']
+              ],
+              __('Power') => [
+                 'name'  => 'power',
+                 'type'  => 'text',
+                 'value' => $this->fields['power']
+              ],
+              _n('Model', 'Models', 1) => [
+                 'name'  => 'devicepowersupplymodels_id',
+                 'type'  => 'select',
+                 'values' => getOptionForItems('DevicePowerSupplyModel'),
+                 'value' => $this->fields['devicepowersupplymodels_id'],
+                 'actions' => getItemActionButtons(['info', 'add'], 'DevicePowerSupplyModel')
+              ]
          ]
-      );
-   }
+        );
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'is_atx',
-         'name'               => __('ATX'),
-         'datatype'           => 'bool'
-      ];
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'is_atx',
+           'name'               => __('ATX'),
+           'datatype'           => 'bool'
+        ];
 
-      $tab[] = [
-         'id'                 => '12',
-         'table'              => $this->getTable(),
-         'field'              => 'power',
-         'name'               => __('Power'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
+        $tab[] = [
+           'id'                 => '12',
+           'table'              => $this->getTable(),
+           'field'              => 'power',
+           'name'               => __('Power'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-         'id'                 => '13',
-         'table'              => 'glpi_devicepowersupplymodels',
-         'field'              => 'name',
-         'name'               => _n('Model', 'Models', 1),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '13',
+           'table'              => 'glpi_devicepowersupplymodels',
+           'field'              => 'name',
+           'name'               => _n('Model', 'Models', 1),
+           'datatype'           => 'dropdown'
+        ];
 
-      return $tab;
-   }
-
-
-   static function getHTMLTableHeader($itemtype, HTMLTableBase $base,
-                                      HTMLTableSuperHeader $super = null,
-                                      HTMLTableHeader $father = null, array $options = []) {
-
-      $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
-
-      if ($column == $father) {
-         return $father;
-      }
-
-      switch ($itemtype) {
-         case 'Computer' :
-            Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
-            break;
-      }
-   }
+        return $tab;
+    }
 
 
-   function getHTMLTableCellForItem(HTMLTableRow $row = null, CommonDBTM $item = null,
-                                    HTMLTableCell $father = null, array $options = []) {
+    public static function getHTMLTableHeader(
+        $itemtype,
+        HTMLTableBase $base,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
+        array $options = []
+    ) {
 
-      $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
+        $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
 
-      if ($column == $father) {
-         return $father;
-      }
+        if ($column == $father) {
+            return $father;
+        }
 
-      switch ($item->getType()) {
-         case 'Computer' :
-            Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
-      }
-   }
-
-   public static function rawSearchOptionsToAdd($itemtype, $main_joinparams) {
-      $tab = [];
-
-      $tab[] = [
-         'id'                 => '39',
-         'table'              => 'glpi_devicepowersupplies',
-         'field'              => 'designation',
-         'name'               => static::getTypeName(1),
-         'forcegroupby'       => true,
-         'usehaving'          => true,
-         'massiveaction'      => false,
-         'datatype'           => 'string',
-         'joinparams'         => [
-            'beforejoin'         => [
-               'table'              => 'glpi_items_devicepowersupplies',
-               'joinparams'         => $main_joinparams
-            ]
-         ]
-      ];
-
-      return $tab;
-   }
+        switch ($itemtype) {
+            case 'Computer':
+                Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
+                break;
+        }
+    }
 
 
-   static function getIcon() {
-      return "fas fa-bolt";
-   }
+    public function getHTMLTableCellForItem(
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
+        array $options = []
+    ) {
+
+        $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
+
+        if ($column == $father) {
+            return $father;
+        }
+
+        switch ($item->getType()) {
+            case 'Computer':
+                Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
+        }
+    }
+
+    public static function rawSearchOptionsToAdd($itemtype, $main_joinparams)
+    {
+        $tab = [];
+
+        $tab[] = [
+           'id'                 => '39',
+           'table'              => 'glpi_devicepowersupplies',
+           'field'              => 'designation',
+           'name'               => static::getTypeName(1),
+           'forcegroupby'       => true,
+           'usehaving'          => true,
+           'massiveaction'      => false,
+           'datatype'           => 'string',
+           'joinparams'         => [
+              'beforejoin'         => [
+                 'table'              => 'glpi_items_devicepowersupplies',
+                 'joinparams'         => $main_joinparams
+              ]
+           ]
+        ];
+
+        return $tab;
+    }
+
+
+    public static function getIcon()
+    {
+        return "fas fa-bolt";
+    }
 }

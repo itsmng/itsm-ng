@@ -31,152 +31,174 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * Vlan Class
 **/
-class Vlan extends CommonDropdown {
+class Vlan extends CommonDropdown
+{
+    public $dohistory         = true;
 
-   public $dohistory         = true;
-
-   public $can_be_translated = false;
-
-
-   static function getTypeName($nb = 0) {
-      return _n('VLAN', 'VLANs', $nb);
-   }
+    public $can_be_translated = false;
 
 
-   function getAdditionalFields() {
+    public static function getTypeName($nb = 0)
+    {
+        return _n('VLAN', 'VLANs', $nb);
+    }
 
-      return [
-         __('ID TAG') => [
-            'name'     => 'tag',
-            'type'     => 'number',
-            'min'     => 1,
-            'value' => $this->fields['tag']
+
+    public function getAdditionalFields()
+    {
+
+        return [
+           __('ID TAG') => [
+              'name'     => 'tag',
+              'type'     => 'number',
+              'min'     => 1,
+              'value' => $this->fields['tag']
+           ]
+        ];
+    }
+
+
+    public function displaySpecificTypeField($ID, $field = [])
+    {
+
+        if ($field['name'] == 'tag') {
+            Dropdown::showNumber('tag', ['value' => $this->fields['tag'],
+                                              'min'   => 1,
+                                              'max'   => (pow(2, 12) - 2)]);
+        }
+    }
+
+
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
+
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'tag',
+           'name'               => __('ID TAG'),
+           'datatype'           => 'number',
+           'min'                => 1,
+           'max'                => 4094
+        ];
+
+        return $tab;
+    }
+
+
+    public function cleanDBonPurge()
+    {
+
+        $this->deleteChildrenAndRelationsFromDb(
+            [
+              IPNetwork_Vlan::class,
+              NetworkPort_Vlan::class,
          ]
-      ];
-   }
+        );
+    }
 
 
-   function displaySpecificTypeField($ID, $field = []) {
+    /**
+     * @since 0.84
+     *
+     * @param $itemtype
+     * @param $base            HTMLTableBase object
+     * @param $super           HTMLTableSuperHeader object (default NULL
+     * @param $father          HTMLTableHeader object (default NULL)
+     * @param $options   array
+    **/
+    public static function getHTMLTableHeader(
+        $itemtype,
+        HTMLTableBase $base,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
+        array $options = []
+    ) {
 
-      if ($field['name'] == 'tag') {
-         Dropdown::showNumber('tag', ['value' => $this->fields['tag'],
-                                           'min'   => 1,
-                                           'max'   => (pow(2, 12) - 2)]);
-      }
-   }
+        $column_name = __CLASS__;
 
-
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
-
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'tag',
-         'name'               => __('ID TAG'),
-         'datatype'           => 'number',
-         'min'                => 1,
-         'max'                => 4094
-      ];
-
-      return $tab;
-   }
-
-
-   function cleanDBonPurge() {
-
-      $this->deleteChildrenAndRelationsFromDb(
-         [
-            IPNetwork_Vlan::class,
-            NetworkPort_Vlan::class,
-         ]
-      );
-   }
-
-
-   /**
-    * @since 0.84
-    *
-    * @param $itemtype
-    * @param $base            HTMLTableBase object
-    * @param $super           HTMLTableSuperHeader object (default NULL
-    * @param $father          HTMLTableHeader object (default NULL)
-    * @param $options   array
-   **/
-   static function getHTMLTableHeader($itemtype, HTMLTableBase $base,
-                                      HTMLTableSuperHeader $super = null,
-                                      HTMLTableHeader $father = null, array $options = []) {
-
-      $column_name = __CLASS__;
-
-      if (isset($options['dont_display'][$column_name])) {
-         return;
-      }
-
-      if ($itemtype == 'NetworkPort_Vlan') {
-         $base->addHeader($column_name, self::getTypeName(), $super, $father);
-      }
-   }
-
-
-   /**
-    * @since 0.84
-    *
-    * @param $row             HTMLTableRow object (default NULL)
-    * @param $item            CommonDBTM object (default NULL)
-    * @param $father          HTMLTableCell object (default NULL)
-    * @param $options   array
-   **/
-   static function getHTMLTableCellsForItem(HTMLTableRow $row = null, CommonDBTM $item = null,
-                                            HTMLTableCell $father = null, array $options = []) {
-      $column_name = __CLASS__;
-
-      if (isset($options['dont_display'][$column_name])) {
-         return;
-      }
-
-      if (empty($item)) {
-         if (empty($father)) {
+        if (isset($options['dont_display'][$column_name])) {
             return;
-         }
-         $item = $father->getItem();
-      }
+        }
 
-      $canedit = (isset($options['canedit']) && $options['canedit']);
+        if ($itemtype == 'NetworkPort_Vlan') {
+            $base->addHeader($column_name, self::getTypeName(), $super, $father);
+        }
+    }
 
-      if ($item->getType() == 'NetworkPort_Vlan') {
-         if (isset($item->fields["tagged"]) && ($item->fields["tagged"] == 1)) {
-            $tagged_msg = __('Tagged');
-         } else {
-            $tagged_msg = __('Untagged');
-         }
 
-         $vlan = new self();
-         if ($vlan->getFromDB($options['items_id'])) {
-            $content = sprintf(__('%1$s - %2$s'), $vlan->getName(), $tagged_msg);
-            $content .= Html::showToolTip(sprintf(__('%1$s: %2$s'),
-                                                  __('ID TAG'), $vlan->fields['tag'])."<br>".
-                                          sprintf(__('%1$s: %2$s'),
-                                                  __('Comments'), $vlan->fields['comment']),
-                                          ['display' => false]);
+    /**
+     * @since 0.84
+     *
+     * @param $row             HTMLTableRow object (default NULL)
+     * @param $item            CommonDBTM object (default NULL)
+     * @param $father          HTMLTableCell object (default NULL)
+     * @param $options   array
+    **/
+    public static function getHTMLTableCellsForItem(
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
+        array $options = []
+    ) {
+        $column_name = __CLASS__;
 
-            $this_cell = $row->addCell($row->getHeaderByName($column_name), $content, $father);
-         }
-      }
-   }
+        if (isset($options['dont_display'][$column_name])) {
+            return;
+        }
 
-   function defineTabs($options = []) {
+        if (empty($item)) {
+            if (empty($father)) {
+                return;
+            }
+            $item = $father->getItem();
+        }
 
-      $ong = [];
-      $this->addDefaultFormTab($ong)
-         ->addStandardTab('NetworkPort_Vlan', $ong, $options);
+        $canedit = (isset($options['canedit']) && $options['canedit']);
 
-      return $ong;
-   }
+        if ($item->getType() == 'NetworkPort_Vlan') {
+            if (isset($item->fields["tagged"]) && ($item->fields["tagged"] == 1)) {
+                $tagged_msg = __('Tagged');
+            } else {
+                $tagged_msg = __('Untagged');
+            }
+
+            $vlan = new self();
+            if ($vlan->getFromDB($options['items_id'])) {
+                $content = sprintf(__('%1$s - %2$s'), $vlan->getName(), $tagged_msg);
+                $content .= Html::showToolTip(
+                    sprintf(
+                        __('%1$s: %2$s'),
+                        __('ID TAG'),
+                        $vlan->fields['tag']
+                    )."<br>".
+                                              sprintf(
+                                                  __('%1$s: %2$s'),
+                                                  __('Comments'),
+                                                  $vlan->fields['comment']
+                                              ),
+                    ['display' => false]
+                );
+
+                $this_cell = $row->addCell($row->getHeaderByName($column_name), $content, $father);
+            }
+        }
+    }
+
+    public function defineTabs($options = [])
+    {
+
+        $ong = [];
+        $this->addDefaultFormTab($ong)
+           ->addStandardTab('NetworkPort_Vlan', $ong, $options);
+
+        return $ong;
+    }
 }

@@ -41,7 +41,7 @@ $notificationChatSend = new NotificationChatConfig();
 if (!empty($_POST["test_chat_send"])) {
     NotificationChat::testNotification();
     Html::back();
-} else if (!empty($_POST["update"]) && isset($_POST['hookurl'])) {
+} elseif (!empty($_POST["update"]) && isset($_POST['hookurl'])) {
     $config = new Config();
     $config->update($_POST);
 
@@ -57,7 +57,7 @@ if (!empty($_POST["test_chat_send"])) {
             break;
         case 'category':
             $value = $_POST['value_category'];
-            break;   
+            break;
         default:
             $value = "";
             break;
@@ -65,11 +65,11 @@ if (!empty($_POST["test_chat_send"])) {
 
     $notificationChatSend->processPostData($_POST['hookurl'], $_POST['chat_mode'], $_POST['type'], $value);
     Html::back();
-} else if (!empty($_GET["delete"])) {
+} elseif (!empty($_GET["delete"])) {
     $notificationChatSend->delete(['id' => $_GET["delete"]]);
     Html::back();
-} else if (!empty($_GET["test"])) {
-    if(NotificationChat::testNotification($_GET["test"])) {
+} elseif (!empty($_GET["test"])) {
+    if (NotificationChat::testNotification($_GET["test"])) {
         Session::addMessageAfterRedirect(__('Test successful'));
     } else {
         Session::addMessageAfterRedirect(__('Test failed'), false, ERROR);

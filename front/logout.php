@@ -34,13 +34,13 @@
  * @since 0.85
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 //@session_start();
 
 if ($CFG_GLPI["ssovariables_id"] > 0
     && strlen($CFG_GLPI['ssologout_url']) > 0) {
-   Html::redirect($CFG_GLPI["ssologout_url"]);
+    Html::redirect($CFG_GLPI["ssologout_url"]);
 }
 
 if (!isset($_SESSION["noAUTO"])
@@ -48,62 +48,73 @@ if (!isset($_SESSION["noAUTO"])
     && $_SESSION["glpiauthtype"] == Auth::CAS
     && Toolbox::canUseCAS()) {
 
-   $has_service_base_url_arg = version_compare(phpCAS::getVersion(), '1.6.0', '>=')
-        || count((new ReflectionMethod(phpCAS::class, 'client'))->getParameters()) > 6;
-   if (!$has_service_base_url_arg) {
-       phpCAS::client($CFG_GLPI["cas_version"], $CFG_GLPI["cas_host"], intval($CFG_GLPI["cas_port"]),
-                      $CFG_GLPI["cas_uri"], false);
-   } else {
-       $url_base = parse_url($CFG_GLPI["url_base"]);
-       $service_base_url = $url_base["scheme"] . "://" . $url_base["host"] . (isset($url_base["port"]) ? ":" . $url_base["port"] : "");
-       phpCAS::client($CFG_GLPI["cas_version"], $CFG_GLPI["cas_host"], intval($CFG_GLPI["cas_port"]),
-                      $CFG_GLPI["cas_uri"], $service_base_url, false);
-   }
-   phpCAS::setServerLogoutURL(strval($CFG_GLPI["cas_logout"]));
-   phpCAS::logout();
+    $has_service_base_url_arg = version_compare(phpCAS::getVersion(), '1.6.0', '>=')
+         || count((new ReflectionMethod(phpCAS::class, 'client'))->getParameters()) > 6;
+    if (!$has_service_base_url_arg) {
+        phpCAS::client(
+            $CFG_GLPI["cas_version"],
+            $CFG_GLPI["cas_host"],
+            intval($CFG_GLPI["cas_port"]),
+            $CFG_GLPI["cas_uri"],
+            false
+        );
+    } else {
+        $url_base = parse_url($CFG_GLPI["url_base"]);
+        $service_base_url = $url_base["scheme"] . "://" . $url_base["host"] . (isset($url_base["port"]) ? ":" . $url_base["port"] : "");
+        phpCAS::client(
+            $CFG_GLPI["cas_version"],
+            $CFG_GLPI["cas_host"],
+            intval($CFG_GLPI["cas_port"]),
+            $CFG_GLPI["cas_uri"],
+            $service_base_url,
+            false
+        );
+    }
+    phpCAS::setServerLogoutURL(strval($CFG_GLPI["cas_logout"]));
+    phpCAS::logout();
 }
 
 $toADD = "";
 
 // Redirect management
 if (isset($_POST['redirect']) && (strlen($_POST['redirect']) > 0)) {
-   $toADD = "?redirect=" .$_POST['redirect'];
+    $toADD = "?redirect=" .$_POST['redirect'];
 
-} else if (isset($_GET['redirect']) && (strlen($_GET['redirect']) > 0)) {
-   $toADD = "?redirect=" .$_GET['redirect'];
+} elseif (isset($_GET['redirect']) && (strlen($_GET['redirect']) > 0)) {
+    $toADD = "?redirect=" .$_GET['redirect'];
 }
 
 if (isset($_SESSION["noAUTO"]) || isset($_GET['noAUTO'])) {
-   if (empty($toADD)) {
-      $toADD .= "?";
-   } else {
-      $toADD .= "&";
-   }
-   $toADD .= "noAUTO=1";
+    if (empty($toADD)) {
+        $toADD .= "?";
+    } else {
+        $toADD .= "&";
+    }
+    $toADD .= "noAUTO=1";
 }
 
 if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
 
-   //Get config from DB and use it to setup oidc
-   $criteria = "SELECT * FROM glpi_oidc_config";
-   $iterators = $DB->request($criteria);
-   foreach($iterators as $iterator) {
-      $oidc_db['Provider'] = $iterator['Provider'];
-      $oidc_db['ClientID'] = $iterator['ClientID'];
-      $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
-      $oidc_db['scope'] = explode(',', addslashes($iterator['scope']));
-      $oidc_db['logout'] = empty($iterator['logout']) ? null : $iterator['logout'];
-   }
+    //Get config from DB and use it to setup oidc
+    $criteria = "SELECT * FROM glpi_oidc_config";
+    $iterators = $DB->request($criteria);
+    foreach ($iterators as $iterator) {
+        $oidc_db['Provider'] = $iterator['Provider'];
+        $oidc_db['ClientID'] = $iterator['ClientID'];
+        $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
+        $oidc_db['scope'] = explode(',', addslashes($iterator['scope']));
+        $oidc_db['logout'] = empty($iterator['logout']) ? null : $iterator['logout'];
+    }
 
-   if (isset($oidc_db)) {
-      $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
-      $sid = $_SESSION['itsm_oidc_idtoken'];
+    if (isset($oidc_db)) {
+        $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
+        $sid = $_SESSION['itsm_oidc_idtoken'];
 
-      Session::destroy();
-      Auth::setRememberMeCookie('');
+        Session::destroy();
+        Auth::setRememberMeCookie('');
 
-      $oidc->signOut($sid, $oidc_db['logout'] ?? $CFG_GLPI["url_base"]."/index.php".$toADD);
-   }
+        $oidc->signOut($sid, $oidc_db['logout'] ?? $CFG_GLPI["url_base"]."/index.php".$toADD);
+    }
 }
 
 Session::destroy();

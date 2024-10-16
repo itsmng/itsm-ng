@@ -32,7 +32,7 @@
 
 use Glpi\Event;
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkCentralAccess();
 
@@ -40,13 +40,18 @@ $item = new CalendarSegment();
 
 if (isset($_POST["add"])) {
 
-   $item->check(-1, CREATE, $_POST);
-   if ($item->add($_POST)) {
-      Event::log($_POST["calendars_id"], "calendars", 4, "setup",
-                 //TRANS: %s is the user login
-                 sprintf(__('%s adds a link with an item'), $_SESSION["glpiname"]));
-   }
-   Html::back();
+    $item->check(-1, CREATE, $_POST);
+    if ($item->add($_POST)) {
+        Event::log(
+            $_POST["calendars_id"],
+            "calendars",
+            4,
+            "setup",
+            //TRANS: %s is the user login
+            sprintf(__('%s adds a link with an item'), $_SESSION["glpiname"])
+        );
+    }
+    Html::back();
 }
 
 Html::displayErrorAndDie("lost");

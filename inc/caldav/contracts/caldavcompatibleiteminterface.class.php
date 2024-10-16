@@ -33,7 +33,7 @@
 namespace Glpi\CalDAV\Contracts;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 use Sabre\VObject\Component\VCalendar;
@@ -43,43 +43,43 @@ use Sabre\VObject\Component\VCalendar;
  *
  * @since 9.5.0
  */
-interface CalDAVCompatibleItemInterface {
+interface CalDAVCompatibleItemInterface
+{
+    /**
+     * Get group items as VCalendar documents.
+     *
+     * @param integer $groups_id
+     *
+     * @return VCalendar[]
+     */
+    public static function getGroupItemsAsVCalendars($groups_id);
 
-   /**
-    * Get group items as VCalendar documents.
-    *
-    * @param integer $groups_id
-    *
-    * @return VCalendar[]
-    */
-   public static function getGroupItemsAsVCalendars($groups_id);
+    /**
+     * Get user items as VCalendar documents.
+     *
+     * @param integer $users_id
+     *
+     * @return VCalendar[]
+     */
+    public static function getUserItemsAsVCalendars($users_id);
 
-   /**
-    * Get user items as VCalendar documents.
-    *
-    * @param integer $users_id
-    *
-    * @return VCalendar[]
-    */
-   public static function getUserItemsAsVCalendars($users_id);
+    /**
+     * Get current item as a VCalendar document.
+     *
+     * @return null|VCalendar
+     *
+     * @see https://tools.ietf.org/html/rfc2445
+     */
+    public function getAsVCalendar();
 
-   /**
-    * Get current item as a VCalendar document.
-    *
-    * @return null|VCalendar
-    *
-    * @see https://tools.ietf.org/html/rfc2445
-    */
-   public function getAsVCalendar();
-
-   /**
-    * Get input array from a VCalendar object.
-    *
-    * @param VCalendar $vcalendar
-    *
-    * @return array
-    *
-    * @see https://tools.ietf.org/html/rfc2445
-    */
-   public function getInputFromVCalendar(VCalendar $vcalendar);
+    /**
+     * Get input array from a VCalendar object.
+     *
+     * @param VCalendar $vcalendar
+     *
+     * @return array
+     *
+     * @see https://tools.ietf.org/html/rfc2445
+     */
+    public function getInputFromVCalendar(VCalendar $vcalendar);
 }

@@ -31,18 +31,19 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class Network
-class Network extends CommonDropdown {
+class Network extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Network', 'Networks', $nb);
+    }
 
-
-   static function getTypeName($nb = 0) {
-      return _n('Network', 'Networks', $nb);
-   }
-
-   static function getiCon() {
-      return "fas fa-network-wired";
-   }
+    public static function getiCon()
+    {
+        return "fas fa-network-wired";
+    }
 }

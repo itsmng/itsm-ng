@@ -33,112 +33,114 @@
 namespace Glpi\System\Requirement;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * @since 9.5.0
  */
-class SeLinux extends AbstractRequirement {
+class SeLinux extends AbstractRequirement
+{
+    public function __construct()
+    {
+        $this->title = __('Check SELinux configuration');
+        $this->optional = true;
+    }
 
-   public function __construct() {
-      $this->title = __('Check SELinux configuration');
-      $this->optional = true;
-   }
+    protected function check()
+    {
+        $is_slash_separator = DIRECTORY_SEPARATOR == '/';
+        $are_bin_existing = file_exists('/usr/sbin/getenforce') && file_exists('/usr/sbin/getsebool');
+        $are_functions_existing = function_exists('selinux_is_enabled')
+           && function_exists('selinux_getenforce')
+           && function_exists('selinux_get_boolean_active');
 
-   protected function check() {
-      $is_slash_separator = DIRECTORY_SEPARATOR == '/';
-      $are_bin_existing = file_exists('/usr/sbin/getenforce') && file_exists('/usr/sbin/getsebool');
-      $are_functions_existing = function_exists('selinux_is_enabled')
-         && function_exists('selinux_getenforce')
-         && function_exists('selinux_get_boolean_active');
+        $exec_enabled = function_exists('exec') && !in_array('exec', explode(',', ini_get('disable_functions')), true);
 
-      $exec_enabled = function_exists('exec') && !in_array('exec', explode(',', ini_get('disable_functions')), true);
+        if (!$is_slash_separator || (!$are_bin_existing && !$are_functions_existing)) {
+            // This is not a SELinux system
+            $this->out_of_context = true;
+            $this->validated = false;
+            return;
+        }
 
-      if (!$is_slash_separator || (!$are_bin_existing && !$are_functions_existing)) {
-         // This is not a SELinux system
-         $this->out_of_context = true;
-         $this->validated = false;
-         return;
-      }
-
-      if (function_exists('selinux_is_enabled') && function_exists('selinux_getenforce')) {
-         // Use https://pecl.php.net/package/selinux
-         if (!selinux_is_enabled()) {
-            $mode = 'disabled';
-         } else {
-            $mode = selinux_getenforce();
-            // Make it human readable, with same output as the command
-            if ($mode == 1) {
-               $mode = 'enforcing';
-            } else if ($mode == 0) {
-               $mode = 'permissive';
-            }
-         }
-      } else {
-         $mode = $exec_enabled ? strtolower(exec('/usr/sbin/getenforce')) : 'unknown';
-      }
-      if (!in_array($mode, ['enforcing', 'permissive', 'disabled'])) {
-         $mode = 'unknown';
-      }
-
-      //TRANS: %s is mode name (Permissive, Enforcing, Disabled or Unknown)
-      $this->title = sprintf(__('SELinux mode is %s'), ucfirst($mode));
-
-      if ('enforcing' !== $mode) {
-         $this->validated = false;
-         $this->validation_messages[] = __('For security reasons, SELinux mode should be Enforcing.');
-         return;
-      }
-
-      // No need to check file context as DirectoryWriteAccess requirements will show issues
-
-      $bools = [
-         'httpd_can_network_connect',
-         'httpd_can_network_connect_db',
-         'httpd_can_sendmail',
-      ];
-
-      $has_missing_boolean = false;
-
-      foreach ($bools as $bool) {
-         if (function_exists('selinux_get_boolean_active')) {
-            $state = selinux_get_boolean_active($bool);
-            if ($state == 1) {
-               $state = 'on';
-            } else if ($state == 0) {
-               $state = 'off';
-            }
-         } else {
-            // command result is something like "httpd_can_network_connect --> on"
-            if ($exec_enabled) {
-               $state = preg_replace(
-                  '/^.*(on|off)$/',
-                  '$1',
-                  strtolower(exec('/usr/sbin/getsebool ' . $bool))
-               );
+        if (function_exists('selinux_is_enabled') && function_exists('selinux_getenforce')) {
+            // Use https://pecl.php.net/package/selinux
+            if (!selinux_is_enabled()) {
+                $mode = 'disabled';
             } else {
-               $state = 'unknown';
+                $mode = selinux_getenforce();
+                // Make it human readable, with same output as the command
+                if ($mode == 1) {
+                    $mode = 'enforcing';
+                } elseif ($mode == 0) {
+                    $mode = 'permissive';
+                }
             }
-         }
-         if (!in_array($state, ['on', 'off'])) {
-            $state = 'unknown';
-         }
+        } else {
+            $mode = $exec_enabled ? strtolower(exec('/usr/sbin/getenforce')) : 'unknown';
+        }
+        if (!in_array($mode, ['enforcing', 'permissive', 'disabled'])) {
+            $mode = 'unknown';
+        }
 
-         if ('on' !== $state) {
-            $has_missing_boolean = true;
-            $this->validation_messages[] = sprintf(
-               __('SELinux boolean %s is %s, some features may require this to be on.'),
-               $bool,
-               $state
-            );
-         }
-      }
+        //TRANS: %s is mode name (Permissive, Enforcing, Disabled or Unknown)
+        $this->title = sprintf(__('SELinux mode is %s'), ucfirst($mode));
 
-      $this->validated = !$has_missing_boolean;
+        if ('enforcing' !== $mode) {
+            $this->validated = false;
+            $this->validation_messages[] = __('For security reasons, SELinux mode should be Enforcing.');
+            return;
+        }
 
-      if (!$has_missing_boolean) {
-         $this->validation_messages[] = __('SELinux configuration is OK.');
-      }
-   }
+        // No need to check file context as DirectoryWriteAccess requirements will show issues
+
+        $bools = [
+           'httpd_can_network_connect',
+           'httpd_can_network_connect_db',
+           'httpd_can_sendmail',
+        ];
+
+        $has_missing_boolean = false;
+
+        foreach ($bools as $bool) {
+            if (function_exists('selinux_get_boolean_active')) {
+                $state = selinux_get_boolean_active($bool);
+                if ($state == 1) {
+                    $state = 'on';
+                } elseif ($state == 0) {
+                    $state = 'off';
+                }
+            } else {
+                // command result is something like "httpd_can_network_connect --> on"
+                if ($exec_enabled) {
+                    $state = preg_replace(
+                        '/^.*(on|off)$/',
+                        '$1',
+                        strtolower(exec('/usr/sbin/getsebool ' . $bool))
+                    );
+                } else {
+                    $state = 'unknown';
+                }
+            }
+            if (!in_array($state, ['on', 'off'])) {
+                $state = 'unknown';
+            }
+
+            if ('on' !== $state) {
+                $has_missing_boolean = true;
+                $this->validation_messages[] = sprintf(
+                    __('SELinux boolean %s is %s, some features may require this to be on.'),
+                    $bool,
+                    $state
+                );
+            }
+        }
+
+        $this->validated = !$has_missing_boolean;
+
+        if (!$has_missing_boolean) {
+            $this->validation_messages[] = __('SELinux configuration is OK.');
+        }
+    }
 }

@@ -31,86 +31,90 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * TicketValidation class
  */
-class TicketValidation  extends CommonITILValidation {
+class TicketValidation extends CommonITILValidation
+{
+    // From CommonDBChild
+    public static $itemtype           = 'Ticket';
+    public static $items_id           = 'tickets_id';
 
-   // From CommonDBChild
-   static public $itemtype           = 'Ticket';
-   static public $items_id           = 'tickets_id';
+    public static $rightname                 = 'ticketvalidation';
 
-   static $rightname                 = 'ticketvalidation';
-
-   const CREATEREQUEST               = 1024;
-   const CREATEINCIDENT              = 2048;
-   const VALIDATEREQUEST             = 4096;
-   const VALIDATEINCIDENT            = 8192;
-
-
-
-   static function getCreateRights() {
-      return [static::CREATEREQUEST, static::CREATEINCIDENT];
-   }
+    public const CREATEREQUEST               = 1024;
+    public const CREATEINCIDENT              = 2048;
+    public const VALIDATEREQUEST             = 4096;
+    public const VALIDATEINCIDENT            = 8192;
 
 
-   static function getValidateRights() {
-      return [static::VALIDATEREQUEST, static::VALIDATEINCIDENT];
-   }
+
+    public static function getCreateRights()
+    {
+        return [static::CREATEREQUEST, static::CREATEINCIDENT];
+    }
 
 
-   /**
-    * @since 0.85
-   **/
-   function canCreateItem() {
+    public static function getValidateRights()
+    {
+        return [static::VALIDATEREQUEST, static::VALIDATEINCIDENT];
+    }
 
-      if ($this->canChildItem('canViewItem', 'canView')) {
-         $ticket = new Ticket();
-         if ($ticket->getFromDB($this->fields['tickets_id'])) {
-            // No validation for closed tickets
-            if (in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
-               return false;
-            }
 
-            if ($ticket->fields['type'] == Ticket::INCIDENT_TYPE) {
-               return Session::haveRight(self::$rightname, self::CREATEINCIDENT);
-            }
-            if ($ticket->fields['type'] == Ticket::DEMAND_TYPE) {
-               return Session::haveRight(self::$rightname, self::CREATEREQUEST);
-            }
-         }
-      }
-   }
-
-   /**
-    * @since 0.85
-    *
-    * @see commonDBTM::getRights()
+    /**
+     * @since 0.85
     **/
-   function getRights($interface = 'central') {
+    public function canCreateItem()
+    {
 
-      $values = parent::getRights();
-      unset($values[UPDATE], $values[CREATE], $values[READ]);
+        if ($this->canChildItem('canViewItem', 'canView')) {
+            $ticket = new Ticket();
+            if ($ticket->getFromDB($this->fields['tickets_id'])) {
+                // No validation for closed tickets
+                if (in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
+                    return false;
+                }
 
-      $values[self::CREATEREQUEST]
-                              = ['short' => __('Create for request'),
-                                      'long'  => __('Create a validation request for a request')];
-      $values[self::CREATEINCIDENT]
-                              = ['short' => __('Create for incident'),
-                                      'long'  => __('Create a validation request for an incident')];
-      $values[self::VALIDATEREQUEST]
-                              = __('Validate a request');
-      $values[self::VALIDATEINCIDENT]
-                              = __('Validate an incident');
+                if ($ticket->fields['type'] == Ticket::INCIDENT_TYPE) {
+                    return Session::haveRight(self::$rightname, self::CREATEINCIDENT);
+                }
+                if ($ticket->fields['type'] == Ticket::DEMAND_TYPE) {
+                    return Session::haveRight(self::$rightname, self::CREATEREQUEST);
+                }
+            }
+        }
+    }
 
-      if ($interface == 'helpdesk') {
-         unset($values[PURGE]);
-      }
+    /**
+     * @since 0.85
+     *
+     * @see commonDBTM::getRights()
+     **/
+    public function getRights($interface = 'central')
+    {
 
-      return $values;
-   }
+        $values = parent::getRights();
+        unset($values[UPDATE], $values[CREATE], $values[READ]);
+
+        $values[self::CREATEREQUEST]
+                                = ['short' => __('Create for request'),
+                                        'long'  => __('Create a validation request for a request')];
+        $values[self::CREATEINCIDENT]
+                                = ['short' => __('Create for incident'),
+                                        'long'  => __('Create a validation request for an incident')];
+        $values[self::VALIDATEREQUEST]
+                                = __('Validate a request');
+        $values[self::VALIDATEINCIDENT]
+                                = __('Validate an incident');
+
+        if ($interface == 'helpdesk') {
+            unset($values[PURGE]);
+        }
+
+        return $values;
+    }
 
 }

@@ -31,14 +31,15 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /// Class DeviceGenericType
-class DeviceGenericType extends CommonDeviceType {
-
-   static function getTypeName($nb = 0) {
-      return _n('Generic type', 'Generic types', $nb); //TODO : add this to locales (if don't exist)
-   }
+class DeviceGenericType extends CommonDeviceType
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Generic type', 'Generic types', $nb); //TODO : add this to locales (if don't exist)
+    }
 
 }

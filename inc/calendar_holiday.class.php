@@ -31,209 +31,215 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class Calendar_Holiday extends CommonDBRelation {
+class Calendar_Holiday extends CommonDBRelation
+{
+    public $auto_message_on_action = false;
 
-   public $auto_message_on_action = false;
+    // From CommonDBRelation
+    public static $itemtype_1 = 'Calendar';
+    public static $items_id_1 = 'calendars_id';
+    public static $itemtype_2 = 'Holiday';
+    public static $items_id_2 = 'holidays_id';
 
-   // From CommonDBRelation
-   static public $itemtype_1 = 'Calendar';
-   static public $items_id_1 = 'calendars_id';
-   static public $itemtype_2 = 'Holiday';
-   static public $items_id_2 = 'holidays_id';
-
-   static public $checkItem_2_Rights = self::DONT_CHECK_ITEM_RIGHTS;
-
-
-   /**
-    * @since 0.84
-   **/
-   function getForbiddenStandardMassiveAction() {
-
-      $forbidden   = parent::getForbiddenStandardMassiveAction();
-      $forbidden[] = 'update';
-      return $forbidden;
-   }
+    public static $checkItem_2_Rights = self::DONT_CHECK_ITEM_RIGHTS;
 
 
-   /**
-    * Show holidays for a calendar
-    *
-    * @param $calendar Calendar object
-    *
-    * @return void|boolean (HTML display) False if there is a rights error.
-    */
-   static function showForCalendar(Calendar $calendar) {
-      global $DB;
+    /**
+     * @since 0.84
+    **/
+    public function getForbiddenStandardMassiveAction()
+    {
 
-      $ID = $calendar->getField('id');
-      if (!$calendar->can($ID, READ)) {
-         return false;
-      }
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'update';
+        return $forbidden;
+    }
 
-      $canedit = $calendar->can($ID, UPDATE);
 
-      $rand    = mt_rand();
+    /**
+     * Show holidays for a calendar
+     *
+     * @param $calendar Calendar object
+     *
+     * @return void|boolean (HTML display) False if there is a rights error.
+     */
+    public static function showForCalendar(Calendar $calendar)
+    {
+        global $DB;
 
-      $iterator = $DB->request([
-         'SELECT' => [
-            'glpi_calendars_holidays.id AS linkid',
-            'glpi_holidays.*'
-         ],
-         'DISTINCT'        => true,
-         'FROM'            => 'glpi_calendars_holidays',
-         'LEFT JOIN'       => [
-            'glpi_holidays'   => [
-               'ON' => [
-                  'glpi_calendars_holidays'  => 'holidays_id',
-                  'glpi_holidays'            => 'id'
-               ]
-            ]
-         ],
-         'WHERE'           => [
-            'glpi_calendars_holidays.calendars_id' => $ID
-         ],
-         'ORDERBY'         => 'glpi_holidays.name'
-      ]);
+        $ID = $calendar->getField('id');
+        if (!$calendar->can($ID, READ)) {
+            return false;
+        }
 
-      $numrows = count($iterator);
-      $holidays = [];
-      $used     = [];
-      while ($data = $iterator->next()) {
-         $holidays[$data['id']] = $data;
-         $used[$data['id']]     = $data['id'];
-      }
+        $canedit = $calendar->can($ID, UPDATE);
 
-      if ($canedit) {
-         $form = [
-            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-            'buttons' => [
-               [
-                  'name' => 'add',
-                  'value' => _sx('button', 'Add'),
-                  'class' => 'btn btn-secondary'
-               ]
-            ],
-            'content' => [
-               __('Add a close time') => [
-                  'visible' => true,
-                  'inputs' => [
-                     [
-                        'type' => 'hidden',
-                        'name' => 'calendars_id',
-                        'value' => $ID
-                     ],
-                     Holiday::getTypeName() => [
-                        'type' => 'select',
-                        'name' => 'holidays_id',
-                        'itemtype' => Holiday::class,
-                        'used' => $used,
-                        'col_lg' => 12,
-                        'col_md' => 12,
+        $rand    = mt_rand();
+
+        $iterator = $DB->request([
+           'SELECT' => [
+              'glpi_calendars_holidays.id AS linkid',
+              'glpi_holidays.*'
+           ],
+           'DISTINCT'        => true,
+           'FROM'            => 'glpi_calendars_holidays',
+           'LEFT JOIN'       => [
+              'glpi_holidays'   => [
+                 'ON' => [
+                    'glpi_calendars_holidays'  => 'holidays_id',
+                    'glpi_holidays'            => 'id'
+                 ]
+              ]
+           ],
+           'WHERE'           => [
+              'glpi_calendars_holidays.calendars_id' => $ID
+           ],
+           'ORDERBY'         => 'glpi_holidays.name'
+        ]);
+
+        $numrows = count($iterator);
+        $holidays = [];
+        $used     = [];
+        while ($data = $iterator->next()) {
+            $holidays[$data['id']] = $data;
+            $used[$data['id']]     = $data['id'];
+        }
+
+        if ($canedit) {
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                  [
+                     'name' => 'add',
+                     'value' => _sx('button', 'Add'),
+                     'class' => 'btn btn-secondary'
+                  ]
+               ],
+               'content' => [
+                  __('Add a close time') => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'calendars_id',
+                           'value' => $ID
+                        ],
+                        Holiday::getTypeName() => [
+                           'type' => 'select',
+                           'name' => 'holidays_id',
+                           'itemtype' => Holiday::class,
+                           'used' => $used,
+                           'col_lg' => 12,
+                           'col_md' => 12,
+                        ]
                      ]
                   ]
                ]
-            ]
-         ];
-         renderTwigForm($form);
-      }
+            ];
+            renderTwigForm($form);
+        }
 
 
-      $massActionContainerId = 'mass'.__CLASS__.$rand;
-      if ($canedit && $numrows) {
-         $massiveactionparams = [
-            'num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-            'container'     => $massActionContainerId,
-            'specific_actions' => [
-               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
-            ],
-            'display_arrow' => false,
-         ];
-         Html::showMassiveActions($massiveactionparams);
-      }
-      $fields = [
-         __('Name'),
-         __('Start'),
-         __('End'),
-         __('Recurrent'),
-      ];
-      $values = [];
-      $massive_action = [];
-      foreach ($holidays as $data) {
-         $values[] = [
-            '<a href="'.Toolbox::getItemTypeFormURL('Holiday')."?id=".$data['id'].'">'.$data["name"].'</a>',
-            Html::convDate($data["begin_date"]),
-            Html::convDate($data["end_date"]),
-            Dropdown::getYesNo($data["is_perpetual"]),
-         ];
-         $massive_action[] = sprintf('item[%s][%s]', __CLASS__, $data['linkid']);
-      }
+        $massActionContainerId = 'mass'.__CLASS__.$rand;
+        if ($canedit && $numrows) {
+            $massiveactionparams = [
+               'num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
+               'container'     => $massActionContainerId,
+               'specific_actions' => [
+                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+               ],
+               'display_arrow' => false,
+            ];
+            Html::showMassiveActions($massiveactionparams);
+        }
+        $fields = [
+           __('Name'),
+           __('Start'),
+           __('End'),
+           __('Recurrent'),
+        ];
+        $values = [];
+        $massive_action = [];
+        foreach ($holidays as $data) {
+            $values[] = [
+               '<a href="'.Toolbox::getItemTypeFormURL('Holiday')."?id=".$data['id'].'">'.$data["name"].'</a>',
+               Html::convDate($data["begin_date"]),
+               Html::convDate($data["end_date"]),
+               Dropdown::getYesNo($data["is_perpetual"]),
+            ];
+            $massive_action[] = sprintf('item[%s][%s]', __CLASS__, $data['linkid']);
+        }
 
-      renderTwigTemplate('table.twig', [
-         'id' => $massActionContainerId,
-         'fields' => $fields,
-         'values' => $values,
-         'massive_action' => $massive_action,
-      ]);
-   }
+        renderTwigTemplate('table.twig', [
+           'id' => $massActionContainerId,
+           'fields' => $fields,
+           'values' => $values,
+           'massive_action' => $massive_action,
+        ]);
+    }
 
-   /**
-    * Duplicate all holidays from a calendar to its clone
-    *
-    * @deprecated 9.5
-    *
-    * @param integer $oldid The ID of the calendar to copy from.
-    * @param integer $newid The ID of the calendar to copy to.
-   **/
-   static function cloneCalendar($oldid, $newid) {
-      global $DB;
+    /**
+     * Duplicate all holidays from a calendar to its clone
+     *
+     * @deprecated 9.5
+     *
+     * @param integer $oldid The ID of the calendar to copy from.
+     * @param integer $newid The ID of the calendar to copy to.
+    **/
+    public static function cloneCalendar($oldid, $newid)
+    {
+        global $DB;
 
-      Toolbox::deprecated('Use clone');
-      $result = $DB->request(
-         [
-            'FROM'   => self::getTable(),
-            'WHERE'  => [
-               'calendars_id' => $oldid,
-            ]
+        Toolbox::deprecated('Use clone');
+        $result = $DB->request(
+            [
+              'FROM'   => self::getTable(),
+              'WHERE'  => [
+                 'calendars_id' => $oldid,
+              ]
          ]
-      );
+        );
 
-      foreach ($result as $data) {
-         $ch                   = new self();
-         unset($data['id']);
-         $data['calendars_id'] = $newid;
-         $data['_no_history']  = true;
+        foreach ($result as $data) {
+            $ch                   = new self();
+            unset($data['id']);
+            $data['calendars_id'] = $newid;
+            $data['_no_history']  = true;
 
-         $ch->add($data);
-      }
-   }
-
-
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-
-      if (!$withtemplate) {
-         $nb = 0;
-         switch ($item->getType()) {
-            case 'Calendar' :
-               if ($_SESSION['glpishow_count_on_tabs']) {
-                  $nb = countElementsInTable($this->getTable(), ['calendars_id' => $item->getID()]);
-               }
-               return self::createTabEntry(_n('Close time', 'Close times', Session::getPluralNumber()),
-                                            $nb);
-         }
-      }
-      return '';
-   }
+            $ch->add($data);
+        }
+    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
 
-      if ($item->getType()=='Calendar') {
-         self::showForCalendar($item);
-      }
-      return true;
-   }
+        if (!$withtemplate) {
+            $nb = 0;
+            switch ($item->getType()) {
+                case 'Calendar':
+                    if ($_SESSION['glpishow_count_on_tabs']) {
+                        $nb = countElementsInTable($this->getTable(), ['calendars_id' => $item->getID()]);
+                    }
+                    return self::createTabEntry(
+                        _n('Close time', 'Close times', Session::getPluralNumber()),
+                        $nb
+                    );
+            }
+        }
+        return '';
+    }
+
+
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+
+        if ($item->getType() == 'Calendar') {
+            self::showForCalendar($item);
+        }
+        return true;
+    }
 }
-

@@ -31,12 +31,13 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class ApplianceType extends CommonDropdown {
-
-   static function getTypeName($nb = 0) {
-      return _n('Appliance type', 'Appliance types', $nb);
-   }
+class ApplianceType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Appliance type', 'Appliance types', $nb);
+    }
 }

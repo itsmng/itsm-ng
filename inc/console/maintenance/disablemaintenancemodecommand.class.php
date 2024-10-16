@@ -33,38 +33,39 @@
 namespace Glpi\Console\Maintenance;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 use Config;
 use Glpi\Console\AbstractCommand;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DisableMaintenanceModeCommand extends AbstractCommand {
+class DisableMaintenanceModeCommand extends AbstractCommand
+{
+    protected $requires_db_up_to_date = false;
 
-   protected $requires_db_up_to_date = false;
+    protected function configure()
+    {
+        parent::configure();
 
-   protected function configure() {
-      parent::configure();
-
-      $this->setName('itsmng:maintenance:disable');
-      $this->setAliases(
-         [
-            'maintenance:disable',
+        $this->setName('itsmng:maintenance:disable');
+        $this->setAliases(
+            [
+              'maintenance:disable',
          ]
-      );
-      $this->setDescription(__('Disable maintenance mode'));
-   }
+        );
+        $this->setDescription(__('Disable maintenance mode'));
+    }
 
-   protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
-      $config = new Config();
-      $config->setConfigurationValues('core', ['maintenance_mode' => '0']);
+        $config = new Config();
+        $config->setConfigurationValues('core', ['maintenance_mode' => '0']);
 
-      $output->writeln('<info>' . __('Maintenance mode disabled.') . '</info>');
+        $output->writeln('<info>' . __('Maintenance mode disabled.') . '</info>');
 
-      return 0; // Success
-   }
+        return 0; // Success
+    }
 }

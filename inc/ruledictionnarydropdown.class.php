@@ -30,19 +30,20 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryDropdown extends Rule {
+class RuleDictionnaryDropdown extends Rule
+{
+    // From Rule
+    public $can_sort      = true;
 
-   // From Rule
-   public $can_sort      = true;
+    public static $rightname     = 'rule_dictionnary_dropdown';
 
-   static $rightname     = 'rule_dictionnary_dropdown';
-
-   /**
-    * @see Rule::maxActionsCount()
-   **/
-   function maxActionsCount() {
-      return 1;
-   }
+    /**
+     * @see Rule::maxActionsCount()
+    **/
+    public function maxActionsCount()
+    {
+        return 1;
+    }
 
 
 }

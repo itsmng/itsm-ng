@@ -31,19 +31,20 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class PeripheralType
-class PeripheralType extends CommonDropdown {
+class PeripheralType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Devices type', 'Devices types', $nb);
+    }
 
-
-   static function getTypeName($nb = 0) {
-      return _n('Devices type', 'Devices types', $nb);
-   }
-
-   static function getFieldLabel() {
-      return _n('Type', 'Types', 1);
-   }
+    public static function getFieldLabel()
+    {
+        return _n('Type', 'Types', 1);
+    }
 
 }

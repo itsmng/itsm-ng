@@ -31,42 +31,46 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  *  Sub query class
 **/
-abstract class AbstractQuery {
-   protected $alias = null;
+abstract class AbstractQuery
+{
+    protected $alias = null;
 
-   /**
-    * Create a query
-    *
-    * @param string $alias Alias for the whole subquery
-    */
-   public function __construct($alias = null) {
-      $this->alias = $alias;
-   }
+    /**
+     * Create a query
+     *
+     * @param string $alias Alias for the whole subquery
+     */
+    public function __construct($alias = null)
+    {
+        $this->alias = $alias;
+    }
 
-   /**
-    * Get alias
-    *
-    * @return string|null
-    */
-   public function getAlias() {
-      return $this->alias;
-   }
+    /**
+     * Get alias
+     *
+     * @return string|null
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
 
-   /**
-    *
-    * Get SQL query
-    *
-    * @return string
-    */
-   abstract public function getQuery();
+    /**
+     *
+     * Get SQL query
+     *
+     * @return string
+     */
+    abstract public function getQuery();
 
-   public function __toString() {
-      return $this->getQuery();
-   }
+    public function __toString()
+    {
+        return $this->getQuery();
+    }
 }

@@ -30,8 +30,8 @@
  * ---------------------------------------------------------------------
 */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 $validation = new TicketValidation();
 
-include (GLPI_ROOT . "/front/commonitilvalidation.form.php");
+include(GLPI_ROOT . "/front/commonitilvalidation.form.php");

@@ -31,16 +31,17 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class NetworkInterface
-class NetworkInterface extends CommonDropdown {
+class NetworkInterface extends CommonDropdown
+{
+    public $can_be_translated = false;
 
-   public $can_be_translated = false;
 
-
-   static function getTypeName($nb = 0) {
-      return _n('Network interface', 'Network interfaces', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Network interface', 'Network interfaces', $nb);
+    }
 }

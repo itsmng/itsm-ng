@@ -35,17 +35,20 @@ namespace Glpi\Exception;
 use Exception;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class PasswordTooWeakException extends Exception {
-   private $messages = [];
+class PasswordTooWeakException extends Exception
+{
+    private $messages = [];
 
-   public function addMessage($message) {
-      $this->messages[] = $message;
-   }
+    public function addMessage($message)
+    {
+        $this->messages[] = $message;
+    }
 
-   public function getMessages() {
-      return $this->messages;
-   }
+    public function getMessages()
+    {
+        return $this->messages;
+    }
 }

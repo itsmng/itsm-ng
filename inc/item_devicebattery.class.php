@@ -32,7 +32,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -40,31 +40,30 @@ if (!defined('GLPI_ROOT')) {
  **/
 class Item_DeviceBattery extends Item_Devices
 {
+    public static $itemtype_2 = 'DeviceBattery';
+    public static $items_id_2 = 'devicebatteries_id';
 
-   static public $itemtype_2 = 'DeviceBattery';
-   static public $items_id_2 = 'devicebatteries_id';
-
-   static protected $notable = false;
+    protected static $notable = false;
 
 
-   static function getSpecificities($specif = '')
-   {
-      return [
-         'serial'             => parent::getSpecificities('serial'),
-         'otherserial'        => parent::getSpecificities('otherserial'),
-         'locations_id'       => parent::getSpecificities('locations_id'),
-         'states_id'          => parent::getSpecificities('states_id'),
-         'manufacturing_date' => [
-            'long name' => __('Manufacturing date'),
-            'short name' => _n('Date', 'Dates', 1),
-            'size'       => 10,
-            'datatype'   => 'date',
-            'id'         => 20,
-            'autocomplete' => true,
-            'formContent' => [
-               'type' => 'date'
-            ]
-         ]
-      ];
-   }
+    public static function getSpecificities($specif = '')
+    {
+        return [
+           'serial'             => parent::getSpecificities('serial'),
+           'otherserial'        => parent::getSpecificities('otherserial'),
+           'locations_id'       => parent::getSpecificities('locations_id'),
+           'states_id'          => parent::getSpecificities('states_id'),
+           'manufacturing_date' => [
+              'long name' => __('Manufacturing date'),
+              'short name' => _n('Date', 'Dates', 1),
+              'size'       => 10,
+              'datatype'   => 'date',
+              'id'         => 20,
+              'autocomplete' => true,
+              'formContent' => [
+                 'type' => 'date'
+              ]
+           ]
+        ];
+    }
 }

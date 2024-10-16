@@ -30,9 +30,9 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
-Session ::checkLoginUser();
+Session::checkLoginUser();
 
 Html::header(__('Setup'), $_SERVER['PHP_SELF'], "config", "commondropdown");
 
@@ -42,16 +42,16 @@ $optgroup = Dropdown::getStandardDropdownItemTypes();
 if (count($optgroup) > 0) {
     $selected = '';
     foreach ($optgroup as $label => $dp) {
-       foreach ($dp as $key => $val) {
-          $search = $key::getSearchURL();
-          $values[$label][$search] = $val;
-       }
+        foreach ($dp as $key => $val) {
+            $search = $key::getSearchURL();
+            $values[$label][$search] = $val;
+        }
     }
-      //Dropdown::showFromArray('dpmenu', $values,
-                              //['on_change'
-                                       //=> "var _value = this.options[this.selectedIndex].value; if (_value != 0) {window.location.href=_value;}",
-                                    //'value'               => $selected,
-                                    //'display_emptychoice' => true]);
+    //Dropdown::showFromArray('dpmenu', $values,
+    //['on_change'
+    //=> "var _value = this.options[this.selectedIndex].value; if (_value != 0) {window.location.href=_value;}",
+    //'value'               => $selected,
+    //'display_emptychoice' => true]);
     renderTwigTemplate('macros/wrappedInput.twig', [
         'title' => _n('Dropdown', 'Dropdowns', Session::getPluralNumber()),
         'input' => [
@@ -72,7 +72,7 @@ if (count($optgroup) > 0) {
         ]
     ]);
 } else {
-   Html::displayRightError();
+    Html::displayRightError();
 }
 
 echo "</div>";

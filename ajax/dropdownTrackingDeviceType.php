@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
@@ -42,48 +42,48 @@ $itemtype = $_POST["itemtype"] ?? '';
 
 // Check for required params
 if (empty($itemtype)) {
-   http_response_code(400);
-   Toolbox::logWarning("Bad request: itemtype cannot be empty, received: $itemtype");
-   die;
+    http_response_code(400);
+    Toolbox::logWarning("Bad request: itemtype cannot be empty, received: $itemtype");
+    die;
 }
 
 // Check if itemtype is valid in the given context
 if ($context == "impact") {
-   $isValidItemtype = Impact::isEnabled($itemtype);
+    $isValidItemtype = Impact::isEnabled($itemtype);
 } else {
-   $isValidItemtype = CommonITILObject::isPossibleToAssignType($itemtype);
+    $isValidItemtype = CommonITILObject::isPossibleToAssignType($itemtype);
 }
 
 // Make a select box
 if ($isValidItemtype) {
-   $table = getTableForItemType($itemtype);
+    $table = getTableForItemType($itemtype);
 
-   $rand = mt_rand();
-   if (isset($_POST["rand"])) {
-      $rand = $_POST["rand"];
-   }
+    $rand = mt_rand();
+    if (isset($_POST["rand"])) {
+        $rand = $_POST["rand"];
+    }
 
-   // Message for post-only
-   $p = [
-      'itemtype'            => $itemtype,
-      'entity_restrict'     => $_POST['entity_restrict'],
-      'table'               => $table,
-      '_idor_token'         => Session::getNewIDORToken($itemtype, [
-         'entity_restrict' => $_POST['entity_restrict'],
-      ]),
-   ];
+    // Message for post-only
+    $p = [
+       'itemtype'            => $itemtype,
+       'entity_restrict'     => $_POST['entity_restrict'],
+       'table'               => $table,
+       '_idor_token'         => Session::getNewIDORToken($itemtype, [
+          'entity_restrict' => $_POST['entity_restrict'],
+       ]),
+    ];
 
-   if (isset($_POST["used"]) && !empty($_POST["used"])) {
-      if (isset($_POST["used"][$itemtype])) {
-         $p["used"] = $_POST["used"][$itemtype];
-      }
-   }
+    if (isset($_POST["used"]) && !empty($_POST["used"])) {
+        if (isset($_POST["used"][$itemtype])) {
+            $p["used"] = $_POST["used"][$itemtype];
+        }
+    }
 
-   // Add context if defined
-   if (!empty($context)) {
-      $p["context"] = $context;
-   }
-   $p['table'] = $table;
+    // Add context if defined
+    if (!empty($context)) {
+        $p["context"] = $context;
+    }
+    $p['table'] = $table;
 
-   echo Dropdown::getDropdownFindNum($p);
+    echo Dropdown::getDropdownFindNum($p);
 }

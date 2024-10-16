@@ -30,40 +30,40 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 // Change profile system
 if (isset($_POST['newprofile'])) {
-   if (isset($_SESSION["glpiprofiles"][$_POST['newprofile']])) {
-      Session::changeProfile($_POST['newprofile']);
+    if (isset($_SESSION["glpiprofiles"][$_POST['newprofile']])) {
+        Session::changeProfile($_POST['newprofile']);
 
-      if (Session::getCurrentInterface() == "central") {
-         Html::redirect($CFG_GLPI['root_doc']."/front/central.php");
-      } else {
-         Html::redirect($_SERVER['PHP_SELF']);
-      }
+        if (Session::getCurrentInterface() == "central") {
+            Html::redirect($CFG_GLPI['root_doc']."/front/central.php");
+        } else {
+            Html::redirect($_SERVER['PHP_SELF']);
+        }
 
-   } else {
-      Html::redirect(preg_replace("/entities_id=.*/", "", $_SERVER['HTTP_REFERER']));
-   }
+    } else {
+        Html::redirect(preg_replace("/entities_id=.*/", "", $_SERVER['HTTP_REFERER']));
+    }
 }
 
 // Manage entity change
 if (isset($_GET["active_entity"])) {
-   $_GET["active_entity"] = rtrim($_GET["active_entity"], 'r');
-   if (!isset($_GET["is_recursive"])) {
-      $_GET["is_recursive"] = 0;
-   }
-   if (Session::changeActiveEntities($_GET["active_entity"], $_GET["is_recursive"])) {
-      if ($_GET["active_entity"] == $_SESSION["glpiactive_entity"]) {
-         Html::redirect(preg_replace("/(\?|&|".urlencode('?')."|".urlencode('&').")?(entities_id|active_entity).*/", "", $_SERVER['HTTP_REFERER']));
-      }
-   }
+    $_GET["active_entity"] = rtrim($_GET["active_entity"], 'r');
+    if (!isset($_GET["is_recursive"])) {
+        $_GET["is_recursive"] = 0;
+    }
+    if (Session::changeActiveEntities($_GET["active_entity"], $_GET["is_recursive"])) {
+        if ($_GET["active_entity"] == $_SESSION["glpiactive_entity"]) {
+            Html::redirect(preg_replace("/(\?|&|".urlencode('?')."|".urlencode('&').")?(entities_id|active_entity).*/", "", $_SERVER['HTTP_REFERER']));
+        }
+    }
 }
 
 // Redirect management
 if (isset($_GET["redirect"])) {
-   Toolbox::manageRedirect($_GET["redirect"]);
+    Toolbox::manageRedirect($_GET["redirect"]);
 }
 
 // redirect if no create ticket right
@@ -71,18 +71,18 @@ if (!Session::haveRight('ticket', CREATE)
     && !Session::haveRight('reminder_public', READ)
     && !Session::haveRight("rssfeed_public", READ)) {
 
-   if (Session::haveRight('followup', ITILFollowup::SEEPUBLIC)
-       || Session::haveRight('task', TicketTask::SEEPUBLIC)
-       || Session::haveRightsOr('ticketvalidation', [TicketValidation::VALIDATEREQUEST,
-                                                          TicketValidation::VALIDATEINCIDENT])) {
-      Html::redirect($CFG_GLPI['root_doc']."/front/ticket.php");
+    if (Session::haveRight('followup', ITILFollowup::SEEPUBLIC)
+        || Session::haveRight('task', TicketTask::SEEPUBLIC)
+        || Session::haveRightsOr('ticketvalidation', [TicketValidation::VALIDATEREQUEST,
+                                                           TicketValidation::VALIDATEINCIDENT])) {
+        Html::redirect($CFG_GLPI['root_doc']."/front/ticket.php");
 
-   } else if (Session::haveRight('reservation', ReservationItem::RESERVEANITEM)) {
-      Html::redirect($CFG_GLPI['root_doc']."/front/reservationitem.php");
+    } elseif (Session::haveRight('reservation', ReservationItem::RESERVEANITEM)) {
+        Html::redirect($CFG_GLPI['root_doc']."/front/reservationitem.php");
 
-   } else if (Session::haveRight('knowbase', KnowbaseItem::READFAQ)) {
-      Html::redirect($CFG_GLPI['root_doc']."/front/helpdesk.faq.php");
-   }
+    } elseif (Session::haveRight('knowbase', KnowbaseItem::READFAQ)) {
+        Html::redirect($CFG_GLPI['root_doc']."/front/helpdesk.faq.php");
+    }
 }
 
 Session::checkHelpdeskAccess();
@@ -90,86 +90,85 @@ Session::checkHelpdeskAccess();
 
 Html::header(__('Home'), $_SERVER['PHP_SELF'], $_SESSION["glpiname"]);
 if (isset($_GET['create_ticket'])) {
-   $ticket = new Ticket();
-   $ticket->showFormHelpdesk(Session::getLoginUserID());
+    $ticket = new Ticket();
+    $ticket->showFormHelpdesk(Session::getLoginUserID());
 
 } else {
-   echo "<table class='tab_cadre_postonly' aria-label='Search form'>";
+    echo "<table class='tab_cadre_postonly' aria-label='Search form'>";
 
-   $user = new User();
-   $user->getFromDB(Session::getLoginUserID());
-   if ($user->fields['authtype'] == Auth::DB_GLPI && $user->shouldChangePassword()) {
-      $expiration_msg = sprintf(
-         __('Your password will expire on %s.'),
-         Html::convDateTime(date('Y-m-d H:i:s', $user->getPasswordExpirationTime()))
-      );
-      echo '<tr>';
-      echo '<th colspan="2">';
-      echo '<div class="warning">';
-      echo '<i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i>';
-      echo '<ul>';
-      echo '<li>';
-      echo $expiration_msg . ' ';
-      echo '<a href="' . $CFG_GLPI['root_doc'] . '/front/updatepassword.php">';
-      echo __('Update my password');
-      echo '</a>';
-      echo '</li>';
-      echo '</ul>';
-      echo '<div class="sep"></div>';
-      echo '</div>';
-      echo '</th>';
-      echo '</tr>';
-   }
+    $user = new User();
+    $user->getFromDB(Session::getLoginUserID());
+    if ($user->fields['authtype'] == Auth::DB_GLPI && $user->shouldChangePassword()) {
+        $expiration_msg = sprintf(
+            __('Your password will expire on %s.'),
+            Html::convDateTime(date('Y-m-d H:i:s', $user->getPasswordExpirationTime()))
+        );
+        echo '<tr>';
+        echo '<th colspan="2">';
+        echo '<div class="warning">';
+        echo '<i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i>';
+        echo '<ul>';
+        echo '<li>';
+        echo $expiration_msg . ' ';
+        echo '<a href="' . $CFG_GLPI['root_doc'] . '/front/updatepassword.php">';
+        echo __('Update my password');
+        echo '</a>';
+        echo '</li>';
+        echo '</ul>';
+        echo '<div class="sep"></div>';
+        echo '</div>';
+        echo '</th>';
+        echo '</tr>';
+    }
 
-   echo "<tr class='noHover'>";
-   echo "<td class='top' width='50%'><br>";
-   echo "<table class='central' aria-label='Search results table for hardware items'>";
-   Plugin::doHook('display_central');
-   if (Session::haveRight('ticket', CREATE)) {
-      echo "<tr class='noHover'><td class='top'>";
-      Ticket::showCentralCount(true);
-      echo "</td></tr>";
-      echo "<tr class='noHover'><td class='top'>";
-      Ticket::showCentralList(0, "survey", false);
-      echo "</td></tr>";
-   }
+    echo "<tr class='noHover'>";
+    echo "<td class='top' width='50%'><br>";
+    echo "<table class='central' aria-label='Search results table for hardware items'>";
+    Plugin::doHook('display_central');
+    if (Session::haveRight('ticket', CREATE)) {
+        echo "<tr class='noHover'><td class='top'>";
+        Ticket::showCentralCount(true);
+        echo "</td></tr>";
+        echo "<tr class='noHover'><td class='top'>";
+        Ticket::showCentralList(0, "survey", false);
+        echo "</td></tr>";
+    }
 
-   if (Session::haveRight("reminder_public", READ)) {
-      echo "<tr class='noHover'><td class='top'>";
-      Reminder::showListForCentral(false);
-      echo "</td></tr>";
-   }
+    if (Session::haveRight("reminder_public", READ)) {
+        echo "<tr class='noHover'><td class='top'>";
+        Reminder::showListForCentral(false);
+        echo "</td></tr>";
+    }
 
-   if (Session::haveRight("rssfeed_public", READ)) {
-      echo "<tr class='noHover'><td class='top'>";
-      RSSFeed::showListForCentral(false);
-      echo "</td></tr>";
-   }
-   echo "</table></td>";
+    if (Session::haveRight("rssfeed_public", READ)) {
+        echo "<tr class='noHover'><td class='top'>";
+        RSSFeed::showListForCentral(false);
+        echo "</td></tr>";
+    }
+    echo "</table></td>";
 
-   echo "<td class='top' width='50%'><br>";
-   echo "<table class='central' aria-label='Search results table for software items'>";
+    echo "<td class='top' width='50%'><br>";
+    echo "<table class='central' aria-label='Search results table for software items'>";
 
-   // Show KB items
-   if (Session::haveRight('knowbase', KnowbaseItem::READFAQ)) {
-      echo "<tr class='noHover'><td class='top'>";
-      KnowbaseItem::showRecentPopular("popular");
-      echo "</td></tr>";
-      echo "<tr class='noHover'><td class='top'><br>";
-      KnowbaseItem::showRecentPopular("recent");
-      echo "</td></tr>";
-      echo "<tr class='noHover'><td class='top'><br>";
-      KnowbaseItem::showRecentPopular("lastupdate");
-      echo "</td></tr>";
-   } else {
-      echo "<tr><td>&nbsp;</td></tr>";
-   }
+    // Show KB items
+    if (Session::haveRight('knowbase', KnowbaseItem::READFAQ)) {
+        echo "<tr class='noHover'><td class='top'>";
+        KnowbaseItem::showRecentPopular("popular");
+        echo "</td></tr>";
+        echo "<tr class='noHover'><td class='top'><br>";
+        KnowbaseItem::showRecentPopular("recent");
+        echo "</td></tr>";
+        echo "<tr class='noHover'><td class='top'><br>";
+        KnowbaseItem::showRecentPopular("lastupdate");
+        echo "</td></tr>";
+    } else {
+        echo "<tr><td>&nbsp;</td></tr>";
+    }
 
-   echo "</table>";
-   echo "</td>";
-   echo "</tr></table>";
+    echo "</table>";
+    echo "</td>";
+    echo "</tr></table>";
 
 }
 
 Html::footer();
-

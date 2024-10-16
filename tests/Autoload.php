@@ -30,6 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-class Autoload extends \DbTestCase {
-   //Placebo class to get autoloader tested
+class Autoload extends \DbTestCase
+{
+    //Placebo class to get autoloader tested
 }

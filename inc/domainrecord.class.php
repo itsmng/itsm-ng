@@ -31,470 +31,495 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class DomainRecord extends CommonDBChild {
-   const DEFAULT_TTL = 3600;
+class DomainRecord extends CommonDBChild
+{
+    public const DEFAULT_TTL = 3600;
 
-   static $rightname              = 'domain';
-   // From CommonDBChild
-   static public $itemtype        = 'Domain';
-   static public $items_id        = 'domains_id';
-   public $dohistory              = true;
+    public static $rightname              = 'domain';
+    // From CommonDBChild
+    public static $itemtype        = 'Domain';
+    public static $items_id        = 'domains_id';
+    public $dohistory              = true;
 
-   static function getTypeName($nb = 0) {
-      return _n('Domain record', 'Domains records', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Domain record', 'Domains records', $nb);
+    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      if (!$withtemplate) {
-         if ($item->getType() == 'Domain') {
-            if ($_SESSION['glpishow_count_on_tabs']) {
-               return self::createTabEntry(_n('Record', 'Records', Session::getPluralNumber()), self::countForDomain($item));
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
+        if (!$withtemplate) {
+            if ($item->getType() == 'Domain') {
+                if ($_SESSION['glpishow_count_on_tabs']) {
+                    return self::createTabEntry(_n('Record', 'Records', Session::getPluralNumber()), self::countForDomain($item));
+                }
+                return _n('Record', 'Records', Session::getPluralNumber());
             }
-            return _n('Record', 'Records', Session::getPluralNumber());
-         }
-      }
-      return '';
-   }
+        }
+        return '';
+    }
 
-   static function countForDomain(Domain $item) {
-      return countElementsInTable(
-         self::getTable(), [
-            "domains_id"   => $item->getID(),
+    public static function countForDomain(Domain $item)
+    {
+        return countElementsInTable(
+            self::getTable(),
+            [
+              "domains_id"   => $item->getID(),
          ]
-      );
-   }
+        );
+    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      if ($item->getType() == 'Domain') {
-         self::showForDomain($item);
-      }
-      return true;
-   }
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+        if ($item->getType() == 'Domain') {
+            self::showForDomain($item);
+        }
+        return true;
+    }
 
-   function rawSearchOptions() {
-      $tab = [];
+    public function rawSearchOptions()
+    {
+        $tab = [];
 
-      $tab = array_merge($tab, parent::rawSearchOptions());
+        $tab = array_merge($tab, parent::rawSearchOptions());
 
-      $tab[] = [
-         'id'                 => '2',
-         'table'              => 'glpi_domains',
-         'field'              => 'name',
-         'name'               => Domain::getTypeName(1),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '2',
+           'table'              => 'glpi_domains',
+           'field'              => 'name',
+           'name'               => Domain::getTypeName(1),
+           'datatype'           => 'dropdown'
+        ];
 
-      $tab[] = [
-         'id'                 => '3',
-         'table'              => DomainRecordType::getTable(),
-         'field'              => 'name',
-         'name'               => DomainRecordType::getTypeName(1),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '3',
+           'table'              => DomainRecordType::getTable(),
+           'field'              => 'name',
+           'name'               => DomainRecordType::getTypeName(1),
+           'datatype'           => 'dropdown'
+        ];
 
-      $tab[] = [
-         'id'                 => '4',
-         'table'              => $this->getTable(),
-         'field'              => 'ttl',
-         'name'               => __('TTL')
-      ];
+        $tab[] = [
+           'id'                 => '4',
+           'table'              => $this->getTable(),
+           'field'              => 'ttl',
+           'name'               => __('TTL')
+        ];
 
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'data',
-         'name'               => __('Data'),
-      ];
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'data',
+           'name'               => __('Data'),
+        ];
 
-      $tab[] = [
-         'id'                 => '6',
-         'table'              => 'glpi_users',
-         'field'              => 'name',
-         'linkfield'          => 'users_id_tech',
-         'name'               => __('Technician in charge'),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '6',
+           'table'              => 'glpi_users',
+           'field'              => 'name',
+           'linkfield'          => 'users_id_tech',
+           'name'               => __('Technician in charge'),
+           'datatype'           => 'dropdown'
+        ];
 
-      $tab[] = [
-         'id'                 => '7',
-         'table'              => $this->getTable(),
-         'field'              => 'date_creation',
-         'name'               => __('Creation date'),
-         'datatype'           => 'date'
-      ];
+        $tab[] = [
+           'id'                 => '7',
+           'table'              => $this->getTable(),
+           'field'              => 'date_creation',
+           'name'               => __('Creation date'),
+           'datatype'           => 'date'
+        ];
 
-      $tab[] = [
-         'id'                 => '8',
-         'table'              => $this->getTable(),
-         'field'              => 'comment',
-         'name'               => __('Comments'),
-         'datatype'           => 'text'
-      ];
+        $tab[] = [
+           'id'                 => '8',
+           'table'              => $this->getTable(),
+           'field'              => 'comment',
+           'name'               => __('Comments'),
+           'datatype'           => 'text'
+        ];
 
-      $tab[] = [
-         'id'                 => '9',
-         'table'              => 'glpi_groups',
-         'field'              => 'name',
-         'linkfield'          => 'groups_id_tech',
-         'name'               => __('Group in charge'),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '9',
+           'table'              => 'glpi_groups',
+           'field'              => 'name',
+           'linkfield'          => 'groups_id_tech',
+           'name'               => __('Group in charge'),
+           'datatype'           => 'dropdown'
+        ];
 
-      $tab[] = [
-         'id'                 => '10',
-         'table'              => $this->getTable(),
-         'field'              => 'date_mod',
-         'massiveaction'      => false,
-         'name'               => __('Last update'),
-         'datatype'           => 'datetime'
-      ];
+        $tab[] = [
+           'id'                 => '10',
+           'table'              => $this->getTable(),
+           'field'              => 'date_mod',
+           'massiveaction'      => false,
+           'name'               => __('Last update'),
+           'datatype'           => 'datetime'
+        ];
 
-      $tab[] = [
-         'id'                 => '80',
-         'table'              => 'glpi_entities',
-         'field'              => 'completename',
-         'name'               => Entity::getTypeName(1),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '80',
+           'table'              => 'glpi_entities',
+           'field'              => 'completename',
+           'name'               => Entity::getTypeName(1),
+           'datatype'           => 'dropdown'
+        ];
 
-      return $tab;
-   }
+        return $tab;
+    }
 
-   static function canCreate() {
-      if (count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])) {
-         return true;
-      }
-      return parent::canCreate();
-   }
+    public static function canCreate()
+    {
+        if (count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])) {
+            return true;
+        }
+        return parent::canCreate();
+    }
 
-   static function canUpdate() {
-      if (count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])) {
-         return true;
-      }
-      return parent::canUpdate();
-   }
-
-
-   static function canDelete() {
-      if (count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])) {
-         return true;
-      }
-      return parent::canDelete();
-   }
+    public static function canUpdate()
+    {
+        if (count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])) {
+            return true;
+        }
+        return parent::canUpdate();
+    }
 
 
-   static function canPurge() {
-      if (count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])) {
-         return true;
-      }
-      return parent::canPurge();
-   }
+    public static function canDelete()
+    {
+        if (count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])) {
+            return true;
+        }
+        return parent::canDelete();
+    }
 
 
-   public function canCreateItem() {
-      return count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes']);
-   }
+    public static function canPurge()
+    {
+        if (count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])) {
+            return true;
+        }
+        return parent::canPurge();
+    }
 
 
-   public function canUpdateItem() {
-      return parent::canUpdateItem()
-         && ($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] == [-1]
+    public function canCreateItem()
+    {
+        return count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes']);
+    }
+
+
+    public function canUpdateItem()
+    {
+        return parent::canUpdateItem()
+           && (
+               $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] == [-1]
          || in_array($this->fields['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])
-         );
-   }
+           );
+    }
 
-   function canDeleteItem() {
-      return parent::canDeleteItem()
-         && ($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] == [-1]
+    public function canDeleteItem()
+    {
+        return parent::canDeleteItem()
+           && (
+               $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] == [-1]
          || in_array($this->fields['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])
-         );
-   }
+           );
+    }
 
 
-   function canPurgeItem() {
-      return parent::canPurgeItem()
-         && ($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] == [-1]
+    public function canPurgeItem()
+    {
+        return parent::canPurgeItem()
+           && (
+               $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] == [-1]
          || in_array($this->fields['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'])
-         );
-   }
+           );
+    }
 
 
-   function defineTabs($options = []) {
-      $ong = [];
-      $this->addDefaultFormTab($ong);
-      $this->addStandardTab('Ticket', $ong, $options);
-      $this->addStandardTab('Item_Problem', $ong, $options);
-      $this->addStandardTab('Document_Item', $ong, $options);
-      $this->addStandardTab('Link', $ong, $options);
-      $this->addStandardTab('Notepad', $ong, $options);
-      $this->addStandardTab('Log', $ong, $options);
+    public function defineTabs($options = [])
+    {
+        $ong = [];
+        $this->addDefaultFormTab($ong);
+        $this->addStandardTab('Ticket', $ong, $options);
+        $this->addStandardTab('Item_Problem', $ong, $options);
+        $this->addStandardTab('Document_Item', $ong, $options);
+        $this->addStandardTab('Link', $ong, $options);
+        $this->addStandardTab('Notepad', $ong, $options);
+        $this->addStandardTab('Log', $ong, $options);
 
-      return $ong;
-   }
+        return $ong;
+    }
 
-   /**
-    * Prepare input for add and update
-    *
-    * @param array   $input Input values
-    * @param boolean $add   True when we're adding a record
-    *
-    * @return aray|false
-    */
-   private function prepareInput($input, $add = false) {
+    /**
+     * Prepare input for add and update
+     *
+     * @param array   $input Input values
+     * @param boolean $add   True when we're adding a record
+     *
+     * @return aray|false
+     */
+    private function prepareInput($input, $add = false)
+    {
 
-      if ($add) {
-         if (isset($input['date_creation']) && empty($input['date_creation'])) {
-            $input['date_creation'] = 'NULL';
-         }
-
-         if (!isset($input['ttl']) || empty($input['ttl'])) {
-            $input['ttl'] = self::DEFAULT_TTL;
-         }
-      }
-
-      //search entity
-      if ($add && !isset($input['entities_id'])) {
-         $input['entities_id'] = $_SESSION['glpiactive_entity'] ?? 0;
-         $input['is_recursive'] = $_SESSION['glpiactive_entity_recursive'] ?? 0;
-         $domain = new Domain();
-         if (isset($input['domains_id']) && $domain->getFromDB($input['domains_id'])) {
-            $input['entities_id'] = $domain->fields['entities_id'];
-            $input['is_recursive'] = $domain->fields['is_recursive'];
-         }
-      }
-
-      if (!Session::isCron() && (isset($input['domainrecordtypes_id']) || isset($this->fields['domainrecordtypes_id']))) {
-         if (!($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] == [-1])) {
-            if (isset($input['domainrecordtypes_id']) && !(in_array($input['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes']))) {
-               //no right to use selected type
-               Session::addMessageAfterRedirect(
-                  __('You are not allowed to use this type of records'),
-                  true,
-                  ERROR
-               );
-               return false;
+        if ($add) {
+            if (isset($input['date_creation']) && empty($input['date_creation'])) {
+                $input['date_creation'] = 'NULL';
             }
-            if ($add === false && !(in_array($this->fields['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes']))) {
-               //no right to change existing type
-               Session::addMessageAfterRedirect(
-                  __('You are not allowed to edit this type of records'),
-                  true,
-                  ERROR
-               );
-               return false;
+
+            if (!isset($input['ttl']) || empty($input['ttl'])) {
+                $input['ttl'] = self::DEFAULT_TTL;
             }
-         }
-      }
+        }
 
-      return $input;
-   }
+        //search entity
+        if ($add && !isset($input['entities_id'])) {
+            $input['entities_id'] = $_SESSION['glpiactive_entity'] ?? 0;
+            $input['is_recursive'] = $_SESSION['glpiactive_entity_recursive'] ?? 0;
+            $domain = new Domain();
+            if (isset($input['domains_id']) && $domain->getFromDB($input['domains_id'])) {
+                $input['entities_id'] = $domain->fields['entities_id'];
+                $input['is_recursive'] = $domain->fields['is_recursive'];
+            }
+        }
 
-   function prepareInputForAdd($input) {
-      return $this->prepareInput($input, true);
-   }
+        if (!Session::isCron() && (isset($input['domainrecordtypes_id']) || isset($this->fields['domainrecordtypes_id']))) {
+            if (!($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] == [-1])) {
+                if (isset($input['domainrecordtypes_id']) && !(in_array($input['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes']))) {
+                    //no right to use selected type
+                    Session::addMessageAfterRedirect(
+                        __('You are not allowed to use this type of records'),
+                        true,
+                        ERROR
+                    );
+                    return false;
+                }
+                if ($add === false && !(in_array($this->fields['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes']))) {
+                    //no right to change existing type
+                    Session::addMessageAfterRedirect(
+                        __('You are not allowed to edit this type of records'),
+                        true,
+                        ERROR
+                    );
+                    return false;
+                }
+            }
+        }
 
-   function prepareInputForUpdate($input) {
-      return $this->prepareInput($input);
-   }
+        return $input;
+    }
 
-   function showForm($ID, $options = []) {
-      $form = [
-         'action' => $this->getFormURL(),
-         'itemtype' => $this::class,
-         'content' => [
-            '' => [
-               'visible' => true,
-               'inputs' => [
-                  Domain::getTypeName(1) => [
-                     'type' => 'select',
-                     'name' => 'domains_id',
-                     'values' => getOptionForItems(Domain::class),
-                     'value' => $this->fields['domains_id'] ?? '',
-                     'actions' => getItemActionButtons(['info', 'add'], Domain::class)
-                  ],
-                  __('Name') => [
-                     'type' => 'text',
-                     'name' => 'name',
-                     'value' => $this->fields['name'] ?? '',
-                  ],
-                  DomainRecordType::getTypeName(1) => [
-                     'type' => 'select',
-                     'name' => 'domainrecordtypes_id',
-                     'values' => getOptionForItems(DomainRecordType::class),
-                     'value' => $this->fields['domainrecordtypes_id'] ?? '',
-                     'actions' => getItemActionButtons(['info', 'add'], DomainRecordType::class)
-                  ],
-                  __('Creation date') => [
-                     'type' => 'datetime-local',
-                     'name' => 'date_creation',
-                     'value' => $this->fields["date_creation"] ?? '',
-                  ],
-                  __('Data') => [
-                     'type' => 'text',
-                     'name' => 'data',
-                     'value' => $this->fields['data'] ?? '',
-                  ],
-                  __('Technician in charge') => [
-                     'type' => 'select',
-                     'name' => "users_id_tech",
-                     'values' => getOptionsForUsers('interface', ['entities_id' => Session::getActiveEntity()]),
-                     'value' => $this->fields["users_id_tech"] ?? '',
-                     'actions' => getItemActionButtons(['info'], User::class),
-                  ],
-                  __('Group in charge') => [
-                     'type' => 'select',
-                     'name' => "groups_id_tech",
-                     'values' => getOptionForItems(Group::class, ['entities_id' => Session::getActiveEntity()]),
-                     'value' => $this->fields["groups_id_tech"] ?? '',
-                     'actions' => getItemActionButtons(['info', 'add'], Group::class),
-                  ],
-                  __('TTL') => [
-                     'type' => 'number',
-                     'name' => 'ttl',
-                     'value' => $this->fields['ttl'] ?? '',
-                  ],
-                  __('Comments') => [
-                     'type' => 'textarea',
-                     'name' => 'comment',
-                     'value' => $this->fields['comment'] ?? '',
+    public function prepareInputForAdd($input)
+    {
+        return $this->prepareInput($input, true);
+    }
+
+    public function prepareInputForUpdate($input)
+    {
+        return $this->prepareInput($input);
+    }
+
+    public function showForm($ID, $options = [])
+    {
+        $form = [
+           'action' => $this->getFormURL(),
+           'itemtype' => $this::class,
+           'content' => [
+              '' => [
+                 'visible' => true,
+                 'inputs' => [
+                    Domain::getTypeName(1) => [
+                       'type' => 'select',
+                       'name' => 'domains_id',
+                       'values' => getOptionForItems(Domain::class),
+                       'value' => $this->fields['domains_id'] ?? '',
+                       'actions' => getItemActionButtons(['info', 'add'], Domain::class)
+                    ],
+                    __('Name') => [
+                       'type' => 'text',
+                       'name' => 'name',
+                       'value' => $this->fields['name'] ?? '',
+                    ],
+                    DomainRecordType::getTypeName(1) => [
+                       'type' => 'select',
+                       'name' => 'domainrecordtypes_id',
+                       'values' => getOptionForItems(DomainRecordType::class),
+                       'value' => $this->fields['domainrecordtypes_id'] ?? '',
+                       'actions' => getItemActionButtons(['info', 'add'], DomainRecordType::class)
+                    ],
+                    __('Creation date') => [
+                       'type' => 'datetime-local',
+                       'name' => 'date_creation',
+                       'value' => $this->fields["date_creation"] ?? '',
+                    ],
+                    __('Data') => [
+                       'type' => 'text',
+                       'name' => 'data',
+                       'value' => $this->fields['data'] ?? '',
+                    ],
+                    __('Technician in charge') => [
+                       'type' => 'select',
+                       'name' => "users_id_tech",
+                       'values' => getOptionsForUsers('interface', ['entities_id' => Session::getActiveEntity()]),
+                       'value' => $this->fields["users_id_tech"] ?? '',
+                       'actions' => getItemActionButtons(['info'], User::class),
+                    ],
+                    __('Group in charge') => [
+                       'type' => 'select',
+                       'name' => "groups_id_tech",
+                       'values' => getOptionForItems(Group::class, ['entities_id' => Session::getActiveEntity()]),
+                       'value' => $this->fields["groups_id_tech"] ?? '',
+                       'actions' => getItemActionButtons(['info', 'add'], Group::class),
+                    ],
+                    __('TTL') => [
+                       'type' => 'number',
+                       'name' => 'ttl',
+                       'value' => $this->fields['ttl'] ?? '',
+                    ],
+                    __('Comments') => [
+                       'type' => 'textarea',
+                       'name' => 'comment',
+                       'value' => $this->fields['comment'] ?? '',
+                    ]
+                 ]
+              ]
+           ]
+        ];
+        renderTwigForm($form, '', $this->fields);
+
+        return true;
+    }
+
+    /**
+     * Show records for a domain
+     *
+     * @param Domain $domain Domain object
+     *
+     * @return void|boolean (display) Returns false if there is a rights error.
+     **/
+    public static function showForDomain(Domain $domain)
+    {
+        global $DB;
+
+        $instID = $domain->fields['id'];
+        if (!$domain->can($instID, READ)) {
+            return false;
+        }
+        $canedit = $domain->can($instID, UPDATE)
+                   || count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes']);
+        $rand    = mt_rand();
+
+        $iterator = $DB->request([
+           'SELECT'    => 'record.*',
+           'FROM'      => self::getTable() . ' AS record',
+           'WHERE'     => ['domains_id' => $instID],
+           'LEFT JOIN' => [
+              DomainRecordType::getTable() . ' AS rtype'  => [
+                 'ON'  => [
+                    'rtype'  => 'id',
+                    'record' => 'domainrecordtypes_id'
+                 ]
+              ]
+           ],
+           'ORDER'     => ['rtype.name ASC', 'record.name ASC']
+        ]);
+
+        $number = count($iterator);
+
+        if ($canedit) {
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL("Domain"),
+               'buttons' => [
+                  [
+                     'name' => 'addrecord',
+                     'value' => _x('button', 'Add'),
+                     'class' => 'btn btn-secondary',
                   ]
-               ]
-            ]
-         ]
-      ];
-      renderTwigForm($form, '', $this->fields);
-
-      return true;
-   }
-
-   /**
-    * Show records for a domain
-    *
-    * @param Domain $domain Domain object
-    *
-    * @return void|boolean (display) Returns false if there is a rights error.
-    **/
-   public static function showForDomain(Domain $domain) {
-      global $DB;
-
-      $instID = $domain->fields['id'];
-      if (!$domain->can($instID, READ)) {
-         return false;
-      }
-      $canedit = $domain->can($instID, UPDATE)
-                 || count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes']);
-      $rand    = mt_rand();
-
-      $iterator = $DB->request([
-         'SELECT'    => 'record.*',
-         'FROM'      => self::getTable() . ' AS record',
-         'WHERE'     => ['domains_id' => $instID],
-         'LEFT JOIN' => [
-            DomainRecordType::getTable() . ' AS rtype'  => [
-               'ON'  => [
-                  'rtype'  => 'id',
-                  'record' => 'domainrecordtypes_id'
-               ]
-            ]
-         ],
-         'ORDER'     => ['rtype.name ASC', 'record.name ASC']
-      ]);
-
-      $number = count($iterator);
-
-      if ($canedit) {
-         $form = [
-            'action' => Toolbox::getItemTypeFormURL("Domain"),
-            'buttons' => [
-               [
-                  'name' => 'addrecord',
-                  'value' => _x('button', 'Add'),
-                  'class' => 'btn btn-secondary',
-               ]
-            ],
-            'content' => [
-               __('Link a record') => [
-                  'visible' => true,
-                  'inputs' => [
-                     [
-                        'type' => 'hidden',
-                        'name' => 'domains_id',
-                        'value' => $instID,
-                     ],
-                     '' => [
-                        'type' => 'select',
-                        'name' => 'domainrecords_id',
-                        'itemtype' => DomainRecord::class,
-                        'condition' => ['domains_id' => 0],
-                        'actions' => getItemActionButtons(['info', 'add'], DomainRecord::class),
-                        'col_lg' => 12,
-                        'col_md' => 12,
+               ],
+               'content' => [
+                  __('Link a record') => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'domains_id',
+                           'value' => $instID,
+                        ],
+                        '' => [
+                           'type' => 'select',
+                           'name' => 'domainrecords_id',
+                           'itemtype' => DomainRecord::class,
+                           'condition' => ['domains_id' => 0],
+                           'actions' => getItemActionButtons(['info', 'add'], DomainRecord::class),
+                           'col_lg' => 12,
+                           'col_md' => 12,
+                        ]
                      ]
                   ]
                ]
-            ]
 
-         ];
-         renderTwigForm($form);
-      }
+            ];
+            renderTwigForm($form);
+        }
 
-      if ($canedit && $number) {
-         $massiveactionparams = [
-            'container' => 'tableForDomainRecordsDomain',
-            'display_arrow' => false,
-         ];
-         Html::showMassiveActions($massiveactionparams);
-      }
-      $fields = [
-         _n('Type', 'Types', 1),
-         __('Name'),
-         __('TTL'),
-         _n('Target', 'Targets', 1),
-      ];
-      $values = [];
-      $massive_action = [];
-      while ($data = $iterator->next()) {
-         $ID = "";
+        if ($canedit && $number) {
+            $massiveactionparams = [
+               'container' => 'tableForDomainRecordsDomain',
+               'display_arrow' => false,
+            ];
+            Html::showMassiveActions($massiveactionparams);
+        }
+        $fields = [
+           _n('Type', 'Types', 1),
+           __('Name'),
+           __('TTL'),
+           _n('Target', 'Targets', 1),
+        ];
+        $values = [];
+        $massive_action = [];
+        while ($data = $iterator->next()) {
+            $ID = "";
 
-         if ($_SESSION["glpiis_ids_visible"] || empty(self::getDisplayName($domain, $data['name']))) {
-            $ID = " (" . $data["id"] . ")";
-         }
+            if ($_SESSION["glpiis_ids_visible"] || empty(self::getDisplayName($domain, $data['name']))) {
+                $ID = " (" . $data["id"] . ")";
+            }
 
-         $link = Toolbox::getItemTypeFormURL('DomainRecord');
-         $name = "<a href=\"" . $link . "?id=" . $data["id"] . "\">"
-                  . self::getDisplayName($domain, $data['name']) . "$ID</a>";
-         $values[] = [
-            Dropdown::getDropdownName(DomainRecordType::getTable(), $data['domainrecordtypes_id']),
-            $name,
-            $data['ttl'],
-            $data['data'],
-         ];
-         $massive_action[] = sprintf('item[%s][%s]', DomainRecord::class, $data['id']);
-      }
-      renderTwigTemplate('table.twig', [
-         'id' => 'tableForDomainRecordsDomain',
-         'fields' => $fields,
-         'values' => $values,
-         'massive_action' => $massive_action,
-      ]);
-   }
+            $link = Toolbox::getItemTypeFormURL('DomainRecord');
+            $name = "<a href=\"" . $link . "?id=" . $data["id"] . "\">"
+                     . self::getDisplayName($domain, $data['name']) . "$ID</a>";
+            $values[] = [
+               Dropdown::getDropdownName(DomainRecordType::getTable(), $data['domainrecordtypes_id']),
+               $name,
+               $data['ttl'],
+               $data['data'],
+            ];
+            $massive_action[] = sprintf('item[%s][%s]', DomainRecord::class, $data['id']);
+        }
+        renderTwigTemplate('table.twig', [
+           'id' => 'tableForDomainRecordsDomain',
+           'fields' => $fields,
+           'values' => $values,
+           'massive_action' => $massive_action,
+        ]);
+    }
 
-   public static function getDisplayName(Domain $domain, $name) {
-      $name_txt = rtrim(
-         str_replace(
-            rtrim($domain->getCanonicalName(), '.'),
-            '',
-            $name
-         ),
-         '.'
-      );
-      if (empty($name_txt)) {
-         //dns root
-         $name_txt = '@';
-      }
-      return $name_txt;
-   }
+    public static function getDisplayName(Domain $domain, $name)
+    {
+        $name_txt = rtrim(
+            str_replace(
+                rtrim($domain->getCanonicalName(), '.'),
+                '',
+                $name
+            ),
+            '.'
+        );
+        if (empty($name_txt)) {
+            //dns root
+            $name_txt = '@';
+        }
+        return $name_txt;
+    }
 }

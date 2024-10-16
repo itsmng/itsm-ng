@@ -32,7 +32,7 @@
 
 $AJAX_INCLUDE = 1;
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
@@ -40,51 +40,51 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (!isset($_GET['users_id'])) {
-   // Bad request
-   Toolbox::logError("Missing users_id parameter");
-   http_response_code(400);
-   return;
-} else if (!is_array($_GET['users_id'])) {
-   $_GET['users_id'] = [$_GET['users_id']];
+    // Bad request
+    Toolbox::logError("Missing users_id parameter");
+    http_response_code(400);
+    return;
+} elseif (!is_array($_GET['users_id'])) {
+    $_GET['users_id'] = [$_GET['users_id']];
 }
 
 $_GET['users_id'] = array_unique($_GET['users_id']);
 
 if (!isset($_GET['size'])) {
-   $_GET['size'] = '100%';
+    $_GET['size'] = '100%';
 }
 
 if (!isset($_GET['allow_blank'])) {
-   $_GET['allow_blank'] = false;
+    $_GET['allow_blank'] = false;
 }
 
 $user = new User();
 $imgs = [];
 
 foreach ($_GET['users_id'] as $user_id) {
-   if ($user->getFromDB($user_id)) {
-      if (!empty($user->fields['picture']) || $_GET['allow_blank']) {
-         if (isset($_GET['type']) && $_GET['type'] == 'thumbnail') {
-            $path = User::getThumbnailURLForPicture($user->fields['picture']);
-         } else {
-            $path = User::getURLForPicture($user->fields['picture']);
-         }
-         $img = Html::image($path, [
-            'title'  => getUserName($user_id),
-            'width'  => $_GET['size'],
-            'height' => $_GET['size'],
-            'class'  => isset($_GET['class']) ? $_GET['class'] : ''
-         ]);
-         if (isset($_GET['link']) && $_GET['link']) {
-            $imgs[$user_id] = Html::link($img, User::getFormURLWithID($user_id));
-         } else {
-            $imgs[$user_id] = $img;
-         }
-      } else {
-         // No picture and default image is not allowed.
-         continue;
-      }
-   }
+    if ($user->getFromDB($user_id)) {
+        if (!empty($user->fields['picture']) || $_GET['allow_blank']) {
+            if (isset($_GET['type']) && $_GET['type'] == 'thumbnail') {
+                $path = User::getThumbnailURLForPicture($user->fields['picture']);
+            } else {
+                $path = User::getURLForPicture($user->fields['picture']);
+            }
+            $img = Html::image($path, [
+               'title'  => getUserName($user_id),
+               'width'  => $_GET['size'],
+               'height' => $_GET['size'],
+               'class'  => isset($_GET['class']) ? $_GET['class'] : ''
+            ]);
+            if (isset($_GET['link']) && $_GET['link']) {
+                $imgs[$user_id] = Html::link($img, User::getFormURLWithID($user_id));
+            } else {
+                $imgs[$user_id] = $img;
+            }
+        } else {
+            // No picture and default image is not allowed.
+            continue;
+        }
+    }
 }
 
 echo json_encode($imgs, JSON_FORCE_OBJECT);

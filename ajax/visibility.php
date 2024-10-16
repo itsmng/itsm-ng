@@ -32,49 +32,50 @@
 
 // Direct access to file
 if (strpos($_SERVER['PHP_SELF'], "visibility.php")) {
-   $AJAX_INCLUDE = 1;
-   include ('../inc/includes.php');
-   header("Content-Type: text/html; charset=UTF-8");
-   Html::header_nocache();
+    $AJAX_INCLUDE = 1;
+    include('../inc/includes.php');
+    header("Content-Type: text/html; charset=UTF-8");
+    Html::header_nocache();
 }
 
 Session::checkLoginUser();
 
-if (!isset($_POST['type']) || empty($_POST['type']) || !isset($_POST['right']))
-   return;
+if (!isset($_POST['type']) || empty($_POST['type']) || !isset($_POST['right'])) {
+    return;
+}
 
 switch ($_POST['type']) {
-   case 'User' :
-      echo json_encode(getOptionsForUsers($_POST['right']));
-      break;
-   case 'Group' :
-      echo json_encode(getItemByEntity(Group::class, Session::getActiveEntity()));
-      break;
-   case 'Profile' :
-      global $DB;
+    case 'User':
+        echo json_encode(getOptionsForUsers($_POST['right']));
+        break;
+    case 'Group':
+        echo json_encode(getItemByEntity(Group::class, Session::getActiveEntity()));
+        break;
+    case 'Profile':
+        global $DB;
 
-      $checkright   = (READ | CREATE | UPDATE | PURGE);
-      $righttocheck = $_POST['right'];
-      if ($_POST['right'] == 'faq') {
-         $righttocheck = 'knowbase';
-         $checkright   = KnowbaseItem::READFAQ;
-      }
+        $checkright   = (READ | CREATE | UPDATE | PURGE);
+        $righttocheck = $_POST['right'];
+        if ($_POST['right'] == 'faq') {
+            $righttocheck = 'knowbase';
+            $checkright   = KnowbaseItem::READFAQ;
+        }
 
-      $result = $DB->request([
-         'SELECT' => ['profiles_id', 'name'],
-         'FROM'   => ProfileRight::getTable(),
-         'WHERE'  => [
-            'name'   => $righttocheck,
-            'rights' => ['&', $checkright]
-         ]
-      ]);
-      $profileWithRight = array_column(iterator_to_array($result), 'profiles_id', 'profiles_id');
-      $options = getOptionForItems(Profile::class);
-      foreach ($options as $id => $name) {
-         if (!isset($profileWithRight[$id])) {
-            unset($options[$id]);
-         }
-      }
-      echo json_encode($options);
-      break;
+        $result = $DB->request([
+           'SELECT' => ['profiles_id', 'name'],
+           'FROM'   => ProfileRight::getTable(),
+           'WHERE'  => [
+              'name'   => $righttocheck,
+              'rights' => ['&', $checkright]
+           ]
+        ]);
+        $profileWithRight = array_column(iterator_to_array($result), 'profiles_id', 'profiles_id');
+        $options = getOptionForItems(Profile::class);
+        foreach ($options as $id => $name) {
+            if (!isset($profileWithRight[$id])) {
+                unset($options[$id]);
+            }
+        }
+        echo json_encode($options);
+        break;
 }

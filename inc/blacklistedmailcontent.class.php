@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -39,59 +39,64 @@ if (!defined('GLPI_ROOT')) {
  *
  * @since 0.85
 **/
-class BlacklistedMailContent extends CommonDropdown {
+class BlacklistedMailContent extends CommonDropdown
+{
+    // From CommonDBTM
+    public $dohistory       = false;
 
-   // From CommonDBTM
-   public $dohistory       = false;
+    public static $rightname       = 'config';
 
-   static $rightname       = 'config';
-
-   public $can_be_translated = false;
-
-
-   static function getTypeName($nb = 0) {
-      return __('Blacklisted mail content');
-   }
+    public $can_be_translated = false;
 
 
-   static function canCreate() {
-      return static::canUpdate();
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return __('Blacklisted mail content');
+    }
 
 
-   static function canPurge() {
-      return static::canUpdate();
-   }
+    public static function canCreate()
+    {
+        return static::canUpdate();
+    }
 
 
-   function getAdditionalFields() {
-
-      return [
-         __('Content') => [
-            'name'  => 'content',
-            'type'  => 'textarea',
-            'value' => $this->fields['content'],
-            'rows'  => 10,
-            'col_lg' => 12,
-            'col_md' => 12,
-         ]
-      ];
-   }
+    public static function canPurge()
+    {
+        return static::canUpdate();
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function getAdditionalFields()
+    {
 
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'content',
-         'name'               => __('Content'),
-         'datatype'           => 'text',
-         'massiveaction'      => false
-      ];
+        return [
+           __('Content') => [
+              'name'  => 'content',
+              'type'  => 'textarea',
+              'value' => $this->fields['content'],
+              'rows'  => 10,
+              'col_lg' => 12,
+              'col_md' => 12,
+           ]
+        ];
+    }
 
-      return $tab;
-   }
+
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
+
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'content',
+           'name'               => __('Content'),
+           'datatype'           => 'text',
+           'massiveaction'      => false
+        ];
+
+        return $tab;
+    }
 
 }

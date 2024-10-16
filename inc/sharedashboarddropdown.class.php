@@ -32,12 +32,13 @@
 
 class ShareDashboardDropdown extends AbstractRightsDropdown
 {
-   protected static function getTypes(): array {
-      return [
-         User::getType(),
-         Entity::getType(),
-         Profile::getType(),
-         Group::getType(),
-      ];
-   }
+    protected static function getTypes(): array
+    {
+        return [
+           User::getType(),
+           Entity::getType(),
+           Profile::getType(),
+           Group::getType(),
+        ];
+    }
 }

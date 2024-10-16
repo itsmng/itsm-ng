@@ -8,7 +8,6 @@ use Toolbox;
 
 class MailServer
 {
-
     /**
      * Retuns available mail servers protocols.
      *
@@ -83,7 +82,7 @@ class MailServer
      *                norsh, secure and debug) : options are empty if not set
      *                and options have boolean values if set
      **/
-    static function parseMailServerConnectString($value, $forceport = false) : array
+    public static function parseMailServerConnectString($value, $forceport = false): array
     {
 
         $tab = [];
@@ -164,7 +163,7 @@ class MailServer
      *
      * @return array
      **/
-    static function showMailServerConfig($value): array
+    public static function showMailServerConfig($value): array
     {
         $data = array();
 
@@ -272,7 +271,7 @@ class MailServer
      *
      * @return void
      **/
-    static function showMailServerConfigForm($action, $fields, $is_ID, $ID)
+    public static function showMailServerConfigForm($action, $fields, $is_ID, $ID)
     {
         $data = self::parseMailServerConnectString($fields["connect_string"] ?? '');
 
@@ -461,21 +460,21 @@ class MailServer
         renderTwigForm($form);
     }
 
-    static function dropdown_upload_size() : array
+    public static function dropdown_upload_size(): array
     {
         $i = 0;
         $size = 0;
         $data = array();
 
         $data[$i] = __('No import');
-        for ($i = 1; $i < 100; $i++ ) {
+        for ($i = 1; $i < 100; $i++) {
             $size = $size + 1048576;
             $data[$size] = $i . ' Mio';
         }
         return $data;
     }
 
-    static function getMailCollectorConfig($entry) : bool|array
+    public static function getMailCollectorConfig($entry): bool|array
     {
 
         if (empty($entry)) {
@@ -489,19 +488,19 @@ class MailServer
 
         $key = ['host', 'port', 'protocol', 'security', 'cert-validation', 'tls', 'norsh'];
         foreach ($key as $k => $v) {
-            if($v == 'protocol' || $v == 'security' || $v == 'cert-validation' || $v == 'tls' || $v == 'norsh') {
+            if ($v == 'protocol' || $v == 'security' || $v == 'cert-validation' || $v == 'tls' || $v == 'norsh') {
                 $data[$v] = '/' . $matches[$k + 1] ?? '';
             } else {
                 $data[$v] = $matches[$k + 1] ?? '';
             }
         }
 
-        if(strstr($entry, '/secure')) {
+        if (strstr($entry, '/secure')) {
             $data['secure'] = '/secure';
             $data['norsh'] = str_replace('/secure', '', $data['norsh']);
 
         }
-        if(strstr($entry, '/debug')) {
+        if (strstr($entry, '/debug')) {
             $data['debug'] = '/debug';
             $data['norsh'] = str_replace('/debug', '', $data['norsh']);
         }

@@ -31,160 +31,164 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 // Relation between CartridgeItem and PrinterModel
 // since version 0.84
-class CartridgeItem_PrinterModel extends CommonDBRelation {
+class CartridgeItem_PrinterModel extends CommonDBRelation
+{
+    // From CommonDBRelation
+    public static $itemtype_1          = 'CartridgeItem';
+    public static $items_id_1          = 'cartridgeitems_id';
 
-   // From CommonDBRelation
-   static public $itemtype_1          = 'CartridgeItem';
-   static public $items_id_1          = 'cartridgeitems_id';
-
-   static public $itemtype_2          = 'PrinterModel';
-   static public $items_id_2          = 'printermodels_id';
-   static public $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
-
-
-
-   function getForbiddenStandardMassiveAction() {
-
-      $forbidden   = parent::getForbiddenStandardMassiveAction();
-      $forbidden[] = 'update';
-      return $forbidden;
-   }
+    public static $itemtype_2          = 'PrinterModel';
+    public static $items_id_2          = 'printermodels_id';
+    public static $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
-      switch ($item->getType()) {
-         case 'CartridgeItem' :
-            self::showForCartridgeItem($item);
-            break;
+    public function getForbiddenStandardMassiveAction()
+    {
 
-      }
-      return true;
-   }
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'update';
+        return $forbidden;
+    }
 
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
 
-      if (!$withtemplate && Printer::canView()) {
-         $nb = 0;
-         switch ($item->getType()) {
-            case 'CartridgeItem' :
-               if ($_SESSION['glpishow_count_on_tabs']) {
-                  $nb = self::countForItem($item);
-               }
-               return self::createTabEntry(PrinterModel::getTypeName(Session::getPluralNumber()), $nb);
-         }
-      }
-      return '';
-   }
+        switch ($item->getType()) {
+            case 'CartridgeItem':
+                self::showForCartridgeItem($item);
+                break;
+
+        }
+        return true;
+    }
 
 
-   /**
-    * Show the printer types that are compatible with a cartridge type
-    *
-    * @param $item   CartridgeItem object
-    *
-    * @return boolean|void
-   **/
-   static function showForCartridgeItem(CartridgeItem $item) {
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
 
-      $instID = $item->getField('id');
-      if (!$item->can($instID, READ)) {
-         return false;
-      }
-      $canedit = $item->canEdit($instID);
-      $rand    = mt_rand();
+        if (!$withtemplate && Printer::canView()) {
+            $nb = 0;
+            switch ($item->getType()) {
+                case 'CartridgeItem':
+                    if ($_SESSION['glpishow_count_on_tabs']) {
+                        $nb = self::countForItem($item);
+                    }
+                    return self::createTabEntry(PrinterModel::getTypeName(Session::getPluralNumber()), $nb);
+            }
+        }
+        return '';
+    }
 
-      $iterator = self::getListForItem($item);
-      $number = count($iterator);
 
-      $used  = [];
-      $datas = [];
-      while ($data = $iterator->next()) {
-         $used[$data["id"]] = $data["id"];
-         $datas[$data["linkid"]]  = $data;
-      }
+    /**
+     * Show the printer types that are compatible with a cartridge type
+     *
+     * @param $item   CartridgeItem object
+     *
+     * @return boolean|void
+    **/
+    public static function showForCartridgeItem(CartridgeItem $item)
+    {
 
-      if ($canedit) {
-         $options = getOptionForItems(PrinterModel::class);
-         foreach ($used as $cartridge) {
-            unset($options[$cartridge]);
-         };
-         $form = [
-            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-            'buttons' => [
-               [
-                  'type' => 'submit',
-                  'name' => 'add',
-                  'value' => _sx('button', 'Add an item'),
-                  'class' => 'btn btn-secondary'
-               ]
-            ],
-            'content' => [
-               __('Add a compatible printer model') => [
-                  'visible' => true,
-                  'inputs' => [
-                     [
-                        'type' => 'hidden',
-                        'name' => 'cartridgeitems_id',
-                        'value' => $instID
-                     ],
-                     '' => [
-                        'type' => 'select',
-                        'name' => 'printermodels_id',
-                        'values' => $options,
-                        'col_lg' => 12,
-                        'col_md' => 12,
-                        'actions' => getItemActionButtons(['info', 'add'], PrinterModel::class)
-                     ],
-                  ]
-               ]
-            ]
-         ];
-         renderTwigForm($form);
-      }
+        $instID = $item->getField('id');
+        if (!$item->can($instID, READ)) {
+            return false;
+        }
+        $canedit = $item->canEdit($instID);
+        $rand    = mt_rand();
 
-      if ($number) {
-         if ($canedit) {
-            $massiveactionparams = [
-               'num_displayed' => min($_SESSION['glpilist_limit'], count($used)),
-               'container'     => 'tableForCartidgeItemPrinterModel',
-               'display_arrow' => false,
-               'specific_actions' => [
-                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
-               ],   
-            ];
-            Html::showMassiveActions($massiveactionparams);
-         }
-         $fields = [_n('Model', 'Models', 1)];
-         $values = [];
-         $massive_action = [];
-         foreach ($datas as $data) {
-            $opt = [
-               'is_deleted' => 0,
-               'criteria'   => [
+        $iterator = self::getListForItem($item);
+        $number = count($iterator);
+
+        $used  = [];
+        $datas = [];
+        while ($data = $iterator->next()) {
+            $used[$data["id"]] = $data["id"];
+            $datas[$data["linkid"]]  = $data;
+        }
+
+        if ($canedit) {
+            $options = getOptionForItems(PrinterModel::class);
+            foreach ($used as $cartridge) {
+                unset($options[$cartridge]);
+            };
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
                   [
-                     'field'      => 40, // printer model
-                     'searchtype' => 'equals',
-                     'value'      => $data["id"],
+                     'type' => 'submit',
+                     'name' => 'add',
+                     'value' => _sx('button', 'Add an item'),
+                     'class' => 'btn btn-secondary'
+                  ]
+               ],
+               'content' => [
+                  __('Add a compatible printer model') => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'cartridgeitems_id',
+                           'value' => $instID
+                        ],
+                        '' => [
+                           'type' => 'select',
+                           'name' => 'printermodels_id',
+                           'values' => $options,
+                           'col_lg' => 12,
+                           'col_md' => 12,
+                           'actions' => getItemActionButtons(['info', 'add'], PrinterModel::class)
+                        ],
+                     ]
                   ]
                ]
             ];
-            $url = Printer::getSearchURL()."?".Toolbox::append_params($opt, '&amp;');
-            $values[] = ["<a href='".$url."'>".$data["name"]];
-            $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
-         }
-         renderTwigTemplate('table.twig', [
-            'id' => 'tableForCartidgeItemPrinterModel',
-            'fields' => $fields,
-            'values' => $values,
-            'massive_action' => $massive_action,
-         ]);
-      }
-   }
+            renderTwigForm($form);
+        }
+
+        if ($number) {
+            if ($canedit) {
+                $massiveactionparams = [
+                   'num_displayed' => min($_SESSION['glpilist_limit'], count($used)),
+                   'container'     => 'tableForCartidgeItemPrinterModel',
+                   'display_arrow' => false,
+                   'specific_actions' => [
+                      'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+                   ],
+                ];
+                Html::showMassiveActions($massiveactionparams);
+            }
+            $fields = [_n('Model', 'Models', 1)];
+            $values = [];
+            $massive_action = [];
+            foreach ($datas as $data) {
+                $opt = [
+                   'is_deleted' => 0,
+                   'criteria'   => [
+                      [
+                         'field'      => 40, // printer model
+                         'searchtype' => 'equals',
+                         'value'      => $data["id"],
+                      ]
+                   ]
+                ];
+                $url = Printer::getSearchURL()."?".Toolbox::append_params($opt, '&amp;');
+                $values[] = ["<a href='".$url."'>".$data["name"]];
+                $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
+            }
+            renderTwigTemplate('table.twig', [
+               'id' => 'tableForCartidgeItemPrinterModel',
+               'fields' => $fields,
+               'values' => $values,
+               'massive_action' => $massive_action,
+            ]);
+        }
+    }
 }

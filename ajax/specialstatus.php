@@ -1,7 +1,7 @@
 <?php
 /**
  * ---------------------------------------------------------------------
- * ITSM-NG 
+ * ITSM-NG
  * Copyright (C) 2022 ITSM-NG and contributors.
  *
  * https://www.itsm-ng.org/
@@ -30,8 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 if (isset($_GET["status"])) {
-   SpecialStatus::deleteStatus($_GET["id"]);
+    SpecialStatus::deleteStatus($_GET["id"]);
 }

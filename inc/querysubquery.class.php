@@ -31,47 +31,50 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  *  Sub query class
 **/
-class QuerySubQuery extends AbstractQuery {
-   private $dbiterator;
+class QuerySubQuery extends AbstractQuery
+{
+    private $dbiterator;
 
-   /**
-    * Create a sub query
-    *
-    * @param array  $crit      Array of query criteria. Any valid DBmysqlIterator parameters are valid.
-    * @param string $alias     Alias for the whole subquery
-    */
-   public function __construct(array $crit, $alias = null) {
-      global $DB;
+    /**
+     * Create a sub query
+     *
+     * @param array  $crit      Array of query criteria. Any valid DBmysqlIterator parameters are valid.
+     * @param string $alias     Alias for the whole subquery
+     */
+    public function __construct(array $crit, $alias = null)
+    {
+        global $DB;
 
-      parent::__construct($alias);
-      if (empty($crit)) {
-         throw new \RuntimeException('Cannot build an empty subquery');
-      }
+        parent::__construct($alias);
+        if (empty($crit)) {
+            throw new \RuntimeException('Cannot build an empty subquery');
+        }
 
-      $this->dbiterator = new DBmysqlIterator($DB);
-      $this->dbiterator->buildQuery($crit);
-   }
+        $this->dbiterator = new DBmysqlIterator($DB);
+        $this->dbiterator->buildQuery($crit);
+    }
 
-   /**
-    *
-    * Get SQL query
-    *
-    * @return string
-    */
-   public function getQuery() {
-      global $DB;
+    /**
+     *
+     * Get SQL query
+     *
+     * @return string
+     */
+    public function getQuery()
+    {
+        global $DB;
 
-      $sql = "(" . $this->dbiterator->getSql() . ")";
+        $sql = "(" . $this->dbiterator->getSql() . ")";
 
-      if ($this->alias !== null) {
-         $sql .= ' AS ' . $DB->quoteName($this->alias);
-      }
-      return $sql;
-   }
+        if ($this->alias !== null) {
+            $sql .= ' AS ' . $DB->quoteName($this->alias);
+        }
+        return $sql;
+    }
 }

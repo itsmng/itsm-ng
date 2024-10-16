@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   include ('../inc/includes.php');
+    include('../inc/includes.php');
 }
 
 Html::header(SavedSearch::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], 'tools', 'savedsearch');
@@ -40,9 +40,9 @@ $savedsearch = new SavedSearch();
 
 if (isset($_GET['action']) && $_GET["action"] == "load"
    && isset($_GET["id"]) && ($_GET["id"] > 0)) {
-   $savedsearch->check($_GET["id"], READ);
-   $savedsearch->load($_GET["id"]);
-   return;
+    $savedsearch->check($_GET["id"], READ);
+    $savedsearch->load($_GET["id"]);
+    return;
 }
 
 Search::show('SavedSearch');

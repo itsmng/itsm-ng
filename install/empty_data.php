@@ -83,15 +83,15 @@ $tables['glpi_calendars'] = [
 
 $tables['glpi_calendarsegments'] = [];
 for ($i = 1; $i < 6; ++$i) {
-   $tables['glpi_calendarsegments'][] = [
-      'id'           => $i,
-      'calendars_id' => 1,
-      'entities_id'  => 0,
-      'is_recursive' => 0,
-      'day'          => $i,
-      'begin'        => '08:00:00',
-      'end'          => '20:00:00',
-   ];
+    $tables['glpi_calendarsegments'][] = [
+       'id'           => $i,
+       'calendars_id' => 1,
+       'entities_id'  => 0,
+       'is_recursive' => 0,
+       'day'          => $i,
+       'begin'        => '08:00:00',
+       'end'          => '20:00:00',
+    ];
 }
 
 $default_prefs = [
@@ -316,11 +316,11 @@ $default_prefs = [
 
 $tables['glpi_configs'] = [];
 foreach ($default_prefs as $name => $value) {
-   $tables['glpi_configs'][] = [
-      'context' => 'core',
-      'name'    => $name,
-      'value'   => $value,
-   ];
+    $tables['glpi_configs'][] = [
+       'context' => 'core',
+       'name'    => $name,
+       'value'   => $value,
+    ];
 }
 $tables['glpi_crontasks'] = [
    [
@@ -1668,14 +1668,14 @@ $ADDTODISPLAYPREF['DomainRecord'] = [2, 3];
 $ADDTODISPLAYPREF['Appliance'] = [2, 3, 4, 5];
 
 foreach ($ADDTODISPLAYPREF as $type => $options) {
-   $rank = 1;
-   foreach ($options as $newval) {
-      $tables['glpi_displaypreferences'][] = [
-         'itemtype'  => $type,
-         'num'       => $newval,
-         'rank'      => $rank++,
-      ];
-   }
+    $rank = 1;
+    foreach ($options as $newval) {
+        $tables['glpi_displaypreferences'][] = [
+           'itemtype'  => $type,
+           'num'       => $newval,
+           'rank'      => $rank++,
+        ];
+    }
 }
 
 $tables['glpi_documenttypes'] = [

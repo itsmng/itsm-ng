@@ -38,19 +38,17 @@ use itsmng\MailServer;
  */
 class AuthMail extends CommonDBTM
 {
-
-
     // From CommonDBTM
     public $dohistory = true;
 
-    static $rightname = 'config';
+    public static $rightname = 'config';
 
-    static function getTypeName($nb = 0)
+    public static function getTypeName($nb = 0)
     {
         return _n('Mail server', 'Mail servers', $nb);
     }
 
-    function prepareInputForUpdate($input)
+    public function prepareInputForUpdate($input)
     {
 
 
@@ -61,17 +59,17 @@ class AuthMail extends CommonDBTM
         return $input;
     }
 
-    static function canCreate()
+    public static function canCreate()
     {
         return static::canUpdate();
     }
 
-    static function canPurge()
+    public static function canPurge()
     {
         return static::canUpdate();
     }
 
-    function prepareInputForAdd($input)
+    public function prepareInputForAdd($input)
     {
 
         if (isset($input['mail_server']) && !empty($input['mail_server'])) {
@@ -80,7 +78,7 @@ class AuthMail extends CommonDBTM
         return $input;
     }
 
-    function defineTabs($options = [])
+    public function defineTabs($options = [])
     {
 
         $ong = [];
@@ -91,7 +89,7 @@ class AuthMail extends CommonDBTM
         return $ong;
     }
 
-    function rawSearchOptions()
+    public function rawSearchOptions()
     {
         $tab = [];
 
@@ -171,7 +169,7 @@ class AuthMail extends CommonDBTM
      *
      * @return void|boolean (display) Returns false if there is a rights error.
      */
-    function showForm($ID)
+    public function showForm($ID)
     {
 
         if (!Config::canUpdate()) {
@@ -191,7 +189,7 @@ class AuthMail extends CommonDBTM
      *
      * @return void
      */
-    function showFormTestMail()
+    public function showFormTestMail()
     {
 
         $ID = $this->getField('id');
@@ -241,7 +239,7 @@ class AuthMail extends CommonDBTM
      *
      * @return boolean
      */
-    static function useAuthMail()
+    public static function useAuthMail()
     {
         return (countElementsInTable('glpi_authmails', ['is_active' => 1]) > 0);
     }
@@ -256,7 +254,7 @@ class AuthMail extends CommonDBTM
      *
      * @return boolean Authentication succeeded?
      */
-    static function testAuth($connect_string, $login, $password)
+    public static function testAuth($connect_string, $login, $password)
     {
 
         $auth = new Auth();
@@ -278,7 +276,7 @@ class AuthMail extends CommonDBTM
      *
      * @return object identification object
      */
-    static function mailAuth($auth, $login, $password, $mail_method)
+    public static function mailAuth($auth, $login, $password, $mail_method)
     {
 
         if (isset($mail_method["connect_string"]) && !empty($mail_method["connect_string"])) {
@@ -312,7 +310,7 @@ class AuthMail extends CommonDBTM
      *
      * @return object identification object
      */
-    static function tryMailAuth($auth, $login, $password, $auths_id = 0, $break = true)
+    public static function tryMailAuth($auth, $login, $password, $auths_id = 0, $break = true)
     {
 
         if ($auths_id <= 0) {
@@ -325,19 +323,19 @@ class AuthMail extends CommonDBTM
                     }
                 }
             }
-        } else if (array_key_exists($auths_id, $auth->authtypes["mail"])) {
+        } elseif (array_key_exists($auths_id, $auth->authtypes["mail"])) {
             //Check if the mail server indicated as the last good one still exists !
             $auth = self::mailAuth($auth, $login, $password, $auth->authtypes["mail"][$auths_id]);
         }
         return $auth;
     }
 
-    function cleanDBonPurge()
+    public function cleanDBonPurge()
     {
         Rule::cleanForItemCriteria($this, 'MAIL_SERVER');
     }
 
-    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
         if (!$withtemplate && $item->can($item->getField('id'), READ)) {
@@ -349,7 +347,7 @@ class AuthMail extends CommonDBTM
         return '';
     }
 
-    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
         switch ($tabnum) {

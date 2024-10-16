@@ -13,16 +13,16 @@ class Twig
     public static function load($path = '../templates/', $cache = true, $debug = false)
     {
         global $CFG_GLPI;
-        
+
         $loader = new FilesystemLoader($path);
         $twig = new Environment($loader, [
             'cache' => $cache ? './cache' : false,
             'debug' => $debug,
         ]);
         self::load_filters($twig);
-        $twig->addExtension(new DebugExtension);
-        $twig->addExtension(new StringExtension);
-        
+        $twig->addExtension(new DebugExtension());
+        $twig->addExtension(new StringExtension());
+
         $twig->addGlobal('root_doc', $CFG_GLPI['root_doc']);
 
         return $twig;
@@ -37,7 +37,7 @@ class Twig
             $output =  ob_get_clean();
             return new \Twig\Markup($output, 'UTF-8');
         }));
-        
+
         $twig->addFilter(new TwigFilter('transd', function ($string, $domain) {
             return __($string, $domain);
         }));

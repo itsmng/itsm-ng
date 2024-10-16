@@ -31,13 +31,14 @@
  */
 
 /// Update from 0.4 and 0.41 to 0.42
-function update04to042() {
-   global $DB;
+function update04to042()
+{
+    global $DB;
 
-   echo "<p class='center'>Version 0.42 </p>";
+    echo "<p class='center'>Version 0.42 </p>";
 
-   if (!$DB->tableExists("glpi_reservation_item")) {
-      $query = "CREATE TABLE `glpi_reservation_item` (
+    if (!$DB->tableExists("glpi_reservation_item")) {
+        $query = "CREATE TABLE `glpi_reservation_item` (
                   `ID` int(11) NOT NULL auto_increment,
                   `device_type` tinyint(4) NOT NULL default '0',
                   `id_device` int(11) NOT NULL default '0',
@@ -45,11 +46,11 @@ function update04to042() {
                   PRIMARY KEY  (`ID`),
                   KEY `device_type` (`device_type`)
                 )";
-      $DB->queryOrDie($query, "4201");
-   }
+        $DB->queryOrDie($query, "4201");
+    }
 
-   if (!$DB->tableExists("glpi_reservation_resa")) {
-      $query = "CREATE TABLE `glpi_reservation_resa` (
+    if (!$DB->tableExists("glpi_reservation_resa")) {
+        $query = "CREATE TABLE `glpi_reservation_resa` (
                   `ID` bigint(20) NOT NULL auto_increment,
                   `id_item` int(11) NOT NULL default '0',
                   `begin` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -61,21 +62,20 @@ function update04to042() {
                   KEY `begin` (`begin`),
                   KEY `end` (`end`)
                 )";
-      $DB->queryOrDie($query, "4202");
-   }
+        $DB->queryOrDie($query, "4202");
+    }
 
-   if (!$DB->fieldExists("glpi_tracking", "device_type", false)) {
-      $query = "ALTER TABLE `glpi_tracking`
+    if (!$DB->fieldExists("glpi_tracking", "device_type", false)) {
+        $query = "ALTER TABLE `glpi_tracking`
                 ADD `device_type` INT DEFAULT '1' NOT NULL AFTER `assign` ";
-      $DB->queryOrDie($query, "4203");
-   }
+        $DB->queryOrDie($query, "4203");
+    }
 
-   // Ajout language par defaut
-   if (!$DB->fieldExists("glpi_config", "default_language", false)) {
-      $query = "ALTER TABLE `glpi_config`
+    // Ajout language par defaut
+    if (!$DB->fieldExists("glpi_config", "default_language", false)) {
+        $query = "ALTER TABLE `glpi_config`
                 ADD `default_language` VARCHAR(255) DEFAULT 'english' NOT NULL ";
-      $DB->queryOrDie($query, "4204");
-   }
+        $DB->queryOrDie($query, "4204");
+    }
 
 }
-

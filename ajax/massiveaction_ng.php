@@ -39,20 +39,20 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 try {
-   $ma = new MassiveAction($_POST, $_GET, 'initial');
+    $ma = new MassiveAction($_POST, $_GET, 'initial');
 } catch (Exception $e) {
-   
-   echo "<div class='center'><img src='" . $CFG_GLPI["root_doc"] . "/pics/warning.png' alt='" .
-   __s('Warning') . "'><br><br>";
-   echo "<span class='b'>" . $e->getMessage() . "</span><br>";
-   echo "</div>";
-   exit();
+
+    echo "<div class='center'><img src='" . $CFG_GLPI["root_doc"] . "/pics/warning.png' alt='" .
+    __s('Warning') . "'><br><br>";
+    echo "<span class='b'>" . $e->getMessage() . "</span><br>";
+    echo "</div>";
+    exit();
 }
 
 $params = ['action' => '__VALUE__'];
 $input  = $ma->getInput();
 foreach ($input as $key => $val) {
-   $params[$key] = $val;
+    $params[$key] = $val;
 }
 $actions = $params['actions'];
 
@@ -61,10 +61,10 @@ $POST['items'] = $POST;
 $POST['items'] = $POST['item'];
 
 try {
-   renderTwigForm('massiveaction.twig', [
-      'actions' => $actions,
-      'subformBody' => $POST,
-   ]);
+    renderTwigForm('massiveaction.twig', [
+       'actions' => $actions,
+       'subformBody' => $POST,
+    ]);
 } catch (Exception $e) {
-   echo $e->getMessage();
+    echo $e->getMessage();
 }

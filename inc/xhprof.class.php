@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -53,63 +53,67 @@ if (!defined('GLPI_ROOT')) {
  *
  * php-errors.log will give you the URL of the result.
  */
-class XHProf {
-
-   // this can be overloaded in config/local_define.php
-   const XHPROF_PATH = '/usr/share/xhprof/xhprof_lib';
-   const XHPROF_URL  = '/xhprof';
-
-
-   static private $run = false;
+class XHProf
+{
+    // this can be overloaded in config/local_define.php
+    public const XHPROF_PATH = '/usr/share/xhprof/xhprof_lib';
+    public const XHPROF_URL  = '/xhprof';
 
 
-   /**
-    * @param $msg (default '')
-   **/
-   function __construct($msg = '') {
-      $this->start($msg);
-   }
+    private static $run = false;
 
 
-   function __destruct() {
-      $this->stop();
-   }
+    /**
+     * @param $msg (default '')
+    **/
+    public function __construct($msg = '')
+    {
+        $this->start($msg);
+    }
 
 
-   /**
-    * @param $msg (default '')
-   **/
-   function start($msg = '') {
-
-      if (!self::$run
-          && function_exists('xhprof_enable')) {
-         xhprof_enable();
-         if (class_exists('Toolbox')) {
-            Toolbox::logDebug("Start profiling with XHProf", $msg);
-         }
-         self::$run = true;
-      }
-   }
+    public function __destruct()
+    {
+        $this->stop();
+    }
 
 
-   function stop() {
+    /**
+     * @param $msg (default '')
+    **/
+    public function start($msg = '')
+    {
 
-      if (self::$run) {
-         $data = xhprof_disable();
+        if (!self::$run
+            && function_exists('xhprof_enable')) {
+            xhprof_enable();
+            if (class_exists('Toolbox')) {
+                Toolbox::logDebug("Start profiling with XHProf", $msg);
+            }
+            self::$run = true;
+        }
+    }
 
-         $incl = (defined('XHPROF_PATH') ? XHPROF_PATH : self::XHPROF_PATH);
-         include_once $incl.'/utils/xhprof_lib.php';
-         include_once $incl.'/utils/xhprof_runs.php';
 
-         $runs = new XHProfRuns_Default();
-         $id   = $runs->save_run($data, 'glpi');
+    public function stop()
+    {
 
-         $url  = (defined('XHPROF_URL') ? XHPROF_URL : self::XHPROF_URL);
-         $host = (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost');
-         $link = "http://".$host."$url/index.php?run=$id&source=glpi";
-         Toolbox::logDebug("Stop profiling with XHProf, result URL", $link);
+        if (self::$run) {
+            $data = xhprof_disable();
 
-         self::$run = false;
-      }
-   }
+            $incl = (defined('XHPROF_PATH') ? XHPROF_PATH : self::XHPROF_PATH);
+            include_once $incl.'/utils/xhprof_lib.php';
+            include_once $incl.'/utils/xhprof_runs.php';
+
+            $runs = new XHProfRuns_Default();
+            $id   = $runs->save_run($data, 'glpi');
+
+            $url  = (defined('XHPROF_URL') ? XHPROF_URL : self::XHPROF_URL);
+            $host = (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost');
+            $link = "http://".$host."$url/index.php?run=$id&source=glpi";
+            Toolbox::logDebug("Stop profiling with XHProf, result URL", $link);
+
+            self::$run = false;
+        }
+    }
 }

@@ -33,48 +33,51 @@
 namespace Glpi\System\Requirement;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * @since 9.5.0
  */
-class Extension extends AbstractRequirement {
+class Extension extends AbstractRequirement
+{
+    /**
+     * Required extension name.
+     *
+     * @var string
+     */
+    protected $name;
 
-   /**
-    * Required extension name.
-    *
-    * @var string
-    */
-   protected $name;
+    /**
+     * @param string $name    Required extension name.
+     * @param bool $optional  Indicated if extension is optional.
+     */
+    public function __construct(string $name, bool $optional = false)
+    {
+        $this->title = sprintf(__('%s extension test'), $name);
+        $this->name = $name;
+        $this->optional = $optional;
+    }
 
-   /**
-    * @param string $name    Required extension name.
-    * @param bool $optional  Indicated if extension is optional.
-    */
-   public function __construct(string $name, bool $optional = false) {
-      $this->title = sprintf(__('%s extension test'), $name);
-      $this->name = $name;
-      $this->optional = $optional;
-   }
+    protected function check()
+    {
+        $this->validated = extension_loaded($this->name);
+        $this->buildValidationMessage();
+    }
 
-   protected function check() {
-      $this->validated = extension_loaded($this->name);
-      $this->buildValidationMessage();
-   }
-
-   /**
-    * Defines the validation message based on self properties.
-    *
-    * @return void
-    */
-   protected function buildValidationMessage() {
-      if ($this->validated) {
-         $this->validation_messages[] = sprintf(__('%s extension is installed'), $this->name);
-      } else if ($this->optional) {
-         $this->validation_messages[] = sprintf(__('%s extension is not present'), $this->name);
-      } else {
-         $this->validation_messages[] = sprintf(__('%s extension is missing'), $this->name);
-      }
-   }
+    /**
+     * Defines the validation message based on self properties.
+     *
+     * @return void
+     */
+    protected function buildValidationMessage()
+    {
+        if ($this->validated) {
+            $this->validation_messages[] = sprintf(__('%s extension is installed'), $this->name);
+        } elseif ($this->optional) {
+            $this->validation_messages[] = sprintf(__('%s extension is not present'), $this->name);
+        } else {
+            $this->validation_messages[] = sprintf(__('%s extension is missing'), $this->name);
+        }
+    }
 }

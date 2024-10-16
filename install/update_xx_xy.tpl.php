@@ -36,19 +36,20 @@
  *
  * @return bool for success (will die for most error)
 **/
-function updateXXtoXY() {
-   global $migration;
+function updateXXtoXY()
+{
+    global $migration;
 
-   $updateresult     = true;
+    $updateresult     = true;
 
-   //TRANS: %s is the number of new version
-   $migration->displayTitle(sprintf(__('Update to %s'), 'XY'));
-   $migration->setVersion('XY');
+    //TRANS: %s is the number of new version
+    $migration->displayTitle(sprintf(__('Update to %s'), 'XY'));
+    $migration->setVersion('XY');
 
-   //put you migration script here
+    //put you migration script here
 
-   // ************ Keep it at the end **************
-   $migration->executeMigration();
+    // ************ Keep it at the end **************
+    $migration->executeMigration();
 
-   return $updateresult;
+    return $updateresult;
 }

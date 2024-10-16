@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkLoginUser();
 
@@ -57,4 +57,3 @@ echo "<p class='mb-4'>Merci de nous fournir autant de détails que possible sur 
 echo "</div>";
 
 Html::footer();
-?>

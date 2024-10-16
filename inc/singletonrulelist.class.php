@@ -31,31 +31,33 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class SingletonRuleList {
-   /// Items list
-   public $list = [];
-   /// Items loaded ?
-   public $load = 0;
+class SingletonRuleList
+{
+    /// Items list
+    public $list = [];
+    /// Items loaded ?
+    public $load = 0;
 
 
-   /**
-    * get a unique instance of a SingletonRuleList for a type of RuleCollection
-    *
-    * @param $type   type of the Rule listed
-    * @param $entity entity where the rule Rule is processed
-    *
-    * @return unique instance of an object
-   **/
-   public static function &getInstance($type, $entity) {
-      static $instances = [];
+    /**
+     * get a unique instance of a SingletonRuleList for a type of RuleCollection
+     *
+     * @param $type   type of the Rule listed
+     * @param $entity entity where the rule Rule is processed
+     *
+     * @return unique instance of an object
+    **/
+    public static function &getInstance($type, $entity)
+    {
+        static $instances = [];
 
-      if (!isset($instances[$type][$entity])) {
-         $instances[$type][$entity] = new self();
-      }
-      return $instances[$type][$entity];
-   }
+        if (!isset($instances[$type][$entity])) {
+            $instances[$type][$entity] = new self();
+        }
+        return $instances[$type][$entity];
+    }
 
 }

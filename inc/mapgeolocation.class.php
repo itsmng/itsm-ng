@@ -31,22 +31,23 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * Map geolocation
  **/
-trait MapGeolocation {
+trait MapGeolocation
+{
+    /**
+     * get openstreetmap
+     */
+    public function showMap()
+    {
+        $rand = mt_rand();
 
-   /**
-    * get openstreetmap
-    */
-   public function showMap() {
-      $rand = mt_rand();
-
-      echo "<div id='setlocation_container_{$rand}'></div>";
-      $js = "var map_elt, _marker;
+        echo "<div id='setlocation_container_{$rand}'></div>";
+        $js = "var map_elt, _marker;
       var _setLocation = function(lat, lng) {
          if (_marker) {
             map_elt.removeLayer(_marker);
@@ -138,6 +139,6 @@ trait MapGeolocation {
             }
          });
       });";
-      echo Html::scriptBlock($js);
-   }
+        echo Html::scriptBlock($js);
+    }
 }

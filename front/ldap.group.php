@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 $group = new Group();
 $group->checkGlobal(UPDATE);
@@ -39,27 +39,27 @@ Session::checkRight('user', User::UPDATEAUTHENT);
 Html::header(__('LDAP directory link'), $_SERVER['PHP_SELF'], "admin", "group", "ldap");
 
 if (isset($_SESSION["ldap_import"])) {
-   unset($_SESSION["ldap_import"]);
+    unset($_SESSION["ldap_import"]);
 }
 if (isset($_SESSION["ldap_import_entities"])) {
-   unset($_SESSION["ldap_import_entities"]);
+    unset($_SESSION["ldap_import_entities"]);
 }
 if (isset($_SESSION["ldap_server"])) {
-   unset($_SESSION["ldap_server"]);
+    unset($_SESSION["ldap_server"]);
 }
 if (isset($_SESSION["entity"])) {
-   unset($_SESSION["entity"]);
+    unset($_SESSION["entity"]);
 }
 if (isset($_SESSION["ldap_sortorder"])) {
-   unset($_SESSION["ldap_sortorder"]);
+    unset($_SESSION["ldap_sortorder"]);
 }
 
 //Reset session variable related to filters
 if (isset($_SESSION["ldap_group_filter"])) {
-   unset($_SESSION["ldap_group_filter"]);
+    unset($_SESSION["ldap_group_filter"]);
 }
 if (isset($_SESSION["ldap_group_filter2"])) {
-   unset($_SESSION["ldap_group_filter2"]);
+    unset($_SESSION["ldap_group_filter2"]);
 }
 
 echo "<div class='center'><table class='tab_cadre' aria-label='LDAP directory link'>";

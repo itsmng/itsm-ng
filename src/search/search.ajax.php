@@ -33,7 +33,9 @@
 include_once '../../inc/includes.php';
 Session::checkLoginUser();
 
-if (!isset($_GET['itemtype'])) return '{}';
+if (!isset($_GET['itemtype'])) {
+    return '{}';
+}
 
 $itemtype = $_GET['itemtype'];
 $params = [];
@@ -64,7 +66,7 @@ if (isset($_GET['search'])) {
 } else {
     $params['criteria'] = [];
 }
-if(isset($_GET['criteria'])) {
+if (isset($_GET['criteria'])) {
     $criterias = json_decode(stripslashes($_GET['criteria']), true);
     if ($params['criteria'] == null) {
         $params['criteria'] = $criterias;
@@ -89,9 +91,9 @@ foreach ($datas['data']['rows'] as $row) {
         $newCol = $row[$itemtype . '_' . $col['id']];
         if (isset($newCol['displayname'])) {
             $field = $newCol['displayname'];
-        } else if (isset($newCol[0]['name'])) {
+        } elseif (isset($newCol[0]['name'])) {
             $field = $newCol[0][0]['name'];
-        } else if (isset($newCol[0]['id'])) {
+        } elseif (isset($newCol[0]['id'])) {
             $field = $newCol[0][0]['id'];
         } else {
             $field = '';

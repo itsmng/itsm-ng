@@ -37,40 +37,41 @@ namespace Glpi\Toolbox;
 
 final class URL
 {
-   /**
-    * Sanitize URL to prevent XSS.
-    * /!\ This method only prevent links on javascript scheme. To be sure that no XSS is possible, value have to be
-    * HTML encoded when it is printed in a HTML page.
-    *
-    * @param null|string $url
-    *
-    * @return string|null
-    */
-   final public static function sanitizeURL(?string $url): string {
-      if ($url === null) {
-         return '';
-      }
+    /**
+     * Sanitize URL to prevent XSS.
+     * /!\ This method only prevent links on javascript scheme. To be sure that no XSS is possible, value have to be
+     * HTML encoded when it is printed in a HTML page.
+     *
+     * @param null|string $url
+     *
+     * @return string|null
+     */
+    final public static function sanitizeURL(?string $url): string
+    {
+        if ($url === null) {
+            return '';
+        }
 
-      $url = trim($url);
+        $url = trim($url);
 
-      $url_begin_patterns = [
-         // scheme followed by `//` and a hostname (absolute URL)
-         '[a-z]+:\/\/.+',
-         // `/` that corresponds to either start of a network path (e.g. `//host/path/to/file`)
-         // or a relative URL (e.g. `/`, `/path/to/page`, or `//anothersite.org/`)
-         '\/',
-      ];
-      $url_pattern = '/^(' . implode('|', $url_begin_patterns) . ')/i';
-      if (preg_match($url_pattern, $url) !== 1) {
-         return '';
-      }
+        $url_begin_patterns = [
+           // scheme followed by `//` and a hostname (absolute URL)
+           '[a-z]+:\/\/.+',
+           // `/` that corresponds to either start of a network path (e.g. `//host/path/to/file`)
+           // or a relative URL (e.g. `/`, `/path/to/page`, or `//anothersite.org/`)
+           '\/',
+        ];
+        $url_pattern = '/^(' . implode('|', $url_begin_patterns) . ')/i';
+        if (preg_match($url_pattern, $url) !== 1) {
+            return '';
+        }
 
-      $js_pattern = '/^javascript:/i';
+        $js_pattern = '/^javascript:/i';
 
-      if (preg_match($js_pattern, $url)) {
-         return '';
-      }
+        if (preg_match($js_pattern, $url)) {
+            return '';
+        }
 
-      return $url;
-   }
+        return $url;
+    }
 }

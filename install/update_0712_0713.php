@@ -33,40 +33,41 @@
  */
 
 /// Update from 0.71.2 to 0.71.3
-function update0712to0713() {
-   global $DB;
+function update0712to0713()
+{
+    global $DB;
 
-   if (!$DB->fieldExists("glpi_rule_cache_software", "ignore_ocs_import", false)) {
-      $query = "ALTER TABLE `glpi_rule_cache_software`
+    if (!$DB->fieldExists("glpi_rule_cache_software", "ignore_ocs_import", false)) {
+        $query = "ALTER TABLE `glpi_rule_cache_software`
                 ADD `ignore_ocs_import` VARCHAR( 255 ) NULL ";
-      $DB->queryOrDie($query, "0.71.3 add ignore_ocs_import field in dictionary cache");
-   }
+        $DB->queryOrDie($query, "0.71.3 add ignore_ocs_import field in dictionary cache");
+    }
 
-   // Update to longtext for fields which may be very long
-   if ($DB->fieldExists("glpi_kbitems", "answer", false)) {
+    // Update to longtext for fields which may be very long
+    if ($DB->fieldExists("glpi_kbitems", "answer", false)) {
 
-      if (isIndex("glpi_kbitems", "fulltext")) { // to avoid pb in altering column answer
-         $query = "ALTER TABLE `glpi_kbitems`
+        if (isIndex("glpi_kbitems", "fulltext")) { // to avoid pb in altering column answer
+            $query = "ALTER TABLE `glpi_kbitems`
                    DROP INDEX `fulltext`";
-         $DB->queryOrDie($query, "0.71.3 alter kbitem drop index Fulltext");
-      }
+            $DB->queryOrDie($query, "0.71.3 alter kbitem drop index Fulltext");
+        }
 
-      // field question : only to change latin1 to utf-8 if not done in update 0.68.3 to 0.71
-      // before creating index fulltext based on 2 fields (perhaps both are not in same encoding)
-      $query = "ALTER TABLE `glpi_kbitems`
+        // field question : only to change latin1 to utf-8 if not done in update 0.68.3 to 0.71
+        // before creating index fulltext based on 2 fields (perhaps both are not in same encoding)
+        $query = "ALTER TABLE `glpi_kbitems`
                 CHANGE `question` `question` TEXT,
                 CHANGE `answer` `answer` LONGTEXT NULL DEFAULT NULL ";
-      $DB->queryOrDie($query, "0.71.3 alter kbitem answer field to longtext");
+        $DB->queryOrDie($query, "0.71.3 alter kbitem answer field to longtext");
 
-      $query = "ALTER TABLE `glpi_kbitems`
+        $query = "ALTER TABLE `glpi_kbitems`
                 ADD FULLTEXT `fulltext` (`question`,`answer`)";
-      $DB->queryOrDie($query, "0.71.3 alter kbitem re-add index Fulltext");
-   }
+        $DB->queryOrDie($query, "0.71.3 alter kbitem re-add index Fulltext");
+    }
 
-   if ($DB->fieldExists("glpi_tracking", "contents", false)) {
-      $query = "ALTER TABLE `glpi_tracking`
+    if ($DB->fieldExists("glpi_tracking", "contents", false)) {
+        $query = "ALTER TABLE `glpi_tracking`
                 CHANGE `contents` `contents` LONGTEXT NULL DEFAULT NULL ";
-      $DB->queryOrDie($query, "0.71.3 alter tracking contents field to longtext");
-   }
+        $DB->queryOrDie($query, "0.71.3 alter tracking contents field to longtext");
+    }
 
 }

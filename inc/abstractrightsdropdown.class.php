@@ -32,219 +32,228 @@
 
 abstract class AbstractRightsDropdown
 {
-   /**
-    * Max limit per itemtype
-    */
-   const LIMIT = 50;
+    /**
+     * Max limit per itemtype
+     */
+    public const LIMIT = 50;
 
-   /**
-    * To be redefined by subclasses, specify enabled types
-    *
-    * @return array
-    */
-   protected static function getTypes(): array {
-      return [];
-   }
+    /**
+     * To be redefined by subclasses, specify enabled types
+     *
+     * @return array
+     */
+    protected static function getTypes(): array
+    {
+        return [];
+    }
 
-   /**
-    * Check if a given type is enabled
-    *
-    * @param string $type Class to check
-    *
-    * @return bool
-    */
-   protected static function isTypeEnabled(string $type): bool {
-      $types = array_flip(static::getTypes());
-      return isset($types[$type]);
-   }
+    /**
+     * Check if a given type is enabled
+     *
+     * @param string $type Class to check
+     *
+     * @return bool
+     */
+    protected static function isTypeEnabled(string $type): bool
+    {
+        $types = array_flip(static::getTypes());
+        return isset($types[$type]);
+    }
 
-   /**
-    * Get possible data for profiles
-    *
-    * @param string $name  Field name
-    * @param array $values Selected values
-    *
-    * @return array
-    */
-   public static function show(string $name, array $values): string {
-      global $CFG_GLPI;
+    /**
+     * Get possible data for profiles
+     *
+     * @param string $name  Field name
+     * @param array $values Selected values
+     *
+     * @return array
+     */
+    public static function show(string $name, array $values): string
+    {
+        global $CFG_GLPI;
 
-      // Build DOM id
-      $field_id = $name . "_" . mt_rand();
+        // Build DOM id
+        $field_id = $name . "_" . mt_rand();
 
-      // Build url
-      $url = $CFG_GLPI['root_doc'] . "/ajax/getRightDropdownValue.php";
+        // Build url
+        $url = $CFG_GLPI['root_doc'] . "/ajax/getRightDropdownValue.php";
 
-      // Build params
-      $params = [
-         'values' => $values,
-         'valuesnames' => self::getValueNames($values),
-      ];
+        // Build params
+        $params = [
+           'values' => $values,
+           'valuesnames' => self::getValueNames($values),
+        ];
 
-      return Html::jsAjaxDropdown($name, $field_id, $url, $params);
-   }
+        return Html::jsAjaxDropdown($name, $field_id, $url, $params);
+    }
 
-   /**
-    * Get possible data for profiles
-    *
-    * @param string $text Search string
-    *
-    * @return array
-    */
-   public static function fetchValues(string $text = ""): array {
-      $possible_rights = [];
+    /**
+     * Get possible data for profiles
+     *
+     * @param string $text Search string
+     *
+     * @return array
+     */
+    public static function fetchValues(string $text = ""): array
+    {
+        $possible_rights = [];
 
-      // Add profiles if enabled
-      if (self::isTypeEnabled(Profile::getType())) {
-         $possible_rights[Profile::getType()] = self::getProfiles($text);
-      }
+        // Add profiles if enabled
+        if (self::isTypeEnabled(Profile::getType())) {
+            $possible_rights[Profile::getType()] = self::getProfiles($text);
+        }
 
-      // Add entities if enabled
-      if (self::isTypeEnabled(Entity::getType())) {
-         $possible_rights[Entity::getType()] = self::getEntities($text);
-      }
+        // Add entities if enabled
+        if (self::isTypeEnabled(Entity::getType())) {
+            $possible_rights[Entity::getType()] = self::getEntities($text);
+        }
 
-      // Add users if enabled
-      if (self::isTypeEnabled(User::getType())) {
-         $possible_rights[User::getType()] = self::getUsers($text);
-      }
+        // Add users if enabled
+        if (self::isTypeEnabled(User::getType())) {
+            $possible_rights[User::getType()] = self::getUsers($text);
+        }
 
-      // Add groups if enabled
-      if (self::isTypeEnabled(Group::getType())) {
-         $possible_rights[Group::getType()] = self::getGroups($text);
-      }
+        // Add groups if enabled
+        if (self::isTypeEnabled(Group::getType())) {
+            $possible_rights[Group::getType()] = self::getGroups($text);
+        }
 
-      $results = [];
-      foreach ($possible_rights as $itemtype => $ids) {
-         $new_group = [];
-         foreach ($ids as $id => $label) {
-            $new_group[] = [
-               'id' => $id,
-               'text' => $label,
-               "selection_text"=> "$itemtype - $label",
+        $results = [];
+        foreach ($possible_rights as $itemtype => $ids) {
+            $new_group = [];
+            foreach ($ids as $id => $label) {
+                $new_group[] = [
+                   'id' => $id,
+                   'text' => $label,
+                   "selection_text" => "$itemtype - $label",
+                ];
+            }
+            $results[] = [
+               "text" => $itemtype::getTypeName(1),
+               "children" => $new_group,
             ];
-         }
-         $results[] = [
-            "text" => $itemtype::getTypeName(1),
-            "children" => $new_group,
-         ];
-      }
+        }
 
-      $ret = [
-         'results' => Toolbox::unclean_cross_side_scripting_deep($results),
-         'count' =>  count($results)
-      ];
+        $ret = [
+           'results' => Toolbox::unclean_cross_side_scripting_deep($results),
+           'count' =>  count($results)
+        ];
 
-      return $ret;
-   }
+        return $ret;
+    }
 
-   /**
-    * Get names for each selected values
-    *
-    * @param array $values Selected values
-    *
-    * @return array
-    */
-   protected static function getValueNames(array $values): array {
-      return array_map(function($value) {
-         $data = explode("-", $value);
-         $itemtype = getItemtypeForForeignKeyField($data[0]);
-         $items_id = $data[1];
-         $item = new $itemtype;
+    /**
+     * Get names for each selected values
+     *
+     * @param array $values Selected values
+     *
+     * @return array
+     */
+    protected static function getValueNames(array $values): array
+    {
+        return array_map(function ($value) {
+            $data = explode("-", $value);
+            $itemtype = getItemtypeForForeignKeyField($data[0]);
+            $items_id = $data[1];
+            $item = new $itemtype();
 
-         return $itemtype::getTypeName(1) . " - " . Dropdown::getDropdownName(
-            $item->getTable(),
-            $items_id
-         );
-      }, $values);
-   }
+            return $itemtype::getTypeName(1) . " - " . Dropdown::getDropdownName(
+                $item->getTable(),
+                $items_id
+            );
+        }, $values);
+    }
 
-   /**
-    * Get possible values for profiles
-    *
-    * @param string $text Search string
-    *
-    * @return array
-    */
-   protected static function getProfiles(string $text): array {
-      $profile_item = new Profile();
-      $profiles = $profile_item->find([
-         'name' => ["LIKE", "%$text%"]
-      ], [], self::LIMIT);
-      $profiles_items = [];
-      foreach ($profiles as $profile) {
-         $new_key = 'profiles_id-'.$profile['id'];
-         $profiles_items[$new_key] = $profile['name'];
-      }
+    /**
+     * Get possible values for profiles
+     *
+     * @param string $text Search string
+     *
+     * @return array
+     */
+    protected static function getProfiles(string $text): array
+    {
+        $profile_item = new Profile();
+        $profiles = $profile_item->find([
+           'name' => ["LIKE", "%$text%"]
+        ], [], self::LIMIT);
+        $profiles_items = [];
+        foreach ($profiles as $profile) {
+            $new_key = 'profiles_id-'.$profile['id'];
+            $profiles_items[$new_key] = $profile['name'];
+        }
 
-      return $profiles_items;
-   }
+        return $profiles_items;
+    }
 
-   /**
-    * Get possible values for entities
-    *
-    * @param string $text Search string
-    *
-    * @return array
-    */
-   protected static function getEntities(string $text): array {
-      $entity_item = new Entity;
-      $entities = $entity_item->find(
-         [
-            'name' => ["LIKE", "%$text%"]
+    /**
+     * Get possible values for entities
+     *
+     * @param string $text Search string
+     *
+     * @return array
+     */
+    protected static function getEntities(string $text): array
+    {
+        $entity_item = new Entity();
+        $entities = $entity_item->find(
+            [
+              'name' => ["LIKE", "%$text%"]
          ] + getEntitiesRestrictCriteria(Entity::getTable()),
-         [],
-         self::LIMIT
-      );
-      $entities_items = [];
-      foreach ($entities as $entity) {
-         $new_key = 'entities_id-'.$entity['id'];
-         $entities_items[$new_key] = $entity['completename'];
-      }
+            [],
+            self::LIMIT
+        );
+        $entities_items = [];
+        foreach ($entities as $entity) {
+            $new_key = 'entities_id-'.$entity['id'];
+            $entities_items[$new_key] = $entity['completename'];
+        }
 
-      return $entities_items;
-   }
+        return $entities_items;
+    }
 
-   /**
-    * Get possible values for users
-    *
-    * @param string $text Search string
-    *
-    * @return array
-    */
-   protected static function getUsers(string $text): array {
-      $users = User::getSqlSearchResult(false, "all", -1, 0, [], $text, 0, self::LIMIT);
-      $users_items = [];
-      foreach ($users as $user) {
-         $new_key = 'users_id-'.$user['id'];
-         $users_items[$new_key] = $user['name'];
-      }
+    /**
+     * Get possible values for users
+     *
+     * @param string $text Search string
+     *
+     * @return array
+     */
+    protected static function getUsers(string $text): array
+    {
+        $users = User::getSqlSearchResult(false, "all", -1, 0, [], $text, 0, self::LIMIT);
+        $users_items = [];
+        foreach ($users as $user) {
+            $new_key = 'users_id-'.$user['id'];
+            $users_items[$new_key] = $user['name'];
+        }
 
-      return $users_items;
-   }
+        return $users_items;
+    }
 
-   /**
-    * Get possible values for groups
-    *
-    * @param string $text Search string
-    *
-    * @return array
-    */
-   protected static function getGroups(string $text): array {
-      $group_item = new Group;
-      $groups = $group_item->find(
-         [
-            'name' => ["LIKE", "%$text%"]
+    /**
+     * Get possible values for groups
+     *
+     * @param string $text Search string
+     *
+     * @return array
+     */
+    protected static function getGroups(string $text): array
+    {
+        $group_item = new Group();
+        $groups = $group_item->find(
+            [
+              'name' => ["LIKE", "%$text%"]
          ] + getEntitiesRestrictCriteria(Group::getTable()),
-         [],
-         self::LIMIT
-      );
-      $groups_items = [];
-      foreach ($groups as $group) {
-         $new_key = 'groups_id-'.$group['id'];
-         $groups_items[$new_key] = $group['name'];
-      }
+            [],
+            self::LIMIT
+        );
+        $groups_items = [];
+        foreach ($groups as $group) {
+            $new_key = 'groups_id-'.$group['id'];
+            $groups_items[$new_key] = $group['name'];
+        }
 
-      return $groups_items;
-   }
+        return $groups_items;
+    }
 }

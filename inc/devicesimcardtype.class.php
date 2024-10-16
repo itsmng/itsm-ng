@@ -35,12 +35,13 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class DeviceSimcardType extends CommonDeviceType {
-
-   static function getTypeName($nb = 0) {
-      return _n('Simcard type', 'Simcard types', $nb);
-   }
+class DeviceSimcardType extends CommonDeviceType
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Simcard type', 'Simcard types', $nb);
+    }
 }

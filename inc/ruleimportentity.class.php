@@ -31,161 +31,170 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// OCS Rules class
-class RuleImportEntity extends Rule {
-
-   // From Rule
-   static $rightname = 'rule_import';
-   public $can_sort  = true;
-
-
-   function getTitle() {
-      return __('Rules for assigning an item to an entity');
-   }
+class RuleImportEntity extends Rule
+{
+    // From Rule
+    public static $rightname = 'rule_import';
+    public $can_sort  = true;
 
 
-   /**
-    * @see Rule::maxActionsCount()
-   **/
-   function maxActionsCount() {
-      // Unlimited
-      return 4;
-   }
+    public function getTitle()
+    {
+        return __('Rules for assigning an item to an entity');
+    }
 
-   function executeActions($output, $params, array $input = []) {
 
-      if (count($this->actions)) {
-         foreach ($this->actions as $action) {
-            switch ($action->fields["action_type"]) {
-               case "assign" :
-                  $output[$action->fields["field"]] = $action->fields["value"];
-                  break;
+    /**
+     * @see Rule::maxActionsCount()
+    **/
+    public function maxActionsCount()
+    {
+        // Unlimited
+        return 4;
+    }
 
-               case "regex_result" :
-                  //Assign entity using the regex's result
-                  if ($action->fields["field"] == "_affect_entity_by_tag") {
-                     //Get the TAG from the regex's results
-                     if (isset($this->regex_results[0])) {
-                        $res = RuleAction::getRegexResultById($action->fields["value"],
-                                                              $this->regex_results[0]);
-                     } else {
-                        $res = $action->fields["value"];
-                     }
-                     if ($res != null) {
-                        //Get the entity associated with the TAG
-                        $target_entity = Entity::getEntityIDByTag(addslashes($res));
-                        if ($target_entity != '') {
-                           $output["entities_id"] = $target_entity;
+    public function executeActions($output, $params, array $input = [])
+    {
+
+        if (count($this->actions)) {
+            foreach ($this->actions as $action) {
+                switch ($action->fields["action_type"]) {
+                    case "assign":
+                        $output[$action->fields["field"]] = $action->fields["value"];
+                        break;
+
+                    case "regex_result":
+                        //Assign entity using the regex's result
+                        if ($action->fields["field"] == "_affect_entity_by_tag") {
+                            //Get the TAG from the regex's results
+                            if (isset($this->regex_results[0])) {
+                                $res = RuleAction::getRegexResultById(
+                                    $action->fields["value"],
+                                    $this->regex_results[0]
+                                );
+                            } else {
+                                $res = $action->fields["value"];
+                            }
+                            if ($res != null) {
+                                //Get the entity associated with the TAG
+                                $target_entity = Entity::getEntityIDByTag(addslashes($res));
+                                if ($target_entity != '') {
+                                    $output["entities_id"] = $target_entity;
+                                }
+                            }
                         }
-                     }
-                  }
-                  break;
+                        break;
+                }
             }
-         }
-      }
-      return $output;
-   }
+        }
+        return $output;
+    }
 
 
-   /**
-    * @see Rule::getCriterias()
-   **/
-   function getCriterias() {
+    /**
+     * @see Rule::getCriterias()
+    **/
+    public function getCriterias()
+    {
 
-      static $criterias = [];
+        static $criterias = [];
 
-      if (count($criterias)) {
-         return $criterias;
-      }
+        if (count($criterias)) {
+            return $criterias;
+        }
 
-      $criterias['_source']['table']            = '';
-      $criterias['_source']['field']            = '_source';
-      $criterias['_source']['name']             = __('Source');
-      $criterias['_source']['allow_condition']  = [Rule::PATTERN_IS, Rule::PATTERN_IS_NOT];
+        $criterias['_source']['table']            = '';
+        $criterias['_source']['field']            = '_source';
+        $criterias['_source']['name']             = __('Source');
+        $criterias['_source']['allow_condition']  = [Rule::PATTERN_IS, Rule::PATTERN_IS_NOT];
 
-      return $criterias;
-   }
+        return $criterias;
+    }
 
 
-   /**
-    * @since 0.84
-    *
-    * @see Rule::displayAdditionalRuleCondition()
-   **/
-   function displayAdditionalRuleCondition($condition, $criteria, $name, $value, $test = false) {
-      global $PLUGIN_HOOKS;
+    /**
+     * @since 0.84
+     *
+     * @see Rule::displayAdditionalRuleCondition()
+    **/
+    public function displayAdditionalRuleCondition($condition, $criteria, $name, $value, $test = false)
+    {
+        global $PLUGIN_HOOKS;
 
-      if ($criteria['field'] == '_source') {
-         $tab = [];
-         foreach ($PLUGIN_HOOKS['import_item'] as $plug => $types) {
-            if (!Plugin::isPluginActive($plug)) {
-               continue;
+        if ($criteria['field'] == '_source') {
+            $tab = [];
+            foreach ($PLUGIN_HOOKS['import_item'] as $plug => $types) {
+                if (!Plugin::isPluginActive($plug)) {
+                    continue;
+                }
+                $tab[$plug] = Plugin::getInfo($plug, 'name');
             }
-            $tab[$plug] = Plugin::getInfo($plug, 'name');
-         }
-         renderTwigTemplate('macros/input.twig', [
-            'name' => $name,
-            'type' => 'select',
-            'values' => $tab,
-            'value' => $value,
-            'test' => $test,
-         ]);
-         return true;
-      }
-      return false;
-   }
+            renderTwigTemplate('macros/input.twig', [
+               'name' => $name,
+               'type' => 'select',
+               'values' => $tab,
+               'value' => $value,
+               'test' => $test,
+            ]);
+            return true;
+        }
+        return false;
+    }
 
 
-   /**
-    * @since 0.84
-    *
-    * @see Rule::getAdditionalCriteriaDisplayPattern()
-   **/
-   function getAdditionalCriteriaDisplayPattern($ID, $condition, $pattern) {
+    /**
+     * @since 0.84
+     *
+     * @see Rule::getAdditionalCriteriaDisplayPattern()
+    **/
+    public function getAdditionalCriteriaDisplayPattern($ID, $condition, $pattern)
+    {
 
-      $crit = $this->getCriteria($ID);
-      if (count($crit) && $crit['field'] == '_source') {
-         $name = Plugin::getInfo($pattern, 'name');
-         if (empty($name)) {
-            return false;
-         }
-         return $name;
-      }
-   }
+        $crit = $this->getCriteria($ID);
+        if (count($crit) && $crit['field'] == '_source') {
+            $name = Plugin::getInfo($pattern, 'name');
+            if (empty($name)) {
+                return false;
+            }
+            return $name;
+        }
+    }
 
 
-   /**
-    * @see Rule::getActions()
-   **/
-   function getActions() {
+    /**
+     * @see Rule::getActions()
+    **/
+    public function getActions()
+    {
 
-      $actions                             = [];
+        $actions                             = [];
 
-      $actions['entities_id']['name']      = Entity::getTypeName(1);
-      $actions['entities_id']['type']      = 'dropdown';
-      $actions['entities_id']['table']     = 'glpi_entities';
+        $actions['entities_id']['name']      = Entity::getTypeName(1);
+        $actions['entities_id']['type']      = 'dropdown';
+        $actions['entities_id']['table']     = 'glpi_entities';
 
-      $actions['locations_id']['name']     = Location::getTypeName(1);
-      $actions['locations_id']['type']     = 'dropdown';
-      $actions['locations_id']['table']    = 'glpi_locations';
+        $actions['locations_id']['name']     = Location::getTypeName(1);
+        $actions['locations_id']['type']     = 'dropdown';
+        $actions['locations_id']['table']    = 'glpi_locations';
 
-      $actions['_ignore_import']['name']   = __('To be unaware of import');
-      $actions['_ignore_import']['type']   = 'yesonly';
+        $actions['_ignore_import']['name']   = __('To be unaware of import');
+        $actions['_ignore_import']['type']   = 'yesonly';
 
-      $actions['is_recursive']['name']     = __('Child entities');
-      $actions['is_recursive']['type']     = 'yesno';
+        $actions['is_recursive']['name']     = __('Child entities');
+        $actions['is_recursive']['type']     = 'yesno';
 
-      $actions['groups_id_tech']['name']     = __('Group in charge of the hardware');
-      $actions['groups_id_tech']['type']     = 'dropdown';
-      $actions['groups_id_tech']['table']    = 'glpi_groups';
+        $actions['groups_id_tech']['name']     = __('Group in charge of the hardware');
+        $actions['groups_id_tech']['type']     = 'dropdown';
+        $actions['groups_id_tech']['table']    = 'glpi_groups';
 
-      $actions['users_id_tech']['name']     = __('Technician in charge of the hardware');
-      $actions['users_id_tech']['type']     = 'dropdown_users';
+        $actions['users_id_tech']['name']     = __('Technician in charge of the hardware');
+        $actions['users_id_tech']['type']     = 'dropdown_users';
 
-      return $actions;
-   }
+        return $actions;
+    }
 
 }

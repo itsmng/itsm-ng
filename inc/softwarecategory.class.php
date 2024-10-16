@@ -31,74 +31,80 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class SoftwareCategory
-class SoftwareCategory extends CommonTreeDropdown {
+class SoftwareCategory extends CommonTreeDropdown
+{
+    public $can_be_translated = true;
 
-   public $can_be_translated = true;
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
-
-      return [
-         __('As child of') => [
-            'name'  => $this->getForeignKeyField(),
-            'type'  => 'select',
-            'values'  => getOptionForItems('SoftwareCategory', ['NOT' => ['id' => $this->getID()]]),
-            'value' => $this->fields[$this->getForeignKeyField()],
-         ]
-      ];
-   }
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Software category', 'Software categories', $nb);
-   }
+        return [
+           __('As child of') => [
+              'name'  => $this->getForeignKeyField(),
+              'type'  => 'select',
+              'values'  => getOptionForItems('SoftwareCategory', ['NOT' => ['id' => $this->getID()]]),
+              'value' => $this->fields[$this->getForeignKeyField()],
+           ]
+        ];
+    }
 
 
-   function cleanDBonPurge() {
-      Rule::cleanForItemAction($this);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Software category', 'Software categories', $nb);
+    }
 
 
-   function cleanRelationData() {
+    public function cleanDBonPurge()
+    {
+        Rule::cleanForItemAction($this);
+    }
 
-      parent::cleanRelationData();
 
-      if ($this->isUsedAsCategoryOnSoftwareDeletion()) {
-         $newval = (isset($this->input['_replace_by']) ? $this->input['_replace_by'] : 0);
+    public function cleanRelationData()
+    {
 
-         Config::setConfigurationValues(
-            'core',
-            [
-               'softwarecategories_id_ondelete' => $newval,
+        parent::cleanRelationData();
+
+        if ($this->isUsedAsCategoryOnSoftwareDeletion()) {
+            $newval = (isset($this->input['_replace_by']) ? $this->input['_replace_by'] : 0);
+
+            Config::setConfigurationValues(
+                'core',
+                [
+                  'softwarecategories_id_ondelete' => $newval,
             ]
-         );
-      }
-   }
+            );
+        }
+    }
 
 
-   function isUsed() {
+    public function isUsed()
+    {
 
-      if (parent::isUsed()) {
-         return true;
-      }
+        if (parent::isUsed()) {
+            return true;
+        }
 
-      return $this->isUsedAsCategoryOnSoftwareDeletion();
-   }
+        return $this->isUsedAsCategoryOnSoftwareDeletion();
+    }
 
 
-   /**
-    * Check if type is used as category for softwares deleted by rules.
-    *
-    * @return boolean
-    */
-   private function isUsedAsCategoryOnSoftwareDeletion() {
+    /**
+     * Check if type is used as category for softwares deleted by rules.
+     *
+     * @return boolean
+     */
+    private function isUsedAsCategoryOnSoftwareDeletion()
+    {
 
-      $config_values = Config::getConfigurationValues('core', ['softwarecategories_id_ondelete']);
+        $config_values = Config::getConfigurationValues('core', ['softwarecategories_id_ondelete']);
 
-      return array_key_exists('softwarecategories_id_ondelete', $config_values)
-         && $config_values['softwarecategories_id_ondelete'] == $this->fields['id'];
-   }
+        return array_key_exists('softwarecategories_id_ondelete', $config_values)
+           && $config_values['softwarecategories_id_ondelete'] == $this->fields['id'];
+    }
 }

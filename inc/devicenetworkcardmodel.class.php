@@ -31,16 +31,17 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /// Class DeviceNetworkCardModel
-class DeviceNetworkCardModel extends CommonDeviceModel {
+class DeviceNetworkCardModel extends CommonDeviceModel
+{
+    public $additional_fields_for_dictionnary = ['manufacturer'];
 
-   var $additional_fields_for_dictionnary = ['manufacturer'];
 
-
-   static function getTypeName($nb = 0) {
-      return _n('Network card model', 'Network card models', $nb);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Network card model', 'Network card models', $nb);
+    }
 }

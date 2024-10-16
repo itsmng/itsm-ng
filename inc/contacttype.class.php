@@ -31,14 +31,14 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class ContactType
-class ContactType extends CommonDropdown {
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Contact type', 'Contact types', $nb);
-   }
+class ContactType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Contact type', 'Contact types', $nb);
+    }
 }

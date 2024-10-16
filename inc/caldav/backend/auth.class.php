@@ -33,7 +33,7 @@
 namespace Glpi\CalDAV\Backend;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 use Sabre\DAV\Auth\Backend\AbstractBasic;
@@ -43,12 +43,13 @@ use Sabre\DAV\Auth\Backend\AbstractBasic;
  *
  * @since 9.5.0
  */
-class Auth extends AbstractBasic {
+class Auth extends AbstractBasic
+{
+    protected $principalPrefix = Principal::PREFIX_USERS . '/';
 
-   protected $principalPrefix = Principal::PREFIX_USERS . '/';
-
-   protected function validateUserPass($username, $password) {
-      $auth = new \Auth();
-      return $auth->login($username, $password);
-   }
+    protected function validateUserPass($username, $password)
+    {
+        $auth = new \Auth();
+        return $auth->login($username, $password);
+    }
 }

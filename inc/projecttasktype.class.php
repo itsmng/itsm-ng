@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -39,11 +39,11 @@ if (!defined('GLPI_ROOT')) {
  *
  * @since 0.85
 **/
-class ProjectTaskType extends CommonDropdown {
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Project tasks type', 'Project tasks types', $nb);
-   }
+class ProjectTaskType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Project tasks type', 'Project tasks types', $nb);
+    }
 
 }

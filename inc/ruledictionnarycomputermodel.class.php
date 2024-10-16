@@ -30,50 +30,52 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryComputerModel extends RuleDictionnaryDropdown {
+class RuleDictionnaryComputerModel extends RuleDictionnaryDropdown
+{
+    /**
+     * Constructor
+    **/
+    public function __construct()
+    {
+        parent::__construct('RuleDictionnaryComputerModel');
+    }
 
 
-   /**
-    * Constructor
-   **/
-   function __construct() {
-      parent::__construct('RuleDictionnaryComputerModel');
-   }
+    /**
+     * @see Rule::getCriterias()
+    **/
+    public function getCriterias()
+    {
+
+        static $criterias = [];
+
+        if (count($criterias)) {
+            return $criterias;
+        }
+
+        $criterias['name']['field']         = 'name';
+        $criterias['name']['name']          =  _n('Model', 'Models', 1);
+        $criterias['name']['table']         = 'glpi_computermodels';
+
+        $criterias['manufacturer']['field'] = 'name';
+        $criterias['manufacturer']['name']  = Manufacturer::getTypeName(1);
+        $criterias['manufacturer']['table'] = 'glpi_manufacturers';
+
+        return $criterias;
+    }
 
 
-   /**
-    * @see Rule::getCriterias()
-   **/
-   function getCriterias() {
+    /**
+     * @see Rule::getActions()
+    **/
+    public function getActions()
+    {
 
-      static $criterias = [];
+        $actions                          = [];
+        $actions['name']['name']          = _n('Model', 'Models', 1);
+        $actions['name']['force_actions'] = ['append_regex_result', 'assign', 'regex_result'];
 
-      if (count($criterias)) {
-         return $criterias;
-      }
-
-      $criterias['name']['field']         = 'name';
-      $criterias['name']['name']          =  _n('Model', 'Models', 1);
-      $criterias['name']['table']         ='glpi_computermodels';
-
-      $criterias['manufacturer']['field'] = 'name';
-      $criterias['manufacturer']['name']  = Manufacturer::getTypeName(1);
-      $criterias['manufacturer']['table'] = 'glpi_manufacturers';
-
-      return $criterias;
-   }
-
-
-   /**
-    * @see Rule::getActions()
-   **/
-   function getActions() {
-
-      $actions                          = [];
-      $actions['name']['name']          = _n('Model', 'Models', 1);
-      $actions['name']['force_actions'] = ['append_regex_result', 'assign', 'regex_result'];
-
-      return $actions;
-   }
+        return $actions;
+    }
 
 }

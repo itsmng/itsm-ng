@@ -32,68 +32,93 @@
 
 use Glpi\Event;
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("contact_enterprise", READ);
 
 if (!isset($_GET["id"])) {
-   $_GET["id"] = -1;
+    $_GET["id"] = -1;
 }
 
 
 $ent = new Supplier();
 
 if (isset($_POST["add"])) {
-   $ent->check(-1, CREATE, $_POST);
+    $ent->check(-1, CREATE, $_POST);
 
-   if ($newID = $ent->add($_POST)) {
-      Event::log($newID, "suppliers", 4, "financial",
-                 sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $_POST["name"]));
-      if ($_SESSION['glpibackcreated']) {
-         Html::redirect($ent->getLinkURL());
-      }
-   }
-   Html::back();
+    if ($newID = $ent->add($_POST)) {
+        Event::log(
+            $newID,
+            "suppliers",
+            4,
+            "financial",
+            sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $_POST["name"])
+        );
+        if ($_SESSION['glpibackcreated']) {
+            Html::redirect($ent->getLinkURL());
+        }
+    }
+    Html::back();
 
-} else if (isset($_POST["delete"])) {
-   $ent->check($_POST["id"], DELETE);
-   $ent->delete($_POST);
-   Event::log($_POST["id"], "suppliers", 4, "financial",
-               //TRANS: %s is the user login
-               sprintf(__('%s deletes an item'), $_SESSION["glpiname"]));
-   $ent->redirectToList();
+} elseif (isset($_POST["delete"])) {
+    $ent->check($_POST["id"], DELETE);
+    $ent->delete($_POST);
+    Event::log(
+        $_POST["id"],
+        "suppliers",
+        4,
+        "financial",
+        //TRANS: %s is the user login
+        sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
+    );
+    $ent->redirectToList();
 
-} else if (isset($_POST["restore"])) {
-   $ent->check($_POST["id"], DELETE);
-   $ent->restore($_POST);
-   Event::log($_POST["id"], "suppliers", 4, "financial",
-               //TRANS: %s is the user login
-               sprintf(__('%s restores an item'), $_SESSION["glpiname"]));
+} elseif (isset($_POST["restore"])) {
+    $ent->check($_POST["id"], DELETE);
+    $ent->restore($_POST);
+    Event::log(
+        $_POST["id"],
+        "suppliers",
+        4,
+        "financial",
+        //TRANS: %s is the user login
+        sprintf(__('%s restores an item'), $_SESSION["glpiname"])
+    );
 
-   $ent->redirectToList();
+    $ent->redirectToList();
 
-} else if (isset($_POST["purge"])) {
-   $ent->check($_POST["id"], PURGE);
-   $ent->delete($_POST, 1);
-   Event::log($_POST["id"], "suppliers", 4, "financial",
-               //TRANS: %s is the user login
-               sprintf(__('%s purges an item'), $_SESSION["glpiname"]));
+} elseif (isset($_POST["purge"])) {
+    $ent->check($_POST["id"], PURGE);
+    $ent->delete($_POST, 1);
+    Event::log(
+        $_POST["id"],
+        "suppliers",
+        4,
+        "financial",
+        //TRANS: %s is the user login
+        sprintf(__('%s purges an item'), $_SESSION["glpiname"])
+    );
 
-   $ent->redirectToList();
+    $ent->redirectToList();
 
-} else if (isset($_POST["update"])) {
-   $ent->check($_POST["id"], UPDATE);
-   $ent->update($_POST);
-   Event::log($_POST["id"], "suppliers", 4, "financial",
-               //TRANS: %s is the user login
-               sprintf(__('%s updates an item'), $_SESSION["glpiname"]));
-   Html::back();
+} elseif (isset($_POST["update"])) {
+    $ent->check($_POST["id"], UPDATE);
+    $ent->update($_POST);
+    Event::log(
+        $_POST["id"],
+        "suppliers",
+        4,
+        "financial",
+        //TRANS: %s is the user login
+        sprintf(__('%s updates an item'), $_SESSION["glpiname"])
+    );
+    Html::back();
 
 } else {
-   Html::header(Supplier::getTypeName(Session::getPluralNumber()), '', "management", "supplier");
-   $ent->display([
-      'id'           => $_GET["id"],
-      'formoptions'  => "data-track-changes=true"
-   ]);
-   Html::footer();
+    Html::header(Supplier::getTypeName(Session::getPluralNumber()), '', "management", "supplier");
+    $ent->display([
+       'id'           => $_GET["id"],
+       'formoptions'  => "data-track-changes=true"
+    ]);
+    Html::footer();
 }

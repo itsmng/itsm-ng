@@ -35,28 +35,29 @@
  *
  * @return bool for success (will die for most error)
  **/
-function update100to101() {
-   /** @global Migration $migration */
-   global $DB, $migration;
+function update100to101()
+{
+    /** @global Migration $migration */
+    global $DB, $migration;
 
-   $updateresult     = true;
+    $updateresult     = true;
 
-   //TRANS: %s is the number of new version
-   $migration->displayTitle(sprintf(__('Update to %s'), '1.0.1'));
-   $migration->setVersion('1.0.1');
+    //TRANS: %s is the number of new version
+    $migration->displayTitle(sprintf(__('Update to %s'), '1.0.1'));
+    $migration->setVersion('1.0.1');
 
-   /** Replace auror values where glpi_configs.name field = palette */
-   $migration->addPostQuery(
-       $DB->buildUpdate(
-           'glpi_configs',
-           ['value' => 'itsmng'],
-           ['name' => 'palette']
-       )
-   );
-   /** /Replace auror values where glpi_configs.name field = palette */
+    /** Replace auror values where glpi_configs.name field = palette */
+    $migration->addPostQuery(
+        $DB->buildUpdate(
+            'glpi_configs',
+            ['value' => 'itsmng'],
+            ['name' => 'palette']
+        )
+    );
+    /** /Replace auror values where glpi_configs.name field = palette */
 
-   // ************ Keep it at the end **************
-   $migration->executeMigration();
+    // ************ Keep it at the end **************
+    $migration->executeMigration();
 
-   return $updateresult;
+    return $updateresult;
 }

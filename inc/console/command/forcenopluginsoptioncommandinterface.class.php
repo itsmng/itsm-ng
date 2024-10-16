@@ -33,15 +33,15 @@
 namespace Glpi\Console\Command;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-interface ForceNoPluginsOptionCommandInterface {
-
-   /**
-    * Defines whether or not command prevents plugins to be loaded.
-    *
-    * @return boolean
-    */
-   public function getNoPluginsOptionValue();
+interface ForceNoPluginsOptionCommandInterface
+{
+    /**
+     * Defines whether or not command prevents plugins to be loaded.
+     *
+     * @return boolean
+     */
+    public function getNoPluginsOptionValue();
 }

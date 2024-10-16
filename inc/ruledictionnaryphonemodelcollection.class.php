@@ -30,15 +30,17 @@
  * ---------------------------------------------------------------------
  */
 
-class RuleDictionnaryPhoneModelCollection extends RuleDictionnaryDropdownCollection {
-   public $item_table  = "glpi_phonemodels";
-   public $menu_option = "model.phone";
+class RuleDictionnaryPhoneModelCollection extends RuleDictionnaryDropdownCollection
+{
+    public $item_table  = "glpi_phonemodels";
+    public $menu_option = "model.phone";
 
-   /**
-    * @see RuleCollection::getTitle()
-   **/
-   function getTitle() {
-      return __('Dictionnary of phone models');
-   }
+    /**
+     * @see RuleCollection::getTitle()
+    **/
+    public function getTitle()
+    {
+        return __('Dictionnary of phone models');
+    }
 
 }

@@ -31,14 +31,15 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class MonitorModel
-class MonitorModel extends CommonDCModelDropdown {
-
-   static function getTypeName($nb = 0) {
-      return _n('Monitor model', 'Monitor models', $nb);
-   }
+class MonitorModel extends CommonDCModelDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Monitor model', 'Monitor models', $nb);
+    }
 
 }

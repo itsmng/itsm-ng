@@ -34,8 +34,8 @@
  * @since 0.85
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 $validation = new ChangeValidation();
 
-include (GLPI_ROOT . "/front/commonitilvalidation.form.php");
+include(GLPI_ROOT . "/front/commonitilvalidation.form.php");

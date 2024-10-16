@@ -31,84 +31,84 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-interface NotificationEventInterface {
-
-   /**
-    * Raise a notification event
-    *
-    * @param string               $event              Event
-    * @param CommonGLPI           $item               Item
-    * @param array                $options            Options
-    * @param string               $label              Label
-    * @param array                $data               Notification data
-    * @param NotificationTarget   $notificationtarget Target
-    * @param NotificationTemplate $template           Template
-    * @param boolean              $notify_me          Whether to notify current user
-    *
-    * @return void
-    */
-   static public function raise(
-      $event,
-      CommonGLPI $item,
-      array $options,
-      $label,
-      array $data,
-      NotificationTarget $notificationtarget,
-      NotificationTemplate $template,
-      $notify_me,
-      $emitter = null
-   );
-
-
-   /**
-    * Get target field name
-    *
-    * @return string
-    */
-   static public function getTargetFieldName();
-
-   /**
-    * Get (and populate if needed) target field for notification
-    *
-    * @param array $data Input event data
-    *
-    * @return string
-    */
-   static public function getTargetField(&$data);
-
-   /**
-    * Whether notifications can be handled by a crontab
-    *
-    * @return boolean
-    */
-   static public function canCron();
-
-   /**
-    * Get admin data
-    *
-    * @return array
-    */
-   static public function getAdminData();
-
-   /**
-    * Get entity admin data
-    *
-    * @param integer $entity Entity ID
-    *
-    * @return array
-    */
-   static public function getEntityAdminsData($entity);
+interface NotificationEventInterface
+{
+    /**
+     * Raise a notification event
+     *
+     * @param string               $event              Event
+     * @param CommonGLPI           $item               Item
+     * @param array                $options            Options
+     * @param string               $label              Label
+     * @param array                $data               Notification data
+     * @param NotificationTarget   $notificationtarget Target
+     * @param NotificationTemplate $template           Template
+     * @param boolean              $notify_me          Whether to notify current user
+     *
+     * @return void
+     */
+    public static function raise(
+        $event,
+        CommonGLPI $item,
+        array $options,
+        $label,
+        array $data,
+        NotificationTarget $notificationtarget,
+        NotificationTemplate $template,
+        $notify_me,
+        $emitter = null
+    );
 
 
-   /**
-    * Send notification
-    *
-    * @param array $data Data to send
-    *
-    * @return false|integer False if something went wrong, number of send notifications otherwise
-    */
-   static public function send(array $data);
+    /**
+     * Get target field name
+     *
+     * @return string
+     */
+    public static function getTargetFieldName();
+
+    /**
+     * Get (and populate if needed) target field for notification
+     *
+     * @param array $data Input event data
+     *
+     * @return string
+     */
+    public static function getTargetField(&$data);
+
+    /**
+     * Whether notifications can be handled by a crontab
+     *
+     * @return boolean
+     */
+    public static function canCron();
+
+    /**
+     * Get admin data
+     *
+     * @return array
+     */
+    public static function getAdminData();
+
+    /**
+     * Get entity admin data
+     *
+     * @param integer $entity Entity ID
+     *
+     * @return array
+     */
+    public static function getEntityAdminsData($entity);
+
+
+    /**
+     * Send notification
+     *
+     * @param array $data Data to send
+     *
+     * @return false|integer False if something went wrong, number of send notifications otherwise
+     */
+    public static function send(array $data);
 }

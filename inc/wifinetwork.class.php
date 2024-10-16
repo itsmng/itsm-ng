@@ -31,109 +31,120 @@
 */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class WifiNetwork
 /// since version 0.84
-class WifiNetwork extends CommonDropdown {
+class WifiNetwork extends CommonDropdown
+{
+    public $dohistory          = true;
 
-   public $dohistory          = true;
+    public static $rightname          = 'internet';
 
-   static $rightname          = 'internet';
-
-   public $can_be_translated  = false;
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Wifi network', 'Wifi networks', $nb);
-   }
-
-   static function getWifiCardVersion() {
-      return [
-         ''          => '',
-         'a'         => 'a',
-         'a/b'       => 'a/b',
-         'a/b/g'     => 'a/b/g',
-         'a/b/g/n'   => 'a/b/g/n',
-         'a/b/g/n/y' => 'a/b/g/n/y',
-         'ac'        => 'ac',
-         'ax'        => 'ax',
-      ];
-   }
+    public $can_be_translated  = false;
 
 
-   static function getWifiCardModes() {
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Wifi network', 'Wifi networks', $nb);
+    }
 
-      return [''          => Dropdown::EMPTY_VALUE,
-                   'ad-hoc'    => __('Ad-hoc'),
-                   'managed'   => __('Managed'),
-                   'master'    => __('Master'),
-                   'repeater'  => __('Repeater'),
-                   'secondary' => __('Secondary'),
-                   'monitor'   => Monitor::getTypeName(1),
-                   'auto'      => __('Automatic')];
-   }
-
-
-   static function getWifiNetworkModes() {
-
-      return [''               => Dropdown::EMPTY_VALUE,
-                   'infrastructure' => __('Infrastructure (with access point)'),
-                   'ad-hoc'         => __('Ad-hoc (without access point)')];
-   }
-
-
-   function defineTabs($options = []) {
-
-      $ong  = [];
-      $this->addDefaultFormTab($ong);
-      $this->addStandardTab('NetworkPort', $ong, $options);
-
-      return $ong;
-   }
+    public static function getWifiCardVersion()
+    {
+        return [
+           ''          => '',
+           'a'         => 'a',
+           'a/b'       => 'a/b',
+           'a/b/g'     => 'a/b/g',
+           'a/b/g/n'   => 'a/b/g/n',
+           'a/b/g/n/y' => 'a/b/g/n/y',
+           'ac'        => 'ac',
+           'ax'        => 'ax',
+        ];
+    }
 
 
-   function getAdditionalFields() {
+    public static function getWifiCardModes()
+    {
 
-      return [
-         __('ESSID') => [
-            'name'  => 'essid',
-            'type'  => 'text',
-            'value' => $this->fields['essid'],
-         ],
-         __('Wifi network type') => [
-            'name'  => 'mode',
-            'type'  => 'select',
-            'values' => self::getWifiNetworkModes(),
-            'value' => $this->fields['mode'],
-         ]
-      ];
-   }
+        return [''          => Dropdown::EMPTY_VALUE,
+                     'ad-hoc'    => __('Ad-hoc'),
+                     'managed'   => __('Managed'),
+                     'master'    => __('Master'),
+                     'repeater'  => __('Repeater'),
+                     'secondary' => __('Secondary'),
+                     'monitor'   => Monitor::getTypeName(1),
+                     'auto'      => __('Automatic')];
+    }
 
 
-   function displaySpecificTypeField($ID, $field = []) {
+    public static function getWifiNetworkModes()
+    {
 
-      if ($field['type'] == 'wifi_mode') {
-         Dropdown::showFromArray($field['name'], self::getWifiNetworkModes(),
-                                 ['value' => $this->fields[$field['name']]]);
-
-      }
-   }
+        return [''               => Dropdown::EMPTY_VALUE,
+                     'infrastructure' => __('Infrastructure (with access point)'),
+                     'ad-hoc'         => __('Ad-hoc (without access point)')];
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function defineTabs($options = [])
+    {
 
-      $tab[] = [
-         'id'                 => '10',
-         'table'              => $this->getTable(),
-         'field'              => 'essid',
-         'name'               => __('ESSID'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
+        $ong  = [];
+        $this->addDefaultFormTab($ong);
+        $this->addStandardTab('NetworkPort', $ong, $options);
 
-      return $tab;
-   }
+        return $ong;
+    }
+
+
+    public function getAdditionalFields()
+    {
+
+        return [
+           __('ESSID') => [
+              'name'  => 'essid',
+              'type'  => 'text',
+              'value' => $this->fields['essid'],
+           ],
+           __('Wifi network type') => [
+              'name'  => 'mode',
+              'type'  => 'select',
+              'values' => self::getWifiNetworkModes(),
+              'value' => $this->fields['mode'],
+           ]
+        ];
+    }
+
+
+    public function displaySpecificTypeField($ID, $field = [])
+    {
+
+        if ($field['type'] == 'wifi_mode') {
+            Dropdown::showFromArray(
+                $field['name'],
+                self::getWifiNetworkModes(),
+                ['value' => $this->fields[$field['name']]]
+            );
+
+        }
+    }
+
+
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
+
+        $tab[] = [
+           'id'                 => '10',
+           'table'              => $this->getTable(),
+           'field'              => 'essid',
+           'name'               => __('ESSID'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
+
+        return $tab;
+    }
 }

@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -41,97 +41,118 @@ if (!defined('GLPI_ROOT')) {
  */
 abstract class CommonItilObject_Item extends CommonDBRelation
 {
-   static function getSpecificValueToDisplay($field, $values, array $options = []) {
+    public static function getSpecificValueToDisplay($field, $values, array $options = [])
+    {
 
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      switch ($field) {
-         case 'items_id':
-            if (strpos($values[$field], "_") !== false) {
-               $item_itemtype      = explode("_", $values[$field]);
-               $values['itemtype'] = $item_itemtype[0];
-               $values[$field]     = $item_itemtype[1];
-            }
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
+        switch ($field) {
+            case 'items_id':
+                if (strpos($values[$field], "_") !== false) {
+                    $item_itemtype      = explode("_", $values[$field]);
+                    $values['itemtype'] = $item_itemtype[0];
+                    $values[$field]     = $item_itemtype[1];
+                }
 
-            if (isset($values['itemtype'])) {
-               if (isset($options['comments']) && $options['comments']) {
-                  $tmp = Dropdown::getDropdownName(getTableForItemType($values['itemtype']),
-                                                   $values[$field], 1);
-                  return sprintf(__('%1$s %2$s'), $tmp['name'],
-                                 Html::showToolTip($tmp['comment'], ['display' => false]));
+                if (isset($values['itemtype'])) {
+                    if (isset($options['comments']) && $options['comments']) {
+                        $tmp = Dropdown::getDropdownName(
+                            getTableForItemType($values['itemtype']),
+                            $values[$field],
+                            1
+                        );
+                        return sprintf(
+                            __('%1$s %2$s'),
+                            $tmp['name'],
+                            Html::showToolTip($tmp['comment'], ['display' => false])
+                        );
 
-               }
-               return Dropdown::getDropdownName(getTableForItemType($values['itemtype']),
-                                                $values[$field]);
-            }
-            break;
-      }
-      return parent::getSpecificValueToDisplay($field, $values, $options);
-   }
+                    }
+                    return Dropdown::getDropdownName(
+                        getTableForItemType($values['itemtype']),
+                        $values[$field]
+                    );
+                }
+                break;
+        }
+        return parent::getSpecificValueToDisplay($field, $values, $options);
+    }
 
-   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      $options['display'] = false;
-      switch ($field) {
-         case 'items_id' :
-            if (isset($values['itemtype']) && !empty($values['itemtype'])) {
-               $options['name']  = $name;
-               $options['value'] = $values[$field];
-               return Dropdown::show($values['itemtype'], $options);
-            } else {
-               static::dropdownAllDevices($name, 0, 0);
-               return ' ';
-            }
-            break;
-      }
-      return parent::getSpecificValueToSelect($field, $name, $values, $options);
-   }
+    public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
+    {
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
+        $options['display'] = false;
+        switch ($field) {
+            case 'items_id':
+                if (isset($values['itemtype']) && !empty($values['itemtype'])) {
+                    $options['name']  = $name;
+                    $options['value'] = $values[$field];
+                    return Dropdown::show($values['itemtype'], $options);
+                } else {
+                    static::dropdownAllDevices($name, 0, 0);
+                    return ' ';
+                }
+                break;
+        }
+        return parent::getSpecificValueToSelect($field, $name, $values, $options);
+    }
 
-   static function dropdownAllDevices($myname, $itemtype, $items_id = 0, $admin = 0, $users_id = 0,
-                                      $entity_restrict = -1, $options = []) {
-      global $CFG_GLPI;
+    public static function dropdownAllDevices(
+        $myname,
+        $itemtype,
+        $items_id = 0,
+        $admin = 0,
+        $users_id = 0,
+        $entity_restrict = -1,
+        $options = []
+    ) {
+        global $CFG_GLPI;
 
-      $params = [static::$items_id_1 => 0,
-                      'used'       => [],
-                      'multiple'   => 0,
-                      'rand'       => mt_rand()];
+        $params = [static::$items_id_1 => 0,
+                        'used'       => [],
+                        'multiple'   => 0,
+                        'rand'       => mt_rand()];
 
-      foreach ($options as $key => $val) {
-         $params[$key] = $val;
-      }
+        foreach ($options as $key => $val) {
+            $params[$key] = $val;
+        }
 
-      $rand = $params['rand'];
+        $rand = $params['rand'];
 
-      if ($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] == 0) {
-         echo "<input type='hidden' name='$myname' value=''>";
-         echo "<input type='hidden' name='items_id' value='0'>";
+        if ($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] == 0) {
+            echo "<input type='hidden' name='$myname' value=''>";
+            echo "<input type='hidden' name='items_id' value='0'>";
 
-      } else {
-         echo "<div id='tracking_all_devices$rand'>";
-         if ($_SESSION["glpiactiveprofile"]["helpdesk_hardware"]&pow(2,
-                                                                     Ticket::HELPDESK_ALL_HARDWARE)) {
-            // Display a message if view my hardware
-            if ($users_id
-                &&($_SESSION["glpiactiveprofile"]["helpdesk_hardware"]&pow(2,
-                                                                           Ticket::HELPDESK_MY_HARDWARE))) {
-               echo __('Or complete search')."&nbsp;";
-            }
+        } else {
+            echo "<div id='tracking_all_devices$rand'>";
+            if ($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] & pow(
+                2,
+                Ticket::HELPDESK_ALL_HARDWARE
+            )) {
+                // Display a message if view my hardware
+                if ($users_id
+                    && ($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] & pow(
+                        2,
+                        Ticket::HELPDESK_MY_HARDWARE
+                    ))) {
+                    echo __('Or complete search')."&nbsp;";
+                }
 
-            $types = static::$itemtype_1::getAllTypesForHelpdesk();
-            $used = json_encode($params['used']);
-            $inputs = [
-               [
-                  'type' => 'select',
-                  'id' => "dropdown_itemtype$rand",
-                  'name' => 'itemtype',
-                  'values' => [($params[static::$items_id_1] > 0) ? Dropdown::EMPTY_VALUE : __('General')] + $types,
-                  'col_lg' => 12,
-                  'col_md' => 12,
-                  'hooks' => [
-                     'change' => <<<JS
+                $types = static::$itemtype_1::getAllTypesForHelpdesk();
+                $used = json_encode($params['used']);
+                $inputs = [
+                   [
+                      'type' => 'select',
+                      'id' => "dropdown_itemtype$rand",
+                      'name' => 'itemtype',
+                      'values' => [($params[static::$items_id_1] > 0) ? Dropdown::EMPTY_VALUE : __('General')] + $types,
+                      'col_lg' => 12,
+                      'col_md' => 12,
+                      'hooks' => [
+                         'change' => <<<JS
                      const val = this.value;
                      $.ajax({
                         url: "{$CFG_GLPI['root_doc']}/ajax/dropdownTrackingDeviceType.php",
@@ -167,23 +188,23 @@ abstract class CommonItilObject_Item extends CommonDBRelation
                         }
                      });
                      JS,
-                  ]
-               ],
-               [
-                  'type' => 'select',
-                  'id' => "dropdown_add_items_id$rand",
-                  'name' => 'items_id',
-                  'col_lg' => 12,
-                  'col_md' => 12,
-               ]
-            ];
-            foreach ($inputs as $input) {
-               renderTwigTemplate('macros/wrappedInput.twig', ['title' => '', 'input' => $input]);
+                      ]
+                   ],
+                   [
+                      'type' => 'select',
+                      'id' => "dropdown_add_items_id$rand",
+                      'name' => 'items_id',
+                      'col_lg' => 12,
+                      'col_md' => 12,
+                   ]
+                ];
+                foreach ($inputs as $input) {
+                    renderTwigTemplate('macros/wrappedInput.twig', ['title' => '', 'input' => $input]);
+                }
+                echo "</span>\n";
             }
-            echo "</span>\n";
-         }
-         echo "</div>";
-      }
-      return $rand;
-   }
+            echo "</div>";
+        }
+        return $rand;
+    }
 }

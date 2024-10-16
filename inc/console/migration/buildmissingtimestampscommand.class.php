@@ -33,70 +33,71 @@
 namespace Glpi\Console\Migration;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 use CommonDBTM;
 use Glpi\Console\AbstractCommand;
 use Log;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class BuildMissingTimestampsCommand extends AbstractCommand {
+class BuildMissingTimestampsCommand extends AbstractCommand
+{
+    protected function configure()
+    {
+        parent::configure();
 
-   protected function configure() {
-      parent::configure();
+        $this->setName('itsmng:migration:build_missing_timestamps');
+        $this->setDescription(__('Set missing `date_creation` and `date_mod` values using log entries.'));
+        $this->setHidden(true); // Hide this command as it is when migrating from really old GLPI version
+    }
 
-      $this->setName('itsmng:migration:build_missing_timestamps');
-      $this->setDescription(__('Set missing `date_creation` and `date_mod` values using log entries.'));
-      $this->setHidden(true); // Hide this command as it is when migrating from really old GLPI version
-   }
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
-   protected function execute(InputInterface $input, OutputInterface $output) {
-
-      $tables_iterator = $this->db->request(
-         [
-            'SELECT' => [
-               'table_name AS TABLE_NAME',
-               'column_name AS COLUMN_NAME',
-            ],
-            'FROM'   => 'information_schema.columns',
-            'WHERE'  => [
-               'table_schema' => $this->db->dbdefault,
-               'table_name'   => ['LIKE', 'glpi\_%'],
-               'column_name'  => ['date_creation', 'date_mod'],
-            ],
-            'ORDER'  => ['table_name', 'column_name'],
+        $tables_iterator = $this->db->request(
+            [
+              'SELECT' => [
+                 'table_name AS TABLE_NAME',
+                 'column_name AS COLUMN_NAME',
+              ],
+              'FROM'   => 'information_schema.columns',
+              'WHERE'  => [
+                 'table_schema' => $this->db->dbdefault,
+                 'table_name'   => ['LIKE', 'glpi\_%'],
+                 'column_name'  => ['date_creation', 'date_mod'],
+              ],
+              'ORDER'  => ['table_name', 'column_name'],
          ]
-      );
+        );
 
-      $log_table = Log::getTable();
+        $log_table = Log::getTable();
 
-      foreach ($tables_iterator as $table_info) {
-         $table    = $table_info['TABLE_NAME'];
-         $itemtype = getItemTypeForTable($table);
-         $column   = $table_info['COLUMN_NAME'];
+        foreach ($tables_iterator as $table_info) {
+            $table    = $table_info['TABLE_NAME'];
+            $itemtype = getItemTypeForTable($table);
+            $column   = $table_info['COLUMN_NAME'];
 
-         if (!is_a($itemtype, CommonDBTM::class, true)) {
-            continue; // getItemTypeForTable() may not return a class name ("UNKNOWN" for example)
-         }
-         /* @var $item CommonDBTM */
-         $item = new $itemtype();
+            if (!is_a($itemtype, CommonDBTM::class, true)) {
+                continue; // getItemTypeForTable() may not return a class name ("UNKNOWN" for example)
+            }
+            /* @var $item CommonDBTM */
+            $item = new $itemtype();
 
-         if (!$item->dohistory) {
-            continue; // Skip items that does not have an history
-         }
+            if (!$item->dohistory) {
+                continue; // Skip items that does not have an history
+            }
 
-         $output->writeln(
-            '<comment>' . sprintf(__('Filling `%s`.`%s`...'), $table, $column) . '</comment>',
-            OutputInterface::VERBOSITY_VERBOSE
-         );
+            $output->writeln(
+                '<comment>' . sprintf(__('Filling `%s`.`%s`...'), $table, $column) . '</comment>',
+                OutputInterface::VERBOSITY_VERBOSE
+            );
 
-         $target_date = $column === 'date_creation' ? 'MIN(`date_mod`)' : 'MAX(`date_mod`)';
+            $target_date = $column === 'date_creation' ? 'MIN(`date_mod`)' : 'MAX(`date_mod`)';
 
-         $result = $this->db->query(
-            "
+            $result = $this->db->query(
+                "
             UPDATE `$table`
             LEFT JOIN (
                SELECT $target_date AS `date_mod`, `itemtype`, `items_id`
@@ -106,24 +107,24 @@ class BuildMissingTimestampsCommand extends AbstractCommand {
             ON `logs`.`itemtype` = '$itemtype' AND `logs`.`items_id` = `$table`.`id`
             SET  `$table`.`$column` = `logs`.`date_mod` WHERE `$table`.`$column` IS NULL
             "
-         );
-         if (false === $result) {
-            $message = sprintf(
-               __('Update of `%s`.`%s` failed with message "(%s) %s".'),
-               $table,
-               $column,
-               $this->db->errno(),
-               $this->db->error()
             );
-            $output->writeln(
-               '<error>' . $message . '</error>',
-               OutputInterface::VERBOSITY_QUIET
-            );
-         }
-      }
+            if (false === $result) {
+                $message = sprintf(
+                    __('Update of `%s`.`%s` failed with message "(%s) %s".'),
+                    $table,
+                    $column,
+                    $this->db->errno(),
+                    $this->db->error()
+                );
+                $output->writeln(
+                    '<error>' . $message . '</error>',
+                    OutputInterface::VERBOSITY_QUIET
+                );
+            }
+        }
 
-      $output->writeln('<info>' . __('Migration done.') . '</info>');
+        $output->writeln('<info>' . __('Migration done.') . '</info>');
 
-      return 0; // Success
-   }
+        return 0; // Success
+    }
 }

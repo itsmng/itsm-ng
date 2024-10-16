@@ -33,7 +33,7 @@
 namespace Glpi\CalDAV\Node;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 use Glpi\CalDAV\Backend\Calendar;
@@ -44,25 +44,26 @@ use Glpi\CalDAV\Backend\Principal;
  *
  * @since 9.5.0
  */
-class CalendarRoot extends \Sabre\CalDAV\CalendarRoot {
+class CalendarRoot extends \Sabre\CalDAV\CalendarRoot
+{
+    public function getName()
+    {
 
-   public function getName() {
+        $calendarPath = '';
+        switch ($this->principalPrefix) {
+            case Principal::PREFIX_GROUPS:
+                $calendarPath = Calendar::PREFIX_GROUPS;
+                break;
+            case Principal::PREFIX_USERS:
+                $calendarPath = Calendar::PREFIX_USERS;
+                break;
+        }
 
-      $calendarPath = '';
-      switch ($this->principalPrefix) {
-         case Principal::PREFIX_GROUPS:
-            $calendarPath = Calendar::PREFIX_GROUPS;
-            break;
-         case Principal::PREFIX_USERS:
-            $calendarPath = Calendar::PREFIX_USERS;
-            break;
-      }
-
-      // Return calendar path relative to calendar root path
-      return preg_replace(
-         '/^' . preg_quote(Calendar::CALENDAR_ROOT . '/', '/') . '/',
-         '',
-         $calendarPath
-      );
-   }
+        // Return calendar path relative to calendar root path
+        return preg_replace(
+            '/^' . preg_quote(Calendar::CALENDAR_ROOT . '/', '/') . '/',
+            '',
+            $calendarPath
+        );
+    }
 }

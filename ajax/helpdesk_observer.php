@@ -31,7 +31,7 @@
 */
 
 $AJAX_INCLUDE = 1;
-include ("../inc/includes.php");
+include("../inc/includes.php");
 
 // Send UTF8 Headers
 header("Content-Type: text/html; charset=UTF-8");

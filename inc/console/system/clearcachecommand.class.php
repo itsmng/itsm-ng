@@ -33,32 +33,34 @@
 namespace Glpi\Console\System;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ClearCacheCommand extends Command {
+class ClearCacheCommand extends Command
+{
+    protected $requires_db_up_to_date = false;
 
-   protected $requires_db_up_to_date = false;
+    protected function configure()
+    {
+        parent::configure();
 
-   protected function configure() {
-      parent::configure();
+        $this->setName('itsmng:system:clear_cache');
+        $this->setAliases(['system:clear_cache']);
+        $this->setDescription('Clear ITSM-NG cache.');
+    }
 
-      $this->setName('itsmng:system:clear_cache');
-      $this->setAliases(['system:clear_cache']);
-      $this->setDescription('Clear ITSM-NG cache.');
-   }
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
-   protected function execute(InputInterface $input, OutputInterface $output) {
+        global $GLPI_CACHE;
+        $GLPI_CACHE->clear();
 
-      global $GLPI_CACHE;
-      $GLPI_CACHE->clear();
+        $output->writeln('<info>'. __('Cache reset successful') . '</info>');
 
-      $output->writeln('<info>'. __('Cache reset successful') . '</info>');
-
-      return 0; // Success
-   }
+        return 0; // Success
+    }
 }

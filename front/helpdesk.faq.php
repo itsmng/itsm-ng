@@ -30,11 +30,11 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 // Redirect management
 if (isset($_GET["redirect"])) {
-   Toolbox::manageRedirect($_GET["redirect"]);
+    Toolbox::manageRedirect($_GET["redirect"]);
 }
 
 Session::checkFaqAccess();
@@ -47,20 +47,20 @@ Html::header(__('FAQ'), [
 ]);
 
 if (isset($_GET["id"])) {
-   $kb = new KnowbaseItem();
-   if ($kb->getFromDB($_GET["id"])) {
-      $kb->showFull();
-   }
+    $kb = new KnowbaseItem();
+    if ($kb->getFromDB($_GET["id"])) {
+        $kb->showFull();
+    }
 
 } else {
-   // Manage forcetab : non standard system (file name <> class name)
-   if (isset($_GET['forcetab'])) {
-      Session::setActiveTab('Knowbase', $_GET['forcetab']);
-      unset($_GET['forcetab']);
-   }
+    // Manage forcetab : non standard system (file name <> class name)
+    if (isset($_GET['forcetab'])) {
+        Session::setActiveTab('Knowbase', $_GET['forcetab']);
+        unset($_GET['forcetab']);
+    }
 
-   $kb = new Knowbase();
-   $kb->display($_GET);
+    $kb = new Knowbase();
+    $kb->display($_GET);
 }
 
 Html::footer();

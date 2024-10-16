@@ -35,28 +35,29 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class SlaLevelCriteria
-class SlaLevelCriteria extends RuleCriteria {
+class SlaLevelCriteria extends RuleCriteria
+{
+    public static $itemtype  = 'SlaLevel';
+    public static $items_id  = 'slalevels_id';
+    public $dohistory        = true;
 
 
-   static public $itemtype  = 'SlaLevel';
-   static public $items_id  = 'slalevels_id';
-   public $dohistory        = true;
+    /**
+    * Constructor
+    **/
+    public function __construct()
+    {
+        // Override in order not to use glpi_rules table.
+    }
 
-
-   /**
-   * Constructor
-   **/
-   function __construct() {
-      // Override in order not to use glpi_rules table.
-   }
-
-   function rawSearchOptions() {
-      // RuleCriteria search options requires value of rules_id field which does not exists here
-      return [];
-   }
+    public function rawSearchOptions()
+    {
+        // RuleCriteria search options requires value of rules_id field which does not exists here
+        return [];
+    }
 
 }

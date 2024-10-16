@@ -31,34 +31,36 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Import rules collection class
-class RuleImportEntityCollection extends RuleCollection {
-
-   // From RuleCollection
-   public $stop_on_first_match = true;
-   static $rightname           = 'rule_import';
-   public $menu_option         = 'importentity';
-
-
-   /**
-    * @see RuleCollection::canList()
-   **/
-   function canList() {
-      if (Plugin::haveImport()) {
-         return static::canView();
-      }
-      return false;
-   }
+class RuleImportEntityCollection extends RuleCollection
+{
+    // From RuleCollection
+    public $stop_on_first_match = true;
+    public static $rightname           = 'rule_import';
+    public $menu_option         = 'importentity';
 
 
-   /**
-    * @see RuleCollection::getTitle()
-   **/
-   function getTitle() {
-      return __('Rules for assigning an item to an entity');
-   }
+    /**
+     * @see RuleCollection::canList()
+    **/
+    public function canList()
+    {
+        if (Plugin::haveImport()) {
+            return static::canView();
+        }
+        return false;
+    }
+
+
+    /**
+     * @see RuleCollection::getTitle()
+    **/
+    public function getTitle()
+    {
+        return __('Rules for assigning an item to an entity');
+    }
 
 }

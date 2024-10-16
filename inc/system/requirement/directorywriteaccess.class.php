@@ -33,100 +33,102 @@
 namespace Glpi\System\Requirement;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * @since 9.5.0
  */
-class DirectoryWriteAccess extends AbstractRequirement {
+class DirectoryWriteAccess extends AbstractRequirement
+{
+    /**
+     * Directory path.
+     *
+     * @var string
+     */
+    private $path;
 
-   /**
-    * Directory path.
-    *
-    * @var string
-    */
-   private $path;
+    /**
+     * @param string $path    Directory path.
+     * @param bool $optional  Indicated if write access is optional.
+     */
+    public function __construct(string $path, bool $optional = false)
+    {
+        $this->path = $path;
+        $this->optional = $optional;
 
-   /**
-    * @param string $path    Directory path.
-    * @param bool $optional  Indicated if write access is optional.
-    */
-   public function __construct(string $path, bool $optional = false) {
-      $this->path = $path;
-      $this->optional = $optional;
+        switch (realpath($this->path)) {
+            case realpath(GLPI_CACHE_DIR):
+                $this->title = __('Checking write permissions for cache files');
+                break;
+            case realpath(GLPI_CONFIG_DIR):
+                $this->title = __('Checking write permissions for setting files');
+                break;
+            case realpath(GLPI_CRON_DIR):
+                $this->title = __('Checking write permissions for automatic actions files');
+                break;
+            case realpath(GLPI_DOC_DIR):
+                $this->title = __('Checking write permissions for document files');
+                break;
+            case realpath(GLPI_DUMP_DIR):
+                $this->title = __('Checking write permissions for dump files');
+                break;
+            case realpath(GLPI_GRAPH_DIR):
+                $this->title = __('Checking write permissions for graphic files');
+                break;
+            case realpath(GLPI_LOCK_DIR):
+                $this->title = __('Checking write permissions for lock files');
+                break;
+            case realpath(GLPI_PLUGIN_DOC_DIR):
+                $this->title = __('Checking write permissions for plugins document files');
+                break;
+            case realpath(GLPI_PICTURE_DIR):
+                $this->title = __('Checking write permissions for pictures files');
+                break;
+            case realpath(GLPI_RSS_DIR):
+                $this->title = __('Checking write permissions for rss files');
+                break;
+            case realpath(GLPI_SESSION_DIR):
+                $this->title = __('Checking write permissions for session files');
+                break;
+            case realpath(GLPI_TMP_DIR):
+                $this->title = __('Checking write permissions for temporary files');
+                break;
+            case realpath(GLPI_UPLOAD_DIR):
+                $this->title = __('Checking write permissions for upload files');
+                break;
+            default:
+                $this->title = sprintf(__('Checking write permissions for directory %s'), $this->path);
+                break;
+        }
+    }
 
-      switch (realpath($this->path)) {
-         case realpath(GLPI_CACHE_DIR):
-            $this->title = __('Checking write permissions for cache files');
-            break;
-         case realpath(GLPI_CONFIG_DIR):
-            $this->title = __('Checking write permissions for setting files');
-            break;
-         case realpath(GLPI_CRON_DIR):
-            $this->title = __('Checking write permissions for automatic actions files');
-            break;
-         case realpath(GLPI_DOC_DIR):
-            $this->title = __('Checking write permissions for document files');
-            break;
-         case realpath(GLPI_DUMP_DIR):
-            $this->title = __('Checking write permissions for dump files');
-            break;
-         case realpath(GLPI_GRAPH_DIR):
-            $this->title = __('Checking write permissions for graphic files');
-            break;
-         case realpath(GLPI_LOCK_DIR):
-            $this->title = __('Checking write permissions for lock files');
-            break;
-         case realpath(GLPI_PLUGIN_DOC_DIR):
-            $this->title = __('Checking write permissions for plugins document files');
-            break;
-         case realpath(GLPI_PICTURE_DIR):
-            $this->title = __('Checking write permissions for pictures files');
-            break;
-         case realpath(GLPI_RSS_DIR):
-            $this->title = __('Checking write permissions for rss files');
-            break;
-         case realpath(GLPI_SESSION_DIR):
-            $this->title = __('Checking write permissions for session files');
-            break;
-         case realpath(GLPI_TMP_DIR):
-            $this->title = __('Checking write permissions for temporary files');
-            break;
-         case realpath(GLPI_UPLOAD_DIR):
-            $this->title = __('Checking write permissions for upload files');
-            break;
-         default:
-            $this->title = sprintf(__('Checking write permissions for directory %s'), $this->path);
-            break;
-      }
-   }
+    protected function check()
+    {
 
-   protected function check() {
+        $result = \Toolbox::testWriteAccessToDirectory($this->path);
 
-      $result = \Toolbox::testWriteAccessToDirectory($this->path);
+        $this->validated = $result === 0;
 
-      $this->validated = $result === 0;
-
-      if (0 === $result) {
-         $this->validated = true;
-         $this->validation_messages[] = sprintf(__('Write access to %s has been validated.'), $this->path);
-      } else {
-         switch ($result) {
-            case 1:
-               $this->validation_messages[] = sprintf(__("The file was created in %s but can't be deleted."), $this->path);
-               break;
-            case 2:
-               $this->validation_messages[] = sprintf(__('The file could not be created in %s.'), $this->path);
-               break;
-            case 3:
-               $this->validation_messages[] = sprintf(__('The directory was created in %s but could not be removed.'), $this->path);
-               break;
-            case 4:
-               $this->validation_messages[] = sprintf(__('The directory could not be created in %s.'), $this->path);
-               break;
-         }
-      }
-   }
+        if (0 === $result) {
+            $this->validated = true;
+            $this->validation_messages[] = sprintf(__('Write access to %s has been validated.'), $this->path);
+        } else {
+            switch ($result) {
+                case 1:
+                    $this->validation_messages[] = sprintf(__("The file was created in %s but can't be deleted."), $this->path);
+                    break;
+                case 2:
+                    $this->validation_messages[] = sprintf(__('The file could not be created in %s.'), $this->path);
+                    break;
+                case 3:
+                    $this->validation_messages[] = sprintf(__('The directory was created in %s but could not be removed.'), $this->path);
+                    break;
+                case 4:
+                    $this->validation_messages[] = sprintf(__('The directory could not be created in %s.'), $this->path);
+                    break;
+            }
+        }
+    }
 
 }

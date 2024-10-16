@@ -31,176 +31,187 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class Link_Itemtype extends CommonDBChild {
-   // From CommonDbChild
-   static public $itemtype = 'Link';
-   static public $items_id = 'links_id';
+class Link_Itemtype extends CommonDBChild
+{
+    // From CommonDbChild
+    public static $itemtype = 'Link';
+    public static $items_id = 'links_id';
 
 
-   /**
-    * @since 0.84
-   **/
-   function getForbiddenStandardMassiveAction() {
+    /**
+     * @since 0.84
+    **/
+    public function getForbiddenStandardMassiveAction()
+    {
 
-      $forbidden   = parent::getForbiddenStandardMassiveAction();
-      $forbidden[] = 'update';
-      return $forbidden;
-   }
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'update';
+        return $forbidden;
+    }
 
 
-   /**
-    * Print the HTML array for device on link
-    *
-    * @param $link : Link
-    *
-    * @return void
-   **/
-   static function showForLink($link) {
-      global $DB,$CFG_GLPI;
+    /**
+     * Print the HTML array for device on link
+     *
+     * @param $link : Link
+     *
+     * @return void
+    **/
+    public static function showForLink($link)
+    {
+        global $DB,$CFG_GLPI;
 
-      $links_id = $link->getField('id');
+        $links_id = $link->getField('id');
 
-      $canedit  = $link->canEdit($links_id);
-      $rand     = mt_rand();
+        $canedit  = $link->canEdit($links_id);
+        $rand     = mt_rand();
 
-      if (!Link::canView()
-          || !$link->can($links_id, READ)) {
-         return false;
-      }
+        if (!Link::canView()
+            || !$link->can($links_id, READ)) {
+            return false;
+        }
 
-      $iterator = $DB->request([
-         'FROM'   => 'glpi_links_itemtypes',
-         'WHERE'  => ['links_id' => $links_id],
-         'ORDER'  => 'itemtype'
-      ]);
-      $types  = [];
-      $used   = [];
-      $numrows = count($iterator);
-      while ($data = $iterator->next()) {
-         $types[$data['id']]      = $data;
-         $used[$data['itemtype']] = $data['itemtype'];
-      }
+        $iterator = $DB->request([
+           'FROM'   => 'glpi_links_itemtypes',
+           'WHERE'  => ['links_id' => $links_id],
+           'ORDER'  => 'itemtype'
+        ]);
+        $types  = [];
+        $used   = [];
+        $numrows = count($iterator);
+        while ($data = $iterator->next()) {
+            $types[$data['id']]      = $data;
+            $used[$data['itemtype']] = $data['itemtype'];
+        }
 
-      if ($canedit) {
-         $values = [];
-         if (count($CFG_GLPI["link_types"])) {
-            foreach ($CFG_GLPI["link_types"] as $type) {
-               if ($item = getItemForItemtype($type)) {
-                  $values[$type] = $item->getTypeName(1);
-               }
+        if ($canedit) {
+            $values = [];
+            if (count($CFG_GLPI["link_types"])) {
+                foreach ($CFG_GLPI["link_types"] as $type) {
+                    if ($item = getItemForItemtype($type)) {
+                        $values[$type] = $item->getTypeName(1);
+                    }
+                }
             }
-         }
-         asort($values);
+            asort($values);
 
-         $form = [
-            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-            'buttons' => [
-               [
-                  'type'  => 'submit',
-                  'name' => 'add',
-                  'value' => _sx('button', 'Add'),
-                  'class' => 'btn btn-secondary',
-               ]
-            ],
-            'content' => [
-               '' => [
-                  'visible' => true,
-                  'inputs' => [
-                     [
-                        'type' => 'hidden',
-                        'name' => 'links_id',
-                        'value' => $links_id,
-                     ],
-                     __('Add an item type') => [
-                        'type' => 'select',
-                        'name' => 'itemtype',
-                        'values' => array_merge([Dropdown::EMPTY_VALUE], $values),
-                        'col_lg' => 12,
-                        'col_md' => 12,
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                  [
+                     'type'  => 'submit',
+                     'name' => 'add',
+                     'value' => _sx('button', 'Add'),
+                     'class' => 'btn btn-secondary',
+                  ]
+               ],
+               'content' => [
+                  '' => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'links_id',
+                           'value' => $links_id,
+                        ],
+                        __('Add an item type') => [
+                           'type' => 'select',
+                           'name' => 'itemtype',
+                           'values' => array_merge([Dropdown::EMPTY_VALUE], $values),
+                           'col_lg' => 12,
+                           'col_md' => 12,
+                        ]
                      ]
                   ]
                ]
-            ]
-         ];
-         renderTwigForm($form);
-      }
+            ];
+            renderTwigForm($form);
+        }
 
-      if ($canedit && $numrows) {
-         $massiveactionparams = [
-            'num_displayed'  => min($_SESSION['glpilist_limit'], $numrows),
-            'container'      => 'tab_associated_itemtypes',
-            'display_arrow'  => false,
-         ];
-         Html::showMassiveActions($massiveactionparams);
-      }
-      $fields = [_n('Type', 'Types', 1)];
-      $values = [];
-      $massiveactionparams = [];
+        if ($canedit && $numrows) {
+            $massiveactionparams = [
+               'num_displayed'  => min($_SESSION['glpilist_limit'], $numrows),
+               'container'      => 'tab_associated_itemtypes',
+               'display_arrow'  => false,
+            ];
+            Html::showMassiveActions($massiveactionparams);
+        }
+        $fields = [_n('Type', 'Types', 1)];
+        $values = [];
+        $massiveactionparams = [];
 
-      foreach ($types as $data) {
-         $typename = NOT_AVAILABLE;
-         if ($item = getItemForItemtype($data['itemtype'])) {
-            $values[] = [$item->getTypeName(1)];
-            $massiveactionparams[] = sprintf('item[%s][%s]', self::class, $data['id']);
-         }
-      }
-      renderTwigTemplate('table.twig', [
-         'id' => 'tab_associated_itemtypes',
-         'fields' => $fields,
-         'values' => $values,
-         'itemtype' => self::class,
-         'massive_action' => $massiveactionparams,
-      ]);
-   }
-
-
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-
-      if (!$withtemplate) {
-         $nb = 0;
-         switch ($item->getType()) {
-            case 'Link' :
-               if ($_SESSION['glpishow_count_on_tabs']) {
-                  $nb = countElementsInTable($this->getTable(),
-                                             ['links_id' => $item->getID()]);
-               }
-               return self::createTabEntry(_n('Associated item type', 'Associated item types',
-                                              Session::getPluralNumber()), $nb);
-         }
-      }
-      return '';
-   }
+        foreach ($types as $data) {
+            $typename = NOT_AVAILABLE;
+            if ($item = getItemForItemtype($data['itemtype'])) {
+                $values[] = [$item->getTypeName(1)];
+                $massiveactionparams[] = sprintf('item[%s][%s]', self::class, $data['id']);
+            }
+        }
+        renderTwigTemplate('table.twig', [
+           'id' => 'tab_associated_itemtypes',
+           'fields' => $fields,
+           'values' => $values,
+           'itemtype' => self::class,
+           'massive_action' => $massiveactionparams,
+        ]);
+    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
 
-      if ($item->getType() == 'Link') {
-         self::showForLink($item);
-      }
-      return true;
-   }
+        if (!$withtemplate) {
+            $nb = 0;
+            switch ($item->getType()) {
+                case 'Link':
+                    if ($_SESSION['glpishow_count_on_tabs']) {
+                        $nb = countElementsInTable(
+                            $this->getTable(),
+                            ['links_id' => $item->getID()]
+                        );
+                    }
+                    return self::createTabEntry(_n(
+                        'Associated item type',
+                        'Associated item types',
+                        Session::getPluralNumber()
+                    ), $nb);
+            }
+        }
+        return '';
+    }
 
 
-   /**
-    *
-    * Remove all associations for an itemtype
-    *
-    * @since 0.85
-    *
-    * @param string $itemtype  itemtype for which all link associations must be removed
-    */
-   static function deleteForItemtype($itemtype) {
-      global $DB;
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
 
-      $DB->delete(
-         self::getTable(), [
-            'itemtype'  => ['LIKE', "%Plugin$itemtype%"]
+        if ($item->getType() == 'Link') {
+            self::showForLink($item);
+        }
+        return true;
+    }
+
+
+    /**
+     *
+     * Remove all associations for an itemtype
+     *
+     * @since 0.85
+     *
+     * @param string $itemtype  itemtype for which all link associations must be removed
+     */
+    public static function deleteForItemtype($itemtype)
+    {
+        global $DB;
+
+        $DB->delete(
+            self::getTable(),
+            [
+              'itemtype'  => ['LIKE', "%Plugin$itemtype%"]
          ]
-      );
-   }
+        );
+    }
 
 }
-

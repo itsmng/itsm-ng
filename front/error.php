@@ -31,9 +31,9 @@
  */
 
 /**
- * 
+ *
  * This is a page for error page
- * 
+ *
  */
 echo '
 <html>
@@ -51,21 +51,19 @@ echo '
 <body translate="no">
 <h1>';
 //check all messages
-foreach ($msg as $k=>$v){
-  echo '<span class="word">'.$v.'</span>';
+foreach ($msg as $k => $v) {
+    echo '<span class="word">'.$v.'</span>';
 }
 echo '</h1><div class="gears">';
-$i=0;
-$lettres=array('a','b','c','d','e','f');
-while ($i <= 2){
- echo '<div class="gear '.$lettres[$i].'">
+$i = 0;
+$lettres = array('a','b','c','d','e','f');
+while ($i <= 2) {
+    echo '<div class="gear '.$lettres[$i].'">
   <div class="bar"></div>
   <div class="bar"></div>
   <div class="bar"></div>
   </div>';
-  $i++;
+    $i++;
 }
 echo '</div></body></html>';
 die();
-
-

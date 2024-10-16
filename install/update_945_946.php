@@ -34,19 +34,20 @@
  *
  * @return bool for success (will die for most error)
 **/
-function update945to946() {
-   global $DB, $migration;
-   $updateresult     = true;
-   //TRANS: %s is the number of new version
-   $migration->displayTitle(sprintf(__('Update to %s'), '9.4.6'));
-   $migration->setVersion('9.4.6');
-   $DB->deleteOrDie(
-      'glpi_profilerights',
-      [
-         'name'  => 'backup'
+function update945to946()
+{
+    global $DB, $migration;
+    $updateresult     = true;
+    //TRANS: %s is the number of new version
+    $migration->displayTitle(sprintf(__('Update to %s'), '9.4.6'));
+    $migration->setVersion('9.4.6');
+    $DB->deleteOrDie(
+        'glpi_profilerights',
+        [
+          'name'  => 'backup'
       ]
-   );
-   // ************ Keep it at the end **************
-   $migration->executeMigration();
-   return $updateresult;
+    );
+    // ************ Keep it at the end **************
+    $migration->executeMigration();
+    return $updateresult;
 }

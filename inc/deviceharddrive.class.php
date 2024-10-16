@@ -31,246 +31,265 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class DeviceHardDrive
-class DeviceHardDrive extends CommonDevice {
+class DeviceHardDrive extends CommonDevice
+{
+    protected static $forward_entity_to = ['Item_DeviceHardDrive', 'Infocom'];
 
-   static protected $forward_entity_to = ['Item_DeviceHardDrive', 'Infocom'];
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Hard drive', 'Hard drives', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Hard drive', 'Hard drives', $nb);
-   }
 
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
-
-      return array_merge(
-         parent::getAdditionalFields(),
-         [
-            __('Capacity by default') => [
-               'name'  => 'capacity_default',
-               'type'  => 'number',
-               'after'  => __('Mio'),
-               'value' => $this->fields['capacity_default']
-            ],
-            __('Rpm') => [
-               'name'  => 'rpm',
-               'type'  => 'number',
-               'value' => $this->fields['rpm']
-            ],
-            __('Cache') => [
-               'name'  => 'cache',
-               'type'  => 'number',
-               'after'  => __('Mio'),
-               'value' => $this->fields['cache']
-            ],
-            _n('Model', 'Models', 1) => [
-               'name'  => 'deviceharddrivemodels_id',
-               'type'  => 'select',
-               'values' => getOptionForItems('DeviceHardDriveModel'),
-               'value' => $this->fields['deviceharddrivemodels_id'],
-               'actions' => getItemActionButtons(['info', 'add'], 'DeviceHardDriveModel')
-            ],
-            __('Interface') => [
-               'name'  => 'interfacetypes_id',
-               'type'  => 'select',
-               'values' => getOptionForItems('InterfaceType'),
-               'value' => $this->fields['interfacetypes_id'],
-               'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType')
-            ]
+        return array_merge(
+            parent::getAdditionalFields(),
+            [
+              __('Capacity by default') => [
+                 'name'  => 'capacity_default',
+                 'type'  => 'number',
+                 'after'  => __('Mio'),
+                 'value' => $this->fields['capacity_default']
+              ],
+              __('Rpm') => [
+                 'name'  => 'rpm',
+                 'type'  => 'number',
+                 'value' => $this->fields['rpm']
+              ],
+              __('Cache') => [
+                 'name'  => 'cache',
+                 'type'  => 'number',
+                 'after'  => __('Mio'),
+                 'value' => $this->fields['cache']
+              ],
+              _n('Model', 'Models', 1) => [
+                 'name'  => 'deviceharddrivemodels_id',
+                 'type'  => 'select',
+                 'values' => getOptionForItems('DeviceHardDriveModel'),
+                 'value' => $this->fields['deviceharddrivemodels_id'],
+                 'actions' => getItemActionButtons(['info', 'add'], 'DeviceHardDriveModel')
+              ],
+              __('Interface') => [
+                 'name'  => 'interfacetypes_id',
+                 'type'  => 'select',
+                 'values' => getOptionForItems('InterfaceType'),
+                 'value' => $this->fields['interfacetypes_id'],
+                 'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType')
+              ]
          ]
-      );
-   }
+        );
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'capacity_default',
-         'name'               => __('Capacity by default'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'capacity_default',
+           'name'               => __('Capacity by default'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-         'id'                 => '12',
-         'table'              => $this->getTable(),
-         'field'              => 'rpm',
-         'name'               => __('Rpm'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
+        $tab[] = [
+           'id'                 => '12',
+           'table'              => $this->getTable(),
+           'field'              => 'rpm',
+           'name'               => __('Rpm'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-         'id'                 => '13',
-         'table'              => $this->getTable(),
-         'field'              => 'cache',
-         'name'               => __('Cache'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
+        $tab[] = [
+           'id'                 => '13',
+           'table'              => $this->getTable(),
+           'field'              => 'cache',
+           'name'               => __('Cache'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-         'id'                 => '14',
-         'table'              => 'glpi_interfacetypes',
-         'field'              => 'name',
-         'name'               => __('Interface'),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '14',
+           'table'              => 'glpi_interfacetypes',
+           'field'              => 'name',
+           'name'               => __('Interface'),
+           'datatype'           => 'dropdown'
+        ];
 
-      $tab[] = [
-         'id'                 => '15',
-         'table'              => 'glpi_deviceharddrivemodels',
-         'field'              => 'name',
-         'name'               => _n('Model', 'Models', 1),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '15',
+           'table'              => 'glpi_deviceharddrivemodels',
+           'field'              => 'name',
+           'name'               => _n('Model', 'Models', 1),
+           'datatype'           => 'dropdown'
+        ];
 
-      return $tab;
-   }
-
-
-   /**
-    * @since 0.85
-    * @param $input
-    *
-    * @return number
-   **/
-   function prepareInputForAddOrUpdate($input) {
-
-      foreach (['capacity_default'] as $field) {
-         if (isset($input[$field]) && !is_numeric($input[$field])) {
-            $input[$field] = 0;
-         }
-      }
-      return $input;
-   }
+        return $tab;
+    }
 
 
-   function prepareInputForAdd($input) {
-      return $this->prepareInputForAddOrUpdate($input);
-   }
+    /**
+     * @since 0.85
+     * @param $input
+     *
+     * @return number
+    **/
+    public function prepareInputForAddOrUpdate($input)
+    {
 
-
-   function prepareInputForUpdate($input) {
-      return $this->prepareInputForAddOrUpdate($input);
-   }
-
-
-   static function getHTMLTableHeader($itemtype, HTMLTableBase $base,
-                                      HTMLTableSuperHeader $super = null,
-                                      HTMLTableHeader $father = null, array $options = []) {
-
-      $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
-
-      if ($column == $father) {
-         return $father;
-      }
-
-      switch ($itemtype) {
-         case 'Computer' :
-            Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
-            $base->addHeader('deviceharddriver_rpm', __('Rpm'), $super, $father);
-            $base->addHeader('deviceharddriver_cache', __('Cache'), $super, $father);
-            InterfaceType::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
-            break;
-      }
-
-   }
-
-
-   function getHTMLTableCellForItem(HTMLTableRow $row = null, CommonDBTM $item = null,
-                                    HTMLTableCell $father = null, array $options = []) {
-
-      $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
-
-      if ($column == $father) {
-         return $father;
-      }
-
-      switch ($item->getType()) {
-         case 'Computer' :
-            Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
-            if ($this->fields["rpm"]) {
-               $row->addCell($row->getHeaderByName('deviceharddriver_rpm'), $this->fields["rpm"]);
+        foreach (['capacity_default'] as $field) {
+            if (isset($input[$field]) && !is_numeric($input[$field])) {
+                $input[$field] = 0;
             }
-
-            if ($this->fields["cache"]) {
-               $row->addCell($row->getHeaderByName('deviceharddriver_cache'),
-                             $this->fields["cache"]);
-            }
-
-            InterfaceType::getHTMLTableCellsForItem($row, $this, null, $options);
-            break;
-      }
-   }
+        }
+        return $input;
+    }
 
 
-   /**
-    * Criteria used for import function
-    *
-    * @see CommonDevice::getImportCriteria()
-    *
-    * @since 0.84
-   **/
-   function getImportCriteria() {
+    public function prepareInputForAdd($input)
+    {
+        return $this->prepareInputForAddOrUpdate($input);
+    }
 
-      return ['designation'       => 'equal',
-                   'manufacturers_id'  => 'equal',
-                   'interfacetypes_id' => 'equal'];
-   }
 
-   public static function rawSearchOptionsToAdd($itemtype, $main_joinparams) {
-      global $DB;
+    public function prepareInputForUpdate($input)
+    {
+        return $this->prepareInputForAddOrUpdate($input);
+    }
 
-      $tab = [];
 
-      $tab[] = [
-         'id'                 => '114',
-         'table'              => 'glpi_deviceharddrives',
-         'field'              => 'designation',
-         'name'               => __('Hard drive type'),
-         'forcegroupby'       => true,
-         'usehaving'          => true,
-         'massiveaction'      => false,
-         'datatype'           => 'string',
-         'joinparams'         => [
-            'beforejoin'         => [
-               'table'              => 'glpi_items_deviceharddrives',
-               'joinparams'         => $main_joinparams
-            ]
-         ]
-      ];
+    public static function getHTMLTableHeader(
+        $itemtype,
+        HTMLTableBase $base,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
+        array $options = []
+    ) {
 
-      $tab[] = [
-         'id'                 => '115',
-         'table'              => 'glpi_items_deviceharddrives',
-         'field'              => 'capacity',
-         'name'               => __('Hard drive size'),
-         'unit'               => 'auto',
-         'forcegroupby'       => true,
-         'usehaving'          => true,
-         'datatype'           => 'number',
-         'width'              => 1000,
-         'massiveaction'      => false,
-         'joinparams'         => $main_joinparams,
-         'computation'        =>
-            '(SUM(' . $DB->quoteName('TABLE.capacity') . ') / COUNT(' .
-            $DB->quoteName('TABLE.id') . '))
+        $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
+
+        if ($column == $father) {
+            return $father;
+        }
+
+        switch ($itemtype) {
+            case 'Computer':
+                Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
+                $base->addHeader('deviceharddriver_rpm', __('Rpm'), $super, $father);
+                $base->addHeader('deviceharddriver_cache', __('Cache'), $super, $father);
+                InterfaceType::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
+                break;
+        }
+
+    }
+
+
+    public function getHTMLTableCellForItem(
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
+        array $options = []
+    ) {
+
+        $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
+
+        if ($column == $father) {
+            return $father;
+        }
+
+        switch ($item->getType()) {
+            case 'Computer':
+                Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
+                if ($this->fields["rpm"]) {
+                    $row->addCell($row->getHeaderByName('deviceharddriver_rpm'), $this->fields["rpm"]);
+                }
+
+                if ($this->fields["cache"]) {
+                    $row->addCell(
+                        $row->getHeaderByName('deviceharddriver_cache'),
+                        $this->fields["cache"]
+                    );
+                }
+
+                InterfaceType::getHTMLTableCellsForItem($row, $this, null, $options);
+                break;
+        }
+    }
+
+
+    /**
+     * Criteria used for import function
+     *
+     * @see CommonDevice::getImportCriteria()
+     *
+     * @since 0.84
+    **/
+    public function getImportCriteria()
+    {
+
+        return ['designation'       => 'equal',
+                     'manufacturers_id'  => 'equal',
+                     'interfacetypes_id' => 'equal'];
+    }
+
+    public static function rawSearchOptionsToAdd($itemtype, $main_joinparams)
+    {
+        global $DB;
+
+        $tab = [];
+
+        $tab[] = [
+           'id'                 => '114',
+           'table'              => 'glpi_deviceharddrives',
+           'field'              => 'designation',
+           'name'               => __('Hard drive type'),
+           'forcegroupby'       => true,
+           'usehaving'          => true,
+           'massiveaction'      => false,
+           'datatype'           => 'string',
+           'joinparams'         => [
+              'beforejoin'         => [
+                 'table'              => 'glpi_items_deviceharddrives',
+                 'joinparams'         => $main_joinparams
+              ]
+           ]
+        ];
+
+        $tab[] = [
+           'id'                 => '115',
+           'table'              => 'glpi_items_deviceharddrives',
+           'field'              => 'capacity',
+           'name'               => __('Hard drive size'),
+           'unit'               => 'auto',
+           'forcegroupby'       => true,
+           'usehaving'          => true,
+           'datatype'           => 'number',
+           'width'              => 1000,
+           'massiveaction'      => false,
+           'joinparams'         => $main_joinparams,
+           'computation'        =>
+              '(SUM(' . $DB->quoteName('TABLE.capacity') . ') / COUNT(' .
+              $DB->quoteName('TABLE.id') . '))
             * COUNT(DISTINCT ' . $DB->quoteName('TABLE.id') . ')',
-         'nometa'             => true, // cannot GROUP_CONCAT a SUM
-      ];
+           'nometa'             => true, // cannot GROUP_CONCAT a SUM
+        ];
 
-      return $tab;
-   }
+        return $tab;
+    }
 
 
-   static function getIcon() {
-      return "fas fa-hdd";
-   }
+    public static function getIcon()
+    {
+        return "fas fa-hdd";
+    }
 }

@@ -33,225 +33,232 @@
 use itsmng\Timezone;
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * Template for task
  * @since 9.1
 **/
-class TaskTemplate extends CommonDropdown {
+class TaskTemplate extends CommonDropdown
+{
+    // From CommonDBTM
+    public $dohistory          = true;
+    public $can_be_translated  = true;
 
-   // From CommonDBTM
-   public $dohistory          = true;
-   public $can_be_translated  = true;
-
-   static $rightname          = 'taskcategory';
-
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Task template', 'Task templates', $nb);
-   }
+    public static $rightname          = 'taskcategory';
 
 
-   function getAdditionalFields() {
 
-      return [
-         __('Content') => [
-            'name'  => 'content',
-            'type'  => 'richtextarea',
-            'value' => $this->fields['content'],
-            'col_lg' => 12,
-            'col_md' => 12,
-         ],
-         TaskCategory::getTypeName(1) => [
-            'name'  => 'taskcategories_id',
-            'type'  => 'select',
-            'itemtype' => TaskCategory::class,
-            'value' => $this->fields['taskcategories_id']
-         ],
-         __('Status') => [
-            'name'  => 'state',
-            'type'  => 'select',
-            'itemtype' => State::class,
-            'value' => $this->fields['state']
-         ],
-         __('Private') => [
-            'name'  => 'is_private',
-            'type'  => 'checkbox',
-            'value' => $this->fields['is_private']
-         ],
-         __('Duration') => [
-            'name'  => 'actiontime',
-            'type'  => 'select',
-            'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
-               'min'             => 0,
-               'max'             => 100*HOUR_TIMESTAMP,
-               'step'            => 15 * MINUTE_TIMESTAMP,
-               'addfirstminutes' => true,
-            ]),
-            'value' => $this->fields['actiontime'],
-
-         ],
-         __('By') => [
-            'name'  => 'users_id_tech',
-            'type'  => 'select',
-            'values' => getOptionsForUsers('own_ticket'),
-            'value' => $this->fields['users_id_tech'],
-            'actions' => getItemActionButtons(['info'], User::class),
-         ],
-         Group::getTypeName(1) => [
-            'name'  => 'groups_id_tech',
-            'type'  => 'select',
-            'itemtype' => Group::class,
-            'conditions' => ['is_task' => 1],
-            'value' => $this->fields['groups_id_tech'],
-            'actions' => getItemActionButtons(['info', 'add'], Group::class),
-         ],
-      ];
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Task template', 'Task templates', $nb);
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function getAdditionalFields()
+    {
 
-      $tab[] = [
-         'id'                 => '4',
-         'name'               => __('Content'),
-         'field'              => 'content',
-         'table'              => $this->getTable(),
-         'datatype'           => 'text',
-         'htmltext'           => true
-      ];
+        return [
+           __('Content') => [
+              'name'  => 'content',
+              'type'  => 'richtextarea',
+              'value' => $this->fields['content'],
+              'col_lg' => 12,
+              'col_md' => 12,
+           ],
+           TaskCategory::getTypeName(1) => [
+              'name'  => 'taskcategories_id',
+              'type'  => 'select',
+              'itemtype' => TaskCategory::class,
+              'value' => $this->fields['taskcategories_id']
+           ],
+           __('Status') => [
+              'name'  => 'state',
+              'type'  => 'select',
+              'itemtype' => State::class,
+              'value' => $this->fields['state']
+           ],
+           __('Private') => [
+              'name'  => 'is_private',
+              'type'  => 'checkbox',
+              'value' => $this->fields['is_private']
+           ],
+           __('Duration') => [
+              'name'  => 'actiontime',
+              'type'  => 'select',
+              'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
+                 'min'             => 0,
+                 'max'             => 100 * HOUR_TIMESTAMP,
+                 'step'            => 15 * MINUTE_TIMESTAMP,
+                 'addfirstminutes' => true,
+              ]),
+              'value' => $this->fields['actiontime'],
 
-      $tab[] = [
-         'id'                 => '3',
-         'name'               => TaskCategory::getTypeName(1),
-         'field'              => 'name',
-         'table'              => getTableForItemType('TaskCategory'),
-         'datatype'           => 'dropdown'
-      ];
-
-      $tab[] = [
-         'id'                 => '5',
-         'table'              => $this->getTable(),
-         'field'              => 'is_private',
-         'name'               => __('Private'),
-         'datatype'           => 'bool'
-      ];
-
-      $tab[] = [
-         'id'                 => '7',
-         'table'              => 'glpi_users',
-         'field'              => 'name',
-         'linkfield'          => 'users_id_tech',
-         'name'               => __('By'),
-         'datatype'           => 'dropdown',
-         'right'              => 'own_ticket'
-      ];
-
-      $tab[] = [
-         'id'                 => '8',
-         'table'              => 'glpi_groups',
-         'field'              => 'completename',
-         'linkfield'          => 'groups_id_tech',
-         'name'               => Group::getTypeName(1),
-         'condition'          => ['is_task' => 1],
-         'datatype'           => 'dropdown'
-      ];
-
-      $tab[] = [
-         'id'                 => '9',
-         'table'              => $this->getTable(),
-         'field'              => 'actiontime',
-         'name'               => __('Total duration'),
-         'datatype'           => 'actiontime',
-         'massiveaction'      => false
-      ];
-
-      $tab[] = [
-         'id'                 => '10',
-         'table'              => $this->getTable(),
-         'field'              => 'state',
-         'name'               => __('Status'),
-         'searchtype'         => 'equals',
-         'datatype'           => 'specific'
-      ];
-
-      return $tab;
-   }
+           ],
+           __('By') => [
+              'name'  => 'users_id_tech',
+              'type'  => 'select',
+              'values' => getOptionsForUsers('own_ticket'),
+              'value' => $this->fields['users_id_tech'],
+              'actions' => getItemActionButtons(['info'], User::class),
+           ],
+           Group::getTypeName(1) => [
+              'name'  => 'groups_id_tech',
+              'type'  => 'select',
+              'itemtype' => Group::class,
+              'conditions' => ['is_task' => 1],
+              'value' => $this->fields['groups_id_tech'],
+              'actions' => getItemActionButtons(['info', 'add'], Group::class),
+           ],
+        ];
+    }
 
 
-   static function getSpecificValueToDisplay($field, $values, array $options = []) {
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
+        $tab[] = [
+           'id'                 => '4',
+           'name'               => __('Content'),
+           'field'              => 'content',
+           'table'              => $this->getTable(),
+           'datatype'           => 'text',
+           'htmltext'           => true
+        ];
 
-      switch ($field) {
-         case 'state' :
-            return Planning::getState($values[$field]);
-      }
-      return parent::getSpecificValueToDisplay($field, $values, $options);
-   }
+        $tab[] = [
+           'id'                 => '3',
+           'name'               => TaskCategory::getTypeName(1),
+           'field'              => 'name',
+           'table'              => getTableForItemType('TaskCategory'),
+           'datatype'           => 'dropdown'
+        ];
+
+        $tab[] = [
+           'id'                 => '5',
+           'table'              => $this->getTable(),
+           'field'              => 'is_private',
+           'name'               => __('Private'),
+           'datatype'           => 'bool'
+        ];
+
+        $tab[] = [
+           'id'                 => '7',
+           'table'              => 'glpi_users',
+           'field'              => 'name',
+           'linkfield'          => 'users_id_tech',
+           'name'               => __('By'),
+           'datatype'           => 'dropdown',
+           'right'              => 'own_ticket'
+        ];
+
+        $tab[] = [
+           'id'                 => '8',
+           'table'              => 'glpi_groups',
+           'field'              => 'completename',
+           'linkfield'          => 'groups_id_tech',
+           'name'               => Group::getTypeName(1),
+           'condition'          => ['is_task' => 1],
+           'datatype'           => 'dropdown'
+        ];
+
+        $tab[] = [
+           'id'                 => '9',
+           'table'              => $this->getTable(),
+           'field'              => 'actiontime',
+           'name'               => __('Total duration'),
+           'datatype'           => 'actiontime',
+           'massiveaction'      => false
+        ];
+
+        $tab[] = [
+           'id'                 => '10',
+           'table'              => $this->getTable(),
+           'field'              => 'state',
+           'name'               => __('Status'),
+           'searchtype'         => 'equals',
+           'datatype'           => 'specific'
+        ];
+
+        return $tab;
+    }
 
 
-   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+    public static function getSpecificValueToDisplay($field, $values, array $options = [])
+    {
 
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      $options['display'] = false;
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
 
-      switch ($field) {
-         case 'state':
-            return Planning::dropdownState($name, $values[$field], false);
-      }
-      return parent::getSpecificValueToSelect($field, $name, $values, $options);
-   }
+        switch ($field) {
+            case 'state':
+                return Planning::getState($values[$field]);
+        }
+        return parent::getSpecificValueToDisplay($field, $values, $options);
+    }
 
-   /**
-    * @see CommonDropdown::displaySpecificTypeField()
-   **/
-   function displaySpecificTypeField($ID, $field = []) {
 
-      switch ($field['type']) {
-         case 'state' :
-            Planning::dropdownState("state", $this->fields["state"]);
-            break;
-         case 'users_id_tech' :
-            User::dropdown([
-               'name'   => "users_id_tech",
-               'right'  => "own_ticket",
-               'value'  => $this->fields["users_id_tech"],
-               'entity' => $this->fields["entities_id"],
-            ]);
-            break;
-         case 'groups_id_tech' :
-            Group::dropdown([
-               'name'     => "groups_id_tech",
-               'condition' => ['is_task' => 1],
-               'value'     => $this->fields["groups_id_tech"],
-               'entity'    => $this->fields["entities_id"],
-            ]);
-            break;
-         case 'actiontime' :
-            $toadd = [];
-            for ($i=9; $i<=100; $i++) {
-               $toadd[] = $i*HOUR_TIMESTAMP;
-            }
-            Dropdown::showTimeStamp(
-               "actiontime", [
-                  'min'             => 0,
-                  'max'             => 8*HOUR_TIMESTAMP,
-                  'value'           => $this->fields["actiontime"],
-                  'addfirstminutes' => true,
-                  'inhours'         => true,
-                  'toadd'           => $toadd
+    public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
+    {
+
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
+        $options['display'] = false;
+
+        switch ($field) {
+            case 'state':
+                return Planning::dropdownState($name, $values[$field], false);
+        }
+        return parent::getSpecificValueToSelect($field, $name, $values, $options);
+    }
+
+    /**
+     * @see CommonDropdown::displaySpecificTypeField()
+    **/
+    public function displaySpecificTypeField($ID, $field = [])
+    {
+
+        switch ($field['type']) {
+            case 'state':
+                Planning::dropdownState("state", $this->fields["state"]);
+                break;
+            case 'users_id_tech':
+                User::dropdown([
+                   'name'   => "users_id_tech",
+                   'right'  => "own_ticket",
+                   'value'  => $this->fields["users_id_tech"],
+                   'entity' => $this->fields["entities_id"],
+                ]);
+                break;
+            case 'groups_id_tech':
+                Group::dropdown([
+                   'name'     => "groups_id_tech",
+                   'condition' => ['is_task' => 1],
+                   'value'     => $this->fields["groups_id_tech"],
+                   'entity'    => $this->fields["entities_id"],
+                ]);
+                break;
+            case 'actiontime':
+                $toadd = [];
+                for ($i = 9; $i <= 100; $i++) {
+                    $toadd[] = $i * HOUR_TIMESTAMP;
+                }
+                Dropdown::showTimeStamp(
+                    "actiontime",
+                    [
+                      'min'             => 0,
+                      'max'             => 8 * HOUR_TIMESTAMP,
+                      'value'           => $this->fields["actiontime"],
+                      'addfirstminutes' => true,
+                      'inhours'         => true,
+                      'toadd'           => $toadd
                ]
-            );
-            break;
-      }
-   }
+                );
+                break;
+        }
+    }
 }

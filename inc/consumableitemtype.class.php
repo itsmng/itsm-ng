@@ -31,14 +31,14 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class ConsumableItemType
-class ConsumableItemType extends CommonDropdown {
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Consumable type', 'Consumable types', $nb);
-   }
+class ConsumableItemType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Consumable type', 'Consumable types', $nb);
+    }
 }

@@ -31,15 +31,15 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Mandatory fields for ticket template class
 /// since version 0.83
-class TicketTemplateMandatoryField extends ITILTemplateMandatoryField {
-
-   // From CommonDBChild
-   static public $itemtype  = 'TicketTemplate';
-   static public $items_id  = 'tickettemplates_id';
-   static public $itiltype = 'Ticket';
+class TicketTemplateMandatoryField extends ITILTemplateMandatoryField
+{
+    // From CommonDBChild
+    public static $itemtype  = 'TicketTemplate';
+    public static $items_id  = 'tickettemplates_id';
+    public static $itiltype = 'Ticket';
 }

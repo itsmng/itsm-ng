@@ -31,17 +31,17 @@
  * ---------------------------------------------------------------------
  */
 
- include ('../../inc/includes.php');
+include('../../inc/includes.php');
 
- Session::checkRight("dashboard", UPDATE);
- 
- Html::header(Dashboard::getMenuName(), $_SERVER['PHP_SELF'], "config", "Dashboard");
+Session::checkRight("dashboard", UPDATE);
+
+Html::header(Dashboard::getMenuName(), $_SERVER['PHP_SELF'], "config", "Dashboard");
 if (isset($_POST['update']) && isset($_POST['id'])) {
     $dashboard = new Dashboard();
     $dashboard->getFromDB($_POST['id']);
     $dashboard->update($_POST);
     Html::back();
-} else if (isset($_POST['add'])) {
+} elseif (isset($_POST['add'])) {
     $dashboard = new Dashboard();
     try {
         $dashboard->add($_POST);
@@ -55,5 +55,4 @@ if (isset($_POST['update']) && isset($_POST['id'])) {
     $dashboard->showForm($_GET['id'] ?? null, $_GET);
 }
 
- Html::footer();
-?>
+Html::footer();

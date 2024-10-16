@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 header('Content-Type: application/json; charset=UTF-8');
 Html::header_nocache();
 
@@ -39,71 +39,72 @@ Session::checkLoginUser();
 $savedsearch = new SavedSearch();
 
 if (isset($_POST["name"])) {
-   //Add a new saved search
-   header("Content-Type: application/json; charset=UTF-8");
-   $savedsearch->check(-1, CREATE, $_POST);
-   if ($savedsearch->add($_POST)) {
-      Session::addMessageAfterRedirect(
-         __('Search has been saved'),
-         false,
-         INFO
-      );
-      echo json_encode(['success' => true]);
-   } else {
-      Session::addMessageAfterRedirect(
-         __('Search has not been saved'),
-         false,
-         ERROR
-      );
-      echo json_encode(['success' => false]);
-   }
-   return;
+    //Add a new saved search
+    header("Content-Type: application/json; charset=UTF-8");
+    $savedsearch->check(-1, CREATE, $_POST);
+    if ($savedsearch->add($_POST)) {
+        Session::addMessageAfterRedirect(
+            __('Search has been saved'),
+            false,
+            INFO
+        );
+        echo json_encode(['success' => true]);
+    } else {
+        Session::addMessageAfterRedirect(
+            __('Search has not been saved'),
+            false,
+            ERROR
+        );
+        echo json_encode(['success' => false]);
+    }
+    return;
 }
 
 if (isset($_GET['mark_default'])
            && isset($_GET["id"])) {
-   $savedsearch->check($_GET["id"], READ);
+    $savedsearch->check($_GET["id"], READ);
 
-   if ($_GET["mark_default"] > 0) {
-      $savedsearch->markDefault($_GET["id"]);
-   } else if ($_GET["mark_default"] == 0) {
-      $savedsearch->unmarkDefault($_GET["id"]);
-   }
-   //to refresh slidepanel
-   $_GET['action'] = 'show';
+    if ($_GET["mark_default"] > 0) {
+        $savedsearch->markDefault($_GET["id"]);
+    } elseif ($_GET["mark_default"] == 0) {
+        $savedsearch->unmarkDefault($_GET["id"]);
+    }
+    //to refresh slidepanel
+    $_GET['action'] = 'show';
 }
 
 if (!isset($_GET['action'])) {
-   return;
+    return;
 }
 
 if ($_GET['action'] == 'reorder') {
-   $savedsearch->saveOrder($_GET['ids']);
-   header("Content-Type: application/json; charset=UTF-8");
-   echo json_encode(['res' => true]);
+    $savedsearch->saveOrder($_GET['ids']);
+    header("Content-Type: application/json; charset=UTF-8");
+    echo json_encode(['res' => true]);
 }
 
 if ($_GET['action'] == 'create') {
-   header("Content-Type: text/html; charset=UTF-8");
+    header("Content-Type: text/html; charset=UTF-8");
 
-   if (!isset($_GET['type'])) {
-      $_GET['type'] = -1;
-   } else {
-      $_GET['type']  =(int)$_GET['type'];
-   }
+    if (!isset($_GET['type'])) {
+        $_GET['type'] = -1;
+    } else {
+        $_GET['type']  = (int)$_GET['type'];
+    }
 
-   $savedsearch->showForm(
-      0, [
-         'type'      => $_GET['type'],
-         'url'       => $_GET["url"],
-         'itemtype'  => $_GET["itemtype"],
-         'ajax'      => true
+    $savedsearch->showForm(
+        0,
+        [
+          'type'      => $_GET['type'],
+          'url'       => $_GET["url"],
+          'itemtype'  => $_GET["itemtype"],
+          'ajax'      => true
       ]
-   );
-   return;
+    );
+    return;
 }
 
 if ($_GET['action'] == 'show') {
-   header("Content-Type: text/html; charset=UTF-8");
-   $savedsearch->displayMine();
+    header("Content-Type: text/html; charset=UTF-8");
+    $savedsearch->displayMine();
 }

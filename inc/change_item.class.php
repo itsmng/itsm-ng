@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
@@ -39,93 +39,95 @@ if (!defined('GLPI_ROOT')) {
  *
  * Relation between Changes and Items
 **/
-class Change_Item extends CommonItilObject_Item {
+class Change_Item extends CommonItilObject_Item
+{
+    // From CommonDBRelation
+    public static $itemtype_1          = 'Change';
+    public static $items_id_1          = 'changes_id';
+
+    public static $itemtype_2          = 'itemtype';
+    public static $items_id_2          = 'items_id';
+    public static $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
 
 
-   // From CommonDBRelation
-   static public $itemtype_1          = 'Change';
-   static public $items_id_1          = 'changes_id';
 
-   static public $itemtype_2          = 'itemtype';
-   static public $items_id_2          = 'items_id';
-   static public $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
+    public function getForbiddenStandardMassiveAction()
+    {
 
-
-
-   function getForbiddenStandardMassiveAction() {
-
-      $forbidden   = parent::getForbiddenStandardMassiveAction();
-      $forbidden[] = 'update';
-      return $forbidden;
-   }
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'update';
+        return $forbidden;
+    }
 
 
-   function prepareInputForAdd($input) {
+    public function prepareInputForAdd($input)
+    {
 
-      // Well, if I remember my PHP: empty(0) == true ...
-      if (empty($input['changes_id']) || ($input['changes_id'] == 0)) {
-         return false;
-      }
+        // Well, if I remember my PHP: empty(0) == true ...
+        if (empty($input['changes_id']) || ($input['changes_id'] == 0)) {
+            return false;
+        }
 
-      // Avoid duplicate entry
-      if (countElementsInTable($this->getTable(), ['changes_id' => $input['changes_id'],
-                                                  'itemtype' => $input['itemtype'],
-                                                  'items_id' => $input['items_id']])>0) {
-         return false;
-      }
-      return parent::prepareInputForAdd($input);
-   }
+        // Avoid duplicate entry
+        if (countElementsInTable($this->getTable(), ['changes_id' => $input['changes_id'],
+                                                    'itemtype' => $input['itemtype'],
+                                                    'items_id' => $input['items_id']]) > 0) {
+            return false;
+        }
+        return parent::prepareInputForAdd($input);
+    }
 
 
-   /**
-    * Print the HTML array for Items linked to a change
-    *
-    * @param $change Change object
-    *
-    * @return boolean|void
-   **/
-   static function showForChange(Change $change) {
-      global $CFG_GLPI;
+    /**
+     * Print the HTML array for Items linked to a change
+     *
+     * @param $change Change object
+     *
+     * @return boolean|void
+    **/
+    public static function showForChange(Change $change)
+    {
+        global $CFG_GLPI;
 
-      $instID = $change->fields['id'];
+        $instID = $change->fields['id'];
 
-      if (!$change->can($instID, READ)) {
-         return false;
-      }
-      $canedit = $change->canEdit($instID);
-      $rand    = mt_rand();
+        if (!$change->can($instID, READ)) {
+            return false;
+        }
+        $canedit = $change->canEdit($instID);
+        $rand    = mt_rand();
 
-      $types_iterator = self::getDistinctTypes($instID);
-      $number = count($types_iterator);
+        $types_iterator = self::getDistinctTypes($instID);
+        $number = count($types_iterator);
 
-      if ($canedit) {
-         $form = [
-            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-            'buttons' => [
-               [
-                  'type' => 'submit',
-                  'name' => 'add',
-                  'value' => _sx('button', 'Add an item'),
-                  'class' => 'btn btn-secondary'
-               ]
-            ],
-            'content' => [
-               __('Add an item') => [
-                  'visible' => true,
-                  'inputs' => [
-                     [
-                        'type' => 'hidden',
-                        'name' => 'changes_id',
-                        'value' => $instID
-                     ],
-                     __('Type') => [
-                        'type' => 'select',
-                        'id' => 'dropdown_itemtype',
-                        'name' => 'itemtype',
-                        'values' => [Dropdown::EMPTY_VALUE] + array_unique($change->getAllTypesForHelpdesk()),
-                        'col_lg' => 6,
-                        'hooks' => [
-                           'change' => <<<JS
+        if ($canedit) {
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                  [
+                     'type' => 'submit',
+                     'name' => 'add',
+                     'value' => _sx('button', 'Add an item'),
+                     'class' => 'btn btn-secondary'
+                  ]
+               ],
+               'content' => [
+                  __('Add an item') => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'changes_id',
+                           'value' => $instID
+                        ],
+                        __('Type') => [
+                           'type' => 'select',
+                           'id' => 'dropdown_itemtype',
+                           'name' => 'itemtype',
+                           'values' => [Dropdown::EMPTY_VALUE] + array_unique($change->getAllTypesForHelpdesk()),
+                           'col_lg' => 6,
+                           'hooks' => [
+                              'change' => <<<JS
                               $.ajax({
                                     method: "POST",
                                     url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
@@ -150,150 +152,152 @@ class Change_Item extends CommonItilObject_Item {
                                     }
                                  });
                            JS,
-                        ]
-                     ],
-                     __('Item') => [
-                        'type' => 'select',
-                        'id' => 'dropdown_items_id',
-                        'name' => 'items_id',
-                        'values' => [],
-                        'col_lg' => 6,
-                     ],
+                           ]
+                        ],
+                        __('Item') => [
+                           'type' => 'select',
+                           'id' => 'dropdown_items_id',
+                           'name' => 'items_id',
+                           'values' => [],
+                           'col_lg' => 6,
+                        ],
+                     ]
                   ]
                ]
-            ]
-         ];
-         renderTwigForm($form);
-      }
+            ];
+            renderTwigForm($form);
+        }
 
-      if ($canedit && $number) {
-         $massiveactionparams = [
-            'container' => 'tableForProblemItem',
-            'specific_actions' => [
-               'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
-            ],
-            'display_arrow' => false
-         ];
-         Html::showMassiveActions($massiveactionparams);
-      }
-      $fields = [
-         _n('Type', 'Types', 1),
-         Entity::getTypeName(1),
-         __('Name'),
-         __('Serial number'),
-         __('Inventory number'),
-      ];
-      $values = [];
-      $massive_action = [];
-      while ($row = $types_iterator->next()) {
-         $itemtype = $row['itemtype'];
-         if (!($item = getItemForItemtype($itemtype))) {
-            continue;
-         }
-
-         if ($item->canView()) {
-            $iterator = self::getTypeItems($instID, $itemtype);
-            $nb = count($iterator);
-
-            $prem = true;
-            while ($data = $iterator->next()) {
-               $name = $data["name"];
-               if ($_SESSION["glpiis_ids_visible"]
-                   || empty($data["name"])) {
-                  $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
-               }
-               $link = $itemtype::getFormURLWithID($data['id']);
-               $namelink = "<a href=\"".$link."\">".$name."</a>";
-               $typename = $item->getTypeName($nb);
-
-               $values[] = [
-                  (($nb > 1) ? sprintf(__('%1$s: %2$s'), $typename, $nb) : $typename),
-                  Dropdown::getDropdownName("glpi_entities", $data['entity']),
-                  $namelink,
-                  (isset($data["serial"])? "".$data["serial"]."" :"-"),
-                  (isset($data["otherserial"])? "".$data["otherserial"]."" :"-"),
-               ];
-               $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
+        if ($canedit && $number) {
+            $massiveactionparams = [
+               'container' => 'tableForProblemItem',
+               'specific_actions' => [
+                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+               ],
+               'display_arrow' => false
+            ];
+            Html::showMassiveActions($massiveactionparams);
+        }
+        $fields = [
+           _n('Type', 'Types', 1),
+           Entity::getTypeName(1),
+           __('Name'),
+           __('Serial number'),
+           __('Inventory number'),
+        ];
+        $values = [];
+        $massive_action = [];
+        while ($row = $types_iterator->next()) {
+            $itemtype = $row['itemtype'];
+            if (!($item = getItemForItemtype($itemtype))) {
+                continue;
             }
-         }
-      }
-      renderTwigTemplate('table.twig', [
-         'id' => 'tableForProblemItem',
-         'fields' => $fields,
-         'values' => $values,
-         'massive_action' => $massive_action
-      ]);
-   }
+
+            if ($item->canView()) {
+                $iterator = self::getTypeItems($instID, $itemtype);
+                $nb = count($iterator);
+
+                $prem = true;
+                while ($data = $iterator->next()) {
+                    $name = $data["name"];
+                    if ($_SESSION["glpiis_ids_visible"]
+                        || empty($data["name"])) {
+                        $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
+                    }
+                    $link = $itemtype::getFormURLWithID($data['id']);
+                    $namelink = "<a href=\"".$link."\">".$name."</a>";
+                    $typename = $item->getTypeName($nb);
+
+                    $values[] = [
+                       (($nb > 1) ? sprintf(__('%1$s: %2$s'), $typename, $nb) : $typename),
+                       Dropdown::getDropdownName("glpi_entities", $data['entity']),
+                       $namelink,
+                       (isset($data["serial"]) ? "".$data["serial"]."" : "-"),
+                       (isset($data["otherserial"]) ? "".$data["otherserial"]."" : "-"),
+                    ];
+                    $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
+                }
+            }
+        }
+        renderTwigTemplate('table.twig', [
+           'id' => 'tableForProblemItem',
+           'fields' => $fields,
+           'values' => $values,
+           'massive_action' => $massive_action
+        ]);
+    }
 
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      global $DB;
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
+        global $DB;
 
-      if (!$withtemplate) {
-         $nb = 0;
-         switch ($item->getType()) {
-            case 'Change' :
-               if ($_SESSION['glpishow_count_on_tabs']) {
-                  $nb = self::countForMainItem($item);
-               }
-               return self::createTabEntry(_n('Item', 'Items', Session::getPluralNumber()), $nb);
+        if (!$withtemplate) {
+            $nb = 0;
+            switch ($item->getType()) {
+                case 'Change':
+                    if ($_SESSION['glpishow_count_on_tabs']) {
+                        $nb = self::countForMainItem($item);
+                    }
+                    return self::createTabEntry(_n('Item', 'Items', Session::getPluralNumber()), $nb);
 
-            case 'User' :
-            case 'Group' :
-            case 'Supplier' :
-               if ($_SESSION['glpishow_count_on_tabs']) {
-                  $from = 'glpi_changes_' . strtolower($item->getType() . 's');
-                  $result = $DB->request([
-                     'COUNT'  => 'cpt',
-                     'FROM'   => $from,
-                     'WHERE'  => [
-                        $item->getForeignKeyField()   => $item->fields['id']
-                     ]
-                  ])->next();
-                  $nb = $result['cpt'];
-               }
-               return self::createTabEntry(Change::getTypeName(Session::getPluralNumber()), $nb);
+                case 'User':
+                case 'Group':
+                case 'Supplier':
+                    if ($_SESSION['glpishow_count_on_tabs']) {
+                        $from = 'glpi_changes_' . strtolower($item->getType() . 's');
+                        $result = $DB->request([
+                           'COUNT'  => 'cpt',
+                           'FROM'   => $from,
+                           'WHERE'  => [
+                              $item->getForeignKeyField()   => $item->fields['id']
+                           ]
+                        ])->next();
+                        $nb = $result['cpt'];
+                    }
+                    return self::createTabEntry(Change::getTypeName(Session::getPluralNumber()), $nb);
 
-            default :
-               if (Session::haveRight("change", Change::READALL)) {
-                  if ($_SESSION['glpishow_count_on_tabs']) {
-                     // Direct one
-                     $nb = self::countForItem($item);
-                     // Linked items
-                     $linkeditems = $item->getLinkedItems();
+                default:
+                    if (Session::haveRight("change", Change::READALL)) {
+                        if ($_SESSION['glpishow_count_on_tabs']) {
+                            // Direct one
+                            $nb = self::countForItem($item);
+                            // Linked items
+                            $linkeditems = $item->getLinkedItems();
 
-                     if (count($linkeditems)) {
-                        foreach ($linkeditems as $type => $tab) {
-                           foreach ($tab as $ID) {
-                              $typeitem = new $type;
-                              if ($typeitem->getFromDB($ID)) {
-                                 $nb += self::countForItem($typeitem);
-                              }
-                           }
+                            if (count($linkeditems)) {
+                                foreach ($linkeditems as $type => $tab) {
+                                    foreach ($tab as $ID) {
+                                        $typeitem = new $type();
+                                        if ($typeitem->getFromDB($ID)) {
+                                            $nb += self::countForItem($typeitem);
+                                        }
+                                    }
+                                }
+                            }
                         }
-                     }
-                  }
-                  return self::createTabEntry(Change::getTypeName(Session::getPluralNumber()), $nb);
-               }
+                        return self::createTabEntry(Change::getTypeName(Session::getPluralNumber()), $nb);
+                    }
 
-         }
-      }
-      return '';
-   }
+            }
+        }
+        return '';
+    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
 
-      switch ($item->getType()) {
-         case 'Change' :
-            self::showForChange($item);
-            break;
+        switch ($item->getType()) {
+            case 'Change':
+                self::showForChange($item);
+                break;
 
-         default :
-            Change::showListForItem($item, $withtemplate);
-      }
-      return true;
+            default:
+                Change::showListForItem($item, $withtemplate);
+        }
+        return true;
 
-   }
+    }
 
 }

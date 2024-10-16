@@ -36,15 +36,15 @@ define('GLPI_ROOT', realpath('..'));
 // Do not include config.php so set root_doc
 $CFG_GLPI['root_doc'] = '..';
 
-include_once (GLPI_ROOT . "/inc/based_config.php");
-include_once (GLPI_ROOT . "/inc/db.function.php");
-include_once (GLPI_CONFIG_DIR . "/config_db.php");
+include_once(GLPI_ROOT . "/inc/based_config.php");
+include_once(GLPI_ROOT . "/inc/db.function.php");
+include_once(GLPI_CONFIG_DIR . "/config_db.php");
 
 Session::setPath();
 Session::start();
 
 if (!isset($_SESSION['do_content_update'])) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 // Init debug variable
@@ -55,199 +55,208 @@ Toolbox::setDebugMode(Session::DEBUG_MODE, 0, 0, 1);
 
 $max_time = min(get_cfg_var("max_execution_time"), get_cfg_var("max_input_time"));
 
-if ($max_time>5) {
-   $defaulttimeout  = $max_time-2;
-   $defaultrowlimit = 1;
+if ($max_time > 5) {
+    $defaulttimeout  = $max_time - 2;
+    $defaultrowlimit = 1;
 
 } else {
-   $defaulttimeout  = 1;
-   $defaultrowlimit = 1;
+    $defaulttimeout  = 1;
+    $defaultrowlimit = 1;
 }
 
 $DB = new DB();
 
 
-function init_time() {
-   global $TPSDEB, $TPSCOUR;
+function init_time()
+{
+    global $TPSDEB, $TPSCOUR;
 
-   list ($usec, $sec) = explode(" ", microtime());
-   $TPSDEB  = $sec;
-   $TPSCOUR = 0;
+    list($usec, $sec) = explode(" ", microtime());
+    $TPSDEB  = $sec;
+    $TPSCOUR = 0;
 }
 
 
-function current_time() {
-   global $TPSDEB,$TPSCOUR;
+function current_time()
+{
+    global $TPSDEB,$TPSCOUR;
 
-   list ($usec, $sec) = explode(" ", microtime());
-   $TPSFIN = $sec;
+    list($usec, $sec) = explode(" ", microtime());
+    $TPSFIN = $sec;
 
-   if (round($TPSFIN-$TPSDEB, 1)>=$TPSCOUR+1) {//une seconde de plus
-      $TPSCOUR = round($TPSFIN-$TPSDEB, 1);
-   }
+    if (round($TPSFIN - $TPSDEB, 1) >= $TPSCOUR + 1) {//une seconde de plus
+        $TPSCOUR = round($TPSFIN - $TPSDEB, 1);
+    }
 }
 
 
-function get_update_content($DB, $table, $from, $limit, $conv_utf8) {
+function get_update_content($DB, $table, $from, $limit, $conv_utf8)
+{
 
-   $content = "";
-   $DB->query("SET NAMES latin1");
+    $content = "";
+    $DB->query("SET NAMES latin1");
 
-   $result = $DB->query("SELECT *
+    $result = $DB->query("SELECT *
                          FROM `$table`
                          LIMIT $from, $limit");
 
-   if ($result) {
-      while ($row = $DB->fetchAssoc($result)) {
-         if (isset($row["id"])) {
-            $insert = "UPDATE `$table`
+    if ($result) {
+        while ($row = $DB->fetchAssoc($result)) {
+            if (isset($row["id"])) {
+                $insert = "UPDATE `$table`
                        SET ";
 
-            foreach ($row as $key => $val) {
-               $insert .= " `".$key."` = ";
+                foreach ($row as $key => $val) {
+                    $insert .= " `".$key."` = ";
 
-               if (!isset($val)) {
-                  $insert .= "NULL,";
+                    if (!isset($val)) {
+                        $insert .= "NULL,";
 
-               } else if ($val != "") {
-                  if ($conv_utf8) {
-                     // Gestion users AD qui sont deja en UTF8
-                     if ($table!="glpi_users" || !Toolbox::seems_utf8($val)) {
-                        $val = Toolbox::encodeInUtf8($val);
-                     }
-                  }
-                  $insert .= "'".addslashes($val)."',";
+                    } elseif ($val != "") {
+                        if ($conv_utf8) {
+                            // Gestion users AD qui sont deja en UTF8
+                            if ($table != "glpi_users" || !Toolbox::seems_utf8($val)) {
+                                $val = Toolbox::encodeInUtf8($val);
+                            }
+                        }
+                        $insert .= "'".addslashes($val)."',";
 
-               } else {
-                  $insert .= "'',";
-               }
+                    } else {
+                        $insert .= "'',";
+                    }
+                }
+
+                $insert  = preg_replace("/,$/", "", $insert);
+                $insert .= " WHERE `id` = '".$row["id"]."' ";
+                $insert .= ";\n";
+                $content .= $insert;
             }
-
-            $insert  = preg_replace("/,$/", "", $insert);
-            $insert .=" WHERE `id` = '".$row["id"]."' ";
-            $insert .= ";\n";
-            $content .= $insert;
-         }
-      }
-   }
-   return $content;
+        }
+    }
+    return $content;
 }
 
 
-function UpdateContent($DB, $duree, $rowlimit, $conv_utf8, $complete_utf8) {
-   global $TPSCOUR, $offsettable, $offsetrow, $cpt;
-   // $dumpFile, fichier source
-   // $database, nom de la base de données cible
-   // $mysqlUser, login pouyr la connexion au serveur MySql
-   // $mysqlPassword, mot de passe
-   // $histMySql, nom de la machine serveur MySQl
-   // $duree=timeout pour changement de page (-1 = aucun)
+function UpdateContent($DB, $duree, $rowlimit, $conv_utf8, $complete_utf8)
+{
+    global $TPSCOUR, $offsettable, $offsetrow, $cpt;
+    // $dumpFile, fichier source
+    // $database, nom de la base de données cible
+    // $mysqlUser, login pouyr la connexion au serveur MySql
+    // $mysqlPassword, mot de passe
+    // $histMySql, nom de la machine serveur MySQl
+    // $duree=timeout pour changement de page (-1 = aucun)
 
-   $result = $DB->listTables();
-   $numtab = 0;
-   while ($t = $result->next()) {
-      $tables[$numtab] = $t['TABLE_NAME'];
-      $numtab++;
-   }
+    $result = $DB->listTables();
+    $numtab = 0;
+    while ($t = $result->next()) {
+        $tables[$numtab] = $t['TABLE_NAME'];
+        $numtab++;
+    }
 
-   for (; $offsettable<$numtab; $offsettable++) {
-      // Dump de la structyre table
-      if ($offsetrow==-1) {
-         if ($complete_utf8) {
-            $DB->query("ALTER TABLE `".$tables[$offsettable]."`
+    for (; $offsettable < $numtab; $offsettable++) {
+        // Dump de la structyre table
+        if ($offsetrow == -1) {
+            if ($complete_utf8) {
+                $DB->query("ALTER TABLE `".$tables[$offsettable]."`
                         DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
 
-            $data = $DB->listFields($tables[$offsettable]);
+                $data = $DB->listFields($tables[$offsettable]);
 
-            foreach ($data as $key =>$val) {
-               if (preg_match("/^char/i", $val["Type"])) {
-                  $default = "NULL";
-                  if (!empty($val["Default"]) && !is_null($val["Default"])) {
-                     $default = "'".$val["Default"]."'";
-                  }
-                  $DB->query("ALTER TABLE `".$tables[$offsettable]."`
+                foreach ($data as $key => $val) {
+                    if (preg_match("/^char/i", $val["Type"])) {
+                        $default = "NULL";
+                        if (!empty($val["Default"]) && !is_null($val["Default"])) {
+                            $default = "'".$val["Default"]."'";
+                        }
+                        $DB->query("ALTER TABLE `".$tables[$offsettable]."`
                               CHANGE `".$val["Field"]."` `".$val["Field"]."` ".$val["Type"]."
                               CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT $default");
 
-               } else if (preg_match("/^varchar/i", $val["Type"])) {
-                  $default = "NULL";
-                  if (!empty($val["Default"]) && !is_null($val["Default"])) {
-                     $default = "'".$val["Default"]."'";
-                  }
-                  $DB->query("ALTER TABLE `".$tables[$offsettable]."`
+                    } elseif (preg_match("/^varchar/i", $val["Type"])) {
+                        $default = "NULL";
+                        if (!empty($val["Default"]) && !is_null($val["Default"])) {
+                            $default = "'".$val["Default"]."'";
+                        }
+                        $DB->query("ALTER TABLE `".$tables[$offsettable]."`
                               CHANGE `".$val["Field"]."` `".$val["Field"]."` VARCHAR( 255 )
                               CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT $default");
 
-               } else if (preg_match("/^longtext/i", $val["Type"])) {
-                  $DB->query("ALTER TABLE `".$tables[$offsettable]."`
+                    } elseif (preg_match("/^longtext/i", $val["Type"])) {
+                        $DB->query("ALTER TABLE `".$tables[$offsettable]."`
                               CHANGE `".$val["Field"]."` `".$val["Field"]."` LONGTEXT
                               CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL");
 
-               } else if (preg_match("/^text/i", $val["Type"])) {
-                  $DB->query("ALTER TABLE `".$tables[$offsettable]."`
+                    } elseif (preg_match("/^text/i", $val["Type"])) {
+                        $DB->query("ALTER TABLE `".$tables[$offsettable]."`
                               CHANGE `".$val["Field"]."` `".$val["Field"]."` TEXT
                               CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL");
-               }
+                    }
+                }
+
+            }
+            $offsetrow++;
+            $cpt++;
+        }
+
+        current_time();
+        if ($duree > 0 && $TPSCOUR >= $duree) {//on atteint la fin du temps imparti
+            return true;
+        }
+
+        $fin = 0;
+        while (!$fin) {
+            $todump    = get_update_content(
+                $DB,
+                $tables[$offsettable],
+                $offsetrow,
+                $rowlimit,
+                $conv_utf8
+            );
+            $rowtodump = substr_count($todump, "UPDATE ");
+
+            if ($rowtodump > 0) {
+                $DB->query("SET NAMES utf8");
+                $result = $DB->query($todump);
+
+                $cpt       += $rowtodump;
+                $offsetrow += $rowlimit;
+
+                if ($rowtodump < $rowlimit) {
+                    $fin = 1;
+                }
+                current_time();
+
+                if ($duree > 0 && $TPSCOUR >= $duree) {//on atteint la fin du temps imparti
+                    return true;
+                }
+
+            } else {
+                $fin       = 1;
+                $offsetrow = -1;
             }
 
-         }
-         $offsetrow++;
-         $cpt++;
-      }
+        }
 
-      current_time();
-      if ($duree>0 && $TPSCOUR>=$duree) {//on atteint la fin du temps imparti
-         return true;
-      }
-
-      $fin = 0;
-      while (!$fin) {
-         $todump    = get_update_content($DB, $tables[$offsettable], $offsetrow, $rowlimit,
-                                         $conv_utf8);
-         $rowtodump = substr_count($todump, "UPDATE ");
-
-         if ($rowtodump>0) {
-            $DB->query("SET NAMES utf8");
-            $result = $DB->query($todump);
-
-            $cpt       += $rowtodump;
-            $offsetrow += $rowlimit;
-
-            if ($rowtodump<$rowlimit) {
-               $fin = 1;
-            }
-            current_time();
-
-            if ($duree>0 && $TPSCOUR>=$duree) {//on atteint la fin du temps imparti
-               return true;
-            }
-
-         } else {
-            $fin       = 1;
+        if ($fin) {
             $offsetrow = -1;
-         }
+        }
+        current_time();
 
-      }
+        if ($duree > 0 && $TPSCOUR >= $duree) {//on atteint la fin du temps imparti
+            return true;
+        }
 
-      if ($fin) {
-         $offsetrow = -1;
-      }
-      current_time();
+    }
 
-      if ($duree>0 && $TPSCOUR>=$duree) {//on atteint la fin du temps imparti
-         return true;
-      }
+    if ($DB->error()) {
+        echo "<hr>";
+        print(__("SQL error starting"));
+        echo "<br>".$DB->error()."<hr>";
+    }
 
-   }
-
-   if ($DB->error()) {
-      echo "<hr>";
-      print(__("SQL error starting"));
-      echo "<br>".$DB->error()."<hr>";
-   }
-
-   $offsettable = -1;
-   return true;
+    $offsettable = -1;
+    return true;
 }
 
 //########################### Script start ################################
@@ -284,101 +293,101 @@ init_time(); //initialise le temps
 
 //debut de fichier
 if (!isset($_GET["offsettable"])) {
-   $offsettable = 0;
+    $offsettable = 0;
 } else {
-   $offsettable = $_GET["offsettable"];
+    $offsettable = $_GET["offsettable"];
 }
 
 //debut de fichier
 if (!isset($_GET["offsetrow"])) {
-   $offsetrow = -1;
+    $offsetrow = -1;
 } else {
-   $offsetrow = $_GET["offsetrow"];
+    $offsetrow = $_GET["offsetrow"];
 }
 
 //timeout de 5 secondes par defaut, -1 pour utiliser sans timeout
 if (!isset($_GET["duree"])) {
-   $duree = $defaulttimeout;
+    $duree = $defaulttimeout;
 } else {
-   $duree = $_GET["duree"];
+    $duree = $_GET["duree"];
 }
 
 //Limite de lignes a dumper a chaque fois
 if (!isset($_GET["rowlimit"])) {
-   $rowlimit = $defaultrowlimit;
+    $rowlimit = $defaultrowlimit;
 } else {
-   $rowlimit = $_GET["rowlimit"];
+    $rowlimit = $_GET["rowlimit"];
 }
 
 $tot = $DB->listTables()->count();
 
 if (isset($offsettable)) {
-   if ($offsettable>=0) {
-      $percent = min(100, round(100*$offsettable/$tot, 0));
-   } else {
-      $percent = 100;
-   }
+    if ($offsettable >= 0) {
+        $percent = min(100, round(100 * $offsettable / $tot, 0));
+    } else {
+        $percent = 100;
+    }
 
 } else {
-   $percent = 0;
+    $percent = 0;
 }
 
 $conv_utf8     = false;
 $complete_utf8 = true;
 $config_table  = "glpi_config";
 if ($DB->tableExists("glpi_configs")) {
-   $config_table = "glpi_configs";
+    $config_table = "glpi_configs";
 }
 
 if (!$DB->fieldExists($config_table, "utf8_conv", false)) {
-   $conv_utf8 = true;
+    $conv_utf8 = true;
 } else {
-   $query = "SELECT `utf8_conv`
+    $query = "SELECT `utf8_conv`
              FROM `$config_table`
              WHERE `id` = '1'";
 
-   $result = $DB->query($query);
-   $data   = $DB->fetchAssoc($result);
+    $result = $DB->query($query);
+    $data   = $DB->fetchAssoc($result);
 
-   if ($data["utf8_conv"]) {
-      $complete_utf8 = false;
-   }
+    if ($data["utf8_conv"]) {
+        $complete_utf8 = false;
+    }
 }
 
-if ($offsettable>=0 && $complete_utf8) {
-   if ($percent >= 0) {
-      Html::displayProgressBar(400, $percent);
-      echo "</div></div></body></html>";
-      Html::glpi_flush();
-   }
+if ($offsettable >= 0 && $complete_utf8) {
+    if ($percent >= 0) {
+        Html::displayProgressBar(400, $percent);
+        echo "</div></div></body></html>";
+        Html::glpi_flush();
+    }
 
-   if (UpdateContent($DB, $duree, $rowlimit, $conv_utf8, $complete_utf8)) {
-      echo "<br><a href='update_content.php?dump=1&amp;duree=$duree&amp;rowlimit=".
-                 "$rowlimit&amp;offsetrow=$offsetrow&amp;offsettable=$offsettable&amp;cpt=$cpt'>".
-                 __('Automatic redirection, else click')."</a>";
-      echo "<script language='javascript' type='text/javascript'>
+    if (UpdateContent($DB, $duree, $rowlimit, $conv_utf8, $complete_utf8)) {
+        echo "<br><a href='update_content.php?dump=1&amp;duree=$duree&amp;rowlimit=".
+                   "$rowlimit&amp;offsetrow=$offsetrow&amp;offsettable=$offsettable&amp;cpt=$cpt'>".
+                   __('Automatic redirection, else click')."</a>";
+        echo "<script language='javascript' type='text/javascript'>
              window.location=\"update_content.php?dump=1&duree=$duree&rowlimit=$rowlimit&offsetrow=".
-             "$offsetrow&offsettable=$offsettable&cpt=$cpt\";</script>";
-      Html::glpi_flush();
-      exit;
-   }
+               "$offsetrow&offsettable=$offsettable&cpt=$cpt\";</script>";
+        Html::glpi_flush();
+        exit;
+    }
 
 } else {
-   echo "<p><a class='vsubmit' href='../index.php'>".__('Use ITSM-NG')."</a></p>";
-   echo "</div></div></body></html>";
+    echo "<p><a class='vsubmit' href='../index.php'>".__('Use ITSM-NG')."</a></p>";
+    echo "</div></div></body></html>";
 }
 
 if ($conv_utf8) {
-   $query = "ALTER TABLE `$config_table`
+    $query = "ALTER TABLE `$config_table`
              ADD `utf8_conv` INT( 11 ) DEFAULT '0' NOT NULL";
-   $DB->queryOrDie($query, " 0.6 add utf8_conv to $config_table");
+    $DB->queryOrDie($query, " 0.6 add utf8_conv to $config_table");
 }
 
 if ($complete_utf8) {
-   $DB->query("ALTER DATABASE `".$DB->dbdefault."` DEFAULT
+    $DB->query("ALTER DATABASE `".$DB->dbdefault."` DEFAULT
                CHARACTER SET utf8 COLLATE utf8_unicode_ci");
 
-   $DB->query("UPDATE `$config_table`
+    $DB->query("UPDATE `$config_table`
                SET `utf8_conv` = '1'
                WHERE `id` = '1'");
 }

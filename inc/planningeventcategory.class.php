@@ -31,23 +31,24 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class PlanningEventCategory extends CommonDropdown {
+class PlanningEventCategory extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Event category', 'Event categories', $nb);
+    }
 
-
-   static function getTypeName($nb = 0) {
-      return _n('Event category', 'Event categories', $nb);
-   }
-
-   function getAdditionalFields() {
-      return [
-         __('Color') => [
-            'name'  => 'color',
-            'type'  => 'color',
-            'value' => $this->fields['color']
-         ]
-      ];
-   }
+    public function getAdditionalFields()
+    {
+        return [
+           __('Color') => [
+              'name'  => 'color',
+              'type'  => 'color',
+              'value' => $this->fields['color']
+           ]
+        ];
+    }
 }

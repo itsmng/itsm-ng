@@ -31,15 +31,15 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * @since 9.5.0
  */
-class VObject extends CommonDBChild {
-
-   static public $itemtype          = 'itemtype';
-   static public $items_id          = 'items_id';
+class VObject extends CommonDBChild
+{
+    public static $itemtype          = 'itemtype';
+    public static $items_id          = 'items_id';
 
 }

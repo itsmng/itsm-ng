@@ -34,14 +34,14 @@
  * @since 9.1
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
 
 if (!isset($_POST['kbid']) || !isset($_POST['oldid']) || !isset($_POST['diffid'])) {
-   throw new \RuntimeException('Required argument missing!');
+    throw new \RuntimeException('Required argument missing!');
 }
 
 $oldid = $_POST['oldid'];

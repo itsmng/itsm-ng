@@ -32,7 +32,7 @@
 
 use Glpi\Event;
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("logs", READ);
 
@@ -40,12 +40,12 @@ Html::header(Event::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'
 
 // Show last events
 if (isset($_GET["order"])) {
-   if (!isset($_GET["start"])) {
-      $_GET["start"] = 0;
-   }
-   Event::showList($_SERVER['PHP_SELF'], $_GET["order"], $_GET["sort"], $_GET["start"]);
+    if (!isset($_GET["start"])) {
+        $_GET["start"] = 0;
+    }
+    Event::showList($_SERVER['PHP_SELF'], $_GET["order"], $_GET["sort"], $_GET["start"]);
 } else {
-   Event::showList($_SERVER['PHP_SELF']);
+    Event::showList($_SERVER['PHP_SELF']);
 }
 
 Html::footer();

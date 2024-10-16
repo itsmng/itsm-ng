@@ -31,7 +31,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 
@@ -39,94 +39,102 @@ if (!defined('GLPI_ROOT')) {
  * Only an HTMLTableMain can create an HTMLTableSuperHeader.
  * @since 0.84
 **/
-class HTMLTableSuperHeader extends HTMLTableHeader {
-
-   /// The headers of each column
-   private $headerSets = [];
-   /// The table that owns the current super header
-   private $table;
-
-
-   /**
-    * @param HTMLTableMain        $table    HTMLTableMain object: table owning the current header
-    * @param string               $name     the name of the header
-    * @param string               $content  see inc/HTMLTableEntity#__construct()
-    * @param HTMLTableSuperHeader $father   HTMLTableSuperHeader objet (default NULL)
-   **/
-   function __construct(HTMLTableMain $table, $name, $content, HTMLTableSuperHeader $father = null) {
-
-      $this->table = $table;
-      parent::__construct($name, $content, $father);
-   }
+class HTMLTableSuperHeader extends HTMLTableHeader
+{
+    /// The headers of each column
+    private $headerSets = [];
+    /// The table that owns the current super header
+    private $table;
 
 
-   /**
-    * Compute the Least Common Multiple of two integers
-    *
-    * @param $first
-    * @param $second
-    *
-    * @return integer LCM of $first and $second
-   **/
-   private static function LCM($first, $second) {
+    /**
+     * @param HTMLTableMain        $table    HTMLTableMain object: table owning the current header
+     * @param string               $name     the name of the header
+     * @param string               $content  see inc/HTMLTableEntity#__construct()
+     * @param HTMLTableSuperHeader $father   HTMLTableSuperHeader objet (default NULL)
+    **/
+    public function __construct(HTMLTableMain $table, $name, $content, HTMLTableSuperHeader $father = null)
+    {
 
-      $result = $first * $second;
-      while ($first > 1) {
-         $reste = $first % $second;
-         if ($reste == 0) {
-            $result = $result / $second;
-            break;  // leave when LCM is found
-         }
-         $first = $second;
-         $second = $reste;
-      }
-      return $result;
-   }
+        $this->table = $table;
+        parent::__construct($name, $content, $father);
+    }
 
 
-   function isSuperHeader() {
-      return true;
-   }
+    /**
+     * Compute the Least Common Multiple of two integers
+     *
+     * @param $first
+     * @param $second
+     *
+     * @return integer LCM of $first and $second
+    **/
+    private static function LCM($first, $second)
+    {
+
+        $result = $first * $second;
+        while ($first > 1) {
+            $reste = $first % $second;
+            if ($reste == 0) {
+                $result = $result / $second;
+                break;  // leave when LCM is found
+            }
+            $first = $second;
+            $second = $reste;
+        }
+        return $result;
+    }
 
 
-   /**
-    * @see HTMLTableHeader::getHeaderAndSubHeaderName()
-   **/
-   function getHeaderAndSubHeaderName(&$header_name, &$subheader_name) {
-
-      $header_name    = $this->getName();
-      $subheader_name = '';
-   }
+    public function isSuperHeader()
+    {
+        return true;
+    }
 
 
-   function getCompositeName() {
-      return $this->getName().':';
-   }
+    /**
+     * @see HTMLTableHeader::getHeaderAndSubHeaderName()
+    **/
+    public function getHeaderAndSubHeaderName(&$header_name, &$subheader_name)
+    {
+
+        $header_name    = $this->getName();
+        $subheader_name = '';
+    }
 
 
-   protected function getTable() {
-      return $this->table;
-   }
+    public function getCompositeName()
+    {
+        return $this->getName().':';
+    }
 
 
-   /**
-    * compute the total number of current super header colspan: it is the Least Common
-    * Multiple of the colspan of each subHeader it owns.
-    *
-    * @param integer $number the colspan for this header given by the group
-   **/
-   function updateNumberOfSubHeader($number) {
-      $this->setColSpan(self::LCM($number, $this->getColSpan()));
-   }
+    protected function getTable()
+    {
+        return $this->table;
+    }
 
 
-   /**
-    * The super headers always have to be displayed, conversely to sub headers
-    *
-    * @return true
-   **/
-   function hasToDisplay() {
-      return true;
-   }
+    /**
+     * compute the total number of current super header colspan: it is the Least Common
+     * Multiple of the colspan of each subHeader it owns.
+     *
+     * @param integer $number the colspan for this header given by the group
+    **/
+    public function updateNumberOfSubHeader($number)
+    {
+        $this->setColSpan(self::LCM($number, $this->getColSpan()));
+    }
+
+
+    /**
+     * The super headers always have to be displayed, conversely to sub headers
+     *
+     * @return true
+    **/
+    public function hasToDisplay()
+    {
+        return true;
+    }
 
 }

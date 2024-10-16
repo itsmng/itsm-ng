@@ -31,247 +31,264 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// NetworkPortWifi class : wifi instantitation of NetworkPort
 /// @todo : add connection to other wifi networks
 /// @since 0.84
-class NetworkPortWifi extends NetworkPortInstantiation {
+class NetworkPortWifi extends NetworkPortInstantiation
+{
+    public static function getTypeName($nb = 0)
+    {
+        return __('Wifi port');
+    }
 
 
-   static function getTypeName($nb = 0) {
-      return __('Wifi port');
-   }
+    public function getNetworkCardInterestingFields()
+    {
+        return ['link.mac' => 'mac'];
+    }
 
 
-   function getNetworkCardInterestingFields() {
-      return ['link.mac' => 'mac'];
-   }
+    public function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems)
+    {
 
-
-   function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems) {
-
-      if (!$options['several']) {
-         return [
-            $this->getTypeName() => [
-               'visible' => true,
-               'inputs' => [
-                  DeviceNetworkCard::getTypeName(1) => [
-                     'type' => 'select',
-                     'name' => 'items_devicenetworkcards_id',
-                     'itemtype' => DeviceNetworkCard::class,
-                     'value' => $this->fields['items_devicenetworkcards_id']
-                  ],
-                  WifiNetwork::getTypeName(1) => [
-                     'type' => 'select',
-                     'name' => 'wifinetworks_id',
-                     'itemtype' => WifiNetwork::class,
-                     'value' => $this->fields["wifinetworks_id"],
-                     'actions' => getItemActionButtons(['info', 'add'], WifiNetwork::class)
-                  ],
-                  __('Wifi mode') => [
-                     'type' => 'select',
-                     'name' => 'mode',
-                     'values' => WifiNetwork::getWifiCardModes(),
-                     'value' => $this->fields['mode']
-                  ],
-                  __('Wifi protocol version') => [
-                     'type' => 'select',
-                     'name' => 'version',
-                     'values' => WifiNetwork::getWifiCardVersion(),
-                     'value' => $this->fields['version']
-                  ],
-                  __('MAC') => [
-                     'type' => 'text',
-                     'name' => 'mac',
-                     'value' => $netport->fields['mac'],
-                  ],
+        if (!$options['several']) {
+            return [
+               $this->getTypeName() => [
+                  'visible' => true,
+                  'inputs' => [
+                     DeviceNetworkCard::getTypeName(1) => [
+                        'type' => 'select',
+                        'name' => 'items_devicenetworkcards_id',
+                        'itemtype' => DeviceNetworkCard::class,
+                        'value' => $this->fields['items_devicenetworkcards_id']
+                     ],
+                     WifiNetwork::getTypeName(1) => [
+                        'type' => 'select',
+                        'name' => 'wifinetworks_id',
+                        'itemtype' => WifiNetwork::class,
+                        'value' => $this->fields["wifinetworks_id"],
+                        'actions' => getItemActionButtons(['info', 'add'], WifiNetwork::class)
+                     ],
+                     __('Wifi mode') => [
+                        'type' => 'select',
+                        'name' => 'mode',
+                        'values' => WifiNetwork::getWifiCardModes(),
+                        'value' => $this->fields['mode']
+                     ],
+                     __('Wifi protocol version') => [
+                        'type' => 'select',
+                        'name' => 'version',
+                        'values' => WifiNetwork::getWifiCardVersion(),
+                        'value' => $this->fields['version']
+                     ],
+                     __('MAC') => [
+                        'type' => 'text',
+                        'name' => 'mac',
+                        'value' => $netport->fields['mac'],
+                     ],
+                  ]
                ]
-            ]
-         ];
-         echo "<tr class='tab_bg_1'>\n";
-         $this->showMacField($netport, $options);
-         echo "</tr>\n";
-      }
-      return [];
-   }
+            ];
+            echo "<tr class='tab_bg_1'>\n";
+            $this->showMacField($netport, $options);
+            echo "</tr>\n";
+        }
+        return [];
+    }
 
 
-   function getInstantiationHTMLTableHeaders(HTMLTableGroup $group, HTMLTableSuperHeader $super,
-                                             HTMLTableSuperHeader $internet_super = null,
-                                             HTMLTableHeader $father = null,
-                                             array $options = []) {
+    public function getInstantiationHTMLTableHeaders(
+        HTMLTableGroup $group,
+        HTMLTableSuperHeader $super,
+        HTMLTableSuperHeader $internet_super = null,
+        HTMLTableHeader $father = null,
+        array $options = []
+    ) {
 
-      DeviceNetworkCard::getHTMLTableHeader('NetworkPortWifi', $group, $super, null, $options);
+        DeviceNetworkCard::getHTMLTableHeader('NetworkPortWifi', $group, $super, null, $options);
 
-      $group->addHeader('ESSID', __('ESSID'), $super);
-      $group->addHeader('Mode', __('Wifi mode'), $super);
-      $group->addHeader('Version', __('Wifi protocol version'), $super);
+        $group->addHeader('ESSID', __('ESSID'), $super);
+        $group->addHeader('Mode', __('Wifi mode'), $super);
+        $group->addHeader('Version', __('Wifi protocol version'), $super);
 
-      parent::getInstantiationHTMLTableHeaders($group, $super, $internet_super, $father, $options);
-      return null;
-   }
-
-
-   function getInstantiationHTMLTable(NetworkPort $netport, HTMLTableRow $row,
-                                      HTMLTableCell $father = null, array $options = []) {
-
-      DeviceNetworkCard::getHTMLTableCellsForItem($row, $this, null, $options);
-
-      $row->addCell($row->getHeaderByName('Instantiation', 'ESSID'),
-                    Dropdown::getDropdownName("glpi_wifinetworks",
-                                              $this->fields["wifinetworks_id"]));
-
-      $row->addCell($row->getHeaderByName('Instantiation', 'Mode'), $this->fields['mode']);
-
-      $row->addCell($row->getHeaderByName('Instantiation', 'Version'), $this->fields['version']);
-
-      parent::getInstantiationHTMLTable($netport, $row, $father, $options);
-      return null;
-   }
+        parent::getInstantiationHTMLTableHeaders($group, $super, $internet_super, $father, $options);
+        return null;
+    }
 
 
-   function rawSearchOptions() {
-      $tab = [];
+    public function getInstantiationHTMLTable(
+        NetworkPort $netport,
+        HTMLTableRow $row,
+        HTMLTableCell $father = null,
+        array $options = []
+    ) {
 
-      $tab[] = [
-         'id'                 => 'common',
-         'name'               => __('Characteristics')
-      ];
+        DeviceNetworkCard::getHTMLTableCellsForItem($row, $this, null, $options);
 
-      $tab[] = [
-         'id'                 => '10',
-         'table'              => NetworkPort::getTable(),
-         'field'              => 'mac',
-         'datatype'           => 'mac',
-         'name'               => __('MAC'),
-         'massiveaction'      => false,
-         'joinparams'         => [
-            'jointype'           => 'empty'
-         ]
-      ];
+        $row->addCell(
+            $row->getHeaderByName('Instantiation', 'ESSID'),
+            Dropdown::getDropdownName(
+                "glpi_wifinetworks",
+                $this->fields["wifinetworks_id"]
+            )
+        );
 
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'mode',
-         'name'               => __('Wifi mode'),
-         'massiveaction'      => false,
-         'datatype'           => 'specific'
-      ];
+        $row->addCell($row->getHeaderByName('Instantiation', 'Mode'), $this->fields['mode']);
 
-      $tab[] = [
-         'id'                 => '12',
-         'table'              => $this->getTable(),
-         'field'              => 'version',
-         'name'               => __('Wifi protocol version'),
-         'massiveaction'      => false
-      ];
+        $row->addCell($row->getHeaderByName('Instantiation', 'Version'), $this->fields['version']);
 
-      $tab[] = [
-         'id'                 => '13',
-         'table'              => 'glpi_wifinetworks',
-         'field'              => 'name',
-         'name'               => WifiNetwork::getTypeName(1),
-         'massiveaction'      => false,
-         'datatype'           => 'dropdown'
-      ];
-
-      return $tab;
-   }
+        parent::getInstantiationHTMLTable($netport, $row, $father, $options);
+        return null;
+    }
 
 
-   /**
-    * @param $field
-    * @param $values
-    * @param $options   array
-   **/
-   static function getSpecificValueToDisplay($field, $values, array $options = []) {
+    public function rawSearchOptions()
+    {
+        $tab = [];
 
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      switch ($field) {
-         case 'mode':
-            $tab = WifiNetwork::getWifiCardModes();
-            if (isset($tab[$values[$field]])) {
-               return $tab[$values[$field]];
-            }
-            return NOT_AVAILABLE;
+        $tab[] = [
+           'id'                 => 'common',
+           'name'               => __('Characteristics')
+        ];
 
-         case 'version':
-            $tab = WifiNetwork::getWifiCardVersion();
-            if (isset($tab[$values[$field]])) {
-               return $tab[$values[$field]];
-            }
-            return NOT_AVAILABLE;
-      }
-      return parent::getSpecificValueToDisplay($field, $values, $options);
-   }
+        $tab[] = [
+           'id'                 => '10',
+           'table'              => NetworkPort::getTable(),
+           'field'              => 'mac',
+           'datatype'           => 'mac',
+           'name'               => __('MAC'),
+           'massiveaction'      => false,
+           'joinparams'         => [
+              'jointype'           => 'empty'
+           ]
+        ];
 
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'mode',
+           'name'               => __('Wifi mode'),
+           'massiveaction'      => false,
+           'datatype'           => 'specific'
+        ];
 
-   /**
-    * @param $field
-    * @param $name            (default'')
-    * @param $values           (default '')
-    * @param $options   array
-   **/
-   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+        $tab[] = [
+           'id'                 => '12',
+           'table'              => $this->getTable(),
+           'field'              => 'version',
+           'name'               => __('Wifi protocol version'),
+           'massiveaction'      => false
+        ];
 
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      $options['display'] = false;
-      switch ($field) {
-         case 'mode':
-            $options['value'] = $values[$field];
-            return Dropdown::showFromArray($name, WifiNetwork::getWifiCardModes(), $options);
+        $tab[] = [
+           'id'                 => '13',
+           'table'              => 'glpi_wifinetworks',
+           'field'              => 'name',
+           'name'               => WifiNetwork::getTypeName(1),
+           'massiveaction'      => false,
+           'datatype'           => 'dropdown'
+        ];
 
-         case 'version':
-            $options['value'] = $values[$field];
-            return Dropdown::showFromArray($name, WifiNetwork::getWifiCardVersion(), $options);
-      }
-      return parent::getSpecificValueToSelect($field, $name, $values, $options);
-   }
+        return $tab;
+    }
 
 
-   /**
-    * @param $tab          array
-    * @param $joinparams   array
-   **/
-   static function getSearchOptionsToAddForInstantiation(array &$tab, array $joinparams) {
+    /**
+     * @param $field
+     * @param $values
+     * @param $options   array
+    **/
+    public static function getSpecificValueToDisplay($field, $values, array $options = [])
+    {
 
-      $tab[] = [
-         'id'                 => '157',
-         'table'              => 'glpi_wifinetworks',
-         'field'              => 'name',
-         'name'               => WifiNetwork::getTypeName(1),
-         'forcegroupby'       => true,
-         'massiveaction'      => false,
-         'joinparams'         => [
-            'jointype'           => 'standard',
-            'beforejoin'         => [
-               'table'              => 'glpi_networkportwifis',
-               'joinparams'         => $joinparams
-            ]
-         ]
-      ];
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
+        switch ($field) {
+            case 'mode':
+                $tab = WifiNetwork::getWifiCardModes();
+                if (isset($tab[$values[$field]])) {
+                    return $tab[$values[$field]];
+                }
+                return NOT_AVAILABLE;
 
-      $tab[] = [
-         'id'                 => '158',
-         'table'              => 'glpi_wifinetworks',
-         'field'              => 'essid',
-         'name'               => __('ESSID'),
-         'forcegroupby'       => true,
-         'massiveaction'      => false,
-         'joinparams'         => [
-            'jointype'           => 'standard',
-            'beforejoin'         => [
-               'table'              => 'glpi_networkportwifis',
-               'joinparams'         => $joinparams
-            ]
-         ]
-      ];
-   }
+            case 'version':
+                $tab = WifiNetwork::getWifiCardVersion();
+                if (isset($tab[$values[$field]])) {
+                    return $tab[$values[$field]];
+                }
+                return NOT_AVAILABLE;
+        }
+        return parent::getSpecificValueToDisplay($field, $values, $options);
+    }
+
+
+    /**
+     * @param $field
+     * @param $name            (default'')
+     * @param $values           (default '')
+     * @param $options   array
+    **/
+    public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
+    {
+
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
+        $options['display'] = false;
+        switch ($field) {
+            case 'mode':
+                $options['value'] = $values[$field];
+                return Dropdown::showFromArray($name, WifiNetwork::getWifiCardModes(), $options);
+
+            case 'version':
+                $options['value'] = $values[$field];
+                return Dropdown::showFromArray($name, WifiNetwork::getWifiCardVersion(), $options);
+        }
+        return parent::getSpecificValueToSelect($field, $name, $values, $options);
+    }
+
+
+    /**
+     * @param $tab          array
+     * @param $joinparams   array
+    **/
+    public static function getSearchOptionsToAddForInstantiation(array &$tab, array $joinparams)
+    {
+
+        $tab[] = [
+           'id'                 => '157',
+           'table'              => 'glpi_wifinetworks',
+           'field'              => 'name',
+           'name'               => WifiNetwork::getTypeName(1),
+           'forcegroupby'       => true,
+           'massiveaction'      => false,
+           'joinparams'         => [
+              'jointype'           => 'standard',
+              'beforejoin'         => [
+                 'table'              => 'glpi_networkportwifis',
+                 'joinparams'         => $joinparams
+              ]
+           ]
+        ];
+
+        $tab[] = [
+           'id'                 => '158',
+           'table'              => 'glpi_wifinetworks',
+           'field'              => 'essid',
+           'name'               => __('ESSID'),
+           'forcegroupby'       => true,
+           'massiveaction'      => false,
+           'joinparams'         => [
+              'jointype'           => 'standard',
+              'beforejoin'         => [
+                 'table'              => 'glpi_networkportwifis',
+                 'joinparams'         => $joinparams
+              ]
+           ]
+        ];
+    }
 }

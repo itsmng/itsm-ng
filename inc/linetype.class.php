@@ -31,14 +31,13 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class LineType extends CommonDropdown {
-
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Line type', 'Line types', $nb);
-   }
+class LineType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Line type', 'Line types', $nb);
+    }
 }

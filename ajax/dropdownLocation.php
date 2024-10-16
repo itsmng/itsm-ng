@@ -30,32 +30,32 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 Html::header_nocache();
 
 Session::checkLoginUser();
 
 if (!isset($_REQUEST['itemtype'])
     && !is_subclass_of($_REQUEST['itemtype'], 'CommonDBTM')) {
-   throw new \RuntimeException('Required argument missing or incorrect!');
+    throw new \RuntimeException('Required argument missing or incorrect!');
 }
 
-$item = new $_REQUEST['itemtype'];
+$item = new $_REQUEST['itemtype']();
 $item->getFromDB((int) $_REQUEST['items_id']);
 
 $locations_id = 0;
 if (isset($item->fields['locations_id'])) {
-   $locations_id = $item->fields['locations_id'];
+    $locations_id = $item->fields['locations_id'];
 }
 
 $entities_id = $_SESSION['glpiactive_entity'];
 if (isset($item->fields['entities_id'])) {
-   $entities_id = $item->fields['entities_id'];
+    $entities_id = $item->fields['entities_id'];
 }
 
 $is_recursive = $_SESSION['glpiactive_entity_recursive'];
 if (isset($_REQUEST['is_recursive'])) {
-   $is_recursive = (bool) $_REQUEST['is_recursive'];
+    $is_recursive = (bool) $_REQUEST['is_recursive'];
 }
 
 global $DB;
@@ -67,13 +67,13 @@ $request = [
    ],
 ];
 if ($locations_id != 0) {
-   $request['WHERE']['id'] = $locations_id;
+    $request['WHERE']['id'] = $locations_id;
 };
 $iterator = $DB->request($request);
 
 $result = [];
 while ($row = $iterator->next()) {
-   $result += [$row['id'] => $row['name']];
+    $result += [$row['id'] => $row['name']];
 }
 $result += ['selected' => $locations_id];
 echo json_encode($result);

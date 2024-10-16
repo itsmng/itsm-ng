@@ -42,29 +42,28 @@ if (!defined('GLPI_ROOT')) {
  **/
 class QueuedChat extends CommonDBTM
 {
+    public static $rightname = 'queuedchat';
 
-    static $rightname = 'queuedchat';
 
-
-    static function getTypeName($nb = 0)
+    public static function getTypeName($nb = 0)
     {
         return __('Chat queue');
     }
 
 
-    static function canCreate()
+    public static function canCreate()
     {
         // Everybody can create : human and cron
         return Session::getLoginUserID(false);
     }
 
-    static function getForbiddenActionsForMenu()
+    public static function getForbiddenActionsForMenu()
     {
         return ['add'];
     }
 
 
-    function getForbiddenStandardMassiveAction()
+    public function getForbiddenStandardMassiveAction()
     {
 
         $forbidden   = parent::getForbiddenStandardMassiveAction();
@@ -75,7 +74,7 @@ class QueuedChat extends CommonDBTM
     /**
      * @see CommonDBTM::getSpecificMassiveActions()
      **/
-    function getSpecificMassiveActions($checkitem = null, $is_deleted = false)
+    public function getSpecificMassiveActions($checkitem = null, $is_deleted = false)
     {
 
         $isadmin = static::canUpdate();
@@ -91,7 +90,7 @@ class QueuedChat extends CommonDBTM
     /**
      * @see CommonDBTM::processMassiveActionsForOneItemtype()
      **/
-    static function processMassiveActionsForOneItemtype(
+    public static function processMassiveActionsForOneItemtype(
         MassiveAction $ma,
         CommonDBTM $item,
         array $ids
@@ -114,7 +113,7 @@ class QueuedChat extends CommonDBTM
         parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
     }
 
-    function prepareInputForAdd($input)
+    public function prepareInputForAdd($input)
     {
         global $DB;
 
@@ -144,7 +143,7 @@ class QueuedChat extends CommonDBTM
             $input['items_id'] = 0;
         }
 
-        // Drop existing mails in queue for the same event and item 
+        // Drop existing mails in queue for the same event and item
         if (
             isset($input['itemtype']) && !empty($input['itemtype'])
             && isset($input['entities_id']) && ($input['entities_id'] >= 0)
@@ -174,7 +173,7 @@ class QueuedChat extends CommonDBTM
     }
 
 
-    function rawSearchOptions()
+    public function rawSearchOptions()
     {
         $tab = [];
 
@@ -300,7 +299,7 @@ class QueuedChat extends CommonDBTM
      * @param $values
      * @param $options   array
      **/
-    static function getSpecificValueToDisplay($field, $values, array $options = [])
+    public static function getSpecificValueToDisplay($field, $values, array $options = [])
     {
 
         if (!is_array($values)) {
@@ -326,7 +325,7 @@ class QueuedChat extends CommonDBTM
     }
 
 
-    static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
+    public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
     {
         if (!is_array($values)) {
             $values = [$field => $values];
@@ -373,7 +372,7 @@ class QueuedChat extends CommonDBTM
      *
      * @return array of information
      **/
-    static function cronInfo($name)
+    public static function cronInfo($name)
     {
 
         switch ($name) {
@@ -404,7 +403,7 @@ class QueuedChat extends CommonDBTM
      *
      * @return array
      */
-    static public function getPendings($send_time = null, $limit = 20, $limit_modes = null, $extra_where = [])
+    public static function getPendings($send_time = null, $limit = 20, $limit_modes = null, $extra_where = [])
     {
         global $DB, $CFG_GLPI;
 
@@ -464,7 +463,7 @@ class QueuedChat extends CommonDBTM
      *
      * @return integer either 0 or 1
      **/
-    static function cronQueuedChat($task = null)
+    public static function cronQueuedChat($task = null)
     {
         if (!Notification_NotificationTemplate::hasActiveMode()) {
             return 0;
@@ -506,7 +505,7 @@ class QueuedChat extends CommonDBTM
      *
      * @return integer either 0 or 1
      **/
-    static function cronQueuedChatClean($task = null)
+    public static function cronQueuedChatClean($task = null)
     {
         global $DB;
 
@@ -540,7 +539,7 @@ class QueuedChat extends CommonDBTM
      *
      * @return void
      **/
-    static function forceSendFor($itemtype, $items_id)
+    public static function forceSendFor($itemtype, $items_id)
     {
         if (
             !empty($itemtype)
@@ -571,7 +570,7 @@ class QueuedChat extends CommonDBTM
      *
      * @return true if displayed  false if item not found or not right to display
      **/
-    function showForm($ID, $options = [])
+    public function showForm($ID, $options = [])
     {
         if (!Session::haveRight("queuedchat", READ)) {
             return false;
@@ -591,7 +590,7 @@ class QueuedChat extends CommonDBTM
             echo "<td>" . _n('Name', 'Names', 1) . "</td>";
             echo "<td>";
             echo NOT_AVAILABLE;
-        } else if ($item instanceof CommonDBTM) {
+        } elseif ($item instanceof CommonDBTM) {
             echo $item->getType();
             $item->getFromDB($this->fields['items_id']);
             echo "</td>";
@@ -667,7 +666,7 @@ class QueuedChat extends CommonDBTM
      *
      * @param $string
      **/
-    static function cleanHtml($string)
+    public static function cleanHtml($string)
     {
 
         $begin_strip     = -1;
@@ -698,7 +697,7 @@ class QueuedChat extends CommonDBTM
     }
 
 
-    static function getIcon()
+    public static function getIcon()
     {
         return "far fa-list-alt";
     }

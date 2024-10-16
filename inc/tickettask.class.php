@@ -31,294 +31,314 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-class TicketTask extends CommonITILTask {
-
-   static $rightname = 'task';
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Ticket task', 'Ticket tasks', $nb);
-   }
+class TicketTask extends CommonITILTask
+{
+    public static $rightname = 'task';
 
 
-   static function canCreate() {
-      return (Session::haveRight(self::$rightname, parent::ADDALLITEM)
-              || Session::haveRight('ticket', Ticket::OWN));
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Ticket task', 'Ticket tasks', $nb);
+    }
 
 
-   static function canView() {
-      return (Session::haveRightsOr(self::$rightname, [parent::SEEPUBLIC, parent::SEEPRIVATE])
-              || Session::haveRight('ticket', Ticket::OWN));
-   }
+    public static function canCreate()
+    {
+        return (Session::haveRight(self::$rightname, parent::ADDALLITEM)
+                || Session::haveRight('ticket', Ticket::OWN));
+    }
 
 
-   static function canUpdate() {
-      return (Session::haveRight(self::$rightname, parent::UPDATEALL)
-              || Session::haveRight('ticket', Ticket::OWN));
-   }
+    public static function canView()
+    {
+        return (Session::haveRightsOr(self::$rightname, [parent::SEEPUBLIC, parent::SEEPRIVATE])
+                || Session::haveRight('ticket', Ticket::OWN));
+    }
 
 
-   function canViewPrivates() {
-      return Session::haveRight(self::$rightname, parent::SEEPRIVATE);
-   }
+    public static function canUpdate()
+    {
+        return (Session::haveRight(self::$rightname, parent::UPDATEALL)
+                || Session::haveRight('ticket', Ticket::OWN));
+    }
 
 
-   function canEditAll() {
-      return Session::haveRight(self::$rightname, parent::UPDATEALL);
-   }
+    public function canViewPrivates()
+    {
+        return Session::haveRight(self::$rightname, parent::SEEPRIVATE);
+    }
 
 
-   /**
-    * Does current user have right to show the current task?
-    *
-    * @return boolean
-   **/
-   function canViewItem() {
-
-      if (!$this->canReadITILItem()) {
-         return false;
-      }
-
-      if (Session::haveRight(self::$rightname, parent::SEEPRIVATE)) {
-         return true;
-      }
-
-      if (!$this->fields['is_private']
-          && Session::haveRight(self::$rightname, parent::SEEPUBLIC)) {
-         return true;
-      }
-
-      // see task created or affected to me
-      if (Session::getCurrentInterface() == "central"
-          && ($this->fields["users_id"] === Session::getLoginUserID())
-              || ($this->fields["users_id_tech"] === Session::getLoginUserID())) {
-         return true;
-      }
-
-      if ($this->fields["groups_id_tech"] && ($this->fields["groups_id_tech"] > 0)
-          && isset($_SESSION["glpigroups"])
-          && in_array($this->fields["groups_id_tech"], $_SESSION["glpigroups"])) {
-         return true;
-      }
-
-      return false;
-   }
+    public function canEditAll()
+    {
+        return Session::haveRight(self::$rightname, parent::UPDATEALL);
+    }
 
 
-   /**
-    * Does current user have right to create the current task?
-    *
-    * @return boolean
-   **/
-   function canCreateItem() {
-
-      if (!$this->canReadITILItem()) {
-         return false;
-      }
-
-      $ticket = new Ticket();
-      if ($ticket->getFromDB($this->fields['tickets_id'])
-          // No validation for closed tickets
-          && !in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
-         return (Session::haveRight(self::$rightname, parent::ADDALLITEM)
-                 || $ticket->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
-                 || (isset($_SESSION["glpigroups"])
-                     && $ticket->haveAGroup(CommonITILActor::ASSIGN,
-                                            $_SESSION['glpigroups'])));
-      }
-      return false;
-   }
-
-
-   /**
-    * Does current user have right to update the current task?
-    *
-    * @return boolean
-   **/
-   function canUpdateItem() {
-
-      if (!$this->canReadITILItem()) {
-         return false;
-      }
-
-      $ticket = new Ticket();
-      if ($ticket->getFromDB($this->fields['tickets_id'])
-         && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
-         return false;
-      }
-
-      if (($this->fields["users_id"] != Session::getLoginUserID())
-          && !Session::haveRight(self::$rightname, parent::UPDATEALL)) {
-         return false;
-      }
-
-      return true;
-   }
-
-
-   /**
-    * Does current user have right to purge the current task?
-    *
-    * @return boolean
-   **/
-   function canPurgeItem() {
-      $ticket = new Ticket();
-      if ($ticket->getFromDB($this->fields['tickets_id'])
-         && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
-         return false;
-      }
-
-      return Session::haveRight(self::$rightname, PURGE);
-   }
-
-
-   /**
-    * Populate the planning with planned ticket tasks
-    *
-    * @param $options   array of possible options:
-    *    - who          ID of the user (0 = undefined)
-    *    - whogroup     ID of the group of users (0 = undefined)
-    *    - begin        Date
-    *    - end          Date
-    *
-    * @return array of planning item
-   **/
-   static function populatePlanning($options = []) :array {
-      return parent::genericPopulatePlanning(__CLASS__, $options);
-   }
-
-
-   /**
-    * Populate the planning with planned ticket tasks
-    *
-    * @param $options   array of possible options:
-    *    - who          ID of the user (0 = undefined)
-    *    - whogroup     ID of the group of users (0 = undefined)
-    *    - begin        Date
-    *    - end          Date
-    *
-    * @return array of planning item
-   **/
-   static function populateNotPlanned($options = []) :array {
-      return parent::genericPopulateNotPlanned(__CLASS__, $options);
-   }
-
-
-   /**
-    * Display a Planning Item
-    *
-    * @param array           $val       array of the item to display
-    * @param integer         $who       ID of the user (0 if all)
-    * @param string          $type      position of the item in the time block (in, through, begin or end)
-    * @param integer|boolean $complete  complete display (more details)
-    *
-    * @return string
-    */
-   static function displayPlanningItem(array $val, $who, $type = "", $complete = 0) {
-      return parent::genericDisplayPlanningItem(__CLASS__, $val, $who, $type, $complete);
-   }
-
-
-   /**
-    * @since 0.85
-    *
-    * @see commonDBTM::getRights()
+    /**
+     * Does current user have right to show the current task?
+     *
+     * @return boolean
     **/
-   function getRights($interface = 'central') {
+    public function canViewItem()
+    {
 
-      $values = parent::getRights();
-      unset($values[UPDATE], $values[CREATE], $values[READ]);
+        if (!$this->canReadITILItem()) {
+            return false;
+        }
 
-      if ($interface == 'central') {
-         $values[parent::UPDATEALL]      = __('Update all');
-         $values[parent::ADDALLITEM  ]   = __('Add to all items');
-         $values[parent::SEEPRIVATE]     = __('See private ones');
-      }
+        if (Session::haveRight(self::$rightname, parent::SEEPRIVATE)) {
+            return true;
+        }
 
-      $values[parent::SEEPUBLIC]   = __('See public ones');
+        if (!$this->fields['is_private']
+            && Session::haveRight(self::$rightname, parent::SEEPUBLIC)) {
+            return true;
+        }
 
-      if ($interface == 'helpdesk') {
-         unset($values[PURGE]);
-      }
+        // see task created or affected to me
+        if (Session::getCurrentInterface() == "central"
+            && ($this->fields["users_id"] === Session::getLoginUserID())
+                || ($this->fields["users_id_tech"] === Session::getLoginUserID())) {
+            return true;
+        }
 
-      return $values;
-   }
+        if ($this->fields["groups_id_tech"] && ($this->fields["groups_id_tech"] > 0)
+            && isset($_SESSION["glpigroups"])
+            && in_array($this->fields["groups_id_tech"], $_SESSION["glpigroups"])) {
+            return true;
+        }
+
+        return false;
+    }
 
 
-   /**
-    * @since 0.90
-    *
-    * @see CommonDBTM::showFormButtons()
-   **/
-   function showFormButtons($options = []) {
-      // for single object like config
-      $ID = 1;
-      if (isset($this->fields['id'])) {
-         $ID = $this->fields['id'];
-      }
+    /**
+     * Does current user have right to create the current task?
+     *
+     * @return boolean
+    **/
+    public function canCreateItem()
+    {
 
-      $params['colspan']      = 2;
-      $params['candel']       = true;
-      $params['canedit']      = true;
+        if (!$this->canReadITILItem()) {
+            return false;
+        }
 
-      if (is_array($options) && count($options)) {
-         foreach ($options as $key => $val) {
-            $params[$key] = $val;
-         }
-      }
+        $ticket = new Ticket();
+        if ($ticket->getFromDB($this->fields['tickets_id'])
+            // No validation for closed tickets
+            && !in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
+            return (Session::haveRight(self::$rightname, parent::ADDALLITEM)
+                    || $ticket->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
+                    || (isset($_SESSION["glpigroups"])
+                        && $ticket->haveAGroup(
+                            CommonITILActor::ASSIGN,
+                            $_SESSION['glpigroups']
+                        )));
+        }
+        return false;
+    }
 
-      if (!$this->isNewID($ID)) {
-         echo "<input type='hidden' name='id' value='$ID'>";
-      }
 
-      Plugin::doHook("post_item_form", ['item' => $this, 'options' => &$params]);
+    /**
+     * Does current user have right to update the current task?
+     *
+     * @return boolean
+    **/
+    public function canUpdateItem()
+    {
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td class='center' colspan='".($params['colspan']*2)."'>";
+        if (!$this->canReadITILItem()) {
+            return false;
+        }
 
-      if ($this->isNewID($ID)) {
-         echo Ticket::getSplittedSubmitButtonHtml($this->fields['tickets_id'], 'add');
-      } else {
-         if ($params['candel']
-               // no trashbin in tickettask
-          //   && !$this->can($ID, DELETE)
-             && !$this->can($ID, PURGE)) {
-            $params['candel'] = false;
-         }
+        $ticket = new Ticket();
+        if ($ticket->getFromDB($this->fields['tickets_id'])
+           && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
+            return false;
+        }
 
-         if ($params['canedit'] && $this->canUpdateItem()) {
-            echo Ticket::getSplittedSubmitButtonHtml($this->fields['tickets_id'], 'update');
-            echo "</td></tr><tr class='tab_bg_2'>\n";
-         }
+        if (($this->fields["users_id"] != Session::getLoginUserID())
+            && !Session::haveRight(self::$rightname, parent::UPDATEALL)) {
+            return false;
+        }
 
-         if ($params['candel']) {
-            echo "<td class='right' colspan='".($params['colspan']*2)."' >\n";
-            if ($this->can($ID, PURGE)) {
-               echo Html::submit(_x('button', 'Delete permanently'),
-                                 ['name'    => 'purge',
-                                       'confirm' => __('Confirm the final deletion?')]);
+        return true;
+    }
+
+
+    /**
+     * Does current user have right to purge the current task?
+     *
+     * @return boolean
+    **/
+    public function canPurgeItem()
+    {
+        $ticket = new Ticket();
+        if ($ticket->getFromDB($this->fields['tickets_id'])
+           && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())) {
+            return false;
+        }
+
+        return Session::haveRight(self::$rightname, PURGE);
+    }
+
+
+    /**
+     * Populate the planning with planned ticket tasks
+     *
+     * @param $options   array of possible options:
+     *    - who          ID of the user (0 = undefined)
+     *    - whogroup     ID of the group of users (0 = undefined)
+     *    - begin        Date
+     *    - end          Date
+     *
+     * @return array of planning item
+    **/
+    public static function populatePlanning($options = []): array
+    {
+        return parent::genericPopulatePlanning(__CLASS__, $options);
+    }
+
+
+    /**
+     * Populate the planning with planned ticket tasks
+     *
+     * @param $options   array of possible options:
+     *    - who          ID of the user (0 = undefined)
+     *    - whogroup     ID of the group of users (0 = undefined)
+     *    - begin        Date
+     *    - end          Date
+     *
+     * @return array of planning item
+    **/
+    public static function populateNotPlanned($options = []): array
+    {
+        return parent::genericPopulateNotPlanned(__CLASS__, $options);
+    }
+
+
+    /**
+     * Display a Planning Item
+     *
+     * @param array           $val       array of the item to display
+     * @param integer         $who       ID of the user (0 if all)
+     * @param string          $type      position of the item in the time block (in, through, begin or end)
+     * @param integer|boolean $complete  complete display (more details)
+     *
+     * @return string
+     */
+    public static function displayPlanningItem(array $val, $who, $type = "", $complete = 0)
+    {
+        return parent::genericDisplayPlanningItem(__CLASS__, $val, $who, $type, $complete);
+    }
+
+
+    /**
+     * @since 0.85
+     *
+     * @see commonDBTM::getRights()
+     **/
+    public function getRights($interface = 'central')
+    {
+
+        $values = parent::getRights();
+        unset($values[UPDATE], $values[CREATE], $values[READ]);
+
+        if ($interface == 'central') {
+            $values[parent::UPDATEALL]      = __('Update all');
+            $values[parent::ADDALLITEM  ]   = __('Add to all items');
+            $values[parent::SEEPRIVATE]     = __('See private ones');
+        }
+
+        $values[parent::SEEPUBLIC]   = __('See public ones');
+
+        if ($interface == 'helpdesk') {
+            unset($values[PURGE]);
+        }
+
+        return $values;
+    }
+
+
+    /**
+     * @since 0.90
+     *
+     * @see CommonDBTM::showFormButtons()
+    **/
+    public function showFormButtons($options = [])
+    {
+        // for single object like config
+        $ID = 1;
+        if (isset($this->fields['id'])) {
+            $ID = $this->fields['id'];
+        }
+
+        $params['colspan']      = 2;
+        $params['candel']       = true;
+        $params['canedit']      = true;
+
+        if (is_array($options) && count($options)) {
+            foreach ($options as $key => $val) {
+                $params[$key] = $val;
             }
-         }
+        }
 
-         if ($this->isField('date_mod')) {
-            echo "<input type='hidden' name='_read_date_mod' value='".$this->getField('date_mod')."'>";
-         }
-      }
+        if (!$this->isNewID($ID)) {
+            echo "<input type='hidden' name='id' value='$ID'>";
+        }
 
-      echo "</td></tr></table></div>";
-      Html::closeForm();
-   }
+        Plugin::doHook("post_item_form", ['item' => $this, 'options' => &$params]);
 
-   /**
-    * Build parent condition for search
-    *
-    * @return string
-    */
-   public static function buildParentCondition() {
-      return "(0 = 1 " . Ticket::buildCanViewCondition("tickets_id") . ") ";
-   }
+        echo "<tr class='tab_bg_2'>";
+        echo "<td class='center' colspan='".($params['colspan'] * 2)."'>";
+
+        if ($this->isNewID($ID)) {
+            echo Ticket::getSplittedSubmitButtonHtml($this->fields['tickets_id'], 'add');
+        } else {
+            if ($params['candel']
+                  // no trashbin in tickettask
+             //   && !$this->can($ID, DELETE)
+                && !$this->can($ID, PURGE)) {
+                $params['candel'] = false;
+            }
+
+            if ($params['canedit'] && $this->canUpdateItem()) {
+                echo Ticket::getSplittedSubmitButtonHtml($this->fields['tickets_id'], 'update');
+                echo "</td></tr><tr class='tab_bg_2'>\n";
+            }
+
+            if ($params['candel']) {
+                echo "<td class='right' colspan='".($params['colspan'] * 2)."' >\n";
+                if ($this->can($ID, PURGE)) {
+                    echo Html::submit(
+                        _x('button', 'Delete permanently'),
+                        ['name'    => 'purge',
+                                            'confirm' => __('Confirm the final deletion?')]
+                    );
+                }
+            }
+
+            if ($this->isField('date_mod')) {
+                echo "<input type='hidden' name='_read_date_mod' value='".$this->getField('date_mod')."'>";
+            }
+        }
+
+        echo "</td></tr></table></div>";
+        Html::closeForm();
+    }
+
+    /**
+     * Build parent condition for search
+     *
+     * @return string
+     */
+    public static function buildParentCondition()
+    {
+        return "(0 = 1 " . Ticket::buildCanViewCondition("tickets_id") . ") ";
+    }
 }

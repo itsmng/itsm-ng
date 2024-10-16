@@ -31,34 +31,34 @@
  */
 
 if (strpos($_SERVER['PHP_SELF'], "dropdownUnicityFields.php")) {
-   include ('../inc/includes.php');
-   header("Content-Type: text/html; charset=UTF-8");
-   Html::header_nocache();
+    include('../inc/includes.php');
+    header("Content-Type: text/html; charset=UTF-8");
+    Html::header_nocache();
 }
 global $DB;
 Session::checkRight("config", UPDATE);
 
 $field = new FieldUnicity();
 if ($_POST['id'] > 0) {
-   $field->getFromDB($_POST['id']);
+    $field->getFromDB($_POST['id']);
 } else {
-   $field->getEmpty();
-   $field->fields['itemtype'] = $_POST['itemtype'];
+    $field->getEmpty();
+    $field->fields['itemtype'] = $_POST['itemtype'];
 }
 
 if ($target = getItemForItemtype($field->fields['itemtype'])) {
-   //Do not check unicity on fields in DB with theses types
-   $blacklisted_types = ['longtext', 'text'];
+    //Do not check unicity on fields in DB with theses types
+    $blacklisted_types = ['longtext', 'text'];
 
-   //Construct list
-   $values = [];
-   foreach ($DB->listFields(getTableForItemType($target::class)) as $field) {
-      $searchOption = $target->getSearchOptionByField('field', $field['Field']);
-      if (!empty($searchOption)
-            && !in_array($field['Type'], $blacklisted_types)
-            && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
-         $values[$field['Field']] = $searchOption['name'];
-      }
-   }
-   echo json_encode($values);
+    //Construct list
+    $values = [];
+    foreach ($DB->listFields(getTableForItemType($target::class)) as $field) {
+        $searchOption = $target->getSearchOptionByField('field', $field['Field']);
+        if (!empty($searchOption)
+              && !in_array($field['Type'], $blacklisted_types)
+              && !in_array($field['Field'], $target->getUnallowedFieldsForUnicity())) {
+            $values[$field['Field']] = $searchOption['name'];
+        }
+    }
+    echo json_encode($values);
 }

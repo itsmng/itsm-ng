@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkSeveralRightsOr(['rule_dictionnary_dropdown' => READ,
                                     'rule_dictionnary_software' => READ]);
@@ -44,13 +44,13 @@ echo "<div class='center'><table class='tab_cadre' aria-label='Dictionaries type
 echo "<tr><th colspan='".count($dictionnaries)."'>" . __('Dictionaries') . "</th></tr>";
 echo "<tr class='tab_bg_1'>";
 foreach ($dictionnaries as $dictionnary) {
-   echo "<td class='top'><table class='tab_cadre' aria-label='Dictionaries entries table'>";
-   echo "<tr><th>" . $dictionnary['type'] . "</th></tr>";
-   foreach ($dictionnary['entries'] as $entry) {
-      echo "<tr class='tab_bg_1'><td class='center b'>";
-      echo "<a href='".$entry['link']."'>" . $entry['label'] ."</a></td></tr>";
-   }
-   echo "</td></table>";
+    echo "<td class='top'><table class='tab_cadre' aria-label='Dictionaries entries table'>";
+    echo "<tr><th>" . $dictionnary['type'] . "</th></tr>";
+    foreach ($dictionnary['entries'] as $entry) {
+        echo "<tr class='tab_bg_1'><td class='center b'>";
+        echo "<a href='".$entry['link']."'>" . $entry['label'] ."</a></td></tr>";
+    }
+    echo "</td></table>";
 }
 echo "</tr>";
 echo "</table></div>";

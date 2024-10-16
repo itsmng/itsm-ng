@@ -31,103 +31,108 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * Holiday Class
 **/
-class Holiday extends CommonDropdown {
+class Holiday extends CommonDropdown
+{
+    public static $rightname = 'calendar';
 
-   static $rightname = 'calendar';
-
-   public $can_be_translated = false;
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Close time', 'Close times', $nb);
-   }
+    public $can_be_translated = false;
 
 
-   function getAdditionalFields() {
-
-      return [
-         __('Start') => [
-            'name'  => 'begin_date',
-            'type'  => 'date',
-            'value' => $this->fields['begin_date']
-         ],
-         __('End') => [
-            'name'  => 'end_date',
-            'type'  => 'date',
-            'value' => $this->fields['end_date']
-         ],
-         __('Recurrent') => [
-            'name'  => 'is_perpetual',
-            'type'  => 'checkbox',
-            'value' => $this->fields['is_perpetual']
-         ]
-      ];
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Close time', 'Close times', $nb);
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function getAdditionalFields()
+    {
 
-      $tab[] = [
-         'id'                 => '11',
-         'table'              => $this->getTable(),
-         'field'              => 'begin_date',
-         'name'               => __('Start'),
-         'datatype'           => 'date'
-      ];
-
-      $tab[] = [
-         'id'                 => '12',
-         'table'              => $this->getTable(),
-         'field'              => 'end_date',
-         'name'               => __('End'),
-         'datatype'           => 'date'
-      ];
-
-      $tab[] = [
-         'id'                 => '13',
-         'table'              => $this->getTable(),
-         'field'              => 'is_perpetual',
-         'name'               => __('Recurrent'),
-         'datatype'           => 'bool'
-      ];
-
-      return $tab;
-   }
+        return [
+           __('Start') => [
+              'name'  => 'begin_date',
+              'type'  => 'date',
+              'value' => $this->fields['begin_date']
+           ],
+           __('End') => [
+              'name'  => 'end_date',
+              'type'  => 'date',
+              'value' => $this->fields['end_date']
+           ],
+           __('Recurrent') => [
+              'name'  => 'is_perpetual',
+              'type'  => 'checkbox',
+              'value' => $this->fields['is_perpetual']
+           ]
+        ];
+    }
 
 
-   function prepareInputForAdd($input) {
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      $input = parent::prepareInputForAdd($input);
+        $tab[] = [
+           'id'                 => '11',
+           'table'              => $this->getTable(),
+           'field'              => 'begin_date',
+           'name'               => __('Start'),
+           'datatype'           => 'date'
+        ];
 
-      if (empty($input['end_date'])
-          || ($input['end_date'] == 'NULL')
-          || ($input['end_date'] < $input['begin_date'])) {
+        $tab[] = [
+           'id'                 => '12',
+           'table'              => $this->getTable(),
+           'field'              => 'end_date',
+           'name'               => __('End'),
+           'datatype'           => 'date'
+        ];
 
-         $input['end_date'] = $input['begin_date'];
-      }
-      return $input;
-   }
+        $tab[] = [
+           'id'                 => '13',
+           'table'              => $this->getTable(),
+           'field'              => 'is_perpetual',
+           'name'               => __('Recurrent'),
+           'datatype'           => 'bool'
+        ];
+
+        return $tab;
+    }
 
 
-   function prepareInputForUpdate($input) {
+    public function prepareInputForAdd($input)
+    {
 
-      $input = parent::prepareInputForUpdate($input);
+        $input = parent::prepareInputForAdd($input);
 
-      if (isset($input['begin_date']) && (empty($input['end_date'])
-          || ($input['end_date'] == 'NULL')
-          || ($input['end_date'] < $input['begin_date']))) {
+        if (empty($input['end_date'])
+            || ($input['end_date'] == 'NULL')
+            || ($input['end_date'] < $input['begin_date'])) {
 
-         $input['end_date'] = $input['begin_date'];
-      }
+            $input['end_date'] = $input['begin_date'];
+        }
+        return $input;
+    }
 
-      return $input;
-   }
+
+    public function prepareInputForUpdate($input)
+    {
+
+        $input = parent::prepareInputForUpdate($input);
+
+        if (isset($input['begin_date']) && (empty($input['end_date'])
+            || ($input['end_date'] == 'NULL')
+            || ($input['end_date'] < $input['begin_date']))) {
+
+            $input['end_date'] = $input['begin_date'];
+        }
+
+        return $input;
+    }
 
 }

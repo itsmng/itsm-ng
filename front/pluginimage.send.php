@@ -41,13 +41,18 @@
 
 use Glpi\Event;
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 if (!isset($_GET["name"]) || !isset($_GET["plugin"]) || !Plugin::isPluginActive($_GET["plugin"])) {
-   Event::log(0, "system", 2, "security",
-              //TRANS: %s is user name
-              sprintf(__('%s makes a bad usage.'), $_SESSION["glpiname"]));
-   die("security");
+    Event::log(
+        0,
+        "system",
+        2,
+        "security",
+        //TRANS: %s is user name
+        sprintf(__('%s makes a bad usage.'), $_SESSION["glpiname"])
+    );
+    die("security");
 }
 
 $dir = GLPI_PLUGIN_DOC_DIR."/".$_GET["plugin"]."/";
@@ -58,9 +63,14 @@ if ((basename($_GET["name"]) != $_GET["name"])
     || !Toolbox::startsWith(realpath($filepath), realpath(GLPI_PLUGIN_DOC_DIR))
     || !Document::isImage($filepath)) {
 
-   Event::log(0, "system", 1, "security",
-              sprintf(__('%s tries to use a non standard path.'), $_SESSION["glpiname"]));
-   die("security");
+    Event::log(
+        0,
+        "system",
+        1,
+        "security",
+        sprintf(__('%s tries to use a non standard path.'), $_SESSION["glpiname"])
+    );
+    die("security");
 }
 
 // Now send the file with header() magic
@@ -70,9 +80,9 @@ header('Cache-control: private, must-revalidate'); /// IE BUG + SSL
 header('Content-disposition: filename="' . $_GET["name"] . '"');
 
 if (file_exists($filepath)) {
-   header("Content-type: " . Toolbox::getMime($filepath));
-   readfile($filepath);
+    header("Content-type: " . Toolbox::getMime($filepath));
+    readfile($filepath);
 } else {
-   header("Content-type: image/png");
-   readfile($CFG_GLPI['root_doc'] . "/pics/warning.png");
+    header("Content-type: image/png");
+    readfile($CFG_GLPI['root_doc'] . "/pics/warning.png");
 }

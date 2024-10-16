@@ -1,6 +1,7 @@
 <?php
 
-function expandSelect(&$select, $fields = []) {
+function expandSelect(&$select, $fields = [])
+{
     global $CFG_GLPI;
 
     if (isset($select['itemtype']) && !isset($select['values'])) {
@@ -20,7 +21,7 @@ function expandSelect(&$select, $fields = []) {
             $select['used'] ?? []
         );
         if (isset($select['value']) && !in_array($select['value'], $select['values'])) {
-            $item = new $select['itemtype'];
+            $item = new $select['itemtype']();
             $item->getFromDB($select['value']);
             if (isset($item->fields['name'])) {
                 $select['values'][$select['value']] = $item->fields['name'];
@@ -58,7 +59,7 @@ function expandForm($form, $fields = [])
         }
     }
     if (!isset($form['buttons']) && isset($form['itemtype'])) {
-        $item = new $form['itemtype'];
+        $item = new $form['itemtype']();
         $isNew = !isset($fields['id']) || intval($fields['id']) <= 0 ||
             isset($fields['withtemplate']) && $fields['withtemplate'] == 2;
         $isDeleted = isset($fields['is_deleted']) && $fields['is_deleted'];
@@ -96,8 +97,12 @@ function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
 {
     $cond = $conditions;
     if (isset($conditions['entities_id'])) {
-        $cond = $conditions + getEntitiesRestrictCriteria($itemtype::getTable(),
-            'entities_id', $entity, true);
+        $cond = $conditions + getEntitiesRestrictCriteria(
+            $itemtype::getTable(),
+            'entities_id',
+            $entity,
+            true
+        );
     }
     $key = Dropdown::addNewCondition($cond);
     $values = Dropdown::getDropdownValue([
@@ -107,8 +112,9 @@ function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
     ], false);
     $options = [];
     foreach ($values['results'] as $key => $value) {
-        if (!$value || !count($value))
+        if (!$value || !count($value)) {
             continue;
+        }
 
         if (isset($value['children'])) {
             if (!isset($options[$value['text']])) {
@@ -142,8 +148,9 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true,
 
     $options = [];
     foreach ($values['results'] as $key => $value) {
-        if (!$value || !count($value))
+        if (!$value || !count($value)) {
             continue;
+        }
 
         if (isset($value['children'])) {
             $options[$value['text']] = [];
@@ -157,7 +164,8 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true,
     return $options;
 }
 
-function getLinkedDocumentsForItem($itemType, $items_id) {
+function getLinkedDocumentsForItem($itemType, $items_id)
+{
     global $DB;
 
     $iterator = $DB->request([
@@ -190,9 +198,9 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
     $users = [];
     foreach ($rights as $right) {
         if (isset($conditions['entities_id'])) {
-          $users += iterator_to_array(User::getSqlSearchResult(false, $right, $conditions['entities_id']));
+            $users += iterator_to_array(User::getSqlSearchResult(false, $right, $conditions['entities_id']));
         } else {
-          $users += iterator_to_array(User::getSqlSearchResult(false, $right));
+            $users += iterator_to_array(User::getSqlSearchResult(false, $right));
         }
     }
     $options = [];
@@ -206,7 +214,7 @@ function getOptionsForUsers($right, $conditions = [], $display_emptychoice = tru
     return $options;
 }
 
-function renderTwigTemplate($path, $vars, $root='/templates')
+function renderTwigTemplate($path, $vars, $root = '/templates')
 {
     global $CFG_GLPI;
     require_once GLPI_ROOT . '/src/twig/twig.class.php';
@@ -278,7 +286,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
                 ],
             ],
         ]] + $form['content'];
-    } else if (isset($fields['entities_id'])) {
+    } elseif (isset($fields['entities_id'])) {
         $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
             [
                 'type' => 'hidden',
@@ -390,7 +398,7 @@ function getItemActionButtons(array $actions, string $itemType): array
         $content = [];
         switch ($action) {
             case 'info':
-                $item = new $itemType;
+                $item = new $itemType();
                 $itemSearchUrl = $item->getSearchUrl();
                 $content = [
                     'icon' => 'fas fa-info',
@@ -399,7 +407,7 @@ function getItemActionButtons(array $actions, string $itemType): array
                 ];
                 break;
             case 'add':
-                $item = new $itemType;
+                $item = new $itemType();
                 Ajax::createModalWindow('add_'.$itemType, $item->getFormUrl() . '?_in_modal=1');
                 $content = [
                     'icon' => 'fas fa-plus',

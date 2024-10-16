@@ -31,22 +31,24 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class PhoneModel
-class PhoneModel extends CommonDropdown {
-
-   public $additional_fields_for_dictionnary = ['manufacturer'];
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Phone model', 'Phone models', $nb);
-   }
+class PhoneModel extends CommonDropdown
+{
+    public $additional_fields_for_dictionnary = ['manufacturer'];
 
 
-   static function getFieldLabel() {
-      return _n('Model', 'Models', 1);
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Phone model', 'Phone models', $nb);
+    }
+
+
+    public static function getFieldLabel()
+    {
+        return _n('Model', 'Models', 1);
+    }
 
 }

@@ -33,17 +33,18 @@
  */
 
 /// Update from 0.71 to 0.71.2
-function update071to0712() {
-   global $DB;
+function update071to0712()
+{
+    global $DB;
 
-   $query = "UPDATE `glpi_display`
+    $query = "UPDATE `glpi_display`
              SET `num` = 120
              WHERE `num` = 121";
-   $DB->queryOrDie($query, "0.71.2 Update display index in view item");
+    $DB->queryOrDie($query, "0.71.2 Update display index in view item");
 
-   $query = "UPDATE `glpi_rules_actions`
+    $query = "UPDATE `glpi_rules_actions`
              SET `field` = '_ignore_ocs_import'
              WHERE `action_type` = 'ignore'";
-   $DB->queryOrDie($query, "0.71.2 Update ignore field for soft dict");
+    $DB->queryOrDie($query, "0.71.2 Update ignore field for soft dict");
 
 } // fin 0.71 #####################################################################################

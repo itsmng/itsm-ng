@@ -31,46 +31,48 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 
 /**
  *  Timer class for debug and some other cases
  */
-class Timer {
-
-   //! Timer value
-   public $timer=0;
-
-
-   /**
-    * Start the Timer
-    *
-    * @return true
-    */
-   function start () {
-
-      $this->timer = microtime(true);
-      return true;
-   }
+class Timer
+{
+    //! Timer value
+    public $timer = 0;
 
 
-   /**
-    * Get the current time of the timer
-    *
-    * @param integer $decimals Number of decimal of the result (default 3)
-    * @param boolean $raw      Get raw time
-    *
-    * @return time past from start
-   **/
-   function getTime ($decimals = 3, $raw = false) {
-      $elapsed = microtime(true) - $this->timer;
-      if ($raw === true) {
-         return $elapsed * 1000;
-      } else {
-         // $decimals will set the number of decimals you want for your milliseconds.
-         return number_format($elapsed, $decimals, '.', ' ');
-      }
-   }
+    /**
+     * Start the Timer
+     *
+     * @return true
+     */
+    public function start()
+    {
+
+        $this->timer = microtime(true);
+        return true;
+    }
+
+
+    /**
+     * Get the current time of the timer
+     *
+     * @param integer $decimals Number of decimal of the result (default 3)
+     * @param boolean $raw      Get raw time
+     *
+     * @return time past from start
+    **/
+    public function getTime($decimals = 3, $raw = false)
+    {
+        $elapsed = microtime(true) - $this->timer;
+        if ($raw === true) {
+            return $elapsed * 1000;
+        } else {
+            // $decimals will set the number of decimals you want for your milliseconds.
+            return number_format($elapsed, $decimals, '.', ' ');
+        }
+    }
 }

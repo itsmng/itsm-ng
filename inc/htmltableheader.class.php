@@ -31,144 +31,154 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 
 /**
  * @since 0.84
 **/
-abstract class HTMLTableHeader extends HTMLTableEntity {
-
-   private $name;
-   private $father;
-   private $itemtypes   = [];
-   private $colSpan     = 1;
-   private $numberCells = 0;
-
-
-   /**
-    * get the table of the header (for a subheader, it is the table of its super header)
-    *
-    * @return HTMLTableMain the table owning the current header
-   **/
-   abstract protected function getTable();
+abstract class HTMLTableHeader extends HTMLTableEntity
+{
+    private $name;
+    private $father;
+    private $itemtypes   = [];
+    private $colSpan     = 1;
+    private $numberCells = 0;
 
 
-   /**
-    * get its name and subname : usefull for instance to create an index for arrays
-    *
-    * @param string $header_name [out]     header name
-    * @param string $subheader_name [out]  sub header name ( = '' in case of super header)
-    *
-    * @return void
-   **/
-   abstract function getHeaderAndSubHeaderName(&$header_name, &$subheader_name);
+    /**
+     * get the table of the header (for a subheader, it is the table of its super header)
+     *
+     * @return HTMLTableMain the table owning the current header
+    **/
+    abstract protected function getTable();
 
 
-   /**
-    * check to see if it is a super header or not
-    *
-    * @return true if this is a super header
-   **/
-   abstract function isSuperHeader();
+    /**
+     * get its name and subname : usefull for instance to create an index for arrays
+     *
+     * @param string $header_name [out]     header name
+     * @param string $subheader_name [out]  sub header name ( = '' in case of super header)
+     *
+     * @return void
+    **/
+    abstract public function getHeaderAndSubHeaderName(&$header_name, &$subheader_name);
 
 
-   /**
-    * @param string          $name     the name of the header
-    * @param string          $content  see HTMLTableEntity#__construct()
-    * @param HTMLTableHeader $father   HTMLTableHeader object:
-    *                                  the father of the current column (default NULL)
-   **/
-   function __construct($name, $content, HTMLTableHeader $father = null) {
-
-      parent::__construct($content);
-
-      $this->name           = $name;
-      $this->father         = $father;
-   }
+    /**
+     * check to see if it is a super header or not
+     *
+     * @return true if this is a super header
+    **/
+    abstract public function isSuperHeader();
 
 
-   /**
-    * @param $itemtype
-    * @param $title         (default '')
-   **/
-   function setItemType($itemtype, $title = '') {
-      $this->itemtypes[$itemtype] = $title;
-   }
+    /**
+     * @param string          $name     the name of the header
+     * @param string          $content  see HTMLTableEntity#__construct()
+     * @param HTMLTableHeader $father   HTMLTableHeader object:
+     *                                  the father of the current column (default NULL)
+    **/
+    public function __construct($name, $content, HTMLTableHeader $father = null)
+    {
+
+        parent::__construct($content);
+
+        $this->name           = $name;
+        $this->father         = $father;
+    }
 
 
-   /**
-    * @param $item      CommonDBTM object (default NULL)
-   **/
-   function checkItemType(CommonDBTM $item = null) {
-
-      if (($item === null) && (count($this->itemtypes) > 0)) {
-         throw new Exception('Implementation error: header requires an item');
-      }
-      if ($item !== null) {
-         if (!isset($this->itemtypes[$item->getType()])) {
-            throw new Exception('Implementation error: type mismatch between header and cell');
-         }
-         $this->getTable()->addItemType($item->getType(), $this->itemtypes[$item->getType()]);
-      }
-   }
+    /**
+     * @param $itemtype
+     * @param $title         (default '')
+    **/
+    public function setItemType($itemtype, $title = '')
+    {
+        $this->itemtypes[$itemtype] = $title;
+    }
 
 
-   function getName() {
-      return $this->name;
-   }
+    /**
+     * @param $item      CommonDBTM object (default NULL)
+    **/
+    public function checkItemType(CommonDBTM $item = null)
+    {
+
+        if (($item === null) && (count($this->itemtypes) > 0)) {
+            throw new Exception('Implementation error: header requires an item');
+        }
+        if ($item !== null) {
+            if (!isset($this->itemtypes[$item->getType()])) {
+                throw new Exception('Implementation error: type mismatch between header and cell');
+            }
+            $this->getTable()->addItemType($item->getType(), $this->itemtypes[$item->getType()]);
+        }
+    }
 
 
-   /**
-    * @param $colSpan
-   **/
-   function setColSpan($colSpan) {
-      $this->colSpan = $colSpan;
-   }
+    public function getName()
+    {
+        return $this->name;
+    }
 
 
-   function addCell() {
-      $this->numberCells++;
-   }
+    /**
+     * @param $colSpan
+    **/
+    public function setColSpan($colSpan)
+    {
+        $this->colSpan = $colSpan;
+    }
 
 
-   function hasToDisplay() {
-      return ($this->numberCells > 0);
-   }
+    public function addCell()
+    {
+        $this->numberCells++;
+    }
 
 
-   function getColSpan() {
-      return $this->colSpan;
-   }
+    public function hasToDisplay()
+    {
+        return ($this->numberCells > 0);
+    }
 
 
-   /**
-    * @param boolean $with_content do we displaye the content ?
-    * @param boolean $main_header  main header (from table) or secondary (from group) ? (true by default)
-   **/
-   function displayTableHeader($with_content, $main_header = true) {
-
-      if ($main_header) {
-         echo "<th";
-      } else {
-         echo "<td class='subheader'";
-      }
-      echo " colspan='".$this->colSpan."'>";
-      if ($with_content) {
-         $this->displayContent();
-      } else {
-         echo "&nbsp;";
-      }
-      if ($main_header) {
-         echo "</th>";
-      } else {
-         echo "</td>";
-      }
-   }
+    public function getColSpan()
+    {
+        return $this->colSpan;
+    }
 
 
-   function getFather() {
-      return $this->father;
-   }
+    /**
+     * @param boolean $with_content do we displaye the content ?
+     * @param boolean $main_header  main header (from table) or secondary (from group) ? (true by default)
+    **/
+    public function displayTableHeader($with_content, $main_header = true)
+    {
+
+        if ($main_header) {
+            echo "<th";
+        } else {
+            echo "<td class='subheader'";
+        }
+        echo " colspan='".$this->colSpan."'>";
+        if ($with_content) {
+            $this->displayContent();
+        } else {
+            echo "&nbsp;";
+        }
+        if ($main_header) {
+            echo "</th>";
+        } else {
+            echo "</td>";
+        }
+    }
+
+
+    public function getFather()
+    {
+        return $this->father;
+    }
 }

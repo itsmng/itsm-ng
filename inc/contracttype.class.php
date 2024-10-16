@@ -31,14 +31,14 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class ContractType
-class ContractType extends CommonDropdown {
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Contract type', 'Contract types', $nb);
-   }
+class ContractType extends CommonDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Contract type', 'Contract types', $nb);
+    }
 }

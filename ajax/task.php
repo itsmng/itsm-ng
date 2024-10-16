@@ -36,26 +36,26 @@
 
 $AJAX_INCLUDE = 1;
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
 
 if (isset($_POST['tasktemplates_id']) && ($_POST['tasktemplates_id'] > 0)) {
-   $template = new TaskTemplate();
-   $template->getFromDB($_POST['tasktemplates_id']);
+    $template = new TaskTemplate();
+    $template->getFromDB($_POST['tasktemplates_id']);
 
-   if (DropdownTranslation::isDropdownTranslationActive()) {
-      $template->fields['content'] = DropdownTranslation::getTranslatedValue(
-         $template->getID(),
-         $template->getType(),
-         'content',
-         $_SESSION['glpilanguage'],
-         $template->fields['content']
-      );
-   }
+    if (DropdownTranslation::isDropdownTranslationActive()) {
+        $template->fields['content'] = DropdownTranslation::getTranslatedValue(
+            $template->getID(),
+            $template->getType(),
+            'content',
+            $_SESSION['glpilanguage'],
+            $template->fields['content']
+        );
+    }
 
-   $template->fields = array_map('html_entity_decode', $template->fields);
-   echo json_encode($template->fields);
+    $template->fields = array_map('html_entity_decode', $template->fields);
+    echo json_encode($template->fields);
 }

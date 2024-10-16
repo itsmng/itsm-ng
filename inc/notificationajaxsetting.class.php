@@ -31,100 +31,104 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  *  This class manages the ajax notifications settings
  */
-class NotificationAjaxSetting extends NotificationSetting {
-
-   static public function getTypeName($nb = 0) {
-      return __('Browser followups configuration');
-   }
-
-
-   public function getEnableLabel() {
-      return __('Enable followups from browser');
-   }
+class NotificationAjaxSetting extends NotificationSetting
+{
+    public static function getTypeName($nb = 0)
+    {
+        return __('Browser followups configuration');
+    }
 
 
-   static public function getMode() {
-      return Notification_NotificationTemplate::MODE_AJAX;
-   }
+    public function getEnableLabel()
+    {
+        return __('Enable followups from browser');
+    }
 
 
-   function showFormConfig() {
-      global $CFG_GLPI;
+    public static function getMode()
+    {
+        return Notification_NotificationTemplate::MODE_AJAX;
+    }
 
-     $sounds = [
-        'sound_a' => __('Sound') . ' A',
-        'sound_b' => __('Sound') . ' B',
-        'sound_c' => __('Sound') . ' C',
-        'sound_d' => __('Sound') . ' D',
-     ];
 
-      $form = [
-        'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-        'buttons' => [
-            [
-                'name'  => 'update',
-                'value' => __('Save'),
-                'type'  => 'submit',
-                'class' => 'btn btn-secondary'
-            ],
-            !$CFG_GLPI['notifications_ajax'] ? [] : [
-                'name' => 'test_ajax_send',
-                'value' => __('Send a test browser notification to you'),
-                'type' => 'submit',
-                'class' => 'btn btn-warning'
-            ]
-        ],
-        'content' => [
-            _n('Browser notification', 'Browser notifications', Session::getPluralNumber()) => [
-                'visible' => true,
-                'inputs' => !$CFG_GLPI['notifications_ajax'] ? [
-                    '' => [
-                        'content' => __('Notifications are disabled.') .
-                            "<a href='{$CFG_GLPI['root_doc']}/front/setup.notification.php'>" .
-                            __('See configuration') .  "</a>",
-                        'col_lg' => 12,
-                        'col_md' => 12,
-                    ]
-                ] : [
-                    [
-                        'type'    => 'hidden',
-                        'name'    => 'id',
-                        'value'   => 1,
-                    ],
-                    __('Default notification sound') => [
-                        'type'    => 'select',
-                        'name'    => 'notifications_ajax_sound',
-                        'value'   => $CFG_GLPI['notifications_ajax_sound'],
-                        'values' => [__('Disabled')] + $sounds,
-                        'col_lg' => 12,
-                        'col_md' => 12,
-                    ],
-                    __('Time to check for new notifications (in seconds)') => [
-                        'type'    => 'number',
-                        'name'    => 'notifications_ajax_check_interval',
-                        'value'   => $CFG_GLPI['notifications_ajax_check_interval'],
-                        'min'     => 5,
-                        'max'     => 120,
-                        'step'    => 5,
-                        'col_lg' => 6
-                    ],
-                    __('URL of the icon') => [
-                        'type'    => 'text',
-                        'name'    => 'notifications_ajax_icon_url',
-                        'value'   => $CFG_GLPI['notifications_ajax_icon_url'],
-                        'placeholder' => "{$CFG_GLPI['root_doc']}/pics/glpi.png",
-                        'col_lg' => 6,
-                    ],
-                ],
-            ]
-        ]
-      ];
-      renderTwigForm($form);
-   }
+    public function showFormConfig()
+    {
+        global $CFG_GLPI;
+
+        $sounds = [
+           'sound_a' => __('Sound') . ' A',
+           'sound_b' => __('Sound') . ' B',
+           'sound_c' => __('Sound') . ' C',
+           'sound_d' => __('Sound') . ' D',
+        ];
+
+        $form = [
+          'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+          'buttons' => [
+              [
+                  'name'  => 'update',
+                  'value' => __('Save'),
+                  'type'  => 'submit',
+                  'class' => 'btn btn-secondary'
+              ],
+              !$CFG_GLPI['notifications_ajax'] ? [] : [
+                  'name' => 'test_ajax_send',
+                  'value' => __('Send a test browser notification to you'),
+                  'type' => 'submit',
+                  'class' => 'btn btn-warning'
+              ]
+          ],
+          'content' => [
+              _n('Browser notification', 'Browser notifications', Session::getPluralNumber()) => [
+                  'visible' => true,
+                  'inputs' => !$CFG_GLPI['notifications_ajax'] ? [
+                      '' => [
+                          'content' => __('Notifications are disabled.') .
+                              "<a href='{$CFG_GLPI['root_doc']}/front/setup.notification.php'>" .
+                              __('See configuration') .  "</a>",
+                          'col_lg' => 12,
+                          'col_md' => 12,
+                      ]
+                  ] : [
+                      [
+                          'type'    => 'hidden',
+                          'name'    => 'id',
+                          'value'   => 1,
+                      ],
+                      __('Default notification sound') => [
+                          'type'    => 'select',
+                          'name'    => 'notifications_ajax_sound',
+                          'value'   => $CFG_GLPI['notifications_ajax_sound'],
+                          'values' => [__('Disabled')] + $sounds,
+                          'col_lg' => 12,
+                          'col_md' => 12,
+                      ],
+                      __('Time to check for new notifications (in seconds)') => [
+                          'type'    => 'number',
+                          'name'    => 'notifications_ajax_check_interval',
+                          'value'   => $CFG_GLPI['notifications_ajax_check_interval'],
+                          'min'     => 5,
+                          'max'     => 120,
+                          'step'    => 5,
+                          'col_lg' => 6
+                      ],
+                      __('URL of the icon') => [
+                          'type'    => 'text',
+                          'name'    => 'notifications_ajax_icon_url',
+                          'value'   => $CFG_GLPI['notifications_ajax_icon_url'],
+                          'placeholder' => "{$CFG_GLPI['root_doc']}/pics/glpi.png",
+                          'col_lg' => 6,
+                      ],
+                  ],
+              ]
+          ]
+        ];
+        renderTwigForm($form);
+    }
 }

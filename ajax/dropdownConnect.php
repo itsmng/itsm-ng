@@ -31,29 +31,29 @@
  */
 
 if (strpos($_SERVER['PHP_SELF'], "dropdownConnect.php")) {
-   include ('../inc/includes.php');
-   header("Content-Type: text/html; charset=UTF-8");
-   Html::header_nocache();
-} else if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    include('../inc/includes.php');
+    header("Content-Type: text/html; charset=UTF-8");
+    Html::header_nocache();
+} elseif (!defined('GLPI_ROOT')) {
+    die("Sorry. You can't access this file directly");
 }
 
 if (!isset($_POST['fromtype']) || !($fromitem = getItemForItemtype($_POST['fromtype']))) {
-   exit();
+    exit();
 }
 
 $fromitem->checkGlobal(UPDATE);
 
 $used = [];
 if (isset($_POST["used"])) {
-   $used = $_POST["used"];
+    $used = $_POST["used"];
 }
 $options = getItemByEntity(
-   $_POST['itemtype'],
-   $_POST["entity_restrict"]
+    $_POST['itemtype'],
+    $_POST["entity_restrict"]
 );
 if (isset($used[$_POST['itemtype']])) {
-   $options = array_diff_key($options, array_combine($used[$_POST['itemtype']], $used[$_POST['itemtype']]));
+    $options = array_diff_key($options, array_combine($used[$_POST['itemtype']], $used[$_POST['itemtype']]));
 }
 echo json_encode($options);
 // Computer_Item::dropdownConnect($_POST["itemtype"], $_POST['fromtype'], $_POST['myname'],

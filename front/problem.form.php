@@ -32,127 +32,162 @@
 
 use Glpi\Event;
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 if (empty($_GET["id"])) {
-   $_GET["id"] = '';
+    $_GET["id"] = '';
 }
 
 Session::checkLoginUser();
 
 $problem = new Problem();
 if (isset($_POST["add"])) {
-   $problem->check(-1, CREATE, $_POST);
+    $problem->check(-1, CREATE, $_POST);
 
-   if ($newID = $problem->add($_POST)) {
-      Event::log($newID, "problem", 4, "maintain",
-                 sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $_POST["name"]));
-      if ($_SESSION['glpibackcreated']) {
-         Html::redirect($problem->getLinkURL());
-      }
-   }
-   Html::back();
+    if ($newID = $problem->add($_POST)) {
+        Event::log(
+            $newID,
+            "problem",
+            4,
+            "maintain",
+            sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $_POST["name"])
+        );
+        if ($_SESSION['glpibackcreated']) {
+            Html::redirect($problem->getLinkURL());
+        }
+    }
+    Html::back();
 
-} else if (isset($_POST["delete"])) {
-   $problem->check($_POST["id"], DELETE);
+} elseif (isset($_POST["delete"])) {
+    $problem->check($_POST["id"], DELETE);
 
-   $problem->delete($_POST);
-   Event::log($_POST["id"], "problem", 4, "maintain",
-              //TRANS: %s is the user login
-              sprintf(__('%s deletes an item'), $_SESSION["glpiname"]));
-   $problem->redirectToList();
+    $problem->delete($_POST);
+    Event::log(
+        $_POST["id"],
+        "problem",
+        4,
+        "maintain",
+        //TRANS: %s is the user login
+        sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
+    );
+    $problem->redirectToList();
 
-} else if (isset($_POST["restore"])) {
-   $problem->check($_POST["id"], DELETE);
+} elseif (isset($_POST["restore"])) {
+    $problem->check($_POST["id"], DELETE);
 
-   $problem->restore($_POST);
-   Event::log($_POST["id"], "problem", 4, "maintain",
-              //TRANS: %s is the user login
-              sprintf(__('%s restores an item'), $_SESSION["glpiname"]));
-   $problem->redirectToList();
+    $problem->restore($_POST);
+    Event::log(
+        $_POST["id"],
+        "problem",
+        4,
+        "maintain",
+        //TRANS: %s is the user login
+        sprintf(__('%s restores an item'), $_SESSION["glpiname"])
+    );
+    $problem->redirectToList();
 
-} else if (isset($_POST["purge"])) {
-   $problem->check($_POST["id"], PURGE);
+} elseif (isset($_POST["purge"])) {
+    $problem->check($_POST["id"], PURGE);
 
-   $problem->delete($_POST, 1);
-   Event::log($_POST["id"], "problem", 4, "maintain",
-              //TRANS: %s is the user login
-              sprintf(__('%s purges an item'), $_SESSION["glpiname"]));
-   $problem->redirectToList();
+    $problem->delete($_POST, 1);
+    Event::log(
+        $_POST["id"],
+        "problem",
+        4,
+        "maintain",
+        //TRANS: %s is the user login
+        sprintf(__('%s purges an item'), $_SESSION["glpiname"])
+    );
+    $problem->redirectToList();
 
-} else if (isset($_POST["update"])) {
-   $problem->check($_POST["id"], UPDATE);
+} elseif (isset($_POST["update"])) {
+    $problem->check($_POST["id"], UPDATE);
 
-   $problem->update($_POST);
-   Event::log($_POST["id"], "problem", 4, "maintain",
-              //TRANS: %s is the user login
-              sprintf(__('%s updates an item'), $_SESSION["glpiname"]));
+    $problem->update($_POST);
+    Event::log(
+        $_POST["id"],
+        "problem",
+        4,
+        "maintain",
+        //TRANS: %s is the user login
+        sprintf(__('%s updates an item'), $_SESSION["glpiname"])
+    );
 
-   // Copy solution to KB redirect to KB
-   if (isset($_POST['_sol_to_kb']) && $_POST['_sol_to_kb']) {
-      Html::redirect(KnowbaseItem::getFormURL()."?id=new&item_itemtype=Problem&item_items_id=". $_POST["id"]);
-   } else {
-      Html::back();
-   }
+    // Copy solution to KB redirect to KB
+    if (isset($_POST['_sol_to_kb']) && $_POST['_sol_to_kb']) {
+        Html::redirect(KnowbaseItem::getFormURL()."?id=new&item_itemtype=Problem&item_items_id=". $_POST["id"]);
+    } else {
+        Html::back();
+    }
 
-} else if (isset($_POST['addme_observer'])) {
-   $problem->check($_POST['problems_id'], READ);
-   $input = array_merge(Toolbox::addslashes_deep($problem->fields), [
-      'id' => $_POST['problems_id'],
-      '_itil_observer' => [
-         '_type' => "user",
-         'users_id' => Session::getLoginUserID(),
-         'use_notification' => 1,
-      ]
-   ]);
-   $problem->update($input);
-   Event::log($_POST['problems_id'], "problem", 4, "maintain",
-              //TRANS: %s is the user login
-              sprintf(__('%s adds an actor'), $_SESSION["glpiname"]));
-   Html::redirect($problem->getFormURLWithID($_POST['problems_id']));
+} elseif (isset($_POST['addme_observer'])) {
+    $problem->check($_POST['problems_id'], READ);
+    $input = array_merge(Toolbox::addslashes_deep($problem->fields), [
+       'id' => $_POST['problems_id'],
+       '_itil_observer' => [
+          '_type' => "user",
+          'users_id' => Session::getLoginUserID(),
+          'use_notification' => 1,
+       ]
+    ]);
+    $problem->update($input);
+    Event::log(
+        $_POST['problems_id'],
+        "problem",
+        4,
+        "maintain",
+        //TRANS: %s is the user login
+        sprintf(__('%s adds an actor'), $_SESSION["glpiname"])
+    );
+    Html::redirect($problem->getFormURLWithID($_POST['problems_id']));
 
-} else if (isset($_POST['addme_assign'])) {
-   $problem_user = new Problem_User();
-   $problem->check($_POST['problems_id'], READ);
-   $input = ['problems_id'       => $_POST['problems_id'],
-                  'users_id'         => Session::getLoginUserID(),
-                  'use_notification' => 1,
-                  'type'             => CommonITILActor::ASSIGN];
-   $problem_user->add($input);
-   Event::log($_POST['problems_id'], "problem", 4, "maintain",
-              //TRANS: %s is the user login
-              sprintf(__('%s adds an actor'), $_SESSION["glpiname"]));
-   Html::redirect($problem->getFormURLWithID($_POST['problems_id']));
-} else if (isset($_POST['delete_document'])) {
-   $problem->getFromDB((int)$_POST['problems_id']);
-   $doc = new Document();
-   $doc->getFromDB(intval($_POST['documents_id']));
-   if ($doc->can($doc->getID(), UPDATE)) {
-      $document_item = new Document_Item;
-      $found_document_items = $document_item->find([
-         $problem->getAssociatedDocumentsCriteria(),
-         'documents_id' => $doc->getID()
-      ]);
-      foreach ($found_document_items  as $item) {
-         $document_item->delete(Toolbox::addslashes_deep($item), true);
-      }
-   }
-   Html::back();
+} elseif (isset($_POST['addme_assign'])) {
+    $problem_user = new Problem_User();
+    $problem->check($_POST['problems_id'], READ);
+    $input = ['problems_id'       => $_POST['problems_id'],
+                   'users_id'         => Session::getLoginUserID(),
+                   'use_notification' => 1,
+                   'type'             => CommonITILActor::ASSIGN];
+    $problem_user->add($input);
+    Event::log(
+        $_POST['problems_id'],
+        "problem",
+        4,
+        "maintain",
+        //TRANS: %s is the user login
+        sprintf(__('%s adds an actor'), $_SESSION["glpiname"])
+    );
+    Html::redirect($problem->getFormURLWithID($_POST['problems_id']));
+} elseif (isset($_POST['delete_document'])) {
+    $problem->getFromDB((int)$_POST['problems_id']);
+    $doc = new Document();
+    $doc->getFromDB(intval($_POST['documents_id']));
+    if ($doc->can($doc->getID(), UPDATE)) {
+        $document_item = new Document_Item();
+        $found_document_items = $document_item->find([
+           $problem->getAssociatedDocumentsCriteria(),
+           'documents_id' => $doc->getID()
+        ]);
+        foreach ($found_document_items as $item) {
+            $document_item->delete(Toolbox::addslashes_deep($item), true);
+        }
+    }
+    Html::back();
 } else {
-   Html::header(Problem::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "helpdesk", "problem");
-   $problem->display($_REQUEST);
+    Html::header(Problem::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "helpdesk", "problem");
+    $problem->display($_REQUEST);
 
-   if (isset($_GET['id']) && ($_GET['id'] > 0) && isset($_GET['_sol_to_kb'])) {
-      Ajax::createIframeModalWindow(
-         'savetokb',
-         KnowbaseItem::getFormURL() . '?_in_modal=1&item_itemtype=Problem&item_items_id=' . $_GET['id'],
-         [
-            'title'         => __('Save solution to the knowledge base'),
-            'reloadonclose' => false,
+    if (isset($_GET['id']) && ($_GET['id'] > 0) && isset($_GET['_sol_to_kb'])) {
+        Ajax::createIframeModalWindow(
+            'savetokb',
+            KnowbaseItem::getFormURL() . '?_in_modal=1&item_itemtype=Problem&item_items_id=' . $_GET['id'],
+            [
+              'title'         => __('Save solution to the knowledge base'),
+              'reloadonclose' => false,
          ]
-      );
-      echo Html::scriptBlock('$(function() {' . Html::jsGetElementbyID('savetokb') . '.dialog("open"); });');
-   }
+        );
+        echo Html::scriptBlock('$(function() {' . Html::jsGetElementbyID('savetokb') . '.dialog("open"); });');
+    }
 
-   Html::footer();
+    Html::footer();
 }

@@ -31,159 +31,178 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class DeviceDrive
-class DeviceDrive extends CommonDevice {
+class DeviceDrive extends CommonDevice
+{
+    protected static $forward_entity_to = ['Item_DeviceDrive', 'Infocom'];
 
-   static protected $forward_entity_to = ['Item_DeviceDrive', 'Infocom'];
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Drive', 'Drives', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Drive', 'Drives', $nb);
-   }
 
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
+        return array_merge(
+            parent::getAdditionalFields(),
+            [
+              __('Writing ability') => [
+                 'name'  => 'is_writer',
+                 'type'  => 'checkbox',
+                 'value' => $this->fields['is_writer'],
+              ],
+              __('Speed') => [
+                 'name'  => 'speed',
+                 'type'  => 'text',
+                 'value' => $this->fields['speed'],
+              ],
+              __('Interface') => [
+                 'name'  => 'interfacetypes_id',
+                 'type'  => 'select',
+                 'values' => getOptionForItems('InterfaceType'),
+                 'value' => $this->fields['interfacetypes_id'],
+                 'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType'),
+              ],
+              _n('Model', 'Models', 1) => [
+                 'name'  => 'devicedrivemodels_id',
+                 'type'  => 'select',
+                 'values' => getOptionForItems('DeviceDriveModel'),
+                 'value' => $this->fields['devicedrivemodels_id'],
+                 'actions' => getItemActionButtons(['info', 'add'], 'DeviceDriveModel'),
 
-      return array_merge(
-         parent::getAdditionalFields(),
-         [
-            __('Writing ability') => [
-               'name'  => 'is_writer',
-               'type'  => 'checkbox',
-               'value' => $this->fields['is_writer'],
-            ],
-            __('Speed') => [
-               'name'  => 'speed',
-               'type'  => 'text',
-               'value' => $this->fields['speed'],
-            ],
-            __('Interface') => [
-               'name'  => 'interfacetypes_id',
-               'type'  => 'select',
-               'values' => getOptionForItems('InterfaceType'),
-               'value' => $this->fields['interfacetypes_id'],
-               'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType'),
-            ],
-            _n('Model', 'Models', 1) => [
-               'name'  => 'devicedrivemodels_id',
-               'type'  => 'select',
-               'values' => getOptionForItems('DeviceDriveModel'),
-               'value' => $this->fields['devicedrivemodels_id'],
-               'actions' => getItemActionButtons(['info', 'add'], 'DeviceDriveModel'),
-
-            ]
+              ]
          ]
-      );
-   }
+        );
+    }
 
 
-   function rawSearchOptions() {
-      $tab = parent::rawSearchOptions();
+    public function rawSearchOptions()
+    {
+        $tab = parent::rawSearchOptions();
 
-      $tab[] = [
-         'id'                 => '12',
-         'table'              => $this->getTable(),
-         'field'              => 'is_writer',
-         'name'               => __('Writing ability'),
-         'datatype'           => 'bool'
-      ];
+        $tab[] = [
+           'id'                 => '12',
+           'table'              => $this->getTable(),
+           'field'              => 'is_writer',
+           'name'               => __('Writing ability'),
+           'datatype'           => 'bool'
+        ];
 
-      $tab[] = [
-         'id'                 => '13',
-         'table'              => $this->getTable(),
-         'field'              => 'speed',
-         'name'               => __('Speed'),
-         'datatype'           => 'string',
-         'autocomplete'       => true,
-      ];
+        $tab[] = [
+           'id'                 => '13',
+           'table'              => $this->getTable(),
+           'field'              => 'speed',
+           'name'               => __('Speed'),
+           'datatype'           => 'string',
+           'autocomplete'       => true,
+        ];
 
-      $tab[] = [
-         'id'                 => '14',
-         'table'              => 'glpi_interfacetypes',
-         'field'              => 'name',
-         'name'               => __('Interface'),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '14',
+           'table'              => 'glpi_interfacetypes',
+           'field'              => 'name',
+           'name'               => __('Interface'),
+           'datatype'           => 'dropdown'
+        ];
 
-      $tab[] = [
-         'id'                 => '15',
-         'table'              => 'glpi_devicedrivemodels',
-         'field'              => 'name',
-         'name'               => _n('Model', 'Models', 1),
-         'datatype'           => 'dropdown'
-      ];
+        $tab[] = [
+           'id'                 => '15',
+           'table'              => 'glpi_devicedrivemodels',
+           'field'              => 'name',
+           'name'               => _n('Model', 'Models', 1),
+           'datatype'           => 'dropdown'
+        ];
 
-      return $tab;
-   }
-
-
-   static function getHTMLTableHeader($itemtype, HTMLTableBase $base,
-                                      HTMLTableSuperHeader $super = null,
-                                      HTMLTableHeader $father = null, array $options = []) {
-
-      $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
-
-      if ($column == $father) {
-         return $father;
-      }
-
-      switch ($itemtype) {
-         case 'Computer' :
-            Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
-            $base->addHeader('devicedrive_writer', __('Writing ability'), $super, $father);
-            $base->addHeader('devicedrive_speed', __('Speed'), $super, $father);
-            InterfaceType::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
-            break;
-      }
-
-   }
+        return $tab;
+    }
 
 
-   function getHTMLTableCellForItem(HTMLTableRow $row = null, CommonDBTM $item = null,
-                                    HTMLTableCell $father = null, array $options = []) {
+    public static function getHTMLTableHeader(
+        $itemtype,
+        HTMLTableBase $base,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
+        array $options = []
+    ) {
 
-      $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
+        $column = parent::getHTMLTableHeader($itemtype, $base, $super, $father, $options);
 
-      if ($column == $father) {
-         return $father;
-      }
+        if ($column == $father) {
+            return $father;
+        }
 
-      switch ($item->getType()) {
-         case 'Computer' :
-            Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
-            if ($this->fields["is_writer"]) {
-               $row->addCell($row->getHeaderByName('devicedrive_writer'),
-                             Dropdown::getYesNo($this->fields["is_writer"]), $father);
-            }
+        switch ($itemtype) {
+            case 'Computer':
+                Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
+                $base->addHeader('devicedrive_writer', __('Writing ability'), $super, $father);
+                $base->addHeader('devicedrive_speed', __('Speed'), $super, $father);
+                InterfaceType::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
+                break;
+        }
 
-            if ($this->fields["speed"]) {
-               $row->addCell($row->getHeaderByName('devicedrive_speed'),
-                             $this->fields["speed"], $father);
-            }
-
-            InterfaceType::getHTMLTableCellsForItem($row, $this, null, $options);
-      }
-   }
-
-
-   /**
-    * Criteria used for import function
-    *
-    * @see CommonDevice::getImportCriteria()
-    *
-    * @since 0.84
-   **/
-   function getImportCriteria() {
-
-      return ['designation'       => 'equal',
-                   'manufacturers_id'  => 'equal',
-                   'interfacetypes_id' => 'equal'];
-   }
+    }
 
 
-   static function getIcon() {
-      return "fas fa-hdd";
-   }
+    public function getHTMLTableCellForItem(
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
+        array $options = []
+    ) {
+
+        $column = parent::getHTMLTableCellForItem($row, $item, $father, $options);
+
+        if ($column == $father) {
+            return $father;
+        }
+
+        switch ($item->getType()) {
+            case 'Computer':
+                Manufacturer::getHTMLTableCellsForItem($row, $this, null, $options);
+                if ($this->fields["is_writer"]) {
+                    $row->addCell(
+                        $row->getHeaderByName('devicedrive_writer'),
+                        Dropdown::getYesNo($this->fields["is_writer"]),
+                        $father
+                    );
+                }
+
+                if ($this->fields["speed"]) {
+                    $row->addCell(
+                        $row->getHeaderByName('devicedrive_speed'),
+                        $this->fields["speed"],
+                        $father
+                    );
+                }
+
+                InterfaceType::getHTMLTableCellsForItem($row, $this, null, $options);
+        }
+    }
+
+
+    /**
+     * Criteria used for import function
+     *
+     * @see CommonDevice::getImportCriteria()
+     *
+     * @since 0.84
+    **/
+    public function getImportCriteria()
+    {
+
+        return ['designation'       => 'equal',
+                     'manufacturers_id'  => 'equal',
+                     'interfacetypes_id' => 'equal'];
+    }
+
+
+    public static function getIcon()
+    {
+        return "fas fa-hdd";
+    }
 }

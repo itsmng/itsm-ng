@@ -31,45 +31,46 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class Group_Reminder
 /// @since 0.83
-class Group_Reminder extends CommonDBRelation {
+class Group_Reminder extends CommonDBRelation
+{
+    // From CommonDBRelation
+    public static $itemtype_1          = 'Reminder';
+    public static $items_id_1          = 'reminders_id';
+    public static $itemtype_2          = 'Group';
+    public static $items_id_2          = 'groups_id';
 
-   // From CommonDBRelation
-   static public $itemtype_1          = 'Reminder';
-   static public $items_id_1          = 'reminders_id';
-   static public $itemtype_2          = 'Group';
-   static public $items_id_2          = 'groups_id';
-
-   static public $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
-   static public $logs_for_item_2     = false;
+    public static $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
+    public static $logs_for_item_2     = false;
 
 
-   /**
-    * Get groups for a reminder
-    *
-    * @param integer $reminders_id ID of the reminder
-    *
-    * @return array of groups linked to a reminder
-   **/
-   static function getGroups($reminders_id) {
-      global $DB;
+    /**
+     * Get groups for a reminder
+     *
+     * @param integer $reminders_id ID of the reminder
+     *
+     * @return array of groups linked to a reminder
+    **/
+    public static function getGroups($reminders_id)
+    {
+        global $DB;
 
-      $groups = [];
-      $iterator = $DB->request([
-         'FROM'   => self::getTable(),
-         'WHERE'  => [
-            'reminders_id' => $reminders_id
-         ]
-      ]);
+        $groups = [];
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'reminders_id' => $reminders_id
+           ]
+        ]);
 
-      while ($data = $iterator->next()) {
-         $groups[$data['groups_id']][] = $data;
-      }
-      return $groups;
-   }
+        while ($data = $iterator->next()) {
+            $groups[$data['groups_id']][] = $data;
+        }
+        return $groups;
+    }
 
 }

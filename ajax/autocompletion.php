@@ -32,9 +32,9 @@
 
 // Include plugin if it is a plugin table
 if (!strstr($_GET['itemtype'], "Plugin")) {
-   $AJAX_INCLUDE = 1;
+    $AJAX_INCLUDE = 1;
 }
-include ('../inc/includes.php');
+include('../inc/includes.php');
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
@@ -42,32 +42,32 @@ Session::checkLoginUser();
 
 // Security
 if (!isset($_GET['itemtype']) || !($item = getItemForItemtype($_GET['itemtype']))) {
-   exit();
+    exit();
 }
 
 $item->getEmpty();
 $table = $item->getTable();
 // Security
 if (!isset($item->fields[$_GET['field']]) || !$item->canView()) {
-   exit();
+    exit();
 }
 
 // Security : check whitelist
 $field_so = $item->getSearchOptionByField('field', $_GET['field'], $item->getTable());
 $can_autocomplete = array_key_exists('autocomplete', $field_so) && $field_so['autocomplete'];
 if (!$can_autocomplete) {
-   exit();
+    exit();
 }
 
 $entity = [];
-if (isset($_GET['entity_restrict']) && $_GET['entity_restrict']>=0) {
-   if ($item->isEntityAssign()) {
-      $entity['entities_id'] = $_GET['entity_restrict'];
-   }
+if (isset($_GET['entity_restrict']) && $_GET['entity_restrict'] >= 0) {
+    if ($item->isEntityAssign()) {
+        $entity['entities_id'] = $_GET['entity_restrict'];
+    }
 }
 
-if (isset($_GET['user_restrict']) && $_GET['user_restrict']>0) {
-   $entity['users_id'] = $_GET['user_restrict'];
+if (isset($_GET['user_restrict']) && $_GET['user_restrict'] > 0) {
+    $entity['users_id'] = $_GET['user_restrict'];
 }
 
 $iterator = $DB->request([
@@ -84,11 +84,11 @@ $iterator = $DB->request([
 $values = [];
 
 if (count($iterator)) {
-   while ($data = $iterator->next()) {
-      $values[] = Html::entity_decode_deep($data[$_GET['field']]);
-   }
+    while ($data = $iterator->next()) {
+        $values[] = Html::entity_decode_deep($data[$_GET['field']]);
+    }
 }
 
 if (count($values)) {
-   echo json_encode($values);
+    echo json_encode($values);
 }

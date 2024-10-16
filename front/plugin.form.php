@@ -34,7 +34,7 @@
  * @since 0.84
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkRight("config", UPDATE);
 
@@ -44,24 +44,24 @@ $id     = isset($_POST['id']) && is_numeric($_POST['id']) ? (int)$_POST['id'] : 
 $action = $id > 0 && isset($_POST['action']) ? $_POST['action'] : null;
 
 switch ($action) {
-   case 'install':
-      $plugin->install($id);
-      break;
-   case 'activate':
-      $plugin->activate($id);
-      break;
-   case 'unactivate':
-      $plugin->unactivate($id);
-      break;
-   case 'uninstall':
-      $plugin->uninstall($id);
-      break;
-   case 'clean':
-      $plugin->clean($id);
-      break;
-   default:
-      Html::displayErrorAndDie('Lost');
-      break;
+    case 'install':
+        $plugin->install($id);
+        break;
+    case 'activate':
+        $plugin->activate($id);
+        break;
+    case 'unactivate':
+        $plugin->unactivate($id);
+        break;
+    case 'uninstall':
+        $plugin->uninstall($id);
+        break;
+    case 'clean':
+        $plugin->clean($id);
+        break;
+    default:
+        Html::displayErrorAndDie('Lost');
+        break;
 }
 
 Html::back();

@@ -31,13 +31,14 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class EnclosureModel
-class EnclosureModel extends CommonDCModelDropdown {
-
-   static function getTypeName($nb = 0) {
-      return _n('Enclosure model', 'Enclosure models', $nb);
-   }
+class EnclosureModel extends CommonDCModelDropdown
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Enclosure model', 'Enclosure models', $nb);
+    }
 }

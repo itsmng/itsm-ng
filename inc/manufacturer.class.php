@@ -31,50 +31,53 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class Manufacturer
 /// @todo study if we should integrate getHTMLTableHeader and getHTMLTableCellsForItem ...
-class Manufacturer extends CommonDropdown {
-
-   public $can_be_translated = false;
-
-
-   static function getTypeName($nb = 0) {
-      return _n('Manufacturer', 'Manufacturers', $nb);
-   }
+class Manufacturer extends CommonDropdown
+{
+    public $can_be_translated = false;
 
 
-   function displaySpecificTypeField($ID, $field = []) {
-
-      switch ($field['type']) {
-         case 'registeredIDChooser':
-            RegisteredID::showChildsForItemForm($this, '_registeredID');
-            break;
-      }
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Manufacturer', 'Manufacturers', $nb);
+    }
 
 
-   function getAdditionalFields() {
+    public function displaySpecificTypeField($ID, $field = [])
+    {
 
-      return [
-         RegisteredID::getTypeName(Session::getPluralNumber()) => [
-            'name'  => 'none',
-            'type'  => 'multiSelect',
-            'inputs' => [
-               [
-                  'name' => 'current_registeredID_type',
-                  'type' => 'select',
-                  'values' => array_merge([ Dropdown::EMPTY_VALUE ], RegisteredID::getRegisteredIDTypes()),
-               ],
-               [
-                  'name' => 'current_registeredID',
-                  'type' => 'text',
-                  'size' => 30,
-               ],
-            ],
-            'getInputAdd' => <<<JS
+        switch ($field['type']) {
+            case 'registeredIDChooser':
+                RegisteredID::showChildsForItemForm($this, '_registeredID');
+                break;
+        }
+    }
+
+
+    public function getAdditionalFields()
+    {
+
+        return [
+           RegisteredID::getTypeName(Session::getPluralNumber()) => [
+              'name'  => 'none',
+              'type'  => 'multiSelect',
+              'inputs' => [
+                 [
+                    'name' => 'current_registeredID_type',
+                    'type' => 'select',
+                    'values' => array_merge([ Dropdown::EMPTY_VALUE ], RegisteredID::getRegisteredIDTypes()),
+                 ],
+                 [
+                    'name' => 'current_registeredID',
+                    'type' => 'text',
+                    'size' => 30,
+                 ],
+              ],
+              'getInputAdd' => <<<JS
                function () {
                   if (!$('input[name="current_registeredID"]').val()) {
                      return;
@@ -87,145 +90,166 @@ class Manufacturer extends CommonDropdown {
                   return {values, title};
                }
             JS,
-            'values' => getOptionsWithNameForItem('RegisteredID',
-               ['itemtype' => $this::class, 'items_id' => $this->getID()],
-               ['_registeredID_type' => 'device_type', '_registeredID' => 'name']
-            ),
-            'col_lg' => 12,
-            'col_md' => 12,
-         ],
-      ];
-   }
+              'values' => getOptionsWithNameForItem(
+                  'RegisteredID',
+                  ['itemtype' => $this::class, 'items_id' => $this->getID()],
+                  ['_registeredID_type' => 'device_type', '_registeredID' => 'name']
+              ),
+              'col_lg' => 12,
+              'col_md' => 12,
+           ],
+        ];
+    }
 
 
-   /**
-    * @since 0.85
-   **/
-   function post_workOnItem() {
+    /**
+     * @since 0.85
+    **/
+    public function post_workOnItem()
+    {
 
-      if ((isset($this->input['_registeredID']))
-          && (is_array($this->input['_registeredID']))) {
+        if ((isset($this->input['_registeredID']))
+            && (is_array($this->input['_registeredID']))) {
 
-         $input = ['itemtype' => $this->getType(),
-                        'items_id' => $this->getID()];
+            $input = ['itemtype' => $this->getType(),
+                           'items_id' => $this->getID()];
 
-         foreach ($this->input['_registeredID'] as $id => $registered_id) {
-            $id_object     = new RegisteredID();
-            $input['name'] = $registered_id;
+            foreach ($this->input['_registeredID'] as $id => $registered_id) {
+                $id_object     = new RegisteredID();
+                $input['name'] = $registered_id;
 
-            if (isset($this->input['_registeredID_type'][$id])) {
-               $input['device_type'] = $this->input['_registeredID_type'][$id];
-            } else {
-               $input['device_type'] = '';
+                if (isset($this->input['_registeredID_type'][$id])) {
+                    $input['device_type'] = $this->input['_registeredID_type'][$id];
+                } else {
+                    $input['device_type'] = '';
+                }
+                //$input['device_type'] = '';
+                if ($id < 0) {
+                    if (!empty($registered_id)) {
+                        $id_object->add($input);
+                    }
+                } else {
+                    if (!empty($registered_id)) {
+                        $input['id'] = $id;
+                        $id_object->update($input);
+                        unset($input['id']);
+                    } else {
+                        $id_object->delete(['id' => $id]);
+                    }
+                }
             }
-            //$input['device_type'] = '';
-            if ($id < 0) {
-               if (!empty($registered_id)) {
-                  $id_object->add($input);
-               }
-            } else {
-               if (!empty($registered_id)) {
-                  $input['id'] = $id;
-                  $id_object->update($input);
-                  unset($input['id']);
-               } else {
-                  $id_object->delete(['id' => $id]);
-               }
-            }
-         }
-         unset($this->input['_registeredID']);
-      }
-   }
+            unset($this->input['_registeredID']);
+        }
+    }
 
 
-   function post_addItem() {
+    public function post_addItem()
+    {
 
-      $this->post_workOnItem();
-      parent::post_addItem();
-   }
-
-
-   function post_updateItem($history = 1) {
-
-      $this->post_workOnItem();
-      parent::post_updateItem($history);
-   }
+        $this->post_workOnItem();
+        parent::post_addItem();
+    }
 
 
-   /**
-    * @param null|string $old_name  Old name (need to be addslashes)
-    *
-    * @return null|string new addslashes name
-   **/
-   static function processName($old_name) {
+    public function post_updateItem($history = 1)
+    {
 
-      if ($old_name == null) {
-         return $old_name;
-      }
-
-      $rulecollection = new RuleDictionnaryManufacturerCollection();
-      $output         = [];
-      $output         = $rulecollection->processAllRules(["name" => stripslashes($old_name)],
-                                                         $output, []);
-      if (isset($output["name"])) {
-         return $output["name"];
-      }
-      return $old_name;
-   }
+        $this->post_workOnItem();
+        parent::post_updateItem($history);
+    }
 
 
-   function cleanDBonPurge() {
-      // Rules use manufacturer intread of manufacturers_id
-      Rule::cleanForItemAction($this, 'manufacturer');
-   }
+    /**
+     * @param null|string $old_name  Old name (need to be addslashes)
+     *
+     * @return null|string new addslashes name
+    **/
+    public static function processName($old_name)
+    {
+
+        if ($old_name == null) {
+            return $old_name;
+        }
+
+        $rulecollection = new RuleDictionnaryManufacturerCollection();
+        $output         = [];
+        $output         = $rulecollection->processAllRules(
+            ["name" => stripslashes($old_name)],
+            $output,
+            []
+        );
+        if (isset($output["name"])) {
+            return $output["name"];
+        }
+        return $old_name;
+    }
 
 
-   /**
-    * @since 0.84
-    *
-    * @param $itemtype
-    * @param $base                  HTMLTableBase object
-    * @param $super                 HTMLTableSuperHeader object (default NULL)
-    * @param $father                HTMLTableHeader object (default NULL)
-    * @param $options      array
-   **/
-   static function getHTMLTableHeader($itemtype, HTMLTableBase $base,
-                                      HTMLTableSuperHeader $super = null,
-                                      HTMLTableHeader $father = null, array $options = []) {
-
-      $column_name = __CLASS__;
-
-      if (isset($options['dont_display'][$column_name])) {
-         return;
-      }
-
-      $base->addHeader($column_name, Manufacturer::getTypeName(1), $super, $father);
-   }
+    public function cleanDBonPurge()
+    {
+        // Rules use manufacturer intread of manufacturers_id
+        Rule::cleanForItemAction($this, 'manufacturer');
+    }
 
 
-   /**
-    * @since 0.84
-    *
-    * @param $row                HTMLTableRow object (default NULL)
-    * @param $item               CommonDBTM object (default NULL)
-    * @param $father             HTMLTableCell object (default NULL)
-    * @param $options   array
-   **/
-   static function getHTMLTableCellsForItem(HTMLTableRow $row = null, CommonDBTM $item = null,
-                                            HTMLTableCell $father = null, array $options = []) {
+    /**
+     * @since 0.84
+     *
+     * @param $itemtype
+     * @param $base                  HTMLTableBase object
+     * @param $super                 HTMLTableSuperHeader object (default NULL)
+     * @param $father                HTMLTableHeader object (default NULL)
+     * @param $options      array
+    **/
+    public static function getHTMLTableHeader(
+        $itemtype,
+        HTMLTableBase $base,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
+        array $options = []
+    ) {
 
-      $column_name = __CLASS__;
+        $column_name = __CLASS__;
 
-      if (isset($options['dont_display'][$column_name])) {
-         return;
-      }
+        if (isset($options['dont_display'][$column_name])) {
+            return;
+        }
 
-      if (!empty($item->fields["manufacturers_id"])) {
-         $row->addCell($row->getHeaderByName($column_name),
-                       Dropdown::getDropdownName("glpi_manufacturers",
-                                                 $item->fields["manufacturers_id"]),
-                       $father);
-      }
-   }
+        $base->addHeader($column_name, Manufacturer::getTypeName(1), $super, $father);
+    }
+
+
+    /**
+     * @since 0.84
+     *
+     * @param $row                HTMLTableRow object (default NULL)
+     * @param $item               CommonDBTM object (default NULL)
+     * @param $father             HTMLTableCell object (default NULL)
+     * @param $options   array
+    **/
+    public static function getHTMLTableCellsForItem(
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
+        array $options = []
+    ) {
+
+        $column_name = __CLASS__;
+
+        if (isset($options['dont_display'][$column_name])) {
+            return;
+        }
+
+        if (!empty($item->fields["manufacturers_id"])) {
+            $row->addCell(
+                $row->getHeaderByName($column_name),
+                Dropdown::getDropdownName(
+                    "glpi_manufacturers",
+                    $item->fields["manufacturers_id"]
+                ),
+                $father
+            );
+        }
+    }
 
 }

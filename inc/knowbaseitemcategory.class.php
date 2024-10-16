@@ -31,39 +31,42 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class KnowbaseItemCategory
-class KnowbaseItemCategory extends CommonTreeDropdown {
+class KnowbaseItemCategory extends CommonTreeDropdown
+{
+    // From CommonDBTM
+    public $dohistory          = true;
+    public $can_be_translated  = true;
 
-   // From CommonDBTM
-   public $dohistory          = true;
-   public $can_be_translated  = true;
+    public static $rightname          = 'knowbasecategory';
 
-   static $rightname          = 'knowbasecategory';
+    public function getAdditionalFields()
+    {
 
-   function getAdditionalFields() {
+        return [
+           __('As child of') => [
+              'name'  => $this->getForeignKeyField(),
+              'type'  => 'select',
+              'values'  => getOptionForItems('KnowbaseItemCategory', ['NOT' => ['id' => $this->getID()]]),
+              'value' => $this->fields[$this->getForeignKeyField()],
+           ]
+        ];
+    }
 
-      return [
-         __('As child of') => [
-            'name'  => $this->getForeignKeyField(),
-            'type'  => 'select',
-            'values'  => getOptionForItems('KnowbaseItemCategory', ['NOT' => ['id' => $this->getID()]]),
-            'value' => $this->fields[$this->getForeignKeyField()],
-         ]
-      ];
-   }
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Knowledge base category', 'Knowledge base categories', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Knowledge base category', 'Knowledge base categories', $nb);
-   }
+    public static function canView()
+    {
+        if (Session::getCurrentInterface() == "helpdesk") {
+            return true;
+        }
 
-   public static function canView() {
-      if (Session::getCurrentInterface() == "helpdesk") {
-         return true;
-      }
-
-      return parent::canView();
-   }
+        return parent::canView();
+    }
 }

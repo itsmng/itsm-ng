@@ -31,114 +31,118 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /// Class KnowbaseItem_Comment
 /// since version 9.2
-class KnowbaseItem_Comment extends CommonDBTM {
+class KnowbaseItem_Comment extends CommonDBTM
+{
+    public static function getTypeName($nb = 0)
+    {
+        return _n('Comment', 'Comments', $nb);
+    }
 
-   static function getTypeName($nb = 0) {
-      return _n('Comment', 'Comments', $nb);
-   }
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
+        if (!$item->canUpdateItem()) {
+            return '';
+        }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      if (!$item->canUpdateItem()) {
-         return '';
-      }
+        $nb = 0;
+        if ($_SESSION['glpishow_count_on_tabs']) {
+            $where = [];
+            if ($item->getType() == KnowbaseItem::getType()) {
+                $where = [
+                   'knowbaseitems_id' => $item->getID(),
+                   'language'         => null
+                ];
+            } else {
+                $where = [
+                   'knowbaseitems_id' => $item->fields['knowbaseitems_id'],
+                   'language'         => $item->fields['language']
+                ];
+            }
 
-      $nb = 0;
-      if ($_SESSION['glpishow_count_on_tabs']) {
-         $where = [];
-         if ($item->getType() == KnowbaseItem::getType()) {
+            $nb = countElementsInTable(
+                'glpi_knowbaseitems_comments',
+                $where
+            );
+        }
+        return self::createTabEntry(self::getTypeName($nb), $nb);
+    }
+
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+        self::showForItem($item, $withtemplate);
+        return true;
+    }
+
+    /**
+     * Show linked items of a knowbase item
+     *
+     * @param $item                     CommonDBTM object
+     * @param $withtemplate    integer  withtemplate param (default 0)
+    **/
+    public static function showForItem(CommonDBTM $item, $withtemplate = 0)
+    {
+        global $CFG_GLPI;
+
+        // Total Number of comments
+        if ($item->getType() == KnowbaseItem::getType()) {
             $where = [
                'knowbaseitems_id' => $item->getID(),
                'language'         => null
             ];
-         } else {
+        } else {
             $where = [
                'knowbaseitems_id' => $item->fields['knowbaseitems_id'],
                'language'         => $item->fields['language']
             ];
-         }
+        }
 
-         $nb = countElementsInTable(
+        $kbitem_id = $where['knowbaseitems_id'];
+        $kbitem = new KnowbaseItem();
+        $kbitem->getFromDB($kbitem_id);
+
+        $number = countElementsInTable(
             'glpi_knowbaseitems_comments',
             $where
-         );
-      }
-      return self::createTabEntry(self::getTypeName($nb), $nb);
-   }
+        );
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      self::showForItem($item, $withtemplate);
-      return true;
-   }
+        $cancomment = $kbitem->canComment();
+        if ($cancomment) {
+            echo "<div class='firstbloc'>";
 
-   /**
-    * Show linked items of a knowbase item
-    *
-    * @param $item                     CommonDBTM object
-    * @param $withtemplate    integer  withtemplate param (default 0)
-   **/
-   static function showForItem(CommonDBTM $item, $withtemplate = 0) {
-      global $CFG_GLPI;
+            $lang = null;
+            if ($item->getType() == KnowbaseItemTranslation::getType()) {
+                $lang = $item->fields['language'];
+            }
 
-      // Total Number of comments
-      if ($item->getType() == KnowbaseItem::getType()) {
-         $where = [
-            'knowbaseitems_id' => $item->getID(),
-            'language'         => null
-         ];
-      } else {
-         $where = [
-            'knowbaseitems_id' => $item->fields['knowbaseitems_id'],
-            'language'         => $item->fields['language']
-         ];
-      }
+            echo self::getCommentForm($kbitem_id, $lang);
+            echo "</div>";
+        }
 
-      $kbitem_id = $where['knowbaseitems_id'];
-      $kbitem = new KnowbaseItem();
-      $kbitem->getFromDB($kbitem_id);
+        // No comments in database
+        if ($number < 1) {
+            $no_txt = __('No comments');
+            echo "<div class='center'>";
+            echo "<table class='tab_cadre_fixe' aria-label='Base item'>";
+            echo "<tr><th>$no_txt</th></tr>";
+            echo "</table>";
+            echo "</div>";
+            return;
+        }
 
-      $number = countElementsInTable(
-         'glpi_knowbaseitems_comments',
-         $where
-       );
+        // Output events
+        echo "<div class='forcomments timeline_history'>";
+        echo "<ul class='comments left'>";
+        $comments = self::getCommentsForKbItem($where['knowbaseitems_id'], $where['language']);
+        $html = self::displayComments($comments, $cancomment);
+        echo $html;
 
-      $cancomment = $kbitem->canComment();
-      if ($cancomment) {
-         echo "<div class='firstbloc'>";
-
-         $lang = null;
-         if ($item->getType() == KnowbaseItemTranslation::getType()) {
-            $lang = $item->fields['language'];
-         }
-
-         echo self::getCommentForm($kbitem_id, $lang);
-         echo "</div>";
-      }
-
-      // No comments in database
-      if ($number < 1) {
-         $no_txt = __('No comments');
-         echo "<div class='center'>";
-         echo "<table class='tab_cadre_fixe' aria-label='Base item'>";
-         echo "<tr><th>$no_txt</th></tr>";
-         echo "</table>";
-         echo "</div>";
-         return;
-      }
-
-      // Output events
-      echo "<div class='forcomments timeline_history'>";
-      echo "<ul class='comments left'>";
-      $comments = self::getCommentsForKbItem($where['knowbaseitems_id'], $where['language']);
-      $html = self::displayComments($comments, $cancomment);
-      echo $html;
-
-      echo "</ul>";
-      echo "<script type='text/javascript'>
+        echo "</ul>";
+        echo "<script type='text/javascript'>
               $(function() {
                  var _bindForm = function(form) {
                      form.find('input[type=reset]').on('click', function(e) {
@@ -174,7 +178,7 @@ class KnowbaseItem_Comment extends CommonDBTM {
                           _this.parents('.h_item').after(_form);
                        },
                        error: function() { ".
-                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
+                            Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
                        }
                     });
                  });
@@ -208,7 +212,7 @@ class KnowbaseItem_Comment extends CommonDBTM {
                            .append(_form);
                        },
                        error: function() { ".
-                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
+                            Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!'))."
                        }
                     });
                  });
@@ -217,205 +221,211 @@ class KnowbaseItem_Comment extends CommonDBTM {
               });
             </script>";
 
-            echo "</div>";
-   }
+        echo "</div>";
+    }
 
-   /**
-    * Gat all comments for specified KB entry
-    *
-    * @param integer $kbitem_id KB entry ID
-    * @param string  $lang      Requested language
-    * @param integer $parent    Parent ID (defaults to 0)
-    *
-    * @return array
-    */
-   static public function getCommentsForKbItem($kbitem_id, $lang, $parent = null) {
-      global $DB;
+    /**
+     * Gat all comments for specified KB entry
+     *
+     * @param integer $kbitem_id KB entry ID
+     * @param string  $lang      Requested language
+     * @param integer $parent    Parent ID (defaults to 0)
+     *
+     * @return array
+     */
+    public static function getCommentsForKbItem($kbitem_id, $lang, $parent = null)
+    {
+        global $DB;
 
-      $where = [
-         'knowbaseitems_id'  => $kbitem_id,
-         'language'          => $lang,
-         'parent_comment_id' => $parent
-      ];
+        $where = [
+           'knowbaseitems_id'  => $kbitem_id,
+           'language'          => $lang,
+           'parent_comment_id' => $parent
+        ];
 
-      $db_comments = $DB->request(
-         'glpi_knowbaseitems_comments',
-         $where + ['ORDER' => 'id ASC']
-      );
+        $db_comments = $DB->request(
+            'glpi_knowbaseitems_comments',
+            $where + ['ORDER' => 'id ASC']
+        );
 
-      $comments = [];
-      foreach ($db_comments as $db_comment) {
-         $db_comment['answers'] = self::getCommentsForKbItem($kbitem_id, $lang, $db_comment['id']);
-         $comments[] = $db_comment;
-      }
+        $comments = [];
+        foreach ($db_comments as $db_comment) {
+            $db_comment['answers'] = self::getCommentsForKbItem($kbitem_id, $lang, $db_comment['id']);
+            $comments[] = $db_comment;
+        }
 
-      return $comments;
-   }
+        return $comments;
+    }
 
-   /**
-    * Display comments
-    *
-    * @param array   $comments   Comments
-    * @param boolean $cancomment Whether user can comment or not
-    * @param integer $level      Current level, defaults to 0
-    *
-    * @return string
-    */
-   static public function displayComments($comments, $cancomment, $level = 0) {
-      $html = '';
-      foreach ($comments as $comment) {
-         $user = new User();
-         $user->getFromDB($comment['users_id']);
+    /**
+     * Display comments
+     *
+     * @param array   $comments   Comments
+     * @param boolean $cancomment Whether user can comment or not
+     * @param integer $level      Current level, defaults to 0
+     *
+     * @return string
+     */
+    public static function displayComments($comments, $cancomment, $level = 0)
+    {
+        $html = '';
+        foreach ($comments as $comment) {
+            $user = new User();
+            $user->getFromDB($comment['users_id']);
 
-         $html .= "<li class='comment" . ($level > 0 ? ' subcomment' : '') . "' id='kbcomment{$comment['id']}'>";
-         $html .= "<div class='h_item left'>";
-         if ($level === 0) {
-            $html .= '<hr/>';
-         }
-         $html .= "<div class='h_info'>";
-         $html .= "<div class='h_date'>".Html::convDateTime($comment['date_creation'])."</div>";
-         $html .= "<div class='h_user'>";
-         $html .= "<div class='tooltip_picture_border'>";
-         $html .= "<img class='user_picture' alt='' src='".
-                User::getThumbnailURLForPicture($user->fields['picture'])."'>";
-         $html .= "</div>";
-         $html .= "<span class='h_user_name'>";
-         $userdata = getUserName($user->getID(), 2);
-         $html .= $user->getLink()."&nbsp;";
-         $html .= Html::showToolTip($userdata["comment"],
-                                ['link' => $userdata['link'], 'display' => false]);
-         $html .= "</span>";
-         $html .= "</div>"; // h_user
-         $html .= "</div>"; //h_info
+            $html .= "<li class='comment" . ($level > 0 ? ' subcomment' : '') . "' id='kbcomment{$comment['id']}'>";
+            $html .= "<div class='h_item left'>";
+            if ($level === 0) {
+                $html .= '<hr/>';
+            }
+            $html .= "<div class='h_info'>";
+            $html .= "<div class='h_date'>".Html::convDateTime($comment['date_creation'])."</div>";
+            $html .= "<div class='h_user'>";
+            $html .= "<div class='tooltip_picture_border'>";
+            $html .= "<img class='user_picture' alt='' src='".
+                   User::getThumbnailURLForPicture($user->fields['picture'])."'>";
+            $html .= "</div>";
+            $html .= "<span class='h_user_name'>";
+            $userdata = getUserName($user->getID(), 2);
+            $html .= $user->getLink()."&nbsp;";
+            $html .= Html::showToolTip(
+                $userdata["comment"],
+                ['link' => $userdata['link'], 'display' => false]
+            );
+            $html .= "</span>";
+            $html .= "</div>"; // h_user
+            $html .= "</div>"; //h_info
 
-         $html .= "<div class='h_content KnowbaseItemComment'>";
-         $html .= "<div class='displayed_content'>";
+            $html .= "<div class='h_content KnowbaseItemComment'>";
+            $html .= "<div class='displayed_content'>";
 
-         if ($cancomment) {
-            if (Session::getLoginUserID() == $comment['users_id']) {
-               $html .= "<span class='fa fa-pencil-square-o edit_item'
+            if ($cancomment) {
+                if (Session::getLoginUserID() == $comment['users_id']) {
+                    $html .= "<span class='fa fa-pencil-square-o edit_item'
                   data-kbitem_id='{$comment['knowbaseitems_id']}'
                   data-lang='{$comment['language']}'
                   data-id='{$comment['id']}'></span>";
+                }
             }
-         }
 
-         $html .= "<div class='item_content'>";
-         $html .= "<p>{$comment['comment']}</p>";
-         $html .= "</div>";
-         $html .= "</div>"; // displayed_content
+            $html .= "<div class='item_content'>";
+            $html .= "<p>{$comment['comment']}</p>";
+            $html .= "</div>";
+            $html .= "</div>"; // displayed_content
 
-         if ($cancomment) {
-            $html .= "<span class='add_answer' title='" . __('Add an answer') . "'
+            if ($cancomment) {
+                $html .= "<span class='add_answer' title='" . __('Add an answer') . "'
                data-kbitem_id='{$comment['knowbaseitems_id']}'
                data-lang='{$comment['language']}'
                data-id='{$comment['id']}'></span>";
-         }
+            }
 
-         $html .= "</div>"; //end h_content
-         $html .= "</div>";
+            $html .= "</div>"; //end h_content
+            $html .= "</div>";
 
-         if (isset($comment['answers']) && count($comment['answers']) > 0) {
+            if (isset($comment['answers']) && count($comment['answers']) > 0) {
 
-            $html .= "<input type='checkbox' id='toggle_{$comment['id']}'
+                $html .= "<input type='checkbox' id='toggle_{$comment['id']}'
                              class='toggle_comments' checked='checked'>";
-            $html .= "<label for='toggle_{$comment['id']}' class='toggle_label'>&nbsp;</label>";
-            $html .= "<ul>";
-            $html .= self::displayComments($comment['answers'], $cancomment, $level + 1);
-            $html .= "</ul>";
-         }
+                $html .= "<label for='toggle_{$comment['id']}' class='toggle_label'>&nbsp;</label>";
+                $html .= "<ul>";
+                $html .= self::displayComments($comment['answers'], $cancomment, $level + 1);
+                $html .= "</ul>";
+            }
 
-         $html .= "</li>";
-      }
-      return $html;
-   }
+            $html .= "</li>";
+        }
+        return $html;
+    }
 
-   /**
-    * Get comment form
-    *
-    * @param integer       $kbitem_id Knowbase item ID
-    * @param string        $lang      Related item language
-    * @param false|integer $edit      Comment id to edit, or false
-    * @param false|integer $answer    Comment id to answer to, or false
-    * @return string
-    */
-   static public function getCommentForm($kbitem_id, $lang = null, $edit = false, $answer = false) {
-      $content = '';
-      if ($edit !== false) {
-         $comment = new KnowbaseItem_Comment();
-         $comment->getFromDB($edit);
-         $content = $comment->fields['comment'];
-      }
+    /**
+     * Get comment form
+     *
+     * @param integer       $kbitem_id Knowbase item ID
+     * @param string        $lang      Related item language
+     * @param false|integer $edit      Comment id to edit, or false
+     * @param false|integer $answer    Comment id to answer to, or false
+     * @return string
+     */
+    public static function getCommentForm($kbitem_id, $lang = null, $edit = false, $answer = false)
+    {
+        $content = '';
+        if ($edit !== false) {
+            $comment = new KnowbaseItem_Comment();
+            $comment->getFromDB($edit);
+            $content = $comment->fields['comment'];
+        }
 
-      $form = [
-         'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-         'buttons' => [
-            [
-               'type'  => 'submit',
-               'name'  => 'add',
-               'value' => _sx('button', 'Add'),
-               'class' => 'btn btn-secondary',
-            ],
-            ($edit !== false || $answer !== false) ? [
-               'type'  => 'reset',
-               'name'  => 'cancel',
-               'value' => __('Cancel'),
-               'class' => 'btn btn-secondary',
-            ] : [],
-            ($edit !== false) ? [
-               'type'  => 'submit',
-               'name'  => 'edit',
-               'value' => _sx('button', 'Edit'),
-               'class' => 'btn btn-secondary',
-            ] : [],
-         ],
-         'content' => [
-            ($edit === false ? __('New comment') : __('Edit comment')) => [
-               'visible' => true,
-               'inputs' => [
-                  [
-                     'type'  => 'hidden',
-                     'name'  => 'knowbaseitems_id',
-                     'value' => $kbitem_id,
-                  ],
-                  ($lang !== null) ? [
-                     'type'  => 'hidden',
-                     'name'  => 'language',
-                     'value' => $lang,
-                  ] : [],
-                  ($answer !== false) ? [
-                     'type'  => 'hidden',
-                     'name'  => 'parent_comment_id',
-                     'value' => $answer,
-                  ] : [],
-                  ($edit !== false) ? [
-                     'type'  => 'hidden',
-                     'name'  => 'id',
-                     'value' => $edit,
-                  ] : [],
-                  _n('Comment', 'Comments', 1) => [
-                     'type'  => 'textarea',
-                     'name'  => 'comment',
-                     'value' => $content,
-                     'required' => true,
-                     'col_lg' => 12,
-                     'col_md' => 12,
-                  ],
-               ]
-            ]
-         ]
-      ];
-      renderTwigForm($form);
-   }
+        $form = [
+           'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+           'buttons' => [
+              [
+                 'type'  => 'submit',
+                 'name'  => 'add',
+                 'value' => _sx('button', 'Add'),
+                 'class' => 'btn btn-secondary',
+              ],
+              ($edit !== false || $answer !== false) ? [
+                 'type'  => 'reset',
+                 'name'  => 'cancel',
+                 'value' => __('Cancel'),
+                 'class' => 'btn btn-secondary',
+              ] : [],
+              ($edit !== false) ? [
+                 'type'  => 'submit',
+                 'name'  => 'edit',
+                 'value' => _sx('button', 'Edit'),
+                 'class' => 'btn btn-secondary',
+              ] : [],
+           ],
+           'content' => [
+              ($edit === false ? __('New comment') : __('Edit comment')) => [
+                 'visible' => true,
+                 'inputs' => [
+                    [
+                       'type'  => 'hidden',
+                       'name'  => 'knowbaseitems_id',
+                       'value' => $kbitem_id,
+                    ],
+                    ($lang !== null) ? [
+                       'type'  => 'hidden',
+                       'name'  => 'language',
+                       'value' => $lang,
+                    ] : [],
+                    ($answer !== false) ? [
+                       'type'  => 'hidden',
+                       'name'  => 'parent_comment_id',
+                       'value' => $answer,
+                    ] : [],
+                    ($edit !== false) ? [
+                       'type'  => 'hidden',
+                       'name'  => 'id',
+                       'value' => $edit,
+                    ] : [],
+                    _n('Comment', 'Comments', 1) => [
+                       'type'  => 'textarea',
+                       'name'  => 'comment',
+                       'value' => $content,
+                       'required' => true,
+                       'col_lg' => 12,
+                       'col_md' => 12,
+                    ],
+                 ]
+              ]
+           ]
+        ];
+        renderTwigForm($form);
+    }
 
-   function prepareInputForAdd($input) {
-      if (!isset($input["users_id"])) {
-         $input["users_id"] = 0;
-         if ($uid = Session::getLoginUserID()) {
-            $input["users_id"] = $uid;
-         }
-      }
+    public function prepareInputForAdd($input)
+    {
+        if (!isset($input["users_id"])) {
+            $input["users_id"] = 0;
+            if ($uid = Session::getLoginUserID()) {
+                $input["users_id"] = $uid;
+            }
+        }
 
-      return $input;
-   }
+        return $input;
+    }
 }

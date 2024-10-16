@@ -31,76 +31,85 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
 /**
  * @since 0.84
 **/
-class SsoVariable extends CommonDropdown {
+class SsoVariable extends CommonDropdown
+{
+    public static $rightname = 'config';
 
-   static $rightname = 'config';
-
-   public $can_be_translated = false;
-
-
-   static function getTypeName($nb = 0) {
-
-      return _n('Field storage of the login in the HTTP request',
-                'Fields storage of the login in the HTTP request', $nb);
-   }
+    public $can_be_translated = false;
 
 
-   static function canCreate() {
-      return static::canUpdate();
-   }
+    public static function getTypeName($nb = 0)
+    {
+
+        return _n(
+            'Field storage of the login in the HTTP request',
+            'Fields storage of the login in the HTTP request',
+            $nb
+        );
+    }
 
 
-   /**
-    * @since 0.85
-   **/
-   static function canPurge() {
-      return static::canUpdate();
-   }
+    public static function canCreate()
+    {
+        return static::canUpdate();
+    }
 
 
-   function cleanRelationData() {
+    /**
+     * @since 0.85
+    **/
+    public static function canPurge()
+    {
+        return static::canUpdate();
+    }
 
-      parent::cleanRelationData();
 
-      if ($this->isUsedInAuth()) {
-         $newval = (isset($this->input['_replace_by']) ? $this->input['_replace_by'] : 0);
+    public function cleanRelationData()
+    {
 
-         Config::setConfigurationValues(
-            'core',
-            [
-               'ssovariables_id' => $newval,
+        parent::cleanRelationData();
+
+        if ($this->isUsedInAuth()) {
+            $newval = (isset($this->input['_replace_by']) ? $this->input['_replace_by'] : 0);
+
+            Config::setConfigurationValues(
+                'core',
+                [
+                  'ssovariables_id' => $newval,
             ]
-         );
-      }
-   }
+            );
+        }
+    }
 
 
-   function isUsed() {
+    public function isUsed()
+    {
 
-      if (parent::isUsed()) {
-         return true;
-      }
+        if (parent::isUsed()) {
+            return true;
+        }
 
-      return $this->isUsedInAuth();
-   }
+        return $this->isUsedInAuth();
+    }
 
 
-   /**
-    * Check if variable is used in auth process.
-    *
-    * @return boolean
-    */
-   private function isUsedInAuth() {
+    /**
+     * Check if variable is used in auth process.
+     *
+     * @return boolean
+     */
+    private function isUsedInAuth()
+    {
 
-      $config_values = Config::getConfigurationValues('core', ['ssovariables_id']);
+        $config_values = Config::getConfigurationValues('core', ['ssovariables_id']);
 
-      return array_key_exists('ssovariables_id', $config_values)
-         && $config_values['ssovariables_id'] == $this->fields['id'];
-   }
+        return array_key_exists('ssovariables_id', $config_values)
+           && $config_values['ssovariables_id'] == $this->fields['id'];
+    }
 }

@@ -34,7 +34,7 @@
  * @since 9.2
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 Session::checkLoginUser();
 $tmpFiles = ItsmngUploadHandler::storeTmpFiles($_FILES);

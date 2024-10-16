@@ -30,12 +30,14 @@
  * ---------------------------------------------------------------------
  */
 
-include ('../inc/includes.php');
+include('../inc/includes.php');
 
 if (!$CFG_GLPI['notifications_mailing']
-    || !countElementsInTable('glpi_notifications',
-                             ['itemtype' => 'User', 'event' => 'passwordforget', 'is_active' => 1])) {
-   exit();
+    || !countElementsInTable(
+        'glpi_notifications',
+        ['itemtype' => 'User', 'event' => 'passwordforget', 'is_active' => 1]
+    )) {
+    exit();
 }
 
 $user = new User();
@@ -46,19 +48,19 @@ Html::simpleHeader(__('Forgotten password?'));
 // REQUEST needed : GET on first access / POST on submit form
 if (isset($_REQUEST['password_forget_token'])) {
 
-   if (isset($_POST['password'])) {
-      $user->showUpdateForgottenPassword($_REQUEST);
-   } else {
-      User::showPasswordForgetChangeForm($_REQUEST['password_forget_token']);
-   }
+    if (isset($_POST['password'])) {
+        $user->showUpdateForgottenPassword($_REQUEST);
+    } else {
+        User::showPasswordForgetChangeForm($_REQUEST['password_forget_token']);
+    }
 
 } else {
 
-   if (isset($_POST['email'])) {
-      $user->showForgetPassword($_POST['email']);
-   } else {
-      User::showPasswordForgetRequestForm();
-   }
+    if (isset($_POST['email'])) {
+        $user->showForgetPassword($_POST['email']);
+    } else {
+        User::showPasswordForgetRequestForm();
+    }
 }
 
 Html::nullFooter();

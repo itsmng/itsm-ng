@@ -35,65 +35,66 @@
  *
  * @return bool for success (will die for most error)
  **/
-function update956to957() {
-   /** @global Migration $migration */
-   global $DB, $migration, $CFG_GLPI;
+function update956to957()
+{
+    /** @global Migration $migration */
+    global $DB, $migration, $CFG_GLPI;
 
-   $current_config   = Config::getConfigurationValues('core');
-   $updateresult     = true;
-   $ADDTODISPLAYPREF = [];
+    $current_config   = Config::getConfigurationValues('core');
+    $updateresult     = true;
+    $ADDTODISPLAYPREF = [];
 
-   //TRANS: %s is the number of new version
-   $migration->displayTitle(sprintf(__('Update to %s'), '9.5.7'));
-   $migration->setVersion('9.5.7');
+    //TRANS: %s is the number of new version
+    $migration->displayTitle(sprintf(__('Update to %s'), '9.5.7'));
+    $migration->setVersion('9.5.7');
 
-   /* Fix null `date` in ITIL tables */
-   $itil_tables = ['glpi_changes', 'glpi_problems', 'glpi_tickets'];
-   foreach ($itil_tables as $itil_table) {
-      $migration->addPostQuery(
-         $DB->buildUpdate(
-            $itil_table,
-            ['date' => new QueryExpression($DB->quoteName($itil_table . '.date_creation'))],
-            ['date' => null]
-         )
-      );
-   }
-   /* /Fix null `date` in ITIL tables */
+    /* Fix null `date` in ITIL tables */
+    $itil_tables = ['glpi_changes', 'glpi_problems', 'glpi_tickets'];
+    foreach ($itil_tables as $itil_table) {
+        $migration->addPostQuery(
+            $DB->buildUpdate(
+                $itil_table,
+                ['date' => new QueryExpression($DB->quoteName($itil_table . '.date_creation'))],
+                ['date' => null]
+            )
+        );
+    }
+    /* /Fix null `date` in ITIL tables */
 
-   /** Replace -1 values for glpi_events.items_id field */
-   $migration->addPostQuery(
-       $DB->buildUpdate(
-           'glpi_events',
-           ['items_id' => '0'],
-           ['items_id' => '-1', 'type' => 'system']
-       )
-   );
-   /** /Replace -1 values for glpi_events.items_id field */
+    /** Replace -1 values for glpi_events.items_id field */
+    $migration->addPostQuery(
+        $DB->buildUpdate(
+            'glpi_events',
+            ['items_id' => '0'],
+            ['items_id' => '-1', 'type' => 'system']
+        )
+    );
+    /** /Replace -1 values for glpi_events.items_id field */
 
-   /** Replace -1 values for glpi_networkportaliases.networkports_id_alias field */
-   $migration->addPostQuery(
-       $DB->buildUpdate(
-           'glpi_networkportaliases',
-           ['networkports_id_alias' => '0'],
-           ['networkports_id_alias' => '-1']
-       )
-   );
-   /** /Replace -1 values for glpi_networkportaliases.networkports_id_alias field */
+    /** Replace -1 values for glpi_networkportaliases.networkports_id_alias field */
+    $migration->addPostQuery(
+        $DB->buildUpdate(
+            'glpi_networkportaliases',
+            ['networkports_id_alias' => '0'],
+            ['networkports_id_alias' => '-1']
+        )
+    );
+    /** /Replace -1 values for glpi_networkportaliases.networkports_id_alias field */
 
-   /** Replace -1 values for glpi_items_operatingsystems table foreign key fields */
-   foreach (['operatingsystems_id', 'operatingsystemversions_id', 'operatingsystemservicepacks_id'] as $item_os_fkey) {
-      $migration->addPostQuery(
-          $DB->buildUpdate(
-              'glpi_items_operatingsystems',
-              [$item_os_fkey => '0'],
-              [$item_os_fkey => '-1']
-          )
-      );
-   }
-   /** /Replace -1 values for glpi_items_operatingsystems table foreign key fields */
+    /** Replace -1 values for glpi_items_operatingsystems table foreign key fields */
+    foreach (['operatingsystems_id', 'operatingsystemversions_id', 'operatingsystemservicepacks_id'] as $item_os_fkey) {
+        $migration->addPostQuery(
+            $DB->buildUpdate(
+                'glpi_items_operatingsystems',
+                [$item_os_fkey => '0'],
+                [$item_os_fkey => '-1']
+            )
+        );
+    }
+    /** /Replace -1 values for glpi_items_operatingsystems table foreign key fields */
 
-   // ************ Keep it at the end **************
-   $migration->executeMigration();
+    // ************ Keep it at the end **************
+    $migration->executeMigration();
 
-   return $updateresult;
+    return $updateresult;
 }
