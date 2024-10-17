@@ -395,7 +395,8 @@ hr {
 
 #page {
    padding: 8px 8px 20px 8px;
-   min-height: 80%;
+   height: 100vh;
+   overflow-y: auto;
 
    .form #page {
       max-width: 1400px;
