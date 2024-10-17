@@ -4936,10 +4936,10 @@ class User extends CommonDBTM
         // Same check but for the account activation dates
         if (
             (
-            $user->fields['begin_date'] !== null
+                $user->fields['begin_date'] !== null
               && $user->fields['begin_date'] < $_SESSION['glpi_currenttime']
             ) || (
-            $user->fields['end_date'] !== null
+                $user->fields['end_date'] !== null
             && $user->fields['end_date'] > $_SESSION['glpi_currenttime']
             )
         ) {

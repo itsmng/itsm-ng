@@ -19,5 +19,8 @@ jobs:
       - name: Run composer install
         run: composer install
 
-      - name: Run PHP Unit tests
+      - name: Run PHP linter 
+        run: vendor/bin/php-cs-fixer check .
+
+      - name: Run Twig linter
         run: vendor/bin/twig-linter lint  templates

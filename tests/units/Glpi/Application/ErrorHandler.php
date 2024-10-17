@@ -49,7 +49,7 @@ class ErrorHandler extends \GLPITestCase
         $data = [
            [
               'error_call'           => function () {
-                file_get_contents('this-file-does-not-exists');
+                  file_get_contents('this-file-does-not-exists');
               },
               'expected_log_level'   => LogLevel::WARNING,
               'expected_msg_pattern' => $log_prefix
@@ -58,7 +58,7 @@ class ErrorHandler extends \GLPITestCase
            ],
            [
               'error_call'           => function () {
-                trigger_error('this is a warning', E_USER_WARNING);
+                  trigger_error('this is a warning', E_USER_WARNING);
               },
               'expected_log_level'   => LogLevel::WARNING,
               'expected_msg_pattern' => $log_prefix
@@ -67,7 +67,7 @@ class ErrorHandler extends \GLPITestCase
            ],
            [
               'error_call'           => function () {
-                trigger_error('some notice', E_USER_NOTICE);
+                  trigger_error('some notice', E_USER_NOTICE);
               },
               'expected_log_level'   => LogLevel::NOTICE,
               'expected_msg_pattern' => $log_prefix
@@ -76,7 +76,7 @@ class ErrorHandler extends \GLPITestCase
            ],
            [
               'error_call'           => function () {
-                trigger_error('this method is deprecated', E_USER_DEPRECATED);
+                  trigger_error('this method is deprecated', E_USER_DEPRECATED);
               },
               'expected_log_level'   => LogLevel::NOTICE,
               'expected_msg_pattern' => $log_prefix
@@ -100,11 +100,11 @@ class ErrorHandler extends \GLPITestCase
             $data[] = [
                'error_call'           => function () {
                    $inst = new class () {
-                    public function nonstatic()
-                    {
-                    }
+                       public function nonstatic()
+                       {
+                       }
                    };
-                    $inst::nonstatic();
+                   $inst::nonstatic();
                },
                'expected_log_level'   => LogLevel::NOTICE,
                'expected_msg_pattern' => $log_prefix
@@ -113,7 +113,7 @@ class ErrorHandler extends \GLPITestCase
             ];
             $data[] = [
                'error_call'           => function () {
-                $a = $b;
+                   $a = $b;
                },
                'expected_log_level'   => LogLevel::NOTICE,
                'expected_msg_pattern' => $log_prefix
