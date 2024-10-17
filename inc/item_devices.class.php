@@ -376,7 +376,7 @@ class Item_Devices extends CommonDBRelation
                 ];
 
             case 'locations_id':
-                include_once GLPI_ROOT . "src/twig/twig.utils.php";
+                include_once GLPI_ROOT . "/src/twig/twig.utils.php";
                 return [
                    'long name'  => Location::getTypeName(1),
                    'short name' => Location::getTypeName(1),
