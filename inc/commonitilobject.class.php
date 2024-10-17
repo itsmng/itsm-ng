@@ -1483,7 +1483,7 @@ abstract class CommonITILObject extends CommonDBTM
             !is_null($this->fields['begin_waiting_date'])
             && ($key = array_search('status', $this->updates)) !== false
             && (
-               $this->oldvalues['status'] == self::WAITING
+                $this->oldvalues['status'] == self::WAITING
             // From solved to another state than closed
             || (
                 in_array($this->oldvalues["status"], $this->getSolvedStatusArray())
@@ -7866,14 +7866,14 @@ abstract class CommonITILObject extends CommonDBTM
                         Entity::getUsedConfig('anonymize_support_agents', $entity)
                         && Session::getCurrentInterface() == 'helpdesk'
                         && (
-                           $item['type'] == "Solution"
+                            $item['type'] == "Solution"
                         || is_subclass_of($item['type'], "CommonITILTask")
                         || (
-                         $item['type'] == "ITILFollowup"
+                            $item['type'] == "ITILFollowup"
                         && ITILFollowup::getById($item_i['id'])->isFromSupportAgent()
                         )
                         || (
-                         $item['type'] == "Document_Item"
+                            $item['type'] == "Document_Item"
                         && Document_Item::getById($item_i['documents_item_id'])->isFromSupportAgent()
                         )
                         )
