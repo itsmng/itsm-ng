@@ -43,8 +43,8 @@ function update151to200(): bool
     $current_config   = Config::getConfigurationValues('core');
     $updateresult     = true;
 
-    $migration->displayTitle(sprintf(__('Update to %s'), '2.0.0_rc4'));
-    $migration->setVersion('2.0.0_rc4');
+    $migration->displayTitle(sprintf(__('Update to %s'), '2.0.0'));
+    $migration->setVersion('2.0.0');
 
     $userModifications = [
         'menu_favorite' => "longtext default '{}'",
