@@ -1037,14 +1037,6 @@ function update94to95()
         $DB->queryOrDie($query, "add table glpi_dashboards_rights");
     }
 
-    // migration from previous development versions
-    $dashboards = Config::getConfigurationValues('core', ['dashboards']);
-    if (count($dashboards)) {
-        $dashboards = $dashboards['dashboards'];
-        \Glpi\Dashboard\Dashboard::importFromJson($dashboards);
-        Config::deleteConfigurationValues('core', ['dashboards']);
-    }
-
     //delete prevous dashboards configuration (remove partial dev versions)
     Config::deleteConfigurationValues('core', [
        'default_dashboard_central',
