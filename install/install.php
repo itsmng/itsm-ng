@@ -5,6 +5,7 @@ define('GLPI_ROOT', realpath('..'));
 
 include_once(GLPI_ROOT . "/inc/based_config.php");
 include_once(GLPI_ROOT . "/inc/db.function.php");
+include_once(GLPI_ROOT . "/src/twig/twig.utils.php");
 
 $GLPI = new GLPI();
 $GLPI->initLogger();
@@ -144,8 +145,8 @@ switch ($step) {
                 $db_info = [];
                 if ($DB_list = $link->query(
                     "SELECT S.schema_name AS 'name', COUNT(T.table_name) AS 'table_count', DATE(MIN(T.create_time)) AS 'table_create', DATE(MAX(T.update_time)) AS 'table_update'
-                    FROM information_schema.tables AS T 
-                    RIGHT JOIN information_schema.schemata AS S 
+                    FROM information_schema.tables AS T
+                    RIGHT JOIN information_schema.schemata AS S
                     ON S.schema_name = T.table_schema
                     GROUP BY S.schema_name;"
                 )) {
@@ -266,7 +267,6 @@ switch ($step) {
 }
 
 try {
-    include_once(GLPI_ROOT . "/src/twig/twig.utils.php");
     renderTwigTemplate('install/index.twig', [
         'step' => ['number' => $step, 'progress' => $step / count($steps), 'name' => $steps_name[$step]],
         'header_data' => $header_data] + $twig_vars);
