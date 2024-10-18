@@ -1416,9 +1416,7 @@ div.chip > p {
 }
 
 .input-group {
-    flex: 1;
-    min-width: 200px; 
-    max-width: 100%;
+  flex-wrap: nowrap;
 }
 
 .select2-container {
