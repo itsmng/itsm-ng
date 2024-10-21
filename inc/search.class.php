@@ -2222,7 +2222,7 @@ class Search
         $p['as_map']       = 0;
         $p['criteria']     = [];
         $p['metacriteria'] = [];
-        $p['hide'] = true;
+        $p['hide'] = false;
         if (class_exists($itemtype)) {
             $p['target']       = $itemtype::getSearchURL();
         } else {
@@ -2243,11 +2243,11 @@ class Search
 
         $main_block_class = '';
         if ($p['mainform']) {
-            echo "<form aria-label='Searc Form $itemtype' name='searchform$itemtype' method='get' action='" . $p['target'] . "'>";
+            echo "<form aria-label='Search Form $itemtype' name='searchform$itemtype' method='get' action='" . $p['target'] . "'>";
         } else {
             $main_block_class = "sub_criteria";
         }
-        echo "<div id='searchcriteria' class='$main_block_class'" . ($p['hide'] ? " style='display: ;'" : "none") . ">";
+        echo "<div id='searchcriteria' class='$main_block_class w-100 w-md-50 mx-auto'" . ($p['hide'] ? "style='display: none;'" : "") . ">";
         $nbsearchcountvar      = 'nbcriteria' . strtolower($itemtype) . mt_rand();
         $searchcriteriatableid = 'criteriatable' . strtolower($itemtype) . mt_rand();
         // init criteria count
