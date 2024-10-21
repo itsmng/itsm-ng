@@ -1,55 +1,60 @@
-<nav id='menu' class="{{menu_small ? 'menu-close' : 'menu-open'}} d-flex flex-column space-between">
-    <div class="menu-list flex-grow-1">
-        <ul id="menu-content" class="menu-content collapse out">
-            {% for menu_name, data in menu|filter(data => data['show_menu']) %}
-            {% if menu_name =='favorite' or data['content']|filter(val => val['show_sub_menu']) is not empty %}
-                <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}} {{menu_favorite_on ? '' : 'hidden'}}' tabindex="0">
-                    <a href="#" aria-label="{{ menu_name | trans }}" class="nav-link {{menu[menu_name]['is_open'] ?: 'collapsed'}}" onclick="openMenu(this, '{{menu_name}}')" data-bs-toggle="collapse" data-bs-target="#submenu-{{menu_name}}" aria-expanded="false">
-                        <i class="bubble-icon fas {{menu[menu_name]['icon']}}" aria-hidden="true"></i>
-                        <span>{{data['title']}}</span>
-                    </a>
+<nav id='menu' class="{{menu_small ? 'menu-close' : 'menu-open'}}">
+    <div class="offcanvas-md offcanvas-start d-flex flex-column h-100" id="navOffCanvas" tabindex="-1">
+        <button class="navbar-toggler absolute ms-auto d-md-none p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#navOffCanvas" aria-controls="navbar" aria-label="Toggle navigation">
+            <i class="fa fa-times" title="menu"></i>
+        </button>
+        <div class="menu-list flex-grow-1">
+            <ul id="menu-content" class="menu-content collapse out">
+                {% for menu_name, data in menu|filter(data => data['show_menu']) %}
+                {% if menu_name =='favorite' or data['content']|filter(val => val['show_sub_menu']) is not empty %}
+                    <li title="{{data['title']}}" id='menu-{{menu_name}}' class='menu {{data['class']}} {{menu_favorite_on ? '' : 'hidden'}} w-md-100' tabindex="0">
+                        <a href="#" aria-label="{{ menu_name | trans }}" class="nav-link {{menu[menu_name]['is_open'] ?: 'collapsed'}}" onclick="openMenu(this, '{{menu_name}}')" data-bs-toggle="collapse" data-bs-target="#submenu-{{menu_name}}" aria-expanded="false">
+                            <i class="bubble-icon fas {{menu[menu_name]['icon']}}" aria-hidden="true"></i>
+                            <span>{{data['title']}}</span>
+                        </a>
 
-                    {% if data['show_sub_menu'] %}
-                        <ul class="sub-menu ssmenu collapse {{menu[menu_name]['is_open'] ? 'show' : ''}}" id='submenu-{{menu_name}}'>
+                        {% if data['show_sub_menu'] %}
+                            <ul class="sub-menu ssmenu collapse {{menu[menu_name]['is_open'] ? 'show' : ''}}" id='submenu-{{menu_name}}'>
 
-                            {% if menu_name == 'favorite' %}
-                                <p>{{'You can add your favorite section to this menu. To do this click on the cogwheel then click and the star next to the menu you wish to add as a favorite.'|trans}}</p>
+                                {% if menu_name == 'favorite' %}
+                                    <p>{{'You can add your favorite section to this menu. To do this click on the cogwheel then click and the star next to the menu you wish to add as a favorite.'|trans}}</p>
 
-                                {% for menu_name, data in menu|filter(data => data['show_menu']) %}
-                                    {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
-                                        {% if val['is_favorite'] %}
-                                            <li>
-                                                <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
-                                                    <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
-                                                    <span>{{val['title']}}</span>
-                                                    <i class="star-icon" title="add/remove favorite"></i>
-                                                </a>
-                                            </li>
-                                        {% endif %}
+                                    {% for menu_name, data in menu|filter(data => data['show_menu']) %}
+                                        {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
+                                            {% if val['is_favorite'] %}
+                                                <li>
+                                                    <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                                                        <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
+                                                        <span>{{val['title']}}</span>
+                                                        <i class="star-icon" title="add/remove favorite"></i>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
                                     {% endfor %}
-                                {% endfor %}
-                            {% endif %}
-                            {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
-                                {% if val.title and (access == 'central' or (val.page != '/front/reminder.php' and val.page != '/front/rssfeed.php')) %}
-                                    <li>
-                                        <a aria-label="{{ sub_menu_name }}" data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show' : ''}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
-                                            <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
-                                            <span>{{val['title']}}</span>
-                                            <i class="star-icon" title="favorite icon" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
                                 {% endif %}
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="menu-bottom">
-        <a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
-        <a class="accessibility-text" title="{{'Accessibility'|trans}}" href="{{root_doc}}/front/accessibility.php">Déclaration d'accessibilité</a>
+                                {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
+                                    {% if val.title and (access == 'central' or (val.page != '/front/reminder.php' and val.page != '/front/rssfeed.php')) %}
+                                        <li>
+                                            <a aria-label="{{ sub_menu_name }}" data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show' : ''}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                                                <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
+                                                <span>{{val['title']}}</span>
+                                                <i class="star-icon" title="favorite icon" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="menu-bottom">
+            <a class="copyright-message" href="https://www.itsm-ng.com" target="_blank" title="{{ITSM_VERSION}} Copyright (C) {{ITSM_YEAR}} ITSM-NG and contributors"></a>
+            <a class="accessibility-text" title="{{'Accessibility'|trans}}" href="{{root_doc}}/front/accessibility.php">Déclaration d'accessibilité</a>
+        </div>
     </div>
 </nav>
 
