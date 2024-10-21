@@ -15,11 +15,14 @@
         {% include "headers/utils/accessibility_buttons.twig" %}
 
 		<header role='banner' id='header_top' class='d-flex justify-content-between align-items-center'>
-			<div class="header_logo m-3" id='c_logo'>
+			<div class="header_logo m-3 d-md-block d-none" id='c_logo'>
 				<a href="{{root_doc}}/front/central.php" accesskey='1' title={{"Home"|trans}}>
 					<span class='sr-only'>{{"Home"|trans}}</span>
 				</a>
 			</div>
+            <button class="navbar-toggler d-md-none p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#navOffCanvas" aria-controls="navbar" aria-label="Toggle navigation">
+                <i class="fa fa-bars fa-2x" title="menu"></i>
+            </button>
 
 			{% if main_menu.args.access == 'central' %}
 				<div id="searchbar">
@@ -40,7 +43,7 @@
 							<i class="fas fa-language" aria-label="{{ 'Languages'|trans }}"></i>
 						</a>
 					</li>
-					<li id="menu-options" class="p-2" aria-hidden="true">
+					<li id="menu-options" class="p-2 d-md-flex d-none" aria-hidden="true">
 						<a href="#" title="{{'Navbar'|trans }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="{{'Navbar'|trans }}">
 							<i class="far fa-window-maximize" aria-hidden="true"></i>
 						</a>
@@ -55,7 +58,7 @@
 
 				<div class="dropdown">
 					<button class="btn me-1 text-light" aria-label="Menu" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-						<i class="fas fa-bars" title="menu"></i>
+                        <i class="fas fa-ellipsis-h" title="menu"></i>
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 						{% if can_update %}
