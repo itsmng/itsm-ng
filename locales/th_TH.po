@@ -24582,6 +24582,12 @@ msgstr "ข้อความการบำรุงรักษา"
 msgid "Decrease List Size"
 msgstr "ลดลง"
 
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle navigation"
+msgstr "รุ่นจอภาพ"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Use ITSM-NG"
 

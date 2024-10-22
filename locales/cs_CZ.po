@@ -25720,6 +25720,11 @@ msgstr "Text při údržbě"
 msgid "Decrease List Size"
 msgstr "Snižující se"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "Přepnout noční mód"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Používat ITSM-NG"
 

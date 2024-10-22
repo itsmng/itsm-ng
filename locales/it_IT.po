@@ -25041,6 +25041,11 @@ msgstr "Testo da visualizzare in modalità manutenzione"
 msgid "Decrease List Size"
 msgstr "Decrescente"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "Abilita/disabilita modalità notte"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Usa ITSM-NG"
 

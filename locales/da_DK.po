@@ -24987,6 +24987,9 @@ msgstr "Vedligeholdelsestekst"
 msgid "Decrease List Size"
 msgstr "Degressive"
 
+msgid "Toggle navigation"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Brug ITSM-NG"
 

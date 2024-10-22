@@ -24967,6 +24967,11 @@ msgstr "Bakım metni"
 msgid "Decrease List Size"
 msgstr "Azalan"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "Gece kipini aç/kapat"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG Kullanmaya Geç"
 

@@ -25324,6 +25324,11 @@ msgstr "Uzturēšanas teksts"
 msgid "Decrease List Size"
 msgstr "Samazinās"
 
+#, fuzzy
+#| msgid "Toggle edit mode"
+msgid "Toggle navigation"
+msgstr "Rediģēšanas režīms"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Pieslēgties ITSM-NG"
 

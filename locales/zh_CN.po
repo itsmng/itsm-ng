@@ -24474,6 +24474,11 @@ msgstr "维护文本"
 msgid "Decrease List Size"
 msgstr "递减"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "切换至夜间模式"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

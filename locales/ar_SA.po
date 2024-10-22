@@ -26375,5 +26375,8 @@ msgstr "رسالة الصيانة"
 msgid "Decrease List Size"
 msgstr ""
 
+msgid "Toggle navigation"
+msgstr ""
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "الحساب glpi/glpi للمدراء"

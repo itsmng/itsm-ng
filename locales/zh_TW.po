@@ -24560,6 +24560,11 @@ msgstr ""
 msgid "Decrease List Size"
 msgstr "遞減"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "篩選器 切換"
+
 #~ msgid "Use GLPI"
 #~ msgstr "使用ITSM-NG"
 

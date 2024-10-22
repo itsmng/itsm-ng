@@ -24932,5 +24932,8 @@ msgstr ""
 msgid "Decrease List Size"
 msgstr "ಕಡಿಮೆ"
 
+msgid "Toggle navigation"
+msgstr ""
+
 #~ msgid "glpi/glpi for the administrator account"
 #~ msgstr "ನಿರ್ವಾಹಕ ಖಾತೆಗೆ glpi / glpi"

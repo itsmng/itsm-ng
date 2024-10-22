@@ -25675,6 +25675,11 @@ msgstr "Текст режиму обслуговування"
 msgid "Decrease List Size"
 msgstr "Зменшення"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "Перемкнути нічний режим"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Запустити ITSM-NG"
 

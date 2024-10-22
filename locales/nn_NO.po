@@ -24852,3 +24852,6 @@ msgstr ""
 #| msgid "Decreasing"
 msgid "Decrease List Size"
 msgstr "Synkende"
+
+msgid "Toggle navigation"
+msgstr ""

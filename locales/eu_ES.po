@@ -25052,6 +25052,11 @@ msgstr "Mantenketa testua"
 msgid "Decrease List Size"
 msgstr "Jaisten"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "Filtroak gaitu/ezgaitu"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG erabili"
 
