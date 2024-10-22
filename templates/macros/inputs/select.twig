@@ -85,12 +85,6 @@
                 .trigger('change');
             {% endif %}
         });
-        $(document).on('keydown', 'select', function(event) {
-          if (event.key === ' ' && !$(this).is(':focus')) {
-            event.preventDefault();
-            $(this).click();
-          }
-        });
       });
   </script>
   {% endif %}

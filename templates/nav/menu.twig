@@ -1,6 +1,6 @@
 <nav id='menu' class="{{menu_small ? 'menu-close' : 'menu-open'}}">
     <div class="offcanvas-md offcanvas-start d-flex flex-column h-100" id="navOffCanvas" tabindex="-1">
-        <button class="navbar-toggler absolute ms-auto d-md-none p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#navOffCanvas" aria-controls="navbar" aria-label="Toggle navigation">
+        <button class="navbar-toggler absolute ms-auto d-md-none p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#navOffCanvas" aria-controls="navbar" aria-label= "{{'Toggle navigation' | trans}}">
             <i class="fa fa-times" title="menu"></i>
         </button>
         <div class="menu-list flex-grow-1">
@@ -26,7 +26,7 @@
                                                     <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                                                         <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
                                                         <span>{{val['title']}}</span>
-                                                        <i class="star-icon" title="add/remove favorite"></i>
+                                                        <i class="star-icon" title="add/remove favorite" aria-hidden="true"></i>
                                                     </a>
                                                 </li>
                                             {% endif %}
@@ -39,7 +39,7 @@
                                             <a aria-label="{{ sub_menu_name }}" data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show' : ''}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                                                 <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
                                                 <span>{{val['title']}}</span>
-                                                <i class="star-icon" title="favorite icon" aria-hidden="true"></i>
+                                                <i class="star-icon" title="favorite icon" aria-label="favorite icon"></i>
                                             </a>
                                         </li>
                                     {% endif %}
