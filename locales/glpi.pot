@@ -29951,3 +29951,6 @@ msgstr ""
 
 msgid "Decrease List Size"
 msgstr ""
+
+msgid "Toggle navigation"
+msgstr ""
