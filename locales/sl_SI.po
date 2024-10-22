@@ -25637,6 +25637,9 @@ msgstr ""
 msgid "Decrease List Size"
 msgstr "Upadanje"
 
+msgid "Toggle navigation"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Uporabi ITSM-NG"
 

@@ -24951,6 +24951,11 @@ msgstr "रखरखाव पाठ"
 msgid "Decrease List Size"
 msgstr "घटाना"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "फ़िल्टर टॉगल करें"
+
 #~ msgid "Use GLPI"
 #~ msgstr "जीएलपीआई का उपयोग करें"
 

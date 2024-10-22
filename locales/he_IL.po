@@ -25669,6 +25669,9 @@ msgstr "טקסט תחזוקה"
 msgid "Decrease List Size"
 msgstr "יורדת"
 
+msgid "Toggle navigation"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "השתמש ב-ITSM-NG"
 

@@ -25103,6 +25103,11 @@ msgstr "Texto de mantenimiento"
 msgid "Decrease List Size"
 msgstr "Reducido"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "Alternar filtros"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
 

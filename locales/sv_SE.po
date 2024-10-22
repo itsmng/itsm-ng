@@ -24951,6 +24951,12 @@ msgstr "Text för underhållsläge"
 msgid "Decrease List Size"
 msgstr "Minskande"
 
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle navigation"
+msgstr "Skärm modell"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Starta ITSM-NG"
 

@@ -25121,6 +25121,11 @@ msgstr "Texte de maintenance"
 msgid "Decrease List Size"
 msgstr "Dégressif"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "Basculer le mode nuit"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utiliser ITSM-NG"
 

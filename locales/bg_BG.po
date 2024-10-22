@@ -24945,6 +24945,12 @@ msgstr "Текст за режим на поддръжка"
 msgid "Decrease List Size"
 msgstr "Намаляващо"
 
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle navigation"
+msgstr "Модел монитор"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Стартирайте ITSM-NG"
 

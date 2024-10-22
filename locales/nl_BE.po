@@ -25114,6 +25114,11 @@ msgstr "Onderhoud tekst"
 msgid "Decrease List Size"
 msgstr "Degressief"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "Filter aan/uit"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik ITSM-NG"
 

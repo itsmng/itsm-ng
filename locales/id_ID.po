@@ -24606,5 +24606,11 @@ msgstr ""
 msgid "Decrease List Size"
 msgstr "Penurunan"
 
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle navigation"
+msgstr "Model Monitor"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Gunakan ITSM-NG"

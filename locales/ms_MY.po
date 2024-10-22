@@ -24455,3 +24455,9 @@ msgstr ""
 
 msgid "Decrease List Size"
 msgstr ""
+
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle navigation"
+msgstr "Model monitor"

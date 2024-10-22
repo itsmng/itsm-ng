@@ -24988,6 +24988,11 @@ msgstr "Karbantartási szöveg"
 msgid "Decrease List Size"
 msgstr "Degresszív"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "Szűrők ki/be"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG használata"
 

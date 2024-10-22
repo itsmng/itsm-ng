@@ -25711,5 +25711,11 @@ msgstr ""
 msgid "Decrease List Size"
 msgstr "Degresinis"
 
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle navigation"
+msgstr "Monitoriaus modelis"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Į ITSM-NG"

@@ -24645,6 +24645,11 @@ msgstr "Văn bản bảo trì"
 msgid "Decrease List Size"
 msgstr "Đang giảm"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "Các bộ lọc chuyển đổi"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng ITSM-NG"
 
