@@ -25000,6 +25000,11 @@ msgstr "Tiedoteteksti järjestelmän ylläpidosta"
 msgid "Decrease List Size"
 msgstr "Aleneva"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "Vaihda suodattimia"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Käytä ITSM-NG:tä"
 

@@ -25072,6 +25072,9 @@ msgstr ""
 msgid "Decrease List Size"
 msgstr "Φθήνοντα"
 
+msgid "Toggle navigation"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση ITSM-NG"
 

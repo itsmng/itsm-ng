@@ -24981,6 +24981,12 @@ msgstr "Vedlikholdstekst"
 msgid "Decrease List Size"
 msgstr "Synkende"
 
+#, fuzzy
+#| msgid "Monitor model"
+#| msgid_plural "Monitor models"
+msgid "Toggle navigation"
+msgstr "Skjerm modell"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Bruk ITSM-NG"
 

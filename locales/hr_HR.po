@@ -25328,6 +25328,11 @@ msgstr "Tekst za održavanje"
 msgid "Decrease List Size"
 msgstr "Smanjenje"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "Uklj/Isklj noćni modus"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Koristi ITSM-NG"
 

@@ -25354,6 +25354,11 @@ msgstr "Tekst održavanja"
 msgid "Decrease List Size"
 msgstr "Smanjenje"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "Isključi filtere"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Počni sa koriščenjem ITSM-NG"
 

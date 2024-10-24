@@ -25015,6 +25015,11 @@ msgstr "Засвар үйлчилгээний текст"
 msgid "Decrease List Size"
 msgstr "Буурч байна"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "Шөнийн горимыг асаах"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG ашиглах"
 

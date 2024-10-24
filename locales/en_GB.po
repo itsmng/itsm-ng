@@ -25327,3 +25327,8 @@ msgstr "Maintenance text"
 #| msgid "Decreasing"
 msgid "Decrease List Size"
 msgstr "Decreasing"
+
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "Toggle filters"

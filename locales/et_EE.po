@@ -24876,6 +24876,11 @@ msgstr "Hoolduse tekst"
 msgid "Decrease List Size"
 msgstr "Regressiivne"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "Lülita öörežiim"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta ITSM-NG kasutamist"
 

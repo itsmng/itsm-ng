@@ -24561,6 +24561,11 @@ msgstr "メンテナンステキスト"
 msgid "Decrease List Size"
 msgstr "逓減"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "ナイトモードを切り替え"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NGを使用"
 

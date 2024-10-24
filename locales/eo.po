@@ -25005,6 +25005,11 @@ msgstr "Текст обслуживания"
 msgid "Decrease List Size"
 msgstr "Убывающий"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "Смена фильтров"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Запустить ITSM-NG"
 

@@ -24562,6 +24562,11 @@ msgstr "유지보수 텍스트"
 msgid "Decrease List Size"
 msgstr "감소"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "야간 모드 전환"
+
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG 사용"
 

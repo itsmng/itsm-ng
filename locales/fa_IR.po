@@ -24945,5 +24945,8 @@ msgstr ""
 msgid "Decrease List Size"
 msgstr "کاهنده"
 
+msgid "Toggle navigation"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "استفاده از ITSM-NG"

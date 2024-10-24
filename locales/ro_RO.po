@@ -25412,6 +25412,11 @@ msgstr "Text mentenanţă"
 msgid "Decrease List Size"
 msgstr "Degresivă"
 
+#, fuzzy
+#| msgid "Toggle filters"
+msgid "Toggle navigation"
+msgstr "Filtre Comutare"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi ITSM-NG"
 

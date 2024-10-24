@@ -24867,6 +24867,9 @@ msgstr ""
 msgid "Decrease List Size"
 msgstr "Lækkandi"
 
+msgid "Toggle navigation"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Nota ITSM-NG"
 

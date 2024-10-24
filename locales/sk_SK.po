@@ -25667,6 +25667,11 @@ msgstr "Text pri údržbe"
 msgid "Decrease List Size"
 msgstr "Klesajúci"
 
+#, fuzzy
+#| msgid "Toggle night mode"
+msgid "Toggle navigation"
+msgstr "Zapnuť/vypnúť nočný režim"
+
 #~ msgid "Use GLPI"
 #~ msgstr "Spustiť ITSM-NG"
 

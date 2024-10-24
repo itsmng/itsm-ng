@@ -25027,6 +25027,9 @@ msgstr "Texto de mantenimiento"
 msgid "Decrease List Size"
 msgstr "Reducido"
 
+msgid "Toggle navigation"
+msgstr ""
+
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
 
