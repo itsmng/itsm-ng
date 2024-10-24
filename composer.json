@@ -23,7 +23,9 @@
         "ext-zlib": "*",
         "apereo/phpcas": "^1.6",
         "blueimp/jquery-file-upload": "^10.2",
+        "doctrine/dbal": "^3.9",
         "doctrine/doctrine-module": "^6.0",
+        "doctrine/orm": "^3.3",
         "elvanto/litemoji": "^4.3",
         "guzzlehttp/guzzle": "^7.8",
         "guzzlehttp/psr7": "^2.6",
@@ -56,7 +58,9 @@
         "scssphp/scssphp": "^1.11",
         "sebastian/diff": "^5.0",
         "simplepie/simplepie": "^1.8",
+        "symfony/cache": "^5.4",
         "symfony/console": "^6.0",
+        "symfony/orm-pack": "^2.4",
         "tecnickcom/tcpdf": "^6.2",
         "twbs/bootstrap": "^5.3",
         "twig/string-extra": "^3.7",
@@ -98,7 +102,8 @@
     },
     "autoload": {
         "psr-4": {
-            "itsmng\\": "src/"
+            "itsmng\\": "src/",
+            "Infrastructure\\": "Infrastructure/"
         }
     },
     "scripts": {
