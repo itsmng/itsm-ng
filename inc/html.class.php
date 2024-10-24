@@ -3810,7 +3810,7 @@ JS;
                 [
                   'value'     => $_SESSION["glpiactiveprofile"]["id"],
                   'width'     => '150px',
-                  'on_change' => 'submit()',
+                  'on_change' => "$(this).closest('form').trigger('submit')",
                   'class' => 'form-select form-select-sm ms-3'
                 ]
             );
