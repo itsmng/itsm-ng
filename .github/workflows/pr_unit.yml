@@ -41,7 +41,7 @@ jobs:
         run: export NODE_OPTIONS=--openssl-legacy-provider && php bin/console dependencies install
 
       - name: Install ITSM-ng
-        run: php bin/console itsmng:database:install -H 127.0.0.1 -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE -n
+        run: php bin/console itsmng:database:install --config-dir=/home/runner/work/itsm-ng/itsm-ng/tests/config
 
       - name: Run PHP Unit tests
         run: vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --fail-if-skipped-methods --max-children-number 10 -d tests/units
