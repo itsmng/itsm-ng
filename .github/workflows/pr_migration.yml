@@ -1,0 +1,47 @@
+name: Test Migration
+
+on: [pull_request]
+
+jobs:
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    env:
+      DB_DATABASE: itsm_migration
+      DB_USER: itsm_migration
+      DB_PASSWORD: itsm_migration
+
+    services:
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_USER: ${{env.DB_USER}}
+          MYSQL_PASSWORD: ${{env.DB_PASSWORD}}
+          MYSQL_DATABASE: ${{env.DB_DATABASE}}
+          MYSQL_ROOT_PASSWORD: ${{env.DB_PASSWORD}}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run composer / npm install
+        run: export NODE_OPTIONS=--openssl-legacy-provider && php bin/console dependencies install
+
+      - name: Install ITSM-ng
+        run: sudo mysql -h 127.0.0.1 -u $DB_USER -p$DB_PASSWORD $DB_DATABASE < tests/migrations/schema.sql
+
+      - name: Run migration tests
+        run: php bin/console itsmng:database:update --config-dir=/home/runner/work/itsm-ng/itsm-ng/tests/migrations -n
