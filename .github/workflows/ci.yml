@@ -63,7 +63,7 @@ jobs:
             app_home_lint-${{ matrix.php-version }}
             app_home_lint-
       - name: "install docker-compose"
-        run: apt update && apt install docker-compose
+        run: sudo apt update && sudo apt install docker-compose
       - name: "Initialize containers"
         run: |
           .github/actions/init_containers-start.sh
