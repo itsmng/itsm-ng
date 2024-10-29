@@ -83,6 +83,7 @@ class Ticket extends CommonITILObject {
    const OWN              =  32768;
    const CHANGEPRIORITY   =  65536;
    const SURVEY           = 131072;
+   const READDOCUMENT     = 262144;
 
    private $userentities;
    private $countentitiesforuser;
@@ -6673,6 +6674,7 @@ class Ticket extends CommonITILObject {
       if ($interface == 'helpdesk') {
          unset($values[UPDATE], $values[DELETE], $values[PURGE]);
       }
+      $values[self::READDOCUMENT]    = __("See linked document");
       return $values;
    }
 

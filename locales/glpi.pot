@@ -22968,3 +22968,7 @@ msgstr ""
 #: inc/oidc.class.php:149
 msgid "Could not access user from mappings"
 msgstr ""
+
+#: inc/ticket.class.php:6677
+msgid "See linked document"
+msgstr ""
