@@ -23563,3 +23563,7 @@ msgstr "URL de déconnexion"
 #: inc/oidc.class.php:149
 msgid "Could not access user from mappings"
 msgstr "Impossible d'accéder à l'utilisateur depuis les mappages"
+
+#: inc/ticket.class.php:6677
+msgid "See linked document"
+msgstr "Voir les documents liés"
