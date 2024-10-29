@@ -124,6 +124,8 @@ jobs:
           restore-keys: |
             app_home_deps-${{ matrix.php-version }}-
             app_home_deps-
+      - name: "install docker-compose"
+        run: sudo apt update && sudo apt install docker-compose
       - name: "Initialize containers"
         if: env.skip != 'true'
         run: |
