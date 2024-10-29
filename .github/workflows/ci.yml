@@ -62,6 +62,8 @@ jobs:
           restore-keys: |
             app_home_lint-${{ matrix.php-version }}
             app_home_lint-
+      - name: "install docker-compose"
+        run: apt update && apt install docker-compose
       - name: "Initialize containers"
         run: |
           .github/actions/init_containers-start.sh
@@ -122,8 +124,6 @@ jobs:
           restore-keys: |
             app_home_deps-${{ matrix.php-version }}-
             app_home_deps-
-      - name: "install docker-compose"
-        run: apt update && apt install docker-compose
       - name: "Initialize containers"
         if: env.skip != 'true'
         run: |
