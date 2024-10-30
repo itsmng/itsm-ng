@@ -22,6 +22,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: check if version is set
+        run:  grep -q "define('ITSM_VERSION', '${TAG#v}');" inc/define.php && echo "Version correspondante" || { echo "La version dans inc/define.php n'est pas bonne"; exit 5; }
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
