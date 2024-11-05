@@ -15,20 +15,21 @@ class EntityManagerProvider
     public static function getEntityManager(): EntityManager
     {
         if (self::$entityManager === null) {
-            // Create a simple "default" Doctrine ORM configuration for Attributes
+            $domainPath = realpath(__DIR__ . '/../../Domain');
             $config = ORMSetup::createAttributeMetadataConfiguration(
-                paths: [__DIR__ . '/../../Domain'], // Adjust path to your domain entities
+                paths: [$domainPath],
                 isDevMode: true
             );
 
-            // Configure the database connection
             $connectionParams = [
-                'driver' => 'pdo_sqlite',
-                'path' => __DIR__ . '/../../db.sqlite', // Adjust path as needed
+                'driver' => 'pdo_mysql',
+                'host' => 'localhost',
+                'user' => 'root',
+                'password' => 'mypass',
+                'dbname' => 'latest',
             ];
             $connection = DriverManager::getConnection($connectionParams, $config);
 
-            // Obtain the entity manager
             self::$entityManager = new (EntityManager::class)($connection, $config);
         }
 
