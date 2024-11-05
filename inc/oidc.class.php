@@ -239,7 +239,7 @@ class Oidc extends CommonDBTM
                $request = $DB->request('glpi_groups');
 
                while ($data = $request->next()) {
-                  if ($data['name'] == $value) {
+                  if ($data['name'] == $value || $data['name'] == stripslashes($value)) {
                      $id_group_create = $data['id'];
                      break;
                   }
