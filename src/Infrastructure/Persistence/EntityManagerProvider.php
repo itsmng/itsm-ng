@@ -1,4 +1,5 @@
 <?php
+
 // src/Infrastructure/Persistence/EntityManagerProvider.php
 
 namespace Itsmng\Infrastructure\Persistence;
@@ -34,4 +35,3 @@ class EntityManagerProvider
         return self::$entityManager;
     }
 }
-
