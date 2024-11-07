@@ -32,7 +32,7 @@ class Alert
     #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'see define.php ALERT_* constant'])]
     private $type;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private $date;
 
     public function getId(): ?int
