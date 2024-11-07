@@ -5,6 +5,7 @@
 namespace Itsmng\Infrastructure\Persistence;
 
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 
@@ -21,14 +22,29 @@ class EntityManagerProvider
                 isDevMode: true
             );
 
-            $connectionParams = [
-                'driver' => 'pdo_mysql',
-                'host' => 'localhost',
-                'user' => 'root',
-                'password' => 'mypass',
-                'dbname' => 'latest',
-            ];
+            if (isset($_ENV['DB_URL'])) {
+                $dsnParser = new DsnParser();
+                $connectionParams = $dsnParser->parse($_ENV['DB_URL']);
+            } else {
+                foreach ([ 'DB_DRIVER', 'DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME' ]
+                    as $envVar) {
+                    if (!isset($_ENV[$envVar])) {
+                        throw new \Exception("$envVar environment variable not found");
+                    }
+                }
+                $connectionParams = [
+                    'driver'   => $_ENV['DB_DRIVER'],
+                    'host'     => $_ENV['DB_HOST'],
+                    'user'     => $_ENV['DB_USER'],
+                    'password' => $_ENV['DB_PASSWORD'],
+                    'dbname'   => $_ENV['DB_NAME'],
+                ];
+            }
             $connection = DriverManager::getConnection($connectionParams, $config);
+            $connection->connect();
+            if (!$connection->isConnected()) {
+                throw new \Exception('Could not connect to database');
+            }
 
             self::$entityManager = new (EntityManager::class)($connection, $config);
         }
