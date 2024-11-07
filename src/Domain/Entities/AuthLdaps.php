@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_active", columns: ["is_active"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "sync_field", columns: ["sync_field"])]
-class AuthLdaps {
+class AuthLdaps
+{
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\GeneratedValue]
@@ -152,552 +153,552 @@ class AuthLdaps {
     #[ORM\Column(name: 'inventory_domain', type: 'string', length: 255, nullable: true)]
     private $inventory_domain;
 
-    function getId(): int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    function setId(int $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 
         return $this;
     }
 
-    function getName(): string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    function setName(string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    function getHost(): string
+    public function getHost(): string
     {
         return $this->host;
     }
 
-    function setHost(string $host): self
+    public function setHost(string $host): self
     {
         $this->host = $host;
 
         return $this;
     }
 
-    function getBasedn(): string
+    public function getBasedn(): string
     {
         return $this->basedn;
     }
 
-    function setBasedn(string $basedn): self
+    public function setBasedn(string $basedn): self
     {
         $this->basedn = $basedn;
 
         return $this;
     }
 
-    function getRootdn(): string
+    public function getRootdn(): string
     {
         return $this->rootdn;
     }
 
-    function setRootdn(string $rootdn): self
+    public function setRootdn(string $rootdn): self
     {
         $this->rootdn = $rootdn;
 
         return $this;
     }
 
-    function getPort(): int
+    public function getPort(): int
     {
         return $this->port;
     }
 
-    function setPort(int $port): self
+    public function setPort(int $port): self
     {
         $this->port = $port;
 
         return $this;
     }
 
-    function getCondition(): string
+    public function getCondition(): string
     {
         return $this->condition;
     }
 
-    function setCondition(string $condition): self
+    public function setCondition(string $condition): self
     {
         $this->condition = $condition;
 
         return $this;
     }
 
-    function getLoginField(): string
+    public function getLoginField(): string
     {
         return $this->loginField;
     }
 
-    function setLoginField(string $loginField): self
+    public function setLoginField(string $loginField): self
     {
         $this->loginField = $loginField;
 
         return $this;
     }
 
-    function getSyncField(): string
+    public function getSyncField(): string
     {
         return $this->syncField;
     }
 
-    function setSyncField(string $syncField): self
+    public function setSyncField(string $syncField): self
     {
         $this->syncField = $syncField;
 
         return $this;
     }
 
-    function getUseTls(): bool
+    public function getUseTls(): bool
     {
         return $this->useTls;
     }
 
-    function setUseTls(bool $useTls): self
+    public function setUseTls(bool $useTls): self
     {
         $this->useTls = $useTls;
 
         return $this;
     }
 
-    function getGroupField(): string
+    public function getGroupField(): string
     {
         return $this->groupField;
     }
 
-    function setGroupField(string $groupField): self
+    public function setGroupField(string $groupField): self
     {
         $this->groupField = $groupField;
 
         return $this;
     }
 
-    function getGroupCondition(): string
+    public function getGroupCondition(): string
     {
         return $this->groupCondition;
     }
 
-    function setGroupCondition(string $groupCondition): self
+    public function setGroupCondition(string $groupCondition): self
     {
         $this->groupCondition = $groupCondition;
 
         return $this;
     }
 
-    function getGroupSearchType(): int
+    public function getGroupSearchType(): int
     {
         return $this->groupSearchType;
     }
 
-    function setGroupSearchType(int $groupSearchType): self
+    public function setGroupSearchType(int $groupSearchType): self
     {
         $this->groupSearchType = $groupSearchType;
 
         return $this;
     }
 
-    function getGroupMemberField(): string
+    public function getGroupMemberField(): string
     {
         return $this->groupMemberField;
     }
 
-    function setGroupMemberField(string $groupMemberField): self
+    public function setGroupMemberField(string $groupMemberField): self
     {
         $this->groupMemberField = $groupMemberField;
 
         return $this;
     }
 
-    function getEmail1Field(): string
+    public function getEmail1Field(): string
     {
         return $this->email1Field;
     }
 
-    function setEmail1Field(string $email1Field): self
+    public function setEmail1Field(string $email1Field): self
     {
         $this->email1Field = $email1Field;
 
         return $this;
     }
 
-    function getRealnameField(): string
+    public function getRealnameField(): string
     {
         return $this->realnameField;
     }
 
-    function setRealnameField(string $realnameField): self
+    public function setRealnameField(string $realnameField): self
     {
         $this->realnameField = $realnameField;
 
         return $this;
     }
 
-    function getFirstnameField(): string
+    public function getFirstnameField(): string
     {
         return $this->firstnameField;
     }
 
-    function setFirstnameField(string $firstnameField): self
+    public function setFirstnameField(string $firstnameField): self
     {
         $this->firstnameField = $firstnameField;
 
         return $this;
     }
 
-    function getPhoneField(): string
+    public function getPhoneField(): string
     {
         return $this->phoneField;
     }
 
-    function setPhoneField(string $phoneField): self
+    public function setPhoneField(string $phoneField): self
     {
         $this->phoneField = $phoneField;
 
         return $this;
     }
 
-    function getPhone2Field(): string
+    public function getPhone2Field(): string
     {
         return $this->phone2Field;
     }
 
-    function setPhone2Field(string $phone2Field): self
+    public function setPhone2Field(string $phone2Field): self
     {
         $this->phone2Field = $phone2Field;
 
         return $this;
     }
 
-    function getMobileField(): string
+    public function getMobileField(): string
     {
         return $this->mobileField;
     }
 
-    function setMobileField(string $mobileField): self
+    public function setMobileField(string $mobileField): self
     {
         $this->mobileField = $mobileField;
 
         return $this;
     }
 
-    function getCommentField(): string
+    public function getCommentField(): string
     {
         return $this->commentField;
     }
 
-    function setCommentField(string $commentField): self
+    public function setCommentField(string $commentField): self
     {
         $this->commentField = $commentField;
 
         return $this;
     }
 
-    function getUseDn(): bool
+    public function getUseDn(): bool
     {
         return $this->useDn;
     }
 
-    function setUseDn(bool $useDn): self
+    public function setUseDn(bool $useDn): self
     {
         $this->useDn = $useDn;
 
         return $this;
     }
 
-    function getTimeOffset(): int
+    public function getTimeOffset(): int
     {
         return $this->timeOffset;
     }
 
-    function setTimeOffset(int $timeOffset): self
+    public function setTimeOffset(int $timeOffset): self
     {
         $this->timeOffset = $timeOffset;
 
         return $this;
     }
 
-    function getDerefOptions(): int
+    public function getDerefOptions(): int
     {
         return $this->derefOptions;
     }
 
-    function setDerefOptions(int $derefOptions): self
+    public function setDerefOptions(int $derefOptions): self
     {
         $this->derefOptions = $derefOptions;
 
         return $this;
     }
 
-    function getTitleField(): string
+    public function getTitleField(): string
     {
         return $this->titleField;
     }
 
-    function setTitleField(string $titleField): self
+    public function setTitleField(string $titleField): self
     {
         $this->titleField = $titleField;
 
         return $this;
     }
 
-    function getCategoryField(): string
+    public function getCategoryField(): string
     {
         return $this->categoryField;
     }
 
-    function setCategoryField(string $categoryField): self
+    public function setCategoryField(string $categoryField): self
     {
         $this->categoryField = $categoryField;
 
         return $this;
     }
 
-    function getLanguageField(): string
+    public function getLanguageField(): string
     {
         return $this->languageField;
     }
 
-    function setLanguageField(string $languageField): self
+    public function setLanguageField(string $languageField): self
     {
         $this->languageField = $languageField;
 
         return $this;
     }
 
-    function getEntityField(): string
+    public function getEntityField(): string
     {
         return $this->entityField;
     }
 
-    function setEntityField(string $entityField): self
+    public function setEntityField(string $entityField): self
     {
         $this->entityField = $entityField;
 
         return $this;
     }
 
-    function getEntityCondition(): string
+    public function getEntityCondition(): string
     {
         return $this->entityCondition;
     }
 
-    function setEntityCondition(string $entityCondition): self
+    public function setEntityCondition(string $entityCondition): self
     {
         $this->entityCondition = $entityCondition;
 
         return $this;
     }
 
-    function getDateMod(): \DateTime
+    public function getDateMod(): \DateTime
     {
         return $this->dateMod;
     }
 
-    function setDateMod(\DateTime $dateMod): self
+    public function setDateMod(\DateTime $dateMod): self
     {
         $this->dateMod = $dateMod;
 
         return $this;
     }
 
-    function getComment(): string
+    public function getComment(): string
     {
         return $this->comment;
     }
 
-    function setComment(string $comment): self
+    public function setComment(string $comment): self
     {
         $this->comment = $comment;
 
         return $this;
     }
 
-    function getIsDefault(): bool
+    public function getIsDefault(): bool
     {
         return $this->isDefault;
     }
 
-    function setIsDefault(bool $isDefault): self
+    public function setIsDefault(bool $isDefault): self
     {
         $this->isDefault = $isDefault;
 
         return $this;
     }
 
-    function getIsActive(): bool
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
 
-    function setIsActive(bool $isActive): self
+    public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
 
         return $this;
     }
 
-    function getRootdnPasswd(): string
+    public function getRootdnPasswd(): string
     {
         return $this->rootdnPasswd;
     }
 
-    function setRootdnPasswd(string $rootdnPasswd): self
+    public function setRootdnPasswd(string $rootdnPasswd): self
     {
         $this->rootdnPasswd = $rootdnPasswd;
 
         return $this;
     }
 
-    function getRegistrationNumberField(): string
+    public function getRegistrationNumberField(): string
     {
         return $this->registrationNumberField;
     }
 
-    function setRegistrationNumberField(string $registrationNumberField): self
+    public function setRegistrationNumberField(string $registrationNumberField): self
     {
         $this->registrationNumberField = $registrationNumberField;
 
         return $this;
     }
 
-    function getEmail2_field(): string
+    public function getEmail2_field(): string
     {
         return $this->email2_field;
     }
 
-    function setEmail2_field(string $email2_field): self
+    public function setEmail2_field(string $email2_field): self
     {
         $this->email2_field = $email2_field;
 
         return $this;
     }
 
-    function getEmail3_field(): string
+    public function getEmail3_field(): string
     {
         return $this->email3_field;
     }
 
-    function setEmail3_field(string $email3_field): self
+    public function setEmail3_field(string $email3_field): self
     {
         $this->email3_field = $email3_field;
 
         return $this;
     }
 
-    function getEmail4_field(): string
+    public function getEmail4_field(): string
     {
         return $this->email4_field;
     }
 
-    function setEmail4_field(string $email4_field): self
+    public function setEmail4_field(string $email4_field): self
     {
         $this->email4_field = $email4_field;
 
         return $this;
     }
 
-    function getLocation_field(): string
+    public function getLocation_field(): string
     {
         return $this->location_field;
     }
 
-    function setLocation_field(string $location_field): self
+    public function setLocation_field(string $location_field): self
     {
         $this->location_field = $location_field;
 
         return $this;
     }
 
-    function getResponsible_field(): string
+    public function getResponsible_field(): string
     {
         return $this->responsible_field;
     }
 
-    function setResponsible_field(string $responsible_field): self
+    public function setResponsible_field(string $responsible_field): self
     {
         $this->responsible_field = $responsible_field;
 
         return $this;
     }
 
-    function getPagesize(): int
+    public function getPagesize(): int
     {
         return $this->pagesize;
     }
 
-    function setPagesize(int $pagesize): self
+    public function setPagesize(int $pagesize): self
     {
         $this->pagesize = $pagesize;
 
         return $this;
     }
 
-    function getLdap_maxlimit(): int
+    public function getLdap_maxlimit(): int
     {
         return $this->ldap_maxlimit;
     }
 
-    function setLdap_maxlimit(int $ldap_maxlimit): self
+    public function setLdap_maxlimit(int $ldap_maxlimit): self
     {
         $this->ldap_maxlimit = $ldap_maxlimit;
 
         return $this;
     }
 
-    function getCan_support_pagesize(): bool
+    public function getCan_support_pagesize(): bool
     {
         return $this->can_support_pagesize;
     }
 
-    function setCan_support_pagesize(bool $can_support_pagesize): self
+    public function setCan_support_pagesize(bool $can_support_pagesize): self
     {
         $this->can_support_pagesize = $can_support_pagesize;
 
         return $this;
     }
 
-    function getPicture_field(): string
+    public function getPicture_field(): string
     {
         return $this->picture_field;
     }
 
-    function setPicture_field(string $picture_field): self
+    public function setPicture_field(string $picture_field): self
     {
         $this->picture_field = $picture_field;
 
         return $this;
     }
 
-    function getDate_creation(): \DateTime
+    public function getDate_creation(): \DateTime
     {
         return $this->date_creation;
     }
 
-    function setDate_creation(\DateTime $date_creation): self
+    public function setDate_creation(\DateTime $date_creation): self
     {
         $this->date_creation = $date_creation;
 
         return $this;
     }
 
-    function getInventory_domain(): string
+    public function getInventory_domain(): string
     {
         return $this->inventory_domain;
     }
 
-    function setInventory_domain(string $inventory_domain): self
+    public function setInventory_domain(string $inventory_domain): self
     {
         $this->inventory_domain = $inventory_domain;
 
