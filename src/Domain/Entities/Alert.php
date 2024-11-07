@@ -1,4 +1,5 @@
 <?php
+
 //Column	Type	Comment
 //id	int(11) Auto Increment
 //itemtype	varchar(100)
