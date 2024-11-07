@@ -1,21 +1,8 @@
 <?php
 
-namespace Itsm\Entities;
+namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-
-//Column	Type	Comment
-//id	int(11) Auto Increment
-//calendars_id	int(11) [0]
-//entities_id	int(11) [0]
-//is_recursive	tinyint(1) [0]
-//day	tinyint(1) [1]	numer of the day based on date(w)
-//begin	time NULL
-//end	time NULL
-//Indexes
-//PRIMARY	id
-//INDEX	calendars_id
-//INDEX	day
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_calendarsegments")]

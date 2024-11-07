@@ -1,29 +1,8 @@
 <?php
 
-namespace Itsm\Domain\Entities;
+namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-
-/*
-Column	Type	Comment
-id	int(11) Auto Increment
-entities_id	int(11) [0]
-cartridgeitems_id	int(11) [0]
-printers_id	int(11) [0]
-date_in	date NULL
-date_use	date NULL
-date_out	date NULL
-pages	int(11) [0]
-date_mod	timestamp NULL
-date_creation	timestamp NULL
-Indexes
-PRIMARY	id
-INDEX	cartridgeitems_id
-INDEX	printers_id
-INDEX	entities_id
-INDEX	date_mod
-INDEX	date_creation
- */
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_cartridges')]
