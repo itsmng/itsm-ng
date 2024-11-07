@@ -1,12 +1,5 @@
 <?php
 
-//Column	Type	Comment
-//id	int(11) Auto Increment
-//itemtype	varchar(100)
-//items_id	int(11) [0]
-//type	int(11) [0]	see define.php ALERT_* constant
-//date	timestamp [current_timestamp()]
-
 namespace itsm\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
