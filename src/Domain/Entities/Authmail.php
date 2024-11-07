@@ -1,6 +1,6 @@
 <?php
 
-namespace Itsmng\Domain\Entities;    
+namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'is_active', columns: ['is_active'])]
 
-class Authmail {
-
+class Authmail
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -110,4 +110,4 @@ class Authmail {
 
         return $this;
     }
-}   
+}

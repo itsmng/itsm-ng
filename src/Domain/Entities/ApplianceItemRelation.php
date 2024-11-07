@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'itemtype', columns: ['itemtype'])]
 #[ORM\Index(name: 'items_id', columns: ['items_id'])]
 #[ORM\Index(name: 'itemtype_items_id', columns: ['itemtype', 'items_id'])]
-class ApplianceItemRelation {
-
-    #[ORM\Id]    
+class ApplianceItemRelation
+{
+    #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
@@ -65,5 +65,5 @@ class ApplianceItemRelation {
         $this->items_id = $items_id;
 
         return $this;
-    }           
+    }
 }

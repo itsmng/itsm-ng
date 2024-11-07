@@ -6,14 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_calendars')]
-#[ORM\Index(name: 'name', columns: ['name'])]                
+#[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
 #[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 
-class Calendar {    
-
+class Calendar
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -67,7 +67,7 @@ class Calendar {
         $this->entities_id = $entities_id;
 
         return $this;
-    }        
+    }
 
     public function getIsRecursive(): ?bool
     {
