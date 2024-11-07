@@ -26,8 +26,7 @@ class EntityManagerProvider
                 $dsnParser = new DsnParser();
                 $connectionParams = $dsnParser->parse($_ENV['DB_URL']);
             } else {
-                foreach ([ 'DB_DRIVER', 'DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME' ]
-                    as $envVar) {
+                foreach ([ 'DB_DRIVER', 'DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME' ] as $envVar) {
                     if (!isset($_ENV[$envVar])) {
                         throw new \Exception("$envVar environment variable not found");
                     }

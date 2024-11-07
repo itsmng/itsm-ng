@@ -1,4 +1,5 @@
 <?php
+
 namespace Itsmng\Infrastructure;
 
 use Symfony\Component\Dotenv\Dotenv;

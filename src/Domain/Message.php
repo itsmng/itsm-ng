@@ -25,4 +25,3 @@ class Message
         return $this;
     }
 }
-
