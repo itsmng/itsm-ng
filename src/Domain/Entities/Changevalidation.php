@@ -180,18 +180,6 @@ class Changevalidation
         return $this;
     }
 
-    public function getValidationStatus(): ?int
-    {
-        return $this->validation_status;
-    }
-
-    public function setValidationStatus(int $validation_status): self
-    {
-        $this->validation_status = $validation_status;
-
-        return $this;
-    }
-
     public function getTimelinePosition(): ?int
     {
         return $this->timeline_position;
