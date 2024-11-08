@@ -58,156 +58,156 @@ class Domain
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
 
-    function getId(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    function setId(int $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 
         return $this;
     }
 
-    function getName(): ?string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    function setName(?string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    function getEntitiesId(): ?int
+    public function getEntitiesId(): ?int
     {
         return $this->entities_id;
     }
 
-    function setEntitiesId(int $entities_id): self
+    public function setEntitiesId(int $entities_id): self
     {
         $this->entities_id = $entities_id;
 
         return $this;
     }
 
-    function getIsRecursive(): ?bool
+    public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
     }
 
-    function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
 
         return $this;
     }
 
-    function getDomaintypesId(): ?int
+    public function getDomaintypesId(): ?int
     {
         return $this->domaintypes_id;
     }
 
-    function setDomaintypesId(int $domaintypes_id): self
+    public function setDomaintypesId(int $domaintypes_id): self
     {
         $this->domaintypes_id = $domaintypes_id;
 
         return $this;
     }
 
-    function getDateExpiration(): ?\DateTimeInterface
+    public function getDateExpiration(): ?\DateTimeInterface
     {
         return $this->date_expiration;
     }
 
-    function setDateExpiration(\DateTimeInterface $date_expiration): self
+    public function setDateExpiration(\DateTimeInterface $date_expiration): self
     {
         $this->date_expiration = $date_expiration;
 
         return $this;
     }
 
-    function getUsersIdTech(): ?int
+    public function getUsersIdTech(): ?int
     {
         return $this->users_id_tech;
     }
 
-    function setUsersIdTech(int $users_id_tech): self
+    public function setUsersIdTech(int $users_id_tech): self
     {
         $this->users_id_tech = $users_id_tech;
 
         return $this;
     }
 
-    function getGroupsIdTech(): ?int
+    public function getGroupsIdTech(): ?int
     {
         return $this->groups_id_tech;
     }
 
-    function setGroupsIdTech(int $groups_id_tech): self
+    public function setGroupsIdTech(int $groups_id_tech): self
     {
         $this->groups_id_tech = $groups_id_tech;
 
         return $this;
     }
 
-    function getOthers(): ?string
+    public function getOthers(): ?string
     {
         return $this->others;
     }
 
-    function setOthers(string $others): self
+    public function setOthers(string $others): self
     {
         $this->others = $others;
 
         return $this;
     }
 
-    function getIsDeleted(): ?bool
+    public function getIsDeleted(): ?bool
     {
         return $this->is_deleted;
     }
 
-    function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $is_deleted): self
     {
         $this->is_deleted = $is_deleted;
 
         return $this;
     }
 
-    function getComment(): ?string
+    public function getComment(): ?string
     {
         return $this->comment;
     }
 
-    function setComment(string $comment): self
+    public function setComment(string $comment): self
     {
         $this->comment = $comment;
 
         return $this;
     }
 
-    function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
     }
 
-    function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
 
         return $this;
     }
 
-    function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->date_creation;
     }
 
-    function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
 

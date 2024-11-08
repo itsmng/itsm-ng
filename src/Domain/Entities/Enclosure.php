@@ -16,7 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
 #[ORM\Index(name: 'states_id', columns: ['states_id'])]
 #[ORM\Index(name: 'manufacturers_id', columns: ['manufacturers_id'])]
-class Enclosure {
+class Enclosure
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

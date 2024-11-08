@@ -92,4 +92,3 @@ class DomainrecordType
         return $this;
     }
 }
-
