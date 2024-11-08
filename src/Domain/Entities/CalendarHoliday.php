@@ -5,7 +5,7 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_calendar_holidays')]
+#[ORM\Table(name: 'glpi_calendars_holidays')]
 #[ORM\UniqueConstraint(name: 'calendars_id_holidays_id', columns: ['calendars_id', 'holidays_id'])]
 #[ORM\Index(name: 'holidays_id', columns: ['holidays_id'])]
 
