@@ -35,8 +35,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "devicecasemodels_id", columns: ["devicecasemodels_id"])]
-class DeviceCase {
-
+class DeviceCase
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
@@ -69,101 +69,121 @@ class DeviceCase {
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function setId(int $id): self {
+    public function setId(int $id): self
+    {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getDesignation(): ?string {
+    public function getDesignation(): ?string
+    {
         return $this->designation;
     }
 
-    public function setDesignation(?string $designation): self {
+    public function setDesignation(?string $designation): self
+    {
         $this->designation = $designation;
 
         return $this;
     }
 
-    public function getDevicecasetypesId(): ?int {
+    public function getDevicecasetypesId(): ?int
+    {
         return $this->devicecasetypes_id;
     }
 
-    public function setDevicecasetypesId(int $devicecasetypes_id): self {
+    public function setDevicecasetypesId(int $devicecasetypes_id): self
+    {
         $this->devicecasetypes_id = $devicecasetypes_id;
 
         return $this;
     }
 
-    public function getComment(): ?string {
+    public function getComment(): ?string
+    {
         return $this->comment;
     }
 
-    public function setComment(?string $comment): self {
+    public function setComment(?string $comment): self
+    {
         $this->comment = $comment;
 
         return $this;
     }
 
-    public function getManufacturersId(): ?int {
+    public function getManufacturersId(): ?int
+    {
         return $this->manufacturers_id;
     }
 
-    public function setManufacturersId(int $manufacturers_id): self {
+    public function setManufacturersId(int $manufacturers_id): self
+    {
         $this->manufacturers_id = $manufacturers_id;
 
         return $this;
     }
 
-    public function getEntitiesId(): ?int {
+    public function getEntitiesId(): ?int
+    {
         return $this->entities_id;
     }
 
-    public function setEntitiesId(int $entities_id): self {
+    public function setEntitiesId(int $entities_id): self
+    {
         $this->entities_id = $entities_id;
 
         return $this;
     }
 
-    public function getIsRecursive(): ?bool {
+    public function getIsRecursive(): ?bool
+    {
         return $this->is_recursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self {
+    public function setIsRecursive(bool $is_recursive): self
+    {
         $this->is_recursive = $is_recursive;
 
         return $this;
     }
 
-    public function getDevicecasemodelsId(): ?int {
+    public function getDevicecasemodelsId(): ?int
+    {
         return $this->devicecasemodels_id;
     }
 
-    public function setDevicecasemodelsId(?int $devicecasemodels_id): self {
+    public function setDevicecasemodelsId(?int $devicecasemodels_id): self
+    {
         $this->devicecasemodels_id = $devicecasemodels_id;
 
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface {
+    public function getDateMod(): ?\DateTimeInterface
+    {
         return $this->date_mod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self {
+    public function setDateMod(\DateTimeInterface $date_mod): self
+    {
         $this->date_mod = $date_mod;
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface {
+    public function getDateCreation(): ?\DateTimeInterface
+    {
         return $this->date_creation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self {
+    public function setDateCreation(\DateTimeInterface $date_creation): self
+    {
         $this->date_creation = $date_creation;
 
         return $this;

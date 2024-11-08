@@ -213,4 +213,3 @@ class DeviceHarddrive
         return $this;
     }
 }
-

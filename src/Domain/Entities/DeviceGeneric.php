@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_devicegenerics")]
 #[ORM\Index(name: "designation", columns: ["designation"])]
@@ -15,8 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "devicegenericmodels_id", columns: ["devicegenericmodels_id"])]
-class DeviceGeneric {
-
+class DeviceGeneric
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
@@ -55,121 +56,145 @@ class DeviceGeneric {
     #[ORM\Column(type: "datetime")]
     private $date_creation;
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function setId(int $id): self {
+    public function setId(int $id): self
+    {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getDesignation(): ?string {
+    public function getDesignation(): ?string
+    {
         return $this->designation;
     }
 
-    public function setDesignation(?string $designation): self {
+    public function setDesignation(?string $designation): self
+    {
         $this->designation = $designation;
 
         return $this;
     }
 
-    public function getDevicegenerictypesId(): ?int {
+    public function getDevicegenerictypesId(): ?int
+    {
         return $this->devicegenerictypes_id;
     }
 
-    public function setDevicegenerictypesId(int $devicegenerictypes_id): self {
+    public function setDevicegenerictypesId(int $devicegenerictypes_id): self
+    {
         $this->devicegenerictypes_id = $devicegenerictypes_id;
 
         return $this;
     }
 
-    public function getComment(): ?string {
+    public function getComment(): ?string
+    {
         return $this->comment;
     }
 
-    public function setComment(?string $comment): self {
+    public function setComment(?string $comment): self
+    {
         $this->comment = $comment;
 
         return $this;
     }
 
-    public function getManufacturersId(): ?int {
+    public function getManufacturersId(): ?int
+    {
         return $this->manufacturers_id;
     }
 
-    public function setManufacturersId(int $manufacturers_id): self {
+    public function setManufacturersId(int $manufacturers_id): self
+    {
         $this->manufacturers_id = $manufacturers_id;
 
         return $this;
     }
 
-    public function getEntitiesId(): ?int {
+    public function getEntitiesId(): ?int
+    {
         return $this->entities_id;
     }
 
-    public function setEntitiesId(int $entities_id): self {
+    public function setEntitiesId(int $entities_id): self
+    {
         $this->entities_id = $entities_id;
 
         return $this;
     }
 
-    public function getIsRecursive(): ?bool {
+    public function getIsRecursive(): ?bool
+    {
         return $this->is_recursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self {
+    public function setIsRecursive(bool $is_recursive): self
+    {
         $this->is_recursive = $is_recursive;
 
         return $this;
     }
 
-    public function getLocationsId(): ?int {
+    public function getLocationsId(): ?int
+    {
         return $this->locations_id;
     }
 
-    public function setLocationsId(int $locations_id): self {
+    public function setLocationsId(int $locations_id): self
+    {
         $this->locations_id = $locations_id;
 
         return $this;
     }
 
-    public function getStatesId(): ?int {
+    public function getStatesId(): ?int
+    {
         return $this->states_id;
     }
 
-    public function setStatesId(int $states_id): self {
+    public function setStatesId(int $states_id): self
+    {
         $this->states_id = $states_id;
 
         return $this;
     }
 
-    public function getDevicegenericmodelsId(): ?int {
+    public function getDevicegenericmodelsId(): ?int
+    {
         return $this->devicegenericmodels_id;
     }
 
-    public function setDevicegenericmodelsId(int $devicegenericmodels_id): self {
+    public function setDevicegenericmodelsId(int $devicegenericmodels_id): self
+    {
         $this->devicegenericmodels_id = $devicegenericmodels_id;
 
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface {
+    public function getDateMod(): ?\DateTimeInterface
+    {
         return $this->date_mod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self {
+    public function setDateMod(\DateTimeInterface $date_mod): self
+    {
         $this->date_mod = $date_mod;
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface {
+    public function getDateCreation(): ?\DateTimeInterface
+    {
         return $this->date_creation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self {
+    public function setDateCreation(\DateTimeInterface $date_creation): self
+    {
         $this->date_creation = $date_creation;
 
         return $this;

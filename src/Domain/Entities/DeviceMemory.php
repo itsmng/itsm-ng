@@ -191,4 +191,3 @@ class DeviceMemory
         return $this;
     }
 }
-
