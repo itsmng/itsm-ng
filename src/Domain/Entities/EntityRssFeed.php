@@ -5,11 +5,11 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "glpi_entities_reminders")]
-#[ORM\Index(columns: ["reminders_id"])]
+#[ORM\Table(name: "glpi_entities_rssfeeds")]
+#[ORM\Index(columns: ["rssfeeds_id"])]
 #[ORM\Index(columns: ["entities_id"])]
 #[ORM\Index(columns: ["is_recursive"])]
-class EntityReminder
+class EntityRssFeed
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,7 +17,7 @@ class EntityReminder
     private $id;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $reminders_id;
+    private $rssfeeds_id;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $entities_id;
@@ -30,14 +30,21 @@ class EntityReminder
         return $this->id;
     }
 
-    public function getRemindersId(): ?int
+    public function setId(int $id): self
     {
-        return $this->reminders_id;
+        $this->id = $id;
+
+        return $this;
     }
 
-    public function setRemindersId(int $reminders_id): self
+    public function getRssfeedsId(): ?int
     {
-        $this->reminders_id = $reminders_id;
+        return $this->rssfeeds_id;
+    }
+
+    public function setRssfeedsId(int $rssfeeds_id): self
+    {
+        $this->rssfeeds_id = $rssfeeds_id;
 
         return $this;
     }
