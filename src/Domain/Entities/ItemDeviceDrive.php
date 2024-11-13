@@ -4,69 +4,83 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
+//id	int(11) Auto Increment
+//items_id	int(11) [0]
+//itemtype	varchar(255) NULL
+//devicedrives_id	int(11) [0]
+//is_deleted	tinyint(1) [0]
+//is_dynamic	tinyint(1) [0]
+//entities_id	int(11) [0]
+//is_recursive	tinyint(1) [0]
+//serial	varchar(255) NULL
+//busID	varchar(255) NULL
+//otherserial	varchar(255) NULL
+//locations_id	int(11) [0]
+//states_id	int(11) [0]
+
 #[ORM\Entity]
-#[ORM\Table(name: "glpi_items_devicecontrols")]
-#[ORM\Index(columns: ["items_id"])]
-#[ORM\Index(columns: ["devicecontrols_id"])]
-#[ORM\Index(columns: ["is_deleted"])]
-#[ORM\Index(columns: ["is_dynamic"])]
-#[ORM\Index(columns: ["entities_id"])]
-#[ORM\Index(columns: ["is_recursive"])]
-#[ORM\Index(columns: ["serial"])]
-#[ORM\Index(columns: ["busID"])]
-#[ORM\Index(columns: ["itemtype", "items_id"])]
-#[ORM\Index(columns: ["otherserial"])]
-#[ORM\Index(columns: ["locations_id"])]
-#[ORM\Index(columns: ["states_id"])]
-class Item_DeviceControl
+#[ORM\Table(name: 'glpi_items_devicedrives')]
+#[ORM\Index(columns: ['items_id'])]
+#[ORM\Index(columns: ['devicedrives_id'])]
+#[ORM\Index(columns: ['is_deleted'])]
+#[ORM\Index(columns: ['is_dynamic'])]
+#[ORM\Index(columns: ['entities_id'])]
+#[ORM\Index(columns: ['is_recursive'])]
+#[ORM\Index(columns: ['serial'])]
+#[ORM\Index(columns: ['busID'])]
+#[ORM\Index(columns: ['itemtype', 'items_id'])]
+#[ORM\Index(columns: ['otherserial'])]
+#[ORM\Index(columns: ['locations_id'])]
+#[ORM\Index(columns: ['states_id'])]
+class ItemDeviceDrive
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_id;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $devicecontrols_id;
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private $devicedrives_id;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $is_deleted;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $is_dynamic;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $entities_id;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $busID;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $locations_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $states_id;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getItemsId(): int
+    public function getItemsId(): ?int
     {
         return $this->items_id;
     }
@@ -90,21 +104,21 @@ class Item_DeviceControl
         return $this;
     }
 
-    public function getDevicecontrolsId(): int
+    public function getDevicedrivesId(): ?int
     {
-        return $this->devicecontrols_id;
+        return $this->devicedrives_id;
     }
 
-    public function setDevicecontrolsId(int $devicecontrols_id): self
+    public function setDevicedrivesId(int $devicedrives_id): self
     {
-        $this->devicecontrols_id = $devicecontrols_id;
+        $this->devicedrives_id = $devicedrives_id;
 
         return $this;
     }
 
-    public function getIsDeleted(): bool
+    public function getIsDeleted(): ?bool
     {
-        return (bool) $this->is_deleted;
+        return $this->is_deleted;
     }
 
     public function setIsDeleted(bool $is_deleted): self
@@ -114,9 +128,9 @@ class Item_DeviceControl
         return $this;
     }
 
-    public function getIsDynamic(): bool
+    public function getIsDynamic(): ?bool
     {
-        return (bool) $this->is_dynamic;
+        return $this->is_dynamic;
     }
 
     public function setIsDynamic(bool $is_dynamic): self
@@ -126,7 +140,7 @@ class Item_DeviceControl
         return $this;
     }
 
-    public function getEntitiesId(): int
+    public function getEntitiesId(): ?int
     {
         return $this->entities_id;
     }
@@ -138,9 +152,9 @@ class Item_DeviceControl
         return $this;
     }
 
-    public function getIsRecursive(): bool
+    public function getIsRecursive(): ?bool
     {
-        return (bool) $this->is_recursive;
+        return $this->is_recursive;
     }
 
     public function setIsRecursive(bool $is_recursive): self
@@ -186,7 +200,7 @@ class Item_DeviceControl
         return $this;
     }
 
-    public function getLocationsId(): int
+    public function getLocationsId(): ?int
     {
         return $this->locations_id;
     }
@@ -198,7 +212,7 @@ class Item_DeviceControl
         return $this;
     }
 
-    public function getStatesId(): int
+    public function getStatesId(): ?int
     {
         return $this->states_id;
     }
