@@ -4,20 +4,6 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
-//id	int(11) Auto Increment
-//items_id	int(11) [0]
-//itemtype	varchar(255) NULL
-//devicedrives_id	int(11) [0]
-//is_deleted	tinyint(1) [0]
-//is_dynamic	tinyint(1) [0]
-//entities_id	int(11) [0]
-//is_recursive	tinyint(1) [0]
-//serial	varchar(255) NULL
-//busID	varchar(255) NULL
-//otherserial	varchar(255) NULL
-//locations_id	int(11) [0]
-//states_id	int(11) [0]
-
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_items_devicedrives')]
 #[ORM\Index(columns: ['items_id'])]

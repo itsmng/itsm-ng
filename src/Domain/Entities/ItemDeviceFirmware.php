@@ -4,34 +4,6 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
-//Table: glpi_items_devicefirmwares
-//
-//Select data Show structure Alter table New item
-//Column	Type	Comment
-//id	int(11) Auto Increment
-//items_id	int(11) [0]
-//itemtype	varchar(255) NULL
-//devicefirmwares_id	int(11) [0]
-//is_deleted	tinyint(1) [0]
-//is_dynamic	tinyint(1) [0]
-//entities_id	int(11) [0]
-//is_recursive	tinyint(1) [0]
-//serial	varchar(255) NULL
-//otherserial	varchar(255) NULL
-//locations_id	int(11) [0]
-//states_id	int(11) [0]
-//Indexes
-//PRIMARY	id
-//INDEX	items_id
-//INDEX	devicefirmwares_id
-//INDEX	is_deleted
-//INDEX	is_dynamic
-//INDEX	entities_id
-//INDEX	is_recursive
-//INDEX	serial
-//INDEX	itemtype, items_id
-//INDEX	otherserial
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_items_devicefirmwares")]
 #[ORM\Index(columns: ["items_id"])]
