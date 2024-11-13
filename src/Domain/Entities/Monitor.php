@@ -38,7 +38,7 @@ class Monitor
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -53,7 +53,7 @@ class Monitor
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $groups_id_tech;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $comment;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -122,7 +122,7 @@ class Monitor
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $states_id;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0000])]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0000], nullable: true)]
     private $ticket_tco;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -159,18 +159,6 @@ class Monitor
     public function setEntitiesId(int $entities_id): self
     {
         $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
 
         return $this;
     }
