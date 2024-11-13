@@ -4,19 +4,6 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
-//Table: glpi_domainrecordtypes
-//
-//Select data Show structure Alter table New item
-//Column	Type	Comment
-//id	int(11) Auto Increment
-//name	varchar(255) NULL
-//entities_id	int(11) [0]
-//is_recursive	tinyint(1) [0]
-//comment	text NULL
-//Indexes
-//PRIMARY	id
-//INDEX	name
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_domainrecordtypes")]
 #[ORM\Index(name: "name", columns: ["name"])]

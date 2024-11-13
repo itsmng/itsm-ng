@@ -1,16 +1,5 @@
 <?php
 
-// Column	Type	Comment
-//id	int(11) Auto Increment
-//appliances_id	int(11) [0]
-//items_id	int(11) [0]
-//itemtype	varchar(100) []
-//Indexes
-//PRIMARY	id
-//UNIQUE	appliances_id, items_id, itemtype
-//INDEX	appliances_id
-//INDEX	itemtype, items_id
-
 namespace Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;

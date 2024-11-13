@@ -4,19 +4,6 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
-//Table => glpi_knowbaseitems_comments
-//
-//Select data Show structure Alter table New item
-//Column	Type	Comment
-//id	int(11) Auto Increment
-//knowbaseitems_id	int(11)
-//users_id	int(11) [0]
-//language	varchar(10) NULL
-//comment	text
-//parent_comment_id	int(11) NULL
-//date_creation	timestamp NULL
-//date_mod	timestamp NULL
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_knowbaseitems_comments")]
 class KnowbaseitemComment

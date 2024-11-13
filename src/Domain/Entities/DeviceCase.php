@@ -4,27 +4,6 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
-//id	int(11) Auto Increment
-//designation	varchar(255) NULL
-//devicecasetypes_id	int(11) [0]
-//comment	text NULL
-//manufacturers_id	int(11) [0]
-//entities_id	int(11) [0]
-//is_recursive	tinyint(1) [0]
-//devicecasemodels_id	int(11) NULL
-//date_mod	timestamp NULL
-//date_creation	timestamp NULL
-//Indexes
-//PRIMARY	id
-//INDEX	designation
-//INDEX	manufacturers_id
-//INDEX	devicecasetypes_id
-//INDEX	entities_id
-//INDEX	is_recursive
-//INDEX	date_mod
-//INDEX	date_creation
-//INDEX	devicecasemodels_id
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_devicecases")]
 #[ORM\Index(name: "designation", columns: ["designation"])]

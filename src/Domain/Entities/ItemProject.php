@@ -4,19 +4,6 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
-//Table: glpi_items_projects
-//
-//Select data Show structure Alter table New item
-//Column	Type	Comment
-//id	int(11) Auto Increment
-//projects_id	int(11) [0]
-//itemtype	varchar(100) NULL
-//items_id	int(11) [0]
-//Indexes
-//PRIMARY	id
-//UNIQUE	projects_id, itemtype, items_id
-//INDEX	itemtype, items_id
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_items_projects")]
 #[ORM\UniqueConstraint(columns: ["projects_id", "itemtype", "items_id"])]

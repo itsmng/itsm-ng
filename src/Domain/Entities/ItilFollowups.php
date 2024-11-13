@@ -4,39 +4,6 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
-//Table: glpi_itilfollowups
-//
-//Select data Show structure Alter table New item
-//Column	Type	Comment
-//id	int(11) Auto Increment
-//itemtype	varchar(100)
-//items_id	int(11) [0]
-//date	timestamp NULL
-//users_id	int(11) [0]
-//users_id_editor	int(11) [0]
-//content	longtext NULL
-//is_private	tinyint(1) [0]
-//requesttypes_id	int(11) [0]
-//date_mod	timestamp NULL
-//date_creation	timestamp NULL
-//timeline_position	tinyint(1) [0]
-//sourceitems_id	int(11) [0]
-//sourceof_items_id	int(11) [0]
-//Indexes
-//PRIMARY	id
-//INDEX	itemtype
-//INDEX	items_id
-//INDEX	itemtype, items_id
-//INDEX	date
-//INDEX	date_mod
-//INDEX	date_creation
-//INDEX	users_id
-//INDEX	users_id_editor
-//INDEX	is_private
-//INDEX	requesttypes_id
-//INDEX	sourceitems_id
-//INDEX	sourceof_items_id
-
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_itilfollowups')]
 #[ORM\Index(columns: ['itemtype'])]

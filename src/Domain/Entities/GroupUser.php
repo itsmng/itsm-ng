@@ -4,23 +4,6 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
-//Table: glpi_groups_users
-//
-//Select data Show structure Alter table New item
-//Column	Type	Comment
-//id	int(11) Auto Increment
-//users_id	int(11) [0]
-//groups_id	int(11) [0]
-//is_dynamic	tinyint(1) [0]
-//is_manager	tinyint(1) [0]
-//is_userdelegate	tinyint(1) [0]
-//Indexes
-//PRIMARY	id
-//UNIQUE	users_id, groups_id
-//INDEX	groups_id
-//INDEX	is_manager
-//INDEX	is_userdelegate
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_groups_users")]
 #[ORM\UniqueConstraint(columns: ["users_id", "groups_id"])]

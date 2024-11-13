@@ -4,12 +4,6 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
-//Column	Type	Comment
-//id	int(11) Auto Increment
-//clusters_id	int(11) [0]
-//itemtype	varchar(100) NULL
-//items_id	int(11) [0]
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_items_clusters")]
 #[ORM\UniqueConstraint(name: "UNIQUE", columns: ["clusters_id", "itemtype", "items_id"])]
