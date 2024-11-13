@@ -60,7 +60,7 @@ class ItemDevicePowerSupply
     public function getId(): ?int
     {
         return $this->id;
-        }
+    }
 
     public function getItemsId(): ?int
     {
