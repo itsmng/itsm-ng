@@ -19,12 +19,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(columns: ["is_dynamic"])]
 #[ORM\Index(columns: ["entities_id"])]
 #[ORM\Index(columns: ["is_recursive"])]
-class ItemOperatingSystem {
-
-	#[ORM\Id]
-	#[ORM\GeneratedValue]
-	#[ORM\Column(type: "integer")]
-	private $id;
+class ItemOperatingSystem
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private $id;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $items_id;
@@ -75,145 +75,174 @@ class ItemOperatingSystem {
     private $is_recursive;
 
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getItemsId(): ?int {
+    public function getItemsId(): ?int
+    {
         return $this->items_id;
     }
 
-    public function setItemsId(int $items_id): self {
+    public function setItemsId(int $items_id): self
+    {
         $this->items_id = $items_id;
 
         return $this;
     }
 
-    public function getItemtype(): ?string {
+    public function getItemtype(): ?string
+    {
         return $this->itemtype;
     }
 
-    public function setItemtype(?string $itemtype): self {
+    public function setItemtype(?string $itemtype): self
+    {
         $this->itemtype = $itemtype;
 
         return $this;
     }
 
-    public function getOperatingSystemsId(): ?int {
+    public function getOperatingSystemsId(): ?int
+    {
         return $this->operatingsystems_id;
     }
 
-    public function setOperatingSystemsId(int $operatingsystems_id): self {
+    public function setOperatingSystemsId(int $operatingsystems_id): self
+    {
         $this->operatingsystems_id = $operatingsystems_id;
 
         return $this;
     }
 
-    public function getOperatingSystemVersionsId(): ?int {
+    public function getOperatingSystemVersionsId(): ?int
+    {
         return $this->operatingsystemversions_id;
     }
 
-    public function setOperatingSystemVersionsId(int $operatingsystemversions_id): self {
+    public function setOperatingSystemVersionsId(int $operatingsystemversions_id): self
+    {
         $this->operatingsystemversions_id = $operatingsystemversions_id;
 
         return $this;
     }
 
-    public function getOperatingSystemServicePacksId(): ?int {
+    public function getOperatingSystemServicePacksId(): ?int
+    {
         return $this->operatingsystemservicepacks_id;
     }
 
-    public function setOperatingSystemServicePacksId(int $operatingsystemservicepacks_id): self {
+    public function setOperatingSystemServicePacksId(int $operatingsystemservicepacks_id): self
+    {
         $this->operatingsystemservicepacks_id = $operatingsystemservicepacks_id;
 
         return $this;
     }
 
-    public function getOperatingSystemArchitecturesId(): ?int {
+    public function getOperatingSystemArchitecturesId(): ?int
+    {
         return $this->operatingsystemarchitectures_id;
     }
 
-    public function setOperatingSystemArchitecturesId(int $operatingsystemarchitectures_id): self {
+    public function setOperatingSystemArchitecturesId(int $operatingsystemarchitectures_id): self
+    {
         $this->operatingsystemarchitectures_id = $operatingsystemarchitectures_id;
 
         return $this;
     }
 
-    public function getOperatingSystemKernelVersionsId(): ?int {
+    public function getOperatingSystemKernelVersionsId(): ?int
+    {
         return $this->operatingsystemkernelversions_id;
     }
 
-    public function setOperatingSystemKernelVersionsId(int $operatingsystemkernelversions_id): self {
+    public function setOperatingSystemKernelVersionsId(int $operatingsystemkernelversions_id): self
+    {
         $this->operatingsystemkernelversions_id = $operatingsystemkernelversions_id;
 
         return $this;
     }
 
-    public function getLicenseNumber(): ?string {
+    public function getLicenseNumber(): ?string
+    {
         return $this->license_number;
     }
 
-    public function setLicenseNumber(string $license_number): self {
+    public function setLicenseNumber(string $license_number): self
+    {
         $this->license_number = $license_number;
 
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface {
+    public function getDateMod(): ?\DateTimeInterface
+    {
         return $this->date_mod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self {
+    public function setDateMod(\DateTimeInterface $date_mod): self
+    {
         $this->date_mod = $date_mod;
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface {
+    public function getDateCreation(): ?\DateTimeInterface
+    {
         return $this->date_creation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self {
+    public function setDateCreation(\DateTimeInterface $date_creation): self
+    {
         $this->date_creation = $date_creation;
 
         return $this;
     }
 
-    public function isIsDeleted(): ?bool {
+    public function isIsDeleted(): ?bool
+    {
         return $this->is_deleted;
     }
 
-    public function setIsDeleted(bool $deleted): self {
+    public function setIsDeleted(bool $deleted): self
+    {
         $this->is_deleted = $deleted;
 
         return $this;
     }
 
-    public function getIsDynamic(): ?bool {
+    public function getIsDynamic(): ?bool
+    {
         return $this->is_dynamic;
     }
 
-    public function setIsDynamic(bool $is_dynamic): self {
+    public function setIsDynamic(bool $is_dynamic): self
+    {
         $this->is_dynamic = $is_dynamic;
 
         return $this;
     }
 
-    public function getEntitiesId(): ?int {
+    public function getEntitiesId(): ?int
+    {
         return $this->entities_id;
     }
 
-    public function setEntitiesId(int $entities_id): self {
+    public function setEntitiesId(int $entities_id): self
+    {
         $this->entities_id = $entities_id;
 
         return $this;
     }
 
-    public function getIsRecursive(): ?bool {
+    public function getIsRecursive(): ?bool
+    {
         return $this->is_recursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self {
+    public function setIsRecursive(bool $is_recursive): self
+    {
         $this->is_recursive = $is_recursive;
 
         return $this;
