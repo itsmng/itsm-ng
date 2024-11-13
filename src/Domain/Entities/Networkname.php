@@ -28,7 +28,7 @@ class Networkname
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $items_id;
 
-    #[ORM\Column(type: "string", length: 100, nullable: true)]
+    #[ORM\Column(type: "string", length: 100)]
     private $itemtype;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
