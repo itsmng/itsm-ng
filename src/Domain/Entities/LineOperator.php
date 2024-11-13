@@ -144,4 +144,3 @@ class LineOperator
         return $this;
     }
 }
-
