@@ -32,7 +32,7 @@ class Networkequipmentmodel
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $required_units;
 
-    #[ORM\Column(type: 'float',options: ['default' => 1.0])]
+    #[ORM\Column(type: 'float', options: ['default' => 1.0])]
     private $depth;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
