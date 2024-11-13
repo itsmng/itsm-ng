@@ -15,12 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(columns: ["serial"])]
 #[ORM\Index(columns: ["itemtype", "items_id"])]
 #[ORM\Index(columns: ["otherserial"])]
-class ItemDeviceSensor {
-
-	#[ORM\Id]
-	#[ORM\GeneratedValue]
-	#[ORM\Column(type: "integer")]
-	private $id;
+class ItemDeviceSensor
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private $id;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $items_id;
@@ -55,106 +55,129 @@ class ItemDeviceSensor {
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $states_id;
 
-	public function getId() {
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function getItems_id() {
-		return $this->items_id;
-	}
+    public function getItems_id()
+    {
+        return $this->items_id;
+    }
 
-	public function setItems_id($items_id) {
-		$this->items_id = $items_id;
-		return $this;
-	}
+    public function setItems_id($items_id)
+    {
+        $this->items_id = $items_id;
+        return $this;
+    }
 
-	public function getItemtype() {
-		return $this->itemtype;
-	}
+    public function getItemtype()
+    {
+        return $this->itemtype;
+    }
 
-	public function setItemtype($itemtype) {
-		$this->itemtype = $itemtype;
-		return $this;
-	}
+    public function setItemtype($itemtype)
+    {
+        $this->itemtype = $itemtype;
+        return $this;
+    }
 
-	public function getDevicesensors_id() {
-		return $this->devicesensors_id;
-	}
+    public function getDevicesensors_id()
+    {
+        return $this->devicesensors_id;
+    }
 
-	public function setDevicesensors_id($devicesensors_id) {
-		$this->devicesensors_id = $devicesensors_id;
-		return $this;
-	}
+    public function setDevicesensors_id($devicesensors_id)
+    {
+        $this->devicesensors_id = $devicesensors_id;
+        return $this;
+    }
 
-	public function getIs_deleted() {
-		return $this->is_deleted;
-	}
+    public function getIs_deleted()
+    {
+        return $this->is_deleted;
+    }
 
-    public function setIs_deleted($is_deleted) {
+    public function setIs_deleted($is_deleted)
+    {
         $this->is_deleted = $is_deleted;
         return $this;
     }
 
-	public function getIs_dynamic() {
-		return $this->is_dynamic;
-	}
+    public function getIs_dynamic()
+    {
+        return $this->is_dynamic;
+    }
 
-	public function setIs_dynamic($is_dynamic) {
-		$this->is_dynamic = $is_dynamic;
-		return $this;
-	}
+    public function setIs_dynamic($is_dynamic)
+    {
+        $this->is_dynamic = $is_dynamic;
+        return $this;
+    }
 
-	public function getEntities_id() {
-		return $this->entities_id;
-	}
+    public function getEntities_id()
+    {
+        return $this->entities_id;
+    }
 
-	public function setEntities_id($entities_id) {
-		$this->entities_id = $entities_id;
-		return $this;
-	}
+    public function setEntities_id($entities_id)
+    {
+        $this->entities_id = $entities_id;
+        return $this;
+    }
 
-	public function getIs_recursive() {
-		return $this->is_recursive;
-	}
+    public function getIs_recursive()
+    {
+        return $this->is_recursive;
+    }
 
-	public function setIs_recursive($is_recursive) {
-		$this->is_recursive = $is_recursive;
-		return $this;
-	}
+    public function setIs_recursive($is_recursive)
+    {
+        $this->is_recursive = $is_recursive;
+        return $this;
+    }
 
-	public function getSerial() {
-		return $this->serial;
-	}
+    public function getSerial()
+    {
+        return $this->serial;
+    }
 
-	public function setSerial($serial) {
-		$this->serial = $serial;
-		return $this;
-	}
+    public function setSerial($serial)
+    {
+        $this->serial = $serial;
+        return $this;
+    }
 
-	public function getOtherserial() {
-		return $this->otherserial;
-	}
+    public function getOtherserial()
+    {
+        return $this->otherserial;
+    }
 
-	public function setOtherserial($otherserial) {
-		$this->otherserial = $otherserial;
-		return $this;
-	}
+    public function setOtherserial($otherserial)
+    {
+        $this->otherserial = $otherserial;
+        return $this;
+    }
 
-	public function getLocations_id() {
-		return $this->locations_id;
-	}
+    public function getLocations_id()
+    {
+        return $this->locations_id;
+    }
 
-	public function setLocations_id($locations_id) {
-		$this->locations_id = $locations_id;
-		return $this;
-	}
+    public function setLocations_id($locations_id)
+    {
+        $this->locations_id = $locations_id;
+        return $this;
+    }
 
-	public function getStates_id() {
-		return $this->states_id;
-	}
+    public function getStates_id()
+    {
+        return $this->states_id;
+    }
 
-	public function setStates_id($states_id) {
-		$this->states_id = $states_id;
-		return $this;
-	}
+    public function setStates_id($states_id)
+    {
+        $this->states_id = $states_id;
+        return $this;
+    }
 }
