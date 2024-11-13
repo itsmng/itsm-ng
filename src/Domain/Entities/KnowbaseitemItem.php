@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+
 //Table: glpi_knowbaseitems_items
 //
 //Select data Show structure Alter table New item
