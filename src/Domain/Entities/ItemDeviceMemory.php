@@ -5,7 +5,7 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "item_devicememories")]
+#[ORM\Table(name: "glpi_items_devicememories")]
 #[ORM\Index(columns: ["items_id"])]
 #[ORM\Index(columns: ["devicememories_id"])]
 #[ORM\Index(columns: ["size"])]
