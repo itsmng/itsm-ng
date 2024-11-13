@@ -26,7 +26,7 @@ class Log
     #[ORM\Column(type: 'string', length: 100, options: ['default' => ''])]
     private $itemtype_link;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'see define.php HISTORY_* constant'])]
     private $linked_action;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -35,7 +35,7 @@ class Log
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'see search.constant.php for value'])]
     private $id_search_option;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
