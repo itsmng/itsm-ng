@@ -5,9 +5,9 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "glpi_items_devicebatteries")]
+#[ORM\Table(name: "glpi_items_devicecases")]
 #[ORM\Index(columns: ["items_id"])]
-#[ORM\Index(columns: ["devicebatteries_id"])]
+#[ORM\Index(columns: ["devicecases_id"])]
 #[ORM\Index(columns: ["is_deleted"])]
 #[ORM\Index(columns: ["is_dynamic"])]
 #[ORM\Index(columns: ["entities_id"])]
@@ -15,55 +15,54 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(columns: ["serial"])]
 #[ORM\Index(columns: ["itemtype", "items_id"])]
 #[ORM\Index(columns: ["otherserial"])]
-class ItemDeviceBattery
+#[ORM\Index(columns: ["locations_id"])]
+#[ORM\Index(columns: ["states_id"])]
+class ItemDeviceCase
 {
     #[ORM\Id]
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
-    private $id;
+    private int $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: "items_id", type: "integer", options: ["default" => 0])]
+    private int $items_id;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $itemtype;
+    #[ORM\Column(name: "itemtype", type: "string", length: 255, nullable: true)]
+    private string $itemtype;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $devicebatteries_id;
+    #[ORM\Column(name: "devicecases_id", type: "integer", options: ["default" => 0])]
+    private int $devicecases_id;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private $manufacturing_date;
+    #[ORM\Column(name: "is_deleted", type: "boolean", options: ["default" => 0])]
+    private bool $is_deleted;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_deleted;
+    #[ORM\Column(name: "is_dynamic", type: "boolean", options: ["default" => 0])]
+    private bool $is_dynamic;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_dynamic;
+    #[ORM\Column(name: "entities_id", type: "integer", options: ["default" => 0])]
+    private int $entities_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\Column(name: "is_recursive", type: "boolean", options: ["default" => 0])]
+    private bool $is_recursive;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_recursive;
+    #[ORM\Column(name: "serial", type: "string", length: 255, nullable: true)]
+    private string $serial;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $serial;
+    #[ORM\Column(name: "otherserial", type: "string", length: 255, nullable: true)]
+    private string $otherserial;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $otherserial;
+    #[ORM\Column(name: "locations_id", type: "integer", options: ["default" => 0])]
+    private int $locations_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $locations_id;
+    #[ORM\Column(name: "states_id", type: "integer", options: ["default" => 0])]
+    private int $states_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $states_id;
-
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getItemsId(): ?int
+    public function getItemsId(): int
     {
         return $this->items_id;
     }
@@ -87,31 +86,19 @@ class ItemDeviceBattery
         return $this;
     }
 
-    public function getDevicebatteriesId(): ?int
+    public function getDevicecasesId(): int
     {
-        return $this->devicebatteries_id;
+        return $this->devicecases_id;
     }
 
-    public function setDevicebatteriesId(int $devicebatteries_id): self
+    public function setDevicecasesId(int $devicecases_id): self
     {
-        $this->devicebatteries_id = $devicebatteries_id;
+        $this->devicecases_id = $devicecases_id;
 
         return $this;
     }
 
-    public function getManufacturingDate(): ?\DateTimeInterface
-    {
-        return $this->manufacturing_date;
-    }
-
-    public function setManufacturingDate(\DateTimeInterface $manufacturing_date): self
-    {
-        $this->manufacturing_date = $manufacturing_date;
-
-        return $this;
-    }
-
-    public function getIsDeleted(): ?bool
+    public function getIsDeleted(): bool
     {
         return $this->is_deleted;
     }
@@ -123,7 +110,7 @@ class ItemDeviceBattery
         return $this;
     }
 
-    public function getIsDynamic(): ?bool
+    public function getIsDynamic(): bool
     {
         return $this->is_dynamic;
     }
@@ -135,7 +122,7 @@ class ItemDeviceBattery
         return $this;
     }
 
-    public function getEntitiesId(): ?int
+    public function getEntitiesId(): int
     {
         return $this->entities_id;
     }
@@ -147,7 +134,7 @@ class ItemDeviceBattery
         return $this;
     }
 
-    public function getIsRecursive(): ?bool
+    public function getIsRecursive(): bool
     {
         return $this->is_recursive;
     }
@@ -183,7 +170,7 @@ class ItemDeviceBattery
         return $this;
     }
 
-    public function getLocationsId(): ?int
+    public function getLocationsId(): int
     {
         return $this->locations_id;
     }
@@ -195,7 +182,7 @@ class ItemDeviceBattery
         return $this;
     }
 
-    public function getStatesId(): ?int
+    public function getStatesId(): int
     {
         return $this->states_id;
     }
