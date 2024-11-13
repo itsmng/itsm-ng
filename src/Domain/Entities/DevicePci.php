@@ -5,125 +5,99 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_items_devicepcis')]
-#[ORM\Index(name: 'items_id', columns: ['items_id'])]
-#[ORM\Index(name: 'devicepcis_id', columns: ['devicepcis_id'])]
-#[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
-#[ORM\Index(name: 'is_dynamic', columns: ['is_dynamic'])]
-#[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
-#[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
-#[ORM\Index(name: 'serial', columns: ['serial'])]
-#[ORM\Index(name: 'busID', columns: ['busID'])]
-#[ORM\Index(name: 'itemtype', columns: ['itemtype', 'items_id'])]
-#[ORM\Index(name: 'otherserial', columns: ['otherserial'])]
-#[ORM\Index(name: 'locations_id', columns: ['locations_id'])]
-#[ORM\Index(name: 'states_id', columns: ['states_id'])]
+#[ORM\Table(name: "glpi_devicepcis")]
+#[ORM\Index(columns: ["designation"])]
+#[ORM\Index(columns: ["manufacturers_id"])]
+#[ORM\Index(columns: ["devicenetworkcardmodels_id"])]
+#[ORM\Index(columns: ["entities_id"])]
+#[ORM\Index(columns: ["is_recursive"])]
+#[ORM\Index(columns: ["date_mod"])]
+#[ORM\Index(columns: ["date_creation"])]
+#[ORM\Index(columns: ["devicepcimodels_id"])]
 class DevicePci
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private $designation;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $itemtype;
+    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $devicepcis_id;
+    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    private $manufacturers_id;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_deleted;
+    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    private $devicenetworkcardmodels_id;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_dynamic;
-
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $entities_id;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $serial;
+    #[ORM\Column(type: "integer", nullable: true)]
+    private $devicepcimodels_id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $busID;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private $date_mod;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $otherserial;
-
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
-
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private $date_creation;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function getDesignation(): ?string
     {
-        $this->id = $id;
+        return $this->designation;
+    }
+
+    public function setDesignation(?string $designation): self
+    {
+        $this->designation = $designation;
+
         return $this;
     }
 
-    public function getItemsId(): ?int
+    public function getComment(): ?string
     {
-        return $this->items_id;
+        return $this->comment;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setComment(?string $comment): self
     {
-        $this->items_id = $items_id;
+        $this->comment = $comment;
+
         return $this;
     }
 
-    public function getItemtype(): ?string
+    public function getManufacturersId(): ?int
     {
-        return $this->itemtype;
+        return $this->manufacturers_id;
     }
 
-    public function setItemtype(string $itemtype): self
+    public function setManufacturersId(?int $manufacturers_id): self
     {
-        $this->itemtype = $itemtype;
+        $this->manufacturers_id = $manufacturers_id;
+
         return $this;
     }
 
-    public function getDevicePcisId(): ?int
+    public function getDeviceNetworkCardModelsId(): ?int
     {
-        return $this->devicepcis_id;
+        return $this->devicenetworkcardmodels_id;
     }
 
-    public function setDevicePcisId(int $devicepcis_id): self
+    public function setDeviceNetworkCardModelsId(?int $devicenetworkcardmodels_id): self
     {
-        $this->devicepcis_id = $devicepcis_id;
-        return $this;
-    }
+        $this->devicenetworkcardmodels_id = $devicenetworkcardmodels_id;
 
-    public function getIsDeleted(): ?bool
-    {
-        return $this->is_deleted;
-    }
-
-    public function setIsDeleted(bool $is_deleted): self
-    {
-        $this->is_deleted = $is_deleted;
-        return $this;
-    }
-
-    public function getIsDynamic(): ?bool
-    {
-        return $this->is_dynamic;
-    }
-
-    public function setIsDynamic(bool $is_dynamic): self
-    {
-        $this->is_dynamic = $is_dynamic;
         return $this;
     }
 
@@ -132,9 +106,10 @@ class DevicePci
         return $this->entities_id;
     }
 
-    public function setEntitiesId(int $entities_id): self
+    public function setEntitiesId(?int $entities_id): self
     {
         $this->entities_id = $entities_id;
+
         return $this;
     }
 
@@ -143,64 +118,46 @@ class DevicePci
         return $this->is_recursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
+
         return $this;
     }
 
-    public function getSerial(): ?string
+    public function getDevicePciModelsId(): ?int
     {
-        return $this->serial;
+        return $this->devicepcimodels_id;
     }
 
-    public function setSerial(string $serial): self
+    public function setDevicePciModelsId(?int $devicepcimodels_id): self
     {
-        $this->serial = $serial;
+        $this->devicepcimodels_id = $devicepcimodels_id;
+
         return $this;
     }
 
-    public function getBusID(): ?string
+    public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->busID;
+        return $this->date_mod;
     }
 
-    public function setBusID(string $busID): self
+    public function setDateMod(\DateTimeInterface $date_mod): self
     {
-        $this->busID = $busID;
+        $this->date_mod = $date_mod;
+
         return $this;
     }
 
-    public function getOtherserial(): ?string
+    public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->otherserial;
+        return $this->date_creation;
     }
 
-    public function setOtherserial(string $otherserial): self
+    public function setDateCreation(\DateTimeInterface $date_creation): self
     {
-        $this->otherserial = $otherserial;
-        return $this;
-    }
+        $this->date_creation = $date_creation;
 
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-        return $this;
-    }
-
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(int $states_id): self
-    {
-        $this->states_id = $states_id;
         return $this;
     }
 }
