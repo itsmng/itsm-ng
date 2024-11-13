@@ -5,7 +5,7 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_documents_items')]  
+#[ORM\Table(name: 'glpi_documents_items')]
 #[ORM\UniqueConstraint(name: 'documents_id_itemtype_items_id_timeline_position', columns: ['documents_id', 'itemtype', 'items_id', 'timeline_position'])]
 #[ORM\Index(name: 'itemtype_items_id_entities_id_is_recursive', columns: ['itemtype', 'items_id', 'entities_id', 'is_recursive'])]
 #[ORM\Index(name: 'users_id', columns: ['users_id'])]
@@ -173,4 +173,4 @@ class DocumentItem
         return $this;
     }
 
-}   
+}

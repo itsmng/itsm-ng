@@ -51,7 +51,7 @@ class ChangeUser
     public function getUsersId(): ?int
     {
         return $this->users_id;
-    }    
+    }
 
     public function setUsersId(int $users_id): self
     {

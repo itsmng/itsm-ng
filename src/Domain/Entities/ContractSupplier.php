@@ -50,4 +50,4 @@ class ContractSupplier
 
         return $this;
     }
-}   
+}

@@ -1,4 +1,5 @@
 <?php
+
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'glpi_computertypes')]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
-#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]     
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 class Computertype
 {
     #[ORM\Id]
@@ -25,7 +26,7 @@ class Computertype
     private $date_mod;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
-    private $date_creation; 
+    private $date_creation;
 
     public function getId()
     {
@@ -76,4 +77,4 @@ class Computertype
     {
         $this->date_creation = $date_creation;
     }
-}   
+}

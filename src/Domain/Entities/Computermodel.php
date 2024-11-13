@@ -32,8 +32,8 @@ class Computermodel
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $required_units;
-    
-    #[ORM\Column(type: "float", options: ["default" => 1], columnDefinition: "FLOAT NOT NULL DEFAULT 1")] 
+
+    #[ORM\Column(type: "float", options: ["default" => 1], columnDefinition: "FLOAT NOT NULL DEFAULT 1")]
     private $depth;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
@@ -60,7 +60,7 @@ class Computermodel
     public function getId(): ?int
     {
         return $this->id;
-    }                
+    }
 
     public function getName(): ?string
     {
@@ -92,7 +92,7 @@ class Computermodel
     }
 
     public function setProductNumber(?string $product_number): self
-    {                
+    {
         $this->product_number = $product_number;
 
         return $this;
@@ -185,14 +185,14 @@ class Computermodel
     public function getPictureRear(): ?string
     {
         return $this->picture_rear;
-    }    
+    }
 
     public function setPictureRear(?string $picture_rear): self
     {
         $this->picture_rear = $picture_rear;
 
         return $this;
-    }    
+    }
 
 
     public function getDateMod(): ?\DateTimeInterface

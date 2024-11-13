@@ -130,7 +130,7 @@ class Changevalidation
         $this->comment_submission = $comment_submission;
 
         return $this;
-    }                
+    }
 
     public function getCommentValidation(): ?string
     {

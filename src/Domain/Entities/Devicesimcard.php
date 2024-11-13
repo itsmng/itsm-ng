@@ -5,8 +5,8 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_devicesimcards')]  
-#[ORM\Index(name: 'designation', columns: ['designation'])]            
+#[ORM\Table(name: 'glpi_devicesimcards')]
+#[ORM\Index(name: 'designation', columns: ['designation'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
 #[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
 #[ORM\Index(name: 'devicesimcardtypes_id', columns: ['devicesimcardtypes_id'])]

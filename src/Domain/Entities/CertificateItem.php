@@ -22,10 +22,10 @@ class CertificateItem
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $certificates_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' =>'RELATION to various tables, according to itemtype (id)'])]
+    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to various tables, according to itemtype (id)'])]
     private $items_id;
 
-    #[ORM\Column(type: 'string', length: 100, options: ['comment' =>'see .class.php file'])]
+    #[ORM\Column(type: 'string', length: 100, options: ['comment' => 'see .class.php file'])]
     private $itemtype;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]

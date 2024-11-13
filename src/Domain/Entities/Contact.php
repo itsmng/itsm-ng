@@ -240,7 +240,7 @@ class Contact
         $this->postcode = $postcode;
 
         return $this;
-    }   
+    }
 
     public function getTown(): ?string
     {
@@ -252,7 +252,7 @@ class Contact
         $this->town = $town;
 
         return $this;
-    }   
+    }
 
     public function getState(): ?string
     {

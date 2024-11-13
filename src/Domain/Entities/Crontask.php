@@ -21,22 +21,22 @@ class Crontask
     #[ORM\Column(type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'string', length: 150, options: ['comment' =>'task name'])]
+    #[ORM\Column(type: 'string', length: 150, options: ['comment' => 'task name'])]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['comment' =>'second between launch'])]
+    #[ORM\Column(type: 'integer', options: ['comment' => 'second between launch'])]
     private $frequency;
 
-    #[ORM\Column(type: 'integer', nullable: true, options: ['comment' =>'task specify parameter'])]
+    #[ORM\Column(type: 'integer', nullable: true, options: ['comment' => 'task specify parameter'])]
     private $param;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1, 'comment' =>'0:disabled, 1:waiting, 2:running'])]
+    #[ORM\Column(type: 'integer', options: ['default' => 1, 'comment' => '0:disabled, 1:waiting, 2:running'])]
     private $state;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1, 'comment' =>'1:internal, 2:external'])]
+    #[ORM\Column(type: 'integer', options: ['default' => 1, 'comment' => '1:internal, 2:external'])]
     private $mode;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 3, 'comment' =>'1:internal, 2:external, 3:both'])]
+    #[ORM\Column(type: 'integer', options: ['default' => 3, 'comment' => '1:internal, 2:external, 3:both'])]
     private $allowmode;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
@@ -45,13 +45,13 @@ class Crontask
     #[ORM\Column(type: 'integer', options: ['default' => 24])]
     private $hourmax;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 30, 'comment' =>'number of days'])]
+    #[ORM\Column(type: 'integer', options: ['default' => 30, 'comment' => 'number of days'])]
     private $logs_lifetime;
 
-    #[ORM\Column(type: 'datetime', nullable: true, options: ['default' => 'CURRENT_TIMESTAMP', 'comment' =>'last run date'])]
+    #[ORM\Column(type: 'datetime', nullable: true, options: ['default' => 'CURRENT_TIMESTAMP', 'comment' => 'last run date'])]
     private $lastrun;
 
-    #[ORM\Column(type: 'integer', nullable: true, options: ['comment' =>'last run return code'])]
+    #[ORM\Column(type: 'integer', nullable: true, options: ['comment' => 'last run return code'])]
     private $lastcode;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
@@ -186,7 +186,7 @@ class Crontask
         $this->logs_lifetime = $logs_lifetime;
 
         return $this;
-    }                
+    }
 
     public function getLastrun(): ?\DateTimeInterface
     {
@@ -247,4 +247,4 @@ class Crontask
 
         return $this;
     }
-}   
+}

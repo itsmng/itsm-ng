@@ -182,7 +182,7 @@ class Consumableitem
         $this->groups_id_tech = $groups_id_tech;
 
         return $this;
-    }   
+    }
 
     public function getIsDeleted(): ?int
     {

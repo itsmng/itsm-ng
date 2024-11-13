@@ -187,6 +187,6 @@ class Dcroom
         $this->date_creation = $date_creation;
 
         return $this;
-    }   
+    }
 
 }

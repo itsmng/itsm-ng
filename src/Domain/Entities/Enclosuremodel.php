@@ -5,10 +5,10 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_enclosuremodels')]  
-#[ORM\Index(name: 'name', columns: ['name'])]            
+#[ORM\Table(name: 'glpi_enclosuremodels')]
+#[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
-#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]            
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 #[ORM\Index(name: 'product_number', columns: ['product_number'])]
 class Enclosuremodel
 {
@@ -191,8 +191,8 @@ class Enclosuremodel
         $this->picture_rear = $picture_rear;
 
         return $this;
-    }       
-    
+    }
+
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;

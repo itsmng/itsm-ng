@@ -135,7 +135,7 @@ class Computervirtualmachine
     public function getVirtualmachinetypesId(): ?int
     {
         return $this->virtualmachinetypes_id;
-    }                
+    }
 
     public function setVirtualmachinetypesId(int $virtualmachinetypes_id): self
     {

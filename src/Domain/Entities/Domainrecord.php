@@ -5,8 +5,8 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_domainrecords')]  
-#[ORM\Index(name: 'name', columns: ['name'])]            
+#[ORM\Table(name: 'glpi_domainrecords')]
+#[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
 #[ORM\Index(name: 'domains_id', columns: ['domains_id'])]
 #[ORM\Index(name: 'domainrecordtypes_id', columns: ['domainrecordtypes_id'])]

@@ -5,9 +5,9 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_documentcategories')]  
+#[ORM\Table(name: 'glpi_documentcategories')]
 #[ORM\UniqueConstraint(name: 'documentcategories_id_name', columns: ['documentcategories_id', 'name'])]
-#[ORM\Index(name: 'name', columns: ['name'])]            
+#[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 class Documentcategory
@@ -157,4 +157,4 @@ class Documentcategory
         return $this;
     }
 
-}   
+}

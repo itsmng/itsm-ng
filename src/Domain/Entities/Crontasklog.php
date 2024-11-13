@@ -20,22 +20,22 @@ class Crontasklog
     #[ORM\Column(type: 'integer')]
     private $crontasks_id;
 
-    #[ORM\Column(type: 'integer', options: ['comment' =>'id of "start" event'])]
+    #[ORM\Column(type: 'integer', options: ['comment' => 'id of "start" event'])]
     private $crontasklogs_id;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private $date;
 
-    #[ORM\Column(type: 'integer', options: ['comment' =>'0:start, 1:run, 2:stop'])]
+    #[ORM\Column(type: 'integer', options: ['comment' => '0:start, 1:run, 2:stop'])]
     private $state;
 
-    #[ORM\Column(type: 'float', options: ['comment' =>'time elapsed since start'])]
+    #[ORM\Column(type: 'float', options: ['comment' => 'time elapsed since start'])]
     private $elapsed;
 
-    #[ORM\Column(type: 'integer', options: ['comment' =>'for statistics'])]
+    #[ORM\Column(type: 'integer', options: ['comment' => 'for statistics'])]
     private $volume;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' =>'message'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => 'message'])]
     private $content;
 
     public function getId(): ?int
@@ -46,7 +46,7 @@ class Crontasklog
     public function getCrontasksId(): ?int
     {
         return $this->crontasks_id;
-    }                
+    }
 
     public function setCrontasksId(int $crontasks_id): self
     {

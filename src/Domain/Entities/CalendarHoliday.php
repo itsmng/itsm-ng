@@ -50,4 +50,4 @@ class CalendarHoliday
 
         return $this;
     }
-}   
+}

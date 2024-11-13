@@ -5,8 +5,8 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_devicenetworkcards')]  
-#[ORM\Index(name: 'designation', columns: ['designation'])]            
+#[ORM\Table(name: 'glpi_devicenetworkcards')]
+#[ORM\Index(name: 'designation', columns: ['designation'])]
 #[ORM\Index(name: 'manufacturers_id', columns: ['manufacturers_id'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
 #[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
@@ -142,7 +142,7 @@ class Devicenetworkcard
     public function getDevicenetworkcardmodelsId(): ?int
     {
         return $this->devicenetworkcardmodels_id;
-    }        
+    }
 
     public function setDevicenetworkcardmodelsId(?int $devicenetworkcardmodels_id): self
     {
@@ -166,7 +166,7 @@ class Devicenetworkcard
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->date_creation;
-    }  
+    }
 
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
@@ -174,9 +174,5 @@ class Devicenetworkcard
 
         return $this;
     }
-    
+
 }
-
-
-
-

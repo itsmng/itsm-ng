@@ -160,4 +160,3 @@ class ItilFollowupTemplate
         return $this->comment;
     }
 }
-

@@ -5,8 +5,8 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_devicesensors')]  
-#[ORM\Index(name: 'designation', columns: ['designation'])]            
+#[ORM\Table(name: 'glpi_devicesensors')]
+#[ORM\Index(name: 'designation', columns: ['designation'])]
 #[ORM\Index(name: 'manufacturers_id', columns: ['manufacturers_id'])]
 #[ORM\Index(name: 'devicesensortypes_id', columns: ['devicesensortypes_id'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
@@ -75,7 +75,7 @@ class Devicesensor
     public function getDevicesensortypesId(): ?int
     {
         return $this->devicesensortypes_id;
-    }        
+    }
 
     public function setDevicesensortypesId(?int $devicesensortypes_id): self
     {

@@ -5,8 +5,8 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_devicesensortypes')]  
-#[ORM\Index(name: 'name', columns: ['name'])]            
+#[ORM\Table(name: 'glpi_devicesensortypes')]
+#[ORM\Index(name: 'name', columns: ['name'])]
 class Devicesensortype
 {
     #[ORM\Id]
@@ -49,4 +49,4 @@ class Devicesensortype
         return $this;
     }
 
-}   
+}
