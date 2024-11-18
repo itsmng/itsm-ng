@@ -36,7 +36,7 @@ class Appliance
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
