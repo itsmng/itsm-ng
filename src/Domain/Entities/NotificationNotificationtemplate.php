@@ -20,7 +20,7 @@ class NotificationNotificationtemplate
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $notifications_id;
     
-    #[ORM\Column(type: 'string', length: 20)]
+    #[ORM\Column(type: 'string', length: 20, options: ['comment' => 'See Notification_NotificationTemplate::MODE_* constants'])]
     private $mode;
     
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
