@@ -13,13 +13,13 @@ class OidcConfig
     private $id;
 
     #[ORM\Column(name: 'Provider', type: 'string', length: 255, nullable: true)]
-    private $provider;
+    private $Provider;
     
-    #[ORM\Column(name: 'ClientID', type: 'string', length: 255, nullable: true)]
-    private $clientId;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $ClientId;
     
-    #[ORM\Column(name: 'ClientSecret', type: 'string', length: 255, nullable: true)]
-    private $clientSecret;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $ClientSecret;
     
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_activate;
@@ -46,36 +46,36 @@ class OidcConfig
 
     public function getProvider(): ?string
     {
-        return $this->provider;
+        return $this->Provider;
     }
 
-    public function setProvider(?string $provider): self
+    public function setProvider(?string $Provider): self
     {
-        $this->provider = $provider;
+        $this->Provider = $Provider;
 
         return $this;
     }
 
     public function getClientId(): ?string
     {
-        return $this->clientId;
+        return $this->ClientId;
     }
 
-    public function setClientId(?string $clientId): self
+    public function setClientId(?string $ClientId): self
     {
-        $this->clientId = $clientId;
+        $this->ClientId = $ClientId;
 
         return $this;
     }
 
     public function getClientSecret(): ?string
     {
-        return $this->clientSecret;
+        return $this->ClientSecret;
     }
 
-    public function setClientSecret(?string $clientSecret): self
+    public function setClientSecret(?string $ClientSecret): self
     {
-        $this->clientSecret = $clientSecret;
+        $this->ClientSecret = $ClientSecret;
 
         return $this;
     }
