@@ -6,12 +6,12 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\UniqueConstraint(name: 'networkports_id', columns: ['networkports_id'])]
 #[ORM\Table(name: 'glpi_networkportaliases')]
+#[ORM\UniqueConstraint(name: 'networkports_id', columns: ['networkports_id'])]
 #[ORM\Index(name: 'networkports_id_alias', columns: ['networkports_id_alias'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-class Networkportaliase
+class Networkportalias
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
