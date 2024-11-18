@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Comment;
 
 #[ORM\Entity]
 #[ORM\UniqueConstraint(name: 'networkports_id', columns: ['networkports_id'])]
@@ -18,8 +19,8 @@ class Netwotkportaggregate
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $networkports_id;
-
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    
+    #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ['comment' => 'array of associated networkports_id'])]
     private $networkports_id_list;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
