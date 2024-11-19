@@ -120,8 +120,8 @@ class Problemcost
     public function getActiontime(): ?int
     {
         return $this->actiontime;
-    }   
-    
+    }
+
     public function setActiontime(?int $actiontime): self
     {
         $this->actiontime = $actiontime;
@@ -131,35 +131,35 @@ class Problemcost
     public function getCostTime(): ?float
     {
         return $this->cost_time;
-    }  
-    
+    }
+
     public function setCostTime(?float $cost_time): self
     {
         $this->cost_time = $cost_time;
         return $this;
-    }   
+    }
 
     public function getCostFixed(): ?float
     {
         return $this->cost_fixed;
-    }  
-    
+    }
+
     public function setCostFixed(?float $cost_fixed): self
     {
         $this->cost_fixed = $cost_fixed;
         return $this;
-    }   
+    }
 
     public function getCostMaterial(): ?float
     {
         return $this->cost_material;
-    }  
-    
+    }
+
     public function setCostMaterial(?float $cost_material): self
     {
         $this->cost_material = $cost_material;
         return $this;
-    }   
+    }
 
     public function getBudgetsId(): ?int
     {
@@ -176,12 +176,12 @@ class Problemcost
     public function getEntitiesId(): ?int
     {
         return $this->entities_id;
-    }   
-    
+    }
+
     public function setEntitiesId(?int $entities_id): self
     {
         $this->entities_id = $entities_id;
         return $this;
-    }   
+    }
 
- }
+}

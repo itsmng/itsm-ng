@@ -29,52 +29,52 @@ class Printertype
     private $date_creation;
 
     public function getId(): ?int
-    {   
+    {
         return $this->id;
     }
 
     public function getName(): ?string
     {
         return $this->name;
-    }  
-    
+    }
+
     public function setName(?string $name): self
     {
         $this->name = $name;
         return $this;
-    }   
+    }
 
     public function getComment(): ?string
     {
         return $this->comment;
-    }  
-    
+    }
+
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
         return $this;
-    }   
+    }
 
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
-    }   
-    
+    }
+
     public function setDateMod(?\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
         return $this;
-    }   
+    }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->date_creation;
-    }  
-    
+    }
+
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
         return $this;
-    }   
-    
+    }
+
 }

@@ -24,32 +24,32 @@ class ProblemTicket
     public function getId(): ?int
     {
         return $this->id;
-    }       
+    }
 
     public function getProblemsId(): ?int
     {
         return $this->problems_id;
-    }   
+    }
 
-    
+
     public function setProblemsId(?int $problems_id): self
     {
         $this->problems_id = $problems_id;
-    
+
         return $this;
-    }   
+    }
 
     public function getTicketsId(): ?int
     {
         return $this->tickets_id;
-    }   
+    }
 
-    
+
     public function setTicketsId(?int $tickets_id): self
     {
         $this->tickets_id = $tickets_id;
-    
+
         return $this;
-    }   
+    }
 
 }

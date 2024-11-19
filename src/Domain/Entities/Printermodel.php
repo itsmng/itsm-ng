@@ -95,6 +95,6 @@ class Printermodel
         $this->date_creation = $date_creation;
 
         return $this;
-    }    
-    
+    }
+
 }

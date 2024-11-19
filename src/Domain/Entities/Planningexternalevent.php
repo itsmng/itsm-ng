@@ -66,7 +66,7 @@ class Planningexternalevent
     private $rrule;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $state; 
+    private $state;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $planningeventcategories_id;
@@ -208,95 +208,89 @@ class Planningexternalevent
     public function getBegin(): ?\DateTimeInterface
     {
         return $this->begin;
-    }   
+    }
 
     public function setBegin(?\DateTimeInterface $begin): self
     {
-        $this->begin = $begin;        
+        $this->begin = $begin;
         return $this;
-    }   
+    }
 
     public function getEnd(): ?\DateTimeInterface
     {
         return $this->end;
-    }       
+    }
 
     public function setEnd(?\DateTimeInterface $end): self
     {
-        $this->end = $end;        
+        $this->end = $end;
         return $this;
-    }  
+    }
 
     public function getRrule(): ?string
     {
         return $this->rrule;
-    } 
- 
+    }
+
     public function setRrule(?string $rrule): self
-    {        
+    {
         $this->rrule = $rrule;
         return $this;
     }
 
     public function getState(): ?int
-    {   
-        return $this->state;    
-    }   
+    {
+        return $this->state;
+    }
 
     public function setState(?int $state): self
-    {        
+    {
         $this->state = $state;
         return $this;
     }
 
     public function getplanningeventcategoriesId(): ?int
-    {   
-        return $this->planningeventcategories_id;    
-    }   
+    {
+        return $this->planningeventcategories_id;
+    }
 
     public function setPlanningeventcategoriesId(?int $planningeventcategories_id): self
-    {        
+    {
         $this->planningeventcategories_id = $planningeventcategories_id;
         return $this;
-    }   
+    }
 
-    public function getBackground(): ?bool  
-    {   
-        return $this->background;    
-    }   
+    public function getBackground(): ?bool
+    {
+        return $this->background;
+    }
 
     public function setBackground(?bool $background): self
-    {        
+    {
         $this->background = $background;
         return $this;
-    }   
+    }
 
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
-    }   
+    }
 
     public function setDateMod(\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
         return $this;
-    }   
+    }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->date_creation;
-    }   
+    }
 
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
         return $this;
-    }   
+    }
 
 }
-
-    
-
-
-
-

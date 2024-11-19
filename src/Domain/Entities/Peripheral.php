@@ -87,7 +87,7 @@ class Peripheral
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_template;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]      
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $template_name;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
@@ -109,7 +109,7 @@ class Peripheral
     private $date_creation;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;    
+    private $is_recursive;
 
 
     public function getId(): ?int
@@ -325,13 +325,13 @@ class Peripheral
     {
         return $this->is_template;
     }
-    
+
     public function setIsTemplate(?bool $is_template): self
     {
         $this->is_template = $is_template;
 
         return $this;
-    }   
+    }
 
     public function getTemplateName(): ?string
     {
@@ -429,7 +429,7 @@ class Peripheral
         $this->is_recursive = $is_recursive;
 
         return $this;
-    }   
+    }
 
-    
-}   
+
+}

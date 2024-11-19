@@ -28,8 +28,8 @@ class Planningexternaleventtemplate
     private $text;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $comment; 
-    
+    private $comment;
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $duration;
 
@@ -59,7 +59,7 @@ class Planningexternaleventtemplate
         return $this->id;
     }
 
-    
+
     public function getEntitiesId(): ?int
     {
         return $this->entities_id;
@@ -123,7 +123,7 @@ class Planningexternaleventtemplate
     public function getBeforeTime(): ?int
     {
         return $this->before_time;
-    }   
+    }
 
     public function setBeforeTime(?int $before_time): self
     {

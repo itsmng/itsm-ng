@@ -33,71 +33,71 @@ class ProblemSupplier
     public function getId(): ?int
     {
         return $this->id;
-    }       
+    }
 
     public function getProblemsId(): ?int
     {
         return $this->problems_id;
-    }   
+    }
 
-    
+
     public function setProblemsId(?int $problems_id): self
     {
         $this->problems_id = $problems_id;
-    
+
         return $this;
-    }   
+    }
 
     public function getSuppliersId(): ?int
     {
         return $this->suppliers_id;
-    }   
+    }
 
-    
+
     public function setSuppliersId(?int $suppliers_id): self
     {
         $this->suppliers_id = $suppliers_id;
-    
+
         return $this;
-    }   
+    }
 
     public function getType(): ?int
     {
         return $this->type;
-    }   
+    }
 
-    
+
     public function setType(?int $type): self
     {
         $this->type = $type;
-    
+
         return $this;
-    }   
+    }
 
     public function getUseNotification(): ?bool
     {
         return $this->use_notification;
-    }   
+    }
 
-    
+
     public function setUseNotification(?bool $use_notification): self
     {
         $this->use_notification = $use_notification;
-    
+
         return $this;
-    }   
+    }
 
     public function getAlternativeEmail(): ?string
     {
         return $this->alternative_email;
-    }   
+    }
 
-    
+
     public function setAlternativeEmail(?string $alternative_email): self
     {
         $this->alternative_email = $alternative_email;
-    
+
         return $this;
-    }   
+    }
 
 }

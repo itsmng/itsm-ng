@@ -343,7 +343,7 @@ class Phone
         $this->have_hp = $have_hp;
 
         return $this;
-    }   
+    }
 
     public function getManufacturersId(): ?int
     {
@@ -488,4 +488,4 @@ class Phone
 
         return $this;
     }
-}   
+}
