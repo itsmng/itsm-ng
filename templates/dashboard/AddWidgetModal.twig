@@ -80,4 +80,15 @@ $('input[name="format"]').on('change', function() {
     });
 });
 
+$(function () {
+
+    $('#widgetModal').on('shown.bs.modal', function () {
+        $('#data-selection-widget-modal select').select2({
+            theme: 'bootstrap-5',
+            dropdownParent: $('#widgetModal'),
+        });
+    });
+});
+
+
 </script>
