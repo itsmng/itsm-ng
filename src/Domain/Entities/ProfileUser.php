@@ -32,7 +32,7 @@ class ProfileUser
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_dynamic;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_default_profile;
 

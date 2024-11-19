@@ -49,7 +49,7 @@ class ProblemUser
     }
 
     public function getUsersId(): ?int
-    {        
+    {
         return $this->users_id;
     }
 

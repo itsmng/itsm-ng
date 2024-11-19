@@ -266,7 +266,7 @@ class Profile
         $this->managed_domainrecordtypes = $managed_domainrecordtypes;
 
         return $this;
-    }   
+    }
 
     public function getDateCreation(): ?\DateTimeInterface
     {

@@ -5,7 +5,7 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_profiles_reminders')] 
+#[ORM\Table(name: 'glpi_profiles_reminders')]
 #[ORM\Index(name: "reminders_id", columns: ["reminders_id"])]
 #[ORM\Index(name: "profiles_id", columns: ["profiles_id"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
@@ -32,7 +32,7 @@ class ProfileReminder
     public function getId(): ?int
     {
         return $this->id;
-        
+
     }
 
     public function getRemindersId(): ?int

@@ -7,12 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_problemtasks')]
 #[ORM\UniqueConstraint(columns: ["uuid"])]
-#[ORM\Index(name: "problems_id", columns: ["problems_id"])] 
-#[ORM\Index(name: "users_id", columns: ["users_id"])] 
-#[ORM\Index(name: "users_id_editor", columns: ["users_id_editor"])] 
-#[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])] 
-#[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])] 
-#[ORM\Index(name: "date", columns: ["date"])] 
+#[ORM\Index(name: "problems_id", columns: ["problems_id"])]
+#[ORM\Index(name: "users_id", columns: ["users_id"])]
+#[ORM\Index(name: "users_id_editor", columns: ["users_id_editor"])]
+#[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])]
+#[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
+#[ORM\Index(name: "date", columns: ["date"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "begin", columns: ["begin"])]
@@ -169,7 +169,7 @@ class Problemtask
     public function getUsersId(): ?int
     {
         return $this->users_id;
-    }   
+    }
 
     public function setUsersId(?int $users_id): self
     {
