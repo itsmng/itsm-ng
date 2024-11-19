@@ -5,7 +5,7 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'pdumodels')]
+#[ORM\Table(name: 'glpi_pdumodels')]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "is_rackable", columns: ["is_rackable"])]
 #[ORM\Index(name: "product_number", columns: ["product_number"])]
