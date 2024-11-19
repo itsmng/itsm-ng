@@ -19,7 +19,7 @@ class Netwotkportaggregate
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $networkports_id;
-    
+
     #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ['comment' => 'array of associated networkports_id'])]
     private $networkports_id_list;
 
@@ -82,4 +82,4 @@ class Netwotkportaggregate
         return $this;
     }
 
-}   
+}

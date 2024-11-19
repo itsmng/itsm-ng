@@ -17,7 +17,7 @@ class NetworkportNetworkport
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $networkports_id_1;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $networkports_id_2;
 
@@ -50,6 +50,4 @@ class NetworkportNetworkport
         return $this;
     }
 
-}   
-
-
+}

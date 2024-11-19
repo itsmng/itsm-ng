@@ -17,7 +17,7 @@ class NetworkportVlan
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $networkports_id;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $vlans_id;
 
@@ -64,5 +64,5 @@ class NetworkportVlan
 
         return $this;
     }
-    
+
 }

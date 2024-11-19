@@ -129,4 +129,4 @@ class Networkportethernet
 
         return $this;
     }
-}   
+}

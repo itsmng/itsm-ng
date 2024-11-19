@@ -20,10 +20,10 @@ class Notepas
 
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $itemtype;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_id;
-    
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date;
 
@@ -32,7 +32,7 @@ class Notepas
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id_lastupdater;
 

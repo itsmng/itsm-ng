@@ -19,10 +19,10 @@ class Notificationtemplate
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
-    
+
     #[ORM\Column(type: 'string', length: 100)]
     private $itemtype;
-    
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 

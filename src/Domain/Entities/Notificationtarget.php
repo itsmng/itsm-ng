@@ -17,10 +17,10 @@ class Notificationtarget
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_id;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $type;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $notifications_id;
 

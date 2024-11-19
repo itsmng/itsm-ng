@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'mac', columns: ['mac'])]
 #[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
 #[ORM\Index(name: 'is_dynamic', columns: ['is_dynamic'])]
-#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]    
+#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-Class Networkport
+class Networkport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -169,10 +169,10 @@ Class Networkport
 
     public function setComment(string $comment): self
     {
-        $this->comment = $comment;  
+        $this->comment = $comment;
 
         return $this;
-    }  
+    }
 
     public function getIsDeleted(): ?int
     {
@@ -222,10 +222,4 @@ Class Networkport
         return $this;
     }
 
-    }  
-
-
-
-
-
-
+}

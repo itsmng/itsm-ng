@@ -9,33 +9,33 @@ use Doctrine\ORM\Mapping as ORM;
 class OidcConfig
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer', options: ['default'=> 0])]   
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $id;
 
     #[ORM\Column(name: 'Provider', type: 'string', length: 255, nullable: true)]
     private $Provider;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $ClientId;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $ClientSecret;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_activate;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_forced;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $scope;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $cert;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $proxy;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $logout;
 

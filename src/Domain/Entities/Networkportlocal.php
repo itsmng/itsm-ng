@@ -18,7 +18,7 @@ class Networkportlocal
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $networkports_id;
-    
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
@@ -66,4 +66,4 @@ class Networkportlocal
         return $this;
     }
 
-}   
+}

@@ -22,16 +22,16 @@ class Notification
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $entities_id;
-    
+
     #[ORM\Column(type: 'string', length: 100)]
     private $itemtype;
-    
+
     #[ORM\Column(type: 'string', length: 255)]
     private $event;
-    
+
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
@@ -113,7 +113,7 @@ class Notification
         $this->comment = $comment;
 
         return $this;
-    }        
+    }
 
     public function getIsRecursive(): ?bool
     {

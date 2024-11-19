@@ -22,16 +22,16 @@ class Networkportfiberchannel
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $networkports_id;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_devicenetworkcards_id;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $netpoints_id;
-    
+
     #[ORM\Column(type: 'string', length: 16, options: ['default' => ''], nullable: true)]
     private $wwn;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 10, 'comment' => 'Mbit/s: 10, 100, 1000, 10000'])]
     private $speed;
 
@@ -131,7 +131,3 @@ class Networkportfiberchannel
     }
 
 }
-
-
-
-

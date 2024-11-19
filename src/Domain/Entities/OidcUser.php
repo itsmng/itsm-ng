@@ -10,12 +10,12 @@ class OidcUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]   
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default'=> 0])]
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $user_id;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $update;
 

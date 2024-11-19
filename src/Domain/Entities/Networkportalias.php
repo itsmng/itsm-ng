@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -83,7 +82,4 @@ class Networkportalias
         return $this;
     }
 
-}   
-
-
-
+}

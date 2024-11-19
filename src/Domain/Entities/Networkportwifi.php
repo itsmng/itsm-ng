@@ -22,13 +22,13 @@ class Networkportwifi
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $networkports_id;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_devicenetworkcards_id;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $wifinetworks_id;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'only useful in case of Managed node'])]
     private $networkportwifis_id;
 

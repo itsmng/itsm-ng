@@ -9,35 +9,35 @@ use Doctrine\ORM\Mapping as ORM;
 class OidcMapping
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer', options: ['default'=> 0])]   
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default'=> ''])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $name;
-    
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default'=> ''])]
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $given_name;
-    
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default'=> ''])]
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $family_name;
-    
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default'=> ''])]
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $picture;
-    
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default'=> ''])]
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $email;
-    
-    #[ORM\Column(type: 'string', length: 255, nullable: true,options: ['default'=> ''])]
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $locale;
-    
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default'=> ''])]
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $phone_number;
-    
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default'=> ''])]
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $group;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;  
+    private $date_mod;
 
 
 

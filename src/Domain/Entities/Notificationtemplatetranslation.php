@@ -16,13 +16,13 @@ class Notificationtemplatetranslation
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $notificationtemplates_id;
-    
+
     #[ORM\Column(type: 'string', length: 10, options: ['default' => ''])]
     private $language;
-    
+
     #[ORM\Column(type: 'string', length: 255)]
     private $subject;
-    
+
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $content_text;
 

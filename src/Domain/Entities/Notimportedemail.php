@@ -17,25 +17,25 @@ class Notimportedemail
 
     #[ORM\Column(type: 'string', length: 255)]
     private $from;
-    
+
     #[ORM\Column(type: 'string', length: 255)]
     private $to;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $mailcollectors_id;
-    
+
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private $date;
-    
+
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $subject;
-    
+
     #[ORM\Column(type: 'string', length: 255)]
     private $messageid;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $reason;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id;
 

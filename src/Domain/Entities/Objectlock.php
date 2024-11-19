@@ -16,13 +16,13 @@ class Objectlock
 
     #[ORM\Column(type: 'string', length: 100, options: ['comment' => 'Type of locked object'])]
     private $itemtype;
-    
+
     #[ORM\Column(type: 'integer', options: ['comment' => 'RELATION to various tables, according to itemtype (ID)'])]
     private $items_id;
-    
+
     #[ORM\Column(type: 'integer', options: ['comment' => 'id of the locker'])]
     private $users_id;
-    
+
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP', 'comment' => 'Timestamp of the lock'])]
     private $date_mod;
 
