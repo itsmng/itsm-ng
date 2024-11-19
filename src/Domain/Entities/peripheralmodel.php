@@ -33,8 +33,8 @@ class peripheralmodel
     private $required_units;
 
     #[ORM\Column(type: 'float', options: ['default' => 1])]
-    private $depth; 
-    
+    private $depth;
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $power_connections;
 
@@ -79,7 +79,7 @@ class peripheralmodel
     }
 
     public function setComment(?string $comment): self
-    { 
+    {
         $this->comment = $comment;
 
         return $this;
@@ -95,7 +95,7 @@ class peripheralmodel
         $this->product_number = $product_number;
 
         return $this;
-    }   
+    }
 
     public function getWeight(): ?int
     {
@@ -192,7 +192,7 @@ class peripheralmodel
 
         return $this;
     }
-    
+
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;

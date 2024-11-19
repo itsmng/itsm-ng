@@ -79,4 +79,4 @@ class Operatingsystemkernel
         return $this;
     }
 
-}       
+}

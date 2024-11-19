@@ -104,7 +104,7 @@ class Pdutype
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
-    }   
+    }
 
     public function setDateMod(\DateTimeInterface $date_mod): self
     {
@@ -112,5 +112,4 @@ class Pdutype
 
         return $this;
     }
-}       
-
+}

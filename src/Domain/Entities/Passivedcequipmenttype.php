@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'passivedcequipmenttypes')]
 #[ORM\Index(name: "name", columns: ["name"])]
-#[ORM\Index(name: "date_mod", columns: ["date_mod"])]    
+#[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class Passivedcequipmenttype
 {
@@ -28,7 +28,7 @@ class Passivedcequipmenttype
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
-   
+
 
     public function getId(): ?int
     {

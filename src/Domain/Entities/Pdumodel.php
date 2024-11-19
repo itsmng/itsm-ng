@@ -58,7 +58,7 @@ class Pdumodel
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
-   
+
 
     public function getId(): ?int
     {
@@ -231,5 +231,5 @@ class Pdumodel
         $this->date_creation = $date_creation;
 
         return $this;
-    }       
+    }
 }

@@ -179,7 +179,7 @@ class Ola
         return $this;
     }
 
-    
+
 
     public function getDateCreation(): ?\DateTimeInterface
     {
@@ -193,7 +193,7 @@ class Ola
         return $this;
     }
 
-    
+
     public function getSlmsId(): ?int
     {
         return $this->slms_id;
@@ -207,5 +207,3 @@ class Ola
     }
 
 }
-
-

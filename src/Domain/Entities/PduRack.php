@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'glpi_pdus_racks')]
 #[ORM\Index(name: "racks_id", columns: ["racks_id"])]
 #[ORM\Index(name: "pdus_id", columns: ["pdus_id"])]
-class PduRack {
-
+class PduRack
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -125,4 +125,4 @@ class PduRack {
         return $this;
     }
 
-}   
+}

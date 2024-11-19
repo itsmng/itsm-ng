@@ -167,13 +167,13 @@ class Pdu
     public function getPdumodelsId(): ?int
     {
         return $this->pdumodels_id;
-    }   
+    }
 
     public function setPdumodelsId(?int $pdumodels_id): self
     {
         $this->pdumodels_id = $pdumodels_id;
 
-        return $this; 
+        return $this;
     }
 
     public function getUsersIdTech(): ?int
@@ -282,8 +282,8 @@ class Pdu
         $this->pdutypes_id = $pdutypes_id;
 
         return $this;
-    } 
-    
+    }
+
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -307,5 +307,5 @@ class Pdu
 
         return $this;
     }
-  
+
 }

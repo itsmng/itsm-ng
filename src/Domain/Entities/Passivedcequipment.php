@@ -12,12 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'passivedcequipmentmodels_id', columns: ['passivedcequipmentmodels_id'])]
 #[ORM\Index(name: 'passivedcequipmenttypes_id', columns: ['passivedcequipmenttypes_id'])]
 #[ORM\Index(name: 'users_id_tech', columns: ['users_id_tech'])]
-#[ORM\Index(name: 'groups_id_tech', columns: ['groups_id_tech'])]    
-#[ORM\Index(name: 'is_template', columns: ['is_template'])]        
+#[ORM\Index(name: 'groups_id_tech', columns: ['groups_id_tech'])]
+#[ORM\Index(name: 'is_template', columns: ['is_template'])]
 #[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
 #[ORM\Index(name: 'states_id', columns: ['states_id'])]
-#[ORM\Index(name: 'manufacturers_id', columns: ['manufacturers_id'])]        
-class Passivedcequipment {
+#[ORM\Index(name: 'manufacturers_id', columns: ['manufacturers_id'])]
+class Passivedcequipment
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -33,7 +34,7 @@ class Passivedcequipment {
     private $is_recursive;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;            
+    private $locations_id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $serial;
@@ -130,11 +131,11 @@ class Passivedcequipment {
         return $this;
     }
 
-    public function getSerial(): ?string    
+    public function getSerial(): ?string
     {
         return $this->serial;
-    }     
-    
+    }
+
     public function setSerial(string $serial): self
     {
         $this->serial = $serial;
@@ -212,7 +213,7 @@ class Passivedcequipment {
         $this->is_template = $is_template;
 
         return $this;
-    }   
+    }
 
     public function getTemplateName(): ?string
     {
@@ -236,7 +237,7 @@ class Passivedcequipment {
         $this->is_deleted = $is_deleted;
 
         return $this;
-    }   
+    }
 
     public function getStatesId(): ?int
     {
@@ -274,8 +275,8 @@ class Passivedcequipment {
         return $this;
     }
 
-    
-   
+
+
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -300,4 +301,4 @@ class Passivedcequipment {
         return $this;
     }
 
-}       
+}
