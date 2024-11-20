@@ -131,7 +131,7 @@ class Queuedchat
     public function getLocationsId(): ?int
     {
         return $this->locations_id;
-    }   
+    }
 
     public function setLocationsId(?int $locations_id): self
     {

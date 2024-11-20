@@ -72,7 +72,7 @@ class Projecttask
     private $real_start_date;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $real_end_date; 
+    private $real_end_date;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $planned_duration;
@@ -96,7 +96,7 @@ class Projecttask
     private $auto_percent_done;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_milestone;  
+    private $is_milestone;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $projecttasktemplates_id;
@@ -413,4 +413,3 @@ class Projecttask
     }
 
 }
-

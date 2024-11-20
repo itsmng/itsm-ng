@@ -77,6 +77,6 @@ class Slalevelaction
         $this->value = $value;
 
         return $this;
-    }       
+    }
 
-}   
+}

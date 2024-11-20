@@ -76,7 +76,7 @@ class Project
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $plan_end_date;
 
-    #[ORM\Column(type: 'datetime', nullable: true)] 
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $real_end_date;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -86,7 +86,7 @@ class Project
     private $percent_done;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $auto_percent_done;  
+    private $auto_percent_done;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $show_on_global_gantt;
@@ -96,10 +96,10 @@ class Project
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
-    
+
     #[ORM\Column(type: 'datetime', options: ['default' => null])]
     private $date_creation;
 
@@ -107,12 +107,12 @@ class Project
     private $projecttemplates_id;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_template;   
+    private $is_template;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $template_name;
 
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,13 +121,13 @@ class Project
     public function getName(): ?string
     {
         return $this->name;
-    }   
+    }
 
     public function setName(?string $name): self
-    {   
+    {
         $this->name = $name;
         return $this;
-    }   
+    }
 
     public function getCode(): ?string
     {
@@ -384,7 +384,7 @@ class Project
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->date_creation;
-    }   
+    }
 
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
@@ -430,7 +430,3 @@ class Project
     }
 
 }
-
-
-
-

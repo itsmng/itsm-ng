@@ -22,7 +22,7 @@ class SavedsearchUser
     private $itemtype;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $savedsearches_id;  
+    private $savedsearches_id;
 
     public function getId(): ?int
     {
@@ -63,6 +63,6 @@ class SavedsearchUser
         $this->savedsearches_id = $savedsearches_id;
 
         return $this;
-    }       
+    }
 
 }

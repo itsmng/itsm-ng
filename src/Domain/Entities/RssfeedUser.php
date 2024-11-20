@@ -50,4 +50,4 @@ class RssfeedUser
         return $this;
     }
 
-}   
+}

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'glpi_rulecriterias')]
 #[ORM\Index(name: "rules_id", columns: ["rules_id"])]
 #[ORM\Index(name: "condition", columns: ["condition"])]
-class Rulecriteria  
+class Rulecriteria
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,7 +27,7 @@ class Rulecriteria
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $pattern;
 
-    
+
 
     public function getId(): ?int
     {

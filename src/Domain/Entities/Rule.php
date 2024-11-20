@@ -32,7 +32,7 @@ class Rule
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]                      
+    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $description;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php *_MATCHING constant'])]
@@ -184,7 +184,7 @@ class Rule
         return $this;
     }
 
-    
+
     public function getUuid(): ?string
     {
         return $this->uuid;
@@ -219,10 +219,6 @@ class Rule
         $this->date_creation = $date_creation;
 
         return $this;
-    }       
+    }
 
 }
-    
-    
-
-    

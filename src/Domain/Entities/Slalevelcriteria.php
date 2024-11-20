@@ -78,6 +78,6 @@ class Slalevelcriteria
         $this->pattern = $pattern;
 
         return $this;
-    }       
+    }
 
 }

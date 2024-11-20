@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class SavedsearchAlert
-
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -127,6 +126,6 @@ class SavedsearchAlert
         $this->date_creation = $date_creation;
 
         return $this;
-    }       
+    }
 
 }

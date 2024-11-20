@@ -2,7 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_slalevels_tickets')]
@@ -64,6 +64,6 @@ class SlalevelTicket
         $this->date = $date;
 
         return $this;
-    }       
+    }
 
 }

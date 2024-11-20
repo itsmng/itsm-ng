@@ -19,7 +19,7 @@ class Projecttasktype
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]  
+    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -31,7 +31,7 @@ class Projecttasktype
     public function getId(): ?int
     {
         return $this->id;
-        
+
     }
 
     public function getName(): ?string

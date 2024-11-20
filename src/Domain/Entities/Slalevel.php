@@ -117,7 +117,7 @@ class Slalevel
         return $this;
     }
 
-    
+
     public function getMatch(): ?string
     {
         return $this->match;
@@ -128,9 +128,9 @@ class Slalevel
         $this->match = $match;
 
         return $this;
-    }   
+    }
 
-    
+
     public function getUuid(): ?string
     {
         return $this->uuid;
@@ -141,6 +141,6 @@ class Slalevel
         $this->uuid = $uuid;
 
         return $this;
-    }       
+    }
 
 }

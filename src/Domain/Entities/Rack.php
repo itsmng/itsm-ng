@@ -98,7 +98,7 @@ class Rack
     private $bgcolor;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $max_power; 
+    private $max_power;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $mesured_power;
@@ -109,8 +109,8 @@ class Rack
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)] 
-    private $date_creation; 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $date_creation;
 
     public function getId(): ?int
     {
@@ -155,7 +155,7 @@ class Rack
 
     public function getIsRecursive(): ?string
     {
-        return $this->is_recursive; 
+        return $this->is_recursive;
     }
 
     public function setIsRecursive(?string $is_recursive): self
@@ -408,7 +408,7 @@ class Rack
     public function getMaxPower(): ?string
     {
         return $this->max_power;
-    }   
+    }
 
     public function setMaxPower(?string $max_power): self
     {
@@ -463,6 +463,6 @@ class Rack
         $this->date_creation = $date_creation;
 
         return $this;
-    }   
+    }
 
 }

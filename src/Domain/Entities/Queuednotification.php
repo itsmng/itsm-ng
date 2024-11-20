@@ -90,7 +90,7 @@ class Queuednotification
     public function getId(): ?int
     {
         return $this->id;
-        
+
     }
 
     public function getItemtype(): ?string
@@ -358,4 +358,3 @@ class Queuednotification
     }
 
 }
-

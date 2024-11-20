@@ -220,6 +220,6 @@ class Savedsearch
         $this->counter = $counter;
 
         return $this;
-    }       
+    }
 
-}   
+}
