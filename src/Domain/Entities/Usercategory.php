@@ -2,14 +2,14 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_usercategories")]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-Class Usercategory
+class Usercategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -81,4 +81,4 @@ Class Usercategory
         return $this;
     }
 
-}   
+}

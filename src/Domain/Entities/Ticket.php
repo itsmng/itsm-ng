@@ -2,7 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickets")]
@@ -36,8 +36,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "ola_waiting_duration", columns: ["ola_waiting_duration"])]
 #[ORM\Index(name: "olalevels_id_ttr", columns: ["olalevels_id_ttr"])]
-Class Ticket    
-
+class Ticket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -102,7 +101,7 @@ Class Ticket
     private $slas_id_tto;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slalevels_id_ttr;    
+    private $slalevels_id_ttr;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $time_to_resolve;
@@ -649,4 +648,4 @@ Class Ticket
         return $this;
     }
 
-}   
+}

@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_helpdesk_visible", columns: ["is_helpdesk_visible"])]
 #[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-Class Software
+class Software
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -349,4 +349,4 @@ Class Software
         return $this;
     }
 
-}   
+}

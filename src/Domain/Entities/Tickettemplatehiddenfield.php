@@ -2,13 +2,13 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickettemplatehiddenfields")]
 #[ORM\UniqueConstraint(name: "tickettemplates_id_num", columns: ["tickettemplates_id", "num"])]
 #[ORM\Index(name: "tickettemplates_id", columns: ["tickettemplates_id"])]
-Class TicketTemplateHiddenField
+class TicketTemplateHiddenField
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -50,4 +50,4 @@ Class TicketTemplateHiddenField
         return $this;
     }
 
-}   
+}

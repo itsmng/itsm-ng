@@ -2,14 +2,14 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickettemplates")]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
-Class TicketTemplate
+class TicketTemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

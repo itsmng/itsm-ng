@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: "glpi_ssovariables")]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-Class Ssovariable
+class Ssovariable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

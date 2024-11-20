@@ -2,7 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_ticketcosts")]
@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "end_date", columns: ["end_date"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "budgets_id", columns: ["budgets_id"])]
-Class TicketCost
+class TicketCost
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -175,7 +175,7 @@ Class TicketCost
         $this->budgets_id = $budgets_id;
 
         return $this;
-    }   
+    }
 
     public function getEntitiesId(): ?int
     {

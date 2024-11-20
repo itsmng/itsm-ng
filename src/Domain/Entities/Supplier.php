@@ -2,7 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_suppliers")]
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "is_active", columns: ["is_active"])]
-Class Supplier
+class Supplier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -161,8 +161,8 @@ Class Supplier
         $this->town = $town;
 
         return $this;
-    }  
-    
+    }
+
     public function getState(): ?string
     {
         return $this->state;

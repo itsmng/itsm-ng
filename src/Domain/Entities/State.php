@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_visible_appliance", columns: ["is_visible_appliance"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-Class State
+class State
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -35,7 +35,7 @@ Class State
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name; 
+    private $name;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $entities_id;
@@ -51,72 +51,72 @@ Class State
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $completename;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $level;
-    
+
     #[ORM\Column(type: 'text', nullable: true)]
     private $ancestors_cache;
-    
+
     #[ORM\Column(type: 'text', nullable: true)]
     private $sons_cache;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_computer;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_monitor;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_networkequipment;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_peripheral;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_phone;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_printer;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_softwareversion;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_softwarelicense;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_line;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_certificate;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_rack;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_passivedcequipment;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_enclosure;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_pdu;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_cluster;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_contract;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_visible_appliance;
-    
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
-    
+
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation; 
+    private $date_creation;
 
     public function getId(): ?int
     {
@@ -457,10 +457,6 @@ Class State
         $this->date_creation = $date_creation;
 
         return $this;
-    }   
+    }
 
 }
-
-    
-
-    

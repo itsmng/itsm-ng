@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_specialstatuses")]
-Class Specialstatus
+class Specialstatus
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -2,12 +2,12 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickettemplatepredefinedfields")]
 #[ORM\Index(name: "tickettemplates_id", columns: ["tickettemplates_id"])]
-Class TicketTemplatePredefinedField
+class TicketTemplatePredefinedField
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

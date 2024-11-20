@@ -2,7 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_ticketrecurrents")]
@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_active", columns: ["is_active"])]
 #[ORM\Index(name: "tickettemplates_id", columns: ["tickettemplates_id"])]
 #[ORM\Index(name: "next_creation_date", columns: ["next_creation_date"])]
-Class TicketRecurrent
+class TicketRecurrent
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

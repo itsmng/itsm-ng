@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "manufacturers_id", columns: ["manufacturers_id"])]
 #[ORM\Index(name: "states_id", columns: ["states_id"])]
 #[ORM\Index(name: "allow_overquota", columns: ["allow_overquota"])]
-Class Softwarelicense
+class Softwarelicense
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -64,83 +64,83 @@ Class Softwarelicense
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $serial;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $otherserial;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $softwareversions_id_buy;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $softwareversions_id_use;
-    
+
     #[ORM\Column(type: 'date', nullable: true)]
     private $expire;
-    
+
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
-    
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_valid;
-    
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
 
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $locations_id;
 
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id_tech;
 
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id;
 
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $groups_id_tech;
 
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $groups_id;
 
-    
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]                                
+
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_helpdesk_visible;
 
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_template;
 
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $template_name;
 
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $states_id;
 
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $manufacturers_id;
 
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $contact;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $contact_num;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $allow_overquota;   
+    private $allow_overquota;
 
     public function getId(): ?int
     {
@@ -378,7 +378,7 @@ Class Softwarelicense
     public function getLocationsId(): ?int
     {
         return $this->locations_id;
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    }
     public function setLocationsId(?int $locations_id): self
     {
         $this->locations_id = $locations_id;

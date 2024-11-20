@@ -2,7 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_useremails")]
@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "email", columns: ["email"])]
 #[ORM\Index(name: "is_default", columns: ["is_default"])]
 #[ORM\Index(name: "is_dynamic", columns: ["is_dynamic"])]
-Class Useremail
+class Useremail
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

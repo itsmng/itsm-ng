@@ -182,14 +182,14 @@ class Sla
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->date_creation;
-    }   
+    }
 
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
-        $this->date_creation = $date_creation;      
+        $this->date_creation = $date_creation;
         return $this;
     }
-    
+
     public function getslmsId(): ?\DateTimeInterface
     {
         return $this->slms_id;
@@ -199,7 +199,6 @@ class Sla
     {
         $this->slms_id = $slms_id;
         return $this;
-    }   
+    }
 
 }
-

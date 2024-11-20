@@ -2,12 +2,12 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_transfers")]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
-Class Transfer
+class Transfer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -113,7 +113,7 @@ Class Transfer
     public function getId(): ?int
     {
         return $this->id;
-    }   
+    }
 
     public function getName(): ?string
     {

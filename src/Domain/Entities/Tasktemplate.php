@@ -1,8 +1,8 @@
 <?php
-    
+
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tasktemplates")]
@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_private", columns: ["is_private"])]
 #[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])]
 #[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
-Class Tasktemplate
+class Tasktemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -177,7 +177,7 @@ Class Tasktemplate
     public function getState(): ?int
     {
         return $this->state;
-    }   
+    }
 
     public function setState(?int $state): self
     {

@@ -2,7 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickettasks")]
@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "end", columns: ["end"])]
 #[ORM\Index(name: "tasktemplates_id", columns: ["tasktemplates_id"])]
 #[ORM\Index(name: "sourceitems_id", columns: ["sourceitems_id"])]
-Class TicketTask
+class TicketTask
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

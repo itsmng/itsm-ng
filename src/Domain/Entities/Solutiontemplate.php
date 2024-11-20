@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-Class Solutiontemplate
+class Solutiontemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

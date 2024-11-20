@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "softwarelicensetypes_id", columns: ["softwarelicensetypes_id"])]
-Class Softwarelicensetype
+class Softwarelicensetype
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

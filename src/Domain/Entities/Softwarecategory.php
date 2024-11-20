@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_softwarecategories")]
 #[ORM\Index(name: "softwarecategories_id", columns: ["softwarecategories_id"])]
-Class Softwarecategory
+class Softwarecategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -62,8 +62,8 @@ Class Softwarecategory
         $this->comment = $comment;
 
         return $this;
-    }    
-    
+    }
+
     public function getSoftwarecategoriesId(): ?int
     {
         return $this->softwarecategories_id;

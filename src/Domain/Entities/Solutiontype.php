@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-Class Solutiontype
+class Solutiontype
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

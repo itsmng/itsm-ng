@@ -2,7 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_ticketvalidations")]
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "submission_date", columns: ["submission_date"])]
 #[ORM\Index(name: "validation_date", columns: ["validation_date"])]
 #[ORM\Index(name: "status", columns: ["status"])]
-Class TicketValidation
+class TicketValidation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -82,14 +82,14 @@ Class TicketValidation
     public function getTicketsId(): ?int
     {
         return $this->tickets_id;
-    }   
+    }
 
     public function setTicketsId(?int $tickets_id): self
     {
         $this->tickets_id = $tickets_id;
 
         return $this;
-    }   
+    }
 
     public function getUsersIdValidate(): ?int
     {

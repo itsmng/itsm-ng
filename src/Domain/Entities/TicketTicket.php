@@ -2,12 +2,12 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;    
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickets_tickets")]
 #[ORM\UniqueConstraint(name: "tickets_id_1_tickets_id_2", columns: ["tickets_id_1", "tickets_id_2"])]
-Class TicketTicket
+class TicketTicket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -64,4 +64,4 @@ Class TicketTicket
         return $this;
     }
 
-}   
+}
