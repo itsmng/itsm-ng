@@ -384,7 +384,7 @@ abstract class LevelAgreement extends CommonDBChild
                     echo "<span id='la_choice$type$rand' style='display:none' class='assign_la'>";
                     echo "<i class='fas fa-stopwatch slt' aria-hidden='true'></i>";
                     echo "<span class='b'>" . static::getTypeName() . "</span>&nbsp;";
-                    static::dropdown([
+                    echo static::dropdown([
                        'name'      => $laField,
                        'entity'    => $ticket->fields["entities_id"],
                        'condition' => ['type' => $type]
