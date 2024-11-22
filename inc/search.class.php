@@ -30,6 +30,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Glpi\Toolbox\URL;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
@@ -134,7 +136,7 @@ class Search {
       self::displayData($data);
 
       if ($data['data']['totalcount'] > 0) {
-         $target = $data['search']['target'];
+         $target = URL::sanitizeURL($data['search']['target']);
          $criteria = $data['search']['criteria'];
          array_pop($criteria);
          array_pop($criteria);
@@ -159,6 +161,7 @@ class Search {
          } else {
             $fulltarget = $target."&".$parameters;
          }
+         $fulltarget = URL::sanitizeURL($fulltarget);
          $typename = class_exists($itemtype) ? $itemtype::getTypeName($data['data']['totalcount']) :
                         ($itemtype == 'AllAssets' ? __('assets') : $itemtype);
 
@@ -2333,6 +2336,8 @@ class Search {
       foreach ($params as $key => $val) {
          $p[$key] = $val;
       }
+
+      $p['target'] = URL::sanitizeURL($p['target']);
 
       $main_block_class = '';
       if ($p['mainform']) {
