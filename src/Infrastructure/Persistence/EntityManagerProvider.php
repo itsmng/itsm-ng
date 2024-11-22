@@ -13,6 +13,27 @@ class EntityManagerProvider
 {
     private static ?EntityManager $entityManager = null;
 
+    public static function getEntityManagerConfig(): array
+    {
+        if (isset($_ENV['DB_URL'])) {
+            $dsnParser = new DsnParser();
+            return $dsnParser->parse($_ENV['DB_URL']);
+        } else {
+            foreach ([ 'DB_DRIVER', 'DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME' ] as $envVar) {
+                if (!isset($_ENV[$envVar])) {
+                    throw new \Exception("$envVar environment variable not found");
+                }
+            }
+            return [
+                'driver'   => $_ENV['DB_DRIVER'],
+                'host'     => $_ENV['DB_HOST'],
+                'user'     => $_ENV['DB_USER'],
+                'password' => $_ENV['DB_PASSWORD'],
+                'dbname'   => $_ENV['DB_NAME'],
+            ];
+        }
+    }
+
     public static function getEntityManager(): EntityManager
     {
         if (self::$entityManager === null) {
@@ -22,23 +43,7 @@ class EntityManagerProvider
                 isDevMode: true
             );
 
-            if (isset($_ENV['DB_URL'])) {
-                $dsnParser = new DsnParser();
-                $connectionParams = $dsnParser->parse($_ENV['DB_URL']);
-            } else {
-                foreach ([ 'DB_DRIVER', 'DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME' ] as $envVar) {
-                    if (!isset($_ENV[$envVar])) {
-                        throw new \Exception("$envVar environment variable not found");
-                    }
-                }
-                $connectionParams = [
-                    'driver'   => $_ENV['DB_DRIVER'],
-                    'host'     => $_ENV['DB_HOST'],
-                    'user'     => $_ENV['DB_USER'],
-                    'password' => $_ENV['DB_PASSWORD'],
-                    'dbname'   => $_ENV['DB_NAME'],
-                ];
-            }
+            $connectionParams = self::getEntityManagerConfig();
             $connection = DriverManager::getConnection($connectionParams, $config);
             $connection->connect();
             if (!$connection->isConnected()) {
