@@ -74,6 +74,7 @@ jobs:
           cd tools/
           # Remove the 'v' prefix from the tag
           export TAG=$(sed -e 's/^v//' <<< $TAG)
+          export NODE_OPTIONS=--openssl-legacy-provider
           ./make_release.sh -y ../ $TAG
           mv /tmp/itsm-ng-${TAG}.tgz /tmp/itsm-ng-v${TAG}.tgz
 
