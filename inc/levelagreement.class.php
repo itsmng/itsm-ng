@@ -398,11 +398,12 @@ abstract class LevelAgreement extends CommonDBChild
             echo "<td>";
             echo $tt->getBeginHiddenFieldValue($dateField);
             renderTwigTemplate('macros/input.twig', [
-               'type'      => 'datetime-local',
-               'name'      => $dateField,
-               'value'     => $ticket->fields[$dateField],
-               $tt->isMandatoryField($dateField) ? 'required' : '' => true,
-               $canupdate ? null : 'disabled' => true,
+               'type'      => 'select',
+               'name'      => $laField,
+               'values'    => getOptionForItems($this::class, ['type' => $type]),
+               'value'     => $ticket->fields[$laField],
+               ($tt->isMandatoryField($dateField) ? 'required' : '') => true,
+               ($canupdate ? null : 'disabled') => true,
             ]);
             echo $tt->getEndHiddenFieldValue($dateField, $ticket);
             echo "</td>";
