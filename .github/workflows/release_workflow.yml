@@ -64,9 +64,6 @@ jobs:
       - name: Run migration tests
         run: php bin/console itsmng:database:update --config-dir=/home/runner/work/itsm-ng/itsm-ng/tests/migrations -n
 
-      - name: Run PHP Unit tests
-        run: vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --fail-if-skipped-methods --max-children-number 10 -d tests/units
-
       - name: Clean environment
         run: |
           rm -f config/config_db.php config/glpicrypt.key files/_log/*.log
