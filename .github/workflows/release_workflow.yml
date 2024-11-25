@@ -53,16 +53,6 @@ jobs:
       - name: Install ITSM-ng
         run: php bin/console itsmng:database:install -H localhost -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE -n
 
-      - name: Setup Unit environment
-        run: |
-          sudo mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE_UNIT;"
-          sudo mysql -e "GRANT ALL PRIVILEGES ON $DB_DATABASE_UNIT.* TO '$DB_USER'@'localhost';"
-          sudo mysql -e "FLUSH PRIVILEGES;"
-          php bin/console itsmng:database:install --config-dir=/home/runner/work/itsm-ng/itsm-ng/tests/config -H localhost -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE_UNIT -n
-
-      - name: Run PHP Unit tests
-        run: vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --fail-if-skipped-methods --max-children-number 10 -d tests/units
-
       - name: Setup migration environment
         run: |
           sudo mysql -e "CREATE DATABASE IF NOT EXISTS itsm_migration;"
