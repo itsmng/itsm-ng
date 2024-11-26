@@ -61,7 +61,7 @@ class CalendarHoliday
 
     /**
      * Get the value of calendar
-     */ 
+     */
     public function getCalendar()
     {
         return $this->calendar;
@@ -71,7 +71,7 @@ class CalendarHoliday
      * Set the value of calendar
      *
      * @return  self
-     */ 
+     */
     public function setCalendar($calendar)
     {
         $this->calendar = $calendar;
@@ -81,7 +81,7 @@ class CalendarHoliday
 
     /**
      * Get the value of holiday
-     */ 
+     */
     public function getHoliday()
     {
         return $this->holiday;
@@ -91,7 +91,7 @@ class CalendarHoliday
      * Set the value of holiday
      *
      * @return  self
-     */ 
+     */
     public function setHoliday($holiday)
     {
         $this->holiday = $holiday;

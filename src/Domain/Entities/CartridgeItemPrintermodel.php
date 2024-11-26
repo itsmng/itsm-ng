@@ -60,7 +60,7 @@ class CartridgeItemPrintermodel
 
     /**
      * Get the value of cartridgeItem
-     */ 
+     */
     public function getCartridgeItem()
     {
         return $this->cartridgeItem;
@@ -70,7 +70,7 @@ class CartridgeItemPrintermodel
      * Set the value of cartridgeItem
      *
      * @return  self
-     */ 
+     */
     public function setCartridgeItem($cartridgeItem)
     {
         $this->cartridgeItem = $cartridgeItem;
@@ -80,7 +80,7 @@ class CartridgeItemPrintermodel
 
     /**
      * Get the value of printermodel
-     */ 
+     */
     public function getPrintermodel()
     {
         return $this->printermodel;
@@ -90,7 +90,7 @@ class CartridgeItemPrintermodel
      * Set the value of printermodel
      *
      * @return  self
-     */ 
+     */
     public function setPrintermodel($printermodel)
     {
         $this->printermodel = $printermodel;

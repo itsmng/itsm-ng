@@ -265,7 +265,7 @@ class CartridgeItem
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -275,7 +275,7 @@ class CartridgeItem
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -285,7 +285,7 @@ class CartridgeItem
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -295,7 +295,7 @@ class CartridgeItem
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -305,7 +305,7 @@ class CartridgeItem
 
     /**
      * Get the value of cartridgeItemType
-     */ 
+     */
     public function getCartridgeItemType()
     {
         return $this->cartridgeItemType;
@@ -315,7 +315,7 @@ class CartridgeItem
      * Set the value of cartridgeItemType
      *
      * @return  self
-     */ 
+     */
     public function setCartridgeItemType($cartridgeItemType)
     {
         $this->cartridgeItemType = $cartridgeItemType;
@@ -325,7 +325,7 @@ class CartridgeItem
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -335,7 +335,7 @@ class CartridgeItem
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -345,7 +345,7 @@ class CartridgeItem
 
     /**
      * Get the value of user_tech
-     */ 
+     */
     public function getUser_tech()
     {
         return $this->user_tech;
@@ -355,7 +355,7 @@ class CartridgeItem
      * Set the value of user_tech
      *
      * @return  self
-     */ 
+     */
     public function setUser_tech($user_tech)
     {
         $this->user_tech = $user_tech;
@@ -365,7 +365,7 @@ class CartridgeItem
 
     /**
      * Get the value of group_tech
-     */ 
+     */
     public function getGroup_tech()
     {
         return $this->group_tech;
@@ -375,7 +375,7 @@ class CartridgeItem
      * Set the value of group_tech
      *
      * @return  self
-     */ 
+     */
     public function setGroup_tech($group_tech)
     {
         $this->group_tech = $group_tech;

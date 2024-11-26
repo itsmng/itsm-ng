@@ -208,7 +208,7 @@ class BusinessCriticity
 
     /**
      * Get the value of businessCriticity
-     */ 
+     */
     public function getBusinessCriticity()
     {
         return $this->businessCriticity;
@@ -218,7 +218,7 @@ class BusinessCriticity
      * Set the value of businessCriticity
      *
      * @return  self
-     */ 
+     */
     public function setBusinessCriticity($businessCriticity)
     {
         $this->businessCriticity = $businessCriticity;

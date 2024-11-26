@@ -172,7 +172,7 @@ class Cartridge
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -182,7 +182,7 @@ class Cartridge
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -192,7 +192,7 @@ class Cartridge
 
     /**
      * Get the value of cartridgeItem
-     */ 
+     */
     public function getCartridgeItem()
     {
         return $this->cartridgeItem;
@@ -202,7 +202,7 @@ class Cartridge
      * Set the value of cartridgeItem
      *
      * @return  self
-     */ 
+     */
     public function setCartridgeItem($cartridgeItem)
     {
         $this->cartridgeItem = $cartridgeItem;
@@ -212,7 +212,7 @@ class Cartridge
 
     /**
      * Get the value of printer
-     */ 
+     */
     public function getPrinter()
     {
         return $this->printer;
@@ -222,7 +222,7 @@ class Cartridge
      * Set the value of printer
      *
      * @return  self
-     */ 
+     */
     public function setPrinter($printer)
     {
         $this->printer = $printer;

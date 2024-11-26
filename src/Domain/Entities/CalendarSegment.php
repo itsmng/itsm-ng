@@ -120,7 +120,7 @@ class CalendarSegment
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -130,7 +130,7 @@ class CalendarSegment
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -140,7 +140,7 @@ class CalendarSegment
 
     /**
      * Get the value of calendars
-     */ 
+     */
     public function getCalendars()
     {
         return $this->calendars;
@@ -150,7 +150,7 @@ class CalendarSegment
      * Set the value of calendars
      *
      * @return  self
-     */ 
+     */
     public function setCalendars($calendars)
     {
         $this->calendars = $calendars;
