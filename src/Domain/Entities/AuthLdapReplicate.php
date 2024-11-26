@@ -85,7 +85,7 @@ class AuthLdapReplicate
 
     /**
      * Get the value of authldap
-     */ 
+     */
     public function getAuthldap()
     {
         return $this->authldap;
@@ -95,7 +95,7 @@ class AuthLdapReplicate
      * Set the value of authldap
      *
      * @return  self
-     */ 
+     */
     public function setAuthldap($authldap)
     {
         $this->authldap = $authldap;

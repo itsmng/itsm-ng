@@ -72,7 +72,7 @@ class ApplianceItem
 
     /**
      * Get the value of appliance
-     */ 
+     */
     public function getAppliance()
     {
         return $this->appliance;
@@ -82,7 +82,7 @@ class ApplianceItem
      * Set the value of appliance
      *
      * @return  self
-     */ 
+     */
     public function setAppliance($appliance)
     {
         $this->appliance = $appliance;

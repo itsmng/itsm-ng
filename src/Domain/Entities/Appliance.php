@@ -37,7 +37,7 @@ class Appliance
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 
-        #[ORM\Column(type: 'boolean', options: ['default' => 0])]
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
@@ -346,7 +346,7 @@ class Appliance
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -356,7 +356,7 @@ class Appliance
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -366,7 +366,7 @@ class Appliance
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -376,7 +376,7 @@ class Appliance
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -386,7 +386,7 @@ class Appliance
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -396,7 +396,7 @@ class Appliance
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -406,7 +406,7 @@ class Appliance
 
     /**
      * Get the value of applianceenvironment
-     */ 
+     */
     public function getApplianceenvironment()
     {
         return $this->applianceenvironment;
@@ -416,7 +416,7 @@ class Appliance
      * Set the value of applianceenvironment
      *
      * @return  self
-     */ 
+     */
     public function setApplianceenvironment($applianceenvironment)
     {
         $this->applianceenvironment = $applianceenvironment;
@@ -426,7 +426,7 @@ class Appliance
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -436,7 +436,7 @@ class Appliance
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -446,7 +446,7 @@ class Appliance
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -456,7 +456,7 @@ class Appliance
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -466,7 +466,7 @@ class Appliance
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -476,7 +476,7 @@ class Appliance
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -484,10 +484,10 @@ class Appliance
         return $this;
     }
 
-    
+
     /**
      * Get the value of user_tech
-     */ 
+     */
     public function getUser_tech()
     {
         return $this->user_tech;
@@ -497,7 +497,7 @@ class Appliance
      * Set the value of user_tech
      *
      * @return  self
-     */ 
+     */
     public function setUser_tech($user_tech)
     {
         $this->user_tech = $user_tech;
@@ -507,7 +507,7 @@ class Appliance
 
     /**
      * Get the value of group_tech
-     */ 
+     */
     public function getGroup_tech()
     {
         return $this->group_tech;
@@ -517,7 +517,7 @@ class Appliance
      * Set the value of group_tech
      *
      * @return  self
-     */ 
+     */
     public function setGroup_tech($group_tech)
     {
         $this->group_tech = $group_tech;

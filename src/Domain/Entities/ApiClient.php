@@ -209,7 +209,7 @@ class ApiClient
         return $this->entity;
     }
 
-    
+
     public function setEntity($entity)
     {
         $this->entity = $entity;
