@@ -15,11 +15,19 @@ class CalendarSegment
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "calendars_id", options: ["default" => 0])]
     private $calendars_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: Calendar::class, inversedBy: 'calendarsegments')]
+    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: false)]
+    private ?Calendar $calendars;
+
+    #[ORM\Column(type: "integer", name: "entities_id", options: ["default" => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'businesscriticities')]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
@@ -106,6 +114,46 @@ class CalendarSegment
     public function setEnd(?string $end): self
     {
         $this->end = $end;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of calendars
+     */ 
+    public function getCalendars()
+    {
+        return $this->calendars;
+    }
+
+    /**
+     * Set the value of calendars
+     *
+     * @return  self
+     */ 
+    public function setCalendars($calendars)
+    {
+        $this->calendars = $calendars;
 
         return $this;
     }
