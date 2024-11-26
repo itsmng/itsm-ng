@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_active", columns: ["is_active"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "sync_field", columns: ["sync_field"])]
-class AuthLdaps
+class AuthLdap
 {
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
