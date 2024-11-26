@@ -36,6 +36,7 @@ class EntityManagerProvider
 
     public static function getEntityManager(): EntityManager
     {
+        
         if (self::$entityManager === null) {
             $domainPath = realpath(__DIR__ . '/../../Domain');
             $config = ORMSetup::createAttributeMetadataConfiguration(
