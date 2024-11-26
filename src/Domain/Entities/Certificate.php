@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Location;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_certificates')]
@@ -36,8 +37,12 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'certificates')]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -54,8 +59,12 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $template_name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to glpi_certificatetypes (id)'])]
+    #[ORM\Column(type: 'integer', name: 'certificatetypes_id', options: ['default' => 0, 'comment' => 'RELATION to glpi_certificatetypes (id)'])]
     private $certificatetypes_id;
+
+    #[ORM\ManyToOne(targetEntity: CertificateType::class, inversedBy: 'certificates')]
+    #[ORM\JoinColumn(name: 'certificatetypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?CertificateType $certificateType;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $dns_name;
@@ -63,17 +72,33 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $dns_suffix;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to glpi_users (id)'])]
+    #[ORM\Column(type: 'integer', name: 'users_id_tech', options: ['default' => 0, 'comment' => 'RELATION to glpi_users (id)'])]
     private $users_id_tech;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to glpi_groups (id)'])]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'certificates')]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
+    private ?User $user_tech;
+
+    #[ORM\Column(type: 'integer', name: 'groups_id_tech', options: ['default' => 0, 'comment' => 'RELATION to glpi_groups (id)'])]
     private $groups_id_tech;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to glpi_locations (id)'])]
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'certificates')]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group_tech;
+
+    #[ORM\Column(type: 'integer', name: 'locations_id', options: ['default' => 0, 'comment' => 'RELATION to glpi_locations (id)'])]
     private $locations_id;
+
+    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'certificates')]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
+    private ?Location $location;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to glpi_manufacturers (id)'])]
     private $manufacturers_id;
+
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'certificates')]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $contact;
@@ -81,11 +106,19 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $contact_num;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'users_id', options: ['default' => 0])]
     private $users_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'certificates')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    private ?User $user;
+
+    #[ORM\Column(type: 'integer', name: 'groups_id', options: ['default' => 0])]
     private $groups_id;
+
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'certificates')]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_autosign;
@@ -93,8 +126,12 @@ class Certificate
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_expiration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to states (id)'])]
+    #[ORM\Column(type: 'integer', name: 'states_id', options: ['default' => 0, 'comment' => 'RELATION to states (id)'])]
     private $states_id;
+
+    #[ORM\ManyToOne(targetEntity: State::class, inversedBy: 'certificates')]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: false)]
+    private ?State $state;
 
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $command;
@@ -448,6 +485,186 @@ class Certificate
     public function setDateMod(\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of certificateType
+     */ 
+    public function getCertificateType()
+    {
+        return $this->certificateType;
+    }
+
+    /**
+     * Set the value of certificateType
+     *
+     * @return  self
+     */ 
+    public function setCertificateType($certificateType)
+    {
+        $this->certificateType = $certificateType;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user_tech
+     */ 
+    public function getUser_tech()
+    {
+        return $this->user_tech;
+    }
+
+    /**
+     * Set the value of user_tech
+     *
+     * @return  self
+     */ 
+    public function setUser_tech($user_tech)
+    {
+        $this->user_tech = $user_tech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group_tech
+     */ 
+    public function getGroup_tech()
+    {
+        return $this->group_tech;
+    }
+
+    /**
+     * Set the value of group_tech
+     *
+     * @return  self
+     */ 
+    public function setGroup_tech($group_tech)
+    {
+        $this->group_tech = $group_tech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
 
         return $this;
     }
