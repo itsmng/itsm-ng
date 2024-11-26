@@ -24,8 +24,12 @@ class CartridgeItem
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "entities_id", options: ["default" => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'cartridgeitems')]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
@@ -39,17 +43,37 @@ class CartridgeItem
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $locations_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'cartridgeitems')]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
+    private ?Location $location;
+
+    #[ORM\Column(type: "integer", name: "cartridgeitemtypes_id", options: ["default" => 0])]
     private $cartridgeitemtypes_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: CartridgeItemType::class, inversedBy: 'cartridgeitems')]
+    #[ORM\JoinColumn(name: 'cartridgeitemtypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?CartridgeItemType $cartridgeItemType;
+
+    #[ORM\Column(type: "integer", name: "manufacturers_id", options: ["default" => 0])]
     private $manufacturers_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'cartridgeitems')]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
+
+    #[ORM\Column(type: "integer", name: "users_id_tech", options: ["default" => 0])]
     private $users_id_tech;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'cartridgeitems')]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
+    private ?User $user_tech;
+
+    #[ORM\Column(type: "integer", name: "groups_id_tech", options: ["default" => 0])]
     private $groups_id_tech;
+
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'cartridgeitems')]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group_tech;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_deleted;
@@ -157,24 +181,24 @@ class CartridgeItem
 
     public function getUserIdTech(): ?int
     {
-        return $this->user_id_tech;
+        return $this->users_id_tech;
     }
 
     public function setUserIdTech(int $user_id_tech): self
     {
-        $this->user_id_tech = $user_id_tech;
+        $this->users_id_tech = $user_id_tech;
 
         return $this;
     }
 
     public function getGroupIdTech(): ?int
     {
-        return $this->group_id_tech;
+        return $this->groups_id_tech;
     }
 
     public function setGroupIdTech(int $group_id_tech): self
     {
-        $this->group_id_tech = $group_id_tech;
+        $this->groups_id_tech = $group_id_tech;
 
         return $this;
     }
@@ -235,6 +259,126 @@ class CartridgeItem
     public function setDateCreation(\DateTimeInterface $date_created): self
     {
         $this->date_creation = $date_created;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of cartridgeItemType
+     */ 
+    public function getCartridgeItemType()
+    {
+        return $this->cartridgeItemType;
+    }
+
+    /**
+     * Set the value of cartridgeItemType
+     *
+     * @return  self
+     */ 
+    public function setCartridgeItemType($cartridgeItemType)
+    {
+        $this->cartridgeItemType = $cartridgeItemType;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user_tech
+     */ 
+    public function getUser_tech()
+    {
+        return $this->user_tech;
+    }
+
+    /**
+     * Set the value of user_tech
+     *
+     * @return  self
+     */ 
+    public function setUser_tech($user_tech)
+    {
+        $this->user_tech = $user_tech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group_tech
+     */ 
+    public function getGroup_tech()
+    {
+        return $this->group_tech;
+    }
+
+    /**
+     * Set the value of group_tech
+     *
+     * @return  self
+     */ 
+    public function setGroup_tech($group_tech)
+    {
+        $this->group_tech = $group_tech;
 
         return $this;
     }
