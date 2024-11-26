@@ -16,8 +16,12 @@ class ApplianceType
     #[ORM\Column(type:"integer")]
     private $id;
 
-    #[ORM\Column(type:"integer", options:['default' => 0])]
+    #[ORM\Column(type:"integer", name:"entities_id", options:['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'appliancetypes')]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type:"boolean", options:['default' => 0])]
     private $is_recursive;
@@ -99,6 +103,26 @@ class ApplianceType
     public function setExternalIdentifier(?string $externalIdentifier): self
     {
         $this->externalidentifier = $externalIdentifier;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }
