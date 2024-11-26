@@ -27,8 +27,12 @@ class Budget
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'budgets')]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $is_recursive;
@@ -60,11 +64,19 @@ class Budget
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'locations_id', options: ['default' => 0])]
     private $locations_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'budgets')]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
+    private ?Location $location;
+
+    #[ORM\Column(type: 'integer', name: 'budgettypes_id', options: ['default' => 0])]
     private $budgettypes_id;
+
+    #[ORM\ManyToOne(targetEntity: Budgettype::class, inversedBy: 'budgets')]
+    #[ORM\JoinColumn(name: 'budgettypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Budgettype $budgettype;
 
     public function getId(): ?int
     {
@@ -235,6 +247,66 @@ class Budget
     public function setBudgettypesId(int $budgettypes_id): self
     {
         $this->budgettypes_id = $budgettypes_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of budgettype
+     */ 
+    public function getBudgettype()
+    {
+        return $this->budgettype;
+    }
+
+    /**
+     * Set the value of budgettype
+     *
+     * @return  self
+     */ 
+    public function setBudgettype($budgettype)
+    {
+        $this->budgettype = $budgettype;
 
         return $this;
     }
