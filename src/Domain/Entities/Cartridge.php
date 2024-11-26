@@ -18,14 +18,26 @@ class Cartridge
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'cartridges')]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
+
+    #[ORM\Column(type: 'integer', name: 'cartridgeitems_id', options: ['default' => 0])]
     private $cartridgeitems_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: CartridgeItem::class, inversedBy: 'cartridges')]
+    #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: false)]
+    private ?CartridgeItem $cartridgeItem;
+
+    #[ORM\Column(type: 'integer', name: 'printers_id', options: ['default' => 0])]
     private $printers_id;
+
+    #[ORM\ManyToOne(targetEntity: Printer::class, inversedBy: 'cartridges')]
+    #[ORM\JoinColumn(name: 'printers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Printer $printer;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_in;
@@ -154,6 +166,66 @@ class Cartridge
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of cartridgeItem
+     */ 
+    public function getCartridgeItem()
+    {
+        return $this->cartridgeItem;
+    }
+
+    /**
+     * Set the value of cartridgeItem
+     *
+     * @return  self
+     */ 
+    public function setCartridgeItem($cartridgeItem)
+    {
+        $this->cartridgeItem = $cartridgeItem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of printer
+     */ 
+    public function getPrinter()
+    {
+        return $this->printer;
+    }
+
+    /**
+     * Set the value of printer
+     *
+     * @return  self
+     */ 
+    public function setPrinter($printer)
+    {
+        $this->printer = $printer;
 
         return $this;
     }
