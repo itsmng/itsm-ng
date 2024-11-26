@@ -12,4 +12,3 @@ $config = new JsonFile("migrations.json");
 $entityManager = EntityManagerProvider::getEntityManager();
 
 return DependencyFactory::fromEntityManager($config, new ExistingEntityManager($entityManager));
-
