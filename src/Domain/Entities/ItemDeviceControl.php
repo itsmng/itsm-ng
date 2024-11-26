@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(columns: ["otherserial"])]
 #[ORM\Index(columns: ["locations_id"])]
 #[ORM\Index(columns: ["states_id"])]
-class Item_DeviceControl
+class ItemDeviceControl
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

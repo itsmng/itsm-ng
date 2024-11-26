@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'date', columns: ['date'])]
 #[ORM\Index(name: 'users_id_lastupdater', columns: ['users_id_lastupdater'])]
 #[ORM\Index(name: 'users_id', columns: ['users_id'])]
-class Notepas
+class Notepad
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

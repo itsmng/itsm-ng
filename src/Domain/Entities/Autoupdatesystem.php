@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'glpi_autoupdatesystems')]
 #[ORM\Index(name: 'name', columns: ['name'])]
 
-class Autoupdatesystems
+class Autoupdatesystem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(columns: ["is_recursive"])]
 #[ORM\Index(columns: ["date_mod"])]
 #[ORM\Index(columns: ["date_creation"])]
-class Fqdns
+class Fqdn
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Entities;
+namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\UniqueConstraint(name:"appliances_id_items_id_itemtype", columns:["appliances_id", "items_id", "itemtype"])]
 #[ORM\Index(name:"appliances_id", columns:["appliances_id"])]
 #[ORM\Index(name:"itemtype_items_id", columns:["itemtype", "items_id"])]
-class ApplianceItems
+class ApplianceItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
