@@ -23,7 +23,7 @@ class ChangeCost
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $changes_id;
 
-    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changecosts')]
+    #[ORM\ManyToOne(targetEntity: Change::class)]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
     private ?Change $change;
 
@@ -54,14 +54,14 @@ class ChangeCost
     #[ORM\Column(type: 'integer', name: 'budgets_id', options: ['default' => 0])]
     private $budgets_id;
 
-    #[ORM\ManyToOne(targetEntity: Budget::class, inversedBy: 'changecosts')]
+    #[ORM\ManyToOne(targetEntity: Budget::class)]
     #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: false)]
     private ?Budget $budget;
 
     #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'changecosts')]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 

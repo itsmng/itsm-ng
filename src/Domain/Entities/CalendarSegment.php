@@ -18,14 +18,14 @@ class CalendarSegment
     #[ORM\Column(type: "integer", name: "calendars_id", options: ["default" => 0])]
     private $calendars_id;
 
-    #[ORM\ManyToOne(targetEntity: Calendar::class, inversedBy: 'calendarsegments')]
+    #[ORM\ManyToOne(targetEntity: Calendar::class)]
     #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: false)]
     private ?Calendar $calendars;
 
     #[ORM\Column(type: "integer", name: "entities_id", options: ["default" => 0])]
     private $entities_id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'businesscriticities')]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 

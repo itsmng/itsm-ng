@@ -21,21 +21,21 @@ class Cartridge
     #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'cartridges')]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'integer', name: 'cartridgeitems_id', options: ['default' => 0])]
     private $cartridgeitems_id;
 
-    #[ORM\ManyToOne(targetEntity: CartridgeItem::class, inversedBy: 'cartridges')]
+    #[ORM\ManyToOne(targetEntity: CartridgeItem::class)]
     #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: false)]
     private ?CartridgeItem $cartridgeItem;
 
     #[ORM\Column(type: 'integer', name: 'printers_id', options: ['default' => 0])]
     private $printers_id;
 
-    #[ORM\ManyToOne(targetEntity: Printer::class, inversedBy: 'cartridges')]
+    #[ORM\ManyToOne(targetEntity: Printer::class)]
     #[ORM\JoinColumn(name: 'printers_id', referencedColumnName: 'id', nullable: false)]
     private ?Printer $printer;
 

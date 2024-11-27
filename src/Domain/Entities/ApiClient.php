@@ -18,7 +18,7 @@ class ApiClient
     #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'apiclients')]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 

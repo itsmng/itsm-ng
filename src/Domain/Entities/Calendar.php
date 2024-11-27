@@ -1,6 +1,7 @@
 <?php
 
 namespace Itsmng\Domain\Entities;
+use Doctrine\Common\Collections\Collection;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,7 +26,7 @@ class Calendar
     #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'calendars')]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 
@@ -43,6 +44,9 @@ class Calendar
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'calendar', targetEntity: CalendarHoliday::class)]
+    private Collection $calendarHolidays;
 
     public function getId(): ?int
     {
@@ -149,6 +153,26 @@ class Calendar
     public function setEntity($entity)
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of calendarHolidays
+     */ 
+    public function getCalendarHolidays()
+    {
+        return $this->calendarHolidays;
+    }
+
+    /**
+     * Set the value of calendarHolidays
+     *
+     * @return  self
+     */ 
+    public function setCalendarHolidays($calendarHolidays)
+    {
+        $this->calendarHolidays = $calendarHolidays;
 
         return $this;
     }

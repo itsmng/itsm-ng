@@ -30,7 +30,7 @@ class Budget
     #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'budgets')]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 
@@ -67,14 +67,14 @@ class Budget
     #[ORM\Column(type: 'integer', name: 'locations_id', options: ['default' => 0])]
     private $locations_id;
 
-    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'budgets')]
+    #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
     private ?Location $location;
 
     #[ORM\Column(type: 'integer', name: 'budgettypes_id', options: ['default' => 0])]
     private $budgettypes_id;
 
-    #[ORM\ManyToOne(targetEntity: Budgettype::class, inversedBy: 'budgets')]
+    #[ORM\ManyToOne(targetEntity: Budgettype::class)]
     #[ORM\JoinColumn(name: 'budgettypes_id', referencedColumnName: 'id', nullable: false)]
     private ?Budgettype $budgettype;
 

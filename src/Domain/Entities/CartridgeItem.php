@@ -27,7 +27,7 @@ class CartridgeItem
     #[ORM\Column(type: "integer", name: "entities_id", options: ["default" => 0])]
     private $entities_id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'cartridgeitems')]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 
@@ -43,35 +43,35 @@ class CartridgeItem
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $locations_id;
 
-    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'cartridgeitems')]
+    #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
     private ?Location $location;
 
     #[ORM\Column(type: "integer", name: "cartridgeitemtypes_id", options: ["default" => 0])]
     private $cartridgeitemtypes_id;
 
-    #[ORM\ManyToOne(targetEntity: CartridgeItemType::class, inversedBy: 'cartridgeitems')]
+    #[ORM\ManyToOne(targetEntity: CartridgeItemType::class)]
     #[ORM\JoinColumn(name: 'cartridgeitemtypes_id', referencedColumnName: 'id', nullable: false)]
     private ?CartridgeItemType $cartridgeItemType;
 
     #[ORM\Column(type: "integer", name: "manufacturers_id", options: ["default" => 0])]
     private $manufacturers_id;
 
-    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'cartridgeitems')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
     private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: "integer", name: "users_id_tech", options: ["default" => 0])]
     private $users_id_tech;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'cartridgeitems')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
     private ?User $user_tech;
 
     #[ORM\Column(type: "integer", name: "groups_id_tech", options: ["default" => 0])]
     private $groups_id_tech;
 
-    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'cartridgeitems')]
+    #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
     private ?Group $group_tech;
 

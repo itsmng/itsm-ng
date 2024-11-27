@@ -19,14 +19,14 @@ class ChangeGroup
     #[ORM\Column(type: 'integer', name: 'changes_id', options: ['default' => 0])]
     private $changes_id;
 
-    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changes_groups')]
+    #[ORM\ManyToOne(targetEntity: Change::class)]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
     private ?Change $change;
 
     #[ORM\Column(type: 'integer', name: 'groups_id', options: ['default' => 0])]
     private $groups_id;
 
-    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'changes_groups')]
+    #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
     private ?Group $group;
 

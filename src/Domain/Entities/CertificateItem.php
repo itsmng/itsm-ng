@@ -22,7 +22,7 @@ class CertificateItem
     #[ORM\Column(type: 'integer', name: 'certificates_id', nullable: false)]
     private $certificates_id;
 
-    #[ORM\ManyToOne(targetEntity: Certificate::class, inversedBy: 'certificates_items')]
+    #[ORM\ManyToOne(targetEntity: Certificate::class)]
     #[ORM\JoinColumn(name: 'certificates_id', referencedColumnName: 'id', nullable: false)]
     private ?Certificate $certificate;
 

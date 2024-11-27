@@ -23,7 +23,7 @@ class BusinessCriticity
     #[ORM\Column(type: "integer", name: 'entities_id', options: ["default" => 0])]
     private $entities_id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'businesscriticities')]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 
@@ -42,7 +42,7 @@ class BusinessCriticity
     #[ORM\Column(type: "integer", name: 'businesscriticities_id', options: ["default" => 0])]
     private $businesscriticities_id;
 
-    #[ORM\ManyToOne(targetEntity: BusinessCriticity::class, inversedBy: 'businesscriticities')]
+    #[ORM\ManyToOne(targetEntity: BusinessCriticity::class)]
     #[ORM\JoinColumn(name: 'businesscriticities_id', referencedColumnName: 'id', nullable: false)]
     private ?BusinessCriticity $businessCriticity;
 

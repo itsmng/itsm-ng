@@ -19,7 +19,7 @@ class ApplianceItem
     #[ORM\Column(type: "integer", name: "appliances_id", options: ["default" => 0])]
     private $appliances_id;
 
-    #[ORM\ManyToOne(targetEntity: Appliance::class, inversedBy: 'applianceitems')]
+    #[ORM\ManyToOne(targetEntity: Appliance::class)]
     #[ORM\JoinColumn(name: 'appliances_id', referencedColumnName: 'id', nullable: false)]
     private ?Appliance $appliance;
 

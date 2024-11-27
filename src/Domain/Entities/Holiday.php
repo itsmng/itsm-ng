@@ -1,6 +1,8 @@
 <?php
 
 namespace Itsmng\Domain\Entities;
+use Doctrine\Common\Collections\Collection;
+
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -45,6 +47,9 @@ class Holiday
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'holiday', targetEntity: CalendarHoliday::class)]
+    private Collection $calendarHolidays;
 
     public function getId(): ?int
     {
@@ -155,6 +160,26 @@ class Holiday
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of calendarHolidays
+     */ 
+    public function getCalendarHolidays()
+    {
+        return $this->calendarHolidays;
+    }
+
+    /**
+     * Set the value of calendarHolidays
+     *
+     * @return  self
+     */ 
+    public function setCalendarHolidays($calendarHolidays)
+    {
+        $this->calendarHolidays = $calendarHolidays;
 
         return $this;
     }

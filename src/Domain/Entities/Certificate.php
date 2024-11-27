@@ -40,7 +40,7 @@ class Certificate
     #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'certificates')]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 
@@ -62,7 +62,7 @@ class Certificate
     #[ORM\Column(type: 'integer', name: 'certificatetypes_id', options: ['default' => 0, 'comment' => 'RELATION to glpi_certificatetypes (id)'])]
     private $certificatetypes_id;
 
-    #[ORM\ManyToOne(targetEntity: CertificateType::class, inversedBy: 'certificates')]
+    #[ORM\ManyToOne(targetEntity: CertificateType::class)]
     #[ORM\JoinColumn(name: 'certificatetypes_id', referencedColumnName: 'id', nullable: false)]
     private ?CertificateType $certificateType;
 
@@ -75,28 +75,28 @@ class Certificate
     #[ORM\Column(type: 'integer', name: 'users_id_tech', options: ['default' => 0, 'comment' => 'RELATION to glpi_users (id)'])]
     private $users_id_tech;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'certificates')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
     private ?User $user_tech;
 
     #[ORM\Column(type: 'integer', name: 'groups_id_tech', options: ['default' => 0, 'comment' => 'RELATION to glpi_groups (id)'])]
     private $groups_id_tech;
 
-    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'certificates')]
+    #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
     private ?Group $group_tech;
 
     #[ORM\Column(type: 'integer', name: 'locations_id', options: ['default' => 0, 'comment' => 'RELATION to glpi_locations (id)'])]
     private $locations_id;
 
-    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'certificates')]
+    #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
     private ?Location $location;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to glpi_manufacturers (id)'])]
     private $manufacturers_id;
 
-    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'certificates')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
     private ?Manufacturer $manufacturer;
 
@@ -109,14 +109,14 @@ class Certificate
     #[ORM\Column(type: 'integer', name: 'users_id', options: ['default' => 0])]
     private $users_id;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'certificates')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user;
 
     #[ORM\Column(type: 'integer', name: 'groups_id', options: ['default' => 0])]
     private $groups_id;
 
-    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'certificates')]
+    #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
     private ?Group $group;
 
@@ -129,7 +129,7 @@ class Certificate
     #[ORM\Column(type: 'integer', name: 'states_id', options: ['default' => 0, 'comment' => 'RELATION to states (id)'])]
     private $states_id;
 
-    #[ORM\ManyToOne(targetEntity: State::class, inversedBy: 'certificates')]
+    #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: false)]
     private ?State $state;
 

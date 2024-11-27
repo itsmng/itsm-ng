@@ -17,7 +17,7 @@ class AuthLdapReplicate
     #[ORM\Column(type: "integer", name: "authldaps_id", options: ["default" => 0])]
     private $authldaps_id;
 
-    #[ORM\ManyToOne(targetEntity: AuthLdap::class, inversedBy: 'authldapreplicates')]
+    #[ORM\ManyToOne(targetEntity: AuthLdap::class)]
     #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: false)]
     private ?AuthLdap $authldap;
 

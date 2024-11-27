@@ -21,7 +21,7 @@ class CertificateType
     #[ORM\Column(type: 'integer', name: 'entities_id', nullable: false)]
     private $entities_id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'certificatetypes')]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
     private ?Entity $entity;
 

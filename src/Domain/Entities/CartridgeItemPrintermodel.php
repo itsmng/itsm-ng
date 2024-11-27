@@ -18,14 +18,14 @@ class CartridgeItemPrintermodel
     #[ORM\Column(type: "integer", name: "cartridgeitems_id", options: ["default" => 0])]
     private $cartridgeitems_id;
 
-    #[ORM\ManyToOne(targetEntity: CartridgeItem::class, inversedBy: 'cartridgeitems_printermodels')]
+    #[ORM\ManyToOne(targetEntity: CartridgeItem::class)]
     #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: false)]
     private ?CartridgeItem $cartridgeItem;
 
     #[ORM\Column(type: "integer", name: "printermodels_id", options: ["default" => 0])]
     private $printermodels_id;
 
-    #[ORM\ManyToOne(targetEntity: Printermodel::class, inversedBy: 'cartridgeitems_printermodels')]
+    #[ORM\ManyToOne(targetEntity: Printermodel::class)]
     #[ORM\JoinColumn(name: 'printermodels_id', referencedColumnName: 'id', nullable: false)]
     private ?Printermodel $printermodel;
 
