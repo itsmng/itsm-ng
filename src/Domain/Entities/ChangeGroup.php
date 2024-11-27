@@ -19,14 +19,14 @@ class ChangeGroup
     #[ORM\Column(type: 'integer', name: 'changes_id', options: ['default' => 0])]
     private $changes_id;
 
-    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changesGroups' )]
+    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changesGroups')]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
     private ?Change $change;
 
     #[ORM\Column(type: 'integer', name: 'groups_id', options: ['default' => 0])]
     private $groups_id;
 
-    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'changesGroups' )]
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'changesGroups')]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
     private ?Group $group;
 
@@ -76,7 +76,7 @@ class ChangeGroup
 
     /**
      * Get the value of change
-     */ 
+     */
     public function getChange()
     {
         return $this->change;
@@ -86,7 +86,7 @@ class ChangeGroup
      * Set the value of change
      *
      * @return  self
-     */ 
+     */
     public function setChange($change)
     {
         $this->change = $change;
@@ -96,7 +96,7 @@ class ChangeGroup
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -106,7 +106,7 @@ class ChangeGroup
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;

@@ -78,7 +78,7 @@ class ChangeProblem
 
     /**
      * Get the value of change
-     */ 
+     */
     public function getChange()
     {
         return $this->change;
@@ -88,7 +88,7 @@ class ChangeProblem
      * Set the value of change
      *
      * @return  self
-     */ 
+     */
     public function setChange($change)
     {
         $this->change = $change;
@@ -98,7 +98,7 @@ class ChangeProblem
 
     /**
      * Get the value of problem
-     */ 
+     */
     public function getProblem()
     {
         return $this->problem;
@@ -108,7 +108,7 @@ class ChangeProblem
      * Set the value of problem
      *
      * @return  self
-     */ 
+     */
     public function setProblem($problem)
     {
         $this->problem = $problem;

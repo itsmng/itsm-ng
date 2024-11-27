@@ -5,7 +5,6 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
-
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_groups')]
 #[ORM\Index(columns: ['name'])]
@@ -370,7 +369,7 @@ class Group
 
     /**
      * Get the value of changesGroups
-     */ 
+     */
     public function getChangesGroups()
     {
         return $this->changesGroups;
@@ -380,7 +379,7 @@ class Group
      * Set the value of changesGroups
      *
      * @return  self
-     */ 
+     */
     public function setChangesGroups($changesGroups)
     {
         $this->changesGroups = $changesGroups;

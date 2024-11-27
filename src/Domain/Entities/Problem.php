@@ -5,7 +5,6 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
-
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_problems')]
 #[ORM\Index(name: "name", columns: ["name"])]
@@ -461,7 +460,7 @@ class Problem
 
     /**
      * Get the value of changesProblems
-     */ 
+     */
     public function getChangesProblems()
     {
         return $this->changesProblems;
@@ -471,7 +470,7 @@ class Problem
      * Set the value of changesProblems
      *
      * @return  self
-     */ 
+     */
     public function setChangesProblems($changesProblems)
     {
         $this->changesProblems = $changesProblems;

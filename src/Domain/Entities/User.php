@@ -5,7 +5,6 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_users")]
 #[ORM\UniqueConstraint(name: "name_authtype_auths_id", columns: ["name", "authtype", "auths_id"])]
@@ -1547,7 +1546,7 @@ class User
 
     /**
      * Get the value of changesUsers
-     */ 
+     */
     public function getChangesUsers()
     {
         return $this->changesUsers;
@@ -1557,7 +1556,7 @@ class User
      * Set the value of changesUsers
      *
      * @return  self
-     */ 
+     */
     public function setChangesUsers($changesUsers)
     {
         $this->changesUsers = $changesUsers;

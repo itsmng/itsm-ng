@@ -5,7 +5,6 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickets")]
 #[ORM\Index(name: "date", columns: ["date"])]
@@ -656,7 +655,7 @@ class Ticket
 
     /**
      * Get the value of changesTickets
-     */ 
+     */
     public function getChangesTickets()
     {
         return $this->changesTickets;
@@ -666,7 +665,7 @@ class Ticket
      * Set the value of changesTickets
      *
      * @return  self
-     */ 
+     */
     public function setChangesTickets($changesTickets)
     {
         $this->changesTickets = $changesTickets;

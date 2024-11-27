@@ -106,7 +106,7 @@ class ChangeSupplier
 
     /**
      * Get the value of change
-     */ 
+     */
     public function getChange()
     {
         return $this->change;
@@ -116,7 +116,7 @@ class ChangeSupplier
      * Set the value of change
      *
      * @return  self
-     */ 
+     */
     public function setChange($change)
     {
         $this->change = $change;
@@ -126,7 +126,7 @@ class ChangeSupplier
 
     /**
      * Get the value of supplier
-     */ 
+     */
     public function getSupplier()
     {
         return $this->supplier;
@@ -136,7 +136,7 @@ class ChangeSupplier
      * Set the value of supplier
      *
      * @return  self
-     */ 
+     */
     public function setSupplier($supplier)
     {
         $this->supplier = $supplier;

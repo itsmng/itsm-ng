@@ -219,7 +219,7 @@ class ChangeCost
 
     /**
      * Get the value of change
-     */ 
+     */
     public function getChange()
     {
         return $this->change;
@@ -229,7 +229,7 @@ class ChangeCost
      * Set the value of change
      *
      * @return  self
-     */ 
+     */
     public function setChange($change)
     {
         $this->change = $change;
@@ -239,7 +239,7 @@ class ChangeCost
 
     /**
      * Get the value of budget
-     */ 
+     */
     public function getBudget()
     {
         return $this->budget;
@@ -249,7 +249,7 @@ class ChangeCost
      * Set the value of budget
      *
      * @return  self
-     */ 
+     */
     public function setBudget($budget)
     {
         $this->budget = $budget;
@@ -259,7 +259,7 @@ class ChangeCost
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -269,7 +269,7 @@ class ChangeCost
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

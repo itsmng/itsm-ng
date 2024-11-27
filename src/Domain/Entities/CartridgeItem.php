@@ -5,7 +5,6 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_cartridgeitems")]
 #[ORM\Index(name: "name", columns: ["name"])]
@@ -390,7 +389,7 @@ class CartridgeItem
 
     /**
      * Get the value of cartridgeItemPrintermodels
-     */ 
+     */
     public function getCartridgeItemPrintermodels()
     {
         return $this->cartridgeItemPrintermodels;
@@ -400,7 +399,7 @@ class CartridgeItem
      * Set the value of cartridgeItemPrintermodels
      *
      * @return  self
-     */ 
+     */
     public function setCartridgeItemPrintermodels($cartridgeItemPrintermodels)
     {
         $this->cartridgeItemPrintermodels = $cartridgeItemPrintermodels;

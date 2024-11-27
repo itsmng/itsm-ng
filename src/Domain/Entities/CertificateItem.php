@@ -105,7 +105,7 @@ class CertificateItem
 
     /**
      * Get the value of certificate
-     */ 
+     */
     public function getCertificate()
     {
         return $this->certificate;
@@ -115,7 +115,7 @@ class CertificateItem
      * Set the value of certificate
      *
      * @return  self
-     */ 
+     */
     public function setCertificate($certificate)
     {
         $this->certificate = $certificate;

@@ -67,7 +67,7 @@ class ChangeTicket
 
     /**
      * Get the value of change
-     */ 
+     */
     public function getChange()
     {
         return $this->change;
@@ -77,7 +77,7 @@ class ChangeTicket
      * Set the value of change
      *
      * @return  self
-     */ 
+     */
     public function setChange($change)
     {
         $this->change = $change;
@@ -87,7 +87,7 @@ class ChangeTicket
 
     /**
      * Get the value of ticket
-     */ 
+     */
     public function getTicket()
     {
         return $this->ticket;
@@ -97,7 +97,7 @@ class ChangeTicket
      * Set the value of ticket
      *
      * @return  self
-     */ 
+     */
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;

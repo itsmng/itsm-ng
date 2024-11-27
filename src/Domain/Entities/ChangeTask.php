@@ -341,7 +341,7 @@ class ChangeTask
 
     /**
      * Get the value of change
-     */ 
+     */
     public function getChange()
     {
         return $this->change;
@@ -351,7 +351,7 @@ class ChangeTask
      * Set the value of change
      *
      * @return  self
-     */ 
+     */
     public function setChange($change)
     {
         $this->change = $change;
@@ -359,11 +359,11 @@ class ChangeTask
         return $this;
     }
 
-   
+
 
     /**
      * Get the value of taskcategory
-     */ 
+     */
     public function getTaskcategory()
     {
         return $this->taskcategory;
@@ -373,7 +373,7 @@ class ChangeTask
      * Set the value of taskcategory
      *
      * @return  self
-     */ 
+     */
     public function setTaskcategory($taskcategory)
     {
         $this->taskcategory = $taskcategory;
@@ -383,7 +383,7 @@ class ChangeTask
 
     /**
      * Get the value of user_editor
-     */ 
+     */
     public function getUser_editor()
     {
         return $this->user_editor;
@@ -393,7 +393,7 @@ class ChangeTask
      * Set the value of user_editor
      *
      * @return  self
-     */ 
+     */
     public function setUser_editor($user_editor)
     {
         $this->user_editor = $user_editor;
@@ -403,7 +403,7 @@ class ChangeTask
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -413,7 +413,7 @@ class ChangeTask
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -423,7 +423,7 @@ class ChangeTask
 
     /**
      * Get the value of user_tech
-     */ 
+     */
     public function getUser_tech()
     {
         return $this->user_tech;
@@ -433,7 +433,7 @@ class ChangeTask
      * Set the value of user_tech
      *
      * @return  self
-     */ 
+     */
     public function setUser_tech($user_tech)
     {
         $this->user_tech = $user_tech;
@@ -443,7 +443,7 @@ class ChangeTask
 
     /**
      * Get the value of group_tech
-     */ 
+     */
     public function getGroup_tech()
     {
         return $this->group_tech;
@@ -453,7 +453,7 @@ class ChangeTask
      * Set the value of group_tech
      *
      * @return  self
-     */ 
+     */
     public function setGroup_tech($group_tech)
     {
         $this->group_tech = $group_tech;
@@ -463,7 +463,7 @@ class ChangeTask
 
     /**
      * Get the value of tasktemplate
-     */ 
+     */
     public function getTasktemplate()
     {
         return $this->tasktemplate;
@@ -473,7 +473,7 @@ class ChangeTask
      * Set the value of tasktemplate
      *
      * @return  self
-     */ 
+     */
     public function setTasktemplate($tasktemplate)
     {
         $this->tasktemplate = $tasktemplate;

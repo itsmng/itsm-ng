@@ -5,7 +5,6 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
-
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_changes')]
 #[ORM\Index(name: 'name', columns: ['name'])]
@@ -517,7 +516,7 @@ class Change
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -527,7 +526,7 @@ class Change
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -537,7 +536,7 @@ class Change
 
     /**
      * Get the value of changesProblems
-     */ 
+     */
     public function getChangesProblems()
     {
         return $this->changesProblems;
@@ -547,7 +546,7 @@ class Change
      * Set the value of changesProblems
      *
      * @return  self
-     */ 
+     */
     public function setChangesProblems($changesProblems)
     {
         $this->changesProblems = $changesProblems;
@@ -557,7 +556,7 @@ class Change
 
     /**
      * Get the value of changesGroups
-     */ 
+     */
     public function getChangesGroups()
     {
         return $this->changesGroups;
@@ -567,7 +566,7 @@ class Change
      * Set the value of changesGroups
      *
      * @return  self
-     */ 
+     */
     public function setChangesGroups($changesGroups)
     {
         $this->changesGroups = $changesGroups;
@@ -577,7 +576,7 @@ class Change
 
     /**
      * Get the value of changesTickets
-     */ 
+     */
     public function getChangesTickets()
     {
         return $this->changesTickets;
@@ -587,7 +586,7 @@ class Change
      * Set the value of changesTickets
      *
      * @return  self
-     */ 
+     */
     public function setChangesTickets($changesTickets)
     {
         $this->changesTickets = $changesTickets;
@@ -599,7 +598,7 @@ class Change
 
     /**
      * Get the value of changesSuppliers
-     */ 
+     */
     public function getChangesSuppliers()
     {
         return $this->changesSuppliers;
@@ -609,7 +608,7 @@ class Change
      * Set the value of changesSuppliers
      *
      * @return  self
-     */ 
+     */
     public function setChangesSuppliers($changesSuppliers)
     {
         $this->changesSuppliers = $changesSuppliers;
@@ -619,7 +618,7 @@ class Change
 
     /**
      * Get the value of changesUsers
-     */ 
+     */
     public function getChangesUsers()
     {
         return $this->changesUsers;
@@ -629,7 +628,7 @@ class Change
      * Set the value of changesUsers
      *
      * @return  self
-     */ 
+     */
     public function setChangesUsers($changesUsers)
     {
         $this->changesUsers = $changesUsers;

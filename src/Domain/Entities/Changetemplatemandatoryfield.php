@@ -57,7 +57,7 @@ class Changetemplatemandatoryfield
 
     /**
      * Get the value of changetemplate
-     */ 
+     */
     public function getChangetemplate()
     {
         return $this->changetemplate;
@@ -67,7 +67,7 @@ class Changetemplatemandatoryfield
      * Set the value of changetemplate
      *
      * @return  self
-     */ 
+     */
     public function setChangetemplate($changetemplate)
     {
         $this->changetemplate = $changetemplate;

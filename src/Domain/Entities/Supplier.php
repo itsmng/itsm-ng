@@ -5,7 +5,6 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
-
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_suppliers")]
 #[ORM\Index(name: "name", columns: ["name"])]
@@ -304,7 +303,7 @@ class Supplier
 
     /**
      * Get the value of changesSuppliers
-     */ 
+     */
     public function getChangesSuppliers()
     {
         return $this->changesSuppliers;
@@ -314,7 +313,7 @@ class Supplier
      * Set the value of changesSuppliers
      *
      * @return  self
-     */ 
+     */
     public function setChangesSuppliers($changesSuppliers)
     {
         $this->changesSuppliers = $changesSuppliers;

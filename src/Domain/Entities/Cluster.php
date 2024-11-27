@@ -269,7 +269,7 @@ class Cluster
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -279,7 +279,7 @@ class Cluster
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -289,7 +289,7 @@ class Cluster
 
     /**
      * Get the value of autoupdatesystem
-     */ 
+     */
     public function getAutoupdatesystem()
     {
         return $this->autoupdatesystem;
@@ -299,7 +299,7 @@ class Cluster
      * Set the value of autoupdatesystem
      *
      * @return  self
-     */ 
+     */
     public function setAutoupdatesystem($autoupdatesystem)
     {
         $this->autoupdatesystem = $autoupdatesystem;
@@ -309,7 +309,7 @@ class Cluster
 
     /**
      * Get the value of clustertype
-     */ 
+     */
     public function getClustertype()
     {
         return $this->clustertype;
@@ -319,7 +319,7 @@ class Cluster
      * Set the value of clustertype
      *
      * @return  self
-     */ 
+     */
     public function setClustertype($clustertype)
     {
         $this->clustertype = $clustertype;
@@ -329,7 +329,7 @@ class Cluster
 
     /**
      * Get the value of group_tech
-     */ 
+     */
     public function getGroup_tech()
     {
         return $this->group_tech;
@@ -339,7 +339,7 @@ class Cluster
      * Set the value of group_tech
      *
      * @return  self
-     */ 
+     */
     public function setGroup_tech($group_tech)
     {
         $this->group_tech = $group_tech;
@@ -349,7 +349,7 @@ class Cluster
 
     /**
      * Get the value of users_tech
-     */ 
+     */
     public function getUsers_tech()
     {
         return $this->users_tech;
@@ -359,7 +359,7 @@ class Cluster
      * Set the value of users_tech
      *
      * @return  self
-     */ 
+     */
     public function setUsers_tech($users_tech)
     {
         $this->users_tech = $users_tech;
@@ -369,7 +369,7 @@ class Cluster
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -379,7 +379,7 @@ class Cluster
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

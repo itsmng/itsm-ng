@@ -1,9 +1,8 @@
 <?php
 
 namespace Itsmng\Domain\Entities;
+
 use Doctrine\Common\Collections\Collection;
-
-
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -166,7 +165,7 @@ class Holiday
 
     /**
      * Get the value of calendarHolidays
-     */ 
+     */
     public function getCalendarHolidays()
     {
         return $this->calendarHolidays;
@@ -176,7 +175,7 @@ class Holiday
      * Set the value of calendarHolidays
      *
      * @return  self
-     */ 
+     */
     public function setCalendarHolidays($calendarHolidays)
     {
         $this->calendarHolidays = $calendarHolidays;

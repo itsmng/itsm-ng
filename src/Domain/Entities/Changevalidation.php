@@ -210,7 +210,7 @@ class Changevalidation
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -220,7 +220,7 @@ class Changevalidation
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -230,7 +230,7 @@ class Changevalidation
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -240,7 +240,7 @@ class Changevalidation
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -250,7 +250,7 @@ class Changevalidation
 
     /**
      * Get the value of change
-     */ 
+     */
     public function getChange()
     {
         return $this->change;
@@ -260,7 +260,7 @@ class Changevalidation
      * Set the value of change
      *
      * @return  self
-     */ 
+     */
     public function setChange($change)
     {
         $this->change = $change;
@@ -270,7 +270,7 @@ class Changevalidation
 
     /**
      * Get the value of user_validate
-     */ 
+     */
     public function getUser_validate()
     {
         return $this->user_validate;
@@ -280,7 +280,7 @@ class Changevalidation
      * Set the value of user_validate
      *
      * @return  self
-     */ 
+     */
     public function setUser_validate($user_validate)
     {
         $this->user_validate = $user_validate;
