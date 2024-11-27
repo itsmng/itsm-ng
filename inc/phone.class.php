@@ -190,9 +190,9 @@ class Phone extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "Location"),
                     ],
                     _n('Type', 'Types', 1) => [
-                       'name' => 'computertypes_id',
+                       'name' => 'phonetypes_id',
+                       'itemtype' => PhoneType::class,
                        'type' => 'select',
-                       'values' => getOptionForItems('PhoneType'),
                        'value' => $this->fields['phonetypes_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "PhoneType"),
                     ],
