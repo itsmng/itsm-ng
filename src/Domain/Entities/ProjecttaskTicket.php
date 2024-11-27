@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_projecttasks_tickets')]
-#[ORM\UniqueConstraint(columns: ['tickets_id', 'projecttasks_id'])]
-#[ORM\Index(name: "projecttasks_id", columns: ["projecttasks_id"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ['tickets_id', 'projecttasks_id'])]
+#[ORM\Index(name: "projects_id", columns: ["projecttasks_id"])]
 class ProjecttaskTicket
 {
     #[ORM\Id]

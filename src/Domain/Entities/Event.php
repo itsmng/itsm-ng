@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_events")]
-#[Orm\Index(columns: ["date"])]
-#[Orm\Index(columns: ["level"])]
-#[Orm\Index(columns: ["type", "items_id"])]
+#[Orm\Index(name: "name", columns: ["date"])]
+#[Orm\Index(name: "level", columns: ["level"])]
+#[Orm\Index(name: "item", columns: ["type", "items_id"])]
 class Event
 {
     #[ORM\Id]

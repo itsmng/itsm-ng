@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_cartridgeitems_printermodels")]
-#[ORM\UniqueConstraint(name: "printermodels_id_cartridgeitems_id", columns: ["printermodels_id", "cartridgeitems_id"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["printermodels_id", "cartridgeitems_id"])]
 #[ORM\Index(name: "cartridgeitems_id", columns: ["cartridgeitems_id"])]
 class CartridgeItemPrinterModel
 {

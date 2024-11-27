@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_businesscriticities")]
-#[ORM\UniqueConstraint(name: "businesscriticities_name_unique", columns: ["businesscriticities_id", "name"])]
-#[ORM\Index(name: "businesscriticities_name_index", columns: ["name"])]
-#[ORM\Index(name: "businesscriticities_date_mod_index", columns: ["date_mod"])]
-#[ORM\Index(name: "businesscriticities_date_creation_index", columns: ["date_creation"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["businesscriticities_id", "name"])]
+#[ORM\Index(name: "name", columns: ["name"])]
+#[ORM\Index(name: "date_mod", columns: ["date_mod"])]
+#[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class BusinessCriticities
 {
     #[ORM\Id]

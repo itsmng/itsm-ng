@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_savedsearches_users')]
-#[ORM\UniqueConstraint(name: "users_id_itemtype", columns: ["users_id", "itemtype"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["users_id", "itemtype"])]
 #[ORM\Index(name: "savedsearches_id", columns: ["savedsearches_id"])]
 class SavedsearchUser
 {

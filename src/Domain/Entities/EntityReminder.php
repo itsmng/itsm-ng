@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_entities_reminders")]
-#[ORM\Index(columns: ["reminders_id"])]
-#[ORM\Index(columns: ["entities_id"])]
-#[ORM\Index(columns: ["is_recursive"])]
+#[ORM\Index(name: "reminders_id", columns: ["reminders_id"])]
+#[ORM\Index(name: "entities_id", columns: ["entities_id"])]
+#[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
 class EntityReminder
 {
     #[ORM\Id]

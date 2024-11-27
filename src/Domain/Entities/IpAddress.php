@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_ipaddresses")]
-#[ORM\Index(columns: ["entities_id"])]
-#[ORM\Index(columns: ["name"])]
-#[ORM\Index(columns: ["binary_0", "binary_1", "binary_2", "binary_3"])]
-#[ORM\Index(columns: ["is_deleted"])]
-#[ORM\Index(columns: ["is_dynamic"])]
-#[ORM\Index(columns: ["itemtype", "items_id", "is_deleted"])]
-#[ORM\Index(columns: ["mainitemtype", "mainitems_id", "is_deleted"])]
+#[ORM\Index(name: "entities_id", columns: ["entities_id"])]
+#[ORM\Index(name: "textual", columns: ["name"])]
+#[ORM\Index(name: "binary", columns: ["binary_0", "binary_1", "binary_2", "binary_3"])]
+#[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
+#[ORM\Index(name: "is_dynamic", columns: ["is_dynamic"])]
+#[ORM\Index(name: "item", columns: ["itemtype", "items_id", "is_deleted"])]
+#[ORM\Index(name: "mainitem", columns: ["mainitemtype", "mainitems_id", "is_deleted"])]
 class IpAddress
 {
     #[ORM\Id]

@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name:"glpi_appliancetypes")]
-#[ORM\UniqueConstraint(name:"appliancetype_externalidentifier", columns:["externalidentifier"])]
-#[ORM\Index(name:"appliancetype_name", columns:["name"])]
-#[ORM\Index(name:"appliancetype_entities_id", columns:["entities_id"])]
+#[ORM\UniqueConstraint(name: "externalidentifier", columns:["externalidentifier"])]
+#[ORM\Index(name: "name", columns:["name"])]
+#[ORM\Index(name: "entities_id", columns:["entities_id"])]
 class ApplianceType
 {
     #[ORM\Id]

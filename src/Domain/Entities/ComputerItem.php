@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_computers_items')]
 #[ORM\Index(name: 'computers_id', columns: ['computers_id'])]
-#[ORM\Index(name: 'itemtype_items_id', columns: ['itemtype', 'items_id'])]
+#[ORM\Index(name: 'item', columns: ['itemtype', 'items_id'])]
 #[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
 #[ORM\Index(name: 'is_dynamic', columns: ['is_dynamic'])]
 

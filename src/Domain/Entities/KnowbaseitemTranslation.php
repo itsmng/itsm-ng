@@ -6,11 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_knowbaseitemtranslations')]
-#[ORM\Index(columns: ['knowbaseitems_id', 'language'])]
-#[ORM\Index(columns: ['users_id'])]
-#[ORM\Index(columns: ['name', 'answer'], flags: ['FULLTEXT'])]
-#[ORM\Index(columns: ['name'], flags: ['FULLTEXT'])]
-#[ORM\Index(columns: ['answer'], flags: ['FULLTEXT'])]
+#[ORM\Index(name: "item", columns: ['knowbaseitems_id', 'language'])]
+#[ORM\Index(name: "users_id", columns: ['users_id'])]
+#[ORM\Index(name: "fulltext", columns: ['name', 'answer'], flags: ['FULLTEXT'])]
+#[ORM\Index(name: "name", columns: ['name'], flags: ['FULLTEXT'])]
+#[ORM\Index(name: "answer", columns: ['answer'], flags: ['FULLTEXT'])]
 class KnowbaseitemTranslation
 {
     #[ORM\Id]

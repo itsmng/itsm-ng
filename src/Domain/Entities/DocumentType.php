@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_documenttypes')]
-#[ORM\UniqueConstraint(name: 'ext', columns: ['ext'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['ext'])]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'is_uploadable', columns: ['is_uploadable'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
@@ -33,7 +33,8 @@ class DocumentType
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $is_uploadable;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]

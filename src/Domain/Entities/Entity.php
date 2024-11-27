@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_entities")]
-#[ORM\UniqueConstraint(columns: ['entities_id', 'name'])]
-#[ORM\Index(columns: ['entities_id'])]
-#[ORM\Index(columns: ['date_mod'])]
-#[ORM\Index(columns: ['date_creation'])]
-#[ORM\Index(columns: ['tickettemplates_id'])]
-#[ORM\Index(columns: ['changetemplates_id'])]
-#[ORM\Index(columns: ['problemtemplates_id'])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ['entities_id', 'name'])]
+#[ORM\Index(name: "entities_id", columns: ['entities_id'])]
+#[ORM\Index(name: "date_mod", columns: ['date_mod'])]
+#[ORM\Index(name: "date_creation", columns: ['date_creation'])]
+#[ORM\Index(name: "tickettemplates_id", columns: ['tickettemplates_id'])]
+#[ORM\Index(name: "changetemplates_id", columns: ['changetemplates_id'])]
+#[ORM\Index(name: "problemtemplates_id", columns: ['problemtemplates_id'])]
 class Entity
 {
     #[ORM\Id]
@@ -223,7 +223,8 @@ class Entity
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $inquest_duration;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime', nullable: true)]

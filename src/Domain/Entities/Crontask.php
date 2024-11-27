@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_crontasks')]
-#[ORM\UniqueConstraint(name: 'itemtype_name', columns: ['itemtype', 'name'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['itemtype', 'name'])]
 #[ORM\Index(name: 'mode', columns: ['mode'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]

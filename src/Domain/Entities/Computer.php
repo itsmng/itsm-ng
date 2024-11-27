@@ -26,7 +26,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'serial', columns: ['serial'])]
 #[ORM\Index(name: 'otherserial', columns: ['otherserial'])]
 #[ORM\Index(name: 'uuid', columns: ['uuid'])]
-#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 #[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
 class Computer
 {
@@ -62,7 +61,8 @@ class Computer
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]

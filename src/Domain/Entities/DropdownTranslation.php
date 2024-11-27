@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_dropdowntranslations')]
-#[ORM\UniqueConstraint(columns: ['itemtype', 'items_id', 'language', 'field'])]
-#[ORM\Index(name: 'itemtype', columns: ['itemtype', 'items_id'])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ['itemtype', 'items_id', 'language', 'field'])]
+#[ORM\Index(name: 'typeid', columns: ['itemtype', 'items_id'])]
 #[ORM\Index(name: 'language', columns: ['language'])]
 #[ORM\Index(name: 'field', columns: ['field'])]
 class DropdownTranslation

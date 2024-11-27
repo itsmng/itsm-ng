@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "closedate", columns: ["closedate"])]
 #[ORM\Index(name: "status", columns: ["status"])]
 #[ORM\Index(name: "priority", columns: ["priority"])]
-#[ORM\Index(name: "requesttypes_id", columns: ["requesttypes_id"])]
+#[ORM\Index(name: "request_type", columns: ["requesttypes_id"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "users_id_recipient", columns: ["users_id_recipient"])]

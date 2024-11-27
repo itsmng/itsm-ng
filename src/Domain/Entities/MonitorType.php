@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_monitortypes')]
-#[ORM\Index(columns: ['name'])]
-#[ORM\Index(columns: ['date_mod'])]
-#[ORM\Index(columns: ['date_creation'])]
+#[ORM\Index(name: "name", columns: ['name'])]
+#[ORM\Index(name: "date_mod", columns: ['date_mod'])]
+#[ORM\Index(name: "date_creation", columns: ['date_creation'])]
 class MonitorType
 {
     #[ORM\Id]

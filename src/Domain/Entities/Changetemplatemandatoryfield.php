@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_changetemplatemandatoryfields')]
-#[ORM\UniqueConstraint(name: 'changetemplates_id_num', columns: ['changetemplates_id', 'num'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['changetemplates_id', 'num'])]
 #[ORM\Index(name: 'changetemplates_id', columns: ['changetemplates_id'])]
 
 class Changetemplatemandatoryfield

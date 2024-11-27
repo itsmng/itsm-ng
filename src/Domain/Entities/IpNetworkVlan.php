@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_ipnetworks_vlans")]
-#[ORM\UniqueConstraint(columns: ["ipnetworks_id", "vlans_id"])]
+#[ORM\UniqueConstraint(name: "link", columns: ["ipnetworks_id", "vlans_id"])]
 class IpNetworkVlan
 {
     #[ORM\Id]

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_users")]
-#[ORM\UniqueConstraint(name: "name_authtype_auths_id", columns: ["name", "authtype", "auths_id"])]
+#[ORM\UniqueConstraint(name: "unicityloginauth", columns: ["name", "authtype", "auths_id"])]
 #[ORM\Index(name: "firstname", columns: ["firstname"])]
 #[ORM\Index(name: "realname", columns: ["realname"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
 #[ORM\Index(name: "is_active", columns: ["is_active"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
-#[ORM\Index(name: "authtype_auths_id", columns: ["authtype", "auths_id"])]
+#[ORM\Index(name: "authitem", columns: ["authtype", "auths_id"])]
 #[ORM\Index(name: "is_deleted_ldap", columns: ["is_deleted_ldap"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "begin_date", columns: ["begin_date"])]

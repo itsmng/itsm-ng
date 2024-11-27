@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_certificates_items')]
-#[ORM\UniqueConstraint(name: 'certificates_id_itemtype_items_id', columns: ['certificates_id', 'itemtype', 'items_id'])]
-#[ORM\Index(name: 'items_id_itemtype', columns: ['items_id', 'itemtype'])]
-#[ORM\Index(name: 'itemtype_items_id', columns: ['itemtype', 'items_id'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['certificates_id', 'itemtype', 'items_id'])]
+#[ORM\Index(name: 'device', columns: ['items_id', 'itemtype'])]
+#[ORM\Index(name: 'item', columns: ['itemtype', 'items_id'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 
@@ -31,7 +31,8 @@ class CertificateItem
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     public function getId(): ?int

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_registeredids')]
 #[ORM\Index(name: "name", columns: ["name"])]
-#[ORM\Index(name: "items_id_itemtype", columns: ["items_id", "itemtype"])]
+#[ORM\Index(name: "item", columns: ["items_id", "itemtype"])]
 #[ORM\Index(name: "device_type", columns: ["device_type"])]
 class Registeredid
 {

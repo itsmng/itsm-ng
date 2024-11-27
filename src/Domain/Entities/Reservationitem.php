@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_reservationitems')]
 #[ORM\Index(name: "is_active", columns: ["is_active"])]
-#[ORM\Index(name: "itemtype_items_id", columns: ["itemtype", "items_id"])]
+#[ORM\Index(name: "item", columns: ["itemtype", "items_id"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]

@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_remindertranslations')]
-#[ORM\Index(columns: ["reminders_id", "language"])]
-#[ORM\Index(columns: ["users_id"])]
+#[ORM\Index(name: "item", columns: ["reminders_id", "language"])]
+#[ORM\Index(name: "users_id", columns: ["users_id"])]
 class Remindertranslation
 {
     #[ORM\Id]

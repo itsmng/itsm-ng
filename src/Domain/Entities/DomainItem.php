@@ -6,11 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_domains_items')]
-#[ORM\UniqueConstraint(name: 'domains_id_itemtype_items_id', columns: ['domains_id', 'itemtype', 'items_id'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['domains_id', 'itemtype', 'items_id'])]
 #[ORM\Index(name: 'domains_id', columns: ['domains_id'])]
 #[ORM\Index(name: 'domainrelations_id', columns: ['domainrelations_id'])]
-#[ORM\Index(name: 'items_id_itemtype', columns: ['items_id', 'itemtype'])]
-#[ORM\Index(name: 'itemtype_items_id', columns: ['itemtype', 'items_id'])]
+#[ORM\Index(name: 'fk_device', columns: ['items_id', 'itemtype'])]
+#[ORM\Index(name: 'item', columns: ['itemtype', 'items_id'])]
 class DomainItem
 {
     #[ORM\Id]

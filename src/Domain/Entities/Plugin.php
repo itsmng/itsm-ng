@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_plugins')]
-#[ORM\UniqueConstraint(columns: ['directory'])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ['directory'])]
 #[ORM\Index(name: "state", columns: ["state"])]
 class Plugin
 {

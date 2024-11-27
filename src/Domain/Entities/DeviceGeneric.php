@@ -50,7 +50,8 @@ class DeviceGeneric
     #[ORM\Column(type: "integer", nullable: true)]
     private $devicegenericmodels_id;
 
-    #[ORM\Column(type: "datetime")]
+    #[ORM\Column(type: "datetime", nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: "datetime")]

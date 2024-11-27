@@ -6,20 +6,20 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_items_disks')]
-#[ORM\Index(columns: ['name'])]
-#[ORM\Index(columns: ['device'])]
-#[ORM\Index(columns: ['mountpoint'])]
-#[ORM\Index(columns: ['totalsize'])]
-#[ORM\Index(columns: ['freesize'])]
-#[ORM\Index(columns: ['itemtype'])]
-#[ORM\Index(columns: ['items_id'])]
-#[ORM\Index(columns: ['itemtype', 'items_id'])]
-#[ORM\Index(columns: ['filesystems_id'])]
-#[ORM\Index(columns: ['entities_id'])]
-#[ORM\Index(columns: ['is_deleted'])]
-#[ORM\Index(columns: ['is_dynamic'])]
-#[ORM\Index(columns: ['date_mod'])]
-#[ORM\Index(columns: ['date_creation'])]
+#[ORM\Index(name: "name", columns: ['name'])]
+#[ORM\Index(name: "device", columns: ['device'])]
+#[ORM\Index(name: "mountpoint", columns: ['mountpoint'])]
+#[ORM\Index(name: "totalsize", columns: ['totalsize'])]
+#[ORM\Index(name: "freesize", columns: ['freesize'])]
+#[ORM\Index(name: "itemtype", columns: ['itemtype'])]
+#[ORM\Index(name: "items_id", columns: ['items_id'])]
+#[ORM\Index(name: "item", columns: ['itemtype', 'items_id'])]
+#[ORM\Index(name: "filesystems_id", columns: ['filesystems_id'])]
+#[ORM\Index(name: "entities_id", columns: ['entities_id'])]
+#[ORM\Index(name: "is_deleted", columns: ['is_deleted'])]
+#[ORM\Index(name: "is_dynamic", columns: ['is_dynamic'])]
+#[ORM\Index(name: "date_mod", columns: ['date_mod'])]
+#[ORM\Index(name: "date_creation", columns: ['date_creation'])]
 class ItemDisk
 {
     #[ORM\Id]
@@ -72,7 +72,8 @@ class ItemDisk
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $encryption_type;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime')]

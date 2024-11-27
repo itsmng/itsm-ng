@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_vobjects")]
-#[ORM\UniqueConstraint(name: "itemtype_items_id", columns: ["itemtype", "items_id"])]
-#[ORM\Index(name: "itemtype_items_id", columns: ["itemtype", "items_id"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["itemtype", "items_id"])]
+#[ORM\Index(name: "item", columns: ["itemtype", "items_id"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class Vobject

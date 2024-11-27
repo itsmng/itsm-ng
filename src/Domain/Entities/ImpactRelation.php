@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_impactrelations")]
-#[ORM\UniqueConstraint(columns: ["itemtype_source", "items_id_source", "itemtype_impacted", "items_id_impacted"])]
-#[ORM\Index(columns: ["itemtype_source", "items_id_source"])]
-#[ORM\Index(columns: ["itemtype_impacted", "items_id_impacted"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["itemtype_source", "items_id_source", "itemtype_impacted", "items_id_impacted"])]
+#[ORM\Index(name: "source_asset", columns: ["itemtype_source", "items_id_source"])]
+#[ORM\Index(name: "impacted_asset", columns: ["itemtype_impacted", "items_id_impacted"])]
 class ImpactRelation
 {
     #[ORM\Id]

@@ -25,7 +25,8 @@ class Authmail
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $host;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]

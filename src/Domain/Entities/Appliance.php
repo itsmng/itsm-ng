@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_appliances')]
-#[ORM\UniqueConstraint(name: 'externalidentifier', columns: ['externalidentifier'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['externalidentifier'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
@@ -69,7 +69,7 @@ class Appliance
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $groups_id_tech;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     #[ORM\Version]
     private $date_mod;
 
