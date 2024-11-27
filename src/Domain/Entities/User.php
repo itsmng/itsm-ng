@@ -3,6 +3,8 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_users")]
@@ -331,6 +333,9 @@ class User
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $accessibility_menu;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChangeUser::class)]
+    private Collection $changesUsers;
 
 
     public function getId(): ?int
@@ -1539,4 +1544,24 @@ class User
         return $this;
     }
 
+
+    /**
+     * Get the value of changesUsers
+     */ 
+    public function getChangesUsers()
+    {
+        return $this->changesUsers;
+    }
+
+    /**
+     * Set the value of changesUsers
+     *
+     * @return  self
+     */ 
+    public function setChangesUsers($changesUsers)
+    {
+        $this->changesUsers = $changesUsers;
+
+        return $this;
+    }
 }

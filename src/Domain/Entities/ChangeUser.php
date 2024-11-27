@@ -19,8 +19,16 @@ class ChangeUser
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $changes_id;
 
+    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changesUsers')]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Change $change;
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'changesUsers')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    private ?User $user;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $type;
@@ -92,6 +100,46 @@ class ChangeUser
     public function setAlternativeEmail(?string $alternative_email): self
     {
         $this->alternative_email = $alternative_email;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of change
+     */ 
+    public function getChange()
+    {
+        return $this->change;
+    }
+
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */ 
+    public function setChange($change)
+    {
+        $this->change = $change;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

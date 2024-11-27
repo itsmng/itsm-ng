@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use TaskTemplate;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_changetasks")]
@@ -34,8 +35,16 @@ class ChangeTask
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $changes_id;
 
+    #[ORM\ManyToOne(targetEntity: Change::class)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Change $change;
+
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $taskcategories_id;
+
+    #[ORM\ManyToOne(targetEntity: Taskcategory::class)]
+    #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: false)]
+    private ?Taskcategory $taskcategory;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $state;
@@ -49,17 +58,33 @@ class ChangeTask
     #[ORM\Column(type: "datetime", nullable: true)]
     private $end;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "users_id", options: ["default" => 0])]
     private $users_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    private ?User $user;
+
+    #[ORM\Column(type: "integer", name: "users_id_editor", options: ["default" => 0])]
     private $users_id_editor;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: false)]
+    private ?User $user_editor;
+
+    #[ORM\Column(type: "integer", name: "users_id_tech", options: ["default" => 0])]
     private $users_id_tech;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
+    private ?User $user_tech;
+
+    #[ORM\Column(type: "integer", name: "groups_id_tech", options: ["default" => 0])]
     private $groups_id_tech;
+
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group_tech;
 
     #[ORM\Column(type: "text", nullable: true)]
     private $content;
@@ -75,6 +100,10 @@ class ChangeTask
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $tasktemplates_id;
+
+    #[ORM\ManyToOne(targetEntity: TaskTemplate::class)]
+    #[ORM\JoinColumn(name: 'tasktemplates_id', referencedColumnName: 'id', nullable: false)]
+    private ?TaskTemplate $tasktemplate;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $timeline_position;
@@ -306,6 +335,148 @@ class ChangeTask
     public function setIsPrivate(int $is_private): self
     {
         $this->is_private = $is_private;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of change
+     */ 
+    public function getChange()
+    {
+        return $this->change;
+    }
+
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */ 
+    public function setChange($change)
+    {
+        $this->change = $change;
+
+        return $this;
+    }
+
+   
+
+    /**
+     * Get the value of taskcategory
+     */ 
+    public function getTaskcategory()
+    {
+        return $this->taskcategory;
+    }
+
+    /**
+     * Set the value of taskcategory
+     *
+     * @return  self
+     */ 
+    public function setTaskcategory($taskcategory)
+    {
+        $this->taskcategory = $taskcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user_editor
+     */ 
+    public function getUser_editor()
+    {
+        return $this->user_editor;
+    }
+
+    /**
+     * Set the value of user_editor
+     *
+     * @return  self
+     */ 
+    public function setUser_editor($user_editor)
+    {
+        $this->user_editor = $user_editor;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user_tech
+     */ 
+    public function getUser_tech()
+    {
+        return $this->user_tech;
+    }
+
+    /**
+     * Set the value of user_tech
+     *
+     * @return  self
+     */ 
+    public function setUser_tech($user_tech)
+    {
+        $this->user_tech = $user_tech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group_tech
+     */ 
+    public function getGroup_tech()
+    {
+        return $this->group_tech;
+    }
+
+    /**
+     * Set the value of group_tech
+     *
+     * @return  self
+     */ 
+    public function setGroup_tech($group_tech)
+    {
+        $this->group_tech = $group_tech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tasktemplate
+     */ 
+    public function getTasktemplate()
+    {
+        return $this->tasktemplate;
+    }
+
+    /**
+     * Set the value of tasktemplate
+     *
+     * @return  self
+     */ 
+    public function setTasktemplate($tasktemplate)
+    {
+        $this->tasktemplate = $tasktemplate;
 
         return $this;
     }

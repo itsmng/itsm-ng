@@ -24,6 +24,10 @@ class Cluster
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $entities_id;
 
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
+
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
 
@@ -36,11 +40,19 @@ class Cluster
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $version;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "users_id_tech", options: ["default" => 0])]
     private $users_id_tech;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
+    private ?User $users_tech;
+
+    #[ORM\Column(type: "integer", name: "groups_id_tech", options: ["default" => 0])]
     private $groups_id_tech;
+
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group_tech;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_deleted;
@@ -48,14 +60,26 @@ class Cluster
     #[ORM\Column(type: "integer", options: ["default" => 0, "comment" => "RELATION to states (id)"])]
     private $states_id;
 
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: false)]
+    private ?State $state;
+
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "clustertypes_id", options: ["default" => 0])]
     private $clustertypes_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: Clustertype::class)]
+    #[ORM\JoinColumn(name: 'clustertypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Clustertype $clustertype;
+
+    #[ORM\Column(type: "integer", name: "autoupdatesystems_id", options: ["default" => 0])]
     private $autoupdatesystems_id;
+
+    #[ORM\ManyToOne(targetEntity: Autoupdatesystem::class)]
+    #[ORM\JoinColumn(name: 'autoupdatesystems_id', referencedColumnName: 'id', nullable: false)]
+    private ?Autoupdatesystem $autoupdatesystem;
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_mod;
@@ -239,6 +263,126 @@ class Cluster
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of autoupdatesystem
+     */ 
+    public function getAutoupdatesystem()
+    {
+        return $this->autoupdatesystem;
+    }
+
+    /**
+     * Set the value of autoupdatesystem
+     *
+     * @return  self
+     */ 
+    public function setAutoupdatesystem($autoupdatesystem)
+    {
+        $this->autoupdatesystem = $autoupdatesystem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of clustertype
+     */ 
+    public function getClustertype()
+    {
+        return $this->clustertype;
+    }
+
+    /**
+     * Set the value of clustertype
+     *
+     * @return  self
+     */ 
+    public function setClustertype($clustertype)
+    {
+        $this->clustertype = $clustertype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group_tech
+     */ 
+    public function getGroup_tech()
+    {
+        return $this->group_tech;
+    }
+
+    /**
+     * Set the value of group_tech
+     *
+     * @return  self
+     */ 
+    public function setGroup_tech($group_tech)
+    {
+        $this->group_tech = $group_tech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of users_tech
+     */ 
+    public function getUsers_tech()
+    {
+        return $this->users_tech;
+    }
+
+    /**
+     * Set the value of users_tech
+     *
+     * @return  self
+     */ 
+    public function setUsers_tech($users_tech)
+    {
+        $this->users_tech = $users_tech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

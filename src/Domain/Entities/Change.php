@@ -139,6 +139,9 @@ class Change
     #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeSupplier::class)]
     private Collection $changesSuppliers;
 
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeUser::class)]
+    private Collection $changesUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -610,6 +613,26 @@ class Change
     public function setChangesSuppliers($changesSuppliers)
     {
         $this->changesSuppliers = $changesSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changesUsers
+     */ 
+    public function getChangesUsers()
+    {
+        return $this->changesUsers;
+    }
+
+    /**
+     * Set the value of changesUsers
+     *
+     * @return  self
+     */ 
+    public function setChangesUsers($changesUsers)
+    {
+        $this->changesUsers = $changesUsers;
 
         return $this;
     }
