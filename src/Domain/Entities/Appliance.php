@@ -70,6 +70,7 @@ class Appliance
     private $groups_id_tech;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]

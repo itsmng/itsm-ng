@@ -5,7 +5,7 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_oidc_configs')]
+#[ORM\Table(name: 'glpi_oidc_config')]
 class OidcConfig
 {
     #[ORM\Id]
