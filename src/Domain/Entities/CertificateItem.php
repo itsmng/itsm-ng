@@ -19,8 +19,12 @@ class CertificateItem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'certificates_id', nullable: false)]
     private $certificates_id;
+
+    #[ORM\ManyToOne(targetEntity: Certificate::class, inversedBy: 'certificates_items')]
+    #[ORM\JoinColumn(name: 'certificates_id', referencedColumnName: 'id', nullable: false)]
+    private ?Certificate $certificate;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to various tables, according to itemtype (id)'])]
     private $items_id;
@@ -95,6 +99,26 @@ class CertificateItem
     public function setDateMod(\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of certificate
+     */ 
+    public function getCertificate()
+    {
+        return $this->certificate;
+    }
+
+    /**
+     * Set the value of certificate
+     *
+     * @return  self
+     */ 
+    public function setCertificate($certificate)
+    {
+        $this->certificate = $certificate;
 
         return $this;
     }
