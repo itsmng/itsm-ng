@@ -16,14 +16,14 @@ class CalendarHoliday
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'calendars_id', options: ['default' => 0])]
     private $calendars_id;
 
     #[ORM\ManyToOne(targetEntity: Calendar::class, inversedBy: 'calendarHolidays')]
     #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: false)]
     private ?Calendar $calendar;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'holidays_id', options: ['default' => 0])]
     private $holidays_id;
 
     #[ORM\ManyToOne(targetEntity: Holiday::class, inversedBy: 'calendarHolidays')]

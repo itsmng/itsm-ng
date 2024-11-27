@@ -3,6 +3,8 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_problems')]
@@ -107,6 +109,9 @@ class Problem
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ChangeProblem::class)]
+    private Collection $changesProblems;
 
     public function getId(): ?int
     {
@@ -453,4 +458,24 @@ class Problem
         return $this;
     }
 
+
+    /**
+     * Get the value of changesProblems
+     */ 
+    public function getChangesProblems()
+    {
+        return $this->changesProblems;
+    }
+
+    /**
+     * Set the value of changesProblems
+     *
+     * @return  self
+     */ 
+    public function setChangesProblems($changesProblems)
+    {
+        $this->changesProblems = $changesProblems;
+
+        return $this;
+    }
 }

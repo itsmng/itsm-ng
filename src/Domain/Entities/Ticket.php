@@ -3,6 +3,8 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickets")]
@@ -162,6 +164,9 @@ class Ticket
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ChangeTicket::class)]
+    private Collection $changesTickets;
 
     public function getId(): ?int
     {
@@ -648,4 +653,24 @@ class Ticket
         return $this;
     }
 
+
+    /**
+     * Get the value of changesTickets
+     */ 
+    public function getChangesTickets()
+    {
+        return $this->changesTickets;
+    }
+
+    /**
+     * Set the value of changesTickets
+     *
+     * @return  self
+     */ 
+    public function setChangesTickets($changesTickets)
+    {
+        $this->changesTickets = $changesTickets;
+
+        return $this;
+    }
 }

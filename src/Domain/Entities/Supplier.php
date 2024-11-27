@@ -3,6 +3,8 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_suppliers")]
@@ -73,6 +75,9 @@ class Supplier
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_active;
+
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ChangeSupplier::class)]
+    private Collection $changesSuppliers;
 
     public function getId(): ?int
     {
@@ -295,4 +300,25 @@ class Supplier
         return $this;
     }
 
+
+
+    /**
+     * Get the value of changesSuppliers
+     */ 
+    public function getChangesSuppliers()
+    {
+        return $this->changesSuppliers;
+    }
+
+    /**
+     * Set the value of changesSuppliers
+     *
+     * @return  self
+     */ 
+    public function setChangesSuppliers($changesSuppliers)
+    {
+        $this->changesSuppliers = $changesSuppliers;
+
+        return $this;
+    }
 }

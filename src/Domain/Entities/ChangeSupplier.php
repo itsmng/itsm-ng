@@ -16,11 +16,19 @@ class ChangeSupplier
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'changes_id', options: ['default' => 0])]
     private $changes_id;
+
+    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changesSuppliers')]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Change $change;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $suppliers_id;
+
+    #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'changesSuppliers')]
+    #[ORM\JoinColumn(name: 'supplier_id', referencedColumnName: 'id', nullable: false)]
+    private ?Supplier $supplier;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $type;
@@ -92,6 +100,46 @@ class ChangeSupplier
     public function setAlternativeEmail(?string $alternative_email): self
     {
         $this->alternative_email = $alternative_email;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of change
+     */ 
+    public function getChange()
+    {
+        return $this->change;
+    }
+
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */ 
+    public function setChange($change)
+    {
+        $this->change = $change;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of supplier
+     */ 
+    public function getSupplier()
+    {
+        return $this->supplier;
+    }
+
+    /**
+     * Set the value of supplier
+     *
+     * @return  self
+     */ 
+    public function setSupplier($supplier)
+    {
+        $this->supplier = $supplier;
 
         return $this;
     }

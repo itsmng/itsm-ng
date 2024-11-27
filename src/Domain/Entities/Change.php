@@ -3,6 +3,8 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_changes')]
@@ -124,6 +126,18 @@ class Change
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeProblem::class)]
+    private Collection $changesProblems;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeGroup::class)]
+    private Collection $changesGroups;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeTicket::class)]
+    private Collection $changesTickets;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeSupplier::class)]
+    private Collection $changesSuppliers;
 
     public function getId(): ?int
     {
@@ -514,6 +528,88 @@ class Change
     public function setEntity($entity)
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changesProblems
+     */ 
+    public function getChangesProblems()
+    {
+        return $this->changesProblems;
+    }
+
+    /**
+     * Set the value of changesProblems
+     *
+     * @return  self
+     */ 
+    public function setChangesProblems($changesProblems)
+    {
+        $this->changesProblems = $changesProblems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changesGroups
+     */ 
+    public function getChangesGroups()
+    {
+        return $this->changesGroups;
+    }
+
+    /**
+     * Set the value of changesGroups
+     *
+     * @return  self
+     */ 
+    public function setChangesGroups($changesGroups)
+    {
+        $this->changesGroups = $changesGroups;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changesTickets
+     */ 
+    public function getChangesTickets()
+    {
+        return $this->changesTickets;
+    }
+
+    /**
+     * Set the value of changesTickets
+     *
+     * @return  self
+     */ 
+    public function setChangesTickets($changesTickets)
+    {
+        $this->changesTickets = $changesTickets;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of changesSuppliers
+     */ 
+    public function getChangesSuppliers()
+    {
+        return $this->changesSuppliers;
+    }
+
+    /**
+     * Set the value of changesSuppliers
+     *
+     * @return  self
+     */ 
+    public function setChangesSuppliers($changesSuppliers)
+    {
+        $this->changesSuppliers = $changesSuppliers;
 
         return $this;
     }

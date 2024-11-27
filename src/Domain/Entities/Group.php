@@ -3,6 +3,8 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_groups')]
@@ -93,6 +95,9 @@ class Group
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'group', targetEntity: ChangeGroup::class)]
+    private Collection $changesGroups;
 
     public function getId(): ?int
     {
@@ -359,6 +364,26 @@ class Group
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changesGroups
+     */ 
+    public function getChangesGroups()
+    {
+        return $this->changesGroups;
+    }
+
+    /**
+     * Set the value of changesGroups
+     *
+     * @return  self
+     */ 
+    public function setChangesGroups($changesGroups)
+    {
+        $this->changesGroups = $changesGroups;
 
         return $this;
     }
