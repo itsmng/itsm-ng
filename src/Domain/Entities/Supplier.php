@@ -78,6 +78,12 @@ class Supplier
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ChangeSupplier::class)]
     private Collection $changesSuppliers;
 
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ContactSupplier::class)]
+    private Collection $contactSuppliers;
+
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ContractSupplier::class)]
+    private Collection $contractSuppliers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -317,6 +323,46 @@ class Supplier
     public function setChangesSuppliers($changesSuppliers)
     {
         $this->changesSuppliers = $changesSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contactSuppliers
+     */ 
+    public function getContactSuppliers()
+    {
+        return $this->contactSuppliers;
+    }
+
+    /**
+     * Set the value of contactSuppliers
+     *
+     * @return  self
+     */ 
+    public function setContactSuppliers($contactSuppliers)
+    {
+        $this->contactSuppliers = $contactSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contractSuppliers
+     */ 
+    public function getContractSuppliers()
+    {
+        return $this->contractSuppliers;
+    }
+
+    /**
+     * Set the value of contractSuppliers
+     *
+     * @return  self
+     */ 
+    public function setContractSuppliers($contractSuppliers)
+    {
+        $this->contractSuppliers = $contractSuppliers;
 
         return $this;
     }

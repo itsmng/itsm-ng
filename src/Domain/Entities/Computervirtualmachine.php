@@ -25,23 +25,43 @@ class Computervirtualmachine
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer',name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
+
+    #[ORM\Column(type: 'integer', name: 'computers_id', options: ['default' => 0])]
     private $computers_id;
+
+    #[ORM\ManyToOne(targetEntity: Computer::class)]
+    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Computer $computer;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'virtualmachinestates_id', options: ['default' => 0])]
     private $virtualmachinestates_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Virtualmachinestate::class)]
+    #[ORM\JoinColumn(name: 'virtualmachinestates_id', referencedColumnName: 'id', nullable: false)]
+    private ?Virtualmachinestate $virtualmachinestate;
+
+    #[ORM\Column(type: 'integer', name: 'virtualmachinesystems_id', options: ['default' => 0])]
     private $virtualmachinesystems_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Virtualmachinesystem::class)]
+    #[ORM\JoinColumn(name: 'virtualmachinesystems_id', referencedColumnName: 'id', nullable: false)]
+    private ?Virtualmachinesystem $virtualmachinesystem;
+
+    #[ORM\Column(type: 'integer', name: 'virtualmachinetypes_id', options: ['default' => 0])]
     private $virtualmachinetypes_id;
+
+    #[ORM\ManyToOne(targetEntity: Virtualmachinetype::class)]
+    #[ORM\JoinColumn(name: 'virtualmachinetypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Virtualmachinetype $virtualmachinetype;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
     private $uuid;
@@ -237,6 +257,106 @@ class Computervirtualmachine
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of computer
+     */ 
+    public function getComputer()
+    {
+        return $this->computer;
+    }
+
+    /**
+     * Set the value of computer
+     *
+     * @return  self
+     */ 
+    public function setComputer($computer)
+    {
+        $this->computer = $computer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of virtualmachinestate
+     */ 
+    public function getVirtualmachinestate()
+    {
+        return $this->virtualmachinestate;
+    }
+
+    /**
+     * Set the value of virtualmachinestate
+     *
+     * @return  self
+     */ 
+    public function setVirtualmachinestate($virtualmachinestate)
+    {
+        $this->virtualmachinestate = $virtualmachinestate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of virtualmachinesystem
+     */ 
+    public function getVirtualmachinesystem()
+    {
+        return $this->virtualmachinesystem;
+    }
+
+    /**
+     * Set the value of virtualmachinesystem
+     *
+     * @return  self
+     */ 
+    public function setVirtualmachinesystem($virtualmachinesystem)
+    {
+        $this->virtualmachinesystem = $virtualmachinesystem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of virtualmachinetype
+     */ 
+    public function getVirtualmachinetype()
+    {
+        return $this->virtualmachinetype;
+    }
+
+    /**
+     * Set the value of virtualmachinetype
+     *
+     * @return  self
+     */ 
+    public function setVirtualmachinetype($virtualmachinetype)
+    {
+        $this->virtualmachinetype = $virtualmachinetype;
 
         return $this;
     }

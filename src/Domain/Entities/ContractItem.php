@@ -17,8 +17,12 @@ class ContractItem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'contracts_id', options: ['default' => 0])]
     private $contracts_id;
+
+    #[ORM\ManyToOne(targetEntity: Contract::class)]
+    #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: false)]
+    private ?Contract $contract;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_id;
@@ -63,6 +67,26 @@ class ContractItem
     public function setItemtype(?string $itemtype): self
     {
         $this->itemtype = $itemtype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contract
+     */ 
+    public function getContract()
+    {
+        return $this->contract;
+    }
+
+    /**
+     * Set the value of contract
+     *
+     * @return  self
+     */ 
+    public function setContract($contract)
+    {
+        $this->contract = $contract;
 
         return $this;
     }

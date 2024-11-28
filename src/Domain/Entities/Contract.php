@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_contracts')]
@@ -24,8 +25,12 @@ class Contract
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -36,8 +41,12 @@ class Contract
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $num;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'contracttypes_id', options: ['default' => 0])]
     private $contracttypes_id;
+
+    #[ORM\ManyToOne(targetEntity: Contracttype::class)]
+    #[ORM\JoinColumn(name: 'contractypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Contracttype $contracttype;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $begin_date;
@@ -102,8 +111,12 @@ class Contract
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_template;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'states_id', options: ['default' => 0])]
     private $states_id;
+
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: false)]
+    private ?State $state;
 
     #[ORM\Column(type: 'datetime', nullable: 'false')]
     #[ORM\Version]
@@ -111,6 +124,9 @@ class Contract
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'contract', targetEntity: ContractSupplier::class)]
+    private Collection $contractSuppliers;
 
     public function getId(): ?int
     {
@@ -461,6 +477,86 @@ class Contract
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contracttype
+     */ 
+    public function getContracttype()
+    {
+        return $this->contracttype;
+    }
+
+    /**
+     * Set the value of contracttype
+     *
+     * @return  self
+     */ 
+    public function setContracttype($contracttype)
+    {
+        $this->contracttype = $contracttype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contractSuppliers
+     */ 
+    public function getContractSuppliers()
+    {
+        return $this->contractSuppliers;
+    }
+
+    /**
+     * Set the value of contractSuppliers
+     *
+     * @return  self
+     */ 
+    public function setContractSuppliers($contractSuppliers)
+    {
+        $this->contractSuppliers = $contractSuppliers;
 
         return $this;
     }

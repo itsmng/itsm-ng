@@ -21,8 +21,12 @@ class ComputerItem
     #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to various table, according to itemtype (ID)'])]
     private $items_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'computers_id', options: ['default' => 0])]
     private $computers_id;
+
+    #[ORM\ManyToOne(targetEntity: Computer::class)]
+    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Computer $computer;
 
     #[ORM\Column(type: 'string', length: 100)]
     private $itemtype;
@@ -94,6 +98,26 @@ class ComputerItem
     public function setIsDynamic(int $is_dynamic): self
     {
         $this->is_dynamic = $is_dynamic;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of computer
+     */ 
+    public function getComputer()
+    {
+        return $this->computer;
+    }
+
+    /**
+     * Set the value of computer
+     *
+     * @return  self
+     */ 
+    public function setComputer($computer)
+    {
+        $this->computer = $computer;
 
         return $this;
     }

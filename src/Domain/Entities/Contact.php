@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_contacts')]
@@ -20,8 +21,12 @@ class Contact
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -47,8 +52,12 @@ class Contact
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $email;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'contacttypes_id', options: ['default' => 0])]
     private $contacttypes_id;
+
+    #[ORM\ManyToOne(targetEntity: Contacttype::class)]
+    #[ORM\JoinColumn(name: 'contacttypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Contacttype $contacttype;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -56,8 +65,13 @@ class Contact
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'usertitles_id', options: ['default' => 0])]
     private $usertitles_id;
+
+    #[ORM\ManyToOne(targetEntity: Usertitle::class)]
+    #[ORM\JoinColumn(name: 'usertitles_id', referencedColumnName: 'id', nullable: false)]
+    private ?Usertitle $usertitle;
+
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $address;
@@ -80,6 +94,9 @@ class Contact
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: ContactSupplier::class)]
+    private Collection $contactSuppliers;
 
     public function getId(): ?int
     {
@@ -322,6 +339,86 @@ class Contact
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of usertitle
+     */ 
+    public function getUsertitle()
+    {
+        return $this->usertitle;
+    }
+
+    /**
+     * Set the value of usertitle
+     *
+     * @return  self
+     */ 
+    public function setUsertitle($usertitle)
+    {
+        $this->usertitle = $usertitle;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contacttype
+     */ 
+    public function getContacttype()
+    {
+        return $this->contacttype;
+    }
+
+    /**
+     * Set the value of contacttype
+     *
+     * @return  self
+     */ 
+    public function setContacttype($contacttype)
+    {
+        $this->contacttype = $contacttype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contactSuppliers
+     */ 
+    public function getContactSuppliers()
+    {
+        return $this->contactSuppliers;
+    }
+
+    /**
+     * Set the value of contactSuppliers
+     *
+     * @return  self
+     */ 
+    public function setContactSuppliers($contactSuppliers)
+    {
+        $this->contactSuppliers = $contactSuppliers;
 
         return $this;
     }

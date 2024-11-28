@@ -19,8 +19,16 @@ class ContactSupplier
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $suppliers_id;
 
+    #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'contactSuppliers')]
+    #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Supplier $supplier;
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $contacts_id;
+
+    #[ORM\ManyToOne(targetEntity: Contact::class, inversedBy: 'contactSuppliers')]
+    #[ORM\JoinColumn(name: 'contacts_id', referencedColumnName: 'id', nullable: false)]
+    private ?Contact $contact;
 
     public function getId(): ?int
     {
@@ -47,6 +55,46 @@ class ContactSupplier
     public function setContactsId(int $contacts_id): self
     {
         $this->contacts_id = $contacts_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of supplier
+     */ 
+    public function getSupplier()
+    {
+        return $this->supplier;
+    }
+
+    /**
+     * Set the value of supplier
+     *
+     * @return  self
+     */ 
+    public function setSupplier($supplier)
+    {
+        $this->supplier = $supplier;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contact
+     */ 
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * Set the value of contact
+     *
+     * @return  self
+     */ 
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
 
         return $this;
     }

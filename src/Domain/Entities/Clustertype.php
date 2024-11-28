@@ -22,6 +22,10 @@ class Clustertype
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $entities_id;
 
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
@@ -111,6 +115,26 @@ class Clustertype
     public function setDateMod(\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

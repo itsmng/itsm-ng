@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-class BusinessCriticities
+class BusinessCriticity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -42,9 +42,9 @@ class BusinessCriticities
     #[ORM\Column(type: "integer", name: 'businesscriticities_id', options: ["default" => 0])]
     private $businesscriticities_id;
 
-    #[ORM\ManyToOne(targetEntity: BusinessCriticities::class)]
+    #[ORM\ManyToOne(targetEntity: BusinessCriticity::class)]
     #[ORM\JoinColumn(name: 'businesscriticities_id', referencedColumnName: 'id', nullable: false)]
-    private ?BusinessCriticities $businessCriticities;
+    private ?BusinessCriticity $businessCriticities;
 
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $completename;

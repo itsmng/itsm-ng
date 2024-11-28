@@ -24,14 +24,22 @@ class ComputerAntivirus
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "computers_id", options: ["default" => 0])]
     private $computers_id;
+
+    #[ORM\ManyToOne(targetEntity: Computer::class)]
+    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Computer $computer;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "manufacturers_id", options: ["default" => 0])]
     private $manufacturers_id;
+
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $antivirus_version;
@@ -212,6 +220,46 @@ class ComputerAntivirus
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of computer
+     */ 
+    public function getComputer()
+    {
+        return $this->computer;
+    }
+
+    /**
+     * Set the value of computer
+     *
+     * @return  self
+     */ 
+    public function setComputer($computer)
+    {
+        $this->computer = $computer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
 
         return $this;
     }
