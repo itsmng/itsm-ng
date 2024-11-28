@@ -27,8 +27,13 @@ class Devicebattery
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
     private $manufacturers_id;
+    
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
+
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $voltage;
@@ -36,8 +41,13 @@ class Devicebattery
     #[ORM\Column(type: 'integer', nullable: true)]
     private $capacity;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'devicebatterytypes_id', options: ['default' => 0])]
     private $devicebatterytypes_id;
+
+    #[ORM\ManyToOne(targetEntity: DeviceBatteryType::class)]
+    #[ORM\JoinColumn(name: 'devicebattrytypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?DeviceBatteryType $deviceBatteryType;
+
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $entities_id;
@@ -45,8 +55,13 @@ class Devicebattery
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer', name: 'devicebatterymodels_id', nullable: true)]
     private $devicebatterymodels_id;
+
+    #[ORM\ManyToOne(targetEntity: Devicebatterymodel::class)]
+    #[ORM\JoinColumn(name: 'devicebatterymodels_id', referencedColumnName: 'id', nullable: false)]
+    private ?Devicebatterymodel $deviceBatteryModel;
+
 
     #[ORM\Column(type: 'datetime', nullable: 'false')]
     #[ORM\Version]
@@ -188,6 +203,66 @@ class Devicebattery
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deviceBatteryType
+     */ 
+    public function getDeviceBatteryType()
+    {
+        return $this->deviceBatteryType;
+    }
+
+    /**
+     * Set the value of deviceBatteryType
+     *
+     * @return  self
+     */ 
+    public function setDeviceBatteryType($deviceBatteryType)
+    {
+        $this->deviceBatteryType = $deviceBatteryType;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deviceBatteryModel
+     */ 
+    public function getDeviceBatteryModel()
+    {
+        return $this->deviceBatteryModel;
+    }
+
+    /**
+     * Set the value of deviceBatteryModel
+     *
+     * @return  self
+     */ 
+    public function setDeviceBatteryModel($deviceBatteryModel)
+    {
+        $this->deviceBatteryModel = $deviceBatteryModel;
 
         return $this;
     }

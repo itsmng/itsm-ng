@@ -24,14 +24,22 @@ class DeviceCase
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $designation;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'devicecasetypes_id', options: ["default" => 0])]
     private $devicecasetypes_id;
+
+    #[ORM\ManyToOne(targetEntity: DevicecaseType::class)]
+    #[ORM\JoinColumn(name: 'devicecasetypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?DevicecaseType $devicecaseType;
 
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'manufacturers_id', options: ["default" => 0])]
     private $manufacturers_id;
+
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $entities_id;
@@ -41,6 +49,10 @@ class DeviceCase
 
     #[ORM\Column(type: "integer", nullable: true)]
     private $devicecasemodels_id;
+
+    #[ORM\ManyToOne(targetEntity: Devicecasemodel::class)]
+    #[ORM\JoinColumn(name: 'devicecasemodels_id', referencedColumnName: 'id', nullable: false)]
+    private ?Devicecasemodel $devicecasemodel;
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_mod;
@@ -164,6 +176,67 @@ class DeviceCase
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+   
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicecasemodel
+     */ 
+    public function getDevicecasemodel()
+    {
+        return $this->devicecasemodel;
+    }
+
+    /**
+     * Set the value of devicecasemodel
+     *
+     * @return  self
+     */ 
+    public function setDevicecasemodel($devicecasemodel)
+    {
+        $this->devicecasemodel = $devicecasemodel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicecaseType
+     */ 
+    public function getDevicecaseType()
+    {
+        return $this->devicecaseType;
+    }
+
+    /**
+     * Set the value of devicecaseType
+     *
+     * @return  self
+     */ 
+    public function setDevicecaseType($devicecaseType)
+    {
+        $this->devicecaseType = $devicecaseType;
 
         return $this;
     }

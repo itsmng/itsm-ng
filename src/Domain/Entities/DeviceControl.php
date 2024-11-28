@@ -30,11 +30,19 @@ class DeviceControl
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
     private $manufacturers_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
+
+    #[ORM\Column(type: 'integer', name: 'interfacetypes_id', options: ['default' => 0])]
     private $interfacetypes_id;
+
+    #[ORM\ManyToOne(targetEntity: InterfaceType::class)]
+    #[ORM\JoinColumn(name: 'interfacetypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?InterfaceType $interfacetype;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $entities_id;
@@ -42,8 +50,12 @@ class DeviceControl
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer', name: 'devicecontrolmodels_id', nullable: true)]
     private $devicecontrolmodels_id;
+
+    #[ORM\ManyToOne(targetEntity: DeviceControlModel::class)]
+    #[ORM\JoinColumn(name: 'devicecontrolmodels_id', referencedColumnName: 'id', nullable: false)]
+    private ?DeviceControlModel $devicecontrolmodel;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -172,6 +184,66 @@ class DeviceControl
     public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
         $this->date_creation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of interfacetype
+     */ 
+    public function getInterfacetype()
+    {
+        return $this->interfacetype;
+    }
+
+    /**
+     * Set the value of interfacetype
+     *
+     * @return  self
+     */ 
+    public function setInterfacetype($interfacetype)
+    {
+        $this->interfacetype = $interfacetype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicecontrolmodel
+     */ 
+    public function getDevicecontrolmodel()
+    {
+        return $this->devicecontrolmodel;
+    }
+
+    /**
+     * Set the value of devicecontrolmodel
+     *
+     * @return  self
+     */ 
+    public function setDevicecontrolmodel($devicecontrolmodel)
+    {
+        $this->devicecontrolmodel = $devicecontrolmodel;
 
         return $this;
     }

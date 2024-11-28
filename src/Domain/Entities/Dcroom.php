@@ -21,14 +21,22 @@ class Dcroom
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'locations_id', options: ['default' => 0])]
     private $locations_id;
+
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
+    private ?Location $location;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $vis_cols;
@@ -39,8 +47,12 @@ class Dcroom
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $blueprint;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'datacenters_id', options: ['default' => 0])]
     private $datacenters_id;
+
+    #[ORM\ManyToOne(targetEntity: Datacenter::class)]
+    #[ORM\JoinColumn(name: 'datacenters_id', referencedColumnName: 'id', nullable: false)]
+    private ?Datacenter $datacenter;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
@@ -189,4 +201,64 @@ class Dcroom
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of datacenter
+     */ 
+    public function getDatacenter()
+    {
+        return $this->datacenter;
+    }
+
+    /**
+     * Set the value of datacenter
+     *
+     * @return  self
+     */ 
+    public function setDatacenter($datacenter)
+    {
+        $this->datacenter = $datacenter;
+
+        return $this;
+    }
 }

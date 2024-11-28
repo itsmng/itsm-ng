@@ -17,11 +17,19 @@ class Crontasklog
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', name: 'crontasks_id')]
     private $crontasks_id;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => 'id of "start" event'])]
+    #[ORM\ManyToOne(targetEntity: Crontask::class)]
+    #[ORM\JoinColumn(name: 'crontasks_id', referencedColumnName: 'id', nullable: false)]
+    private ?Crontask $crontask;
+
+    #[ORM\Column(type: 'integer', name: 'crontasklogs_id', options: ['comment' => 'id of "start" event'])]
     private $crontasklogs_id;
+
+    #[ORM\ManyToOne(targetEntity: Crontasklog::class)]
+    #[ORM\JoinColumn(name: 'crontasklogs_id', referencedColumnName: 'id', nullable: false)]
+    private ?Crontasklog $crontasklogs;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private $date;
@@ -123,6 +131,46 @@ class Crontasklog
     public function setContent(?string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of crontask
+     */ 
+    public function getCrontask()
+    {
+        return $this->crontask;
+    }
+
+    /**
+     * Set the value of crontask
+     *
+     * @return  self
+     */ 
+    public function setCrontask($crontask)
+    {
+        $this->crontask = $crontask;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of crontasklogs
+     */ 
+    public function getCrontasklogs()
+    {
+        return $this->crontasklogs;
+    }
+
+    /**
+     * Set the value of crontasklogs
+     *
+     * @return  self
+     */ 
+    public function setCrontasklogs($crontasklogs)
+    {
+        $this->crontasklogs = $crontasklogs;
 
         return $this;
     }

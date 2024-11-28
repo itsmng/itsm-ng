@@ -27,8 +27,12 @@ class DeviceFirmware
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "manufacturers_id", options: ["default" => 0])]
     private $manufacturers_id;
+
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: "date", nullable: true)]
     private $date;
@@ -36,8 +40,12 @@ class DeviceFirmware
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $version;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "devicefirmwaretypes_id", options: ["default" => 0])]
     private $devicefirmwaretypes_id;
+
+    #[ORM\ManyToOne(targetEntity: DeviceFirmwareType::class)]
+    #[ORM\JoinColumn(name: 'devicefirmwaretypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?DeviceFirmwareType $devicefirmwaretype;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $entities_id;
@@ -45,8 +53,12 @@ class DeviceFirmware
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(type: "integer", name: "devicefirmwaremodels_id", nullable: true)]
     private $devicefirmwaremodels_id;
+
+    #[ORM\ManyToOne(targetEntity: Devicefirmwaremodel::class)]
+    #[ORM\JoinColumn(name: 'devicefirmwaremodels_id', referencedColumnName: 'id', nullable: false)]
+    private ?Devicefirmwaremodel $devicefirmwaremodel;
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_mod;
@@ -194,6 +206,66 @@ class DeviceFirmware
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicefirmwaretype
+     */ 
+    public function getDevicefirmwaretype()
+    {
+        return $this->devicefirmwaretype;
+    }
+
+    /**
+     * Set the value of devicefirmwaretype
+     *
+     * @return  self
+     */ 
+    public function setDevicefirmwaretype($devicefirmwaretype)
+    {
+        $this->devicefirmwaretype = $devicefirmwaretype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicefirmwaremodel
+     */ 
+    public function getDevicefirmwaremodel()
+    {
+        return $this->devicefirmwaremodel;
+    }
+
+    /**
+     * Set the value of devicefirmwaremodel
+     *
+     * @return  self
+     */ 
+    public function setDevicefirmwaremodel($devicefirmwaremodel)
+    {
+        $this->devicefirmwaremodel = $devicefirmwaremodel;
 
         return $this;
     }
