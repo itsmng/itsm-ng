@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_computers')]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'is_template', columns: ['is_template'])]
 #[ORM\Index(name: 'autoupdatesystems_id', columns: ['autoupdatesystems_id'])]
