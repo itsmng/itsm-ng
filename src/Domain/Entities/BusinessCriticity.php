@@ -6,11 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_businesscriticities")]
-#[ORM\UniqueConstraint(name: "businesscriticities_name_unique", columns: ["businesscriticities_id", "name"])]
-#[ORM\Index(name: "businesscriticities_name_index", columns: ["name"])]
-#[ORM\Index(name: "businesscriticities_date_mod_index", columns: ["date_mod"])]
-#[ORM\Index(name: "businesscriticities_date_creation_index", columns: ["date_creation"])]
-class BusinessCriticity
+#[ORM\UniqueConstraint(name: "unicity", columns: ["businesscriticities_id", "name"])]
+#[ORM\Index(name: "name", columns: ["name"])]
+#[ORM\Index(name: "date_mod", columns: ["date_mod"])]
+#[ORM\Index(name: "date_creation", columns: ["date_creation"])]
+class BusinessCriticities
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -42,9 +42,9 @@ class BusinessCriticity
     #[ORM\Column(type: "integer", name: 'businesscriticities_id', options: ["default" => 0])]
     private $businesscriticities_id;
 
-    #[ORM\ManyToOne(targetEntity: BusinessCriticity::class)]
+    #[ORM\ManyToOne(targetEntity: BusinessCriticities::class)]
     #[ORM\JoinColumn(name: 'businesscriticities_id', referencedColumnName: 'id', nullable: false)]
-    private ?BusinessCriticity $businessCriticity;
+    private ?BusinessCriticities $businessCriticities;
 
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $completename;
@@ -207,21 +207,21 @@ class BusinessCriticity
 
 
     /**
-     * Get the value of businessCriticity
+     * Get the value of businessCriticities
      */
-    public function getBusinessCriticity()
+    public function getBusinessCriticities()
     {
-        return $this->businessCriticity;
+        return $this->businessCriticities;
     }
 
     /**
-     * Set the value of businessCriticity
+     * Set the value of businessCriticities
      *
      * @return  self
      */
-    public function setBusinessCriticity($businessCriticity)
+    public function setBusinessCriticities($businessCriticities)
     {
-        $this->businessCriticity = $businessCriticity;
+        $this->businessCriticities = $businessCriticities;
 
         return $this;
     }

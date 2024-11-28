@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "end", columns: ["end"])]
 #[ORM\Index(name: "reservationitems_id", columns: ["reservationitems_id"])]
 #[ORM\Index(name: "users_id", columns: ["users_id"])]
-#[ORM\Index(columns: ["reservationitems_id", "group"])]
+#[ORM\Index(name: "resagroup", columns: ["reservationitems_id", "group"])]
 class Reservation
 {
     #[ORM\Id]

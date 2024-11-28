@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_networkaliases")]
-#[ORM\Index(columns: ["entities_id"])]
-#[ORM\Index(columns: ["name"])]
-#[ORM\Index(columns: ["networknames_id"])]
+#[ORM\Index(name: "entities_id", columns: ["entities_id"])]
+#[ORM\Index(name: "name", columns: ["name"])]
+#[ORM\Index(name: "networknames_id", columns: ["networknames_id"])]
 class Networkalias
 {
     #[ORM\Id]

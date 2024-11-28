@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_lineoperators')]
-#[ORM\UniqueConstraint(columns: ['mcc', 'mnc'])]
-#[ORM\Index(columns: ['name'])]
-#[ORM\Index(columns: ['entities_id'])]
-#[ORM\Index(columns: ['is_recursive'])]
-#[ORM\Index(columns: ['date_mod'])]
-#[ORM\Index(columns: ['date_creation'])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ['mcc', 'mnc'])]
+#[ORM\Index(name: "name", columns: ['name'])]
+#[ORM\Index(name: "entities_id", columns: ['entities_id'])]
+#[ORM\Index(name: "is_recursive", columns: ['is_recursive'])]
+#[ORM\Index(name: "date_mod", columns: ['date_mod'])]
+#[ORM\Index(name: "date_creation", columns: ['date_creation'])]
 class LineOperator
 {
     #[ORM\Id]

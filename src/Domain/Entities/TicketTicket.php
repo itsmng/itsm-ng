@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickets_tickets")]
-#[ORM\UniqueConstraint(name: "tickets_id_1_tickets_id_2", columns: ["tickets_id_1", "tickets_id_2"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["tickets_id_1", "tickets_id_2"])]
 class TicketTicket
 {
     #[ORM\Id]

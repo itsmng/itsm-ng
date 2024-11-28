@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_profilerights')]
-#[ORM\UniqueConstraint(columns: ["profiles_id", "name"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["profiles_id", "name"])]
 class Profileright
 {
     #[ORM\Id]

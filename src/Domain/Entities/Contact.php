@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'usertitles_id', columns: ['usertitles_id'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-
 class Contact
 {
     #[ORM\Id]
@@ -75,7 +74,8 @@ class Contact
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $country;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
@@ -146,6 +146,18 @@ class Contact
         return $this;
     }
 
+    public function getPhone2(): ?string
+    {
+        return $this->phone2;
+    }
+
+    public function setPhone2(?string $phone): self
+    {
+        $this->phone2 = $phone;
+
+        return $this;
+    }
+
     public function getMobile(): ?string
     {
         return $this->mobile;
@@ -154,6 +166,18 @@ class Contact
     public function setMobile(?string $mobile): self
     {
         $this->mobile = $mobile;
+
+        return $this;
+    }
+
+    public function getFax(): ?string
+    {
+        return $this->fax;
+    }
+
+    public function setFax(?string $mobile): self
+    {
+        $this->fax = $mobile;
 
         return $this;
     }

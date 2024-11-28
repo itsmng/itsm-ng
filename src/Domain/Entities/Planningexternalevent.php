@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_planningexternalevents')]
-#[ORM\UniqueConstraint(name: 'glpi_planningexternalevents_uc', columns: ['uuid'])]
+#[ORM\UniqueConstraint(name: 'uuid', columns: ['uuid'])]
 #[ORM\Index(name: "planningexternaleventtemplates_id", columns: ["planningexternaleventtemplates_id"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]

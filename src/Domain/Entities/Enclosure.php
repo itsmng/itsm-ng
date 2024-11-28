@@ -74,7 +74,8 @@ class Enclosure
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $manufacturers_id;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime', nullable: true)]

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_planningrecalls')]
-#[ORM\UniqueConstraint(name: 'itemtype_items_id_users_id', columns: ['itemtype', 'items_id', 'users_id'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['itemtype', 'items_id', 'users_id'])]
 #[ORM\Index(name: "users_id", columns: ["users_id"])]
 #[ORM\Index(name: "before_time", columns: ["before_time"])]
 #[ORM\Index(name: "when", columns: ["when"])]

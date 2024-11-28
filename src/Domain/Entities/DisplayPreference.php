@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_displaypreferences")]
-#[ORM\UniqueConstraint(columns: ["users_id", "itemtype", "num"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["users_id", "itemtype", "num"])]
 #[ORM\Index(name: "rank", columns: ["rank"])]
 #[ORM\Index(name: "num", columns: ["num"])]
 #[ORM\Index(name: "itemtype", columns: ["itemtype"])]

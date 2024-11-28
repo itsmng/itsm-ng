@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_objectlocks')]
-#[ORM\UniqueConstraint(name: 'itemtype_items_id', columns: ['itemtype', 'items_id'])]
+#[ORM\UniqueConstraint(name: 'item', columns: ['itemtype', 'items_id'])]
 class Objectlock
 {
     #[ORM\Id]

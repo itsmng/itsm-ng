@@ -4,22 +4,10 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/*
-Column	Type	Comment
-id	int(11) Auto Increment
-changes_id	int(11) [0]
-itemtype	varchar(100) NULL
-items_id	int(11) [0]
-Indexes
-PRIMARY	id
-UNIQUE	changes_id, itemtype, items_id
-INDEX	itemtype, items_id
- */
-
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_changes_items')]
-#[ORM\UniqueConstraint(columns: ['changes_id', 'itemtype', 'items_id'])]
-#[ORM\Index(columns: ['itemtype', 'items_id'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['changes_id', 'itemtype', 'items_id'])]
+#[ORM\Index(name: 'itemt', columns: ['itemtype', 'items_id'])]
 class ChangeItem
 {
     #[ORM\Id]

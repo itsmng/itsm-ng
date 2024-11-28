@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_savedsearches_alerts')]
-#[ORM\UniqueConstraint(name: "savedsearches_id_operator_value", columns: ["savedsearches_id", "operator", "value"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["savedsearches_id", "operator", "value"])]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "is_active", columns: ["is_active"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]

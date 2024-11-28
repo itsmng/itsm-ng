@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-
 class Consumableitemtype
 {
     #[ORM\Id]
@@ -23,7 +22,8 @@ class Consumableitemtype
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]

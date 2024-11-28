@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_knowbaseitems_profiles')]
-#[ORM\Index(columns: ['knowbaseitems_id'])]
-#[ORM\Index(columns: ['profiles_id'])]
-#[ORM\Index(columns: ['entities_id'])]
-#[ORM\Index(columns: ['is_recursive'])]
+#[ORM\Index(name: "knowbaseitems_id", columns: ['knowbaseitems_id'])]
+#[ORM\Index(name: "profiles_id", columns: ['profiles_id'])]
+#[ORM\Index(name: "entities_id", columns: ['entities_id'])]
+#[ORM\Index(name: "is_recursive", columns: ['is_recursive'])]
 class KnowbaseitemProfile
 {
     #[ORM\Id]

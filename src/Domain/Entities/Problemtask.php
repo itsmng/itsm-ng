@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_problemtasks')]
-#[ORM\UniqueConstraint(columns: ["uuid"])]
+#[ORM\UniqueConstraint(name: "uuid", columns: ["uuid"])]
 #[ORM\Index(name: "problems_id", columns: ["problems_id"])]
 #[ORM\Index(name: "users_id", columns: ["users_id"])]
 #[ORM\Index(name: "users_id_editor", columns: ["users_id_editor"])]
