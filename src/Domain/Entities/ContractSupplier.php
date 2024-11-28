@@ -61,7 +61,7 @@ class ContractSupplier
 
     /**
      * Get the value of supplier
-     */ 
+     */
     public function getSupplier()
     {
         return $this->supplier;
@@ -71,7 +71,7 @@ class ContractSupplier
      * Set the value of supplier
      *
      * @return  self
-     */ 
+     */
     public function setSupplier($supplier)
     {
         $this->supplier = $supplier;
@@ -81,7 +81,7 @@ class ContractSupplier
 
     /**
      * Get the value of contract
-     */ 
+     */
     public function getContract()
     {
         return $this->contract;
@@ -91,7 +91,7 @@ class ContractSupplier
      * Set the value of contract
      *
      * @return  self
-     */ 
+     */
     public function setContract($contract)
     {
         $this->contract = $contract;

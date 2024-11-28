@@ -226,7 +226,7 @@ class ComputerAntivirus
 
     /**
      * Get the value of computer
-     */ 
+     */
     public function getComputer()
     {
         return $this->computer;
@@ -236,7 +236,7 @@ class ComputerAntivirus
      * Set the value of computer
      *
      * @return  self
-     */ 
+     */
     public function setComputer($computer)
     {
         $this->computer = $computer;
@@ -246,7 +246,7 @@ class ComputerAntivirus
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -256,7 +256,7 @@ class ComputerAntivirus
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;

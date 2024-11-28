@@ -483,7 +483,7 @@ class Contract
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -493,7 +493,7 @@ class Contract
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -503,7 +503,7 @@ class Contract
 
     /**
      * Get the value of contracttype
-     */ 
+     */
     public function getContracttype()
     {
         return $this->contracttype;
@@ -513,7 +513,7 @@ class Contract
      * Set the value of contracttype
      *
      * @return  self
-     */ 
+     */
     public function setContracttype($contracttype)
     {
         $this->contracttype = $contracttype;
@@ -523,7 +523,7 @@ class Contract
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -533,7 +533,7 @@ class Contract
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -543,7 +543,7 @@ class Contract
 
     /**
      * Get the value of contractSuppliers
-     */ 
+     */
     public function getContractSuppliers()
     {
         return $this->contractSuppliers;
@@ -553,7 +553,7 @@ class Contract
      * Set the value of contractSuppliers
      *
      * @return  self
-     */ 
+     */
     public function setContractSuppliers($contractSuppliers)
     {
         $this->contractSuppliers = $contractSuppliers;

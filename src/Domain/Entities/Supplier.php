@@ -329,7 +329,7 @@ class Supplier
 
     /**
      * Get the value of contactSuppliers
-     */ 
+     */
     public function getContactSuppliers()
     {
         return $this->contactSuppliers;
@@ -339,7 +339,7 @@ class Supplier
      * Set the value of contactSuppliers
      *
      * @return  self
-     */ 
+     */
     public function setContactSuppliers($contactSuppliers)
     {
         $this->contactSuppliers = $contactSuppliers;
@@ -349,7 +349,7 @@ class Supplier
 
     /**
      * Get the value of contractSuppliers
-     */ 
+     */
     public function getContractSuppliers()
     {
         return $this->contractSuppliers;
@@ -359,7 +359,7 @@ class Supplier
      * Set the value of contractSuppliers
      *
      * @return  self
-     */ 
+     */
     public function setContractSuppliers($contractSuppliers)
     {
         $this->contractSuppliers = $contractSuppliers;

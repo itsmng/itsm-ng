@@ -283,7 +283,7 @@ class Consumableitem
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -293,7 +293,7 @@ class Consumableitem
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -303,7 +303,7 @@ class Consumableitem
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -313,7 +313,7 @@ class Consumableitem
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -323,7 +323,7 @@ class Consumableitem
 
     /**
      * Get the value of consumableitemtype
-     */ 
+     */
     public function getConsumableitemtype()
     {
         return $this->consumableitemtype;
@@ -333,7 +333,7 @@ class Consumableitem
      * Set the value of consumableitemtype
      *
      * @return  self
-     */ 
+     */
     public function setConsumableitemtype($consumableitemtype)
     {
         $this->consumableitemtype = $consumableitemtype;
@@ -343,7 +343,7 @@ class Consumableitem
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -353,7 +353,7 @@ class Consumableitem
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -363,7 +363,7 @@ class Consumableitem
 
     /**
      * Get the value of users_tech
-     */ 
+     */
     public function getUsers_tech()
     {
         return $this->users_tech;
@@ -373,7 +373,7 @@ class Consumableitem
      * Set the value of users_tech
      *
      * @return  self
-     */ 
+     */
     public function setUsers_tech($users_tech)
     {
         $this->users_tech = $users_tech;
@@ -383,7 +383,7 @@ class Consumableitem
 
     /**
      * Get the value of groups_tech
-     */ 
+     */
     public function getGroups_tech()
     {
         return $this->groups_tech;
@@ -393,7 +393,7 @@ class Consumableitem
      * Set the value of groups_tech
      *
      * @return  self
-     */ 
+     */
     public function setGroups_tech($groups_tech)
     {
         $this->groups_tech = $groups_tech;

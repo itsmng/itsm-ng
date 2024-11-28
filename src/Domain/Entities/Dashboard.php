@@ -90,7 +90,7 @@ class Dashboard
 
     /**
      * Get the value of profile
-     */ 
+     */
     public function getProfile()
     {
         return $this->profile;
@@ -100,7 +100,7 @@ class Dashboard
      * Set the value of profile
      *
      * @return  self
-     */ 
+     */
     public function setProfile($profile)
     {
         $this->profile = $profile;
@@ -110,7 +110,7 @@ class Dashboard
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -120,7 +120,7 @@ class Dashboard
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

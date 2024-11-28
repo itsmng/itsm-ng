@@ -29,7 +29,7 @@ class Devicebattery
 
     #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
     private $manufacturers_id;
-    
+
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
     private ?Manufacturer $manufacturer;
@@ -209,7 +209,7 @@ class Devicebattery
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -219,7 +219,7 @@ class Devicebattery
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -229,7 +229,7 @@ class Devicebattery
 
     /**
      * Get the value of deviceBatteryType
-     */ 
+     */
     public function getDeviceBatteryType()
     {
         return $this->deviceBatteryType;
@@ -239,7 +239,7 @@ class Devicebattery
      * Set the value of deviceBatteryType
      *
      * @return  self
-     */ 
+     */
     public function setDeviceBatteryType($deviceBatteryType)
     {
         $this->deviceBatteryType = $deviceBatteryType;
@@ -249,7 +249,7 @@ class Devicebattery
 
     /**
      * Get the value of deviceBatteryModel
-     */ 
+     */
     public function getDeviceBatteryModel()
     {
         return $this->deviceBatteryModel;
@@ -259,7 +259,7 @@ class Devicebattery
      * Set the value of deviceBatteryModel
      *
      * @return  self
-     */ 
+     */
     public function setDeviceBatteryModel($deviceBatteryModel)
     {
         $this->deviceBatteryModel = $deviceBatteryModel;

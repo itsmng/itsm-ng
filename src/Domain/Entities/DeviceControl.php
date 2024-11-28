@@ -190,7 +190,7 @@ class DeviceControl
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -200,7 +200,7 @@ class DeviceControl
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -210,7 +210,7 @@ class DeviceControl
 
     /**
      * Get the value of interfacetype
-     */ 
+     */
     public function getInterfacetype()
     {
         return $this->interfacetype;
@@ -220,7 +220,7 @@ class DeviceControl
      * Set the value of interfacetype
      *
      * @return  self
-     */ 
+     */
     public function setInterfacetype($interfacetype)
     {
         $this->interfacetype = $interfacetype;
@@ -230,7 +230,7 @@ class DeviceControl
 
     /**
      * Get the value of devicecontrolmodel
-     */ 
+     */
     public function getDevicecontrolmodel()
     {
         return $this->devicecontrolmodel;
@@ -240,7 +240,7 @@ class DeviceControl
      * Set the value of devicecontrolmodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicecontrolmodel($devicecontrolmodel)
     {
         $this->devicecontrolmodel = $devicecontrolmodel;

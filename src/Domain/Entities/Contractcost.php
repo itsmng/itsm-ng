@@ -175,7 +175,7 @@ class Contractcost
 
     /**
      * Get the value of contract
-     */ 
+     */
     public function getContract()
     {
         return $this->contract;
@@ -185,7 +185,7 @@ class Contractcost
      * Set the value of contract
      *
      * @return  self
-     */ 
+     */
     public function setContract($contract)
     {
         $this->contract = $contract;
@@ -195,7 +195,7 @@ class Contractcost
 
     /**
      * Get the value of budget
-     */ 
+     */
     public function getBudget()
     {
         return $this->budget;
@@ -205,7 +205,7 @@ class Contractcost
      * Set the value of budget
      *
      * @return  self
-     */ 
+     */
     public function setBudget($budget)
     {
         $this->budget = $budget;
@@ -215,7 +215,7 @@ class Contractcost
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -225,7 +225,7 @@ class Contractcost
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

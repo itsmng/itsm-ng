@@ -104,7 +104,7 @@ class ComputerItem
 
     /**
      * Get the value of computer
-     */ 
+     */
     public function getComputer()
     {
         return $this->computer;
@@ -114,7 +114,7 @@ class ComputerItem
      * Set the value of computer
      *
      * @return  self
-     */ 
+     */
     public function setComputer($computer)
     {
         $this->computer = $computer;

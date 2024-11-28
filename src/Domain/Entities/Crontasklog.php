@@ -137,7 +137,7 @@ class Crontasklog
 
     /**
      * Get the value of crontask
-     */ 
+     */
     public function getCrontask()
     {
         return $this->crontask;
@@ -147,7 +147,7 @@ class Crontasklog
      * Set the value of crontask
      *
      * @return  self
-     */ 
+     */
     public function setCrontask($crontask)
     {
         $this->crontask = $crontask;
@@ -157,7 +157,7 @@ class Crontasklog
 
     /**
      * Get the value of crontasklogs
-     */ 
+     */
     public function getCrontasklogs()
     {
         return $this->crontasklogs;
@@ -167,7 +167,7 @@ class Crontasklog
      * Set the value of crontasklogs
      *
      * @return  self
-     */ 
+     */
     public function setCrontasklogs($crontasklogs)
     {
         $this->crontasklogs = $crontasklogs;

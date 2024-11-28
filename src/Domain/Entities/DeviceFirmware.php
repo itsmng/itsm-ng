@@ -212,7 +212,7 @@ class DeviceFirmware
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -222,7 +222,7 @@ class DeviceFirmware
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -232,7 +232,7 @@ class DeviceFirmware
 
     /**
      * Get the value of devicefirmwaretype
-     */ 
+     */
     public function getDevicefirmwaretype()
     {
         return $this->devicefirmwaretype;
@@ -242,7 +242,7 @@ class DeviceFirmware
      * Set the value of devicefirmwaretype
      *
      * @return  self
-     */ 
+     */
     public function setDevicefirmwaretype($devicefirmwaretype)
     {
         $this->devicefirmwaretype = $devicefirmwaretype;
@@ -252,7 +252,7 @@ class DeviceFirmware
 
     /**
      * Get the value of devicefirmwaremodel
-     */ 
+     */
     public function getDevicefirmwaremodel()
     {
         return $this->devicefirmwaremodel;
@@ -262,7 +262,7 @@ class DeviceFirmware
      * Set the value of devicefirmwaremodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicefirmwaremodel($devicefirmwaremodel)
     {
         $this->devicefirmwaremodel = $devicefirmwaremodel;

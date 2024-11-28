@@ -61,7 +61,7 @@ class ContactSupplier
 
     /**
      * Get the value of supplier
-     */ 
+     */
     public function getSupplier()
     {
         return $this->supplier;
@@ -71,7 +71,7 @@ class ContactSupplier
      * Set the value of supplier
      *
      * @return  self
-     */ 
+     */
     public function setSupplier($supplier)
     {
         $this->supplier = $supplier;
@@ -81,7 +81,7 @@ class ContactSupplier
 
     /**
      * Get the value of contact
-     */ 
+     */
     public function getContact()
     {
         return $this->contact;
@@ -91,7 +91,7 @@ class ContactSupplier
      * Set the value of contact
      *
      * @return  self
-     */ 
+     */
     public function setContact($contact)
     {
         $this->contact = $contact;

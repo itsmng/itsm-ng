@@ -156,7 +156,7 @@ class Consumable
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -166,7 +166,7 @@ class Consumable
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -176,7 +176,7 @@ class Consumable
 
     /**
      * Get the value of consumableitem
-     */ 
+     */
     public function getConsumableitem()
     {
         return $this->consumableitem;
@@ -186,7 +186,7 @@ class Consumable
      * Set the value of consumableitem
      *
      * @return  self
-     */ 
+     */
     public function setConsumableitem($consumableitem)
     {
         $this->consumableitem = $consumableitem;

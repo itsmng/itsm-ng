@@ -180,10 +180,10 @@ class DeviceCase
         return $this;
     }
 
-   
+
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -193,7 +193,7 @@ class DeviceCase
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -203,7 +203,7 @@ class DeviceCase
 
     /**
      * Get the value of devicecasemodel
-     */ 
+     */
     public function getDevicecasemodel()
     {
         return $this->devicecasemodel;
@@ -213,7 +213,7 @@ class DeviceCase
      * Set the value of devicecasemodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicecasemodel($devicecasemodel)
     {
         $this->devicecasemodel = $devicecasemodel;
@@ -223,7 +223,7 @@ class DeviceCase
 
     /**
      * Get the value of devicecaseType
-     */ 
+     */
     public function getDevicecaseType()
     {
         return $this->devicecaseType;
@@ -233,7 +233,7 @@ class DeviceCase
      * Set the value of devicecaseType
      *
      * @return  self
-     */ 
+     */
     public function setDevicecaseType($devicecaseType)
     {
         $this->devicecaseType = $devicecaseType;

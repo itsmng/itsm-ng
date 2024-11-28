@@ -204,7 +204,7 @@ class Dcroom
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -214,7 +214,7 @@ class Dcroom
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -224,7 +224,7 @@ class Dcroom
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -234,7 +234,7 @@ class Dcroom
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -244,7 +244,7 @@ class Dcroom
 
     /**
      * Get the value of datacenter
-     */ 
+     */
     public function getDatacenter()
     {
         return $this->datacenter;
@@ -254,7 +254,7 @@ class Dcroom
      * Set the value of datacenter
      *
      * @return  self
-     */ 
+     */
     public function setDatacenter($datacenter)
     {
         $this->datacenter = $datacenter;

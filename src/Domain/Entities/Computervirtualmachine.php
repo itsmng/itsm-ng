@@ -25,7 +25,7 @@ class Computervirtualmachine
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer',name: 'entities_id', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
@@ -263,7 +263,7 @@ class Computervirtualmachine
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -273,7 +273,7 @@ class Computervirtualmachine
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -283,7 +283,7 @@ class Computervirtualmachine
 
     /**
      * Get the value of computer
-     */ 
+     */
     public function getComputer()
     {
         return $this->computer;
@@ -293,7 +293,7 @@ class Computervirtualmachine
      * Set the value of computer
      *
      * @return  self
-     */ 
+     */
     public function setComputer($computer)
     {
         $this->computer = $computer;
@@ -303,7 +303,7 @@ class Computervirtualmachine
 
     /**
      * Get the value of virtualmachinestate
-     */ 
+     */
     public function getVirtualmachinestate()
     {
         return $this->virtualmachinestate;
@@ -313,7 +313,7 @@ class Computervirtualmachine
      * Set the value of virtualmachinestate
      *
      * @return  self
-     */ 
+     */
     public function setVirtualmachinestate($virtualmachinestate)
     {
         $this->virtualmachinestate = $virtualmachinestate;
@@ -323,7 +323,7 @@ class Computervirtualmachine
 
     /**
      * Get the value of virtualmachinesystem
-     */ 
+     */
     public function getVirtualmachinesystem()
     {
         return $this->virtualmachinesystem;
@@ -333,7 +333,7 @@ class Computervirtualmachine
      * Set the value of virtualmachinesystem
      *
      * @return  self
-     */ 
+     */
     public function setVirtualmachinesystem($virtualmachinesystem)
     {
         $this->virtualmachinesystem = $virtualmachinesystem;
@@ -343,7 +343,7 @@ class Computervirtualmachine
 
     /**
      * Get the value of virtualmachinetype
-     */ 
+     */
     public function getVirtualmachinetype()
     {
         return $this->virtualmachinetype;
@@ -353,7 +353,7 @@ class Computervirtualmachine
      * Set the value of virtualmachinetype
      *
      * @return  self
-     */ 
+     */
     public function setVirtualmachinetype($virtualmachinetype)
     {
         $this->virtualmachinetype = $virtualmachinetype;

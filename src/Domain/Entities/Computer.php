@@ -140,7 +140,7 @@ class Computer
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
-    private ?Group $group;  
+    private ?Group $group;
 
     #[ORM\Column(type: 'integer', name: 'states_id', options: ['default' => 0])]
     private $states_id;
@@ -499,7 +499,7 @@ class Computer
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -509,7 +509,7 @@ class Computer
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -519,7 +519,7 @@ class Computer
 
     /**
      * Get the value of users_tech
-     */ 
+     */
     public function getUsers_tech()
     {
         return $this->users_tech;
@@ -529,7 +529,7 @@ class Computer
      * Set the value of users_tech
      *
      * @return  self
-     */ 
+     */
     public function setUsers_tech($users_tech)
     {
         $this->users_tech = $users_tech;
@@ -539,7 +539,7 @@ class Computer
 
     /**
      * Get the value of groups_tech
-     */ 
+     */
     public function getGroups_tech()
     {
         return $this->groups_tech;
@@ -549,7 +549,7 @@ class Computer
      * Set the value of groups_tech
      *
      * @return  self
-     */ 
+     */
     public function setGroups_tech($groups_tech)
     {
         $this->groups_tech = $groups_tech;
@@ -559,7 +559,7 @@ class Computer
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -569,7 +569,7 @@ class Computer
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -579,7 +579,7 @@ class Computer
 
     /**
      * Get the value of network
-     */ 
+     */
     public function getNetwork()
     {
         return $this->network;
@@ -589,7 +589,7 @@ class Computer
      * Set the value of network
      *
      * @return  self
-     */ 
+     */
     public function setNetwork($network)
     {
         $this->network = $network;
@@ -599,7 +599,7 @@ class Computer
 
     /**
      * Get the value of computermodel
-     */ 
+     */
     public function getComputermodel()
     {
         return $this->computermodel;
@@ -609,7 +609,7 @@ class Computer
      * Set the value of computermodel
      *
      * @return  self
-     */ 
+     */
     public function setComputermodel($computermodel)
     {
         $this->computermodel = $computermodel;
@@ -619,7 +619,7 @@ class Computer
 
     /**
      * Get the value of computertype
-     */ 
+     */
     public function getComputertype()
     {
         return $this->computertype;
@@ -629,7 +629,7 @@ class Computer
      * Set the value of computertype
      *
      * @return  self
-     */ 
+     */
     public function setComputertype($computertype)
     {
         $this->computertype = $computertype;
@@ -639,7 +639,7 @@ class Computer
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -649,7 +649,7 @@ class Computer
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -659,7 +659,7 @@ class Computer
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -669,7 +669,7 @@ class Computer
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -679,7 +679,7 @@ class Computer
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -689,7 +689,7 @@ class Computer
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -699,7 +699,7 @@ class Computer
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -709,7 +709,7 @@ class Computer
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

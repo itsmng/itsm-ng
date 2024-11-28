@@ -205,7 +205,7 @@ class DeviceDrive
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -215,7 +215,7 @@ class DeviceDrive
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -225,7 +225,7 @@ class DeviceDrive
 
     /**
      * Get the value of interfacetype
-     */ 
+     */
     public function getInterfacetype()
     {
         return $this->interfacetype;
@@ -235,7 +235,7 @@ class DeviceDrive
      * Set the value of interfacetype
      *
      * @return  self
-     */ 
+     */
     public function setInterfacetype($interfacetype)
     {
         $this->interfacetype = $interfacetype;
@@ -245,7 +245,7 @@ class DeviceDrive
 
     /**
      * Get the value of devicedrivemodel
-     */ 
+     */
     public function getDevicedrivemodel()
     {
         return $this->devicedrivemodel;
@@ -255,7 +255,7 @@ class DeviceDrive
      * Set the value of devicedrivemodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicedrivemodel($devicedrivemodel)
     {
         $this->devicedrivemodel = $devicedrivemodel;

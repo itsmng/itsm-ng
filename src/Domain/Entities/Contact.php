@@ -345,7 +345,7 @@ class Contact
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -355,7 +355,7 @@ class Contact
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -365,7 +365,7 @@ class Contact
 
     /**
      * Get the value of usertitle
-     */ 
+     */
     public function getUsertitle()
     {
         return $this->usertitle;
@@ -375,7 +375,7 @@ class Contact
      * Set the value of usertitle
      *
      * @return  self
-     */ 
+     */
     public function setUsertitle($usertitle)
     {
         $this->usertitle = $usertitle;
@@ -385,7 +385,7 @@ class Contact
 
     /**
      * Get the value of contacttype
-     */ 
+     */
     public function getContacttype()
     {
         return $this->contacttype;
@@ -395,7 +395,7 @@ class Contact
      * Set the value of contacttype
      *
      * @return  self
-     */ 
+     */
     public function setContacttype($contacttype)
     {
         $this->contacttype = $contacttype;
@@ -405,7 +405,7 @@ class Contact
 
     /**
      * Get the value of contactSuppliers
-     */ 
+     */
     public function getContactSuppliers()
     {
         return $this->contactSuppliers;
@@ -415,7 +415,7 @@ class Contact
      * Set the value of contactSuppliers
      *
      * @return  self
-     */ 
+     */
     public function setContactSuppliers($contactSuppliers)
     {
         $this->contactSuppliers = $contactSuppliers;

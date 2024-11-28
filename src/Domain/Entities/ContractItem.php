@@ -73,7 +73,7 @@ class ContractItem
 
     /**
      * Get the value of contract
-     */ 
+     */
     public function getContract()
     {
         return $this->contract;
@@ -83,7 +83,7 @@ class ContractItem
      * Set the value of contract
      *
      * @return  self
-     */ 
+     */
     public function setContract($contract)
     {
         $this->contract = $contract;
