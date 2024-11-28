@@ -17,7 +17,8 @@ final class Version20241127160124 extends AbstractMigration
         return '';
     }
 
-    private function switchToDatetime($table, $column) {
+    private function switchToDatetime($table, $column)
+    {
         // add temp column
         $this->addSql('ALTER TABLE '.$table.' ADD temp_'.$column.' DATETIME DEFAULT NULL');
         // set temp column value with old column value
