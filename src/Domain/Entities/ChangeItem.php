@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_changes_items')]
 #[ORM\UniqueConstraint(name: 'unicity', columns: ['changes_id', 'itemtype', 'items_id'])]
-#[ORM\Index(name: 'itemt', columns: ['itemtype', 'items_id'])]
+#[ORM\Index(name: 'item', columns: ['itemtype', 'items_id'])]
 class ChangeItem
 {
     #[ORM\Id]
