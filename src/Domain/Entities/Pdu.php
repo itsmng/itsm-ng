@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "locations_id", columns: ["locations_id"])]
 #[ORM\Index(name: "pdumodels_id", columns: ["pdumodels_id"])]
 #[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])]
-#[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
+#[ORM\Index(name: "group_id_tech", columns: ["groups_id_tech"])]
 #[ORM\Index(name: "is_template", columns: ["is_template"])]
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
 #[ORM\Index(name: "states_id", columns: ["states_id"])]

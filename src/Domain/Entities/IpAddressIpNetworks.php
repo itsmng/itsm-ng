@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_ipaddresses_ipnetworks")]
-#[ORM\UniqueConstraint(columns: ["ipaddresses_id", "ipnetworks_id"])]
-#[ORM\Index(columns: ["ipnetworks_id"])]
-#[ORM\Index(columns: ["ipaddresses_id"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["ipaddresses_id", "ipnetworks_id"])]
+#[ORM\Index(name: "ipnetworks_id", columns: ["ipnetworks_id"])]
+#[ORM\Index(name: "ipaddresses_id", columns: ["ipaddresses_id"])]
 class IpAddressIpNetworks
 {
     #[ORM\Id]

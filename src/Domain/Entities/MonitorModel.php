@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_monitormodels')]
-#[ORM\Index(columns: ['name'])]
-#[ORM\Index(columns: ['date_mod'])]
-#[ORM\Index(columns: ['date_creation'])]
-#[ORM\Index(columns: ['product_number'])]
+#[ORM\Index(name: "name", columns: ['name'])]
+#[ORM\Index(name: "date_mod", columns: ['date_mod'])]
+#[ORM\Index(name: "date_creation", columns: ['date_creation'])]
+#[ORM\Index(name: "product_number", columns: ['product_number'])]
 class MonitorModel
 {
     #[ORM\Id]

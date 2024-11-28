@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_holidays")]
-#[ORM\Index(columns: ["name"])]
-#[ORM\Index(columns: ["begin_date"])]
-#[ORM\Index(columns: ["end_date"])]
-#[ORM\Index(columns: ["is_perpetual"])]
-#[ORM\Index(columns: ["date_mod"])]
-#[ORM\Index(columns: ["date_creation"])]
+#[ORM\Index(name: "name", columns: ["name"])]
+#[ORM\Index(name: "begin_date", columns: ["begin_date"])]
+#[ORM\Index(name: "end_date", columns: ["end_date"])]
+#[ORM\Index(name: "is_perpetual", columns: ["is_perpetual"])]
+#[ORM\Index(name: "date_mod", columns: ["date_mod"])]
+#[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class Holiday
 {
     #[ORM\Id]

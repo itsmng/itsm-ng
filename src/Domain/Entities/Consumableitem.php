@@ -18,7 +18,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 #[ORM\Index(name: 'otherserial', columns: ['otherserial'])]
-
 class Consumableitem
 {
     #[ORM\Id]
@@ -62,7 +61,8 @@ class Consumableitem
     #[ORM\Column(type: 'integer', options: ['default' => 10])]
     private $alarm_threshold;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]

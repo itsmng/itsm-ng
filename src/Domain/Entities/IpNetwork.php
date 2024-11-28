@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_ipnetworks")]
-#[ORM\Index(columns: ["entities_id", "address", "netmask"])]
-#[ORM\Index(columns: ["address_0", "address_1", "address_2", "address_3"])]
-#[ORM\Index(columns: ["netmask_0", "netmask_1", "netmask_2", "netmask_3"])]
-#[ORM\Index(columns: ["gateway_0", "gateway_1", "gateway_2", "gateway_3"])]
-#[ORM\Index(columns: ["name"])]
-#[ORM\Index(columns: ["date_mod"])]
-#[ORM\Index(columns: ["date_creation"])]
+#[ORM\Index(name: "network_definition", columns: ["entities_id", "address", "netmask"])]
+#[ORM\Index(name: "address", columns: ["address_0", "address_1", "address_2", "address_3"])]
+#[ORM\Index(name: "netmask", columns: ["netmask_0", "netmask_1", "netmask_2", "netmask_3"])]
+#[ORM\Index(name: "gateway", columns: ["gateway_0", "gateway_1", "gateway_2", "gateway_3"])]
+#[ORM\Index(name: "name", columns: ["name"])]
+#[ORM\Index(name: "date_mod", columns: ["date_mod"])]
+#[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class IpNetwork
 {
     #[ORM\Id]

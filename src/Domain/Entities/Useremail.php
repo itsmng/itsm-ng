@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_useremails")]
-#[ORM\UniqueConstraint(name: "users_id_email", columns: ["users_id", "email"])]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["users_id", "email"])]
 #[ORM\Index(name: "email", columns: ["email"])]
 #[ORM\Index(name: "is_default", columns: ["is_default"])]
 #[ORM\Index(name: "is_dynamic", columns: ["is_dynamic"])]

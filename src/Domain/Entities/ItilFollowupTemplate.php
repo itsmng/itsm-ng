@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_itilfollowuptemplates")]
-#[ORM\Index(columns: ["name"])]
-#[ORM\Index(columns: ["is_recursive"])]
-#[ORM\Index(columns: ["requesttypes_id"])]
-#[ORM\Index(columns: ["entities_id"])]
-#[ORM\Index(columns: ["date_mod"])]
-#[ORM\Index(columns: ["date_creation"])]
-#[ORM\Index(columns: ["is_private"])]
+#[ORM\Index(name: "name", columns: ["name"])]
+#[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
+#[ORM\Index(name: "requesttypes_id", columns: ["requesttypes_id"])]
+#[ORM\Index(name: "entities_id", columns: ["entities_id"])]
+#[ORM\Index(name: "date_mod", columns: ["date_mod"])]
+#[ORM\Index(name: "date_creation", columns: ["date_creation"])]
+#[ORM\Index(name: "is_private", columns: ["is_private"])]
 class ItilFollowupTemplate
 {
     #[ORM\Id]

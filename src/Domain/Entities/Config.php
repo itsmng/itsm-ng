@@ -6,9 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_configs')]
-#[ORM\UniqueConstraint(name: 'context_name_unique', columns: ['context', 'name'])]
-
-
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['context', 'name'])]
 class Config
 {
     #[ORM\Id]

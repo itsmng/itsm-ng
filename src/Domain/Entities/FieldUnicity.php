@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_fieldunicities')]
-#[ORM\Index(columns: ['date_mod'])]
-#[ORM\Index(columns: ['date_creation'])]
+#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 class FieldUnicity
 {
     #[ORM\Id]

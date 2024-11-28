@@ -1,26 +1,6 @@
 <?php
 
-# Column	Type	Comment
-# id	int(11) Auto Increment
-# entities_id	int(11) [0]
-# is_recursive	tinyint(1) [0]
-# name	varchar(255) NULL
-# date_mod	timestamp NULL
-# is_active	tinyint(1) [0]
-# ipv4_range_start	bigint(20) NULL
-# ipv4_range_end	bigint(20) NULL
-# ipv6	varchar(255) NULL
-# app_token	varchar(255) NULL
-# app_token_date	timestamp NULL
-# dolog_method	tinyint(4) [0]
-# comment	text NULL
-#
-# Indexes
-# PRIMARY	id
-# INDEX	date_mod
-# INDEX	is_active
-
-namespace App\Domain\Entities;
+namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'glpi_apiclients')]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'is_active', columns: ['is_active'])]
-class ApiClients
+class ApiClient
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

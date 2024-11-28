@@ -5,8 +5,8 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\UniqueConstraint(name: 'networkports_id_1_networkports_id_2', columns: ['networkports_id_1', 'networkports_id_2'])]
 #[ORM\Table(name: 'glpi_networkports_networkports')]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['networkports_id_1', 'networkports_id_2'])]
 #[ORM\Index(name: 'networkports_id_2', columns: ['networkports_id_2'])]
 class NetworkportNetworkport
 {

@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_notepads')]
-#[ORM\Index(name: 'itemtype_items_id', columns: ['itemtype', 'items_id'])]
+#[ORM\Index(name: 'item', columns: ['itemtype', 'items_id'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date', columns: ['date'])]
 #[ORM\Index(name: 'users_id_lastupdater', columns: ['users_id_lastupdater'])]
 #[ORM\Index(name: 'users_id', columns: ['users_id'])]
-class Notepas
+class Notepad
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

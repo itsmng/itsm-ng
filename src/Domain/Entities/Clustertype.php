@@ -34,7 +34,8 @@ class Clustertype
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     public function getId(): ?int

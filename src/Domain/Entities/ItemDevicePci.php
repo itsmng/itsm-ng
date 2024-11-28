@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
 #[ORM\Index(name: 'serial', columns: ['serial'])]
 #[ORM\Index(name: 'busID', columns: ['busID'])]
-#[ORM\Index(name: 'itemtype', columns: ['itemtype', 'items_id'])]
+#[ORM\Index(name: 'item', columns: ['itemtype', 'items_id'])]
 #[ORM\Index(name: 'otherserial', columns: ['otherserial'])]
 #[ORM\Index(name: 'locations_id', columns: ['locations_id'])]
 #[ORM\Index(name: 'states_id', columns: ['states_id'])]

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_items_kanbans")]
-#[ORM\UniqueConstraint(columns:["itemtype", "items_id", "users_id"])]
+#[ORM\UniqueConstraint(name: "unicity", columns:["itemtype", "items_id", "users_id"])]
 class ItemKanban
 {
     #[ORM\Id]

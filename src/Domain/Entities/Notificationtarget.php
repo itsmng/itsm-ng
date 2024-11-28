@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_notificationtargets')]
-#[ORM\Index(name: 'type_items_id', columns: ['type', 'items_id'])]
+#[ORM\Index(name: 'items', columns: ['type', 'items_id'])]
 #[ORM\Index(name: 'notifications_id', columns: ['notifications_id'])]
 class Notificationtarget
 {

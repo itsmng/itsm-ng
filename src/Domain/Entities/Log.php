@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_logs')]
-#[ORM\Index(columns: ['date_mod'])]
-#[ORM\Index(columns: ['itemtype_link'])]
-#[ORM\Index(columns: ['itemtype', 'items_id'])]
-#[ORM\Index(columns: ['id_search_option'])]
+#[ORM\Index(name: "date_mod", columns: ['date_mod'])]
+#[ORM\Index(name: "itemtype_link", columns: ['itemtype_link'])]
+#[ORM\Index(name: "item", columns: ['itemtype', 'items_id'])]
+#[ORM\Index(name: "id_search_option", columns: ['id_search_option'])]
 class Log
 {
     #[ORM\Id]

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_documentcategories')]
-#[ORM\UniqueConstraint(name: 'documentcategories_id_name', columns: ['documentcategories_id', 'name'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['documentcategories_id', 'name'])]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
@@ -38,7 +38,8 @@ class Documentcategory
     #[ORM\Column(type: 'text', nullable: true)]
     private $sons_cache;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]

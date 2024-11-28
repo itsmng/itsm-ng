@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_documents_items')]
-#[ORM\UniqueConstraint(name: 'documents_id_itemtype_items_id_timeline_position', columns: ['documents_id', 'itemtype', 'items_id', 'timeline_position'])]
-#[ORM\Index(name: 'itemtype_items_id_entities_id_is_recursive', columns: ['itemtype', 'items_id', 'entities_id', 'is_recursive'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['documents_id', 'itemtype', 'items_id', 'timeline_position'])]
+#[ORM\Index(name: 'item', columns: ['itemtype', 'items_id', 'entities_id', 'is_recursive'])]
 #[ORM\Index(name: 'users_id', columns: ['users_id'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 #[ORM\Index(name: 'date', columns: ['date'])]
@@ -33,7 +33,8 @@ class DocumentItem
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0], nullable: true)]

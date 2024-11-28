@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_groups_users")]
-#[ORM\UniqueConstraint(columns: ["users_id", "groups_id"])]
-#[ORM\Index(columns: ["groups_id"])]
-#[ORM\Index(columns: ["is_manager"])]
-#[ORM\Index(columns: ["is_userdelegate"])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ["users_id", "groups_id"])]
+#[ORM\Index(name: "groups_id", columns: ["groups_id"])]
+#[ORM\Index(name: "is_manager", columns: ["is_manager"])]
+#[ORM\Index(name: "is_userdelegate", columns: ["is_userdelegate"])]
 class GroupUser
 {
     #[ORM\Id]

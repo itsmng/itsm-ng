@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_links')]
-#[ORM\Index(columns: ['entities_id'])]
-#[ORM\Index(columns: ['date_mod'])]
-#[ORM\Index(columns: ['date_creation'])]
+#[ORM\Index(name: "entities_id", columns: ['entities_id'])]
+#[ORM\Index(name: "date_mod", columns: ['date_mod'])]
+#[ORM\Index(name: "date_creation", columns: ['date_creation'])]
 class Link
 {
     #[ORM\Id]
@@ -34,7 +34,8 @@ class Link
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $open_window;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime')]

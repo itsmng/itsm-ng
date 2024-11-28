@@ -1,12 +1,12 @@
 <?php
 
-namespace itsm\Entities;
+namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_alerts')]
-#[ORM\UniqueConstraint(name: 'alert_itemtype_items_id_type', columns: ['itemtype', 'items_id', 'type'])]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['itemtype', 'items_id', 'type'])]
 #[ORM\Index(name: 'type', columns: ['type'])]
 #[ORM\Index(name: 'date', columns: ['date'])]
 class Alert

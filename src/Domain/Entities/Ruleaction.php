@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_ruleactions')]
 #[ORM\Index(name: "rules_id", columns: ["rules_id"])]
-#[ORM\Index(columns: ["field", "value"])]
+#[ORM\Index(name: "field_value", columns: ["field", "value"])]
 
 class Ruleaction
 {

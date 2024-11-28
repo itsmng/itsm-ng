@@ -1,21 +1,13 @@
 <?php
 
-#Column	Type	Comment
-#id	int(11) Auto Increment
-#name	varchar(255) NULL
-#comment	text NULL
-#Indexes
-#PRIMARY	id
-#INDEX	name
-
-namespace Itsm\Entities;
+namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_applianceenvironments")]
 #[ORM\Index(name: "name", columns: ["name"])]
-class ApplicanceEnvironment
+class ApplianceEnvironment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

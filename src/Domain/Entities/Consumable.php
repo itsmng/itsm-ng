@@ -10,10 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'date_out', columns: ['date_out'])]
 #[ORM\Index(name: 'consumableitems_id', columns: ['consumableitems_id'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
-#[ORM\Index(name: 'itemtype_items_id', columns: ['itemtype', 'items_id'])]
+#[ORM\Index(name: 'item', columns: ['itemtype', 'items_id'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-
 class Consumable
 {
     #[ORM\Id]
@@ -39,7 +38,8 @@ class Consumable
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_id;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: 'false')]
+    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]

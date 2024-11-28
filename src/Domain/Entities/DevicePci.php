@@ -6,14 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_devicepcis")]
-#[ORM\Index(columns: ["designation"])]
-#[ORM\Index(columns: ["manufacturers_id"])]
-#[ORM\Index(columns: ["devicenetworkcardmodels_id"])]
-#[ORM\Index(columns: ["entities_id"])]
-#[ORM\Index(columns: ["is_recursive"])]
-#[ORM\Index(columns: ["date_mod"])]
-#[ORM\Index(columns: ["date_creation"])]
-#[ORM\Index(columns: ["devicepcimodels_id"])]
+#[ORM\Index(name: "designation", columns: ["designation"])]
+#[ORM\Index(name: "manufacturers_id", columns: ["manufacturers_id"])]
+#[ORM\Index(name: "devicenetworkcardmodels_id", columns: ["devicenetworkcardmodels_id"])]
+#[ORM\Index(name: "entities_id", columns: ["entities_id"])]
+#[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
+#[ORM\Index(name: "date_mod", columns: ["date_mod"])]
+#[ORM\Index(name: "date_creation", columns: ["date_creation"])]
+#[ORM\Index(name: "devicepcimodels_id", columns: ["devicepcimodels_id"])]
 class DevicePci
 {
     #[ORM\Id]
