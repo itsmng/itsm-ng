@@ -227,7 +227,7 @@ class DeviceGeneric
 
     /**
      * Get the value of devicegenerictypes
-     */ 
+     */
     public function getDevicegenerictypes()
     {
         return $this->devicegenerictypes;
@@ -237,7 +237,7 @@ class DeviceGeneric
      * Set the value of devicegenerictypes
      *
      * @return  self
-     */ 
+     */
     public function setDevicegenerictypes($devicegenerictypes)
     {
         $this->devicegenerictypes = $devicegenerictypes;
@@ -247,7 +247,7 @@ class DeviceGeneric
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -257,7 +257,7 @@ class DeviceGeneric
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -267,7 +267,7 @@ class DeviceGeneric
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -277,7 +277,7 @@ class DeviceGeneric
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -287,7 +287,7 @@ class DeviceGeneric
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -297,7 +297,7 @@ class DeviceGeneric
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -307,7 +307,7 @@ class DeviceGeneric
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -317,7 +317,7 @@ class DeviceGeneric
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -327,7 +327,7 @@ class DeviceGeneric
 
     /**
      * Get the value of devicegenericmodel
-     */ 
+     */
     public function getDevicegenericmodel()
     {
         return $this->devicegenericmodel;
@@ -337,7 +337,7 @@ class DeviceGeneric
      * Set the value of devicegenericmodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicegenericmodel($devicegenericmodel)
     {
         $this->devicegenericmodel = $devicegenericmodel;
