@@ -27,8 +27,12 @@ class DeviceHarddrive
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $rpm;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'interfacetypes_id', options: ['default' => 0])]
     private $interfacetypes_id;
+
+    #[ORM\ManyToOne(targetEntity: InterfaceType::class)]
+    #[ORM\JoinColumn(name: 'interfacetypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?InterfaceType $interfacetype;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $cache;
@@ -36,20 +40,32 @@ class DeviceHarddrive
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
     private $manufacturers_id;
+
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $capacity_default;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $deviceharddrivemodels_id;
+
+    #[ORM\ManyToOne(targetEntity: DeviceharddriveModel::class)]
+    #[ORM\JoinColumn(name: 'devicehardrivemodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?DeviceharddriveModel $deviceharddrivemodel;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -209,6 +225,86 @@ class DeviceHarddrive
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of interfacetype
+     */ 
+    public function getInterfacetype()
+    {
+        return $this->interfacetype;
+    }
+
+    /**
+     * Set the value of interfacetype
+     *
+     * @return  self
+     */ 
+    public function setInterfacetype($interfacetype)
+    {
+        $this->interfacetype = $interfacetype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deviceharddrivemodel
+     */ 
+    public function getDeviceharddrivemodel()
+    {
+        return $this->deviceharddrivemodel;
+    }
+
+    /**
+     * Set the value of deviceharddrivemodel
+     *
+     * @return  self
+     */ 
+    public function setDeviceharddrivemodel($deviceharddrivemodel)
+    {
+        $this->deviceharddrivemodel = $deviceharddrivemodel;
 
         return $this;
     }
