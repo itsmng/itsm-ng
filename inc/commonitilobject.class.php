@@ -7024,6 +7024,7 @@ abstract class CommonITILObject extends CommonDBTM {
 
       //add documents to timeline
       $document_obj   = new Document();
+      if ($document_item_obj->canView()) {
          $document_items = $document_item_obj->find([
             $this->getAssociatedDocumentsCriteria(),
             'timeline_position'  => ['>', self::NO_TIMELINE]
@@ -7042,10 +7043,11 @@ abstract class CommonITILObject extends CommonDBTM {
    
             $item['timeline_position'] = $document_item['timeline_position'];
    
-          if ($document_item_obj->canView() || Session::haveRight(Ticket::$rightname, Ticket::READDOCUMENT)) {
-            $timeline[$date."_document_".$document_item['documents_id']]
-               = ['type' => 'Document_Item', 'item' => $item];
-          }
+            if ($document_item_obj->canView() || Session::haveRight(Ticket::$rightname, Ticket::READDOCUMENT)) {
+               $timeline[$date."_document_".$document_item['documents_id']]
+                  = ['type' => 'Document_Item', 'item' => $item];
+            }
+         }
       }
 
       $solution_obj = new ITILSolution();
