@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_domains")]
@@ -73,6 +74,9 @@ class Domain
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'domain', targetEntity: DomainItem::class)]
+    private Collection $domainItems;
 
     public function getId(): ?int
     {
@@ -306,6 +310,26 @@ class Domain
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of domainItems
+     */ 
+    public function getDomainItems()
+    {
+        return $this->domainItems;
+    }
+
+    /**
+     * Set the value of domainItems
+     *
+     * @return  self
+     */ 
+    public function setDomainItems($domainItems)
+    {
+        $this->domainItems = $domainItems;
 
         return $this;
     }

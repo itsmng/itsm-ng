@@ -21,6 +21,10 @@ class DomainItem
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $domains_id;
 
+    #[ORM\ManyToOne(targetEntity: Domain::class, inversedBy: 'domainItems')]
+    #[ORM\JoinColumn(name: 'domains_id', referencedColumnName: 'id', nullable: false)]
+    private ?Domain $domain;
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_id;
 
@@ -83,4 +87,24 @@ class DomainItem
         return $this;
     }
 
+
+    /**
+     * Get the value of domain
+     */ 
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
+     * Set the value of domain
+     *
+     * @return  self
+     */ 
+    public function setDomain($domain)
+    {
+        $this->domain = $domain;
+
+        return $this;
+    }
 }
