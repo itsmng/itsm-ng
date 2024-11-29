@@ -21,14 +21,22 @@ class IpNetwork
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'entities_id', options: ["default" => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'ipnetworks_id', options: ["default" => 0])]
     private $ipnetworks_id;
+
+    #[ORM\ManyToOne(targetEntity: IpNetwork::class)]
+    #[ORM\JoinColumn(name: 'ipnetworks_id', referencedColumnName: 'id', nullable: false)]
+    private ?IpNetwork $ipnetwork;
 
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $completename;
@@ -107,6 +115,9 @@ class IpNetwork
     
     #[ORM\OneToMany(mappedBy: 'ipnetwork', targetEntity: IpAddressIpNetwork::class)]
     private Collection $ipaddressIpnetworks;
+
+    #[ORM\OneToMany(mappedBy: 'ipnetwork', targetEntity: IpNetworkVlan::class)]
+    private Collection $ipnetworkVlans;
 
 
     public function __construct()
@@ -473,6 +484,66 @@ class IpNetwork
     public function setIpaddressIpnetworks($ipaddressIpnetworks)
     {
         $this->ipaddressIpnetworks = $ipaddressIpnetworks;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ipnetwork
+     */ 
+    public function getIpnetwork()
+    {
+        return $this->ipnetwork;
+    }
+
+    /**
+     * Set the value of ipnetwork
+     *
+     * @return  self
+     */ 
+    public function setIpnetwork($ipnetwork)
+    {
+        $this->ipnetwork = $ipnetwork;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ipnetworkVlans
+     */ 
+    public function getIpnetworkVlans()
+    {
+        return $this->ipnetworkVlans;
+    }
+
+    /**
+     * Set the value of ipnetworkVlans
+     *
+     * @return  self
+     */ 
+    public function setIpnetworkVlans($ipnetworkVlans)
+    {
+        $this->ipnetworkVlans = $ipnetworkVlans;
 
         return $this;
     }

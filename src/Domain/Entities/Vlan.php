@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_vlans")]
@@ -38,6 +39,9 @@ class Vlan
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'vlan', targetEntity: IpNetworkVlan::class)]
+    private Collection $ipnetworkVlans;
 
     public function getId(): ?int
     {
