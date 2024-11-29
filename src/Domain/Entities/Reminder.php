@@ -65,6 +65,9 @@ class Reminder
     #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: EntityReminder::class)]
     private Collection $entityReminders;
 
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: GroupReminder::class)]
+    private Collection $groupReminders;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -243,6 +246,26 @@ class Reminder
     public function setEntityReminders($entityReminders)
     {
         $this->entityReminders = $entityReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupReminders
+     */ 
+    public function getGroupReminders()
+    {
+        return $this->groupReminders;
+    }
+
+    /**
+     * Set the value of groupReminders
+     *
+     * @return  self
+     */ 
+    public function setGroupReminders($groupReminders)
+    {
+        $this->groupReminders = $groupReminders;
 
         return $this;
     }

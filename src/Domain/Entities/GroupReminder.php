@@ -17,14 +17,26 @@ class GroupReminder
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
+    #[ORM\Column(type: "integer", name: 'reminders_id', options: ['default' => 0])]
     private $reminders_id;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Reminder::class, inversedBy: 'groupReminders')]
+    #[ORM\JoinColumn(name: 'reminders_id', referencedColumnName: 'id', nullable: false)]
+    private ?Reminder $reminder;
+
+    #[ORM\Column(type: "integer", name: 'groups_id', options: ['default' => 0])]
     private $groups_id;
 
-    #[ORM\Column(type: "integer", options: ['default' => -1])]
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupReminders')]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group;
+
+    #[ORM\Column(type: "integer", name: 'entities_id', options: ['default' => -1])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ['default' => false])]
     private $is_recursive;
@@ -78,6 +90,66 @@ class GroupReminder
     public function setIsRecursive(bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of reminder
+     */ 
+    public function getReminder()
+    {
+        return $this->reminder;
+    }
+
+    /**
+     * Set the value of reminder
+     *
+     * @return  self
+     */ 
+    public function setReminder($reminder)
+    {
+        $this->reminder = $reminder;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

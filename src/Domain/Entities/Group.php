@@ -112,6 +112,12 @@ class Group
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupProblem::class)]
     private Collection $groupProblems;
 
+    #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupReminder::class)]
+    private Collection $groupReminders;
+    
+    #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupRssFeed::class)]
+    private Collection $groupRssfeeds;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -477,6 +483,46 @@ class Group
     public function setGroupProblems($groupProblems)
     {
         $this->groupProblems = $groupProblems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupReminders
+     */ 
+    public function getGroupReminders()
+    {
+        return $this->groupReminders;
+    }
+
+    /**
+     * Set the value of groupReminders
+     *
+     * @return  self
+     */ 
+    public function setGroupReminders($groupReminders)
+    {
+        $this->groupReminders = $groupReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupRssfeeds
+     */ 
+    public function getGroupRssfeeds()
+    {
+        return $this->groupRssfeeds;
+    }
+
+    /**
+     * Set the value of groupRssfeeds
+     *
+     * @return  self
+     */ 
+    public function setGroupRssfeeds($groupRssfeeds)
+    {
+        $this->groupRssfeeds = $groupRssfeeds;
 
         return $this;
     }
