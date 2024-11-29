@@ -29,8 +29,12 @@ class Infocom
     #[ORM\Column(type: "string", length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'entities_id', options: ["default" => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
     private $is_recursive;
@@ -49,6 +53,10 @@ class Infocom
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $suppliers_id;
+
+    #[ORM\ManyToOne(targetEntity: Supplier::class)]
+    #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Supplier $supplier;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $order_number;
@@ -83,6 +91,10 @@ class Infocom
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $budgets_id;
 
+    #[ORM\ManyToOne(targetEntity: Budget::class)]
+    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: false)]
+    private ?Budget $budget;
+    
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $alert;
 
@@ -107,8 +119,12 @@ class Infocom
     #[ORM\Column(type: "datetime", nullable: true)]
     private $decommission_date;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'businesscriticities_id', options: ["default" => 0])]
     private $businesscriticities_id;
+
+    #[ORM\ManyToOne(targetEntity: BusinessCriticity::class)]
+    #[ORM\JoinColumn(name: 'businesscriticities_id', referencedColumnName: 'id', nullable: false)]
+    private ?BusinessCriticity $businesscriticity;
 
     public function getId(): ?int
     {
@@ -435,6 +451,126 @@ class Infocom
     public function setBusinesscriticitiesId(int $businesscriticities_id): self
     {
         $this->businesscriticities_id = $businesscriticities_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of delivery_number
+     */ 
+    public function getDelivery_number()
+    {
+        return $this->delivery_number;
+    }
+
+    /**
+     * Set the value of delivery_number
+     *
+     * @return  self
+     */ 
+    public function setDelivery_number($delivery_number)
+    {
+        $this->delivery_number = $delivery_number;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of immo_number
+     */ 
+    public function getImmo_number()
+    {
+        return $this->immo_number;
+    }
+
+    /**
+     * Set the value of immo_number
+     *
+     * @return  self
+     */ 
+    public function setImmo_number($immo_number)
+    {
+        $this->immo_number = $immo_number;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of supplier
+     */ 
+    public function getSupplier()
+    {
+        return $this->supplier;
+    }
+
+    /**
+     * Set the value of supplier
+     *
+     * @return  self
+     */ 
+    public function setSupplier($supplier)
+    {
+        $this->supplier = $supplier;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of budget
+     */ 
+    public function getBudget()
+    {
+        return $this->budget;
+    }
+
+    /**
+     * Set the value of budget
+     *
+     * @return  self
+     */ 
+    public function setBudget($budget)
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of businesscriticity
+     */ 
+    public function getBusinesscriticity()
+    {
+        return $this->businesscriticity;
+    }
+
+    /**
+     * Set the value of businesscriticity
+     *
+     * @return  self
+     */ 
+    public function setBusinesscriticity($businesscriticity)
+    {
+        $this->businesscriticity = $businesscriticity;
 
         return $this;
     }
