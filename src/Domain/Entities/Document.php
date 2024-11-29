@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_documents')]
@@ -26,6 +27,10 @@ class Document
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $entities_id;
 
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
+
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $is_recursive;
 
@@ -38,8 +43,12 @@ class Document
     #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => 'file storage path'])]
     private $filepath;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'documentcategories_id', options: ['default' => 0])]
     private $documentcategories_id;
+
+    #[ORM\ManyToOne(targetEntity: Documentcategory::class)]
+    #[ORM\JoinColumn(name: 'documentcategories_id', referencedColumnName: 'id', nullable: false)]
+    private ?Documentcategory $documentcategory;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mime;
@@ -56,11 +65,19 @@ class Document
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $link;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'users_id', options: ['default' => 0])]
     private $users_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    private ?User $user;
+
+    #[ORM\Column(type: 'integer', name: 'tickets_id', options: ['default' => 0])]
     private $tickets_id;
+
+    #[ORM\ManyToOne(targetEntity: Ticket::class)]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: false)]
+    private ?Ticket $ticket;
 
     #[ORM\Column(type: 'string', length: 40, nullable: true, options: ['fixed' => true])]
     private $sha1sum;
@@ -73,6 +90,9 @@ class Document
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'document', targetEntity: DocumentItem::class)]
+    private Collection $documentItems;
 
     public function getId(): ?int
     {
@@ -286,6 +306,106 @@ class Document
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of documentcategory
+     */ 
+    public function getDocumentcategory()
+    {
+        return $this->documentcategory;
+    }
+
+    /**
+     * Set the value of documentcategory
+     *
+     * @return  self
+     */ 
+    public function setDocumentcategory($documentcategory)
+    {
+        $this->documentcategory = $documentcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ticket
+     */ 
+    public function getTicket()
+    {
+        return $this->ticket;
+    }
+
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */ 
+    public function setTicket($ticket)
+    {
+        $this->ticket = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of documentItems
+     */ 
+    public function getDocumentItems()
+    {
+        return $this->documentItems;
+    }
+
+    /**
+     * Set the value of documentItems
+     *
+     * @return  self
+     */ 
+    public function setDocumentItems($documentItems)
+    {
+        $this->documentItems = $documentItems;
 
         return $this;
     }
