@@ -25,29 +25,53 @@ class Devicesensor
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $designation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'devicesensortypes_id', options: ['default' => 0])]
     private $devicesensortypes_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Devicesensortype::class)]
+    #[ORM\JoinColumn(name: 'devicesensortypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Devicesensortype $devicesensortype;
+
+    #[ORM\Column(type: 'integer', name: 'devicesensormodels_id', options: ['default' => 0])]
     private $devicesensormodels_id;
+
+    #[ORM\ManyToOne(targetEntity: Devicesensormodel::class)]
+    #[ORM\JoinColumn(name: 'devicesensormodels_id', referencedColumnName: 'id', nullable: false)]
+    private ?Devicesensormodel $devicesensormodel;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
     private $manufacturers_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
+
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'locations_id', options: ['default' => 0])]
     private $locations_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
+    private ?Location $location;
+
+    #[ORM\Column(type: 'integer', name: 'states_id', options: ['default' => 0])]
     private $states_id;
+
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: false)]
+    private ?State $state;
 
     #[ORM\Column(type: 'datetime', nullable: 'false')]
     #[ORM\Version]
@@ -193,4 +217,124 @@ class Devicesensor
         return $this;
     }
 
+
+    /**
+     * Get the value of devicesensormodel
+     */ 
+    public function getDevicesensormodel()
+    {
+        return $this->devicesensormodel;
+    }
+
+    /**
+     * Set the value of devicesensormodel
+     *
+     * @return  self
+     */ 
+    public function setDevicesensormodel($devicesensormodel)
+    {
+        $this->devicesensormodel = $devicesensormodel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicesensortype
+     */ 
+    public function getDevicesensortype()
+    {
+        return $this->devicesensortype;
+    }
+
+    /**
+     * Set the value of devicesensortype
+     *
+     * @return  self
+     */ 
+    public function setDevicesensortype($devicesensortype)
+    {
+        $this->devicesensortype = $devicesensortype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
 }
