@@ -29,8 +29,12 @@ class Group
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'entityRssfeeds')]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $is_recursive;
@@ -53,8 +57,12 @@ class Group
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'groups_id', options: ['default' => 0])]
     private $groups_id;
+
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group;
 
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $completename;
@@ -97,6 +105,9 @@ class Group
 
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: ChangeGroup::class)]
     private Collection $changesGroups;
+
+    #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupKnowbaseItem::class)]
+    private Collection $groupKnowbaseitems;
 
     public function getId(): ?int
     {
@@ -383,6 +394,66 @@ class Group
     public function setChangesGroups($changesGroups)
     {
         $this->changesGroups = $changesGroups;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupKnowbaseitems
+     */ 
+    public function getGroupKnowbaseitems()
+    {
+        return $this->groupKnowbaseitems;
+    }
+
+    /**
+     * Set the value of groupKnowbaseitems
+     *
+     * @return  self
+     */ 
+    public function setGroupKnowbaseitems($groupKnowbaseitems)
+    {
+        $this->groupKnowbaseitems = $groupKnowbaseitems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
 
         return $this;
     }

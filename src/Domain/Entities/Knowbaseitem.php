@@ -56,6 +56,9 @@ class Knowbaseitem
     #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: EntityKnowbaseitem::class)]
     private Collection $entityKnowbaseitems;
 
+    #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: GroupKnowbaseItem::class)]
+    private Collection $groupKnowbaseitems;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -188,6 +191,26 @@ class Knowbaseitem
     public function setEntityKnowbaseitems($entityKnowbaseitems)
     {
         $this->entityKnowbaseitems = $entityKnowbaseitems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupKnowbaseitems
+     */ 
+    public function getGroupKnowbaseitems()
+    {
+        return $this->groupKnowbaseitems;
+    }
+
+    /**
+     * Set the value of groupKnowbaseitems
+     *
+     * @return  self
+     */ 
+    public function setGroupKnowbaseitems($groupKnowbaseitems)
+    {
+        $this->groupKnowbaseitems = $groupKnowbaseitems;
 
         return $this;
     }

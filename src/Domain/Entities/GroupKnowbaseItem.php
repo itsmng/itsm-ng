@@ -20,8 +20,16 @@ class GroupKnowbaseItem
     #[ORM\Column(type: "integer", options: ['default' => 0])]
     private $knowbaseitems_id;
 
+    #[ORM\ManyToOne(targetEntity: Knowbaseitem::class, inversedBy: 'groupKnowbaseitems')]
+    #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: false)]
+    private ?Knowbaseitem $knowbaseitem;
+
     #[ORM\Column(type: "integer", options: ['default' => 0])]
     private $groups_id;
+
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupKnowbaseitems')]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group;
 
     #[ORM\Column(type: "integer", options: ['default' => -1])]
     private $entities_id;
@@ -78,6 +86,46 @@ class GroupKnowbaseItem
     public function setIsRecursive(bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitem
+     */ 
+    public function getKnowbaseitem()
+    {
+        return $this->knowbaseitem;
+    }
+
+    /**
+     * Set the value of knowbaseitem
+     *
+     * @return  self
+     */ 
+    public function setKnowbaseitem($knowbaseitem)
+    {
+        $this->knowbaseitem = $knowbaseitem;
 
         return $this;
     }
