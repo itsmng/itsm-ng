@@ -118,6 +118,9 @@ class Group
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupRssFeed::class)]
     private Collection $groupRssfeeds;
 
+    #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupTicket::class)]
+    private Collection $groupTickets;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -523,6 +526,26 @@ class Group
     public function setGroupRssfeeds($groupRssfeeds)
     {
         $this->groupRssfeeds = $groupRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupTickets
+     */ 
+    public function getGroupTickets()
+    {
+        return $this->groupTickets;
+    }
+
+    /**
+     * Set the value of groupTickets
+     *
+     * @return  self
+     */ 
+    public function setGroupTickets($groupTickets)
+    {
+        $this->groupTickets = $groupTickets;
 
         return $this;
     }

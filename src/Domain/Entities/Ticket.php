@@ -165,7 +165,10 @@ class Ticket
     private $date_creation;
 
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ChangeTicket::class)]
-    private Collection $changesTickets;
+    private Collection $changeTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: GroupTicket::class)]
+    private Collection $groupTickets;
 
     public function getId(): ?int
     {
@@ -654,21 +657,41 @@ class Ticket
 
 
     /**
-     * Get the value of changesTickets
-     */
-    public function getChangesTickets()
+     * Get the value of groupTickets
+     */ 
+    public function getGroupTickets()
     {
-        return $this->changesTickets;
+        return $this->groupTickets;
     }
 
     /**
-     * Set the value of changesTickets
+     * Set the value of groupTickets
      *
      * @return  self
-     */
-    public function setChangesTickets($changesTickets)
+     */ 
+    public function setGroupTickets($groupTickets)
     {
-        $this->changesTickets = $changesTickets;
+        $this->groupTickets = $groupTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeTickets
+     */ 
+    public function getChangeTickets()
+    {
+        return $this->changeTickets;
+    }
+
+    /**
+     * Set the value of changeTickets
+     *
+     * @return  self
+     */ 
+    public function setChangeTickets($changeTickets)
+    {
+        $this->changeTickets = $changeTickets;
 
         return $this;
     }
