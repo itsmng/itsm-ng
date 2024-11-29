@@ -136,7 +136,7 @@ class Change
     private Collection $changeTickets;
 
     #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeSupplier::class)]
-    private Collection $changesSuppliers;
+    private Collection $changeSuppliers;
 
     #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeUser::class)]
     private Collection $changeUsers;
@@ -533,29 +533,7 @@ class Change
 
         return $this;
     }
-
-   
-
-    /**
-     * Get the value of changesSuppliers
-     */
-    public function getChangesSuppliers()
-    {
-        return $this->changesSuppliers;
-    }
-
-    /**
-     * Set the value of changesSuppliers
-     *
-     * @return  self
-     */
-    public function setChangesSuppliers($changesSuppliers)
-    {
-        $this->changesSuppliers = $changesSuppliers;
-
-        return $this;
-    }
-
+      
     
     /**
      * Get the value of changeTickets
@@ -633,6 +611,26 @@ class Change
     public function setChangeGroups($changeGroups)
     {
         $this->changeGroups = $changeGroups;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeSuppliers
+     */ 
+    public function getChangeSuppliers()
+    {
+        return $this->changeSuppliers;
+    }
+
+    /**
+     * Set the value of changeSuppliers
+     *
+     * @return  self
+     */ 
+    public function setChangeSuppliers($changeSuppliers)
+    {
+        $this->changeSuppliers = $changeSuppliers;
 
         return $this;
     }

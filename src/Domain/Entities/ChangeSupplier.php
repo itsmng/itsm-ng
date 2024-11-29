@@ -19,14 +19,14 @@ class ChangeSupplier
     #[ORM\Column(type: 'integer', name: 'changes_id', options: ['default' => 0])]
     private $changes_id;
 
-    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changesSuppliers')]
+    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeSuppliers')]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
     private ?Change $change;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $suppliers_id;
 
-    #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'changesSuppliers')]
+    #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'changeSuppliers')]
     #[ORM\JoinColumn(name: 'supplier_id', referencedColumnName: 'id', nullable: false)]
     private ?Supplier $supplier;
 

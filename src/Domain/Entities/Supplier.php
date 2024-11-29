@@ -76,7 +76,7 @@ class Supplier
     private $is_active;
 
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ChangeSupplier::class)]
-    private Collection $changesSuppliers;
+    private Collection $changeSuppliers;
 
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ContactSupplier::class)]
     private Collection $contactSuppliers;
@@ -308,26 +308,6 @@ class Supplier
 
 
     /**
-     * Get the value of changesSuppliers
-     */
-    public function getChangesSuppliers()
-    {
-        return $this->changesSuppliers;
-    }
-
-    /**
-     * Set the value of changesSuppliers
-     *
-     * @return  self
-     */
-    public function setChangesSuppliers($changesSuppliers)
-    {
-        $this->changesSuppliers = $changesSuppliers;
-
-        return $this;
-    }
-
-    /**
      * Get the value of contactSuppliers
      */
     public function getContactSuppliers()
@@ -363,6 +343,26 @@ class Supplier
     public function setContractSuppliers($contractSuppliers)
     {
         $this->contractSuppliers = $contractSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeSuppliers
+     */ 
+    public function getChangeSuppliers()
+    {
+        return $this->changeSuppliers;
+    }
+
+    /**
+     * Set the value of changeSuppliers
+     *
+     * @return  self
+     */ 
+    public function setChangeSuppliers($changeSuppliers)
+    {
+        $this->changeSuppliers = $changeSuppliers;
 
         return $this;
     }
