@@ -25,23 +25,39 @@ class Domain
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "entities_id", options: ["default" => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "domaintypes_id", options: ["default" => 0])]
     private $domaintypes_id;
+
+    #[ORM\ManyToOne(targetEntity: Domaintype::class)]
+    #[ORM\JoinColumn(name: 'domaintypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Domaintype $domaintype;
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_expiration;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "users_id_tech", options: ["default" => 0])]
     private $users_id_tech;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
+    private ?User $userTech;
+
+    #[ORM\Column(type: "integer", name: "groups_id_tech", options: ["default" => 0])]
     private $groups_id_tech;
+
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
+    private ?Group $groupTech;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $others;
@@ -210,6 +226,86 @@ class Domain
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of domaintype
+     */ 
+    public function getDomaintype()
+    {
+        return $this->domaintype;
+    }
+
+    /**
+     * Set the value of domaintype
+     *
+     * @return  self
+     */ 
+    public function setDomaintype($domaintype)
+    {
+        $this->domaintype = $domaintype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userTech
+     */ 
+    public function getUserTech()
+    {
+        return $this->userTech;
+    }
+
+    /**
+     * Set the value of userTech
+     *
+     * @return  self
+     */ 
+    public function setUserTech($userTech)
+    {
+        $this->userTech = $userTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupTech
+     */ 
+    public function getGroupTech()
+    {
+        return $this->groupTech;
+    }
+
+    /**
+     * Set the value of groupTech
+     *
+     * @return  self
+     */ 
+    public function setGroupTech($groupTech)
+    {
+        $this->groupTech = $groupTech;
 
         return $this;
     }
