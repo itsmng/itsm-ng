@@ -18,8 +18,12 @@ class DocumentItem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'documents_id', options: ['default' => 0])]
     private $documents_id;
+
+    #[ORM\ManyToOne(targetEntity: Document::class, inversedBy: 'documentItems')]
+    #[ORM\JoinColumn(name: 'documents_id', referencedColumnName: 'id', nullable: false)]
+    private ?Document $document;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_id;
@@ -27,8 +31,12 @@ class DocumentItem
     #[ORM\Column(type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -37,8 +45,12 @@ class DocumentItem
     #[ORM\Version]
     private $date_mod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0], nullable: true)]
+    #[ORM\Column(type: 'integer', name: 'users_id', options: ['default' => 0], nullable: true)]
     private $users_id;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    private ?User $user;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $timeline_position;
@@ -174,4 +186,64 @@ class DocumentItem
         return $this;
     }
 
+
+    /**
+     * Get the value of document
+     */ 
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
+    /**
+     * Set the value of document
+     *
+     * @return  self
+     */ 
+    public function setDocument($document)
+    {
+        $this->document = $document;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }
