@@ -121,6 +121,10 @@ class Group
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupTicket::class)]
     private Collection $groupTickets;
 
+    #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupUser::class)]
+    private Collection $groupUsers;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -547,6 +551,26 @@ class Group
     public function setChangeGroups($changeGroups)
     {
         $this->changeGroups = $changeGroups;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupUsers
+     */ 
+    public function getGroupUsers()
+    {
+        return $this->groupUsers;
+    }
+
+    /**
+     * Set the value of groupUsers
+     *
+     * @return  self
+     */ 
+    public function setGroupUsers($groupUsers)
+    {
+        $this->groupUsers = $groupUsers;
 
         return $this;
     }

@@ -17,11 +17,19 @@ class GroupUser
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'users_id', options: ["default" => 0])]
     private $users_id;
+    
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'groupUsers')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    private ?User $user;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'groups_id', options: ["default" => 0])]
     private $groups_id;
+
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupUsers')]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
     private $is_dynamic;
@@ -93,6 +101,46 @@ class GroupUser
     public function setIsUserdelegate(bool $is_userdelegate): self
     {
         $this->is_userdelegate = $is_userdelegate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

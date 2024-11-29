@@ -336,6 +336,9 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChangeUser::class)]
     private Collection $changeUsers;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: GroupUser::class)]
+    private Collection $groupUsers;
+
 
     public function getId(): ?int
     {
@@ -1561,6 +1564,26 @@ class User
     public function setChangeUsers($changeUsers)
     {
         $this->changeUsers = $changeUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupUsers
+     */ 
+    public function getGroupUsers()
+    {
+        return $this->groupUsers;
+    }
+
+    /**
+     * Set the value of groupUsers
+     *
+     * @return  self
+     */ 
+    public function setGroupUsers($groupUsers)
+    {
+        $this->groupUsers = $groupUsers;
 
         return $this;
     }
