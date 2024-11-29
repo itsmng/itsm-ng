@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_ipnetworks")]
@@ -103,6 +104,10 @@ class IpNetwork
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
+    
+    #[ORM\OneToMany(mappedBy: 'ipnetwork', targetEntity: IpAddressIpNetwork::class)]
+    private Collection $ipaddressIpnetworks;
+
 
     public function __construct()
     {
@@ -447,6 +452,27 @@ class IpNetwork
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    
+    /**
+     * Get the value of ipaddressIpnetworks
+     */ 
+    public function getIpaddressIpnetworks()
+    {
+        return $this->ipaddressIpnetworks;
+    }
+
+    /**
+     * Set the value of ipaddressIpnetworks
+     *
+     * @return  self
+     */ 
+    public function setIpaddressIpnetworks($ipaddressIpnetworks)
+    {
+        $this->ipaddressIpnetworks = $ipaddressIpnetworks;
 
         return $this;
     }
