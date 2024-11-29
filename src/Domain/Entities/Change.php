@@ -127,7 +127,7 @@ class Change
     private $date_creation;
 
     #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeProblem::class)]
-    private Collection $changesProblems;
+    private Collection $changeProblems;
 
     #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeGroup::class)]
     private Collection $changesGroups;
@@ -535,26 +535,6 @@ class Change
     }
 
     /**
-     * Get the value of changesProblems
-     */
-    public function getChangesProblems()
-    {
-        return $this->changesProblems;
-    }
-
-    /**
-     * Set the value of changesProblems
-     *
-     * @return  self
-     */
-    public function setChangesProblems($changesProblems)
-    {
-        $this->changesProblems = $changesProblems;
-
-        return $this;
-    }
-
-    /**
      * Get the value of changesGroups
      */
     public function getChangesGroups()
@@ -632,6 +612,26 @@ class Change
     public function setChangeUsers($changeUsers)
     {
         $this->changeUsers = $changeUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeProblems
+     */ 
+    public function getChangeProblems()
+    {
+        return $this->changeProblems;
+    }
+
+    /**
+     * Set the value of changeProblems
+     *
+     * @return  self
+     */ 
+    public function setChangeProblems($changeProblems)
+    {
+        $this->changeProblems = $changeProblems;
 
         return $this;
     }

@@ -18,14 +18,14 @@ class ChangeProblem
     #[ORM\Column(type: 'integer', name: 'changes_id', options: ['default' => 0])]
     private $changes_id;
 
-    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changesProblems')]
+    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeProblems')]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
     private ?Change $change;
 
     #[ORM\Column(type: 'integer', name: 'problems_id', options: ['default' => 0])]
     private $problems_id;
 
-    #[ORM\ManyToOne(targetEntity: Problem::class, inversedBy: 'changesProblems')]
+    #[ORM\ManyToOne(targetEntity: Problem::class, inversedBy: 'changeProblems')]
     #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: false)]
     private ?Problem $problem;
 
