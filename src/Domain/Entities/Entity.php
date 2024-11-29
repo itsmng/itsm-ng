@@ -282,6 +282,9 @@ class Entity
     #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityKnowbaseitem::class)]
     private Collection $entityKnowbaseitems;
 
+    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityReminder::class)]
+    private Collection $entityReminders;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -1366,6 +1369,26 @@ class Entity
     public function setEntityKnowbaseitems($entityKnowbaseitems)
     {
         $this->entityKnowbaseitems = $entityKnowbaseitems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entityReminders
+     */ 
+    public function getEntityReminders()
+    {
+        return $this->entityReminders;
+    }
+
+    /**
+     * Set the value of entityReminders
+     *
+     * @return  self
+     */ 
+    public function setEntityReminders($entityReminders)
+    {
+        $this->entityReminders = $entityReminders;
 
         return $this;
     }

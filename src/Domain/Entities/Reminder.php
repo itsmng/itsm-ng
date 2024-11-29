@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_reminders')]
@@ -60,6 +61,9 @@ class Reminder
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: EntityReminder::class)]
+    private Collection $entityReminders;
 
     public function getId(): ?int
     {
@@ -222,4 +226,24 @@ class Reminder
         return $this;
     }
 
+
+    /**
+     * Get the value of entityReminders
+     */ 
+    public function getEntityReminders()
+    {
+        return $this->entityReminders;
+    }
+
+    /**
+     * Set the value of entityReminders
+     *
+     * @return  self
+     */ 
+    public function setEntityReminders($entityReminders)
+    {
+        $this->entityReminders = $entityReminders;
+
+        return $this;
+    }
 }
