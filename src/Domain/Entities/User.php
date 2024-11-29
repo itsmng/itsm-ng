@@ -334,7 +334,7 @@ class User
     private $accessibility_menu;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChangeUser::class)]
-    private Collection $changesUsers;
+    private Collection $changeUsers;
 
 
     public function getId(): ?int
@@ -1544,22 +1544,23 @@ class User
     }
 
 
+
     /**
-     * Get the value of changesUsers
-     */
-    public function getChangesUsers()
+     * Get the value of changeUsers
+     */ 
+    public function getChangeUsers()
     {
-        return $this->changesUsers;
+        return $this->changeUsers;
     }
 
     /**
-     * Set the value of changesUsers
+     * Set the value of changeUsers
      *
      * @return  self
-     */
-    public function setChangesUsers($changesUsers)
+     */ 
+    public function setChangeUsers($changeUsers)
     {
-        $this->changesUsers = $changesUsers;
+        $this->changeUsers = $changeUsers;
 
         return $this;
     }

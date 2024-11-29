@@ -139,7 +139,7 @@ class Change
     private Collection $changesSuppliers;
 
     #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeUser::class)]
-    private Collection $changesUsers;
+    private Collection $changeUsers;
 
     public function getId(): ?int
     {
@@ -595,26 +595,7 @@ class Change
         return $this;
     }
 
-    /**
-     * Get the value of changesUsers
-     */
-    public function getChangesUsers()
-    {
-        return $this->changesUsers;
-    }
-
-    /**
-     * Set the value of changesUsers
-     *
-     * @return  self
-     */
-    public function setChangesUsers($changesUsers)
-    {
-        $this->changesUsers = $changesUsers;
-
-        return $this;
-    }
-
+    
     /**
      * Get the value of changeTickets
      */ 
@@ -631,6 +612,26 @@ class Change
     public function setChangeTickets($changeTickets)
     {
         $this->changeTickets = $changeTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeUsers
+     */ 
+    public function getChangeUsers()
+    {
+        return $this->changeUsers;
+    }
+
+    /**
+     * Set the value of changeUsers
+     *
+     * @return  self
+     */ 
+    public function setChangeUsers($changeUsers)
+    {
+        $this->changeUsers = $changeUsers;
 
         return $this;
     }
