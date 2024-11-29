@@ -18,14 +18,14 @@ class ChangeTicket
     #[ORM\Column(type: 'integer', name: 'changes_id', options: ['default' => 0])]
     private $changes_id;
 
-    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changesTickets')]
+    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeTickets')]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
     private ?Change $change;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $tickets_id;
 
-    #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'changesTickets')]
+    #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'changeTickets')]
     #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: false)]
     private ?Ticket $ticket;
 
