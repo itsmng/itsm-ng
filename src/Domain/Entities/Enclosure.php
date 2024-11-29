@@ -26,7 +26,7 @@ class Enclosure
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', NAME: 'entities_id', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
