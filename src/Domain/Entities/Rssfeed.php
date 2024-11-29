@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_rssfeeds')]
@@ -48,6 +49,9 @@ class Rssfeed
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'rssfeed', targetEntity: EntityRssFeed::class)]
+    private Collection $entityRssfeeds;
 
     public function getId(): ?int
     {
@@ -174,4 +178,24 @@ class Rssfeed
         return $this;
     }
 
+
+    /**
+     * Get the value of entityRssfeeds
+     */ 
+    public function getEntityRssfeeds()
+    {
+        return $this->entityRssfeeds;
+    }
+
+    /**
+     * Set the value of entityRssfeeds
+     *
+     * @return  self
+     */ 
+    public function setEntityRssfeeds($entityRssfeeds)
+    {
+        $this->entityRssfeeds = $entityRssfeeds;
+
+        return $this;
+    }
 }

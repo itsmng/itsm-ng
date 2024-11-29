@@ -16,11 +16,19 @@ class EntityRssFeed
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: "rssfeeds_id", options: ["default" => 0])]
     private $rssfeeds_id;
+
+    #[ORM\ManyToOne(targetEntity: Rssfeed::class, inversedBy: 'entityRssfeeds')]
+    #[ORM\JoinColumn(name: 'rssfeeds_id', referencedColumnName: 'id', nullable: false)]
+    private ?Rssfeed $rssfeed;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'entityRssfeeds')]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
@@ -69,6 +77,46 @@ class EntityRssFeed
     public function setIsRecursive(bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of rssfeed
+     */ 
+    public function getRssfeed()
+    {
+        return $this->rssfeed;
+    }
+
+    /**
+     * Set the value of rssfeed
+     *
+     * @return  self
+     */ 
+    public function setRssfeed($rssfeed)
+    {
+        $this->rssfeed = $rssfeed;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

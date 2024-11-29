@@ -285,6 +285,9 @@ class Entity
     #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityReminder::class)]
     private Collection $entityReminders;
 
+    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityRssFeed::class)]
+    private Collection $entityRssfeeds;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -1389,6 +1392,26 @@ class Entity
     public function setEntityReminders($entityReminders)
     {
         $this->entityReminders = $entityReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entityRssfeeds
+     */ 
+    public function getEntityRssfeeds()
+    {
+        return $this->entityRssfeeds;
+    }
+
+    /**
+     * Set the value of entityRssfeeds
+     *
+     * @return  self
+     */ 
+    public function setEntityRssfeeds($entityRssfeeds)
+    {
+        $this->entityRssfeeds = $entityRssfeeds;
 
         return $this;
     }
