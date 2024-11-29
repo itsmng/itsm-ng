@@ -32,14 +32,22 @@ class ItilCategory
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'entities_id', options: ["default" => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'itilcategories_id', options: ["default" => 0])]
     private $itilcategories_id;
+
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: false)]
+    private ?ItilCategory $itilCategory;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
@@ -53,14 +61,26 @@ class ItilCategory
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $level;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'knowbaseitemcategories_id', options: ["default" => 0])]
     private $knowbaseitemcategories_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: Knowbaseitemcategory::class)]
+    #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: false)]
+    private ?Knowbaseitemcategory $knowbaseitemcategory;
+
+    #[ORM\Column(type: "integer", name: 'users_id', options: ["default" => 0])]
     private $users_id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    private ?User $user;
+
+    #[ORM\Column(type: "integer", name: 'groups_id', options: ["default" => 0])]
     private $groups_id;
+
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $code;
@@ -77,15 +97,31 @@ class ItilCategory
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $tickettemplates_id_incident;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id_incident', referencedColumnName: 'id', nullable: false)]
+    private ?TicketTemplate $tickettemplateIncident;
+
+    #[ORM\Column(type: "integer", name: 'tickettemplates_id_demand', options: ["default" => 0])]
     private $tickettemplates_id_demand;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id_demand', referencedColumnName: 'id', nullable: false)]
+    private ?TicketTemplate $tickettemplateDemand;
+
+    #[ORM\Column(type: "integer", name: 'changetemplates_id', options: ["default" => 0])]
     private $changetemplates_id;
+
+    #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
+    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: false)]
+    private ?ChangeTemplate $changetemplate;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $problemtemplates_id;
 
+    #[ORM\ManyToOne(targetEntity: ProblemTemplate::class)]
+    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: false)]
+    private ?ProblemTemplate $problemtemplate;
+    
     #[ORM\Column(type: "integer", options: ["default" => 1])]
     private $is_incident;
 
@@ -393,6 +429,186 @@ class ItilCategory
     public function setDateCreation(?DateTime $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilCategory
+     */ 
+    public function getItilCategory()
+    {
+        return $this->itilCategory;
+    }
+
+    /**
+     * Set the value of itilCategory
+     *
+     * @return  self
+     */ 
+    public function setItilCategory($itilCategory)
+    {
+        $this->itilCategory = $itilCategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemcategory
+     */ 
+    public function getKnowbaseitemcategory()
+    {
+        return $this->knowbaseitemcategory;
+    }
+
+    /**
+     * Set the value of knowbaseitemcategory
+     *
+     * @return  self
+     */ 
+    public function setKnowbaseitemcategory($knowbaseitemcategory)
+    {
+        $this->knowbaseitemcategory = $knowbaseitemcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickettemplateIncident
+     */ 
+    public function getTickettemplateIncident()
+    {
+        return $this->tickettemplateIncident;
+    }
+
+    /**
+     * Set the value of tickettemplateIncident
+     *
+     * @return  self
+     */ 
+    public function setTickettemplateIncident($tickettemplateIncident)
+    {
+        $this->tickettemplateIncident = $tickettemplateIncident;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickettemplateDemand
+     */ 
+    public function getTickettemplateDemand()
+    {
+        return $this->tickettemplateDemand;
+    }
+
+    /**
+     * Set the value of tickettemplateDemand
+     *
+     * @return  self
+     */ 
+    public function setTickettemplateDemand($tickettemplateDemand)
+    {
+        $this->tickettemplateDemand = $tickettemplateDemand;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changetemplate
+     */ 
+    public function getChangetemplate()
+    {
+        return $this->changetemplate;
+    }
+
+    /**
+     * Set the value of changetemplate
+     *
+     * @return  self
+     */ 
+    public function setChangetemplate($changetemplate)
+    {
+        $this->changetemplate = $changetemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemtemplate
+     */ 
+    public function getProblemtemplate()
+    {
+        return $this->problemtemplate;
+    }
+
+    /**
+     * Set the value of problemtemplate
+     *
+     * @return  self
+     */ 
+    public function setProblemtemplate($problemtemplate)
+    {
+        $this->problemtemplate = $problemtemplate;
 
         return $this;
     }
