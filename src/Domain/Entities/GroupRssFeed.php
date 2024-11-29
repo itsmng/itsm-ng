@@ -17,14 +17,26 @@ class GroupRssFeed
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
+    #[ORM\Column(type: "integer", name: 'rssfeeds_id', options: ['default' => 0])]
     private $rssfeeds_id;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Rssfeed::class, inversedBy: 'groupRssfeeds')]
+    #[ORM\JoinColumn(name: 'rssfeeds_id', referencedColumnName: 'id', nullable: false)]
+    private ?Rssfeed $rssfeed;
+
+    #[ORM\Column(type: "integer", name: 'groups_id', options: ['default' => 0])]
     private $groups_id;
 
-    #[ORM\Column(type: "integer", options: ['default' => -1])]
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupRssfeeds')]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    private ?Group $group;
+
+    #[ORM\Column(type: "integer", name: 'entities_id', options: ['default' => -1])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ['default' => false])]
     private $is_recursive;
@@ -78,6 +90,66 @@ class GroupRssFeed
     public function setIsRecursive(bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of rssfeed
+     */ 
+    public function getRssfeed()
+    {
+        return $this->rssfeed;
+    }
+
+    /**
+     * Set the value of rssfeed
+     *
+     * @return  self
+     */ 
+    public function setRssfeed($rssfeed)
+    {
+        $this->rssfeed = $rssfeed;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

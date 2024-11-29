@@ -53,6 +53,9 @@ class Rssfeed
     #[ORM\OneToMany(mappedBy: 'rssfeed', targetEntity: EntityRssFeed::class)]
     private Collection $entityRssfeeds;
 
+    #[ORM\OneToMany(mappedBy: 'rssfeed', targetEntity: GroupRssFeed::class)]
+    private Collection $groupRssfeeds;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -195,6 +198,26 @@ class Rssfeed
     public function setEntityRssfeeds($entityRssfeeds)
     {
         $this->entityRssfeeds = $entityRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupRssfeeds
+     */ 
+    public function getGroupRssfeeds()
+    {
+        return $this->groupRssfeeds;
+    }
+
+    /**
+     * Set the value of groupRssfeeds
+     *
+     * @return  self
+     */ 
+    public function setGroupRssfeeds($groupRssfeeds)
+    {
+        $this->groupRssfeeds = $groupRssfeeds;
 
         return $this;
     }
