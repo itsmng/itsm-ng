@@ -22,8 +22,12 @@ class Entity
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $completename;
@@ -88,8 +92,12 @@ class Entity
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $tag;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'authldaps_id', options: ['default' => 0])]
     private $authldaps_id;
+
+    #[ORM\ManyToOne(targetEntity: AuthLdap::class)]
+    #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: false)]
+    private ?AuthLdap $authldap;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mail_domain;
@@ -151,8 +159,12 @@ class Entity
     #[ORM\Column(type: 'integer', options: ['default' => -2])]
     private $notclosed_delay;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
+    #[ORM\Column(type: 'integer', name: 'calendars_id', options: ['default' => -2])]
     private $calendars_id;
+
+    #[ORM\ManyToOne(targetEntity: Calendar::class)]
+    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: false)]
+    private ?Calendar $calendar;
 
     #[ORM\Column(type: 'integer', options: ['default' => -2])]
     private $auto_assign_mode;
@@ -193,11 +205,23 @@ class Entity
     #[ORM\Column(type: 'integer', options: ['default' => -2])]
     private $tickettemplates_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $changetemplates_id;
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: false)]
+    private ?TicketTemplate $tickettemplate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
+    #[ORM\Column(type: 'integer', name: 'changetemplates_id', options: ['default' => -2])]
+    private $changetemplates_id;
+    
+    #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
+    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: false)]
+    private ?ChangeTemplate $changetemplate;
+
+    #[ORM\Column(type: 'integer', name: 'problemtemplates_id', options: ['default' => -2])]
     private $problemtemplates_id;
+
+    #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
+    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: false)]
+    private ?Problemtemplate $problemtemplate;
 
     #[ORM\Column(type: 'integer', options: ['default' => -2])]
     private $entities_id_software;
@@ -1198,6 +1222,126 @@ class Entity
     public function setAltitude(string $altitude): self
     {
         $this->altitude = $altitude;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of calendar
+     */ 
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * Set the value of calendar
+     *
+     * @return  self
+     */ 
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickettemplate
+     */ 
+    public function getTickettemplate()
+    {
+        return $this->tickettemplate;
+    }
+
+    /**
+     * Set the value of tickettemplate
+     *
+     * @return  self
+     */ 
+    public function setTickettemplate($tickettemplate)
+    {
+        $this->tickettemplate = $tickettemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changetemplate
+     */ 
+    public function getChangetemplate()
+    {
+        return $this->changetemplate;
+    }
+
+    /**
+     * Set the value of changetemplate
+     *
+     * @return  self
+     */ 
+    public function setChangetemplate($changetemplate)
+    {
+        $this->changetemplate = $changetemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemtemplate
+     */ 
+    public function getProblemtemplate()
+    {
+        return $this->problemtemplate;
+    }
+
+    /**
+     * Set the value of problemtemplate
+     *
+     * @return  self
+     */ 
+    public function setProblemtemplate($problemtemplate)
+    {
+        $this->problemtemplate = $problemtemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of authldap
+     */ 
+    public function getAuthldap()
+    {
+        return $this->authldap;
+    }
+
+    /**
+     * Set the value of authldap
+     *
+     * @return  self
+     */ 
+    public function setAuthldap($authldap)
+    {
+        $this->authldap = $authldap;
 
         return $this;
     }
