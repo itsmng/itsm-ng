@@ -26,20 +26,32 @@ class Devicesimcard
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
     private $manufacturers_id;
+
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $voltage;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'devicesimcardtypes_id', options: ['default' => 0])]
     private $devicesimcardtypes_id;
+
+    #[ORM\ManyToOne(targetEntity: Devicesimcardtype::class)]
+    #[ORM\JoinColumn(name: 'devicesimcardtypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Devicesimcardtype $devicesimcardtype;
 
     #[ORM\Column(type: 'datetime', nullable: 'false')]
     #[ORM\Version]
@@ -176,4 +188,64 @@ class Devicesimcard
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicesimcardtype
+     */ 
+    public function getDevicesimcardtype()
+    {
+        return $this->devicesimcardtype;
+    }
+
+    /**
+     * Set the value of devicesimcardtype
+     *
+     * @return  self
+     */ 
+    public function setDevicesimcardtype($devicesimcardtype)
+    {
+        $this->devicesimcardtype = $devicesimcardtype;
+
+        return $this;
+    }
 }
