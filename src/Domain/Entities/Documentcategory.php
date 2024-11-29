@@ -23,8 +23,12 @@ class Documentcategory
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'documentcategories_id', options: ['default' => 0])]
     private $documentcategories_id;
+
+    #[ORM\ManyToOne(targetEntity: Documentcategory::class)]
+    #[ORM\JoinColumn(name: 'documentcategories_id', referencedColumnName: 'id', nullable: false)]
+    private ?Documentcategory $documentcategory;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $completename;
@@ -158,4 +162,24 @@ class Documentcategory
         return $this;
     }
 
+
+    /**
+     * Get the value of documentcategory
+     */ 
+    public function getDocumentcategory()
+    {
+        return $this->documentcategory;
+    }
+
+    /**
+     * Set the value of documentcategory
+     *
+     * @return  self
+     */ 
+    public function setDocumentcategory($documentcategory)
+    {
+        $this->documentcategory = $documentcategory;
+
+        return $this;
+    }
 }
