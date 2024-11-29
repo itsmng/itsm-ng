@@ -27,11 +27,19 @@ class DevicePci
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: "integer", name: 'manufacturer_id', options: ["default" => 0])]
     private $manufacturers_id;
+
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $devicenetworkcardmodels_id;
+
+    #[ORM\ManyToOne(targetEntity: Devicenetworkcardmodel::class)]
+    #[ORM\JoinColumn(name: 'devicenetworkcardmodels_id', referencedColumnName: 'id', nullable: false)]
+    private ?Devicenetworkcardmodel $devicenetworkcardmodel;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $entities_id;
@@ -39,8 +47,12 @@ class DevicePci
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(type: "integer", name: 'devicepcimodels_id', nullable: true)]
     private $devicepcimodels_id;
+
+    #[ORM\ManyToOne(targetEntity: Devicepcimodel::class)]
+    #[ORM\JoinColumn(name: 'devicepcimodels_id', referencedColumnName: 'id', nullable: false)]
+    private ?Devicepcimodel $devicepcimodel;
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_mod;
@@ -157,6 +169,66 @@ class DevicePci
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicenetworkcardmodel
+     */ 
+    public function getDevicenetworkcardmodel()
+    {
+        return $this->devicenetworkcardmodel;
+    }
+
+    /**
+     * Set the value of devicenetworkcardmodel
+     *
+     * @return  self
+     */ 
+    public function setDevicenetworkcardmodel($devicenetworkcardmodel)
+    {
+        $this->devicenetworkcardmodel = $devicenetworkcardmodel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicepcimodel
+     */ 
+    public function getDevicepcimodel()
+    {
+        return $this->devicepcimodel;
+    }
+
+    /**
+     * Set the value of devicepcimodel
+     *
+     * @return  self
+     */ 
+    public function setDevicepcimodel($devicepcimodel)
+    {
+        $this->devicepcimodel = $devicepcimodel;
 
         return $this;
     }
