@@ -19,8 +19,16 @@ class EntityKnowbaseitem
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $knowbaseitems_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\ManyToOne(targetEntity: Knowbaseitem::class, inversedBy: 'entityKnowbaseitems')]
+    #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: false)]
+    private ?Knowbaseitem $knowbaseitem;
+
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'entityKnowbaseitems')]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -66,4 +74,44 @@ class EntityKnowbaseitem
         return $this;
     }
 
+
+    /**
+     * Get the value of knowbaseitem
+     */ 
+    public function getKnowbaseitem()
+    {
+        return $this->knowbaseitem;
+    }
+
+    /**
+     * Set the value of knowbaseitem
+     *
+     * @return  self
+     */ 
+    public function setKnowbaseitem($knowbaseitem)
+    {
+        $this->knowbaseitem = $knowbaseitem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
 }

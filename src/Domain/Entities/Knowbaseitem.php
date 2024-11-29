@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_knowbaseitems")]
@@ -51,6 +52,9 @@ class Knowbaseitem
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $end_date;
+
+    #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: EntityKnowbaseitem::class)]
+    private Collection $entityKnowbaseitems;
 
     public function getId(): ?int
     {
@@ -164,6 +168,27 @@ class Knowbaseitem
     public function setEndDate(\DateTimeInterface $end_date): self
     {
         $this->end_date = $end_date;
+        return $this;
+    }
+
+    
+    /**
+     * Get the value of entityKnowbaseitems
+     */ 
+    public function getEntityKnowbaseitems()
+    {
+        return $this->entityKnowbaseitems;
+    }
+
+    /**
+     * Set the value of entityKnowbaseitems
+     *
+     * @return  self
+     */ 
+    public function setEntityKnowbaseitems($entityKnowbaseitems)
+    {
+        $this->entityKnowbaseitems = $entityKnowbaseitems;
+
         return $this;
     }
 }

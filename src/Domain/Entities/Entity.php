@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_entities")]
@@ -277,6 +278,9 @@ class Entity
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $altitude;
+
+    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityKnowbaseitem::class)]
+    private Collection $entityKnowbaseitems;
 
     public function getId(): ?int
     {
@@ -1342,6 +1346,26 @@ class Entity
     public function setAuthldap($authldap)
     {
         $this->authldap = $authldap;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entityKnowbaseitems
+     */ 
+    public function getEntityKnowbaseitems()
+    {
+        return $this->entityKnowbaseitems;
+    }
+
+    /**
+     * Set the value of entityKnowbaseitems
+     *
+     * @return  self
+     */ 
+    public function setEntityKnowbaseitems($entityKnowbaseitems)
+    {
+        $this->entityKnowbaseitems = $entityKnowbaseitems;
 
         return $this;
     }
