@@ -112,6 +112,9 @@ class Problem
     #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ChangeProblem::class)]
     private Collection $changesProblems;
 
+    #[ORM\OneToMany(mappedBy: 'problem', targetEntity: GroupProblem::class)]
+    private Collection $groupProblems;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -474,6 +477,26 @@ class Problem
     public function setChangesProblems($changesProblems)
     {
         $this->changesProblems = $changesProblems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupProblems
+     */ 
+    public function getGroupProblems()
+    {
+        return $this->groupProblems;
+    }
+
+    /**
+     * Set the value of groupProblems
+     *
+     * @return  self
+     */ 
+    public function setGroupProblems($groupProblems)
+    {
+        $this->groupProblems = $groupProblems;
 
         return $this;
     }

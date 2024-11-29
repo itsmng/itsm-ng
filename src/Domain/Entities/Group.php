@@ -109,6 +109,9 @@ class Group
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupKnowbaseItem::class)]
     private Collection $groupKnowbaseitems;
 
+    #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupProblem::class)]
+    private Collection $groupProblems;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -454,6 +457,26 @@ class Group
     public function setGroup($group)
     {
         $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupProblems
+     */ 
+    public function getGroupProblems()
+    {
+        return $this->groupProblems;
+    }
+
+    /**
+     * Set the value of groupProblems
+     *
+     * @return  self
+     */ 
+    public function setGroupProblems($groupProblems)
+    {
+        $this->groupProblems = $groupProblems;
 
         return $this;
     }
