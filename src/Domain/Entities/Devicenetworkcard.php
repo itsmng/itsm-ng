@@ -29,20 +29,34 @@ class Devicenetworkcard
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
     private $manufacturers_id;
+
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mac_default;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
     private $entities_id;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
+
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer', name: 'devicenetworkcardmodels_id', nullable: true)]
     private $devicenetworkcardmodels_id;
+
+    #[ORM\ManyToOne(targetEntity: Devicenetworkcardmodel::class)]
+    #[ORM\JoinColumn(name: 'devicenetworkcardmodels_id', referencedColumnName: 'id', nullable: false)]
+    private ?Devicenetworkcardmodel $devicenetworkcardmodel;
+
 
     #[ORM\Column(type: 'datetime', nullable: 'false')]
     #[ORM\Version]
@@ -176,4 +190,64 @@ class Devicenetworkcard
         return $this;
     }
 
+
+    /**
+     * Get the value of manufacturer
+     */ 
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */ 
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicenetworkcardmodel
+     */ 
+    public function getDevicenetworkcardmodel()
+    {
+        return $this->devicenetworkcardmodel;
+    }
+
+    /**
+     * Set the value of devicenetworkcardmodel
+     *
+     * @return  self
+     */ 
+    public function setDevicenetworkcardmodel($devicenetworkcardmodel)
+    {
+        $this->devicenetworkcardmodel = $devicenetworkcardmodel;
+
+        return $this;
+    }
 }
