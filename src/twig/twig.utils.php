@@ -47,8 +47,6 @@ function expandSelect(&$select, $fields = [])
 
 function expandForm($form, $fields = [])
 {
-    global $CFG_GLPI;
-
     foreach ($form['content'] as $contentKey => $content) {
         if (isset($content['inputs'])) {
             foreach ($content['inputs'] as $inputKey => $input) {
@@ -268,7 +266,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     };
     if (
         isset($_SESSION['glpiactiveentities']) &&
-        count($_SESSION['glpiactiveentities']) > 1 &&
+        count($_SESSION['glpiactiveentities']) >= 1 &&
         isset($fields['entities_id']) && !isset($fields['noEntity'])
     ) {
         $entity_name = Dropdown::getDropdownName('glpi_entities', $fields['entities_id']);
