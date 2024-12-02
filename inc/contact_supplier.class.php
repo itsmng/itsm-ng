@@ -250,10 +250,7 @@ class Contact_Supplier extends CommonDBRelation
         $number = count($iterator);
 
         $contacts = [];
-        $options = getOptionForItems('Contact', [
-           'entities_id' => $supplier->fields["entities_id"],
-           'is_recursive' => $supplier->fields["is_recursive"]
-        ]);
+        $options = getItemByEntity(Contact::class, $supplier->fields['entities_id']);
         while ($data = $iterator->next()) {
             unset($options[$data['id']]);
             $contacts[$data['linkid']] = $data;

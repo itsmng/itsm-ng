@@ -384,10 +384,13 @@ abstract class LevelAgreement extends CommonDBChild
                     echo "<span id='la_choice$type$rand' style='display:none' class='assign_la'>";
                     echo "<i class='fas fa-stopwatch slt' aria-hidden='true'></i>";
                     echo "<span class='b'>" . static::getTypeName() . "</span>&nbsp;";
-                    echo static::dropdown([
+                    renderTwigTemplate('macros/input.twig', [
+                       'type'      => 'select',
                        'name'      => $laField,
-                       'entity'    => $ticket->fields["entities_id"],
-                       'condition' => ['type' => $type]
+                       'values'    => getOptionForItems($this::class, ['type' => $type]),
+                       'value'     => $ticket->fields[$laField],
+                       ($tt->isMandatoryField($dateField) ? 'required' : '') => true,
+                       ($canupdate ? null : 'disabled') => true,
                     ]);
                     echo "</span>";
                     echo $tt->getEndHiddenFieldText($laField);
@@ -398,11 +401,12 @@ abstract class LevelAgreement extends CommonDBChild
             echo "<td>";
             echo $tt->getBeginHiddenFieldValue($dateField);
             renderTwigTemplate('macros/input.twig', [
-               'type'      => 'datetime-local',
-               'name'      => $dateField,
-               'value'     => $ticket->fields[$dateField],
-               $tt->isMandatoryField($dateField) ? 'required' : '' => true,
-               $canupdate ? null : 'disabled' => true,
+               'type'      => 'select',
+               'name'      => $laField,
+               'values'    => getOptionForItems($this::class, ['type' => $type]),
+               'value'     => $ticket->fields[$laField],
+               ($tt->isMandatoryField($dateField) ? 'required' : '') => true,
+               ($canupdate ? null : 'disabled') => true,
             ]);
             echo $tt->getEndHiddenFieldValue($dateField, $ticket);
             echo "</td>";
