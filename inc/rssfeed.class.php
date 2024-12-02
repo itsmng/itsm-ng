@@ -373,8 +373,8 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
             $values = [$field => $values];
         }
         switch ($field) {
-        case 'refresh_rate':
-            return Html::timestampToString($values[$field], false);
+            case 'refresh_rate':
+                return Html::timestampToString($values[$field], false);
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);
     }
@@ -395,8 +395,8 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
         $options['display'] = false;
 
         switch ($field) {
-        case 'refresh_rate':
-            return Planning::dropdownState($name, $values[$field], false);
+            case 'refresh_rate':
+                return Planning::dropdownState($name, $values[$field], false);
         }
         return parent::getSpecificValueToSelect($field, $name, $values, $options);
     }
@@ -534,19 +534,19 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
         if (self::canView()) {
             $nb = 0;
             switch ($item->getType()) {
-            case 'RSSFeed':
-                $showtab = [1 => __('Content')];
-                if (Session::haveRight('rssfeed_public', UPDATE)) {
-                    if ($_SESSION['glpishow_count_on_tabs']) {
-                        $nb = $item->countVisibilities();
+                case 'RSSFeed':
+                    $showtab = [1 => __('Content')];
+                    if (Session::haveRight('rssfeed_public', UPDATE)) {
+                        if ($_SESSION['glpishow_count_on_tabs']) {
+                            $nb = $item->countVisibilities();
+                        }
+                        $showtab[2] = self::createTabEntry(_n(
+                            'Target',
+                            'Targets',
+                            Session::getPluralNumber()
+                        ), $nb);
                     }
-                    $showtab[2] = self::createTabEntry(_n(
-                        'Target',
-                        'Targets',
-                        Session::getPluralNumber()
-                    ), $nb);
-                }
-                return $showtab;
+                    return $showtab;
             }
         }
         return '';
@@ -577,16 +577,16 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
     {
 
         switch ($item->getType()) {
-        case 'RSSFeed':
-            switch ($tabnum) {
-            case 1:
-                $item->showFeedContent();
-                return true;
+            case 'RSSFeed':
+                switch ($tabnum) {
+                    case 1:
+                        $item->showFeedContent();
+                        return true;
 
-            case 2:
-                $item->showVisibility();
-                return true;
-            }
+                    case 2:
+                        $item->showVisibility();
+                        return true;
+                }
         }
         return false;
     }

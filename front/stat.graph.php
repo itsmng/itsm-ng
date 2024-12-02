@@ -84,250 +84,250 @@ if (Session::haveRight('user', READ)) {
 }
 
 switch ($_GET["type"]) {
-case "technicien":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        __('Technician'),
-        $item->getAssignName($_GET["id"], 'User', $showuserlink)
-    );
-    break;
+    case "technicien":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(
+            __('%1$s: %2$s'),
+            __('Technician'),
+            $item->getAssignName($_GET["id"], 'User', $showuserlink)
+        );
+        break;
 
-case "technicien_followup":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        __('Technician'),
-        $item->getAssignName($_GET["id"], 'User', $showuserlink)
-    );
-    break;
+    case "technicien_followup":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(
+            __('%1$s: %2$s'),
+            __('Technician'),
+            $item->getAssignName($_GET["id"], 'User', $showuserlink)
+        );
+        break;
 
-case "suppliers_id_assign":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        Supplier::getTypeName(1),
-        $item->getAssignName($_GET["id"], 'Supplier', $showuserlink)
-    );
-    break;
+    case "suppliers_id_assign":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(
+            __('%1$s: %2$s'),
+            Supplier::getTypeName(1),
+            $item->getAssignName($_GET["id"], 'Supplier', $showuserlink)
+        );
+        break;
 
-case "user":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(__('%1$s: %2$s'), User::getTypeName(1), getUserName($_GET["id"], $showuserlink));
-    break;
+    case "user":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(__('%1$s: %2$s'), User::getTypeName(1), getUserName($_GET["id"], $showuserlink));
+        break;
 
-case "users_id_recipient":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(__('%1$s: %2$s'), User::getTypeName(1), getUserName($_GET["id"], $showuserlink));
-    break;
+    case "users_id_recipient":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(__('%1$s: %2$s'), User::getTypeName(1), getUserName($_GET["id"], $showuserlink));
+        break;
 
-case "itilcategories_tree":
-    $parent = (isset($_GET['champ']) ? $_GET['champ'] : 0);
-    // nobreak;
+    case "itilcategories_tree":
+        $parent = (isset($_GET['champ']) ? $_GET['champ'] : 0);
+        // nobreak;
 
-    // no break
-case "itilcategories_id":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems(
-        $_GET["itemtype"],
-        $_POST["date1"],
-        $_POST["date2"],
-        $_GET["type"],
-        $parent
-    );
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        __('Category'),
-        Dropdown::getDropdownName("glpi_itilcategories", $_GET["id"])
-    );
-    break;
-
-case 'locations_tree':
-    $parent = (isset($_GET['champ']) ? $_GET['champ'] : 0);
-    // nobreak;
-
-    // no break
-case 'locations_id':
-    $val1    = $_GET['id'];
-    $val2    = '';
-    $values  = Stat::getItems(
-        $_GET['itemtype'],
-        $_POST['date1'],
-        $_POST['date2'],
-        $_GET['type'],
-        $parent
-    );
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        Location::getTypeName(1),
-        Dropdown::getDropdownName('glpi_locations', $_GET['id'])
-    );
-    break;
-
-case "type":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(__('%1$s: %2$s'), _n('Type', 'Types', 1), Ticket::getTicketTypeName($_GET["id"]));
-    break;
-
-case 'group_tree':
-case 'groups_tree_assign':
-    $parent = (isset($_GET['champ']) ? $_GET['champ'] : 0);
-    // nobreak;
-
-    // no break
-case "group":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems(
-        $_GET["itemtype"],
-        $_POST["date1"],
-        $_POST["date2"],
-        $_GET["type"],
-        $parent
-    );
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        Group::getTypeName(1),
-        Dropdown::getDropdownName("glpi_groups", $_GET["id"])
-    );
-    break;
-
-case "groups_id_assign":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        Group::getTypeName(1),
-        Dropdown::getDropdownName("glpi_groups", $_GET["id"])
-    );
-    break;
-
-case "priority":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(__('%1$s: %2$s'), __('Priority'), $item->getPriorityName($_GET["id"]));
-    break;
-
-case "urgency":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(__('%1$s: %2$s'), __('Urgency'), $item->getUrgencyName($_GET["id"]));
-    break;
-
-case "impact":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(__('%1$s: %2$s'), __('Impact'), $item->getImpactName($_GET["id"]));
-    break;
-
-case "usertitles_id":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        _x('person', 'Title'),
-        Dropdown::getDropdownName("glpi_usertitles", $_GET["id"])
-    );
-    break;
-
-case "solutiontypes_id":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        SolutionType::getTypeName(1),
-        Dropdown::getDropdownName("glpi_solutiontypes", $_GET["id"])
-    );
-    break;
-
-case "usercategories_id":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        __('Category'),
-        Dropdown::getDropdownName("glpi_usercategories", $_GET["id"])
-    );
-    break;
-
-case "requesttypes_id":
-    $val1    = $_GET["id"];
-    $val2    = "";
-    $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
-    $title   = sprintf(
-        __('%1$s: %2$s'),
-        RequestType::getTypeName(1),
-        Dropdown::getDropdownName("glpi_requesttypes", $_GET["id"])
-    );
-    break;
-
-case "device":
-    $val1 = $_GET["id"];
-    $val2 = $_GET["champ"];
-    if ($item = getItemForItemtype($_GET["champ"])) {
-        $device_table = $item->getTable();
-        $values       = Stat::getItems(
+        // no break
+    case "itilcategories_id":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems(
             $_GET["itemtype"],
             $_POST["date1"],
             $_POST["date2"],
-            $_GET["champ"]
+            $_GET["type"],
+            $parent
         );
-
-        $iterator = $DB->request([
-            'SELECT' => ['designation'],
-            'FROM'   => $device_table,
-            'WHERE'  => [
-                'id' => $_GET['id']
-            ]
-        ]);
-        $current = $iterator->next();
-
-        $title  = sprintf(
+        $title   = sprintf(
             __('%1$s: %2$s'),
-            $item->getTypeName(),
-            $current['designation']
+            __('Category'),
+            Dropdown::getDropdownName("glpi_itilcategories", $_GET["id"])
         );
-    }
-    break;
+        break;
 
-case "comp_champ":
-    $val1  = $_GET["id"];
-    $val2  = $_GET["champ"];
-    if ($item = getItemForItemtype($_GET["champ"])) {
-        $table  = $item->getTable();
-        $values = Stat::getItems(
+    case 'locations_tree':
+        $parent = (isset($_GET['champ']) ? $_GET['champ'] : 0);
+        // nobreak;
+
+        // no break
+    case 'locations_id':
+        $val1    = $_GET['id'];
+        $val2    = '';
+        $values  = Stat::getItems(
+            $_GET['itemtype'],
+            $_POST['date1'],
+            $_POST['date2'],
+            $_GET['type'],
+            $parent
+        );
+        $title   = sprintf(
+            __('%1$s: %2$s'),
+            Location::getTypeName(1),
+            Dropdown::getDropdownName('glpi_locations', $_GET['id'])
+        );
+        break;
+
+    case "type":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(__('%1$s: %2$s'), _n('Type', 'Types', 1), Ticket::getTicketTypeName($_GET["id"]));
+        break;
+
+    case 'group_tree':
+    case 'groups_tree_assign':
+        $parent = (isset($_GET['champ']) ? $_GET['champ'] : 0);
+        // nobreak;
+
+        // no break
+    case "group":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems(
             $_GET["itemtype"],
             $_POST["date1"],
             $_POST["date2"],
-            $_GET["champ"]
+            $_GET["type"],
+            $parent
         );
-        $title  = sprintf(
+        $title   = sprintf(
             __('%1$s: %2$s'),
-            $item->getTypeName(),
-            Dropdown::getDropdownName($table, $_GET["id"])
+            Group::getTypeName(1),
+            Dropdown::getDropdownName("glpi_groups", $_GET["id"])
         );
-    }
-    break;
+        break;
+
+    case "groups_id_assign":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(
+            __('%1$s: %2$s'),
+            Group::getTypeName(1),
+            Dropdown::getDropdownName("glpi_groups", $_GET["id"])
+        );
+        break;
+
+    case "priority":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(__('%1$s: %2$s'), __('Priority'), $item->getPriorityName($_GET["id"]));
+        break;
+
+    case "urgency":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(__('%1$s: %2$s'), __('Urgency'), $item->getUrgencyName($_GET["id"]));
+        break;
+
+    case "impact":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(__('%1$s: %2$s'), __('Impact'), $item->getImpactName($_GET["id"]));
+        break;
+
+    case "usertitles_id":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(
+            __('%1$s: %2$s'),
+            _x('person', 'Title'),
+            Dropdown::getDropdownName("glpi_usertitles", $_GET["id"])
+        );
+        break;
+
+    case "solutiontypes_id":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(
+            __('%1$s: %2$s'),
+            SolutionType::getTypeName(1),
+            Dropdown::getDropdownName("glpi_solutiontypes", $_GET["id"])
+        );
+        break;
+
+    case "usercategories_id":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(
+            __('%1$s: %2$s'),
+            __('Category'),
+            Dropdown::getDropdownName("glpi_usercategories", $_GET["id"])
+        );
+        break;
+
+    case "requesttypes_id":
+        $val1    = $_GET["id"];
+        $val2    = "";
+        $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
+        $title   = sprintf(
+            __('%1$s: %2$s'),
+            RequestType::getTypeName(1),
+            Dropdown::getDropdownName("glpi_requesttypes", $_GET["id"])
+        );
+        break;
+
+    case "device":
+        $val1 = $_GET["id"];
+        $val2 = $_GET["champ"];
+        if ($item = getItemForItemtype($_GET["champ"])) {
+            $device_table = $item->getTable();
+            $values       = Stat::getItems(
+                $_GET["itemtype"],
+                $_POST["date1"],
+                $_POST["date2"],
+                $_GET["champ"]
+            );
+
+            $iterator = $DB->request([
+                'SELECT' => ['designation'],
+                'FROM'   => $device_table,
+                'WHERE'  => [
+                    'id' => $_GET['id']
+                ]
+            ]);
+            $current = $iterator->next();
+
+            $title  = sprintf(
+                __('%1$s: %2$s'),
+                $item->getTypeName(),
+                $current['designation']
+            );
+        }
+        break;
+
+    case "comp_champ":
+        $val1  = $_GET["id"];
+        $val2  = $_GET["champ"];
+        if ($item = getItemForItemtype($_GET["champ"])) {
+            $table  = $item->getTable();
+            $values = Stat::getItems(
+                $_GET["itemtype"],
+                $_POST["date1"],
+                $_POST["date2"],
+                $_GET["champ"]
+            );
+            $title  = sprintf(
+                __('%1$s: %2$s'),
+                $item->getTypeName(),
+                Dropdown::getDropdownName($table, $_GET["id"])
+            );
+        }
+        break;
 }
 
 // Found next and prev items

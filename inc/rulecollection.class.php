@@ -515,7 +515,7 @@ class RuleCollection extends CommonDBTM
         $fields[] = __('Active');
         if ($display_entities) {
             $fields[] = Entity::getTypeName(1);
-        } else if ($rule->can_sort && $canedit) {
+        } elseif ($rule->can_sort && $canedit) {
             $fields[] = __('Actions');
         }
 
@@ -535,22 +535,30 @@ class RuleCollection extends CommonDBTM
                     "glpi_entities",
                     $rule->fields['entities_id']
                 );
-            } else if ($rule->can_sort && $canedit) {
+            } elseif ($rule->can_sort && $canedit) {
                 $active_condition = $rule->fields['condition'];
                 ob_start();
                 if ($idx > 0) {
-                    Html::showSimpleForm($target, ['action' => 'up',
-                        'condition' => $active_condition], '',
+                    Html::showSimpleForm(
+                        $target,
+                        ['action' => 'up',
+                        'condition' => $active_condition],
+                        '',
                         ['type' => $rule->fields["sub_type"],
                         'id'   => $rule->fields["id"],],
-                        $CFG_GLPI["root_doc"]."/pics/deplier_up.png");
+                        $CFG_GLPI["root_doc"]."/pics/deplier_up.png"
+                    );
                 }
                 if ($idx < count($this->RuleList->list) - 1) {
-                    Html::showSimpleForm($target, ['action' => 'down',
-                        'condition' => $active_condition], '',
+                    Html::showSimpleForm(
+                        $target,
+                        ['action' => 'down',
+                        'condition' => $active_condition],
+                        '',
                         ['type' => $rule->fields["sub_type"],
                         'id'   => $rule->fields["id"]],
-                        $CFG_GLPI["root_doc"]."/pics/deplier_down.png");
+                        $CFG_GLPI["root_doc"]."/pics/deplier_down.png"
+                    );
                 }
                 $newValue[] = ob_get_clean();
             }
@@ -650,18 +658,18 @@ class RuleCollection extends CommonDBTM
             ];
 
             switch ($action) {
-            case "up":
-                $criteria['WHERE']['ranking'] = ['<', $current_rank];
-                $criteria['ORDERBY'] = 'ranking DESC';
-                break;
+                case "up":
+                    $criteria['WHERE']['ranking'] = ['<', $current_rank];
+                    $criteria['ORDERBY'] = 'ranking DESC';
+                    break;
 
-            case "down":
-                $criteria['WHERE']['ranking'] = ['>', $current_rank];
-                $criteria['ORDERBY'] = 'ranking ASC';
-                break;
+                case "down":
+                    $criteria['WHERE']['ranking'] = ['>', $current_rank];
+                    $criteria['ORDERBY'] = 'ranking ASC';
+                    break;
 
-            default:
-                return false;
+                default:
+                    return false;
             }
 
             $iterator2 = $DB->request($criteria);
@@ -681,30 +689,30 @@ class RuleCollection extends CommonDBTM
                 ];
                 $diff = $new_rank - $current_rank;
                 switch ($action) {
-                case "up":
-                    $criteria['WHERE'] = array_merge(
-                        $criteria['WHERE'],
-                        [
-                            ['ranking' => ['>', $new_rank]],
-                            ['ranking' => ['<=', $current_rank]]
-                        ]
-                    );
-                    $diff += 1;
-                    break;
+                    case "up":
+                        $criteria['WHERE'] = array_merge(
+                            $criteria['WHERE'],
+                            [
+                                ['ranking' => ['>', $new_rank]],
+                                ['ranking' => ['<=', $current_rank]]
+                            ]
+                        );
+                        $diff += 1;
+                        break;
 
-                case "down":
-                    $criteria['WHERE'] = array_merge(
-                        $criteria['WHERE'],
-                        [
-                            ['ranking' => ['>=', $current_rank]],
-                            ['ranking' => ['<', $new_rank]]
-                        ]
-                    );
-                    $diff -= 1;
-                    break;
+                    case "down":
+                        $criteria['WHERE'] = array_merge(
+                            $criteria['WHERE'],
+                            [
+                                ['ranking' => ['>=', $current_rank]],
+                                ['ranking' => ['<', $new_rank]]
+                            ]
+                        );
+                        $diff -= 1;
+                        break;
 
-                default:
-                    return false;
+                    default:
+                        return false;
                 }
 
                 if ($diff != 0) {
@@ -1776,14 +1784,14 @@ class RuleCollection extends CommonDBTM
                 echo "<td class='b'>";
 
                 switch ($rule_result["result"]) {
-                case 0:
-                case 1:
-                    echo Dropdown::getYesNo($rule_result["result"]);
-                    break;
+                    case 0:
+                    case 1:
+                        echo Dropdown::getYesNo($rule_result["result"]);
+                        break;
 
-                case 2:
-                    echo __('Inactive');
-                    break;
+                    case 2:
+                        echo __('Inactive');
+                        break;
                 }
 
                 echo "</td></tr>\n";
@@ -2051,18 +2059,18 @@ class RuleCollection extends CommonDBTM
         if ($item instanceof RuleCollection) {
             $options = $_GET;
             switch ($tabnum) {
-            case 1:
-                $options['inherited'] = 1;
-                break;
+                case 1:
+                    $options['inherited'] = 1;
+                    break;
 
-            case 2:
-                $options['inherited'] = 0;
-                break;
+                case 2:
+                    $options['inherited'] = 0;
+                    break;
 
-            case 3:
-                $options['inherited'] = 0;
-                $options['childrens'] = 1;
-                break;
+                case 3:
+                    $options['inherited'] = 0;
+                    $options['childrens'] = 1;
+                    break;
             }
             if ($item->isRuleEntityAssigned()) {
                 $item->setEntity($_SESSION['glpiactive_entity']);
