@@ -1,12 +1,68 @@
 <div id="parameter-selection-widget-modal" class="px-3">
     <div class="input-group my-3">
-        <label for="title-widget-modal" class="input-group-text">{{"Title"|trans}} :
-        </label>
-        <input type="text "name="title" id="title-widget-modal" class="form-control"/>
+        <label for="title-widget-modal" class="input-group-text">{{"Title"|trans}} :</label>
+        <input type="text" name="title" id="title-widget-modal" class="form-control"/>
     </div>
     <div class="input-group my-3">
-        <label for="icon-widget-modal" class="input-group-text">{{"Icon"|trans}} :
-        </label>
-        <input type="text "name="icon" id="icon-widget-modal" class="form-control"/>
+        <label for="icon-widget-modal" class="input-group-text">{{"Icon"|trans}} :</label>
+        <input type="text" name="icon" id="icon-widget-modal" style="display: none">
+        <button type="button" class="btn btn-outline-secondary" id="icon-select-button">
+            <i id="selected-icon" class="fas fa-icons"></i> <span>Select Icon</span>
+        </button>
     </div>
 </div>
+
+<div id="icon-selector-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sélectionner une icône</h5>
+            </div>
+            <div class="modal-body">
+                <div id="icon-list" class="d-flex flex-wrap">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeModal" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  <script>
+    $(function () {
+        const icons = [
+            "fas fa-ticket-alt", "fas fa-user", "fas fa-laptop", "fas fa-server", "fas fa-trash", "fas fa-search", "fas fa-bug", "fas fa-exclamation", "fas fa-users", "fas fa-cube", "fas fa-file",
+            "fas fa-desktop", "fas fa-mobile", "fas fa-table", "fas fa-calendar", "fas fa-envelope", "fas fa-bell", "fas fa-question"
+        ];
+    
+        icons.forEach(icon => {
+            const iconElement = `<button class="btn btn-icon m-1" data-icon="${icon}">
+                <i class="${icon}"></i>
+            </button>`;
+            $("#icon-list").append(iconElement);
+        });
+    
+        $("#icon-select-button").on("click", function (e) {
+            e.preventDefault();
+            $("#icon-selector-modal").modal("show");
+        });
+    
+        $(document).on("click", ".btn-icon", function (e) {
+            e.preventDefault();
+    
+            const icon = $(this).data("icon");
+    
+            $("#icon-widget-modal").val(icon);
+    
+            $("#selected-icon").attr("class", icon);
+
+            $("#icon-selector-modal").modal('hide');
+        });
+        $(document).on("click", "#closeModal", function (e) {
+            e.preventDefault();
+            $("#icon-selector-modal").modal("hide");
+        });
+    });    
+    </script>
