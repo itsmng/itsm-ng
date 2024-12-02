@@ -5062,6 +5062,11 @@ class User extends CommonDBTM
            ]
         ];
 
+        // Randomly increase the response time to prevent an attacker to be able to detect whether
+        // a notification was sent (a longer response time could correspond to a SMTP operation).
+        sleep(rand(1, 3));
+
+
         // Try to find a single user matching the given email
         if (!$this->getFromDBbyEmail($email, $condition)) {
             $count = self::countUsersByEmail($email, $condition);
