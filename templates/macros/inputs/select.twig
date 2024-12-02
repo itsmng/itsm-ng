@@ -18,7 +18,7 @@
   {% endif %}
   <select class='form-select form-select-sm {{attributes.class}}' id="{{id}}"
     {% for name, value in attributes %}
-      {% if name not in  ['values', 'class', 'multiple', 'conditions', 'ajax']%}
+      {% if name not in  ['values', 'class', 'multiple', 'conditions', 'ajax', 'itemtype']%}
         {{name}}="{{value}}"
       {% endif %}
     {% endfor %}
