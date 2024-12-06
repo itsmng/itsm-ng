@@ -169,7 +169,13 @@ main {
         }
     }
 }
+
+.main-container::-webkit-scrollbar { 
+    display: none;
+}
+
 .main-container {
+    -ms-overflow-style: none;
     height: calc(100vh - var(--header-height));
     overflow-y: auto;
     width: calc(100% - var(--nav-open-width));
