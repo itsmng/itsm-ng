@@ -212,7 +212,7 @@ class Entity
 
     #[ORM\Column(type: 'integer', name: 'changetemplates_id', options: ['default' => -2])]
     private $changetemplates_id;
-    
+
     #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
     #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: false)]
     private ?ChangeTemplate $changetemplate;
@@ -1238,7 +1238,7 @@ class Entity
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -1248,7 +1248,7 @@ class Entity
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -1258,7 +1258,7 @@ class Entity
 
     /**
      * Get the value of calendar
-     */ 
+     */
     public function getCalendar()
     {
         return $this->calendar;
@@ -1268,7 +1268,7 @@ class Entity
      * Set the value of calendar
      *
      * @return  self
-     */ 
+     */
     public function setCalendar($calendar)
     {
         $this->calendar = $calendar;
@@ -1278,7 +1278,7 @@ class Entity
 
     /**
      * Get the value of tickettemplate
-     */ 
+     */
     public function getTickettemplate()
     {
         return $this->tickettemplate;
@@ -1288,7 +1288,7 @@ class Entity
      * Set the value of tickettemplate
      *
      * @return  self
-     */ 
+     */
     public function setTickettemplate($tickettemplate)
     {
         $this->tickettemplate = $tickettemplate;
@@ -1298,7 +1298,7 @@ class Entity
 
     /**
      * Get the value of changetemplate
-     */ 
+     */
     public function getChangetemplate()
     {
         return $this->changetemplate;
@@ -1308,7 +1308,7 @@ class Entity
      * Set the value of changetemplate
      *
      * @return  self
-     */ 
+     */
     public function setChangetemplate($changetemplate)
     {
         $this->changetemplate = $changetemplate;
@@ -1318,7 +1318,7 @@ class Entity
 
     /**
      * Get the value of problemtemplate
-     */ 
+     */
     public function getProblemtemplate()
     {
         return $this->problemtemplate;
@@ -1328,7 +1328,7 @@ class Entity
      * Set the value of problemtemplate
      *
      * @return  self
-     */ 
+     */
     public function setProblemtemplate($problemtemplate)
     {
         $this->problemtemplate = $problemtemplate;
@@ -1338,7 +1338,7 @@ class Entity
 
     /**
      * Get the value of authldap
-     */ 
+     */
     public function getAuthldap()
     {
         return $this->authldap;
@@ -1348,7 +1348,7 @@ class Entity
      * Set the value of authldap
      *
      * @return  self
-     */ 
+     */
     public function setAuthldap($authldap)
     {
         $this->authldap = $authldap;
@@ -1358,7 +1358,7 @@ class Entity
 
     /**
      * Get the value of entityKnowbaseitems
-     */ 
+     */
     public function getEntityKnowbaseitems()
     {
         return $this->entityKnowbaseitems;
@@ -1368,7 +1368,7 @@ class Entity
      * Set the value of entityKnowbaseitems
      *
      * @return  self
-     */ 
+     */
     public function setEntityKnowbaseitems($entityKnowbaseitems)
     {
         $this->entityKnowbaseitems = $entityKnowbaseitems;
@@ -1378,7 +1378,7 @@ class Entity
 
     /**
      * Get the value of entityReminders
-     */ 
+     */
     public function getEntityReminders()
     {
         return $this->entityReminders;
@@ -1388,7 +1388,7 @@ class Entity
      * Set the value of entityReminders
      *
      * @return  self
-     */ 
+     */
     public function setEntityReminders($entityReminders)
     {
         $this->entityReminders = $entityReminders;
@@ -1398,7 +1398,7 @@ class Entity
 
     /**
      * Get the value of entityRssfeeds
-     */ 
+     */
     public function getEntityRssfeeds()
     {
         return $this->entityRssfeeds;
@@ -1408,7 +1408,7 @@ class Entity
      * Set the value of entityRssfeeds
      *
      * @return  self
-     */ 
+     */
     public function setEntityRssfeeds($entityRssfeeds)
     {
         $this->entityRssfeeds = $entityRssfeeds;

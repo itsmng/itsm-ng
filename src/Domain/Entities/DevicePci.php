@@ -179,7 +179,7 @@ class DevicePci
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -189,7 +189,7 @@ class DevicePci
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -199,7 +199,7 @@ class DevicePci
 
     /**
      * Get the value of devicenetworkcardmodel
-     */ 
+     */
     public function getDevicenetworkcardmodel()
     {
         return $this->devicenetworkcardmodel;
@@ -209,7 +209,7 @@ class DevicePci
      * Set the value of devicenetworkcardmodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicenetworkcardmodel($devicenetworkcardmodel)
     {
         $this->devicenetworkcardmodel = $devicenetworkcardmodel;
@@ -219,7 +219,7 @@ class DevicePci
 
     /**
      * Get the value of devicepcimodel
-     */ 
+     */
     public function getDevicepcimodel()
     {
         return $this->devicepcimodel;
@@ -229,7 +229,7 @@ class DevicePci
      * Set the value of devicepcimodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicepcimodel($devicepcimodel)
     {
         $this->devicepcimodel = $devicepcimodel;
@@ -239,7 +239,7 @@ class DevicePci
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -249,7 +249,7 @@ class DevicePci
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

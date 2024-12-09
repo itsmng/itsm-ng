@@ -191,7 +191,7 @@ class Devicepowersupply
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -201,7 +201,7 @@ class Devicepowersupply
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -211,7 +211,7 @@ class Devicepowersupply
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -221,7 +221,7 @@ class Devicepowersupply
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -231,7 +231,7 @@ class Devicepowersupply
 
     /**
      * Get the value of devicepowersupplymodel
-     */ 
+     */
     public function getDevicepowersupplymodel()
     {
         return $this->devicepowersupplymodel;
@@ -241,7 +241,7 @@ class Devicepowersupply
      * Set the value of devicepowersupplymodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicepowersupplymodel($devicepowersupplymodel)
     {
         $this->devicepowersupplymodel = $devicepowersupplymodel;

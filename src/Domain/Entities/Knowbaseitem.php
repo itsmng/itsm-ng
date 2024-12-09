@@ -174,10 +174,10 @@ class Knowbaseitem
         return $this;
     }
 
-    
+
     /**
      * Get the value of entityKnowbaseitems
-     */ 
+     */
     public function getEntityKnowbaseitems()
     {
         return $this->entityKnowbaseitems;
@@ -187,7 +187,7 @@ class Knowbaseitem
      * Set the value of entityKnowbaseitems
      *
      * @return  self
-     */ 
+     */
     public function setEntityKnowbaseitems($entityKnowbaseitems)
     {
         $this->entityKnowbaseitems = $entityKnowbaseitems;
@@ -197,7 +197,7 @@ class Knowbaseitem
 
     /**
      * Get the value of groupKnowbaseitems
-     */ 
+     */
     public function getGroupKnowbaseitems()
     {
         return $this->groupKnowbaseitems;
@@ -207,7 +207,7 @@ class Knowbaseitem
      * Set the value of groupKnowbaseitems
      *
      * @return  self
-     */ 
+     */
     public function setGroupKnowbaseitems($groupKnowbaseitems)
     {
         $this->groupKnowbaseitems = $groupKnowbaseitems;

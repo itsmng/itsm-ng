@@ -232,7 +232,7 @@ class Reminder
 
     /**
      * Get the value of entityReminders
-     */ 
+     */
     public function getEntityReminders()
     {
         return $this->entityReminders;
@@ -242,7 +242,7 @@ class Reminder
      * Set the value of entityReminders
      *
      * @return  self
-     */ 
+     */
     public function setEntityReminders($entityReminders)
     {
         $this->entityReminders = $entityReminders;
@@ -252,7 +252,7 @@ class Reminder
 
     /**
      * Get the value of groupReminders
-     */ 
+     */
     public function getGroupReminders()
     {
         return $this->groupReminders;
@@ -262,7 +262,7 @@ class Reminder
      * Set the value of groupReminders
      *
      * @return  self
-     */ 
+     */
     public function setGroupReminders($groupReminders)
     {
         $this->groupReminders = $groupReminders;

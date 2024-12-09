@@ -191,7 +191,7 @@ class Devicesimcard
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -201,7 +201,7 @@ class Devicesimcard
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -211,7 +211,7 @@ class Devicesimcard
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -221,7 +221,7 @@ class Devicesimcard
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -231,7 +231,7 @@ class Devicesimcard
 
     /**
      * Get the value of devicesimcardtype
-     */ 
+     */
     public function getDevicesimcardtype()
     {
         return $this->devicesimcardtype;
@@ -241,7 +241,7 @@ class Devicesimcard
      * Set the value of devicesimcardtype
      *
      * @return  self
-     */ 
+     */
     public function setDevicesimcardtype($devicesimcardtype)
     {
         $this->devicesimcardtype = $devicesimcardtype;

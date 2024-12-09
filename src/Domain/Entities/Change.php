@@ -533,11 +533,11 @@ class Change
 
         return $this;
     }
-      
-    
+
+
     /**
      * Get the value of changeTickets
-     */ 
+     */
     public function getChangeTickets()
     {
         return $this->changeTickets;
@@ -547,7 +547,7 @@ class Change
      * Set the value of changeTickets
      *
      * @return  self
-     */ 
+     */
     public function setChangeTickets($changeTickets)
     {
         $this->changeTickets = $changeTickets;
@@ -557,7 +557,7 @@ class Change
 
     /**
      * Get the value of changeUsers
-     */ 
+     */
     public function getChangeUsers()
     {
         return $this->changeUsers;
@@ -567,7 +567,7 @@ class Change
      * Set the value of changeUsers
      *
      * @return  self
-     */ 
+     */
     public function setChangeUsers($changeUsers)
     {
         $this->changeUsers = $changeUsers;
@@ -577,7 +577,7 @@ class Change
 
     /**
      * Get the value of changeProblems
-     */ 
+     */
     public function getChangeProblems()
     {
         return $this->changeProblems;
@@ -587,7 +587,7 @@ class Change
      * Set the value of changeProblems
      *
      * @return  self
-     */ 
+     */
     public function setChangeProblems($changeProblems)
     {
         $this->changeProblems = $changeProblems;
@@ -597,7 +597,7 @@ class Change
 
     /**
      * Get the value of changeGroups
-     */ 
+     */
     public function getChangeGroups()
     {
         return $this->changeGroups;
@@ -607,7 +607,7 @@ class Change
      * Set the value of changeGroups
      *
      * @return  self
-     */ 
+     */
     public function setChangeGroups($changeGroups)
     {
         $this->changeGroups = $changeGroups;
@@ -617,7 +617,7 @@ class Change
 
     /**
      * Get the value of changeSuppliers
-     */ 
+     */
     public function getChangeSuppliers()
     {
         return $this->changeSuppliers;
@@ -627,7 +627,7 @@ class Change
      * Set the value of changeSuppliers
      *
      * @return  self
-     */ 
+     */
     public function setChangeSuppliers($changeSuppliers)
     {
         $this->changeSuppliers = $changeSuppliers;

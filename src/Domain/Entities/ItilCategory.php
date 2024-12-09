@@ -121,7 +121,7 @@ class ItilCategory
     #[ORM\ManyToOne(targetEntity: ProblemTemplate::class)]
     #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: false)]
     private ?ProblemTemplate $problemtemplate;
-    
+
     #[ORM\Column(type: "integer", options: ["default" => 1])]
     private $is_incident;
 
@@ -435,7 +435,7 @@ class ItilCategory
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -445,7 +445,7 @@ class ItilCategory
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -455,7 +455,7 @@ class ItilCategory
 
     /**
      * Get the value of itilCategory
-     */ 
+     */
     public function getItilCategory()
     {
         return $this->itilCategory;
@@ -465,7 +465,7 @@ class ItilCategory
      * Set the value of itilCategory
      *
      * @return  self
-     */ 
+     */
     public function setItilCategory($itilCategory)
     {
         $this->itilCategory = $itilCategory;
@@ -475,7 +475,7 @@ class ItilCategory
 
     /**
      * Get the value of knowbaseitemcategory
-     */ 
+     */
     public function getKnowbaseitemcategory()
     {
         return $this->knowbaseitemcategory;
@@ -485,7 +485,7 @@ class ItilCategory
      * Set the value of knowbaseitemcategory
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitemcategory($knowbaseitemcategory)
     {
         $this->knowbaseitemcategory = $knowbaseitemcategory;
@@ -495,7 +495,7 @@ class ItilCategory
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -505,7 +505,7 @@ class ItilCategory
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -515,7 +515,7 @@ class ItilCategory
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -525,7 +525,7 @@ class ItilCategory
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -535,7 +535,7 @@ class ItilCategory
 
     /**
      * Get the value of tickettemplateIncident
-     */ 
+     */
     public function getTickettemplateIncident()
     {
         return $this->tickettemplateIncident;
@@ -545,7 +545,7 @@ class ItilCategory
      * Set the value of tickettemplateIncident
      *
      * @return  self
-     */ 
+     */
     public function setTickettemplateIncident($tickettemplateIncident)
     {
         $this->tickettemplateIncident = $tickettemplateIncident;
@@ -555,7 +555,7 @@ class ItilCategory
 
     /**
      * Get the value of tickettemplateDemand
-     */ 
+     */
     public function getTickettemplateDemand()
     {
         return $this->tickettemplateDemand;
@@ -565,7 +565,7 @@ class ItilCategory
      * Set the value of tickettemplateDemand
      *
      * @return  self
-     */ 
+     */
     public function setTickettemplateDemand($tickettemplateDemand)
     {
         $this->tickettemplateDemand = $tickettemplateDemand;
@@ -575,7 +575,7 @@ class ItilCategory
 
     /**
      * Get the value of changetemplate
-     */ 
+     */
     public function getChangetemplate()
     {
         return $this->changetemplate;
@@ -585,7 +585,7 @@ class ItilCategory
      * Set the value of changetemplate
      *
      * @return  self
-     */ 
+     */
     public function setChangetemplate($changetemplate)
     {
         $this->changetemplate = $changetemplate;
@@ -595,7 +595,7 @@ class ItilCategory
 
     /**
      * Get the value of problemtemplate
-     */ 
+     */
     public function getProblemtemplate()
     {
         return $this->problemtemplate;
@@ -605,7 +605,7 @@ class ItilCategory
      * Set the value of problemtemplate
      *
      * @return  self
-     */ 
+     */
     public function setProblemtemplate($problemtemplate)
     {
         $this->problemtemplate = $problemtemplate;

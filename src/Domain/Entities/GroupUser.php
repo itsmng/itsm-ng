@@ -19,7 +19,7 @@ class GroupUser
 
     #[ORM\Column(type: "integer", name: 'users_id', options: ["default" => 0])]
     private $users_id;
-    
+
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'groupUsers')]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user;
@@ -107,7 +107,7 @@ class GroupUser
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -117,7 +117,7 @@ class GroupUser
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -127,7 +127,7 @@ class GroupUser
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -137,7 +137,7 @@ class GroupUser
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

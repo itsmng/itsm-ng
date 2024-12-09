@@ -75,7 +75,7 @@ class GroupTicket
 
     /**
      * Get the value of ticket
-     */ 
+     */
     public function getTicket()
     {
         return $this->ticket;
@@ -85,7 +85,7 @@ class GroupTicket
      * Set the value of ticket
      *
      * @return  self
-     */ 
+     */
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
@@ -95,7 +95,7 @@ class GroupTicket
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -105,7 +105,7 @@ class GroupTicket
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;

@@ -1550,7 +1550,7 @@ class User
 
     /**
      * Get the value of changeUsers
-     */ 
+     */
     public function getChangeUsers()
     {
         return $this->changeUsers;
@@ -1560,7 +1560,7 @@ class User
      * Set the value of changeUsers
      *
      * @return  self
-     */ 
+     */
     public function setChangeUsers($changeUsers)
     {
         $this->changeUsers = $changeUsers;
@@ -1570,7 +1570,7 @@ class User
 
     /**
      * Get the value of groupUsers
-     */ 
+     */
     public function getGroupUsers()
     {
         return $this->groupUsers;
@@ -1580,7 +1580,7 @@ class User
      * Set the value of groupUsers
      *
      * @return  self
-     */ 
+     */
     public function setGroupUsers($groupUsers)
     {
         $this->groupUsers = $groupUsers;

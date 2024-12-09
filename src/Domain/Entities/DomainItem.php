@@ -90,7 +90,7 @@ class DomainItem
 
     /**
      * Get the value of domain
-     */ 
+     */
     public function getDomain()
     {
         return $this->domain;
@@ -100,7 +100,7 @@ class DomainItem
      * Set the value of domain
      *
      * @return  self
-     */ 
+     */
     public function setDomain($domain)
     {
         $this->domain = $domain;

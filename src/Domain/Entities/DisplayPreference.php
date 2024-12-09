@@ -88,7 +88,7 @@ class DisplayPreference
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -98,7 +98,7 @@ class DisplayPreference
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

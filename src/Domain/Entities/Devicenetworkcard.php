@@ -193,7 +193,7 @@ class Devicenetworkcard
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -203,7 +203,7 @@ class Devicenetworkcard
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -213,7 +213,7 @@ class Devicenetworkcard
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -223,7 +223,7 @@ class Devicenetworkcard
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -233,7 +233,7 @@ class Devicenetworkcard
 
     /**
      * Get the value of devicenetworkcardmodel
-     */ 
+     */
     public function getDevicenetworkcardmodel()
     {
         return $this->devicenetworkcardmodel;
@@ -243,7 +243,7 @@ class Devicenetworkcard
      * Set the value of devicenetworkcardmodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicenetworkcardmodel($devicenetworkcardmodel)
     {
         $this->devicenetworkcardmodel = $devicenetworkcardmodel;

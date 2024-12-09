@@ -236,7 +236,7 @@ class Domain
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -246,7 +246,7 @@ class Domain
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -256,7 +256,7 @@ class Domain
 
     /**
      * Get the value of domaintype
-     */ 
+     */
     public function getDomaintype()
     {
         return $this->domaintype;
@@ -266,7 +266,7 @@ class Domain
      * Set the value of domaintype
      *
      * @return  self
-     */ 
+     */
     public function setDomaintype($domaintype)
     {
         $this->domaintype = $domaintype;
@@ -276,7 +276,7 @@ class Domain
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -286,7 +286,7 @@ class Domain
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -296,7 +296,7 @@ class Domain
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -306,7 +306,7 @@ class Domain
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -316,7 +316,7 @@ class Domain
 
     /**
      * Get the value of domainItems
-     */ 
+     */
     public function getDomainItems()
     {
         return $this->domainItems;
@@ -326,7 +326,7 @@ class Domain
      * Set the value of domainItems
      *
      * @return  self
-     */ 
+     */
     public function setDomainItems($domainItems)
     {
         $this->domainItems = $domainItems;

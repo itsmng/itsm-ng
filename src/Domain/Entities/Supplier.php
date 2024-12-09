@@ -349,7 +349,7 @@ class Supplier
 
     /**
      * Get the value of changeSuppliers
-     */ 
+     */
     public function getChangeSuppliers()
     {
         return $this->changeSuppliers;
@@ -359,7 +359,7 @@ class Supplier
      * Set the value of changeSuppliers
      *
      * @return  self
-     */ 
+     */
     public function setChangeSuppliers($changeSuppliers)
     {
         $this->changeSuppliers = $changeSuppliers;

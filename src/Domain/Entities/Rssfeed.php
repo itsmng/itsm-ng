@@ -184,7 +184,7 @@ class Rssfeed
 
     /**
      * Get the value of entityRssfeeds
-     */ 
+     */
     public function getEntityRssfeeds()
     {
         return $this->entityRssfeeds;
@@ -194,7 +194,7 @@ class Rssfeed
      * Set the value of entityRssfeeds
      *
      * @return  self
-     */ 
+     */
     public function setEntityRssfeeds($entityRssfeeds)
     {
         $this->entityRssfeeds = $entityRssfeeds;
@@ -204,7 +204,7 @@ class Rssfeed
 
     /**
      * Get the value of groupRssfeeds
-     */ 
+     */
     public function getGroupRssfeeds()
     {
         return $this->groupRssfeeds;
@@ -214,7 +214,7 @@ class Rssfeed
      * Set the value of groupRssfeeds
      *
      * @return  self
-     */ 
+     */
     public function setGroupRssfeeds($groupRssfeeds)
     {
         $this->groupRssfeeds = $groupRssfeeds;

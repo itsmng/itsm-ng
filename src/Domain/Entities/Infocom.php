@@ -94,7 +94,7 @@ class Infocom
     #[ORM\ManyToOne(targetEntity: Budget::class)]
     #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: false)]
     private ?Budget $budget;
-    
+
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $alert;
 
@@ -457,7 +457,7 @@ class Infocom
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -467,7 +467,7 @@ class Infocom
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -477,7 +477,7 @@ class Infocom
 
     /**
      * Get the value of delivery_number
-     */ 
+     */
     public function getDelivery_number()
     {
         return $this->delivery_number;
@@ -487,7 +487,7 @@ class Infocom
      * Set the value of delivery_number
      *
      * @return  self
-     */ 
+     */
     public function setDelivery_number($delivery_number)
     {
         $this->delivery_number = $delivery_number;
@@ -497,7 +497,7 @@ class Infocom
 
     /**
      * Get the value of immo_number
-     */ 
+     */
     public function getImmo_number()
     {
         return $this->immo_number;
@@ -507,7 +507,7 @@ class Infocom
      * Set the value of immo_number
      *
      * @return  self
-     */ 
+     */
     public function setImmo_number($immo_number)
     {
         $this->immo_number = $immo_number;
@@ -517,7 +517,7 @@ class Infocom
 
     /**
      * Get the value of supplier
-     */ 
+     */
     public function getSupplier()
     {
         return $this->supplier;
@@ -527,7 +527,7 @@ class Infocom
      * Set the value of supplier
      *
      * @return  self
-     */ 
+     */
     public function setSupplier($supplier)
     {
         $this->supplier = $supplier;
@@ -537,7 +537,7 @@ class Infocom
 
     /**
      * Get the value of budget
-     */ 
+     */
     public function getBudget()
     {
         return $this->budget;
@@ -547,7 +547,7 @@ class Infocom
      * Set the value of budget
      *
      * @return  self
-     */ 
+     */
     public function setBudget($budget)
     {
         $this->budget = $budget;
@@ -557,7 +557,7 @@ class Infocom
 
     /**
      * Get the value of businesscriticity
-     */ 
+     */
     public function getBusinesscriticity()
     {
         return $this->businesscriticity;
@@ -567,7 +567,7 @@ class Infocom
      * Set the value of businesscriticity
      *
      * @return  self
-     */ 
+     */
     public function setBusinesscriticity($businesscriticity)
     {
         $this->businesscriticity = $businesscriticity;

@@ -220,7 +220,7 @@ class Devicesensor
 
     /**
      * Get the value of devicesensormodel
-     */ 
+     */
     public function getDevicesensormodel()
     {
         return $this->devicesensormodel;
@@ -230,7 +230,7 @@ class Devicesensor
      * Set the value of devicesensormodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicesensormodel($devicesensormodel)
     {
         $this->devicesensormodel = $devicesensormodel;
@@ -240,7 +240,7 @@ class Devicesensor
 
     /**
      * Get the value of devicesensortype
-     */ 
+     */
     public function getDevicesensortype()
     {
         return $this->devicesensortype;
@@ -250,7 +250,7 @@ class Devicesensor
      * Set the value of devicesensortype
      *
      * @return  self
-     */ 
+     */
     public function setDevicesensortype($devicesensortype)
     {
         $this->devicesensortype = $devicesensortype;
@@ -260,7 +260,7 @@ class Devicesensor
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -270,7 +270,7 @@ class Devicesensor
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -280,7 +280,7 @@ class Devicesensor
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -290,7 +290,7 @@ class Devicesensor
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -300,7 +300,7 @@ class Devicesensor
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -310,7 +310,7 @@ class Devicesensor
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -320,7 +320,7 @@ class Devicesensor
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -330,7 +330,7 @@ class Devicesensor
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

@@ -46,7 +46,7 @@ class Devicesoundcard
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', name: 'devicesoundcardmodels_id', nullable: true)]    
+    #[ORM\Column(type: 'integer', name: 'devicesoundcardmodels_id', nullable: true)]
     private $devicesoundcardmodels_id;
 
     #[ORM\ManyToOne(targetEntity: Devicesoundcardmodel::class)]
@@ -176,7 +176,7 @@ class Devicesoundcard
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -186,7 +186,7 @@ class Devicesoundcard
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -196,7 +196,7 @@ class Devicesoundcard
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -206,7 +206,7 @@ class Devicesoundcard
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -216,7 +216,7 @@ class Devicesoundcard
 
     /**
      * Get the value of devicesoundcardmodel
-     */ 
+     */
     public function getDevicesoundcardmodel()
     {
         return $this->devicesoundcardmodel;
@@ -226,7 +226,7 @@ class Devicesoundcard
      * Set the value of devicesoundcardmodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicesoundcardmodel($devicesoundcardmodel)
     {
         $this->devicesoundcardmodel = $devicesoundcardmodel;

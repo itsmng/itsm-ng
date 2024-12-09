@@ -206,7 +206,7 @@ class DeviceMemory
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -216,7 +216,7 @@ class DeviceMemory
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -226,7 +226,7 @@ class DeviceMemory
 
     /**
      * Get the value of deviceMemoryType
-     */ 
+     */
     public function getDeviceMemoryType()
     {
         return $this->deviceMemoryType;
@@ -236,7 +236,7 @@ class DeviceMemory
      * Set the value of deviceMemoryType
      *
      * @return  self
-     */ 
+     */
     public function setDeviceMemoryType($deviceMemoryType)
     {
         $this->deviceMemoryType = $deviceMemoryType;
@@ -246,7 +246,7 @@ class DeviceMemory
 
     /**
      * Get the value of deviceMemoryModel
-     */ 
+     */
     public function getDeviceMemoryModel()
     {
         return $this->deviceMemoryModel;
@@ -256,7 +256,7 @@ class DeviceMemory
      * Set the value of deviceMemoryModel
      *
      * @return  self
-     */ 
+     */
     public function setDeviceMemoryModel($deviceMemoryModel)
     {
         $this->deviceMemoryModel = $deviceMemoryModel;

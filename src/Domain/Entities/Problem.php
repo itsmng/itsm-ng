@@ -463,7 +463,7 @@ class Problem
 
     /**
      * Get the value of groupProblems
-     */ 
+     */
     public function getGroupProblems()
     {
         return $this->groupProblems;
@@ -473,7 +473,7 @@ class Problem
      * Set the value of groupProblems
      *
      * @return  self
-     */ 
+     */
     public function setGroupProblems($groupProblems)
     {
         $this->groupProblems = $groupProblems;
@@ -483,7 +483,7 @@ class Problem
 
     /**
      * Get the value of changeProblems
-     */ 
+     */
     public function getChangeProblems()
     {
         return $this->changeProblems;
@@ -493,7 +493,7 @@ class Problem
      * Set the value of changeProblems
      *
      * @return  self
-     */ 
+     */
     public function setChangeProblems($changeProblems)
     {
         $this->changeProblems = $changeProblems;

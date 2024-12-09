@@ -226,7 +226,7 @@ class DeviceProcessor
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -236,7 +236,7 @@ class DeviceProcessor
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -246,7 +246,7 @@ class DeviceProcessor
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -256,7 +256,7 @@ class DeviceProcessor
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -266,7 +266,7 @@ class DeviceProcessor
 
     /**
      * Get the value of deviceprocessormodel
-     */ 
+     */
     public function getDeviceprocessormodel()
     {
         return $this->deviceprocessormodel;
@@ -276,7 +276,7 @@ class DeviceProcessor
      * Set the value of deviceprocessormodel
      *
      * @return  self
-     */ 
+     */
     public function setDeviceprocessormodel($deviceprocessormodel)
     {
         $this->deviceprocessormodel = $deviceprocessormodel;

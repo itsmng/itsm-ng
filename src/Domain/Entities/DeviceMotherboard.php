@@ -181,7 +181,7 @@ class DeviceMotherboard
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -191,7 +191,7 @@ class DeviceMotherboard
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -201,7 +201,7 @@ class DeviceMotherboard
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -211,7 +211,7 @@ class DeviceMotherboard
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -221,7 +221,7 @@ class DeviceMotherboard
 
     /**
      * Get the value of devicemotherboardmodel
-     */ 
+     */
     public function getDevicemotherboardmodel()
     {
         return $this->devicemotherboardmodel;
@@ -231,7 +231,7 @@ class DeviceMotherboard
      * Set the value of devicemotherboardmodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicemotherboardmodel($devicemotherboardmodel)
     {
         $this->devicemotherboardmodel = $devicemotherboardmodel;

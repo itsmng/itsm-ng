@@ -114,7 +114,7 @@ class Group
 
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupReminder::class)]
     private Collection $groupReminders;
-    
+
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupRssFeed::class)]
     private Collection $groupRssfeeds;
 
@@ -397,7 +397,7 @@ class Group
 
     /**
      * Get the value of groupKnowbaseitems
-     */ 
+     */
     public function getGroupKnowbaseitems()
     {
         return $this->groupKnowbaseitems;
@@ -407,7 +407,7 @@ class Group
      * Set the value of groupKnowbaseitems
      *
      * @return  self
-     */ 
+     */
     public function setGroupKnowbaseitems($groupKnowbaseitems)
     {
         $this->groupKnowbaseitems = $groupKnowbaseitems;
@@ -417,7 +417,7 @@ class Group
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -427,7 +427,7 @@ class Group
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -437,7 +437,7 @@ class Group
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -447,7 +447,7 @@ class Group
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -457,7 +457,7 @@ class Group
 
     /**
      * Get the value of groupProblems
-     */ 
+     */
     public function getGroupProblems()
     {
         return $this->groupProblems;
@@ -467,7 +467,7 @@ class Group
      * Set the value of groupProblems
      *
      * @return  self
-     */ 
+     */
     public function setGroupProblems($groupProblems)
     {
         $this->groupProblems = $groupProblems;
@@ -477,7 +477,7 @@ class Group
 
     /**
      * Get the value of groupReminders
-     */ 
+     */
     public function getGroupReminders()
     {
         return $this->groupReminders;
@@ -487,7 +487,7 @@ class Group
      * Set the value of groupReminders
      *
      * @return  self
-     */ 
+     */
     public function setGroupReminders($groupReminders)
     {
         $this->groupReminders = $groupReminders;
@@ -497,7 +497,7 @@ class Group
 
     /**
      * Get the value of groupRssfeeds
-     */ 
+     */
     public function getGroupRssfeeds()
     {
         return $this->groupRssfeeds;
@@ -507,7 +507,7 @@ class Group
      * Set the value of groupRssfeeds
      *
      * @return  self
-     */ 
+     */
     public function setGroupRssfeeds($groupRssfeeds)
     {
         $this->groupRssfeeds = $groupRssfeeds;
@@ -517,7 +517,7 @@ class Group
 
     /**
      * Get the value of groupTickets
-     */ 
+     */
     public function getGroupTickets()
     {
         return $this->groupTickets;
@@ -527,7 +527,7 @@ class Group
      * Set the value of groupTickets
      *
      * @return  self
-     */ 
+     */
     public function setGroupTickets($groupTickets)
     {
         $this->groupTickets = $groupTickets;
@@ -537,7 +537,7 @@ class Group
 
     /**
      * Get the value of changeGroups
-     */ 
+     */
     public function getChangeGroups()
     {
         return $this->changeGroups;
@@ -547,7 +547,7 @@ class Group
      * Set the value of changeGroups
      *
      * @return  self
-     */ 
+     */
     public function setChangeGroups($changeGroups)
     {
         $this->changeGroups = $changeGroups;
@@ -557,7 +557,7 @@ class Group
 
     /**
      * Get the value of groupUsers
-     */ 
+     */
     public function getGroupUsers()
     {
         return $this->groupUsers;
@@ -567,7 +567,7 @@ class Group
      * Set the value of groupUsers
      *
      * @return  self
-     */ 
+     */
     public function setGroupUsers($groupUsers)
     {
         $this->groupUsers = $groupUsers;

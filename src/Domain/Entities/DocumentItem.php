@@ -189,7 +189,7 @@ class DocumentItem
 
     /**
      * Get the value of document
-     */ 
+     */
     public function getDocument()
     {
         return $this->document;
@@ -199,7 +199,7 @@ class DocumentItem
      * Set the value of document
      *
      * @return  self
-     */ 
+     */
     public function setDocument($document)
     {
         $this->document = $document;
@@ -209,7 +209,7 @@ class DocumentItem
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -219,7 +219,7 @@ class DocumentItem
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -229,7 +229,7 @@ class DocumentItem
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -239,7 +239,7 @@ class DocumentItem
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

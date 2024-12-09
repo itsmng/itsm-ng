@@ -312,7 +312,7 @@ class Document
 
     /**
      * Get the value of documentcategory
-     */ 
+     */
     public function getDocumentcategory()
     {
         return $this->documentcategory;
@@ -322,7 +322,7 @@ class Document
      * Set the value of documentcategory
      *
      * @return  self
-     */ 
+     */
     public function setDocumentcategory($documentcategory)
     {
         $this->documentcategory = $documentcategory;
@@ -332,7 +332,7 @@ class Document
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -342,7 +342,7 @@ class Document
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -352,7 +352,7 @@ class Document
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -362,7 +362,7 @@ class Document
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -372,7 +372,7 @@ class Document
 
     /**
      * Get the value of ticket
-     */ 
+     */
     public function getTicket()
     {
         return $this->ticket;
@@ -382,7 +382,7 @@ class Document
      * Set the value of ticket
      *
      * @return  self
-     */ 
+     */
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
@@ -392,7 +392,7 @@ class Document
 
     /**
      * Get the value of documentItems
-     */ 
+     */
     public function getDocumentItems()
     {
         return $this->documentItems;
@@ -402,7 +402,7 @@ class Document
      * Set the value of documentItems
      *
      * @return  self
-     */ 
+     */
     public function setDocumentItems($documentItems)
     {
         $this->documentItems = $documentItems;

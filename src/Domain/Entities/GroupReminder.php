@@ -96,7 +96,7 @@ class GroupReminder
 
     /**
      * Get the value of reminder
-     */ 
+     */
     public function getReminder()
     {
         return $this->reminder;
@@ -106,7 +106,7 @@ class GroupReminder
      * Set the value of reminder
      *
      * @return  self
-     */ 
+     */
     public function setReminder($reminder)
     {
         $this->reminder = $reminder;
@@ -116,7 +116,7 @@ class GroupReminder
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -126,7 +126,7 @@ class GroupReminder
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -136,7 +136,7 @@ class GroupReminder
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -146,7 +146,7 @@ class GroupReminder
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

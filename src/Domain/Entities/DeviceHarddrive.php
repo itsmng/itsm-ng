@@ -231,7 +231,7 @@ class DeviceHarddrive
 
     /**
      * Get the value of interfacetype
-     */ 
+     */
     public function getInterfacetype()
     {
         return $this->interfacetype;
@@ -241,7 +241,7 @@ class DeviceHarddrive
      * Set the value of interfacetype
      *
      * @return  self
-     */ 
+     */
     public function setInterfacetype($interfacetype)
     {
         $this->interfacetype = $interfacetype;
@@ -251,7 +251,7 @@ class DeviceHarddrive
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -261,7 +261,7 @@ class DeviceHarddrive
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -271,7 +271,7 @@ class DeviceHarddrive
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -281,7 +281,7 @@ class DeviceHarddrive
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -291,7 +291,7 @@ class DeviceHarddrive
 
     /**
      * Get the value of deviceharddrivemodel
-     */ 
+     */
     public function getDeviceharddrivemodel()
     {
         return $this->deviceharddrivemodel;
@@ -301,7 +301,7 @@ class DeviceHarddrive
      * Set the value of deviceharddrivemodel
      *
      * @return  self
-     */ 
+     */
     public function setDeviceharddrivemodel($deviceharddrivemodel)
     {
         $this->deviceharddrivemodel = $deviceharddrivemodel;

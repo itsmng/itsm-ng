@@ -165,7 +165,7 @@ class Documentcategory
 
     /**
      * Get the value of documentcategory
-     */ 
+     */
     public function getDocumentcategory()
     {
         return $this->documentcategory;
@@ -175,7 +175,7 @@ class Documentcategory
      * Set the value of documentcategory
      *
      * @return  self
-     */ 
+     */
     public function setDocumentcategory($documentcategory)
     {
         $this->documentcategory = $documentcategory;

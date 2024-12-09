@@ -59,7 +59,7 @@ class IpNetworkVlan
 
     /**
      * Get the value of ipnetwork
-     */ 
+     */
     public function getIpnetwork()
     {
         return $this->ipnetwork;
@@ -69,7 +69,7 @@ class IpNetworkVlan
      * Set the value of ipnetwork
      *
      * @return  self
-     */ 
+     */
     public function setIpnetwork($ipnetwork)
     {
         $this->ipnetwork = $ipnetwork;
@@ -79,7 +79,7 @@ class IpNetworkVlan
 
     /**
      * Get the value of vlan
-     */ 
+     */
     public function getVlan()
     {
         return $this->vlan;
@@ -89,7 +89,7 @@ class IpNetworkVlan
      * Set the value of vlan
      *
      * @return  self
-     */ 
+     */
     public function setVlan($vlan)
     {
         $this->vlan = $vlan;

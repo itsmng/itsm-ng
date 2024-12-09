@@ -344,7 +344,7 @@ class Enclosure
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -354,7 +354,7 @@ class Enclosure
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -364,7 +364,7 @@ class Enclosure
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -374,7 +374,7 @@ class Enclosure
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -384,7 +384,7 @@ class Enclosure
 
     /**
      * Get the value of enclosuremodel
-     */ 
+     */
     public function getEnclosuremodel()
     {
         return $this->enclosuremodel;
@@ -394,7 +394,7 @@ class Enclosure
      * Set the value of enclosuremodel
      *
      * @return  self
-     */ 
+     */
     public function setEnclosuremodel($enclosuremodel)
     {
         $this->enclosuremodel = $enclosuremodel;
@@ -405,7 +405,7 @@ class Enclosure
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -415,7 +415,7 @@ class Enclosure
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -425,7 +425,7 @@ class Enclosure
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -435,7 +435,7 @@ class Enclosure
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -445,7 +445,7 @@ class Enclosure
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -455,7 +455,7 @@ class Enclosure
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -465,7 +465,7 @@ class Enclosure
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -475,7 +475,7 @@ class Enclosure
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;

@@ -59,10 +59,10 @@ class IpAddressIpNetwork
         return $this;
     }
 
-    
+
     /**
      * Get the value of ipnetwork
-     */ 
+     */
     public function getIpnetwork()
     {
         return $this->ipnetwork;
@@ -72,7 +72,7 @@ class IpAddressIpNetwork
      * Set the value of ipnetwork
      *
      * @return  self
-     */ 
+     */
     public function setIpnetwork($ipnetwork)
     {
         $this->ipnetwork = $ipnetwork;
@@ -82,7 +82,7 @@ class IpAddressIpNetwork
 
     /**
      * Get the value of ipaddress
-     */ 
+     */
     public function getIpaddress()
     {
         return $this->ipaddress;
@@ -92,7 +92,7 @@ class IpAddressIpNetwork
      * Set the value of ipaddress
      *
      * @return  self
-     */ 
+     */
     public function setIpaddress($ipaddress)
     {
         $this->ipaddress = $ipaddress;

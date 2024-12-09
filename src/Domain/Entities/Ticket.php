@@ -658,7 +658,7 @@ class Ticket
 
     /**
      * Get the value of groupTickets
-     */ 
+     */
     public function getGroupTickets()
     {
         return $this->groupTickets;
@@ -668,7 +668,7 @@ class Ticket
      * Set the value of groupTickets
      *
      * @return  self
-     */ 
+     */
     public function setGroupTickets($groupTickets)
     {
         $this->groupTickets = $groupTickets;
@@ -678,7 +678,7 @@ class Ticket
 
     /**
      * Get the value of changeTickets
-     */ 
+     */
     public function getChangeTickets()
     {
         return $this->changeTickets;
@@ -688,7 +688,7 @@ class Ticket
      * Set the value of changeTickets
      *
      * @return  self
-     */ 
+     */
     public function setChangeTickets($changeTickets)
     {
         $this->changeTickets = $changeTickets;

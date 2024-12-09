@@ -230,7 +230,7 @@ class IpAddress
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -240,7 +240,7 @@ class IpAddress
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -248,10 +248,10 @@ class IpAddress
         return $this;
     }
 
-    
+
     /**
      * Get the value of ipaddressIpnetworks
-     */ 
+     */
     public function getIpaddressIpnetworks()
     {
         return $this->ipaddressIpnetworks;
@@ -261,7 +261,7 @@ class IpAddress
      * Set the value of ipaddressIpnetworks
      *
      * @return  self
-     */ 
+     */
     public function setIpaddressIpnetworks($ipaddressIpnetworks)
     {
         $this->ipaddressIpnetworks = $ipaddressIpnetworks;

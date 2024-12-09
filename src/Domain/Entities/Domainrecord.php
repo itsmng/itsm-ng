@@ -250,7 +250,7 @@ class Domainrecord
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -260,7 +260,7 @@ class Domainrecord
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -270,7 +270,7 @@ class Domainrecord
 
     /**
      * Get the value of domain
-     */ 
+     */
     public function getDomain()
     {
         return $this->domain;
@@ -280,7 +280,7 @@ class Domainrecord
      * Set the value of domain
      *
      * @return  self
-     */ 
+     */
     public function setDomain($domain)
     {
         $this->domain = $domain;
@@ -290,7 +290,7 @@ class Domainrecord
 
     /**
      * Get the value of domainrecordtype
-     */ 
+     */
     public function getDomainrecordtype()
     {
         return $this->domainrecordtype;
@@ -300,7 +300,7 @@ class Domainrecord
      * Set the value of domainrecordtype
      *
      * @return  self
-     */ 
+     */
     public function setDomainrecordtype($domainrecordtype)
     {
         $this->domainrecordtype = $domainrecordtype;
@@ -310,7 +310,7 @@ class Domainrecord
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -320,7 +320,7 @@ class Domainrecord
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -330,7 +330,7 @@ class Domainrecord
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -340,7 +340,7 @@ class Domainrecord
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;

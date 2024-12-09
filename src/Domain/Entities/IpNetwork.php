@@ -112,7 +112,7 @@ class IpNetwork
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
-    
+
     #[ORM\OneToMany(mappedBy: 'ipnetwork', targetEntity: IpAddressIpNetwork::class)]
     private Collection $ipaddressIpnetworks;
 
@@ -467,10 +467,10 @@ class IpNetwork
         return $this;
     }
 
-    
+
     /**
      * Get the value of ipaddressIpnetworks
-     */ 
+     */
     public function getIpaddressIpnetworks()
     {
         return $this->ipaddressIpnetworks;
@@ -480,7 +480,7 @@ class IpNetwork
      * Set the value of ipaddressIpnetworks
      *
      * @return  self
-     */ 
+     */
     public function setIpaddressIpnetworks($ipaddressIpnetworks)
     {
         $this->ipaddressIpnetworks = $ipaddressIpnetworks;
@@ -490,7 +490,7 @@ class IpNetwork
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -500,7 +500,7 @@ class IpNetwork
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -510,7 +510,7 @@ class IpNetwork
 
     /**
      * Get the value of ipnetwork
-     */ 
+     */
     public function getIpnetwork()
     {
         return $this->ipnetwork;
@@ -520,7 +520,7 @@ class IpNetwork
      * Set the value of ipnetwork
      *
      * @return  self
-     */ 
+     */
     public function setIpnetwork($ipnetwork)
     {
         $this->ipnetwork = $ipnetwork;
@@ -530,7 +530,7 @@ class IpNetwork
 
     /**
      * Get the value of ipnetworkVlans
-     */ 
+     */
     public function getIpnetworkVlans()
     {
         return $this->ipnetworkVlans;
@@ -540,7 +540,7 @@ class IpNetwork
      * Set the value of ipnetworkVlans
      *
      * @return  self
-     */ 
+     */
     public function setIpnetworkVlans($ipnetworkVlans)
     {
         $this->ipnetworkVlans = $ipnetworkVlans;

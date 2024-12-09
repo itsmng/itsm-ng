@@ -83,7 +83,7 @@ class EntityRssFeed
 
     /**
      * Get the value of rssfeed
-     */ 
+     */
     public function getRssfeed()
     {
         return $this->rssfeed;
@@ -93,7 +93,7 @@ class EntityRssFeed
      * Set the value of rssfeed
      *
      * @return  self
-     */ 
+     */
     public function setRssfeed($rssfeed)
     {
         $this->rssfeed = $rssfeed;
@@ -103,7 +103,7 @@ class EntityRssFeed
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -113,7 +113,7 @@ class EntityRssFeed
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

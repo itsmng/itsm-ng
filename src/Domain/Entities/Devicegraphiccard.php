@@ -212,7 +212,7 @@ class Devicegraphiccard
 
     /**
      * Get the value of interfacetype
-     */ 
+     */
     public function getInterfacetype()
     {
         return $this->interfacetype;
@@ -222,7 +222,7 @@ class Devicegraphiccard
      * Set the value of interfacetype
      *
      * @return  self
-     */ 
+     */
     public function setInterfacetype($interfacetype)
     {
         $this->interfacetype = $interfacetype;
@@ -232,7 +232,7 @@ class Devicegraphiccard
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -242,7 +242,7 @@ class Devicegraphiccard
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -252,7 +252,7 @@ class Devicegraphiccard
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -262,7 +262,7 @@ class Devicegraphiccard
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -272,7 +272,7 @@ class Devicegraphiccard
 
     /**
      * Get the value of devicegraphiccardmodel
-     */ 
+     */
     public function getDevicegraphiccardmodel()
     {
         return $this->devicegraphiccardmodel;
@@ -282,7 +282,7 @@ class Devicegraphiccard
      * Set the value of devicegraphiccardmodel
      *
      * @return  self
-     */ 
+     */
     public function setDevicegraphiccardmodel($devicegraphiccardmodel)
     {
         $this->devicegraphiccardmodel = $devicegraphiccardmodel;
