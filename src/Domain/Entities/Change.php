@@ -72,8 +72,16 @@ class Change
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id_recipient;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_recipient', referencedColumnName: 'id', nullable: false)]
+    private ?User $userRecipient;
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id_lastupdater;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: false)]
+    private ?User $userLastupdater;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $urgency;
@@ -86,6 +94,10 @@ class Change
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $itilcategories_id;
+
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: false)]
+    private ?ItilCategory $itilCategory;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $impactcontent;
@@ -631,6 +643,66 @@ class Change
     public function setChangeSuppliers($changeSuppliers)
     {
         $this->changeSuppliers = $changeSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userRecipient
+     */ 
+    public function getUserRecipient()
+    {
+        return $this->userRecipient;
+    }
+
+    /**
+     * Set the value of userRecipient
+     *
+     * @return  self
+     */ 
+    public function setUserRecipient($userRecipient)
+    {
+        $this->userRecipient = $userRecipient;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userLastupdater
+     */ 
+    public function getUserLastupdater()
+    {
+        return $this->userLastupdater;
+    }
+
+    /**
+     * Set the value of userLastupdater
+     *
+     * @return  self
+     */ 
+    public function setUserLastupdater($userLastupdater)
+    {
+        $this->userLastupdater = $userLastupdater;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilCategory
+     */ 
+    public function getItilCategory()
+    {
+        return $this->itilCategory;
+    }
+
+    /**
+     * Set the value of itilCategory
+     *
+     * @return  self
+     */ 
+    public function setItilCategory($itilCategory)
+    {
+        $this->itilCategory = $itilCategory;
 
         return $this;
     }
