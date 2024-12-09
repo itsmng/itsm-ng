@@ -20,7 +20,7 @@ class GroupRssFeed
     #[ORM\ManyToOne(targetEntity: Rssfeed::class, inversedBy: 'groupRssfeeds')]
     #[ORM\JoinColumn(name: 'rssfeeds_id', referencedColumnName: 'id', nullable: true)]
     private ?Rssfeed $rssfeed;
-    
+
     #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupRssfeeds')]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group;

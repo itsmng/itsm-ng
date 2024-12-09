@@ -104,7 +104,7 @@ class Appliance
         return $this->id;
     }
 
-    
+
 
     public function getIsRecursive(): ?int
     {
@@ -165,7 +165,7 @@ class Appliance
         return $this;
     }
 
-    
+
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;

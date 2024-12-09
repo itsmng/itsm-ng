@@ -195,7 +195,7 @@ class ItilFollowup
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -205,7 +205,7 @@ class ItilFollowup
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -215,7 +215,7 @@ class ItilFollowup
 
     /**
      * Get the value of userEditor
-     */ 
+     */
     public function getUserEditor()
     {
         return $this->userEditor;
@@ -225,7 +225,7 @@ class ItilFollowup
      * Set the value of userEditor
      *
      * @return  self
-     */ 
+     */
     public function setUserEditor($userEditor)
     {
         $this->userEditor = $userEditor;
@@ -235,7 +235,7 @@ class ItilFollowup
 
     /**
      * Get the value of requesttype
-     */ 
+     */
     public function getRequesttype()
     {
         return $this->requesttype;
@@ -245,7 +245,7 @@ class ItilFollowup
      * Set the value of requesttype
      *
      * @return  self
-     */ 
+     */
     public function setRequesttype($requesttype)
     {
         $this->requesttype = $requesttype;
@@ -253,5 +253,5 @@ class ItilFollowup
         return $this;
     }
 
-    
+
 }

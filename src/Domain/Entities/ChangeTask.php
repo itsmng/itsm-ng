@@ -210,7 +210,7 @@ class ChangeTask
         return $this;
     }
 
-    
+
     public function getTimelinePosition(): ?int
     {
         return $this->timeline_position;

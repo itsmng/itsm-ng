@@ -16,7 +16,7 @@ class ApplianceType
     #[ORM\Column(type:"integer")]
     private $id;
 
-   
+
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
@@ -38,7 +38,7 @@ class ApplianceType
         return $this->id;
     }
 
-    
+
 
     public function getIsRecursive(): ?bool
     {
@@ -67,7 +67,7 @@ class ApplianceType
         return $this;
     }
 
-    
+
     public function setIsRecursive(?bool $isRecursive): self
     {
         $this->is_recursive = $isRecursive;

@@ -165,7 +165,7 @@ class Change
         return $this;
     }
 
-    
+
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -274,7 +274,7 @@ class Change
         return $this;
     }
 
-   
+
     public function getUrgency(): ?int
     {
         return $this->urgency;
@@ -311,7 +311,7 @@ class Change
         return $this;
     }
 
-    
+
     public function getImpactcontent(): ?string
     {
         return $this->impactcontent;
@@ -592,7 +592,7 @@ class Change
 
     /**
      * Get the value of userRecipient
-     */ 
+     */
     public function getUserRecipient()
     {
         return $this->userRecipient;
@@ -602,7 +602,7 @@ class Change
      * Set the value of userRecipient
      *
      * @return  self
-     */ 
+     */
     public function setUserRecipient($userRecipient)
     {
         $this->userRecipient = $userRecipient;
@@ -612,7 +612,7 @@ class Change
 
     /**
      * Get the value of userLastupdater
-     */ 
+     */
     public function getUserLastupdater()
     {
         return $this->userLastupdater;
@@ -622,7 +622,7 @@ class Change
      * Set the value of userLastupdater
      *
      * @return  self
-     */ 
+     */
     public function setUserLastupdater($userLastupdater)
     {
         $this->userLastupdater = $userLastupdater;
@@ -632,7 +632,7 @@ class Change
 
     /**
      * Get the value of itilCategory
-     */ 
+     */
     public function getItilCategory()
     {
         return $this->itilCategory;
@@ -642,7 +642,7 @@ class Change
      * Set the value of itilCategory
      *
      * @return  self
-     */ 
+     */
     public function setItilCategory($itilCategory)
     {
         $this->itilCategory = $itilCategory;

@@ -14,7 +14,7 @@ class AuthLdapReplicate
     #[ORM\Column(type: "integer")]
     private $id;
 
-    
+
     #[ORM\ManyToOne(targetEntity: AuthLdap::class)]
     #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: true)]
     private ?AuthLdap $authldap;
@@ -33,7 +33,7 @@ class AuthLdapReplicate
         return $this->id;
     }
 
-    
+
     public function getHost(): ?string
     {
         return $this->host;

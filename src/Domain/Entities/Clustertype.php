@@ -44,7 +44,7 @@ class Clustertype
         return $this->id;
     }
 
-    
+
     public function getIsRecursive(): ?int
     {
         return $this->is_recursive;

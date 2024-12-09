@@ -68,7 +68,7 @@ class BusinessCriticity
         return $this;
     }
 
-    
+
 
     public function getIsRecursive(): ?bool
     {
@@ -114,7 +114,7 @@ class BusinessCriticity
         return $this;
     }
 
-    
+
     public function getCompletename(): ?string
     {
         return $this->completename;

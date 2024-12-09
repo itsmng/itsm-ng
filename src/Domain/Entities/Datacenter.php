@@ -58,7 +58,7 @@ class Datacenter
         return $this;
     }
 
-    
+
     public function getIsRecursive(): ?int
     {
         return $this->is_recursive;
@@ -71,7 +71,7 @@ class Datacenter
         return $this;
     }
 
-    
+
     public function getIsDeleted(): ?int
     {
         return $this->is_deleted;

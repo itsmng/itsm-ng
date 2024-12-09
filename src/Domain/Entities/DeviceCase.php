@@ -76,7 +76,7 @@ class DeviceCase
         return $this;
     }
 
-    
+
     public function getComment(): ?string
     {
         return $this->comment;
@@ -89,7 +89,7 @@ class DeviceCase
         return $this;
     }
 
-    
+
 
     public function getIsRecursive(): ?bool
     {
@@ -103,7 +103,7 @@ class DeviceCase
         return $this;
     }
 
-    
+
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;

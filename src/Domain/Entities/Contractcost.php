@@ -21,7 +21,7 @@ class Contractcost
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Contract::class)]
     #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: true)]
     private ?Contract $contract;
@@ -44,7 +44,7 @@ class Contractcost
     #[ORM\ManyToOne(targetEntity: Budget::class)]
     #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
     private ?Budget $budget;
-    
+
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
@@ -117,7 +117,7 @@ class Contractcost
         return $this;
     }
 
-    
+
     public function getIsRecursive(): ?int
     {
         return $this->is_recursive;

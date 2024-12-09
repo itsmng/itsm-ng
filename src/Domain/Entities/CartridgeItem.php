@@ -25,7 +25,7 @@ class CartridgeItem
     #[ORM\Column(type: "integer")]
     private $id;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
@@ -39,27 +39,27 @@ class CartridgeItem
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $ref;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location;
 
-    
+
     #[ORM\ManyToOne(targetEntity: CartridgeItemType::class)]
     #[ORM\JoinColumn(name: 'cartridgeitemtypes_id', referencedColumnName: 'id', nullable: true)]
     private ?CartridgeItemType $cartridgeItemType;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
 
-    
+
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?User $user_tech;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?Group $group_tech;
@@ -87,7 +87,7 @@ class CartridgeItem
         return $this->id;
     }
 
-    
+
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -122,8 +122,8 @@ class CartridgeItem
         $this->ref = $ref;
 
         return $this;
-    }    
-    
+    }
+
 
     public function getIsDeleted(): ?bool
     {

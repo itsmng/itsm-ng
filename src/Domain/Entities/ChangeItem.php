@@ -37,7 +37,7 @@ class ChangeItem
         return $this;
     }
 
-    
+
     public function getItemtype(): ?string
     {
         return $this->itemtype;

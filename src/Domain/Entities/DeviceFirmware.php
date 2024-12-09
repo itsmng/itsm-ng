@@ -116,7 +116,7 @@ class DeviceFirmware
         $this->version = $version;
 
         return $this;
-    }    
+    }
 
     public function getIsRecursive(): ?bool
     {
@@ -216,7 +216,7 @@ class DeviceFirmware
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -226,7 +226,7 @@ class DeviceFirmware
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

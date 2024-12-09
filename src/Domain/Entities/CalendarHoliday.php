@@ -29,7 +29,7 @@ class CalendarHoliday
         return $this->id;
     }
 
-    
+
     /**
      * Get the value of calendar
      */

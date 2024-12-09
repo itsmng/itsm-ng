@@ -45,7 +45,7 @@ class Crontasklog
         return $this->id;
     }
 
-    
+
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;

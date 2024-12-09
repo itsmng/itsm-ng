@@ -15,7 +15,7 @@ class ApiClient
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
@@ -58,7 +58,7 @@ class ApiClient
         return $this->id;
     }
 
-    
+
 
     public function getIsRecursive(): ?bool
     {

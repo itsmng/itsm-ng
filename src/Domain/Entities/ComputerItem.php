@@ -39,7 +39,7 @@ class ComputerItem
         return $this->id;
     }
 
-   
+
     public function getItemsId(): ?int
     {
         return $this->items_id;

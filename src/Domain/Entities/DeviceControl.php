@@ -96,7 +96,7 @@ class DeviceControl
         return $this;
     }
 
-    
+
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -109,7 +109,7 @@ class DeviceControl
         return $this;
     }
 
-    
+
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -196,7 +196,7 @@ class DeviceControl
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -206,7 +206,7 @@ class DeviceControl
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

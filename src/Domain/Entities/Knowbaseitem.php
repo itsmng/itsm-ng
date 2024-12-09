@@ -35,7 +35,7 @@ class Knowbaseitem
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
     private $is_faq;
-    
+
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
@@ -197,7 +197,7 @@ class Knowbaseitem
 
     /**
      * Get the value of knowbaseitemcategory
-     */ 
+     */
     public function getKnowbaseitemcategory()
     {
         return $this->knowbaseitemcategory;
@@ -207,7 +207,7 @@ class Knowbaseitem
      * Set the value of knowbaseitemcategory
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitemcategory($knowbaseitemcategory)
     {
         $this->knowbaseitemcategory = $knowbaseitemcategory;
@@ -217,7 +217,7 @@ class Knowbaseitem
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -227,7 +227,7 @@ class Knowbaseitem
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

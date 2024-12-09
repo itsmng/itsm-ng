@@ -64,7 +64,7 @@ class Changevalidation
         return $this->id;
     }
 
-    
+
     public function getIsRecursive(): ?int
     {
         return $this->is_recursive;
@@ -77,7 +77,7 @@ class Changevalidation
         return $this;
     }
 
-    
+
     public function getCommentSubmission(): ?string
     {
         return $this->comment_submission;

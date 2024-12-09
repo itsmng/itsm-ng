@@ -15,12 +15,12 @@ class ChangeTicket
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeTickets')]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
     private ?Change $change;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'changeTickets')]
     #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
     private ?Ticket $ticket;
@@ -37,7 +37,7 @@ class ChangeTicket
         return $this;
     }
 
-    
+
 
     /**
      * Get the value of change

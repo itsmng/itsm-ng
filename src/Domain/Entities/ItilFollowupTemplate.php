@@ -140,7 +140,7 @@ class ItilFollowupTemplate
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -150,7 +150,7 @@ class ItilFollowupTemplate
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -160,7 +160,7 @@ class ItilFollowupTemplate
 
     /**
      * Get the value of requesttype
-     */ 
+     */
     public function getRequesttype()
     {
         return $this->requesttype;
@@ -170,7 +170,7 @@ class ItilFollowupTemplate
      * Set the value of requesttype
      *
      * @return  self
-     */ 
+     */
     public function setRequesttype($requesttype)
     {
         $this->requesttype = $requesttype;

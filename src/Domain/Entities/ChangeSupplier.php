@@ -16,7 +16,7 @@ class ChangeSupplier
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeSuppliers')]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
     private ?Change $change;
@@ -39,7 +39,7 @@ class ChangeSupplier
         return $this->id;
     }
 
-    
+
     public function getType(): ?int
     {
         return $this->type;

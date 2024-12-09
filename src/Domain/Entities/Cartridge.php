@@ -18,17 +18,17 @@ class Cartridge
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
-    
+
     #[ORM\ManyToOne(targetEntity: CartridgeItem::class)]
     #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: true)]
     private ?CartridgeItem $cartridgeItem;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Printer::class)]
     #[ORM\JoinColumn(name: 'printers_id', referencedColumnName: 'id', nullable: true)]
     private ?Printer $printer;
@@ -56,7 +56,7 @@ class Cartridge
         return $this->id;
     }
 
-    
+
 
     public function getDateIn(): ?\DateTimeInterface
     {

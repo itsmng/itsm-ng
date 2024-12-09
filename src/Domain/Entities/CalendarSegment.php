@@ -15,7 +15,7 @@ class CalendarSegment
     #[ORM\Column(type: "integer")]
     private $id;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Calendar::class)]
     #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
     private ?Calendar $calendars;
@@ -41,7 +41,7 @@ class CalendarSegment
         return $this->id;
     }
 
-    
+
     public function isRecursive(): ?bool
     {
         return $this->is_recursive;

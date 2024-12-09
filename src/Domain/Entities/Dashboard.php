@@ -58,7 +58,7 @@ class Dashboard
         return $this;
     }
 
-    
+
     /**
      * Get the value of profile
      */

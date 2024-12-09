@@ -42,7 +42,7 @@ class CertificateType
         return $this->id;
     }
 
-    
+
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;

@@ -52,7 +52,7 @@ class Consumable
         return $this->id;
     }
 
-    
+
     public function getDateIn(): ?\DateTimeInterface
     {
         return $this->date_in;

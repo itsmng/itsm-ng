@@ -160,7 +160,7 @@ class Contract
         return $this;
     }
 
-    
+
     public function getBeginDate(): ?\DateTimeInterface
     {
         return $this->begin_date;
@@ -413,7 +413,7 @@ class Contract
         return $this;
     }
 
-   
+
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;

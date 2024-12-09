@@ -16,12 +16,12 @@ class ContactSupplier
     #[ORM\Column(type: 'integer')]
     private $id;
 
-   
+
     #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'contactSuppliers')]
     #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: true)]
     private ?Supplier $supplier;
 
-   
+
     #[ORM\ManyToOne(targetEntity: Contact::class, inversedBy: 'contactSuppliers')]
     #[ORM\JoinColumn(name: 'contacts_id', referencedColumnName: 'id', nullable: true)]
     private ?Contact $contact;
@@ -31,7 +31,7 @@ class ContactSupplier
         return $this->id;
     }
 
-    
+
     /**
      * Get the value of supplier
      */

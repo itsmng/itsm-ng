@@ -86,7 +86,7 @@ class Budget
         return $this;
     }
 
-    
+
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -207,7 +207,7 @@ class Budget
         return $this;
     }
 
-    
+
     /**
      * Get the value of location
      */

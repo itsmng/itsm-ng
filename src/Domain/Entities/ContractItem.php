@@ -17,7 +17,7 @@ class ContractItem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Contract::class)]
     #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: true)]
     private ?Contract $contract;
@@ -33,7 +33,7 @@ class ContractItem
         return $this->id;
     }
 
-    
+
     public function getItemsId(): ?int
     {
         return $this->items_id;

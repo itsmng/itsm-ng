@@ -90,7 +90,7 @@ class Computervirtualmachine
         return $this;
     }
 
-    
+
     public function getUuid(): ?string
     {
         return $this->uuid;

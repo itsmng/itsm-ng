@@ -547,7 +547,7 @@ class Entity
         return $this;
     }
 
-   
+
     public function getMailDomain(): ?string
     {
         return $this->mail_domain;
@@ -1318,7 +1318,7 @@ class Entity
 
     /**
      * Get the value of entitySoftware
-     */ 
+     */
     public function getEntitySoftware()
     {
         return $this->entitySoftware;
@@ -1328,7 +1328,7 @@ class Entity
      * Set the value of entitySoftware
      *
      * @return  self
-     */ 
+     */
     public function setEntitySoftware($entitySoftware)
     {
         $this->entitySoftware = $entitySoftware;

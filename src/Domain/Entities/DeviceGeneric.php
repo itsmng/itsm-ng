@@ -47,7 +47,7 @@ class DeviceGeneric
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location;
-    
+
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
     private ?State $state;
@@ -99,7 +99,7 @@ class DeviceGeneric
         return $this;
     }
 
-    
+
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;

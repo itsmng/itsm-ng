@@ -28,7 +28,7 @@ class Changetemplatemandatoryfield
         return $this->id;
     }
 
-    
+
     public function getNum(): ?int
     {
         return $this->num;

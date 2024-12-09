@@ -104,7 +104,7 @@ class Computer
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $is_dynamic;
 
-    
+
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
@@ -201,7 +201,7 @@ class Computer
         return $this;
     }
 
-    
+
     public function getComment(): ?string
     {
         return $this->comment;
@@ -238,7 +238,7 @@ class Computer
         return $this;
     }
 
-    
+
     public function getIsTemplate(): ?bool
     {
         return $this->is_template;
@@ -263,7 +263,7 @@ class Computer
         return $this;
     }
 
-    
+
     public function getIsDeleted(): ?bool
     {
         return $this->is_deleted;
@@ -288,7 +288,7 @@ class Computer
         return $this;
     }
 
-    
+
     public function getTicketTco(): ?float
     {
         return $this->ticket_tco;

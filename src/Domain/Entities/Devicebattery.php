@@ -91,7 +91,7 @@ class Devicebattery
         return $this;
     }
 
-   
+
     public function getVoltage(): ?int
     {
         return $this->voltage;
@@ -116,7 +116,7 @@ class Devicebattery
         return $this;
     }
 
-    
+
 
     public function getIsRecursive(): ?int
     {
@@ -130,7 +130,7 @@ class Devicebattery
         return $this;
     }
 
-    
+
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -217,7 +217,7 @@ class Devicebattery
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -227,7 +227,7 @@ class Devicebattery
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

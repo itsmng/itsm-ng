@@ -35,7 +35,7 @@ class ChangeProblem
         return $this;
     }
 
-    
+
 
     /**
      * Get the value of change

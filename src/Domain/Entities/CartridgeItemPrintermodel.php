@@ -15,12 +15,12 @@ class CartridgeItemPrintermodel
     #[ORM\GeneratedValue]
     private $id;
 
-    
+
     #[ORM\ManyToOne(targetEntity: CartridgeItem::class, inversedBy: 'cartridgeItemPrintermodels')]
     #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: true)]
     private ?CartridgeItem $cartridgeItem;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Printermodel::class, inversedBy: 'cartridgeItemPrintermodels')]
     #[ORM\JoinColumn(name: 'printermodels_id', referencedColumnName: 'id', nullable: true)]
     private ?Printermodel $printermodel;
@@ -30,7 +30,7 @@ class CartridgeItemPrintermodel
     {
         return $this->id;
     }
-    
+
 
     /**
      * Get the value of cartridgeItem

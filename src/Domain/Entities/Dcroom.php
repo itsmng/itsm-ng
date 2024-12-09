@@ -72,7 +72,7 @@ class Dcroom
         return $this;
     }
 
-    
+
     public function getIsRecursive(): ?int
     {
         return $this->is_recursive;
@@ -85,7 +85,7 @@ class Dcroom
         return $this;
     }
 
-    
+
     public function getVisCols(): ?int
     {
         return $this->vis_cols;
@@ -122,7 +122,7 @@ class Dcroom
         return $this;
     }
 
-    
+
     public function getIsDeleted(): ?int
     {
         return $this->is_deleted;

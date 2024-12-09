@@ -201,7 +201,7 @@ class ItilSolution
 
     /**
      * Get the value of solutiontype
-     */ 
+     */
     public function getSolutiontype()
     {
         return $this->solutiontype;
@@ -211,7 +211,7 @@ class ItilSolution
      * Set the value of solutiontype
      *
      * @return  self
-     */ 
+     */
     public function setSolutiontype($solutiontype)
     {
         $this->solutiontype = $solutiontype;
@@ -221,7 +221,7 @@ class ItilSolution
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -231,7 +231,7 @@ class ItilSolution
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -241,7 +241,7 @@ class ItilSolution
 
     /**
      * Get the value of userEditor
-     */ 
+     */
     public function getUserEditor()
     {
         return $this->userEditor;
@@ -251,7 +251,7 @@ class ItilSolution
      * Set the value of userEditor
      *
      * @return  self
-     */ 
+     */
     public function setUserEditor($userEditor)
     {
         $this->userEditor = $userEditor;
@@ -261,7 +261,7 @@ class ItilSolution
 
     /**
      * Get the value of userApproval
-     */ 
+     */
     public function getUserApproval()
     {
         return $this->userApproval;
@@ -271,7 +271,7 @@ class ItilSolution
      * Set the value of userApproval
      *
      * @return  self
-     */ 
+     */
     public function setUserApproval($userApproval)
     {
         $this->userApproval = $userApproval;
@@ -281,7 +281,7 @@ class ItilSolution
 
     /**
      * Get the value of itilFollowup
-     */ 
+     */
     public function getItilFollowup()
     {
         return $this->itilFollowup;
@@ -291,7 +291,7 @@ class ItilSolution
      * Set the value of itilFollowup
      *
      * @return  self
-     */ 
+     */
     public function setItilFollowup($itilFollowup)
     {
         $this->itilFollowup = $itilFollowup;

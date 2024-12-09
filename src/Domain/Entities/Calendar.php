@@ -62,7 +62,7 @@ class Calendar
         return $this;
     }
 
-    
+
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;

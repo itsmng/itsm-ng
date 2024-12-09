@@ -82,7 +82,7 @@ class Consumableitem
         return $this->id;
     }
 
-    
+
     public function getIsRecursive(): ?int
     {
         return $this->is_recursive;
@@ -117,8 +117,8 @@ class Consumableitem
         $this->ref = $ref;
 
         return $this;
-    } 
-     
+    }
+
 
     public function getIsDeleted(): ?int
     {

@@ -36,7 +36,7 @@ class Cluster
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $version;
-    
+
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?User $users_tech;
@@ -81,7 +81,7 @@ class Cluster
         return $this;
     }
 
-    
+
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;

@@ -37,7 +37,7 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
@@ -57,7 +57,7 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $template_name;
 
-    
+
     #[ORM\ManyToOne(targetEntity: CertificateType::class)]
     #[ORM\JoinColumn(name: 'certificatetypes_id', referencedColumnName: 'id', nullable: true)]
     private ?CertificateType $certificateType;
@@ -68,7 +68,7 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $dns_suffix;
 
-    
+
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?User $user_tech;
@@ -77,7 +77,7 @@ class Certificate
     #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true, options:['comment' => 'RELATION to glpi_groups (id)'])]
     private ?Group $group_tech;
 
-    
+
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'RELATION to glpi_locations (id)'])]
     private ?Location $location;
@@ -250,7 +250,7 @@ class Certificate
         return $this;
     }
 
-       
+
     public function getContact(): ?string
     {
         return $this->contact;

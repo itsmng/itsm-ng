@@ -18,7 +18,7 @@ class GroupTicket
     #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'groupTickets')]
     #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
     private ?Ticket $ticket;
-    
+
     #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupTickets')]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group;

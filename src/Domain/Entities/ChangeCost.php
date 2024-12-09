@@ -20,7 +20,7 @@ class ChangeCost
     #[ORM\Column(type: 'integer')]
     private $id;
 
-   
+
     #[ORM\ManyToOne(targetEntity: Change::class)]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
     private ?Change $change;
@@ -65,7 +65,7 @@ class ChangeCost
         return $this->id;
     }
 
-    
+
     public function getName(): ?string
     {
         return $this->name;
@@ -162,7 +162,7 @@ class ChangeCost
         return $this;
     }
 
-    
+
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;

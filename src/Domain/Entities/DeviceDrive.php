@@ -110,7 +110,7 @@ class DeviceDrive
         return $this;
     }
 
-   
+
     public function getEntitiesId(): ?int
     {
         return $this->entities_id;
@@ -135,7 +135,7 @@ class DeviceDrive
         return $this;
     }
 
-   
+
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;

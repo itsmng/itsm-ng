@@ -38,7 +38,7 @@ class ChangeUser
         return $this->id;
     }
 
-    
+
     public function getType(): ?int
     {
         return $this->type;

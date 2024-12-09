@@ -74,7 +74,7 @@ class ComputerAntivirus
         return $this;
     }
 
-    
+
     public function getName(): ?string
     {
         return $this->name;
@@ -87,7 +87,7 @@ class ComputerAntivirus
         return $this;
     }
 
-   
+
     public function getAntivirusVersion(): ?string
     {
         return $this->antivirus_version;
