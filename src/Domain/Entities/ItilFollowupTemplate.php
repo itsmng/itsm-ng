@@ -29,6 +29,10 @@ class ItilFollowupTemplate
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $entities_id;
 
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    private ?Entity $entity;
+
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
     private $is_recursive;
 
@@ -40,6 +44,10 @@ class ItilFollowupTemplate
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $requesttypes_id;
+
+    #[ORM\ManyToOne(targetEntity: RequestType::class)]
+    #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Requesttype $requesttype;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
     private $is_private;
@@ -158,5 +166,45 @@ class ItilFollowupTemplate
     public function getComment(): ?string
     {
         return $this->comment;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of requesttype
+     */ 
+    public function getRequesttype()
+    {
+        return $this->requesttype;
+    }
+
+    /**
+     * Set the value of requesttype
+     *
+     * @return  self
+     */ 
+    public function setRequesttype($requesttype)
+    {
+        $this->requesttype = $requesttype;
+
+        return $this;
     }
 }
