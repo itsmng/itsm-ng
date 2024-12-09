@@ -31,6 +31,10 @@ class ItilSolution
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $solutiontypes_id;
 
+    #[ORM\ManyToOne(targetEntity: Solutiontype::class)]
+    #[ORM\JoinColumn(name: 'solutiontypes_id', referencedColumnName: 'id', nullable: false)]
+    private ?Solutiontype $solutiontype;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $solutiontype_name;
 
@@ -49,14 +53,28 @@ class ItilSolution
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    private ?User $user;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $user_name;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id_editor;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: false)]
+    private ?User $userEditor;
+
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id_approval;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_approval', referencedColumnName: 'id', nullable: false)]
+    private ?User $userApproval;
+
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $user_name_approval;
@@ -66,6 +84,11 @@ class ItilSolution
 
     #[ORM\Column(type: 'integer', nullable: true, options: ['comment' => 'Followup reference on reject or approve a solution'])]
     private $itilfollowups_id;
+
+    #[ORM\ManyToOne(targetEntity: ItilFollowup::class)]
+    #[ORM\JoinColumn(name: 'itilfollowups_id', referencedColumnName: 'id', nullable: false)]
+    private ?ItilFollowup $itilFollowup;
+
 
     public function getId(): ?int
     {
@@ -248,6 +271,106 @@ class ItilSolution
     public function setItilFollowupsId(int $itil_followups_id): self
     {
         $this->itilfollowups_id = $itil_followups_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of solutiontype
+     */ 
+    public function getSolutiontype()
+    {
+        return $this->solutiontype;
+    }
+
+    /**
+     * Set the value of solutiontype
+     *
+     * @return  self
+     */ 
+    public function setSolutiontype($solutiontype)
+    {
+        $this->solutiontype = $solutiontype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userEditor
+     */ 
+    public function getUserEditor()
+    {
+        return $this->userEditor;
+    }
+
+    /**
+     * Set the value of userEditor
+     *
+     * @return  self
+     */ 
+    public function setUserEditor($userEditor)
+    {
+        $this->userEditor = $userEditor;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userApproval
+     */ 
+    public function getUserApproval()
+    {
+        return $this->userApproval;
+    }
+
+    /**
+     * Set the value of userApproval
+     *
+     * @return  self
+     */ 
+    public function setUserApproval($userApproval)
+    {
+        $this->userApproval = $userApproval;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilFollowup
+     */ 
+    public function getItilFollowup()
+    {
+        return $this->itilFollowup;
+    }
+
+    /**
+     * Set the value of itilFollowup
+     *
+     * @return  self
+     */ 
+    public function setItilFollowup($itilFollowup)
+    {
+        $this->itilFollowup = $itilFollowup;
 
         return $this;
     }
