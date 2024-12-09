@@ -37,11 +37,9 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
+    
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -59,11 +57,9 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $template_name;
 
-    #[ORM\Column(type: 'integer', name: 'certificatetypes_id', options: ['default' => 0, 'comment' => 'RELATION to glpi_certificatetypes (id)'])]
-    private $certificatetypes_id;
-
+    
     #[ORM\ManyToOne(targetEntity: CertificateType::class)]
-    #[ORM\JoinColumn(name: 'certificatetypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'certificatetypes_id', referencedColumnName: 'id', nullable: true)]
     private ?CertificateType $certificateType;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -72,32 +68,22 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $dns_suffix;
 
-    #[ORM\Column(type: 'integer', name: 'users_id_tech', options: ['default' => 0, 'comment' => 'RELATION to glpi_users (id)'])]
-    private $users_id_tech;
-
+    
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?User $user_tech;
 
-    #[ORM\Column(type: 'integer', name: 'groups_id_tech', options: ['default' => 0, 'comment' => 'RELATION to glpi_groups (id)'])]
-    private $groups_id_tech;
-
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true, options:['comment' => 'RELATION to glpi_groups (id)'])]
     private ?Group $group_tech;
 
-    #[ORM\Column(type: 'integer', name: 'locations_id', options: ['default' => 0, 'comment' => 'RELATION to glpi_locations (id)'])]
-    private $locations_id;
-
+    
     #[ORM\ManyToOne(targetEntity: Location::class)]
-    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'RELATION to glpi_locations (id)'])]
     private ?Location $location;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to glpi_manufacturers (id)'])]
-    private $manufacturers_id;
-
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
-    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'RELATION to glpi_manufacturers (id)'])]
     private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -106,18 +92,12 @@ class Certificate
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $contact_num;
 
-    #[ORM\Column(type: 'integer', name: 'users_id', options: ['default' => 0])]
-    private $users_id;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
 
-    #[ORM\Column(type: 'integer', name: 'groups_id', options: ['default' => 0])]
-    private $groups_id;
-
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -126,11 +106,8 @@ class Certificate
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_expiration;
 
-    #[ORM\Column(type: 'integer', name: 'states_id', options: ['default' => 0, 'comment' => 'RELATION to states (id)'])]
-    private $states_id;
-
     #[ORM\ManyToOne(targetEntity: State::class)]
-    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'RELATION to states (id)'])]
     private ?State $state;
 
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
@@ -185,18 +162,6 @@ class Certificate
     public function setOtherserial(string $otherserial): self
     {
         $this->otherserial = $otherserial;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }
@@ -261,18 +226,6 @@ class Certificate
         return $this;
     }
 
-    public function getCertificatetypesId(): ?int
-    {
-        return $this->certificatetypes_id;
-    }
-
-    public function setCertificatetypesId(int $certificatetypes_id): self
-    {
-        $this->certificatetypes_id = $certificatetypes_id;
-
-        return $this;
-    }
-
     public function getDnsName(): ?string
     {
         return $this->dns_name;
@@ -297,54 +250,7 @@ class Certificate
         return $this;
     }
 
-    public function getUsersIdTech(): ?int
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(int $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
-
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
+       
     public function getContact(): ?string
     {
         return $this->contact;
@@ -369,30 +275,6 @@ class Certificate
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
-
-        return $this;
-    }
-
     public function getIsAutosign(): ?bool
     {
         return $this->is_autosign;
@@ -413,18 +295,6 @@ class Certificate
     public function setDateExpiration(\DateTimeInterface $date_expiration): self
     {
         $this->date_expiration = $date_expiration;
-
-        return $this;
-    }
-
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(int $states_id): self
-    {
-        $this->states_id = $states_id;
 
         return $this;
     }

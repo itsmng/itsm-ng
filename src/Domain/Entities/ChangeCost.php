@@ -20,11 +20,9 @@ class ChangeCost
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changes_id;
-
+   
     #[ORM\ManyToOne(targetEntity: Change::class)]
-    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
     private ?Change $change;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -51,18 +49,12 @@ class ChangeCost
     #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0])]
     private $cost_material;
 
-    #[ORM\Column(type: 'integer', name: 'budgets_id', options: ['default' => 0])]
-    private $budgets_id;
-
     #[ORM\ManyToOne(targetEntity: Budget::class)]
-    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
     private ?Budget $budget;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -73,18 +65,7 @@ class ChangeCost
         return $this->id;
     }
 
-    public function getChangesId(): ?int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
-
+    
     public function getName(): ?string
     {
         return $this->name;
@@ -181,30 +162,7 @@ class ChangeCost
         return $this;
     }
 
-    public function getBudgetsId(): ?int
-    {
-        return $this->budgets_id;
-    }
-
-    public function setBudgetsId(?int $budgets_id): self
-    {
-        $this->budgets_id = $budgets_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
+    
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;

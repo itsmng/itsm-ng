@@ -23,11 +23,8 @@ class Documentcategory
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', name: 'documentcategories_id', options: ['default' => 0])]
-    private $documentcategories_id;
-
     #[ORM\ManyToOne(targetEntity: Documentcategory::class)]
-    #[ORM\JoinColumn(name: 'documentcategories_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'documentcategories_id', referencedColumnName: 'id', nullable: true)]
     private ?Documentcategory $documentcategory;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
@@ -74,18 +71,6 @@ class Documentcategory
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getDocumentcategoriesId(): ?int
-    {
-        return $this->documentcategories_id;
-    }
-
-    public function setDocumentcategoriesId(?int $documentcategories_id): self
-    {
-        $this->documentcategories_id = $documentcategories_id;
 
         return $this;
     }

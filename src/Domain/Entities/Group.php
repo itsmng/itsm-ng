@@ -29,11 +29,8 @@ class Group
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'entityRssfeeds')]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -57,11 +54,8 @@ class Group
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
-    #[ORM\Column(type: 'integer', name: 'groups_id', options: ['default' => 0])]
-    private $groups_id;
-
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group;
 
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
@@ -128,18 +122,6 @@ class Group
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool
@@ -222,18 +204,6 @@ class Group
     public function setDateMod(?\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?Group
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(?Group $groups_id): self
-    {
-        $this->groups_id = $groups_id;
 
         return $this;
     }

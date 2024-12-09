@@ -24,38 +24,26 @@ class DeviceCase
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $designation;
 
-    #[ORM\Column(type: "integer", name: 'devicecasetypes_id', options: ["default" => 0])]
-    private $devicecasetypes_id;
-
     #[ORM\ManyToOne(targetEntity: DevicecaseType::class)]
-    #[ORM\JoinColumn(name: 'devicecasetypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'devicecasetypes_id', referencedColumnName: 'id', nullable: true)]
     private ?DevicecaseType $devicecaseType;
 
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", name: 'manufacturers_id', options: ["default" => 0])]
-    private $manufacturers_id;
-
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
-    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
 
-    #[ORM\Column(type: "integer", name: 'entities_id', options: ["default" => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", nullable: true)]
-    private $devicecasemodels_id;
-
     #[ORM\ManyToOne(targetEntity: Devicecasemodel::class)]
-    #[ORM\JoinColumn(name: 'devicecasemodels_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'devicecasemodels_id', referencedColumnName: 'id', nullable: true)]
     private ?Devicecasemodel $devicecasemodel;
 
     #[ORM\Column(type: "datetime", nullable: true)]
@@ -88,18 +76,7 @@ class DeviceCase
         return $this;
     }
 
-    public function getDevicecasetypesId(): ?int
-    {
-        return $this->devicecasetypes_id;
-    }
-
-    public function setDevicecasetypesId(int $devicecasetypes_id): self
-    {
-        $this->devicecasetypes_id = $devicecasetypes_id;
-
-        return $this;
-    }
-
+    
     public function getComment(): ?string
     {
         return $this->comment;
@@ -112,29 +89,7 @@ class DeviceCase
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
+    
 
     public function getIsRecursive(): ?bool
     {
@@ -148,18 +103,7 @@ class DeviceCase
         return $this;
     }
 
-    public function getDevicecasemodelsId(): ?int
-    {
-        return $this->devicecasemodels_id;
-    }
-
-    public function setDevicecasemodelsId(?int $devicecasemodels_id): self
-    {
-        $this->devicecasemodels_id = $devicecasemodels_id;
-
-        return $this;
-    }
-
+    
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;

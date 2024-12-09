@@ -29,11 +29,8 @@ class Infocom
     #[ORM\Column(type: "string", length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", name: 'entities_id', options: ["default" => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
@@ -51,11 +48,8 @@ class Infocom
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $warranty_info;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $suppliers_id;
-
     #[ORM\ManyToOne(targetEntity: Supplier::class)]
-    #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: true)]
     private ?Supplier $supplier;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
@@ -88,11 +82,8 @@ class Infocom
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $bill;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $budgets_id;
-
     #[ORM\ManyToOne(targetEntity: Budget::class)]
-    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
     private ?Budget $budget;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
@@ -119,11 +110,8 @@ class Infocom
     #[ORM\Column(type: "datetime", nullable: true)]
     private $decommission_date;
 
-    #[ORM\Column(type: "integer", name: 'businesscriticities_id', options: ["default" => 0])]
-    private $businesscriticities_id;
-
     #[ORM\ManyToOne(targetEntity: BusinessCriticity::class)]
-    #[ORM\JoinColumn(name: 'businesscriticities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'businesscriticities_id', referencedColumnName: 'id', nullable: true)]
     private ?BusinessCriticity $businesscriticity;
 
     public function getId(): ?int
@@ -151,18 +139,6 @@ class Infocom
     public function setItemtype(string $itemtype): self
     {
         $this->itemtype = $itemtype;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }
@@ -223,18 +199,6 @@ class Infocom
     public function setWarrantyInfo(string $warranty_info): self
     {
         $this->warranty_info = $warranty_info;
-
-        return $this;
-    }
-
-    public function getSuppliersId(): ?int
-    {
-        return $this->suppliers_id;
-    }
-
-    public function setSuppliersId(int $suppliers_id): self
-    {
-        $this->suppliers_id = $suppliers_id;
 
         return $this;
     }
@@ -335,18 +299,6 @@ class Infocom
         return $this;
     }
 
-    public function getBudgetsId(): ?int
-    {
-        return $this->budgets_id;
-    }
-
-    public function setBudgetsId(int $budgets_id): self
-    {
-        $this->budgets_id = $budgets_id;
-
-        return $this;
-    }
-
     public function getAlert(): ?int
     {
         return $this->alert;
@@ -439,18 +391,6 @@ class Infocom
     public function setDecommissionDate(\DateTimeInterface $decommission_date): self
     {
         $this->decommission_date = $decommission_date;
-
-        return $this;
-    }
-
-    public function getBusinesscriticitiesId(): ?int
-    {
-        return $this->businesscriticities_id;
-    }
-
-    public function setBusinesscriticitiesId(int $businesscriticities_id): self
-    {
-        $this->businesscriticities_id = $businesscriticities_id;
 
         return $this;
     }

@@ -25,42 +25,27 @@ class Computervirtualmachine
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
-    #[ORM\Column(type: 'integer', name: 'computers_id', options: ['default' => 0])]
-    private $computers_id;
-
     #[ORM\ManyToOne(targetEntity: Computer::class)]
-    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: true)]
     private ?Computer $computer;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
-    #[ORM\Column(type: 'integer', name: 'virtualmachinestates_id', options: ['default' => 0])]
-    private $virtualmachinestates_id;
-
     #[ORM\ManyToOne(targetEntity: Virtualmachinestate::class)]
-    #[ORM\JoinColumn(name: 'virtualmachinestates_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'virtualmachinestates_id', referencedColumnName: 'id', nullable: true)]
     private ?Virtualmachinestate $virtualmachinestate;
 
-    #[ORM\Column(type: 'integer', name: 'virtualmachinesystems_id', options: ['default' => 0])]
-    private $virtualmachinesystems_id;
-
     #[ORM\ManyToOne(targetEntity: Virtualmachinesystem::class)]
-    #[ORM\JoinColumn(name: 'virtualmachinesystems_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'virtualmachinesystems_id', referencedColumnName: 'id', nullable: true)]
     private ?Virtualmachinesystem $virtualmachinesystem;
 
-    #[ORM\Column(type: 'integer', name: 'virtualmachinetypes_id', options: ['default' => 0])]
-    private $virtualmachinetypes_id;
-
     #[ORM\ManyToOne(targetEntity: Virtualmachinetype::class)]
-    #[ORM\JoinColumn(name: 'virtualmachinetypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'virtualmachinetypes_id', referencedColumnName: 'id', nullable: true)]
     private ?Virtualmachinetype $virtualmachinetype;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
@@ -93,30 +78,6 @@ class Computervirtualmachine
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getComputersId(): ?int
-    {
-        return $this->computers_id;
-    }
-
-    public function setComputersId(int $computers_id): self
-    {
-        $this->computers_id = $computers_id;
-
-        return $this;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -129,42 +90,7 @@ class Computervirtualmachine
         return $this;
     }
 
-    public function getVirtualmachinestatesId(): ?int
-    {
-        return $this->virtualmachinestates_id;
-    }
-
-    public function setVirtualmachinestatesId(int $virtualmachinestates_id): self
-    {
-        $this->virtualmachinestates_id = $virtualmachinestates_id;
-
-        return $this;
-    }
-
-    public function getVirtualmachinesystemsId(): ?int
-    {
-        return $this->virtualmachinesystems_id;
-    }
-
-    public function setVirtualmachinesystemsId(int $virtualmachinesystems_id): self
-    {
-        $this->virtualmachinesystems_id = $virtualmachinesystems_id;
-
-        return $this;
-    }
-
-    public function getVirtualmachinetypesId(): ?int
-    {
-        return $this->virtualmachinetypes_id;
-    }
-
-    public function setVirtualmachinetypesId(int $virtualmachinetypes_id): self
-    {
-        $this->virtualmachinetypes_id = $virtualmachinetypes_id;
-
-        return $this;
-    }
-
+    
     public function getUuid(): ?string
     {
         return $this->uuid;

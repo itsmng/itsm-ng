@@ -16,18 +16,14 @@ class ContractSupplier
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'suppliers_id', options: ['default' => 0])]
-    private $suppliers_id;
-
+   
     #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'contractSuppliers')]
-    #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: true)]
     private ?Supplier $supplier;
 
-    #[ORM\Column(type: 'integer', name: 'contracts_id', options: ['default' => 0])]
-    private $contracts_id;
-
+   
     #[ORM\ManyToOne(targetEntity: Contract::class, inversedBy: 'contractSuppliers')]
-    #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: true)]
     private ?Contract $contract;
 
     public function getId(): ?int
@@ -35,30 +31,7 @@ class ContractSupplier
         return $this->id;
     }
 
-    public function getSuppliersId(): ?int
-    {
-        return $this->suppliers_id;
-    }
-
-    public function setSuppliersId(int $suppliers_id): self
-    {
-        $this->suppliers_id = $suppliers_id;
-
-        return $this;
-    }
-
-    public function getContractsId(): ?int
-    {
-        return $this->contracts_id;
-    }
-
-    public function setContractsId(int $contracts_id): self
-    {
-        $this->contracts_id = $contracts_id;
-
-        return $this;
-    }
-
+    
     /**
      * Get the value of supplier
      */

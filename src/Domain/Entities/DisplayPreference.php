@@ -26,11 +26,8 @@ class DisplayPreference
     #[ORM\Column(type: "integer", options: ['default' => 0])]
     private $rank;
 
-    #[ORM\Column(type: "integer", name: "users_id", options: ['default' => 0])]
-    private $users_id;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
 
     public function getId(): ?int
@@ -70,18 +67,6 @@ class DisplayPreference
     public function setRank(int $rank): self
     {
         $this->rank = $rank;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
 
         return $this;
     }

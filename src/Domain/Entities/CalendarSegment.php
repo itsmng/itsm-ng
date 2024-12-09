@@ -15,18 +15,13 @@ class CalendarSegment
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", name: "calendars_id", options: ["default" => 0])]
-    private $calendars_id;
-
+    
     #[ORM\ManyToOne(targetEntity: Calendar::class)]
-    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
     private ?Calendar $calendars;
 
-    #[ORM\Column(type: "integer", name: "entities_id", options: ["default" => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
@@ -46,30 +41,7 @@ class CalendarSegment
         return $this->id;
     }
 
-    public function getCalendarsId(): ?int
-    {
-        return $this->calendars_id;
-    }
-
-    public function setCalendarsId(int $calendars_id): self
-    {
-        $this->calendars_id = $calendars_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
+    
     public function isRecursive(): ?bool
     {
         return $this->is_recursive;

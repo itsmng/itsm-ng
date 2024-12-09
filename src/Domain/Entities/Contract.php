@@ -25,11 +25,8 @@ class Contract
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -41,11 +38,8 @@ class Contract
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $num;
 
-    #[ORM\Column(type: 'integer', name: 'contracttypes_id', options: ['default' => 0])]
-    private $contracttypes_id;
-
     #[ORM\ManyToOne(targetEntity: Contracttype::class)]
-    #[ORM\JoinColumn(name: 'contractypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'contracttypes_id', referencedColumnName: 'id', nullable: true)]
     private ?Contracttype $contracttype;
 
     #[ORM\Column(type: 'date', nullable: true)]
@@ -111,11 +105,8 @@ class Contract
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_template;
 
-    #[ORM\Column(type: 'integer', name: 'states_id', options: ['default' => 0])]
-    private $states_id;
-
     #[ORM\ManyToOne(targetEntity: State::class)]
-    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
     private ?State $state;
 
     #[ORM\Column(type: 'datetime', nullable: 'false')]
@@ -131,18 +122,6 @@ class Contract
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?int
@@ -181,18 +160,7 @@ class Contract
         return $this;
     }
 
-    public function getContracttypesId(): ?int
-    {
-        return $this->contracttypes_id;
-    }
-
-    public function setContracttypesId(int $contracttypes_id): self
-    {
-        $this->contracttypes_id = $contracttypes_id;
-
-        return $this;
-    }
-
+    
     public function getBeginDate(): ?\DateTimeInterface
     {
         return $this->begin_date;
@@ -445,18 +413,7 @@ class Contract
         return $this;
     }
 
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(int $states_id): self
-    {
-        $this->states_id = $states_id;
-
-        return $this;
-    }
-
+   
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;

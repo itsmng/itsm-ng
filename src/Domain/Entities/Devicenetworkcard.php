@@ -29,32 +29,23 @@ class Devicenetworkcard
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
-    private $manufacturers_id;
-
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
-    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mac_default;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', name: 'devicenetworkcardmodels_id', nullable: true)]
-    private $devicenetworkcardmodels_id;
-
     #[ORM\ManyToOne(targetEntity: Devicenetworkcardmodel::class)]
-    #[ORM\JoinColumn(name: 'devicenetworkcardmodels_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'devicenetworkcardmodels_id', referencedColumnName: 'id', nullable: true)]
     private ?Devicenetworkcardmodel $devicenetworkcardmodel;
 
 
@@ -106,18 +97,6 @@ class Devicenetworkcard
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
     public function getMacDefault(): ?string
     {
         return $this->mac_default;
@@ -130,18 +109,6 @@ class Devicenetworkcard
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -150,18 +117,6 @@ class Devicenetworkcard
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getDevicenetworkcardmodelsId(): ?int
-    {
-        return $this->devicenetworkcardmodels_id;
-    }
-
-    public function setDevicenetworkcardmodelsId(?int $devicenetworkcardmodels_id): self
-    {
-        $this->devicenetworkcardmodels_id = $devicenetworkcardmodels_id;
 
         return $this;
     }

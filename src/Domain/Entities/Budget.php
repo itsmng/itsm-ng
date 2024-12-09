@@ -27,11 +27,8 @@ class Budget
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -64,18 +61,12 @@ class Budget
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: 'integer', name: 'locations_id', options: ['default' => 0])]
-    private $locations_id;
-
     #[ORM\ManyToOne(targetEntity: Location::class)]
-    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location;
 
-    #[ORM\Column(type: 'integer', name: 'budgettypes_id', options: ['default' => 0])]
-    private $budgettypes_id;
-
     #[ORM\ManyToOne(targetEntity: Budgettype::class)]
-    #[ORM\JoinColumn(name: 'budgettypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'budgettypes_id', referencedColumnName: 'id', nullable: true)]
     private ?Budgettype $budgettype;
 
     public function getId(): ?int
@@ -95,18 +86,7 @@ class Budget
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
+    
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -227,30 +207,7 @@ class Budget
         return $this;
     }
 
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
-
-    public function getBudgettypesId(): ?int
-    {
-        return $this->budgettypes_id;
-    }
-
-    public function setBudgettypesId(int $budgettypes_id): self
-    {
-        $this->budgettypes_id = $budgettypes_id;
-
-        return $this;
-    }
-
+    
     /**
      * Get the value of location
      */

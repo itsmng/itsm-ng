@@ -27,35 +27,23 @@ class DevicePci
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", name: 'manufacturer_id', options: ["default" => 0])]
-    private $manufacturers_id;
-
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
-    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $devicenetworkcardmodels_id;
-
     #[ORM\ManyToOne(targetEntity: Devicenetworkcardmodel::class)]
-    #[ORM\JoinColumn(name: 'devicenetworkcardmodels_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'devicenetworkcardmodels_id', referencedColumnName: 'id', nullable: true)]
     private ?Devicenetworkcardmodel $devicenetworkcardmodel;
 
-    #[ORM\Column(type: "integer", name: 'entities_id', options: ["default" => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", name: 'devicepcimodels_id', nullable: true)]
-    private $devicepcimodels_id;
-
     #[ORM\ManyToOne(targetEntity: Devicepcimodel::class)]
-    #[ORM\JoinColumn(name: 'devicepcimodels_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'devicepcimodels_id', referencedColumnName: 'id', nullable: true)]
     private ?Devicepcimodel $devicepcimodel;
 
     #[ORM\Column(type: "datetime", nullable: true)]
@@ -93,41 +81,7 @@ class DevicePci
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
 
-    public function setManufacturersId(?int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
-    public function getDeviceNetworkCardModelsId(): ?int
-    {
-        return $this->devicenetworkcardmodels_id;
-    }
-
-    public function setDeviceNetworkCardModelsId(?int $devicenetworkcardmodels_id): self
-    {
-        $this->devicenetworkcardmodels_id = $devicenetworkcardmodels_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?bool
     {
@@ -137,18 +91,6 @@ class DevicePci
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getDevicePciModelsId(): ?int
-    {
-        return $this->devicepcimodels_id;
-    }
-
-    public function setDevicePciModelsId(?int $devicepcimodels_id): self
-    {
-        $this->devicepcimodels_id = $devicepcimodels_id;
 
         return $this;
     }

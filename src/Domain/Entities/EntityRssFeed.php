@@ -16,18 +16,12 @@ class EntityRssFeed
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", name: "rssfeeds_id", options: ["default" => 0])]
-    private $rssfeeds_id;
-
     #[ORM\ManyToOne(targetEntity: Rssfeed::class, inversedBy: 'entityRssfeeds')]
-    #[ORM\JoinColumn(name: 'rssfeeds_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'rssfeeds_id', referencedColumnName: 'id', nullable: true)]
     private ?Rssfeed $rssfeed;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'entityRssfeeds')]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
@@ -41,30 +35,6 @@ class EntityRssFeed
     public function setId(int $id): self
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function getRssfeedsId(): ?int
-    {
-        return $this->rssfeeds_id;
-    }
-
-    public function setRssfeedsId(int $rssfeeds_id): self
-    {
-        $this->rssfeeds_id = $rssfeeds_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }

@@ -17,18 +17,12 @@ class GroupKnowbaseItem
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
-    private $knowbaseitems_id;
-
     #[ORM\ManyToOne(targetEntity: Knowbaseitem::class, inversedBy: 'groupKnowbaseitems')]
-    #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: true)]
     private ?Knowbaseitem $knowbaseitem;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
-    private $groups_id;
-
     #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupKnowbaseitems')]
-    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group;
 
     #[ORM\Column(type: "integer", options: ['default' => -1])]
@@ -40,30 +34,6 @@ class GroupKnowbaseItem
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getKnowbaseitemsId(): ?int
-    {
-        return $this->knowbaseitems_id;
-    }
-
-    public function setKnowbaseitemsId(int $knowbaseitems_id): self
-    {
-        $this->knowbaseitems_id = $knowbaseitems_id;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
-
-        return $this;
     }
 
     public function getEntitiesId(): ?int

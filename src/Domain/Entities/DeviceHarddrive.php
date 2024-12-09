@@ -27,11 +27,8 @@ class DeviceHarddrive
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $rpm;
 
-    #[ORM\Column(type: 'integer', name: 'interfacetypes_id', options: ['default' => 0])]
-    private $interfacetypes_id;
-
     #[ORM\ManyToOne(targetEntity: InterfaceType::class)]
-    #[ORM\JoinColumn(name: 'interfacetypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'interfacetypes_id', referencedColumnName: 'id', nullable: true)]
     private ?InterfaceType $interfacetype;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -40,31 +37,22 @@ class DeviceHarddrive
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
-    private $manufacturers_id;
-
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
-    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $capacity_default;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $deviceharddrivemodels_id;
-
     #[ORM\ManyToOne(targetEntity: DeviceharddriveModel::class)]
-    #[ORM\JoinColumn(name: 'devicehardrivemodels_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\JoinColumn(name: 'deviceharddrivemodels_id', referencedColumnName: 'id', nullable: true)]
     private ?DeviceharddriveModel $deviceharddrivemodel;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -109,18 +97,6 @@ class DeviceHarddrive
         return $this;
     }
 
-    public function getInterfacetypesId(): ?int
-    {
-        return $this->interfacetypes_id;
-    }
-
-    public function setInterfacetypesId(int $interfacetypes_id): self
-    {
-        $this->interfacetypes_id = $interfacetypes_id;
-
-        return $this;
-    }
-
     public function getCache(): ?string
     {
         return $this->cache;
@@ -145,18 +121,6 @@ class DeviceHarddrive
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
     public function getCapacityDefault(): ?int
     {
         return $this->capacity_default;
@@ -169,18 +133,6 @@ class DeviceHarddrive
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -189,18 +141,6 @@ class DeviceHarddrive
     public function setIsRecursive(bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getDeviceharddrivemodelsId(): ?int
-    {
-        return $this->deviceharddrivemodels_id;
-    }
-
-    public function setDeviceharddrivemodelsId(?int $deviceharddrivemodels_id): self
-    {
-        $this->deviceharddrivemodels_id = $deviceharddrivemodels_id;
 
         return $this;
     }

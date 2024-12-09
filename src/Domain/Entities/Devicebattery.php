@@ -27,11 +27,8 @@ class Devicebattery
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
-    private $manufacturers_id;
-
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
-    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
 
 
@@ -41,25 +38,20 @@ class Devicebattery
     #[ORM\Column(type: 'integer', nullable: true)]
     private $capacity;
 
-    #[ORM\Column(type: 'integer', name: 'devicebatterytypes_id', options: ['default' => 0])]
-    private $devicebatterytypes_id;
-
     #[ORM\ManyToOne(targetEntity: DeviceBatteryType::class)]
-    #[ORM\JoinColumn(name: 'devicebattrytypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'devicebatterytypes_id', referencedColumnName: 'id', nullable: true)]
     private ?DeviceBatteryType $deviceBatteryType;
 
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', name: 'devicebatterymodels_id', nullable: true)]
-    private $devicebatterymodels_id;
-
     #[ORM\ManyToOne(targetEntity: Devicebatterymodel::class)]
-    #[ORM\JoinColumn(name: 'devicebatterymodels_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'devicebatterymodels_id', referencedColumnName: 'id', nullable: true)]
     private ?Devicebatterymodel $deviceBatteryModel;
 
 
@@ -99,18 +91,7 @@ class Devicebattery
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
+   
     public function getVoltage(): ?int
     {
         return $this->voltage;
@@ -135,29 +116,7 @@ class Devicebattery
         return $this;
     }
 
-    public function getDevicebatterytypesId(): ?int
-    {
-        return $this->devicebatterytypes_id;
-    }
-
-    public function setDevicebatterytypesId(int $devicebatterytypes_id): self
-    {
-        $this->devicebatterytypes_id = $devicebatterytypes_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
+    
 
     public function getIsRecursive(): ?int
     {
@@ -171,18 +130,7 @@ class Devicebattery
         return $this;
     }
 
-    public function getDevicebatterymodelsId(): ?int
-    {
-        return $this->devicebatterymodels_id;
-    }
-
-    public function setDevicebatterymodelsId(int $devicebatterymodels_id): self
-    {
-        $this->devicebatterymodels_id = $devicebatterymodels_id;
-
-        return $this;
-    }
-
+    
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -263,6 +211,26 @@ class Devicebattery
     public function setDeviceBatteryModel($deviceBatteryModel)
     {
         $this->deviceBatteryModel = $deviceBatteryModel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

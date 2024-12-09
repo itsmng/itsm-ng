@@ -24,21 +24,15 @@ class ComputerAntivirus
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", name: "computers_id", options: ["default" => 0])]
-    private $computers_id;
-
     #[ORM\ManyToOne(targetEntity: Computer::class)]
-    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: true)]
     private ?Computer $computer;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", name: "manufacturers_id", options: ["default" => 0])]
-    private $manufacturers_id;
-
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
-    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
@@ -80,18 +74,7 @@ class ComputerAntivirus
         return $this;
     }
 
-    public function getComputersId(): ?int
-    {
-        return $this->computers_id;
-    }
-
-    public function setComputersId(int $computers_id): self
-    {
-        $this->computers_id = $computers_id;
-
-        return $this;
-    }
-
+    
     public function getName(): ?string
     {
         return $this->name;
@@ -104,18 +87,7 @@ class ComputerAntivirus
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
+   
     public function getAntivirusVersion(): ?string
     {
         return $this->antivirus_version;

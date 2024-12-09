@@ -15,18 +15,12 @@ class ChangeProblem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'changes_id', options: ['default' => 0])]
-    private $changes_id;
-
     #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeProblems')]
-    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
     private ?Change $change;
 
-    #[ORM\Column(type: 'integer', name: 'problems_id', options: ['default' => 0])]
-    private $problems_id;
-
     #[ORM\ManyToOne(targetEntity: Problem::class, inversedBy: 'changeProblems')]
-    #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: true)]
     private ?Problem $problem;
 
     public function getId(): int
@@ -41,29 +35,7 @@ class ChangeProblem
         return $this;
     }
 
-    public function getChangesId(): int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
-
-    public function getProblemsId(): int
-    {
-        return $this->problems_id;
-    }
-
-    public function setProblemsId(int $problems_id): self
-    {
-        $this->problems_id = $problems_id;
-
-        return $this;
-    }
+    
 
     /**
      * Get the value of change

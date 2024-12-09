@@ -16,18 +16,13 @@ class ChangeSupplier
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'changes_id', options: ['default' => 0])]
-    private $changes_id;
-
+    
     #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeSuppliers')]
-    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
     private ?Change $change;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $suppliers_id;
-
     #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'changeSuppliers')]
-    #[ORM\JoinColumn(name: 'supplier_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: true)]
     private ?Supplier $supplier;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
@@ -44,30 +39,7 @@ class ChangeSupplier
         return $this->id;
     }
 
-    public function getChangesId(): ?int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
-
-    public function getSuppliersId(): ?int
-    {
-        return $this->suppliers_id;
-    }
-
-    public function setSuppliersId(int $suppliers_id): self
-    {
-        $this->suppliers_id = $suppliers_id;
-
-        return $this;
-    }
-
+    
     public function getType(): ?int
     {
         return $this->type;

@@ -22,35 +22,23 @@ class Changevalidation
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', name: 'users_id', options: ['default' => 0])]
-    private $users_id;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
 
-    #[ORM\Column(type: 'integer', name: 'changes_id', options: ['default' => 0])]
-    private $changes_id;
-
     #[ORM\ManyToOne(targetEntity: Change::class)]
-    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
     private ?Change $change;
 
-    #[ORM\Column(type: 'integer', name: 'users_id_validate', options: ['default' => 0])]
-    private $users_id_validate;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_validate', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id_validate', referencedColumnName: 'id', nullable: true)]
     private ?User $user_validate;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
@@ -76,18 +64,7 @@ class Changevalidation
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
+    
     public function getIsRecursive(): ?int
     {
         return $this->is_recursive;
@@ -100,42 +77,7 @@ class Changevalidation
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getChangesId(): ?int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
-
-    public function getUsersIdValidate(): ?int
-    {
-        return $this->users_id_validate;
-    }
-
-    public function setUsersIdValidate(int $users_id_validate): self
-    {
-        $this->users_id_validate = $users_id_validate;
-
-        return $this;
-    }
-
+    
     public function getCommentSubmission(): ?string
     {
         return $this->comment_submission;

@@ -29,47 +29,31 @@ class Domainrecord
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $data;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', name: 'domains_id', options: ['default' => 0])]
-    private $domains_id;
-
     #[ORM\ManyToOne(targetEntity: Domain::class)]
-    #[ORM\JoinColumn(name: 'domains_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'domains_id', referencedColumnName: 'id', nullable: true)]
     private ?Domain $domain;
 
-    #[ORM\Column(type: 'integer', name: 'domainrecordtypes_id', options: ['default' => 0])]
-    private $domainrecordtypes_id;
-
     #[ORM\ManyToOne(targetEntity: DomainrecordType::class)]
-    #[ORM\JoinColumn(name: 'domainrecordtypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'domainrecordtypes_id', referencedColumnName: 'id', nullable: true)]
     private ?DomainrecordType $domainrecordtype;
 
 
     #[ORM\Column(type: 'integer')]
     private $ttl;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_tech;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?User $userTech;
 
-
-    #[ORM\Column(type: 'integer', name: 'groups_id_tech', options: ['default' => 0])]
-    private $groups_id_tech;
-
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?Group $groupTech;
 
 
@@ -115,18 +99,6 @@ class Domainrecord
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -139,30 +111,6 @@ class Domainrecord
         return $this;
     }
 
-    public function getDomainsId(): ?int
-    {
-        return $this->domains_id;
-    }
-
-    public function setDomainsId(?int $domains_id): self
-    {
-        $this->domains_id = $domains_id;
-
-        return $this;
-    }
-
-    public function getDomainrecordtypesId(): ?int
-    {
-        return $this->domainrecordtypes_id;
-    }
-
-    public function setDomainrecordtypesId(?int $domainrecordtypes_id): self
-    {
-        $this->domainrecordtypes_id = $domainrecordtypes_id;
-
-        return $this;
-    }
-
     public function getTtl(): ?int
     {
         return $this->ttl;
@@ -171,30 +119,6 @@ class Domainrecord
     public function setTtl(?int $ttl): self
     {
         $this->ttl = $ttl;
-
-        return $this;
-    }
-
-    public function getUsersIdTech(): ?int
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(?int $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(?int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
 
         return $this;
     }

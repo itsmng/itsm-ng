@@ -21,11 +21,8 @@ class Contact
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -52,11 +49,8 @@ class Contact
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $email;
 
-    #[ORM\Column(type: 'integer', name: 'contacttypes_id', options: ['default' => 0])]
-    private $contacttypes_id;
-
     #[ORM\ManyToOne(targetEntity: Contacttype::class)]
-    #[ORM\JoinColumn(name: 'contacttypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'contacttypes_id', referencedColumnName: 'id', nullable: true)]
     private ?Contacttype $contacttype;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
@@ -65,11 +59,8 @@ class Contact
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
 
-    #[ORM\Column(type: 'integer', name: 'usertitles_id', options: ['default' => 0])]
-    private $usertitles_id;
-
     #[ORM\ManyToOne(targetEntity: Usertitle::class)]
-    #[ORM\JoinColumn(name: 'usertitles_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'usertitles_id', referencedColumnName: 'id', nullable: true)]
     private ?Usertitle $usertitle;
 
 
@@ -101,18 +92,6 @@ class Contact
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?int
@@ -211,18 +190,6 @@ class Contact
         return $this;
     }
 
-    public function getContacttypesId(): ?int
-    {
-        return $this->contacttypes_id;
-    }
-
-    public function setContacttypesId(int $contacttypes_id): self
-    {
-        $this->contacttypes_id = $contacttypes_id;
-
-        return $this;
-    }
-
     public function getComment(): ?string
     {
         return $this->comment;
@@ -243,18 +210,6 @@ class Contact
     public function setIsDeleted(int $is_deleted): self
     {
         $this->is_deleted = $is_deleted;
-
-        return $this;
-    }
-
-    public function getUsertitlesId(): ?int
-    {
-        return $this->usertitles_id;
-    }
-
-    public function setUsertitlesId(int $usertitles_id): self
-    {
-        $this->usertitles_id = $usertitles_id;
 
         return $this;
     }

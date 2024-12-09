@@ -32,18 +32,12 @@ class ChangeTask
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $uuid;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $changes_id;
-
     #[ORM\ManyToOne(targetEntity: Change::class)]
-    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
     private ?Change $change;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $taskcategories_id;
-
     #[ORM\ManyToOne(targetEntity: Taskcategory::class)]
-    #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: true)]
     private ?Taskcategory $taskcategory;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
@@ -58,32 +52,20 @@ class ChangeTask
     #[ORM\Column(type: "datetime", nullable: true)]
     private $end;
 
-    #[ORM\Column(type: "integer", name: "users_id", options: ["default" => 0])]
-    private $users_id;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
 
-    #[ORM\Column(type: "integer", name: "users_id_editor", options: ["default" => 0])]
-    private $users_id_editor;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
     private ?User $user_editor;
 
-    #[ORM\Column(type: "integer", name: "users_id_tech", options: ["default" => 0])]
-    private $users_id_tech;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?User $user_tech;
 
-    #[ORM\Column(type: "integer", name: "groups_id_tech", options: ["default" => 0])]
-    private $groups_id_tech;
-
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?Group $group_tech;
 
     #[ORM\Column(type: "text", nullable: true)]
@@ -98,11 +80,8 @@ class ChangeTask
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $tasktemplates_id;
-
     #[ORM\ManyToOne(targetEntity: TaskTemplate::class)]
-    #[ORM\JoinColumn(name: 'tasktemplates_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'tasktemplates_id', referencedColumnName: 'id', nullable: true)]
     private ?TaskTemplate $tasktemplate;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
@@ -131,30 +110,6 @@ class ChangeTask
     public function setUuid(?string $uuid): self
     {
         $this->uuid = $uuid;
-
-        return $this;
-    }
-
-    public function getChangesId(): ?int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
-
-    public function getTaskCategoriesId(): ?int
-    {
-        return $this->taskcategories_id;
-    }
-
-    public function setTaskCategoriesId(int $taskcategories_id): self
-    {
-        $this->taskcategories_id = $taskcategories_id;
 
         return $this;
     }
@@ -207,54 +162,6 @@ class ChangeTask
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getUsersIdEditor(): ?int
-    {
-        return $this->users_id_editor;
-    }
-
-    public function setUsersIdEditor(int $users_id_editor): self
-    {
-        $this->users_id_editor = $users_id_editor;
-
-        return $this;
-    }
-
-    public function getUsersIdTech(): ?int
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(int $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
@@ -303,18 +210,7 @@ class ChangeTask
         return $this;
     }
 
-    public function getTaskTemplatesId(): ?int
-    {
-        return $this->tasktemplates_id;
-    }
-
-    public function setTaskTemplatesId(int $tasktemplates_id): self
-    {
-        $this->tasktemplates_id = $tasktemplates_id;
-
-        return $this;
-    }
-
+    
     public function getTimelinePosition(): ?int
     {
         return $this->timeline_position;

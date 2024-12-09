@@ -24,11 +24,8 @@ class Document
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -43,11 +40,8 @@ class Document
     #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => 'file storage path'])]
     private $filepath;
 
-    #[ORM\Column(type: 'integer', name: 'documentcategories_id', options: ['default' => 0])]
-    private $documentcategories_id;
-
     #[ORM\ManyToOne(targetEntity: Documentcategory::class)]
-    #[ORM\JoinColumn(name: 'documentcategories_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'documentcategories_id', referencedColumnName: 'id', nullable: true)]
     private ?Documentcategory $documentcategory;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -65,18 +59,12 @@ class Document
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $link;
 
-    #[ORM\Column(type: 'integer', name: 'users_id', options: ['default' => 0])]
-    private $users_id;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
 
-    #[ORM\Column(type: 'integer', name: 'tickets_id', options: ['default' => 0])]
-    private $tickets_id;
-
     #[ORM\ManyToOne(targetEntity: Ticket::class)]
-    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
     private ?Ticket $ticket;
 
     #[ORM\Column(type: 'string', length: 40, nullable: true, options: ['fixed' => true])]
@@ -102,18 +90,6 @@ class Document
     public function setId(int $id): self
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }
@@ -162,18 +138,6 @@ class Document
     public function setFilepath(string $filepath): self
     {
         $this->filepath = $filepath;
-
-        return $this;
-    }
-
-    public function getDocumentcategoriesId(): ?int
-    {
-        return $this->documentcategories_id;
-    }
-
-    public function setDocumentcategoriesId(int $documentcategories_id): self
-    {
-        $this->documentcategories_id = $documentcategories_id;
 
         return $this;
     }
@@ -234,30 +198,6 @@ class Document
     public function setLink(string $link): self
     {
         $this->link = $link;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getTicketsId(): ?int
-    {
-        return $this->tickets_id;
-    }
-
-    public function setTicketsId(int $tickets_id): self
-    {
-        $this->tickets_id = $tickets_id;
 
         return $this;
     }

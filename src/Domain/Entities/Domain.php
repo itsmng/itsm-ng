@@ -26,38 +26,26 @@ class Domain
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", name: "entities_id", options: ["default" => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", name: "domaintypes_id", options: ["default" => 0])]
-    private $domaintypes_id;
-
     #[ORM\ManyToOne(targetEntity: Domaintype::class)]
-    #[ORM\JoinColumn(name: 'domaintypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'domaintypes_id', referencedColumnName: 'id', nullable: true)]
     private ?Domaintype $domaintype;
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_expiration;
 
-    #[ORM\Column(type: "integer", name: "users_id_tech", options: ["default" => 0])]
-    private $users_id_tech;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?User $userTech;
-
-    #[ORM\Column(type: "integer", name: "groups_id_tech", options: ["default" => 0])]
-    private $groups_id_tech;
-
+    
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?Group $groupTech;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
@@ -102,18 +90,6 @@ class Domain
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -126,18 +102,6 @@ class Domain
         return $this;
     }
 
-    public function getDomaintypesId(): ?int
-    {
-        return $this->domaintypes_id;
-    }
-
-    public function setDomaintypesId(int $domaintypes_id): self
-    {
-        $this->domaintypes_id = $domaintypes_id;
-
-        return $this;
-    }
-
     public function getDateExpiration(): ?\DateTimeInterface
     {
         return $this->date_expiration;
@@ -146,30 +110,6 @@ class Domain
     public function setDateExpiration(\DateTimeInterface $date_expiration): self
     {
         $this->date_expiration = $date_expiration;
-
-        return $this;
-    }
-
-    public function getUsersIdTech(): ?int
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(int $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
 
         return $this;
     }

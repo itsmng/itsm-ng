@@ -14,11 +14,9 @@ class AuthLdapReplicate
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", name: "authldaps_id", options: ["default" => 0])]
-    private $authldaps_id;
-
+    
     #[ORM\ManyToOne(targetEntity: AuthLdap::class)]
-    #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: true)]
     private ?AuthLdap $authldap;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
@@ -35,18 +33,7 @@ class AuthLdapReplicate
         return $this->id;
     }
 
-    public function getAuthldapsId(): ?int
-    {
-        return $this->authldaps_id;
-    }
-
-    public function setAuthldapsId(?int $authldaps_id): self
-    {
-        $this->authldaps_id = $authldaps_id;
-
-        return $this;
-    }
-
+    
     public function getHost(): ?string
     {
         return $this->host;

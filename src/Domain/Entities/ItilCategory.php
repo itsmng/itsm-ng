@@ -32,21 +32,15 @@ class ItilCategory
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", name: 'entities_id', options: ["default" => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", name: 'itilcategories_id', options: ["default" => 0])]
-    private $itilcategories_id;
-
     #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
-    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
     private ?ItilCategory $itilCategory;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
@@ -61,25 +55,16 @@ class ItilCategory
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $level;
 
-    #[ORM\Column(type: "integer", name: 'knowbaseitemcategories_id', options: ["default" => 0])]
-    private $knowbaseitemcategories_id;
-
     #[ORM\ManyToOne(targetEntity: Knowbaseitemcategory::class)]
-    #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: true)]
     private ?Knowbaseitemcategory $knowbaseitemcategory;
 
-    #[ORM\Column(type: "integer", name: 'users_id', options: ["default" => 0])]
-    private $users_id;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
 
-    #[ORM\Column(type: "integer", name: 'groups_id', options: ["default" => 0])]
-    private $groups_id;
-
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
@@ -94,32 +79,20 @@ class ItilCategory
     #[ORM\Column(type: "boolean", options: ["default" => 1])]
     private $is_helpdeskvisible;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $tickettemplates_id_incident;
-
     #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
-    #[ORM\JoinColumn(name: 'tickettemplates_id_incident', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id_incident', referencedColumnName: 'id', nullable: true)]
     private ?TicketTemplate $tickettemplateIncident;
 
-    #[ORM\Column(type: "integer", name: 'tickettemplates_id_demand', options: ["default" => 0])]
-    private $tickettemplates_id_demand;
-
     #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
-    #[ORM\JoinColumn(name: 'tickettemplates_id_demand', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id_demand', referencedColumnName: 'id', nullable: true)]
     private ?TicketTemplate $tickettemplateDemand;
 
-    #[ORM\Column(type: "integer", name: 'changetemplates_id', options: ["default" => 0])]
-    private $changetemplates_id;
-
     #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
-    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
     private ?ChangeTemplate $changetemplate;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $problemtemplates_id;
-
     #[ORM\ManyToOne(targetEntity: ProblemTemplate::class)]
-    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
     private ?ProblemTemplate $problemtemplate;
 
     #[ORM\Column(type: "integer", options: ["default" => 1])]
@@ -145,18 +118,6 @@ class ItilCategory
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -165,18 +126,6 @@ class ItilCategory
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getItilCategoriesId(): ?int
-    {
-        return $this->itilcategories_id;
-    }
-
-    public function setItilCategoriesId(?int $itilcategories_id): self
-    {
-        $this->itilcategories_id = $itilcategories_id;
 
         return $this;
     }
@@ -229,42 +178,6 @@ class ItilCategory
         return $this;
     }
 
-    public function getKnowbaseitemcategoriesId(): ?int
-    {
-        return $this->knowbaseitemcategories_id;
-    }
-
-    public function setKnowbaseitemcategoriesId(?int $knowbaseitemcategories_id): self
-    {
-        $this->knowbaseitemcategories_id = $knowbaseitemcategories_id;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUserId(?int $user_id): self
-    {
-        $this->users_id = $user_id;
-
-        return $this;
-    }
-
-    public function getGroupId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupId(?int $group_id): self
-    {
-        $this->groups_id = $group_id;
-
-        return $this;
-    }
-
     public function getCode(): ?string
     {
         return $this->code;
@@ -309,54 +222,6 @@ class ItilCategory
     public function setIsHelpdeskVisible(?bool $is_helpdesk_visible): self
     {
         $this->is_helpdeskvisible = $is_helpdesk_visible;
-
-        return $this;
-    }
-
-    public function getTickettemplatesIdIncident(): ?int
-    {
-        return $this->tickettemplates_id_incident;
-    }
-
-    public function setTickettemplatesIdIncident(?int $tickettemplates_id_incident): self
-    {
-        $this->tickettemplates_id_incident = $tickettemplates_id_incident;
-
-        return $this;
-    }
-
-    public function getTickettemplatesIdDemand(): ?int
-    {
-        return $this->tickettemplates_id_demand;
-    }
-
-    public function setTickettemplatesIdDemand(?int $tickettemplates_id_demand): self
-    {
-        $this->tickettemplates_id_demand = $tickettemplates_id_demand;
-
-        return $this;
-    }
-
-    public function getChangetemplatesId(): ?int
-    {
-        return $this->changetemplates_id;
-    }
-
-    public function setChangetemplatesId(?int $changetemplates_id): self
-    {
-        $this->changetemplates_id = $changetemplates_id;
-
-        return $this;
-    }
-
-    public function getProblemtemplatesId(): ?int
-    {
-        return $this->problemtemplates_id;
-    }
-
-    public function setProblemtemplatesId(?int $problemtemplates_id): self
-    {
-        $this->problemtemplates_id = $problemtemplates_id;
 
         return $this;
     }

@@ -21,18 +21,12 @@ class Dashboard
     #[ORM\Column(type: 'text')]
     private $content;
 
-    #[ORM\Column(type: 'integer', name: 'profileId', options: ['default' => 0])]
-    private $profileId;
-
     #[ORM\ManyToOne(targetEntity: Profile::class)]
-    #[ORM\JoinColumn(name: 'profileId', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'profileId', referencedColumnName: 'id', nullable: true)]
     private ?Profile $profile;
 
-    #[ORM\Column(type: 'integer', name: 'userId', options: ['default' => 0])]
-    private $userId;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'userId', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'userId', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
 
     public function getId(): ?int
@@ -64,30 +58,7 @@ class Dashboard
         return $this;
     }
 
-    public function getProfileId(): ?int
-    {
-        return $this->profileId;
-    }
-
-    public function setProfileId(int $profileId): self
-    {
-        $this->profileId = $profileId;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
+    
     /**
      * Get the value of profile
      */

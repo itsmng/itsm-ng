@@ -24,11 +24,8 @@ class FieldUnicity
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => -1])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -96,18 +93,6 @@ class FieldUnicity
     public function setItemtype(string $itemtype): self
     {
         $this->itemtype = $itemtype;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }

@@ -23,8 +23,9 @@ class Knowbaseitem
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $knowbaseitemcategories_id;
+    #[ORM\ManyToOne(targetEntity: Knowbaseitemcategory::class)]
+    #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Knowbaseitemcategory $knowbaseitemcategory;
 
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $name;
@@ -34,9 +35,10 @@ class Knowbaseitem
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
     private $is_faq;
-
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $users_id;
+    
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $view;
@@ -62,17 +64,6 @@ class Knowbaseitem
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getKnowbaseitemcategoriesId(): ?int
-    {
-        return $this->knowbaseitemcategories_id;
-    }
-
-    public function setKnowbaseitemcategoriesId(int $knowbaseitemcategories_id): self
-    {
-        $this->knowbaseitemcategories_id = $knowbaseitemcategories_id;
-        return $this;
     }
 
     public function getName(): ?string
@@ -105,17 +96,6 @@ class Knowbaseitem
     public function setIsFaq(?bool $is_faq): self
     {
         $this->is_faq = $is_faq;
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
         return $this;
     }
 
@@ -211,6 +191,46 @@ class Knowbaseitem
     public function setGroupKnowbaseitems($groupKnowbaseitems)
     {
         $this->groupKnowbaseitems = $groupKnowbaseitems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemcategory
+     */ 
+    public function getKnowbaseitemcategory()
+    {
+        return $this->knowbaseitemcategory;
+    }
+
+    /**
+     * Set the value of knowbaseitemcategory
+     *
+     * @return  self
+     */ 
+    public function setKnowbaseitemcategory($knowbaseitemcategory)
+    {
+        $this->knowbaseitemcategory = $knowbaseitemcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

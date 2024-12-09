@@ -28,11 +28,8 @@ class ItilSolution
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $solutiontypes_id;
-
     #[ORM\ManyToOne(targetEntity: Solutiontype::class)]
-    #[ORM\JoinColumn(name: 'solutiontypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'solutiontypes_id', referencedColumnName: 'id', nullable: true)]
     private ?Solutiontype $solutiontype;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -50,29 +47,19 @@ class ItilSolution
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_approval;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $user_name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_editor;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
     private ?User $userEditor;
 
-
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_approval;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_approval', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id_approval', referencedColumnName: 'id', nullable: true)]
     private ?User $userApproval;
 
 
@@ -82,11 +69,8 @@ class ItilSolution
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $status;
 
-    #[ORM\Column(type: 'integer', nullable: true, options: ['comment' => 'Followup reference on reject or approve a solution'])]
-    private $itilfollowups_id;
-
     #[ORM\ManyToOne(targetEntity: ItilFollowup::class)]
-    #[ORM\JoinColumn(name: 'itilfollowups_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'itilfollowups_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'Followup reference on reject or approve a solution'])]
     private ?ItilFollowup $itilFollowup;
 
 
@@ -115,18 +99,6 @@ class ItilSolution
     public function setItemsId(int $items_id): self
     {
         $this->items_id = $items_id;
-
-        return $this;
-    }
-
-    public function getSolutiontypesId(): ?int
-    {
-        return $this->solutiontypes_id;
-    }
-
-    public function setSolutiontypesId(int $solutiontypes_id): self
-    {
-        $this->solutiontypes_id = $solutiontypes_id;
 
         return $this;
     }
@@ -191,18 +163,6 @@ class ItilSolution
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getUserName(): ?string
     {
         return $this->user_name;
@@ -211,30 +171,6 @@ class ItilSolution
     public function setUserName(string $user_name): self
     {
         $this->user_name = $user_name;
-
-        return $this;
-    }
-
-    public function getUsersIdEditor(): ?int
-    {
-        return $this->users_id_editor;
-    }
-
-    public function setUsersIdEditor(int $user_id_editor): self
-    {
-        $this->users_id_editor = $user_id_editor;
-
-        return $this;
-    }
-
-    public function getUserIdApproval(): ?int
-    {
-        return $this->users_id_approval;
-    }
-
-    public function setUsersIdApproval(int $user_id_approval): self
-    {
-        $this->users_id_approval = $user_id_approval;
 
         return $this;
     }
@@ -259,18 +195,6 @@ class ItilSolution
     public function setStatus(int $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getItilFollowupsId(): ?int
-    {
-        return $this->itilfollowups_id;
-    }
-
-    public function setItilFollowupsId(int $itil_followups_id): self
-    {
-        $this->itilfollowups_id = $itil_followups_id;
 
         return $this;
     }

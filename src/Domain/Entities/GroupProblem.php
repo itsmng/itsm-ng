@@ -16,18 +16,12 @@ class GroupProblem
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", name: 'problems_id', options: ['default' => 0])]
-    private $problems_id;
-
     #[ORM\ManyToOne(targetEntity: Problem::class, inversedBy: 'groupProblems')]
-    #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: true)]
     private ?Problem $problem;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
-    private $groups_id;
-
     #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupProblems')]
-    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group;
 
     #[ORM\Column(type: "integer", options: ['default' => 1])]
@@ -36,30 +30,6 @@ class GroupProblem
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProblemsId(): ?int
-    {
-        return $this->problems_id;
-    }
-
-    public function setProblemsId(int $knowbaseitems_id): self
-    {
-        $this->problems_id = $knowbaseitems_id;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
-
-        return $this;
     }
 
     public function getType(): ?int

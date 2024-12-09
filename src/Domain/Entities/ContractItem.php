@@ -17,11 +17,9 @@ class ContractItem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'contracts_id', options: ['default' => 0])]
-    private $contracts_id;
-
+    
     #[ORM\ManyToOne(targetEntity: Contract::class)]
-    #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: true)]
     private ?Contract $contract;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
@@ -35,18 +33,7 @@ class ContractItem
         return $this->id;
     }
 
-    public function getContractsId(): ?int
-    {
-        return $this->contracts_id;
-    }
-
-    public function setContractsId(int $contracts_id): self
-    {
-        $this->contracts_id = $contracts_id;
-
-        return $this;
-    }
-
+    
     public function getItemsId(): ?int
     {
         return $this->items_id;

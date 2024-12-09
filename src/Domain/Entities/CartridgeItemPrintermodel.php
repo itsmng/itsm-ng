@@ -15,18 +15,14 @@ class CartridgeItemPrintermodel
     #[ORM\GeneratedValue]
     private $id;
 
-    #[ORM\Column(type: "integer", name: "cartridgeitems_id", options: ["default" => 0])]
-    private $cartridgeitems_id;
-
+    
     #[ORM\ManyToOne(targetEntity: CartridgeItem::class, inversedBy: 'cartridgeItemPrintermodels')]
-    #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: true)]
     private ?CartridgeItem $cartridgeItem;
 
-    #[ORM\Column(type: "integer", name: "printermodels_id", options: ["default" => 0])]
-    private $printermodels_id;
-
+    
     #[ORM\ManyToOne(targetEntity: Printermodel::class, inversedBy: 'cartridgeItemPrintermodels')]
-    #[ORM\JoinColumn(name: 'printermodels_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'printermodels_id', referencedColumnName: 'id', nullable: true)]
     private ?Printermodel $printermodel;
 
 
@@ -34,30 +30,7 @@ class CartridgeItemPrintermodel
     {
         return $this->id;
     }
-
-    public function getCartridgeitemsId(): ?int
-    {
-        return $this->cartridgeitems_id;
-    }
-
-    public function setCartridgeitemsId(int $cartridgeitems_id): self
-    {
-        $this->cartridgeitems_id = $cartridgeitems_id;
-
-        return $this;
-    }
-
-    public function getPrintermodelsId(): ?int
-    {
-        return $this->printermodels_id;
-    }
-
-    public function setPrintermodelsId(int $printermodels_id): self
-    {
-        $this->printermodels_id = $printermodels_id;
-
-        return $this;
-    }
+    
 
     /**
      * Get the value of cartridgeItem

@@ -18,25 +18,19 @@ class Cartridge
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
+    
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
-    #[ORM\Column(type: 'integer', name: 'cartridgeitems_id', options: ['default' => 0])]
-    private $cartridgeitems_id;
-
+    
     #[ORM\ManyToOne(targetEntity: CartridgeItem::class)]
-    #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: true)]
     private ?CartridgeItem $cartridgeItem;
 
-    #[ORM\Column(type: 'integer', name: 'printers_id', options: ['default' => 0])]
-    private $printers_id;
-
+    
     #[ORM\ManyToOne(targetEntity: Printer::class)]
-    #[ORM\JoinColumn(name: 'printers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'printers_id', referencedColumnName: 'id', nullable: true)]
     private ?Printer $printer;
 
     #[ORM\Column(type: 'date', nullable: true)]
@@ -62,41 +56,7 @@ class Cartridge
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getCartridgeitemsId(): ?int
-    {
-        return $this->cartridgeitems_id;
-    }
-
-    public function setCartridgeitemsId(int $cartridgeitems_id): self
-    {
-        $this->cartridgeitems_id = $cartridgeitems_id;
-
-        return $this;
-    }
-
-    public function getPrintersId(): ?int
-    {
-        return $this->printers_id;
-    }
-
-    public function setPrintersId(int $printers_id): self
-    {
-        $this->printers_id = $printers_id;
-
-        return $this;
-    }
+    
 
     public function getDateIn(): ?\DateTimeInterface
     {

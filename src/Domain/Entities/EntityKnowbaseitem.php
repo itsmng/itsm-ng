@@ -16,18 +16,12 @@ class EntityKnowbaseitem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $knowbaseitems_id;
-
     #[ORM\ManyToOne(targetEntity: Knowbaseitem::class, inversedBy: 'entityKnowbaseitems')]
-    #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: true)]
     private ?Knowbaseitem $knowbaseitem;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'entityKnowbaseitems')]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -36,30 +30,6 @@ class EntityKnowbaseitem
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getKnowbaseitemsId(): ?int
-    {
-        return $this->knowbaseitems_id;
-    }
-
-    public function setKnowbaseitemsId(?int $knowbaseitems_id): self
-    {
-        $this->knowbaseitems_id = $knowbaseitems_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool

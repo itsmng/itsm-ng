@@ -14,47 +14,17 @@ class IpNetworkVlan
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", name: 'ipnetworks_id', options: ["default" => 0])]
-    private $ipnetworks_id;
-
     #[ORM\ManyToOne(targetEntity: IpNetwork::class, inversedBy: 'ipnetworkVlans')]
-    #[ORM\JoinColumn(name: 'ipaddresses_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'ipnetworks_id', referencedColumnName: 'id', nullable: true)]
     private ?IpNetwork $ipnetwork;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $vlans_id;
-
     #[ORM\ManyToOne(targetEntity: Vlan::class, inversedBy: 'ipnetworkVlans')]
-    #[ORM\JoinColumn(name: 'vlans_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'vlans_id', referencedColumnName: 'id', nullable: true)]
     private ?Vlan $vlan;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIpnetworksId(): ?int
-    {
-        return $this->ipnetworks_id;
-    }
-
-    public function setIpnetworksId(int $ipnetworks_id): self
-    {
-        $this->ipnetworks_id = $ipnetworks_id;
-
-        return $this;
-    }
-
-    public function getVlansId(): ?int
-    {
-        return $this->vlans_id;
-    }
-
-    public function setVlansId(int $vlans_id): self
-    {
-        $this->vlans_id = $vlans_id;
-
-        return $this;
     }
 
     /**

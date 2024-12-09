@@ -18,11 +18,8 @@ class DocumentItem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'documents_id', options: ['default' => 0])]
-    private $documents_id;
-
     #[ORM\ManyToOne(targetEntity: Document::class, inversedBy: 'documentItems')]
-    #[ORM\JoinColumn(name: 'documents_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'documents_id', referencedColumnName: 'id', nullable: true)]
     private ?Document $document;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
@@ -31,11 +28,8 @@ class DocumentItem
     #[ORM\Column(type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -45,11 +39,8 @@ class DocumentItem
     #[ORM\Version]
     private $date_mod;
 
-    #[ORM\Column(type: 'integer', name: 'users_id', options: ['default' => 0], nullable: true)]
-    private $users_id;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -64,18 +55,6 @@ class DocumentItem
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDocumentsId(): ?int
-    {
-        return $this->documents_id;
-    }
-
-    public function setDocumentsId(?int $documents_id): self
-    {
-        $this->documents_id = $documents_id;
-
-        return $this;
     }
 
     public function getItemsId(): ?int
@@ -102,18 +81,6 @@ class DocumentItem
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -134,18 +101,6 @@ class DocumentItem
     public function setDateMod(?\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
 
         return $this;
     }

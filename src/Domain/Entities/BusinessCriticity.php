@@ -20,11 +20,8 @@ class BusinessCriticity
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", name: 'entities_id', options: ["default" => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
@@ -39,11 +36,8 @@ class BusinessCriticity
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: "integer", name: 'businesscriticities_id', options: ["default" => 0])]
-    private $businesscriticities_id;
-
     #[ORM\ManyToOne(targetEntity: BusinessCriticity::class)]
-    #[ORM\JoinColumn(name: 'businesscriticities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'businesscriticities_id', referencedColumnName: 'id', nullable: true)]
     private ?BusinessCriticity $businessCriticities;
 
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
@@ -74,16 +68,7 @@ class BusinessCriticity
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-        return $this;
-    }
+    
 
     public function getIsRecursive(): ?bool
     {
@@ -129,17 +114,7 @@ class BusinessCriticity
         return $this;
     }
 
-    public function getBusinesscriticitiesId(): ?int
-    {
-        return $this->businesscriticities_id;
-    }
-
-    public function setBusinesscriticitiesId(?int $businesscriticities_id): self
-    {
-        $this->businesscriticities_id = $businesscriticities_id;
-        return $this;
-    }
-
+    
     public function getCompletename(): ?string
     {
         return $this->completename;

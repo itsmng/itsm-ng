@@ -35,18 +35,12 @@ class ItilFollowup
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_editor;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
     private ?User $userEditor;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -55,11 +49,8 @@ class ItilFollowup
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_private;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $requesttypes_id;
-
     #[ORM\ManyToOne(targetEntity: RequestType::class)]
-    #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
     private ?RequestType $requesttype;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -118,30 +109,6 @@ class ItilFollowup
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getUsersIdEditor(): ?int
-    {
-        return $this->users_id_editor;
-    }
-
-    public function setUsersIdEditor(int $users_id_editor): self
-    {
-        $this->users_id_editor = $users_id_editor;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
@@ -162,18 +129,6 @@ class ItilFollowup
     public function setIsPrivate(bool $is_private): self
     {
         $this->is_private = $is_private;
-
-        return $this;
-    }
-
-    public function getRequesttypesId(): ?int
-    {
-        return $this->requesttypes_id;
-    }
-
-    public function setRequesttypesId(int $requesttypes_id): self
-    {
-        $this->requesttypes_id = $requesttypes_id;
 
         return $this;
     }

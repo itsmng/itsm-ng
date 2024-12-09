@@ -25,11 +25,8 @@ class Consumableitem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -41,40 +38,24 @@ class Consumableitem
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $ref;
 
-    #[ORM\Column(type: 'integer', name: 'locations_id', options: ['default' => 0])]
-    private $locations_id;
-
     #[ORM\ManyToOne(targetEntity: Location::class)]
-    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location;
 
-    #[ORM\Column(type: 'integer', name: 'consumableitemtypes_id', options: ['default' => 0])]
-    private $consumableitemtypes_id;
-
     #[ORM\ManyToOne(targetEntity: Consumableitemtype::class)]
-    #[ORM\JoinColumn(name: 'consumableitemtypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'consumableitemtypes_id', referencedColumnName: 'id', nullable: true)]
     private ?Consumableitemtype $consumableitemtype;
 
-    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
-    private $manufacturers_id;
-
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
-    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
 
-    #[ORM\Column(type: 'integer', name: 'users_id_tech', options: ['default' => 0])]
-    private $users_id_tech;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?User $users_tech;
 
-
-    #[ORM\Column(type: 'integer', name: 'groups_id_tech', options: ['default' => 0])]
-    private $groups_id_tech;
-
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?Group $groups_tech;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -101,18 +82,7 @@ class Consumableitem
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
+    
     public function getIsRecursive(): ?int
     {
         return $this->is_recursive;
@@ -147,67 +117,8 @@ class Consumableitem
         $this->ref = $ref;
 
         return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
-
-    public function getConsumableitemtypesId(): ?int
-    {
-        return $this->consumableitemtypes_id;
-    }
-
-    public function setConsumableitemtypesId(int $consumableitemtypes_id): self
-    {
-        $this->consumableitemtypes_id = $consumableitemtypes_id;
-
-        return $this;
-    }
-
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
-    public function getUsersIdTech(): ?int
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(int $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
-
-        return $this;
-    }
+    } 
+     
 
     public function getIsDeleted(): ?int
     {

@@ -19,11 +19,8 @@ class CertificateItem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'certificates_id', nullable: false)]
-    private $certificates_id;
-
     #[ORM\ManyToOne(targetEntity: Certificate::class)]
-    #[ORM\JoinColumn(name: 'certificates_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'certificates_id', referencedColumnName: 'id', nullable: true)]
     private ?Certificate $certificate;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to various tables, according to itemtype (id)'])]
@@ -44,18 +41,7 @@ class CertificateItem
         return $this->id;
     }
 
-    public function getCertificatesId(): ?int
-    {
-        return $this->certificates_id;
-    }
-
-    public function setCertificatesId(int $certificates_id): self
-    {
-        $this->certificates_id = $certificates_id;
-
-        return $this;
-    }
-
+    
     public function getItemsId(): ?int
     {
         return $this->items_id;

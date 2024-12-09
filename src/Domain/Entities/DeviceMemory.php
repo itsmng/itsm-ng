@@ -31,34 +31,29 @@ class DeviceMemory
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", name: 'manufacturers_id', options: ['default' => 0])]
-    private $manufacturers_id;
-
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
-    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: "integer", options: ['default' => 0])]
     private $size_default;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
-    private $devicememorytypes_id;
-
     #[ORM\ManyToOne(targetEntity: DeviceMemoryType::class)]
-    #[ORM\JoinColumn(name: 'devicememorytypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'devicememorytypes_id', referencedColumnName: 'id', nullable: true)]
     private ?DeviceMemoryType $deviceMemoryType;
 
     #[ORM\Column(type: "integer", options: ['default' => 0])]
     private $entities_id;
 
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
+
     #[ORM\Column(type: "boolean", options: ['default' => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", name: 'devicememorymodels_id', nullable: true)]
-    private $devicememorymodels_id;
-
     #[ORM\ManyToOne(targetEntity: DeviceMemoryModel::class)]
-    #[ORM\JoinColumn(name: 'devicememorymodels_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'devicememorymodels_id', referencedColumnName: 'id', nullable: true)]
     private ?DeviceMemoryModel $deviceMemoryModel;
 
     #[ORM\Column(type: "datetime", nullable: true)]
@@ -108,18 +103,6 @@ class DeviceMemory
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
     public function getSizeDefault(): ?int
     {
         return $this->size_default;
@@ -128,18 +111,6 @@ class DeviceMemory
     public function setSizeDefault(?int $size_default): self
     {
         $this->size_default = $size_default;
-
-        return $this;
-    }
-
-    public function getDeviceMemoryTypesId(): ?int
-    {
-        return $this->devicememorytypes_id;
-    }
-
-    public function setDeviceMemoryTypesId(?int $devicememorytypes_id): self
-    {
-        $this->devicememorytypes_id = $devicememorytypes_id;
 
         return $this;
     }
@@ -164,18 +135,6 @@ class DeviceMemory
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getDeviceMemoryModelsId(): ?int
-    {
-        return $this->devicememorymodels_id;
-    }
-
-    public function setDeviceMemoryModelsId(?int $devicememorymodels_id): self
-    {
-        $this->devicememorymodels_id = $devicememorymodels_id;
 
         return $this;
     }
@@ -260,6 +219,26 @@ class DeviceMemory
     public function setDeviceMemoryModel($deviceMemoryModel)
     {
         $this->deviceMemoryModel = $deviceMemoryModel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

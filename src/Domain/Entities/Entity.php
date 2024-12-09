@@ -23,11 +23,8 @@ class Entity
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', name: 'entities_id', options: ['default' => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
@@ -93,11 +90,8 @@ class Entity
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $tag;
 
-    #[ORM\Column(type: 'integer', name: 'authldaps_id', options: ['default' => 0])]
-    private $authldaps_id;
-
     #[ORM\ManyToOne(targetEntity: AuthLdap::class)]
-    #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: true)]
     private ?AuthLdap $authldap;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -160,11 +154,8 @@ class Entity
     #[ORM\Column(type: 'integer', options: ['default' => -2])]
     private $notclosed_delay;
 
-    #[ORM\Column(type: 'integer', name: 'calendars_id', options: ['default' => -2])]
-    private $calendars_id;
-
     #[ORM\ManyToOne(targetEntity: Calendar::class)]
-    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
     private ?Calendar $calendar;
 
     #[ORM\Column(type: 'integer', options: ['default' => -2])]
@@ -203,29 +194,21 @@ class Entity
     #[ORM\Column(type: 'string', length: 255, options: ['default' => '-2'])]
     private $autofill_order_date;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $tickettemplates_id;
-
     #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
-    #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
     private ?TicketTemplate $tickettemplate;
 
-    #[ORM\Column(type: 'integer', name: 'changetemplates_id', options: ['default' => -2])]
-    private $changetemplates_id;
-
     #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
-    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
     private ?ChangeTemplate $changetemplate;
 
-    #[ORM\Column(type: 'integer', name: 'problemtemplates_id', options: ['default' => -2])]
-    private $problemtemplates_id;
-
     #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
-    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
     private ?Problemtemplate $problemtemplate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $entities_id_software;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id_software', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entitySoftware;
 
     #[ORM\Column(type: 'integer', options: ['default' => -2])]
     private $default_contract_alert;
@@ -308,18 +291,6 @@ class Entity
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entitiesId): self
-    {
-        $this->entities_id = $entitiesId;
 
         return $this;
     }
@@ -576,18 +547,7 @@ class Entity
         return $this;
     }
 
-    public function getAuthldapsId(): ?int
-    {
-        return $this->authldaps_id;
-    }
-
-    public function setAuthldapsId(int $authldapId): self
-    {
-        $this->authldaps_id = $authldapId;
-
-        return $this;
-    }
-
+   
     public function getMailDomain(): ?string
     {
         return $this->mail_domain;
@@ -828,18 +788,6 @@ class Entity
         return $this;
     }
 
-    public function getCalendarsId(): ?int
-    {
-        return $this->calendars_id;
-    }
-
-    public function setCalendarsId(int $calendarsId): self
-    {
-        $this->calendars_id = $calendarsId;
-
-        return $this;
-    }
-
     public function getAutoAssignMode(): ?int
     {
         return $this->auto_assign_mode;
@@ -980,54 +928,6 @@ class Entity
     public function setAutofillOrderDate(string $autofillOrderDate): self
     {
         $this->autofill_order_date = $autofillOrderDate;
-
-        return $this;
-    }
-
-    public function getTicketTemplatesId(): ?int
-    {
-        return $this->tickettemplates_id;
-    }
-
-    public function setTicketTemplatesId(int $ticketTemplatesId): self
-    {
-        $this->tickettemplates_id = $ticketTemplatesId;
-
-        return $this;
-    }
-
-    public function getChangeTemplatesId(): ?int
-    {
-        return $this->changetemplates_id;
-    }
-
-    public function setChangeTemplatesId(int $changeTemplatesId): self
-    {
-        $this->changetemplates_id = $changeTemplatesId;
-
-        return $this;
-    }
-
-    public function getProblemTemplatesId(): ?int
-    {
-        return $this->problemtemplates_id;
-    }
-
-    public function setProblemTemplatesId(int $problemTemplatesId): self
-    {
-        $this->problemtemplates_id = $problemTemplatesId;
-
-        return $this;
-    }
-
-    public function getEntitiesIdSoftware(): ?int
-    {
-        return $this->entities_id_software;
-    }
-
-    public function setEntitiesIdSoftware(int $entitiesIdSoftware): self
-    {
-        $this->entities_id_software = $entitiesIdSoftware;
 
         return $this;
     }
@@ -1412,6 +1312,26 @@ class Entity
     public function setEntityRssfeeds($entityRssfeeds)
     {
         $this->entityRssfeeds = $entityRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entitySoftware
+     */ 
+    public function getEntitySoftware()
+    {
+        return $this->entitySoftware;
+    }
+
+    /**
+     * Set the value of entitySoftware
+     *
+     * @return  self
+     */ 
+    public function setEntitySoftware($entitySoftware)
+    {
+        $this->entitySoftware = $entitySoftware;
 
         return $this;
     }

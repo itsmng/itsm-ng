@@ -30,31 +30,23 @@ class DeviceControl
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', name: 'manufacturers_id', options: ['default' => 0])]
-    private $manufacturers_id;
-
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
-    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
 
-    #[ORM\Column(type: 'integer', name: 'interfacetypes_id', options: ['default' => 0])]
-    private $interfacetypes_id;
-
     #[ORM\ManyToOne(targetEntity: InterfaceType::class)]
-    #[ORM\JoinColumn(name: 'interfacetypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'interfacetypes_id', referencedColumnName: 'id', nullable: true)]
     private ?InterfaceType $interfacetype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', name: 'devicecontrolmodels_id', nullable: true)]
-    private $devicecontrolmodels_id;
-
     #[ORM\ManyToOne(targetEntity: DeviceControlModel::class)]
-    #[ORM\JoinColumn(name: 'devicecontrolmodels_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'devicecontrolmodels_id', referencedColumnName: 'id', nullable: true)]
     private ?DeviceControlModel $devicecontrolmodel;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -104,42 +96,7 @@ class DeviceControl
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturersId): self
-    {
-        $this->manufacturers_id = $manufacturersId;
-
-        return $this;
-    }
-
-    public function getInterfacetypesId(): ?int
-    {
-        return $this->interfacetypes_id;
-    }
-
-    public function setInterfacetypesId(?int $interfacetypesId): self
-    {
-        $this->interfacetypes_id = $interfacetypesId;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entities_id = $entitiesId;
-
-        return $this;
-    }
-
+    
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -152,18 +109,7 @@ class DeviceControl
         return $this;
     }
 
-    public function getDevicecontrolmodelsId(): ?int
-    {
-        return $this->devicecontrolmodels_id;
-    }
-
-    public function setDevicecontrolmodelsId(?int $devicecontrolmodelsId): self
-    {
-        $this->devicecontrolmodels_id = $devicecontrolmodelsId;
-
-        return $this;
-    }
-
+    
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -244,6 +190,26 @@ class DeviceControl
     public function setDevicecontrolmodel($devicecontrolmodel)
     {
         $this->devicecontrolmodel = $devicecontrolmodel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

@@ -26,11 +26,8 @@ class ItilFollowupTemplate
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_mod;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
@@ -42,11 +39,8 @@ class ItilFollowupTemplate
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $content;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $requesttypes_id;
-
     #[ORM\ManyToOne(targetEntity: RequestType::class)]
-    #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
     private ?Requesttype $requesttype;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
@@ -84,18 +78,6 @@ class ItilFollowupTemplate
         return $this->date_mod;
     }
 
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): int
-    {
-        return $this->entities_id;
-    }
-
     public function setIsRecursive(bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
@@ -130,18 +112,6 @@ class ItilFollowupTemplate
     public function getContent(): ?string
     {
         return $this->content;
-    }
-
-    public function setRequesttypesId(int $requesttypes_id): self
-    {
-        $this->requesttypes_id = $requesttypes_id;
-
-        return $this;
-    }
-
-    public function getRequesttypesId(): int
-    {
-        return $this->requesttypes_id;
     }
 
     public function setIsPrivate(bool $is_private): self

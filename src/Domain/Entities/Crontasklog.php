@@ -17,18 +17,12 @@ class Crontasklog
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', name: 'crontasks_id')]
-    private $crontasks_id;
-
     #[ORM\ManyToOne(targetEntity: Crontask::class)]
-    #[ORM\JoinColumn(name: 'crontasks_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'crontasks_id', referencedColumnName: 'id', nullable: true)]
     private ?Crontask $crontask;
 
-    #[ORM\Column(type: 'integer', name: 'crontasklogs_id', options: ['comment' => 'id of "start" event'])]
-    private $crontasklogs_id;
-
     #[ORM\ManyToOne(targetEntity: Crontasklog::class)]
-    #[ORM\JoinColumn(name: 'crontasklogs_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'crontasklogs_id', referencedColumnName: 'id', nullable: false, options: ['comment' => 'id of "start" event'])]
     private ?Crontasklog $crontasklogs;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
@@ -51,30 +45,7 @@ class Crontasklog
         return $this->id;
     }
 
-    public function getCrontasksId(): ?int
-    {
-        return $this->crontasks_id;
-    }
-
-    public function setCrontasksId(int $crontasks_id): self
-    {
-        $this->crontasks_id = $crontasks_id;
-
-        return $this;
-    }
-
-    public function getCrontasklogsId(): ?int
-    {
-        return $this->crontasklogs_id;
-    }
-
-    public function setCrontasklogsId(int $crontasklogs_id): self
-    {
-        $this->crontasklogs_id = $crontasklogs_id;
-
-        return $this;
-    }
-
+    
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;

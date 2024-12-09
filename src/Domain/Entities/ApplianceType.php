@@ -16,11 +16,9 @@ class ApplianceType
     #[ORM\Column(type:"integer")]
     private $id;
 
-    #[ORM\Column(type:"integer", name:"entities_id", options:['default' => 0])]
-    private $entities_id;
-
+   
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type:"boolean", options:['default' => 0])]
@@ -40,10 +38,7 @@ class ApplianceType
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
+    
 
     public function getIsRecursive(): ?bool
     {
@@ -72,13 +67,7 @@ class ApplianceType
         return $this;
     }
 
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entities_id = $entitiesId;
-
-        return $this;
-    }
-
+    
     public function setIsRecursive(?bool $isRecursive): self
     {
         $this->is_recursive = $isRecursive;

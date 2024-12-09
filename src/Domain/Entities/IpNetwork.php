@@ -21,21 +21,15 @@ class IpNetwork
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", name: 'entities_id', options: ["default" => 0])]
-    private $entities_id;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
-    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", name: 'ipnetworks_id', options: ["default" => 0])]
-    private $ipnetworks_id;
-
     #[ORM\ManyToOne(targetEntity: IpNetwork::class)]
-    #[ORM\JoinColumn(name: 'ipnetworks_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'ipnetworks_id', referencedColumnName: 'id', nullable: true)]
     private ?IpNetwork $ipnetwork;
 
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
@@ -131,18 +125,6 @@ class IpNetwork
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -151,18 +133,6 @@ class IpNetwork
     public function setIsRecursive(bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getIpNetworksId(): ?int
-    {
-        return $this->ipnetworks_id;
-    }
-
-    public function setIpNetworksId(int $ipnetworks_id): self
-    {
-        $this->ipnetworks_id = $ipnetworks_id;
 
         return $this;
     }

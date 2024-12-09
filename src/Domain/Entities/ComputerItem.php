@@ -21,11 +21,8 @@ class ComputerItem
     #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to various table, according to itemtype (ID)'])]
     private $items_id;
 
-    #[ORM\Column(type: 'integer', name: 'computers_id', options: ['default' => 0])]
-    private $computers_id;
-
     #[ORM\ManyToOne(targetEntity: Computer::class)]
-    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: true)]
     private ?Computer $computer;
 
     #[ORM\Column(type: 'string', length: 100)]
@@ -42,18 +39,7 @@ class ComputerItem
         return $this->id;
     }
 
-    public function getComputersId(): ?int
-    {
-        return $this->computers_id;
-    }
-
-    public function setComputersId(int $computers_id): self
-    {
-        $this->computers_id = $computers_id;
-
-        return $this;
-    }
-
+   
     public function getItemsId(): ?int
     {
         return $this->items_id;

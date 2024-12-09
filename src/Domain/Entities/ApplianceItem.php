@@ -16,11 +16,8 @@ class ApplianceItem
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", name: "appliances_id", options: ["default" => 0])]
-    private $appliances_id;
-
     #[ORM\ManyToOne(targetEntity: Appliance::class)]
-    #[ORM\JoinColumn(name: 'appliances_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'appliances_id', referencedColumnName: 'id', nullable: true)]
     private ?Appliance $appliance;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
@@ -32,18 +29,6 @@ class ApplianceItem
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getAppliancesId(): ?int
-    {
-        return $this->appliances_id;
-    }
-
-    public function setAppliancesId(?int $appliances_id): self
-    {
-        $this->appliances_id = $appliances_id;
-
-        return $this;
     }
 
     public function getItemsId(): ?int
