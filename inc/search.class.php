@@ -7132,7 +7132,6 @@ JAVASCRIPT;
         return $params;
     }
 
-
     /**
      * Clean search options depending of user active profile
      *

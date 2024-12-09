@@ -35,6 +35,15 @@ use Glpi\Event;
 
 include('../inc/includes.php');
 
+if (isset($_POST['language']) && !Session::getLoginUserID()) {
+   // Offline lang change, keep it before session validity check
+   $_SESSION["glpilanguage"] = $_POST['language'];
+   Session::addMessageAfterRedirect(__('Lang has been changed!'));
+   Html::back();
+}
+
+Session::checkLoginUser();
+
 if (empty($_GET["id"])) {
     $_GET["id"] = "";
 }

@@ -53,6 +53,11 @@ class MassiveAction
     public const ACTION_KO               = 2;
     public const ACTION_NORIGHT          = 3;
 
+   public $POST;
+   public $items;
+   public $check_item;
+   public $nb_items;
+
 
     /**
      * Constructor of massive actions.

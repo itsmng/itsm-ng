@@ -66,28 +66,27 @@ if (isset($_REQUEST['itemtype'])) {
 
 // Rights Checks
 if (isset($itemtype)) {
-    if (in_array($action, ['refresh', 'get_switcher_dropdown', 'get_column'])) {
-        if (!$item->canView()) {
-            // Missing rights
-            http_response_code(403);
-            return;
-        }
-    }
-    if (in_array($action, ['update'])) {
-        $item->getFromDB($_REQUEST['items_id']);
-        if (!$item->canUpdateItem()) {
-            // Missing rights
-            http_response_code(403);
-            return;
-        }
-    }
-    if (in_array($action, ['bulk_add_item', 'add_item'])) {
-        if (!$item->canCreate()) {
-            // Missing rights
-            http_response_code(403);
-            return;
-        }
-    }
+   if (in_array($action, ['refresh', 'get_switcher_dropdown', 'get_column'])) {
+      if (!$item->canView()) {
+         // Missing rights
+         http_response_code(403);
+         return;
+      }
+   }
+   if (in_array($action, ['update'])) {
+      if (!$item->can($_REQUEST['items_id'], UPDATE)) {
+         // Missing rights
+         http_response_code(403);
+         return;
+      }
+   }
+   if (in_array($action, ['bulk_add_item', 'add_item'])) {
+      if (!$item->canCreate()) {
+         // Missing rights
+         http_response_code(403);
+         return;
+      }
+   }
 }
 
 // Helper to check required parameters

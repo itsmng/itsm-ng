@@ -152,6 +152,35 @@ class Plugin extends CommonDBTM
         ];
     }
 
+       public function prepareInputForAdd($input)
+    {
+        $input = $this->prepareInput($input);
+
+        return $input;
+    }
+
+    public function prepareInputForUpdate($input)
+    {
+        $input = $this->prepareInput($input);
+
+        return $input;
+    }
+
+    private function prepareInput(array $input)
+    {
+        if ($this->isNewItem() || array_key_exists('directory', $input)) {
+            if (preg_match(self::PLUGIN_KEY_PATTERN, $input['directory'] ?? '') !== 1) {
+                Session::addMessageAfterRedirect(
+                    __s('Invalid plugin directory'),
+                    false,
+                    ERROR
+                );
+                return false;
+            }
+        }
+        return $input;
+    }
+
 
     /**
      * Retrieve an item from the database using its directory

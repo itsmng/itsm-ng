@@ -50,6 +50,15 @@ foreach (['date1', 'date2'] as $key) {
     }
 }
 
+foreach (['date1', 'date2'] as $key) {
+    if (array_key_exists($key, $_GET) && preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)$_GET[$key]) !== 1) {
+        unset($_GET[$key]);
+    }
+    if (array_key_exists($key, $_POST) && preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)$_POST[$key]) !== 1) {
+        unset($_POST[$key]);
+    }
+}
+
 if (empty($_POST["date1"]) && empty($_POST["date2"])) {
     if (isset($_GET["date1"])) {
         $_POST["date1"] = $_GET["date1"];

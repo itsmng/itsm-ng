@@ -7660,7 +7660,6 @@ abstract class CommonITILObject extends CommonDBTM
             $timeline[$date . "_document_" . $document_item['documents_id']]
                = ['type' => 'Document_Item', 'item' => $item];
         }
-
         $solution_obj = new ITILSolution();
         $solution_items = $solution_obj->find([
            'itemtype'  => static::getType(),

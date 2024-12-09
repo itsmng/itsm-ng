@@ -42,7 +42,7 @@ $fup = new ITILFollowup();
 if (!isset($_POST['itemtype']) || !class_exists($_POST['itemtype'])) {
     Html::displayErrorAndDie('Lost');
 }
-$track = new $_POST['itemtype']();
+$track = getItemForItemtype($_POST['itemtype']);
 
 
 if (isset($_POST["add"])) {

@@ -39,5 +39,5 @@ if (!isset($_GET['itemtype']) || !class_exists($_GET['itemtype'])) {
     );
 }
 
-$dropdown = new $_GET['itemtype']();
-include(GLPI_ROOT . "/front/dropdown.common.form.php");
+$dropdown = getItemForItemtype($_GET['itemtype']);
+include (GLPI_ROOT . "/front/dropdown.common.form.php");
