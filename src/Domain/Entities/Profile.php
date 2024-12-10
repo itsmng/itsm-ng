@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_profiles')]
@@ -67,6 +68,9 @@ class Profile
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: KnowbaseitemProfile::class)]
+    private Collection $knowbaseitemProfiles;
 
     public function getId(): ?int
     {
@@ -277,6 +281,26 @@ class Profile
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemProfiles
+     */ 
+    public function getKnowbaseitemProfiles()
+    {
+        return $this->knowbaseitemProfiles;
+    }
+
+    /**
+     * Set the value of knowbaseitemProfiles
+     *
+     * @return  self
+     */ 
+    public function setKnowbaseitemProfiles($knowbaseitemProfiles)
+    {
+        $this->knowbaseitemProfiles = $knowbaseitemProfiles;
 
         return $this;
     }
