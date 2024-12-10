@@ -339,6 +339,9 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: GroupUser::class)]
     private Collection $groupUsers;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: KnowbaseitemUser::class)]
+    private Collection $knowbaseitemUsers;
+
 
     public function getId(): ?int
     {
@@ -1584,6 +1587,26 @@ class User
     public function setGroupUsers($groupUsers)
     {
         $this->groupUsers = $groupUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemUsers
+     */ 
+    public function getKnowbaseitemUsers()
+    {
+        return $this->knowbaseitemUsers;
+    }
+
+    /**
+     * Set the value of knowbaseitemUsers
+     *
+     * @return  self
+     */ 
+    public function setKnowbaseitemUsers($knowbaseitemUsers)
+    {
+        $this->knowbaseitemUsers = $knowbaseitemUsers;
 
         return $this;
     }
