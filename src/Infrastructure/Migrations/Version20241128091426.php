@@ -167,7 +167,6 @@ final class Version20241128091426 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_softwares CHANGE ticket_tco ticket_tco NUMERIC(20, 4) DEFAULT \'0\'');
         $this->addSql('ALTER TABLE glpi_ticketcosts CHANGE cost_time cost_time NUMERIC(20, 4) DEFAULT \'0\' NOT NULL, CHANGE cost_fixed cost_fixed NUMERIC(20, 4) DEFAULT \'0\' NOT NULL, CHANGE cost_material cost_material NUMERIC(20, 4) DEFAULT \'0\' NOT NULL');
         $this->addSql('ALTER TABLE glpi_ticketsatisfactions CHANGE satisfaction satisfaction INT DEFAULT 0 NOT NULL');
-        $this->addSql('ALTER TABLE glpi_users ADD menu_width TEXT DEFAULT \'null\', ADD bubble_pos TEXT DEFAULT NULL, ADD accessibility_menu TINYINT(1) DEFAULT 0 NOT NULL, CHANGE language language VARCHAR(10) DEFAULT NULL COMMENT \'see define.php CFG_GLPI[language] array\', CHANGE csv_delimiter csv_delimiter VARCHAR(1) DEFAULT NULL, CHANGE priority_1 priority_1 VARCHAR(20) DEFAULT NULL, CHANGE priority_2 priority_2 VARCHAR(20) DEFAULT NULL, CHANGE priority_3 priority_3 VARCHAR(20) DEFAULT NULL, CHANGE priority_4 priority_4 VARCHAR(20) DEFAULT NULL, CHANGE priority_5 priority_5 VARCHAR(20) DEFAULT NULL, CHANGE priority_6 priority_6 VARCHAR(20) DEFAULT NULL, CHANGE password_forget_token password_forget_token VARCHAR(40) DEFAULT NULL, CHANGE layout layout VARCHAR(20) DEFAULT NULL, CHANGE palette palette VARCHAR(20) DEFAULT NULL, CHANGE access_custom_shortcuts access_custom_shortcuts LONGTEXT DEFAULT NULL');
         $this->addSql('DROP INDEX item ON glpi_vobjects');
     }
 
