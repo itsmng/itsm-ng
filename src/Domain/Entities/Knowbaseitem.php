@@ -61,6 +61,12 @@ class Knowbaseitem
     #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: GroupKnowbaseItem::class)]
     private Collection $groupKnowbaseitems;
 
+    #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: KnowbaseitemProfile::class)]
+    private Collection $knowbaseitemProfiles;
+
+    #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: KnowbaseitemUser::class)]
+    private Collection $knowbaseitemUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -231,6 +237,46 @@ class Knowbaseitem
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemProfiles
+     */ 
+    public function getKnowbaseitemProfiles()
+    {
+        return $this->knowbaseitemProfiles;
+    }
+
+    /**
+     * Set the value of knowbaseitemProfiles
+     *
+     * @return  self
+     */ 
+    public function setKnowbaseitemProfiles($knowbaseitemProfiles)
+    {
+        $this->knowbaseitemProfiles = $knowbaseitemProfiles;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemUsers
+     */ 
+    public function getKnowbaseitemUsers()
+    {
+        return $this->knowbaseitemUsers;
+    }
+
+    /**
+     * Set the value of knowbaseitemUsers
+     *
+     * @return  self
+     */ 
+    public function setKnowbaseitemUsers($knowbaseitemUsers)
+    {
+        $this->knowbaseitemUsers = $knowbaseitemUsers;
 
         return $this;
     }
