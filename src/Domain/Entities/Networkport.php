@@ -69,6 +69,9 @@ class Networkport
     #[ORM\OneToMany(mappedBy: 'networkport2', targetEntity: NetworkportNetworkport::class)]
     private Collection $networkportNetworkports2;
 
+    #[ORM\OneToMany(mappedBy: 'networkport', targetEntity: NetworkportVlan::class)]
+    private Collection $networkportVlans;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -276,6 +279,26 @@ class Networkport
     public function setNetworkportNetworkports2($networkportNetworkports2)
     {
         $this->networkportNetworkports2 = $networkportNetworkports2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportVlans
+     */ 
+    public function getNetworkportVlans()
+    {
+        return $this->networkportVlans;
+    }
+
+    /**
+     * Set the value of networkportVlans
+     *
+     * @return  self
+     */ 
+    public function setNetworkportVlans($networkportVlans)
+    {
+        $this->networkportVlans = $networkportVlans;
 
         return $this;
     }

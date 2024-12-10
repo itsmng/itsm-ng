@@ -43,6 +43,9 @@ class Vlan
     #[ORM\OneToMany(mappedBy: 'vlan', targetEntity: IpNetworkVlan::class)]
     private Collection $ipnetworkVlans;
 
+    #[ORM\OneToMany(mappedBy: 'vlan', targetEntity: NetworkportVlan::class)]
+    private Collection $networkportVlans;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -128,6 +131,46 @@ class Vlan
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ipnetworkVlans
+     */ 
+    public function getIpnetworkVlans()
+    {
+        return $this->ipnetworkVlans;
+    }
+
+    /**
+     * Set the value of ipnetworkVlans
+     *
+     * @return  self
+     */ 
+    public function setIpnetworkVlans($ipnetworkVlans)
+    {
+        $this->ipnetworkVlans = $ipnetworkVlans;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportVlans
+     */ 
+    public function getNetworkportVlans()
+    {
+        return $this->networkportVlans;
+    }
+
+    /**
+     * Set the value of networkportVlans
+     *
+     * @return  self
+     */ 
+    public function setNetworkportVlans($networkportVlans)
+    {
+        $this->networkportVlans = $networkportVlans;
 
         return $this;
     }

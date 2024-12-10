@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use NetworkPort;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_networkports_vlans')]
@@ -15,11 +16,13 @@ class NetworkportVlan
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $networkports_id;
-
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $vlans_id;
+    #[ORM\ManyToOne(targetEntity: NetworkPort::class, inversedBy: 'networkportVlans')]
+    #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
+    private ?NetworkPort $networkport;
+    
+    #[ORM\ManyToOne(targetEntity: Vlan::class, inversedBy: 'networkportVlans')]
+    #[ORM\JoinColumn(name: 'vlans_id', referencedColumnName: 'id', nullable: true)]
+    private ?Vlan $vlan;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $tagged;
@@ -27,30 +30,6 @@ class NetworkportVlan
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNetworkportsId(): ?int
-    {
-        return $this->networkports_id;
-    }
-
-    public function setNetworkportsId(?int $networkports_id): self
-    {
-        $this->networkports_id = $networkports_id;
-
-        return $this;
-    }
-
-    public function getVlansId(): ?int
-    {
-        return $this->vlans_id;
-    }
-
-    public function setVlansId(?int $vlans_id): self
-    {
-        $this->vlans_id = $vlans_id;
-
-        return $this;
     }
 
     public function getTagged(): ?bool
@@ -65,4 +44,44 @@ class NetworkportVlan
         return $this;
     }
 
+
+    /**
+     * Get the value of networkport
+     */ 
+    public function getNetworkport()
+    {
+        return $this->networkport;
+    }
+
+    /**
+     * Set the value of networkport
+     *
+     * @return  self
+     */ 
+    public function setNetworkport($networkport)
+    {
+        $this->networkport = $networkport;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of vlan
+     */ 
+    public function getVlan()
+    {
+        return $this->vlan;
+    }
+
+    /**
+     * Set the value of vlan
+     *
+     * @return  self
+     */ 
+    public function setVlan($vlan)
+    {
+        $this->vlan = $vlan;
+
+        return $this;
+    }
 }
