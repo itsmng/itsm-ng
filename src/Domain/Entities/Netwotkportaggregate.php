@@ -17,11 +17,13 @@ class Netwotkportaggregate
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $networkports_id;
+    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
+    private ?Networkport $networkport;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ['comment' => 'array of associated networkports_id'])]
-    private $networkports_id_list;
+    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\JoinColumn(name: 'networkports_id_list', referencedColumnName: 'id', nullable: true, options: ['comment' => 'array of associated networkports_id'])]
+    private ?Networkport $networkportList;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -32,30 +34,6 @@ class Netwotkportaggregate
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNetworkportsId(): ?int
-    {
-        return $this->networkports_id;
-    }
-
-    public function setNetworkportsId(?int $networkports_id): self
-    {
-        $this->networkports_id = $networkports_id;
-
-        return $this;
-    }
-
-    public function getNetworkportsIdList(): ?string
-    {
-        return $this->networkports_id_list;
-    }
-
-    public function setNetworkportsIdList(?string $networkports_id_list): self
-    {
-        $this->networkports_id_list = $networkports_id_list;
-
-        return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
@@ -82,4 +60,44 @@ class Netwotkportaggregate
         return $this;
     }
 
+
+    /**
+     * Get the value of networkport
+     */ 
+    public function getNetworkport()
+    {
+        return $this->networkport;
+    }
+
+    /**
+     * Set the value of networkport
+     *
+     * @return  self
+     */ 
+    public function setNetworkport($networkport)
+    {
+        $this->networkport = $networkport;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportList
+     */ 
+    public function getNetworkportList()
+    {
+        return $this->networkportList;
+    }
+
+    /**
+     * Set the value of networkportList
+     *
+     * @return  self
+     */ 
+    public function setNetworkportList($networkportList)
+    {
+        $this->networkportList = $networkportList;
+
+        return $this;
+    }
 }
