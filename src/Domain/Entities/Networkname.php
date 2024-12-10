@@ -22,8 +22,9 @@ class Networkname
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $items_id;
@@ -37,8 +38,9 @@ class Networkname
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $fqdns_id;
+    #[ORM\ManyToOne(targetEntity: Fqdn::class)]
+    #[ORM\JoinColumn(name: 'fqdns_id', referencedColumnName: 'id', nullable: true)]
+    private ?Fqdn $fqdn;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
     private $is_deleted;
@@ -55,18 +57,6 @@ class Networkname
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getItemsId(): ?int
@@ -117,18 +107,6 @@ class Networkname
         return $this;
     }
 
-    public function getFqdnsId(): ?int
-    {
-        return $this->fqdns_id;
-    }
-
-    public function setFqdnsId(int $fqdns_id): self
-    {
-        $this->fqdns_id = $fqdns_id;
-
-        return $this;
-    }
-
     public function getIsDeleted(): ?bool
     {
         return $this->is_deleted;
@@ -173,6 +151,46 @@ class Networkname
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of fqdn
+     */ 
+    public function getFqdn()
+    {
+        return $this->fqdn;
+    }
+
+    /**
+     * Set the value of fqdn
+     *
+     * @return  self
+     */ 
+    public function setFqdn($fqdn)
+    {
+        $this->fqdn = $fqdn;
 
         return $this;
     }
