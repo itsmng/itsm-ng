@@ -23,7 +23,7 @@ class Networkportfiberchannel
     #[ORM\ManyToOne(targetEntity: Networkport::class)]
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
     private ?Networkport $networkport;
-    
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_devicenetworkcards_id;
 
@@ -111,7 +111,7 @@ class Networkportfiberchannel
 
     /**
      * Get the value of networkport
-     */ 
+     */
     public function getNetworkport()
     {
         return $this->networkport;
@@ -121,7 +121,7 @@ class Networkportfiberchannel
      * Set the value of networkport
      *
      * @return  self
-     */ 
+     */
     public function setNetworkport($networkport)
     {
         $this->networkport = $networkport;
@@ -131,7 +131,7 @@ class Networkportfiberchannel
 
     /**
      * Get the value of netpoint
-     */ 
+     */
     public function getNetpoint()
     {
         return $this->netpoint;
@@ -141,7 +141,7 @@ class Networkportfiberchannel
      * Set the value of netpoint
      *
      * @return  self
-     */ 
+     */
     public function setNetpoint($netpoint)
     {
         $this->netpoint = $netpoint;

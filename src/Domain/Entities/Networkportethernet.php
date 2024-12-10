@@ -110,7 +110,7 @@ class Networkportethernet
 
     /**
      * Get the value of networkport
-     */ 
+     */
     public function getNetworkport()
     {
         return $this->networkport;
@@ -120,7 +120,7 @@ class Networkportethernet
      * Set the value of networkport
      *
      * @return  self
-     */ 
+     */
     public function setNetworkport($networkport)
     {
         $this->networkport = $networkport;
@@ -130,7 +130,7 @@ class Networkportethernet
 
     /**
      * Get the value of netpoint
-     */ 
+     */
     public function getNetpoint()
     {
         return $this->netpoint;
@@ -140,7 +140,7 @@ class Networkportethernet
      * Set the value of netpoint
      *
      * @return  self
-     */ 
+     */
     public function setNetpoint($netpoint)
     {
         $this->netpoint = $netpoint;

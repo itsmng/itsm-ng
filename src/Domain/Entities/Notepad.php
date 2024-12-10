@@ -124,7 +124,7 @@ class Notepad
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -134,7 +134,7 @@ class Notepad
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -144,7 +144,7 @@ class Notepad
 
     /**
      * Get the value of userLastupdater
-     */ 
+     */
     public function getUserLastupdater()
     {
         return $this->userLastupdater;
@@ -154,7 +154,7 @@ class Notepad
      * Set the value of userLastupdater
      *
      * @return  self
-     */ 
+     */
     public function setUserLastupdater($userLastupdater)
     {
         $this->userLastupdater = $userLastupdater;

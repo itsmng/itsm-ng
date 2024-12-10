@@ -19,7 +19,7 @@ class NetworkportVlan
     #[ORM\ManyToOne(targetEntity: NetworkPort::class, inversedBy: 'networkportVlans')]
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
     private ?NetworkPort $networkport;
-    
+
     #[ORM\ManyToOne(targetEntity: Vlan::class, inversedBy: 'networkportVlans')]
     #[ORM\JoinColumn(name: 'vlans_id', referencedColumnName: 'id', nullable: true)]
     private ?Vlan $vlan;
@@ -47,7 +47,7 @@ class NetworkportVlan
 
     /**
      * Get the value of networkport
-     */ 
+     */
     public function getNetworkport()
     {
         return $this->networkport;
@@ -57,7 +57,7 @@ class NetworkportVlan
      * Set the value of networkport
      *
      * @return  self
-     */ 
+     */
     public function setNetworkport($networkport)
     {
         $this->networkport = $networkport;
@@ -67,7 +67,7 @@ class NetworkportVlan
 
     /**
      * Get the value of vlan
-     */ 
+     */
     public function getVlan()
     {
         return $this->vlan;
@@ -77,7 +77,7 @@ class NetworkportVlan
      * Set the value of vlan
      *
      * @return  self
-     */ 
+     */
     public function setVlan($vlan)
     {
         $this->vlan = $vlan;

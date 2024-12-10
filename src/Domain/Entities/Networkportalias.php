@@ -63,7 +63,7 @@ class Networkportalias
 
     /**
      * Get the value of networkport
-     */ 
+     */
     public function getNetworkport()
     {
         return $this->networkport;
@@ -73,7 +73,7 @@ class Networkportalias
      * Set the value of networkport
      *
      * @return  self
-     */ 
+     */
     public function setNetworkport($networkport)
     {
         $this->networkport = $networkport;
@@ -83,7 +83,7 @@ class Networkportalias
 
     /**
      * Get the value of networkportAlias
-     */ 
+     */
     public function getNetworkportAlias()
     {
         return $this->networkportAlias;
@@ -93,7 +93,7 @@ class Networkportalias
      * Set the value of networkportAlias
      *
      * @return  self
-     */ 
+     */
     public function setNetworkportAlias($networkportAlias)
     {
         $this->networkportAlias = $networkportAlias;

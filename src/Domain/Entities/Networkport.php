@@ -224,7 +224,7 @@ class Networkport
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -234,7 +234,7 @@ class Networkport
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -242,10 +242,10 @@ class Networkport
         return $this;
     }
 
-    
+
     /**
      * Get the value of networkportNetworkports1
-     */ 
+     */
     public function getNetworkportNetworkports1()
     {
         return $this->networkportNetworkports1;
@@ -255,7 +255,7 @@ class Networkport
      * Set the value of networkportNetworkports1
      *
      * @return  self
-     */ 
+     */
     public function setNetworkportNetworkports1($networkportNetworkports1)
     {
         $this->networkportNetworkports1 = $networkportNetworkports1;
@@ -265,7 +265,7 @@ class Networkport
 
     /**
      * Get the value of networkportNetworkports2
-     */ 
+     */
     public function getNetworkportNetworkports2()
     {
         return $this->networkportNetworkports2;
@@ -275,7 +275,7 @@ class Networkport
      * Set the value of networkportNetworkports2
      *
      * @return  self
-     */ 
+     */
     public function setNetworkportNetworkports2($networkportNetworkports2)
     {
         $this->networkportNetworkports2 = $networkportNetworkports2;
@@ -285,7 +285,7 @@ class Networkport
 
     /**
      * Get the value of networkportVlans
-     */ 
+     */
     public function getNetworkportVlans()
     {
         return $this->networkportVlans;
@@ -295,7 +295,7 @@ class Networkport
      * Set the value of networkportVlans
      *
      * @return  self
-     */ 
+     */
     public function setNetworkportVlans($networkportVlans)
     {
         $this->networkportVlans = $networkportVlans;

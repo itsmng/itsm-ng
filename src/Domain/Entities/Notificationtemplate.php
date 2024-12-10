@@ -119,7 +119,7 @@ class Notificationtemplate
 
     /**
      * Get the value of notificationNotificationtemplates
-     */ 
+     */
     public function getNotificationNotificationtemplates()
     {
         return $this->notificationNotificationtemplates;
@@ -129,7 +129,7 @@ class Notificationtemplate
      * Set the value of notificationNotificationtemplates
      *
      * @return  self
-     */ 
+     */
     public function setNotificationNotificationtemplates($notificationNotificationtemplates)
     {
         $this->notificationNotificationtemplates = $notificationNotificationtemplates;

@@ -137,7 +137,7 @@ class Vlan
 
     /**
      * Get the value of ipnetworkVlans
-     */ 
+     */
     public function getIpnetworkVlans()
     {
         return $this->ipnetworkVlans;
@@ -147,7 +147,7 @@ class Vlan
      * Set the value of ipnetworkVlans
      *
      * @return  self
-     */ 
+     */
     public function setIpnetworkVlans($ipnetworkVlans)
     {
         $this->ipnetworkVlans = $ipnetworkVlans;
@@ -157,7 +157,7 @@ class Vlan
 
     /**
      * Get the value of networkportVlans
-     */ 
+     */
     public function getNetworkportVlans()
     {
         return $this->networkportVlans;
@@ -167,7 +167,7 @@ class Vlan
      * Set the value of networkportVlans
      *
      * @return  self
-     */ 
+     */
     public function setNetworkportVlans($networkportVlans)
     {
         $this->networkportVlans = $networkportVlans;

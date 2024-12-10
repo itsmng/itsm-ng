@@ -171,7 +171,7 @@ class Notification
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -181,7 +181,7 @@ class Notification
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -191,7 +191,7 @@ class Notification
 
     /**
      * Get the value of notificationNotificationtemplates
-     */ 
+     */
     public function getNotificationNotificationtemplates()
     {
         return $this->notificationNotificationtemplates;
@@ -201,7 +201,7 @@ class Notification
      * Set the value of notificationNotificationtemplates
      *
      * @return  self
-     */ 
+     */
     public function setNotificationNotificationtemplates($notificationNotificationtemplates)
     {
         $this->notificationNotificationtemplates = $notificationNotificationtemplates;

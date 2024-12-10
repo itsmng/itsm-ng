@@ -120,7 +120,7 @@ class Notimportedemail
 
     /**
      * Get the value of mailcollector
-     */ 
+     */
     public function getMailcollector()
     {
         return $this->mailcollector;
@@ -130,7 +130,7 @@ class Notimportedemail
      * Set the value of mailcollector
      *
      * @return  self
-     */ 
+     */
     public function setMailcollector($mailcollector)
     {
         $this->mailcollector = $mailcollector;
@@ -140,7 +140,7 @@ class Notimportedemail
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -150,7 +150,7 @@ class Notimportedemail
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

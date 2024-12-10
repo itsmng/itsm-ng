@@ -56,7 +56,7 @@ class Notificationtarget
 
     /**
      * Get the value of notification
-     */ 
+     */
     public function getNotification()
     {
         return $this->notification;
@@ -66,7 +66,7 @@ class Notificationtarget
      * Set the value of notification
      *
      * @return  self
-     */ 
+     */
     public function setNotification($notification)
     {
         $this->notification = $notification;

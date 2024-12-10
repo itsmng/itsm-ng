@@ -86,7 +86,7 @@ class Notificationtemplatetranslation
 
     /**
      * Get the value of notificationtemplate
-     */ 
+     */
     public function getNotificationtemplate()
     {
         return $this->notificationtemplate;
@@ -96,7 +96,7 @@ class Notificationtemplatetranslation
      * Set the value of notificationtemplate
      *
      * @return  self
-     */ 
+     */
     public function setNotificationtemplate($notificationtemplate)
     {
         $this->notificationtemplate = $notificationtemplate;

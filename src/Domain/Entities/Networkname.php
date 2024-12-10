@@ -157,7 +157,7 @@ class Networkname
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -167,7 +167,7 @@ class Networkname
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -177,7 +177,7 @@ class Networkname
 
     /**
      * Get the value of fqdn
-     */ 
+     */
     public function getFqdn()
     {
         return $this->fqdn;
@@ -187,7 +187,7 @@ class Networkname
      * Set the value of fqdn
      *
      * @return  self
-     */ 
+     */
     public function setFqdn($fqdn)
     {
         $this->fqdn = $fqdn;

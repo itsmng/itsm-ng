@@ -115,7 +115,7 @@ class Networkportwifi
 
     /**
      * Get the value of networkportwifi
-     */ 
+     */
     public function getNetworkportwifi()
     {
         return $this->networkportwifi;
@@ -125,7 +125,7 @@ class Networkportwifi
      * Set the value of networkportwifi
      *
      * @return  self
-     */ 
+     */
     public function setNetworkportwifi($networkportwifi)
     {
         $this->networkportwifi = $networkportwifi;
@@ -135,7 +135,7 @@ class Networkportwifi
 
     /**
      * Get the value of wifinetwork
-     */ 
+     */
     public function getWifinetwork()
     {
         return $this->wifinetwork;
@@ -145,7 +145,7 @@ class Networkportwifi
      * Set the value of wifinetwork
      *
      * @return  self
-     */ 
+     */
     public function setWifinetwork($wifinetwork)
     {
         $this->wifinetwork = $wifinetwork;
@@ -155,7 +155,7 @@ class Networkportwifi
 
     /**
      * Get the value of networkport
-     */ 
+     */
     public function getNetworkport()
     {
         return $this->networkport;
@@ -165,7 +165,7 @@ class Networkportwifi
      * Set the value of networkport
      *
      * @return  self
-     */ 
+     */
     public function setNetworkport($networkport)
     {
         $this->networkport = $networkport;

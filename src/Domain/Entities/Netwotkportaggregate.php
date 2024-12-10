@@ -63,7 +63,7 @@ class Netwotkportaggregate
 
     /**
      * Get the value of networkport
-     */ 
+     */
     public function getNetworkport()
     {
         return $this->networkport;
@@ -73,7 +73,7 @@ class Netwotkportaggregate
      * Set the value of networkport
      *
      * @return  self
-     */ 
+     */
     public function setNetworkport($networkport)
     {
         $this->networkport = $networkport;
@@ -83,7 +83,7 @@ class Netwotkportaggregate
 
     /**
      * Get the value of networkportList
-     */ 
+     */
     public function getNetworkportList()
     {
         return $this->networkportList;
@@ -93,7 +93,7 @@ class Netwotkportaggregate
      * Set the value of networkportList
      *
      * @return  self
-     */ 
+     */
     public function setNetworkportList($networkportList)
     {
         $this->networkportList = $networkportList;
