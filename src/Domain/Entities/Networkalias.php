@@ -16,17 +16,20 @@ class Networkalias
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $networknames_id;
+    #[ORM\ManyToOne(targetEntity: Networkname::class)]
+    #[ORM\JoinColumn(name: 'networknames_id', referencedColumnName: 'id', nullable: true)]
+    private ?Networkname $networkname;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $fqdns_id;
+    #[ORM\ManyToOne(targetEntity: Fqdn::class)]
+    #[ORM\JoinColumn(name: 'fqdns_id', referencedColumnName: 'id', nullable: true)]
+    private ?Fqdn $fqdn;
 
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $comment;
@@ -34,30 +37,6 @@ class Networkalias
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getNetworknamesId(): ?int
-    {
-        return $this->networknames_id;
-    }
-
-    public function setNetworknamesId(int $networknames_id): self
-    {
-        $this->networknames_id = $networknames_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -72,18 +51,6 @@ class Networkalias
         return $this;
     }
 
-    public function getFqdnsId(): ?int
-    {
-        return $this->fqdns_id;
-    }
-
-    public function setFqdnsId(int $fqdns_id): self
-    {
-        $this->fqdns_id = $fqdns_id;
-
-        return $this;
-    }
-
     public function getComment(): ?string
     {
         return $this->comment;
@@ -92,6 +59,66 @@ class Networkalias
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkname
+     */ 
+    public function getNetworkname()
+    {
+        return $this->networkname;
+    }
+
+    /**
+     * Set the value of networkname
+     *
+     * @return  self
+     */ 
+    public function setNetworkname($networkname)
+    {
+        $this->networkname = $networkname;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of fqdn
+     */ 
+    public function getFqdn()
+    {
+        return $this->fqdn;
+    }
+
+    /**
+     * Set the value of fqdn
+     *
+     * @return  self
+     */ 
+    public function setFqdn($fqdn)
+    {
+        $this->fqdn = $fqdn;
 
         return $this;
     }
