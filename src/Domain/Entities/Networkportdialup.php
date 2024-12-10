@@ -16,8 +16,9 @@ class Networkportdialup
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $networkports_id;
+    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
+    private ?Networkport $networkport;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -28,18 +29,6 @@ class Networkportdialup
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNetworkportsId(): ?int
-    {
-        return $this->networkports_id;
-    }
-
-    public function setNetworkportsId(?int $networkports_id): self
-    {
-        $this->networkports_id = $networkports_id;
-
-        return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
@@ -66,4 +55,24 @@ class Networkportdialup
         return $this;
     }
 
+
+    /**
+     * Get the value of networkport
+     */ 
+    public function getNetworkport()
+    {
+        return $this->networkport;
+    }
+
+    /**
+     * Set the value of networkport
+     *
+     * @return  self
+     */ 
+    public function setNetworkport($networkport)
+    {
+        $this->networkport = $networkport;
+
+        return $this;
+    }
 }
