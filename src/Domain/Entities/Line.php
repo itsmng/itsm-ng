@@ -20,8 +20,9 @@ class Line
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -35,23 +36,29 @@ class Line
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
     private $caller_name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $lineoperators_id;
+    #[ORM\ManyToOne(targetEntity: LineOperator::class)]
+    #[ORM\JoinColumn(name: 'lineoperators_id', referencedColumnName: 'id', nullable: true)]
+    private ?LineOperator $lineOperator;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $linetypes_id;
+    #[ORM\ManyToOne(targetEntity: LineType::class)]
+    #[ORM\JoinColumn(name: 'linetypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?LineType $lineType;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
@@ -75,18 +82,6 @@ class Line
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }
@@ -139,78 +134,6 @@ class Line
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
-
-        return $this;
-    }
-
-    public function getLineoperatorsId(): ?int
-    {
-        return $this->lineoperators_id;
-    }
-
-    public function setLineoperatorsId(int $lineoperators_id): self
-    {
-        $this->lineoperators_id = $lineoperators_id;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
-
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(int $states_id): self
-    {
-        $this->states_id = $states_id;
-
-        return $this;
-    }
-
-    public function getLinetypesId(): ?int
-    {
-        return $this->linetypes_id;
-    }
-
-    public function setLinetypesId(int $linetypes_id): self
-    {
-        $this->linetypes_id = $linetypes_id;
-
-        return $this;
-    }
-
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->date_creation;
@@ -243,6 +166,146 @@ class Line
     public function setComment(string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of lineOperator
+     */ 
+    public function getLineOperator()
+    {
+        return $this->lineOperator;
+    }
+
+    /**
+     * Set the value of lineOperator
+     *
+     * @return  self
+     */ 
+    public function setLineOperator($lineOperator)
+    {
+        $this->lineOperator = $lineOperator;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of lineType
+     */ 
+    public function getLineType()
+    {
+        return $this->lineType;
+    }
+
+    /**
+     * Set the value of lineType
+     *
+     * @return  self
+     */ 
+    public function setLineType($lineType)
+    {
+        $this->lineType = $lineType;
 
         return $this;
     }
