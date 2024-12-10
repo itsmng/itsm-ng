@@ -14,8 +14,9 @@ class Notificationtemplatetranslation
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $notificationtemplates_id;
+    #[ORM\ManyToOne(targetEntity: Notificationtemplate::class)]
+    #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Notificationtemplate $notificationtemplate;
 
     #[ORM\Column(type: 'string', length: 10, options: ['default' => ''])]
     private $language;
@@ -32,18 +33,6 @@ class Notificationtemplatetranslation
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNotificationtemplatesId(): ?int
-    {
-        return $this->notificationtemplates_id;
-    }
-
-    public function setNotificationtemplatesId(?int $notificationtemplates_id): self
-    {
-        $this->notificationtemplates_id = $notificationtemplates_id;
-
-        return $this;
     }
 
     public function getLanguage(): ?string
@@ -94,4 +83,24 @@ class Notificationtemplatetranslation
         return $this;
     }
 
+
+    /**
+     * Get the value of notificationtemplate
+     */ 
+    public function getNotificationtemplate()
+    {
+        return $this->notificationtemplate;
+    }
+
+    /**
+     * Set the value of notificationtemplate
+     *
+     * @return  self
+     */ 
+    public function setNotificationtemplate($notificationtemplate)
+    {
+        $this->notificationtemplate = $notificationtemplate;
+
+        return $this;
+    }
 }
