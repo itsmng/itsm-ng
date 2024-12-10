@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_networkports')]
@@ -28,8 +29,9 @@ class Networkport
     #[ORM\Column(type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -61,6 +63,12 @@ class Networkport
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
+    #[ORM\OneToMany(mappedBy: 'networkport1', targetEntity: NetworkportNetworkport::class)]
+    private Collection $networkportNetworkports1;
+
+    #[ORM\OneToMany(mappedBy: 'networkport2', targetEntity: NetworkportNetworkport::class)]
+    private Collection $networkportNetworkports2;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,18 +94,6 @@ class Networkport
     public function setItemtype(string $itemtype): self
     {
         $this->itemtype = $itemtype;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_Id): self
-    {
-        $this->entities_id = $entities_Id;
 
         return $this;
     }
@@ -222,4 +218,65 @@ class Networkport
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    
+    /**
+     * Get the value of networkportNetworkports1
+     */ 
+    public function getNetworkportNetworkports1()
+    {
+        return $this->networkportNetworkports1;
+    }
+
+    /**
+     * Set the value of networkportNetworkports1
+     *
+     * @return  self
+     */ 
+    public function setNetworkportNetworkports1($networkportNetworkports1)
+    {
+        $this->networkportNetworkports1 = $networkportNetworkports1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportNetworkports2
+     */ 
+    public function getNetworkportNetworkports2()
+    {
+        return $this->networkportNetworkports2;
+    }
+
+    /**
+     * Set the value of networkportNetworkports2
+     *
+     * @return  self
+     */ 
+    public function setNetworkportNetworkports2($networkportNetworkports2)
+    {
+        $this->networkportNetworkports2 = $networkportNetworkports2;
+
+        return $this;
+    }
 }
