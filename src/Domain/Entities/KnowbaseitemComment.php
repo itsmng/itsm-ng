@@ -16,8 +16,13 @@ class KnowbaseitemComment
     #[ORM\Column(type: "integer")]
     private $knowbaseitems_id;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: Knowbaseitem::class)]
+    #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Knowbaseitem $knowbaseitem;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: "string", length: 10, nullable: true)]
     private $language;
@@ -47,18 +52,6 @@ class KnowbaseitemComment
     public function setKnowbaseitemsId(int $knowbaseitems_id): self
     {
         $this->knowbaseitems_id = $knowbaseitems_id;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
 
         return $this;
     }
@@ -119,6 +112,46 @@ class KnowbaseitemComment
     public function setDateMod(\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitem
+     */ 
+    public function getKnowbaseitem()
+    {
+        return $this->knowbaseitem;
+    }
+
+    /**
+     * Set the value of knowbaseitem
+     *
+     * @return  self
+     */ 
+    public function setKnowbaseitem($knowbaseitem)
+    {
+        $this->knowbaseitem = $knowbaseitem;
 
         return $this;
     }
