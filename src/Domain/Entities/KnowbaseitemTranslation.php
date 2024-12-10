@@ -108,7 +108,7 @@ class KnowbaseitemTranslation
 
     /**
      * Get the value of knowbaseitem
-     */ 
+     */
     public function getKnowbaseitem()
     {
         return $this->knowbaseitem;
@@ -118,7 +118,7 @@ class KnowbaseitemTranslation
      * Set the value of knowbaseitem
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitem($knowbaseitem)
     {
         $this->knowbaseitem = $knowbaseitem;
@@ -128,7 +128,7 @@ class KnowbaseitemTranslation
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -138,7 +138,7 @@ class KnowbaseitemTranslation
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

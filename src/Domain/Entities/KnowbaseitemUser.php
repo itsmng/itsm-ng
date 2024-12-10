@@ -30,7 +30,7 @@ class KnowbaseitemUser
 
     /**
      * Get the value of knowbaseitem
-     */ 
+     */
     public function getKnowbaseitem()
     {
         return $this->knowbaseitem;
@@ -40,7 +40,7 @@ class KnowbaseitemUser
      * Set the value of knowbaseitem
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitem($knowbaseitem)
     {
         $this->knowbaseitem = $knowbaseitem;
@@ -50,7 +50,7 @@ class KnowbaseitemUser
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -60,7 +60,7 @@ class KnowbaseitemUser
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

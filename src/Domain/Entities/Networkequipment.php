@@ -310,7 +310,7 @@ class Networkequipment
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -320,7 +320,7 @@ class Networkequipment
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -330,7 +330,7 @@ class Networkequipment
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -340,7 +340,7 @@ class Networkequipment
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -350,7 +350,7 @@ class Networkequipment
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -360,7 +360,7 @@ class Networkequipment
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -370,7 +370,7 @@ class Networkequipment
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -380,7 +380,7 @@ class Networkequipment
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -390,7 +390,7 @@ class Networkequipment
 
     /**
      * Get the value of network
-     */ 
+     */
     public function getNetwork()
     {
         return $this->network;
@@ -400,7 +400,7 @@ class Networkequipment
      * Set the value of network
      *
      * @return  self
-     */ 
+     */
     public function setNetwork($network)
     {
         $this->network = $network;
@@ -410,7 +410,7 @@ class Networkequipment
 
     /**
      * Get the value of networkequipmenttype
-     */ 
+     */
     public function getNetworkequipmenttype()
     {
         return $this->networkequipmenttype;
@@ -420,7 +420,7 @@ class Networkequipment
      * Set the value of networkequipmenttype
      *
      * @return  self
-     */ 
+     */
     public function setNetworkequipmenttype($networkequipmenttype)
     {
         $this->networkequipmenttype = $networkequipmenttype;
@@ -430,7 +430,7 @@ class Networkequipment
 
     /**
      * Get the value of networkequipmentmodel
-     */ 
+     */
     public function getNetworkequipmentmodel()
     {
         return $this->networkequipmentmodel;
@@ -440,7 +440,7 @@ class Networkequipment
      * Set the value of networkequipmentmodel
      *
      * @return  self
-     */ 
+     */
     public function setNetworkequipmentmodel($networkequipmentmodel)
     {
         $this->networkequipmentmodel = $networkequipmentmodel;
@@ -450,7 +450,7 @@ class Networkequipment
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -460,7 +460,7 @@ class Networkequipment
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -470,7 +470,7 @@ class Networkequipment
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -480,7 +480,7 @@ class Networkequipment
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -490,7 +490,7 @@ class Networkequipment
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -500,7 +500,7 @@ class Networkequipment
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -510,7 +510,7 @@ class Networkequipment
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -520,7 +520,7 @@ class Networkequipment
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

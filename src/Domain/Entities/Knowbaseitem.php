@@ -243,7 +243,7 @@ class Knowbaseitem
 
     /**
      * Get the value of knowbaseitemProfiles
-     */ 
+     */
     public function getKnowbaseitemProfiles()
     {
         return $this->knowbaseitemProfiles;
@@ -253,7 +253,7 @@ class Knowbaseitem
      * Set the value of knowbaseitemProfiles
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitemProfiles($knowbaseitemProfiles)
     {
         $this->knowbaseitemProfiles = $knowbaseitemProfiles;
@@ -263,7 +263,7 @@ class Knowbaseitem
 
     /**
      * Get the value of knowbaseitemUsers
-     */ 
+     */
     public function getKnowbaseitemUsers()
     {
         return $this->knowbaseitemUsers;
@@ -273,7 +273,7 @@ class Knowbaseitem
      * Set the value of knowbaseitemUsers
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitemUsers($knowbaseitemUsers)
     {
         $this->knowbaseitemUsers = $knowbaseitemUsers;

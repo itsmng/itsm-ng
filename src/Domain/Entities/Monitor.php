@@ -31,7 +31,7 @@ class Monitor
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
+
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
@@ -439,7 +439,7 @@ class Monitor
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -449,7 +449,7 @@ class Monitor
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -459,7 +459,7 @@ class Monitor
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -469,7 +469,7 @@ class Monitor
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -479,7 +479,7 @@ class Monitor
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -489,7 +489,7 @@ class Monitor
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -499,7 +499,7 @@ class Monitor
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -509,7 +509,7 @@ class Monitor
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -519,7 +519,7 @@ class Monitor
 
     /**
      * Get the value of monitorType
-     */ 
+     */
     public function getMonitorType()
     {
         return $this->monitorType;
@@ -529,7 +529,7 @@ class Monitor
      * Set the value of monitorType
      *
      * @return  self
-     */ 
+     */
     public function setMonitorType($monitorType)
     {
         $this->monitorType = $monitorType;
@@ -539,7 +539,7 @@ class Monitor
 
     /**
      * Get the value of monitorModel
-     */ 
+     */
     public function getMonitorModel()
     {
         return $this->monitorModel;
@@ -549,7 +549,7 @@ class Monitor
      * Set the value of monitorModel
      *
      * @return  self
-     */ 
+     */
     public function setMonitorModel($monitorModel)
     {
         $this->monitorModel = $monitorModel;
@@ -559,7 +559,7 @@ class Monitor
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -569,7 +569,7 @@ class Monitor
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -579,7 +579,7 @@ class Monitor
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -589,7 +589,7 @@ class Monitor
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -599,7 +599,7 @@ class Monitor
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -609,7 +609,7 @@ class Monitor
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -619,7 +619,7 @@ class Monitor
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -629,7 +629,7 @@ class Monitor
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

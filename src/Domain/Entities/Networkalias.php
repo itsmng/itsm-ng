@@ -65,7 +65,7 @@ class Networkalias
 
     /**
      * Get the value of networkname
-     */ 
+     */
     public function getNetworkname()
     {
         return $this->networkname;
@@ -75,7 +75,7 @@ class Networkalias
      * Set the value of networkname
      *
      * @return  self
-     */ 
+     */
     public function setNetworkname($networkname)
     {
         $this->networkname = $networkname;
@@ -85,7 +85,7 @@ class Networkalias
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -95,7 +95,7 @@ class Networkalias
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -105,7 +105,7 @@ class Networkalias
 
     /**
      * Get the value of fqdn
-     */ 
+     */
     public function getFqdn()
     {
         return $this->fqdn;
@@ -115,7 +115,7 @@ class Networkalias
      * Set the value of fqdn
      *
      * @return  self
-     */ 
+     */
     public function setFqdn($fqdn)
     {
         $this->fqdn = $fqdn;

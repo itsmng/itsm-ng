@@ -118,7 +118,7 @@ class KnowbaseitemComment
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -128,7 +128,7 @@ class KnowbaseitemComment
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -138,7 +138,7 @@ class KnowbaseitemComment
 
     /**
      * Get the value of knowbaseitem
-     */ 
+     */
     public function getKnowbaseitem()
     {
         return $this->knowbaseitem;
@@ -148,7 +148,7 @@ class KnowbaseitemComment
      * Set the value of knowbaseitem
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitem($knowbaseitem)
     {
         $this->knowbaseitem = $knowbaseitem;

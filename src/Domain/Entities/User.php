@@ -1593,7 +1593,7 @@ class User
 
     /**
      * Get the value of knowbaseitemUsers
-     */ 
+     */
     public function getKnowbaseitemUsers()
     {
         return $this->knowbaseitemUsers;
@@ -1603,7 +1603,7 @@ class User
      * Set the value of knowbaseitemUsers
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitemUsers($knowbaseitemUsers)
     {
         $this->knowbaseitemUsers = $knowbaseitemUsers;

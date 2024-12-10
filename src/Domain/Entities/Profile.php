@@ -287,7 +287,7 @@ class Profile
 
     /**
      * Get the value of knowbaseitemProfiles
-     */ 
+     */
     public function getKnowbaseitemProfiles()
     {
         return $this->knowbaseitemProfiles;
@@ -297,7 +297,7 @@ class Profile
      * Set the value of knowbaseitemProfiles
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitemProfiles($knowbaseitemProfiles)
     {
         $this->knowbaseitemProfiles = $knowbaseitemProfiles;

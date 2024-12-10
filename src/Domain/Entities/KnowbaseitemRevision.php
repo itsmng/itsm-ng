@@ -42,7 +42,7 @@ class KnowbaseitemRevision
         return $this->id;
     }
 
-    
+
     public function getRevision(): ?int
     {
         return $this->revision;

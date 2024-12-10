@@ -172,7 +172,7 @@ class Line
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -182,7 +182,7 @@ class Line
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -192,7 +192,7 @@ class Line
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -202,7 +202,7 @@ class Line
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -212,7 +212,7 @@ class Line
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -222,7 +222,7 @@ class Line
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -232,7 +232,7 @@ class Line
 
     /**
      * Get the value of lineOperator
-     */ 
+     */
     public function getLineOperator()
     {
         return $this->lineOperator;
@@ -242,7 +242,7 @@ class Line
      * Set the value of lineOperator
      *
      * @return  self
-     */ 
+     */
     public function setLineOperator($lineOperator)
     {
         $this->lineOperator = $lineOperator;
@@ -252,7 +252,7 @@ class Line
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -262,7 +262,7 @@ class Line
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -272,7 +272,7 @@ class Line
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -282,7 +282,7 @@ class Line
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -292,7 +292,7 @@ class Line
 
     /**
      * Get the value of lineType
-     */ 
+     */
     public function getLineType()
     {
         return $this->lineType;
@@ -302,7 +302,7 @@ class Line
      * Set the value of lineType
      *
      * @return  self
-     */ 
+     */
     public function setLineType($lineType)
     {
         $this->lineType = $lineType;

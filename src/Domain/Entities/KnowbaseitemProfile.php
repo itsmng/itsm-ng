@@ -53,7 +53,7 @@ class KnowbaseitemProfile
 
     /**
      * Get the value of knowbaseitem
-     */ 
+     */
     public function getKnowbaseitem()
     {
         return $this->knowbaseitem;
@@ -63,7 +63,7 @@ class KnowbaseitemProfile
      * Set the value of knowbaseitem
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitem($knowbaseitem)
     {
         $this->knowbaseitem = $knowbaseitem;
@@ -73,7 +73,7 @@ class KnowbaseitemProfile
 
     /**
      * Get the value of profile
-     */ 
+     */
     public function getProfile()
     {
         return $this->profile;
@@ -83,7 +83,7 @@ class KnowbaseitemProfile
      * Set the value of profile
      *
      * @return  self
-     */ 
+     */
     public function setProfile($profile)
     {
         $this->profile = $profile;
@@ -93,7 +93,7 @@ class KnowbaseitemProfile
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -103,7 +103,7 @@ class KnowbaseitemProfile
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
