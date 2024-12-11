@@ -351,6 +351,9 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ReminderUser::class)]
     private Collection $reminderUsers;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RssfeedUser::class)]
+    private Collection $rssfeedUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -1675,6 +1678,26 @@ class User
     public function setReminderUsers($reminderUsers)
     {
         $this->reminderUsers = $reminderUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of rssfeedUsers
+     */ 
+    public function getRssfeedUsers()
+    {
+        return $this->rssfeedUsers;
+    }
+
+    /**
+     * Set the value of rssfeedUsers
+     *
+     * @return  self
+     */ 
+    public function setRssfeedUsers($rssfeedUsers)
+    {
+        $this->rssfeedUsers = $rssfeedUsers;
 
         return $this;
     }
