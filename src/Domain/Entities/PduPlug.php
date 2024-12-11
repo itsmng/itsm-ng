@@ -17,11 +17,13 @@ class PduPlug
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $plugs_id;
+    #[ORM\ManyToOne(targetEntity: Plug::class, inversedBy: 'pduPlugs')]
+    #[ORM\JoinColumn(name: 'plugs_id', referencedColumnName: 'id', nullable: true)]
+    private ?Plug $plug;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $pdus_id;
+    #[ORM\ManyToOne(targetEntity: Pdu::class, inversedBy: 'pduPlugs')]
+    #[ORM\JoinColumn(name: 'pdus_id', referencedColumnName: 'id', nullable: true)]
+    private ?Pdu $pdu;
 
     #[ORM\Column(type: 'integer', nullable: true, options: ['default' => 0])]
     private $number_plugs;
@@ -35,30 +37,6 @@ class PduPlug
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPlugsId(): ?int
-    {
-        return $this->plugs_id;
-    }
-
-    public function setPlugsId(int $plugs_id): self
-    {
-        $this->plugs_id = $plugs_id;
-
-        return $this;
-    }
-
-    public function getPdusId(): ?int
-    {
-        return $this->pdus_id;
-    }
-
-    public function setPdusId(int $pdus_id): self
-    {
-        $this->pdus_id = $pdus_id;
-
-        return $this;
     }
 
     public function getNumberPlugs(): ?int
@@ -93,6 +71,46 @@ class PduPlug
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of plug
+     */ 
+    public function getPlug()
+    {
+        return $this->plug;
+    }
+
+    /**
+     * Set the value of plug
+     *
+     * @return  self
+     */ 
+    public function setPlug($plug)
+    {
+        $this->plug = $plug;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pdu
+     */ 
+    public function getPdu()
+    {
+        return $this->pdu;
+    }
+
+    /**
+     * Set the value of pdu
+     *
+     * @return  self
+     */ 
+    public function setPdu($pdu)
+    {
+        $this->pdu = $pdu;
 
         return $this;
     }

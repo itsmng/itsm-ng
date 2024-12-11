@@ -5,6 +5,7 @@ namespace App\Domain\Entities;
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_pdus')]
@@ -90,6 +91,9 @@ class Pdu
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'pdu', targetEntity: PduPlug::class)]
+    private Collection $pduPlugs;
 
     public function getId(): ?int
     {
@@ -392,6 +396,26 @@ class Pdu
     public function setPdutype($pdutype)
     {
         $this->pdutype = $pdutype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pduPlugs
+     */ 
+    public function getPduPlugs()
+    {
+        return $this->pduPlugs;
+    }
+
+    /**
+     * Set the value of pduPlugs
+     *
+     * @return  self
+     */ 
+    public function setPduPlugs($pduPlugs)
+    {
+        $this->pduPlugs = $pduPlugs;
 
         return $this;
     }
