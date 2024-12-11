@@ -15,39 +15,57 @@ class ProjecttaskTicket
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'projecttaskTickets')]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $projecttasks_id;
+    #[ORM\ManyToOne(targetEntity: Projecttask::class, inversedBy: 'projecttaskTickets')]
+    #[ORM\JoinColumn(name: 'projecttasks_id', referencedColumnName: 'id', nullable: true)]
+    private ?Projecttask $projecttask;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTicketsId(): ?int
+
+    /**
+     * Get the value of ticket
+     */ 
+    public function getTicket()
     {
-        return $this->tickets_id;
+        return $this->ticket;
     }
 
-    public function setTicketsId(?int $tickets_id): self
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */ 
+    public function setTicket($ticket)
     {
-        $this->tickets_id = $tickets_id;
+        $this->ticket = $ticket;
 
         return $this;
     }
 
-    public function getProjecttasksId(): ?int
+    /**
+     * Get the value of projecttask
+     */ 
+    public function getProjecttask()
     {
-        return $this->projecttasks_id;
+        return $this->projecttask;
     }
 
-    public function setProjecttasksId(?int $projecttasks_id): self
+    /**
+     * Set the value of projecttask
+     *
+     * @return  self
+     */ 
+    public function setProjecttask($projecttask)
     {
-        $this->projecttasks_id = $projecttasks_id;
+        $this->projecttask = $projecttask;
 
         return $this;
     }
-
 }

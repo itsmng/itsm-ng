@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_projecttasks')]
@@ -113,6 +114,9 @@ class Projecttask
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $template_name;
+
+    #[ORM\OneToMany(mappedBy: 'projecttask', targetEntity: ProjecttaskTicket::class)]
+    private Collection $projecttaskTickets;
 
     public function getId(): ?int
     {
@@ -472,6 +476,26 @@ class Projecttask
     public function setProjecttasktemplate($projecttasktemplate)
     {
         $this->projecttasktemplate = $projecttasktemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of projecttaskTickets
+     */ 
+    public function getProjecttaskTickets()
+    {
+        return $this->projecttaskTickets;
+    }
+
+    /**
+     * Set the value of projecttaskTickets
+     *
+     * @return  self
+     */ 
+    public function setProjecttaskTickets($projecttaskTickets)
+    {
+        $this->projecttaskTickets = $projecttaskTickets;
 
         return $this;
     }
