@@ -342,6 +342,9 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: KnowbaseitemUser::class)]
     private Collection $knowbaseitemUsers;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ProblemUser::class)]
+    private Collection $problemUsers;
+
 
     public function getId(): ?int
     {
@@ -1607,6 +1610,26 @@ class User
     public function setKnowbaseitemUsers($knowbaseitemUsers)
     {
         $this->knowbaseitemUsers = $knowbaseitemUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemUsers
+     */ 
+    public function getProblemUsers()
+    {
+        return $this->problemUsers;
+    }
+
+    /**
+     * Set the value of problemUsers
+     *
+     * @return  self
+     */ 
+    public function setProblemUsers($problemUsers)
+    {
+        $this->problemUsers = $problemUsers;
 
         return $this;
     }

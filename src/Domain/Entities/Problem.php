@@ -125,6 +125,9 @@ class Problem
     #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ProblemTicket::class)]
     private Collection $problemTickets;
 
+    #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ProblemUser::class)]
+    private Collection $problemUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -577,6 +580,26 @@ class Problem
     public function setProblemSuppliers($problemSuppliers)
     {
         $this->problemSuppliers = $problemSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemUsers
+     */ 
+    public function getProblemUsers()
+    {
+        return $this->problemUsers;
+    }
+
+    /**
+     * Set the value of problemUsers
+     *
+     * @return  self
+     */ 
+    public function setProblemUsers($problemUsers)
+    {
+        $this->problemUsers = $problemUsers;
 
         return $this;
     }

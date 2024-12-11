@@ -15,11 +15,13 @@ class ProblemUser
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $problems_id;
+    #[ORM\ManyToOne(targetEntity: Problem::class, inversedBy: 'problemUsers')]
+    #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Problem $problem;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'problemUsers')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $type;
@@ -33,32 +35,6 @@ class ProblemUser
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProblemsId(): ?int
-    {
-        return $this->problems_id;
-    }
-
-
-    public function setProblemsId(?int $problems_id): self
-    {
-        $this->problems_id = $problems_id;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
     }
 
     public function getType(): ?int
@@ -100,4 +76,44 @@ class ProblemUser
         return $this;
     }
 
+
+    /**
+     * Get the value of problem
+     */ 
+    public function getProblem()
+    {
+        return $this->problem;
+    }
+
+    /**
+     * Set the value of problem
+     *
+     * @return  self
+     */ 
+    public function setProblem($problem)
+    {
+        $this->problem = $problem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }
