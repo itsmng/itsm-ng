@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_olalevels')]
@@ -42,6 +43,10 @@ class Olalevel
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $uuid;
 
+    #[ORM\OneToMany(mappedBy: 'olalevel', targetEntity: OlalevelTicket::class)]
+    private Collection $olalevelTickets;
+
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -155,6 +160,26 @@ class Olalevel
     public function setEntity($entity)
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of olalevelTickets
+     */ 
+    public function getOlalevelTickets()
+    {
+        return $this->olalevelTickets;
+    }
+
+    /**
+     * Set the value of olalevelTickets
+     *
+     * @return  self
+     */ 
+    public function setOlalevelTickets($olalevelTickets)
+    {
+        $this->olalevelTickets = $olalevelTickets;
 
         return $this;
     }
