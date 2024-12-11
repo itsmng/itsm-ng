@@ -89,6 +89,9 @@ class Supplier
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ProblemSupplier::class)]
     private Collection $problemSuppliers;
 
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: SupplierTicket::class)]
+    private Collection $supplierTickets;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -406,6 +409,26 @@ class Supplier
     public function setSuppliertype($suppliertype)
     {
         $this->suppliertype = $suppliertype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of supplierTickets
+     */ 
+    public function getSupplierTickets()
+    {
+        return $this->supplierTickets;
+    }
+
+    /**
+     * Set the value of supplierTickets
+     *
+     * @return  self
+     */ 
+    public function setSupplierTickets($supplierTickets)
+    {
+        $this->supplierTickets = $supplierTickets;
 
         return $this;
     }
