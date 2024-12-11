@@ -29,8 +29,9 @@ class Reminder
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -96,18 +97,6 @@ class Reminder
     public function setDate(?string $date): self
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?string
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?string $users_id): self
-    {
-        $this->users_id = $users_id;
 
         return $this;
     }
@@ -289,6 +278,26 @@ class Reminder
     public function setProfileReminders($profileReminders)
     {
         $this->profileReminders = $profileReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }
