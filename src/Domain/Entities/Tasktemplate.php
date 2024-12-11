@@ -22,8 +22,9 @@ class Tasktemplate
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -34,8 +35,9 @@ class Tasktemplate
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $content;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $taskcategories_id;
+    #[ORM\ManyToOne(targetEntity: Taskcategory::class)]
+    #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Taskcategory $taskcategory;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $actiontime;
@@ -55,27 +57,18 @@ class Tasktemplate
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_private;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_tech;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?User $userTech;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id_tech;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?Group $groupTech;
 
+    
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool
@@ -110,18 +103,6 @@ class Tasktemplate
     public function setContent(?string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function getTaskcategoriesId(): ?int
-    {
-        return $this->taskcategories_id;
-    }
-
-    public function setTaskcategoriesId(?int $taskcategories_id): self
-    {
-        $this->taskcategories_id = $taskcategories_id;
 
         return $this;
     }
@@ -198,28 +179,84 @@ class Tasktemplate
         return $this;
     }
 
-    public function getUsersIdTech(): ?int
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
     {
-        return $this->users_id_tech;
+        return $this->entity;
     }
 
-    public function setUsersIdTech(?int $users_id_tech): self
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
     {
-        $this->users_id_tech = $users_id_tech;
+        $this->entity = $entity;
 
         return $this;
     }
 
-    public function getGroupsIdTech(): ?int
+    /**
+     * Get the value of taskcategory
+     */ 
+    public function getTaskcategory()
     {
-        return $this->groups_id_tech;
+        return $this->taskcategory;
     }
 
-    public function setGroupsIdTech(?int $groups_id_tech): self
+    /**
+     * Set the value of taskcategory
+     *
+     * @return  self
+     */ 
+    public function setTaskcategory($taskcategory)
     {
-        $this->groups_id_tech = $groups_id_tech;
+        $this->taskcategory = $taskcategory;
 
         return $this;
     }
 
+    /**
+     * Get the value of userTech
+     */ 
+    public function getUserTech()
+    {
+        return $this->userTech;
+    }
+
+    /**
+     * Set the value of userTech
+     *
+     * @return  self
+     */ 
+    public function setUserTech($userTech)
+    {
+        $this->userTech = $userTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupTech
+     */ 
+    public function getGroupTech()
+    {
+        return $this->groupTech;
+    }
+
+    /**
+     * Set the value of groupTech
+     *
+     * @return  self
+     */ 
+    public function setGroupTech($groupTech)
+    {
+        $this->groupTech = $groupTech;
+
+        return $this;
+    }
 }
