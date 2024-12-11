@@ -21,9 +21,10 @@ class Sla
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
-
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
+    
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
@@ -36,8 +37,9 @@ class Sla
     #[ORM\Column(type: 'integer')]
     private $number_time;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $calendars_id;
+    #[ORM\ManyToOne(targetEntity: Calendar::class)]
+    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
+    private ?Calendar $calendar;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -51,8 +53,9 @@ class Sla
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slms_id;
+    #[ORM\ManyToOne(targetEntity: Slm::class)]
+    #[ORM\JoinColumn(name: 'slms_id', referencedColumnName: 'id', nullable: true)]
+    private ?Slm $slm;
 
     public function getId(): ?int
     {
@@ -67,18 +70,6 @@ class Sla
     public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }
@@ -131,18 +122,6 @@ class Sla
         return $this;
     }
 
-    public function getCalendarsId(): ?int
-    {
-        return $this->calendars_id;
-    }
-
-    public function setCalendarsId(int $calendars_id): self
-    {
-        $this->calendars_id = $calendars_id;
-
-        return $this;
-    }
-
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -190,15 +169,64 @@ class Sla
         return $this;
     }
 
-    public function getslmsId(): ?\DateTimeInterface
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
     {
-        return $this->slms_id;
+        return $this->entity;
     }
 
-    public function setslmsId(?\DateTimeInterface $slms_id): self
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
     {
-        $this->slms_id = $slms_id;
+        $this->entity = $entity;
+
         return $this;
     }
 
+    /**
+     * Get the value of calendar
+     */ 
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * Set the value of calendar
+     *
+     * @return  self
+     */ 
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slm
+     */ 
+    public function getSlm()
+    {
+        return $this->slm;
+    }
+
+    /**
+     * Set the value of slm
+     *
+     * @return  self
+     */ 
+    public function setSlm($slm)
+    {
+        $this->slm = $slm;
+
+        return $this;
+    }
 }
