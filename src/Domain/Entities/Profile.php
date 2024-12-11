@@ -75,6 +75,9 @@ class Profile
     #[ORM\OneToMany(mappedBy: 'profile', targetEntity: KnowbaseitemProfile::class)]
     private Collection $knowbaseitemProfiles;
 
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileReminder::class)]
+    private Collection $profileReminders;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -325,6 +328,26 @@ class Profile
     public function setProblemtemplate($problemtemplate)
     {
         $this->problemtemplate = $problemtemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileReminders
+     */ 
+    public function getProfileReminders()
+    {
+        return $this->profileReminders;
+    }
+
+    /**
+     * Set the value of profileReminders
+     *
+     * @return  self
+     */ 
+    public function setProfileReminders($profileReminders)
+    {
+        $this->profileReminders = $profileReminders;
 
         return $this;
     }
