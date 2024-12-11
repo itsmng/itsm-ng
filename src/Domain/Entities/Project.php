@@ -43,20 +43,24 @@ class Project
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $priority;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $projects_id;
+    #[ORM\ManyToOne(targetEntity: Project::class)]
+    #[ORM\JoinColumn(name: 'projects_id', referencedColumnName: 'id', nullable: true)]
+    private ?Project $project;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $projectstates_id;
+    #[ORM\ManyToOne(targetEntity: Projectstate::class)]
+    #[ORM\JoinColumn(name: 'projectstates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Projectstate $projectstate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $projecttypes_id;
+    #[ORM\ManyToOne(targetEntity: Projecttype::class)]
+    #[ORM\JoinColumn(name: 'projecttypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Projecttype $projecttype;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date;
@@ -65,11 +69,13 @@ class Project
     #[ORM\Version]
     private $date_mod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $plan_start_date;
@@ -154,18 +160,6 @@ class Project
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -174,42 +168,6 @@ class Project
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getProjectsId(): ?int
-    {
-        return $this->projects_id;
-    }
-
-    public function setProjectsId(?int $projects_id): self
-    {
-        $this->projects_id = $projects_id;
-
-        return $this;
-    }
-
-    public function getProjectstatesId(): ?int
-    {
-        return $this->projectstates_id;
-    }
-
-    public function setProjectstatesId(?int $projectstates_id): self
-    {
-        $this->projectstates_id = $projectstates_id;
-
-        return $this;
-    }
-
-    public function getProjecttypesId(): ?int
-    {
-        return $this->projecttypes_id;
-    }
-
-    public function setProjecttypesId(?int $projecttypes_id): self
-    {
-        $this->projecttypes_id = $projecttypes_id;
 
         return $this;
     }
@@ -234,30 +192,6 @@ class Project
     public function setDateMod(?\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(?int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
 
         return $this;
     }
@@ -430,4 +364,124 @@ class Project
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of project
+     */ 
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Set the value of project
+     *
+     * @return  self
+     */ 
+    public function setProject($project)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of projectstate
+     */ 
+    public function getProjectstate()
+    {
+        return $this->projectstate;
+    }
+
+    /**
+     * Set the value of projectstate
+     *
+     * @return  self
+     */ 
+    public function setProjectstate($projectstate)
+    {
+        $this->projectstate = $projectstate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of projecttype
+     */ 
+    public function getProjecttype()
+    {
+        return $this->projecttype;
+    }
+
+    /**
+     * Set the value of projecttype
+     *
+     * @return  self
+     */ 
+    public function setProjecttype($projecttype)
+    {
+        $this->projecttype = $projecttype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
 }
