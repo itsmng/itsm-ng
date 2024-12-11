@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_savedsearches')]
@@ -62,6 +63,9 @@ class Savedsearch
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $counter;
+
+    #[ORM\OneToMany(mappedBy: 'savedsearch', targetEntity: SavedsearchAlert::class)]
+    private Collection $savedsearchAlerts;
 
     public function getId(): ?int
     {
@@ -237,6 +241,26 @@ class Savedsearch
     public function setEntity($entity)
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of savedsearchAlerts
+     */ 
+    public function getSavedsearchAlerts()
+    {
+        return $this->savedsearchAlerts;
+    }
+
+    /**
+     * Set the value of savedsearchAlerts
+     *
+     * @return  self
+     */ 
+    public function setSavedsearchAlerts($savedsearchAlerts)
+    {
+        $this->savedsearchAlerts = $savedsearchAlerts;
 
         return $this;
     }

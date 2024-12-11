@@ -18,8 +18,9 @@ class SavedsearchAlert
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $savedsearches_id;
+    #[ORM\ManyToOne(targetEntity: Savedsearch::class, inversedBy: 'savedsearchAlerts')]
+    #[ORM\JoinColumn(name: 'savedsearches_id', referencedColumnName: 'id', nullable: true)]
+    private ?Savedsearch $savedsearch;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -42,18 +43,6 @@ class SavedsearchAlert
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getSavedsearchesId(): ?int
-    {
-        return $this->savedsearches_id;
-    }
-
-    public function setSavedsearchesId(int $savedsearches_id): self
-    {
-        $this->savedsearches_id = $savedsearches_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -128,4 +117,24 @@ class SavedsearchAlert
         return $this;
     }
 
+
+    /**
+     * Get the value of savedsearch
+     */ 
+    public function getSavedsearch()
+    {
+        return $this->savedsearch;
+    }
+
+    /**
+     * Set the value of savedsearch
+     *
+     * @return  self
+     */ 
+    public function setSavedsearch($savedsearch)
+    {
+        $this->savedsearch = $savedsearch;
+
+        return $this;
+    }
 }
