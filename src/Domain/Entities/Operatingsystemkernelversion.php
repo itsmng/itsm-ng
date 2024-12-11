@@ -87,7 +87,7 @@ class Operatingsystemkernelversion
 
     /**
      * Get the value of operatingsystemkernel
-     */ 
+     */
     public function getOperatingsystemkernel()
     {
         return $this->operatingsystemkernel;
@@ -97,7 +97,7 @@ class Operatingsystemkernelversion
      * Set the value of operatingsystemkernel
      *
      * @return  self
-     */ 
+     */
     public function setOperatingsystemkernel($operatingsystemkernel)
     {
         $this->operatingsystemkernel = $operatingsystemkernel;

@@ -704,7 +704,7 @@ class Ticket
 
     /**
      * Get the value of olalevelTickets
-     */ 
+     */
     public function getOlalevelTickets()
     {
         return $this->olalevelTickets;
@@ -714,7 +714,7 @@ class Ticket
      * Set the value of olalevelTickets
      *
      * @return  self
-     */ 
+     */
     public function setOlalevelTickets($olalevelTickets)
     {
         $this->olalevelTickets = $olalevelTickets;
@@ -724,7 +724,7 @@ class Ticket
 
     /**
      * Get the value of problemTickets
-     */ 
+     */
     public function getProblemTickets()
     {
         return $this->problemTickets;
@@ -734,7 +734,7 @@ class Ticket
      * Set the value of problemTickets
      *
      * @return  self
-     */ 
+     */
     public function setProblemTickets($problemTickets)
     {
         $this->problemTickets = $problemTickets;

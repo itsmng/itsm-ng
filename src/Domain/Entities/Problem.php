@@ -37,7 +37,7 @@ class Problem
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
@@ -463,7 +463,7 @@ class Problem
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -473,7 +473,7 @@ class Problem
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -483,7 +483,7 @@ class Problem
 
     /**
      * Get the value of userRecipient
-     */ 
+     */
     public function getUserRecipient()
     {
         return $this->userRecipient;
@@ -493,7 +493,7 @@ class Problem
      * Set the value of userRecipient
      *
      * @return  self
-     */ 
+     */
     public function setUserRecipient($userRecipient)
     {
         $this->userRecipient = $userRecipient;
@@ -503,7 +503,7 @@ class Problem
 
     /**
      * Get the value of userLastupdater
-     */ 
+     */
     public function getUserLastupdater()
     {
         return $this->userLastupdater;
@@ -513,7 +513,7 @@ class Problem
      * Set the value of userLastupdater
      *
      * @return  self
-     */ 
+     */
     public function setUserLastupdater($userLastupdater)
     {
         $this->userLastupdater = $userLastupdater;
@@ -523,7 +523,7 @@ class Problem
 
     /**
      * Get the value of itilcategory
-     */ 
+     */
     public function getItilcategory()
     {
         return $this->itilcategory;
@@ -533,7 +533,7 @@ class Problem
      * Set the value of itilcategory
      *
      * @return  self
-     */ 
+     */
     public function setItilcategory($itilcategory)
     {
         $this->itilcategory = $itilcategory;
@@ -541,12 +541,12 @@ class Problem
         return $this;
     }
 
-      
-    
+
+
 
     /**
      * Get the value of problemTickets
-     */ 
+     */
     public function getProblemTickets()
     {
         return $this->problemTickets;
@@ -556,7 +556,7 @@ class Problem
      * Set the value of problemTickets
      *
      * @return  self
-     */ 
+     */
     public function setProblemTickets($problemTickets)
     {
         $this->problemTickets = $problemTickets;
@@ -566,7 +566,7 @@ class Problem
 
     /**
      * Get the value of problemSuppliers
-     */ 
+     */
     public function getProblemSuppliers()
     {
         return $this->problemSuppliers;
@@ -576,7 +576,7 @@ class Problem
      * Set the value of problemSuppliers
      *
      * @return  self
-     */ 
+     */
     public function setProblemSuppliers($problemSuppliers)
     {
         $this->problemSuppliers = $problemSuppliers;
@@ -586,7 +586,7 @@ class Problem
 
     /**
      * Get the value of problemUsers
-     */ 
+     */
     public function getProblemUsers()
     {
         return $this->problemUsers;
@@ -596,7 +596,7 @@ class Problem
      * Set the value of problemUsers
      *
      * @return  self
-     */ 
+     */
     public function setProblemUsers($problemUsers)
     {
         $this->problemUsers = $problemUsers;

@@ -31,7 +31,7 @@ class ProblemTicket
 
     /**
      * Get the value of ticket
-     */ 
+     */
     public function getTicket()
     {
         return $this->ticket;
@@ -41,7 +41,7 @@ class ProblemTicket
      * Set the value of ticket
      *
      * @return  self
-     */ 
+     */
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
@@ -51,7 +51,7 @@ class ProblemTicket
 
     /**
      * Get the value of problem
-     */ 
+     */
     public function getProblem()
     {
         return $this->problem;
@@ -61,7 +61,7 @@ class ProblemTicket
      * Set the value of problem
      *
      * @return  self
-     */ 
+     */
     public function setProblem($problem)
     {
         $this->problem = $problem;

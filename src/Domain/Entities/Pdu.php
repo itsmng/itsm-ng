@@ -29,7 +29,7 @@ class Pdu
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
-    
+
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
@@ -246,7 +246,7 @@ class Pdu
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -256,7 +256,7 @@ class Pdu
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -266,7 +266,7 @@ class Pdu
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -276,7 +276,7 @@ class Pdu
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -286,7 +286,7 @@ class Pdu
 
     /**
      * Get the value of pdumodel
-     */ 
+     */
     public function getPdumodel()
     {
         return $this->pdumodel;
@@ -296,7 +296,7 @@ class Pdu
      * Set the value of pdumodel
      *
      * @return  self
-     */ 
+     */
     public function setPdumodel($pdumodel)
     {
         $this->pdumodel = $pdumodel;
@@ -306,7 +306,7 @@ class Pdu
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -316,7 +316,7 @@ class Pdu
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -326,7 +326,7 @@ class Pdu
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -336,7 +336,7 @@ class Pdu
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -346,7 +346,7 @@ class Pdu
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -356,7 +356,7 @@ class Pdu
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -366,7 +366,7 @@ class Pdu
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -376,7 +376,7 @@ class Pdu
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -386,7 +386,7 @@ class Pdu
 
     /**
      * Get the value of pdutype
-     */ 
+     */
     public function getPdutype()
     {
         return $this->pdutype;
@@ -396,7 +396,7 @@ class Pdu
      * Set the value of pdutype
      *
      * @return  self
-     */ 
+     */
     public function setPdutype($pdutype)
     {
         $this->pdutype = $pdutype;
@@ -406,7 +406,7 @@ class Pdu
 
     /**
      * Get the value of pduPlugs
-     */ 
+     */
     public function getPduPlugs()
     {
         return $this->pduPlugs;
@@ -416,7 +416,7 @@ class Pdu
      * Set the value of pduPlugs
      *
      * @return  self
-     */ 
+     */
     public function setPduPlugs($pduPlugs)
     {
         $this->pduPlugs = $pduPlugs;
@@ -426,7 +426,7 @@ class Pdu
 
     /**
      * Get the value of pduRacks
-     */ 
+     */
     public function getPduRacks()
     {
         return $this->pduRacks;
@@ -436,7 +436,7 @@ class Pdu
      * Set the value of pduRacks
      *
      * @return  self
-     */ 
+     */
     public function setPduRacks($pduRacks)
     {
         $this->pduRacks = $pduRacks;

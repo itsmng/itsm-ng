@@ -37,7 +37,7 @@ class Printer
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
-    
+
     #[ORM\Column(type: 'boolean', options:['default' => 0])]
     private $is_recursive;
 
@@ -415,7 +415,7 @@ class Printer
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -425,7 +425,7 @@ class Printer
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -435,7 +435,7 @@ class Printer
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -445,7 +445,7 @@ class Printer
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -455,7 +455,7 @@ class Printer
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -465,7 +465,7 @@ class Printer
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -475,7 +475,7 @@ class Printer
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -485,7 +485,7 @@ class Printer
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -495,7 +495,7 @@ class Printer
 
     /**
      * Get the value of network
-     */ 
+     */
     public function getNetwork()
     {
         return $this->network;
@@ -505,7 +505,7 @@ class Printer
      * Set the value of network
      *
      * @return  self
-     */ 
+     */
     public function setNetwork($network)
     {
         $this->network = $network;
@@ -515,7 +515,7 @@ class Printer
 
     /**
      * Get the value of printertype
-     */ 
+     */
     public function getPrintertype()
     {
         return $this->printertype;
@@ -525,7 +525,7 @@ class Printer
      * Set the value of printertype
      *
      * @return  self
-     */ 
+     */
     public function setPrintertype($printertype)
     {
         $this->printertype = $printertype;
@@ -535,7 +535,7 @@ class Printer
 
     /**
      * Get the value of printermodel
-     */ 
+     */
     public function getPrintermodel()
     {
         return $this->printermodel;
@@ -545,7 +545,7 @@ class Printer
      * Set the value of printermodel
      *
      * @return  self
-     */ 
+     */
     public function setPrintermodel($printermodel)
     {
         $this->printermodel = $printermodel;
@@ -555,7 +555,7 @@ class Printer
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -565,7 +565,7 @@ class Printer
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -575,7 +575,7 @@ class Printer
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -585,7 +585,7 @@ class Printer
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -595,7 +595,7 @@ class Printer
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -605,7 +605,7 @@ class Printer
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -615,7 +615,7 @@ class Printer
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -625,7 +625,7 @@ class Printer
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

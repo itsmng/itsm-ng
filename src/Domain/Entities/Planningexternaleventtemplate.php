@@ -21,7 +21,7 @@ class Planningexternaleventtemplate
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
@@ -183,7 +183,7 @@ class Planningexternaleventtemplate
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -193,7 +193,7 @@ class Planningexternaleventtemplate
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -203,7 +203,7 @@ class Planningexternaleventtemplate
 
     /**
      * Get the value of planningeventcategory
-     */ 
+     */
     public function getPlanningeventcategory()
     {
         return $this->planningeventcategory;
@@ -213,7 +213,7 @@ class Planningexternaleventtemplate
      * Set the value of planningeventcategory
      *
      * @return  self
-     */ 
+     */
     public function setPlanningeventcategory($planningeventcategory)
     {
         $this->planningeventcategory = $planningeventcategory;

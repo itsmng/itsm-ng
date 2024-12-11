@@ -106,7 +106,7 @@ class PduRack
 
     /**
      * Get the value of rack
-     */ 
+     */
     public function getRack()
     {
         return $this->rack;
@@ -116,7 +116,7 @@ class PduRack
      * Set the value of rack
      *
      * @return  self
-     */ 
+     */
     public function setRack($rack)
     {
         $this->rack = $rack;
@@ -126,7 +126,7 @@ class PduRack
 
     /**
      * Get the value of pdu
-     */ 
+     */
     public function getPdu()
     {
         return $this->pdu;
@@ -136,7 +136,7 @@ class PduRack
      * Set the value of pdu
      *
      * @return  self
-     */ 
+     */
     public function setPdu($pdu)
     {
         $this->pdu = $pdu;

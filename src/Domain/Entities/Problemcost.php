@@ -155,7 +155,7 @@ class Problemcost
 
     /**
      * Get the value of problem
-     */ 
+     */
     public function getProblem()
     {
         return $this->problem;
@@ -165,7 +165,7 @@ class Problemcost
      * Set the value of problem
      *
      * @return  self
-     */ 
+     */
     public function setProblem($problem)
     {
         $this->problem = $problem;
@@ -175,7 +175,7 @@ class Problemcost
 
     /**
      * Get the value of budget
-     */ 
+     */
     public function getBudget()
     {
         return $this->budget;
@@ -185,7 +185,7 @@ class Problemcost
      * Set the value of budget
      *
      * @return  self
-     */ 
+     */
     public function setBudget($budget)
     {
         $this->budget = $budget;
@@ -195,7 +195,7 @@ class Problemcost
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -205,7 +205,7 @@ class Problemcost
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

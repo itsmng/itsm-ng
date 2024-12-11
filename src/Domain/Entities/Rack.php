@@ -472,7 +472,7 @@ class Rack
 
     /**
      * Get the value of pduRacks
-     */ 
+     */
     public function getPduRacks()
     {
         return $this->pduRacks;
@@ -482,7 +482,7 @@ class Rack
      * Set the value of pduRacks
      *
      * @return  self
-     */ 
+     */
     public function setPduRacks($pduRacks)
     {
         $this->pduRacks = $pduRacks;

@@ -77,7 +77,7 @@ class PduPlug
 
     /**
      * Get the value of plug
-     */ 
+     */
     public function getPlug()
     {
         return $this->plug;
@@ -87,7 +87,7 @@ class PduPlug
      * Set the value of plug
      *
      * @return  self
-     */ 
+     */
     public function setPlug($plug)
     {
         $this->plug = $plug;
@@ -97,7 +97,7 @@ class PduPlug
 
     /**
      * Get the value of pdu
-     */ 
+     */
     public function getPdu()
     {
         return $this->pdu;
@@ -107,7 +107,7 @@ class PduPlug
      * Set the value of pdu
      *
      * @return  self
-     */ 
+     */
     public function setPdu($pdu)
     {
         $this->pdu = $pdu;

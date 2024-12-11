@@ -381,7 +381,7 @@ class Phone
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -391,7 +391,7 @@ class Phone
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -401,7 +401,7 @@ class Phone
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -411,7 +411,7 @@ class Phone
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -421,7 +421,7 @@ class Phone
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -431,7 +431,7 @@ class Phone
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -441,7 +441,7 @@ class Phone
 
     /**
      * Get the value of phonetype
-     */ 
+     */
     public function getPhonetype()
     {
         return $this->phonetype;
@@ -451,7 +451,7 @@ class Phone
      * Set the value of phonetype
      *
      * @return  self
-     */ 
+     */
     public function setPhonetype($phonetype)
     {
         $this->phonetype = $phonetype;
@@ -461,7 +461,7 @@ class Phone
 
     /**
      * Get the value of phonemodel
-     */ 
+     */
     public function getPhonemodel()
     {
         return $this->phonemodel;
@@ -471,7 +471,7 @@ class Phone
      * Set the value of phonemodel
      *
      * @return  self
-     */ 
+     */
     public function setPhonemodel($phonemodel)
     {
         $this->phonemodel = $phonemodel;
@@ -481,7 +481,7 @@ class Phone
 
     /**
      * Get the value of phonepowersupply
-     */ 
+     */
     public function getPhonepowersupply()
     {
         return $this->phonepowersupply;
@@ -491,7 +491,7 @@ class Phone
      * Set the value of phonepowersupply
      *
      * @return  self
-     */ 
+     */
     public function setPhonepowersupply($phonepowersupply)
     {
         $this->phonepowersupply = $phonepowersupply;
@@ -501,7 +501,7 @@ class Phone
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -511,7 +511,7 @@ class Phone
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -521,7 +521,7 @@ class Phone
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -531,7 +531,7 @@ class Phone
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -541,7 +541,7 @@ class Phone
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -551,7 +551,7 @@ class Phone
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -561,7 +561,7 @@ class Phone
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -571,7 +571,7 @@ class Phone
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

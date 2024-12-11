@@ -257,7 +257,7 @@ class Planningexternalevent
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -267,7 +267,7 @@ class Planningexternalevent
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -277,7 +277,7 @@ class Planningexternalevent
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -287,7 +287,7 @@ class Planningexternalevent
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -297,7 +297,7 @@ class Planningexternalevent
 
     /**
      * Get the value of userGuest
-     */ 
+     */
     public function getUserGuest()
     {
         return $this->userGuest;
@@ -307,7 +307,7 @@ class Planningexternalevent
      * Set the value of userGuest
      *
      * @return  self
-     */ 
+     */
     public function setUserGuest($userGuest)
     {
         $this->userGuest = $userGuest;
@@ -317,7 +317,7 @@ class Planningexternalevent
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -327,7 +327,7 @@ class Planningexternalevent
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -337,7 +337,7 @@ class Planningexternalevent
 
     /**
      * Get the value of planningeventcategory
-     */ 
+     */
     public function getPlanningeventcategory()
     {
         return $this->planningeventcategory;
@@ -347,7 +347,7 @@ class Planningexternalevent
      * Set the value of planningeventcategory
      *
      * @return  self
-     */ 
+     */
     public function setPlanningeventcategory($planningeventcategory)
     {
         $this->planningeventcategory = $planningeventcategory;

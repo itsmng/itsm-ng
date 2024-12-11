@@ -72,7 +72,7 @@ class Olalevelcriteria
 
     /**
      * Get the value of olalevel
-     */ 
+     */
     public function getOlalevel()
     {
         return $this->olalevel;
@@ -82,7 +82,7 @@ class Olalevelcriteria
      * Set the value of olalevel
      *
      * @return  self
-     */ 
+     */
     public function setOlalevel($olalevel)
     {
         $this->olalevel = $olalevel;

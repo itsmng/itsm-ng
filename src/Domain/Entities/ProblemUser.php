@@ -79,7 +79,7 @@ class ProblemUser
 
     /**
      * Get the value of problem
-     */ 
+     */
     public function getProblem()
     {
         return $this->problem;
@@ -89,7 +89,7 @@ class ProblemUser
      * Set the value of problem
      *
      * @return  self
-     */ 
+     */
     public function setProblem($problem)
     {
         $this->problem = $problem;
@@ -99,7 +99,7 @@ class ProblemUser
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -109,7 +109,7 @@ class ProblemUser
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

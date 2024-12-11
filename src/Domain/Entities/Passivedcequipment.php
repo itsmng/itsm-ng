@@ -216,7 +216,7 @@ class Passivedcequipment
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -226,7 +226,7 @@ class Passivedcequipment
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -236,7 +236,7 @@ class Passivedcequipment
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -246,7 +246,7 @@ class Passivedcequipment
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -256,7 +256,7 @@ class Passivedcequipment
 
     /**
      * Get the value of passivedcequipmentmodel
-     */ 
+     */
     public function getPassivedcequipmentmodel()
     {
         return $this->passivedcequipmentmodel;
@@ -266,7 +266,7 @@ class Passivedcequipment
      * Set the value of passivedcequipmentmodel
      *
      * @return  self
-     */ 
+     */
     public function setPassivedcequipmentmodel($passivedcequipmentmodel)
     {
         $this->passivedcequipmentmodel = $passivedcequipmentmodel;
@@ -276,7 +276,7 @@ class Passivedcequipment
 
     /**
      * Get the value of passivedcequipmenttype
-     */ 
+     */
     public function getPassivedcequipmenttype()
     {
         return $this->passivedcequipmenttype;
@@ -286,7 +286,7 @@ class Passivedcequipment
      * Set the value of passivedcequipmenttype
      *
      * @return  self
-     */ 
+     */
     public function setPassivedcequipmenttype($passivedcequipmenttype)
     {
         $this->passivedcequipmenttype = $passivedcequipmenttype;
@@ -296,7 +296,7 @@ class Passivedcequipment
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -306,7 +306,7 @@ class Passivedcequipment
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -316,7 +316,7 @@ class Passivedcequipment
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -326,7 +326,7 @@ class Passivedcequipment
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -336,7 +336,7 @@ class Passivedcequipment
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -346,7 +346,7 @@ class Passivedcequipment
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -356,7 +356,7 @@ class Passivedcequipment
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -366,7 +366,7 @@ class Passivedcequipment
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;

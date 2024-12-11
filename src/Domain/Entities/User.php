@@ -1616,7 +1616,7 @@ class User
 
     /**
      * Get the value of problemUsers
-     */ 
+     */
     public function getProblemUsers()
     {
         return $this->problemUsers;
@@ -1626,7 +1626,7 @@ class User
      * Set the value of problemUsers
      *
      * @return  self
-     */ 
+     */
     public function setProblemUsers($problemUsers)
     {
         $this->problemUsers = $problemUsers;

@@ -43,7 +43,7 @@ class Problemtemplatemandatoryfield
 
     /**
      * Get the value of problemtemplate
-     */ 
+     */
     public function getProblemtemplate()
     {
         return $this->problemtemplate;
@@ -53,7 +53,7 @@ class Problemtemplatemandatoryfield
      * Set the value of problemtemplate
      *
      * @return  self
-     */ 
+     */
     public function setProblemtemplate($problemtemplate)
     {
         $this->problemtemplate = $problemtemplate;

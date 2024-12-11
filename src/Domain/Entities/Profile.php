@@ -271,7 +271,7 @@ class Profile
 
     /**
      * Get the value of tickettemplate
-     */ 
+     */
     public function getTickettemplate()
     {
         return $this->tickettemplate;
@@ -281,7 +281,7 @@ class Profile
      * Set the value of tickettemplate
      *
      * @return  self
-     */ 
+     */
     public function setTickettemplate($tickettemplate)
     {
         $this->tickettemplate = $tickettemplate;
@@ -291,7 +291,7 @@ class Profile
 
     /**
      * Get the value of changetemplate
-     */ 
+     */
     public function getChangetemplate()
     {
         return $this->changetemplate;
@@ -301,7 +301,7 @@ class Profile
      * Set the value of changetemplate
      *
      * @return  self
-     */ 
+     */
     public function setChangetemplate($changetemplate)
     {
         $this->changetemplate = $changetemplate;
@@ -311,7 +311,7 @@ class Profile
 
     /**
      * Get the value of problemtemplate
-     */ 
+     */
     public function getProblemtemplate()
     {
         return $this->problemtemplate;
@@ -321,7 +321,7 @@ class Profile
      * Set the value of problemtemplate
      *
      * @return  self
-     */ 
+     */
     public function setProblemtemplate($problemtemplate)
     {
         $this->problemtemplate = $problemtemplate;

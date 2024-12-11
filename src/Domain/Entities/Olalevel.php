@@ -46,7 +46,7 @@ class Olalevel
     #[ORM\OneToMany(mappedBy: 'olalevel', targetEntity: OlalevelTicket::class)]
     private Collection $olalevelTickets;
 
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -126,7 +126,7 @@ class Olalevel
 
     /**
      * Get the value of ola
-     */ 
+     */
     public function getOla()
     {
         return $this->ola;
@@ -136,7 +136,7 @@ class Olalevel
      * Set the value of ola
      *
      * @return  self
-     */ 
+     */
     public function setOla($ola)
     {
         $this->ola = $ola;
@@ -146,7 +146,7 @@ class Olalevel
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -156,7 +156,7 @@ class Olalevel
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -166,7 +166,7 @@ class Olalevel
 
     /**
      * Get the value of olalevelTickets
-     */ 
+     */
     public function getOlalevelTickets()
     {
         return $this->olalevelTickets;
@@ -176,7 +176,7 @@ class Olalevel
      * Set the value of olalevelTickets
      *
      * @return  self
-     */ 
+     */
     public function setOlalevelTickets($olalevelTickets)
     {
         $this->olalevelTickets = $olalevelTickets;

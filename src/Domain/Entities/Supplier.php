@@ -374,7 +374,7 @@ class Supplier
 
     /**
      * Get the value of problemSuppliers
-     */ 
+     */
     public function getProblemSuppliers()
     {
         return $this->problemSuppliers;
@@ -384,7 +384,7 @@ class Supplier
      * Set the value of problemSuppliers
      *
      * @return  self
-     */ 
+     */
     public function setProblemSuppliers($problemSuppliers)
     {
         $this->problemSuppliers = $problemSuppliers;

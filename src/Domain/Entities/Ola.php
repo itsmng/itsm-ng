@@ -175,7 +175,7 @@ class Ola
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -185,7 +185,7 @@ class Ola
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -195,7 +195,7 @@ class Ola
 
     /**
      * Get the value of calendar
-     */ 
+     */
     public function getCalendar()
     {
         return $this->calendar;
@@ -205,7 +205,7 @@ class Ola
      * Set the value of calendar
      *
      * @return  self
-     */ 
+     */
     public function setCalendar($calendar)
     {
         $this->calendar = $calendar;
@@ -215,7 +215,7 @@ class Ola
 
     /**
      * Get the value of slm
-     */ 
+     */
     public function getSlm()
     {
         return $this->slm;
@@ -225,7 +225,7 @@ class Ola
      * Set the value of slm
      *
      * @return  self
-     */ 
+     */
     public function setSlm($slm)
     {
         $this->slm = $slm;

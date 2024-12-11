@@ -324,7 +324,7 @@ class Peripheral
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -334,7 +334,7 @@ class Peripheral
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -344,7 +344,7 @@ class Peripheral
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -354,7 +354,7 @@ class Peripheral
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -364,7 +364,7 @@ class Peripheral
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -374,7 +374,7 @@ class Peripheral
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -384,7 +384,7 @@ class Peripheral
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -394,7 +394,7 @@ class Peripheral
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -404,7 +404,7 @@ class Peripheral
 
     /**
      * Get the value of peripheraltype
-     */ 
+     */
     public function getPeripheraltype()
     {
         return $this->peripheraltype;
@@ -414,7 +414,7 @@ class Peripheral
      * Set the value of peripheraltype
      *
      * @return  self
-     */ 
+     */
     public function setPeripheraltype($peripheraltype)
     {
         $this->peripheraltype = $peripheraltype;
@@ -424,7 +424,7 @@ class Peripheral
 
     /**
      * Get the value of peripheralmodel
-     */ 
+     */
     public function getPeripheralmodel()
     {
         return $this->peripheralmodel;
@@ -434,7 +434,7 @@ class Peripheral
      * Set the value of peripheralmodel
      *
      * @return  self
-     */ 
+     */
     public function setPeripheralmodel($peripheralmodel)
     {
         $this->peripheralmodel = $peripheralmodel;
@@ -444,7 +444,7 @@ class Peripheral
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -454,7 +454,7 @@ class Peripheral
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -464,7 +464,7 @@ class Peripheral
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -474,7 +474,7 @@ class Peripheral
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -484,7 +484,7 @@ class Peripheral
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -494,7 +494,7 @@ class Peripheral
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -504,7 +504,7 @@ class Peripheral
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -514,7 +514,7 @@ class Peripheral
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

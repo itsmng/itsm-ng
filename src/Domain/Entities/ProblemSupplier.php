@@ -79,7 +79,7 @@ class ProblemSupplier
 
     /**
      * Get the value of problem
-     */ 
+     */
     public function getProblem()
     {
         return $this->problem;
@@ -89,7 +89,7 @@ class ProblemSupplier
      * Set the value of problem
      *
      * @return  self
-     */ 
+     */
     public function setProblem($problem)
     {
         $this->problem = $problem;
@@ -99,7 +99,7 @@ class ProblemSupplier
 
     /**
      * Get the value of supplier
-     */ 
+     */
     public function getSupplier()
     {
         return $this->supplier;
@@ -109,7 +109,7 @@ class ProblemSupplier
      * Set the value of supplier
      *
      * @return  self
-     */ 
+     */
     public function setSupplier($supplier)
     {
         $this->supplier = $supplier;
