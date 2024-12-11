@@ -173,6 +173,9 @@ class Ticket
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: OlalevelTicket::class)]
     private Collection $olalevelTickets;
 
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ProblemTicket::class)]
+    private Collection $problemTickets;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -715,6 +718,26 @@ class Ticket
     public function setOlalevelTickets($olalevelTickets)
     {
         $this->olalevelTickets = $olalevelTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemTickets
+     */ 
+    public function getProblemTickets()
+    {
+        return $this->problemTickets;
+    }
+
+    /**
+     * Set the value of problemTickets
+     *
+     * @return  self
+     */ 
+    public function setProblemTickets($problemTickets)
+    {
+        $this->problemTickets = $problemTickets;
 
         return $this;
     }
