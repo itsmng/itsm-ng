@@ -15,11 +15,16 @@ class PduRack
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $racks_id;
+    #[ORM\ManyToOne(targetEntity: Rack::class, inversedBy: 'pduRacks')]
+    #[ORM\JoinColumn(name: 'racks_id', referencedColumnName: 'id', nullable: true)]
+    private ?Rack $rack;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $pdus_id;
+
+    #[ORM\ManyToOne(targetEntity: Pdu::class, inversedBy: 'pduRacks')]
+    #[ORM\JoinColumn(name: 'pdus_id', referencedColumnName: 'id', nullable: true)]
+    private ?Pdu $pdu;
 
     #[ORM\Column(type: 'integer', nullable: true, options: ['default' => 0])]
     private $side;
@@ -39,18 +44,6 @@ class PduRack
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRacksId(): ?int
-    {
-        return $this->racks_id;
-    }
-
-    public function setRacksId(?int $racks_id): self
-    {
-        $this->racks_id = $racks_id;
-
-        return $this;
     }
 
     public function getPdusId(): ?int
@@ -125,4 +118,24 @@ class PduRack
         return $this;
     }
 
+
+    /**
+     * Get the value of rack
+     */ 
+    public function getRack()
+    {
+        return $this->rack;
+    }
+
+    /**
+     * Set the value of rack
+     *
+     * @return  self
+     */ 
+    public function setRack($rack)
+    {
+        $this->rack = $rack;
+
+        return $this;
+    }
 }

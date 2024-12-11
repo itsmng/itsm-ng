@@ -95,6 +95,10 @@ class Pdu
     #[ORM\OneToMany(mappedBy: 'pdu', targetEntity: PduPlug::class)]
     private Collection $pduPlugs;
 
+    #[ORM\OneToMany(mappedBy: 'pdu', targetEntity: PduRack::class)]
+    private Collection $pduRacks;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -416,6 +420,26 @@ class Pdu
     public function setPduPlugs($pduPlugs)
     {
         $this->pduPlugs = $pduPlugs;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pduRacks
+     */ 
+    public function getPduRacks()
+    {
+        return $this->pduRacks;
+    }
+
+    /**
+     * Set the value of pduRacks
+     *
+     * @return  self
+     */ 
+    public function setPduRacks($pduRacks)
+    {
+        $this->pduRacks = $pduRacks;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_racks')]
@@ -111,6 +112,9 @@ class Rack
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'rack', targetEntity: PduRack::class)]
+    private Collection $pduRacks;
 
     public function getId(): ?int
     {
@@ -465,4 +469,24 @@ class Rack
         return $this;
     }
 
+
+    /**
+     * Get the value of pduRacks
+     */ 
+    public function getPduRacks()
+    {
+        return $this->pduRacks;
+    }
+
+    /**
+     * Set the value of pduRacks
+     *
+     * @return  self
+     */ 
+    public function setPduRacks($pduRacks)
+    {
+        $this->pduRacks = $pduRacks;
+
+        return $this;
+    }
 }
