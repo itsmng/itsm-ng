@@ -15,39 +15,56 @@ class ReminderUser
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $reminders_id;
+    #[ORM\ManyToOne(targetEntity: Reminder::class, inversedBy: 'reminderUsers')]
+    #[ORM\JoinColumn(name: 'reminders_id', referencedColumnName: 'id', nullable: true)]
+    private ?Reminder $reminder;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reminderUsers')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getRemindersId(): ?string
+    /**
+     * Get the value of reminder
+     */ 
+    public function getReminder()
     {
-        return $this->reminders_id;
+        return $this->reminder;
     }
 
-    public function setRemindersId(?string $reminders_id): self
+    /**
+     * Set the value of reminder
+     *
+     * @return  self
+     */ 
+    public function setReminder($reminder)
     {
-        $this->reminders_id = $reminders_id;
+        $this->reminder = $reminder;
 
         return $this;
     }
 
-    public function getUsersId(): ?string
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
     {
-        return $this->users_id;
+        return $this->user;
     }
 
-    public function setUsersId(?string $users_id): self
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
     {
-        $this->users_id = $users_id;
+        $this->user = $user;
 
         return $this;
     }
-
 }

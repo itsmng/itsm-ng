@@ -72,6 +72,9 @@ class Reminder
     #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: ProfileReminder::class)]
     private Collection $profileReminders;
 
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: ReminderUser::class)]
+    private Collection $reminderUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -298,6 +301,27 @@ class Reminder
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of reminderUsers
+     */ 
+    public function getReminderUsers()
+    {
+        return $this->reminderUsers;
+    }
+
+    /**
+     * Set the value of reminderUsers
+     *
+     * @return  self
+     */ 
+    public function setReminderUsers($reminderUsers)
+    {
+        $this->reminderUsers = $reminderUsers;
 
         return $this;
     }
