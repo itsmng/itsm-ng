@@ -78,6 +78,9 @@ class Profile
     #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileReminder::class)]
     private Collection $profileReminders;
 
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileRssfeed::class)]
+    private Collection $profileRssfeeds;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -348,6 +351,26 @@ class Profile
     public function setProfileReminders($profileReminders)
     {
         $this->profileReminders = $profileReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileRssfeeds
+     */ 
+    public function getProfileRssfeeds()
+    {
+        return $this->profileRssfeeds;
+    }
+
+    /**
+     * Set the value of profileRssfeeds
+     *
+     * @return  self
+     */ 
+    public function setProfileRssfeeds($profileRssfeeds)
+    {
+        $this->profileRssfeeds = $profileRssfeeds;
 
         return $this;
     }
