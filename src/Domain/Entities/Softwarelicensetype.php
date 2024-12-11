@@ -29,8 +29,9 @@ class Softwarelicensetype
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $softwarelicensetypes_id;
+    #[ORM\ManyToOne(targetEntity: Softwarelicensetype::class)]
+    #[ORM\JoinColumn(name: 'softwarelicensetypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Softwarelicensetype $softwarelicensetype;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $level;
@@ -41,8 +42,9 @@ class Softwarelicensetype
     #[ORM\Column(type: 'text', nullable: true)]
     private $sons_cache;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -103,18 +105,6 @@ class Softwarelicensetype
         return $this;
     }
 
-    public function getSoftwarelicensetypesId(): ?int
-    {
-        return $this->softwarelicensetypes_id;
-    }
-
-    public function setSoftwarelicensetypesId(?int $softwarelicensetypes_id): self
-    {
-        $this->softwarelicensetypes_id = $softwarelicensetypes_id;
-
-        return $this;
-    }
-
     public function getLevel(): ?int
     {
         return $this->level;
@@ -151,18 +141,6 @@ class Softwarelicensetype
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -187,4 +165,44 @@ class Softwarelicensetype
         return $this;
     }
 
+
+    /**
+     * Get the value of softwarelicensetype
+     */ 
+    public function getSoftwarelicensetype()
+    {
+        return $this->softwarelicensetype;
+    }
+
+    /**
+     * Set the value of softwarelicensetype
+     *
+     * @return  self
+     */ 
+    public function setSoftwarelicensetype($softwarelicensetype)
+    {
+        $this->softwarelicensetype = $softwarelicensetype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
 }
