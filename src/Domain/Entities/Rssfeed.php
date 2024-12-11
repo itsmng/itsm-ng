@@ -23,8 +23,9 @@ class Rssfeed
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -72,18 +73,6 @@ class Rssfeed
     public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?string
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?string $users_id): self
-    {
-        $this->users_id = $users_id;
 
         return $this;
     }
@@ -241,6 +230,26 @@ class Rssfeed
     public function setProfileRssfeeds($profileRssfeeds)
     {
         $this->profileRssfeeds = $profileRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }
