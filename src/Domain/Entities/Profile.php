@@ -81,6 +81,9 @@ class Profile
     #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileRssfeed::class)]
     private Collection $profileRssfeeds;
 
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileUser::class)]
+    private Collection $profileUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -371,6 +374,26 @@ class Profile
     public function setProfileRssfeeds($profileRssfeeds)
     {
         $this->profileRssfeeds = $profileRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileUsers
+     */ 
+    public function getProfileUsers()
+    {
+        return $this->profileUsers;
+    }
+
+    /**
+     * Set the value of profileUsers
+     *
+     * @return  self
+     */ 
+    public function setProfileUsers($profileUsers)
+    {
+        $this->profileUsers = $profileUsers;
 
         return $this;
     }

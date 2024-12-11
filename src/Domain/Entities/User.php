@@ -345,6 +345,8 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ProblemUser::class)]
     private Collection $problemUsers;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ProfileUser::class)]
+    private Collection $profileUsers;
 
     public function getId(): ?int
     {
@@ -1630,6 +1632,26 @@ class User
     public function setProblemUsers($problemUsers)
     {
         $this->problemUsers = $problemUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileUsers
+     */ 
+    public function getProfileUsers()
+    {
+        return $this->profileUsers;
+    }
+
+    /**
+     * Set the value of profileUsers
+     *
+     * @return  self
+     */ 
+    public function setProfileUsers($profileUsers)
+    {
+        $this->profileUsers = $profileUsers;
 
         return $this;
     }
