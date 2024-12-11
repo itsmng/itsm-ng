@@ -19,8 +19,9 @@ class Slalevel
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slas_id;
+    #[ORM\ManyToOne(targetEntity: Sla::class)]
+    #[ORM\JoinColumn(name: 'slas_id', referencedColumnName: 'id', nullable: true)]
+    private ?Sla $sla;
 
     #[ORM\Column(type: 'integer')]
     private $execution_time;
@@ -28,8 +29,9 @@ class Slalevel
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_active;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -57,18 +59,6 @@ class Slalevel
         return $this;
     }
 
-    public function getSlalsId(): ?int
-    {
-        return $this->slas_id;
-    }
-
-    public function setSlalsId(int $slas_id): self
-    {
-        $this->slas_id = $slas_id;
-
-        return $this;
-    }
-
     public function getExecutionTime(): ?int
     {
         return $this->execution_time;
@@ -89,18 +79,6 @@ class Slalevel
     public function setIsActive(bool $is_active): self
     {
         $this->is_active = $is_active;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }
@@ -143,4 +121,44 @@ class Slalevel
         return $this;
     }
 
+
+    /**
+     * Get the value of sla
+     */ 
+    public function getSla()
+    {
+        return $this->sla;
+    }
+
+    /**
+     * Set the value of sla
+     *
+     * @return  self
+     */ 
+    public function setSla($sla)
+    {
+        $this->sla = $sla;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
 }
