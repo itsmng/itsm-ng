@@ -119,6 +119,12 @@ class Problem
     #[ORM\OneToMany(mappedBy: 'problem', targetEntity: GroupProblem::class)]
     private Collection $groupProblems;
 
+    #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ProblemSupplier::class)]
+    private Collection $problemSuppliers;
+
+    #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ProblemTicket::class)]
+    private Collection $problemTickets;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -528,6 +534,49 @@ class Problem
     public function setItilcategory($itilcategory)
     {
         $this->itilcategory = $itilcategory;
+
+        return $this;
+    }
+
+      
+    
+
+    /**
+     * Get the value of problemTickets
+     */ 
+    public function getProblemTickets()
+    {
+        return $this->problemTickets;
+    }
+
+    /**
+     * Set the value of problemTickets
+     *
+     * @return  self
+     */ 
+    public function setProblemTickets($problemTickets)
+    {
+        $this->problemTickets = $problemTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemSuppliers
+     */ 
+    public function getProblemSuppliers()
+    {
+        return $this->problemSuppliers;
+    }
+
+    /**
+     * Set the value of problemSuppliers
+     *
+     * @return  self
+     */ 
+    public function setProblemSuppliers($problemSuppliers)
+    {
+        $this->problemSuppliers = $problemSuppliers;
 
         return $this;
     }
