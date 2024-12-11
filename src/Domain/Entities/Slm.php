@@ -22,8 +22,9 @@ class Slm
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -31,8 +32,9 @@ class Slm
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $calendars_id;
+    #[ORM\ManyToOne(targetEntity: Calendar::class)]
+    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
+    private ?Calendar $calendar;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -53,18 +55,6 @@ class Slm
     public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }
@@ -93,18 +83,6 @@ class Slm
         return $this;
     }
 
-    public function getCalendarsId(): ?int
-    {
-        return $this->calendars_id;
-    }
-
-    public function setCalendarsId(int $calendars_id): self
-    {
-        $this->calendars_id = $calendars_id;
-
-        return $this;
-    }
-
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -129,4 +107,44 @@ class Slm
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of calendar
+     */ 
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * Set the value of calendar
+     *
+     * @return  self
+     */ 
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
 }
