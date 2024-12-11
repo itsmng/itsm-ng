@@ -23,8 +23,10 @@ class Planningrecall
     #[ORM\Column(type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
+
 
     #[ORM\Column(type: 'integer', options: ['default' => -10])]
     private $before_time;
@@ -61,18 +63,6 @@ class Planningrecall
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getBeforeTime(): ?int
     {
         return $this->before_time;
@@ -93,6 +83,26 @@ class Planningrecall
     public function setWhen(\DateTimeInterface $when): self
     {
         $this->when = $when;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }
