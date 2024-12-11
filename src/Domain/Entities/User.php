@@ -354,6 +354,10 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RssfeedUser::class)]
     private Collection $rssfeedUsers;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SavedsearchUser::class)]
+    private Collection $savedsearchUsers;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -1698,6 +1702,26 @@ class User
     public function setRssfeedUsers($rssfeedUsers)
     {
         $this->rssfeedUsers = $rssfeedUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of savedsearchUsers
+     */ 
+    public function getSavedsearchUsers()
+    {
+        return $this->savedsearchUsers;
+    }
+
+    /**
+     * Set the value of savedsearchUsers
+     *
+     * @return  self
+     */ 
+    public function setSavedsearchUsers($savedsearchUsers)
+    {
+        $this->savedsearchUsers = $savedsearchUsers;
 
         return $this;
     }

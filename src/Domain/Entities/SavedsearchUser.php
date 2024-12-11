@@ -15,30 +15,21 @@ class SavedsearchUser
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'savedsearchUsers')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $savedsearches_id;
+    #[ORM\ManyToOne(targetEntity: Savedsearch::class, inversedBy: 'savedsearchUsers')]
+    #[ORM\JoinColumn(name: 'savedsearches_id', referencedColumnName: 'id', nullable: true)]
+    private ?Savedsearch $savedsearch;
+    
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
     }
 
     public function getItemtype(): ?string
@@ -53,16 +44,44 @@ class SavedsearchUser
         return $this;
     }
 
-    public function getSavedsearchesId(): ?int
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
     {
-        return $this->savedsearches_id;
+        return $this->user;
     }
 
-    public function setSavedsearchesId(int $savedsearches_id): self
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
     {
-        $this->savedsearches_id = $savedsearches_id;
+        $this->user = $user;
 
         return $this;
     }
 
+    /**
+     * Get the value of savedsearch
+     */ 
+    public function getSavedsearch()
+    {
+        return $this->savedsearch;
+    }
+
+    /**
+     * Set the value of savedsearch
+     *
+     * @return  self
+     */ 
+    public function setSavedsearch($savedsearch)
+    {
+        $this->savedsearch = $savedsearch;
+
+        return $this;
+    }
 }

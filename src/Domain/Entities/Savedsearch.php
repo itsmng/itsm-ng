@@ -67,6 +67,9 @@ class Savedsearch
     #[ORM\OneToMany(mappedBy: 'savedsearch', targetEntity: SavedsearchAlert::class)]
     private Collection $savedsearchAlerts;
 
+    #[ORM\OneToMany(mappedBy: 'savedsearch', targetEntity: SavedsearchUser::class)]
+    private Collection $savedsearchUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -261,6 +264,26 @@ class Savedsearch
     public function setSavedsearchAlerts($savedsearchAlerts)
     {
         $this->savedsearchAlerts = $savedsearchAlerts;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of savedsearchUsers
+     */ 
+    public function getSavedsearchUsers()
+    {
+        return $this->savedsearchUsers;
+    }
+
+    /**
+     * Set the value of savedsearchUsers
+     *
+     * @return  self
+     */ 
+    public function setSavedsearchUsers($savedsearchUsers)
+    {
+        $this->savedsearchUsers = $savedsearchUsers;
 
         return $this;
     }
