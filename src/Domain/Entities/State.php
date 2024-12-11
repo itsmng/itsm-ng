@@ -37,17 +37,19 @@ class State
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
-
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
+    
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $completename;
@@ -135,18 +137,6 @@ class State
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -167,18 +157,6 @@ class State
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(?int $states_id): self
-    {
-        $this->states_id = $states_id;
 
         return $this;
     }
@@ -459,4 +437,44 @@ class State
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
 }
