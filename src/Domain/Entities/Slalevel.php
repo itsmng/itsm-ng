@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_slalevels')]
@@ -41,6 +42,9 @@ class Slalevel
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $uuid;
+
+    #[ORM\OneToMany(mappedBy: 'slalevel', targetEntity: SlalevelTicket::class)]
+    private Collection $slalevelTickets;
 
     public function getId(): ?int
     {
@@ -158,6 +162,26 @@ class Slalevel
     public function setEntity($entity)
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slalevelTickets
+     */ 
+    public function getSlalevelTickets()
+    {
+        return $this->slalevelTickets;
+    }
+
+    /**
+     * Set the value of slalevelTickets
+     *
+     * @return  self
+     */ 
+    public function setSlalevelTickets($slalevelTickets)
+    {
+        $this->slalevelTickets = $slalevelTickets;
 
         return $this;
     }

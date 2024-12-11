@@ -179,6 +179,10 @@ class Ticket
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ProjecttaskTicket::class)]
     private Collection $projecttaskTickets;
 
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: SlalevelTicket::class)]
+    private Collection $slalevelTickets;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -761,6 +765,26 @@ class Ticket
     public function setProjecttaskTickets($projecttaskTickets)
     {
         $this->projecttaskTickets = $projecttaskTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slalevelTickets
+     */ 
+    public function getSlalevelTickets()
+    {
+        return $this->slalevelTickets;
+    }
+
+    /**
+     * Set the value of slalevelTickets
+     *
+     * @return  self
+     */ 
+    public function setSlalevelTickets($slalevelTickets)
+    {
+        $this->slalevelTickets = $slalevelTickets;
 
         return $this;
     }
