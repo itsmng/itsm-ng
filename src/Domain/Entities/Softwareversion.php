@@ -21,14 +21,16 @@ class Softwareversion
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $softwares_id;
+    #[ORM\ManyToOne(targetEntity: Software::class)]
+    #[ORM\JoinColumn(name: 'softwares_id', referencedColumnName: 'id', nullable: true)]
+    private ?Software $software;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $states_id;
@@ -42,6 +44,11 @@ class Softwareversion
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $operatingsystems_id;
 
+    #[ORM\ManyToOne(targetEntity: Operatingsystem::class)]
+    #[ORM\JoinColumn(name: 'operatingsystems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Operatingsystem $operatingsystem;
+
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
@@ -53,18 +60,6 @@ class Softwareversion
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -73,18 +68,6 @@ class Softwareversion
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getSoftwaresId(): ?int
-    {
-        return $this->softwares_id;
-    }
-
-    public function setSoftwaresId(?int $softwares_id): self
-    {
-        $this->softwares_id = $softwares_id;
 
         return $this;
     }
@@ -161,4 +144,64 @@ class Softwareversion
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of software
+     */ 
+    public function getSoftware()
+    {
+        return $this->software;
+    }
+
+    /**
+     * Set the value of software
+     *
+     * @return  self
+     */ 
+    public function setSoftware($software)
+    {
+        $this->software = $software;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of operatingsystem
+     */ 
+    public function getOperatingsystem()
+    {
+        return $this->operatingsystem;
+    }
+
+    /**
+     * Set the value of operatingsystem
+     *
+     * @return  self
+     */ 
+    public function setOperatingsystem($operatingsystem)
+    {
+        $this->operatingsystem = $operatingsystem;
+
+        return $this;
+    }
 }
