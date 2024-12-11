@@ -31,7 +31,7 @@ class ProjecttaskTicket
 
     /**
      * Get the value of ticket
-     */ 
+     */
     public function getTicket()
     {
         return $this->ticket;
@@ -41,7 +41,7 @@ class ProjecttaskTicket
      * Set the value of ticket
      *
      * @return  self
-     */ 
+     */
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
@@ -51,7 +51,7 @@ class ProjecttaskTicket
 
     /**
      * Get the value of projecttask
-     */ 
+     */
     public function getProjecttask()
     {
         return $this->projecttask;
@@ -61,7 +61,7 @@ class ProjecttaskTicket
      * Set the value of projecttask
      *
      * @return  self
-     */ 
+     */
     public function setProjecttask($projecttask)
     {
         $this->projecttask = $projecttask;

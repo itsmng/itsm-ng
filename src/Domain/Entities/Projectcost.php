@@ -136,7 +136,7 @@ class Projectcost
 
     /**
      * Get the value of project
-     */ 
+     */
     public function getProject()
     {
         return $this->project;
@@ -146,7 +146,7 @@ class Projectcost
      * Set the value of project
      *
      * @return  self
-     */ 
+     */
     public function setProject($project)
     {
         $this->project = $project;
@@ -156,7 +156,7 @@ class Projectcost
 
     /**
      * Get the value of budget
-     */ 
+     */
     public function getBudget()
     {
         return $this->budget;
@@ -166,7 +166,7 @@ class Projectcost
      * Set the value of budget
      *
      * @return  self
-     */ 
+     */
     public function setBudget($budget)
     {
         $this->budget = $budget;
@@ -176,7 +176,7 @@ class Projectcost
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -186,7 +186,7 @@ class Projectcost
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

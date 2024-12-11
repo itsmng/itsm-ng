@@ -244,7 +244,7 @@ class Queuedchat
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -254,7 +254,7 @@ class Queuedchat
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -264,7 +264,7 @@ class Queuedchat
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -274,7 +274,7 @@ class Queuedchat
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -284,7 +284,7 @@ class Queuedchat
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -294,7 +294,7 @@ class Queuedchat
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -304,7 +304,7 @@ class Queuedchat
 
     /**
      * Get the value of notificationtemplate
-     */ 
+     */
     public function getNotificationtemplate()
     {
         return $this->notificationtemplate;
@@ -314,7 +314,7 @@ class Queuedchat
      * Set the value of notificationtemplate
      *
      * @return  self
-     */ 
+     */
     public function setNotificationtemplate($notificationtemplate)
     {
         $this->notificationtemplate = $notificationtemplate;
@@ -324,7 +324,7 @@ class Queuedchat
 
     /**
      * Get the value of itilcategory
-     */ 
+     */
     public function getItilcategory()
     {
         return $this->itilcategory;
@@ -334,7 +334,7 @@ class Queuedchat
      * Set the value of itilcategory
      *
      * @return  self
-     */ 
+     */
     public function setItilcategory($itilcategory)
     {
         $this->itilcategory = $itilcategory;

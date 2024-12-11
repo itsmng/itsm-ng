@@ -47,7 +47,7 @@ class SlalevelTicket
 
     /**
      * Get the value of ticket
-     */ 
+     */
     public function getTicket()
     {
         return $this->ticket;
@@ -57,7 +57,7 @@ class SlalevelTicket
      * Set the value of ticket
      *
      * @return  self
-     */ 
+     */
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
@@ -67,7 +67,7 @@ class SlalevelTicket
 
     /**
      * Get the value of slalevel
-     */ 
+     */
     public function getSlalevel()
     {
         return $this->slalevel;
@@ -77,7 +77,7 @@ class SlalevelTicket
      * Set the value of slalevel
      *
      * @return  self
-     */ 
+     */
     public function setSlalevel($slalevel)
     {
         $this->slalevel = $slalevel;

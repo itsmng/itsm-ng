@@ -24,7 +24,7 @@ class Sla
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
@@ -172,7 +172,7 @@ class Sla
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -182,7 +182,7 @@ class Sla
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -192,7 +192,7 @@ class Sla
 
     /**
      * Get the value of calendar
-     */ 
+     */
     public function getCalendar()
     {
         return $this->calendar;
@@ -202,7 +202,7 @@ class Sla
      * Set the value of calendar
      *
      * @return  self
-     */ 
+     */
     public function setCalendar($calendar)
     {
         $this->calendar = $calendar;
@@ -212,7 +212,7 @@ class Sla
 
     /**
      * Get the value of slm
-     */ 
+     */
     public function getSlm()
     {
         return $this->slm;
@@ -222,7 +222,7 @@ class Sla
      * Set the value of slm
      *
      * @return  self
-     */ 
+     */
     public function setSlm($slm)
     {
         $this->slm = $slm;

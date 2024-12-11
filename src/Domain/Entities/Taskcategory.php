@@ -208,7 +208,7 @@ class Taskcategory
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -218,7 +218,7 @@ class Taskcategory
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -228,7 +228,7 @@ class Taskcategory
 
     /**
      * Get the value of taskcategory
-     */ 
+     */
     public function getTaskcategory()
     {
         return $this->taskcategory;
@@ -238,7 +238,7 @@ class Taskcategory
      * Set the value of taskcategory
      *
      * @return  self
-     */ 
+     */
     public function setTaskcategory($taskcategory)
     {
         $this->taskcategory = $taskcategory;
@@ -248,7 +248,7 @@ class Taskcategory
 
     /**
      * Get the value of knowbaseitemcategory
-     */ 
+     */
     public function getKnowbaseitemcategory()
     {
         return $this->knowbaseitemcategory;
@@ -258,7 +258,7 @@ class Taskcategory
      * Set the value of knowbaseitemcategory
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitemcategory($knowbaseitemcategory)
     {
         $this->knowbaseitemcategory = $knowbaseitemcategory;

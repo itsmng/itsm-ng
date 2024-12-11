@@ -72,7 +72,7 @@ class Slalevelcriteria
 
     /**
      * Get the value of slalevel
-     */ 
+     */
     public function getSlalevel()
     {
         return $this->slalevel;
@@ -82,7 +82,7 @@ class Slalevelcriteria
      * Set the value of slalevel
      *
      * @return  self
-     */ 
+     */
     public function setSlalevel($slalevel)
     {
         $this->slalevel = $slalevel;

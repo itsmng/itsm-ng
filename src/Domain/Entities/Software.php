@@ -32,7 +32,7 @@ class Software
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
@@ -53,7 +53,7 @@ class Software
     #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?Group $groupTech;
-   
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_update;
 
@@ -264,7 +264,7 @@ class Software
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -274,7 +274,7 @@ class Software
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -284,7 +284,7 @@ class Software
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -294,7 +294,7 @@ class Software
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -304,7 +304,7 @@ class Software
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -314,7 +314,7 @@ class Software
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -324,7 +324,7 @@ class Software
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -334,7 +334,7 @@ class Software
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -344,7 +344,7 @@ class Software
 
     /**
      * Get the value of software
-     */ 
+     */
     public function getSoftware()
     {
         return $this->software;
@@ -354,7 +354,7 @@ class Software
      * Set the value of software
      *
      * @return  self
-     */ 
+     */
     public function setSoftware($software)
     {
         $this->software = $software;
@@ -364,7 +364,7 @@ class Software
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -374,7 +374,7 @@ class Software
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -384,7 +384,7 @@ class Software
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -394,7 +394,7 @@ class Software
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -404,7 +404,7 @@ class Software
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -414,7 +414,7 @@ class Software
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;

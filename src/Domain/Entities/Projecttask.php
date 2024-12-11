@@ -342,7 +342,7 @@ class Projecttask
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -352,7 +352,7 @@ class Projecttask
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -362,7 +362,7 @@ class Projecttask
 
     /**
      * Get the value of project
-     */ 
+     */
     public function getProject()
     {
         return $this->project;
@@ -372,7 +372,7 @@ class Projecttask
      * Set the value of project
      *
      * @return  self
-     */ 
+     */
     public function setProject($project)
     {
         $this->project = $project;
@@ -382,7 +382,7 @@ class Projecttask
 
     /**
      * Get the value of projecttask
-     */ 
+     */
     public function getProjecttask()
     {
         return $this->projecttask;
@@ -392,7 +392,7 @@ class Projecttask
      * Set the value of projecttask
      *
      * @return  self
-     */ 
+     */
     public function setProjecttask($projecttask)
     {
         $this->projecttask = $projecttask;
@@ -402,7 +402,7 @@ class Projecttask
 
     /**
      * Get the value of projectstate
-     */ 
+     */
     public function getProjectstate()
     {
         return $this->projectstate;
@@ -412,7 +412,7 @@ class Projecttask
      * Set the value of projectstate
      *
      * @return  self
-     */ 
+     */
     public function setProjectstate($projectstate)
     {
         $this->projectstate = $projectstate;
@@ -422,7 +422,7 @@ class Projecttask
 
     /**
      * Get the value of projecttasktype
-     */ 
+     */
     public function getProjecttasktype()
     {
         return $this->projecttasktype;
@@ -432,7 +432,7 @@ class Projecttask
      * Set the value of projecttasktype
      *
      * @return  self
-     */ 
+     */
     public function setProjecttasktype($projecttasktype)
     {
         $this->projecttasktype = $projecttasktype;
@@ -442,7 +442,7 @@ class Projecttask
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -452,7 +452,7 @@ class Projecttask
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -462,7 +462,7 @@ class Projecttask
 
     /**
      * Get the value of projecttasktemplate
-     */ 
+     */
     public function getProjecttasktemplate()
     {
         return $this->projecttasktemplate;
@@ -472,7 +472,7 @@ class Projecttask
      * Set the value of projecttasktemplate
      *
      * @return  self
-     */ 
+     */
     public function setProjecttasktemplate($projecttasktemplate)
     {
         $this->projecttasktemplate = $projecttasktemplate;
@@ -482,7 +482,7 @@ class Projecttask
 
     /**
      * Get the value of projecttaskTickets
-     */ 
+     */
     public function getProjecttaskTickets()
     {
         return $this->projecttaskTickets;
@@ -492,7 +492,7 @@ class Projecttask
      * Set the value of projecttaskTickets
      *
      * @return  self
-     */ 
+     */
     public function setProjecttaskTickets($projecttaskTickets)
     {
         $this->projecttaskTickets = $projecttaskTickets;

@@ -753,7 +753,7 @@ class Ticket
 
     /**
      * Get the value of projecttaskTickets
-     */ 
+     */
     public function getProjecttaskTickets()
     {
         return $this->projecttaskTickets;
@@ -763,7 +763,7 @@ class Ticket
      * Set the value of projecttaskTickets
      *
      * @return  self
-     */ 
+     */
     public function setProjecttaskTickets($projecttaskTickets)
     {
         $this->projecttaskTickets = $projecttaskTickets;
@@ -773,7 +773,7 @@ class Ticket
 
     /**
      * Get the value of slalevelTickets
-     */ 
+     */
     public function getSlalevelTickets()
     {
         return $this->slalevelTickets;
@@ -783,7 +783,7 @@ class Ticket
      * Set the value of slalevelTickets
      *
      * @return  self
-     */ 
+     */
     public function setSlalevelTickets($slalevelTickets)
     {
         $this->slalevelTickets = $slalevelTickets;
@@ -793,7 +793,7 @@ class Ticket
 
     /**
      * Get the value of supplierTickets
-     */ 
+     */
     public function getSupplierTickets()
     {
         return $this->supplierTickets;
@@ -803,7 +803,7 @@ class Ticket
      * Set the value of supplierTickets
      *
      * @return  self
-     */ 
+     */
     public function setSupplierTickets($supplierTickets)
     {
         $this->supplierTickets = $supplierTickets;

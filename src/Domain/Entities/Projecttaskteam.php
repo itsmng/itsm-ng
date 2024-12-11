@@ -57,7 +57,7 @@ class Projecttaskteam
 
     /**
      * Get the value of projecttask
-     */ 
+     */
     public function getProjecttask()
     {
         return $this->projecttask;
@@ -67,7 +67,7 @@ class Projecttaskteam
      * Set the value of projecttask
      *
      * @return  self
-     */ 
+     */
     public function setProjecttask($projecttask)
     {
         $this->projecttask = $projecttask;

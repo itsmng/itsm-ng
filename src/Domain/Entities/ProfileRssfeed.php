@@ -65,7 +65,7 @@ class ProfileRssfeed
 
     /**
      * Get the value of rssfeed
-     */ 
+     */
     public function getRssfeed()
     {
         return $this->rssfeed;
@@ -75,7 +75,7 @@ class ProfileRssfeed
      * Set the value of rssfeed
      *
      * @return  self
-     */ 
+     */
     public function setRssfeed($rssfeed)
     {
         $this->rssfeed = $rssfeed;
@@ -85,7 +85,7 @@ class ProfileRssfeed
 
     /**
      * Get the value of profile
-     */ 
+     */
     public function getProfile()
     {
         return $this->profile;
@@ -95,7 +95,7 @@ class ProfileRssfeed
      * Set the value of profile
      *
      * @return  self
-     */ 
+     */
     public function setProfile($profile)
     {
         $this->profile = $profile;

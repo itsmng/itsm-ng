@@ -54,7 +54,7 @@ class ProfileReminder
 
     /**
      * Get the value of reminder
-     */ 
+     */
     public function getReminder()
     {
         return $this->reminder;
@@ -64,7 +64,7 @@ class ProfileReminder
      * Set the value of reminder
      *
      * @return  self
-     */ 
+     */
     public function setReminder($reminder)
     {
         $this->reminder = $reminder;
@@ -74,7 +74,7 @@ class ProfileReminder
 
     /**
      * Get the value of profile
-     */ 
+     */
     public function getProfile()
     {
         return $this->profile;
@@ -84,7 +84,7 @@ class ProfileReminder
      * Set the value of profile
      *
      * @return  self
-     */ 
+     */
     public function setProfile($profile)
     {
         $this->profile = $profile;
@@ -94,7 +94,7 @@ class ProfileReminder
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -104,7 +104,7 @@ class ProfileReminder
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

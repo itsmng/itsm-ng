@@ -32,14 +32,14 @@ class Supplier
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Suppliertype::class)]
-    #[ORM\JoinColumn(name: 'suppliertypes_id', referencedColumnName: 'id', nullable: true)]                                                                                                                                                                                                                                                                     
+    #[ORM\JoinColumn(name: 'suppliertypes_id', referencedColumnName: 'id', nullable: true)]
     private ?Suppliertype $suppliertype;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $address;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $postcode;                                                                                                                              
+    private $postcode;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $town;
@@ -375,7 +375,7 @@ class Supplier
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -385,7 +385,7 @@ class Supplier
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -395,7 +395,7 @@ class Supplier
 
     /**
      * Get the value of suppliertype
-     */ 
+     */
     public function getSuppliertype()
     {
         return $this->suppliertype;
@@ -405,7 +405,7 @@ class Supplier
      * Set the value of suppliertype
      *
      * @return  self
-     */ 
+     */
     public function setSuppliertype($suppliertype)
     {
         $this->suppliertype = $suppliertype;
@@ -415,7 +415,7 @@ class Supplier
 
     /**
      * Get the value of supplierTickets
-     */ 
+     */
     public function getSupplierTickets()
     {
         return $this->supplierTickets;
@@ -425,7 +425,7 @@ class Supplier
      * Set the value of supplierTickets
      *
      * @return  self
-     */ 
+     */
     public function setSupplierTickets($supplierTickets)
     {
         $this->supplierTickets = $supplierTickets;

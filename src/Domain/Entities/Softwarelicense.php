@@ -49,7 +49,7 @@ class Softwarelicense
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $level;
-    
+
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
@@ -109,7 +109,7 @@ class Softwarelicense
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?User $userTech;
-   
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id;
 
@@ -136,7 +136,7 @@ class Softwarelicense
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
     private ?State $state;
-    
+
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer;
@@ -422,7 +422,7 @@ class Softwarelicense
 
     /**
      * Get the value of software
-     */ 
+     */
     public function getSoftware()
     {
         return $this->software;
@@ -432,7 +432,7 @@ class Softwarelicense
      * Set the value of software
      *
      * @return  self
-     */ 
+     */
     public function setSoftware($software)
     {
         $this->software = $software;
@@ -442,7 +442,7 @@ class Softwarelicense
 
     /**
      * Get the value of softwarelicense
-     */ 
+     */
     public function getSoftwarelicense()
     {
         return $this->softwarelicense;
@@ -452,7 +452,7 @@ class Softwarelicense
      * Set the value of softwarelicense
      *
      * @return  self
-     */ 
+     */
     public function setSoftwarelicense($softwarelicense)
     {
         $this->softwarelicense = $softwarelicense;
@@ -462,7 +462,7 @@ class Softwarelicense
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -472,7 +472,7 @@ class Softwarelicense
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -482,7 +482,7 @@ class Softwarelicense
 
     /**
      * Get the value of softwarelicensetype
-     */ 
+     */
     public function getSoftwarelicensetype()
     {
         return $this->softwarelicensetype;
@@ -492,7 +492,7 @@ class Softwarelicense
      * Set the value of softwarelicensetype
      *
      * @return  self
-     */ 
+     */
     public function setSoftwarelicensetype($softwarelicensetype)
     {
         $this->softwarelicensetype = $softwarelicensetype;
@@ -500,10 +500,10 @@ class Softwarelicense
         return $this;
     }
 
-   
+
     /**
      * Get the value of softwareversionBuy
-     */ 
+     */
     public function getSoftwareversionBuy()
     {
         return $this->softwareversionBuy;
@@ -513,7 +513,7 @@ class Softwarelicense
      * Set the value of softwareversionBuy
      *
      * @return  self
-     */ 
+     */
     public function setSoftwareversionBuy($softwareversionBuy)
     {
         $this->softwareversionBuy = $softwareversionBuy;
@@ -523,7 +523,7 @@ class Softwarelicense
 
     /**
      * Get the value of softwareversionUse
-     */ 
+     */
     public function getSoftwareversionUse()
     {
         return $this->softwareversionUse;
@@ -533,7 +533,7 @@ class Softwarelicense
      * Set the value of softwareversionUse
      *
      * @return  self
-     */ 
+     */
     public function setSoftwareversionUse($softwareversionUse)
     {
         $this->softwareversionUse = $softwareversionUse;
@@ -543,7 +543,7 @@ class Softwarelicense
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -553,7 +553,7 @@ class Softwarelicense
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -563,7 +563,7 @@ class Softwarelicense
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -573,7 +573,7 @@ class Softwarelicense
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -583,7 +583,7 @@ class Softwarelicense
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -593,7 +593,7 @@ class Softwarelicense
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -603,7 +603,7 @@ class Softwarelicense
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -613,7 +613,7 @@ class Softwarelicense
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -623,7 +623,7 @@ class Softwarelicense
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -633,7 +633,7 @@ class Softwarelicense
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -643,7 +643,7 @@ class Softwarelicense
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -653,7 +653,7 @@ class Softwarelicense
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;

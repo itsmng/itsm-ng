@@ -267,7 +267,7 @@ class Reminder
 
     /**
      * Get the value of profileReminders
-     */ 
+     */
     public function getProfileReminders()
     {
         return $this->profileReminders;
@@ -277,7 +277,7 @@ class Reminder
      * Set the value of profileReminders
      *
      * @return  self
-     */ 
+     */
     public function setProfileReminders($profileReminders)
     {
         $this->profileReminders = $profileReminders;
@@ -287,7 +287,7 @@ class Reminder
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -297,7 +297,7 @@ class Reminder
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -308,7 +308,7 @@ class Reminder
 
     /**
      * Get the value of reminderUsers
-     */ 
+     */
     public function getReminderUsers()
     {
         return $this->reminderUsers;
@@ -318,7 +318,7 @@ class Reminder
      * Set the value of reminderUsers
      *
      * @return  self
-     */ 
+     */
     public function setReminderUsers($reminderUsers)
     {
         $this->reminderUsers = $reminderUsers;

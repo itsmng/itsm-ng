@@ -94,7 +94,7 @@ class Reservation
 
     /**
      * Get the value of reservationitem
-     */ 
+     */
     public function getReservationitem()
     {
         return $this->reservationitem;
@@ -104,7 +104,7 @@ class Reservation
      * Set the value of reservationitem
      *
      * @return  self
-     */ 
+     */
     public function setReservationitem($reservationitem)
     {
         $this->reservationitem = $reservationitem;
@@ -114,7 +114,7 @@ class Reservation
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -124,7 +124,7 @@ class Reservation
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

@@ -115,7 +115,7 @@ class Softwarecategory
 
     /**
      * Get the value of softwarecategory
-     */ 
+     */
     public function getSoftwarecategory()
     {
         return $this->softwarecategory;
@@ -125,7 +125,7 @@ class Softwarecategory
      * Set the value of softwarecategory
      *
      * @return  self
-     */ 
+     */
     public function setSoftwarecategory($softwarecategory)
     {
         $this->softwarecategory = $softwarecategory;

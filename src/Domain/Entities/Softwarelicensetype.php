@@ -168,7 +168,7 @@ class Softwarelicensetype
 
     /**
      * Get the value of softwarelicensetype
-     */ 
+     */
     public function getSoftwarelicensetype()
     {
         return $this->softwarelicensetype;
@@ -178,7 +178,7 @@ class Softwarelicensetype
      * Set the value of softwarelicensetype
      *
      * @return  self
-     */ 
+     */
     public function setSoftwarelicensetype($softwarelicensetype)
     {
         $this->softwarelicensetype = $softwarelicensetype;
@@ -188,7 +188,7 @@ class Softwarelicensetype
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -198,7 +198,7 @@ class Softwarelicensetype
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

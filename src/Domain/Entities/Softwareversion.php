@@ -147,7 +147,7 @@ class Softwareversion
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -157,7 +157,7 @@ class Softwareversion
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -167,7 +167,7 @@ class Softwareversion
 
     /**
      * Get the value of software
-     */ 
+     */
     public function getSoftware()
     {
         return $this->software;
@@ -177,7 +177,7 @@ class Softwareversion
      * Set the value of software
      *
      * @return  self
-     */ 
+     */
     public function setSoftware($software)
     {
         $this->software = $software;
@@ -187,7 +187,7 @@ class Softwareversion
 
     /**
      * Get the value of operatingsystem
-     */ 
+     */
     public function getOperatingsystem()
     {
         return $this->operatingsystem;
@@ -197,7 +197,7 @@ class Softwareversion
      * Set the value of operatingsystem
      *
      * @return  self
-     */ 
+     */
     public function setOperatingsystem($operatingsystem)
     {
         $this->operatingsystem = $operatingsystem;

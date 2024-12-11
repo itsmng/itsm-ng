@@ -1648,7 +1648,7 @@ class User
 
     /**
      * Get the value of profileUsers
-     */ 
+     */
     public function getProfileUsers()
     {
         return $this->profileUsers;
@@ -1658,7 +1658,7 @@ class User
      * Set the value of profileUsers
      *
      * @return  self
-     */ 
+     */
     public function setProfileUsers($profileUsers)
     {
         $this->profileUsers = $profileUsers;
@@ -1668,7 +1668,7 @@ class User
 
     /**
      * Get the value of reminderUsers
-     */ 
+     */
     public function getReminderUsers()
     {
         return $this->reminderUsers;
@@ -1678,7 +1678,7 @@ class User
      * Set the value of reminderUsers
      *
      * @return  self
-     */ 
+     */
     public function setReminderUsers($reminderUsers)
     {
         $this->reminderUsers = $reminderUsers;
@@ -1688,7 +1688,7 @@ class User
 
     /**
      * Get the value of rssfeedUsers
-     */ 
+     */
     public function getRssfeedUsers()
     {
         return $this->rssfeedUsers;
@@ -1698,7 +1698,7 @@ class User
      * Set the value of rssfeedUsers
      *
      * @return  self
-     */ 
+     */
     public function setRssfeedUsers($rssfeedUsers)
     {
         $this->rssfeedUsers = $rssfeedUsers;
@@ -1708,7 +1708,7 @@ class User
 
     /**
      * Get the value of savedsearchUsers
-     */ 
+     */
     public function getSavedsearchUsers()
     {
         return $this->savedsearchUsers;
@@ -1718,7 +1718,7 @@ class User
      * Set the value of savedsearchUsers
      *
      * @return  self
-     */ 
+     */
     public function setSavedsearchUsers($savedsearchUsers)
     {
         $this->savedsearchUsers = $savedsearchUsers;

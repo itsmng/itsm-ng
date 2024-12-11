@@ -25,7 +25,7 @@ class SavedsearchUser
     #[ORM\ManyToOne(targetEntity: Savedsearch::class, inversedBy: 'savedsearchUsers')]
     #[ORM\JoinColumn(name: 'savedsearches_id', referencedColumnName: 'id', nullable: true)]
     private ?Savedsearch $savedsearch;
-    
+
 
     public function getId(): ?int
     {
@@ -47,7 +47,7 @@ class SavedsearchUser
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -57,7 +57,7 @@ class SavedsearchUser
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -67,7 +67,7 @@ class SavedsearchUser
 
     /**
      * Get the value of savedsearch
-     */ 
+     */
     public function getSavedsearch()
     {
         return $this->savedsearch;
@@ -77,7 +77,7 @@ class SavedsearchUser
      * Set the value of savedsearch
      *
      * @return  self
-     */ 
+     */
     public function setSavedsearch($savedsearch)
     {
         $this->savedsearch = $savedsearch;

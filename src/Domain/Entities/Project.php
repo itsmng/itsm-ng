@@ -367,7 +367,7 @@ class Project
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -377,7 +377,7 @@ class Project
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -387,7 +387,7 @@ class Project
 
     /**
      * Get the value of project
-     */ 
+     */
     public function getProject()
     {
         return $this->project;
@@ -397,7 +397,7 @@ class Project
      * Set the value of project
      *
      * @return  self
-     */ 
+     */
     public function setProject($project)
     {
         $this->project = $project;
@@ -407,7 +407,7 @@ class Project
 
     /**
      * Get the value of projectstate
-     */ 
+     */
     public function getProjectstate()
     {
         return $this->projectstate;
@@ -417,7 +417,7 @@ class Project
      * Set the value of projectstate
      *
      * @return  self
-     */ 
+     */
     public function setProjectstate($projectstate)
     {
         $this->projectstate = $projectstate;
@@ -427,7 +427,7 @@ class Project
 
     /**
      * Get the value of projecttype
-     */ 
+     */
     public function getProjecttype()
     {
         return $this->projecttype;
@@ -437,7 +437,7 @@ class Project
      * Set the value of projecttype
      *
      * @return  self
-     */ 
+     */
     public function setProjecttype($projecttype)
     {
         $this->projecttype = $projecttype;
@@ -447,7 +447,7 @@ class Project
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -457,7 +457,7 @@ class Project
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -467,7 +467,7 @@ class Project
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -477,7 +477,7 @@ class Project
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;

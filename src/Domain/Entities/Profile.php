@@ -340,7 +340,7 @@ class Profile
 
     /**
      * Get the value of profileReminders
-     */ 
+     */
     public function getProfileReminders()
     {
         return $this->profileReminders;
@@ -350,7 +350,7 @@ class Profile
      * Set the value of profileReminders
      *
      * @return  self
-     */ 
+     */
     public function setProfileReminders($profileReminders)
     {
         $this->profileReminders = $profileReminders;
@@ -360,7 +360,7 @@ class Profile
 
     /**
      * Get the value of profileRssfeeds
-     */ 
+     */
     public function getProfileRssfeeds()
     {
         return $this->profileRssfeeds;
@@ -370,7 +370,7 @@ class Profile
      * Set the value of profileRssfeeds
      *
      * @return  self
-     */ 
+     */
     public function setProfileRssfeeds($profileRssfeeds)
     {
         $this->profileRssfeeds = $profileRssfeeds;
@@ -380,7 +380,7 @@ class Profile
 
     /**
      * Get the value of profileUsers
-     */ 
+     */
     public function getProfileUsers()
     {
         return $this->profileUsers;
@@ -390,7 +390,7 @@ class Profile
      * Set the value of profileUsers
      *
      * @return  self
-     */ 
+     */
     public function setProfileUsers($profileUsers)
     {
         $this->profileUsers = $profileUsers;

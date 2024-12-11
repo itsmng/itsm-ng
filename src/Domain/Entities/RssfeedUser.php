@@ -30,7 +30,7 @@ class RssfeedUser
 
     /**
      * Get the value of rssfeed
-     */ 
+     */
     public function getRssfeed()
     {
         return $this->rssfeed;
@@ -40,7 +40,7 @@ class RssfeedUser
      * Set the value of rssfeed
      *
      * @return  self
-     */ 
+     */
     public function setRssfeed($rssfeed)
     {
         $this->rssfeed = $rssfeed;
@@ -50,7 +50,7 @@ class RssfeedUser
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -60,7 +60,7 @@ class RssfeedUser
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

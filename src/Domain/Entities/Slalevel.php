@@ -128,7 +128,7 @@ class Slalevel
 
     /**
      * Get the value of sla
-     */ 
+     */
     public function getSla()
     {
         return $this->sla;
@@ -138,7 +138,7 @@ class Slalevel
      * Set the value of sla
      *
      * @return  self
-     */ 
+     */
     public function setSla($sla)
     {
         $this->sla = $sla;
@@ -148,7 +148,7 @@ class Slalevel
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -158,7 +158,7 @@ class Slalevel
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -168,7 +168,7 @@ class Slalevel
 
     /**
      * Get the value of slalevelTickets
-     */ 
+     */
     public function getSlalevelTickets()
     {
         return $this->slalevelTickets;
@@ -178,7 +178,7 @@ class Slalevel
      * Set the value of slalevelTickets
      *
      * @return  self
-     */ 
+     */
     public function setSlalevelTickets($slalevelTickets)
     {
         $this->slalevelTickets = $slalevelTickets;

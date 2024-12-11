@@ -338,7 +338,7 @@ class Queuednotification
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -348,7 +348,7 @@ class Queuednotification
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -358,7 +358,7 @@ class Queuednotification
 
     /**
      * Get the value of notificationtemplate
-     */ 
+     */
     public function getNotificationtemplate()
     {
         return $this->notificationtemplate;
@@ -368,7 +368,7 @@ class Queuednotification
      * Set the value of notificationtemplate
      *
      * @return  self
-     */ 
+     */
     public function setNotificationtemplate($notificationtemplate)
     {
         $this->notificationtemplate = $notificationtemplate;

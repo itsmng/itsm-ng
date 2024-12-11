@@ -125,7 +125,7 @@ class Solutiontemplate
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -135,7 +135,7 @@ class Solutiontemplate
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -145,7 +145,7 @@ class Solutiontemplate
 
     /**
      * Get the value of solutiontype
-     */ 
+     */
     public function getSolutiontype()
     {
         return $this->solutiontype;
@@ -155,7 +155,7 @@ class Solutiontemplate
      * Set the value of solutiontype
      *
      * @return  self
-     */ 
+     */
     public function setSolutiontype($solutiontype)
     {
         $this->solutiontype = $solutiontype;

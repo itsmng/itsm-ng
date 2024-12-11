@@ -393,7 +393,7 @@ class Rack
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -403,7 +403,7 @@ class Rack
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -413,7 +413,7 @@ class Rack
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -423,7 +423,7 @@ class Rack
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -433,7 +433,7 @@ class Rack
 
     /**
      * Get the value of rackmodel
-     */ 
+     */
     public function getRackmodel()
     {
         return $this->rackmodel;
@@ -443,7 +443,7 @@ class Rack
      * Set the value of rackmodel
      *
      * @return  self
-     */ 
+     */
     public function setRackmodel($rackmodel)
     {
         $this->rackmodel = $rackmodel;
@@ -453,7 +453,7 @@ class Rack
 
     /**
      * Get the value of manufacturer
-     */ 
+     */
     public function getManufacturer()
     {
         return $this->manufacturer;
@@ -463,7 +463,7 @@ class Rack
      * Set the value of manufacturer
      *
      * @return  self
-     */ 
+     */
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
@@ -473,7 +473,7 @@ class Rack
 
     /**
      * Get the value of racktype
-     */ 
+     */
     public function getRacktype()
     {
         return $this->racktype;
@@ -483,7 +483,7 @@ class Rack
      * Set the value of racktype
      *
      * @return  self
-     */ 
+     */
     public function setRacktype($racktype)
     {
         $this->racktype = $racktype;
@@ -493,7 +493,7 @@ class Rack
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -503,7 +503,7 @@ class Rack
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -513,7 +513,7 @@ class Rack
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -523,7 +523,7 @@ class Rack
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -533,7 +533,7 @@ class Rack
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -543,7 +543,7 @@ class Rack
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -553,7 +553,7 @@ class Rack
 
     /**
      * Get the value of dcroom
-     */ 
+     */
     public function getDcroom()
     {
         return $this->dcroom;
@@ -563,7 +563,7 @@ class Rack
      * Set the value of dcroom
      *
      * @return  self
-     */ 
+     */
     public function setDcroom($dcroom)
     {
         $this->dcroom = $dcroom;

@@ -18,7 +18,7 @@ class Projectteam
     #[ORM\ManyToOne(targetEntity: Project::class)]
     #[ORM\JoinColumn(name: 'projects_id', referencedColumnName: 'id', nullable: true)]
     private ?Project $project;
-    
+
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $itemtype;
 
@@ -57,7 +57,7 @@ class Projectteam
 
     /**
      * Get the value of project
-     */ 
+     */
     public function getProject()
     {
         return $this->project;
@@ -67,7 +67,7 @@ class Projectteam
      * Set the value of project
      *
      * @return  self
-     */ 
+     */
     public function setProject($project)
     {
         $this->project = $project;

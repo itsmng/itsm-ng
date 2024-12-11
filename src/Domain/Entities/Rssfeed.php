@@ -219,7 +219,7 @@ class Rssfeed
 
     /**
      * Get the value of profileRssfeeds
-     */ 
+     */
     public function getProfileRssfeeds()
     {
         return $this->profileRssfeeds;
@@ -229,7 +229,7 @@ class Rssfeed
      * Set the value of profileRssfeeds
      *
      * @return  self
-     */ 
+     */
     public function setProfileRssfeeds($profileRssfeeds)
     {
         $this->profileRssfeeds = $profileRssfeeds;
@@ -239,7 +239,7 @@ class Rssfeed
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -249,7 +249,7 @@ class Rssfeed
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -257,10 +257,10 @@ class Rssfeed
         return $this;
     }
 
-   
+
     /**
      * Get the value of rssfeedUsers
-     */ 
+     */
     public function getRssfeedUsers()
     {
         return $this->rssfeedUsers;
@@ -270,7 +270,7 @@ class Rssfeed
      * Set the value of rssfeedUsers
      *
      * @return  self
-     */ 
+     */
     public function setRssfeedUsers($rssfeedUsers)
     {
         $this->rssfeedUsers = $rssfeedUsers;

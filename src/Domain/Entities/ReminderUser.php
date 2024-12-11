@@ -30,7 +30,7 @@ class ReminderUser
 
     /**
      * Get the value of reminder
-     */ 
+     */
     public function getReminder()
     {
         return $this->reminder;
@@ -40,7 +40,7 @@ class ReminderUser
      * Set the value of reminder
      *
      * @return  self
-     */ 
+     */
     public function setReminder($reminder)
     {
         $this->reminder = $reminder;
@@ -50,7 +50,7 @@ class ReminderUser
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -60,7 +60,7 @@ class ReminderUser
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

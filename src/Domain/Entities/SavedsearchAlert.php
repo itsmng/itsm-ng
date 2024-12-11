@@ -120,7 +120,7 @@ class SavedsearchAlert
 
     /**
      * Get the value of savedsearch
-     */ 
+     */
     public function getSavedsearch()
     {
         return $this->savedsearch;
@@ -130,7 +130,7 @@ class SavedsearchAlert
      * Set the value of savedsearch
      *
      * @return  self
-     */ 
+     */
     public function setSavedsearch($savedsearch)
     {
         $this->savedsearch = $savedsearch;

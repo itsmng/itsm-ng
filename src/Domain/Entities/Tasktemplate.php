@@ -65,7 +65,7 @@ class Tasktemplate
     #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
     private ?Group $groupTech;
 
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -182,7 +182,7 @@ class Tasktemplate
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -192,7 +192,7 @@ class Tasktemplate
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -202,7 +202,7 @@ class Tasktemplate
 
     /**
      * Get the value of taskcategory
-     */ 
+     */
     public function getTaskcategory()
     {
         return $this->taskcategory;
@@ -212,7 +212,7 @@ class Tasktemplate
      * Set the value of taskcategory
      *
      * @return  self
-     */ 
+     */
     public function setTaskcategory($taskcategory)
     {
         $this->taskcategory = $taskcategory;
@@ -222,7 +222,7 @@ class Tasktemplate
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -232,7 +232,7 @@ class Tasktemplate
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -242,7 +242,7 @@ class Tasktemplate
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -252,7 +252,7 @@ class Tasktemplate
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;

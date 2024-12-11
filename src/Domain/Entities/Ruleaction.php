@@ -73,7 +73,7 @@ class Ruleaction
 
     /**
      * Get the value of rule
-     */ 
+     */
     public function getRule()
     {
         return $this->rule;
@@ -83,7 +83,7 @@ class Ruleaction
      * Set the value of rule
      *
      * @return  self
-     */ 
+     */
     public function setRule($rule)
     {
         $this->rule = $rule;

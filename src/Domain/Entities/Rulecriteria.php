@@ -74,7 +74,7 @@ class Rulecriteria
 
     /**
      * Get the value of rule
-     */ 
+     */
     public function getRule()
     {
         return $this->rule;
@@ -84,7 +84,7 @@ class Rulecriteria
      * Set the value of rule
      *
      * @return  self
-     */ 
+     */
     public function setRule($rule)
     {
         $this->rule = $rule;

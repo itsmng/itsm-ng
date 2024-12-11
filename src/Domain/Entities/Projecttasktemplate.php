@@ -32,7 +32,7 @@ class Projecttasktemplate
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity;
-    
+
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
@@ -286,7 +286,7 @@ class Projecttasktemplate
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -296,7 +296,7 @@ class Projecttasktemplate
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -306,7 +306,7 @@ class Projecttasktemplate
 
     /**
      * Get the value of project
-     */ 
+     */
     public function getProject()
     {
         return $this->project;
@@ -316,7 +316,7 @@ class Projecttasktemplate
      * Set the value of project
      *
      * @return  self
-     */ 
+     */
     public function setProject($project)
     {
         $this->project = $project;
@@ -326,7 +326,7 @@ class Projecttasktemplate
 
     /**
      * Get the value of projecttask
-     */ 
+     */
     public function getProjecttask()
     {
         return $this->projecttask;
@@ -336,7 +336,7 @@ class Projecttasktemplate
      * Set the value of projecttask
      *
      * @return  self
-     */ 
+     */
     public function setProjecttask($projecttask)
     {
         $this->projecttask = $projecttask;
@@ -346,7 +346,7 @@ class Projecttasktemplate
 
     /**
      * Get the value of projectstate
-     */ 
+     */
     public function getProjectstate()
     {
         return $this->projectstate;
@@ -356,7 +356,7 @@ class Projecttasktemplate
      * Set the value of projectstate
      *
      * @return  self
-     */ 
+     */
     public function setProjectstate($projectstate)
     {
         $this->projectstate = $projectstate;
@@ -366,7 +366,7 @@ class Projecttasktemplate
 
     /**
      * Get the value of projecttasktype
-     */ 
+     */
     public function getProjecttasktype()
     {
         return $this->projecttasktype;
@@ -376,7 +376,7 @@ class Projecttasktemplate
      * Set the value of projecttasktype
      *
      * @return  self
-     */ 
+     */
     public function setProjecttasktype($projecttasktype)
     {
         $this->projecttasktype = $projecttasktype;
@@ -386,7 +386,7 @@ class Projecttasktemplate
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -396,7 +396,7 @@ class Projecttasktemplate
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

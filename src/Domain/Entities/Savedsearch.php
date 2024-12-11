@@ -210,7 +210,7 @@ class Savedsearch
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -220,7 +220,7 @@ class Savedsearch
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -230,7 +230,7 @@ class Savedsearch
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -240,7 +240,7 @@ class Savedsearch
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -250,7 +250,7 @@ class Savedsearch
 
     /**
      * Get the value of savedsearchAlerts
-     */ 
+     */
     public function getSavedsearchAlerts()
     {
         return $this->savedsearchAlerts;
@@ -260,7 +260,7 @@ class Savedsearch
      * Set the value of savedsearchAlerts
      *
      * @return  self
-     */ 
+     */
     public function setSavedsearchAlerts($savedsearchAlerts)
     {
         $this->savedsearchAlerts = $savedsearchAlerts;
@@ -270,7 +270,7 @@ class Savedsearch
 
     /**
      * Get the value of savedsearchUsers
-     */ 
+     */
     public function getSavedsearchUsers()
     {
         return $this->savedsearchUsers;
@@ -280,7 +280,7 @@ class Savedsearch
      * Set the value of savedsearchUsers
      *
      * @return  self
-     */ 
+     */
     public function setSavedsearchUsers($savedsearchUsers)
     {
         $this->savedsearchUsers = $savedsearchUsers;
