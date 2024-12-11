@@ -7,6 +7,8 @@
   $(function() {
     if (typeof editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} !== 'undefined' && editor_{{attributes.id|default("ckEditorInstance" ~ rand)}}.config) {
         return;
+    } else if (!window.CKEDITOR) {
+        window.CKEDITOR = {};
     }
     ClassicEditor
       .create(document.getElementById('{{attributes.id|default("ckEditorInstance" ~ rand)}}'), {
@@ -16,6 +18,8 @@
       })
       .then(editor => {
         var editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} = editor
+        window.CKEDITOR['editor_{{attributes.id|default("ckEditorInstance" ~ rand)}}'] = editor;
+        console.log(editor_{{attributes.id|default("ckEditorInstance" ~ rand)}}, 'editor_{{attributes.id|default("ckEditorInstance" ~ rand)}}');
       })
       .catch(error => {
         console.error(error);
