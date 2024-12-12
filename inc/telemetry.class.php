@@ -45,14 +45,14 @@ class Telemetry extends CommonGLPI {
     *
     * @return array
     */
-   static public function getTelemetryInfos() {
+   static public function getTelemetryInfos(bool $hide_sensitive_data = false): array {
       $data = [
-         'glpi'   => self::grabGlpiInfos(),
+         'glpi'   => self::grabGlpiInfos($hide_sensitive_data),
          'system' => [
-            'db'           => self::grabDbInfos(),
-            'web_server'   => self::grabWebserverInfos(),
-            'php'          => self::grabPhpInfos(),
-            'os'           => self::grabOsInfos()
+            'db'           => self::grabDbInfos($hide_sensitive_data),
+            'web_server'   => self::grabWebserverInfos($hide_sensitive_data),
+            'php'          => self::grabPhpInfos($hide_sensitive_data),
+            'os'           => self::grabOsInfos($hide_sensitive_data)
          ]
       ];
 
@@ -64,12 +64,12 @@ class Telemetry extends CommonGLPI {
     *
     * @return array
     */
-   static public function grabGlpiInfos() {
+   static public function grabGlpiInfos(bool $hide_sensitive_data = false) {
       global $CFG_GLPI;
 
       $glpi = [
-         'uuid'               => self::getInstanceUuid(),
-         'version'            => ITSM_VERSION,
+         'uuid'               => $hide_sensitive_data ? 'REDACTED' : self::getInstanceUuid(),
+         'version'            => $hide_sensitive_data ? 'REDACTED' : ITSM_VERSION,
          'plugins'            => [],
          'default_language'   => $CFG_GLPI['language'],
          'install_mode'       => GLPI_INSTALL_MODE,
@@ -93,7 +93,7 @@ class Telemetry extends CommonGLPI {
       foreach ($plugins->getList(['directory', 'version']) as $plugin) {
          $glpi['plugins'][] = [
             'key'       => $plugin['directory'],
-            'version'   => $plugin['version']
+            'version'   => $hide_sensitive_data ? 'REDACTED' : $plugin['version']
          ];
       }
 
@@ -113,7 +113,7 @@ class Telemetry extends CommonGLPI {
     *
     * @return array
     */
-   static public function grabDbInfos() {
+   static public function grabDbInfos(bool $hide_sensitive_data = false) {
       global $DB;
 
       $dbinfos = $DB->getInfo();
@@ -126,7 +126,7 @@ class Telemetry extends CommonGLPI {
 
       $db = [
          'engine'    => $dbinfos['Server Software'],
-         'version'   => $dbinfos['Server Version'],
+         'version'   => $hide_sensitive_data ? 'REDACTED' : $dbinfos['Server Version'],
          'size'      => $size_res['dbsize'],
          'log_size'  => '',
          'sql_mode'  => $dbinfos['Server SQL Mode']
@@ -140,7 +140,7 @@ class Telemetry extends CommonGLPI {
     *
     * @return array
     */
-   static public function grabWebserverInfos() {
+   static public function grabWebserverInfos(bool $hide_sensitive_data = false) {
       global $CFG_GLPI;
 
       $server = [
@@ -168,7 +168,7 @@ class Telemetry extends CommonGLPI {
          $header_matches = [];
          if (preg_match('/^Server: (?<engine>[^ ]+)\/(?<version>[^ ]+)/im', $headers, $header_matches)) {
             $server['engine']  = $header_matches['engine'];
-            $server['version'] = $header_matches['version'];
+            $server['version'] = $hide_sensitive_data ? 'REDACTED' : $header_matches['version'];
          }
       }
 
@@ -180,9 +180,9 @@ class Telemetry extends CommonGLPI {
     *
     * @return array
     */
-   static public function grabPhpInfos() {
+   static public function grabPhpInfos(bool $hide_sensitive_data = false) {
       $php = [
-         'version'   => str_replace(PHP_EXTRA_VERSION, '', PHP_VERSION),
+         'version'   => $hide_sensitive_data ? 'REDACTED' : str_replace(PHP_EXTRA_VERSION, '', PHP_VERSION),
          'modules'   => get_loaded_extensions(),
          'setup'     => [
             'max_execution_time'    => ini_get('max_execution_time'),
@@ -202,7 +202,7 @@ class Telemetry extends CommonGLPI {
     *
     * @return array
     */
-   static public function grabOsInfos() {
+   static public function grabOsInfos(bool $hide_sensitive_data = false) {
       $distro = false;
       if (file_exists('/etc/redhat-release')) {
          $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/redhat-release'));
@@ -210,7 +210,7 @@ class Telemetry extends CommonGLPI {
       $os = [
          'family'       => php_uname('s'),
          'distribution' => ($distro ?: ''),
-         'version'      => php_uname('r')
+         'version'      => $hide_sensitive_data ? 'REDACTED' : php_uname('r')
       ];
       return $os;
    }
