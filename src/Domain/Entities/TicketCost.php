@@ -19,8 +19,9 @@ class TicketCost
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\ManyToOne(targetEntity: Ticket::class)]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -46,27 +47,17 @@ class TicketCost
     #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0000])]
     private $cost_material;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $budgets_id;
+    #[ORM\ManyToOne(targetEntity: Budget::class)]
+    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Budget $budgets;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTicketsId(): ?int
-    {
-        return $this->tickets_id;
-    }
-
-    public function setTicketsId(?int $tickets_id): self
-    {
-        $this->tickets_id = $tickets_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -165,28 +156,64 @@ class TicketCost
         return $this;
     }
 
-    public function getBudgetsId(): ?int
+
+    /**
+     * Get the value of ticket
+     */ 
+    public function getTicket()
     {
-        return $this->budgets_id;
+        return $this->ticket;
     }
 
-    public function setBudgetsId(?int $budgets_id): self
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */ 
+    public function setTicket($ticket)
     {
-        $this->budgets_id = $budgets_id;
+        $this->ticket = $ticket;
 
         return $this;
     }
 
-    public function getEntitiesId(): ?int
+    /**
+     * Get the value of budgets
+     */ 
+    public function getBudgets()
     {
-        return $this->entities_id;
+        return $this->budgets;
     }
 
-    public function setEntitiesId(?int $entities_id): self
+    /**
+     * Set the value of budgets
+     *
+     * @return  self
+     */ 
+    public function setBudgets($budgets)
     {
-        $this->entities_id = $entities_id;
+        $this->budgets = $budgets;
 
         return $this;
     }
 
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
 }
