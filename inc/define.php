@@ -33,7 +33,7 @@
 
 // Last version of GLPI only for plugin compatibility
 define('GLPI_VERSION', '9.5.13');
-define('ITSM_VERSION', '2.0.2');
+define('ITSM_VERSION', '2.0.3');
 if (substr(ITSM_VERSION, -4) === '-dev') {
     //for dev version
     define('ITSM_PREVER', str_replace('-dev', '', ITSM_VERSION));
