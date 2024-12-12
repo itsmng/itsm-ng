@@ -1168,7 +1168,7 @@ class CommonGLPI
                   }
                });
 
-               $(document).on('click', '[data-action]', function() {
+               $(document).on('click', '.navigationheader [data-action]', function() {
                   $('.moreactions + .dropdown-menu').hide();
 
                   var current_action = $(this).data('action');

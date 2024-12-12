@@ -190,7 +190,7 @@ class Html
     {
 
         return (is_array($value) ? array_map([__CLASS__, 'entity_decode_deep'], $value)
-            : html_entity_decode($value, ENT_QUOTES, "UTF-8"));
+            : html_entity_decode($value ?? '', ENT_QUOTES, "UTF-8"));
     }
 
 
