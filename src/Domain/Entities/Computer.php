@@ -62,8 +62,7 @@ class Computer
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
@@ -105,13 +104,13 @@ class Computer
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $states_id;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0], nullable: true)]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"], nullable: true)]
     private $ticket_tco;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $uuid;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

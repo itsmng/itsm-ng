@@ -28,11 +28,10 @@ class CertificateItem
     #[ORM\Column(type: 'string', length: 100, options: ['comment' => 'see .class.php file'])]
     private $itemtype;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
     public function getId(): ?int

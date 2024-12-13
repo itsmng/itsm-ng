@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'glpi_notimportedemails')]
 #[ORM\Index(name: 'users_id', columns: ['users_id'])]
 #[ORM\Index(name: 'mailcollectors_id', columns: ['mailcollectors_id'])]
+#[ORM\Index(name: 'date', columns: ['date'])]
 class Notimportedemail
 {
     #[ORM\Id]
@@ -24,7 +25,7 @@ class Notimportedemail
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $mailcollectors_id;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]

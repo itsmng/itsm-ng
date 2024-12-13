@@ -37,13 +37,13 @@ class Problemcost
     #[ORM\Column(type: 'integer', options:['default' => 0])]
     private $actiontime;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options:['default' => 0.0000])]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options:['default' => "0.0000"])]
     private $cost_time;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options:['default' => 0.0000])]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options:['default' => "0.0000"])]
     private $cost_fixed;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options:['default' => 0.0000])]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options:['default' => "0.0000"])]
     private $cost_material;
 
     #[ORM\Column(type: 'integer', options:['default' => 0])]

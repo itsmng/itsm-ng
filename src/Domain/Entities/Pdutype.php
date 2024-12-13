@@ -33,8 +33,7 @@ class Pdutype
     #[ORM\Column(type: 'datetime')]
     private $date_creation;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
     public function getId(): ?int

@@ -30,14 +30,13 @@ class Calendar
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $cache_duration;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
     public function getId(): ?int

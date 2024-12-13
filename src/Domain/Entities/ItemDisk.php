@@ -72,8 +72,7 @@ class ItemDisk
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $encryption_type;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime')]

@@ -35,7 +35,7 @@ class Projectcost
     #[ORM\Column(type: 'date', nullable: true)]
     private $end_date;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0000])]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
     private $cost;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]

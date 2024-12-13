@@ -59,10 +59,10 @@ class Infocom
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $immo_number;
 
-    #[ORM\Column(type: "decimal", precision: 20, scale: 4, options: ["default" => 0.0])]
+    #[ORM\Column(type: "decimal", precision: 20, scale: 4, options: ["default" =>"0.0000"])]
     private $value;
 
-    #[ORM\Column(type: "decimal", precision: 20, scale: 4, options: ["default" => 0.0])]
+    #[ORM\Column(type: "decimal", precision: 20, scale: 4, options: ["default" =>"0.0000"])]
     private $warranty_value;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
