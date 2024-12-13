@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'mode', columns: ['mode'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-
+#[ORM\Index(name: 'lastrun', columns: ['lastrun'])]
 class Crontask
 {
     #[ORM\Id]
@@ -48,7 +48,7 @@ class Crontask
     #[ORM\Column(type: 'integer', options: ['default' => 30, 'comment' => 'number of days'])]
     private $logs_lifetime;
 
-    #[ORM\Column(type: 'datetime', nullable: true, options: ['default' => 'CURRENT_TIMESTAMP', 'comment' => 'last run date'])]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $lastrun;
 
     #[ORM\Column(type: 'integer', nullable: true, options: ['comment' => 'last run return code'])]
@@ -58,10 +58,9 @@ class Crontask
     private $comment;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
-    #[ORM\Version]
     private $date_mod;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
     public function getId(): ?int

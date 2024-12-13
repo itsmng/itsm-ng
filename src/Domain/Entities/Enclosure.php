@@ -16,6 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
 #[ORM\Index(name: 'states_id', columns: ['states_id'])]
 #[ORM\Index(name: 'manufacturers_id', columns: ['manufacturers_id'])]
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
+#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 class Enclosure
 {
     #[ORM\Id]
@@ -74,11 +76,10 @@ class Enclosure
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $manufacturers_id;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
     public function getId(): ?int

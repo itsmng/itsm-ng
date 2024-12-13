@@ -101,7 +101,7 @@ class Networkequipment
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $states_id;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0], nullable: true)]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"], nullable: true)]
     private $ticket_tco;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]

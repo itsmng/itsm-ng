@@ -112,7 +112,7 @@ class Phone
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $states_id;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, nullable: true, options: ['default' => 0,0000])]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, nullable: true, options: ['default' => "0.0000"])]
     private $ticket_tco;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]

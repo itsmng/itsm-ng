@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_authmails')]
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'is_active', columns: ['is_active'])]
-
 class Authmail
 {
     #[ORM\Id]
@@ -25,9 +25,11 @@ class Authmail
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $host;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
+
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    private $date_creation;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -84,6 +86,18 @@ class Authmail
     public function setDateMod(\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->date_creation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $date_creation): self
+    {
+        $this->date_mod = $date_creation;
 
         return $this;
     }

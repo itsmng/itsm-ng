@@ -31,7 +31,6 @@ class Blacklist
     private $comment;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
-    #[ORM\Version]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime', nullable: false)]

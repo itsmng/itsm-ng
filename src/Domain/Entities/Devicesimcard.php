@@ -41,11 +41,10 @@ class Devicesimcard
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $devicesimcardtypes_id;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]

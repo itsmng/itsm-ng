@@ -223,11 +223,10 @@ class Entity
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $inquest_duration;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => '-2'])]

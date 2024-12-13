@@ -45,7 +45,7 @@ class Budget
     #[ORM\Column(type: 'date', nullable: true)]
     private $end_date;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0])]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => '0.0000'])]
     private $value;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

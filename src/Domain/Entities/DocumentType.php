@@ -33,8 +33,7 @@ class DocumentType
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $is_uploadable;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
