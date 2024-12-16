@@ -20,863 +20,863 @@ final class Version20241212100413 extends AbstractMigration
     public function up(Schema $schema): void
     {
 
-       $transformFkTables = [       
-            'glpi_appliances' => [
-                ['name' => 'A90A053DED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => 'A90A053DA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'A90A053D72B0F067', 'origin' => 'applianceenvironments_id', 'ref' => 'glpi_applianceenvironments'],
-                ['name' => 'A90A053D67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'A90A053DFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => 'A90A053DF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => 'A90A053D1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => 'A90A053DB17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_appliances_items' => [
-                ['name' => 'A2361859C592445B', 'origin' => 'appliances_id', 'ref' => 'glpi_appliances'],
-            ],
-            'glpi_authldapreplicates' => [
-                ['name' => '89F2E7A47D03EC85', 'origin' => 'authldaps_id', 'ref' => 'glpi_authldaps'],
-            ],
-            'glpi_budgets' => [
-                ['name' => 'B6985E2CED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => 'B6985E2C387998CB', 'origin' => 'budgettypes_id', 'ref' => 'glpi_budgettypes'],
-            ],
-            'glpi_businesscriticities' => [
-                ['name' => '5119F8B4FCE88FAB', 'origin' => 'businesscriticities_id', 'ref' => 'glpi_businesscriticities'],
-            ],
-            'glpi_calendars_holidays' => [
-                ['name' => '2315C8B372C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
-                ['name' => '2315C8B37C9675AB', 'origin' => 'holidays_id', 'ref' => 'glpi_holidays'],
-            ],
-            'glpi_calendarsegments' => [
-                ['name' => '8021521D72C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
-            ],
-            'glpi_cartridgeitems' => [
-                ['name' => '988DAA3DED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '988DAA3D31A4834B', 'origin' => 'cartridgeitemtypes_id', 'ref' => 'glpi_cartridgeitemtypes'],
-                ['name' => '988DAA3DA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '988DAA3DFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '988DAA3D1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_cartridgeitems_printermodels' => [
-                ['name' => '856AD7A787A366A1', 'origin' => 'cartridgeitems_id', 'ref' => 'glpi_cartridgeitems'],
-                ['name' => '856AD7A780854B45', 'origin' => 'printermodels_id', 'ref' => 'glpi_printermodels'],
-            ],
-            'glpi_cartridges' => [
-                ['name' => '3185A7C787A366A1', 'origin' => 'cartridgeitems_id', 'ref' => 'glpi_cartridgeitems'],
-                ['name' => '3185A7C7713EF9E2', 'origin' => 'printers_id', 'ref' => 'glpi_printers'],
-            ],
-            'glpi_certificates' => [
-                ['name' => 'F825F106AF5961F5', 'origin' => 'certificatetypes_id', 'ref' => 'glpi_certificatetypes'],
-                ['name' => 'F825F106FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => 'F825F1061421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => 'F825F106ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => 'F825F106A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'F825F10667B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'F825F106F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => 'F825F106B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_certificates_items' => [
-                ['name' => 'E410E24524E411BB', 'origin' => 'certificates_id', 'ref' => 'glpi_certificates'],
-            ],
-            'glpi_changecosts' => [
-                ['name' => 'F846ABCA5D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
-                ['name' => 'F846ABCA22FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
-            ],
-            'glpi_changes' => [
-                ['name' => '4A127359BB756162', 'origin' => 'users_id_recipient', 'ref' => 'glpi_users'],
-                ['name' => '4A12735927D112BD', 'origin' => 'users_id_lastupdater', 'ref' => 'glpi_users'],
-                ['name' => '4A127359EFE9C34D', 'origin' => 'itilcategories_id', 'ref' => 'glpi_itilcategories'],
-            ],
-            'glpi_changes_groups' => [
-                ['name' => 'DC2C71435D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
-                ['name' => 'DC2C7143F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_changes_items' => [
-                ['name' => '79C851F35D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
-            ],
-            'glpi_changes_problems' => [
-                ['name' => '20AE2965D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
-                ['name' => '20AE296E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
-            ],
-            'glpi_changes_suppliers' => [
-                ['name' => 'B37E56B25D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
-                ['name' => 'B37E56B2355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
-            ],
-            'glpi_changes_tickets' => [
-                ['name' => 'EBBABDAA5D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
-                ['name' => 'EBBABDAA8FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
-            ],
-            'glpi_changes_users' => [
-                ['name' => '8C551D575D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
-                ['name' => '8C551D5767B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_changetasks' => [
-                ['name' => '70399F55D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
-                ['name' => '70399F530D85233', 'origin' => 'taskcategories_id', 'ref' => 'glpi_taskcategories'],
-                ['name' => '70399F567B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '70399F58CBB3EB6', 'origin' => 'users_id_editor', 'ref' => 'glpi_users'],
-                ['name' => '70399F5FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '70399F51421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => '70399F53A064358', 'origin' => 'tasktemplates_id', 'ref' => 'glpi_tasktemplates'],
-            ],
-            'glpi_changetemplatehiddenfields' => [
-                ['name' => '71817FF964105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
-            ],
-            'glpi_changetemplatemandatoryfields' => [
-                ['name' => '45BDDDE264105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
-            ],
-            'glpi_changetemplatepredefinedfields' => [
-                ['name' => 'ECC634F464105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
-            ],
-            'glpi_changevalidations' => [
-                ['name' => 'C158C9467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'C158C945D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
-                ['name' => 'C158C94E57CE233', 'origin' => 'users_id_validate', 'ref' => 'glpi_users'],
-            ],
-            'glpi_clusters' => [
-                ['name' => 'A63CCAB5FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => 'A63CCAB51421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => 'A63CCAB5B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-                ['name' => 'A63CCAB59A4747C2', 'origin' => 'clustertypes_id', 'ref' => 'glpi_clustertypes'],
-                ['name' => 'A63CCAB5357A7B6F', 'origin' => 'autoupdatesystems_id', 'ref' => 'glpi_autoupdatesystems'],
-            ],
-            'glpi_computerantiviruses' => [
-                ['name' => '68671079F4B903A6', 'origin' => 'computers_id', 'ref' => 'glpi_computers'],
-                ['name' => '68671079A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-            ],
-            'glpi_computers' => [
-                ['name' => '293E8ED8FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '293E8ED81421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => '293E8ED8ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '293E8ED8604D0C7C', 'origin' => 'networks_id', 'ref' => 'glpi_networks'],
-                ['name' => '293E8ED866A32204', 'origin' => 'computermodels_id', 'ref' => 'glpi_computermodels'],
-                ['name' => '293E8ED89B4E6864', 'origin' => 'computertypes_id', 'ref' => 'glpi_computertypes'],
-                ['name' => '293E8ED8A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '293E8ED867B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '293E8ED8F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => '293E8ED8B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_computers_items' => [
-                ['name' => 'BCF5679DF4B903A6', 'origin' => 'computers_id', 'ref' => 'glpi_computers'],
-            ],
-            'glpi_computervirtualmachines' => [
-                ['name' => '6FDC320CF4B903A6', 'origin' => 'computers_id', 'ref' => 'glpi_computers'],
-                ['name' => '6FDC320C9280C5B3', 'origin' => 'virtualmachinestates_id', 'ref' => 'glpi_virtualmachinestates'],
-                ['name' => '6FDC320CA58A2734', 'origin' => 'virtualmachinesystems_id', 'ref' => 'glpi_virtualmachinesystems'],
-                ['name' => '6FDC320C10B10554', 'origin' => 'virtualmachinetypes_id', 'ref' => 'glpi_virtualmachinetypes'],
-            ],
-            'glpi_consumableitems' => [
-                ['name' => 'B83ADB4AED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => 'B83ADB4A1F067AC9', 'origin' => 'consumableitemtypes_id', 'ref' => 'glpi_consumableitemtypes'],
-                ['name' => 'B83ADB4AA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'B83ADB4AFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => 'B83ADB4A1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_consumables' => [
-                ['name' => 'F28618F29E324C33', 'origin' => 'consumableitems_id', 'ref' => 'glpi_consumableitems'],
-            ],
-            'glpi_contacts' => [
-                ['name' => '79F582F960D5F3AB', 'origin' => 'contacttypes_id', 'ref' => 'glpi_contacttypes'],
-                ['name' => '79F582F99CE64CF3', 'origin' => 'usertitles_id', 'ref' => 'glpi_usertitles'],
-            ],
-            'glpi_contacts_suppliers' => [
-                ['name' => '8B35180D355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
-                ['name' => '8B35180D719FB48E', 'origin' => 'contacts_id', 'ref' => 'glpi_contacts'],
-            ],
-            'glpi_contractcosts' => [
-                ['name' => '888F838124584564', 'origin' => 'contracts_id', 'ref' => 'glpi_contracts'],
-                ['name' => '888F838122FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
-            ],
-            'glpi_contracts' => [
-                ['name' => '47776DAF2ABAFE2', 'origin' => 'contracttypes_id', 'ref' => 'glpi_contracttypes'],
-                ['name' => '47776DAB17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_contracts_items' => [
-                ['name' => '5FF01F0E24584564', 'origin' => 'contracts_id', 'ref' => 'glpi_contracts'],
-            ],
-            'glpi_contracts_suppliers' => [
-                ['name' => '78E40104355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
-                ['name' => '78E4010424584564', 'origin' => 'contracts_id', 'ref' => 'glpi_contracts'],
-            ],
-            'glpi_crontasklogs' => [
-                ['name' => 'F45D647FB01F6436', 'origin' => 'crontasks_id', 'ref' => 'glpi_crontasks'],
-                ['name' => 'F45D647F2D2CC539', 'origin' => 'crontasklogs_id', 'ref' => 'glpi_crontasklogs'],
-            ],
-            'glpi_dashboards' => [
-                ['name' => '7331D499B26949C', 'origin' => 'profileId', 'ref' => 'glpi_profiles'],
-                ['name' => '7331D4964B64DCC', 'origin' => 'userId', 'ref' => 'glpi_users'],
-            ],
-            'glpi_datacenters' => [
-                ['name' => 'D729C869ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-            ],
-            'glpi_dcrooms' => [
-                ['name' => 'BC44EC93ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => 'BC44EC93EB7A8A62', 'origin' => 'datacenters_id', 'ref' => 'glpi_datacenters'],
-            ],
-            'glpi_devicebatteries' => [
-                ['name' => 'A652C99DA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'A652C99D6F236F43', 'origin' => 'devicebatterytypes_id', 'ref' => 'glpi_devicebatterytypes'],
-                ['name' => 'A652C99DC35DFA68', 'origin' => 'devicebatterymodels_id', 'ref' => 'glpi_devicebatterymodels'],
-            ],
-            'glpi_devicecases' => [
-                ['name' => 'A1AE63687964C119', 'origin' => 'devicecasetypes_id', 'ref' => 'glpi_devicecasetypes'],
-                ['name' => 'A1AE6368A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'A1AE636848F5052C', 'origin' => 'devicecasemodels_id', 'ref' => 'glpi_devicecasemodels'],
-            ],
-            'glpi_devicecontrols' => [
-                ['name' => '8FBFCEDFA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '8FBFCEDFD08D9B0', 'origin' => 'interfacetypes_id', 'ref' => 'glpi_interfacetypes'],
-                ['name' => '8FBFCEDFE8A65268', 'origin' => 'devicecontrolmodels_id', 'ref' => 'glpi_devicecontrolmodels'],
-            ],
-            'glpi_devicedrives' => [
-                ['name' => '5FDF4AEDA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '5FDF4AEDD08D9B0', 'origin' => 'interfacetypes_id', 'ref' => 'glpi_interfacetypes'],
-                ['name' => '5FDF4AED6B59CD4B', 'origin' => 'devicedrivemodels_id', 'ref' => 'glpi_devicedrivemodels'],
-            ],
-            'glpi_devicefirmwares' => [
-                ['name' => '27AD954FA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '27AD954FFE693480', 'origin' => 'devicefirmwaretypes_id', 'ref' => 'glpi_devicefirmwaretypes'],
-                ['name' => '27AD954FC1A12339', 'origin' => 'devicefirmwaremodels_id', 'ref' => 'glpi_devicefirmwaremodels'],
-            ],
-            'glpi_devicegenerics' => [
-                ['name' => '711041243D805C04', 'origin' => 'devicegenerictypes_id', 'ref' => 'glpi_devicegenerictypes'],
-                ['name' => '71104124A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '71104124ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '71104124B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-                ['name' => '711041242BB78D68', 'origin' => 'devicegenericmodels_id', 'ref' => 'glpi_devicegenericmodels'],
-            ],
-            'glpi_devicegraphiccards' => [
-                ['name' => '13F4C69ED08D9B0', 'origin' => 'interfacetypes_id', 'ref' => 'glpi_interfacetypes'],
-                ['name' => '13F4C69EA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '13F4C69EE40E4F0B', 'origin' => 'devicegraphiccardmodels_id', 'ref' => 'glpi_devicegraphiccardmodels'],
-            ],
-            'glpi_deviceharddrives' => [
-                ['name' => 'EA210CE0D08D9B0', 'origin' => 'interfacetypes_id', 'ref' => 'glpi_interfacetypes'],
-                ['name' => 'EA210CE0A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'EA210CE06BF9C8E6', 'origin' => 'deviceharddrivemodels_id', 'ref' => 'glpi_deviceharddrivemodels'],
-            ],
-            'glpi_devicememories' => [
-                ['name' => '7AAE9065A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '7AAE9065974BFB7E', 'origin' => 'devicememorytypes_id', 'ref' => 'glpi_devicememorytypes'],
-                ['name' => '7AAE90659BCDDEED', 'origin' => 'devicememorymodels_id', 'ref' => 'glpi_devicememorymodels'],
-            ],
-            'glpi_devicemotherboards' => [
-                ['name' => 'BA4EEEB7A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'BA4EEEB738038C79', 'origin' => 'devicemotherboardmodels_id', 'ref' => 'glpi_devicemotherboardmodels'],
-            ],
-            'glpi_devicenetworkcards' => [
-                ['name' => '2F394962A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '2F394962FB338CF8', 'origin' => 'devicenetworkcardmodels_id', 'ref' => 'glpi_devicenetworkcardmodels'],
-            ],
-            'glpi_devicepcis' => [
-                ['name' => '754B0561A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '754B0561FB338CF8', 'origin' => 'devicenetworkcardmodels_id', 'ref' => 'glpi_devicenetworkcardmodels'],
-                ['name' => '754B0561A809D5C7', 'origin' => 'devicepcimodels_id', 'ref' => 'glpi_devicepcimodels'],
-            ],
-            'glpi_devicepowersupplies' => [
-                ['name' => '7C7209EDA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '7C7209ED1DECE3C7', 'origin' => 'devicepowersupplymodels_id', 'ref' => 'glpi_devicepowersupplymodels'],
-            ],
-            'glpi_deviceprocessors' => [
-                ['name' => 'B6E0F8BBA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'B6E0F8BBD4D3D667', 'origin' => 'deviceprocessormodels_id', 'ref' => 'glpi_deviceprocessormodels'],
-            ],
-            'glpi_devicesensors' => [
-                ['name' => 'E8328652B91582EB', 'origin' => 'devicesensortypes_id', 'ref' => 'glpi_devicesensortypes'],
-                ['name' => 'E83286521B86E75F', 'origin' => 'devicesensormodels_id', 'ref' => 'glpi_devicesensormodels'],
-                ['name' => 'E8328652A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'E8328652ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => 'E8328652B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_devicesimcards' => [
-                ['name' => '5A0BB1A8A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '5A0BB1A87A74B37', 'origin' => 'devicesimcardtypes_id', 'ref' => 'glpi_devicesimcardtypes'],
-            ],
-            'glpi_devicesoundcards' => [
-                ['name' => 'D53EF47AA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'D53EF47A53D98B78', 'origin' => 'devicesoundcardmodels_id', 'ref' => 'glpi_devicesoundcardmodels'],
-            ],
-            'glpi_displaypreferences' => [
-                ['name' => '67F2BE767B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_documentcategories' => [
-                ['name' => '44E98B1F55AC576F', 'origin' => 'documentcategories_id', 'ref' => 'glpi_documentcategories'],
-            ],
-            'glpi_documents' => [
-                ['name' => 'AF97AD2155AC576F', 'origin' => 'documentcategories_id', 'ref' => 'glpi_documentcategories'],
-                ['name' => 'AF97AD2167B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'AF97AD218FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
-            ],
-            'glpi_documents_items' => [
-                ['name' => 'DDD24B255F0F2752', 'origin' => 'documents_id', 'ref' => 'glpi_documents'],
-                ['name' => 'DDD24B2567B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_domainrecords' => [
-                ['name' => '180F59563700F4DC', 'origin' => 'domains_id', 'ref' => 'glpi_domains'],
-                ['name' => '180F595671E56292', 'origin' => 'domainrecordtypes_id', 'ref' => 'glpi_domainrecordtypes'],
-                ['name' => '180F5956FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '180F59561421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_domains' => [
-                ['name' => 'E64974F9182DCB32', 'origin' => 'domaintypes_id', 'ref' => 'glpi_domaintypes'],
-                ['name' => 'E64974F9FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => 'E64974F91421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_domains_items' => [
-                ['name' => '1E9AB0AA3700F4DC', 'origin' => 'domains_id', 'ref' => 'glpi_domains'],
-                ['name' => '1E9AB0AA4360E635', 'origin' => 'domainrelations_id', 'ref' => 'glpi_domainrelations'],
-            ],
-            'glpi_enclosures' => [
-                ['name' => '6052344AED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '6052344A8ED84E80', 'origin' => 'enclosuremodels_id', 'ref' => 'glpi_enclosuremodels'],
-                ['name' => '6052344AFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '6052344A1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => '6052344AB17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-                ['name' => '6052344AA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-            ],
-            'glpi_entities' => [
-                ['name' => '1A59F36F7D03EC85', 'origin' => 'authldaps_id', 'ref' => 'glpi_authldaps'],
-                ['name' => '1A59F36F72C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
-                ['name' => '1A59F36F10E3E815', 'origin' => 'tickettemplates_id', 'ref' => 'glpi_tickettemplates'],
-                ['name' => '1A59F36F64105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
-                ['name' => '1A59F36F7A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
-                ['name' => '1A59F36F16010B6F', 'origin' => 'entities_id_software', 'ref' => 'glpi_entities'],
-            ],
-            'glpi_entities_knowbaseitems' => [
-                ['name' => '30391006D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
-            ],
-            'glpi_entities_reminders' => [
-                ['name' => '265E9306C7C7BF28', 'origin' => 'reminders_id', 'ref' => 'glpi_reminders'],
-            ],
-            'glpi_entities_rssfeeds' => [
-                ['name' => '8F946B4A2920D1F', 'origin' => 'rssfeeds_id', 'ref' => 'glpi_rssfeeds'],
-            ],
-            'glpi_groups' => [
-                ['name' => '7286AF61F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_groups_knowbaseitems' => [
-                ['name' => '9F9797EA6D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
-                ['name' => '9F9797EAF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_groups_problems' => [
-                ['name' => '35FF34E0E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
-                ['name' => '35FF34E0F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_groups_reminders' => [
-                ['name' => 'CB9577E5C7C7BF28', 'origin' => 'reminders_id', 'ref' => 'glpi_reminders'],
-                ['name' => 'CB9577E5F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_groups_rssfeeds' => [
-                ['name' => 'FCF3A8CA2920D1F', 'origin' => 'rssfeeds_id', 'ref' => 'glpi_rssfeeds'],
-                ['name' => 'FCF3A8CAF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_groups_tickets' => [
-                ['name' => 'C6573B418FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
-                ['name' => 'C6573B41F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_groups_users' => [
-                ['name' => '3023C81467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '3023C814F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_infocoms' => [
-                ['name' => '8D32298C355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
-                ['name' => '8D32298C22FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
-                ['name' => '8D32298CFCE88FAB', 'origin' => 'businesscriticities_id', 'ref' => 'glpi_businesscriticities'],
-            ],
-            'glpi_ipaddresses_ipnetworks' => [
-                ['name' => '107118A965020FC5', 'origin' => 'ipaddresses_id', 'ref' => 'glpi_ipaddresses'],
-                ['name' => '107118A9A992AA50', 'origin' => 'ipnetworks_id', 'ref' => 'glpi_ipnetworks'],
-            ],
-            'glpi_ipnetworks' => [
-                ['name' => '2D47D3C8A992AA50', 'origin' => 'ipnetworks_id', 'ref' => 'glpi_ipnetworks'],
-            ],
-            'glpi_ipnetworks_vlans' => [
-                ['name' => '35A7AD8AA992AA50', 'origin' => 'ipnetworks_id', 'ref' => 'glpi_ipnetworks'],
-                ['name' => '35A7AD8A462B676C', 'origin' => 'vlans_id', 'ref' => 'glpi_vlans'],
-            ],
-            'glpi_itilcategories' => [
-                ['name' => '349D19C4EFE9C34D', 'origin' => 'itilcategories_id', 'ref' => 'glpi_itilcategories'],
-                ['name' => '349D19C4551BC90F', 'origin' => 'knowbaseitemcategories_id', 'ref' => 'glpi_knowbaseitemcategories'],
-                ['name' => '349D19C467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '349D19C4F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => '349D19C4943F6381', 'origin' => 'tickettemplates_id_incident', 'ref' => 'glpi_tickettemplates'],
-                ['name' => '349D19C44B225EE6', 'origin' => 'tickettemplates_id_demand', 'ref' => 'glpi_tickettemplates'],
-                ['name' => '349D19C464105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
-                ['name' => '349D19C47A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
-            ],
-            'glpi_itilfollowups' => [
-                ['name' => '1FCFA25D67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '1FCFA25D8CBB3EB6', 'origin' => 'users_id_editor', 'ref' => 'glpi_users'],
-                ['name' => '1FCFA25DD0DEA07D', 'origin' => 'requesttypes_id', 'ref' => 'glpi_requesttypes'],
-            ],
-            'glpi_itilfollowuptemplates' => [
-                ['name' => '3934C13BD0DEA07D', 'origin' => 'requesttypes_id', 'ref' => 'glpi_requesttypes'],
-            ],
-            'glpi_itils_projects' => [
-                ['name' => '64C0EB2B1EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
-            ],
-            'glpi_itilsolutions' => [
-                ['name' => 'BF4769765E58E090', 'origin' => 'solutiontypes_id', 'ref' => 'glpi_solutiontypes'],
-                ['name' => 'BF47697667B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'BF4769768CBB3EB6', 'origin' => 'users_id_editor', 'ref' => 'glpi_users'],
-                ['name' => 'BF476976B18E454C', 'origin' => 'users_id_approval', 'ref' => 'glpi_users'],
-                ['name' => 'BF476976251F6A08', 'origin' => 'itilfollowups_id', 'ref' => 'glpi_itilfollowups'],
-            ],
-            'glpi_knowbaseitems' => [
-                ['name' => '2E07C924551BC90F', 'origin' => 'knowbaseitemcategories_id', 'ref' => 'glpi_knowbaseitemcategories'],
-                ['name' => '2E07C92467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_knowbaseitems_comments' => [
-                ['name' => '33AB06316D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
-                ['name' => '33AB063167B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_knowbaseitems_profiles' => [
-                ['name' => 'E705152B6D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
-                ['name' => 'E705152B22077C89', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
-            ],
-            'glpi_knowbaseitems_revisions' => [
-                ['name' => '3B8DEF96D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
-            ],
-            'glpi_knowbaseitems_users' => [
-                ['name' => '4987D7AC6D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
-                ['name' => '4987D7AC67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_knowbaseitemtranslations' => [
-                ['name' => 'BF433A936D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
-                ['name' => 'BF433A9367B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_lines' => [
-                ['name' => 'AC635CC067B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'AC635CC0F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => 'AC635CC0C12D38F2', 'origin' => 'lineoperators_id', 'ref' => 'glpi_lineoperators'],
-                ['name' => 'AC635CC0ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => 'AC635CC0B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-                ['name' => 'AC635CC04F5E534D', 'origin' => 'linetypes_id', 'ref' => 'glpi_linetypes'],
-            ],
-            'glpi_locations' => [
-                ['name' => '1AC19513ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-            ],
-            'glpi_monitors' => [
-                ['name' => 'CC883AB7FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => 'CC883AB71421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => 'CC883AB7ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => 'CC883AB7A996F641', 'origin' => 'monitortypes_id', 'ref' => 'glpi_monitortypes'],
-                ['name' => 'CC883AB72D952EDD', 'origin' => 'monitormodels_id', 'ref' => 'glpi_monitormodels'],
-                ['name' => 'CC883AB7A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'CC883AB767B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'CC883AB7F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => 'CC883AB7B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_netpoints' => [
-                ['name' => '69DBE45CED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-            ],
-            'glpi_networkaliases' => [
-                ['name' => '4F9E21DC584BEB4F', 'origin' => 'networknames_id', 'ref' => 'glpi_networknames'],
-                ['name' => '4F9E21DC6C543AFA', 'origin' => 'fqdns_id', 'ref' => 'glpi_fqdns'],
-            ],
-            'glpi_networkequipments' => [
-                ['name' => 'AFE59A84FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => 'AFE59A841421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => 'AFE59A84ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => 'AFE59A84604D0C7C', 'origin' => 'networks_id', 'ref' => 'glpi_networks'],
-                ['name' => 'AFE59A8473C51A8B', 'origin' => 'networkequipmenttypes_id', 'ref' => 'glpi_networkequipmenttypes'],
-                ['name' => 'AFE59A8456FE569F', 'origin' => 'networkequipmentmodels_id', 'ref' => 'glpi_networkequipmentmodels'],
-                ['name' => 'AFE59A84A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'AFE59A8467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'AFE59A84F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => 'AFE59A84B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_networknames' => [
-                ['name' => 'A148F0756C543AFA', 'origin' => 'fqdns_id', 'ref' => 'glpi_fqdns'],
-            ],
-            'glpi_networkportaggregates' => [
-                ['name' => '88867CD3CE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
-                ['name' => '88867CD39E2F9770', 'origin' => 'networkports_id_list', 'ref' => 'glpi_networkports'],
-            ],
-            'glpi_networkportaliases' => [
-                ['name' => '1ADCE793CE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
-                ['name' => '1ADCE793A2DF6591', 'origin' => 'networkports_id_alias', 'ref' => 'glpi_networkports'],
-            ],
-            'glpi_networkportdialups' => [
-                ['name' => 'E90B503DCE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
-            ],
-            'glpi_networkportethernets' => [
-                ['name' => '9A1A7916CE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
-                ['name' => '9A1A79165DF72560', 'origin' => 'netpoints_id', 'ref' => 'glpi_netpoints'],
-            ],
-            'glpi_networkportfiberchannels' => [
-                ['name' => 'C62BE585CE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
-                ['name' => 'C62BE5855DF72560', 'origin' => 'netpoints_id', 'ref' => 'glpi_netpoints'],
-            ],
-            'glpi_networkportlocals' => [
-                ['name' => 'A454ACE4CE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
-            ],
-            'glpi_networkports_networkports' => [
-                ['name' => 'DF0512CAF88ABD1B', 'origin' => 'networkports_id_1', 'ref' => 'glpi_networkports'],
-                ['name' => 'DF0512CA6183ECA1', 'origin' => 'networkports_id_2', 'ref' => 'glpi_networkports'],
-            ],
-            'glpi_networkports_vlans' => [
-                ['name' => '84FF692CCE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
-                ['name' => '84FF692C462B676C', 'origin' => 'vlans_id', 'ref' => 'glpi_vlans'],
-            ],
-            'glpi_networkportwifis' => [
-                ['name' => 'FB43456ACE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
-                ['name' => 'FB43456A782248B2', 'origin' => 'wifinetworks_id', 'ref' => 'glpi_wifinetworks'],
-                ['name' => 'FB43456A4D4D852B', 'origin' => 'networkportwifis_id', 'ref' => 'glpi_networkportwifis'],
-            ],
-            'glpi_notepads' => [
-                ['name' => 'BCDEFE2267B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'BCDEFE2227D112BD', 'origin' => 'users_id_lastupdater', 'ref' => 'glpi_users'],
-            ],
-            'glpi_notifications_notificationtemplates' => [
-                ['name' => '45FE608ED4BE081', 'origin' => 'notifications_id', 'ref' => 'glpi_notifications'],
-                ['name' => '45FE608EA9E8DD2B', 'origin' => 'notificationtemplates_id', 'ref' => 'glpi_notificationtemplates'],
-            ],
-            'glpi_notificationtargets' => [
-                ['name' => '9E40A2B1D4BE081', 'origin' => 'notifications_id', 'ref' => 'glpi_notifications'],
-            ],
-            'glpi_notificationtemplatetranslations' => [
-                ['name' => '8F8C3CD6A9E8DD2B', 'origin' => 'notificationtemplates_id', 'ref' => 'glpi_notificationtemplates'],
-            ],
-            'glpi_notimportedemails' => [
-                ['name' => '36514841F9E7A2C', 'origin' => 'mailcollectors_id', 'ref' => 'glpi_mailcollectors'],
-                ['name' => '365148467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_objectlocks' => [
-                ['name' => '55A8E45D67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_olalevelactions' => [
-                ['name' => '4ABB859EC6D702C', 'origin' => 'olalevels_id', 'ref' => 'glpi_olalevels'],
-            ],
-            'glpi_olalevelcriterias' => [
-                ['name' => 'E04BD147C6D702C', 'origin' => 'olalevels_id', 'ref' => 'glpi_olalevels'],
-            ],
-            'glpi_olalevels' => [
-                ['name' => 'EC99B26DDB7C61FE', 'origin' => 'olas_id', 'ref' => 'glpi_olas'],
-            ],
-            'glpi_olalevels_tickets' => [
-                ['name' => 'B47FA3F8FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
-                ['name' => 'B47FA3FC6D702C', 'origin' => 'olalevels_id', 'ref' => 'glpi_olalevels'],
-            ],
-            'glpi_olas' => [
-                ['name' => 'B7FD34E572C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
-                ['name' => 'B7FD34E5BEF27A45', 'origin' => 'slms_id', 'ref' => 'glpi_slms'],
-            ],
-            'glpi_operatingsystemkernelversions' => [
-                ['name' => '69A5AEB9340E0989', 'origin' => 'operatingsystemkernels_id', 'ref' => 'glpi_operatingsystemkernels'],
-            ],
-            'glpi_passivedcequipments' => [
-                ['name' => '3CF108C6ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '3CF108C68DA5A79E', 'origin' => 'passivedcequipmentmodels_id', 'ref' => 'glpi_passivedcequipmentmodels'],
-                ['name' => '3CF108C693FDCDA1', 'origin' => 'passivedcequipmenttypes_id', 'ref' => 'glpi_passivedcequipmenttypes'],
-                ['name' => '3CF108C6FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '3CF108C61421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => '3CF108C6B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-                ['name' => '3CF108C6A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-            ],
-            'glpi_pdus' => [
-                ['name' => '9F3AF5C1ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '9F3AF5C1909D471A', 'origin' => 'pdumodels_id', 'ref' => 'glpi_pdumodels'],
-                ['name' => '9F3AF5C1FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '9F3AF5C11421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => '9F3AF5C1B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-                ['name' => '9F3AF5C1A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '9F3AF5C11C0D2DB1', 'origin' => 'pdutypes_id', 'ref' => 'glpi_pdutypes'],
-            ],
-            'glpi_pdus_plugs' => [
-                ['name' => '460B319C15134C17', 'origin' => 'plugs_id', 'ref' => 'glpi_plugs'],
-                ['name' => '460B319C33D93EF6', 'origin' => 'pdus_id', 'ref' => 'glpi_pdus'],
-            ],
-            'glpi_pdus_racks' => [
-                ['name' => '7ABF2AEF269E262D', 'origin' => 'racks_id', 'ref' => 'glpi_racks'],
-                ['name' => '7ABF2AEF33D93EF6', 'origin' => 'pdus_id', 'ref' => 'glpi_pdus'],
-            ],
-            'glpi_peripherals' => [
-                ['name' => 'B49D126FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => 'B49D1261421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => 'B49D126ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => 'B49D12682709FED', 'origin' => 'peripheraltypes_id', 'ref' => 'glpi_peripheraltypes'],
-                ['name' => 'B49D126F2DE2777', 'origin' => 'peripheralmodels_id', 'ref' => 'glpi_peripheralmodels'],
-                ['name' => 'B49D126A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => 'B49D12667B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'B49D126F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => 'B49D126B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_phones' => [
-                ['name' => '61C3B8E4FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '61C3B8E41421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => '61C3B8E4ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '61C3B8E46AB85E18', 'origin' => 'phonetypes_id', 'ref' => 'glpi_phonetypes'],
-                ['name' => '61C3B8E43FE1E925', 'origin' => 'phonemodels_id', 'ref' => 'glpi_phonemodels'],
-                ['name' => '61C3B8E4EE911589', 'origin' => 'phonepowersupplies_id', 'ref' => 'glpi_phonepowersupplies'],
-                ['name' => '61C3B8E4A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '61C3B8E467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '61C3B8E4F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => '61C3B8E4B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_planningexternalevents' => [
-                ['name' => '544F3E8E67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '544F3E8ED5B73BE', 'origin' => 'users_id_guests', 'ref' => 'glpi_users'],
-                ['name' => '544F3E8EF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => '544F3E8E141A4D45', 'origin' => 'planningeventcategories_id', 'ref' => 'glpi_planningeventcategories'],
-            ],
-            'glpi_planningexternaleventtemplates' => [
-                ['name' => 'A85DD10C141A4D45', 'origin' => 'planningeventcategories_id', 'ref' => 'glpi_planningeventcategories'],
-            ],
-            'glpi_planningrecalls' => [
-                ['name' => '3BBA429167B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_printers' => [
-                ['name' => '8F8D8A3DFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '8F8D8A3D1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => '8F8D8A3DED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '8F8D8A3D604D0C7C', 'origin' => 'networks_id', 'ref' => 'glpi_networks'],
-                ['name' => '8F8D8A3DDE7B282B', 'origin' => 'printertypes_id', 'ref' => 'glpi_printertypes'],
-                ['name' => '8F8D8A3D80854B45', 'origin' => 'printermodels_id', 'ref' => 'glpi_printermodels'],
-                ['name' => '8F8D8A3DA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '8F8D8A3D67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '8F8D8A3DF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => '8F8D8A3DB17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_problemcosts' => [
-                ['name' => '5D343AA8E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
-                ['name' => '5D343AA822FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
-            ],
-            'glpi_problems' => [
-                ['name' => 'C4D3F5CFBB756162', 'origin' => 'users_id_recipient', 'ref' => 'glpi_users'],
-                ['name' => 'C4D3F5CF27D112BD', 'origin' => 'users_id_lastupdater', 'ref' => 'glpi_users'],
-                ['name' => 'C4D3F5CFEFE9C34D', 'origin' => 'itilcategories_id', 'ref' => 'glpi_itilcategories'],
-            ],
-            'glpi_problems_suppliers' => [
-                ['name' => '4A101DFE30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
-                ['name' => '4A101DF355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
-            ],
-            'glpi_problems_tickets' => [
-                ['name' => '3DF11CF6E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
-                ['name' => '3DF11CF68FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
-            ],
-            'glpi_problems_users' => [
-                ['name' => '5C9612D2E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
-                ['name' => '5C9612D267B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_problemtasks' => [
-                ['name' => 'A2710897E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
-                ['name' => 'A271089730D85233', 'origin' => 'taskcategories_id', 'ref' => 'glpi_taskcategories'],
-                ['name' => 'A271089767B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => 'A27108978CBB3EB6', 'origin' => 'users_id_editor', 'ref' => 'glpi_users'],
-                ['name' => 'A2710897FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => 'A27108971421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => 'A27108973A064358', 'origin' => 'tasktemplates_id', 'ref' => 'glpi_tasktemplates'],
-            ],
-            'glpi_problemtemplatehiddenfields' => [
-                ['name' => 'D90AB3B47A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
-            ],
-            'glpi_problemtemplatemandatoryfields' => [
-                ['name' => '20DA01337A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
-            ],
-            'glpi_problemtemplatepredefinedfields' => [
-                ['name' => '1D77B16A7A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
-            ],
-            'glpi_profilerights' => [
-                ['name' => '6E4E481722077C89', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
-            ],
-            'glpi_profiles' => [
-                ['name' => 'C18512BA10E3E815', 'origin' => 'tickettemplates_id', 'ref' => 'glpi_tickettemplates'],
-                ['name' => 'C18512BA64105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
-                ['name' => 'C18512BA7A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
-            ],
-            'glpi_profiles_reminders' => [
-                ['name' => '4A5D764FC7C7BF28', 'origin' => 'reminders_id', 'ref' => 'glpi_reminders'],
-                ['name' => '4A5D764F22077C89', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
-            ],
-            'glpi_profiles_rssfeeds' => [
-                ['name' => '8AE4CF1E2920D1F', 'origin' => 'rssfeeds_id', 'ref' => 'glpi_rssfeeds'],
-                ['name' => '8AE4CF1E22077C89', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
-            ],
-            'glpi_profiles_users' => [
-                ['name' => '752007FA67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '752007FA22077C89', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
-            ],
-            'glpi_projectcosts' => [
-                ['name' => 'BEAAE5F21EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
-                ['name' => 'BEAAE5F222FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
-            ],
-            'glpi_projects' => [
-                ['name' => '1626242E1EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
-                ['name' => '1626242E18995984', 'origin' => 'projectstates_id', 'ref' => 'glpi_projectstates'],
-                ['name' => '1626242E6CE4DE4F', 'origin' => 'projecttypes_id', 'ref' => 'glpi_projecttypes'],
-                ['name' => '1626242E67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '1626242EF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_projecttasks' => [
-                ['name' => '41EFD7CD1EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
-                ['name' => '41EFD7CD171C029', 'origin' => 'projecttasks_id', 'ref' => 'glpi_projecttasks'],
-                ['name' => '41EFD7CD18995984', 'origin' => 'projectstates_id', 'ref' => 'glpi_projectstates'],
-                ['name' => '41EFD7CD7369BDC5', 'origin' => 'projecttasktypes_id', 'ref' => 'glpi_projecttasktypes'],
-                ['name' => '41EFD7CD67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '41EFD7CD7FECD144', 'origin' => 'projecttasktemplates_id', 'ref' => 'glpi_projecttasktemplates'],
-            ],
-            'glpi_projecttasks_tickets' => [
-                ['name' => '2D48CB0A8FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
-                ['name' => '2D48CB0A171C029', 'origin' => 'projecttasks_id', 'ref' => 'glpi_projecttasks'],
-            ],
-            'glpi_projecttaskteams' => [
-                ['name' => '1B0A1B0D171C029', 'origin' => 'projecttasks_id', 'ref' => 'glpi_projecttasks'],
-            ],
-            'glpi_projecttasktemplates' => [
-                ['name' => '286BFEDA1EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
-                ['name' => '286BFEDA171C029', 'origin' => 'projecttasks_id', 'ref' => 'glpi_projecttasks'],
-                ['name' => '286BFEDA18995984', 'origin' => 'projectstates_id', 'ref' => 'glpi_projectstates'],
-                ['name' => '286BFEDA7369BDC5', 'origin' => 'projecttasktypes_id', 'ref' => 'glpi_projecttasktypes'],
-                ['name' => '286BFEDA67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_projectteams' => [
-                ['name' => '877590021EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
-            ],
-            'glpi_queuedchats' => [
-                ['name' => '7E072DC2A9E8DD2B', 'origin' => 'notificationtemplates_id', 'ref' => 'glpi_notificationtemplates'],
-                ['name' => '7E072DC2ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '7E072DC2F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-                ['name' => '7E072DC2EFE9C34D', 'origin' => 'itilcategories_id', 'ref' => 'glpi_itilcategories'],
-            ],
-            'glpi_queuednotifications' => [
-                ['name' => 'FDE96054A9E8DD2B', 'origin' => 'notificationtemplates_id', 'ref' => 'glpi_notificationtemplates'],
-            ],
-            'glpi_racks' => [
-                ['name' => '205CE311ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '205CE311B9750B73', 'origin' => 'rackmodels_id', 'ref' => 'glpi_rackmodels'],
-                ['name' => '205CE311A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '205CE3112D88DCC8', 'origin' => 'racktypes_id', 'ref' => 'glpi_racktypes'],
-                ['name' => '205CE311B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-                ['name' => '205CE311FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '205CE3111421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => '205CE311B569C6DF', 'origin' => 'dcrooms_id', 'ref' => 'glpi_dcrooms'],
-            ],
-            'glpi_reminders' => [
-                ['name' => '60B5667D67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_reminders_users' => [
-                ['name' => '5D0EA00FC7C7BF28', 'origin' => 'reminders_id', 'ref' => 'glpi_reminders'],
-                ['name' => '5D0EA00F67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_remindertranslations' => [
-                ['name' => 'BE66B0AAC7C7BF28', 'origin' => 'reminders_id', 'ref' => 'glpi_reminders'],
-                ['name' => 'BE66B0AA67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_reservations' => [
-                ['name' => '754EA860786DF47C', 'origin' => 'reservationitems_id', 'ref' => 'glpi_reservationitems'],
-                ['name' => '754EA86067B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_rssfeeds' => [
-                ['name' => 'DDF69E567B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_rssfeeds_users' => [
-                ['name' => '3AFFECE42920D1F', 'origin' => 'rssfeeds_id', 'ref' => 'glpi_rssfeeds'],
-                ['name' => '3AFFECE467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_ruleactions' => [
-                ['name' => 'E78233EFB699244', 'origin' => 'rules_id', 'ref' => 'glpi_rules'],
-            ],
-            'glpi_rulecriterias' => [
-                ['name' => '71F92FB0FB699244', 'origin' => 'rules_id', 'ref' => 'glpi_rules'],
-            ],
-            'glpi_savedsearches' => [
-                ['name' => '8C93FCA967B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-            ],
-            'glpi_savedsearches_alerts' => [
-                ['name' => '8F033C74D137DC92', 'origin' => 'savedsearches_id', 'ref' => 'glpi_savedsearches'],
-            ],
-            'glpi_savedsearches_users' => [
-                ['name' => '6AB618A167B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '6AB618A1D137DC92', 'origin' => 'savedsearches_id', 'ref' => 'glpi_savedsearches'],
-            ],
-            'glpi_slalevelactions' => [
-                ['name' => '4B2CB33557FD051', 'origin' => 'slalevels_id', 'ref' => 'glpi_slalevels'],
-            ],
-            'glpi_slalevelcriterias' => [
-                ['name' => '6202206B57FD051', 'origin' => 'slalevels_id', 'ref' => 'glpi_slalevels'],
-            ],
-            'glpi_slalevels' => [
-                ['name' => 'A66D03087B029744', 'origin' => 'slas_id', 'ref' => 'glpi_slas'],
-            ],
-            'glpi_slalevels_tickets' => [
-                ['name' => '890E0B138FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
-                ['name' => '890E0B1357FD051', 'origin' => 'slalevels_id', 'ref' => 'glpi_slalevels'],
-            ],
-            'glpi_slas' => [
-                ['name' => 'AD32DCC272C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
-                ['name' => 'AD32DCC2BEF27A45', 'origin' => 'slms_id', 'ref' => 'glpi_slms'],
-            ],
-            'glpi_slms' => [
-                ['name' => '18793CE72C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
-            ],
-            'glpi_softwarecategories' => [
-                ['name' => '5A90EC8AAD111992', 'origin' => 'softwarecategories_id', 'ref' => 'glpi_softwarecategories'],
-            ],
-            'glpi_softwarelicenses' => [
-                ['name' => '8DF16B58E67D8904', 'origin' => 'softwares_id', 'ref' => 'glpi_softwares'],
-                ['name' => '8DF16B5844CA6F2F', 'origin' => 'softwarelicenses_id', 'ref' => 'glpi_softwarelicenses'],
-                ['name' => '8DF16B5885A13A28', 'origin' => 'softwarelicensetypes_id', 'ref' => 'glpi_softwarelicensetypes'],
-                ['name' => '8DF16B586C46BCBA', 'origin' => 'softwareversions_id_buy', 'ref' => 'glpi_softwareversions'],
-                ['name' => '8DF16B583774F286', 'origin' => 'softwareversions_id_use', 'ref' => 'glpi_softwareversions'],
-                ['name' => '8DF16B58ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '8DF16B58FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '8DF16B5867B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '8DF16B581421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => '8DF16B58B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-                ['name' => '8DF16B58A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-            ],
-            'glpi_softwarelicensetypes' => [
-                ['name' => 'D4B117C385A13A28', 'origin' => 'softwarelicensetypes_id', 'ref' => 'glpi_softwarelicensetypes'],
-            ],
-            'glpi_softwares' => [
-                ['name' => '1D851FEBED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-                ['name' => '1D851FEBFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '1D851FEB1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-                ['name' => '1D851FEBE67D8904', 'origin' => 'softwares_id', 'ref' => 'glpi_softwares'],
-                ['name' => '1D851FEBA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
-                ['name' => '1D851FEB67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
-                ['name' => '1D851FEBF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_softwareversions' => [
-                ['name' => 'EB1F24B5E67D8904', 'origin' => 'softwares_id', 'ref' => 'glpi_softwares'],
-                ['name' => 'EB1F24B57F852578', 'origin' => 'operatingsystems_id', 'ref' => 'glpi_operatingsystems'],
-            ],
-            'glpi_solutiontemplates' => [
-                ['name' => '6048BE7A5E58E090', 'origin' => 'solutiontypes_id', 'ref' => 'glpi_solutiontypes'],
-            ],
-            'glpi_states' => [
-                ['name' => 'B329E15CB17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
-            ],
-            'glpi_suppliers' => [
-                ['name' => 'A10F66F57B9FA635', 'origin' => 'suppliertypes_id', 'ref' => 'glpi_suppliertypes'],
-            ],
-            'glpi_suppliers_tickets' => [
-                ['name' => 'C3F21B8B8FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
-                ['name' => 'C3F21B8B355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
-            ],
-            'glpi_taskcategories' => [
-                ['name' => '83E9502430D85233', 'origin' => 'taskcategories_id', 'ref' => 'glpi_taskcategories'],
-                ['name' => '83E95024551BC90F', 'origin' => 'knowbaseitemcategories_id', 'ref' => 'glpi_knowbaseitemcategories'],
-            ],
-            'glpi_tasktemplates' => [
-                ['name' => '13EA38F830D85233', 'origin' => 'taskcategories_id', 'ref' => 'glpi_taskcategories'],
-                ['name' => '13EA38F8FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
-                ['name' => '13EA38F81421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
-            ],
-            'glpi_ticketcosts' => [
-                ['name' => 'A94AF7498FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
-                ['name' => 'A94AF74922FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
-            ],
-        ];
+        $transformFkTables = [
+             'glpi_appliances' => [
+                 ['name' => 'A90A053DED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'A90A053DA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'A90A053D72B0F067', 'origin' => 'applianceenvironments_id', 'ref' => 'glpi_applianceenvironments'],
+                 ['name' => 'A90A053D67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'A90A053DFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => 'A90A053DF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => 'A90A053D1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => 'A90A053DB17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_appliances_items' => [
+                 ['name' => 'A2361859C592445B', 'origin' => 'appliances_id', 'ref' => 'glpi_appliances'],
+             ],
+             'glpi_authldapreplicates' => [
+                 ['name' => '89F2E7A47D03EC85', 'origin' => 'authldaps_id', 'ref' => 'glpi_authldaps'],
+             ],
+             'glpi_budgets' => [
+                 ['name' => 'B6985E2CED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'B6985E2C387998CB', 'origin' => 'budgettypes_id', 'ref' => 'glpi_budgettypes'],
+             ],
+             'glpi_businesscriticities' => [
+                 ['name' => '5119F8B4FCE88FAB', 'origin' => 'businesscriticities_id', 'ref' => 'glpi_businesscriticities'],
+             ],
+             'glpi_calendars_holidays' => [
+                 ['name' => '2315C8B372C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
+                 ['name' => '2315C8B37C9675AB', 'origin' => 'holidays_id', 'ref' => 'glpi_holidays'],
+             ],
+             'glpi_calendarsegments' => [
+                 ['name' => '8021521D72C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
+             ],
+             'glpi_cartridgeitems' => [
+                 ['name' => '988DAA3DED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '988DAA3D31A4834B', 'origin' => 'cartridgeitemtypes_id', 'ref' => 'glpi_cartridgeitemtypes'],
+                 ['name' => '988DAA3DA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '988DAA3DFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '988DAA3D1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_cartridgeitems_printermodels' => [
+                 ['name' => '856AD7A787A366A1', 'origin' => 'cartridgeitems_id', 'ref' => 'glpi_cartridgeitems'],
+                 ['name' => '856AD7A780854B45', 'origin' => 'printermodels_id', 'ref' => 'glpi_printermodels'],
+             ],
+             'glpi_cartridges' => [
+                 ['name' => '3185A7C787A366A1', 'origin' => 'cartridgeitems_id', 'ref' => 'glpi_cartridgeitems'],
+                 ['name' => '3185A7C7713EF9E2', 'origin' => 'printers_id', 'ref' => 'glpi_printers'],
+             ],
+             'glpi_certificates' => [
+                 ['name' => 'F825F106AF5961F5', 'origin' => 'certificatetypes_id', 'ref' => 'glpi_certificatetypes'],
+                 ['name' => 'F825F106FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => 'F825F1061421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => 'F825F106ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'F825F106A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'F825F10667B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'F825F106F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => 'F825F106B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_certificates_items' => [
+                 ['name' => 'E410E24524E411BB', 'origin' => 'certificates_id', 'ref' => 'glpi_certificates'],
+             ],
+             'glpi_changecosts' => [
+                 ['name' => 'F846ABCA5D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
+                 ['name' => 'F846ABCA22FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
+             ],
+             'glpi_changes' => [
+                 ['name' => '4A127359BB756162', 'origin' => 'users_id_recipient', 'ref' => 'glpi_users'],
+                 ['name' => '4A12735927D112BD', 'origin' => 'users_id_lastupdater', 'ref' => 'glpi_users'],
+                 ['name' => '4A127359EFE9C34D', 'origin' => 'itilcategories_id', 'ref' => 'glpi_itilcategories'],
+             ],
+             'glpi_changes_groups' => [
+                 ['name' => 'DC2C71435D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
+                 ['name' => 'DC2C7143F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_changes_items' => [
+                 ['name' => '79C851F35D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
+             ],
+             'glpi_changes_problems' => [
+                 ['name' => '20AE2965D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
+                 ['name' => '20AE296E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
+             ],
+             'glpi_changes_suppliers' => [
+                 ['name' => 'B37E56B25D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
+                 ['name' => 'B37E56B2355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
+             ],
+             'glpi_changes_tickets' => [
+                 ['name' => 'EBBABDAA5D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
+                 ['name' => 'EBBABDAA8FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
+             ],
+             'glpi_changes_users' => [
+                 ['name' => '8C551D575D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
+                 ['name' => '8C551D5767B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_changetasks' => [
+                 ['name' => '70399F55D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
+                 ['name' => '70399F530D85233', 'origin' => 'taskcategories_id', 'ref' => 'glpi_taskcategories'],
+                 ['name' => '70399F567B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '70399F58CBB3EB6', 'origin' => 'users_id_editor', 'ref' => 'glpi_users'],
+                 ['name' => '70399F5FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '70399F51421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => '70399F53A064358', 'origin' => 'tasktemplates_id', 'ref' => 'glpi_tasktemplates'],
+             ],
+             'glpi_changetemplatehiddenfields' => [
+                 ['name' => '71817FF964105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
+             ],
+             'glpi_changetemplatemandatoryfields' => [
+                 ['name' => '45BDDDE264105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
+             ],
+             'glpi_changetemplatepredefinedfields' => [
+                 ['name' => 'ECC634F464105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
+             ],
+             'glpi_changevalidations' => [
+                 ['name' => 'C158C9467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'C158C945D80B7AB', 'origin' => 'changes_id', 'ref' => 'glpi_changes'],
+                 ['name' => 'C158C94E57CE233', 'origin' => 'users_id_validate', 'ref' => 'glpi_users'],
+             ],
+             'glpi_clusters' => [
+                 ['name' => 'A63CCAB5FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => 'A63CCAB51421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => 'A63CCAB5B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+                 ['name' => 'A63CCAB59A4747C2', 'origin' => 'clustertypes_id', 'ref' => 'glpi_clustertypes'],
+                 ['name' => 'A63CCAB5357A7B6F', 'origin' => 'autoupdatesystems_id', 'ref' => 'glpi_autoupdatesystems'],
+             ],
+             'glpi_computerantiviruses' => [
+                 ['name' => '68671079F4B903A6', 'origin' => 'computers_id', 'ref' => 'glpi_computers'],
+                 ['name' => '68671079A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+             ],
+             'glpi_computers' => [
+                 ['name' => '293E8ED8FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '293E8ED81421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => '293E8ED8ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '293E8ED8604D0C7C', 'origin' => 'networks_id', 'ref' => 'glpi_networks'],
+                 ['name' => '293E8ED866A32204', 'origin' => 'computermodels_id', 'ref' => 'glpi_computermodels'],
+                 ['name' => '293E8ED89B4E6864', 'origin' => 'computertypes_id', 'ref' => 'glpi_computertypes'],
+                 ['name' => '293E8ED8A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '293E8ED867B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '293E8ED8F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => '293E8ED8B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_computers_items' => [
+                 ['name' => 'BCF5679DF4B903A6', 'origin' => 'computers_id', 'ref' => 'glpi_computers'],
+             ],
+             'glpi_computervirtualmachines' => [
+                 ['name' => '6FDC320CF4B903A6', 'origin' => 'computers_id', 'ref' => 'glpi_computers'],
+                 ['name' => '6FDC320C9280C5B3', 'origin' => 'virtualmachinestates_id', 'ref' => 'glpi_virtualmachinestates'],
+                 ['name' => '6FDC320CA58A2734', 'origin' => 'virtualmachinesystems_id', 'ref' => 'glpi_virtualmachinesystems'],
+                 ['name' => '6FDC320C10B10554', 'origin' => 'virtualmachinetypes_id', 'ref' => 'glpi_virtualmachinetypes'],
+             ],
+             'glpi_consumableitems' => [
+                 ['name' => 'B83ADB4AED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'B83ADB4A1F067AC9', 'origin' => 'consumableitemtypes_id', 'ref' => 'glpi_consumableitemtypes'],
+                 ['name' => 'B83ADB4AA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'B83ADB4AFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => 'B83ADB4A1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_consumables' => [
+                 ['name' => 'F28618F29E324C33', 'origin' => 'consumableitems_id', 'ref' => 'glpi_consumableitems'],
+             ],
+             'glpi_contacts' => [
+                 ['name' => '79F582F960D5F3AB', 'origin' => 'contacttypes_id', 'ref' => 'glpi_contacttypes'],
+                 ['name' => '79F582F99CE64CF3', 'origin' => 'usertitles_id', 'ref' => 'glpi_usertitles'],
+             ],
+             'glpi_contacts_suppliers' => [
+                 ['name' => '8B35180D355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
+                 ['name' => '8B35180D719FB48E', 'origin' => 'contacts_id', 'ref' => 'glpi_contacts'],
+             ],
+             'glpi_contractcosts' => [
+                 ['name' => '888F838124584564', 'origin' => 'contracts_id', 'ref' => 'glpi_contracts'],
+                 ['name' => '888F838122FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
+             ],
+             'glpi_contracts' => [
+                 ['name' => '47776DAF2ABAFE2', 'origin' => 'contracttypes_id', 'ref' => 'glpi_contracttypes'],
+                 ['name' => '47776DAB17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_contracts_items' => [
+                 ['name' => '5FF01F0E24584564', 'origin' => 'contracts_id', 'ref' => 'glpi_contracts'],
+             ],
+             'glpi_contracts_suppliers' => [
+                 ['name' => '78E40104355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
+                 ['name' => '78E4010424584564', 'origin' => 'contracts_id', 'ref' => 'glpi_contracts'],
+             ],
+             'glpi_crontasklogs' => [
+                 ['name' => 'F45D647FB01F6436', 'origin' => 'crontasks_id', 'ref' => 'glpi_crontasks'],
+                 ['name' => 'F45D647F2D2CC539', 'origin' => 'crontasklogs_id', 'ref' => 'glpi_crontasklogs'],
+             ],
+             'glpi_dashboards' => [
+                 ['name' => '7331D499B26949C', 'origin' => 'profileId', 'ref' => 'glpi_profiles'],
+                 ['name' => '7331D4964B64DCC', 'origin' => 'userId', 'ref' => 'glpi_users'],
+             ],
+             'glpi_datacenters' => [
+                 ['name' => 'D729C869ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+             ],
+             'glpi_dcrooms' => [
+                 ['name' => 'BC44EC93ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'BC44EC93EB7A8A62', 'origin' => 'datacenters_id', 'ref' => 'glpi_datacenters'],
+             ],
+             'glpi_devicebatteries' => [
+                 ['name' => 'A652C99DA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'A652C99D6F236F43', 'origin' => 'devicebatterytypes_id', 'ref' => 'glpi_devicebatterytypes'],
+                 ['name' => 'A652C99DC35DFA68', 'origin' => 'devicebatterymodels_id', 'ref' => 'glpi_devicebatterymodels'],
+             ],
+             'glpi_devicecases' => [
+                 ['name' => 'A1AE63687964C119', 'origin' => 'devicecasetypes_id', 'ref' => 'glpi_devicecasetypes'],
+                 ['name' => 'A1AE6368A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'A1AE636848F5052C', 'origin' => 'devicecasemodels_id', 'ref' => 'glpi_devicecasemodels'],
+             ],
+             'glpi_devicecontrols' => [
+                 ['name' => '8FBFCEDFA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '8FBFCEDFD08D9B0', 'origin' => 'interfacetypes_id', 'ref' => 'glpi_interfacetypes'],
+                 ['name' => '8FBFCEDFE8A65268', 'origin' => 'devicecontrolmodels_id', 'ref' => 'glpi_devicecontrolmodels'],
+             ],
+             'glpi_devicedrives' => [
+                 ['name' => '5FDF4AEDA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '5FDF4AEDD08D9B0', 'origin' => 'interfacetypes_id', 'ref' => 'glpi_interfacetypes'],
+                 ['name' => '5FDF4AED6B59CD4B', 'origin' => 'devicedrivemodels_id', 'ref' => 'glpi_devicedrivemodels'],
+             ],
+             'glpi_devicefirmwares' => [
+                 ['name' => '27AD954FA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '27AD954FFE693480', 'origin' => 'devicefirmwaretypes_id', 'ref' => 'glpi_devicefirmwaretypes'],
+                 ['name' => '27AD954FC1A12339', 'origin' => 'devicefirmwaremodels_id', 'ref' => 'glpi_devicefirmwaremodels'],
+             ],
+             'glpi_devicegenerics' => [
+                 ['name' => '711041243D805C04', 'origin' => 'devicegenerictypes_id', 'ref' => 'glpi_devicegenerictypes'],
+                 ['name' => '71104124A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '71104124ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '71104124B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+                 ['name' => '711041242BB78D68', 'origin' => 'devicegenericmodels_id', 'ref' => 'glpi_devicegenericmodels'],
+             ],
+             'glpi_devicegraphiccards' => [
+                 ['name' => '13F4C69ED08D9B0', 'origin' => 'interfacetypes_id', 'ref' => 'glpi_interfacetypes'],
+                 ['name' => '13F4C69EA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '13F4C69EE40E4F0B', 'origin' => 'devicegraphiccardmodels_id', 'ref' => 'glpi_devicegraphiccardmodels'],
+             ],
+             'glpi_deviceharddrives' => [
+                 ['name' => 'EA210CE0D08D9B0', 'origin' => 'interfacetypes_id', 'ref' => 'glpi_interfacetypes'],
+                 ['name' => 'EA210CE0A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'EA210CE06BF9C8E6', 'origin' => 'deviceharddrivemodels_id', 'ref' => 'glpi_deviceharddrivemodels'],
+             ],
+             'glpi_devicememories' => [
+                 ['name' => '7AAE9065A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '7AAE9065974BFB7E', 'origin' => 'devicememorytypes_id', 'ref' => 'glpi_devicememorytypes'],
+                 ['name' => '7AAE90659BCDDEED', 'origin' => 'devicememorymodels_id', 'ref' => 'glpi_devicememorymodels'],
+             ],
+             'glpi_devicemotherboards' => [
+                 ['name' => 'BA4EEEB7A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'BA4EEEB738038C79', 'origin' => 'devicemotherboardmodels_id', 'ref' => 'glpi_devicemotherboardmodels'],
+             ],
+             'glpi_devicenetworkcards' => [
+                 ['name' => '2F394962A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '2F394962FB338CF8', 'origin' => 'devicenetworkcardmodels_id', 'ref' => 'glpi_devicenetworkcardmodels'],
+             ],
+             'glpi_devicepcis' => [
+                 ['name' => '754B0561A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '754B0561FB338CF8', 'origin' => 'devicenetworkcardmodels_id', 'ref' => 'glpi_devicenetworkcardmodels'],
+                 ['name' => '754B0561A809D5C7', 'origin' => 'devicepcimodels_id', 'ref' => 'glpi_devicepcimodels'],
+             ],
+             'glpi_devicepowersupplies' => [
+                 ['name' => '7C7209EDA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '7C7209ED1DECE3C7', 'origin' => 'devicepowersupplymodels_id', 'ref' => 'glpi_devicepowersupplymodels'],
+             ],
+             'glpi_deviceprocessors' => [
+                 ['name' => 'B6E0F8BBA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'B6E0F8BBD4D3D667', 'origin' => 'deviceprocessormodels_id', 'ref' => 'glpi_deviceprocessormodels'],
+             ],
+             'glpi_devicesensors' => [
+                 ['name' => 'E8328652B91582EB', 'origin' => 'devicesensortypes_id', 'ref' => 'glpi_devicesensortypes'],
+                 ['name' => 'E83286521B86E75F', 'origin' => 'devicesensormodels_id', 'ref' => 'glpi_devicesensormodels'],
+                 ['name' => 'E8328652A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'E8328652ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'E8328652B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_devicesimcards' => [
+                 ['name' => '5A0BB1A8A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '5A0BB1A87A74B37', 'origin' => 'devicesimcardtypes_id', 'ref' => 'glpi_devicesimcardtypes'],
+             ],
+             'glpi_devicesoundcards' => [
+                 ['name' => 'D53EF47AA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'D53EF47A53D98B78', 'origin' => 'devicesoundcardmodels_id', 'ref' => 'glpi_devicesoundcardmodels'],
+             ],
+             'glpi_displaypreferences' => [
+                 ['name' => '67F2BE767B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_documentcategories' => [
+                 ['name' => '44E98B1F55AC576F', 'origin' => 'documentcategories_id', 'ref' => 'glpi_documentcategories'],
+             ],
+             'glpi_documents' => [
+                 ['name' => 'AF97AD2155AC576F', 'origin' => 'documentcategories_id', 'ref' => 'glpi_documentcategories'],
+                 ['name' => 'AF97AD2167B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'AF97AD218FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
+             ],
+             'glpi_documents_items' => [
+                 ['name' => 'DDD24B255F0F2752', 'origin' => 'documents_id', 'ref' => 'glpi_documents'],
+                 ['name' => 'DDD24B2567B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_domainrecords' => [
+                 ['name' => '180F59563700F4DC', 'origin' => 'domains_id', 'ref' => 'glpi_domains'],
+                 ['name' => '180F595671E56292', 'origin' => 'domainrecordtypes_id', 'ref' => 'glpi_domainrecordtypes'],
+                 ['name' => '180F5956FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '180F59561421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_domains' => [
+                 ['name' => 'E64974F9182DCB32', 'origin' => 'domaintypes_id', 'ref' => 'glpi_domaintypes'],
+                 ['name' => 'E64974F9FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => 'E64974F91421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_domains_items' => [
+                 ['name' => '1E9AB0AA3700F4DC', 'origin' => 'domains_id', 'ref' => 'glpi_domains'],
+                 ['name' => '1E9AB0AA4360E635', 'origin' => 'domainrelations_id', 'ref' => 'glpi_domainrelations'],
+             ],
+             'glpi_enclosures' => [
+                 ['name' => '6052344AED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '6052344A8ED84E80', 'origin' => 'enclosuremodels_id', 'ref' => 'glpi_enclosuremodels'],
+                 ['name' => '6052344AFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '6052344A1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => '6052344AB17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+                 ['name' => '6052344AA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+             ],
+             'glpi_entities' => [
+                 ['name' => '1A59F36F7D03EC85', 'origin' => 'authldaps_id', 'ref' => 'glpi_authldaps'],
+                 ['name' => '1A59F36F72C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
+                 ['name' => '1A59F36F10E3E815', 'origin' => 'tickettemplates_id', 'ref' => 'glpi_tickettemplates'],
+                 ['name' => '1A59F36F64105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
+                 ['name' => '1A59F36F7A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
+                 ['name' => '1A59F36F16010B6F', 'origin' => 'entities_id_software', 'ref' => 'glpi_entities'],
+             ],
+             'glpi_entities_knowbaseitems' => [
+                 ['name' => '30391006D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
+             ],
+             'glpi_entities_reminders' => [
+                 ['name' => '265E9306C7C7BF28', 'origin' => 'reminders_id', 'ref' => 'glpi_reminders'],
+             ],
+             'glpi_entities_rssfeeds' => [
+                 ['name' => '8F946B4A2920D1F', 'origin' => 'rssfeeds_id', 'ref' => 'glpi_rssfeeds'],
+             ],
+             'glpi_groups' => [
+                 ['name' => '7286AF61F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_groups_knowbaseitems' => [
+                 ['name' => '9F9797EA6D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
+                 ['name' => '9F9797EAF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_groups_problems' => [
+                 ['name' => '35FF34E0E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
+                 ['name' => '35FF34E0F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_groups_reminders' => [
+                 ['name' => 'CB9577E5C7C7BF28', 'origin' => 'reminders_id', 'ref' => 'glpi_reminders'],
+                 ['name' => 'CB9577E5F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_groups_rssfeeds' => [
+                 ['name' => 'FCF3A8CA2920D1F', 'origin' => 'rssfeeds_id', 'ref' => 'glpi_rssfeeds'],
+                 ['name' => 'FCF3A8CAF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_groups_tickets' => [
+                 ['name' => 'C6573B418FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
+                 ['name' => 'C6573B41F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_groups_users' => [
+                 ['name' => '3023C81467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '3023C814F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_infocoms' => [
+                 ['name' => '8D32298C355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
+                 ['name' => '8D32298C22FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
+                 ['name' => '8D32298CFCE88FAB', 'origin' => 'businesscriticities_id', 'ref' => 'glpi_businesscriticities'],
+             ],
+             'glpi_ipaddresses_ipnetworks' => [
+                 ['name' => '107118A965020FC5', 'origin' => 'ipaddresses_id', 'ref' => 'glpi_ipaddresses'],
+                 ['name' => '107118A9A992AA50', 'origin' => 'ipnetworks_id', 'ref' => 'glpi_ipnetworks'],
+             ],
+             'glpi_ipnetworks' => [
+                 ['name' => '2D47D3C8A992AA50', 'origin' => 'ipnetworks_id', 'ref' => 'glpi_ipnetworks'],
+             ],
+             'glpi_ipnetworks_vlans' => [
+                 ['name' => '35A7AD8AA992AA50', 'origin' => 'ipnetworks_id', 'ref' => 'glpi_ipnetworks'],
+                 ['name' => '35A7AD8A462B676C', 'origin' => 'vlans_id', 'ref' => 'glpi_vlans'],
+             ],
+             'glpi_itilcategories' => [
+                 ['name' => '349D19C4EFE9C34D', 'origin' => 'itilcategories_id', 'ref' => 'glpi_itilcategories'],
+                 ['name' => '349D19C4551BC90F', 'origin' => 'knowbaseitemcategories_id', 'ref' => 'glpi_knowbaseitemcategories'],
+                 ['name' => '349D19C467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '349D19C4F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => '349D19C4943F6381', 'origin' => 'tickettemplates_id_incident', 'ref' => 'glpi_tickettemplates'],
+                 ['name' => '349D19C44B225EE6', 'origin' => 'tickettemplates_id_demand', 'ref' => 'glpi_tickettemplates'],
+                 ['name' => '349D19C464105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
+                 ['name' => '349D19C47A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
+             ],
+             'glpi_itilfollowups' => [
+                 ['name' => '1FCFA25D67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '1FCFA25D8CBB3EB6', 'origin' => 'users_id_editor', 'ref' => 'glpi_users'],
+                 ['name' => '1FCFA25DD0DEA07D', 'origin' => 'requesttypes_id', 'ref' => 'glpi_requesttypes'],
+             ],
+             'glpi_itilfollowuptemplates' => [
+                 ['name' => '3934C13BD0DEA07D', 'origin' => 'requesttypes_id', 'ref' => 'glpi_requesttypes'],
+             ],
+             'glpi_itils_projects' => [
+                 ['name' => '64C0EB2B1EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
+             ],
+             'glpi_itilsolutions' => [
+                 ['name' => 'BF4769765E58E090', 'origin' => 'solutiontypes_id', 'ref' => 'glpi_solutiontypes'],
+                 ['name' => 'BF47697667B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'BF4769768CBB3EB6', 'origin' => 'users_id_editor', 'ref' => 'glpi_users'],
+                 ['name' => 'BF476976B18E454C', 'origin' => 'users_id_approval', 'ref' => 'glpi_users'],
+                 ['name' => 'BF476976251F6A08', 'origin' => 'itilfollowups_id', 'ref' => 'glpi_itilfollowups'],
+             ],
+             'glpi_knowbaseitems' => [
+                 ['name' => '2E07C924551BC90F', 'origin' => 'knowbaseitemcategories_id', 'ref' => 'glpi_knowbaseitemcategories'],
+                 ['name' => '2E07C92467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_knowbaseitems_comments' => [
+                 ['name' => '33AB06316D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
+                 ['name' => '33AB063167B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_knowbaseitems_profiles' => [
+                 ['name' => 'E705152B6D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
+                 ['name' => 'E705152B22077C89', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
+             ],
+             'glpi_knowbaseitems_revisions' => [
+                 ['name' => '3B8DEF96D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
+             ],
+             'glpi_knowbaseitems_users' => [
+                 ['name' => '4987D7AC6D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
+                 ['name' => '4987D7AC67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_knowbaseitemtranslations' => [
+                 ['name' => 'BF433A936D89C108', 'origin' => 'knowbaseitems_id', 'ref' => 'glpi_knowbaseitems'],
+                 ['name' => 'BF433A9367B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_lines' => [
+                 ['name' => 'AC635CC067B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'AC635CC0F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => 'AC635CC0C12D38F2', 'origin' => 'lineoperators_id', 'ref' => 'glpi_lineoperators'],
+                 ['name' => 'AC635CC0ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'AC635CC0B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+                 ['name' => 'AC635CC04F5E534D', 'origin' => 'linetypes_id', 'ref' => 'glpi_linetypes'],
+             ],
+             'glpi_locations' => [
+                 ['name' => '1AC19513ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+             ],
+             'glpi_monitors' => [
+                 ['name' => 'CC883AB7FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => 'CC883AB71421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => 'CC883AB7ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'CC883AB7A996F641', 'origin' => 'monitortypes_id', 'ref' => 'glpi_monitortypes'],
+                 ['name' => 'CC883AB72D952EDD', 'origin' => 'monitormodels_id', 'ref' => 'glpi_monitormodels'],
+                 ['name' => 'CC883AB7A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'CC883AB767B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'CC883AB7F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => 'CC883AB7B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_netpoints' => [
+                 ['name' => '69DBE45CED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+             ],
+             'glpi_networkaliases' => [
+                 ['name' => '4F9E21DC584BEB4F', 'origin' => 'networknames_id', 'ref' => 'glpi_networknames'],
+                 ['name' => '4F9E21DC6C543AFA', 'origin' => 'fqdns_id', 'ref' => 'glpi_fqdns'],
+             ],
+             'glpi_networkequipments' => [
+                 ['name' => 'AFE59A84FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => 'AFE59A841421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => 'AFE59A84ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'AFE59A84604D0C7C', 'origin' => 'networks_id', 'ref' => 'glpi_networks'],
+                 ['name' => 'AFE59A8473C51A8B', 'origin' => 'networkequipmenttypes_id', 'ref' => 'glpi_networkequipmenttypes'],
+                 ['name' => 'AFE59A8456FE569F', 'origin' => 'networkequipmentmodels_id', 'ref' => 'glpi_networkequipmentmodels'],
+                 ['name' => 'AFE59A84A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'AFE59A8467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'AFE59A84F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => 'AFE59A84B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_networknames' => [
+                 ['name' => 'A148F0756C543AFA', 'origin' => 'fqdns_id', 'ref' => 'glpi_fqdns'],
+             ],
+             'glpi_networkportaggregates' => [
+                 ['name' => '88867CD3CE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
+                 ['name' => '88867CD39E2F9770', 'origin' => 'networkports_id_list', 'ref' => 'glpi_networkports'],
+             ],
+             'glpi_networkportaliases' => [
+                 ['name' => '1ADCE793CE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
+                 ['name' => '1ADCE793A2DF6591', 'origin' => 'networkports_id_alias', 'ref' => 'glpi_networkports'],
+             ],
+             'glpi_networkportdialups' => [
+                 ['name' => 'E90B503DCE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
+             ],
+             'glpi_networkportethernets' => [
+                 ['name' => '9A1A7916CE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
+                 ['name' => '9A1A79165DF72560', 'origin' => 'netpoints_id', 'ref' => 'glpi_netpoints'],
+             ],
+             'glpi_networkportfiberchannels' => [
+                 ['name' => 'C62BE585CE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
+                 ['name' => 'C62BE5855DF72560', 'origin' => 'netpoints_id', 'ref' => 'glpi_netpoints'],
+             ],
+             'glpi_networkportlocals' => [
+                 ['name' => 'A454ACE4CE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
+             ],
+             'glpi_networkports_networkports' => [
+                 ['name' => 'DF0512CAF88ABD1B', 'origin' => 'networkports_id_1', 'ref' => 'glpi_networkports'],
+                 ['name' => 'DF0512CA6183ECA1', 'origin' => 'networkports_id_2', 'ref' => 'glpi_networkports'],
+             ],
+             'glpi_networkports_vlans' => [
+                 ['name' => '84FF692CCE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
+                 ['name' => '84FF692C462B676C', 'origin' => 'vlans_id', 'ref' => 'glpi_vlans'],
+             ],
+             'glpi_networkportwifis' => [
+                 ['name' => 'FB43456ACE45BD77', 'origin' => 'networkports_id', 'ref' => 'glpi_networkports'],
+                 ['name' => 'FB43456A782248B2', 'origin' => 'wifinetworks_id', 'ref' => 'glpi_wifinetworks'],
+                 ['name' => 'FB43456A4D4D852B', 'origin' => 'networkportwifis_id', 'ref' => 'glpi_networkportwifis'],
+             ],
+             'glpi_notepads' => [
+                 ['name' => 'BCDEFE2267B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'BCDEFE2227D112BD', 'origin' => 'users_id_lastupdater', 'ref' => 'glpi_users'],
+             ],
+             'glpi_notifications_notificationtemplates' => [
+                 ['name' => '45FE608ED4BE081', 'origin' => 'notifications_id', 'ref' => 'glpi_notifications'],
+                 ['name' => '45FE608EA9E8DD2B', 'origin' => 'notificationtemplates_id', 'ref' => 'glpi_notificationtemplates'],
+             ],
+             'glpi_notificationtargets' => [
+                 ['name' => '9E40A2B1D4BE081', 'origin' => 'notifications_id', 'ref' => 'glpi_notifications'],
+             ],
+             'glpi_notificationtemplatetranslations' => [
+                 ['name' => '8F8C3CD6A9E8DD2B', 'origin' => 'notificationtemplates_id', 'ref' => 'glpi_notificationtemplates'],
+             ],
+             'glpi_notimportedemails' => [
+                 ['name' => '36514841F9E7A2C', 'origin' => 'mailcollectors_id', 'ref' => 'glpi_mailcollectors'],
+                 ['name' => '365148467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_objectlocks' => [
+                 ['name' => '55A8E45D67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_olalevelactions' => [
+                 ['name' => '4ABB859EC6D702C', 'origin' => 'olalevels_id', 'ref' => 'glpi_olalevels'],
+             ],
+             'glpi_olalevelcriterias' => [
+                 ['name' => 'E04BD147C6D702C', 'origin' => 'olalevels_id', 'ref' => 'glpi_olalevels'],
+             ],
+             'glpi_olalevels' => [
+                 ['name' => 'EC99B26DDB7C61FE', 'origin' => 'olas_id', 'ref' => 'glpi_olas'],
+             ],
+             'glpi_olalevels_tickets' => [
+                 ['name' => 'B47FA3F8FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
+                 ['name' => 'B47FA3FC6D702C', 'origin' => 'olalevels_id', 'ref' => 'glpi_olalevels'],
+             ],
+             'glpi_olas' => [
+                 ['name' => 'B7FD34E572C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
+                 ['name' => 'B7FD34E5BEF27A45', 'origin' => 'slms_id', 'ref' => 'glpi_slms'],
+             ],
+             'glpi_operatingsystemkernelversions' => [
+                 ['name' => '69A5AEB9340E0989', 'origin' => 'operatingsystemkernels_id', 'ref' => 'glpi_operatingsystemkernels'],
+             ],
+             'glpi_passivedcequipments' => [
+                 ['name' => '3CF108C6ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '3CF108C68DA5A79E', 'origin' => 'passivedcequipmentmodels_id', 'ref' => 'glpi_passivedcequipmentmodels'],
+                 ['name' => '3CF108C693FDCDA1', 'origin' => 'passivedcequipmenttypes_id', 'ref' => 'glpi_passivedcequipmenttypes'],
+                 ['name' => '3CF108C6FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '3CF108C61421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => '3CF108C6B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+                 ['name' => '3CF108C6A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+             ],
+             'glpi_pdus' => [
+                 ['name' => '9F3AF5C1ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '9F3AF5C1909D471A', 'origin' => 'pdumodels_id', 'ref' => 'glpi_pdumodels'],
+                 ['name' => '9F3AF5C1FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '9F3AF5C11421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => '9F3AF5C1B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+                 ['name' => '9F3AF5C1A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '9F3AF5C11C0D2DB1', 'origin' => 'pdutypes_id', 'ref' => 'glpi_pdutypes'],
+             ],
+             'glpi_pdus_plugs' => [
+                 ['name' => '460B319C15134C17', 'origin' => 'plugs_id', 'ref' => 'glpi_plugs'],
+                 ['name' => '460B319C33D93EF6', 'origin' => 'pdus_id', 'ref' => 'glpi_pdus'],
+             ],
+             'glpi_pdus_racks' => [
+                 ['name' => '7ABF2AEF269E262D', 'origin' => 'racks_id', 'ref' => 'glpi_racks'],
+                 ['name' => '7ABF2AEF33D93EF6', 'origin' => 'pdus_id', 'ref' => 'glpi_pdus'],
+             ],
+             'glpi_peripherals' => [
+                 ['name' => 'B49D126FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => 'B49D1261421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => 'B49D126ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'B49D12682709FED', 'origin' => 'peripheraltypes_id', 'ref' => 'glpi_peripheraltypes'],
+                 ['name' => 'B49D126F2DE2777', 'origin' => 'peripheralmodels_id', 'ref' => 'glpi_peripheralmodels'],
+                 ['name' => 'B49D126A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => 'B49D12667B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'B49D126F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => 'B49D126B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_phones' => [
+                 ['name' => '61C3B8E4FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '61C3B8E41421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => '61C3B8E4ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '61C3B8E46AB85E18', 'origin' => 'phonetypes_id', 'ref' => 'glpi_phonetypes'],
+                 ['name' => '61C3B8E43FE1E925', 'origin' => 'phonemodels_id', 'ref' => 'glpi_phonemodels'],
+                 ['name' => '61C3B8E4EE911589', 'origin' => 'phonepowersupplies_id', 'ref' => 'glpi_phonepowersupplies'],
+                 ['name' => '61C3B8E4A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '61C3B8E467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '61C3B8E4F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => '61C3B8E4B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_planningexternalevents' => [
+                 ['name' => '544F3E8E67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '544F3E8ED5B73BE', 'origin' => 'users_id_guests', 'ref' => 'glpi_users'],
+                 ['name' => '544F3E8EF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => '544F3E8E141A4D45', 'origin' => 'planningeventcategories_id', 'ref' => 'glpi_planningeventcategories'],
+             ],
+             'glpi_planningexternaleventtemplates' => [
+                 ['name' => 'A85DD10C141A4D45', 'origin' => 'planningeventcategories_id', 'ref' => 'glpi_planningeventcategories'],
+             ],
+             'glpi_planningrecalls' => [
+                 ['name' => '3BBA429167B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_printers' => [
+                 ['name' => '8F8D8A3DFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '8F8D8A3D1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => '8F8D8A3DED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '8F8D8A3D604D0C7C', 'origin' => 'networks_id', 'ref' => 'glpi_networks'],
+                 ['name' => '8F8D8A3DDE7B282B', 'origin' => 'printertypes_id', 'ref' => 'glpi_printertypes'],
+                 ['name' => '8F8D8A3D80854B45', 'origin' => 'printermodels_id', 'ref' => 'glpi_printermodels'],
+                 ['name' => '8F8D8A3DA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '8F8D8A3D67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '8F8D8A3DF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => '8F8D8A3DB17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_problemcosts' => [
+                 ['name' => '5D343AA8E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
+                 ['name' => '5D343AA822FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
+             ],
+             'glpi_problems' => [
+                 ['name' => 'C4D3F5CFBB756162', 'origin' => 'users_id_recipient', 'ref' => 'glpi_users'],
+                 ['name' => 'C4D3F5CF27D112BD', 'origin' => 'users_id_lastupdater', 'ref' => 'glpi_users'],
+                 ['name' => 'C4D3F5CFEFE9C34D', 'origin' => 'itilcategories_id', 'ref' => 'glpi_itilcategories'],
+             ],
+             'glpi_problems_suppliers' => [
+                 ['name' => '4A101DFE30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
+                 ['name' => '4A101DF355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
+             ],
+             'glpi_problems_tickets' => [
+                 ['name' => '3DF11CF6E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
+                 ['name' => '3DF11CF68FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
+             ],
+             'glpi_problems_users' => [
+                 ['name' => '5C9612D2E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
+                 ['name' => '5C9612D267B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_problemtasks' => [
+                 ['name' => 'A2710897E30A47DD', 'origin' => 'problems_id', 'ref' => 'glpi_problems'],
+                 ['name' => 'A271089730D85233', 'origin' => 'taskcategories_id', 'ref' => 'glpi_taskcategories'],
+                 ['name' => 'A271089767B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => 'A27108978CBB3EB6', 'origin' => 'users_id_editor', 'ref' => 'glpi_users'],
+                 ['name' => 'A2710897FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => 'A27108971421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => 'A27108973A064358', 'origin' => 'tasktemplates_id', 'ref' => 'glpi_tasktemplates'],
+             ],
+             'glpi_problemtemplatehiddenfields' => [
+                 ['name' => 'D90AB3B47A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
+             ],
+             'glpi_problemtemplatemandatoryfields' => [
+                 ['name' => '20DA01337A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
+             ],
+             'glpi_problemtemplatepredefinedfields' => [
+                 ['name' => '1D77B16A7A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
+             ],
+             'glpi_profilerights' => [
+                 ['name' => '6E4E481722077C89', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
+             ],
+             'glpi_profiles' => [
+                 ['name' => 'C18512BA10E3E815', 'origin' => 'tickettemplates_id', 'ref' => 'glpi_tickettemplates'],
+                 ['name' => 'C18512BA64105530', 'origin' => 'changetemplates_id', 'ref' => 'glpi_changetemplates'],
+                 ['name' => 'C18512BA7A8D7635', 'origin' => 'problemtemplates_id', 'ref' => 'glpi_problemtemplates'],
+             ],
+             'glpi_profiles_reminders' => [
+                 ['name' => '4A5D764FC7C7BF28', 'origin' => 'reminders_id', 'ref' => 'glpi_reminders'],
+                 ['name' => '4A5D764F22077C89', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
+             ],
+             'glpi_profiles_rssfeeds' => [
+                 ['name' => '8AE4CF1E2920D1F', 'origin' => 'rssfeeds_id', 'ref' => 'glpi_rssfeeds'],
+                 ['name' => '8AE4CF1E22077C89', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
+             ],
+             'glpi_profiles_users' => [
+                 ['name' => '752007FA67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '752007FA22077C89', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
+             ],
+             'glpi_projectcosts' => [
+                 ['name' => 'BEAAE5F21EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
+                 ['name' => 'BEAAE5F222FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
+             ],
+             'glpi_projects' => [
+                 ['name' => '1626242E1EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
+                 ['name' => '1626242E18995984', 'origin' => 'projectstates_id', 'ref' => 'glpi_projectstates'],
+                 ['name' => '1626242E6CE4DE4F', 'origin' => 'projecttypes_id', 'ref' => 'glpi_projecttypes'],
+                 ['name' => '1626242E67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '1626242EF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_projecttasks' => [
+                 ['name' => '41EFD7CD1EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
+                 ['name' => '41EFD7CD171C029', 'origin' => 'projecttasks_id', 'ref' => 'glpi_projecttasks'],
+                 ['name' => '41EFD7CD18995984', 'origin' => 'projectstates_id', 'ref' => 'glpi_projectstates'],
+                 ['name' => '41EFD7CD7369BDC5', 'origin' => 'projecttasktypes_id', 'ref' => 'glpi_projecttasktypes'],
+                 ['name' => '41EFD7CD67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '41EFD7CD7FECD144', 'origin' => 'projecttasktemplates_id', 'ref' => 'glpi_projecttasktemplates'],
+             ],
+             'glpi_projecttasks_tickets' => [
+                 ['name' => '2D48CB0A8FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
+                 ['name' => '2D48CB0A171C029', 'origin' => 'projecttasks_id', 'ref' => 'glpi_projecttasks'],
+             ],
+             'glpi_projecttaskteams' => [
+                 ['name' => '1B0A1B0D171C029', 'origin' => 'projecttasks_id', 'ref' => 'glpi_projecttasks'],
+             ],
+             'glpi_projecttasktemplates' => [
+                 ['name' => '286BFEDA1EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
+                 ['name' => '286BFEDA171C029', 'origin' => 'projecttasks_id', 'ref' => 'glpi_projecttasks'],
+                 ['name' => '286BFEDA18995984', 'origin' => 'projectstates_id', 'ref' => 'glpi_projectstates'],
+                 ['name' => '286BFEDA7369BDC5', 'origin' => 'projecttasktypes_id', 'ref' => 'glpi_projecttasktypes'],
+                 ['name' => '286BFEDA67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_projectteams' => [
+                 ['name' => '877590021EDE0F55', 'origin' => 'projects_id', 'ref' => 'glpi_projects'],
+             ],
+             'glpi_queuedchats' => [
+                 ['name' => '7E072DC2A9E8DD2B', 'origin' => 'notificationtemplates_id', 'ref' => 'glpi_notificationtemplates'],
+                 ['name' => '7E072DC2ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '7E072DC2F373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => '7E072DC2EFE9C34D', 'origin' => 'itilcategories_id', 'ref' => 'glpi_itilcategories'],
+             ],
+             'glpi_queuednotifications' => [
+                 ['name' => 'FDE96054A9E8DD2B', 'origin' => 'notificationtemplates_id', 'ref' => 'glpi_notificationtemplates'],
+             ],
+             'glpi_racks' => [
+                 ['name' => '205CE311ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '205CE311B9750B73', 'origin' => 'rackmodels_id', 'ref' => 'glpi_rackmodels'],
+                 ['name' => '205CE311A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '205CE3112D88DCC8', 'origin' => 'racktypes_id', 'ref' => 'glpi_racktypes'],
+                 ['name' => '205CE311B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+                 ['name' => '205CE311FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '205CE3111421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => '205CE311B569C6DF', 'origin' => 'dcrooms_id', 'ref' => 'glpi_dcrooms'],
+             ],
+             'glpi_reminders' => [
+                 ['name' => '60B5667D67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_reminders_users' => [
+                 ['name' => '5D0EA00FC7C7BF28', 'origin' => 'reminders_id', 'ref' => 'glpi_reminders'],
+                 ['name' => '5D0EA00F67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_remindertranslations' => [
+                 ['name' => 'BE66B0AAC7C7BF28', 'origin' => 'reminders_id', 'ref' => 'glpi_reminders'],
+                 ['name' => 'BE66B0AA67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_reservations' => [
+                 ['name' => '754EA860786DF47C', 'origin' => 'reservationitems_id', 'ref' => 'glpi_reservationitems'],
+                 ['name' => '754EA86067B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_rssfeeds' => [
+                 ['name' => 'DDF69E567B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_rssfeeds_users' => [
+                 ['name' => '3AFFECE42920D1F', 'origin' => 'rssfeeds_id', 'ref' => 'glpi_rssfeeds'],
+                 ['name' => '3AFFECE467B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_ruleactions' => [
+                 ['name' => 'E78233EFB699244', 'origin' => 'rules_id', 'ref' => 'glpi_rules'],
+             ],
+             'glpi_rulecriterias' => [
+                 ['name' => '71F92FB0FB699244', 'origin' => 'rules_id', 'ref' => 'glpi_rules'],
+             ],
+             'glpi_savedsearches' => [
+                 ['name' => '8C93FCA967B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+             ],
+             'glpi_savedsearches_alerts' => [
+                 ['name' => '8F033C74D137DC92', 'origin' => 'savedsearches_id', 'ref' => 'glpi_savedsearches'],
+             ],
+             'glpi_savedsearches_users' => [
+                 ['name' => '6AB618A167B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '6AB618A1D137DC92', 'origin' => 'savedsearches_id', 'ref' => 'glpi_savedsearches'],
+             ],
+             'glpi_slalevelactions' => [
+                 ['name' => '4B2CB33557FD051', 'origin' => 'slalevels_id', 'ref' => 'glpi_slalevels'],
+             ],
+             'glpi_slalevelcriterias' => [
+                 ['name' => '6202206B57FD051', 'origin' => 'slalevels_id', 'ref' => 'glpi_slalevels'],
+             ],
+             'glpi_slalevels' => [
+                 ['name' => 'A66D03087B029744', 'origin' => 'slas_id', 'ref' => 'glpi_slas'],
+             ],
+             'glpi_slalevels_tickets' => [
+                 ['name' => '890E0B138FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
+                 ['name' => '890E0B1357FD051', 'origin' => 'slalevels_id', 'ref' => 'glpi_slalevels'],
+             ],
+             'glpi_slas' => [
+                 ['name' => 'AD32DCC272C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
+                 ['name' => 'AD32DCC2BEF27A45', 'origin' => 'slms_id', 'ref' => 'glpi_slms'],
+             ],
+             'glpi_slms' => [
+                 ['name' => '18793CE72C4B705', 'origin' => 'calendars_id', 'ref' => 'glpi_calendars'],
+             ],
+             'glpi_softwarecategories' => [
+                 ['name' => '5A90EC8AAD111992', 'origin' => 'softwarecategories_id', 'ref' => 'glpi_softwarecategories'],
+             ],
+             'glpi_softwarelicenses' => [
+                 ['name' => '8DF16B58E67D8904', 'origin' => 'softwares_id', 'ref' => 'glpi_softwares'],
+                 ['name' => '8DF16B5844CA6F2F', 'origin' => 'softwarelicenses_id', 'ref' => 'glpi_softwarelicenses'],
+                 ['name' => '8DF16B5885A13A28', 'origin' => 'softwarelicensetypes_id', 'ref' => 'glpi_softwarelicensetypes'],
+                 ['name' => '8DF16B586C46BCBA', 'origin' => 'softwareversions_id_buy', 'ref' => 'glpi_softwareversions'],
+                 ['name' => '8DF16B583774F286', 'origin' => 'softwareversions_id_use', 'ref' => 'glpi_softwareversions'],
+                 ['name' => '8DF16B58ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '8DF16B58FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '8DF16B5867B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '8DF16B581421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => '8DF16B58B17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+                 ['name' => '8DF16B58A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+             ],
+             'glpi_softwarelicensetypes' => [
+                 ['name' => 'D4B117C385A13A28', 'origin' => 'softwarelicensetypes_id', 'ref' => 'glpi_softwarelicensetypes'],
+             ],
+             'glpi_softwares' => [
+                 ['name' => '1D851FEBED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => '1D851FEBFD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '1D851FEB1421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+                 ['name' => '1D851FEBE67D8904', 'origin' => 'softwares_id', 'ref' => 'glpi_softwares'],
+                 ['name' => '1D851FEBA2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],
+                 ['name' => '1D851FEB67B3B43D', 'origin' => 'users_id', 'ref' => 'glpi_users'],
+                 ['name' => '1D851FEBF373DCF', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_softwareversions' => [
+                 ['name' => 'EB1F24B5E67D8904', 'origin' => 'softwares_id', 'ref' => 'glpi_softwares'],
+                 ['name' => 'EB1F24B57F852578', 'origin' => 'operatingsystems_id', 'ref' => 'glpi_operatingsystems'],
+             ],
+             'glpi_solutiontemplates' => [
+                 ['name' => '6048BE7A5E58E090', 'origin' => 'solutiontypes_id', 'ref' => 'glpi_solutiontypes'],
+             ],
+             'glpi_states' => [
+                 ['name' => 'B329E15CB17973F', 'origin' => 'states_id', 'ref' => 'glpi_states'],
+             ],
+             'glpi_suppliers' => [
+                 ['name' => 'A10F66F57B9FA635', 'origin' => 'suppliertypes_id', 'ref' => 'glpi_suppliertypes'],
+             ],
+             'glpi_suppliers_tickets' => [
+                 ['name' => 'C3F21B8B8FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
+                 ['name' => 'C3F21B8B355AF43', 'origin' => 'suppliers_id', 'ref' => 'glpi_suppliers'],
+             ],
+             'glpi_taskcategories' => [
+                 ['name' => '83E9502430D85233', 'origin' => 'taskcategories_id', 'ref' => 'glpi_taskcategories'],
+                 ['name' => '83E95024551BC90F', 'origin' => 'knowbaseitemcategories_id', 'ref' => 'glpi_knowbaseitemcategories'],
+             ],
+             'glpi_tasktemplates' => [
+                 ['name' => '13EA38F830D85233', 'origin' => 'taskcategories_id', 'ref' => 'glpi_taskcategories'],
+                 ['name' => '13EA38F8FD9C58DA', 'origin' => 'users_id_tech', 'ref' => 'glpi_users'],
+                 ['name' => '13EA38F81421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
+             ],
+             'glpi_ticketcosts' => [
+                 ['name' => 'A94AF7498FDC0E9A', 'origin' => 'tickets_id', 'ref' => 'glpi_tickets'],
+                 ['name' => 'A94AF74922FD2D3D', 'origin' => 'budgets_id', 'ref' => 'glpi_budgets'],
+             ],
+         ];
 
         // Désactiver les vérifications des clés étrangères
         $this->addSql('SET foreign_key_checks = 0;');
 
         foreach ($transformFkTables as $table => $rows) {
             foreach ($rows as $row) {
-                
+
                 $tableName = $table;
                 $foreignKey = $row['origin'];
                 $name = $row['name'];

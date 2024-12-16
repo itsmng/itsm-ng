@@ -159,7 +159,7 @@ class TicketCost
 
     /**
      * Get the value of ticket
-     */ 
+     */
     public function getTicket()
     {
         return $this->ticket;
@@ -169,7 +169,7 @@ class TicketCost
      * Set the value of ticket
      *
      * @return  self
-     */ 
+     */
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
@@ -179,7 +179,7 @@ class TicketCost
 
     /**
      * Get the value of budgets
-     */ 
+     */
     public function getBudgets()
     {
         return $this->budgets;
@@ -189,7 +189,7 @@ class TicketCost
      * Set the value of budgets
      *
      * @return  self
-     */ 
+     */
     public function setBudgets($budgets)
     {
         $this->budgets = $budgets;
@@ -199,7 +199,7 @@ class TicketCost
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -209,7 +209,7 @@ class TicketCost
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
