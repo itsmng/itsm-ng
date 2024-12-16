@@ -1667,6 +1667,7 @@ class AuthLDAP extends CommonDBTM
                     count($ldap_users),
                     $_SESSION['glpilist_limit']
                 ),
+                                  'deprecated'       => true,
                                   'container'        => 'mass' . __CLASS__ . $rand,
                                   'specific_actions' => [$form_action => $textbutton]];
                 Html::showMassiveActions($massiveactionparams);

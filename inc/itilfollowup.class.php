@@ -906,13 +906,7 @@ class ITILFollowup extends CommonDBChild
         if ($tech) {
             $form = [
                'action' => $this->getFormURL(),
-               'buttons' => [
-                  [
-                     'name' => 'add',
-                     'value' => _x('button', 'Add'),
-                     'class' => 'btn btn-secondary mb-3',
-                  ]
-               ],
+               'itemtype' => $this::class,
                'content' => [
                   $this->getTypeName() => [
                      'visible' => true,
@@ -1009,7 +1003,7 @@ class ITILFollowup extends CommonDBChild
                   ]
                ]
             ];
-            renderTwigForm($form);
+            renderTwigForm($form, '', $this->fields);
         } else {
             $options['colspan'] = 1;
 

@@ -134,9 +134,9 @@ function openMenu(item, menu_name) {
     },
   });
 }
-function addFavorite() {
-  event.stopPropagation();
-  event.preventDefault();
+function addFavorite(e) {
+  e.stopPropagation();
+  e.preventDefault();
   const menu_name = $(this).parent().data("menu-name");
   const sub_menu_name = $(this).parent().data("submenu-name");
   const ul = document.getElementById("submenu-favorite");
