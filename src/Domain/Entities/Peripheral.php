@@ -109,7 +109,7 @@ class Peripheral
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
     private ?State $state;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, nullable: true, options: ['default' => 0,0000])]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, nullable: true, options: ['default' => "0.0000"])]
     private $ticket_tco;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]

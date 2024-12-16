@@ -22,7 +22,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'serial', columns: ['serial'])]
 #[ORM\Index(name: 'otherserial', columns: ['otherserial'])]
 #[ORM\Index(name: 'is_helpdesk_visible', columns: ['is_helpdesk_visible'])]
-
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
+#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 class Appliance
 {
     #[ORM\Id]
@@ -79,6 +80,9 @@ class Appliance
 
     #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
+
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    private $date_creation;
 
     #[ORM\Column(type: 'integer', name: 'states_id', options: ['default' => 0])]
     private $states_id;
@@ -174,6 +178,17 @@ class Appliance
     public function setDateMod(\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->date_creation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $date_creation): self
+    {
+        $this->date_mod = $date_creation;
         return $this;
     }
 

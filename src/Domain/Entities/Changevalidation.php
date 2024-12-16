@@ -50,10 +50,10 @@ class Changevalidation
     #[ORM\Column(type: 'integer', options: ['default' => 2])]
     private $status;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $submission_date;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $validation_date;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]

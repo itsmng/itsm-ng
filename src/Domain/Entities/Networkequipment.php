@@ -112,7 +112,7 @@ class Networkequipment
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
     private ?State $state;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0], nullable: true)]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"], nullable: true)]
     private $ticket_tco;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]

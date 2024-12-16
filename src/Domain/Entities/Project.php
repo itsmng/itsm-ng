@@ -65,8 +65,7 @@ class Project
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
     #[ORM\ManyToOne(targetEntity: User::class)]

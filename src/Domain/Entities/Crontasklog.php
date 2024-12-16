@@ -25,7 +25,7 @@ class Crontasklog
     #[ORM\JoinColumn(name: 'crontasklogs_id', referencedColumnName: 'id', nullable: false, options: ['comment' => 'id of "start" event'])]
     private ?Crontasklog $crontasklogs;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date;
 
     #[ORM\Column(type: 'integer', options: ['comment' => '0:start, 1:run, 2:stop'])]

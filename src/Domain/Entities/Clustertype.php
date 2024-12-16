@@ -32,11 +32,10 @@ class Clustertype
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
     public function getId(): ?int

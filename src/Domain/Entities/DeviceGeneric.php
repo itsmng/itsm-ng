@@ -56,8 +56,7 @@ class DeviceGeneric
     #[ORM\JoinColumn(name: 'devicegenericmodels_id', referencedColumnName: 'id', nullable: true)]
     private ?Devicegenericmodel $devicegenericmodel;
 
-    #[ORM\Column(type: "datetime", nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: "datetime", nullable: false)]
     private $date_mod;
 
     #[ORM\Column(type: "datetime")]

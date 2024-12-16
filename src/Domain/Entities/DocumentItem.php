@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'item', columns: ['itemtype', 'items_id', 'entities_id', 'is_recursive'])]
 #[ORM\Index(name: 'users_id', columns: ['users_id'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
+#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date', columns: ['date'])]
 class DocumentItem
 {
@@ -35,8 +36,7 @@ class DocumentItem
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -46,10 +46,10 @@ class DocumentItem
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $timeline_position;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date;
 
     public function getId(): ?int

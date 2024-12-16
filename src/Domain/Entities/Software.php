@@ -85,7 +85,7 @@ class Software
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, nullable: true, options: ['default' => 0.0000])]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, nullable: true, options: ['default' => "0.0000"])]
     private $ticket_tco;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]

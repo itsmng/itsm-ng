@@ -65,7 +65,7 @@ class Monitor
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, options: ['default' => 0.00])]
+    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, options: ['default' => "0.00"])]
     private $size;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -132,7 +132,7 @@ class Monitor
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
     private ?State $state;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0000], nullable: true)]
+    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"], nullable: true)]
     private $ticket_tco;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
 #[ORM\Index(name: 'locations_id', columns: ['locations_id'])]
 #[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
+#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 class Datacenter
 {
     #[ORM\Id]
@@ -34,11 +36,10 @@ class Datacenter
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
     public function getId(): ?int

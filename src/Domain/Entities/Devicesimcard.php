@@ -44,11 +44,10 @@ class Devicesimcard
     #[ORM\JoinColumn(name: 'devicesimcardtypes_id', referencedColumnName: 'id', nullable: true)]
     private ?Devicesimcardtype $devicesimcardtype;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'], nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]

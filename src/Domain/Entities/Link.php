@@ -35,8 +35,7 @@ class Link
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $open_window;
 
-    #[ORM\Column(type: 'datetime', nullable: 'false')]
-    #[ORM\Version]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime')]
