@@ -87,9 +87,9 @@ class NotificationTarget extends CommonDBChild {
    const TAG_FOR_ALL_EVENTS         = 0;
 
 
-   const ANONYMOUS_USER             = 0;
-   const GLPI_USER                  = 1;
-   const EXTERNAL_USER              = 2;
+   const ANONYMOUS_USER             = Auth::USER_DOESNT_EXIST;
+   const GLPI_USER                  = Auth::DB_GLPI;
+   const EXTERNAL_USER              = Auth::EXTERNAL;
 
    /**
     * @param string $entity  (default '')
