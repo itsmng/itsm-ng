@@ -78,7 +78,7 @@ class Oidc extends CommonDBTM
             $redirect = 'http://';
          }
          $redirect .= $_SERVER['SERVER_NAME'] 
-            . $CFG_GLPI['root_doc'] . '/front/oidc.php?redirect=' . $_REQUEST['redirect'];
+            . $CFG_GLPI['root_doc'] . '/front/oidc.php';
          $oidc->setRedirectURL($redirect);
       }
       $oidc->setHttpUpgradeInsecureRequests(false);
@@ -186,10 +186,15 @@ class Oidc extends CommonDBTM
       $auth->auth_succeded = true;
       $auth->user = $user;
       //Setup a new session and redirect to the main menu
+      $redirect = $_COOKIE['OIDC_REDIRECT'] ?? null;
+      if (isset($_COOKIE['OIDC_REDIRECT'])) {
+         unset($_COOKIE['OIDC_REDIRECT']);
+         setcookie('OIDC_REDIRECT', null, -1, '/');
+      }
       Session::init($auth);
       $_SESSION['itsm_is_oidc'] = 1;
       $_SESSION['itsm_oidc_idtoken'] = $oidc->getIdToken();
-      Auth::redirectIfAuthenticated($_REQUEST['redirect'] ?? null);
+      Auth::redirectIfAuthenticated($redirect);
    }
 
    /**
