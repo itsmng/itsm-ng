@@ -150,7 +150,6 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    // redirect to ticket
    if (isset($_GET["redirect"])) {
       Toolbox::manageRedirect($_GET["redirect"]);
-      setcookie('OIDC_REDIRECT', $_GET["redirect"], time() + 3600, '/');
       echo '<input type="hidden" name="redirect" value="'.Html::entities_deep($_GET['redirect']).'"/>';
    }
    echo '<p class="login_input" id="login_input_name">
