@@ -7639,26 +7639,29 @@ abstract class CommonITILObject extends CommonDBTM
 
         //add documents to timeline
         $document_obj   = new Document();
-        $document_items = $document_item_obj->find([
-           $this->getAssociatedDocumentsCriteria(),
-           'timeline_position'  => ['>', self::NO_TIMELINE]
-        ]);
-        foreach ($document_items as $document_item) {
-            $document_obj->getFromDB($document_item['documents_id']);
+        if ($document_item_obj->canView() || Session::haveRight(Ticket::$rightname, Ticket::READDOCUMENT)) {
+           $document_items = $document_item_obj->find([
+              $this->getAssociatedDocumentsCriteria(),
+              'timeline_position'  => ['>', self::NO_TIMELINE]
+           ]);
 
-            $date = $document_item['date'] ?? $document_item['date_creation'];
+           foreach ($document_items as $document_item) {
+               $document_obj->getFromDB($document_item['documents_id']);
 
-            $item = $document_obj->fields;
-            $item['date'] = $date;
-            // #1476 - set date_mod and owner to attachment ones
-            $item['date_mod'] = $document_item['date_mod'];
-            $item['users_id'] = $document_item['users_id'];
-            $item['documents_item_id'] = $document_item['id'];
+               $date = $document_item['date'] ?? $document_item['date_creation'];
 
-            $item['timeline_position'] = $document_item['timeline_position'];
+               $item = $document_obj->fields;
+               $item['date'] = $date;
+               // #1476 - set date_mod and owner to attachment ones
+               $item['date_mod'] = $document_item['date_mod'];
+               $item['users_id'] = $document_item['users_id'];
+               $item['documents_item_id'] = $document_item['id'];
 
-            $timeline[$date . "_document_" . $document_item['documents_id']]
-               = ['type' => 'Document_Item', 'item' => $item];
+               $item['timeline_position'] = $document_item['timeline_position'];
+
+               $timeline[$date . "_document_" . $document_item['documents_id']]
+                  = ['type' => 'Document_Item', 'item' => $item];
+           }
         }
 
         $solution_obj = new ITILSolution();
