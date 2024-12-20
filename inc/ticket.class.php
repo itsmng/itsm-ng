@@ -84,6 +84,8 @@ class Ticket extends CommonITILObject
     public const OWN              =  32768;
     public const CHANGEPRIORITY   =  65536;
     public const SURVEY           = 131072;
+    public const READDOCUMENT     = 262144;
+
 
 
     public function getForbiddenStandardMassiveAction()
@@ -7054,6 +7056,8 @@ class Ticket extends CommonITILObject
         if ($interface == 'helpdesk') {
             unset($values[UPDATE], $values[DELETE], $values[PURGE]);
         }
+        $values[self::READDOCUMENT]    = __("See linked document");
+
         return $values;
     }
 
