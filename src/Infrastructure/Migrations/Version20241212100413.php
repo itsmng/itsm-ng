@@ -886,11 +886,6 @@ final class Version20241212100413 extends AbstractMigration
                 $this->addSql("ALTER TABLE `{$tableName}` ADD CONSTRAINT `{$name}` FOREIGN KEY (`{$foreignKey}`) REFERENCES `{$ref}` (`id`)");
             }
         }
-        // this up() migration is auto-generated, please modify it to your needs
-        // $this->addSql('DROP TABLE glpi_dashboards_dashboards');
-        // $this->addSql('DROP TABLE glpi_dashboards_items');
-        // $this->addSql('DROP TABLE glpi_dashboards_rights');
-        // $this->addSql('DROP TABLE glpi_user_menu');
         $this->addSql('ALTER TABLE glpi_apiclients CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_apiclients ADD CONSTRAINT FK_D00BB2E46145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('CREATE INDEX IDX_D00BB2E46145D7DB ON glpi_apiclients (entities_id)');
