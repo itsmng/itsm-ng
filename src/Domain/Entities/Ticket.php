@@ -207,6 +207,9 @@ class Ticket
     #[ORM\OneToMany(mappedBy: 'ticket2', targetEntity: TicketTicket::class)]
     private Collection $ticketTickets2;
 
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: TicketUser::class)]
+    private Collection $ticketUsers;
+
     
     public function getId(): ?int
     {
@@ -967,6 +970,26 @@ class Ticket
     public function setTicketTickets2($ticketTickets2)
     {
         $this->ticketTickets2 = $ticketTickets2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ticketUsers
+     */ 
+    public function getTicketUsers()
+    {
+        return $this->ticketUsers;
+    }
+
+    /**
+     * Set the value of ticketUsers
+     *
+     * @return  self
+     */ 
+    public function setTicketUsers($ticketUsers)
+    {
+        $this->ticketUsers = $ticketUsers;
 
         return $this;
     }

@@ -357,6 +357,9 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SavedsearchUser::class)]
     private Collection $savedsearchUsers;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TicketUser::class)]
+    private Collection $ticketUsers;
+
 
     public function getId(): ?int
     {
@@ -1722,6 +1725,26 @@ class User
     public function setSavedsearchUsers($savedsearchUsers)
     {
         $this->savedsearchUsers = $savedsearchUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ticketUsers
+     */ 
+    public function getTicketUsers()
+    {
+        return $this->ticketUsers;
+    }
+
+    /**
+     * Set the value of ticketUsers
+     *
+     * @return  self
+     */ 
+    public function setTicketUsers($ticketUsers)
+    {
+        $this->ticketUsers = $ticketUsers;
 
         return $this;
     }
