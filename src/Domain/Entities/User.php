@@ -2,6 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
+use Auth;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
@@ -57,8 +58,9 @@ class User
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $firstname;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php CFG_GLPI[language] array'])]
     private $language;
@@ -93,17 +95,21 @@ class User
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $profiles_id;
+    #[ORM\ManyToOne(targetEntity: Profile::class)]
+    #[ORM\JoinColumn(name: 'profiles_id', referencedColumnName: 'id', nullable: true)]
+    private ?Profile $profile;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $usertitles_id;
+    #[ORM\ManyToOne(targetEntity: Usertitle::class)]
+    #[ORM\JoinColumn(name: 'usertitles_id', referencedColumnName: 'id', nullable: true)]    
+    private ?Usertitle $usertitle;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $usercategories_id;
+    #[ORM\ManyToOne(targetEntity: Usercategory::class)]
+    #[ORM\JoinColumn(name: 'usercategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Usercategory $usercategory;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $date_format;
@@ -150,8 +156,9 @@ class User
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $task_private;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $default_requesttypes_id;
+    #[ORM\ManyToOne(targetEntity: Requesttype::class)]
+    #[ORM\JoinColumn(name: 'default_requesttypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Requesttype $defaultRequesttype;
 
     #[ORM\Column(type: 'string', length: 40, nullable: true)]
     private $password_forget_token;
@@ -276,11 +283,13 @@ class User
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $sync_field;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_supervisor;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_supervisor', referencedColumnName: 'id', nullable: true)]
+    private ?User $userSupervisor;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $timezone;
@@ -463,18 +472,6 @@ class User
         return $this;
     }
 
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(?int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
-
     public function getLanguage(): ?string
     {
         return $this->language;
@@ -603,54 +600,6 @@ class User
     public function setIsDeleted(?bool $is_deleted): self
     {
         $this->is_deleted = $is_deleted;
-
-        return $this;
-    }
-
-    public function getProfilesId(): ?int
-    {
-        return $this->profiles_id;
-    }
-
-    public function setProfilesId(?int $profiles_id): self
-    {
-        $this->profiles_id = $profiles_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getUsertitlesId(): ?int
-    {
-        return $this->usertitles_id;
-    }
-
-    public function setUsertitlesId(?int $usertitles_id): self
-    {
-        $this->usertitles_id = $usertitles_id;
-
-        return $this;
-    }
-
-    public function getUsercategoriesId(): ?int
-    {
-        return $this->usercategories_id;
-    }
-
-    public function setUsercategoriesId(?int $usercategories_id): self
-    {
-        $this->usercategories_id = $usercategories_id;
 
         return $this;
     }
@@ -831,18 +780,6 @@ class User
     public function setTaskPrivate(?bool $task_private): self
     {
         $this->task_private = $task_private;
-
-        return $this;
-    }
-
-    public function getDefaultRequesttypesId(): ?int
-    {
-        return $this->default_requesttypes_id;
-    }
-
-    public function setDefaultRequesttypesId(?int $default_requesttypes_id): self
-    {
-        $this->default_requesttypes_id = $default_requesttypes_id;
 
         return $this;
     }
@@ -1339,30 +1276,6 @@ class User
         return $this;
     }
 
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(?int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
-
-        return $this;
-    }
-
-    public function getUsersIdSupervisor(): ?int
-    {
-        return $this->users_id_supervisor;
-    }
-
-    public function setUsersIdSupervisor(?int $users_id_supervisor): self
-    {
-        $this->users_id_supervisor = $users_id_supervisor;
-
-        return $this;
-    }
-
     public function getTimezone(): ?string
     {
         return $this->timezone;
@@ -1745,6 +1658,166 @@ class User
     public function setTicketUsers($ticketUsers)
     {
         $this->ticketUsers = $ticketUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profile
+     */ 
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * Set the value of profile
+     *
+     * @return  self
+     */ 
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of usertitle
+     */ 
+    public function getUsertitle()
+    {
+        return $this->usertitle;
+    }
+
+    /**
+     * Set the value of usertitle
+     *
+     * @return  self
+     */ 
+    public function setUsertitle($usertitle)
+    {
+        $this->usertitle = $usertitle;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of usercategory
+     */ 
+    public function getUsercategory()
+    {
+        return $this->usercategory;
+    }
+
+    /**
+     * Set the value of usercategory
+     *
+     * @return  self
+     */ 
+    public function setUsercategory($usercategory)
+    {
+        $this->usercategory = $usercategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of defaultRequesttype
+     */ 
+    public function getDefaultRequesttype()
+    {
+        return $this->defaultRequesttype;
+    }
+
+    /**
+     * Set the value of defaultRequesttype
+     *
+     * @return  self
+     */ 
+    public function setDefaultRequesttype($defaultRequesttype)
+    {
+        $this->defaultRequesttype = $defaultRequesttype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userSupervisor
+     */ 
+    public function getUserSupervisor()
+    {
+        return $this->userSupervisor;
+    }
+
+    /**
+     * Set the value of userSupervisor
+     *
+     * @return  self
+     */ 
+    public function setUserSupervisor($userSupervisor)
+    {
+        $this->userSupervisor = $userSupervisor;
 
         return $this;
     }
