@@ -4,6 +4,10 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Itsmng\Domain\Entities\Requesttype as EntitiesRequesttype;
+use OlaLevel;
+use RequestType;
+use SlaLevel;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickets")]
@@ -44,8 +48,9 @@ class Ticket
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -62,17 +67,20 @@ class Ticket
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_lastupdater;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: true)]
+    private ?User $userLastupdater;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $status;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_recipient;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_recipient', referencedColumnName: 'id', nullable: true)]
+    private ?User $userRecipient;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $requesttypes_id;
+    #[ORM\ManyToOne(targetEntity: EntitiesRequesttype::class)]
+    #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?EntitiesRequesttype $requesttype;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $content;
@@ -86,8 +94,9 @@ class Ticket
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $priority;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $itilcategories_id;
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?ItilCategory $itilcategory;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $type;
@@ -95,14 +104,17 @@ class Ticket
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $global_validation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slas_id_ttr;
+    #[ORM\ManyToOne(targetEntity: Sla::class)]
+    #[ORM\JoinColumn(name: 'slas_id_ttr', referencedColumnName: 'id', nullable: true)]
+    private ?Sla $slaTtr;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slas_id_tto;
+    #[ORM\ManyToOne(targetEntity: Sla::class)]
+    #[ORM\JoinColumn(name: 'slas_id_tto', referencedColumnName: 'id', nullable: true)]
+    private ?Sla $slaTto;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slalevels_id_ttr;
+    #[ORM\ManyToOne(targetEntity: SlaLevel::class)]
+    #[ORM\JoinColumn(name: 'slalevels_id_ttr', referencedColumnName: 'id', nullable: true)]
+    private ?SlaLevel $slaLevelTtr;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $time_to_resolve;
@@ -119,14 +131,17 @@ class Ticket
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $ola_waiting_duration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olas_id_tto;
+    #[ORM\ManyToOne(targetEntity: Ola::class)]
+    #[ORM\JoinColumn(name: 'olas_id_tto', referencedColumnName: 'id', nullable: true)]
+    private ?Ola $olaTto;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olas_id_ttr;
+    #[ORM\ManyToOne(targetEntity: Ola::class)]
+    #[ORM\JoinColumn(name: 'olas_id_ttr', referencedColumnName: 'id', nullable: true)]
+    private ?Ola $olaTtr;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olalevels_id_ttr;
+    #[ORM\ManyToOne(targetEntity: OlaLevel::class)]
+    #[ORM\JoinColumn(name: 'olalevels_id_ttr', referencedColumnName: 'id', nullable: true)]
+    private ?OlaLevel $olaLevelTtr;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $ola_ttr_begin_date;
@@ -155,8 +170,9 @@ class Ticket
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $validation_percent;
@@ -188,18 +204,6 @@ class Ticket
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -262,18 +266,6 @@ class Ticket
         return $this;
     }
 
-    public function getUsersIdLastupdater(): ?int
-    {
-        return $this->users_id_lastupdater;
-    }
-
-    public function setUsersIdLastupdater(?int $users_id_lastupdater): self
-    {
-        $this->users_id_lastupdater = $users_id_lastupdater;
-
-        return $this;
-    }
-
     public function getStatus(): ?int
     {
         return $this->status;
@@ -282,30 +274,6 @@ class Ticket
     public function setStatus(?int $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getUsersIdRecipient(): ?int
-    {
-        return $this->users_id_recipient;
-    }
-
-    public function setUsersIdRecipient(?int $users_id_recipient): self
-    {
-        $this->users_id_recipient = $users_id_recipient;
-
-        return $this;
-    }
-
-    public function getRequesttypesId(): ?int
-    {
-        return $this->requesttypes_id;
-    }
-
-    public function setRequesttypesId(?int $requesttypes_id): self
-    {
-        $this->requesttypes_id = $requesttypes_id;
 
         return $this;
     }
@@ -358,18 +326,6 @@ class Ticket
         return $this;
     }
 
-    public function getItilcategoriesId(): ?int
-    {
-        return $this->itilcategories_id;
-    }
-
-    public function setItilcategoriesId(?int $itilcategories_id): self
-    {
-        $this->itilcategories_id = $itilcategories_id;
-
-        return $this;
-    }
-
     public function getType(): ?int
     {
         return $this->type;
@@ -394,41 +350,6 @@ class Ticket
         return $this;
     }
 
-    public function getSlasIdTtr(): ?int
-    {
-        return $this->slas_id_ttr;
-    }
-
-    public function setSlasIdTtr(?int $slas_id_ttr): self
-    {
-        $this->slas_id_ttr = $slas_id_ttr;
-
-        return $this;
-    }
-
-    public function getSlasIdTto(): ?int
-    {
-        return $this->slas_id_tto;
-    }
-
-    public function setSlasIdTto(?int $slas_id_tto): self
-    {
-        $this->slas_id_tto = $slas_id_tto;
-
-        return $this;
-    }
-
-    public function getSlalevelsIdTtr(): ?int
-    {
-        return $this->slalevels_id_ttr;
-    }
-
-    public function setSlalevelsIdTtr(?int $slalevels_id_ttr): self
-    {
-        $this->slalevels_id_ttr = $slalevels_id_ttr;
-
-        return $this;
-    }
 
     public function getTimeToResolve(): ?\DateTime
     {
@@ -486,42 +407,6 @@ class Ticket
     public function setOlaWaitingDuration(?int $ola_waiting_duration): self
     {
         $this->ola_waiting_duration = $ola_waiting_duration;
-
-        return $this;
-    }
-
-    public function getOlasIdTto(): ?int
-    {
-        return $this->olas_id_tto;
-    }
-
-    public function setOlasIdTto(?int $olas_id_tto): self
-    {
-        $this->olas_id_tto = $olas_id_tto;
-
-        return $this;
-    }
-
-    public function getOlasIdTtr(): ?int
-    {
-        return $this->olas_id_ttr;
-    }
-
-    public function setOlasIdTtr(?int $olas_id_ttr): self
-    {
-        $this->olas_id_ttr = $olas_id_ttr;
-
-        return $this;
-    }
-
-    public function getOlalevelsIdTtr(): ?int
-    {
-        return $this->olalevels_id_ttr;
-    }
-
-    public function setOlalevelsIdTtr(?int $olalevels_id_ttr): self
-    {
-        $this->olalevels_id_ttr = $olalevels_id_ttr;
 
         return $this;
     }
@@ -630,18 +515,6 @@ class Ticket
     public function setIsDeleted(?bool $is_deleted): self
     {
         $this->is_deleted = $is_deleted;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(?int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
 
         return $this;
     }
@@ -807,6 +680,246 @@ class Ticket
     public function setSupplierTickets($supplierTickets)
     {
         $this->supplierTickets = $supplierTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userLastupdater
+     */ 
+    public function getUserLastupdater()
+    {
+        return $this->userLastupdater;
+    }
+
+    /**
+     * Set the value of userLastupdater
+     *
+     * @return  self
+     */ 
+    public function setUserLastupdater($userLastupdater)
+    {
+        $this->userLastupdater = $userLastupdater;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userRecipient
+     */ 
+    public function getUserRecipient()
+    {
+        return $this->userRecipient;
+    }
+
+    /**
+     * Set the value of userRecipient
+     *
+     * @return  self
+     */ 
+    public function setUserRecipient($userRecipient)
+    {
+        $this->userRecipient = $userRecipient;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of requesttype
+     */ 
+    public function getRequesttype()
+    {
+        return $this->requesttype;
+    }
+
+    /**
+     * Set the value of requesttype
+     *
+     * @return  self
+     */ 
+    public function setRequesttype($requesttype)
+    {
+        $this->requesttype = $requesttype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilcategory
+     */ 
+    public function getItilcategory()
+    {
+        return $this->itilcategory;
+    }
+
+    /**
+     * Set the value of itilcategory
+     *
+     * @return  self
+     */ 
+    public function setItilcategory($itilcategory)
+    {
+        $this->itilcategory = $itilcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slaTtr
+     */ 
+    public function getSlaTtr()
+    {
+        return $this->slaTtr;
+    }
+
+    /**
+     * Set the value of slaTtr
+     *
+     * @return  self
+     */ 
+    public function setSlaTtr($slaTtr)
+    {
+        $this->slaTtr = $slaTtr;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slaTto
+     */ 
+    public function getSlaTto()
+    {
+        return $this->slaTto;
+    }
+
+    /**
+     * Set the value of slaTto
+     *
+     * @return  self
+     */ 
+    public function setSlaTto($slaTto)
+    {
+        $this->slaTto = $slaTto;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slaLevelTtr
+     */ 
+    public function getSlaLevelTtr()
+    {
+        return $this->slaLevelTtr;
+    }
+
+    /**
+     * Set the value of slaLevelTtr
+     *
+     * @return  self
+     */ 
+    public function setSlaLevelTtr($slaLevelTtr)
+    {
+        $this->slaLevelTtr = $slaLevelTtr;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of olaTto
+     */ 
+    public function getOlaTto()
+    {
+        return $this->olaTto;
+    }
+
+    /**
+     * Set the value of olaTto
+     *
+     * @return  self
+     */ 
+    public function setOlaTto($olaTto)
+    {
+        $this->olaTto = $olaTto;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of olaTtr
+     */ 
+    public function getOlaTtr()
+    {
+        return $this->olaTtr;
+    }
+
+    /**
+     * Set the value of olaTtr
+     *
+     * @return  self
+     */ 
+    public function setOlaTtr($olaTtr)
+    {
+        $this->olaTtr = $olaTtr;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of olaLevelTtr
+     */ 
+    public function getOlaLevelTtr()
+    {
+        return $this->olaLevelTtr;
+    }
+
+    /**
+     * Set the value of olaLevelTtr
+     *
+     * @return  self
+     */ 
+    public function setOlaLevelTtr($olaLevelTtr)
+    {
+        $this->olaLevelTtr = $olaLevelTtr;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
 
         return $this;
     }
