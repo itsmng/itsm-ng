@@ -14,11 +14,13 @@ class TicketTicket
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id_1;
+    #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'ticketTickets1')]
+    #[ORM\JoinColumn(name: 'tickets_id_1', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket1;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id_2;
+    #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'ticketTickets2')]
+    #[ORM\JoinColumn(name: 'tickets_id_2', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket2;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $link;
@@ -26,30 +28,6 @@ class TicketTicket
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTicketsId1(): ?int
-    {
-        return $this->tickets_id_1;
-    }
-
-    public function setTicketsId1(?int $tickets_id_1): self
-    {
-        $this->tickets_id_1 = $tickets_id_1;
-
-        return $this;
-    }
-
-    public function getTicketsId2(): ?int
-    {
-        return $this->tickets_id_2;
-    }
-
-    public function setTicketsId2(?int $tickets_id_2): self
-    {
-        $this->tickets_id_2 = $tickets_id_2;
-
-        return $this;
     }
 
     public function getLink(): ?int
@@ -64,4 +42,44 @@ class TicketTicket
         return $this;
     }
 
+
+    /**
+     * Get the value of ticket1
+     */ 
+    public function getTicket1()
+    {
+        return $this->ticket1;
+    }
+
+    /**
+     * Set the value of ticket1
+     *
+     * @return  self
+     */ 
+    public function setTicket1($ticket1)
+    {
+        $this->ticket1 = $ticket1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ticket2
+     */ 
+    public function getTicket2()
+    {
+        return $this->ticket2;
+    }
+
+    /**
+     * Set the value of ticket2
+     *
+     * @return  self
+     */ 
+    public function setTicket2($ticket2)
+    {
+        $this->ticket2 = $ticket2;
+
+        return $this;
+    }
 }

@@ -201,6 +201,13 @@ class Ticket
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: SupplierTicket::class)]
     private Collection $supplierTickets;
 
+    #[ORM\OneToMany(mappedBy: 'ticket1', targetEntity: TicketTicket::class)]
+    private Collection $ticketTickets1;
+
+    #[ORM\OneToMany(mappedBy: 'ticket2', targetEntity: TicketTicket::class)]
+    private Collection $ticketTickets2;
+
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -920,6 +927,46 @@ class Ticket
     public function setLocation($location)
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ticketTickets1
+     */ 
+    public function getTicketTickets1()
+    {
+        return $this->ticketTickets1;
+    }
+
+    /**
+     * Set the value of ticketTickets1
+     *
+     * @return  self
+     */ 
+    public function setTicketTickets1($ticketTickets1)
+    {
+        $this->ticketTickets1 = $ticketTickets1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ticketTickets2
+     */ 
+    public function getTicketTickets2()
+    {
+        return $this->ticketTickets2;
+    }
+
+    /**
+     * Set the value of ticketTickets2
+     *
+     * @return  self
+     */ 
+    public function setTicketTickets2($ticketTickets2)
+    {
+        $this->ticketTickets2 = $ticketTickets2;
 
         return $this;
     }
