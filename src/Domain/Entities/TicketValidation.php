@@ -134,7 +134,7 @@ class TicketValidation
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -144,7 +144,7 @@ class TicketValidation
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -154,7 +154,7 @@ class TicketValidation
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -164,7 +164,7 @@ class TicketValidation
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -174,7 +174,7 @@ class TicketValidation
 
     /**
      * Get the value of userValidate
-     */ 
+     */
     public function getUserValidate()
     {
         return $this->userValidate;
@@ -184,7 +184,7 @@ class TicketValidation
      * Set the value of userValidate
      *
      * @return  self
-     */ 
+     */
     public function setUserValidate($userValidate)
     {
         $this->userValidate = $userValidate;
@@ -194,7 +194,7 @@ class TicketValidation
 
     /**
      * Get the value of ticket
-     */ 
+     */
     public function getTicket()
     {
         return $this->ticket;
@@ -204,7 +204,7 @@ class TicketValidation
      * Set the value of ticket
      *
      * @return  self
-     */ 
+     */
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;

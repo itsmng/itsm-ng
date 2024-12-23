@@ -45,7 +45,7 @@ class TicketTicket
 
     /**
      * Get the value of ticket1
-     */ 
+     */
     public function getTicket1()
     {
         return $this->ticket1;
@@ -55,7 +55,7 @@ class TicketTicket
      * Set the value of ticket1
      *
      * @return  self
-     */ 
+     */
     public function setTicket1($ticket1)
     {
         $this->ticket1 = $ticket1;
@@ -65,7 +65,7 @@ class TicketTicket
 
     /**
      * Get the value of ticket2
-     */ 
+     */
     public function getTicket2()
     {
         return $this->ticket2;
@@ -75,7 +75,7 @@ class TicketTicket
      * Set the value of ticket2
      *
      * @return  self
-     */ 
+     */
     public function setTicket2($ticket2)
     {
         $this->ticket2 = $ticket2;

@@ -210,7 +210,7 @@ class Ticket
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: TicketUser::class)]
     private Collection $ticketUsers;
 
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -696,7 +696,7 @@ class Ticket
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -706,7 +706,7 @@ class Ticket
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -716,7 +716,7 @@ class Ticket
 
     /**
      * Get the value of userLastupdater
-     */ 
+     */
     public function getUserLastupdater()
     {
         return $this->userLastupdater;
@@ -726,7 +726,7 @@ class Ticket
      * Set the value of userLastupdater
      *
      * @return  self
-     */ 
+     */
     public function setUserLastupdater($userLastupdater)
     {
         $this->userLastupdater = $userLastupdater;
@@ -736,7 +736,7 @@ class Ticket
 
     /**
      * Get the value of userRecipient
-     */ 
+     */
     public function getUserRecipient()
     {
         return $this->userRecipient;
@@ -746,7 +746,7 @@ class Ticket
      * Set the value of userRecipient
      *
      * @return  self
-     */ 
+     */
     public function setUserRecipient($userRecipient)
     {
         $this->userRecipient = $userRecipient;
@@ -756,7 +756,7 @@ class Ticket
 
     /**
      * Get the value of requesttype
-     */ 
+     */
     public function getRequesttype()
     {
         return $this->requesttype;
@@ -766,7 +766,7 @@ class Ticket
      * Set the value of requesttype
      *
      * @return  self
-     */ 
+     */
     public function setRequesttype($requesttype)
     {
         $this->requesttype = $requesttype;
@@ -776,7 +776,7 @@ class Ticket
 
     /**
      * Get the value of itilcategory
-     */ 
+     */
     public function getItilcategory()
     {
         return $this->itilcategory;
@@ -786,7 +786,7 @@ class Ticket
      * Set the value of itilcategory
      *
      * @return  self
-     */ 
+     */
     public function setItilcategory($itilcategory)
     {
         $this->itilcategory = $itilcategory;
@@ -796,7 +796,7 @@ class Ticket
 
     /**
      * Get the value of slaTtr
-     */ 
+     */
     public function getSlaTtr()
     {
         return $this->slaTtr;
@@ -806,7 +806,7 @@ class Ticket
      * Set the value of slaTtr
      *
      * @return  self
-     */ 
+     */
     public function setSlaTtr($slaTtr)
     {
         $this->slaTtr = $slaTtr;
@@ -816,7 +816,7 @@ class Ticket
 
     /**
      * Get the value of slaTto
-     */ 
+     */
     public function getSlaTto()
     {
         return $this->slaTto;
@@ -826,7 +826,7 @@ class Ticket
      * Set the value of slaTto
      *
      * @return  self
-     */ 
+     */
     public function setSlaTto($slaTto)
     {
         $this->slaTto = $slaTto;
@@ -836,7 +836,7 @@ class Ticket
 
     /**
      * Get the value of slaLevelTtr
-     */ 
+     */
     public function getSlaLevelTtr()
     {
         return $this->slaLevelTtr;
@@ -846,7 +846,7 @@ class Ticket
      * Set the value of slaLevelTtr
      *
      * @return  self
-     */ 
+     */
     public function setSlaLevelTtr($slaLevelTtr)
     {
         $this->slaLevelTtr = $slaLevelTtr;
@@ -856,7 +856,7 @@ class Ticket
 
     /**
      * Get the value of olaTto
-     */ 
+     */
     public function getOlaTto()
     {
         return $this->olaTto;
@@ -866,7 +866,7 @@ class Ticket
      * Set the value of olaTto
      *
      * @return  self
-     */ 
+     */
     public function setOlaTto($olaTto)
     {
         $this->olaTto = $olaTto;
@@ -876,7 +876,7 @@ class Ticket
 
     /**
      * Get the value of olaTtr
-     */ 
+     */
     public function getOlaTtr()
     {
         return $this->olaTtr;
@@ -886,7 +886,7 @@ class Ticket
      * Set the value of olaTtr
      *
      * @return  self
-     */ 
+     */
     public function setOlaTtr($olaTtr)
     {
         $this->olaTtr = $olaTtr;
@@ -896,7 +896,7 @@ class Ticket
 
     /**
      * Get the value of olaLevelTtr
-     */ 
+     */
     public function getOlaLevelTtr()
     {
         return $this->olaLevelTtr;
@@ -906,7 +906,7 @@ class Ticket
      * Set the value of olaLevelTtr
      *
      * @return  self
-     */ 
+     */
     public function setOlaLevelTtr($olaLevelTtr)
     {
         $this->olaLevelTtr = $olaLevelTtr;
@@ -916,7 +916,7 @@ class Ticket
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -926,7 +926,7 @@ class Ticket
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -936,7 +936,7 @@ class Ticket
 
     /**
      * Get the value of ticketTickets1
-     */ 
+     */
     public function getTicketTickets1()
     {
         return $this->ticketTickets1;
@@ -946,7 +946,7 @@ class Ticket
      * Set the value of ticketTickets1
      *
      * @return  self
-     */ 
+     */
     public function setTicketTickets1($ticketTickets1)
     {
         $this->ticketTickets1 = $ticketTickets1;
@@ -956,7 +956,7 @@ class Ticket
 
     /**
      * Get the value of ticketTickets2
-     */ 
+     */
     public function getTicketTickets2()
     {
         return $this->ticketTickets2;
@@ -966,7 +966,7 @@ class Ticket
      * Set the value of ticketTickets2
      *
      * @return  self
-     */ 
+     */
     public function setTicketTickets2($ticketTickets2)
     {
         $this->ticketTickets2 = $ticketTickets2;
@@ -976,7 +976,7 @@ class Ticket
 
     /**
      * Get the value of ticketUsers
-     */ 
+     */
     public function getTicketUsers()
     {
         return $this->ticketUsers;
@@ -986,7 +986,7 @@ class Ticket
      * Set the value of ticketUsers
      *
      * @return  self
-     */ 
+     */
     public function setTicketUsers($ticketUsers)
     {
         $this->ticketUsers = $ticketUsers;

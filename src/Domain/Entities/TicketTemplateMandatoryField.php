@@ -42,7 +42,7 @@ class TicketTemplateMandatoryField
 
     /**
      * Get the value of tickettemplate
-     */ 
+     */
     public function getTickettemplate()
     {
         return $this->tickettemplate;
@@ -52,7 +52,7 @@ class TicketTemplateMandatoryField
      * Set the value of tickettemplate
      *
      * @return  self
-     */ 
+     */
     public function setTickettemplate($tickettemplate)
     {
         $this->tickettemplate = $tickettemplate;

@@ -245,7 +245,7 @@ class TicketTask
 
     /**
      * Get the value of ticket
-     */ 
+     */
     public function getTicket()
     {
         return $this->ticket;
@@ -255,7 +255,7 @@ class TicketTask
      * Set the value of ticket
      *
      * @return  self
-     */ 
+     */
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
@@ -265,7 +265,7 @@ class TicketTask
 
     /**
      * Get the value of taskcategory
-     */ 
+     */
     public function getTaskcategory()
     {
         return $this->taskcategory;
@@ -275,7 +275,7 @@ class TicketTask
      * Set the value of taskcategory
      *
      * @return  self
-     */ 
+     */
     public function setTaskcategory($taskcategory)
     {
         $this->taskcategory = $taskcategory;
@@ -285,7 +285,7 @@ class TicketTask
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -295,7 +295,7 @@ class TicketTask
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -305,7 +305,7 @@ class TicketTask
 
     /**
      * Get the value of userEditor
-     */ 
+     */
     public function getUserEditor()
     {
         return $this->userEditor;
@@ -315,7 +315,7 @@ class TicketTask
      * Set the value of userEditor
      *
      * @return  self
-     */ 
+     */
     public function setUserEditor($userEditor)
     {
         $this->userEditor = $userEditor;
@@ -325,7 +325,7 @@ class TicketTask
 
     /**
      * Get the value of userTech
-     */ 
+     */
     public function getUserTech()
     {
         return $this->userTech;
@@ -335,7 +335,7 @@ class TicketTask
      * Set the value of userTech
      *
      * @return  self
-     */ 
+     */
     public function setUserTech($userTech)
     {
         $this->userTech = $userTech;
@@ -345,7 +345,7 @@ class TicketTask
 
     /**
      * Get the value of groupTech
-     */ 
+     */
     public function getGroupTech()
     {
         return $this->groupTech;
@@ -355,7 +355,7 @@ class TicketTask
      * Set the value of groupTech
      *
      * @return  self
-     */ 
+     */
     public function setGroupTech($groupTech)
     {
         $this->groupTech = $groupTech;
@@ -365,7 +365,7 @@ class TicketTask
 
     /**
      * Get the value of tasktemplate
-     */ 
+     */
     public function getTasktemplate()
     {
         return $this->tasktemplate;
@@ -375,7 +375,7 @@ class TicketTask
      * Set the value of tasktemplate
      *
      * @return  self
-     */ 
+     */
     public function setTasktemplate($tasktemplate)
     {
         $this->tasktemplate = $tasktemplate;
