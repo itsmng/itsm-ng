@@ -15,8 +15,9 @@ class TicketTemplateHiddenField
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickettemplates_id;
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?TicketTemplate $tickettemplate;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $num;
@@ -24,18 +25,6 @@ class TicketTemplateHiddenField
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTickettemplatesId(): ?int
-    {
-        return $this->tickettemplates_id;
-    }
-
-    public function setTickettemplatesId(?int $tickettemplates_id): self
-    {
-        $this->tickettemplates_id = $tickettemplates_id;
-
-        return $this;
     }
 
     public function getNum(): ?int
@@ -50,4 +39,24 @@ class TicketTemplateHiddenField
         return $this;
     }
 
+
+    /**
+     * Get the value of tickettemplate
+     */ 
+    public function getTickettemplate()
+    {
+        return $this->tickettemplate;
+    }
+
+    /**
+     * Set the value of tickettemplate
+     *
+     * @return  self
+     */ 
+    public function setTickettemplate($tickettemplate)
+    {
+        $this->tickettemplate = $tickettemplate;
+
+        return $this;
+    }
 }
