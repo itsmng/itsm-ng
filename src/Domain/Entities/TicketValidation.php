@@ -20,17 +20,21 @@ class TicketValidation
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\ManyToOne(targetEntity: Ticket::class)]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_validate;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_validate', referencedColumnName: 'id', nullable: true)]
+    private ?User $userValidate;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment_submission;
@@ -53,54 +57,6 @@ class TicketValidation
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getTicketsId(): ?int
-    {
-        return $this->tickets_id;
-    }
-
-    public function setTicketsId(?int $tickets_id): self
-    {
-        $this->tickets_id = $tickets_id;
-
-        return $this;
-    }
-
-    public function getUsersIdValidate(): ?int
-    {
-        return $this->users_id_validate;
-    }
-
-    public function setUsersIdValidate(?int $users_id_validate): self
-    {
-        $this->users_id_validate = $users_id_validate;
-
-        return $this;
     }
 
     public function getCommentSubmission(): ?string
@@ -175,4 +131,84 @@ class TicketValidation
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userValidate
+     */ 
+    public function getUserValidate()
+    {
+        return $this->userValidate;
+    }
+
+    /**
+     * Set the value of userValidate
+     *
+     * @return  self
+     */ 
+    public function setUserValidate($userValidate)
+    {
+        $this->userValidate = $userValidate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ticket
+     */ 
+    public function getTicket()
+    {
+        return $this->ticket;
+    }
+
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */ 
+    public function setTicket($ticket)
+    {
+        $this->ticket = $ticket;
+
+        return $this;
+    }
 }
