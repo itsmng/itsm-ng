@@ -159,7 +159,8 @@ class Monitor extends CommonDBTM
      * @return boolean item found
      **/
     public function showForm($ID, $options = [])
-    {
+    {  
+
         global $CFG_GLPI;
         $isNew = $this->isNewID($ID) || (isset($options['withtemplate']) && $options['withtemplate'] == 2);
 
