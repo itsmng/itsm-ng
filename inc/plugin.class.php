@@ -39,6 +39,7 @@ if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
 
+use Itsmng\Domain\Entities\Plugin as EntitiesPlugin;
 use Psr\SimpleCache\CacheInterface;
 
 class Plugin extends CommonDBTM
@@ -108,6 +109,8 @@ class Plugin extends CommonDBTM
      * @var string[]
      */
     private static $loaded_plugins = [];
+
+    public $entity = EntitiesPlugin::class;
 
     public static function getTypeName($nb = 0)
     {

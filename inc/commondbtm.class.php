@@ -32,6 +32,7 @@
  */
 
 use Glpi\Event;
+use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
 use itsmng\Timezone;
 
 if (!defined('GLPI_ROOT')) {
@@ -49,7 +50,7 @@ class CommonDBTM extends CommonGLPI
      *
      * @var mixed[]
      */
-    public $fields = [];
+    public $fields = null;
 
     /**
      * Flag to determine whether or not changes must be logged into history.
@@ -178,11 +179,15 @@ class CommonDBTM extends CommonGLPI
      */
     public $last_clone_index = null;
 
+    protected $em;
+    public $entity;
+
     /**
      * Constructor
     **/
     public function __construct()
     {
+        $this->em = EntityManagerProvider::getEntityManager();
     }
 
     /**
@@ -280,28 +285,20 @@ class CommonDBTM extends CommonGLPI
             return false;
         }
 
-        $iterator = $DB->request([
-           'FROM'   => $this->getTable(),
-           'WHERE'  => [
-              $this->getTable() . '.' . $this->getIndexName() => Toolbox::cleanInteger($ID)
-           ],
-           'LIMIT'  => 1
-        ]);
+        $item = $this->em->find($this->entity, $ID);
 
-        if (count($iterator) == 1) {
-            $this->fields = $iterator->next();
-            $this->post_getFromDB();
-            return true;
-        } elseif (count($iterator) > 1) {
+        if (!$item) {
             Toolbox::logWarning(
                 sprintf(
                     'getFromDB expects to get one result, %1$s found!',
                     count($iterator)
                 )
             );
+            return false;
         }
-
-        return false;
+        $this->fields = $item;
+        $this->post_getFromDB();
+        return true;
     }
 
 

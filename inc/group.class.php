@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Group as EntitiesGroup;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -45,6 +47,8 @@ class Group extends CommonTreeDropdown
     public static $rightname       = 'group';
 
     protected $usenotepad  = true;
+
+    public $entity = EntitiesGroup::class;
 
 
     public static function getTypeName($nb = 0)

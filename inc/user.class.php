@@ -38,6 +38,7 @@ if (!defined('GLPI_ROOT')) {
 use Sabre\VObject;
 use Glpi\Exception\ForgetPasswordException;
 use Glpi\Exception\PasswordTooWeakException;
+use Itsmng\Domain\Entities\User as EntitiesUser;
 
 class User extends CommonDBTM
 {
@@ -64,6 +65,8 @@ class User extends CommonDBTM
     ];
 
     private $entities = null;
+
+    public $entity = EntitiesUser::class;
 
 
     public static function getTypeName($nb = 0)
