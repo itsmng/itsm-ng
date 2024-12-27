@@ -2154,7 +2154,7 @@ class Entity extends CommonTreeDropdown
 
         $enable_custom_css = self::getUsedConfig(
             'enable_custom_css',
-            $this->fields['id']
+            $this->content->getId()
         );
 
         if (!$enable_custom_css) {
@@ -2163,7 +2163,7 @@ class Entity extends CommonTreeDropdown
 
         $custom_css_code = self::getUsedConfig(
             'enable_custom_css',
-            $this->fields['id'],
+            $this->content->getId(),
             'custom_css_code'
         );
 

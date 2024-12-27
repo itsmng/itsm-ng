@@ -181,6 +181,7 @@ class CommonDBTM extends CommonGLPI
 
     protected $em;
     public $entity;
+    public $content = null;
 
     /**
      * Constructor
@@ -289,14 +290,11 @@ class CommonDBTM extends CommonGLPI
 
         if (!$item) {
             Toolbox::logWarning(
-                sprintf(
-                    'getFromDB expects to get one result, %1$s found!',
-                    count($iterator)
-                )
+                sprintf( 'getFromDB expects to get one result, %1$s found!')
             );
             return false;
         }
-        $this->fields = $item;
+        $this->content = $item;
         $this->post_getFromDB();
         return true;
     }

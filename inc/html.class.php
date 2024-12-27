@@ -1594,8 +1594,8 @@ JAVASCRIPT;
         $user = new User();
         $user->getFromDB(Session::getLoginUserID());
         if (Session::haveRight("accessibility", READ)) {
-            $factor = $user->fields["access_zoom_level"];
-            $font = $user->fields["access_font"];
+            $factor = $user->content->getAccessZoomLevel();
+            $font = $user->content->getAccessFont();
             switch ($font) {
                 case "OpenDyslexic":
                     echo '<link href="http://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet">';     // Use CDNFonts for webfont delivery
