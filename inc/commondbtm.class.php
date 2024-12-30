@@ -32,8 +32,10 @@
  */
 
 use Glpi\Event;
+use Infrastructure\Adapter\Database\DatabaseAdapterInterface;
+use Infrastructure\Adapter\Database\DoctrineRelationalAdapter;
+use Infrastructure\Adapter\Database\LegacySqlAdapter;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
-use itsmng\Timezone;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -179,16 +181,25 @@ class CommonDBTM extends CommonGLPI
      */
     public $last_clone_index = null;
 
-    protected $em;
-    public $entity;
-    public $content = null;
+    protected $entity;
+    public $adapter;
 
     /**
      * Constructor
     **/
     public function __construct()
     {
-        $this->em = EntityManagerProvider::getEntityManager();
+        $this->adapter = self::getAdapter();
+    }
+
+    public static function getAdapter(): DatabaseAdapterInterface
+    {
+        global $CFG_GLPI;
+
+        if (isset($CFG_GLPI['legacy_database']) && $CFG_GLPI['legacy_database']) {
+        return new DoctrineRelationalAdapter(get_called_class());
+        }
+            return new LegacySqlAdapter(get_called_class());
     }
 
     /**
@@ -278,27 +289,13 @@ class CommonDBTM extends CommonGLPI
     **/
     public function getFromDB($ID)
     {
-        global $DB;
-        // Make new database object and fill variables
-
-        // != 0 because 0 is consider as empty
-        if (strlen($ID) == 0) {
-            return false;
+        $item = $this->adapter->findOneBy([$this->getIndexName() => Toolbox::cleanInteger($ID)]);
+        if (isset($item)) {
+            $this->fields = $this->adapter->getFields($item);
+            $this->post_getFromDB();
         }
-
-        $item = $this->em->find($this->entity, $ID);
-
-        if (!$item) {
-            Toolbox::logWarning(
-                sprintf( 'getFromDB expects to get one result, %1$s found!')
-            );
-            return false;
-        }
-        $this->content = $item;
-        $this->post_getFromDB();
         return true;
     }
-
 
     /**
      * Hydrate an object from a resultset row
@@ -350,23 +347,14 @@ class CommonDBTM extends CommonGLPI
      */
     public function getFromDBByCrit(array $crit)
     {
-        global $DB;
-
-        $crit = ['SELECT' => 'id',
-                 'FROM'   => $this->getTable(),
-                 'WHERE'  => $crit];
-
-        $iter = $DB->request($crit);
-        if (count($iter) == 1) {
-            $row = $iter->next();
-            return $this->getFromDB($row['id']);
-        } elseif (count($iter) > 1) {
+        $items = $this->adapter->findBy($crit);
+        if (count($items) == 1) {
+            $fields = $this->adapter->getFields($items[array_key_first($items)]);
+            return $this->getFromDB($fields['id']);
+        } elseif (count($items) > 1) {
             trigger_error(
-                sprintf(
-                    'getFromDBByCrit expects to get one result, %1$s found in query "%2$s".',
-                    count($iter),
-                    $iter->getSql()
-                ),
+                sprintf( 'getFromDBByCrit expects to get one result, %1$s found.',
+                    count($items)),
                 E_USER_WARNING
             );
         }
@@ -400,16 +388,17 @@ class CommonDBTM extends CommonGLPI
         $request['FROM'] = $this->getTable();
         $request['SELECT'] = $this->getTable() . '.*';
 
-        $iterator = $DB->request($request);
-        if (count($iterator) == 1) {
-            $this->fields = $iterator->next();
+        $items = $this->adapter->findByRequest($request);
+
+        if (count($items) == 1) {
+            $this->fields = $this->adapter->getFields($items[0]);
             $this->post_getFromDB();
             return true;
-        } elseif (count($iterator) > 1) {
+        } elseif (count($items) > 1) {
             Toolbox::logWarning(
                 sprintf(
                     'getFromDBByRequest expects to get one result, %1$s found!',
-                    count($iterator)
+                    count($items)
                 )
             );
         }
@@ -467,8 +456,6 @@ class CommonDBTM extends CommonGLPI
     **/
     public function find($condition = [], $order = [], $limit = null)
     {
-        global $DB;
-
         $criteria = [
            'FROM'   => $this->getTable()
         ];
@@ -489,9 +476,10 @@ class CommonDBTM extends CommonGLPI
         }
 
         $data = [];
-        $iterator = $DB->request($criteria);
-        while ($line = $iterator->next()) {
-            $data[$line['id']] = $line;
+        $items = $this->adapter->findByRequest($criteria);
+        foreach ($items as $item) {
+            $fields = $this->adapter->getFields($item);
+            $data[$fields['id']] = $fields;
         }
 
         return $data;
@@ -580,19 +568,11 @@ class CommonDBTM extends CommonGLPI
     **/
     public function updateInDB($updates, $oldvalues = [])
     {
-        global $DB;
-
         foreach ($updates as $field) {
-            if (isset($this->fields[$field])) {
-                $DB->update(
-                    $this->getTable(),
-                    [$field => $this->fields[$field]],
-                    ['id' => $this->fields['id']]
-                );
-                if ($DB->affectedRows() == 0) {
-                    if (isset($oldvalues[$field])) {
-                        unset($oldvalues[$field]);
-                    }
+            if (isset($this->fields[$field])
+                && $this->fields[$field] == $oldvalues[$field]) {
+                if (isset($oldvalues[$field])) {
+                    unset($oldvalues[$field]);
                 }
             } else {
                 // Clean oldvalues
@@ -602,7 +582,7 @@ class CommonDBTM extends CommonGLPI
             }
         }
 
-        if (count($oldvalues)) {
+        if ($this->adapter->save($this->fields) && count($oldvalues)) {
             Log::constructHistory($this, $oldvalues, $this->fields);
             $this->getFromDB($this->fields['id']);
         }
@@ -657,16 +637,14 @@ class CommonDBTM extends CommonGLPI
     **/
     public function restoreInDB()
     {
-        global $DB;
-
         if ($this->maybeDeleted()) {
-            $params = ['is_deleted' => 0];
+            $this->fields['is_deleted'] = 0;
             // Auto set date_mod if exsist
             if (isset($this->fields['date_mod'])) {
-                $params['date_mod'] = $_SESSION["glpi_currenttime"];
+                $this->fields['date_mod'] = $_SESSION["glpi_currenttime"];
             }
 
-            if ($DB->update($this->getTable(), $params, ['id' => $this->fields['id']])) {
+            if ($this->adapter->save($this->fields)) {
                 return true;
             }
         }
@@ -684,8 +662,6 @@ class CommonDBTM extends CommonGLPI
     **/
     public function deleteFromDB($force = 0)
     {
-        global $DB;
-
         if (
             ($force == 1)
             || !$this->maybeDeleted()
@@ -700,32 +676,22 @@ class CommonDBTM extends CommonGLPI
             $this->cleanRelationData();
             $this->cleanRelationTable();
 
-            $result = $DB->delete(
-                $this->getTable(),
-                [
-                  'id' => $this->fields['id']
-                ]
-            );
+            $result = $this->adapter->deleteByCriteria([
+                'id' => $this->fields['id']
+            ]);
             if ($result) {
                 $this->post_deleteFromDB();
                 return true;
             }
         } else {
             // Auto set date_mod if exsist
-            $toadd = [];
             if (isset($this->fields['date_mod'])) {
-                $toadd['date_mod'] = $_SESSION["glpi_currenttime"];
+                $this->fields['date_mod'] = $_SESSION["glpi_currenttime"];
             }
+            $this->fields['is_deleted'] = 1;
 
-            $result = $DB->update(
-                $this->getTable(),
-                [
-                  'is_deleted' => 1
-                ] + $toadd,
-                [
-                  'id' => $this->fields['id']
-                ]
-            );
+            $result = $this->adapter->save($this->fields);
+
             $this->cleanDBonMarkDeleted();
 
             if ($result) {
@@ -744,16 +710,12 @@ class CommonDBTM extends CommonGLPI
     **/
     public function cleanHistory()
     {
-        global $DB;
-
         if ($this->dohistory) {
-            $DB->delete(
-                'glpi_logs',
-                [
-                  'itemtype'  => $this->getType(),
-                  'items_id'  => $this->fields['id']
-                ]
-            );
+            $logAdapter = Log::getAdapter();
+            $logAdapter->deleteByCriteria([
+                'itemtype'  => $this->getType(),
+                'items_id'  => $this->fields['id']
+            ]);
         }
     }
 
@@ -764,6 +726,7 @@ class CommonDBTM extends CommonGLPI
      *
      * @return void
     **/
+    // TODO FIXME TODO FIXME TODO FIXME TODO FIXME TODO
     public function cleanRelationData()
     {
         global $DB, $CFG_GLPI;
@@ -859,6 +822,7 @@ class CommonDBTM extends CommonGLPI
      *
      * @return void
      **/
+    // TODO FIXME TODO FIXME TODO FIXME TODO FIXME TODO
     protected function deleteChildrenAndRelationsFromDb(array $relations_classes)
     {
 
@@ -3358,8 +3322,7 @@ class CommonDBTM extends CommonGLPI
     **/
     public function isEntityAssign()
     {
-
-        if (!array_key_exists('id', $this->fields)) {
+        if (!array_key_exists('id', $this->fields ?? [])) {
             $this->getEmpty();
         }
         return array_key_exists('entities_id', $this->fields);
@@ -3376,7 +3339,7 @@ class CommonDBTM extends CommonGLPI
     public function maybeRecursive()
     {
 
-        if (!array_key_exists('id', $this->fields)) {
+        if (!array_key_exists('id', $this->fields ?? [])) {
             $this->getEmpty();
         }
         return array_key_exists('is_recursive', $this->fields);

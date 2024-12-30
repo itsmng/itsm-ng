@@ -32,7 +32,6 @@
  */
 
 use Glpi\Event;
-use Itsmng\Domain\Entities\Entity as EntitiesEntity;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -120,8 +119,6 @@ class Entity extends CommonTreeDropdown
        // Configuration
        'config' => ['enable_custom_css', 'custom_css_code']
     ];
-
-    public $entity = EntitiesEntity::class;
 
 
     public function getForbiddenStandardMassiveAction()
@@ -2154,7 +2151,7 @@ class Entity extends CommonTreeDropdown
 
         $enable_custom_css = self::getUsedConfig(
             'enable_custom_css',
-            $this->content->getId()
+            $this->fields['id']
         );
 
         if (!$enable_custom_css) {
@@ -2163,7 +2160,7 @@ class Entity extends CommonTreeDropdown
 
         $custom_css_code = self::getUsedConfig(
             'enable_custom_css',
-            $this->content->getId(),
+            $this->fields['id'],
             'custom_css_code'
         );
 

@@ -1594,8 +1594,8 @@ JAVASCRIPT;
         $user = new User();
         $user->getFromDB(Session::getLoginUserID());
         if (Session::haveRight("accessibility", READ)) {
-            $factor = $user->content->getAccessZoomLevel();
-            $font = $user->content->getAccessFont();
+            $factor = $user->fields["access_zoom_level"];
+            $font = $user->fields["access_font"];
             switch ($font) {
                 case "OpenDyslexic":
                     echo '<link href="http://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet">';     // Use CDNFonts for webfont delivery
@@ -3027,6 +3027,7 @@ JAVASCRIPT;
            ? "mode: 'range',"
            : "";
 
+        $name = Html::cleanInputText($name);
         $output = <<<HTML
       <div class="no-wrap flatpickr" id="showdate{$p['rand']}">
          <input type="text" name="{$name}" size="{$p['size']}"
@@ -3048,9 +3049,7 @@ HTML;
            ? "mode: 'multiple',"
            : "";
 
-        $value = is_array($p['value'])
-           ? json_encode($p['value'])
-           : "'{$p['value']}'";
+        $value = json_encode($p['value']);
 
         $locale = Locale::parseLocale($_SESSION['glpilanguage']);
         $js = <<<JS
@@ -3346,9 +3345,11 @@ JS;
             </a>"
            : "";
 
+        $name = Html::cleanInputText($name);
+        $value = Html::cleanInputText($p['value']);
         $output = <<<HTML
          <div class="no-wrap flatpickr" id="showtime{$p['rand']}">
-            <input type="text" name="{$name}" value="{$p['value']}"
+            <input type="text" name="{$name}" value="{$value}"
                    {$required} {$disabled} data-input>
             <a class="input-button" data-toggle>
                <i class="far fa-clock fa-lg pointer" title="Select Time"></i>
