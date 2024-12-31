@@ -43,25 +43,29 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     }
     public function findBy(array $criteria, array $order = null, int $limit = null): array
     {
+        // TODO: Implement findBy() method.
         return [];
     }
     public function findByRequest(array $request): array
     {
+        // TODO: Implement findByRequest() method.
         return [];
     }
 
     public function deleteByCriteria(array $criteria): bool
     {
+        // TODO: Implement deleteByCriteria() method.
         return false;
     }
 
     // list columns from entity
     public function listFields(): array
     {
+        // TODO: Implement listFields() method.
         return [];
     }
-    // get values from entity as array
-    public function getFields($content): array
+
+    private function getPropertiesAndGetters($content): array
     {
         $reflect = new ReflectionClass($content);
         $properties = $reflect->getProperties();
@@ -80,8 +84,15 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             },
             $properties,
         );
+        return array_combine($names, $getters);
+    }
+
+    // get values from entity as array
+    public function getFields($content): array
+    {
+        $propertiesAndGetters = $this->getPropertiesAndGetters($content);
         $fields = [];
-        foreach (array_combine($names, $getters) as $property => $getter) {
+        foreach ($propertiesAndGetters as $property => $getter) {
             $fields[$property] = $content->$getter();
         }
         return $fields;
@@ -89,15 +100,18 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function save(array $fields): bool
     {
+        // TODO: Implement save() method.
         return false;
     }
     public function add(array $fields): bool|array
     {
+        // TODO: Implement add() method.
         return false;
     }
 
     public function getRelations(): array
     {
+        // TODO: Implement getRelations() method.
         return [];
     }
 }
