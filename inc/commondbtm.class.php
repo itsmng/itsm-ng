@@ -351,8 +351,10 @@ class CommonDBTM extends CommonGLPI
             return $this->getFromDB($fields['id']);
         } elseif (count($items) > 1) {
             trigger_error(
-                sprintf( 'getFromDBByCrit expects to get one result, %1$s found.',
-                    count($items)),
+                sprintf(
+                    'getFromDBByCrit expects to get one result, %1$s found.',
+                    count($items)
+                ),
                 E_USER_WARNING
             );
         }
