@@ -721,36 +721,36 @@ class Entity
         return $this;
     }
 
-    public function getUseDomainAlert(): ?int
+    public function getUseDomainsAlert(): ?int
     {
         return $this->use_domains_alert;
     }
 
-    public function setUseDomainAlert(int $useDomainAlert): self
+    public function setUseDomainsAlert(int $useDomainAlert): self
     {
         $this->use_domains_alert = $useDomainAlert;
 
         return $this;
     }
 
-    public function getSendDomainAlertCloseExpiriesDelay(): ?int
+    public function getSendDomainsAlertCloseExpiriesDelay(): ?int
     {
         return $this->send_domains_alert_close_expiries_delay;
     }
 
-    public function setSendDomainAlertCloseExpiriesDelay(int $sendDomainAlertCloseExpiriesDelay): self
+    public function setSendDomainsAlertCloseExpiriesDelay(int $sendDomainAlertCloseExpiriesDelay): self
     {
         $this->send_domains_alert_close_expiries_delay = $sendDomainAlertCloseExpiriesDelay;
 
         return $this;
     }
 
-    public function getSendDomainAlertExpiredDelay(): ?int
+    public function getSendDomainsAlertExpiredDelay(): ?int
     {
         return $this->send_domains_alert_expired_delay;
     }
 
-    public function setSendDomainAlertExpiredDelay(int $sendDomainAlertExpiredDelay): self
+    public function setSendDomainsAlertExpiredDelay(int $sendDomainAlertExpiredDelay): self
     {
         $this->send_domains_alert_expired_delay = $sendDomainAlertExpiredDelay;
 

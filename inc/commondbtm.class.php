@@ -181,15 +181,13 @@ class CommonDBTM extends CommonGLPI
      */
     public $last_clone_index = null;
 
-    protected $entity;
-    public $adapter;
+    public $entity;
 
     /**
      * Constructor
     **/
     public function __construct()
     {
-        $this->adapter = self::getAdapter();
     }
 
     public static function getAdapter(): DatabaseAdapterInterface
@@ -197,9 +195,9 @@ class CommonDBTM extends CommonGLPI
         global $CFG_GLPI;
 
         if (isset($CFG_GLPI['legacy_database']) && $CFG_GLPI['legacy_database']) {
-        return new DoctrineRelationalAdapter(get_called_class());
-        }
             return new LegacySqlAdapter(get_called_class());
+        }
+        return new DoctrineRelationalAdapter(get_called_class());
     }
 
     /**
@@ -289,9 +287,9 @@ class CommonDBTM extends CommonGLPI
     **/
     public function getFromDB($ID)
     {
-        $item = $this->adapter->findOneBy([$this->getIndexName() => Toolbox::cleanInteger($ID)]);
+        $item = $this::getAdapter()->findOneBy([$this->getIndexName() => Toolbox::cleanInteger($ID)]);
         if (isset($item)) {
-            $this->fields = $this->adapter->getFields($item);
+            $this->fields = $this::getAdapter()->getFields($item);
             $this->post_getFromDB();
         }
         return true;
@@ -347,9 +345,9 @@ class CommonDBTM extends CommonGLPI
      */
     public function getFromDBByCrit(array $crit)
     {
-        $items = $this->adapter->findBy($crit);
+        $items = $this::getAdapter()->findBy($crit);
         if (count($items) == 1) {
-            $fields = $this->adapter->getFields($items[array_key_first($items)]);
+            $fields = $this::getAdapter()->getFields($items[array_key_first($items)]);
             return $this->getFromDB($fields['id']);
         } elseif (count($items) > 1) {
             trigger_error(
@@ -388,10 +386,10 @@ class CommonDBTM extends CommonGLPI
         $request['FROM'] = $this->getTable();
         $request['SELECT'] = $this->getTable() . '.*';
 
-        $items = $this->adapter->findByRequest($request);
+        $items = $this::getAdapter()->findByRequest($request);
 
         if (count($items) == 1) {
-            $this->fields = $this->adapter->getFields($items[0]);
+            $this->fields = $this::getAdapter()->getFields($items[0]);
             $this->post_getFromDB();
             return true;
         } elseif (count($items) > 1) {
@@ -476,9 +474,9 @@ class CommonDBTM extends CommonGLPI
         }
 
         $data = [];
-        $items = $this->adapter->findByRequest($criteria);
+        $items = $this::getAdapter()->findByRequest($criteria);
         foreach ($items as $item) {
-            $fields = $this->adapter->getFields($item);
+            $fields = $this::getAdapter()->getFields($item);
             $data[$fields['id']] = $fields;
         }
 
@@ -582,7 +580,7 @@ class CommonDBTM extends CommonGLPI
             }
         }
 
-        if ($this->adapter->save($this->fields) && count($oldvalues)) {
+        if ($this::getAdapter()->save($this->fields) && count($oldvalues)) {
             Log::constructHistory($this, $oldvalues, $this->fields);
             $this->getFromDB($this->fields['id']);
         }
@@ -644,7 +642,7 @@ class CommonDBTM extends CommonGLPI
                 $this->fields['date_mod'] = $_SESSION["glpi_currenttime"];
             }
 
-            if ($this->adapter->save($this->fields)) {
+            if ($this::getAdapter()->save($this->fields)) {
                 return true;
             }
         }
@@ -676,7 +674,7 @@ class CommonDBTM extends CommonGLPI
             $this->cleanRelationData();
             $this->cleanRelationTable();
 
-            $result = $this->adapter->deleteByCriteria([
+            $result = $this::getAdapter()->deleteByCriteria([
                 'id' => $this->fields['id']
             ]);
             if ($result) {
@@ -690,7 +688,7 @@ class CommonDBTM extends CommonGLPI
             }
             $this->fields['is_deleted'] = 1;
 
-            $result = $this->adapter->save($this->fields);
+            $result = $this::getAdapter()->save($this->fields);
 
             $this->cleanDBonMarkDeleted();
 
