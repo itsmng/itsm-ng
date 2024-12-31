@@ -1052,6 +1052,7 @@ class Software extends CommonDBTM
             $massiveactionparams
                = ['num_displayed' => min($_SESSION['glpilist_limit'], $nb),
                        'container'     => 'mass' . __CLASS__ . $rand,
+                       'deprecated'      => true,
                        'specific_actions'
                                        => [__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'merge'
                                                    => __('Merge')],
