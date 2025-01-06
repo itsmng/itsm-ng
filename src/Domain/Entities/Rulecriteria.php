@@ -15,8 +15,9 @@ class Rulecriteria
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $rules_id;
+    #[ORM\ManyToOne(targetEntity: Rule::class)]
+    #[ORM\JoinColumn(name: 'rules_id', referencedColumnName: 'id', nullable: true)]
+    private ?Rule $rule;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $criteria;
@@ -32,18 +33,6 @@ class Rulecriteria
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRulesId(): ?string
-    {
-        return $this->rules_id;
-    }
-
-    public function setRulesId(?string $rules_id): self
-    {
-        $this->rules_id = $rules_id;
-
-        return $this;
     }
 
     public function getCriteria(): ?string
@@ -82,4 +71,24 @@ class Rulecriteria
         return $this;
     }
 
+
+    /**
+     * Get the value of rule
+     */
+    public function getRule()
+    {
+        return $this->rule;
+    }
+
+    /**
+     * Set the value of rule
+     *
+     * @return  self
+     */
+    public function setRule($rule)
+    {
+        $this->rule = $rule;
+
+        return $this;
+    }
 }

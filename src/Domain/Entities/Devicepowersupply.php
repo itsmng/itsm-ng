@@ -32,17 +32,20 @@ class Devicepowersupply
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $devicepowersupplymodels_id;
+    #[ORM\ManyToOne(targetEntity: Devicepowersupplymodel::class)]
+    #[ORM\JoinColumn(name: 'devicepowersupplymodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Devicepowersupplymodel $devicepowersupplymodel;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
@@ -103,30 +106,6 @@ class Devicepowersupply
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -135,18 +114,6 @@ class Devicepowersupply
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getDevicepowersupplymodelsId(): ?int
-    {
-        return $this->devicepowersupplymodels_id;
-    }
-
-    public function setDevicepowersupplymodelsId(?int $devicepowersupplymodels_id): self
-    {
-        $this->devicepowersupplymodels_id = $devicepowersupplymodels_id;
 
         return $this;
     }
@@ -175,4 +142,64 @@ class Devicepowersupply
         return $this;
     }
 
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicepowersupplymodel
+     */
+    public function getDevicepowersupplymodel()
+    {
+        return $this->devicepowersupplymodel;
+    }
+
+    /**
+     * Set the value of devicepowersupplymodel
+     *
+     * @return  self
+     */
+    public function setDevicepowersupplymodel($devicepowersupplymodel)
+    {
+        $this->devicepowersupplymodel = $devicepowersupplymodel;
+
+        return $this;
+    }
 }

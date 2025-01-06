@@ -15,8 +15,9 @@ class Olalevelcriteria
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olalevels_id;
+    #[ORM\ManyToOne(targetEntity: Olalevel::class)]
+    #[ORM\JoinColumn(name: 'olalevels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Olalevel $olalevel;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $criteria;
@@ -30,18 +31,6 @@ class Olalevelcriteria
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getOlalevelsId(): ?int
-    {
-        return $this->olalevels_id;
-    }
-
-    public function setOlalevelsId(?int $olalevels_id): self
-    {
-        $this->olalevels_id = $olalevels_id;
-
-        return $this;
     }
 
     public function getCriteria(): ?string
@@ -80,4 +69,24 @@ class Olalevelcriteria
         return $this;
     }
 
+
+    /**
+     * Get the value of olalevel
+     */
+    public function getOlalevel()
+    {
+        return $this->olalevel;
+    }
+
+    /**
+     * Set the value of olalevel
+     *
+     * @return  self
+     */
+    public function setOlalevel($olalevel)
+    {
+        $this->olalevel = $olalevel;
+
+        return $this;
+    }
 }

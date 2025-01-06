@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_contracts')]
@@ -24,8 +25,9 @@ class Contract
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -36,8 +38,9 @@ class Contract
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $num;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $contracttypes_id;
+    #[ORM\ManyToOne(targetEntity: Contracttype::class)]
+    #[ORM\JoinColumn(name: 'contracttypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Contracttype $contracttype;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $begin_date;
@@ -102,8 +105,9 @@ class Contract
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_template;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
@@ -111,21 +115,12 @@ class Contract
     #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_creation;
 
+    #[ORM\OneToMany(mappedBy: 'contract', targetEntity: ContractSupplier::class)]
+    private Collection $contractSuppliers;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?int
@@ -164,17 +159,6 @@ class Contract
         return $this;
     }
 
-    public function getContracttypesId(): ?int
-    {
-        return $this->contracttypes_id;
-    }
-
-    public function setContracttypesId(int $contracttypes_id): self
-    {
-        $this->contracttypes_id = $contracttypes_id;
-
-        return $this;
-    }
 
     public function getBeginDate(): ?\DateTimeInterface
     {
@@ -428,17 +412,6 @@ class Contract
         return $this;
     }
 
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(int $states_id): self
-    {
-        $this->states_id = $states_id;
-
-        return $this;
-    }
 
     public function getDateMod(): ?\DateTimeInterface
     {
@@ -460,6 +433,86 @@ class Contract
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contracttype
+     */
+    public function getContracttype()
+    {
+        return $this->contracttype;
+    }
+
+    /**
+     * Set the value of contracttype
+     *
+     * @return  self
+     */
+    public function setContracttype($contracttype)
+    {
+        $this->contracttype = $contracttype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contractSuppliers
+     */
+    public function getContractSuppliers()
+    {
+        return $this->contractSuppliers;
+    }
+
+    /**
+     * Set the value of contractSuppliers
+     *
+     * @return  self
+     */
+    public function setContractSuppliers($contractSuppliers)
+    {
+        $this->contractSuppliers = $contractSuppliers;
 
         return $this;
     }

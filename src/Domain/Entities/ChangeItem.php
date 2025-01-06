@@ -15,8 +15,9 @@ class ChangeItem
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changes_id;
+    #[ORM\ManyToOne(targetEntity: Change::class)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Change $change;
 
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $itemtype;
@@ -36,17 +37,6 @@ class ChangeItem
         return $this;
     }
 
-    public function getChangesId(): int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
 
     public function getItemtype(): ?string
     {
@@ -68,6 +58,26 @@ class ChangeItem
     public function setItemsId(int $items_id): self
     {
         $this->items_id = $items_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of change
+     */
+    public function getChange()
+    {
+        return $this->change;
+    }
+
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */
+    public function setChange($change)
+    {
+        $this->change = $change;
 
         return $this;
     }

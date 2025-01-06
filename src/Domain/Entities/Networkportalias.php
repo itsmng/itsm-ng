@@ -17,11 +17,13 @@ class Networkportalias
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $networkports_id;
+    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
+    private ?Networkport $networkport;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $networkports_id_alias;
+    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\JoinColumn(name: 'networkports_id_alias', referencedColumnName: 'id', nullable: true)]
+    private ?Networkport $networkportAlias;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -32,30 +34,6 @@ class Networkportalias
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNetworkportsId(): ?int
-    {
-        return $this->networkports_id;
-    }
-
-    public function setNetworkportsId(?int $networkports_id): self
-    {
-        $this->networkports_id = $networkports_id;
-
-        return $this;
-    }
-
-    public function getNetworkportsIdAlias(): ?int
-    {
-        return $this->networkports_id_alias;
-    }
-
-    public function setNetworkportsIdAlias(?int $networkports_id_alias): self
-    {
-        $this->networkports_id_alias = $networkports_id_alias;
-
-        return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
@@ -82,4 +60,44 @@ class Networkportalias
         return $this;
     }
 
+
+    /**
+     * Get the value of networkport
+     */
+    public function getNetworkport()
+    {
+        return $this->networkport;
+    }
+
+    /**
+     * Set the value of networkport
+     *
+     * @return  self
+     */
+    public function setNetworkport($networkport)
+    {
+        $this->networkport = $networkport;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportAlias
+     */
+    public function getNetworkportAlias()
+    {
+        return $this->networkportAlias;
+    }
+
+    /**
+     * Set the value of networkportAlias
+     *
+     * @return  self
+     */
+    public function setNetworkportAlias($networkportAlias)
+    {
+        $this->networkportAlias = $networkportAlias;
+
+        return $this;
+    }
 }

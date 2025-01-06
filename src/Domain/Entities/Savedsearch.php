@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_savedsearches')]
@@ -31,14 +32,16 @@ class Savedsearch
     #[ORM\Column(type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_private;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -1])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -60,6 +63,12 @@ class Savedsearch
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $counter;
+
+    #[ORM\OneToMany(mappedBy: 'savedsearch', targetEntity: SavedsearchAlert::class)]
+    private Collection $savedsearchAlerts;
+
+    #[ORM\OneToMany(mappedBy: 'savedsearch', targetEntity: SavedsearchUser::class)]
+    private Collection $savedsearchUsers;
 
     public function getId(): ?int
     {
@@ -102,18 +111,6 @@ class Savedsearch
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getIsPrivate(): ?bool
     {
         return $this->is_private;
@@ -122,18 +119,6 @@ class Savedsearch
     public function setIsPrivate(bool $is_private): self
     {
         $this->is_private = $is_private;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }
@@ -222,4 +207,84 @@ class Savedsearch
         return $this;
     }
 
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of savedsearchAlerts
+     */
+    public function getSavedsearchAlerts()
+    {
+        return $this->savedsearchAlerts;
+    }
+
+    /**
+     * Set the value of savedsearchAlerts
+     *
+     * @return  self
+     */
+    public function setSavedsearchAlerts($savedsearchAlerts)
+    {
+        $this->savedsearchAlerts = $savedsearchAlerts;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of savedsearchUsers
+     */
+    public function getSavedsearchUsers()
+    {
+        return $this->savedsearchUsers;
+    }
+
+    /**
+     * Set the value of savedsearchUsers
+     *
+     * @return  self
+     */
+    public function setSavedsearchUsers($savedsearchUsers)
+    {
+        $this->savedsearchUsers = $savedsearchUsers;
+
+        return $this;
+    }
 }

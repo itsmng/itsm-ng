@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_alerts')]
@@ -80,4 +81,5 @@ class Alert
 
         return $this;
     }
+
 }

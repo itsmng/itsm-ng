@@ -19,8 +19,9 @@ class Fqdn
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
@@ -43,18 +44,6 @@ class Fqdn
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool
@@ -125,6 +114,26 @@ class Fqdn
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use TaskTemplate;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_changetasks")]
@@ -31,11 +32,13 @@ class ChangeTask
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $uuid;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $changes_id;
+    #[ORM\ManyToOne(targetEntity: Change::class)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Change $change;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $taskcategories_id;
+    #[ORM\ManyToOne(targetEntity: Taskcategory::class)]
+    #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Taskcategory $taskcategory;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $state;
@@ -49,17 +52,21 @@ class ChangeTask
     #[ORM\Column(type: "datetime", nullable: true)]
     private $end;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $users_id_editor;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
+    private ?User $user_editor;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $users_id_tech;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?User $user_tech;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $groups_id_tech;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group_tech;
 
     #[ORM\Column(type: "text", nullable: true)]
     private $content;
@@ -73,8 +80,9 @@ class ChangeTask
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $tasktemplates_id;
+    #[ORM\ManyToOne(targetEntity: TaskTemplate::class)]
+    #[ORM\JoinColumn(name: 'tasktemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?TaskTemplate $tasktemplate;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $timeline_position;
@@ -102,30 +110,6 @@ class ChangeTask
     public function setUuid(?string $uuid): self
     {
         $this->uuid = $uuid;
-
-        return $this;
-    }
-
-    public function getChangesId(): ?int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
-
-    public function getTaskCategoriesId(): ?int
-    {
-        return $this->taskcategories_id;
-    }
-
-    public function setTaskCategoriesId(int $taskcategories_id): self
-    {
-        $this->taskcategories_id = $taskcategories_id;
 
         return $this;
     }
@@ -178,54 +162,6 @@ class ChangeTask
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getUsersIdEditor(): ?int
-    {
-        return $this->users_id_editor;
-    }
-
-    public function setUsersIdEditor(int $users_id_editor): self
-    {
-        $this->users_id_editor = $users_id_editor;
-
-        return $this;
-    }
-
-    public function getUsersIdTech(): ?int
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(int $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
@@ -274,17 +210,6 @@ class ChangeTask
         return $this;
     }
 
-    public function getTaskTemplatesId(): ?int
-    {
-        return $this->tasktemplates_id;
-    }
-
-    public function setTaskTemplatesId(int $tasktemplates_id): self
-    {
-        $this->tasktemplates_id = $tasktemplates_id;
-
-        return $this;
-    }
 
     public function getTimelinePosition(): ?int
     {
@@ -306,6 +231,148 @@ class ChangeTask
     public function setIsPrivate(int $is_private): self
     {
         $this->is_private = $is_private;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of change
+     */
+    public function getChange()
+    {
+        return $this->change;
+    }
+
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */
+    public function setChange($change)
+    {
+        $this->change = $change;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of taskcategory
+     */
+    public function getTaskcategory()
+    {
+        return $this->taskcategory;
+    }
+
+    /**
+     * Set the value of taskcategory
+     *
+     * @return  self
+     */
+    public function setTaskcategory($taskcategory)
+    {
+        $this->taskcategory = $taskcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user_editor
+     */
+    public function getUser_editor()
+    {
+        return $this->user_editor;
+    }
+
+    /**
+     * Set the value of user_editor
+     *
+     * @return  self
+     */
+    public function setUser_editor($user_editor)
+    {
+        $this->user_editor = $user_editor;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user_tech
+     */
+    public function getUser_tech()
+    {
+        return $this->user_tech;
+    }
+
+    /**
+     * Set the value of user_tech
+     *
+     * @return  self
+     */
+    public function setUser_tech($user_tech)
+    {
+        $this->user_tech = $user_tech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group_tech
+     */
+    public function getGroup_tech()
+    {
+        return $this->group_tech;
+    }
+
+    /**
+     * Set the value of group_tech
+     *
+     * @return  self
+     */
+    public function setGroup_tech($group_tech)
+    {
+        $this->group_tech = $group_tech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tasktemplate
+     */
+    public function getTasktemplate()
+    {
+        return $this->tasktemplate;
+    }
+
+    /**
+     * Set the value of tasktemplate
+     *
+     * @return  self
+     */
+    public function setTasktemplate($tasktemplate)
+    {
+        $this->tasktemplate = $tasktemplate;
 
         return $this;
     }

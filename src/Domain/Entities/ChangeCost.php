@@ -20,8 +20,10 @@ class ChangeCost
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changes_id;
+
+    #[ORM\ManyToOne(targetEntity: Change::class)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Change $change;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -47,11 +49,13 @@ class ChangeCost
     #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
     private $cost_material;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $budgets_id;
+    #[ORM\ManyToOne(targetEntity: Budget::class)]
+    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Budget $budget;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -61,17 +65,6 @@ class ChangeCost
         return $this->id;
     }
 
-    public function getChangesId(): ?int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
 
     public function getName(): ?string
     {
@@ -169,29 +162,6 @@ class ChangeCost
         return $this;
     }
 
-    public function getBudgetsId(): ?int
-    {
-        return $this->budgets_id;
-    }
-
-    public function setBudgetsId(?int $budgets_id): self
-    {
-        $this->budgets_id = $budgets_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?bool
     {
@@ -201,6 +171,66 @@ class ChangeCost
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of change
+     */
+    public function getChange()
+    {
+        return $this->change;
+    }
+
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */
+    public function setChange($change)
+    {
+        $this->change = $change;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of budget
+     */
+    public function getBudget()
+    {
+        return $this->budget;
+    }
+
+    /**
+     * Set the value of budget
+     *
+     * @return  self
+     */
+    public function setBudget($budget)
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

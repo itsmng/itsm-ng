@@ -5,27 +5,30 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "glpi_ipnetworks_vlans")]
-#[ORM\UniqueConstraint(name: "link", columns: ["ipnetworks_id", "vlans_id"])]
-class IpNetworkVlan
+#[ORM\Table(name: "glpi_ipaddresses_ipnetworks")]
+#[ORM\UniqueConstraint(name: "unicity", columns: ["ipaddresses_id", "ipnetworks_id"])]
+#[ORM\Index(name: "ipnetworks_id", columns: ["ipnetworks_id"])]
+#[ORM\Index(name: "ipaddresses_id", columns: ["ipaddresses_id"])]
+class IpAddressIpNetwork
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: IpNetwork::class, inversedBy: 'ipnetworkVlans')]
+    #[ORM\ManyToOne(targetEntity: IpAddress::class, inversedBy: 'ipaddressIpnetworks')]
+    #[ORM\JoinColumn(name: 'ipaddresses_id', referencedColumnName: 'id', nullable: true)]
+    private ?IpAddress $ipaddress;
+
+    #[ORM\ManyToOne(targetEntity: IpNetwork::class, inversedBy: 'ipaddressIpnetworks')]
     #[ORM\JoinColumn(name: 'ipnetworks_id', referencedColumnName: 'id', nullable: true)]
     private ?IpNetwork $ipnetwork;
-
-    #[ORM\ManyToOne(targetEntity: Vlan::class, inversedBy: 'ipnetworkVlans')]
-    #[ORM\JoinColumn(name: 'vlans_id', referencedColumnName: 'id', nullable: true)]
-    private ?Vlan $vlan;
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
 
     /**
      * Get the value of ipnetwork
@@ -48,21 +51,21 @@ class IpNetworkVlan
     }
 
     /**
-     * Get the value of vlan
+     * Get the value of ipaddress
      */
-    public function getVlan()
+    public function getIpaddress()
     {
-        return $this->vlan;
+        return $this->ipaddress;
     }
 
     /**
-     * Set the value of vlan
+     * Set the value of ipaddress
      *
      * @return  self
      */
-    public function setVlan($vlan)
+    public function setIpaddress($ipaddress)
     {
-        $this->vlan = $vlan;
+        $this->ipaddress = $ipaddress;
 
         return $this;
     }

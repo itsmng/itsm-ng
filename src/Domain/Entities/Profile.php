@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_profiles')]
@@ -50,14 +51,17 @@ class Profile
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $create_ticket_on_login;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickettemplates_id;
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?TicketTemplate $tickettemplate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changetemplates_id;
+    #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
+    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?ChangeTemplate $changetemplate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $problemtemplates_id;
+    #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
+    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Problemtemplate $problemtemplate;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ['comment' => 'json encoded array of from/dest allowed status change'])]
     private $change_status;
@@ -67,6 +71,18 @@ class Profile
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: KnowbaseitemProfile::class)]
+    private Collection $knowbaseitemProfiles;
+
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileReminder::class)]
+    private Collection $profileReminders;
+
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileRssfeed::class)]
+    private Collection $profileRssfeeds;
+
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileUser::class)]
+    private Collection $profileUsers;
 
     public function getId(): ?int
     {
@@ -203,45 +219,6 @@ class Profile
         return $this;
     }
 
-    public function getTicketTemplatesId(): ?int
-    {
-        return $this->tickettemplates_id;
-    }
-
-
-    public function setTicketTemplatesId(?int $tickettemplates_id): self
-    {
-        $this->tickettemplates_id = $tickettemplates_id;
-
-        return $this;
-    }
-
-    public function getChangeTemplatesId(): ?int
-    {
-        return $this->changetemplates_id;
-    }
-
-
-    public function setChangeTemplatesId(?int $changetemplates_id): self
-    {
-        $this->changetemplates_id = $changetemplates_id;
-
-        return $this;
-    }
-
-    public function getProblemTemplatesId(): ?int
-    {
-        return $this->problemtemplates_id;
-    }
-
-
-    public function setProblemTemplatesId(?int $problemtemplates_id): self
-    {
-        $this->problemtemplates_id = $problemtemplates_id;
-
-        return $this;
-    }
-
     public function getChangeStatus(): ?string
     {
         return $this->change_status;
@@ -277,6 +254,146 @@ class Profile
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemProfiles
+     */
+    public function getKnowbaseitemProfiles()
+    {
+        return $this->knowbaseitemProfiles;
+    }
+
+    /**
+     * Set the value of knowbaseitemProfiles
+     *
+     * @return  self
+     */
+    public function setKnowbaseitemProfiles($knowbaseitemProfiles)
+    {
+        $this->knowbaseitemProfiles = $knowbaseitemProfiles;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickettemplate
+     */
+    public function getTickettemplate()
+    {
+        return $this->tickettemplate;
+    }
+
+    /**
+     * Set the value of tickettemplate
+     *
+     * @return  self
+     */
+    public function setTickettemplate($tickettemplate)
+    {
+        $this->tickettemplate = $tickettemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changetemplate
+     */
+    public function getChangetemplate()
+    {
+        return $this->changetemplate;
+    }
+
+    /**
+     * Set the value of changetemplate
+     *
+     * @return  self
+     */
+    public function setChangetemplate($changetemplate)
+    {
+        $this->changetemplate = $changetemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemtemplate
+     */
+    public function getProblemtemplate()
+    {
+        return $this->problemtemplate;
+    }
+
+    /**
+     * Set the value of problemtemplate
+     *
+     * @return  self
+     */
+    public function setProblemtemplate($problemtemplate)
+    {
+        $this->problemtemplate = $problemtemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileReminders
+     */
+    public function getProfileReminders()
+    {
+        return $this->profileReminders;
+    }
+
+    /**
+     * Set the value of profileReminders
+     *
+     * @return  self
+     */
+    public function setProfileReminders($profileReminders)
+    {
+        $this->profileReminders = $profileReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileRssfeeds
+     */
+    public function getProfileRssfeeds()
+    {
+        return $this->profileRssfeeds;
+    }
+
+    /**
+     * Set the value of profileRssfeeds
+     *
+     * @return  self
+     */
+    public function setProfileRssfeeds($profileRssfeeds)
+    {
+        $this->profileRssfeeds = $profileRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileUsers
+     */
+    public function getProfileUsers()
+    {
+        return $this->profileUsers;
+    }
+
+    /**
+     * Set the value of profileUsers
+     *
+     * @return  self
+     */
+    public function setProfileUsers($profileUsers)
+    {
+        $this->profileUsers = $profileUsers;
 
         return $this;
     }

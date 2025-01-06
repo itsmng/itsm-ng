@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_printermodels')]
@@ -31,6 +32,9 @@ class Printermodel
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'printermodel', targetEntity: CartridgeItemPrintermodel::class)]
+    private Collection $cartridgeItemPrintermodels;
 
     public function getId(): ?int
     {
@@ -97,4 +101,24 @@ class Printermodel
         return $this;
     }
 
+
+    /**
+     * Get the value of cartridgeItemPrintermodels
+     */
+    public function getCartridgeItemPrintermodels()
+    {
+        return $this->cartridgeItemPrintermodels;
+    }
+
+    /**
+     * Set the value of cartridgeItemPrintermodels
+     *
+     * @return  self
+     */
+    public function setCartridgeItemPrintermodels($cartridgeItemPrintermodels)
+    {
+        $this->cartridgeItemPrintermodels = $cartridgeItemPrintermodels;
+
+        return $this;
+    }
 }

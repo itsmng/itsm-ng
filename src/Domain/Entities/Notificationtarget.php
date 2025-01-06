@@ -21,8 +21,9 @@ class Notificationtarget
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $type;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $notifications_id;
+    #[ORM\ManyToOne(targetEntity: Notification::class)]
+    #[ORM\JoinColumn(name: 'notifications_id', referencedColumnName: 'id', nullable: true)]
+    private ?Notification $notification;
 
     public function getId(): ?int
     {
@@ -53,16 +54,23 @@ class Notificationtarget
         return $this;
     }
 
-    public function getNotificationsId(): ?int
+    /**
+     * Get the value of notification
+     */
+    public function getNotification()
     {
-        return $this->notifications_id;
+        return $this->notification;
     }
 
-    public function setNotificationsId(?int $notifications_id): self
+    /**
+     * Set the value of notification
+     *
+     * @return  self
+     */
+    public function setNotification($notification)
     {
-        $this->notifications_id = $notifications_id;
+        $this->notification = $notification;
 
         return $this;
     }
-
 }

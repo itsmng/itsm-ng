@@ -22,14 +22,16 @@ class Taskcategory
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $taskcategories_id;
+    #[ORM\ManyToOne(targetEntity: Taskcategory::class)]
+    #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Taskcategory $taskcategory;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -61,24 +63,14 @@ class Taskcategory
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $knowbaseitemcategories_id;
+    #[ORM\ManyToOne(targetEntity: Knowbaseitemcategory::class)]
+    #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Knowbaseitemcategory $knowbaseitemcategory;
+
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool
@@ -89,18 +81,6 @@ class Taskcategory
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getTaskcategoriesId(): ?int
-    {
-        return $this->taskcategories_id;
-    }
-
-    public function setTaskcategoriesId(?int $taskcategories_id): self
-    {
-        $this->taskcategories_id = $taskcategories_id;
 
         return $this;
     }
@@ -225,16 +205,64 @@ class Taskcategory
         return $this;
     }
 
-    public function getKnowbaseitemcategoriesId(): ?int
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
     {
-        return $this->knowbaseitemcategories_id;
+        return $this->entity;
     }
 
-    public function setKnowbaseitemcategoriesId(?int $knowbaseitemcategories_id): self
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
     {
-        $this->knowbaseitemcategories_id = $knowbaseitemcategories_id;
+        $this->entity = $entity;
 
         return $this;
     }
 
+    /**
+     * Get the value of taskcategory
+     */
+    public function getTaskcategory()
+    {
+        return $this->taskcategory;
+    }
+
+    /**
+     * Set the value of taskcategory
+     *
+     * @return  self
+     */
+    public function setTaskcategory($taskcategory)
+    {
+        $this->taskcategory = $taskcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemcategory
+     */
+    public function getKnowbaseitemcategory()
+    {
+        return $this->knowbaseitemcategory;
+    }
+
+    /**
+     * Set the value of knowbaseitemcategory
+     *
+     * @return  self
+     */
+    public function setKnowbaseitemcategory($knowbaseitemcategory)
+    {
+        $this->knowbaseitemcategory = $knowbaseitemcategory;
+
+        return $this;
+    }
 }

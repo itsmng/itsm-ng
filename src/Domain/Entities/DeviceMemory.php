@@ -2,6 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DeviceMemoryModel;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -30,23 +31,30 @@ class DeviceMemory
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: "integer", options: ['default' => 0])]
     private $size_default;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
-    private $devicememorytypes_id;
+    #[ORM\ManyToOne(targetEntity: DeviceMemoryType::class)]
+    #[ORM\JoinColumn(name: 'devicememorytypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?DeviceMemoryType $deviceMemoryType;
 
     #[ORM\Column(type: "integer", options: ['default' => 0])]
     private $entities_id;
 
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
+
     #[ORM\Column(type: "boolean", options: ['default' => false])]
     private $is_recursive;
 
-    #[ORM\Column(type: "integer", nullable: true)]
-    private $devicememorymodels_id;
+    #[ORM\ManyToOne(targetEntity: DeviceMemoryModel::class)]
+    #[ORM\JoinColumn(name: 'devicememorymodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?DeviceMemoryModel $deviceMemoryModel;
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_mod;
@@ -95,18 +103,6 @@ class DeviceMemory
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
     public function getSizeDefault(): ?int
     {
         return $this->size_default;
@@ -115,18 +111,6 @@ class DeviceMemory
     public function setSizeDefault(?int $size_default): self
     {
         $this->size_default = $size_default;
-
-        return $this;
-    }
-
-    public function getDeviceMemoryTypesId(): ?int
-    {
-        return $this->devicememorytypes_id;
-    }
-
-    public function setDeviceMemoryTypesId(?int $devicememorytypes_id): self
-    {
-        $this->devicememorytypes_id = $devicememorytypes_id;
 
         return $this;
     }
@@ -155,18 +139,6 @@ class DeviceMemory
         return $this;
     }
 
-    public function getDeviceMemoryModelsId(): ?int
-    {
-        return $this->devicememorymodels_id;
-    }
-
-    public function setDeviceMemoryModelsId(?int $devicememorymodels_id): self
-    {
-        $this->devicememorymodels_id = $devicememorymodels_id;
-
-        return $this;
-    }
-
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -187,6 +159,86 @@ class DeviceMemory
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deviceMemoryType
+     */
+    public function getDeviceMemoryType()
+    {
+        return $this->deviceMemoryType;
+    }
+
+    /**
+     * Set the value of deviceMemoryType
+     *
+     * @return  self
+     */
+    public function setDeviceMemoryType($deviceMemoryType)
+    {
+        $this->deviceMemoryType = $deviceMemoryType;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deviceMemoryModel
+     */
+    public function getDeviceMemoryModel()
+    {
+        return $this->deviceMemoryModel;
+    }
+
+    /**
+     * Set the value of deviceMemoryModel
+     *
+     * @return  self
+     */
+    public function setDeviceMemoryModel($deviceMemoryModel)
+    {
+        $this->deviceMemoryModel = $deviceMemoryModel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

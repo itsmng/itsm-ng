@@ -16,8 +16,9 @@ class Changetemplatemandatoryfield
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changetemplates_id;
+    #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
+    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?ChangeTemplate $changetemplate;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $num;
@@ -27,17 +28,6 @@ class Changetemplatemandatoryfield
         return $this->id;
     }
 
-    public function getChangetemplatesId(): ?int
-    {
-        return $this->changetemplates_id;
-    }
-
-    public function setChangetemplatesId(int $changetemplates_id): self
-    {
-        $this->changetemplates_id = $changetemplates_id;
-
-        return $this;
-    }
 
     public function getNum(): ?int
     {
@@ -47,6 +37,26 @@ class Changetemplatemandatoryfield
     public function setNum(int $num): self
     {
         $this->num = $num;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changetemplate
+     */
+    public function getChangetemplate()
+    {
+        return $this->changetemplate;
+    }
+
+    /**
+     * Set the value of changetemplate
+     *
+     * @return  self
+     */
+    public function setChangetemplate($changetemplate)
+    {
+        $this->changetemplate = $changetemplate;
 
         return $this;
     }

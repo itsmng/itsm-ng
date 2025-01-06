@@ -3,6 +3,8 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Itsmng\Domain\Entities\Passivedcequipmenttype as EntitiesPassivedcequipmenttype;
+use PassiveDCEquipmentType;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_passivedcequipments')]
@@ -27,14 +29,16 @@ class Passivedcequipment
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $serial;
@@ -42,17 +46,21 @@ class Passivedcequipment
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $passivedcequipmentmodels_id;
+    #[ORM\ManyToOne(targetEntity: Passivedcequipmentmodel::class)]
+    #[ORM\JoinColumn(name: 'passivedcequipmentmodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Passivedcequipmentmodel $passivedcequipmentmodel;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $passivedcequipmenttypes_id;
+    #[ORM\ManyToOne(targetEntity: EntitiesPassivedcequipmenttype::class)]
+    #[ORM\JoinColumn(name: 'passivedcequipmenttypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?EntitiesPassivedcequipmenttype $passivedcequipmenttype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_tech;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?User $userTech;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id_tech;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?Group $groupTech;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_template;
@@ -63,14 +71,16 @@ class Passivedcequipment
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to states (id)'])]
-    private $states_id;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -95,18 +105,6 @@ class Passivedcequipment
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -115,18 +113,6 @@ class Passivedcequipment
     public function setIsRecursive(bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
 
         return $this;
     }
@@ -151,54 +137,6 @@ class Passivedcequipment
     public function setOtherserial(string $otherserial): self
     {
         $this->otherserial = $otherserial;
-
-        return $this;
-    }
-
-    public function getPassivedcequipmentmodelsId(): ?int
-    {
-        return $this->passivedcequipmentmodels_id;
-    }
-
-    public function setPassivedcequipmentmodelsId(int $passivedcequipmentmodels_id): self
-    {
-        $this->passivedcequipmentmodels_id = $passivedcequipmentmodels_id;
-
-        return $this;
-    }
-
-    public function getPassivedcequipmenttypesId(): ?int
-    {
-        return $this->passivedcequipmenttypes_id;
-    }
-
-    public function setPassivedcequipmenttypesId(int $passivedcequipmenttypes_id): self
-    {
-        $this->passivedcequipmenttypes_id = $passivedcequipmenttypes_id;
-
-        return $this;
-    }
-
-    public function getUsersIdTech(): ?int
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(int $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
 
         return $this;
     }
@@ -239,18 +177,6 @@ class Passivedcequipment
         return $this;
     }
 
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(int $states_id): self
-    {
-        $this->states_id = $states_id;
-
-        return $this;
-    }
-
     public function getComment(): ?string
     {
         return $this->comment;
@@ -262,20 +188,6 @@ class Passivedcequipment
 
         return $this;
     }
-
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
-
 
     public function getDateMod(): ?\DateTimeInterface
     {
@@ -301,4 +213,164 @@ class Passivedcequipment
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of passivedcequipmentmodel
+     */
+    public function getPassivedcequipmentmodel()
+    {
+        return $this->passivedcequipmentmodel;
+    }
+
+    /**
+     * Set the value of passivedcequipmentmodel
+     *
+     * @return  self
+     */
+    public function setPassivedcequipmentmodel($passivedcequipmentmodel)
+    {
+        $this->passivedcequipmentmodel = $passivedcequipmentmodel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of passivedcequipmenttype
+     */
+    public function getPassivedcequipmenttype()
+    {
+        return $this->passivedcequipmenttype;
+    }
+
+    /**
+     * Set the value of passivedcequipmenttype
+     *
+     * @return  self
+     */
+    public function setPassivedcequipmenttype($passivedcequipmenttype)
+    {
+        $this->passivedcequipmenttype = $passivedcequipmenttype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userTech
+     */
+    public function getUserTech()
+    {
+        return $this->userTech;
+    }
+
+    /**
+     * Set the value of userTech
+     *
+     * @return  self
+     */
+    public function setUserTech($userTech)
+    {
+        $this->userTech = $userTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupTech
+     */
+    public function getGroupTech()
+    {
+        return $this->groupTech;
+    }
+
+    /**
+     * Set the value of groupTech
+     *
+     * @return  self
+     */
+    public function setGroupTech($groupTech)
+    {
+        $this->groupTech = $groupTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
 }

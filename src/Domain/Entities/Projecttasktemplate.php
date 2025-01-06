@@ -29,8 +29,9 @@ class Projecttasktemplate
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -44,11 +45,13 @@ class Projecttasktemplate
     #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $projects_id;
+    #[ORM\ManyToOne(targetEntity: Project::class)]
+    #[ORM\JoinColumn(name: 'projects_id', referencedColumnName: 'id', nullable: true)]
+    private ?Project $project;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $projecttasks_id;
+    #[ORM\ManyToOne(targetEntity: Projecttask::class)]
+    #[ORM\JoinColumn(name: 'projecttasks_id', referencedColumnName: 'id', nullable: true)]
+    private ?Projecttask $projecttask;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $plan_start_date;
@@ -68,14 +71,17 @@ class Projecttasktemplate
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $effective_duration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $projectstates_id;
+    #[ORM\ManyToOne(targetEntity: Projectstate::class)]
+    #[ORM\JoinColumn(name: 'projectstates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Projectstate $projectstate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $projecttasktypes_id;
+    #[ORM\ManyToOne(targetEntity: Projecttasktype::class)]
+    #[ORM\JoinColumn(name: 'projecttasktypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Projecttasktype $projecttasktype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $percent_done;
@@ -95,18 +101,6 @@ class Projecttasktemplate
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool
@@ -153,30 +147,6 @@ class Projecttasktemplate
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getProjectsId(): ?int
-    {
-        return $this->projects_id;
-    }
-
-    public function setProjectsId(?int $projects_id): self
-    {
-        $this->projects_id = $projects_id;
-
-        return $this;
-    }
-
-    public function getProjecttasksId(): ?int
-    {
-        return $this->projecttasks_id;
-    }
-
-    public function setProjecttasksId(?int $projecttasks_id): self
-    {
-        $this->projecttasks_id = $projecttasks_id;
 
         return $this;
     }
@@ -253,42 +223,6 @@ class Projecttasktemplate
         return $this;
     }
 
-    public function getProjectstatesId(): ?int
-    {
-        return $this->projectstates_id;
-    }
-
-    public function setProjectstatesId(?int $projectstates_id): self
-    {
-        $this->projectstates_id = $projectstates_id;
-
-        return $this;
-    }
-
-    public function getProjecttasktypesId(): ?int
-    {
-        return $this->projecttasktypes_id;
-    }
-
-    public function setProjecttasktypesId(?int $projecttasktypes_id): self
-    {
-        $this->projecttasktypes_id = $projecttasktypes_id;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getPercentDone(): ?int
     {
         return $this->percent_done;
@@ -349,4 +283,124 @@ class Projecttasktemplate
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Set the value of project
+     *
+     * @return  self
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of projecttask
+     */
+    public function getProjecttask()
+    {
+        return $this->projecttask;
+    }
+
+    /**
+     * Set the value of projecttask
+     *
+     * @return  self
+     */
+    public function setProjecttask($projecttask)
+    {
+        $this->projecttask = $projecttask;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of projectstate
+     */
+    public function getProjectstate()
+    {
+        return $this->projectstate;
+    }
+
+    /**
+     * Set the value of projectstate
+     *
+     * @return  self
+     */
+    public function setProjectstate($projectstate)
+    {
+        $this->projectstate = $projectstate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of projecttasktype
+     */
+    public function getProjecttasktype()
+    {
+        return $this->projecttasktype;
+    }
+
+    /**
+     * Set the value of projecttasktype
+     *
+     * @return  self
+     */
+    public function setProjecttasktype($projecttasktype)
+    {
+        $this->projecttasktype = $projecttasktype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

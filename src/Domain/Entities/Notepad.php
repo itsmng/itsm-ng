@@ -30,11 +30,16 @@ class Notepad
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id_lastupdater;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: true)]
+    private ?User $userLastupdater;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $content;
@@ -92,18 +97,6 @@ class Notepad
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getUsersIdLastupdater(): ?int
     {
         return $this->users_id_lastupdater;
@@ -128,4 +121,44 @@ class Notepad
         return $this;
     }
 
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userLastupdater
+     */
+    public function getUserLastupdater()
+    {
+        return $this->userLastupdater;
+    }
+
+    /**
+     * Set the value of userLastupdater
+     *
+     * @return  self
+     */
+    public function setUserLastupdater($userLastupdater)
+    {
+        $this->userLastupdater = $userLastupdater;
+
+        return $this;
+    }
 }

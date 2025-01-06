@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_vlans")]
@@ -38,6 +39,12 @@ class Vlan
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'vlan', targetEntity: IpNetworkVlan::class)]
+    private Collection $ipnetworkVlans;
+
+    #[ORM\OneToMany(mappedBy: 'vlan', targetEntity: NetworkportVlan::class)]
+    private Collection $networkportVlans;
 
     public function getId(): ?int
     {
@@ -124,6 +131,46 @@ class Vlan
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ipnetworkVlans
+     */
+    public function getIpnetworkVlans()
+    {
+        return $this->ipnetworkVlans;
+    }
+
+    /**
+     * Set the value of ipnetworkVlans
+     *
+     * @return  self
+     */
+    public function setIpnetworkVlans($ipnetworkVlans)
+    {
+        $this->ipnetworkVlans = $ipnetworkVlans;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportVlans
+     */
+    public function getNetworkportVlans()
+    {
+        return $this->networkportVlans;
+    }
+
+    /**
+     * Set the value of networkportVlans
+     *
+     * @return  self
+     */
+    public function setNetworkportVlans($networkportVlans)
+    {
+        $this->networkportVlans = $networkportVlans;
 
         return $this;
     }

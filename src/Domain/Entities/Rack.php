@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_racks')]
@@ -31,14 +32,16 @@ class Rack
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $serial;
@@ -46,23 +49,29 @@ class Rack
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $rackmodels_id;
+    #[ORM\ManyToOne(targetEntity: Rackmodel::class)]
+    #[ORM\JoinColumn(name: 'rackmodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Rackmodel $rackmodel;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $racktypes_id;
+    #[ORM\ManyToOne(targetEntity: Racktype::class)]
+    #[ORM\JoinColumn(name: 'racktypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Racktype $racktype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_tech;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?User $userTech;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id_tech;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?Group $groupTech;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $width;
@@ -85,8 +94,9 @@ class Rack
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $dcrooms_id;
+    #[ORM\ManyToOne(targetEntity: Dcroom::class)]
+    #[ORM\JoinColumn(name: 'dcrooms_id', referencedColumnName: 'id', nullable: true)]
+    private ?Dcroom $dcroom;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $room_orientation;
@@ -111,6 +121,9 @@ class Rack
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'rack', targetEntity: PduRack::class)]
+    private Collection $pduRacks;
 
     public function getId(): ?int
     {
@@ -141,18 +154,6 @@ class Rack
         return $this;
     }
 
-    public function getEntitiesId(): ?string
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?string $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?string
     {
         return $this->is_recursive;
@@ -161,18 +162,6 @@ class Rack
     public function setIsRecursive(?string $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?string
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(?string $locations_id): self
-    {
-        $this->locations_id = $locations_id;
 
         return $this;
     }
@@ -197,78 +186,6 @@ class Rack
     public function setOtherserial(?string $otherserial): self
     {
         $this->otherserial = $otherserial;
-
-        return $this;
-    }
-
-    public function getRackmodelsId(): ?string
-    {
-        return $this->rackmodels_id;
-    }
-
-    public function setRackmodelsId(?string $rackmodels_id): self
-    {
-        $this->rackmodels_id = $rackmodels_id;
-
-        return $this;
-    }
-
-    public function getManufacturersId(): ?string
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?string $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
-    public function getRacktypesId(): ?string
-    {
-        return $this->racktypes_id;
-    }
-
-    public function setRacktypesId(?string $racktypes_id): self
-    {
-        $this->racktypes_id = $racktypes_id;
-
-        return $this;
-    }
-
-    public function getStatesId(): ?string
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(?string $states_id): self
-    {
-        $this->states_id = $states_id;
-
-        return $this;
-    }
-
-    public function getUsersIdTech(): ?string
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(?string $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?string
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(?string $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
 
         return $this;
     }
@@ -353,18 +270,6 @@ class Rack
     public function setIsDeleted(?string $is_deleted): self
     {
         $this->is_deleted = $is_deleted;
-
-        return $this;
-    }
-
-    public function getDcroomsId(): ?string
-    {
-        return $this->dcrooms_id;
-    }
-
-    public function setDcroomsId(?string $dcrooms_id): self
-    {
-        $this->dcrooms_id = $dcrooms_id;
 
         return $this;
     }
@@ -465,4 +370,204 @@ class Rack
         return $this;
     }
 
+
+    /**
+     * Get the value of pduRacks
+     */
+    public function getPduRacks()
+    {
+        return $this->pduRacks;
+    }
+
+    /**
+     * Set the value of pduRacks
+     *
+     * @return  self
+     */
+    public function setPduRacks($pduRacks)
+    {
+        $this->pduRacks = $pduRacks;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of rackmodel
+     */
+    public function getRackmodel()
+    {
+        return $this->rackmodel;
+    }
+
+    /**
+     * Set the value of rackmodel
+     *
+     * @return  self
+     */
+    public function setRackmodel($rackmodel)
+    {
+        $this->rackmodel = $rackmodel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of racktype
+     */
+    public function getRacktype()
+    {
+        return $this->racktype;
+    }
+
+    /**
+     * Set the value of racktype
+     *
+     * @return  self
+     */
+    public function setRacktype($racktype)
+    {
+        $this->racktype = $racktype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userTech
+     */
+    public function getUserTech()
+    {
+        return $this->userTech;
+    }
+
+    /**
+     * Set the value of userTech
+     *
+     * @return  self
+     */
+    public function setUserTech($userTech)
+    {
+        $this->userTech = $userTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupTech
+     */
+    public function getGroupTech()
+    {
+        return $this->groupTech;
+    }
+
+    /**
+     * Set the value of groupTech
+     *
+     * @return  self
+     */
+    public function setGroupTech($groupTech)
+    {
+        $this->groupTech = $groupTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of dcroom
+     */
+    public function getDcroom()
+    {
+        return $this->dcroom;
+    }
+
+    /**
+     * Set the value of dcroom
+     *
+     * @return  self
+     */
+    public function setDcroom($dcroom)
+    {
+        $this->dcroom = $dcroom;
+
+        return $this;
+    }
 }

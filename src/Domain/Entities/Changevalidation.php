@@ -22,20 +22,24 @@ class Changevalidation
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changes_id;
+    #[ORM\ManyToOne(targetEntity: Change::class)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Change $change;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_validate;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_validate', referencedColumnName: 'id', nullable: true)]
+    private ?User $user_validate;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment_submission;
@@ -60,17 +64,6 @@ class Changevalidation
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?int
     {
@@ -84,41 +77,6 @@ class Changevalidation
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getChangesId(): ?int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
-
-    public function getUsersIdValidate(): ?int
-    {
-        return $this->users_id_validate;
-    }
-
-    public function setUsersIdValidate(int $users_id_validate): self
-    {
-        $this->users_id_validate = $users_id_validate;
-
-        return $this;
-    }
 
     public function getCommentSubmission(): ?string
     {
@@ -188,6 +146,86 @@ class Changevalidation
     public function setTimelinePosition(int $timeline_position): self
     {
         $this->timeline_position = $timeline_position;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of change
+     */
+    public function getChange()
+    {
+        return $this->change;
+    }
+
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */
+    public function setChange($change)
+    {
+        $this->change = $change;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user_validate
+     */
+    public function getUser_validate()
+    {
+        return $this->user_validate;
+    }
+
+    /**
+     * Set the value of user_validate
+     *
+     * @return  self
+     */
+    public function setUser_validate($user_validate)
+    {
+        $this->user_validate = $user_validate;
 
         return $this;
     }

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-class BusinessCriticities
+class BusinessCriticity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,8 +20,9 @@ class BusinessCriticities
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => 0])]
     private $is_recursive;
@@ -35,8 +36,9 @@ class BusinessCriticities
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $businesscriticities_id;
+    #[ORM\ManyToOne(targetEntity: BusinessCriticity::class)]
+    #[ORM\JoinColumn(name: 'businesscriticities_id', referencedColumnName: 'id', nullable: true)]
+    private ?BusinessCriticity $businessCriticities;
 
     #[ORM\Column(type: "text", nullable: true, length: 65535)]
     private $completename;
@@ -66,16 +68,7 @@ class BusinessCriticities
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
 
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-        return $this;
-    }
 
     public function getIsRecursive(): ?bool
     {
@@ -121,16 +114,6 @@ class BusinessCriticities
         return $this;
     }
 
-    public function getBusinesscriticitiesId(): ?int
-    {
-        return $this->businesscriticities_id;
-    }
-
-    public function setBusinesscriticitiesId(?int $businesscriticities_id): self
-    {
-        $this->businesscriticities_id = $businesscriticities_id;
-        return $this;
-    }
 
     public function getCompletename(): ?string
     {
@@ -173,6 +156,48 @@ class BusinessCriticities
     public function setSonsCache(?string $sons_cache): self
     {
         $this->sons_cache = $sons_cache;
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of businessCriticities
+     */
+    public function getBusinessCriticities()
+    {
+        return $this->businessCriticities;
+    }
+
+    /**
+     * Set the value of businessCriticities
+     *
+     * @return  self
+     */
+    public function setBusinessCriticities($businessCriticities)
+    {
+        $this->businessCriticities = $businessCriticities;
+
         return $this;
     }
 }

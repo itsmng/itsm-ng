@@ -17,30 +17,20 @@ class NotificationNotificationtemplate
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $notifications_id;
+    #[ORM\ManyToOne(targetEntity: Notification::class, inversedBy: 'notificationNotificationtemplates')]
+    #[ORM\JoinColumn(name: 'notifications_id', referencedColumnName: 'id', nullable: true)]
+    private ?Notification $notification;
 
     #[ORM\Column(type: 'string', length: 20, options: ['comment' => 'See Notification_NotificationTemplate::MODE_* constants'])]
     private $mode;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $notificationtemplates_id;
+    #[ORM\ManyToOne(targetEntity: Notificationtemplate::class, inversedBy: 'notificationNotificationtemplates')]
+    #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Notificationtemplate $notificationtemplate;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNotificationsId(): ?int
-    {
-        return $this->notifications_id;
-    }
-
-    public function setNotificationsId(?int $notifications_id): self
-    {
-        $this->notifications_id = $notifications_id;
-
-        return $this;
     }
 
     public function getMode(): ?string
@@ -55,16 +45,44 @@ class NotificationNotificationtemplate
         return $this;
     }
 
-    public function getNotificationtemplatesId(): ?int
+
+    /**
+     * Get the value of notification
+     */
+    public function getNotification()
     {
-        return $this->notificationtemplates_id;
+        return $this->notification;
     }
 
-    public function setNotificationtemplatesId(?int $notificationtemplates_id): self
+    /**
+     * Set the value of notification
+     *
+     * @return  self
+     */
+    public function setNotification($notification)
     {
-        $this->notificationtemplates_id = $notificationtemplates_id;
+        $this->notification = $notification;
 
         return $this;
     }
 
+    /**
+     * Get the value of notificationtemplate
+     */
+    public function getNotificationtemplate()
+    {
+        return $this->notificationtemplate;
+    }
+
+    /**
+     * Set the value of notificationtemplate
+     *
+     * @return  self
+     */
+    public function setNotificationtemplate($notificationtemplate)
+    {
+        $this->notificationtemplate = $notificationtemplate;
+
+        return $this;
+    }
 }

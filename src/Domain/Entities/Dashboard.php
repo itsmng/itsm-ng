@@ -21,11 +21,13 @@ class Dashboard
     #[ORM\Column(type: 'text')]
     private $content;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $profileId;
+    #[ORM\ManyToOne(targetEntity: Profile::class)]
+    #[ORM\JoinColumn(name: 'profileId', referencedColumnName: 'id', nullable: true)]
+    private ?Profile $profile;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $userId;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'userId', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     public function getId(): ?int
     {
@@ -56,26 +58,43 @@ class Dashboard
         return $this;
     }
 
-    public function getProfileId(): ?int
+
+    /**
+     * Get the value of profile
+     */
+    public function getProfile()
     {
-        return $this->profileId;
+        return $this->profile;
     }
 
-    public function setProfileId(int $profileId): self
+    /**
+     * Set the value of profile
+     *
+     * @return  self
+     */
+    public function setProfile($profile)
     {
-        $this->profileId = $profileId;
+        $this->profile = $profile;
 
         return $this;
     }
 
-    public function getUserId(): ?int
+    /**
+     * Get the value of user
+     */
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(int $userId): self
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }

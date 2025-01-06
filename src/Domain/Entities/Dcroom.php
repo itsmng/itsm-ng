@@ -23,14 +23,16 @@ class Dcroom
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $vis_cols;
@@ -41,8 +43,9 @@ class Dcroom
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $blueprint;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $datacenters_id;
+    #[ORM\ManyToOne(targetEntity: Datacenter::class)]
+    #[ORM\JoinColumn(name: 'datacenters_id', referencedColumnName: 'id', nullable: true)]
+    private ?Datacenter $datacenter;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
@@ -70,17 +73,6 @@ class Dcroom
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?int
     {
@@ -94,17 +86,6 @@ class Dcroom
         return $this;
     }
 
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
 
     public function getVisCols(): ?int
     {
@@ -142,17 +123,6 @@ class Dcroom
         return $this;
     }
 
-    public function getDatacentersId(): ?int
-    {
-        return $this->datacenters_id;
-    }
-
-    public function setDatacentersId(int $datacenters_id): self
-    {
-        $this->datacenters_id = $datacenters_id;
-
-        return $this;
-    }
 
     public function getIsDeleted(): ?int
     {
@@ -190,4 +160,64 @@ class Dcroom
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of datacenter
+     */
+    public function getDatacenter()
+    {
+        return $this->datacenter;
+    }
+
+    /**
+     * Set the value of datacenter
+     *
+     * @return  self
+     */
+    public function setDatacenter($datacenter)
+    {
+        $this->datacenter = $datacenter;
+
+        return $this;
+    }
 }

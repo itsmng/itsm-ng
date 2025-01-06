@@ -16,11 +16,14 @@ class ChangeSupplier
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changes_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $suppliers_id;
+    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeSuppliers')]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Change $change;
+
+    #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'changeSuppliers')]
+    #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Supplier $supplier;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $type;
@@ -36,29 +39,6 @@ class ChangeSupplier
         return $this->id;
     }
 
-    public function getChangesId(): ?int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
-
-    public function getSuppliersId(): ?int
-    {
-        return $this->suppliers_id;
-    }
-
-    public function setSuppliersId(int $suppliers_id): self
-    {
-        $this->suppliers_id = $suppliers_id;
-
-        return $this;
-    }
 
     public function getType(): ?int
     {
@@ -92,6 +72,46 @@ class ChangeSupplier
     public function setAlternativeEmail(?string $alternative_email): self
     {
         $this->alternative_email = $alternative_email;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of change
+     */
+    public function getChange()
+    {
+        return $this->change;
+    }
+
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */
+    public function setChange($change)
+    {
+        $this->change = $change;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of supplier
+     */
+    public function getSupplier()
+    {
+        return $this->supplier;
+    }
+
+    /**
+     * Set the value of supplier
+     *
+     * @return  self
+     */
+    public function setSupplier($supplier)
+    {
+        $this->supplier = $supplier;
 
         return $this;
     }

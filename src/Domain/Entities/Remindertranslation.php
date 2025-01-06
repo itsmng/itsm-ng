@@ -15,8 +15,9 @@ class Remindertranslation
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $reminders_id;
+    #[ORM\ManyToOne(targetEntity: Reminder::class, inversedBy: 'reminderUsers')]
+    #[ORM\JoinColumn(name: 'reminders_id', referencedColumnName: 'id', nullable: true)]
+    private ?Reminder $reminder;
 
     #[ORM\Column(type: 'string', length: 5, nullable: true)]
     private $language;
@@ -27,8 +28,9 @@ class Remindertranslation
     #[ORM\Column(type: 'text', nullable: true)]
     private $text;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -39,18 +41,6 @@ class Remindertranslation
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRemindersId(): ?int
-    {
-        return $this->reminders_id;
-    }
-
-    public function setRemindersId(int $reminders_id): self
-    {
-        $this->reminders_id = $reminders_id;
-
-        return $this;
     }
 
     public function getLanguage(): ?string
@@ -89,18 +79,6 @@ class Remindertranslation
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -125,4 +103,44 @@ class Remindertranslation
         return $this;
     }
 
+
+    /**
+     * Get the value of reminder
+     */
+    public function getReminder()
+    {
+        return $this->reminder;
+    }
+
+    /**
+     * Set the value of reminder
+     *
+     * @return  self
+     */
+    public function setReminder($reminder)
+    {
+        $this->reminder = $reminder;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

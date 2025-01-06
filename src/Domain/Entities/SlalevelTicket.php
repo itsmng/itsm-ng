@@ -16,11 +16,13 @@ class SlalevelTicket
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'slalevelTickets')]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slalevels_id;
+    #[ORM\ManyToOne(targetEntity: Slalevel::class, inversedBy: 'slalevelTickets')]
+    #[ORM\JoinColumn(name: 'slalevels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Slalevel $slalevel;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date;
@@ -28,30 +30,6 @@ class SlalevelTicket
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTicketsId(): ?int
-    {
-        return $this->tickets_id;
-    }
-
-    public function setTicketsId(int $tickets_id): self
-    {
-        $this->tickets_id = $tickets_id;
-
-        return $this;
-    }
-
-    public function getSlalevelsId(): ?int
-    {
-        return $this->slalevels_id;
-    }
-
-    public function setSlalevelsId(int $slalevels_id): self
-    {
-        $this->slalevels_id = $slalevels_id;
-
-        return $this;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -66,4 +44,44 @@ class SlalevelTicket
         return $this;
     }
 
+
+    /**
+     * Get the value of ticket
+     */
+    public function getTicket()
+    {
+        return $this->ticket;
+    }
+
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */
+    public function setTicket($ticket)
+    {
+        $this->ticket = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slalevel
+     */
+    public function getSlalevel()
+    {
+        return $this->slalevel;
+    }
+
+    /**
+     * Set the value of slalevel
+     *
+     * @return  self
+     */
+    public function setSlalevel($slalevel)
+    {
+        $this->slalevel = $slalevel;
+
+        return $this;
+    }
 }

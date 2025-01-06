@@ -24,14 +24,16 @@ class ComputerAntivirus
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $computers_id;
+    #[ORM\ManyToOne(targetEntity: Computer::class)]
+    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Computer $computer;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $antivirus_version;
@@ -72,17 +74,6 @@ class ComputerAntivirus
         return $this;
     }
 
-    public function getComputersId(): ?int
-    {
-        return $this->computers_id;
-    }
-
-    public function setComputersId(int $computers_id): self
-    {
-        $this->computers_id = $computers_id;
-
-        return $this;
-    }
 
     public function getName(): ?string
     {
@@ -96,17 +87,6 @@ class ComputerAntivirus
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
 
     public function getAntivirusVersion(): ?string
     {
@@ -212,6 +192,46 @@ class ComputerAntivirus
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of computer
+     */
+    public function getComputer()
+    {
+        return $this->computer;
+    }
+
+    /**
+     * Set the value of computer
+     *
+     * @return  self
+     */
+    public function setComputer($computer)
+    {
+        $this->computer = $computer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_olalevels')]
@@ -19,8 +20,9 @@ class Olalevel
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olas_id;
+    #[ORM\ManyToOne(targetEntity: Ola::class)]
+    #[ORM\JoinColumn(name: 'olas_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ola $ola;
 
     #[ORM\Column(type: 'integer')]
     private $execution_time;
@@ -28,8 +30,9 @@ class Olalevel
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $is_active;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -39,6 +42,10 @@ class Olalevel
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $uuid;
+
+    #[ORM\OneToMany(mappedBy: 'olalevel', targetEntity: OlalevelTicket::class)]
+    private Collection $olalevelTickets;
+
 
     public function getId(): ?int
     {
@@ -53,18 +60,6 @@ class Olalevel
     public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getOlasId(): ?int
-    {
-        return $this->olas_id;
-    }
-
-    public function setOlasId(?int $olas_id): self
-    {
-        $this->olas_id = $olas_id;
 
         return $this;
     }
@@ -89,18 +84,6 @@ class Olalevel
     public function setIsActive(?bool $is_active): self
     {
         $this->is_active = $is_active;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }
@@ -137,6 +120,66 @@ class Olalevel
     public function setUuid(?string $uuid): self
     {
         $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ola
+     */
+    public function getOla()
+    {
+        return $this->ola;
+    }
+
+    /**
+     * Set the value of ola
+     *
+     * @return  self
+     */
+    public function setOla($ola)
+    {
+        $this->ola = $ola;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of olalevelTickets
+     */
+    public function getOlalevelTickets()
+    {
+        return $this->olalevelTickets;
+    }
+
+    /**
+     * Set the value of olalevelTickets
+     *
+     * @return  self
+     */
+    public function setOlalevelTickets($olalevelTickets)
+    {
+        $this->olalevelTickets = $olalevelTickets;
 
         return $this;
     }

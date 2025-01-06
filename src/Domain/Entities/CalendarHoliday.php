@@ -16,37 +16,56 @@ class CalendarHoliday
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $calendars_id;
+    #[ORM\ManyToOne(targetEntity: Calendar::class, inversedBy: 'calendarHolidays')]
+    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
+    private ?Calendar $calendar;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $holidays_id;
+    #[ORM\ManyToOne(targetEntity: Holiday::class, inversedBy: 'calendarHolidays')]
+    #[ORM\JoinColumn(name: 'holidays_id', referencedColumnName: 'id', nullable: true)]
+    private ?Holiday $holiday;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCalendarsId(): ?int
+
+    /**
+     * Get the value of calendar
+     */
+    public function getCalendar()
     {
-        return $this->calendars_id;
+        return $this->calendar;
     }
 
-    public function setCalendarsId(int $calendars_id): self
+    /**
+     * Set the value of calendar
+     *
+     * @return  self
+     */
+    public function setCalendar($calendar)
     {
-        $this->calendars_id = $calendars_id;
+        $this->calendar = $calendar;
 
         return $this;
     }
 
-    public function getHolidaysId(): ?int
+    /**
+     * Get the value of holiday
+     */
+    public function getHoliday()
     {
-        return $this->holidays_id;
+        return $this->holiday;
     }
 
-    public function setHolidaysId(int $holidays_id): self
+    /**
+     * Set the value of holiday
+     *
+     * @return  self
+     */
+    public function setHoliday($holiday)
     {
-        $this->holidays_id = $holidays_id;
+        $this->holiday = $holiday;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_ipaddresses")]
@@ -20,8 +21,9 @@ class IpAddress
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private $items_id;
@@ -59,21 +61,12 @@ class IpAddress
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $mainitemtype;
 
+    #[ORM\OneToMany(mappedBy: 'ipaddress', targetEntity: IpAddressIpNetwork::class)]
+    private Collection $ipaddressIpnetworks;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getItemsId(): ?int
@@ -216,6 +209,47 @@ class IpAddress
     public function setMainitemtype(?string $mainitemtype): self
     {
         $this->mainitemtype = $mainitemtype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of ipaddressIpnetworks
+     */
+    public function getIpaddressIpnetworks()
+    {
+        return $this->ipaddressIpnetworks;
+    }
+
+    /**
+     * Set the value of ipaddressIpnetworks
+     *
+     * @return  self
+     */
+    public function setIpaddressIpnetworks($ipaddressIpnetworks)
+    {
+        $this->ipaddressIpnetworks = $ipaddressIpnetworks;
 
         return $this;
     }

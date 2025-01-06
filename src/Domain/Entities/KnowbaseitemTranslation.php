@@ -18,8 +18,9 @@ class KnowbaseitemTranslation
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $knowbaseitems_id;
+    #[ORM\ManyToOne(targetEntity: Knowbaseitem::class)]
+    #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Knowbaseitem $knowbaseitem;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
     private $language;
@@ -30,8 +31,9 @@ class KnowbaseitemTranslation
     #[ORM\Column(type: 'text', nullable: true)]
     private $answer;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -42,18 +44,6 @@ class KnowbaseitemTranslation
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getKnowbaseitemsId(): ?int
-    {
-        return $this->knowbaseitems_id;
-    }
-
-    public function setKnowbaseitemsId(int $knowbaseitems_id): self
-    {
-        $this->knowbaseitems_id = $knowbaseitems_id;
-
-        return $this;
     }
 
     public function getLanguage(): ?string
@@ -92,18 +82,6 @@ class KnowbaseitemTranslation
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -124,6 +102,46 @@ class KnowbaseitemTranslation
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitem
+     */
+    public function getKnowbaseitem()
+    {
+        return $this->knowbaseitem;
+    }
+
+    /**
+     * Set the value of knowbaseitem
+     *
+     * @return  self
+     */
+    public function setKnowbaseitem($knowbaseitem)
+    {
+        $this->knowbaseitem = $knowbaseitem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

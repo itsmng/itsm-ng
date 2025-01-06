@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_rssfeeds')]
@@ -22,8 +23,9 @@ class Rssfeed
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -49,6 +51,18 @@ class Rssfeed
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
+    #[ORM\OneToMany(mappedBy: 'rssfeed', targetEntity: EntityRssFeed::class)]
+    private Collection $entityRssfeeds;
+
+    #[ORM\OneToMany(mappedBy: 'rssfeed', targetEntity: GroupRssFeed::class)]
+    private Collection $groupRssfeeds;
+
+    #[ORM\OneToMany(mappedBy: 'rssfeed', targetEntity: ProfileRssfeed::class)]
+    private Collection $profileRssfeeds;
+
+    #[ORM\OneToMany(mappedBy: 'rssfeed', targetEntity: RssfeedUser::class)]
+    private Collection $rssfeedUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,18 +76,6 @@ class Rssfeed
     public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?string
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?string $users_id): self
-    {
-        $this->users_id = $users_id;
 
         return $this;
     }
@@ -174,4 +176,105 @@ class Rssfeed
         return $this;
     }
 
+
+    /**
+     * Get the value of entityRssfeeds
+     */
+    public function getEntityRssfeeds()
+    {
+        return $this->entityRssfeeds;
+    }
+
+    /**
+     * Set the value of entityRssfeeds
+     *
+     * @return  self
+     */
+    public function setEntityRssfeeds($entityRssfeeds)
+    {
+        $this->entityRssfeeds = $entityRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupRssfeeds
+     */
+    public function getGroupRssfeeds()
+    {
+        return $this->groupRssfeeds;
+    }
+
+    /**
+     * Set the value of groupRssfeeds
+     *
+     * @return  self
+     */
+    public function setGroupRssfeeds($groupRssfeeds)
+    {
+        $this->groupRssfeeds = $groupRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileRssfeeds
+     */
+    public function getProfileRssfeeds()
+    {
+        return $this->profileRssfeeds;
+    }
+
+    /**
+     * Set the value of profileRssfeeds
+     *
+     * @return  self
+     */
+    public function setProfileRssfeeds($profileRssfeeds)
+    {
+        $this->profileRssfeeds = $profileRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of rssfeedUsers
+     */
+    public function getRssfeedUsers()
+    {
+        return $this->rssfeedUsers;
+    }
+
+    /**
+     * Set the value of rssfeedUsers
+     *
+     * @return  self
+     */
+    public function setRssfeedUsers($rssfeedUsers)
+    {
+        $this->rssfeedUsers = $rssfeedUsers;
+
+        return $this;
+    }
 }

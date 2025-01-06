@@ -20,8 +20,10 @@ class Objectlock
     #[ORM\Column(type: 'integer', options: ['comment' => 'RELATION to various tables, according to itemtype (ID)'])]
     private $items_id;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => 'id of the locker'])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
+
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP', 'comment' => 'Timestamp of the lock'])]
     private $date_mod;
@@ -55,18 +57,6 @@ class Objectlock
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->date_mod;
@@ -79,4 +69,24 @@ class Objectlock
         return $this;
     }
 
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

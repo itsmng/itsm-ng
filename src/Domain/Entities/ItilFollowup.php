@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use RequestType;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_itilfollowups')]
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "requesttypes_id", columns: ['requesttypes_id'])]
 #[ORM\Index(name: "sourceitems_id", columns: ['sourceitems_id'])]
 #[ORM\Index(name: "sourceof_items_id", columns: ['sourceof_items_id'])]
-class ItilFollowups
+class ItilFollowup
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,11 +35,13 @@ class ItilFollowups
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_editor;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
+    private ?User $userEditor;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $content;
@@ -46,8 +49,9 @@ class ItilFollowups
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_private;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $requesttypes_id;
+    #[ORM\ManyToOne(targetEntity: RequestType::class)]
+    #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?RequestType $requesttype;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
@@ -105,30 +109,6 @@ class ItilFollowups
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getUsersIdEditor(): ?int
-    {
-        return $this->users_id_editor;
-    }
-
-    public function setUsersIdEditor(int $users_id_editor): self
-    {
-        $this->users_id_editor = $users_id_editor;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
@@ -149,18 +129,6 @@ class ItilFollowups
     public function setIsPrivate(bool $is_private): self
     {
         $this->is_private = $is_private;
-
-        return $this;
-    }
-
-    public function getRequesttypesId(): ?int
-    {
-        return $this->requesttypes_id;
-    }
-
-    public function setRequesttypesId(int $requesttypes_id): self
-    {
-        $this->requesttypes_id = $requesttypes_id;
 
         return $this;
     }
@@ -224,4 +192,66 @@ class ItilFollowups
 
         return $this;
     }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userEditor
+     */
+    public function getUserEditor()
+    {
+        return $this->userEditor;
+    }
+
+    /**
+     * Set the value of userEditor
+     *
+     * @return  self
+     */
+    public function setUserEditor($userEditor)
+    {
+        $this->userEditor = $userEditor;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of requesttype
+     */
+    public function getRequesttype()
+    {
+        return $this->requesttype;
+    }
+
+    /**
+     * Set the value of requesttype
+     *
+     * @return  self
+     */
+    public function setRequesttype($requesttype)
+    {
+        $this->requesttype = $requesttype;
+
+        return $this;
+    }
+
+
 }

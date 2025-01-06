@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_suppliers")]
@@ -20,8 +21,9 @@ class Supplier
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -29,8 +31,9 @@ class Supplier
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $suppliertypes_id;
+    #[ORM\ManyToOne(targetEntity: Suppliertype::class)]
+    #[ORM\JoinColumn(name: 'suppliertypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Suppliertype $suppliertype;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $address;
@@ -74,21 +77,24 @@ class Supplier
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_active;
 
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ChangeSupplier::class)]
+    private Collection $changeSuppliers;
+
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ContactSupplier::class)]
+    private Collection $contactSuppliers;
+
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ContractSupplier::class)]
+    private Collection $contractSuppliers;
+
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ProblemSupplier::class)]
+    private Collection $problemSuppliers;
+
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: SupplierTicket::class)]
+    private Collection $supplierTickets;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool
@@ -111,18 +117,6 @@ class Supplier
     public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getSuppliertypesId(): ?int
-    {
-        return $this->suppliertypes_id;
-    }
-
-    public function setSuppliertypesId(?int $suppliertypes_id): self
-    {
-        $this->suppliertypes_id = $suppliertypes_id;
 
         return $this;
     }
@@ -295,4 +289,147 @@ class Supplier
         return $this;
     }
 
+
+
+    /**
+     * Get the value of contactSuppliers
+     */
+    public function getContactSuppliers()
+    {
+        return $this->contactSuppliers;
+    }
+
+    /**
+     * Set the value of contactSuppliers
+     *
+     * @return  self
+     */
+    public function setContactSuppliers($contactSuppliers)
+    {
+        $this->contactSuppliers = $contactSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contractSuppliers
+     */
+    public function getContractSuppliers()
+    {
+        return $this->contractSuppliers;
+    }
+
+    /**
+     * Set the value of contractSuppliers
+     *
+     * @return  self
+     */
+    public function setContractSuppliers($contractSuppliers)
+    {
+        $this->contractSuppliers = $contractSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeSuppliers
+     */
+    public function getChangeSuppliers()
+    {
+        return $this->changeSuppliers;
+    }
+
+    /**
+     * Set the value of changeSuppliers
+     *
+     * @return  self
+     */
+    public function setChangeSuppliers($changeSuppliers)
+    {
+        $this->changeSuppliers = $changeSuppliers;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of problemSuppliers
+     */
+    public function getProblemSuppliers()
+    {
+        return $this->problemSuppliers;
+    }
+
+    /**
+     * Set the value of problemSuppliers
+     *
+     * @return  self
+     */
+    public function setProblemSuppliers($problemSuppliers)
+    {
+        $this->problemSuppliers = $problemSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of suppliertype
+     */
+    public function getSuppliertype()
+    {
+        return $this->suppliertype;
+    }
+
+    /**
+     * Set the value of suppliertype
+     *
+     * @return  self
+     */
+    public function setSuppliertype($suppliertype)
+    {
+        $this->suppliertype = $suppliertype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of supplierTickets
+     */
+    public function getSupplierTickets()
+    {
+        return $this->supplierTickets;
+    }
+
+    /**
+     * Set the value of supplierTickets
+     *
+     * @return  self
+     */
+    public function setSupplierTickets($supplierTickets)
+    {
+        $this->supplierTickets = $supplierTickets;
+
+        return $this;
+    }
 }

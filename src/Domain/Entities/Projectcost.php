@@ -20,8 +20,9 @@ class Projectcost
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $projects_id;
+    #[ORM\ManyToOne(targetEntity: Project::class)]
+    #[ORM\JoinColumn(name: 'projects_id', referencedColumnName: 'id', nullable: true)]
+    private ?Project $project;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -38,11 +39,13 @@ class Projectcost
     #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
     private $cost;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $budgets_id;
+    #[ORM\ManyToOne(targetEntity: Budget::class)]
+    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Budget $budget;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -50,19 +53,6 @@ class Projectcost
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProjectsId(): ?int
-    {
-        return $this->projects_id;
-    }
-
-
-    public function setProjectsId(?int $projects_id): self
-    {
-        $this->projects_id = $projects_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -130,32 +120,6 @@ class Projectcost
         return $this;
     }
 
-    public function getBudgetsId(): ?int
-    {
-        return $this->budgets_id;
-    }
-
-
-    public function setBudgetsId(?int $budgets_id): self
-    {
-        $this->budgets_id = $budgets_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -169,4 +133,64 @@ class Projectcost
         return $this;
     }
 
+
+    /**
+     * Get the value of project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Set the value of project
+     *
+     * @return  self
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of budget
+     */
+    public function getBudget()
+    {
+        return $this->budget;
+    }
+
+    /**
+     * Set the value of budget
+     *
+     * @return  self
+     */
+    public function setBudget($budget)
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
 }

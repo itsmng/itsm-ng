@@ -27,20 +27,25 @@ class Queuedchat
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $notificationtemplates_id;
+    #[ORM\ManyToOne(targetEntity: Notificationtemplate::class)]
+    #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Notificationtemplate $notificationtemplate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $itilcategories_id;
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?ItilCategory $itilcategory;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
@@ -100,66 +105,6 @@ class Queuedchat
     public function setItemsId(?int $items_id): self
     {
         $this->items_id = $items_id;
-
-        return $this;
-    }
-
-    public function getNotificationtemplatesId(): ?int
-    {
-        return $this->notificationtemplates_id;
-    }
-
-    public function setNotificationtemplatesId(?int $notificationtemplates_id): self
-    {
-        $this->notificationtemplates_id = $notificationtemplates_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(?int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(?int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
-
-        return $this;
-    }
-
-    public function getItilcategoriesId(): ?int
-    {
-        return $this->itilcategories_id;
-    }
-
-    public function setItilcategoriesId(?int $itilcategories_id): self
-    {
-        $this->itilcategories_id = $itilcategories_id;
 
         return $this;
     }
@@ -296,4 +241,104 @@ class Queuedchat
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of notificationtemplate
+     */
+    public function getNotificationtemplate()
+    {
+        return $this->notificationtemplate;
+    }
+
+    /**
+     * Set the value of notificationtemplate
+     *
+     * @return  self
+     */
+    public function setNotificationtemplate($notificationtemplate)
+    {
+        $this->notificationtemplate = $notificationtemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilcategory
+     */
+    public function getItilcategory()
+    {
+        return $this->itilcategory;
+    }
+
+    /**
+     * Set the value of itilcategory
+     *
+     * @return  self
+     */
+    public function setItilcategory($itilcategory)
+    {
+        $this->itilcategory = $itilcategory;
+
+        return $this;
+    }
 }

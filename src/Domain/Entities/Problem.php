@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_problems')]
@@ -33,8 +34,9 @@ class Problem
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -63,11 +65,13 @@ class Problem
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $time_to_resolve;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_recipient;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_recipient', referencedColumnName: 'id', nullable: true)]
+    private ?User $userRecipient;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_lastupdater;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: true)]
+    private ?User $userLastupdater;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $urgency;
@@ -78,8 +82,9 @@ class Problem
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $priority;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $itilcategories_id;
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?ItilCategory $itilcategory;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $impactcontent;
@@ -108,6 +113,21 @@ class Problem
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
+    #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ChangeProblem::class)]
+    private Collection $changeProblems;
+
+    #[ORM\OneToMany(mappedBy: 'problem', targetEntity: GroupProblem::class)]
+    private Collection $groupProblems;
+
+    #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ProblemSupplier::class)]
+    private Collection $problemSuppliers;
+
+    #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ProblemTicket::class)]
+    private Collection $problemTickets;
+
+    #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ProblemUser::class)]
+    private Collection $problemUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -124,20 +144,6 @@ class Problem
 
         return $this;
     }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
 
     public function getIsRecursive(): ?bool
     {
@@ -258,32 +264,6 @@ class Problem
         return $this;
     }
 
-    public function getUsersIdRecipient(): ?int
-    {
-        return $this->users_id_recipient;
-    }
-
-
-    public function setUsersIdRecipient(?int $users_id_recipient): self
-    {
-        $this->users_id_recipient = $users_id_recipient;
-
-        return $this;
-    }
-
-    public function getUsersIdLastupdater(): ?int
-    {
-        return $this->users_id_lastupdater;
-    }
-
-
-    public function setUsersIdLastupdater(?int $users_id_lastupdater): self
-    {
-        $this->users_id_lastupdater = $users_id_lastupdater;
-
-        return $this;
-    }
-
     public function getUrgency(): ?int
     {
         return $this->urgency;
@@ -319,19 +299,6 @@ class Problem
     public function setPriority(?int $priority): self
     {
         $this->priority = $priority;
-
-        return $this;
-    }
-
-    public function getItilcategoriesId(): ?int
-    {
-        return $this->itilcategories_id;
-    }
-
-
-    public function setItilcategoriesId(?int $itilcategories_id): self
-    {
-        $this->itilcategories_id = $itilcategories_id;
 
         return $this;
     }
@@ -453,4 +420,187 @@ class Problem
         return $this;
     }
 
+
+    /**
+     * Get the value of groupProblems
+     */
+    public function getGroupProblems()
+    {
+        return $this->groupProblems;
+    }
+
+    /**
+     * Set the value of groupProblems
+     *
+     * @return  self
+     */
+    public function setGroupProblems($groupProblems)
+    {
+        $this->groupProblems = $groupProblems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeProblems
+     */
+    public function getChangeProblems()
+    {
+        return $this->changeProblems;
+    }
+
+    /**
+     * Set the value of changeProblems
+     *
+     * @return  self
+     */
+    public function setChangeProblems($changeProblems)
+    {
+        $this->changeProblems = $changeProblems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userRecipient
+     */
+    public function getUserRecipient()
+    {
+        return $this->userRecipient;
+    }
+
+    /**
+     * Set the value of userRecipient
+     *
+     * @return  self
+     */
+    public function setUserRecipient($userRecipient)
+    {
+        $this->userRecipient = $userRecipient;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userLastupdater
+     */
+    public function getUserLastupdater()
+    {
+        return $this->userLastupdater;
+    }
+
+    /**
+     * Set the value of userLastupdater
+     *
+     * @return  self
+     */
+    public function setUserLastupdater($userLastupdater)
+    {
+        $this->userLastupdater = $userLastupdater;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilcategory
+     */
+    public function getItilcategory()
+    {
+        return $this->itilcategory;
+    }
+
+    /**
+     * Set the value of itilcategory
+     *
+     * @return  self
+     */
+    public function setItilcategory($itilcategory)
+    {
+        $this->itilcategory = $itilcategory;
+
+        return $this;
+    }
+
+
+
+
+    /**
+     * Get the value of problemTickets
+     */
+    public function getProblemTickets()
+    {
+        return $this->problemTickets;
+    }
+
+    /**
+     * Set the value of problemTickets
+     *
+     * @return  self
+     */
+    public function setProblemTickets($problemTickets)
+    {
+        $this->problemTickets = $problemTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemSuppliers
+     */
+    public function getProblemSuppliers()
+    {
+        return $this->problemSuppliers;
+    }
+
+    /**
+     * Set the value of problemSuppliers
+     *
+     * @return  self
+     */
+    public function setProblemSuppliers($problemSuppliers)
+    {
+        $this->problemSuppliers = $problemSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemUsers
+     */
+    public function getProblemUsers()
+    {
+        return $this->problemUsers;
+    }
+
+    /**
+     * Set the value of problemUsers
+     *
+     * @return  self
+     */
+    public function setProblemUsers($problemUsers)
+    {
+        $this->problemUsers = $problemUsers;
+
+        return $this;
+    }
 }

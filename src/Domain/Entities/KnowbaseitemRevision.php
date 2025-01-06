@@ -15,8 +15,9 @@ class KnowbaseitemRevision
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer')]
-    private $knowbaseitems_id;
+    #[ORM\ManyToOne(targetEntity: Knowbaseitem::class, inversedBy: 'knowbaseitemProfiles')]
+    #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Knowbaseitem $knowbaseitem;
 
     #[ORM\Column(type: 'integer')]
     private $revision;
@@ -41,17 +42,6 @@ class KnowbaseitemRevision
         return $this->id;
     }
 
-    public function getKnowbaseitemsId(): ?int
-    {
-        return $this->knowbaseitems_id;
-    }
-
-    public function setKnowbaseitemsId(int $knowbaseitems_id): self
-    {
-        $this->knowbaseitems_id = $knowbaseitems_id;
-
-        return $this;
-    }
 
     public function getRevision(): ?int
     {

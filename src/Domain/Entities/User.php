@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_users")]
@@ -331,6 +332,30 @@ class User
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $accessibility_menu;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChangeUser::class)]
+    private Collection $changeUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: GroupUser::class)]
+    private Collection $groupUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: KnowbaseitemUser::class)]
+    private Collection $knowbaseitemUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ProblemUser::class)]
+    private Collection $problemUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ProfileUser::class)]
+    private Collection $profileUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ReminderUser::class)]
+    private Collection $reminderUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RssfeedUser::class)]
+    private Collection $rssfeedUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SavedsearchUser::class)]
+    private Collection $savedsearchUsers;
 
 
     public function getId(): ?int
@@ -1539,4 +1564,165 @@ class User
         return $this;
     }
 
+
+
+    /**
+     * Get the value of changeUsers
+     */
+    public function getChangeUsers()
+    {
+        return $this->changeUsers;
+    }
+
+    /**
+     * Set the value of changeUsers
+     *
+     * @return  self
+     */
+    public function setChangeUsers($changeUsers)
+    {
+        $this->changeUsers = $changeUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupUsers
+     */
+    public function getGroupUsers()
+    {
+        return $this->groupUsers;
+    }
+
+    /**
+     * Set the value of groupUsers
+     *
+     * @return  self
+     */
+    public function setGroupUsers($groupUsers)
+    {
+        $this->groupUsers = $groupUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemUsers
+     */
+    public function getKnowbaseitemUsers()
+    {
+        return $this->knowbaseitemUsers;
+    }
+
+    /**
+     * Set the value of knowbaseitemUsers
+     *
+     * @return  self
+     */
+    public function setKnowbaseitemUsers($knowbaseitemUsers)
+    {
+        $this->knowbaseitemUsers = $knowbaseitemUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemUsers
+     */
+    public function getProblemUsers()
+    {
+        return $this->problemUsers;
+    }
+
+    /**
+     * Set the value of problemUsers
+     *
+     * @return  self
+     */
+    public function setProblemUsers($problemUsers)
+    {
+        $this->problemUsers = $problemUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileUsers
+     */
+    public function getProfileUsers()
+    {
+        return $this->profileUsers;
+    }
+
+    /**
+     * Set the value of profileUsers
+     *
+     * @return  self
+     */
+    public function setProfileUsers($profileUsers)
+    {
+        $this->profileUsers = $profileUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of reminderUsers
+     */
+    public function getReminderUsers()
+    {
+        return $this->reminderUsers;
+    }
+
+    /**
+     * Set the value of reminderUsers
+     *
+     * @return  self
+     */
+    public function setReminderUsers($reminderUsers)
+    {
+        $this->reminderUsers = $reminderUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of rssfeedUsers
+     */
+    public function getRssfeedUsers()
+    {
+        return $this->rssfeedUsers;
+    }
+
+    /**
+     * Set the value of rssfeedUsers
+     *
+     * @return  self
+     */
+    public function setRssfeedUsers($rssfeedUsers)
+    {
+        $this->rssfeedUsers = $rssfeedUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of savedsearchUsers
+     */
+    public function getSavedsearchUsers()
+    {
+        return $this->savedsearchUsers;
+    }
+
+    /**
+     * Set the value of savedsearchUsers
+     *
+     * @return  self
+     */
+    public function setSavedsearchUsers($savedsearchUsers)
+    {
+        $this->savedsearchUsers = $savedsearchUsers;
+
+        return $this;
+    }
 }

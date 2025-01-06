@@ -29,8 +29,9 @@ class Software
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -41,23 +42,28 @@ class Software
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_tech;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?User $userTech;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id_tech;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?Group $groupTech;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_update;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $softwares_id;
+    #[ORM\ManyToOne(targetEntity: Software::class)]
+    #[ORM\JoinColumn(name: 'softwares_id', referencedColumnName: 'id', nullable: true)]
+    private ?Software $software;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
@@ -71,11 +77,13 @@ class Software
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group;
 
     #[ORM\Column(type: 'decimal', precision: 20, scale: 4, nullable: true, options: ['default' => "0.0000"])]
     private $ticket_tco;
@@ -95,18 +103,6 @@ class Software
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool
@@ -145,42 +141,6 @@ class Software
         return $this;
     }
 
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(?int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
-
-    public function getUsersIdTech(): ?int
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(?int $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(?int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
-
-        return $this;
-    }
-
     public function getIsUpdate(): ?bool
     {
         return $this->is_update;
@@ -189,30 +149,6 @@ class Software
     public function setIsUpdate(?bool $is_update): self
     {
         $this->is_update = $is_update;
-
-        return $this;
-    }
-
-    public function getSoftwaresId(): ?int
-    {
-        return $this->softwares_id;
-    }
-
-    public function setSoftwaresId(?int $softwares_id): self
-    {
-        $this->softwares_id = $softwares_id;
-
-        return $this;
-    }
-
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
 
         return $this;
     }
@@ -261,30 +197,6 @@ class Software
     public function setDateMod(?\DateTime $date_mod): self
     {
         $this->date_mod = $date_mod;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(?int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
 
         return $this;
     }
@@ -349,4 +261,164 @@ class Software
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userTech
+     */
+    public function getUserTech()
+    {
+        return $this->userTech;
+    }
+
+    /**
+     * Set the value of userTech
+     *
+     * @return  self
+     */
+    public function setUserTech($userTech)
+    {
+        $this->userTech = $userTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupTech
+     */
+    public function getGroupTech()
+    {
+        return $this->groupTech;
+    }
+
+    /**
+     * Set the value of groupTech
+     *
+     * @return  self
+     */
+    public function setGroupTech($groupTech)
+    {
+        $this->groupTech = $groupTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of software
+     */
+    public function getSoftware()
+    {
+        return $this->software;
+    }
+
+    /**
+     * Set the value of software
+     *
+     * @return  self
+     */
+    public function setSoftware($software)
+    {
+        $this->software = $software;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
 }

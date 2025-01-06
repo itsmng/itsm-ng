@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_reminders')]
@@ -28,8 +29,9 @@ class Reminder
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -61,6 +63,18 @@ class Reminder
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: EntityReminder::class)]
+    private Collection $entityReminders;
+
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: GroupReminder::class)]
+    private Collection $groupReminders;
+
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: ProfileReminder::class)]
+    private Collection $profileReminders;
+
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: ReminderUser::class)]
+    private Collection $reminderUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,18 +100,6 @@ class Reminder
     public function setDate(?string $date): self
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?string
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?string $users_id): self
-    {
-        $this->users_id = $users_id;
 
         return $this;
     }
@@ -222,4 +224,105 @@ class Reminder
         return $this;
     }
 
+
+    /**
+     * Get the value of entityReminders
+     */
+    public function getEntityReminders()
+    {
+        return $this->entityReminders;
+    }
+
+    /**
+     * Set the value of entityReminders
+     *
+     * @return  self
+     */
+    public function setEntityReminders($entityReminders)
+    {
+        $this->entityReminders = $entityReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupReminders
+     */
+    public function getGroupReminders()
+    {
+        return $this->groupReminders;
+    }
+
+    /**
+     * Set the value of groupReminders
+     *
+     * @return  self
+     */
+    public function setGroupReminders($groupReminders)
+    {
+        $this->groupReminders = $groupReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileReminders
+     */
+    public function getProfileReminders()
+    {
+        return $this->profileReminders;
+    }
+
+    /**
+     * Set the value of profileReminders
+     *
+     * @return  self
+     */
+    public function setProfileReminders($profileReminders)
+    {
+        $this->profileReminders = $profileReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of reminderUsers
+     */
+    public function getReminderUsers()
+    {
+        return $this->reminderUsers;
+    }
+
+    /**
+     * Set the value of reminderUsers
+     *
+     * @return  self
+     */
+    public function setReminderUsers($reminderUsers)
+    {
+        $this->reminderUsers = $reminderUsers;
+
+        return $this;
+    }
 }

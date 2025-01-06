@@ -20,11 +20,13 @@ class Consumable
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $consumableitems_id;
+    #[ORM\ManyToOne(targetEntity: Consumableitem::class)]
+    #[ORM\JoinColumn(name: 'consumableitems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Consumableitem $consumableitem;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_in;
@@ -49,29 +51,6 @@ class Consumable
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getConsumableitemsId(): ?int
-    {
-        return $this->consumableitems_id;
-    }
-
-    public function setConsumableitemsId(int $consumableitems_id): self
-    {
-        $this->consumableitems_id = $consumableitems_id;
-
-        return $this;
-    }
 
     public function getDateIn(): ?\DateTimeInterface
     {
@@ -141,6 +120,46 @@ class Consumable
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of consumableitem
+     */
+    public function getConsumableitem()
+    {
+        return $this->consumableitem;
+    }
+
+    /**
+     * Set the value of consumableitem
+     *
+     * @return  self
+     */
+    public function setConsumableitem($consumableitem)
+    {
+        $this->consumableitem = $consumableitem;
 
         return $this;
     }

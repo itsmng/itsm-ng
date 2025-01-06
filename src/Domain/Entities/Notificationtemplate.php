@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_notificationtemplates')]
@@ -34,6 +35,9 @@ class Notificationtemplate
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'notificationtemplate', targetEntity: NotificationNotificationtemplate::class)]
+    private Collection $notificationNotificationtemplates;
 
     public function getId(): ?int
     {
@@ -112,4 +116,24 @@ class Notificationtemplate
         return $this;
     }
 
+
+    /**
+     * Get the value of notificationNotificationtemplates
+     */
+    public function getNotificationNotificationtemplates()
+    {
+        return $this->notificationNotificationtemplates;
+    }
+
+    /**
+     * Set the value of notificationNotificationtemplates
+     *
+     * @return  self
+     */
+    public function setNotificationNotificationtemplates($notificationNotificationtemplates)
+    {
+        $this->notificationNotificationtemplates = $notificationNotificationtemplates;
+
+        return $this;
+    }
 }

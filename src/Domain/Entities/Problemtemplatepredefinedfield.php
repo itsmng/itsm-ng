@@ -14,8 +14,9 @@ class Problemtemplatepredefinedfield
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $problemtemplates_id;
+    #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
+    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Problemtemplate $problemtemplate;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $num;
@@ -26,19 +27,6 @@ class Problemtemplatepredefinedfield
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProblemtemplatesId(): ?int
-    {
-        return $this->problemtemplates_id;
-    }
-
-
-    public function setProblemtemplatesId(?int $problemtemplates_id): self
-    {
-        $this->problemtemplates_id = $problemtemplates_id;
-
-        return $this;
     }
 
     public function getNum(): ?int
@@ -67,4 +55,24 @@ class Problemtemplatepredefinedfield
         return $this;
     }
 
+
+    /**
+     * Get the value of problemtemplate
+     */
+    public function getProblemtemplate()
+    {
+        return $this->problemtemplate;
+    }
+
+    /**
+     * Set the value of problemtemplate
+     *
+     * @return  self
+     */
+    public function setProblemtemplate($problemtemplate)
+    {
+        $this->problemtemplate = $problemtemplate;
+
+        return $this;
+    }
 }

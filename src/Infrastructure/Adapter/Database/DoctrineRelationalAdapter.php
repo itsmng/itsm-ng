@@ -44,6 +44,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function findBy(array $criteria, array $order = null, int $limit = null): array
     {
         // TODO: Implement findBy() method.
+        $result = $this->em->find($this->entityName, $criteria);
+        if ($order) {
+            $result = $result->orderBy($order);
+        }
+        if ($limit) {
+            $result = $result->limit($limit);
+        }
         return [];
     }
     public function findByRequest(array $request): array

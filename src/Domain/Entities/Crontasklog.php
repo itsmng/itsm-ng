@@ -17,11 +17,13 @@ class Crontasklog
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer')]
-    private $crontasks_id;
+    #[ORM\ManyToOne(targetEntity: Crontask::class)]
+    #[ORM\JoinColumn(name: 'crontasks_id', referencedColumnName: 'id', nullable: true)]
+    private ?Crontask $crontask;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => 'id of "start" event'])]
-    private $crontasklogs_id;
+    #[ORM\ManyToOne(targetEntity: Crontasklog::class)]
+    #[ORM\JoinColumn(name: 'crontasklogs_id', referencedColumnName: 'id', nullable: false, options: ['comment' => 'id of "start" event'])]
+    private ?Crontasklog $crontasklogs;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
     private $date;
@@ -43,29 +45,6 @@ class Crontasklog
         return $this->id;
     }
 
-    public function getCrontasksId(): ?int
-    {
-        return $this->crontasks_id;
-    }
-
-    public function setCrontasksId(int $crontasks_id): self
-    {
-        $this->crontasks_id = $crontasks_id;
-
-        return $this;
-    }
-
-    public function getCrontasklogsId(): ?int
-    {
-        return $this->crontasklogs_id;
-    }
-
-    public function setCrontasklogsId(int $crontasklogs_id): self
-    {
-        $this->crontasklogs_id = $crontasklogs_id;
-
-        return $this;
-    }
 
     public function getDate(): ?\DateTimeInterface
     {
@@ -123,6 +102,46 @@ class Crontasklog
     public function setContent(?string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of crontask
+     */
+    public function getCrontask()
+    {
+        return $this->crontask;
+    }
+
+    /**
+     * Set the value of crontask
+     *
+     * @return  self
+     */
+    public function setCrontask($crontask)
+    {
+        $this->crontask = $crontask;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of crontasklogs
+     */
+    public function getCrontasklogs()
+    {
+        return $this->crontasklogs;
+    }
+
+    /**
+     * Set the value of crontasklogs
+     *
+     * @return  self
+     */
+    public function setCrontasklogs($crontasklogs)
+    {
+        $this->crontasklogs = $crontasklogs;
 
         return $this;
     }

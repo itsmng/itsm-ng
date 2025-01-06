@@ -20,8 +20,9 @@ class Softwarecategory
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $softwarecategories_id;
+    #[ORM\ManyToOne(targetEntity: Softwarecategory::class)]
+    #[ORM\JoinColumn(name: 'softwarecategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Softwarecategory $softwarecategory;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $completename;
@@ -60,18 +61,6 @@ class Softwarecategory
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getSoftwarecategoriesId(): ?int
-    {
-        return $this->softwarecategories_id;
-    }
-
-    public function setSoftwarecategoriesId(?int $softwarecategories_id): self
-    {
-        $this->softwarecategories_id = $softwarecategories_id;
 
         return $this;
     }
@@ -120,6 +109,26 @@ class Softwarecategory
     public function setSonsCache(?string $sons_cache): self
     {
         $this->sons_cache = $sons_cache;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of softwarecategory
+     */
+    public function getSoftwarecategory()
+    {
+        return $this->softwarecategory;
+    }
+
+    /**
+     * Set the value of softwarecategory
+     *
+     * @return  self
+     */
+    public function setSoftwarecategory($softwarecategory)
+    {
+        $this->softwarecategory = $softwarecategory;
 
         return $this;
     }

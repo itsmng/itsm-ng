@@ -21,8 +21,10 @@ class Contractcost
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $contracts_id;
+
+    #[ORM\ManyToOne(targetEntity: Contract::class)]
+    #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: true)]
+    private ?Contract $contract;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -39,11 +41,13 @@ class Contractcost
     #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => '0.0000'])]
     private $cost;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $budgets_id;
+    #[ORM\ManyToOne(targetEntity: Budget::class)]
+    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Budget $budget;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
@@ -51,18 +55,6 @@ class Contractcost
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getContractsId(): ?int
-    {
-        return $this->contracts_id;
-    }
-
-    public function setContractsId(int $contracts_id): self
-    {
-        $this->contracts_id = $contracts_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -125,29 +117,6 @@ class Contractcost
         return $this;
     }
 
-    public function getBudgetsId(): ?int
-    {
-        return $this->budgets_id;
-    }
-
-    public function setBudgetsId(int $budgets_id): self
-    {
-        $this->budgets_id = $budgets_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?int
     {
@@ -157,6 +126,66 @@ class Contractcost
     public function setIsRecursive(int $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contract
+     */
+    public function getContract()
+    {
+        return $this->contract;
+    }
+
+    /**
+     * Set the value of contract
+     *
+     * @return  self
+     */
+    public function setContract($contract)
+    {
+        $this->contract = $contract;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of budget
+     */
+    public function getBudget()
+    {
+        return $this->budget;
+    }
+
+    /**
+     * Set the value of budget
+     *
+     * @return  self
+     */
+    public function setBudget($budget)
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

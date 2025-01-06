@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickets")]
@@ -162,6 +163,27 @@ class Ticket
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ChangeTicket::class)]
+    private Collection $changeTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: GroupTicket::class)]
+    private Collection $groupTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: OlalevelTicket::class)]
+    private Collection $olalevelTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ProblemTicket::class)]
+    private Collection $problemTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ProjecttaskTicket::class)]
+    private Collection $projecttaskTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: SlalevelTicket::class)]
+    private Collection $slalevelTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: SupplierTicket::class)]
+    private Collection $supplierTickets;
 
     public function getId(): ?int
     {
@@ -648,4 +670,144 @@ class Ticket
         return $this;
     }
 
+
+    /**
+     * Get the value of groupTickets
+     */
+    public function getGroupTickets()
+    {
+        return $this->groupTickets;
+    }
+
+    /**
+     * Set the value of groupTickets
+     *
+     * @return  self
+     */
+    public function setGroupTickets($groupTickets)
+    {
+        $this->groupTickets = $groupTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeTickets
+     */
+    public function getChangeTickets()
+    {
+        return $this->changeTickets;
+    }
+
+    /**
+     * Set the value of changeTickets
+     *
+     * @return  self
+     */
+    public function setChangeTickets($changeTickets)
+    {
+        $this->changeTickets = $changeTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of olalevelTickets
+     */
+    public function getOlalevelTickets()
+    {
+        return $this->olalevelTickets;
+    }
+
+    /**
+     * Set the value of olalevelTickets
+     *
+     * @return  self
+     */
+    public function setOlalevelTickets($olalevelTickets)
+    {
+        $this->olalevelTickets = $olalevelTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemTickets
+     */
+    public function getProblemTickets()
+    {
+        return $this->problemTickets;
+    }
+
+    /**
+     * Set the value of problemTickets
+     *
+     * @return  self
+     */
+    public function setProblemTickets($problemTickets)
+    {
+        $this->problemTickets = $problemTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of projecttaskTickets
+     */
+    public function getProjecttaskTickets()
+    {
+        return $this->projecttaskTickets;
+    }
+
+    /**
+     * Set the value of projecttaskTickets
+     *
+     * @return  self
+     */
+    public function setProjecttaskTickets($projecttaskTickets)
+    {
+        $this->projecttaskTickets = $projecttaskTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slalevelTickets
+     */
+    public function getSlalevelTickets()
+    {
+        return $this->slalevelTickets;
+    }
+
+    /**
+     * Set the value of slalevelTickets
+     *
+     * @return  self
+     */
+    public function setSlalevelTickets($slalevelTickets)
+    {
+        $this->slalevelTickets = $slalevelTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of supplierTickets
+     */
+    public function getSupplierTickets()
+    {
+        return $this->supplierTickets;
+    }
+
+    /**
+     * Set the value of supplierTickets
+     *
+     * @return  self
+     */
+    public function setSupplierTickets($supplierTickets)
+    {
+        $this->supplierTickets = $supplierTickets;
+
+        return $this;
+    }
 }

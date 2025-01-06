@@ -18,8 +18,9 @@ class Planningexternaleventtemplate
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -42,8 +43,9 @@ class Planningexternaleventtemplate
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $state;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $planningeventcategories_id;
+    #[ORM\ManyToOne(targetEntity: Planningeventcategory::class)]
+    #[ORM\JoinColumn(name: 'planningeventcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Planningeventcategory $planningeventcategory;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $background;
@@ -57,19 +59,6 @@ class Planningexternaleventtemplate
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -156,18 +145,6 @@ class Planningexternaleventtemplate
         return $this;
     }
 
-    public function getPlanningeventcategoriesId(): ?int
-    {
-        return $this->planningeventcategories_id;
-    }
-
-    public function setPlanningeventcategoriesId(?int $planningeventcategories_id): self
-    {
-        $this->planningeventcategories_id = $planningeventcategories_id;
-
-        return $this;
-    }
-
     public function getBackground(): ?bool
     {
         return $this->background;
@@ -200,6 +177,46 @@ class Planningexternaleventtemplate
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of planningeventcategory
+     */
+    public function getPlanningeventcategory()
+    {
+        return $this->planningeventcategory;
+    }
+
+    /**
+     * Set the value of planningeventcategory
+     *
+     * @return  self
+     */
+    public function setPlanningeventcategory($planningeventcategory)
+    {
+        $this->planningeventcategory = $planningeventcategory;
 
         return $this;
     }

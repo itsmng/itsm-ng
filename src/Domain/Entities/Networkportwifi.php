@@ -20,17 +20,20 @@ class Networkportwifi
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $networkports_id;
+    #[ORM\ManyToOne(targetEntity: NetworkPort::class)]
+    #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
+    private ?NetworkPort $networkport;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $items_devicenetworkcards_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $wifinetworks_id;
+    #[ORM\ManyToOne(targetEntity: WifiNetwork::class)]
+    #[ORM\JoinColumn(name: 'wifinetworks_id', referencedColumnName: 'id', nullable: true)]
+    private ?WifiNetwork $wifinetwork;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'only useful in case of Managed node'])]
-    private $networkportwifis_id;
+    #[ORM\ManyToOne(targetEntity: Networkportwifi::class)]
+    #[ORM\JoinColumn(name: 'networkportwifis_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'only useful in case of Managed node'])]
+    private ?Networkportwifi $networkportwifi;
 
     #[ORM\Column(type: 'string', length: 20, nullable: true, options: ['comment' => 'a, a/b, a/b/g, a/b/g/n, a/b/g/n/y'])]
     private $version;
@@ -49,18 +52,6 @@ class Networkportwifi
         return $this->id;
     }
 
-    public function getNetworkportsId(): ?int
-    {
-        return $this->networkports_id;
-    }
-
-    public function setNetworkportsId(?int $networkports_id): self
-    {
-        $this->networkports_id = $networkports_id;
-
-        return $this;
-    }
-
     public function getItemsDevicenetworkcardsId(): ?int
     {
         return $this->items_devicenetworkcards_id;
@@ -69,30 +60,6 @@ class Networkportwifi
     public function setItemsDevicenetworkcardsId(?int $items_devicenetworkcards_id): self
     {
         $this->items_devicenetworkcards_id = $items_devicenetworkcards_id;
-
-        return $this;
-    }
-
-    public function getWifinetworksId(): ?int
-    {
-        return $this->wifinetworks_id;
-    }
-
-    public function setWifinetworksId(?int $wifinetworks_id): self
-    {
-        $this->wifinetworks_id = $wifinetworks_id;
-
-        return $this;
-    }
-
-    public function getNetworkportwifisId(): ?int
-    {
-        return $this->networkportwifis_id;
-    }
-
-    public function setNetworkportwifisId(?int $networkportwifis_id): self
-    {
-        $this->networkportwifis_id = $networkportwifis_id;
 
         return $this;
     }
@@ -145,4 +112,64 @@ class Networkportwifi
         return $this;
     }
 
+
+    /**
+     * Get the value of networkportwifi
+     */
+    public function getNetworkportwifi()
+    {
+        return $this->networkportwifi;
+    }
+
+    /**
+     * Set the value of networkportwifi
+     *
+     * @return  self
+     */
+    public function setNetworkportwifi($networkportwifi)
+    {
+        $this->networkportwifi = $networkportwifi;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of wifinetwork
+     */
+    public function getWifinetwork()
+    {
+        return $this->wifinetwork;
+    }
+
+    /**
+     * Set the value of wifinetwork
+     *
+     * @return  self
+     */
+    public function setWifinetwork($wifinetwork)
+    {
+        $this->wifinetwork = $wifinetwork;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkport
+     */
+    public function getNetworkport()
+    {
+        return $this->networkport;
+    }
+
+    /**
+     * Set the value of networkport
+     *
+     * @return  self
+     */
+    public function setNetworkport($networkport)
+    {
+        $this->networkport = $networkport;
+
+        return $this;
+    }
 }

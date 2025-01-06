@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_changes')]
@@ -34,8 +35,9 @@ class Change
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $is_recursive;
@@ -64,11 +66,13 @@ class Change
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $time_to_resolve;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_recipient;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_recipient', referencedColumnName: 'id', nullable: true)]
+    private ?User $userRecipient;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_lastupdater;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: true)]
+    private ?User $userLastupdater;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $urgency;
@@ -79,8 +83,9 @@ class Change
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $priority;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $itilcategories_id;
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?ItilCategory $itilCategory;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $impactcontent;
@@ -121,6 +126,21 @@ class Change
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
 
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeProblem::class)]
+    private Collection $changeProblems;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeGroup::class)]
+    private Collection $changeGroups;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeTicket::class)]
+    private Collection $changeTickets;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeSupplier::class)]
+    private Collection $changeSuppliers;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeUser::class)]
+    private Collection $changeUsers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -145,17 +165,6 @@ class Change
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?bool
     {
@@ -265,29 +274,6 @@ class Change
         return $this;
     }
 
-    public function getUsersIdRecipient(): ?int
-    {
-        return $this->users_id_recipient;
-    }
-
-    public function setUsersIdRecipient(int $users_id_recipient): self
-    {
-        $this->users_id_recipient = $users_id_recipient;
-
-        return $this;
-    }
-
-    public function getUsersIdLastupdater(): ?int
-    {
-        return $this->users_id_lastupdater;
-    }
-
-    public function setUsersIdLastupdater(int $users_id_lastupdater): self
-    {
-        $this->users_id_lastupdater = $users_id_lastupdater;
-
-        return $this;
-    }
 
     public function getUrgency(): ?int
     {
@@ -325,17 +311,6 @@ class Change
         return $this;
     }
 
-    public function getItilcategoriesId(): ?int
-    {
-        return $this->itilcategories_id;
-    }
-
-    public function setItilcategoriesId(int $itilcategories_id): self
-    {
-        $this->itilcategories_id = $itilcategories_id;
-
-        return $this;
-    }
 
     public function getImpactcontent(): ?string
     {
@@ -493,4 +468,185 @@ class Change
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of changeTickets
+     */
+    public function getChangeTickets()
+    {
+        return $this->changeTickets;
+    }
+
+    /**
+     * Set the value of changeTickets
+     *
+     * @return  self
+     */
+    public function setChangeTickets($changeTickets)
+    {
+        $this->changeTickets = $changeTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeUsers
+     */
+    public function getChangeUsers()
+    {
+        return $this->changeUsers;
+    }
+
+    /**
+     * Set the value of changeUsers
+     *
+     * @return  self
+     */
+    public function setChangeUsers($changeUsers)
+    {
+        $this->changeUsers = $changeUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeProblems
+     */
+    public function getChangeProblems()
+    {
+        return $this->changeProblems;
+    }
+
+    /**
+     * Set the value of changeProblems
+     *
+     * @return  self
+     */
+    public function setChangeProblems($changeProblems)
+    {
+        $this->changeProblems = $changeProblems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeGroups
+     */
+    public function getChangeGroups()
+    {
+        return $this->changeGroups;
+    }
+
+    /**
+     * Set the value of changeGroups
+     *
+     * @return  self
+     */
+    public function setChangeGroups($changeGroups)
+    {
+        $this->changeGroups = $changeGroups;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeSuppliers
+     */
+    public function getChangeSuppliers()
+    {
+        return $this->changeSuppliers;
+    }
+
+    /**
+     * Set the value of changeSuppliers
+     *
+     * @return  self
+     */
+    public function setChangeSuppliers($changeSuppliers)
+    {
+        $this->changeSuppliers = $changeSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userRecipient
+     */
+    public function getUserRecipient()
+    {
+        return $this->userRecipient;
+    }
+
+    /**
+     * Set the value of userRecipient
+     *
+     * @return  self
+     */
+    public function setUserRecipient($userRecipient)
+    {
+        $this->userRecipient = $userRecipient;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userLastupdater
+     */
+    public function getUserLastupdater()
+    {
+        return $this->userLastupdater;
+    }
+
+    /**
+     * Set the value of userLastupdater
+     *
+     * @return  self
+     */
+    public function setUserLastupdater($userLastupdater)
+    {
+        $this->userLastupdater = $userLastupdater;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilCategory
+     */
+    public function getItilCategory()
+    {
+        return $this->itilCategory;
+    }
+
+    /**
+     * Set the value of itilCategory
+     *
+     * @return  self
+     */
+    public function setItilCategory($itilCategory)
+    {
+        $this->itilCategory = $itilCategory;
+
+        return $this;
+    }
 }

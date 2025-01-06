@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_entities")]
@@ -22,8 +23,9 @@ class Entity
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $completename;
@@ -88,8 +90,9 @@ class Entity
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $tag;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $authldaps_id;
+    #[ORM\ManyToOne(targetEntity: AuthLdap::class)]
+    #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: true)]
+    private ?AuthLdap $authldap;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mail_domain;
@@ -151,8 +154,9 @@ class Entity
     #[ORM\Column(type: 'integer', options: ['default' => -2])]
     private $notclosed_delay;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $calendars_id;
+    #[ORM\ManyToOne(targetEntity: Calendar::class)]
+    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
+    private ?Calendar $calendar;
 
     #[ORM\Column(type: 'integer', options: ['default' => -2])]
     private $auto_assign_mode;
@@ -190,17 +194,21 @@ class Entity
     #[ORM\Column(type: 'string', length: 255, options: ['default' => '-2'])]
     private $autofill_order_date;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $tickettemplates_id;
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?TicketTemplate $tickettemplate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $changetemplates_id;
+    #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
+    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?ChangeTemplate $changetemplate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $problemtemplates_id;
+    #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
+    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Problemtemplate $problemtemplate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $entities_id_software;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id_software', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entitySoftware;
 
     #[ORM\Column(type: 'integer', options: ['default' => -2])]
     private $default_contract_alert;
@@ -253,6 +261,15 @@ class Entity
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $altitude;
 
+    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityKnowbaseitem::class)]
+    private Collection $entityKnowbaseitems;
+
+    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityReminder::class)]
+    private Collection $entityReminders;
+
+    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityRssFeed::class)]
+    private Collection $entityRssfeeds;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -273,18 +290,6 @@ class Entity
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entitiesId): self
-    {
-        $this->entities_id = $entitiesId;
 
         return $this;
     }
@@ -541,17 +546,6 @@ class Entity
         return $this;
     }
 
-    public function getAuthldapsId(): ?int
-    {
-        return $this->authldaps_id;
-    }
-
-    public function setAuthldapsId(int $authldapId): self
-    {
-        $this->authldaps_id = $authldapId;
-
-        return $this;
-    }
 
     public function getMailDomain(): ?string
     {
@@ -793,18 +787,6 @@ class Entity
         return $this;
     }
 
-    public function getCalendarsId(): ?int
-    {
-        return $this->calendars_id;
-    }
-
-    public function setCalendarsId(int $calendarsId): self
-    {
-        $this->calendars_id = $calendarsId;
-
-        return $this;
-    }
-
     public function getAutoAssignMode(): ?int
     {
         return $this->auto_assign_mode;
@@ -945,54 +927,6 @@ class Entity
     public function setAutofillOrderDate(string $autofillOrderDate): self
     {
         $this->autofill_order_date = $autofillOrderDate;
-
-        return $this;
-    }
-
-    public function getTicketTemplatesId(): ?int
-    {
-        return $this->tickettemplates_id;
-    }
-
-    public function setTicketTemplatesId(int $ticketTemplatesId): self
-    {
-        $this->tickettemplates_id = $ticketTemplatesId;
-
-        return $this;
-    }
-
-    public function getChangeTemplatesId(): ?int
-    {
-        return $this->changetemplates_id;
-    }
-
-    public function setChangeTemplatesId(int $changeTemplatesId): self
-    {
-        $this->changetemplates_id = $changeTemplatesId;
-
-        return $this;
-    }
-
-    public function getProblemTemplatesId(): ?int
-    {
-        return $this->problemtemplates_id;
-    }
-
-    public function setProblemTemplatesId(int $problemTemplatesId): self
-    {
-        $this->problemtemplates_id = $problemTemplatesId;
-
-        return $this;
-    }
-
-    public function getEntitiesIdSoftware(): ?int
-    {
-        return $this->entities_id_software;
-    }
-
-    public function setEntitiesIdSoftware(int $entitiesIdSoftware): self
-    {
-        $this->entities_id_software = $entitiesIdSoftware;
 
         return $this;
     }
@@ -1197,6 +1131,206 @@ class Entity
     public function setAltitude(string $altitude): self
     {
         $this->altitude = $altitude;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * Set the value of calendar
+     *
+     * @return  self
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickettemplate
+     */
+    public function getTickettemplate()
+    {
+        return $this->tickettemplate;
+    }
+
+    /**
+     * Set the value of tickettemplate
+     *
+     * @return  self
+     */
+    public function setTickettemplate($tickettemplate)
+    {
+        $this->tickettemplate = $tickettemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changetemplate
+     */
+    public function getChangetemplate()
+    {
+        return $this->changetemplate;
+    }
+
+    /**
+     * Set the value of changetemplate
+     *
+     * @return  self
+     */
+    public function setChangetemplate($changetemplate)
+    {
+        $this->changetemplate = $changetemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemtemplate
+     */
+    public function getProblemtemplate()
+    {
+        return $this->problemtemplate;
+    }
+
+    /**
+     * Set the value of problemtemplate
+     *
+     * @return  self
+     */
+    public function setProblemtemplate($problemtemplate)
+    {
+        $this->problemtemplate = $problemtemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of authldap
+     */
+    public function getAuthldap()
+    {
+        return $this->authldap;
+    }
+
+    /**
+     * Set the value of authldap
+     *
+     * @return  self
+     */
+    public function setAuthldap($authldap)
+    {
+        $this->authldap = $authldap;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entityKnowbaseitems
+     */
+    public function getEntityKnowbaseitems()
+    {
+        return $this->entityKnowbaseitems;
+    }
+
+    /**
+     * Set the value of entityKnowbaseitems
+     *
+     * @return  self
+     */
+    public function setEntityKnowbaseitems($entityKnowbaseitems)
+    {
+        $this->entityKnowbaseitems = $entityKnowbaseitems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entityReminders
+     */
+    public function getEntityReminders()
+    {
+        return $this->entityReminders;
+    }
+
+    /**
+     * Set the value of entityReminders
+     *
+     * @return  self
+     */
+    public function setEntityReminders($entityReminders)
+    {
+        $this->entityReminders = $entityReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entityRssfeeds
+     */
+    public function getEntityRssfeeds()
+    {
+        return $this->entityRssfeeds;
+    }
+
+    /**
+     * Set the value of entityRssfeeds
+     *
+     * @return  self
+     */
+    public function setEntityRssfeeds($entityRssfeeds)
+    {
+        $this->entityRssfeeds = $entityRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entitySoftware
+     */
+    public function getEntitySoftware()
+    {
+        return $this->entitySoftware;
+    }
+
+    /**
+     * Set the value of entitySoftware
+     *
+     * @return  self
+     */
+    public function setEntitySoftware($entitySoftware)
+    {
+        $this->entitySoftware = $entitySoftware;
 
         return $this;
     }

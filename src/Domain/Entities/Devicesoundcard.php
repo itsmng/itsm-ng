@@ -29,17 +29,20 @@ class Devicesoundcard
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $devicesoundcardmodels_id;
+    #[ORM\ManyToOne(targetEntity: Devicesoundcardmodel::class)]
+    #[ORM\JoinColumn(name: 'devicesoundcardmodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Devicesoundcardmodel $devicesoundcardmodel;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
     private $date_mod;
@@ -88,30 +91,6 @@ class Devicesoundcard
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -120,18 +99,6 @@ class Devicesoundcard
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getDevicesoundcardmodelsId(): ?int
-    {
-        return $this->devicesoundcardmodels_id;
-    }
-
-    public function setDevicesoundcardmodelsId(?int $devicesoundcardmodels_id): self
-    {
-        $this->devicesoundcardmodels_id = $devicesoundcardmodels_id;
 
         return $this;
     }
@@ -160,4 +127,64 @@ class Devicesoundcard
         return $this;
     }
 
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicesoundcardmodel
+     */
+    public function getDevicesoundcardmodel()
+    {
+        return $this->devicesoundcardmodel;
+    }
+
+    /**
+     * Set the value of devicesoundcardmodel
+     *
+     * @return  self
+     */
+    public function setDevicesoundcardmodel($devicesoundcardmodel)
+    {
+        $this->devicesoundcardmodel = $devicesoundcardmodel;
+
+        return $this;
+    }
 }

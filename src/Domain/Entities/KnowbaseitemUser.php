@@ -15,37 +15,55 @@ class KnowbaseitemUser
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $knowbaseitems_id;
+    #[ORM\ManyToOne(targetEntity: Knowbaseitem::class, inversedBy: 'knowbaseitemUsers')]
+    #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Knowbaseitem $knowbaseitem;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'knowbaseitemUsers')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user;
 
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function getKnowbaseitemsId(): int
+    /**
+     * Get the value of knowbaseitem
+     */
+    public function getKnowbaseitem()
     {
-        return $this->knowbaseitems_id;
+        return $this->knowbaseitem;
     }
 
-    public function setKnowbaseitemsId(int $knowbaseitems_id): self
+    /**
+     * Set the value of knowbaseitem
+     *
+     * @return  self
+     */
+    public function setKnowbaseitem($knowbaseitem)
     {
-        $this->knowbaseitems_id = $knowbaseitems_id;
+        $this->knowbaseitem = $knowbaseitem;
 
         return $this;
     }
 
-    public function getUsersId(): int
+    /**
+     * Get the value of user
+     */
+    public function getUser()
     {
-        return $this->users_id;
+        return $this->user;
     }
 
-    public function setUsersId(int $users_id): self
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
     {
-        $this->users_id = $users_id;
+        $this->user = $user;
 
         return $this;
     }

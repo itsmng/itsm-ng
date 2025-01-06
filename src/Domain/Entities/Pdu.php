@@ -5,6 +5,7 @@ namespace App\Domain\Entities;
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_pdus')]
@@ -29,14 +30,16 @@ class Pdu
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_recursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $serial;
@@ -44,14 +47,20 @@ class Pdu
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $pdumodels_id;
+    #[ORM\ManyToOne(targetEntity: Pdumodel::class)]
+    #[ORM\JoinColumn(name: 'pdumodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Pdumodel $pdumodel;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id_tech;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id_tech;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?User $userTech;
+
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
+    private ?Group $groupTech;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_template;
@@ -62,23 +71,33 @@ class Pdu
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $is_deleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to states (id)'])]
-    private $states_id;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state;
 
     #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $pdutypes_id;
+    #[ORM\ManyToOne(targetEntity: Pdutype::class)]
+    #[ORM\JoinColumn(name: 'pdutypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Pdutype $pdutype;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_mod;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_creation;
+
+    #[ORM\OneToMany(mappedBy: 'pdu', targetEntity: PduPlug::class)]
+    private Collection $pduPlugs;
+
+    #[ORM\OneToMany(mappedBy: 'pdu', targetEntity: PduRack::class)]
+    private Collection $pduRacks;
+
 
     public function getId(): ?int
     {
@@ -104,18 +123,6 @@ class Pdu
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->is_recursive;
@@ -124,18 +131,6 @@ class Pdu
     public function setIsRecursive(?bool $is_recursive): self
     {
         $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(?int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
 
         return $this;
     }
@@ -164,18 +159,6 @@ class Pdu
         return $this;
     }
 
-    public function getPdumodelsId(): ?int
-    {
-        return $this->pdumodels_id;
-    }
-
-    public function setPdumodelsId(?int $pdumodels_id): self
-    {
-        $this->pdumodels_id = $pdumodels_id;
-
-        return $this;
-    }
-
     public function getUsersIdTech(): ?int
     {
         return $this->users_id_tech;
@@ -184,18 +167,6 @@ class Pdu
     public function setUsersIdTech(?int $users_id_tech): self
     {
         $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(?int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
 
         return $this;
     }
@@ -236,18 +207,6 @@ class Pdu
         return $this;
     }
 
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(?int $states_id): self
-    {
-        $this->states_id = $states_id;
-
-        return $this;
-    }
-
     public function getComment(): ?string
     {
         return $this->comment;
@@ -256,30 +215,6 @@ class Pdu
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
-    public function getPdutypesId(): ?int
-    {
-        return $this->pdutypes_id;
-    }
-
-    public function setPdutypesId(?int $pdutypes_id): self
-    {
-        $this->pdutypes_id = $pdutypes_id;
 
         return $this;
     }
@@ -308,4 +243,204 @@ class Pdu
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pdumodel
+     */
+    public function getPdumodel()
+    {
+        return $this->pdumodel;
+    }
+
+    /**
+     * Set the value of pdumodel
+     *
+     * @return  self
+     */
+    public function setPdumodel($pdumodel)
+    {
+        $this->pdumodel = $pdumodel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userTech
+     */
+    public function getUserTech()
+    {
+        return $this->userTech;
+    }
+
+    /**
+     * Set the value of userTech
+     *
+     * @return  self
+     */
+    public function setUserTech($userTech)
+    {
+        $this->userTech = $userTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupTech
+     */
+    public function getGroupTech()
+    {
+        return $this->groupTech;
+    }
+
+    /**
+     * Set the value of groupTech
+     *
+     * @return  self
+     */
+    public function setGroupTech($groupTech)
+    {
+        $this->groupTech = $groupTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pdutype
+     */
+    public function getPdutype()
+    {
+        return $this->pdutype;
+    }
+
+    /**
+     * Set the value of pdutype
+     *
+     * @return  self
+     */
+    public function setPdutype($pdutype)
+    {
+        $this->pdutype = $pdutype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pduPlugs
+     */
+    public function getPduPlugs()
+    {
+        return $this->pduPlugs;
+    }
+
+    /**
+     * Set the value of pduPlugs
+     *
+     * @return  self
+     */
+    public function setPduPlugs($pduPlugs)
+    {
+        $this->pduPlugs = $pduPlugs;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pduRacks
+     */
+    public function getPduRacks()
+    {
+        return $this->pduRacks;
+    }
+
+    /**
+     * Set the value of pduRacks
+     *
+     * @return  self
+     */
+    public function setPduRacks($pduRacks)
+    {
+        $this->pduRacks = $pduRacks;
+
+        return $this;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -22,8 +23,9 @@ class Holiday
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity;
 
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $is_recursive;
@@ -46,6 +48,9 @@ class Holiday
     #[ORM\Column(type: "datetime", nullable: true)]
     private $date_creation;
 
+    #[ORM\OneToMany(mappedBy: 'holiday', targetEntity: CalendarHoliday::class)]
+    private Collection $calendarHolidays;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,18 +64,6 @@ class Holiday
     public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
 
         return $this;
     }
@@ -155,6 +148,46 @@ class Holiday
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of calendarHolidays
+     */
+    public function getCalendarHolidays()
+    {
+        return $this->calendarHolidays;
+    }
+
+    /**
+     * Set the value of calendarHolidays
+     *
+     * @return  self
+     */
+    public function setCalendarHolidays($calendarHolidays)
+    {
+        $this->calendarHolidays = $calendarHolidays;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

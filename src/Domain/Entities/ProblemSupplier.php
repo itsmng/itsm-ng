@@ -15,11 +15,13 @@ class ProblemSupplier
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $problems_id;
+    #[ORM\ManyToOne(targetEntity: Problem::class, inversedBy: 'problemSuppliers')]
+    #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Problem $problem;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $suppliers_id;
+    #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'problemSuppliers')]
+    #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Supplier $supplier;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     private $type;
@@ -33,32 +35,6 @@ class ProblemSupplier
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProblemsId(): ?int
-    {
-        return $this->problems_id;
-    }
-
-
-    public function setProblemsId(?int $problems_id): self
-    {
-        $this->problems_id = $problems_id;
-
-        return $this;
-    }
-
-    public function getSuppliersId(): ?int
-    {
-        return $this->suppliers_id;
-    }
-
-
-    public function setSuppliersId(?int $suppliers_id): self
-    {
-        $this->suppliers_id = $suppliers_id;
-
-        return $this;
     }
 
     public function getType(): ?int
@@ -100,4 +76,44 @@ class ProblemSupplier
         return $this;
     }
 
+
+    /**
+     * Get the value of problem
+     */
+    public function getProblem()
+    {
+        return $this->problem;
+    }
+
+    /**
+     * Set the value of problem
+     *
+     * @return  self
+     */
+    public function setProblem($problem)
+    {
+        $this->problem = $problem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of supplier
+     */
+    public function getSupplier()
+    {
+        return $this->supplier;
+    }
+
+    /**
+     * Set the value of supplier
+     *
+     * @return  self
+     */
+    public function setSupplier($supplier)
+    {
+        $this->supplier = $supplier;
+
+        return $this;
+    }
 }
