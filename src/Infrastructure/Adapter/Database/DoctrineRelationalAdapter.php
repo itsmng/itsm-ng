@@ -6,7 +6,6 @@ use CommonDBTM;
 use Doctrine\ORM\EntityManager;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
 use ReflectionClass;
-use ReflectionProperty;
 
 class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 {
@@ -44,14 +43,8 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function findBy(array $criteria, array $order = null, int $limit = null): array
     {
         // TODO: Implement findBy() method.
-        $result = $this->em->find($this->entityName, $criteria);
-        if ($order) {
-            $result = $result->orderBy($order);
-        }
-        if ($limit) {
-            $result = $result->limit($limit);
-        }
-        return [];
+        $result = $this->em->getRepository($this->entityName)->findBy($criteria);
+        return $result;
     }
     public function findByRequest(array $request): array
     {
