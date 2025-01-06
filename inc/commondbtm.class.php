@@ -376,8 +376,6 @@ class CommonDBTM extends CommonGLPI
      **/
     public function getFromDBByRequest(array $request)
     {
-        global $DB;
-
         // Limit the request to the useful expressions
         $request = array_diff_key($request, [
            'FROM' => '',

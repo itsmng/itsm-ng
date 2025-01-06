@@ -359,7 +359,7 @@ class Computer
     /**
      * Get the value of users_tech
      */
-    public function getUsers_tech()
+    public function getUsersTech()
     {
         return $this->users_tech;
     }
@@ -369,7 +369,7 @@ class Computer
      *
      * @return  self
      */
-    public function setUsers_tech($users_tech)
+    public function setUsersTech($users_tech)
     {
         $this->users_tech = $users_tech;
 
@@ -379,7 +379,7 @@ class Computer
     /**
      * Get the value of groups_tech
      */
-    public function getGroups_tech()
+    public function getGroupsTech()
     {
         return $this->groups_tech;
     }
@@ -389,7 +389,7 @@ class Computer
      *
      * @return  self
      */
-    public function setGroups_tech($groups_tech)
+    public function setGroupsTech($groups_tech)
     {
         $this->groups_tech = $groups_tech;
 

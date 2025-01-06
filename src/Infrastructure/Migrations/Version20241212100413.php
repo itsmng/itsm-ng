@@ -889,28 +889,20 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_apiclients CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_apiclients ADD CONSTRAINT FK_D00BB2E46145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('CREATE INDEX IDX_D00BB2E46145D7DB ON glpi_apiclients (entities_id)');
-        $this->addSql('ALTER TABLE glpi_appliances CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE applianceenvironments_id applianceenvironments_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE date_mod date_mod DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE glpi_appliances CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE applianceenvironments_id applianceenvironments_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_appliances ADD CONSTRAINT FK_A90A053D6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('ALTER TABLE glpi_appliances_items CHANGE appliances_id appliances_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_appliancetypes CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_appliancetypes ADD CONSTRAINT FK_514B2A7F6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('ALTER TABLE glpi_authldapreplicates CHANGE authldaps_id authldaps_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE glpi_authmails CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('ALTER TABLE glpi_blacklistedmailcontents CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_blacklistedmailcontents (date_creation)');
-        $this->addSql('ALTER TABLE glpi_blacklists CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL');
-        $this->addSql('CREATE INDEX date_creation ON glpi_blacklists (date_creation)');
         $this->addSql('ALTER TABLE glpi_budgets CHANGE entities_id entities_id INT DEFAULT 0, CHANGE value value NUMERIC(20, 4) DEFAULT \'0\' NOT NULL, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE budgettypes_id budgettypes_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_budgets ADD CONSTRAINT FK_B6985E2C6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('ALTER TABLE glpi_budgettypes CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_budgettypes (date_creation)');
         $this->addSql('ALTER TABLE glpi_businesscriticities CHANGE entities_id entities_id INT DEFAULT 0, CHANGE businesscriticities_id businesscriticities_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_businesscriticities ADD CONSTRAINT FK_5119F8B46145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('CREATE INDEX IDX_5119F8B46145D7DB ON glpi_businesscriticities (entities_id)');
         $this->addSql('CREATE INDEX IDX_5119F8B4FCE88FAB ON glpi_businesscriticities (businesscriticities_id)');
-        $this->addSql('ALTER TABLE glpi_calendars CHANGE entities_id entities_id INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_calendars CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_calendars ADD CONSTRAINT FK_89F85DA66145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_calendars (date_creation)');
         $this->addSql('ALTER TABLE glpi_calendars_holidays CHANGE calendars_id calendars_id INT DEFAULT NULL, CHANGE holidays_id holidays_id INT DEFAULT NULL');
         $this->addSql('CREATE INDEX IDX_2315C8B372C4B705 ON glpi_calendars_holidays (calendars_id)');
         $this->addSql('ALTER TABLE glpi_calendarsegments CHANGE calendars_id calendars_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
@@ -924,9 +916,8 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_cartridges ADD CONSTRAINT FK_3185A7C76145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('ALTER TABLE glpi_certificates CHANGE entities_id entities_id INT DEFAULT 0, CHANGE certificatetypes_id certificatetypes_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL COMMENT \'RELATION to glpi_groups (id)\', CHANGE locations_id locations_id INT DEFAULT NULL COMMENT \'RELATION to glpi_locations (id)\', CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL COMMENT \'RELATION to glpi_manufacturers (id)\', CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL COMMENT \'RELATION to states (id)\'');
         $this->addSql('ALTER TABLE glpi_certificates ADD CONSTRAINT FK_F825F1066145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('ALTER TABLE glpi_certificates_items CHANGE certificates_id certificates_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_certificates_items CHANGE certificates_id certificates_id INT DEFAULT NULL');
         $this->addSql('CREATE INDEX IDX_E410E24524E411BB ON glpi_certificates_items (certificates_id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_certificates_items (date_creation)');
         $this->addSql('ALTER TABLE glpi_certificatetypes CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_certificatetypes ADD CONSTRAINT FK_CADCD7DC6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('ALTER TABLE glpi_changecosts CHANGE changes_id changes_id INT DEFAULT NULL, CHANGE cost_time cost_time NUMERIC(20, 4) DEFAULT \'0\' NOT NULL, CHANGE cost_fixed cost_fixed NUMERIC(20, 4) DEFAULT \'0\' NOT NULL, CHANGE cost_material cost_material NUMERIC(20, 4) DEFAULT \'0\' NOT NULL, CHANGE budgets_id budgets_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
@@ -954,49 +945,34 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_changetemplatepredefinedfields CHANGE changetemplates_id changetemplates_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_changetemplates CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_changetemplates ADD CONSTRAINT FK_EE99887A6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('ALTER TABLE glpi_changevalidations CHANGE entities_id entities_id INT DEFAULT 0, CHANGE users_id users_id INT DEFAULT NULL, CHANGE changes_id changes_id INT DEFAULT NULL, CHANGE users_id_validate users_id_validate INT DEFAULT NULL, CHANGE submission_date submission_date DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE validation_date validation_date DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_changevalidations CHANGE entities_id entities_id INT DEFAULT 0, CHANGE users_id users_id INT DEFAULT NULL, CHANGE changes_id changes_id INT DEFAULT NULL, CHANGE users_id_validate users_id_validate INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_changevalidations ADD CONSTRAINT FK_C158C946145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('ALTER TABLE glpi_clusters CHANGE entities_id entities_id INT DEFAULT 0, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL COMMENT \'RELATION to states (id)\', CHANGE clustertypes_id clustertypes_id INT DEFAULT NULL, CHANGE autoupdatesystems_id autoupdatesystems_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_clusters ADD CONSTRAINT FK_A63CCAB56145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('ALTER TABLE glpi_clustertypes CHANGE entities_id entities_id INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_clustertypes CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_clustertypes ADD CONSTRAINT FK_FAF6E9326145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_clustertypes (date_creation)');
         $this->addSql('ALTER TABLE glpi_computerantiviruses CHANGE computers_id computers_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL');
         $this->addSql('CREATE INDEX IDX_68671079A2A4C2E4 ON glpi_computerantiviruses (manufacturers_id)');
-        $this->addSql('ALTER TABLE glpi_computermodels CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_computermodels (date_creation)');
-        $this->addSql('ALTER TABLE glpi_computers CHANGE entities_id entities_id INT DEFAULT 0, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE networks_id networks_id INT DEFAULT NULL, CHANGE computermodels_id computermodels_id INT DEFAULT NULL, CHANGE computertypes_id computertypes_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE ticket_tco ticket_tco NUMERIC(20, 4) DEFAULT \'0\', CHANGE date_creation date_creation DATETIME DEFAULT NULL');
+        $this->addSql('ALTER TABLE glpi_computers CHANGE entities_id entities_id INT DEFAULT 0, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE networks_id networks_id INT DEFAULT NULL, CHANGE computermodels_id computermodels_id INT DEFAULT NULL, CHANGE computertypes_id computertypes_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE ticket_tco ticket_tco NUMERIC(20, 4) DEFAULT \'0\'');
         $this->addSql('ALTER TABLE glpi_computers ADD CONSTRAINT FK_293E8ED86145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_computers (date_creation)');
         $this->addSql('ALTER TABLE glpi_computers_items CHANGE computers_id computers_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE glpi_computertypes CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_computertypes (date_creation)');
-        $this->addSql('ALTER TABLE glpi_computervirtualmachines CHANGE entities_id entities_id INT DEFAULT 0, CHANGE computers_id computers_id INT DEFAULT NULL, CHANGE virtualmachinestates_id virtualmachinestates_id INT DEFAULT NULL, CHANGE virtualmachinesystems_id virtualmachinesystems_id INT DEFAULT NULL, CHANGE virtualmachinetypes_id virtualmachinetypes_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_computervirtualmachines CHANGE entities_id entities_id INT DEFAULT 0, CHANGE computers_id computers_id INT DEFAULT NULL, CHANGE virtualmachinestates_id virtualmachinestates_id INT DEFAULT NULL, CHANGE virtualmachinesystems_id virtualmachinesystems_id INT DEFAULT NULL, CHANGE virtualmachinetypes_id virtualmachinetypes_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_computervirtualmachines ADD CONSTRAINT FK_6FDC320C6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('CREATE INDEX IDX_6FDC320C10B10554 ON glpi_computervirtualmachines (virtualmachinetypes_id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_computervirtualmachines (date_creation)');
-        $this->addSql('ALTER TABLE glpi_consumableitems CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE consumableitemtypes_id consumableitemtypes_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_consumableitems CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE consumableitemtypes_id consumableitemtypes_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_consumableitems ADD CONSTRAINT FK_B83ADB4A6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_consumableitems (date_creation)');
-        $this->addSql('ALTER TABLE glpi_consumableitemtypes CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_consumableitemtypes (date_creation)');
-        $this->addSql('ALTER TABLE glpi_consumables CHANGE entities_id entities_id INT DEFAULT 0, CHANGE consumableitems_id consumableitems_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_consumables CHANGE entities_id entities_id INT DEFAULT 0, CHANGE consumableitems_id consumableitems_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_consumables ADD CONSTRAINT FK_F28618F26145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_consumables (date_creation)');
-        $this->addSql('ALTER TABLE glpi_contacts CHANGE entities_id entities_id INT DEFAULT 0, CHANGE contacttypes_id contacttypes_id INT DEFAULT NULL, CHANGE usertitles_id usertitles_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_contacts CHANGE entities_id entities_id INT DEFAULT 0, CHANGE contacttypes_id contacttypes_id INT DEFAULT NULL, CHANGE usertitles_id usertitles_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_contacts ADD CONSTRAINT FK_79F582F96145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_contacts (date_creation)');
         $this->addSql('ALTER TABLE glpi_contacts_suppliers CHANGE suppliers_id suppliers_id INT DEFAULT NULL, CHANGE contacts_id contacts_id INT DEFAULT NULL');
         $this->addSql('CREATE INDEX IDX_8B35180D355AF43 ON glpi_contacts_suppliers (suppliers_id)');
-        $this->addSql('ALTER TABLE glpi_contacttypes CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_contacttypes (date_creation)');
         $this->addSql('ALTER TABLE glpi_contractcosts CHANGE contracts_id contracts_id INT DEFAULT NULL, CHANGE budgets_id budgets_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_contractcosts ADD CONSTRAINT FK_888F83816145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('ALTER TABLE glpi_contracts CHANGE entities_id entities_id INT DEFAULT 0, CHANGE contracttypes_id contracttypes_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_contracts CHANGE entities_id entities_id INT DEFAULT 0, CHANGE contracttypes_id contracttypes_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_contracts ADD CONSTRAINT FK_47776DA6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
-        $this->addSql('CREATE INDEX date_creation ON glpi_contracts (date_creation)');
         $this->addSql('ALTER TABLE glpi_contracts_items CHANGE contracts_id contracts_id INT DEFAULT NULL');
 
         $this->addSql('CREATE INDEX IDX_5FF01F0E24584564 ON glpi_contracts_items (contracts_id)');
@@ -1004,39 +980,32 @@ final class Version20241212100413 extends AbstractMigration
 
 
         $this->addSql('CREATE INDEX IDX_78E40104355AF43 ON glpi_contracts_suppliers (suppliers_id)');
-        $this->addSql('ALTER TABLE glpi_contracttypes CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_contracttypes (date_creation)');
         $this->addSql('ALTER TABLE glpi_crontasklogs CHANGE crontasks_id crontasks_id INT DEFAULT NULL');
 
 
         $this->addSql('CREATE INDEX IDX_F45D647F2D2CC539 ON glpi_crontasklogs (crontasklogs_id)');
-        $this->addSql('ALTER TABLE glpi_crontasks CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE lastrun lastrun DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT \'last run date\'');
-        $this->addSql('CREATE INDEX date_creation ON glpi_crontasks (date_creation)');
         $this->addSql('ALTER TABLE glpi_dashboards CHANGE id id INT AUTO_INCREMENT NOT NULL, CHANGE profileId profileId INT DEFAULT NULL, CHANGE userId userId INT DEFAULT NULL');
 
 
         $this->addSql('CREATE INDEX IDX_7331D499B26949C ON glpi_dashboards (profileId)');
         $this->addSql('CREATE INDEX IDX_7331D4964B64DCC ON glpi_dashboards (userId)');
-        $this->addSql('ALTER TABLE glpi_datacenters CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_datacenters CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_datacenters ADD CONSTRAINT FK_D729C8696145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('ALTER TABLE glpi_dcrooms CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE datacenters_id datacenters_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_dcrooms CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE datacenters_id datacenters_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_dcrooms ADD CONSTRAINT FK_BC44EC936145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
-        $this->addSql('ALTER TABLE glpi_devicebatteries CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE devicebatterytypes_id devicebatterytypes_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicebatteries CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE devicebatterytypes_id devicebatterytypes_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
 
         $this->addSql('ALTER TABLE glpi_devicebatteries ADD CONSTRAINT FK_A652C99D6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('CREATE INDEX date_creation ON glpi_devicebatteries (date_creation)');
         $this->addSql('ALTER TABLE glpi_devicecases CHANGE devicecasetypes_id devicecasetypes_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
 
         $this->addSql('ALTER TABLE glpi_devicecases ADD CONSTRAINT FK_A1AE63686145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('ALTER TABLE glpi_devicecasetypes CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_devicecasetypes (date_creation)');
         $this->addSql('ALTER TABLE glpi_devicecontrols CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE interfacetypes_id interfacetypes_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
 
@@ -1051,20 +1020,18 @@ final class Version20241212100413 extends AbstractMigration
 
         $this->addSql('ALTER TABLE glpi_devicefirmwares ADD CONSTRAINT FK_27AD954F6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('ALTER TABLE glpi_devicegenerics CHANGE devicegenerictypes_id devicegenerictypes_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP, CHANGE date_creation date_creation DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE glpi_devicegenerics CHANGE devicegenerictypes_id devicegenerictypes_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL');
 
 
         $this->addSql('ALTER TABLE glpi_devicegenerics ADD CONSTRAINT FK_711041246145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
 
-        $this->addSql('CREATE INDEX date_creation ON glpi_devicegenerics (date_creation)');
-        $this->addSql('ALTER TABLE glpi_devicegraphiccards CHANGE interfacetypes_id interfacetypes_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicegraphiccards CHANGE interfacetypes_id interfacetypes_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
 
         $this->addSql('ALTER TABLE glpi_devicegraphiccards ADD CONSTRAINT FK_13F4C69E6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('CREATE INDEX date_creation ON glpi_devicegraphiccards (date_creation)');
         $this->addSql('ALTER TABLE glpi_deviceharddrives CHANGE interfacetypes_id interfacetypes_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
 
@@ -1079,26 +1046,24 @@ final class Version20241212100413 extends AbstractMigration
 
         $this->addSql('ALTER TABLE glpi_devicemotherboards ADD CONSTRAINT FK_BA4EEEB76145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('ALTER TABLE glpi_devicenetworkcards CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicenetworkcards CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
         $this->addSql('ALTER TABLE glpi_devicenetworkcards ADD CONSTRAINT FK_2F3949626145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('CREATE INDEX date_creation ON glpi_devicenetworkcards (date_creation)');
         $this->addSql('ALTER TABLE glpi_devicepcis CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE devicenetworkcardmodels_id devicenetworkcardmodels_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
 
         $this->addSql('ALTER TABLE glpi_devicepcis ADD CONSTRAINT FK_754B05616145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('ALTER TABLE glpi_devicepowersupplies CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicepowersupplies CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
         $this->addSql('ALTER TABLE glpi_devicepowersupplies ADD CONSTRAINT FK_7C7209ED6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('CREATE INDEX date_creation ON glpi_devicepowersupplies (date_creation)');
         $this->addSql('ALTER TABLE glpi_deviceprocessors CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
         $this->addSql('ALTER TABLE glpi_deviceprocessors ADD CONSTRAINT FK_B6E0F8BB6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('ALTER TABLE glpi_devicesensors CHANGE devicesensortypes_id devicesensortypes_id INT DEFAULT NULL, CHANGE devicesensormodels_id devicesensormodels_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicesensors CHANGE devicesensortypes_id devicesensortypes_id INT DEFAULT NULL, CHANGE devicesensormodels_id devicesensormodels_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL');
 
 
 
@@ -1106,46 +1071,37 @@ final class Version20241212100413 extends AbstractMigration
 
 
         $this->addSql('CREATE INDEX IDX_E83286521B86E75F ON glpi_devicesensors (devicesensormodels_id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_devicesensors (date_creation)');
-        $this->addSql('ALTER TABLE glpi_devicesimcards CHANGE entities_id entities_id INT DEFAULT 0, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE devicesimcardtypes_id devicesimcardtypes_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicesimcards CHANGE entities_id entities_id INT DEFAULT 0, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE devicesimcardtypes_id devicesimcardtypes_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_devicesimcards ADD CONSTRAINT FK_5A0BB1A86145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
-        $this->addSql('CREATE INDEX date_creation ON glpi_devicesimcards (date_creation)');
-        $this->addSql('ALTER TABLE glpi_devicesoundcards CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicesoundcards CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
         $this->addSql('ALTER TABLE glpi_devicesoundcards ADD CONSTRAINT FK_D53EF47A6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-        $this->addSql('CREATE INDEX date_creation ON glpi_devicesoundcards (date_creation)');
         $this->addSql('ALTER TABLE glpi_displaypreferences CHANGE users_id users_id INT DEFAULT NULL');
 
         $this->addSql('CREATE INDEX IDX_67F2BE767B3B43D ON glpi_displaypreferences (users_id)');
-        $this->addSql('ALTER TABLE glpi_documentcategories CHANGE documentcategories_id documentcategories_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_documentcategories CHANGE documentcategories_id documentcategories_id INT DEFAULT NULL');
 
         $this->addSql('CREATE INDEX IDX_44E98B1F55AC576F ON glpi_documentcategories (documentcategories_id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_documentcategories (date_creation)');
         $this->addSql('ALTER TABLE glpi_documents CHANGE entities_id entities_id INT DEFAULT 0, CHANGE documentcategories_id documentcategories_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE tickets_id tickets_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_documents ADD CONSTRAINT FK_AF97AD216145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
 
-        $this->addSql('ALTER TABLE glpi_documents_items CHANGE documents_id documents_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP, CHANGE users_id users_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE glpi_documents_items CHANGE documents_id documents_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0, CHANGE users_id users_id INT DEFAULT NULL');
 
         $this->addSql('ALTER TABLE glpi_documents_items ADD CONSTRAINT FK_DDD24B256145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
         $this->addSql('CREATE INDEX IDX_DDD24B255F0F2752 ON glpi_documents_items (documents_id)');
         $this->addSql('CREATE INDEX IDX_DDD24B256145D7DB ON glpi_documents_items (entities_id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_documents_items (date_creation)');
-        $this->addSql('CREATE INDEX date ON glpi_documents_items (date)');
-        $this->addSql('ALTER TABLE glpi_documenttypes CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_documenttypes (date_creation)');
-        $this->addSql('ALTER TABLE glpi_domainrecords CHANGE entities_id entities_id INT DEFAULT 0, CHANGE domains_id domains_id INT DEFAULT NULL, CHANGE domainrecordtypes_id domainrecordtypes_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_domainrecords CHANGE entities_id entities_id INT DEFAULT 0, CHANGE domains_id domains_id INT DEFAULT NULL, CHANGE domainrecordtypes_id domainrecordtypes_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_domainrecords ADD CONSTRAINT FK_180F59566145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
 
 
-        $this->addSql('CREATE INDEX date_creation ON glpi_domainrecords (date_creation)');
         $this->addSql('ALTER TABLE glpi_domainrecordtypes CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_domainrecordtypes ADD CONSTRAINT FK_19DBFAF66145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('CREATE INDEX IDX_19DBFAF66145D7DB ON glpi_domainrecordtypes (entities_id)');
@@ -1163,9 +1119,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_domaintypes CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_domaintypes ADD CONSTRAINT FK_C060118E6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('CREATE INDEX IDX_C060118E6145D7DB ON glpi_domaintypes (entities_id)');
-        $this->addSql('ALTER TABLE glpi_enclosuremodels CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_enclosuremodels (date_creation)');
-        $this->addSql('ALTER TABLE glpi_enclosures CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL COMMENT \'RELATION to states (id)\', CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_enclosures CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL COMMENT \'RELATION to states (id)\', CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_enclosures ADD CONSTRAINT FK_6052344A6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
@@ -1173,7 +1127,7 @@ final class Version20241212100413 extends AbstractMigration
 
 
 
-        $this->addSql('ALTER TABLE glpi_entities CHANGE entities_id entities_id INT DEFAULT 0, CHANGE authldaps_id authldaps_id INT DEFAULT NULL, CHANGE calendars_id calendars_id INT DEFAULT NULL, CHANGE tickettemplates_id tickettemplates_id INT DEFAULT NULL, CHANGE changetemplates_id changetemplates_id INT DEFAULT NULL, CHANGE problemtemplates_id problemtemplates_id INT DEFAULT NULL, CHANGE entities_id_software entities_id_software INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_entities CHANGE entities_id entities_id INT DEFAULT 0, CHANGE authldaps_id authldaps_id INT DEFAULT NULL, CHANGE calendars_id calendars_id INT DEFAULT NULL, CHANGE tickettemplates_id tickettemplates_id INT DEFAULT NULL, CHANGE changetemplates_id changetemplates_id INT DEFAULT NULL, CHANGE problemtemplates_id problemtemplates_id INT DEFAULT NULL, CHANGE entities_id_software entities_id_software INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_entities ADD CONSTRAINT FK_1A59F36F6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
@@ -1252,8 +1206,6 @@ final class Version20241212100413 extends AbstractMigration
 
         $this->addSql('CREATE INDEX IDX_35A7AD8AA992AA50 ON glpi_ipnetworks_vlans (ipnetworks_id)');
         $this->addSql('CREATE INDEX IDX_35A7AD8A462B676C ON glpi_ipnetworks_vlans (vlans_id)');
-        $this->addSql('ALTER TABLE glpi_items_disks CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('CREATE INDEX date_creation ON glpi_items_disks (date_creation)');
         $this->addSql('ALTER TABLE glpi_itilcategories CHANGE entities_id entities_id INT DEFAULT 0, CHANGE itilcategories_id itilcategories_id INT DEFAULT NULL, CHANGE knowbaseitemcategories_id knowbaseitemcategories_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE tickettemplates_id_incident tickettemplates_id_incident INT DEFAULT NULL, CHANGE tickettemplates_id_demand tickettemplates_id_demand INT DEFAULT NULL, CHANGE changetemplates_id changetemplates_id INT DEFAULT NULL, CHANGE problemtemplates_id problemtemplates_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_itilcategories ADD CONSTRAINT FK_349D19C46145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
@@ -1316,9 +1268,8 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_AC635CC0ED775E23 ON glpi_lines (locations_id)');
         $this->addSql('CREATE INDEX IDX_AC635CC0B17973F ON glpi_lines (states_id)');
         $this->addSql('CREATE INDEX IDX_AC635CC04F5E534D ON glpi_lines (linetypes_id)');
-        $this->addSql('ALTER TABLE glpi_links CHANGE entities_id entities_id INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_links CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_links ADD CONSTRAINT FK_32E0714E6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_links (date_creation)');
         $this->addSql('ALTER TABLE glpi_locations CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_locations ADD CONSTRAINT FK_1AC195136145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
@@ -1409,7 +1360,6 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_objectlocks CHANGE users_id users_id INT DEFAULT NULL');
 
         $this->addSql('CREATE INDEX IDX_55A8E45D67B3B43D ON glpi_objectlocks (users_id)');
-        $this->addSql('ALTER TABLE glpi_oidc_config ADD logout VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_olalevelactions CHANGE olalevels_id olalevels_id INT DEFAULT NULL');
 
         $this->addSql('ALTER TABLE glpi_olalevelcriterias CHANGE olalevels_id olalevels_id INT DEFAULT NULL');
@@ -1452,9 +1402,8 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_pdus_racks CHANGE racks_id racks_id INT DEFAULT NULL, CHANGE pdus_id pdus_id INT DEFAULT NULL');
 
 
-        $this->addSql('ALTER TABLE glpi_pdutypes CHANGE entities_id entities_id INT DEFAULT 0, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_pdutypes CHANGE entities_id entities_id INT DEFAULT 0');
         $this->addSql('ALTER TABLE glpi_pdutypes ADD CONSTRAINT FK_38C353DA6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('CREATE INDEX date_creation ON glpi_pdutypes (date_creation)');
         $this->addSql('ALTER TABLE glpi_peripherals CHANGE entities_id entities_id INT DEFAULT 0, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE peripheraltypes_id peripheraltypes_id INT DEFAULT NULL, CHANGE peripheralmodels_id peripheralmodels_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE ticket_tco ticket_tco NUMERIC(20, 4) DEFAULT \'0\'');
         $this->addSql('ALTER TABLE glpi_peripherals ADD CONSTRAINT FK_B49D1266145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
@@ -1562,14 +1511,13 @@ final class Version20241212100413 extends AbstractMigration
 
 
         $this->addSql('ALTER TABLE glpi_projectcosts ADD CONSTRAINT FK_BEAAE5F26145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('ALTER TABLE glpi_projects CHANGE entities_id entities_id INT DEFAULT 0, CHANGE projects_id projects_id INT DEFAULT NULL, CHANGE projectstates_id projectstates_id INT DEFAULT NULL, CHANGE projecttypes_id projecttypes_id INT DEFAULT NULL, CHANGE date_mod date_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE date_creation date_creation DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE glpi_projects CHANGE entities_id entities_id INT DEFAULT 0, CHANGE projects_id projects_id INT DEFAULT NULL, CHANGE projectstates_id projectstates_id INT DEFAULT NULL, CHANGE projecttypes_id projecttypes_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_projects ADD CONSTRAINT FK_1626242E6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
 
 
 
-        $this->addSql('CREATE INDEX date_creation ON glpi_projects (date_creation)');
         $this->addSql('ALTER TABLE glpi_projecttasks CHANGE entities_id entities_id INT DEFAULT 0, CHANGE projects_id projects_id INT DEFAULT NULL, CHANGE projecttasks_id projecttasks_id INT DEFAULT NULL, CHANGE projectstates_id projectstates_id INT DEFAULT NULL, CHANGE projecttasktypes_id projecttasktypes_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE projecttasktemplates_id projecttasktemplates_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_projecttasks ADD CONSTRAINT FK_41EFD7CD6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
@@ -1762,24 +1710,17 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_appliances DROP FOREIGN KEY FK_A90A053DF373DCF');
         $this->addSql('ALTER TABLE glpi_appliances DROP FOREIGN KEY FK_A90A053D1421F0A5');
         $this->addSql('ALTER TABLE glpi_appliances DROP FOREIGN KEY FK_A90A053DB17973F');
-        $this->addSql('ALTER TABLE glpi_appliances CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE applianceenvironments_id applianceenvironments_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id groups_id INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL');
+        $this->addSql('ALTER TABLE glpi_appliances CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE applianceenvironments_id applianceenvironments_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id groups_id INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_appliances_items DROP FOREIGN KEY FK_A2361859C592445B');
         $this->addSql('ALTER TABLE glpi_appliances_items CHANGE appliances_id appliances_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_appliancetypes DROP FOREIGN KEY FK_514B2A7F6145D7DB');
         $this->addSql('ALTER TABLE glpi_appliancetypes CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_authldapreplicates DROP FOREIGN KEY FK_89F2E7A47D03EC85');
         $this->addSql('ALTER TABLE glpi_authldapreplicates CHANGE authldaps_id authldaps_id INT DEFAULT 0 NOT NULL');
-        $this->addSql('ALTER TABLE glpi_authmails CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('DROP INDEX date_creation ON glpi_blacklistedmailcontents');
-        $this->addSql('ALTER TABLE glpi_blacklistedmailcontents CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP');
-        $this->addSql('DROP INDEX date_creation ON glpi_blacklists');
-        $this->addSql('ALTER TABLE glpi_blacklists CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_budgets DROP FOREIGN KEY FK_B6985E2C6145D7DB');
         $this->addSql('ALTER TABLE glpi_budgets DROP FOREIGN KEY FK_B6985E2CED775E23');
         $this->addSql('ALTER TABLE glpi_budgets DROP FOREIGN KEY FK_B6985E2C387998CB');
         $this->addSql('ALTER TABLE glpi_budgets CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE budgettypes_id budgettypes_id INT DEFAULT 0 NOT NULL, CHANGE value value NUMERIC(20, 4) DEFAULT \'0.0000\' NOT NULL');
-        $this->addSql('DROP INDEX date_creation ON glpi_budgettypes');
-        $this->addSql('ALTER TABLE glpi_budgettypes CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_businesscriticities DROP FOREIGN KEY FK_5119F8B46145D7DB');
         $this->addSql('ALTER TABLE glpi_businesscriticities DROP FOREIGN KEY FK_5119F8B4FCE88FAB');
         $this->addSql('DROP INDEX IDX_5119F8B46145D7DB ON glpi_businesscriticities');
@@ -1787,7 +1728,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_businesscriticities CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE businesscriticities_id businesscriticities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_calendars DROP FOREIGN KEY FK_89F85DA66145D7DB');
         $this->addSql('DROP INDEX date_creation ON glpi_calendars');
-        $this->addSql('ALTER TABLE glpi_calendars CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_calendars CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_calendars_holidays DROP FOREIGN KEY FK_2315C8B372C4B705');
         $this->addSql('ALTER TABLE glpi_calendars_holidays DROP FOREIGN KEY FK_2315C8B37C9675AB');
         $this->addSql('DROP INDEX IDX_2315C8B372C4B705 ON glpi_calendars_holidays');
@@ -1824,7 +1765,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_certificates_items DROP FOREIGN KEY FK_E410E24524E411BB');
         $this->addSql('DROP INDEX IDX_E410E24524E411BB ON glpi_certificates_items');
         $this->addSql('DROP INDEX date_creation ON glpi_certificates_items');
-        $this->addSql('ALTER TABLE glpi_certificates_items CHANGE certificates_id certificates_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_certificates_items CHANGE certificates_id certificates_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_certificatetypes DROP FOREIGN KEY FK_CADCD7DC6145D7DB');
         $this->addSql('ALTER TABLE glpi_certificatetypes CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_changecosts DROP FOREIGN KEY FK_F846ABCA5D80B7AB');
@@ -1882,7 +1823,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_changevalidations DROP FOREIGN KEY FK_C158C9467B3B43D');
         $this->addSql('ALTER TABLE glpi_changevalidations DROP FOREIGN KEY FK_C158C945D80B7AB');
         $this->addSql('ALTER TABLE glpi_changevalidations DROP FOREIGN KEY FK_C158C94E57CE233');
-        $this->addSql('ALTER TABLE glpi_changevalidations CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0 NOT NULL, CHANGE changes_id changes_id INT DEFAULT 0 NOT NULL, CHANGE users_id_validate users_id_validate INT DEFAULT 0 NOT NULL, CHANGE submission_date submission_date DATETIME DEFAULT NULL, CHANGE validation_date validation_date DATETIME DEFAULT NULL');
+        $this->addSql('ALTER TABLE glpi_changevalidations CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0 NOT NULL, CHANGE changes_id changes_id INT DEFAULT 0 NOT NULL, CHANGE users_id_validate users_id_validate INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_clusters DROP FOREIGN KEY FK_A63CCAB56145D7DB');
         $this->addSql('ALTER TABLE glpi_clusters DROP FOREIGN KEY FK_A63CCAB5FD9C58DA');
         $this->addSql('ALTER TABLE glpi_clusters DROP FOREIGN KEY FK_A63CCAB51421F0A5');
@@ -1892,13 +1833,12 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_clusters CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL COMMENT \'RELATION to states (id)\', CHANGE clustertypes_id clustertypes_id INT DEFAULT 0 NOT NULL, CHANGE autoupdatesystems_id autoupdatesystems_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_clustertypes DROP FOREIGN KEY FK_FAF6E9326145D7DB');
         $this->addSql('DROP INDEX date_creation ON glpi_clustertypes');
-        $this->addSql('ALTER TABLE glpi_clustertypes CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_clustertypes CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_computerantiviruses DROP FOREIGN KEY FK_68671079F4B903A6');
         $this->addSql('ALTER TABLE glpi_computerantiviruses DROP FOREIGN KEY FK_68671079A2A4C2E4');
         $this->addSql('DROP INDEX IDX_68671079A2A4C2E4 ON glpi_computerantiviruses');
         $this->addSql('ALTER TABLE glpi_computerantiviruses CHANGE computers_id computers_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL');
         $this->addSql('DROP INDEX date_creation ON glpi_computermodels');
-        $this->addSql('ALTER TABLE glpi_computermodels CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_computers DROP FOREIGN KEY FK_293E8ED86145D7DB');
         $this->addSql('ALTER TABLE glpi_computers DROP FOREIGN KEY FK_293E8ED8FD9C58DA');
         $this->addSql('ALTER TABLE glpi_computers DROP FOREIGN KEY FK_293E8ED81421F0A5');
@@ -1911,11 +1851,10 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_computers DROP FOREIGN KEY FK_293E8ED8F373DCF');
         $this->addSql('ALTER TABLE glpi_computers DROP FOREIGN KEY FK_293E8ED8B17973F');
         $this->addSql('DROP INDEX date_creation ON glpi_computers');
-        $this->addSql('ALTER TABLE glpi_computers CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE networks_id networks_id INT DEFAULT 0 NOT NULL, CHANGE computermodels_id computermodels_id INT DEFAULT 0 NOT NULL, CHANGE computertypes_id computertypes_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0 NOT NULL, CHANGE groups_id groups_id INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE ticket_tco ticket_tco NUMERIC(20, 4) DEFAULT \'0.0000\', CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_computers CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE networks_id networks_id INT DEFAULT 0 NOT NULL, CHANGE computermodels_id computermodels_id INT DEFAULT 0 NOT NULL, CHANGE computertypes_id computertypes_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0 NOT NULL, CHANGE groups_id groups_id INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL, CHANGE ticket_tco ticket_tco NUMERIC(20, 4) DEFAULT \'0.0000\'');
         $this->addSql('ALTER TABLE glpi_computers_items DROP FOREIGN KEY FK_BCF5679DF4B903A6');
         $this->addSql('ALTER TABLE glpi_computers_items CHANGE computers_id computers_id INT DEFAULT 0 NOT NULL');
         $this->addSql('DROP INDEX date_creation ON glpi_computertypes');
-        $this->addSql('ALTER TABLE glpi_computertypes CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_computervirtualmachines DROP FOREIGN KEY FK_6FDC320C6145D7DB');
         $this->addSql('ALTER TABLE glpi_computervirtualmachines DROP FOREIGN KEY FK_6FDC320CF4B903A6');
         $this->addSql('ALTER TABLE glpi_computervirtualmachines DROP FOREIGN KEY FK_6FDC320C9280C5B3');
@@ -1923,7 +1862,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_computervirtualmachines DROP FOREIGN KEY FK_6FDC320C10B10554');
         $this->addSql('DROP INDEX IDX_6FDC320C10B10554 ON glpi_computervirtualmachines');
         $this->addSql('DROP INDEX date_creation ON glpi_computervirtualmachines');
-        $this->addSql('ALTER TABLE glpi_computervirtualmachines CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE computers_id computers_id INT DEFAULT 0 NOT NULL, CHANGE virtualmachinestates_id virtualmachinestates_id INT DEFAULT 0 NOT NULL, CHANGE virtualmachinesystems_id virtualmachinesystems_id INT DEFAULT 0 NOT NULL, CHANGE virtualmachinetypes_id virtualmachinetypes_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_computervirtualmachines CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE computers_id computers_id INT DEFAULT 0 NOT NULL, CHANGE virtualmachinestates_id virtualmachinestates_id INT DEFAULT 0 NOT NULL, CHANGE virtualmachinesystems_id virtualmachinesystems_id INT DEFAULT 0 NOT NULL, CHANGE virtualmachinetypes_id virtualmachinetypes_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_consumableitems DROP FOREIGN KEY FK_B83ADB4A6145D7DB');
         $this->addSql('ALTER TABLE glpi_consumableitems DROP FOREIGN KEY FK_B83ADB4AED775E23');
         $this->addSql('ALTER TABLE glpi_consumableitems DROP FOREIGN KEY FK_B83ADB4A1F067AC9');
@@ -1931,24 +1870,22 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_consumableitems DROP FOREIGN KEY FK_B83ADB4AFD9C58DA');
         $this->addSql('ALTER TABLE glpi_consumableitems DROP FOREIGN KEY FK_B83ADB4A1421F0A5');
         $this->addSql('DROP INDEX date_creation ON glpi_consumableitems');
-        $this->addSql('ALTER TABLE glpi_consumableitems CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE consumableitemtypes_id consumableitemtypes_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_consumableitems CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE consumableitemtypes_id consumableitemtypes_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL');
         $this->addSql('DROP INDEX date_creation ON glpi_consumableitemtypes');
-        $this->addSql('ALTER TABLE glpi_consumableitemtypes CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_consumables DROP FOREIGN KEY FK_F28618F26145D7DB');
         $this->addSql('ALTER TABLE glpi_consumables DROP FOREIGN KEY FK_F28618F29E324C33');
         $this->addSql('DROP INDEX date_creation ON glpi_consumables');
-        $this->addSql('ALTER TABLE glpi_consumables CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE consumableitems_id consumableitems_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_consumables CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE consumableitems_id consumableitems_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_contacts DROP FOREIGN KEY FK_79F582F96145D7DB');
         $this->addSql('ALTER TABLE glpi_contacts DROP FOREIGN KEY FK_79F582F960D5F3AB');
         $this->addSql('ALTER TABLE glpi_contacts DROP FOREIGN KEY FK_79F582F99CE64CF3');
         $this->addSql('DROP INDEX date_creation ON glpi_contacts');
-        $this->addSql('ALTER TABLE glpi_contacts CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE contacttypes_id contacttypes_id INT DEFAULT 0 NOT NULL, CHANGE usertitles_id usertitles_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_contacts CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE contacttypes_id contacttypes_id INT DEFAULT 0 NOT NULL, CHANGE usertitles_id usertitles_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_contacts_suppliers DROP FOREIGN KEY FK_8B35180D355AF43');
         $this->addSql('ALTER TABLE glpi_contacts_suppliers DROP FOREIGN KEY FK_8B35180D719FB48E');
         $this->addSql('DROP INDEX IDX_8B35180D355AF43 ON glpi_contacts_suppliers');
         $this->addSql('ALTER TABLE glpi_contacts_suppliers CHANGE suppliers_id suppliers_id INT DEFAULT 0 NOT NULL, CHANGE contacts_id contacts_id INT DEFAULT 0 NOT NULL');
         $this->addSql('DROP INDEX date_creation ON glpi_contacttypes');
-        $this->addSql('ALTER TABLE glpi_contacttypes CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_contractcosts DROP FOREIGN KEY FK_888F838124584564');
         $this->addSql('ALTER TABLE glpi_contractcosts DROP FOREIGN KEY FK_888F838122FD2D3D');
         $this->addSql('ALTER TABLE glpi_contractcosts DROP FOREIGN KEY FK_888F83816145D7DB');
@@ -1957,7 +1894,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_contracts DROP FOREIGN KEY FK_47776DAF2ABAFE2');
         $this->addSql('ALTER TABLE glpi_contracts DROP FOREIGN KEY FK_47776DAB17973F');
         $this->addSql('DROP INDEX date_creation ON glpi_contracts');
-        $this->addSql('ALTER TABLE glpi_contracts CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE contracttypes_id contracttypes_id INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_contracts CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE contracttypes_id contracttypes_id INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_contracts_items DROP FOREIGN KEY FK_5FF01F0E24584564');
         $this->addSql('DROP INDEX IDX_5FF01F0E24584564 ON glpi_contracts_items');
         $this->addSql('ALTER TABLE glpi_contracts_items CHANGE contracts_id contracts_id INT DEFAULT 0 NOT NULL');
@@ -1966,13 +1903,11 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_78E40104355AF43 ON glpi_contracts_suppliers');
         $this->addSql('ALTER TABLE glpi_contracts_suppliers CHANGE suppliers_id suppliers_id INT DEFAULT 0 NOT NULL, CHANGE contracts_id contracts_id INT DEFAULT 0 NOT NULL');
         $this->addSql('DROP INDEX date_creation ON glpi_contracttypes');
-        $this->addSql('ALTER TABLE glpi_contracttypes CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_crontasklogs DROP FOREIGN KEY FK_F45D647FB01F6436');
         $this->addSql('ALTER TABLE glpi_crontasklogs DROP FOREIGN KEY FK_F45D647F2D2CC539');
         $this->addSql('DROP INDEX IDX_F45D647F2D2CC539 ON glpi_crontasklogs');
         $this->addSql('ALTER TABLE glpi_crontasklogs CHANGE crontasks_id crontasks_id INT NOT NULL');
         $this->addSql('DROP INDEX date_creation ON glpi_crontasks');
-        $this->addSql('ALTER TABLE glpi_crontasks CHANGE lastrun lastrun DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_dashboards DROP FOREIGN KEY FK_7331D499B26949C');
         $this->addSql('ALTER TABLE glpi_dashboards DROP FOREIGN KEY FK_7331D4964B64DCC');
         $this->addSql('DROP INDEX IDX_7331D499B26949C ON glpi_dashboards');
@@ -1980,24 +1915,23 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_dashboards CHANGE id id INT NOT NULL, CHANGE profileId profileId INT DEFAULT 0 NOT NULL, CHANGE userId userId INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_datacenters DROP FOREIGN KEY FK_D729C8696145D7DB');
         $this->addSql('ALTER TABLE glpi_datacenters DROP FOREIGN KEY FK_D729C869ED775E23');
-        $this->addSql('ALTER TABLE glpi_datacenters CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_datacenters CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_dcrooms DROP FOREIGN KEY FK_BC44EC936145D7DB');
         $this->addSql('ALTER TABLE glpi_dcrooms DROP FOREIGN KEY FK_BC44EC93ED775E23');
         $this->addSql('ALTER TABLE glpi_dcrooms DROP FOREIGN KEY FK_BC44EC93EB7A8A62');
-        $this->addSql('ALTER TABLE glpi_dcrooms CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE datacenters_id datacenters_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_dcrooms CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE datacenters_id datacenters_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_devicebatteries DROP FOREIGN KEY FK_A652C99DA2A4C2E4');
         $this->addSql('ALTER TABLE glpi_devicebatteries DROP FOREIGN KEY FK_A652C99D6F236F43');
         $this->addSql('ALTER TABLE glpi_devicebatteries DROP FOREIGN KEY FK_A652C99D6145D7DB');
         $this->addSql('ALTER TABLE glpi_devicebatteries DROP FOREIGN KEY FK_A652C99DC35DFA68');
         $this->addSql('DROP INDEX date_creation ON glpi_devicebatteries');
-        $this->addSql('ALTER TABLE glpi_devicebatteries CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE devicebatterytypes_id devicebatterytypes_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicebatteries CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE devicebatterytypes_id devicebatterytypes_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_devicecases DROP FOREIGN KEY FK_A1AE63687964C119');
         $this->addSql('ALTER TABLE glpi_devicecases DROP FOREIGN KEY FK_A1AE6368A2A4C2E4');
         $this->addSql('ALTER TABLE glpi_devicecases DROP FOREIGN KEY FK_A1AE63686145D7DB');
         $this->addSql('ALTER TABLE glpi_devicecases DROP FOREIGN KEY FK_A1AE636848F5052C');
         $this->addSql('ALTER TABLE glpi_devicecases CHANGE devicecasetypes_id devicecasetypes_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('DROP INDEX date_creation ON glpi_devicecasetypes');
-        $this->addSql('ALTER TABLE glpi_devicecasetypes CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_devicecontrols DROP FOREIGN KEY FK_8FBFCEDFA2A4C2E4');
         $this->addSql('ALTER TABLE glpi_devicecontrols DROP FOREIGN KEY FK_8FBFCEDFD08D9B0');
         $this->addSql('ALTER TABLE glpi_devicecontrols DROP FOREIGN KEY FK_8FBFCEDF6145D7DB');
@@ -2019,13 +1953,13 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_devicegenerics DROP FOREIGN KEY FK_71104124B17973F');
         $this->addSql('ALTER TABLE glpi_devicegenerics DROP FOREIGN KEY FK_711041242BB78D68');
         $this->addSql('DROP INDEX date_creation ON glpi_devicegenerics');
-        $this->addSql('ALTER TABLE glpi_devicegenerics CHANGE devicegenerictypes_id devicegenerictypes_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicegenerics CHANGE devicegenerictypes_id devicegenerictypes_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_devicegraphiccards DROP FOREIGN KEY FK_13F4C69ED08D9B0');
         $this->addSql('ALTER TABLE glpi_devicegraphiccards DROP FOREIGN KEY FK_13F4C69EA2A4C2E4');
         $this->addSql('ALTER TABLE glpi_devicegraphiccards DROP FOREIGN KEY FK_13F4C69E6145D7DB');
         $this->addSql('ALTER TABLE glpi_devicegraphiccards DROP FOREIGN KEY FK_13F4C69EE40E4F0B');
         $this->addSql('DROP INDEX date_creation ON glpi_devicegraphiccards');
-        $this->addSql('ALTER TABLE glpi_devicegraphiccards CHANGE interfacetypes_id interfacetypes_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicegraphiccards CHANGE interfacetypes_id interfacetypes_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_deviceharddrives DROP FOREIGN KEY FK_EA210CE0D08D9B0');
         $this->addSql('ALTER TABLE glpi_deviceharddrives DROP FOREIGN KEY FK_EA210CE0A2A4C2E4');
         $this->addSql('ALTER TABLE glpi_deviceharddrives DROP FOREIGN KEY FK_EA210CE06145D7DB');
@@ -2044,7 +1978,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_devicenetworkcards DROP FOREIGN KEY FK_2F3949626145D7DB');
         $this->addSql('ALTER TABLE glpi_devicenetworkcards DROP FOREIGN KEY FK_2F394962FB338CF8');
         $this->addSql('DROP INDEX date_creation ON glpi_devicenetworkcards');
-        $this->addSql('ALTER TABLE glpi_devicenetworkcards CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicenetworkcards CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_devicepcis DROP FOREIGN KEY FK_754B0561A2A4C2E4');
         $this->addSql('ALTER TABLE glpi_devicepcis DROP FOREIGN KEY FK_754B0561FB338CF8');
         $this->addSql('ALTER TABLE glpi_devicepcis DROP FOREIGN KEY FK_754B05616145D7DB');
@@ -2054,7 +1988,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_devicepowersupplies DROP FOREIGN KEY FK_7C7209ED6145D7DB');
         $this->addSql('ALTER TABLE glpi_devicepowersupplies DROP FOREIGN KEY FK_7C7209ED1DECE3C7');
         $this->addSql('DROP INDEX date_creation ON glpi_devicepowersupplies');
-        $this->addSql('ALTER TABLE glpi_devicepowersupplies CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicepowersupplies CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_deviceprocessors DROP FOREIGN KEY FK_B6E0F8BBA2A4C2E4');
         $this->addSql('ALTER TABLE glpi_deviceprocessors DROP FOREIGN KEY FK_B6E0F8BB6145D7DB');
         $this->addSql('ALTER TABLE glpi_deviceprocessors DROP FOREIGN KEY FK_B6E0F8BBD4D3D667');
@@ -2067,24 +2001,24 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_devicesensors DROP FOREIGN KEY FK_E8328652B17973F');
         $this->addSql('DROP INDEX IDX_E83286521B86E75F ON glpi_devicesensors');
         $this->addSql('DROP INDEX date_creation ON glpi_devicesensors');
-        $this->addSql('ALTER TABLE glpi_devicesensors CHANGE devicesensortypes_id devicesensortypes_id INT DEFAULT 0 NOT NULL, CHANGE devicesensormodels_id devicesensormodels_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicesensors CHANGE devicesensortypes_id devicesensortypes_id INT DEFAULT 0 NOT NULL, CHANGE devicesensormodels_id devicesensormodels_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_devicesimcards DROP FOREIGN KEY FK_5A0BB1A86145D7DB');
         $this->addSql('ALTER TABLE glpi_devicesimcards DROP FOREIGN KEY FK_5A0BB1A8A2A4C2E4');
         $this->addSql('ALTER TABLE glpi_devicesimcards DROP FOREIGN KEY FK_5A0BB1A87A74B37');
         $this->addSql('DROP INDEX date_creation ON glpi_devicesimcards');
-        $this->addSql('ALTER TABLE glpi_devicesimcards CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE devicesimcardtypes_id devicesimcardtypes_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicesimcards CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE devicesimcardtypes_id devicesimcardtypes_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_devicesoundcards DROP FOREIGN KEY FK_D53EF47AA2A4C2E4');
         $this->addSql('ALTER TABLE glpi_devicesoundcards DROP FOREIGN KEY FK_D53EF47A6145D7DB');
         $this->addSql('ALTER TABLE glpi_devicesoundcards DROP FOREIGN KEY FK_D53EF47A53D98B78');
         $this->addSql('DROP INDEX date_creation ON glpi_devicesoundcards');
-        $this->addSql('ALTER TABLE glpi_devicesoundcards CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_devicesoundcards CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_displaypreferences DROP FOREIGN KEY FK_67F2BE767B3B43D');
         $this->addSql('DROP INDEX IDX_67F2BE767B3B43D ON glpi_displaypreferences');
         $this->addSql('ALTER TABLE glpi_displaypreferences CHANGE users_id users_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_documentcategories DROP FOREIGN KEY FK_44E98B1F55AC576F');
         $this->addSql('DROP INDEX IDX_44E98B1F55AC576F ON glpi_documentcategories');
         $this->addSql('DROP INDEX date_creation ON glpi_documentcategories');
-        $this->addSql('ALTER TABLE glpi_documentcategories CHANGE documentcategories_id documentcategories_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_documentcategories CHANGE documentcategories_id documentcategories_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_documents DROP FOREIGN KEY FK_AF97AD216145D7DB');
         $this->addSql('ALTER TABLE glpi_documents DROP FOREIGN KEY FK_AF97AD2155AC576F');
         $this->addSql('ALTER TABLE glpi_documents DROP FOREIGN KEY FK_AF97AD2167B3B43D');
@@ -2097,16 +2031,15 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_DDD24B256145D7DB ON glpi_documents_items');
         $this->addSql('DROP INDEX date_creation ON glpi_documents_items');
         $this->addSql('DROP INDEX date ON glpi_documents_items');
-        $this->addSql('ALTER TABLE glpi_documents_items CHANGE documents_id documents_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_documents_items CHANGE documents_id documents_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0');
         $this->addSql('DROP INDEX date_creation ON glpi_documenttypes');
-        $this->addSql('ALTER TABLE glpi_documenttypes CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_domainrecords DROP FOREIGN KEY FK_180F59566145D7DB');
         $this->addSql('ALTER TABLE glpi_domainrecords DROP FOREIGN KEY FK_180F59563700F4DC');
         $this->addSql('ALTER TABLE glpi_domainrecords DROP FOREIGN KEY FK_180F595671E56292');
         $this->addSql('ALTER TABLE glpi_domainrecords DROP FOREIGN KEY FK_180F5956FD9C58DA');
         $this->addSql('ALTER TABLE glpi_domainrecords DROP FOREIGN KEY FK_180F59561421F0A5');
         $this->addSql('DROP INDEX date_creation ON glpi_domainrecords');
-        $this->addSql('ALTER TABLE glpi_domainrecords CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE domains_id domains_id INT DEFAULT 0 NOT NULL, CHANGE domainrecordtypes_id domainrecordtypes_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_domainrecords CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE domains_id domains_id INT DEFAULT 0 NOT NULL, CHANGE domainrecordtypes_id domainrecordtypes_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_domainrecordtypes DROP FOREIGN KEY FK_19DBFAF66145D7DB');
         $this->addSql('DROP INDEX IDX_19DBFAF66145D7DB ON glpi_domainrecordtypes');
         $this->addSql('ALTER TABLE glpi_domainrecordtypes CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
@@ -2125,7 +2058,6 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_C060118E6145D7DB ON glpi_domaintypes');
         $this->addSql('ALTER TABLE glpi_domaintypes CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('DROP INDEX date_creation ON glpi_enclosuremodels');
-        $this->addSql('ALTER TABLE glpi_enclosuremodels CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_enclosures DROP FOREIGN KEY FK_6052344A6145D7DB');
         $this->addSql('ALTER TABLE glpi_enclosures DROP FOREIGN KEY FK_6052344AED775E23');
         $this->addSql('ALTER TABLE glpi_enclosures DROP FOREIGN KEY FK_6052344A8ED84E80');
@@ -2133,7 +2065,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_enclosures DROP FOREIGN KEY FK_6052344A1421F0A5');
         $this->addSql('ALTER TABLE glpi_enclosures DROP FOREIGN KEY FK_6052344AB17973F');
         $this->addSql('ALTER TABLE glpi_enclosures DROP FOREIGN KEY FK_6052344AA2A4C2E4');
-        $this->addSql('ALTER TABLE glpi_enclosures CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL COMMENT \'RELATION to states (id)\', CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_enclosures CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT 0 NOT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL COMMENT \'RELATION to states (id)\', CHANGE manufacturers_id manufacturers_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_entities DROP FOREIGN KEY FK_1A59F36F6145D7DB');
         $this->addSql('ALTER TABLE glpi_entities DROP FOREIGN KEY FK_1A59F36F7D03EC85');
         $this->addSql('ALTER TABLE glpi_entities DROP FOREIGN KEY FK_1A59F36F72C4B705');
@@ -2144,7 +2076,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_1A59F36F7D03EC85 ON glpi_entities');
         $this->addSql('DROP INDEX IDX_1A59F36F72C4B705 ON glpi_entities');
         $this->addSql('DROP INDEX IDX_1A59F36F16010B6F ON glpi_entities');
-        $this->addSql('ALTER TABLE glpi_entities CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE authldaps_id authldaps_id INT DEFAULT 0 NOT NULL, CHANGE calendars_id calendars_id INT DEFAULT -2 NOT NULL, CHANGE tickettemplates_id tickettemplates_id INT DEFAULT -2 NOT NULL, CHANGE changetemplates_id changetemplates_id INT DEFAULT -2 NOT NULL, CHANGE problemtemplates_id problemtemplates_id INT DEFAULT -2 NOT NULL, CHANGE entities_id_software entities_id_software INT DEFAULT -2 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_entities CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE authldaps_id authldaps_id INT DEFAULT 0 NOT NULL, CHANGE calendars_id calendars_id INT DEFAULT -2 NOT NULL, CHANGE tickettemplates_id tickettemplates_id INT DEFAULT -2 NOT NULL, CHANGE changetemplates_id changetemplates_id INT DEFAULT -2 NOT NULL, CHANGE problemtemplates_id problemtemplates_id INT DEFAULT -2 NOT NULL, CHANGE entities_id_software entities_id_software INT DEFAULT -2 NOT NULL');
         $this->addSql('ALTER TABLE glpi_entities_knowbaseitems DROP FOREIGN KEY FK_30391006D89C108');
         $this->addSql('ALTER TABLE glpi_entities_knowbaseitems DROP FOREIGN KEY FK_30391006145D7DB');
         $this->addSql('ALTER TABLE glpi_entities_knowbaseitems CHANGE knowbaseitems_id knowbaseitems_id INT DEFAULT 0 NOT NULL, CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
@@ -2214,7 +2146,6 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_35A7AD8A462B676C ON glpi_ipnetworks_vlans');
         $this->addSql('ALTER TABLE glpi_ipnetworks_vlans CHANGE ipnetworks_id ipnetworks_id INT DEFAULT 0 NOT NULL, CHANGE vlans_id vlans_id INT DEFAULT 0 NOT NULL');
         $this->addSql('DROP INDEX date_creation ON glpi_items_disks');
-        $this->addSql('ALTER TABLE glpi_items_disks CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE glpi_itilcategories DROP FOREIGN KEY FK_349D19C46145D7DB');
         $this->addSql('ALTER TABLE glpi_itilcategories DROP FOREIGN KEY FK_349D19C4EFE9C34D');
         $this->addSql('ALTER TABLE glpi_itilcategories DROP FOREIGN KEY FK_349D19C4551BC90F');
@@ -2279,7 +2210,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_lines CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0 NOT NULL, CHANGE groups_id groups_id INT DEFAULT 0 NOT NULL, CHANGE lineoperators_id lineoperators_id INT DEFAULT 0 NOT NULL, CHANGE locations_id locations_id INT DEFAULT 0 NOT NULL, CHANGE states_id states_id INT DEFAULT 0 NOT NULL, CHANGE linetypes_id linetypes_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_links DROP FOREIGN KEY FK_32E0714E6145D7DB');
         $this->addSql('DROP INDEX date_creation ON glpi_links');
-        $this->addSql('ALTER TABLE glpi_links CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_links CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_locations DROP FOREIGN KEY FK_1AC195136145D7DB');
         $this->addSql('ALTER TABLE glpi_locations DROP FOREIGN KEY FK_1AC19513ED775E23');
         $this->addSql('DROP INDEX IDX_1AC195136145D7DB ON glpi_locations');
@@ -2415,7 +2346,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_pdus_racks CHANGE racks_id racks_id INT DEFAULT 0 NOT NULL, CHANGE pdus_id pdus_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_pdutypes DROP FOREIGN KEY FK_38C353DA6145D7DB');
         $this->addSql('DROP INDEX date_creation ON glpi_pdutypes');
-        $this->addSql('ALTER TABLE glpi_pdutypes CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_pdutypes CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_peripherals DROP FOREIGN KEY FK_B49D1266145D7DB');
         $this->addSql('ALTER TABLE glpi_peripherals DROP FOREIGN KEY FK_B49D126FD9C58DA');
         $this->addSql('ALTER TABLE glpi_peripherals DROP FOREIGN KEY FK_B49D1261421F0A5');
@@ -2530,7 +2461,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_projects DROP FOREIGN KEY FK_1626242E67B3B43D');
         $this->addSql('ALTER TABLE glpi_projects DROP FOREIGN KEY FK_1626242EF373DCF');
         $this->addSql('DROP INDEX date_creation ON glpi_projects');
-        $this->addSql('ALTER TABLE glpi_projects CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE projects_id projects_id INT DEFAULT 0 NOT NULL, CHANGE projectstates_id projectstates_id INT DEFAULT 0 NOT NULL, CHANGE projecttypes_id projecttypes_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0 NOT NULL, CHANGE groups_id groups_id INT DEFAULT 0 NOT NULL, CHANGE date_mod date_mod DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE date_creation date_creation DATETIME DEFAULT CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE glpi_projects CHANGE entities_id entities_id INT DEFAULT 0 NOT NULL, CHANGE projects_id projects_id INT DEFAULT 0 NOT NULL, CHANGE projectstates_id projectstates_id INT DEFAULT 0 NOT NULL, CHANGE projecttypes_id projecttypes_id INT DEFAULT 0 NOT NULL, CHANGE users_id users_id INT DEFAULT 0 NOT NULL, CHANGE groups_id groups_id INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE glpi_projecttasks DROP FOREIGN KEY FK_41EFD7CD6145D7DB');
         $this->addSql('ALTER TABLE glpi_projecttasks DROP FOREIGN KEY FK_41EFD7CD1EDE0F55');
         $this->addSql('ALTER TABLE glpi_projecttasks DROP FOREIGN KEY FK_41EFD7CD171C029');
