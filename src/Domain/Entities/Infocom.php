@@ -418,7 +418,7 @@ class Infocom
     /**
      * Get the value of delivery_number
      */
-    public function getDelivery_number()
+    public function getDeliveryNumber()
     {
         return $this->delivery_number;
     }
@@ -428,7 +428,7 @@ class Infocom
      *
      * @return  self
      */
-    public function setDelivery_number($delivery_number)
+    public function setDeliveryNumber($delivery_number)
     {
         $this->delivery_number = $delivery_number;
 
@@ -438,7 +438,7 @@ class Infocom
     /**
      * Get the value of immo_number
      */
-    public function getImmo_number()
+    public function getImmoNumber()
     {
         return $this->immo_number;
     }
@@ -448,7 +448,7 @@ class Infocom
      *
      * @return  self
      */
-    public function setImmo_number($immo_number)
+    public function setImmoNumber($immo_number)
     {
         $this->immo_number = $immo_number;
 

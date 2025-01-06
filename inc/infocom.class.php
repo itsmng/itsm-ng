@@ -257,8 +257,8 @@ class Infocom extends CommonDBChild
 
         if (
             $this->getFromDBByCrit([
-            $this->getTable() . '.items_id'  => $ID,
-            $this->getTable() . '.itemtype'  => $itemtype
+            'items_id'  => $ID,
+            'itemtype'  => $itemtype
             ])
         ) {
             return true;
