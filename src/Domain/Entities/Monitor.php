@@ -457,7 +457,7 @@ class Monitor
         return $this;
     }
 
-    
+
     /**
      * Get the value of techGroup
      */
@@ -620,7 +620,7 @@ class Monitor
 
     /**
      * Get the value of techUser
-     */ 
+     */
     public function getTechUser()
     {
         return $this->techUser;
@@ -630,7 +630,7 @@ class Monitor
      * Set the value of techUser
      *
      * @return  self
-     */ 
+     */
     public function setTechUser($techUser)
     {
         $this->techUser = $techUser;

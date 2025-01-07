@@ -427,7 +427,7 @@ class Pdu
 
     /**
      * Get the value of techUser
-     */ 
+     */
     public function getTechUser()
     {
         return $this->techUser;
@@ -437,7 +437,7 @@ class Pdu
      * Set the value of techUser
      *
      * @return  self
-     */ 
+     */
     public function setTechUser($techUser)
     {
         $this->techUser = $techUser;

@@ -319,7 +319,7 @@ class Problemtask
         return $this;
     }
 
-   
+
     /**
      * Get the value of techGroup
      */
@@ -362,7 +362,7 @@ class Problemtask
 
     /**
      * Get the value of techUser
-     */ 
+     */
     public function getTechUser()
     {
         return $this->techUser;
@@ -372,7 +372,7 @@ class Problemtask
      * Set the value of techUser
      *
      * @return  self
-     */ 
+     */
     public function setTechUser($techUser)
     {
         $this->techUser = $techUser;

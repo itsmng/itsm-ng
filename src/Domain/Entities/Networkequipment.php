@@ -328,7 +328,7 @@ class Networkequipment
         return $this;
     }
 
-    
+
     /**
      * Get the value of techGroup
      */
@@ -511,7 +511,7 @@ class Networkequipment
 
     /**
      * Get the value of techUser
-     */ 
+     */
     public function getTechUser()
     {
         return $this->techUser;
@@ -521,7 +521,7 @@ class Networkequipment
      * Set the value of techUser
      *
      * @return  self
-     */ 
+     */
     public function setTechUser($techUser)
     {
         $this->techUser = $techUser;

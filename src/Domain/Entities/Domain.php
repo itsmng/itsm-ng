@@ -214,7 +214,7 @@ class Domain
         return $this;
     }
 
-    
+
     /**
      * Get the value of techGroup
      */
@@ -257,7 +257,7 @@ class Domain
 
     /**
      * Get the value of techUser
-     */ 
+     */
     public function getTechUser()
     {
         return $this->techUser;
@@ -267,7 +267,7 @@ class Domain
      * Set the value of techUser
      *
      * @return  self
-     */ 
+     */
     public function setTechUser($techUser)
     {
         $this->techUser = $techUser;

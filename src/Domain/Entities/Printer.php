@@ -433,7 +433,7 @@ class Printer
         return $this;
     }
 
-    
+
     /**
      * Get the value of techGroup
      */
@@ -616,7 +616,7 @@ class Printer
 
     /**
      * Get the value of techUser
-     */ 
+     */
     public function getTechUser()
     {
         return $this->techUser;
@@ -626,7 +626,7 @@ class Printer
      * Set the value of techUser
      *
      * @return  self
-     */ 
+     */
     public function setTechUser($techUser)
     {
         $this->techUser = $techUser;
