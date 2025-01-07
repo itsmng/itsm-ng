@@ -55,12 +55,12 @@ class Computer
     private $contact_num;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
-    private ?User $users_tech;
+    #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $techUser;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
-    private ?Group $groups_tech;
+    #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $techGroup;
 
     #[ORM\Column(type: 'text', nullable: true, length: 65535)]
     private $comment;
@@ -357,41 +357,41 @@ class Computer
     }
 
     /**
-     * Get the value of users_tech
+     * Get the value of techUser
      */
-    public function getUsersTech()
+    public function getTechUser()
     {
-        return $this->users_tech;
+        return $this->techUser;
     }
 
     /**
-     * Set the value of users_tech
+     * Set the value of techUser
      *
      * @return  self
      */
-    public function setUsersTech($users_tech)
+    public function setTechUser($techUser)
     {
-        $this->users_tech = $users_tech;
+        $this->techUser = $techUser;
 
         return $this;
     }
 
     /**
-     * Get the value of groups_tech
+     * Get the value of techGroup
      */
-    public function getGroupsTech()
+    public function getTechGroup()
     {
-        return $this->groups_tech;
+        return $this->techGroup;
     }
 
     /**
-     * Set the value of groups_tech
+     * Set the value of techGroup
      *
      * @return  self
      */
-    public function setGroupsTech($groups_tech)
+    public function setTechGroup($techGroup)
     {
-        $this->groups_tech = $groups_tech;
+        $this->techGroup = $techGroup;
 
         return $this;
     }

@@ -49,12 +49,12 @@ class Domainrecord
     private $ttl;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
-    private ?User $userTech;
+    #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $techUser;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
-    private ?Group $groupTech;
+    #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $techGroup;
 
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -231,42 +231,44 @@ class Domainrecord
         return $this;
     }
 
+    
+
     /**
-     * Get the value of userTech
+     * Get the value of techGroup
      */
-    public function getUserTech()
+    public function getTechGroup()
     {
-        return $this->userTech;
+        return $this->techGroup;
     }
 
     /**
-     * Set the value of userTech
+     * Set the value of techGroup
      *
      * @return  self
      */
-    public function setUserTech($userTech)
+    public function setTechGroup($techGroup)
     {
-        $this->userTech = $userTech;
+        $this->techGroup = $techGroup;
 
         return $this;
     }
 
     /**
-     * Get the value of groupTech
-     */
-    public function getGroupTech()
+     * Get the value of techUser
+     */ 
+    public function getTechUser()
     {
-        return $this->groupTech;
+        return $this->techUser;
     }
 
     /**
-     * Set the value of groupTech
+     * Set the value of techUser
      *
      * @return  self
-     */
-    public function setGroupTech($groupTech)
+     */ 
+    public function setTechUser($techUser)
     {
-        $this->groupTech = $groupTech;
+        $this->techUser = $techUser;
 
         return $this;
     }

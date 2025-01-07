@@ -41,12 +41,12 @@ class Domain
     private $date_expiration;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
-    private ?User $userTech;
+    #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $techUser;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
-    private ?Group $groupTech;
+    #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $techGroup;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $others;
@@ -214,42 +214,23 @@ class Domain
         return $this;
     }
 
+    
     /**
-     * Get the value of userTech
+     * Get the value of techGroup
      */
-    public function getUserTech()
+    public function getTechGroup()
     {
-        return $this->userTech;
+        return $this->techGroup;
     }
 
     /**
-     * Set the value of userTech
+     * Set the value of techGroup
      *
      * @return  self
      */
-    public function setUserTech($userTech)
+    public function setTechGroup($techGroup)
     {
-        $this->userTech = $userTech;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of groupTech
-     */
-    public function getGroupTech()
-    {
-        return $this->groupTech;
-    }
-
-    /**
-     * Set the value of groupTech
-     *
-     * @return  self
-     */
-    public function setGroupTech($groupTech)
-    {
-        $this->groupTech = $groupTech;
+        $this->techGroup = $techGroup;
 
         return $this;
     }
@@ -270,6 +251,26 @@ class Domain
     public function setDomainItems($domainItems)
     {
         $this->domainItems = $domainItems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of techUser
+     */ 
+    public function getTechUser()
+    {
+        return $this->techUser;
+    }
+
+    /**
+     * Set the value of techUser
+     *
+     * @return  self
+     */ 
+    public function setTechUser($techUser)
+    {
+        $this->techUser = $techUser;
 
         return $this;
     }

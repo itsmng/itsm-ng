@@ -107,8 +107,8 @@ class Softwarelicense
     private ?Location $location;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
-    private ?User $userTech;
+    #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $techUser;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $users_id;
@@ -118,8 +118,8 @@ class Softwarelicense
     private ?User $user;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
-    private ?Group $groupTech;
+    #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $techGroup;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $groups_id;
@@ -562,26 +562,6 @@ class Softwarelicense
     }
 
     /**
-     * Get the value of userTech
-     */
-    public function getUserTech()
-    {
-        return $this->userTech;
-    }
-
-    /**
-     * Set the value of userTech
-     *
-     * @return  self
-     */
-    public function setUserTech($userTech)
-    {
-        $this->userTech = $userTech;
-
-        return $this;
-    }
-
-    /**
      * Get the value of user
      */
     public function getUser()
@@ -602,21 +582,21 @@ class Softwarelicense
     }
 
     /**
-     * Get the value of groupTech
+     * Get the value of techGroup
      */
-    public function getGroupTech()
+    public function getTechGroup()
     {
-        return $this->groupTech;
+        return $this->techGroup;
     }
 
     /**
-     * Set the value of groupTech
+     * Set the value of techGroup
      *
      * @return  self
      */
-    public function setGroupTech($groupTech)
+    public function setTechGroup($techGroup)
     {
-        $this->groupTech = $groupTech;
+        $this->techGroup = $techGroup;
 
         return $this;
     }
@@ -657,6 +637,26 @@ class Softwarelicense
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of techUser
+     */ 
+    public function getTechUser()
+    {
+        return $this->techUser;
+    }
+
+    /**
+     * Set the value of techUser
+     *
+     * @return  self
+     */ 
+    public function setTechUser($techUser)
+    {
+        $this->techUser = $techUser;
 
         return $this;
     }

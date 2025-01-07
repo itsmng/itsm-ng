@@ -61,12 +61,12 @@ class ChangeTask
     private ?User $user_editor;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_tech', referencedColumnName: 'id', nullable: true)]
-    private ?User $user_tech;
+    #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $techUser;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true)]
-    private ?Group $group_tech;
+    #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $techGroup;
 
     #[ORM\Column(type: "text", nullable: true)]
     private $content;
@@ -318,41 +318,41 @@ class ChangeTask
     }
 
     /**
-     * Get the value of user_tech
+     * Get the value of techUser
      */
-    public function getUser_tech()
+    public function getTechUser()
     {
-        return $this->user_tech;
+        return $this->techUser;
     }
 
     /**
-     * Set the value of user_tech
+     * Set the value of techUser
      *
      * @return  self
      */
-    public function setUser_tech($user_tech)
+    public function setTechUser($techUser)
     {
-        $this->user_tech = $user_tech;
+        $this->techUser = $techUser;
 
         return $this;
     }
 
     /**
-     * Get the value of group_tech
+     * Get the value of techGroup
      */
-    public function getGroup_tech()
+    public function getTechGroup()
     {
-        return $this->group_tech;
+        return $this->techGroup;
     }
 
     /**
-     * Set the value of group_tech
+     * Set the value of techGroup
      *
      * @return  self
      */
-    public function setGroup_tech($group_tech)
+    public function setTechGroup($techGroup)
     {
-        $this->group_tech = $group_tech;
+        $this->techGroup = $techGroup;
 
         return $this;
     }
