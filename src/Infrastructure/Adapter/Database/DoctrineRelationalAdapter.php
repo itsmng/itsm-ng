@@ -111,7 +111,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             }
             if (is_object($value) && method_exists($value, 'getId')) {
                 $fields[$this->plurialize($property) . '_id'] = $value->getId();
-            } else if ($value === null) {
+            } elseif ($value === null) {
                 $fields[$property] = null;
                 $fields[$this->plurialize($property) . '_id'] = null;
             } else {
