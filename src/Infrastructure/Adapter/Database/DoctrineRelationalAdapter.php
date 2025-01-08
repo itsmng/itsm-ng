@@ -87,13 +87,36 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return array_combine($names, $getters);
     }
 
+    private function plurialize($word): string
+    {
+        $word = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $word));
+        if (mb_substr($word, -1, 1) == 'y') {
+            $word = mb_substr($word, 0, -1) . 'ies';
+        } else {
+            $word .= 's';
+        }
+        return $word;
+    }
+
     // get values from entity as array
     public function getFields($content): array
     {
         $propertiesAndGetters = $this->getPropertiesAndGetters($content);
         $fields = [];
         foreach ($propertiesAndGetters as $property => $getter) {
-            $fields[$property] = $content->$getter();
+            if (method_exists($content, $getter)) {
+                $value = $content->$getter();
+            } else {
+                $value = $property;
+            }
+            if (is_object($value) && method_exists($value, 'getId')) {
+                $fields[$this->plurialize($property) . '_id'] = $value->getId();
+            } else if ($value === null) {
+                $fields[$property] = null;
+                $fields[$this->plurialize($property) . '_id'] = null;
+            } else {
+                $fields[$property] = $value;
+            }
         }
         return $fields;
     }

@@ -331,7 +331,6 @@ class Computer extends CommonDBTM
      **/
     public function showForm($ID, $options = [])
     {
-
         $form = [
            'action' => $this->getFormURL(),
            'itemtype' => $this::class,
@@ -367,10 +366,10 @@ class Computer extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "ComputerType"),
                     ],
                     __("Technician in charge of the hardware") => [
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'type' => 'select',
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields['users_id_tech'],
+                       'value' => $this->fields['tech_users_id'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     Manufacturer::getTypeName(1) => [
@@ -381,10 +380,10 @@ class Computer extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
                     __('Group in charge of the hardware') => [
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'type' => 'select',
                        'itemtype' => Group::class,
-                       'value' => $this->fields['groups_id_tech'],
+                       'value' => $this->fields['tech_groups_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
                     _n('Model', 'Models', 1) => [
