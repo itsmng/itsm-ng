@@ -135,6 +135,9 @@ var GLPIImpact = {
    // Register badges hitbox so they can be clicked
    badgesHitboxes: [],
 
+   // linked items
+   links: [],
+
    // Store selectors
    selectors: {
       // Dialogs
@@ -1486,7 +1489,8 @@ var GLPIImpact = {
    prepareNetwork: function(
       impactContainer,
       colors,
-      startNode
+      startNode,
+      links
    ) {
       // Set container
       this.impactContainer = impactContainer;
@@ -1501,6 +1505,8 @@ var GLPIImpact = {
 
       // Set start node
       this.startNode = startNode;
+
+      this.links = links;
 
       this.initToolbar();
    },
@@ -3529,6 +3535,9 @@ var GLPIImpact = {
 
       $(GLPIImpact.selectors.sideSearchSpinner).show();
       $(GLPIImpact.selectors.sideSearchNoResults).hide();
+      if (!GLPIImpact.links[itemtype]) {
+         GLPIImpact.links[itemtype] = {};
+      }
       $.ajax({
          type: "GET",
          url: $(GLPIImpact.selectors.form).prop('action'),
@@ -3545,21 +3554,23 @@ var GLPIImpact = {
                var isHidden = hidden.indexOf(graph_id) !== -1;
                var cssClass = "";
 
-               if (isHidden) {
-                  cssClass = "impact-res-disabled";
+               if (GLPIImpact.links[itemtype] && hasOwnProperty.call(GLPIImpact.links[itemtype], value['id'])) {
+                  if (isHidden) {
+                     cssClass = "impact-res-disabled";
+                  }
+
+                  var str = '<p class="' + cssClass + '" data-id="' + value['id'] + '" data-type="' + itemtype + '">';
+                  str += '<img src="' + $(GLPIImpact.selectors.sideSearch + " img").attr('src') + '"></img>';
+                  str += value["name"];
+
+                  if (isHidden) {
+                     str += '<i class="fas fa-eye-slash impact-res-hidden"></i>';
+                  }
+
+                  str += "</p>";
+
+                  $(GLPIImpact.selectors.sideSearchResults).append(str);
                }
-
-               var str = '<p class="' + cssClass + '" data-id="' + value['id'] + '" data-type="' + itemtype + '">';
-               str += '<img src="' + $(GLPIImpact.selectors.sideSearch + " img").attr('src') + '"></img>';
-               str += value["name"];
-
-               if (isHidden) {
-                  str += '<i class="fas fa-eye-slash impact-res-hidden"></i>';
-               }
-
-               str += "</p>";
-
-               $(GLPIImpact.selectors.sideSearchResults).append(str);
             });
 
             // All data was loaded, hide "More..."
@@ -3804,11 +3815,17 @@ var GLPIImpact = {
          $(GLPIImpact.selectors.sideSearchSelectItemtype).hide();
 
          // Empty search
+         if (!GLPIImpact.links[GLPIImpact.selectedItemtype]) {
+            GLPIImpact.links[GLPIImpact.selectedItemtype] = {};
+         }
+         const linksId = Object.keys(GLPIImpact.links[GLPIImpact.selectedItemtype]);
+         const minPage = Math.floor(Math.min.apply(null, linksId) / 20);
+         GLPIImpact.addAssetPage = minPage;
          GLPIImpact.searchAssets(
             GLPIImpact.selectedItemtype,
             JSON.stringify(GLPIImpact.getUsedAssets()),
             $(GLPIImpact.selectors.sideFilterAssets).val(),
-            0
+            GLPIImpact.addAssetPage
          );
       });
 

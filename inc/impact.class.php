@@ -194,6 +194,40 @@ class Impact extends CommonGLPI {
 
       // Print header
       self::printHeader(self::makeDataForCytoscape($graph), $params, $readonly);
+      $closeItems = self::buildListData(
+          $graph, self::DIRECTION_FORWARD, $item, 1) +
+          self::buildListData($graph, self::DIRECTION_BACKWARD, $item, 1);
+      $closeItemList = [];
+      foreach ($closeItems as $itemtype => $items) {
+          foreach ($items as $itemtype_item) {
+              $closeItemList[$itemtype . '::' . $itemtype_item['stored']->fields['id']] = $itemtype_item['stored']->getFriendlyName();
+          }
+      }
+      $linkedItems = $item->getLinkedItems();
+      $invalidNodes = [];
+      var_dump($linkedItems);
+      foreach ($closeItemList as $node => $label) {
+          [$linkClass, $linkId] = explode('::', $node);
+          if (!isset($linkedItems[$linkClass][$linkId])) {
+              $invalidNodes[$linkClass][] = ['id' => $linkId, 'label' => $label];
+          }
+      }
+      if (count($invalidNodes) > 0) {
+          echo "<div class='warning'>";
+          echo "<p>Some items are not linked to this item.</p>";
+          echo "<ul>";
+          foreach ($invalidNodes as $linkClass => $specificLinkedItems) {
+              echo "<li>Items of type <strong>$linkClass</strong> with names <br/><strong>";
+              $it = new $linkClass();
+              foreach ($specificLinkedItems as $linkedItem) {
+                  $it->getFromDB($linkedItem['id']);
+                  echo "<a href='" . $it->getLinkURL() . "'>" . $linkedItem['label'] . "</a><br/>";
+              }
+              echo "</strong></li>";
+          }
+          echo "</ul>";
+          echo "</div>";
+      }
 
       // Displays views
       self::displayGraphView($item);
@@ -1563,6 +1597,8 @@ class Impact extends CommonGLPI {
       $both      = self::IMPACT_AND_DEPENDS_COLOR;
       $start_node = self::getNodeID($item);
 
+      $linkedItems = json_encode($item->getLinkedItems());
+
       // Bind the backend values to the client and start the network
       echo  Html::scriptBlock("
          $(function() {
@@ -1574,7 +1610,8 @@ class Impact extends CommonGLPI {
                   backward: '$backward',
                   both    : '$both',
                },
-               '$start_node'
+               '$start_node',
+               $linkedItems,
             )
          });
       ");
