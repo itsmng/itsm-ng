@@ -563,12 +563,17 @@ abstract class CommonTreeDropdown extends CommonDropdown
                   __('New child heading') => [
                      'visible' => true,
                      'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => $this->getForeignKeyField(),
+                           'value' => $ID,
+                        ],
                         __('Name') => [
                            'type' => 'text',
                            'name' => 'name',
                            'value' => '',
                         ],
-                        ($entity_assign && ($this->getForeignKeyField() != 'entities_id')) ? [
+                        ($entity_assign && ($this->getForeignKeyField() != 'entities_id') && $this::class != Entity::class) ? [
                            'type' => 'hidden',
                            'name' => 'entities_id',
                            'value' => $_SESSION['glpiactive_entity'],
