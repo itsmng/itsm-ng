@@ -424,7 +424,7 @@ class AuthLDAP extends CommonDBTM
                         __('Password (for non-anonymous binds)') => [
                            'name' => 'rootdn_passwd',
                            'type' => 'password',
-                           'value' => $this->fields['rootdn_passwd'] ?? '',
+                           'value' => Toolbox::sodiumDecrypt($this->fields['rootdn_passwd'] ?? ''),
                         ],
                         __('Clear') => [
                            'name' => '_blank_passwd',
