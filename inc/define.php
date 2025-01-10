@@ -126,7 +126,8 @@ $CFG_GLPI['languages'] = [
    'be_BY'  => ['Belarussian',               'be_BY.mo',    'be',    'be', 'belarussian',          3],
    'is_IS'  => ['íslenska',                  'is_IS.mo',    'is',    'en', 'icelandic',            2],
    'eo'     => ['Esperanto',                 'eo.mo',       'eo',    'en', 'esperanto',            2],
-   'es_CL'  => ['Español chileno',           'es_CL',       'es',    'es', 'spanish chilean',      2]
+   'es_CL'  => ['Español chileno',           'es_CL',       'es',    'es', 'spanish chilean',      2],
+   'ta'  => ['தமிழ்',                  'ta_IN.mo',    'ta',    'ta', 'tamil',                2]
 ];
 
 $DEFAULT_PLURAL_NUMBER = 2;
