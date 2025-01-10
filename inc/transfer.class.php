@@ -3753,7 +3753,7 @@ class Transfer extends CommonDBTM
                'hooks' => [
                    'change' => <<<JS
                     var value = document.getElementById('dropdown_id$rand').value;
-                    $('#transfer_form').load('$CFG_GLPI[root_doc]/ajax/transfers.php?action=showform&id='+value);
+                    $('#transfer_form').load('$CFG_GLPI[root_doc]/ajax/transfers.php', {action: 'showform', id: value});
                 JS,
                ]
             ]);
