@@ -2475,25 +2475,24 @@ class User extends CommonDBTM
              ],
              _n('Authorization', 'Authorizations', 1) =>  [
                 'visible' => true,
-                'inputs' => (empty($ID)) ? [
-                   __('Recursive') => [
-                      'type' => 'checkbox',
-                      'name' => '_is_recursive',
-                      'value' => $this->fields['_is_recursive'],
-                   ],
+                'inputs' => ($this->isNewID($ID)) ? [
                    Profile::getTypeName(1) => [
                       'type' => 'select',
                       'name' => '_profiles_id',
                       'values' => getOptionForItems('Profile'),
-                      'value' => $this->fields['_profiles_id'],
+                      'value' => Profile::getDefault(),
                       'actions' => getItemActionButtons(['info', 'add'], 'Profile'),
                    ],
                    Entity::getTypeName(1) => [
                       'type' => 'select',
                       'name' => '_entities_id',
                       'values' => getOptionForItems('Entity'),
-                      'value' => $this->fields['_entities_id'],
                       'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
+                   ],
+                   __('Recursive') => [
+                      'type' => 'checkbox',
+                      'name' => '_is_recursive',
+                      'value' => 0,
                    ],
                 ] : [
                    __('Default profile') => ($higherrights || $ismyself) ? [
