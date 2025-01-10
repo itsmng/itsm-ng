@@ -1239,12 +1239,12 @@ class Config extends CommonDBTM
         $url       = Toolbox::getItemTypeFormURL(__CLASS__);
 
         if (array_key_exists('last_login', $data)) {
-           $userpref = true;
-           if ($data["id"] === Session::getLoginUserID()) {
-              $url  = $CFG_GLPI['root_doc']."/front/preference.php";
-           } else {
-              $url  = User::getFormURL();
-           }
+            $userpref = true;
+            if ($data["id"] === Session::getLoginUserID()) {
+                $url  = $CFG_GLPI['root_doc']."/front/preference.php";
+            } else {
+                $url  = User::getFormURL();
+            }
         }
 
         echo Html::scriptBlock("
