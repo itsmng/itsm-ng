@@ -624,6 +624,7 @@ class Update extends CommonGLPI
             case "2.0.3":
                 include_once "{$updir}itsm_update_151_200.php";
                 update151to200();
+                // no break
             case "2.0.4":
                 include_once "{$updir}itsm_update_200_204.php";
                 update200to204();
