@@ -4876,8 +4876,6 @@ class Ticket extends CommonITILObject
         $display_save_btn = (!array_key_exists('locked', $options) || !$options['locked'])
            && ($canupdate || $can_requester || $canpriority || $canassign || $canassigntome);
 
-        $rand = mt_rand();
-
         $formUrl = $this->getFormURL();
         $reopenLabel = __('Reopen');
         $form = [
