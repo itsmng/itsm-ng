@@ -1967,8 +1967,8 @@ class Dropdown
                   'change' => $param['on_change'] ?? '',
                ],
                'multiple'    => $param['multiple'] ?? false,
-               $param['disabled'] ? 'disabled' : '' => true,
-               $param['noselect2'] ? 'noLib' : '' => true,
+               ($param['disabled'] ? 'disabled' : '') => true,
+               ($param['noselect2'] ? 'noLib' : '') => true,
                'style' => ($param['width'] ? ('width:' . $param['width']) : ''),
             ];
 
