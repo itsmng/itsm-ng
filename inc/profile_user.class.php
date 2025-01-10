@@ -374,7 +374,7 @@ class Profile_User extends CommonDBRelation
                            'type'    => 'select',
                            'name'    => 'users_id',
                            'itemtype' => User::class,
-                           'value' => $_SESSION['glpiactiveentities'],
+                           'value' => $_SESSION['glpiactive_entity'],
                            'actions' => getItemActionButtons(['info'], 'User'),
                         ],
                         self::getTypeName() => [
