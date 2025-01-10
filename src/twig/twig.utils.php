@@ -5,7 +5,7 @@ function expandSelect(&$select, $fields = [])
     global $CFG_GLPI;
 
     if (isset($select['itemtype']) && !isset($select['values'])) {
-        $restrict = $select['condition']['entities_id'] ?? $fields['entities_id'] ?? Session::getActiveEntity();
+        $restrict = $select['condition']['entities_id'] ?? $fields['entities_id'] ?? (Session::getActiveEntity() == 0 ? -1 : Session::getActiveEntity());
         $recursive = $select['condition']['is_recursive'] ?? $fields['is_recursive'] ?? Session::getIsActiveEntityRecursive();
         if (isset($select['condition']['entities_id'])) {
             unset($select['condition']['entities_id']);
@@ -35,6 +35,7 @@ function expandSelect(&$select, $fields = [])
                     'itemtype' => $select['itemtype'],
                     'display_emptychoice' => $select['display_emptychoice'] ?? 1,
                     'condition' => $select['condition'] ?? [],
+                    'permit_parent_select' => 0,
                     'entity_restrict' => $restrict,
                     'recursive' => $recursive,
                     'used' => $select['used'] ?? [],
@@ -241,7 +242,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     global $CFG_GLPI;
 
     $twig = Twig::load(GLPI_ROOT . '/templates', false);
-    if (isset($fields['id']) && $fields['id'] > 0) {
+    if (isset($fields['id']) && $fields['id'] > 0 && !isset($fields['noId'])) {
         $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
             [
                 'type' => 'hidden',
@@ -273,6 +274,11 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
         $form['content'] = [Entity::getTypeName() => [
             'visible' => true,
             'inputs' => [
+                [
+                    'type' => 'hidden',
+                    'name' => 'entities_id',
+                    'value' => $fields['entities_id'],
+                ],
                 __('Entity') => [
                     'content' => $entity_name,
                     'col_lg' => 8,
@@ -285,7 +291,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
                 ],
             ],
         ]] + $form['content'];
-    } elseif (isset($fields['entities_id'])) {
+    } elseif (isset($fields['entities_id']) && !isset($fields['noEntity'])) {
         $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
             [
                 'type' => 'hidden',

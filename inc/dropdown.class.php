@@ -1967,8 +1967,8 @@ class Dropdown
                   'change' => $param['on_change'] ?? '',
                ],
                'multiple'    => $param['multiple'] ?? false,
-               $param['disabled'] ? 'disabled' : '' => true,
-               $param['noselect2'] ? 'noLib' : '' => true,
+               ($param['disabled'] ? 'disabled' : '') => true,
+               ($param['noselect2'] ? 'noLib' : '') => true,
                'style' => ($param['width'] ? ('width:' . $param['width']) : ''),
             ];
 
@@ -2567,6 +2567,7 @@ class Dropdown
                     } else {
                         $outputval = $data['name'];
                     }
+                    $outputval = str_repeat('&nbsp;', ($level - 1) * 2) . ($level > 1 ? '>&nbsp;' : '') . $outputval;
 
                     if (
                         $multi

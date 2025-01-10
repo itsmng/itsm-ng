@@ -1234,9 +1234,19 @@ class Config extends CommonDBTM
         $oncentral = (Session::getCurrentInterface() == "central");
         $userpref  = false;
 
+        $oncentral = (Session::getCurrentInterface() == "central");
+        $userpref  = false;
+        $url       = Toolbox::getItemTypeFormURL(__CLASS__);
+
         if (array_key_exists('last_login', $data)) {
             $userpref = true;
+            if ($data["id"] === Session::getLoginUserID()) {
+                $url  = $CFG_GLPI['root_doc']."/front/preference.php";
+            } else {
+                $url  = User::getFormURL();
+            }
         }
+
         echo Html::scriptBlock("
          function formatThemes(theme) {
              if (!theme.id) {
@@ -1257,8 +1267,7 @@ class Config extends CommonDBTM
         $tz_warning = '';
 
         $form = [
-           'action' => isset($data['id'])
-              && $data["id"] === Session::getLoginUserID() ? $CFG_GLPI['root_doc'] . "/front/preference.php" : User::getFormURL(),
+           'action' => $url,
            'buttons' => [
               [
                  'type' => 'submit',
