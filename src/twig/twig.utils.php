@@ -273,6 +273,11 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
         $form['content'] = [Entity::getTypeName() => [
             'visible' => true,
             'inputs' => [
+                [
+                    'type' => 'hidden',
+                    'name' => 'entities_id',
+                    'value' => $fields['entities_id'],
+                ],
                 __('Entity') => [
                     'content' => $entity_name,
                     'col_lg' => 8,
