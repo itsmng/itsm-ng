@@ -1397,12 +1397,8 @@ div.chip > p {
   flex-wrap: nowrap;
 }
 
-.select2-container {
-    width: 100% !important;
-}
-
 .select2-dropdown {
-    width: auto !important;
+    width: max-content !important;
 }
 
 @media (max-width: 768px) {
