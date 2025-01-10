@@ -13981,8 +13981,11 @@ msgstr "อยู่ระหว่างดำเนินการ (วาง�
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541 inc/change.class.php:543 inc/problem.class.php:698
+#, fuzzy
+#| msgid "Heading"
+msgctxt "status"
 msgid "Pending"
-msgstr ""
+msgstr "ชื่อเรื่อง"
 
 #: inc/problem.class.php:686 inc/problem.class.php:699
 msgctxt "status"

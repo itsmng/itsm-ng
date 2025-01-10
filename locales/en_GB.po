@@ -14233,6 +14233,9 @@ msgstr "Processing (planned)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541 inc/change.class.php:543 inc/problem.class.php:698
+#, fuzzy
+#| msgid "Pending"
+msgctxt "status"
 msgid "Pending"
 msgstr "Pending"
 
