@@ -241,7 +241,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     global $CFG_GLPI;
 
     $twig = Twig::load(GLPI_ROOT . '/templates', false);
-    if (isset($fields['id']) && $fields['id'] > 0) {
+    if (isset($fields['id']) && $fields['id'] > 0 && !isset($fields['noId'])) {
         $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
             [
                 'type' => 'hidden',
@@ -290,7 +290,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
                 ],
             ],
         ]] + $form['content'];
-    } elseif (isset($fields['entities_id'])) {
+    } elseif (isset($fields['entities_id']) && !isset($fields['noEntity'])) {
         $form['content'][array_key_first($form['content'])]['inputs'] = array_merge([
             [
                 'type' => 'hidden',

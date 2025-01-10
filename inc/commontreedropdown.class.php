@@ -563,11 +563,6 @@ abstract class CommonTreeDropdown extends CommonDropdown
                   __('New child heading') => [
                      'visible' => true,
                      'inputs' => [
-                        [
-                           'type' => 'hidden',
-                           'name' => $this->getForeignKeyField(),
-                           'value' => $ID,
-                        ],
                         __('Name') => [
                            'type' => 'text',
                            'name' => 'name',
@@ -577,7 +572,11 @@ abstract class CommonTreeDropdown extends CommonDropdown
                            'type' => 'hidden',
                            'name' => 'entities_id',
                            'value' => $_SESSION['glpiactive_entity'],
-                        ] : [],
+                        ] : [
+                           'type' => 'hidden',
+                           'name' => $this->getForeignKeyField(),
+                           'value' => $ID,
+                        ],
                         ($entity_assign && $this->isRecursive()) ? [
                            'type' => 'hidden',
                            'name' => 'is_recursive',
@@ -587,7 +586,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
                   ]
                ],
             ];
-            renderTwigForm($form, '', $this->fields);
+            renderTwigForm($form, '', $this->fields + ['noEntity' => true, 'noId' => true]);
         }
 
         $header_fields = [__('Name')];
