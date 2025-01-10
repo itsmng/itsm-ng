@@ -3511,7 +3511,7 @@ class Transfer extends CommonDBTM
                       Entity::getTypeName() => $edit_form ? [] : [
                           'type' => 'select',
                           'name' => 'to_entity',
-                          'values' => getOptionForItems(Entity::class),
+                          'itemtype' => Entity::class,
                           'value' => $this->to,
                           'col_lg' => 8,
                       ],

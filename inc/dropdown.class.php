@@ -2567,6 +2567,7 @@ class Dropdown
                     } else {
                         $outputval = $data['name'];
                     }
+                    $outputval = str_repeat('&nbsp;', ($level - 1) * 2) . ($level > 1 ? '>&nbsp;' : '') . $outputval;
 
                     if (
                         $multi
