@@ -11,7 +11,7 @@
     ClassicEditor
       .create(document.getElementById('{{attributes.id|default("ckEditorInstance" ~ rand)}}'), {
         toolbar: ['heading',
-          '|', 'bold', 'italic', 'blockQuote', 'link',
+          '|', 'bold', 'italic', 'blockQuote', 'link', 'insertImage',
           '|', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable']
       })
       .then(editor => {
