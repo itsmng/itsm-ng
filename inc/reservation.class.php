@@ -520,7 +520,7 @@ class Reservation extends CommonDBChild
                "\" title=\"" . __s('Next') . "\"></a></td></tr></table>\n";
 
         // test
-        echo "<table width='90%' class='tab_glpi' aria-label='Test'><tr><td class='top' width='100px'>";
+        echo "<table width='90%' class='tab_glpi'><tr><td class='top' width='100px'>";
 
         echo "<table aria-label='Test'><tr><td width='100px' class='top'>";
 
@@ -598,11 +598,14 @@ class Reservation extends CommonDBChild
 
             if (!empty($ID)) {
                 echo "<tr><td class='center'>";
+                $formatted_date = $annee_courante . "-" . $mois_courant . "-" . $ii;
+                $alt_text = sprintf(__s('Reserve: %s'), $formatted_date);
                 echo "<a href='" . Reservation::getFormURL() . "?id=&amp;item[$ID]=$ID&amp;" .
-                      "begin=" . $annee_courante . "-" . $mois_courant . "-" . $ii . " 12:00:00'>";
-                echo "<img  src='" . $CFG_GLPI["root_doc"] . "/pics/addresa.png' alt=\"" .
-                      __s('Reserve') . "\" title=\"" . __s('Reserve') . "\"></a></td></tr>\n";
+                      "begin=" . $formatted_date . " 12:00:00'>";
+                echo "<img  src='" . $CFG_GLPI["root_doc"] . "/pics/addresa.png' alt=\"" . $alt_text . 
+                      "\" title=\"" . $alt_text . "\"></a></td></tr>\n";
             }
+            
 
             echo "<tr><td>";
             self::displayReservationDay($ID, $annee_courante . "-" . $mois_courant . "-" . $ii);
