@@ -416,10 +416,11 @@ class NotificationTarget extends CommonDBChild
                                'value' => $notification->getField('itemtype'),
                            ],
                            _n('Recipient', 'Recipients', Session::getPluralNumber()) => [
-                               'type' => 'checklist',
-                               'name' => '_targets',
-                               'options' => $values,
-                               'values' => $actives,
+                               'type' => 'select',
+                               'multiple' => true,
+                               'name' => '_targets[]',
+                               'values' => $values,
+                               'value' => json_encode($actives),
                                'col_lg' => 12,
                                'col_md' => 12,
                                $canedit ? '' : 'disabled' => true
