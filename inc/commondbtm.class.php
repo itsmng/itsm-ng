@@ -3759,7 +3759,7 @@ class CommonDBTM extends CommonGLPI
             && $this->isField('comment')
         ) {
             $toadd[] = ['name'  => __('Comments'),
-                             'value' => nl2br($this->getField('comment'))];
+                             'value' => nl2br($this->getField('comment') ?? '')];
         }
 
         if (count($toadd)) {
@@ -4296,8 +4296,6 @@ class CommonDBTM extends CommonGLPI
     **/
     public static function dropdown($options = [])
     {
-        /// TODO try to revert usage : Dropdown::show calling this function
-        /// TODO use this function instead of Dropdown::show
         $fields = [
            'type' => 'select',
            'name' => ($options['name'] ?? static::getForeignKeyField()),

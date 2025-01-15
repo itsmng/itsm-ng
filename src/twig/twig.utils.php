@@ -44,6 +44,7 @@ function expandSelect(&$select, $fields = [])
                 ],
             ];
     }
+    return $select;
 }
 
 function expandForm($form, $fields = [])

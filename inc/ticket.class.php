@@ -5144,52 +5144,15 @@ class Ticket extends CommonITILObject
               __('Actor') => [
                'visible' => true,
                'inputs' => [
-                  __('Requester') => [
-                     'type' => 'actorSelect',
-                     'name' => '_users_id_requester',
-                     'actorTypes' => [
-                        Dropdown::EMPTY_VALUE => 0,
-                        User::getTypeName() => 'user',
-                        Group::getTypeName() => 'group',
-                     ],
-                     'single' => $this->isNewID($ID),
-                     'values' => $this->getActorsForAction(CommonITILActor::REQUESTER),
-                     'actorTypeId' => CommonITILActor::REQUESTER,
-                     'itemType' => 'Ticket',
-                     'actorType' => 'requester',
-                     'ticketId' => $this->isNewID($ID) ? 0 : $ID,
-                  ],
-                  __('Watcher') => [
-                     'type' => 'actorSelect',
-                     'name' => '_users_id_observer',
-                     'actorTypes' => [
-                        Dropdown::EMPTY_VALUE => 0,
-                        User::getTypeName() => 'user',
-                        Group::getTypeName() => 'group',
-                     ],
-                     'single' => $this->isNewID($ID),
-                     'values' => $this->getActorsForAction(CommonITILActor::OBSERVER),
-                     'actorTypeId' => CommonITILActor::OBSERVER,
-                     'itemType' => 'Ticket',
-                     'actorType' => 'observer',
-                     'ticketId' => $this->isNewID($ID) ? 0 : $ID,
-                  ],
-                  __('Assigned to') => [
-                     'type' => 'actorSelect',
-                     'name' => '_users_id_assign',
-                     'actorTypes' => [
-                        Dropdown::EMPTY_VALUE => 0,
-                        User::getTypeName() => 'user',
-                        Group::getTypeName() => 'group',
-                        Supplier::getTypeName() => 'supplier',
-                     ],
-                     'single' => $this->isNewID($ID),
-                     'values' => $this->getActorsForAction(CommonITILActor::ASSIGN),
-                     'actorTypeId' => CommonITILActor::ASSIGN,
-                     'itemType' => 'Ticket',
-                     'actorType' => 'assign',
-                     'ticketId' => $this->isNewID($ID) ? 0 : $ID,
-                  ],
+                   '' => [
+                       'content' => (function() use ($ID, $options) {
+                           ob_start();
+                           $this->showActorsPartForm($ID, $options);
+                           return ob_get_clean();
+                       })(),
+                       'col_lg' => 12,
+                       'col_md' => 12,
+                   ]
                ]
               ],
               __('Content') => [
