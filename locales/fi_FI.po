@@ -11,21 +11,21 @@
 #
 #: inc/rssfeed.class.php:690 inc/authldap.class.php:734
 #: inc/authldap.class.php:742
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2019-04-24 11:58+0000\n"
-"Last-Translator: alexandre delaunay <delaunay.alexandre@gmail.com>, 2021\n"
-"Language-Team: Finnish (Finland) (https://www.transifex.com/glpi/teams/1637/"
-"fi_FI/)\n"
+"PO-Revision-Date: 2025-01-14 16:19+0000\n"
+"Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
+"Language-Team: Finnish <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
+"fi/>\n"
 "Language: fi_FI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -1380,7 +1380,7 @@ msgstr "Replikoi %s"
 
 #: front/migrationcleaner.php:44
 msgid "You don't need the \"migration cleaner\" tool anymore..."
-msgstr "Et tarvitse enää  \\\"Tuonnin puhdistus\\\" -työkalua ..."
+msgstr "Et tarvitse enää \\\"Tuonnin puhdistus\\\" -työkalua ..."
 
 #: front/migrationcleaner.php:48 inc/migrationcleaner.class.php:47
 msgid "Migration cleaner"
@@ -3530,7 +3530,7 @@ msgstr "Arvo"
 #: front/report.infocom.php:266 front/report.infocom.conso.php:256
 #, php-format
 msgid "%1$s account net value"
-msgstr "%1$s  tilin nettoarvo"
+msgstr "%1$s-tilin nettoarvo"
 
 #: front/report.infocom.conso.php:265 front/report.infocom.php:278
 #: front/report.infocom.php:293 front/report.infocom.conso.php:282
@@ -12358,7 +12358,7 @@ msgstr "Laitteeni ja kaikki kohteet"
 
 #: inc/profile.class.php:3847 inc/profile.class.php:3850
 msgid "Select/unselect all"
-msgstr "Valitse / poista  kaikki "
+msgstr "Valitse/Poista kaikki valinnat"
 
 #: inc/profile_user.class.php:134 inc/profile_user.class.php:278
 #: inc/profile_user.class.php:141 inc/profile_user.class.php:342
@@ -12740,7 +12740,7 @@ msgstr "Yksikköön yhdistetty LDAP-suodatin (tarvittaessa)"
 
 #: inc/entity.class.php:1601 inc/entity.class.php:1622
 msgid "Autofill dates for financial and administrative information"
-msgstr "Päivämäärien automaattinen täyttö talous-  ja hallintotiedoissa"
+msgstr "Päivämäärien automaattinen täyttö talous- ja hallintotiedoissa"
 
 #: inc/entity.class.php:1604 inc/entity.class.php:1670
 #: inc/entity.class.php:1690 inc/entity.class.php:3175
@@ -14041,7 +14041,7 @@ msgstr "Suorittanut %s"
 #: inc/commonitiltask.class.php:1257
 #, php-format
 msgid "Recall on %s"
-msgstr "Muistutus  %s"
+msgstr "Muistutus %s:sta"
 
 #: inc/commonitiltask.class.php:1321 inc/commonitiltask.class.php:1322
 msgid "Planned"
@@ -15096,7 +15096,7 @@ msgid ""
 "Threshold of alarm reached for the type of cartridge: %1$s - Reference %2$s "
 "- Remaining %3$d"
 msgstr ""
-"Hälytysraja on saavutettu lisätarviketyypille:  %1$s - viite %2$s – jäljellä "
+"Hälytysraja on saavutettu lisätarviketyypille: %1$s - viite %2$s – jäljellä "
 "%3$d"
 
 #. TRANS: %s is entity name
@@ -15984,7 +15984,7 @@ msgid ""
 "Threshold of alarm reached for the type of consumable: %1$s - Reference %2$s "
 "- Remaining %3$d"
 msgstr ""
-"Hälytysraja on saavutettu kulutustarviketyypille:  %1$s - viite %2$s – "
+"Hälytysraja on saavutettu kulutustarviketyypille: %1$s - viite %2$s – "
 "jäljellä %3$d"
 
 #. TRANS: %s is entity name
@@ -16015,7 +16015,7 @@ msgstr "Ethernet-portin nopeus"
 
 #: inc/networkportethernet.class.php:225
 msgid "Twisted pair (RJ-45)"
-msgstr "Parikaapeli  (RJ-45)"
+msgstr "Parikaapeli (RJ-45)"
 
 #: inc/networkportethernet.class.php:226
 msgid "Multimode fiber"
@@ -19153,7 +19153,7 @@ msgstr "Yksikkö perustuen TAGiin"
 
 #: inc/rulemailcollector.class.php:191
 msgid "Entity based on user's profile"
-msgstr "Yksikkö perustuen  käyttäjän profiiliin"
+msgstr "Yksikkö perustuen käyttäjän profiiliin"
 
 #: inc/rulemailcollector.class.php:195 inc/rulemailcollector.class.php:200
 msgid "Reject email"
@@ -21096,7 +21096,7 @@ msgstr "Käytetty komento"
 
 #: inc/certificate.class.php:175 inc/certificate.class.php:629
 msgid "Certificate request (CSR)"
-msgstr "Varmennepyyntö  (CSR)"
+msgstr "Varmennepyyntö (CSR)"
 
 #: inc/certificate.class.php:446 inc/softwarelicense.class.php:435
 #: inc/softwarelicense.class.php:801 inc/softwarelicense.class.php:454
@@ -23019,7 +23019,7 @@ msgstr "Käyttöjärjestelmän tuotetunnus"
 #: install/update_91_92.php:170 install/update_0905_91.php:69
 #, php-format
 msgid "Add of - %s to database"
-msgstr "Arvon   %s lisäys tietoknataan"
+msgstr "%s:n lisäys tietokantaan"
 
 #: install/update_0905_91.php:454
 msgid "date_mod and date_creation"
