@@ -29955,3 +29955,156 @@ msgstr ""
 
 msgid "Toggle navigation"
 msgstr ""
+
+msgid "computer"
+msgstr "
+
+msgid "monitor"
+msgstr ""
+
+msgid "software"
+msgstr ""
+
+msgid "networkequipment"
+msgstr ""
+
+msgid "printer"
+msgstr ""
+
+msgid "perpiheral"
+msgstr ""
+
+msgid "cartridgeitem"
+msgstr ""
+
+msgid "consumableitem"
+msgtsr ""
+
+msgid "phone"
+msgstr ""
+
+msgid "rack"
+msgstr ""
+
+msgid "enclosure"
+msgstr ""
+
+msgid "passivedcequipment"
+msgstr ""
+
+msgid "item_devicesimcard"
+msgstr ""
+
+msgid "allasset"
+msgstr ""
+
+msgid "create_ticket"
+msgstr ""
+
+msgid "problem"
+msgstr ""
+
+msgid "change"
+msgstr ""
+
+msgid "stat"
+msgstr ""
+
+msgid "ticketrecurrent"
+msgstr ""
+
+msgid "softwarelicense"
+msgstr ""
+
+msgid "supplier"
+msgstr ""
+
+msgid "contract"
+msgstr ""
+
+msgid "line"
+msgstr ""
+
+msgid "certificate"
+msgstr ""
+
+msgid "domain"
+msgstr ""
+
+msgid "appliance"
+msgstr ""
+
+msgid "project"
+msgstr ""
+
+msgid "reminder"
+msgstr ""
+
+msgid "rssfeed"
+msgstr ""
+
+msgid "knowbaseitem"
+msgstr ""
+
+msgid "reservationitem"
+msgstr ""
+
+msgid "report"
+msgstr ""
+
+msgid "savedsearch"
+msgstr ""
+
+msgid "user"
+msgstr ""
+
+msgid "group"
+msgstr ""
+
+msgid "entity"
+msgstr ""
+
+msgid "rule"
+msgstr ""
+
+msgid "dictionnary"
+msgstr ""
+
+msgid "profile"
+msgstr ""
+
+msgid "queuednotification"
+msgstr ""
+
+msgid "queuedchat"
+msgstr ""
+
+msgid "glpi\event"
+msgstr ""
+
+msgid "commondropdown"
+msgstr ""
+
+msgid "commondevice"
+msgstr ""
+
+msgid "slm"
+msgstr "
+
+msgid "config"
+msgstr ""
+
+msgid "fieldunicity"
+msgstr ""
+
+msgid "crontask"
+msgstr ""
+
+msgid "auth"
+msgstr ""
+
+msgid "mailcollector"
+msgstr ""
+
+msgid "link"
+msgstr ""

@@ -25071,3 +25071,156 @@ msgstr "Activer / Désactiver la navigation"
 
 #~ msgid "Remove actor %s"
 #~ msgstr "Supprimer l'acteur %s"
+
+msgid "computer"
+msgstr "Ordinateurs"
+
+msgid "monitor"
+msgstr "Moniteurs"
+
+msgid "software"
+msgstr "Logiciels"
+
+msgid "networkequipment"
+msgstr "Matériels réseau"
+
+msgid "printer"
+msgstr "Imprimantes"
+
+msgid "perpiheral"
+msgstr "Périphériques"
+
+msgid "cartridgeitem"
+msgstr "Cartouches"
+
+msgid "consumableitem"
+msgtsr "Consommables"
+
+msgid "phone"
+msgstr "Téléphones"
+
+msgid "rack"
+msgstr "Baies"
+
+msgid "enclosure"
+msgstr "Chassis"
+
+msgid "passivedcequipment"
+msgstr "Equipements passifs"
+
+msgid "item_devicesimcard"
+msgstr "Cartes SIM"
+
+msgid "allasset"
+msgstr "Global"
+
+msgid "create_ticket"
+msgstr "Créer un ticket"
+
+msgid "problem"
+msgstr "Problèmes"
+
+msgid "change"
+msgstr "Changements"
+
+msgid "stat"
+msgstr "Statistiques"
+
+msgid "ticketrecurrent"
+msgstr "Tickets récurrents"
+
+msgid "softwarelicense"
+msgstr "Licences"
+
+msgid "supplier"
+msgstr "Fournisseurs"
+
+msgid "contract"
+msgstr "Contrats"
+
+msgid "line"
+msgstr "Lignes"
+
+msgid "certificate"
+msgstr "Certificats"
+
+msgid "domain"
+msgstr "Domaines"
+
+msgid "appliance"
+msgstr "Applicatifs"
+
+msgid "project"
+msgstr "Projets"
+
+msgid "reminder"
+msgstr "Notes"
+
+msgid "rssfeed"
+msgstr "Flux RSS"
+
+msgid "knowbaseitem"
+msgstr "Base de connaissances"
+
+msgid "reservationitem"
+msgstr "Réservation"
+
+msgid "report"
+msgstr "Rapports"
+
+msgid "savedsearch"
+msgstr "Recherches Sauvegardées"
+
+msgid "user"
+msgstr "Utilisateurs"
+
+msgid "group"
+msgstr "Groupes"
+
+msgid "entity"
+msgstr "Entités"
+
+msgid "rule"
+msgstr "Règles"
+
+msgid "dictionnary"
+msgstr "dictionnaire"
+
+msgid "profile"
+msgstr "Profils"
+
+msgid "queuednotification"
+msgstr "File d'attente des notifications"
+
+msgid "queuedchat"
+msgstr "File d'attente pour le chat"
+
+msgid "glpi\event"
+msgstr "Journaux"
+
+msgid "commondropdown"
+msgstr "Intitulés"
+
+msgid "commondevice"
+msgstr "Composants"
+
+msgid "slm"
+msgstr "Niveaux de services"
+
+msgid "config"
+msgstr "Générale"
+
+msgid "fieldunicity"
+msgstr "Unicité des champs"
+
+msgid "crontask"
+msgstr "Actions automatiques"
+
+msgid "auth"
+msgstr "Authentification"
+
+msgid "mailcollector"
+msgstr "Collecteurs"
+
+msgid "link"
+msgstr "Liens externes"
