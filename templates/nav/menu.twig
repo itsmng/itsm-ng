@@ -23,7 +23,7 @@
                                         {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
                                             {% if val['is_favorite'] %}
                                                 <li>
-                                                    <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                                                    <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name | trans}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                                                         <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
                                                         <span>{{val['title']}}</span>
                                                         <i class="star-icon" title="add/remove favorite" aria-hidden="true"></i>
@@ -36,7 +36,7 @@
                                 {% for sub_menu_name,val in data['content']|filter(val => val['show_sub_menu']) %}
                                     {% if val.title and (access == 'central' or (val.page != '/front/reminder.php' and val.page != '/front/rssfeed.php')) %}
                                         <li>
-                                            <a aria-label="{{ sub_menu_name | trans}}" data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show' : ''}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
+                                            <a aria-label={{val['title']}} data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='section-{{sub_menu_name}}' class="{{val['is_open'] ? 'show' : ''}} {{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                                                 <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
                                                 <span>{{val['title']}}</span>
                                                 <i class="star-icon" title="favorite icon" aria-label="favorite icon"></i>
