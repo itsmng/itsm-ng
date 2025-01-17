@@ -602,10 +602,10 @@ class Reservation extends CommonDBChild
                 $alt_text = sprintf(__s('Reserve: %s'), $formatted_date);
                 echo "<a href='" . Reservation::getFormURL() . "?id=&amp;item[$ID]=$ID&amp;" .
                       "begin=" . $formatted_date . " 12:00:00'>";
-                echo "<img  src='" . $CFG_GLPI["root_doc"] . "/pics/addresa.png' alt=\"" . $alt_text . 
+                echo "<img  src='" . $CFG_GLPI["root_doc"] . "/pics/addresa.png' alt=\"" . $alt_text .
                       "\" title=\"" . $alt_text . "\"></a></td></tr>\n";
             }
-            
+
 
             echo "<tr><td>";
             self::displayReservationDay($ID, $annee_courante . "-" . $mois_courant . "-" . $ii);

@@ -5145,7 +5145,7 @@ class Ticket extends CommonITILObject
                'visible' => true,
                'inputs' => [
                    '' => [
-                       'content' => (function() use ($ID, $options) {
+                       'content' => (function () use ($ID, $options) {
                            ob_start();
                            $this->showActorsPartForm($ID, $options);
                            return ob_get_clean();
