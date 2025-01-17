@@ -81,7 +81,7 @@ if (isset($is_activate) && $is_activate) {
     $twig_vars["is_activate"] = $is_activate;
     if (isset($_POST["login_oidc"])) {
         Html::redirect("front/oidc.php"
-            . (isset($_POST['redirect']) ? "?redirect=" . Html::entities_deep($_POST['redirect']) : ""));
+            . ((isset($_POST['redirect']) && !empty($_POST['redirect'])) ? "?redirect=" . Html::entities_deep($_POST['redirect']) : ""));
     }
 }
 
