@@ -24,6 +24,8 @@ class Twig
         $twig->addExtension(new StringExtension());
 
         $twig->addGlobal('root_doc', $CFG_GLPI['root_doc']);
+        $twig->addGlobal('currentEntity', Session::getActiveEntity());
+        $twig->addGlobal('currentRecursive', Session::getIsActiveEntityRecursive());
 
         return $twig;
     }

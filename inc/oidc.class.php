@@ -91,6 +91,7 @@ class Oidc extends CommonDBTM
             echo '<div class="center b">';
             echo __('Missing or wrong fields in open ID connect config');
             echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
+            echo '<div>' . $e->getMessage() . '</div>';
             echo '</div>';
             Html::nullFooter();
             die;
