@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------
  * Copyright (C) 2022 ITSM-NG and contributors.
  *
- * http://www.itsm-ng.org
+ * https://www.itsm-ng.org
  *
  * based on GLPI - Gestionnaire Libre de Parc Informatique
  * Copyright (C) 2003-2014 by the INDEPNET Development Team.
