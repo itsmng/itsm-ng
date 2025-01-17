@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2025-01-14 16:19+0000\n"
+"PO-Revision-Date: 2025-01-17 11:00+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fi/>\n"
@@ -606,7 +606,7 @@ msgstr ""
 
 #: ajax/getMapPoint.php:75
 msgid "Location seems not geolocalized!"
-msgstr "Sijainnille ei ole määritetty maantieteellistä sijaintia"
+msgstr "Sijainti ei näytä olevan määritettynä maantieteellisellä sijainnilla!"
 
 #: ajax/getMapPoint.php:76
 msgid "Consider filling latitude and longitude on this location."
@@ -2188,7 +2188,7 @@ msgstr "Talleta ratkaisu tietämyskantaan"
 
 #: front/ticket.form.php:250 inc/notificationtargetticket.class.php:143
 msgid "New ticket"
-msgstr "Uusi tiketti:"
+msgstr "Uusi tiketti"
 
 #: front/knowbaseitem_item.form.php:52
 #, php-format
@@ -5510,7 +5510,7 @@ msgstr "Salasanan tulee sisältää"
 #: inc/config.class.php:1551 inc/config.class.php:1553
 #: inc/config.class.php:1715 inc/config.class.php:1717
 msgid "Password too short!"
-msgstr "Salasana on liian lyhyt"
+msgstr "Salasana liian lyhyt!"
 
 #: inc/config.class.php:1560 inc/config.class.php:1563
 #: inc/config.class.php:1724 inc/config.class.php:1727
@@ -15924,11 +15924,11 @@ msgstr "Isännän ja orjan välinen ero"
 
 #: inc/notificationtargetdbconnection.class.php:91
 msgid "Slave database out of sync!"
-msgstr "Orjatietokanta ei ole synkronissa."
+msgstr "Orjatietokanta ei ole synkronissa!"
 
 #: inc/notificationtargetdbconnection.class.php:93
 msgid "The slave database is desynchronized. The difference is of:"
-msgstr "Orjatietokanta ei ole synkronissa. Ero on "
+msgstr "Orjatietokanta ei ole synkronoitu. Ero on seuraavista:"
 
 #: inc/commondbvisible.class.php:151 inc/commondbvisible.class.php:155
 msgid "Add a target"
@@ -18068,7 +18068,7 @@ msgstr ""
 #: inc/plugin.class.php:726
 #, php-format
 msgid "Plugin %1$s has been installed!"
-msgstr "Liitännäinen %1$son asennettu! "
+msgstr "Liitännäinen %1$s on asennettu!"
 
 #: inc/plugin.class.php:730 inc/plugin.class.php:2288
 msgctxt "button"
@@ -18082,17 +18082,17 @@ msgstr ""
 #: inc/plugin.class.php:736
 #, php-format
 msgid "Plugin %1$s has been installed and must be configured!"
-msgstr "Liitännäinen %1$son asennettu ja se on määritettävä! "
+msgstr "Liitännäinen %1$s on asennettu ja se on määritettävä!"
 
 #: inc/plugin.class.php:742
 #, php-format
 msgid "Plugin %1$s has no install function!"
-msgstr "Liitännäisellä %1$sei ole asennustoimintoa! "
+msgstr "Liitännäisellä %1$s ei ole asennustoimintoa!"
 
 #: inc/plugin.class.php:775
 #, php-format
 msgid "Plugin %1$s is not CSRF compliant!"
-msgstr "Liitännäinen %1$sei ole CSRF-yhteensopiva! "
+msgstr "Liitännäinen %1$s ei ole CSRF-yhteensopiva!"
 
 #: inc/plugin.class.php:796
 msgid "Plugin prerequisites are not matching, it cannot be activated."
@@ -18101,7 +18101,7 @@ msgstr ""
 #: inc/plugin.class.php:829
 #, php-format
 msgid "Plugin %1$s has been activated!"
-msgstr "Liitännäinen %1$son aktivoitu! "
+msgstr "Liitännäinen %1$s on aktivoitu!"
 
 #: inc/plugin.class.php:839
 msgid "Plugin configuration must be done, it cannot be activated."
@@ -19092,7 +19092,7 @@ msgstr "Linkitä tietämyskannan artikkeli"
 
 #: inc/rulemailcollector.class.php:83 inc/notimportedemail.class.php:157
 msgid "Subject email header"
-msgstr "Sähköpostin kenttä Subject:"
+msgstr "Aiheen sähköpostin otsikko"
 
 #: inc/rulemailcollector.class.php:88
 msgid "Email body"
@@ -19100,11 +19100,11 @@ msgstr "Sähköpostiviestin runko"
 
 #: inc/rulemailcollector.class.php:92 inc/notimportedemail.class.php:139
 msgid "From email header"
-msgstr "Sähköpostin kenttä From:"
+msgstr "Sähköpostin otsikosta"
 
 #: inc/rulemailcollector.class.php:96 inc/notimportedemail.class.php:148
 msgid "To email header"
-msgstr "Sähköpostin kenttä To:"
+msgstr "Sähköpostin otsikkoon"
 
 #: inc/rulemailcollector.class.php:100
 msgid "In-Reply-To email header"
@@ -22929,7 +22929,7 @@ msgstr "Poista sähköpostit"
 
 #: inc/notimportedemail.class.php:174
 msgid "Message-ID email header"
-msgstr "Sähköpostin kenttä Message-ID:"
+msgstr "Viestitunnuksen sähköpostin otsikko"
 
 #: inc/notimportedemail.class.php:239
 msgid "Unable to affect the email to an entity"
@@ -23997,10 +23997,8 @@ msgstr ""
 msgid "Or share the dashboard to these target objects:"
 msgstr ""
 
-#, fuzzy
-#| msgid "Empty array"
 msgid "empty card !"
-msgstr "Tyhjä taulukko"
+msgstr "tyhjä kortti!"
 
 #, fuzzy
 #| msgid "Number of rows"
@@ -24357,10 +24355,8 @@ msgid ""
 "GLPI"
 msgstr ""
 
-#, fuzzy
-#| msgid "Created on %s"
 msgid "Register on %1$s!"
-msgstr "Luotu %s"
+msgstr "Rekisteröidy %1$s:lla!"
 
 msgid "And retrieve your key to paste it below"
 msgstr ""
@@ -24585,10 +24581,10 @@ msgid "Change mode"
 msgstr "Muuttunut"
 
 msgid "Debug mode enabled"
-msgstr "Virheenkorjaustila käytössä!"
+msgstr "Viankorjaustila käytössä"
 
 msgid "Debug mode disabled"
-msgstr "Virheenkorjaustila poistettu käytöstä!"
+msgstr "Viankorjaustila poistettu käytöstä"
 
 msgid "Saved searches"
 msgstr "Tallennetut haut"
@@ -24797,13 +24793,13 @@ msgid "The server or/and user field is empty"
 msgstr "Palvelin- tai/ja käyttäjäkentät ovat tyhjät."
 
 msgid "Please select a database:"
-msgstr "Valitse tietokanta"
+msgstr "Valitse tietokanta:"
 
 msgid "Create a new database or use an existing one:"
-msgstr "Luo uusi tietokanta tai käytä olemassa olevaa"
+msgstr "Luo uusi tietokanta tai käytä olemassa olevaa:"
 
 msgid "Please select the database to update:"
-msgstr "Valitse päivitettävä tietokanta"
+msgstr "Valitse päivitettävä tietokanta:"
 
 msgid "Initialization of the database"
 msgstr "Tietokannan alustus"
@@ -24967,10 +24963,8 @@ msgstr "Tiketit"
 msgid "Tickets to validate"
 msgstr "Hyväksyttävänä olevat tikettisi"
 
-#, fuzzy
-#| msgid "New ticket"
 msgid "New widget"
-msgstr "Uusi tiketti:"
+msgstr "Uusi vimpain"
 
 #, fuzzy
 #| msgid "Add cartridges"
