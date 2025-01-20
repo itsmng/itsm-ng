@@ -40,7 +40,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         // $result = $this->em->find($this->entityName, $criteria);
         // return $result;
         $result = $this->em->getRepository($this->entityName)->findOneBy($criteria);
-    return $result;
+        return $result;
     }
     public function findBy(array $criteria, array $order = null, int $limit = null): array
     {
@@ -50,12 +50,12 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     }
     public function findByRequest(array $request): array
     {
-        
+
         return [];
     }
 
-    
-    
+
+
 
     public function deleteByCriteria(array $criteria): bool
     {
@@ -66,8 +66,8 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     // list columns from entity
     public function listFields(): array
     {
-        // TODO: Implement listFields() method.        
-        $metadata = $this->em->getClassMetadata($this->entityName);        
+        // TODO: Implement listFields() method.
+        $metadata = $this->em->getClassMetadata($this->entityName);
         return $metadata->getFieldNames();
         // return [];
     }
@@ -141,9 +141,9 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function getRelations(): array
     {
-        // TODO: Implement getRelations() method.    
+        // TODO: Implement getRelations() method.
         $classMetadata = $this->em->getClassMetadata($this->entityName);
-        $relations = $classMetadata->getAssociationMappings();        
+        $relations = $classMetadata->getAssociationMappings();
         $formattedRelations = [];
         foreach ($relations as $relationName => $relationDetails) {
             $formattedRelations[] = [
@@ -156,7 +156,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         }
 
         return $formattedRelations;
-       
+
         // return [];
     }
 }
