@@ -32,6 +32,7 @@
  */
 
 use Itsmng\Domain\Entities\Computer as EntitiesComputer;
+use PhpParser\Node\Expr\Instanceof_;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");

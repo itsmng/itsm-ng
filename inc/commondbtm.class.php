@@ -196,7 +196,9 @@ class CommonDBTM extends CommonGLPI
 
         if (isset($CFG_GLPI['legacy_database']) && $CFG_GLPI['legacy_database']) {
             return new LegacySqlAdapter(get_called_class());
+            
         }
+        
         return new DoctrineRelationalAdapter(get_called_class());
     }
 
@@ -623,6 +625,7 @@ class CommonDBTM extends CommonGLPI
 
                 return $this->fields['id'];
             }
+            
         }
         return false;
     }
