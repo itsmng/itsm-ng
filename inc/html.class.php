@@ -2052,7 +2052,7 @@ JAVASCRIPT
       // End headline
 
       //  Le fil d ariane
-      echo "<div id='c_ssmenu2'></div>";
+      echo "<div id='c_ssmenu2' ></div>";
       echo "</div>"; // fin header
       echo "<div id='page'>";
 
@@ -7576,7 +7576,7 @@ JAVASCRIPT;
       // End headline
 
       //  Le fil d ariane
-      echo "<div id='c_ssmenu2' >";
+      echo "<div id='c_ssmenu2'>";
       echo "<ul>";
 
       // Display item
