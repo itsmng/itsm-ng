@@ -15,41 +15,41 @@ class Cartridge
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
 
     #[ORM\ManyToOne(targetEntity: CartridgeItem::class)]
     #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: true)]
-    private ?CartridgeItem $cartridgeItem;
+    private ?CartridgeItem $cartridgeItem = null;
 
 
     #[ORM\ManyToOne(targetEntity: Printer::class)]
     #[ORM\JoinColumn(name: 'printers_id', referencedColumnName: 'id', nullable: true)]
-    private ?Printer $printer;
+    private ?Printer $printer = null;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $date_in;
+    #[ORM\Column(name: 'date_in', type: 'date', nullable: true)]
+    private $dateIn;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $date_use;
+    #[ORM\Column(name: 'date_use', type: 'date', nullable: true)]
+    private $dateUse;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $date_out;
+    #[ORM\Column(name: 'date_out', type: 'date', nullable: true)]
+    private $dateOut;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'pages', type: 'integer', options: ['default' => 0])]
     private $pages;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -60,36 +60,36 @@ class Cartridge
 
     public function getDateIn(): ?\DateTimeInterface
     {
-        return $this->date_in;
+        return $this->dateIn;
     }
 
-    public function setDateIn(\DateTimeInterface $date_in): self
+    public function setDateIn(\DateTimeInterface $dateIn): self
     {
-        $this->date_in = $date_in;
+        $this->dateIn = $dateIn;
 
         return $this;
     }
 
     public function getDateUse(): ?\DateTimeInterface
     {
-        return $this->date_use;
+        return $this->dateUse;
     }
 
-    public function setDateUse(\DateTimeInterface $date_use): self
+    public function setDateUse(\DateTimeInterface $dateUse): self
     {
-        $this->date_use = $date_use;
+        $this->dateUse = $dateUse;
 
         return $this;
     }
 
     public function getDateOut(): ?\DateTimeInterface
     {
-        return $this->date_out;
+        return $this->dateOut;
     }
 
-    public function setDateOut(\DateTimeInterface $date_out): self
+    public function setDateOut(\DateTimeInterface $dateOut): self
     {
-        $this->date_out = $date_out;
+        $this->dateOut = $dateOut;
 
         return $this;
     }
@@ -108,24 +108,24 @@ class Cartridge
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

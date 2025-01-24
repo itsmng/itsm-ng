@@ -14,23 +14,23 @@ class KnowbaseitemItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer")]
-    private $knowbaseitems_id;
+    #[ORM\Column(name: 'knowbaseitems_id', type: "integer")]
+    private $knowbaseitemsId;
 
-    #[ORM\Column(type: "string", length: 100)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: "datetime", nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
+    private $dateMod;
 
     public function getId(): ?int
     {
@@ -39,12 +39,12 @@ class KnowbaseitemItem
 
     public function getKnowbaseitemsId(): ?int
     {
-        return $this->knowbaseitems_id;
+        return $this->knowbaseitemsId;
     }
 
-    public function setKnowbaseitemsId(int $knowbaseitems_id): self
+    public function setKnowbaseitemsId(int $knowbaseitemsId): self
     {
-        $this->knowbaseitems_id = $knowbaseitems_id;
+        $this->knowbaseitemsId = $knowbaseitemsId;
 
         return $this;
     }
@@ -63,36 +63,36 @@ class KnowbaseitemItem
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }

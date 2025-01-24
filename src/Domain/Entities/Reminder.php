@@ -20,48 +20,48 @@ class Reminder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'uuid', type: 'string', length: 255, nullable: true)]
     private $uuid;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'text', type: 'text', length: 65535, nullable: true)]
     private $text;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'begin', type: 'datetime', nullable: true)]
     private $begin;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'end', type: 'datetime', nullable: true)]
     private $end;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_planned;
+    #[ORM\Column(name: 'is_planned', type: 'boolean', options: ['default' => 0])]
+    private $isPlanned;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
     private $state;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $begin_view_date;
+    #[ORM\Column(name: 'begin_view_date', type: 'datetime', nullable: true)]
+    private $beginViewDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $end_view_date;
+    #[ORM\Column(name: 'end_view_date', type: 'datetime', nullable: true)]
+    private $endViewDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: EntityReminder::class)]
     private Collection $entityReminders;
@@ -154,24 +154,24 @@ class Reminder
 
     public function getIsPlanned(): ?string
     {
-        return $this->is_planned;
+        return $this->isPlanned;
     }
 
-    public function setIsPlanned(?string $is_planned): self
+    public function setIsPlanned(?string $isPlanned): self
     {
-        $this->is_planned = $is_planned;
+        $this->isPlanned = $isPlanned;
 
         return $this;
     }
 
     public function getDateMod(): ?string
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?string $date_mod): self
+    public function setDateMod(?string $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -190,36 +190,36 @@ class Reminder
 
     public function getBeginViewDate(): ?string
     {
-        return $this->begin_view_date;
+        return $this->beginViewDate;
     }
 
-    public function setBeginViewDate(?string $begin_view_date): self
+    public function setBeginViewDate(?string $beginViewDate): self
     {
-        $this->begin_view_date = $begin_view_date;
+        $this->beginViewDate = $beginViewDate;
 
         return $this;
     }
 
     public function getEndViewDate(): ?string
     {
-        return $this->end_view_date;
+        return $this->endViewDate;
     }
 
-    public function setEndViewDate(?string $end_view_date): self
+    public function setEndViewDate(?string $endViewDate): self
     {
-        $this->end_view_date = $end_view_date;
+        $this->endViewDate = $endViewDate;
 
         return $this;
     }
 
     public function getDateCreation(): ?string
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?string $date_creation): self
+    public function setDateCreation(?string $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

@@ -14,59 +14,59 @@ class Line
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
-    private $caller_num;
+    #[ORM\Column(name: 'caller_num', type: 'string', length: 255, options: ['default' => ''])]
+    private $callerNum;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
-    private $caller_name;
+    #[ORM\Column(name: 'caller_name', type: 'string', length: 255, options: ['default' => ''])]
+    private $callerName;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
-    private ?Group $group;
+    private ?Group $group = null;
 
     #[ORM\ManyToOne(targetEntity: LineOperator::class)]
     #[ORM\JoinColumn(name: 'lineoperators_id', referencedColumnName: 'id', nullable: true)]
-    private ?LineOperator $lineOperator;
+    private ?LineOperator $lineOperator = null;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
-    private ?Location $location;
+    private ?Location $location = null;
 
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
-    private ?State $state;
+    private ?State $state = null;
 
     #[ORM\ManyToOne(targetEntity: LineType::class)]
     #[ORM\JoinColumn(name: 'linetypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?LineType $lineType;
+    private ?LineType $lineType = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'text', options: ['default' => null], length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', options: ['default' => null], length: 65535, nullable: true)]
     private $comment;
 
     public function getId(): ?int
@@ -88,72 +88,72 @@ class Line
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getCallerNum(): ?string
     {
-        return $this->caller_num;
+        return $this->callerNum;
     }
 
-    public function setCallerNum(string $caller_num): self
+    public function setCallerNum(string $callerNum): self
     {
-        $this->caller_num = $caller_num;
+        $this->callerNum = $callerNum;
 
         return $this;
     }
 
     public function getCallerName(): ?string
     {
-        return $this->caller_name;
+        return $this->callerName;
     }
 
-    public function setCallerName(string $caller_name): self
+    public function setCallerName(string $callerName): self
     {
-        $this->caller_name = $caller_name;
+        $this->callerName = $callerName;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }

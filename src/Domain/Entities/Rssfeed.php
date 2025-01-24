@@ -17,39 +17,39 @@ class Rssfeed
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'url', type: 'text', length: 65535, nullable: true)]
     private $url;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 86400])]
-    private $refresh_rate;
+    #[ORM\Column(name: 'refresh_rate', type: 'integer', options: ['default' => 86400])]
+    private $refreshRate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 20])]
-    private $max_items;
+    #[ORM\Column(name: 'max_items', type: 'integer', options: ['default' => 20])]
+    private $maxItems;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $have_error;
+    #[ORM\Column(name: 'have_error', type: 'boolean', options: ['default' => 0])]
+    private $haveError;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_active;
+    #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
+    private $isActive;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'rssfeed', targetEntity: EntityRssFeed::class)]
     private Collection $entityRssfeeds;
@@ -106,72 +106,72 @@ class Rssfeed
 
     public function getRefreshRate(): ?string
     {
-        return $this->refresh_rate;
+        return $this->refreshRate;
     }
 
-    public function setRefreshRate(?string $refresh_rate): self
+    public function setRefreshRate(?string $refreshRate): self
     {
-        $this->refresh_rate = $refresh_rate;
+        $this->refreshRate = $refreshRate;
 
         return $this;
     }
 
     public function getMaxItems(): ?string
     {
-        return $this->max_items;
+        return $this->maxItems;
     }
 
-    public function setMaxItems(?string $max_items): self
+    public function setMaxItems(?string $maxItems): self
     {
-        $this->max_items = $max_items;
+        $this->maxItems = $maxItems;
 
         return $this;
     }
 
     public function getHaveError(): ?string
     {
-        return $this->have_error;
+        return $this->haveError;
     }
 
-    public function setHaveError(?string $have_error): self
+    public function setHaveError(?string $haveError): self
     {
-        $this->have_error = $have_error;
+        $this->haveError = $haveError;
 
         return $this;
     }
 
     public function getIsActive(): ?string
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(?string $is_active): self
+    public function setIsActive(?string $isActive): self
     {
-        $this->is_active = $is_active;
+        $this->isActive = $isActive;
 
         return $this;
     }
 
     public function getDateMod(): ?string
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?string $date_mod): self
+    public function setDateMod(?string $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?string
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?string $date_creation): self
+    public function setDateCreation(?string $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

@@ -18,94 +18,94 @@ class IpNetwork
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
+    private $isRecursive;
 
     #[ORM\ManyToOne(targetEntity: IpNetwork::class)]
     #[ORM\JoinColumn(name: 'ipnetworks_id', referencedColumnName: 'id', nullable: true)]
-    private ?IpNetwork $ipnetwork;
+    private ?IpNetwork $ipnetwork = null;
 
-    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: 'completename', type: "text", nullable: true, length: 65535)]
     private $completename;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(name: 'level', type: "integer", options: ["default" => 0])]
     private $level;
 
-    #[ORM\Column(type: "text", nullable: true)]
-    private $ancestors_cache;
+    #[ORM\Column(name: 'ancestors_cache', type: "text", nullable: true)]
+    private $ancestorsCache;
 
-    #[ORM\Column(type: "text", nullable: true)]
-    private $sons_cache;
+    #[ORM\Column(name: 'sons_cache', type: "text", nullable: true)]
+    private $sonsCache;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
+    #[ORM\Column(name: 'addressable', type: "boolean", options: ["default" => false])]
     private $addressable;
 
-    #[ORM\Column(type: "smallint", nullable: true, options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'version', type: "smallint", nullable: true, options: ["unsigned" => true, "default" => 0])]
     private $version;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "string", length: 40, nullable: true)]
+    #[ORM\Column(name: 'address', type: "string", length: 40, nullable: true)]
     private $address;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $address_0;
+    #[ORM\Column(name: 'address0', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $address0;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $address_1;
+    #[ORM\Column(name: 'address1', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $address1;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $address_2;
+    #[ORM\Column(name: 'address2', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $address2;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $address_3;
+    #[ORM\Column(name: 'address3', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $address3;
 
-    #[ORM\Column(type: "string", length: 40, nullable: true)]
+    #[ORM\Column(name: 'netmask', type: "string", length: 40, nullable: true)]
     private $netmask;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $netmask_0;
+    #[ORM\Column(name: 'netmask0', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $netmask0;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $netmask_1;
+    #[ORM\Column(name: 'netmask1', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $netmask1;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $netmask_2;
+    #[ORM\Column(name: 'netmask2', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $netmask2;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $netmask_3;
+    #[ORM\Column(name: 'netmask3', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $netmask3;
 
-    #[ORM\Column(type: "string", length: 40, nullable: true)]
+    #[ORM\Column(name: 'gateway', type: "string", length: 40, nullable: true)]
     private $gateway;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $gateway_0;
+    #[ORM\Column(name: 'gateway0', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $gateway0;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $gateway_1;
+    #[ORM\Column(name: 'gateway1', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $gateway1;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $gateway_2;
+    #[ORM\Column(name: 'gateway2', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $gateway2;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $gateway_3;
+    #[ORM\Column(name: 'gateway3', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $gateway3;
 
-    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: "datetime", nullable: true)]
+    private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'ipnetwork', targetEntity: IpAddressIpNetwork::class)]
     private Collection $ipaddressIpnetworks;
@@ -116,8 +116,8 @@ class IpNetwork
 
     public function __construct()
     {
-        $this->date_mod = new \DateTime();
-        $this->date_creation = new \DateTime();
+        $this->dateMod = new \DateTime();
+        $this->dateCreation = new \DateTime();
     }
 
     public function getId(): ?int
@@ -127,12 +127,12 @@ class IpNetwork
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -163,24 +163,24 @@ class IpNetwork
 
     public function getAncestorsCache(): ?string
     {
-        return $this->ancestors_cache;
+        return $this->ancestorsCache;
     }
 
-    public function setAncestorsCache(?string $ancestors_cache): self
+    public function setAncestorsCache(?string $ancestorsCache): self
     {
-        $this->ancestors_cache = $ancestors_cache;
+        $this->ancestorsCache = $ancestorsCache;
 
         return $this;
     }
 
     public function getSonsCache(): ?string
     {
-        return $this->sons_cache;
+        return $this->sonsCache;
     }
 
-    public function setSonsCache(?string $sons_cache): self
+    public function setSonsCache(?string $sonsCache): self
     {
-        $this->sons_cache = $sons_cache;
+        $this->sonsCache = $sonsCache;
 
         return $this;
     }
@@ -235,48 +235,48 @@ class IpNetwork
 
     public function getAddress0(): ?int
     {
-        return $this->address_0;
+        return $this->address0;
     }
 
-    public function setAddress0(int $address_0): self
+    public function setAddress0(int $address0): self
     {
-        $this->address_0 = $address_0;
+        $this->address0 = $address_0;
 
         return $this;
     }
 
     public function getAddress1(): ?int
     {
-        return $this->address_1;
+        return $this->address1;
     }
 
-    public function setAddress1(int $address_1): self
+    public function setAddress1(int $address1): self
     {
-        $this->address_1 = $address_1;
+        $this->address1 = $address_1;
 
         return $this;
     }
 
     public function getAddress2(): ?int
     {
-        return $this->address_2;
+        return $this->address2;
     }
 
-    public function setAddress2(int $address_2): self
+    public function setAddress2(int $address2): self
     {
-        $this->address_2 = $address_2;
+        $this->address2 = $address_2;
 
         return $this;
     }
 
     public function getAddress3(): ?int
     {
-        return $this->address_3;
+        return $this->address3;
     }
 
-    public function setAddress3(int $address_3): self
+    public function setAddress3(int $address3): self
     {
-        $this->address_3 = $address_3;
+        $this->address3 = $address_3;
 
         return $this;
     }
@@ -295,48 +295,48 @@ class IpNetwork
 
     public function getNetmask0(): ?int
     {
-        return $this->netmask_0;
+        return $this->netmask0;
     }
 
-    public function setNetmask0(int $netmask_0): self
+    public function setNetmask0(int $netmask0): self
     {
-        $this->netmask_0 = $netmask_0;
+        $this->netmask0 = $netmask_0;
 
         return $this;
     }
 
     public function getNetmask1(): ?int
     {
-        return $this->netmask_1;
+        return $this->netmask1;
     }
 
-    public function setNetmask1(int $netmask_1): self
+    public function setNetmask1(int $netmask1): self
     {
-        $this->netmask_1 = $netmask_1;
+        $this->netmask1 = $netmask_1;
 
         return $this;
     }
 
     public function getNetmask2(): ?int
     {
-        return $this->netmask_2;
+        return $this->netmask2;
     }
 
-    public function setNetmask2(int $netmask_2): self
+    public function setNetmask2(int $netmask2): self
     {
-        $this->netmask_2 = $netmask_2;
+        $this->netmask2 = $netmask_2;
 
         return $this;
     }
 
     public function getNetmask3(): ?int
     {
-        return $this->netmask_3;
+        return $this->netmask3;
     }
 
-    public function setNetmask3(int $netmask_3): self
+    public function setNetmask3(int $netmask3): self
     {
-        $this->netmask_3 = $netmask_3;
+        $this->netmask3 = $netmask_3;
 
         return $this;
     }
@@ -355,48 +355,48 @@ class IpNetwork
 
     public function getGateway0(): ?int
     {
-        return $this->gateway_0;
+        return $this->gateway0;
     }
 
-    public function setGateway0(int $gateway_0): self
+    public function setGateway0(int $gateway0): self
     {
-        $this->gateway_0 = $gateway_0;
+        $this->gateway0 = $gateway_0;
 
         return $this;
     }
 
     public function getGateway1(): ?int
     {
-        return $this->gateway_1;
+        return $this->gateway1;
     }
 
-    public function setGateway1(int $gateway_1): self
+    public function setGateway1(int $gateway1): self
     {
-        $this->gateway_1 = $gateway_1;
+        $this->gateway1 = $gateway_1;
 
         return $this;
     }
 
     public function getGateway2(): ?int
     {
-        return $this->gateway_2;
+        return $this->gateway2;
     }
 
-    public function setGateway2(int $gateway_2): self
+    public function setGateway2(int $gateway2): self
     {
-        $this->gateway_2 = $gateway_2;
+        $this->gateway2 = $gateway_2;
 
         return $this;
     }
 
     public function getGateway3(): ?int
     {
-        return $this->gateway_3;
+        return $this->gateway3;
     }
 
-    public function setGateway3(int $gateway_3): self
+    public function setGateway3(int $gateway3): self
     {
-        $this->gateway_3 = $gateway_3;
+        $this->gateway3 = $gateway_3;
 
         return $this;
     }
@@ -415,24 +415,24 @@ class IpNetwork
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

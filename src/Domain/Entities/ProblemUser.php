@@ -12,25 +12,25 @@ class ProblemUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Problem::class, inversedBy: 'problemUsers')]
     #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Problem $problem;
+    private ?Problem $problem = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'problemUsers')]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
     private $type;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $use_notification;
+    #[ORM\Column(name: 'use_notification', type: 'boolean', options: ['default' => 0])]
+    private $useNotification;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $alternative_email;
+    #[ORM\Column(name: 'alternative_email', type: 'string', length: 255, nullable: true)]
+    private $alternativeEmail;
 
     public function getId(): ?int
     {
@@ -52,26 +52,26 @@ class ProblemUser
 
     public function getUseNotification(): ?bool
     {
-        return $this->use_notification;
+        return $this->useNotification;
     }
 
 
-    public function setUseNotification(?bool $use_notification): self
+    public function setUseNotification(?bool $useNotification): self
     {
-        $this->use_notification = $use_notification;
+        $this->useNotification = $useNotification;
 
         return $this;
     }
 
     public function getAlternativeEmail(): ?string
     {
-        return $this->alternative_email;
+        return $this->alternativeEmail;
     }
 
 
-    public function setAlternativeEmail(?string $alternative_email): self
+    public function setAlternativeEmail(?string $alternativeEmail): self
     {
-        $this->alternative_email = $alternative_email;
+        $this->alternativeEmail = $alternativeEmail;
 
         return $this;
     }

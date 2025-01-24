@@ -23,104 +23,104 @@ class Rack
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
-    private ?Location $location;
+    private ?Location $location = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
     #[ORM\ManyToOne(targetEntity: Rackmodel::class)]
     #[ORM\JoinColumn(name: 'rackmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Rackmodel $rackmodel;
+    private ?Rackmodel $rackmodel = null;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
-    private ?Manufacturer $manufacturer;
+    private ?Manufacturer $manufacturer = null;
 
     #[ORM\ManyToOne(targetEntity: Racktype::class)]
     #[ORM\JoinColumn(name: 'racktypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Racktype $racktype;
+    private ?Racktype $racktype = null;
 
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
-    private ?State $state;
+    private ?State $state = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $techUser;
+    private ?User $techUser = null;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
-    private ?Group $techGroup;
+    private ?Group $techGroup = null;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'width', type: 'integer', nullable: true)]
     private $width;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'height', type: 'integer', nullable: true)]
     private $height;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'depth', type: 'integer', nullable: true)]
     private $depth;
 
-    #[ORM\Column(type: 'integer', nullable: true, options: ['default' => 0])]
-    private $number_units;
+    #[ORM\Column(name: 'number_units', type: 'integer', nullable: true, options: ['default' => 0])]
+    private $numberUnits;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_template;
+    #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
+    private $isTemplate;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $template_name;
+    #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
+    private $templateName;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
     #[ORM\ManyToOne(targetEntity: Dcroom::class)]
     #[ORM\JoinColumn(name: 'dcrooms_id', referencedColumnName: 'id', nullable: true)]
-    private ?Dcroom $dcroom;
+    private ?Dcroom $dcroom = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $room_orientation;
+    #[ORM\Column(name: 'room_orientation', type: 'integer', options: ['default' => 0])]
+    private $roomOrientation;
 
-    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(name: 'position', type: 'string', length: 50, nullable: true)]
     private $position;
 
-    #[ORM\Column(type: 'string', length: 7, nullable: true)]
+    #[ORM\Column(name: 'bgcolor', type: 'string', length: 7, nullable: true)]
     private $bgcolor;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $max_power;
+    #[ORM\Column(name: 'max_power', type: 'integer', options: ['default' => 0])]
+    private $maxPower;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $mesured_power;
+    #[ORM\Column(name: 'mesured_power', type: 'integer', options: ['default' => 0])]
+    private $mesuredPower;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $max_weight;
+    #[ORM\Column(name: 'max_weight', type: 'integer', options: ['default' => 0])]
+    private $maxWeight;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'rack', targetEntity: PduRack::class)]
     private Collection $pduRacks;
@@ -156,12 +156,12 @@ class Rack
 
     public function getIsRecursive(): ?string
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?string $is_recursive): self
+    public function setIsRecursive(?string $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -228,60 +228,60 @@ class Rack
 
     public function getNumberUnits(): ?string
     {
-        return $this->number_units;
+        return $this->numberUnits;
     }
 
-    public function setNumberUnits(?string $number_units): self
+    public function setNumberUnits(?string $numberUnits): self
     {
-        $this->number_units = $number_units;
+        $this->numberUnits = $numberUnits;
 
         return $this;
     }
 
     public function getIsTemplate(): ?string
     {
-        return $this->is_template;
+        return $this->isTemplate;
     }
 
-    public function setIsTemplate(?string $is_template): self
+    public function setIsTemplate(?string $isTemplate): self
     {
-        $this->is_template = $is_template;
+        $this->isTemplate = $isTemplate;
 
         return $this;
     }
 
     public function getTemplateName(): ?string
     {
-        return $this->template_name;
+        return $this->templateName;
     }
 
-    public function setTemplateName(?string $template_name): self
+    public function setTemplateName(?string $templateName): self
     {
-        $this->template_name = $template_name;
+        $this->templateName = $templateName;
 
         return $this;
     }
 
     public function getIsDeleted(): ?string
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(?string $is_deleted): self
+    public function setIsDeleted(?string $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getRoomOrientation(): ?string
     {
-        return $this->room_orientation;
+        return $this->roomOrientation;
     }
 
-    public function setRoomOrientation(?string $room_orientation): self
+    public function setRoomOrientation(?string $roomOrientation): self
     {
-        $this->room_orientation = $room_orientation;
+        $this->roomOrientation = $roomOrientation;
 
         return $this;
     }
@@ -312,60 +312,60 @@ class Rack
 
     public function getMaxPower(): ?string
     {
-        return $this->max_power;
+        return $this->maxPower;
     }
 
-    public function setMaxPower(?string $max_power): self
+    public function setMaxPower(?string $maxPower): self
     {
-        $this->max_power = $max_power;
+        $this->maxPower = $maxPower;
 
         return $this;
     }
 
     public function getMesuredPower(): ?string
     {
-        return $this->mesured_power;
+        return $this->mesuredPower;
     }
 
-    public function setMesuredPower(?string $mesured_power): self
+    public function setMesuredPower(?string $mesuredPower): self
     {
-        $this->mesured_power = $mesured_power;
+        $this->mesuredPower = $mesuredPower;
 
         return $this;
     }
 
     public function getMaxWeight(): ?string
     {
-        return $this->max_weight;
+        return $this->maxWeight;
     }
 
-    public function setMaxWeight(?string $max_weight): self
+    public function setMaxWeight(?string $maxWeight): self
     {
-        $this->max_weight = $max_weight;
+        $this->maxWeight = $maxWeight;
 
         return $this;
     }
 
     public function getDateMod(): ?string
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?string $date_mod): self
+    public function setDateMod(?string $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?string
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?string $date_creation): self
+    public function setDateCreation(?string $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

@@ -14,23 +14,23 @@ class ImpactItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 255, options: ["default" => ""])]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 255, options: ["default" => ""])]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $parent_id;
+    #[ORM\Column(name: 'parent_id', type: "integer", options: ["default" => 0])]
+    private $parentId;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $impactcontexts_id;
+    #[ORM\Column(name: 'impactcontexts_id', type: "integer", options: ["default" => 0])]
+    private $impactcontextsId;
 
-    #[ORM\Column(type: "boolean", options: ["default" => true])]
-    private $is_slave;
+    #[ORM\Column(name: 'is_slave', type: "boolean", options: ["default" => true])]
+    private $isSlave;
 
     public function getId(): ?int
     {
@@ -51,48 +51,48 @@ class ImpactItem
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
 
     public function getParentId(): ?int
     {
-        return $this->parent_id;
+        return $this->parentId;
     }
 
-    public function setParentId(int $parent_id): self
+    public function setParentId(int $parentId): self
     {
-        $this->parent_id = $parent_id;
+        $this->parentId = $parentId;
 
         return $this;
     }
 
     public function getImpactcontextsId(): ?int
     {
-        return $this->impactcontexts_id;
+        return $this->impactcontextsId;
     }
 
-    public function setImpactcontextsId(int $impactcontexts_id): self
+    public function setImpactcontextsId(int $impactcontextsId): self
     {
-        $this->impactcontexts_id = $impactcontexts_id;
+        $this->impactcontextsId = $impactcontextsId;
 
         return $this;
     }
 
     public function getIsSlave(): ?bool
     {
-        return $this->is_slave;
+        return $this->isSlave;
     }
 
-    public function setIsSlave(bool $is_slave): self
+    public function setIsSlave(bool $isSlave): self
     {
-        $this->is_slave = $is_slave;
+        $this->isSlave = $isSlave;
 
         return $this;
     }

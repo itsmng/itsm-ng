@@ -23,47 +23,47 @@ class ItemDeviceNetworkCard
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $devicenetworkcards_id;
+    #[ORM\Column(name: 'devicenetworkcards_id', type: 'integer', options: ['default' => 0])]
+    private $devicenetworkcardsId;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'mac', type: 'string', length: 255, nullable: true)]
     private $mac;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
+    private $isDynamic;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
+    private $entitiesId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'bus_id', type: 'string', length: 255, nullable: true)]
     private $busID;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
+    private $locationsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\Column(name: 'states_id', type: 'integer', options: ['default' => 0])]
+    private $statesId;
 
     public function getId(): ?int
     {
@@ -72,12 +72,12 @@ class ItemDeviceNetworkCard
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -96,12 +96,12 @@ class ItemDeviceNetworkCard
 
     public function getDeviceNetworkCardsId(): ?int
     {
-        return $this->devicenetworkcards_id;
+        return $this->devicenetworkcardsId;
     }
 
-    public function setDeviceNetworkCardsId(int $devicenetworkcards_id): self
+    public function setDeviceNetworkCardsId(int $devicenetworkcardsId): self
     {
-        $this->devicenetworkcards_id = $devicenetworkcards_id;
+        $this->devicenetworkcardsId = $devicenetworkcardsId;
 
         return $this;
     }
@@ -120,48 +120,48 @@ class ItemDeviceNetworkCard
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(bool $is_dynamic): self
+    public function setIsDynamic(bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getEntitiesId(): ?int
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntitiesId(int $entities_id): self
+    public function setEntitiesId(int $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -183,9 +183,9 @@ class ItemDeviceNetworkCard
         return $this->busID;
     }
 
-    public function setBusID(?string $bus_id): self
+    public function setBusID(?string $busId): self
     {
-        $this->busID = $bus_id;
+        $this->busID = $busId;
 
         return $this;
     }
@@ -195,33 +195,33 @@ class ItemDeviceNetworkCard
         return $this->otherserial;
     }
 
-    public function setOtherSerial(?string $other_serial): self
+    public function setOtherSerial(?string $otherSerial): self
     {
-        $this->otherserial = $other_serial;
+        $this->otherserial = $otherSerial;
 
         return $this;
     }
 
     public function getLocationsId(): ?int
     {
-        return $this->locations_id;
+        return $this->locationsId;
     }
 
-    public function setLocationsId(int $locations_id): self
+    public function setLocationsId(int $locationsId): self
     {
-        $this->locations_id = $locations_id;
+        $this->locationsId = $locationsId;
 
         return $this;
     }
 
     public function getStatesId(): ?int
     {
-        return $this->states_id;
+        return $this->statesId;
     }
 
-    public function setStatesId(int $states_id): self
+    public function setStatesId(int $statesId): self
     {
-        $this->states_id = $states_id;
+        $this->statesId = $statesId;
 
         return $this;
     }

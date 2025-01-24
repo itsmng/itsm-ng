@@ -11,17 +11,17 @@ class Profileright
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Profile::class)]
     #[ORM\JoinColumn(name: 'profiles_id', referencedColumnName: 'id', nullable: true)]
-    private ?Profile $profile;
+    private ?Profile $profile = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'rights', type: 'integer', options: ['default' => 0])]
     private $rights;
 
     public function getId(): ?int

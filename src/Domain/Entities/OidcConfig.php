@@ -9,34 +9,34 @@ use Doctrine\ORM\Mapping as ORM;
 class OidcConfig
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'id', type: 'integer', options: ['default' => 0])]
     private $id;
 
     #[ORM\Column(name: 'Provider', type: 'string', length: 255, nullable: true)]
     private $Provider;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'client_id', type: 'string', length: 255, nullable: true)]
     private $ClientId;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'client_secret', type: 'string', length: 255, nullable: true)]
     private $ClientSecret;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_activate;
+    #[ORM\Column(name: 'is_activate', type: 'boolean', options: ['default' => 0])]
+    private $isActivate;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_forced;
+    #[ORM\Column(name: 'is_forced', type: 'boolean', options: ['default' => 0])]
+    private $isForced;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'scope', type: 'string', length: 255, nullable: true)]
     private $scope;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'cert', type: 'string', length: 255, nullable: true)]
     private $cert;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'proxy', type: 'string', length: 255, nullable: true)]
     private $proxy;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'logout', type: 'string', length: 255, nullable: true)]
     private $logout;
 
     public function getId(): ?int
@@ -82,24 +82,24 @@ class OidcConfig
 
     public function getIsActivate(): ?bool
     {
-        return $this->is_activate;
+        return $this->isActivate;
     }
 
-    public function setIsActivate(?bool $is_activate): self
+    public function setIsActivate(?bool $isActivate): self
     {
-        $this->is_activate = $is_activate;
+        $this->isActivate = $isActivate;
 
         return $this;
     }
 
     public function getIsForced(): ?bool
     {
-        return $this->is_forced;
+        return $this->isForced;
     }
 
-    public function setIsForced(?bool $is_forced): self
+    public function setIsForced(?bool $isForced): self
     {
-        $this->is_forced = $is_forced;
+        $this->isForced = $isForced;
 
         return $this;
     }

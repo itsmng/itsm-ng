@@ -14,24 +14,24 @@ class Planningrecall
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
 
-    #[ORM\Column(type: 'integer', options: ['default' => -10])]
-    private $before_time;
+    #[ORM\Column(name: 'before_time', type: 'integer', options: ['default' => -10])]
+    private $beforeTime;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'when', type: 'datetime', nullable: true)]
     private $when;
 
     public function getId(): ?int
@@ -41,12 +41,12 @@ class Planningrecall
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -65,12 +65,12 @@ class Planningrecall
 
     public function getBeforeTime(): ?int
     {
-        return $this->before_time;
+        return $this->beforeTime;
     }
 
-    public function setBeforeTime(?int $before_time): self
+    public function setBeforeTime(?int $beforeTime): self
     {
-        $this->before_time = $before_time;
+        $this->beforeTime = $beforeTime;
 
         return $this;
     }

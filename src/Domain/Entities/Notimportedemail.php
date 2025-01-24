@@ -13,34 +13,34 @@ class Notimportedemail
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(name: 'from', type: 'string', length: 255)]
     private $from;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(name: 'to', type: 'string', length: 255)]
     private $to;
 
     #[ORM\ManyToOne(targetEntity: Mailcollector::class)]
     #[ORM\JoinColumn(name: 'mailcollectors_id', referencedColumnName: 'id', nullable: true)]
-    private ?Mailcollector $mailcollector;
+    private ?Mailcollector $mailcollector = null;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: false)]
     private $date;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'subject', type: 'text', length: 65535, nullable: true)]
     private $subject;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(name: 'messageid', type: 'string', length: 255)]
     private $messageid;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'reason', type: 'integer', options: ['default' => 0])]
     private $reason;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
     public function getId(): ?int
     {

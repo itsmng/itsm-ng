@@ -13,18 +13,18 @@ class NetworkportVlan
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: NetworkPort::class, inversedBy: 'networkportVlans')]
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
-    private ?NetworkPort $networkport;
+    private ?NetworkPort $networkport = null;
 
     #[ORM\ManyToOne(targetEntity: Vlan::class, inversedBy: 'networkportVlans')]
     #[ORM\JoinColumn(name: 'vlans_id', referencedColumnName: 'id', nullable: true)]
-    private ?Vlan $vlan;
+    private ?Vlan $vlan = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
+    #[ORM\Column(name: 'tagged', type: 'boolean', options: ['default' => 0])]
     private $tagged;
 
     public function getId(): ?int

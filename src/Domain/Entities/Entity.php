@@ -17,248 +17,248 @@ use Doctrine\Common\Collections\Collection;
 class Entity
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'id', type: 'integer', options: ['default' => 0])]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'completename', type: 'text', nullable: true, length: 65535)]
     private $completename;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
     private $level;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $sons_cache;
+    #[ORM\Column(name: 'sons_cache', type: 'text', nullable: true)]
+    private $sonsCache;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $ancestors_cache;
+    #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
+    private $ancestorsCache;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'address', type: 'text', nullable: true, length: 65535)]
     private $address;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'postcode', type: 'string', length: 255, nullable: true)]
     private $postcode;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'town', type: 'string', length: 255, nullable: true)]
     private $town;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'state', type: 'string', length: 255, nullable: true)]
     private $state;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'country', type: 'string', length: 255, nullable: true)]
     private $country;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'website', type: 'string', length: 255, nullable: true)]
     private $website;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'phonenumber', type: 'string', length: 255, nullable: true)]
     private $phonenumber;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'fax', type: 'string', length: 255, nullable: true)]
     private $fax;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'email', type: 'string', length: 255, nullable: true)]
     private $email;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $admin_email;
+    #[ORM\Column(name: 'admin_email', type: 'string', length: 255, nullable: true)]
+    private $adminEmail;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $admin_email_name;
+    #[ORM\Column(name: 'admin_email_name', type: 'string', length: 255, nullable: true)]
+    private $adminEmailName;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $admin_reply;
+    #[ORM\Column(name: 'admin_reply', type: 'string', length: 255, nullable: true)]
+    private $adminReply;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $admin_reply_name;
+    #[ORM\Column(name: 'admin_reply_name', type: 'string', length: 255, nullable: true)]
+    private $adminReplyName;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $notification_subject_tag;
+    #[ORM\Column(name: 'notification_subject_tag', type: 'string', length: 255, nullable: true)]
+    private $notificationSubjectTag;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $ldap_dn;
+    #[ORM\Column(name: 'ldap_dn', type: 'string', length: 255, nullable: true)]
+    private $ldapDn;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'tag', type: 'string', length: 255, nullable: true)]
     private $tag;
 
     #[ORM\ManyToOne(targetEntity: AuthLdap::class)]
     #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: true)]
-    private ?AuthLdap $authldap;
+    private ?AuthLdap $authldap = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $mail_domain;
+    #[ORM\Column(name: 'mail_domain', type: 'string', length: 255, nullable: true)]
+    private $mailDomain;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
-    private $entity_ldapfilter;
+    #[ORM\Column(name: 'entity_ldapfilter', type: 'text', nullable: true, length: 65535)]
+    private $entityLdapfilter;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
-    private $mailing_signature;
+    #[ORM\Column(name: 'mailing_signature', type: 'text', nullable: true, length: 65535)]
+    private $mailingSignature;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $cartridges_alert_repeat;
+    #[ORM\Column(name: 'cartridges_alert_repeat', type: 'integer', options: ['default' => -2])]
+    private $cartridgesAlertRepeat;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $consumables_alert_repeat;
+    #[ORM\Column(name: 'consumables_alert_repeat', type: 'integer', options: ['default' => -2])]
+    private $consumablesAlertRepeat;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $use_licenses_alert;
+    #[ORM\Column(name: 'use_licenses_alert', type: 'integer', options: ['default' => -2])]
+    private $useLicensesAlert;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $send_licenses_alert_before_delay;
+    #[ORM\Column(name: 'send_licenses_alert_before_delay', type: 'integer', options: ['default' => -2])]
+    private $sendLicensesAlertBeforeDelay;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $use_certificates_alert;
+    #[ORM\Column(name: 'use_certificates_alert', type: 'integer', options: ['default' => -2])]
+    private $useCertificatesAlert;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $send_certificates_alert_before_delay;
+    #[ORM\Column(name: 'send_certificates_alert_before_delay', type: 'integer', options: ['default' => -2])]
+    private $sendCertificatesAlertBeforeDelay;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $use_contracts_alert;
+    #[ORM\Column(name: 'use_contracts_alert', type: 'integer', options: ['default' => -2])]
+    private $useContractsAlert;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $send_contracts_alert_before_delay;
+    #[ORM\Column(name: 'send_contracts_alert_before_delay', type: 'integer', options: ['default' => -2])]
+    private $sendContractsAlertBeforeDelay;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $use_infocoms_alert;
+    #[ORM\Column(name: 'use_infocoms_alert', type: 'integer', options: ['default' => -2])]
+    private $useInfocomsAlert;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $send_infocoms_alert_before_delay;
+    #[ORM\Column(name: 'send_infocoms_alert_before_delay', type: 'integer', options: ['default' => -2])]
+    private $sendInfocomsAlertBeforeDelay;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $use_reservations_alert;
+    #[ORM\Column(name: 'use_reservations_alert', type: 'integer', options: ['default' => -2])]
+    private $useReservationsAlert;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $use_domains_alert;
+    #[ORM\Column(name: 'use_domains_alert', type: 'integer', options: ['default' => -2])]
+    private $useDomainsAlert;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $send_domains_alert_close_expiries_delay;
+    #[ORM\Column(name: 'send_domains_alert_close_expiries_delay', type: 'integer', options: ['default' => -2])]
+    private $sendDomainsAlertCloseExpiriesDelay;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $send_domains_alert_expired_delay;
+    #[ORM\Column(name: 'send_domains_alert_expired_delay', type: 'integer', options: ['default' => -2])]
+    private $sendDomainsAlertExpiredDelay;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $autoclose_delay;
+    #[ORM\Column(name: 'autoclose_delay', type: 'integer', options: ['default' => -2])]
+    private $autocloseDelay;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -10])]
-    private $autopurge_delay;
+    #[ORM\Column(name: 'autopurge_delay', type: 'integer', options: ['default' => -10])]
+    private $autopurgeDelay;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $notclosed_delay;
+    #[ORM\Column(name: 'notclosed_delay', type: 'integer', options: ['default' => -2])]
+    private $notclosedDelay;
 
     #[ORM\ManyToOne(targetEntity: Calendar::class)]
     #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
-    private ?Calendar $calendar;
+    private ?Calendar $calendar = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $auto_assign_mode;
+    #[ORM\Column(name: 'auto_assign_mode', type: 'integer', options: ['default' => -2])]
+    private $autoAssignMode;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
+    #[ORM\Column(name: 'tickettype', type: 'integer', options: ['default' => -2])]
     private $tickettype;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $max_closedate;
+    #[ORM\Column(name: 'max_closedate', type: 'datetime', nullable: true)]
+    private $maxClosedate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $inquest_config;
+    #[ORM\Column(name: 'inquest_config', type: 'integer', options: ['default' => -2])]
+    private $inquestConfig;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $inquest_rate;
+    #[ORM\Column(name: 'inquest_rate', type: 'integer', options: ['default' => 0])]
+    private $inquestRate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -10])]
-    private $inquest_delay;
+    #[ORM\Column(name: 'inquest_delay', type: 'integer', options: ['default' => -10])]
+    private $inquestDelay;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $inquest_URL;
+    #[ORM\Column(name: 'inquest_url', type: 'string', length: 255, nullable: true)]
+    private $inquestURL;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofill_warranty_date;
+    #[ORM\Column(name: 'autofill_warranty_date', type: 'string', length: 255, options: ['default' => '-2'])]
+    private $autofillWarrantyDate;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofill_use_date;
+    #[ORM\Column(name: 'autofill_use_date', type: 'string', length: 255, options: ['default' => '-2'])]
+    private $autofillUseDate;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofill_buy_date;
+    #[ORM\Column(name: 'autofill_buy_date', type: 'string', length: 255, options: ['default' => '-2'])]
+    private $autofillBuyDate;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofill_delivery_date;
+    #[ORM\Column(name: 'autofill_delivery_date', type: 'string', length: 255, options: ['default' => '-2'])]
+    private $autofillDeliveryDate;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofill_order_date;
+    #[ORM\Column(name: 'autofill_order_date', type: 'string', length: 255, options: ['default' => '-2'])]
+    private $autofillOrderDate;
 
     #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
     #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?TicketTemplate $tickettemplate;
+    private ?TicketTemplate $tickettemplate = null;
 
     #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
     #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?ChangeTemplate $changetemplate;
+    private ?ChangeTemplate $changetemplate = null;
 
     #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
     #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Problemtemplate $problemtemplate;
+    private ?Problemtemplate $problemtemplate = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id_software', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entitySoftware;
+    private ?Entity $entitySoftware = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $default_contract_alert;
+    #[ORM\Column(name: 'default_contract_alert', type: 'integer', options: ['default' => -2])]
+    private $defaultContractAlert;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $default_infocom_alert;
+    #[ORM\Column(name: 'default_infocom_alert', type: 'integer', options: ['default' => -2])]
+    private $defaultInfocomAlert;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $default_cartridges_alarm_threshold;
+    #[ORM\Column(name: 'default_cartridges_alarm_threshold', type: 'integer', options: ['default' => -2])]
+    private $defaultCartridgesAlarmThreshold;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $default_consumables_alarm_threshold;
+    #[ORM\Column(name: 'default_consumables_alarm_threshold', type: 'integer', options: ['default' => -2])]
+    private $defaultConsumablesAlarmThreshold;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $delay_send_emails;
+    #[ORM\Column(name: 'delay_send_emails', type: 'integer', options: ['default' => -2])]
+    private $delaySendEmails;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $is_notif_enable_default;
+    #[ORM\Column(name: 'is_notif_enable_default', type: 'integer', options: ['default' => -2])]
+    private $isNotifEnableDefault;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $inquest_duration;
+    #[ORM\Column(name: 'inquest_duration', type: 'integer', options: ['default' => 0])]
+    private $inquestDuration;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofill_decommission_date;
+    #[ORM\Column(name: 'autofill_decommission_date', type: 'string', length: 255, options: ['default' => '-2'])]
+    private $autofillDecommissionDate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $suppliers_as_private;
+    #[ORM\Column(name: 'suppliers_as_private', type: 'integer', options: ['default' => -2])]
+    private $suppliersAsPrivate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $anonymize_support_agents;
+    #[ORM\Column(name: 'anonymize_support_agents', type: 'integer', options: ['default' => -2])]
+    private $anonymizeSupportAgents;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -2])]
-    private $enable_custom_css;
+    #[ORM\Column(name: 'enable_custom_css', type: 'integer', options: ['default' => -2])]
+    private $enableCustomCss;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
-    private $custom_css_code;
+    #[ORM\Column(name: 'custom_css_code', type: 'text', nullable: true, length: 65535)]
+    private $customCssCode;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'latitude', type: 'string', length: 255, nullable: true)]
     private $latitude;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'longitude', type: 'string', length: 255, nullable: true)]
     private $longitude;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'altitude', type: 'string', length: 255, nullable: true)]
     private $altitude;
 
     #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityKnowbaseitem::class)]
@@ -332,24 +332,24 @@ class Entity
 
     public function getSonsCache(): ?string
     {
-        return $this->sons_cache;
+        return $this->sonsCache;
     }
 
     public function setSonsCache(string $sonsCache): self
     {
-        $this->sons_cache = $sonsCache;
+        $this->sonsCache = $sonsCache;
 
         return $this;
     }
 
     public function getAncestorsCache(): ?string
     {
-        return $this->ancestors_cache;
+        return $this->ancestorsCache;
     }
 
     public function setAncestorsCache(string $ancestorsCache): self
     {
-        $this->ancestors_cache = $ancestorsCache;
+        $this->ancestorsCache = $ancestorsCache;
 
         return $this;
     }
@@ -464,72 +464,72 @@ class Entity
 
     public function getAdminEmail(): ?string
     {
-        return $this->admin_email;
+        return $this->adminEmail;
     }
 
     public function setAdminEmail(string $adminEmail): self
     {
-        $this->admin_email = $adminEmail;
+        $this->adminEmail = $adminEmail;
 
         return $this;
     }
 
     public function getAdminEmailName(): ?string
     {
-        return $this->admin_email_name;
+        return $this->adminEmailName;
     }
 
     public function setAdminEmailName(string $adminEmailName): self
     {
-        $this->admin_email_name = $adminEmailName;
+        $this->adminEmailName = $adminEmailName;
 
         return $this;
     }
 
     public function getAdminReply(): ?string
     {
-        return $this->admin_reply;
+        return $this->adminReply;
     }
 
     public function setAdminReply(string $adminReply): self
     {
-        $this->admin_reply = $adminReply;
+        $this->adminReply = $adminReply;
 
         return $this;
     }
 
     public function getAdminReplyName(): ?string
     {
-        return $this->admin_reply_name;
+        return $this->adminReplyName;
     }
 
     public function setAdminReplyName(string $adminReplyName): self
     {
-        $this->admin_reply_name = $adminReplyName;
+        $this->adminReplyName = $adminReplyName;
 
         return $this;
     }
 
     public function getNotificationSubjectTag(): ?string
     {
-        return $this->notification_subject_tag;
+        return $this->notificationSubjectTag;
     }
 
     public function setNotificationSubjectTag(string $notificationSubjectTag): self
     {
-        $this->notification_subject_tag = $notificationSubjectTag;
+        $this->notificationSubjectTag = $notificationSubjectTag;
 
         return $this;
     }
 
     public function getLdapDn(): ?string
     {
-        return $this->ldap_dn;
+        return $this->ldapDn;
     }
 
     public function setLdapDn(string $ldapDn): self
     {
-        $this->ldap_dn = $ldapDn;
+        $this->ldapDn = $ldapDn;
 
         return $this;
     }
@@ -549,252 +549,252 @@ class Entity
 
     public function getMailDomain(): ?string
     {
-        return $this->mail_domain;
+        return $this->mailDomain;
     }
 
     public function setMailDomain(string $mailDomain): self
     {
-        $this->mail_domain = $mailDomain;
+        $this->mailDomain = $mailDomain;
 
         return $this;
     }
 
     public function getEntityLdapfilter(): ?string
     {
-        return $this->entity_ldapfilter;
+        return $this->entityLdapfilter;
     }
 
     public function setEntityLdapfilter(string $entityLdapfilter): self
     {
-        $this->entity_ldapfilter = $entityLdapfilter;
+        $this->entityLdapfilter = $entityLdapfilter;
 
         return $this;
     }
 
     public function getMailingSignature(): ?string
     {
-        return $this->mailing_signature;
+        return $this->mailingSignature;
     }
 
     public function setMailingSignature(string $mailingSignature): self
     {
-        $this->mailing_signature = $mailingSignature;
+        $this->mailingSignature = $mailingSignature;
 
         return $this;
     }
 
     public function getCartridgesAlertRepeat(): ?int
     {
-        return $this->cartridges_alert_repeat;
+        return $this->cartridgesAlertRepeat;
     }
 
     public function setCartridgesAlertRepeat(int $cartridgesAlertRepeat): self
     {
-        $this->cartridges_alert_repeat = $cartridgesAlertRepeat;
+        $this->cartridgesAlertRepeat = $cartridgesAlertRepeat;
 
         return $this;
     }
 
     public function getConsumablesAlertRepeat(): ?int
     {
-        return $this->consumables_alert_repeat;
+        return $this->consumablesAlertRepeat;
     }
 
     public function setConsumablesAlertRepeat(int $consumablesAlertRepeat): self
     {
-        $this->consumables_alert_repeat = $consumablesAlertRepeat;
+        $this->consumablesAlertRepeat = $consumablesAlertRepeat;
 
         return $this;
     }
 
     public function getUseLicensesAlert(): ?int
     {
-        return $this->use_licenses_alert;
+        return $this->useLicensesAlert;
     }
 
     public function setUseLicensesAlert(int $useLicensesAlert): self
     {
-        $this->use_licenses_alert = $useLicensesAlert;
+        $this->useLicensesAlert = $useLicensesAlert;
 
         return $this;
     }
 
     public function getSendLicensesAlertBeforeDelay(): ?int
     {
-        return $this->send_licenses_alert_before_delay;
+        return $this->sendLicensesAlertBeforeDelay;
     }
 
     public function setSendLicensesAlertBeforeDelay(int $sendLicensesAlertBeforeDelay): self
     {
-        $this->send_licenses_alert_before_delay = $sendLicensesAlertBeforeDelay;
+        $this->sendLicensesAlertBeforeDelay = $sendLicensesAlertBeforeDelay;
 
         return $this;
     }
 
     public function getUseCertificatesAlert(): ?int
     {
-        return $this->use_certificates_alert;
+        return $this->useCertificatesAlert;
     }
 
     public function setUseCertificatesAlert(int $useCertificatesAlert): self
     {
-        $this->use_certificates_alert = $useCertificatesAlert;
+        $this->useCertificatesAlert = $useCertificatesAlert;
 
         return $this;
     }
 
     public function getSendCertificatesAlertBeforeDelay(): ?int
     {
-        return $this->send_certificates_alert_before_delay;
+        return $this->sendCertificatesAlertBeforeDelay;
     }
 
     public function setSendCertificatesAlertBeforeDelay(int $sendCertificatesAlertBeforeDelay): self
     {
-        $this->send_certificates_alert_before_delay = $sendCertificatesAlertBeforeDelay;
+        $this->sendCertificatesAlertBeforeDelay = $sendCertificatesAlertBeforeDelay;
 
         return $this;
     }
 
     public function getUseContractsAlert(): ?int
     {
-        return $this->use_contracts_alert;
+        return $this->useContractsAlert;
     }
 
     public function setUseContractsAlert(int $useContractsAlert): self
     {
-        $this->use_contracts_alert = $useContractsAlert;
+        $this->useContractsAlert = $useContractsAlert;
 
         return $this;
     }
 
     public function getSendContractsAlertBeforeDelay(): ?int
     {
-        return $this->send_contracts_alert_before_delay;
+        return $this->sendContractsAlertBeforeDelay;
     }
 
     public function setSendContractsAlertBeforeDelay(int $sendContractsAlertBeforeDelay): self
     {
-        $this->send_contracts_alert_before_delay = $sendContractsAlertBeforeDelay;
+        $this->sendContractsAlertBeforeDelay = $sendContractsAlertBeforeDelay;
 
         return $this;
     }
 
     public function getUseInfocomsAlert(): ?int
     {
-        return $this->use_infocoms_alert;
+        return $this->useInfocomsAlert;
     }
 
     public function setUseInfocomsAlert(int $useInfocomsAlert): self
     {
-        $this->use_infocoms_alert = $useInfocomsAlert;
+        $this->useInfocomsAlert = $useInfocomsAlert;
 
         return $this;
     }
 
     public function getSendInfocomsAlertBeforeDelay(): ?int
     {
-        return $this->send_infocoms_alert_before_delay;
+        return $this->sendInfocomsAlertBeforeDelay;
     }
 
     public function setSendInfocomsAlertBeforeDelay(int $sendInfocomsAlertBeforeDelay): self
     {
-        $this->send_infocoms_alert_before_delay = $sendInfocomsAlertBeforeDelay;
+        $this->sendInfocomsAlertBeforeDelay = $sendInfocomsAlertBeforeDelay;
 
         return $this;
     }
 
     public function getUseReservationsAlert(): ?int
     {
-        return $this->use_reservations_alert;
+        return $this->useReservationsAlert;
     }
 
     public function setUseReservationsAlert(int $useReservationsAlert): self
     {
-        $this->use_reservations_alert = $useReservationsAlert;
+        $this->useReservationsAlert = $useReservationsAlert;
 
         return $this;
     }
 
     public function getUseDomainsAlert(): ?int
     {
-        return $this->use_domains_alert;
+        return $this->useDomainsAlert;
     }
 
     public function setUseDomainsAlert(int $useDomainAlert): self
     {
-        $this->use_domains_alert = $useDomainAlert;
+        $this->useDomainsAlert = $useDomainAlert;
 
         return $this;
     }
 
     public function getSendDomainsAlertCloseExpiriesDelay(): ?int
     {
-        return $this->send_domains_alert_close_expiries_delay;
+        return $this->sendDomainsAlertCloseExpiriesDelay;
     }
 
     public function setSendDomainsAlertCloseExpiriesDelay(int $sendDomainAlertCloseExpiriesDelay): self
     {
-        $this->send_domains_alert_close_expiries_delay = $sendDomainAlertCloseExpiriesDelay;
+        $this->sendDomainsAlertCloseExpiriesDelay = $sendDomainAlertCloseExpiriesDelay;
 
         return $this;
     }
 
     public function getSendDomainsAlertExpiredDelay(): ?int
     {
-        return $this->send_domains_alert_expired_delay;
+        return $this->sendDomainsAlertExpiredDelay;
     }
 
     public function setSendDomainsAlertExpiredDelay(int $sendDomainAlertExpiredDelay): self
     {
-        $this->send_domains_alert_expired_delay = $sendDomainAlertExpiredDelay;
+        $this->sendDomainsAlertExpiredDelay = $sendDomainAlertExpiredDelay;
 
         return $this;
     }
 
     public function getAutocloseDelay(): ?int
     {
-        return $this->autoclose_delay;
+        return $this->autocloseDelay;
     }
 
     public function setAutocloseDelay(int $autocloseDelay): self
     {
-        $this->autoclose_delay = $autocloseDelay;
+        $this->autocloseDelay = $autocloseDelay;
 
         return $this;
     }
 
     public function getAutopurgeDelay(): ?int
     {
-        return $this->autopurge_delay;
+        return $this->autopurgeDelay;
     }
 
     public function setAutopurgeDelay(int $autopurgeDelay): self
     {
-        $this->autopurge_delay = $autopurgeDelay;
+        $this->autopurgeDelay = $autopurgeDelay;
 
         return $this;
     }
 
     public function getNotclosedDelay(): ?int
     {
-        return $this->notclosed_delay;
+        return $this->notclosedDelay;
     }
 
     public function setNotclosedDelay(int $notclosedDelay): self
     {
-        $this->notclosed_delay = $notclosedDelay;
+        $this->notclosedDelay = $notclosedDelay;
 
         return $this;
     }
 
     public function getAutoAssignMode(): ?int
     {
-        return $this->auto_assign_mode;
+        return $this->autoAssignMode;
     }
 
     public function setAutoAssignMode(int $autoAssignMode): self
     {
-        $this->auto_assign_mode = $autoAssignMode;
+        $this->autoAssignMode = $autoAssignMode;
 
         return $this;
     }
@@ -813,288 +813,288 @@ class Entity
 
     public function getMaxClosedate(): ?\DateTimeInterface
     {
-        return $this->max_closedate;
+        return $this->maxClosedate;
     }
 
     public function setMaxClosedate(\DateTimeInterface $maxClosedate): self
     {
-        $this->max_closedate = $maxClosedate;
+        $this->maxClosedate = $maxClosedate;
 
         return $this;
     }
 
     public function getInquestConfig(): ?int
     {
-        return $this->inquest_config;
+        return $this->inquestConfig;
     }
 
     public function setInquestConfig(int $inquestConfig): self
     {
-        $this->inquest_config = $inquestConfig;
+        $this->inquestConfig = $inquestConfig;
 
         return $this;
     }
 
     public function getInquestRate(): ?int
     {
-        return $this->inquest_rate;
+        return $this->inquestRate;
     }
 
     public function setInquestRate(int $inquestRate): self
     {
-        $this->inquest_rate = $inquestRate;
+        $this->inquestRate = $inquestRate;
 
         return $this;
     }
 
     public function getInquestDelay(): ?int
     {
-        return $this->inquest_delay;
+        return $this->inquestDelay;
     }
 
     public function setInquestDelay(int $inquestDelay): self
     {
-        $this->inquest_delay = $inquestDelay;
+        $this->inquestDelay = $inquestDelay;
 
         return $this;
     }
 
     public function getInquestURL(): ?string
     {
-        return $this->inquest_URL;
+        return $this->inquestURL;
     }
 
     public function setInquestURL(string $inquestURL): self
     {
-        $this->inquest_URL = $inquestURL;
+        $this->inquestURL = $inquestURL;
 
         return $this;
     }
 
     public function getAutofillWarrantyDate(): ?string
     {
-        return $this->autofill_warranty_date;
+        return $this->autofillWarrantyDate;
     }
 
     public function setAutofillWarrantyDate(string $autofillWarrantyDate): self
     {
-        $this->autofill_warranty_date = $autofillWarrantyDate;
+        $this->autofillWarrantyDate = $autofillWarrantyDate;
 
         return $this;
     }
 
     public function getAutofillUseDate(): ?string
     {
-        return $this->autofill_use_date;
+        return $this->autofillUseDate;
     }
 
     public function setAutofillUseDate(string $autofillUseDate): self
     {
-        $this->autofill_use_date = $autofillUseDate;
+        $this->autofillUseDate = $autofillUseDate;
 
         return $this;
     }
 
     public function getAutofillBuyDate(): ?string
     {
-        return $this->autofill_buy_date;
+        return $this->autofillBuyDate;
     }
 
     public function setAutofillBuyDate(string $autofillBuyDate): self
     {
-        $this->autofill_buy_date = $autofillBuyDate;
+        $this->autofillBuyDate = $autofillBuyDate;
 
         return $this;
     }
 
     public function getAutofillDeliveryDate(): ?string
     {
-        return $this->autofill_delivery_date;
+        return $this->autofillDeliveryDate;
     }
 
     public function setAutofillDeliveryDate(string $autofillDeliveryDate): self
     {
-        $this->autofill_delivery_date = $autofillDeliveryDate;
+        $this->autofillDeliveryDate = $autofillDeliveryDate;
 
         return $this;
     }
 
     public function getAutofillOrderDate(): ?string
     {
-        return $this->autofill_order_date;
+        return $this->autofillOrderDate;
     }
 
     public function setAutofillOrderDate(string $autofillOrderDate): self
     {
-        $this->autofill_order_date = $autofillOrderDate;
+        $this->autofillOrderDate = $autofillOrderDate;
 
         return $this;
     }
 
     public function getDefaultContractAlert(): ?int
     {
-        return $this->default_contract_alert;
+        return $this->defaultContractAlert;
     }
 
     public function setDefaultContractAlert(int $defaultContractAlert): self
     {
-        $this->default_contract_alert = $defaultContractAlert;
+        $this->defaultContractAlert = $defaultContractAlert;
 
         return $this;
     }
 
     public function getDefaultInfocomAlert(): ?int
     {
-        return $this->default_infocom_alert;
+        return $this->defaultInfocomAlert;
     }
 
     public function setDefaultInfocomAlert(int $defaultInfocomAlert): self
     {
-        $this->default_infocom_alert = $defaultInfocomAlert;
+        $this->defaultInfocomAlert = $defaultInfocomAlert;
 
         return $this;
     }
 
     public function getDefaultCartridgesAlarmThreshold(): ?int
     {
-        return $this->default_cartridges_alarm_threshold;
+        return $this->defaultCartridgesAlarmThreshold;
     }
 
     public function setDefaultCartridgesAlarmThreshold(int $defaultCartridgesAlarmThreshold): self
     {
-        $this->default_cartridges_alarm_threshold = $defaultCartridgesAlarmThreshold;
+        $this->defaultCartridgesAlarmThreshold = $defaultCartridgesAlarmThreshold;
 
         return $this;
     }
 
     public function getDefaultConsumablesAlarmThreshold(): ?int
     {
-        return $this->default_consumables_alarm_threshold;
+        return $this->defaultConsumablesAlarmThreshold;
     }
 
     public function setDefaultConsumablesAlarmThreshold(int $defaultConsumablesAlarmThreshold): self
     {
-        $this->default_consumables_alarm_threshold = $defaultConsumablesAlarmThreshold;
+        $this->defaultConsumablesAlarmThreshold = $defaultConsumablesAlarmThreshold;
 
         return $this;
     }
 
     public function getDelaySendEmails(): ?int
     {
-        return $this->delay_send_emails;
+        return $this->delaySendEmails;
     }
 
     public function setDelaySendEmails(int $delaySendEmails): self
     {
-        $this->delay_send_emails = $delaySendEmails;
+        $this->delaySendEmails = $delaySendEmails;
 
         return $this;
     }
 
     public function getIsNotifEnableDefault(): ?int
     {
-        return $this->is_notif_enable_default;
+        return $this->isNotifEnableDefault;
     }
 
     public function setIsNotifEnableDefault(int $isNotifEnableDefault): self
     {
-        $this->is_notif_enable_default = $isNotifEnableDefault;
+        $this->isNotifEnableDefault = $isNotifEnableDefault;
 
         return $this;
     }
 
     public function getInquestDuration(): ?int
     {
-        return $this->inquest_duration;
+        return $this->inquestDuration;
     }
 
     public function setInquestDuration(int $inquestDuration): self
     {
-        $this->inquest_duration = $inquestDuration;
+        $this->inquestDuration = $inquestDuration;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
     public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $dateMod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $dateCreation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getAutofillDecommissionDate(): ?string
     {
-        return $this->autofill_decommission_date;
+        return $this->autofillDecommissionDate;
     }
 
     public function setAutofillDecommissionDate(string $autofillDecommissionDate): self
     {
-        $this->autofill_decommission_date = $autofillDecommissionDate;
+        $this->autofillDecommissionDate = $autofillDecommissionDate;
 
         return $this;
     }
 
     public function getSuppliersAsPrivate(): ?int
     {
-        return $this->suppliers_as_private;
+        return $this->suppliersAsPrivate;
     }
 
     public function setSuppliersAsPrivate(int $suppliersAsPrivate): self
     {
-        $this->suppliers_as_private = $suppliersAsPrivate;
+        $this->suppliersAsPrivate = $suppliersAsPrivate;
 
         return $this;
     }
 
     public function getAnonymizeSupportAgents(): ?int
     {
-        return $this->anonymize_support_agents;
+        return $this->anonymizeSupportAgents;
     }
 
     public function setAnonymizeSupportAgents(int $anonymizeSupportAgents): self
     {
-        $this->anonymize_support_agents = $anonymizeSupportAgents;
+        $this->anonymizeSupportAgents = $anonymizeSupportAgents;
 
         return $this;
     }
 
     public function getEnableCustomCss(): ?int
     {
-        return $this->enable_custom_css;
+        return $this->enableCustomCss;
     }
 
     public function setEnableCustomCss(int $enableCustomCss): self
     {
-        $this->enable_custom_css = $enableCustomCss;
+        $this->enableCustomCss = $enableCustomCss;
 
         return $this;
     }
 
     public function getCustomCssCode(): ?string
     {
-        return $this->custom_css_code;
+        return $this->customCssCode;
     }
 
     public function setCustomCssCode(string $customCssCode): self
     {
-        $this->custom_css_code = $customCssCode;
+        $this->customCssCode = $customCssCode;
 
         return $this;
     }

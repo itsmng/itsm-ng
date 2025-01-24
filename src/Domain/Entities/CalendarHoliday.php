@@ -13,16 +13,16 @@ class CalendarHoliday
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Calendar::class, inversedBy: 'calendarHolidays')]
     #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
-    private ?Calendar $calendar;
+    private ?Calendar $calendar = null;
 
     #[ORM\ManyToOne(targetEntity: Holiday::class, inversedBy: 'calendarHolidays')]
     #[ORM\JoinColumn(name: 'holidays_id', referencedColumnName: 'id', nullable: true)]
-    private ?Holiday $holiday;
+    private ?Holiday $holiday = null;
 
     public function getId(): ?int
     {

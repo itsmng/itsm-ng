@@ -14,36 +14,36 @@ class Documentcategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
     #[ORM\ManyToOne(targetEntity: Documentcategory::class)]
     #[ORM\JoinColumn(name: 'documentcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Documentcategory $documentcategory;
+    private ?Documentcategory $documentcategory = null;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'completename', type: 'text', length: 65535, nullable: true)]
     private $completename;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
     private $level;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $ancestors_cache;
+    #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
+    private $ancestorsCache;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $sons_cache;
+    #[ORM\Column(name: 'sons_cache', type: 'text', nullable: true)]
+    private $sonsCache;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -100,48 +100,48 @@ class Documentcategory
 
     public function getAncestorsCache(): ?string
     {
-        return $this->ancestors_cache;
+        return $this->ancestorsCache;
     }
 
-    public function setAncestorsCache(?string $ancestors_cache): self
+    public function setAncestorsCache(?string $ancestorsCache): self
     {
-        $this->ancestors_cache = $ancestors_cache;
+        $this->ancestorsCache = $ancestorsCache;
 
         return $this;
     }
 
     public function getSonsCache(): ?string
     {
-        return $this->sons_cache;
+        return $this->sonsCache;
     }
 
-    public function setSonsCache(?string $sons_cache): self
+    public function setSonsCache(?string $sonsCache): self
     {
-        $this->sons_cache = $sons_cache;
+        $this->sonsCache = $sonsCache;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

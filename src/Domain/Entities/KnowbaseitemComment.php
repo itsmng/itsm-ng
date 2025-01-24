@@ -10,34 +10,34 @@ class KnowbaseitemComment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer")]
-    private $knowbaseitems_id;
+    #[ORM\Column(name: 'knowbaseitems_id', type: "integer")]
+    private $knowbaseitemsId;
 
     #[ORM\ManyToOne(targetEntity: Knowbaseitem::class)]
     #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Knowbaseitem $knowbaseitem;
+    private ?Knowbaseitem $knowbaseitem = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
-    #[ORM\Column(type: "string", length: 10, nullable: true)]
+    #[ORM\Column(name: 'language', type: "string", length: 10, nullable: true)]
     private $language;
 
-    #[ORM\Column(type: "text", length: 65535)]
+    #[ORM\Column(name: 'comment', type: "text", length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", nullable: true)]
-    private $parent_comment_id;
+    #[ORM\Column(name: 'parent_comment_id', type: "integer", nullable: true)]
+    private $parentCommentId;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: "datetime", nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
+    private $dateMod;
 
     public function getId(): ?int
     {
@@ -46,12 +46,12 @@ class KnowbaseitemComment
 
     public function getKnowbaseitemsId(): ?int
     {
-        return $this->knowbaseitems_id;
+        return $this->knowbaseitemsId;
     }
 
-    public function setKnowbaseitemsId(int $knowbaseitems_id): self
+    public function setKnowbaseitemsId(int $knowbaseitemsId): self
     {
-        $this->knowbaseitems_id = $knowbaseitems_id;
+        $this->knowbaseitemsId = $knowbaseitemsId;
 
         return $this;
     }
@@ -82,36 +82,36 @@ class KnowbaseitemComment
 
     public function getParentCommentId(): ?int
     {
-        return $this->parent_comment_id;
+        return $this->parentCommentId;
     }
 
-    public function setParentCommentId(?int $parent_comment_id): self
+    public function setParentCommentId(?int $parentCommentId): self
     {
-        $this->parent_comment_id = $parent_comment_id;
+        $this->parentCommentId = $parentCommentId;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }

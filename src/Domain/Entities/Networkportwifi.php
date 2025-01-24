@@ -17,35 +17,35 @@ class Networkportwifi
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: NetworkPort::class)]
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
-    private ?NetworkPort $networkport;
+    private ?NetworkPort $networkport = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_devicenetworkcards_id;
+    #[ORM\Column(name: 'items_devicenetworkcards_id', type: 'integer', options: ['default' => 0])]
+    private $itemsDevicenetworkcardsId;
 
     #[ORM\ManyToOne(targetEntity: WifiNetwork::class)]
     #[ORM\JoinColumn(name: 'wifinetworks_id', referencedColumnName: 'id', nullable: true)]
-    private ?WifiNetwork $wifinetwork;
+    private ?WifiNetwork $wifinetwork = null;
 
     #[ORM\ManyToOne(targetEntity: Networkportwifi::class)]
     #[ORM\JoinColumn(name: 'networkportwifis_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'only useful in case of Managed node'])]
-    private ?Networkportwifi $networkportwifi;
+    private ?Networkportwifi $networkportwifi = null;
 
-    #[ORM\Column(type: 'string', length: 20, nullable: true, options: ['comment' => 'a, a/b, a/b/g, a/b/g/n, a/b/g/n/y'])]
+    #[ORM\Column(name: 'version', type: 'string', length: 20, nullable: true, options: ['comment' => 'a, a/b, a/b/g, a/b/g/n, a/b/g/n/y'])]
     private $version;
 
-    #[ORM\Column(type: 'string', length: 20, nullable: true, options: ['comment' => 'ad-hoc, managed, master, repeater, secondary, monitor, auto'])]
+    #[ORM\Column(name: 'mode', type: 'string', length: 20, nullable: true, options: ['comment' => 'ad-hoc, managed, master, repeater, secondary, monitor, auto'])]
     private $mode;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -54,12 +54,12 @@ class Networkportwifi
 
     public function getItemsDevicenetworkcardsId(): ?int
     {
-        return $this->items_devicenetworkcards_id;
+        return $this->itemsDevicenetworkcardsId;
     }
 
-    public function setItemsDevicenetworkcardsId(?int $items_devicenetworkcards_id): self
+    public function setItemsDevicenetworkcardsId(?int $itemsDevicenetworkcardsId): self
     {
-        $this->items_devicenetworkcards_id = $items_devicenetworkcards_id;
+        $this->itemsDevicenetworkcardsId = $itemsDevicenetworkcardsId;
 
         return $this;
     }
@@ -90,24 +90,24 @@ class Networkportwifi
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

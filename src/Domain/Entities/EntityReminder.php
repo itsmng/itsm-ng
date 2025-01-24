@@ -13,19 +13,19 @@ class EntityReminder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Reminder::class, inversedBy: 'entityReminders')]
     #[ORM\JoinColumn(name: 'reminders_id', referencedColumnName: 'id', nullable: true)]
-    private ?Reminder $reminder;
+    private ?Reminder $reminder = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'entityReminders')]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
+    private $isRecursive;
 
     public function getId(): ?int
     {
@@ -34,12 +34,12 @@ class EntityReminder
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }

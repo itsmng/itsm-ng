@@ -13,56 +13,56 @@ class Mailcollector
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'host', type: 'string', length: 255, nullable: true)]
     private $host;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'login', type: 'string', length: 255, nullable: true)]
     private $login;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 2097152])]
-    private $filesize_max;
+    #[ORM\Column(name: 'filesize_max', type: 'integer', options: ['default' => 2097152])]
+    private $filesizeMax;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private $is_active;
+    #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => true])]
+    private $isActive;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'passwd', type: 'string', length: 255, nullable: true)]
     private $passwd;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'accepted', type: 'string', length: 255, nullable: true)]
     private $accepted;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'refused', type: 'string', length: 255, nullable: true)]
     private $refused;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'errors', type: 'integer', options: ['default' => 0])]
     private $errors;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $use_mail_date;
+    #[ORM\Column(name: 'use_mail_date', type: 'boolean', options: ['default' => false])]
+    private $useMailDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $requester_field;
+    #[ORM\Column(name: 'requester_field', type: 'integer', options: ['default' => 0])]
+    private $requesterField;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $add_cc_to_observer;
+    #[ORM\Column(name: 'add_cc_to_observer', type: 'boolean', options: ['default' => false])]
+    private $addCcToObserver;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $collect_only_unread;
+    #[ORM\Column(name: 'collect_only_unread', type: 'boolean', options: ['default' => false])]
+    private $collectOnlyUnread;
 
     public function getId(): ?int
     {
@@ -107,36 +107,36 @@ class Mailcollector
 
     public function getFilesizeMax(): ?int
     {
-        return $this->filesize_max;
+        return $this->filesizeMax;
     }
 
-    public function setFilesizeMax(int $filesize_max): self
+    public function setFilesizeMax(int $filesizeMax): self
     {
-        $this->filesize_max = $filesize_max;
+        $this->filesizeMax = $filesizeMax;
 
         return $this;
     }
 
     public function getIsActive(): ?bool
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(bool $is_active): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->is_active = $is_active;
+        $this->isActive = $isActive;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -203,60 +203,60 @@ class Mailcollector
 
     public function getUseMailDate(): ?bool
     {
-        return $this->use_mail_date;
+        return $this->useMailDate;
     }
 
-    public function setUseMailDate(bool $use_mail_date): self
+    public function setUseMailDate(bool $useMailDate): self
     {
-        $this->use_mail_date = $use_mail_date;
+        $this->useMailDate = $useMailDate;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getRequesterField(): ?int
     {
-        return $this->requester_field;
+        return $this->requesterField;
     }
 
-    public function setRequesterField(int $requester_field): self
+    public function setRequesterField(int $requesterField): self
     {
-        $this->requester_field = $requester_field;
+        $this->requesterField = $requesterField;
 
         return $this;
     }
 
     public function getAddCcToObserver(): ?bool
     {
-        return $this->add_cc_to_observer;
+        return $this->addCcToObserver;
     }
 
-    public function setAddCcToObserver(bool $add_cc_to_observer): self
+    public function setAddCcToObserver(bool $addCcToObserver): self
     {
-        $this->add_cc_to_observer = $add_cc_to_observer;
+        $this->addCcToObserver = $addCcToObserver;
 
         return $this;
     }
 
     public function getCollectOnlyUnread(): ?bool
     {
-        return $this->collect_only_unread;
+        return $this->collectOnlyUnread;
     }
 
-    public function setCollectOnlyUnread(bool $collect_only_unread): self
+    public function setCollectOnlyUnread(bool $collectOnlyUnread): self
     {
-        $this->collect_only_unread = $collect_only_unread;
+        $this->collectOnlyUnread = $collectOnlyUnread;
 
         return $this;
     }

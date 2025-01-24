@@ -91,7 +91,7 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
         return [];
     }
     // get values from entity as array
-    public function getFields(array $content): array
+    public function getFields(mixed $content): array
     {
         return $content;
     }
@@ -120,6 +120,11 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
     }
 
     public function getRelations(): array
+    {
+        return [];
+    }
+
+    public function getSettersFromFields(array $fields, object $content): array
     {
         return [];
     }

@@ -11,19 +11,18 @@ use Doctrine\ORM\Mapping as ORM;
 class CartridgeItemPrintermodel
 {
     #[ORM\Id]
-    #[ORM\Column(type: "integer")]
-    #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
 
     #[ORM\ManyToOne(targetEntity: CartridgeItem::class, inversedBy: 'cartridgeItemPrintermodels')]
     #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: true)]
-    private ?CartridgeItem $cartridgeItem;
+    private ?CartridgeItem $cartridgeItem = null;
 
 
     #[ORM\ManyToOne(targetEntity: Printermodel::class, inversedBy: 'cartridgeItemPrintermodels')]
     #[ORM\JoinColumn(name: 'printermodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Printermodel $printermodel;
+    private ?Printermodel $printermodel = null;
 
 
     public function getId(): ?int

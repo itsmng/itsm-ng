@@ -21,35 +21,35 @@ class ItemSoftwareVersion
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $softwareversions_id;
+    #[ORM\Column(name: 'softwareversions_id', type: 'integer', options: ['default' => 0])]
+    private $softwareversionsId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_deleted_item;
+    #[ORM\Column(name: 'is_deleted_item', type: 'boolean', options: ['default' => false])]
+    private $isDeletedItem;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_template_item;
+    #[ORM\Column(name: 'is_template_item', type: 'boolean', options: ['default' => false])]
+    private $isTemplateItem;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
+    private $entitiesId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
+    private $isDynamic;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $date_install;
+    #[ORM\Column(name: 'date_install', type: 'date', nullable: true)]
+    private $dateInstall;
 
     public function getId(): ?int
     {
@@ -58,12 +58,12 @@ class ItemSoftwareVersion
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -82,84 +82,84 @@ class ItemSoftwareVersion
 
     public function getSoftwareversionsId(): ?int
     {
-        return $this->softwareversions_id;
+        return $this->softwareversionsId;
     }
 
-    public function setSoftwareversionsId(int $softwareversions_id): self
+    public function setSoftwareversionsId(int $softwareversionsId): self
     {
-        $this->softwareversions_id = $softwareversions_id;
+        $this->softwareversionsId = $softwareversionsId;
 
         return $this;
     }
 
     public function getIsDeletedItem(): ?bool
     {
-        return $this->is_deleted_item;
+        return $this->isDeletedItem;
     }
 
-    public function setIsDeletedItem(bool $is_deleted_item): self
+    public function setIsDeletedItem(bool $isDeletedItem): self
     {
-        $this->is_deleted_item = $is_deleted_item;
+        $this->isDeletedItem = $isDeletedItem;
 
         return $this;
     }
 
     public function getIsTemplateItem(): ?bool
     {
-        return $this->is_template_item;
+        return $this->isTemplateItem;
     }
 
-    public function setIsTemplateItem(bool $is_template_item): self
+    public function setIsTemplateItem(bool $isTemplateItem): self
     {
-        $this->is_template_item = $is_template_item;
+        $this->isTemplateItem = $isTemplateItem;
 
         return $this;
     }
 
     public function getEntitiesId(): ?int
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntitiesId(int $entities_id): self
+    public function setEntitiesId(int $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(bool $is_dynamic): self
+    public function setIsDynamic(bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getDateInstall(): ?DateTime
     {
-        return $this->date_install;
+        return $this->dateInstall;
     }
 
-    public function setDateInstall(?DateTime $date_install): self
+    public function setDateInstall(?DateTime $dateInstall): self
     {
-        $this->date_install = $date_install;
+        $this->dateInstall = $dateInstall;
 
         return $this;
     }

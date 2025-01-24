@@ -13,20 +13,20 @@ class Registeredid
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'string', length: 100, options: ['comment' => 'USB, PCI ...'])]
-    private $device_type;
+    #[ORM\Column(name: 'device_type', type: 'string', length: 100, options: ['comment' => 'USB, PCI ...'])]
+    private $deviceType;
 
     public function getId(): ?int
     {
@@ -47,12 +47,12 @@ class Registeredid
 
     public function getItemsId(): ?string
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?string $items_id): self
+    public function setItemsId(?string $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -71,12 +71,12 @@ class Registeredid
 
     public function getDeviceType(): ?string
     {
-        return $this->device_type;
+        return $this->deviceType;
     }
 
-    public function setDeviceType(?string $device_type): self
+    public function setDeviceType(?string $deviceType): self
     {
-        $this->device_type = $device_type;
+        $this->deviceType = $deviceType;
 
         return $this;
     }

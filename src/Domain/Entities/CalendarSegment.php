@@ -12,28 +12,28 @@ class CalendarSegment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
 
     #[ORM\ManyToOne(targetEntity: Calendar::class)]
     #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
-    private ?Calendar $calendars;
+    private ?Calendar $calendars = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
+    private $isRecursive;
 
-    #[ORM\Column(type: "boolean", options: ["default" => true, "comment" => "number of the day based on date(w)"])]
+    #[ORM\Column(name: 'day', type: "boolean", options: ["default" => true, "comment" => "number of the day based on date(w)"])]
     private $day;
 
-    #[ORM\Column(type: "time", nullable: true)]
+    #[ORM\Column(name: 'begin', type: "time", nullable: true)]
     private $begin;
 
-    #[ORM\Column(type: "time", nullable: true)]
+    #[ORM\Column(name: 'end', type: "time", nullable: true)]
     private $end;
 
     public function getId(): ?int
@@ -44,12 +44,12 @@ class CalendarSegment
 
     public function isRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }

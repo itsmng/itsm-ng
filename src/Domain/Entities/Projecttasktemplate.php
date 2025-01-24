@@ -26,77 +26,77 @@ class Projecttasktemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'description', type: 'text', nullable: true)]
     private $description;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true)]
     private $comment;
 
     #[ORM\ManyToOne(targetEntity: Project::class)]
     #[ORM\JoinColumn(name: 'projects_id', referencedColumnName: 'id', nullable: true)]
-    private ?Project $project;
+    private ?Project $project = null;
 
     #[ORM\ManyToOne(targetEntity: Projecttask::class)]
     #[ORM\JoinColumn(name: 'projecttasks_id', referencedColumnName: 'id', nullable: true)]
-    private ?Projecttask $projecttask;
+    private ?Projecttask $projecttask = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $plan_start_date;
+    #[ORM\Column(name: 'plan_start_date', type: 'datetime', nullable: true)]
+    private $planStartDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $plan_end_date;
+    #[ORM\Column(name: 'plan_end_date', type: 'datetime', nullable: true)]
+    private $planEndDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $real_start_date;
+    #[ORM\Column(name: 'real_start_date', type: 'datetime', nullable: true)]
+    private $realStartDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $real_end_date;
+    #[ORM\Column(name: 'real_end_date', type: 'datetime', nullable: true)]
+    private $realEndDate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $planned_duration;
+    #[ORM\Column(name: 'planned_duration', type: 'integer', options: ['default' => 0])]
+    private $plannedDuration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $effective_duration;
+    #[ORM\Column(name: 'effective_duration', type: 'integer', options: ['default' => 0])]
+    private $effectiveDuration;
 
     #[ORM\ManyToOne(targetEntity: Projectstate::class)]
     #[ORM\JoinColumn(name: 'projectstates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Projectstate $projectstate;
+    private ?Projectstate $projectstate = null;
 
     #[ORM\ManyToOne(targetEntity: Projecttasktype::class)]
     #[ORM\JoinColumn(name: 'projecttasktypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Projecttasktype $projecttasktype;
+    private ?Projecttasktype $projecttasktype = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $percent_done;
+    #[ORM\Column(name: 'percent_done', type: 'integer', options: ['default' => 0])]
+    private $percentDone;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_milestone;
+    #[ORM\Column(name: 'is_milestone', type: 'boolean', options: ['default' => 0])]
+    private $isMilestone;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comments', type: 'text', length: 65535, nullable: true)]
     private $comments;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -105,12 +105,12 @@ class Projecttasktemplate
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -153,96 +153,96 @@ class Projecttasktemplate
 
     public function getPlanStartDate(): ?\DateTimeInterface
     {
-        return $this->plan_start_date;
+        return $this->planStartDate;
     }
 
-    public function setPlanStartDate(?\DateTimeInterface $plan_start_date): self
+    public function setPlanStartDate(?\DateTimeInterface $planStartDate): self
     {
-        $this->plan_start_date = $plan_start_date;
+        $this->planStartDate = $planStartDate;
 
         return $this;
     }
 
     public function getPlanEndDate(): ?\DateTimeInterface
     {
-        return $this->plan_end_date;
+        return $this->planEndDate;
     }
 
-    public function setPlanEndDate(?\DateTimeInterface $plan_end_date): self
+    public function setPlanEndDate(?\DateTimeInterface $planEndDate): self
     {
-        $this->plan_end_date = $plan_end_date;
+        $this->planEndDate = $planEndDate;
 
         return $this;
     }
 
     public function getRealStartDate(): ?\DateTimeInterface
     {
-        return $this->real_start_date;
+        return $this->realStartDate;
     }
 
-    public function setRealStartDate(?\DateTimeInterface $real_start_date): self
+    public function setRealStartDate(?\DateTimeInterface $realStartDate): self
     {
-        $this->real_start_date = $real_start_date;
+        $this->realStartDate = $realStartDate;
 
         return $this;
     }
 
     public function getRealEndDate(): ?\DateTimeInterface
     {
-        return $this->real_end_date;
+        return $this->realEndDate;
     }
 
-    public function setRealEndDate(?\DateTimeInterface $real_end_date): self
+    public function setRealEndDate(?\DateTimeInterface $realEndDate): self
     {
-        $this->real_end_date = $real_end_date;
+        $this->realEndDate = $realEndDate;
 
         return $this;
     }
 
     public function getPlannedDuration(): ?int
     {
-        return $this->planned_duration;
+        return $this->plannedDuration;
     }
 
-    public function setPlannedDuration(?int $planned_duration): self
+    public function setPlannedDuration(?int $plannedDuration): self
     {
-        $this->planned_duration = $planned_duration;
+        $this->plannedDuration = $plannedDuration;
 
         return $this;
     }
 
     public function getEffectiveDuration(): ?int
     {
-        return $this->effective_duration;
+        return $this->effectiveDuration;
     }
 
-    public function setEffectiveDuration(?int $effective_duration): self
+    public function setEffectiveDuration(?int $effectiveDuration): self
     {
-        $this->effective_duration = $effective_duration;
+        $this->effectiveDuration = $effectiveDuration;
 
         return $this;
     }
 
     public function getPercentDone(): ?int
     {
-        return $this->percent_done;
+        return $this->percentDone;
     }
 
-    public function setPercentDone(?int $percent_done): self
+    public function setPercentDone(?int $percentDone): self
     {
-        $this->percent_done = $percent_done;
+        $this->percentDone = $percentDone;
 
         return $this;
     }
 
     public function getIsMilestone(): ?bool
     {
-        return $this->is_milestone;
+        return $this->isMilestone;
     }
 
-    public function setIsMilestone(?bool $is_milestone): self
+    public function setIsMilestone(?bool $isMilestone): self
     {
-        $this->is_milestone = $is_milestone;
+        $this->isMilestone = $isMilestone;
 
         return $this;
     }
@@ -261,24 +261,24 @@ class Projecttasktemplate
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

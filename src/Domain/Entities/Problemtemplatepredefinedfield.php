@@ -11,17 +11,17 @@ class Problemtemplatepredefinedfield
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
     #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Problemtemplate $problemtemplate;
+    private ?Problemtemplate $problemtemplate = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'num', type: 'integer', options: ['default' => 0])]
     private $num;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'value', type: 'text', length: 65535, nullable: true)]
     private $value;
 
     public function getId(): ?int

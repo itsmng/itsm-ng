@@ -18,75 +18,75 @@ class Queuednotification
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
     #[ORM\ManyToOne(targetEntity: Notificationtemplate::class)]
     #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Notificationtemplate $notificationtemplate;
+    private ?Notificationtemplate $notificationtemplate = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $sent_try;
+    #[ORM\Column(name: 'sent_try', type: 'integer', options: ['default' => 0])]
+    private $sentTry;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $create_time;
+    #[ORM\Column(name: 'create_time', type: 'datetime', nullable: true)]
+    private $createTime;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $send_time;
+    #[ORM\Column(name: 'send_time', type: 'datetime', nullable: true)]
+    private $sendTime;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $sent_time;
+    #[ORM\Column(name: 'sent_time', type: 'datetime', nullable: true)]
+    private $sentTime;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'text', length: 65535, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'sender', type: 'text', length: 65535, nullable: true)]
     private $sender;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'sendername', type: 'text', length: 65535, nullable: true)]
     private $sendername;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'recipient', type: 'text', length: 65535, nullable: true)]
     private $recipient;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'recipientname', type: 'text', length: 65535, nullable: true)]
     private $recipientname;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'replyto', type: 'text', length: 65535, nullable: true)]
     private $replyto;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'replytoname', type: 'text', length: 65535, nullable: true)]
     private $replytoname;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'headers', type: 'text', length: 65535, nullable: true)]
     private $headers;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $body_html;
+    #[ORM\Column(name: 'body_html', type: 'text', nullable: true)]
+    private $bodyHtml;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $body_text;
+    #[ORM\Column(name: 'body_text', type: 'text', nullable: true)]
+    private $bodyText;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'messageid', type: 'text', length: 65535, nullable: true)]
     private $messageid;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'documents', type: 'text', length: 65535, nullable: true)]
     private $documents;
 
-    #[ORM\Column(type: 'string', length: 20, options: ['comment' => 'See Notification_NotificationTemplate::MODE_* constants'])]
+    #[ORM\Column(name: 'mode', type: 'string', length: 20, options: ['comment' => 'See Notification_NotificationTemplate::MODE_* constants'])]
     private $mode;
 
     public function getId(): ?int
@@ -109,72 +109,72 @@ class Queuednotification
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(?bool $is_deleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getSentTry(): ?int
     {
-        return $this->sent_try;
+        return $this->sentTry;
     }
 
-    public function setSentTry(?int $sent_try): self
+    public function setSentTry(?int $sentTry): self
     {
-        $this->sent_try = $sent_try;
+        $this->sentTry = $sentTry;
 
         return $this;
     }
 
     public function getCreateTime(): ?\DateTimeInterface
     {
-        return $this->create_time;
+        return $this->createTime;
     }
 
-    public function setCreateTime(?\DateTimeInterface $create_time): self
+    public function setCreateTime(?\DateTimeInterface $createTime): self
     {
-        $this->create_time = $create_time;
+        $this->createTime = $createTime;
 
         return $this;
     }
 
     public function getSendTime(): ?\DateTimeInterface
     {
-        return $this->send_time;
+        return $this->sendTime;
     }
 
-    public function setSendTime(?\DateTimeInterface $send_time): self
+    public function setSendTime(?\DateTimeInterface $sendTime): self
     {
-        $this->send_time = $send_time;
+        $this->sendTime = $sendTime;
 
         return $this;
     }
 
     public function getSentTime(): ?\DateTimeInterface
     {
-        return $this->sent_time;
+        return $this->sentTime;
     }
 
-    public function setSentTime(?\DateTimeInterface $sent_time): self
+    public function setSentTime(?\DateTimeInterface $sentTime): self
     {
-        $this->sent_time = $sent_time;
+        $this->sentTime = $sentTime;
 
         return $this;
     }
@@ -277,24 +277,24 @@ class Queuednotification
 
     public function getBodyHtml(): ?string
     {
-        return $this->body_html;
+        return $this->bodyHtml;
     }
 
-    public function setBodyHtml(?string $body_html): self
+    public function setBodyHtml(?string $bodyHtml): self
     {
-        $this->body_html = $body_html;
+        $this->bodyHtml = $bodyHtml;
 
         return $this;
     }
 
     public function getBodyText(): ?string
     {
-        return $this->body_text;
+        return $this->bodyText;
     }
 
-    public function setBodyText(?string $body_text): self
+    public function setBodyText(?string $bodyText): self
     {
-        $this->body_text = $body_text;
+        $this->bodyText = $bodyText;
 
         return $this;
     }

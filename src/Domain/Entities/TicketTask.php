@@ -26,65 +26,65 @@ class TicketTask
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'uuid', type: 'string', length: 255, nullable: true)]
     private $uuid;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\Column(name: 'tickets_id', type: 'integer', options: ['default' => 0])]
+    private $ticketsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $taskcategories_id;
+    #[ORM\Column(name: 'taskcategories_id', type: 'integer', options: ['default' => 0])]
+    private $taskcategoriesId;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
+    private $usersId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_editor;
+    #[ORM\Column(name: 'users_id_editor', type: 'integer', options: ['default' => 0])]
+    private $usersIdEditor;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_private;
+    #[ORM\Column(name: 'is_private', type: 'boolean', options: ['default' => 0])]
+    private $isPrivate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
     private $actiontime;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'begin', type: 'datetime', nullable: true)]
     private $begin;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'end', type: 'datetime', nullable: true)]
     private $end;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 1])]
     private $state;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_tech;
+    #[ORM\Column(name: 'users_id_tech', type: 'integer', options: ['default' => 0])]
+    private $usersIdTech;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id_tech;
+    #[ORM\Column(name: 'groups_id_tech', type: 'integer', options: ['default' => 0])]
+    private $groupsIdTech;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tasktemplates_id;
+    #[ORM\Column(name: 'tasktemplates_id', type: 'integer', options: ['default' => 0])]
+    private $tasktemplatesId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $timeline_position;
+    #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
+    private $timelinePosition;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $sourceitems_id;
+    #[ORM\Column(name: 'sourceitems_id', type: 'integer', options: ['default' => 0])]
+    private $sourceitemsId;
 
     public function getId(): ?int
     {
@@ -105,24 +105,24 @@ class TicketTask
 
     public function getTicketsId(): ?int
     {
-        return $this->tickets_id;
+        return $this->ticketsId;
     }
 
-    public function setTicketsId(?int $tickets_id): self
+    public function setTicketsId(?int $ticketsId): self
     {
-        $this->tickets_id = $tickets_id;
+        $this->ticketsId = $ticketsId;
 
         return $this;
     }
 
     public function getTaskcategoriesId(): ?int
     {
-        return $this->taskcategories_id;
+        return $this->taskcategoriesId;
     }
 
-    public function setTaskcategoriesId(?int $taskcategories_id): self
+    public function setTaskcategoriesId(?int $taskcategoriesId): self
     {
-        $this->taskcategories_id = $taskcategories_id;
+        $this->taskcategoriesId = $taskcategoriesId;
 
         return $this;
     }
@@ -141,24 +141,24 @@ class TicketTask
 
     public function getUsersId(): ?int
     {
-        return $this->users_id;
+        return $this->usersId;
     }
 
-    public function setUsersId(?int $users_id): self
+    public function setUsersId(?int $usersId): self
     {
-        $this->users_id = $users_id;
+        $this->usersId = $usersId;
 
         return $this;
     }
 
     public function getUsersIdEditor(): ?int
     {
-        return $this->users_id_editor;
+        return $this->usersIdEditor;
     }
 
-    public function setUsersIdEditor(?int $users_id_editor): self
+    public function setUsersIdEditor(?int $usersIdEditor): self
     {
-        $this->users_id_editor = $users_id_editor;
+        $this->usersIdEditor = $usersIdEditor;
 
         return $this;
     }
@@ -177,12 +177,12 @@ class TicketTask
 
     public function getIsPrivate(): ?bool
     {
-        return $this->is_private;
+        return $this->isPrivate;
     }
 
-    public function setIsPrivate(?bool $is_private): self
+    public function setIsPrivate(?bool $isPrivate): self
     {
-        $this->is_private = $is_private;
+        $this->isPrivate = $isPrivate;
 
         return $this;
     }
@@ -237,84 +237,84 @@ class TicketTask
 
     public function getUsersIdTech(): ?int
     {
-        return $this->users_id_tech;
+        return $this->usersIdTech;
     }
 
-    public function setUsersIdTech(?int $users_id_tech): self
+    public function setUsersIdTech(?int $usersIdTech): self
     {
-        $this->users_id_tech = $users_id_tech;
+        $this->usersIdTech = $usersIdTech;
 
         return $this;
     }
 
     public function getGroupsIdTech(): ?int
     {
-        return $this->groups_id_tech;
+        return $this->groupsIdTech;
     }
 
-    public function setGroupsIdTech(?int $groups_id_tech): self
+    public function setGroupsIdTech(?int $groupsIdTech): self
     {
-        $this->groups_id_tech = $groups_id_tech;
+        $this->groupsIdTech = $groupsIdTech;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTime
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $date_mod): self
+    public function setDateMod(?\DateTime $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $date_creation): self
+    public function setDateCreation(?\DateTime $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getTasktemplatesId(): ?int
     {
-        return $this->tasktemplates_id;
+        return $this->tasktemplatesId;
     }
 
-    public function setTasktemplatesId(?int $tasktemplates_id): self
+    public function setTasktemplatesId(?int $tasktemplatesId): self
     {
-        $this->tasktemplates_id = $tasktemplates_id;
+        $this->tasktemplatesId = $tasktemplatesId;
 
         return $this;
     }
 
     public function getTimelinePosition(): ?bool
     {
-        return $this->timeline_position;
+        return $this->timelinePosition;
     }
 
-    public function setTimelinePosition(?bool $timeline_position): self
+    public function setTimelinePosition(?bool $timelinePosition): self
     {
-        $this->timeline_position = $timeline_position;
+        $this->timelinePosition = $timelinePosition;
 
         return $this;
     }
 
     public function getSourceitemsId(): ?int
     {
-        return $this->sourceitems_id;
+        return $this->sourceitemsId;
     }
 
-    public function setSourceitemsId(?int $sourceitems_id): self
+    public function setSourceitemsId(?int $sourceitemsId): self
     {
-        $this->sourceitems_id = $sourceitems_id;
+        $this->sourceitemsId = $sourceitemsId;
 
         return $this;
     }

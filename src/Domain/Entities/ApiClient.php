@@ -12,45 +12,45 @@ class ApiClient
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_active;
+    #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => false])]
+    private $isActive;
 
-    #[ORM\Column(type: 'bigint', nullable: true)]
+    #[ORM\Column(name: 'ipv4_range_start', type: 'bigint', nullable: true)]
     private $ipv4_range_start;
 
-    #[ORM\Column(type: 'bigint', nullable: true)]
+    #[ORM\Column(name: 'ipv4_range_end', type: 'bigint', nullable: true)]
     private $ipv4_range_end;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'ipv6', type: 'string', length: 255, nullable: true)]
     private $ipv6;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $app_token;
+    #[ORM\Column(name: 'app_token', type: 'string', length: 255, nullable: true)]
+    private $appToken;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $app_token_date;
+    #[ORM\Column(name: 'app_token_date', type: 'datetime', nullable: true)]
+    private $appTokenDate;
 
-    #[ORM\Column(type: 'smallint', options: ['default' => 0])]
-    private $dolog_method;
+    #[ORM\Column(name: 'dolog_method', type: 'smallint', options: ['default' => 0])]
+    private $dologMethod;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
     public function getId(): ?int
@@ -62,12 +62,12 @@ class ApiClient
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -86,24 +86,24 @@ class ApiClient
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getIsActive(): ?bool
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(bool $is_active): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->is_active = $is_active;
+        $this->isActive = $isActive;
 
         return $this;
     }
@@ -146,36 +146,36 @@ class ApiClient
 
     public function getAppToken(): ?string
     {
-        return $this->app_token;
+        return $this->appToken;
     }
 
-    public function setAppToken(?string $app_token): self
+    public function setAppToken(?string $appToken): self
     {
-        $this->app_token = $app_token;
+        $this->appToken = $appToken;
 
         return $this;
     }
 
     public function getAppTokenDate(): ?\DateTimeInterface
     {
-        return $this->app_token_date;
+        return $this->appTokenDate;
     }
 
-    public function setAppTokenDate(\DateTimeInterface $app_token_date): self
+    public function setAppTokenDate(\DateTimeInterface $appTokenDate): self
     {
-        $this->app_token_date = $app_token_date;
+        $this->appTokenDate = $appTokenDate;
 
         return $this;
     }
 
     public function getDologMethod(): ?int
     {
-        return $this->dolog_method;
+        return $this->dologMethod;
     }
 
-    public function setDologMethod(int $dolog_method): self
+    public function setDologMethod(int $dologMethod): self
     {
-        $this->dolog_method = $dolog_method;
+        $this->dologMethod = $dologMethod;
 
         return $this;
     }

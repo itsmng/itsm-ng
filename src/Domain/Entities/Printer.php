@@ -31,122 +31,122 @@ class Printer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options:['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options:['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'contact', type: 'string', length: 255, nullable: true)]
     private $contact;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $contact_num;
+    #[ORM\Column(name: 'contact_num', type: 'string', length: 255, nullable: true)]
+    private $contactNum;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $techUser;
+    private ?User $techUser = null;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
-    private ?Group $techGroup;
+    private ?Group $techGroup = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'boolean', options:['default' => 0])]
-    private $have_serial;
+    #[ORM\Column(name: 'have_serial', type: 'boolean', options:['default' => 0])]
+    private $haveSerial;
 
-    #[ORM\Column(type: 'boolean', options:['default' => 0])]
-    private $have_parallel;
+    #[ORM\Column(name: 'have_parallel', type: 'boolean', options:['default' => 0])]
+    private $haveParallel;
 
 
-    #[ORM\Column(type: 'boolean', options:['default' => 0])]
-    private $have_usb;
+    #[ORM\Column(name: 'have_usb', type: 'boolean', options:['default' => 0])]
+    private $haveUsb;
 
-    #[ORM\Column(type: 'boolean', options:['default' => 0])]
-    private $have_wifi;
+    #[ORM\Column(name: 'have_wifi', type: 'boolean', options:['default' => 0])]
+    private $haveWifi;
 
-    #[ORM\Column(type: 'boolean', options:['default' => 0])]
-    private $have_ethernet;
+    #[ORM\Column(name: 'have_ethernet', type: 'boolean', options:['default' => 0])]
+    private $haveEthernet;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $memory_size;
+    #[ORM\Column(name: 'memory_size', type: 'string', length: 255, nullable: true)]
+    private $memorySize;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
-    private ?Location $location;
+    private ?Location $location = null;
 
     #[ORM\ManyToOne(targetEntity: Network::class)]
     #[ORM\JoinColumn(name: 'networks_id', referencedColumnName: 'id', nullable: true)]
-    private ?Network $network;
+    private ?Network $network = null;
 
     #[ORM\ManyToOne(targetEntity: Printertype::class)]
     #[ORM\JoinColumn(name: 'printertypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Printertype $printertype;
+    private ?Printertype $printertype = null;
 
     #[ORM\ManyToOne(targetEntity: Printermodel::class)]
     #[ORM\JoinColumn(name: 'printermodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Printermodel $printermodel;
+    private ?Printermodel $printermodel = null;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
-    private ?Manufacturer $manufacturer;
+    private ?Manufacturer $manufacturer = null;
 
-    #[ORM\Column(type: 'boolean', options:['default' => 0])]
-    private $is_global;
+    #[ORM\Column(name: 'is_global', type: 'boolean', options:['default' => 0])]
+    private $isGlobal;
 
-    #[ORM\Column(type: 'boolean', options:['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options:['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'boolean', options:['default' => 0])]
-    private $is_template;
+    #[ORM\Column(name: 'is_template', type: 'boolean', options:['default' => 0])]
+    private $isTemplate;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $template_name;
+    #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
+    private $templateName;
 
-    #[ORM\Column(type: 'integer', options:['default' => 0])]
-    private $init_pages_counter;
+    #[ORM\Column(name: 'init_pages_counter', type: 'integer', options:['default' => 0])]
+    private $initPagesCounter;
 
-    #[ORM\Column(type: 'integer', options:['default' => 0])]
-    private $last_pages_counter;
+    #[ORM\Column(name: 'last_pages_counter', type: 'integer', options:['default' => 0])]
+    private $lastPagesCounter;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
-    private ?Group $group;
+    private ?Group $group = null;
 
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
-    private ?State $state;
+    private ?State $state = null;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, nullable: true, options:['default' => "0.0000"])]
-    private $ticket_tco;
+    #[ORM\Column(name: 'ticket_tco', type: 'decimal', precision: 20, scale: 4, nullable: true, options:['default' => "0.0000"])]
+    private $ticketTco;
 
-    #[ORM\Column(type: 'boolean', options:['default' => 0])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options:['default' => 0])]
+    private $isDynamic;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -155,12 +155,12 @@ class Printer
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
         return $this;
     }
 
@@ -178,12 +178,12 @@ class Printer
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
         return $this;
     }
 
@@ -200,12 +200,12 @@ class Printer
 
     public function getContactNum(): ?string
     {
-        return $this->contact_num;
+        return $this->contactNum;
     }
 
-    public function setContactNum(?string $contact_num): self
+    public function setContactNum(?string $contactNum): self
     {
-        $this->contact_num = $contact_num;
+        $this->contactNum = $contactNum;
         return $this;
     }
 
@@ -233,59 +233,59 @@ class Printer
 
     public function getHaveSerial(): ?bool
     {
-        return $this->have_serial;
+        return $this->haveSerial;
     }
 
-    public function setHaveSerial(?bool $have_serial): self
+    public function setHaveSerial(?bool $haveSerial): self
     {
-        $this->have_serial = $have_serial;
+        $this->haveSerial = $haveSerial;
         return $this;
     }
 
     public function getHaveParallel(): ?bool
     {
-        return $this->have_parallel;
+        return $this->haveParallel;
     }
 
-    public function setHaveParallel(?bool $have_parallel): self
+    public function setHaveParallel(?bool $haveParallel): self
     {
-        $this->have_parallel = $have_parallel;
+        $this->haveParallel = $haveParallel;
         return $this;
     }
 
 
     public function getHaveUsb(): ?bool
     {
-        return $this->have_usb;
+        return $this->haveUsb;
     }
 
-    public function setHaveUsb(?bool $have_usb): self
+    public function setHaveUsb(?bool $haveUsb): self
     {
-        $this->have_usb = $have_usb;
+        $this->haveUsb = $haveUsb;
         return $this;
     }
 
 
     public function getHaveWifi(): ?bool
     {
-        return $this->have_wifi;
+        return $this->haveWifi;
     }
 
-    public function setHaveWifi(?bool $have_wifi): self
+    public function setHaveWifi(?bool $haveWifi): self
     {
-        $this->have_wifi = $have_wifi;
+        $this->haveWifi = $haveWifi;
         return $this;
     }
 
 
     public function getHaveEthernet(): ?bool
     {
-        return $this->have_ethernet;
+        return $this->haveEthernet;
     }
 
-    public function setHaveEthernet(?bool $have_ethernet): self
+    public function setHaveEthernet(?bool $haveEthernet): self
     {
-        $this->have_ethernet = $have_ethernet;
+        $this->haveEthernet = $haveEthernet;
         return $this;
     }
 
@@ -302,113 +302,113 @@ class Printer
 
     public function getMemorySize(): ?string
     {
-        return $this->memory_size;
+        return $this->memorySize;
     }
 
-    public function setMemorySize(?string $memory_size): self
+    public function setMemorySize(?string $memorySize): self
     {
-        $this->memory_size = $memory_size;
+        $this->memorySize = $memorySize;
         return $this;
     }
 
     public function getIsGlobal(): ?bool
     {
-        return $this->is_global;
+        return $this->isGlobal;
     }
 
-    public function setIsGlobal(?bool $is_global): self
+    public function setIsGlobal(?bool $isGlobal): self
     {
-        $this->is_global = $is_global;
+        $this->isGlobal = $isGlobal;
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(?bool $is_deleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
         return $this;
     }
 
 
     public function getIsTemplate(): ?bool
     {
-        return $this->is_template;
+        return $this->isTemplate;
     }
 
-    public function setIsTemplate(?bool $is_template): self
+    public function setIsTemplate(?bool $isTemplate): self
     {
-        $this->is_template = $is_template;
+        $this->isTemplate = $isTemplate;
         return $this;
     }
 
     public function getTemplateName(): ?string
     {
-        return $this->template_name;
+        return $this->templateName;
     }
 
-    public function setTemplateName(?string $template_name): self
+    public function setTemplateName(?string $templateName): self
     {
-        $this->template_name = $template_name;
+        $this->templateName = $templateName;
         return $this;
     }
 
     public function getInitPagesCounter(): ?int
     {
-        return $this->init_pages_counter;
+        return $this->initPagesCounter;
     }
 
-    public function setInitPagesCounter(?int $init_pages_counter): self
+    public function setInitPagesCounter(?int $initPagesCounter): self
     {
-        $this->init_pages_counter = $init_pages_counter;
+        $this->initPagesCounter = $initPagesCounter;
         return $this;
     }
 
 
     public function getLastPagesCounter(): ?int
     {
-        return $this->last_pages_counter;
+        return $this->lastPagesCounter;
     }
 
-    public function setLastPagesCounter(?int $last_pages_counter): self
+    public function setLastPagesCounter(?int $lastPagesCounter): self
     {
-        $this->last_pages_counter = $last_pages_counter;
+        $this->lastPagesCounter = $lastPagesCounter;
         return $this;
     }
 
     public function getTicketTco(): ?float
     {
-        return $this->ticket_tco;
+        return $this->ticketTco;
     }
 
-    public function setTicketTco(?float $ticket_tco): self
+    public function setTicketTco(?float $ticketTco): self
     {
-        $this->ticket_tco = $ticket_tco;
+        $this->ticketTco = $ticketTco;
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(?bool $is_dynamic): self
+    public function setIsDynamic(?bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
         return $this;
     }
 

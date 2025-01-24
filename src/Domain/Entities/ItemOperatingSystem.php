@@ -23,56 +23,56 @@ class ItemOperatingSystem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $operatingsystems_id;
+    #[ORM\Column(name: 'operatingsystems_id', type: "integer", options: ["default" => 0])]
+    private $operatingsystemsId;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $operatingsystemversions_id;
+    #[ORM\Column(name: 'operatingsystemversions_id', type: "integer", options: ["default" => 0])]
+    private $operatingsystemversionsId;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $operatingsystemservicepacks_id;
+    #[ORM\Column(name: 'operatingsystemservicepacks_id', type: "integer", options: ["default" => 0])]
+    private $operatingsystemservicepacksId;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $operatingsystemarchitectures_id;
+    #[ORM\Column(name: 'operatingsystemarchitectures_id', type: "integer", options: ["default" => 0])]
+    private $operatingsystemarchitecturesId;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $operatingsystemkernelversions_id;
+    #[ORM\Column(name: 'operatingsystemkernelversions_id', type: "integer", options: ["default" => 0])]
+    private $operatingsystemkernelversionsId;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $license_number;
+    #[ORM\Column(name: 'license_number', type: "string", length: 255, nullable: true)]
+    private $licenseNumber;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'licenseid', type: "string", length: 255, nullable: true)]
     private $licenseid;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $operatingsystemeditions_id;
+    #[ORM\Column(name: 'operatingsystemeditions_id', type: "integer", options: ["default" => 0])]
+    private $operatingsystemeditionsId;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: "datetime", nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => 0])]
+    private $isDynamic;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: "integer", options: ["default" => 0])]
+    private $entitiesId;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
+    private $isRecursive;
 
 
     public function getId(): ?int
@@ -82,12 +82,12 @@ class ItemOperatingSystem
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -106,144 +106,144 @@ class ItemOperatingSystem
 
     public function getOperatingSystemsId(): ?int
     {
-        return $this->operatingsystems_id;
+        return $this->operatingsystemsId;
     }
 
-    public function setOperatingSystemsId(int $operatingsystems_id): self
+    public function setOperatingSystemsId(int $operatingsystemsId): self
     {
-        $this->operatingsystems_id = $operatingsystems_id;
+        $this->operatingsystemsId = $operatingsystemsId;
 
         return $this;
     }
 
     public function getOperatingSystemVersionsId(): ?int
     {
-        return $this->operatingsystemversions_id;
+        return $this->operatingsystemversionsId;
     }
 
-    public function setOperatingSystemVersionsId(int $operatingsystemversions_id): self
+    public function setOperatingSystemVersionsId(int $operatingsystemversionsId): self
     {
-        $this->operatingsystemversions_id = $operatingsystemversions_id;
+        $this->operatingsystemversionsId = $operatingsystemversionsId;
 
         return $this;
     }
 
     public function getOperatingSystemServicePacksId(): ?int
     {
-        return $this->operatingsystemservicepacks_id;
+        return $this->operatingsystemservicepacksId;
     }
 
-    public function setOperatingSystemServicePacksId(int $operatingsystemservicepacks_id): self
+    public function setOperatingSystemServicePacksId(int $operatingsystemservicepacksId): self
     {
-        $this->operatingsystemservicepacks_id = $operatingsystemservicepacks_id;
+        $this->operatingsystemservicepacksId = $operatingsystemservicepacksId;
 
         return $this;
     }
 
     public function getOperatingSystemArchitecturesId(): ?int
     {
-        return $this->operatingsystemarchitectures_id;
+        return $this->operatingsystemarchitecturesId;
     }
 
-    public function setOperatingSystemArchitecturesId(int $operatingsystemarchitectures_id): self
+    public function setOperatingSystemArchitecturesId(int $operatingsystemarchitecturesId): self
     {
-        $this->operatingsystemarchitectures_id = $operatingsystemarchitectures_id;
+        $this->operatingsystemarchitecturesId = $operatingsystemarchitecturesId;
 
         return $this;
     }
 
     public function getOperatingSystemKernelVersionsId(): ?int
     {
-        return $this->operatingsystemkernelversions_id;
+        return $this->operatingsystemkernelversionsId;
     }
 
-    public function setOperatingSystemKernelVersionsId(int $operatingsystemkernelversions_id): self
+    public function setOperatingSystemKernelVersionsId(int $operatingsystemkernelversionsId): self
     {
-        $this->operatingsystemkernelversions_id = $operatingsystemkernelversions_id;
+        $this->operatingsystemkernelversionsId = $operatingsystemkernelversionsId;
 
         return $this;
     }
 
     public function getLicenseNumber(): ?string
     {
-        return $this->license_number;
+        return $this->licenseNumber;
     }
 
-    public function setLicenseNumber(string $license_number): self
+    public function setLicenseNumber(string $licenseNumber): self
     {
-        $this->license_number = $license_number;
+        $this->licenseNumber = $licenseNumber;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function isIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
     public function setIsDeleted(bool $deleted): self
     {
-        $this->is_deleted = $deleted;
+        $this->isDeleted = $deleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(bool $is_dynamic): self
+    public function setIsDynamic(bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getEntitiesId(): ?int
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntitiesId(int $entities_id): self
+    public function setEntitiesId(int $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }

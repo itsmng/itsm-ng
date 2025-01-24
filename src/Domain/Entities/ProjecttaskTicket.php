@@ -12,16 +12,16 @@ class ProjecttaskTicket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'projecttaskTickets')]
     #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
-    private ?Ticket $ticket;
+    private ?Ticket $ticket = null;
 
     #[ORM\ManyToOne(targetEntity: Projecttask::class, inversedBy: 'projecttaskTickets')]
     #[ORM\JoinColumn(name: 'projecttasks_id', referencedColumnName: 'id', nullable: true)]
-    private ?Projecttask $projecttask;
+    private ?Projecttask $projecttask = null;
 
     public function getId(): ?int
     {

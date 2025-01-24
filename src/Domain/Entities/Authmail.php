@@ -13,29 +13,29 @@ class Authmail
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $connect_string;
+    #[ORM\Column(name: 'connect_string', type: 'string', length: 255, nullable: true)]
+    private $connectString;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'host', type: 'string', length: 255, nullable: true)]
     private $host;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_active;
+    #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
+    private $isActive;
 
     public function getId(): ?int
     {
@@ -56,12 +56,12 @@ class Authmail
 
     public function getConnectString(): ?string
     {
-        return $this->connect_string;
+        return $this->connectString;
     }
 
-    public function setConnectString(string $connect_string): self
+    public function setConnectString(string $connectString): self
     {
-        $this->connect_string = $connect_string;
+        $this->connectString = $connectString;
 
         return $this;
     }
@@ -80,24 +80,24 @@ class Authmail
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_mod = $date_creation;
+        $this->dateMod = $dateCreation;
 
         return $this;
     }
@@ -116,12 +116,12 @@ class Authmail
 
     public function getIsActive(): ?int
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(int $is_active): self
+    public function setIsActive(int $isActive): self
     {
-        $this->is_active = $is_active;
+        $this->isActive = $isActive;
 
         return $this;
     }

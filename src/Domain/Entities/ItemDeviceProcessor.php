@@ -25,53 +25,53 @@ class ItemDeviceProcessor
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $deviceprocessors_id;
+    #[ORM\Column(name: 'deviceprocessors_id', type: 'integer', options: ['default' => 0])]
+    private $deviceprocessorsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'frequency', type: 'integer', options: ['default' => 0])]
     private $frequency;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
+    private $isDynamic;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'nbcores', type: 'integer', nullable: true)]
     private $nbcores;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'nbthreads', type: 'integer', nullable: true)]
     private $nbthreads;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
+    private $entitiesId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'bus_id', type: 'string', length: 255, nullable: true)]
     private $busID;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
+    private $locationsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\Column(name: 'states_id', type: 'integer', options: ['default' => 0])]
+    private $statesId;
 
     public function getId(): ?int
     {
@@ -80,12 +80,12 @@ class ItemDeviceProcessor
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -104,12 +104,12 @@ class ItemDeviceProcessor
 
     public function getDeviceprocessorsId(): ?int
     {
-        return $this->deviceprocessors_id;
+        return $this->deviceprocessorsId;
     }
 
-    public function setDeviceprocessorsId(int $deviceprocessors_id): self
+    public function setDeviceprocessorsId(int $deviceprocessorsId): self
     {
-        $this->deviceprocessors_id = $deviceprocessors_id;
+        $this->deviceprocessorsId = $deviceprocessorsId;
 
         return $this;
     }
@@ -140,24 +140,24 @@ class ItemDeviceProcessor
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(?bool $is_deleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(?bool $is_dynamic): self
+    public function setIsDynamic(?bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
@@ -167,9 +167,9 @@ class ItemDeviceProcessor
         return $this->nbcores;
     }
 
-    public function setNbCores(?int $nb_cores): self
+    public function setNbCores(?int $nbCores): self
     {
-        $this->nbcores = $nb_cores;
+        $this->nbcores = $nbCores;
 
         return $this;
     }
@@ -179,33 +179,33 @@ class ItemDeviceProcessor
         return $this->nbthreads;
     }
 
-    public function setNbThreads(?int $nb_threads): self
+    public function setNbThreads(?int $nbThreads): self
     {
-        $this->nbthreads = $nb_threads;
+        $this->nbthreads = $nbThreads;
 
         return $this;
     }
 
     public function getEntitiesId(): ?array
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntitiesId(?array $entities_id): self
+    public function setEntitiesId(?array $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -236,24 +236,24 @@ class ItemDeviceProcessor
 
     public function getLocationsId(): ?array
     {
-        return $this->locations_id;
+        return $this->locationsId;
     }
 
-    public function setLocationsId(?array $locations_id): self
+    public function setLocationsId(?array $locationsId): self
     {
-        $this->locations_id = $locations_id;
+        $this->locationsId = $locationsId;
 
         return $this;
     }
 
     public function getStatesId(): ?array
     {
-        return $this->states_id;
+        return $this->statesId;
     }
 
-    public function setStatesId(?array $states_id): self
+    public function setStatesId(?array $statesId): self
     {
-        $this->states_id = $states_id;
+        $this->statesId = $statesId;
 
         return $this;
     }

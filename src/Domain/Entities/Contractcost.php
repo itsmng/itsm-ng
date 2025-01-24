@@ -18,39 +18,39 @@ class Contractcost
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
 
     #[ORM\ManyToOne(targetEntity: Contract::class)]
     #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: true)]
-    private ?Contract $contract;
+    private ?Contract $contract = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $begin_date;
+    #[ORM\Column(name: 'begin_date', type: 'date', nullable: true)]
+    private $beginDate;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $end_date;
+    #[ORM\Column(name: 'end_date', type: 'date', nullable: true)]
+    private $endDate;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => '0.0000'])]
+    #[ORM\Column(name: 'cost', type: 'decimal', precision: 20, scale: 4, options: ['default' => '0.0000'])]
     private $cost;
 
     #[ORM\ManyToOne(targetEntity: Budget::class)]
     #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
-    private ?Budget $budget;
+    private ?Budget $budget = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
     public function getId(): ?int
     {
@@ -83,24 +83,24 @@ class Contractcost
 
     public function getBeginDate(): ?\DateTimeInterface
     {
-        return $this->begin_date;
+        return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $begin_date): self
+    public function setBeginDate(\DateTimeInterface $beginDate): self
     {
-        $this->begin_date = $begin_date;
+        $this->beginDate = $beginDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $end_date): self
+    public function setEndDate(\DateTimeInterface $endDate): self
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }
@@ -120,12 +120,12 @@ class Contractcost
 
     public function getIsRecursive(): ?int
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(int $is_recursive): self
+    public function setIsRecursive(int $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }

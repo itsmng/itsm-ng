@@ -14,30 +14,30 @@ class Crontasklog
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Crontask::class)]
     #[ORM\JoinColumn(name: 'crontasks_id', referencedColumnName: 'id', nullable: true)]
-    private ?Crontask $crontask;
+    private ?Crontask $crontask = null;
 
     #[ORM\ManyToOne(targetEntity: Crontasklog::class)]
     #[ORM\JoinColumn(name: 'crontasklogs_id', referencedColumnName: 'id', nullable: false, options: ['comment' => 'id of "start" event'])]
     private ?Crontasklog $crontasklogs;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: false)]
     private $date;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => '0:start, 1:run, 2:stop'])]
+    #[ORM\Column(name: 'state', type: 'integer', options: ['comment' => '0:start, 1:run, 2:stop'])]
     private $state;
 
-    #[ORM\Column(type: 'float', options: ['comment' => 'time elapsed since start'])]
+    #[ORM\Column(name: 'elapsed', type: 'float', options: ['comment' => 'time elapsed since start'])]
     private $elapsed;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => 'for statistics'])]
+    #[ORM\Column(name: 'volume', type: 'integer', options: ['comment' => 'for statistics'])]
     private $volume;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => 'message'])]
+    #[ORM\Column(name: 'content', type: 'string', length: 255, nullable: true, options: ['comment' => 'message'])]
     private $content;
 
     public function getId(): ?int

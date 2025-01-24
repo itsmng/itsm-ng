@@ -13,25 +13,25 @@ class Networkalias
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
     #[ORM\ManyToOne(targetEntity: Networkname::class)]
     #[ORM\JoinColumn(name: 'networknames_id', referencedColumnName: 'id', nullable: true)]
-    private ?Networkname $networkname;
+    private ?Networkname $networkname = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Fqdn::class)]
     #[ORM\JoinColumn(name: 'fqdns_id', referencedColumnName: 'id', nullable: true)]
-    private ?Fqdn $fqdn;
+    private ?Fqdn $fqdn = null;
 
-    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
 
     public function getId(): ?int

@@ -14,22 +14,22 @@ class ProfileRssfeed
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Rssfeed::class, inversedBy: 'profileRssfeeds')]
     #[ORM\JoinColumn(name: 'rssfeeds_id', referencedColumnName: 'id', nullable: true)]
-    private ?Rssfeed $rssfeed;
+    private ?Rssfeed $rssfeed = null;
 
     #[ORM\ManyToOne(targetEntity: Profile::class, inversedBy: 'profileRssfeeds')]
     #[ORM\JoinColumn(name: 'profiles_id', referencedColumnName: 'id', nullable: true)]
-    private ?Profile $profile;
+    private ?Profile $profile = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -1])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => -1])]
+    private $entitiesId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
     public function getId(): ?int
     {
@@ -38,26 +38,26 @@ class ProfileRssfeed
 
     public function getEntitiesId(): ?int
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
 
-    public function setEntitiesId(?int $entities_id): self
+    public function setEntitiesId(?int $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }

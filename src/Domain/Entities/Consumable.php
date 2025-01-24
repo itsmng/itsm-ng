@@ -17,34 +17,34 @@ class Consumable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
     #[ORM\ManyToOne(targetEntity: Consumableitem::class)]
     #[ORM\JoinColumn(name: 'consumableitems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Consumableitem $consumableitem;
+    private ?Consumableitem $consumableitem = null;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $date_in;
+    #[ORM\Column(name: 'date_in', type: 'date', nullable: true)]
+    private $dateIn;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $date_out;
+    #[ORM\Column(name: 'date_out', type: 'date', nullable: true)]
+    private $dateOut;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -54,24 +54,24 @@ class Consumable
 
     public function getDateIn(): ?\DateTimeInterface
     {
-        return $this->date_in;
+        return $this->dateIn;
     }
 
-    public function setDateIn(\DateTimeInterface $date_in): self
+    public function setDateIn(\DateTimeInterface $dateIn): self
     {
-        $this->date_in = $date_in;
+        $this->dateIn = $dateIn;
 
         return $this;
     }
 
     public function getDateOut(): ?\DateTimeInterface
     {
-        return $this->date_out;
+        return $this->dateOut;
     }
 
-    public function setDateOut(\DateTimeInterface $date_out): self
+    public function setDateOut(\DateTimeInterface $dateOut): self
     {
-        $this->date_out = $date_out;
+        $this->dateOut = $dateOut;
 
         return $this;
     }
@@ -90,36 +90,36 @@ class Consumable
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

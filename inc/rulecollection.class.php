@@ -1492,7 +1492,7 @@ class RuleCollection extends CommonDBTM
      **/
     public function processAllRules($input = [], $output = [], $params = [], $options = [])
     {
-
+        dump('processAllRules', $input, $output, $params, $options);
         $p['condition']     = 0;
         $p['only_criteria'] = null;
 
@@ -1504,11 +1504,13 @@ class RuleCollection extends CommonDBTM
 
         // Get Collection datas
         $this->getCollectionDatas(1, 1, $p['condition']);
+        dump('processAllRules before prepareInputDataForProcessWithPlugins', $input, $params);
         $input                      = $this->prepareInputDataForProcessWithPlugins($input, $params);
+        dump('input1 prepareInputDataForProcessWithPlugins', $input, $params, $options,$output);
         $output["_no_rule_matches"] = true;
         //Store rule type being processed (for plugins)
         $params['rule_itemtype']    = $this->getRuleClassName();
-
+        // dump('dump processAllRules', $input);
         if (count($this->RuleList->list)) {
             foreach ($this->RuleList->list as $rule) {
                 //If the rule is active, process it
@@ -1682,7 +1684,7 @@ class RuleCollection extends CommonDBTM
     public function prepareInputDataForProcessWithPlugins($input, $params)
     {
         global $PLUGIN_HOOKS;
-
+        dump('prepareInputDataForProcessWithPlugins', $input, $params);
         $input = $this->prepareInputDataForProcess($input, $params);
         if (isset($PLUGIN_HOOKS['use_rules'])) {
             foreach ($PLUGIN_HOOKS['use_rules'] as $plugin => $val) {

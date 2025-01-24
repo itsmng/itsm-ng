@@ -13,20 +13,20 @@ class Computertype
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    private $dateCreation;
 
     public function getId()
     {
@@ -45,12 +45,12 @@ class Computertype
 
     public function getDateMod()
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
     public function getDateCreation()
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
     public function setId($id)
@@ -70,11 +70,11 @@ class Computertype
 
     public function setDateMod($date_mod)
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
     }
 
     public function setDateCreation($date_creation)
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
     }
 }

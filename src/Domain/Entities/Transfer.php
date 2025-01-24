@@ -11,104 +11,104 @@ class Transfer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_ticket;
+    #[ORM\Column(name: 'keep_ticket', type: 'integer', options: ['default' => 0])]
+    private $keepTicket;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_networklink;
+    #[ORM\Column(name: 'keep_networklink', type: 'integer', options: ['default' => 0])]
+    private $keepNetworklink;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_reservation;
+    #[ORM\Column(name: 'keep_reservation', type: 'integer', options: ['default' => 0])]
+    private $keepReservation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_history;
+    #[ORM\Column(name: 'keep_history', type: 'integer', options: ['default' => 0])]
+    private $keepHistory;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_device;
+    #[ORM\Column(name: 'keep_device', type: 'integer', options: ['default' => 0])]
+    private $keepDevice;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_infocom;
+    #[ORM\Column(name: 'keep_infocom', type: 'integer', options: ['default' => 0])]
+    private $keepInfocom;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_dc_monitor;
+    #[ORM\Column(name: 'keep_dc_monitor', type: 'integer', options: ['default' => 0])]
+    private $keepDcMonitor;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $clean_dc_monitor;
+    #[ORM\Column(name: 'clean_dc_monitor', type: 'integer', options: ['default' => 0])]
+    private $cleanDcMonitor;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_dc_phone;
+    #[ORM\Column(name: 'keep_dc_phone', type: 'integer', options: ['default' => 0])]
+    private $keepDcPhone;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $clean_dc_phone;
+    #[ORM\Column(name: 'clean_dc_phone', type: 'integer', options: ['default' => 0])]
+    private $cleanDcPhone;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_dc_peripheral;
+    #[ORM\Column(name: 'keep_dc_peripheral', type: 'integer', options: ['default' => 0])]
+    private $keepDcPeripheral;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $clean_dc_peripheral;
+    #[ORM\Column(name: 'clean_dc_peripheral', type: 'integer', options: ['default' => 0])]
+    private $cleanDcPeripheral;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_dc_printer;
+    #[ORM\Column(name: 'keep_dc_printer', type: 'integer', options: ['default' => 0])]
+    private $keepDcPrinter;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $clean_dc_printer;
+    #[ORM\Column(name: 'clean_dc_printer', type: 'integer', options: ['default' => 0])]
+    private $cleanDcPrinter;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_supplier;
+    #[ORM\Column(name: 'keep_supplier', type: 'integer', options: ['default' => 0])]
+    private $keepSupplier;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $clean_supplier;
+    #[ORM\Column(name: 'clean_supplier', type: 'integer', options: ['default' => 0])]
+    private $cleanSupplier;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_contact;
+    #[ORM\Column(name: 'keep_contact', type: 'integer', options: ['default' => 0])]
+    private $keepContact;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $clean_contact;
+    #[ORM\Column(name: 'clean_contact', type: 'integer', options: ['default' => 0])]
+    private $cleanContact;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_contract;
+    #[ORM\Column(name: 'keep_contract', type: 'integer', options: ['default' => 0])]
+    private $keepContract;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $clean_contract;
+    #[ORM\Column(name: 'clean_contract', type: 'integer', options: ['default' => 0])]
+    private $cleanContract;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_software;
+    #[ORM\Column(name: 'keep_software', type: 'integer', options: ['default' => 0])]
+    private $keepSoftware;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $clean_software;
+    #[ORM\Column(name: 'clean_software', type: 'integer', options: ['default' => 0])]
+    private $cleanSoftware;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_document;
+    #[ORM\Column(name: 'keep_document', type: 'integer', options: ['default' => 0])]
+    private $keepDocument;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $clean_document;
+    #[ORM\Column(name: 'clean_document', type: 'integer', options: ['default' => 0])]
+    private $cleanDocument;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_cartridgeitem;
+    #[ORM\Column(name: 'keep_cartridgeitem', type: 'integer', options: ['default' => 0])]
+    private $keepCartridgeitem;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $clean_cartridgeitem;
+    #[ORM\Column(name: 'clean_cartridgeitem', type: 'integer', options: ['default' => 0])]
+    private $cleanCartridgeitem;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_cartridge;
+    #[ORM\Column(name: 'keep_cartridge', type: 'integer', options: ['default' => 0])]
+    private $keepCartridge;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_consumable;
+    #[ORM\Column(name: 'keep_consumable', type: 'integer', options: ['default' => 0])]
+    private $keepConsumable;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $keep_disk;
+    #[ORM\Column(name: 'keep_disk', type: 'integer', options: ['default' => 0])]
+    private $keepDisk;
 
     public function getId(): ?int
     {
@@ -129,348 +129,348 @@ class Transfer
 
     public function getKeepTicket(): ?int
     {
-        return $this->keep_ticket;
+        return $this->keepTicket;
     }
 
-    public function setKeepTicket(?int $keep_ticket): self
+    public function setKeepTicket(?int $keepTicket): self
     {
-        $this->keep_ticket = $keep_ticket;
+        $this->keepTicket = $keepTicket;
 
         return $this;
     }
 
     public function getKeepNetworklink(): ?int
     {
-        return $this->keep_networklink;
+        return $this->keepNetworklink;
     }
 
-    public function setKeepNetworklink(?int $keep_networklink): self
+    public function setKeepNetworklink(?int $keepNetworklink): self
     {
-        $this->keep_networklink = $keep_networklink;
+        $this->keepNetworklink = $keepNetworklink;
 
         return $this;
     }
 
     public function getKeepReservation(): ?int
     {
-        return $this->keep_reservation;
+        return $this->keepReservation;
     }
 
-    public function setKeepReservation(?int $keep_reservation): self
+    public function setKeepReservation(?int $keepReservation): self
     {
-        $this->keep_reservation = $keep_reservation;
+        $this->keepReservation = $keepReservation;
 
         return $this;
     }
 
     public function getKeepHistory(): ?int
     {
-        return $this->keep_history;
+        return $this->keepHistory;
     }
 
-    public function setKeepHistory(?int $keep_history): self
+    public function setKeepHistory(?int $keepHistory): self
     {
-        $this->keep_history = $keep_history;
+        $this->keepHistory = $keepHistory;
 
         return $this;
     }
 
     public function getKeepDevice(): ?int
     {
-        return $this->keep_device;
+        return $this->keepDevice;
     }
 
-    public function setKeepDevice(?int $keep_device): self
+    public function setKeepDevice(?int $keepDevice): self
     {
-        $this->keep_device = $keep_device;
+        $this->keepDevice = $keepDevice;
 
         return $this;
     }
 
     public function getKeepInfocom(): ?int
     {
-        return $this->keep_infocom;
+        return $this->keepInfocom;
     }
 
-    public function setKeepInfocom(?int $keep_infocom): self
+    public function setKeepInfocom(?int $keepInfocom): self
     {
-        $this->keep_infocom = $keep_infocom;
+        $this->keepInfocom = $keepInfocom;
 
         return $this;
     }
 
     public function getKeepDcMonitor(): ?int
     {
-        return $this->keep_dc_monitor;
+        return $this->keepDcMonitor;
     }
 
-    public function setKeepDcMonitor(?int $keep_dc_monitor): self
+    public function setKeepDcMonitor(?int $keepDcMonitor): self
     {
-        $this->keep_dc_monitor = $keep_dc_monitor;
+        $this->keepDcMonitor = $keepDcMonitor;
 
         return $this;
     }
 
     public function getCleanDcMonitor(): ?int
     {
-        return $this->clean_dc_monitor;
+        return $this->cleanDcMonitor;
     }
 
-    public function setCleanDcMonitor(?int $clean_dc_monitor): self
+    public function setCleanDcMonitor(?int $cleanDcMonitor): self
     {
-        $this->clean_dc_monitor = $clean_dc_monitor;
+        $this->cleanDcMonitor = $cleanDcMonitor;
 
         return $this;
     }
 
     public function getKeepDcPhone(): ?int
     {
-        return $this->keep_dc_phone;
+        return $this->keepDcPhone;
     }
 
-    public function setKeepDcPhone(?int $keep_dc_phone): self
+    public function setKeepDcPhone(?int $keepDcPhone): self
     {
-        $this->keep_dc_phone = $keep_dc_phone;
+        $this->keepDcPhone = $keepDcPhone;
 
         return $this;
     }
 
     public function getCleanDcPhone(): ?int
     {
-        return $this->clean_dc_phone;
+        return $this->cleanDcPhone;
     }
 
-    public function setCleanDcPhone(?int $clean_dc_phone): self
+    public function setCleanDcPhone(?int $cleanDcPhone): self
     {
-        $this->clean_dc_phone = $clean_dc_phone;
+        $this->cleanDcPhone = $cleanDcPhone;
 
         return $this;
     }
 
     public function getKeepDcPeripheral(): ?int
     {
-        return $this->keep_dc_peripheral;
+        return $this->keepDcPeripheral;
     }
 
-    public function setKeepDcPeripheral(?int $keep_dc_peripheral): self
+    public function setKeepDcPeripheral(?int $keepDcPeripheral): self
     {
-        $this->keep_dc_peripheral = $keep_dc_peripheral;
+        $this->keepDcPeripheral = $keepDcPeripheral;
 
         return $this;
     }
 
     public function getCleanDcPeripheral(): ?int
     {
-        return $this->clean_dc_peripheral;
+        return $this->cleanDcPeripheral;
     }
 
-    public function setCleanDcPeripheral(?int $clean_dc_peripheral): self
+    public function setCleanDcPeripheral(?int $cleanDcPeripheral): self
     {
-        $this->clean_dc_peripheral = $clean_dc_peripheral;
+        $this->cleanDcPeripheral = $cleanDcPeripheral;
 
         return $this;
     }
 
     public function getKeepDcPrinter(): ?int
     {
-        return $this->keep_dc_printer;
+        return $this->keepDcPrinter;
     }
 
-    public function setKeepDcPrinter(?int $keep_dc_printer): self
+    public function setKeepDcPrinter(?int $keepDcPrinter): self
     {
-        $this->keep_dc_printer = $keep_dc_printer;
+        $this->keepDcPrinter = $keepDcPrinter;
 
         return $this;
     }
 
     public function getCleanDcPrinter(): ?int
     {
-        return $this->clean_dc_printer;
+        return $this->cleanDcPrinter;
     }
 
-    public function setCleanDcPrinter(?int $clean_dc_printer): self
+    public function setCleanDcPrinter(?int $cleanDcPrinter): self
     {
-        $this->clean_dc_printer = $clean_dc_printer;
+        $this->cleanDcPrinter = $cleanDcPrinter;
 
         return $this;
     }
 
     public function getKeepSupplier(): ?int
     {
-        return $this->keep_supplier;
+        return $this->keepSupplier;
     }
 
-    public function setKeepSupplier(?int $keep_supplier): self
+    public function setKeepSupplier(?int $keepSupplier): self
     {
-        $this->keep_supplier = $keep_supplier;
+        $this->keepSupplier = $keepSupplier;
 
         return $this;
     }
 
     public function getCleanSupplier(): ?int
     {
-        return $this->clean_supplier;
+        return $this->cleanSupplier;
     }
 
-    public function setCleanSupplier(?int $clean_supplier): self
+    public function setCleanSupplier(?int $cleanSupplier): self
     {
-        $this->clean_supplier = $clean_supplier;
+        $this->cleanSupplier = $cleanSupplier;
 
         return $this;
     }
 
     public function getKeepContact(): ?int
     {
-        return $this->keep_contact;
+        return $this->keepContact;
     }
 
-    public function setKeepContact(?int $keep_contact): self
+    public function setKeepContact(?int $keepContact): self
     {
-        $this->keep_contact = $keep_contact;
+        $this->keepContact = $keepContact;
 
         return $this;
     }
 
     public function getCleanContact(): ?int
     {
-        return $this->clean_contact;
+        return $this->cleanContact;
     }
 
-    public function setCleanContact(?int $clean_contact): self
+    public function setCleanContact(?int $cleanContact): self
     {
-        $this->clean_contact = $clean_contact;
+        $this->cleanContact = $cleanContact;
 
         return $this;
     }
 
     public function getKeepContract(): ?int
     {
-        return $this->keep_contract;
+        return $this->keepContract;
     }
 
-    public function setKeepContract(?int $keep_contract): self
+    public function setKeepContract(?int $keepContract): self
     {
-        $this->keep_contract = $keep_contract;
+        $this->keepContract = $keepContract;
 
         return $this;
     }
 
     public function getCleanContract(): ?int
     {
-        return $this->clean_contract;
+        return $this->cleanContract;
     }
 
-    public function setCleanContract(?int $clean_contract): self
+    public function setCleanContract(?int $cleanContract): self
     {
-        $this->clean_contract = $clean_contract;
+        $this->cleanContract = $cleanContract;
 
         return $this;
     }
 
     public function getKeepSoftware(): ?int
     {
-        return $this->keep_software;
+        return $this->keepSoftware;
     }
 
-    public function setKeepSoftware(?int $keep_software): self
+    public function setKeepSoftware(?int $keepSoftware): self
     {
-        $this->keep_software = $keep_software;
+        $this->keepSoftware = $keepSoftware;
 
         return $this;
     }
 
     public function getCleanSoftware(): ?int
     {
-        return $this->clean_software;
+        return $this->cleanSoftware;
     }
 
-    public function setCleanSoftware(?int $clean_software): self
+    public function setCleanSoftware(?int $cleanSoftware): self
     {
-        $this->clean_software = $clean_software;
+        $this->cleanSoftware = $cleanSoftware;
 
         return $this;
     }
 
     public function getKeepDocument(): ?int
     {
-        return $this->keep_document;
+        return $this->keepDocument;
     }
 
-    public function setKeepDocument(?int $keep_document): self
+    public function setKeepDocument(?int $keepDocument): self
     {
-        $this->keep_document = $keep_document;
+        $this->keepDocument = $keepDocument;
 
         return $this;
     }
 
     public function getCleanDocument(): ?int
     {
-        return $this->clean_document;
+        return $this->cleanDocument;
     }
 
-    public function setCleanDocument(?int $clean_document): self
+    public function setCleanDocument(?int $cleanDocument): self
     {
-        $this->clean_document = $clean_document;
+        $this->cleanDocument = $cleanDocument;
 
         return $this;
     }
 
     public function getKeepCartridgeitem(): ?int
     {
-        return $this->keep_cartridgeitem;
+        return $this->keepCartridgeitem;
     }
 
-    public function setKeepCartridgeitem(?int $keep_cartridgeitem): self
+    public function setKeepCartridgeitem(?int $keepCartridgeitem): self
     {
-        $this->keep_cartridgeitem = $keep_cartridgeitem;
+        $this->keepCartridgeitem = $keepCartridgeitem;
 
         return $this;
     }
 
     public function getCleanCartridgeitem(): ?int
     {
-        return $this->clean_cartridgeitem;
+        return $this->cleanCartridgeitem;
     }
 
-    public function setCleanCartridgeitem(?int $clean_cartridgeitem): self
+    public function setCleanCartridgeitem(?int $cleanCartridgeitem): self
     {
-        $this->clean_cartridgeitem = $clean_cartridgeitem;
+        $this->cleanCartridgeitem = $cleanCartridgeitem;
 
         return $this;
     }
 
     public function getKeepCartridge(): ?int
     {
-        return $this->keep_cartridge;
+        return $this->keepCartridge;
     }
 
-    public function setKeepCartridge(?int $keep_cartridge): self
+    public function setKeepCartridge(?int $keepCartridge): self
     {
-        $this->keep_cartridge = $keep_cartridge;
+        $this->keepCartridge = $keepCartridge;
 
         return $this;
     }
 
     public function getKeepConsumable(): ?int
     {
-        return $this->keep_consumable;
+        return $this->keepConsumable;
     }
 
-    public function setKeepConsumable(?int $keep_consumable): self
+    public function setKeepConsumable(?int $keepConsumable): self
     {
-        $this->keep_consumable = $keep_consumable;
+        $this->keepConsumable = $keepConsumable;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTime
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $date_mod): self
+    public function setDateMod(?\DateTime $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -489,12 +489,12 @@ class Transfer
 
     public function getKeepDisk(): ?int
     {
-        return $this->keep_disk;
+        return $this->keepDisk;
     }
 
-    public function setKeepDisk(?int $keep_disk): self
+    public function setKeepDisk(?int $keepDisk): self
     {
-        $this->keep_disk = $keep_disk;
+        $this->keepDisk = $keepDisk;
 
         return $this;
     }

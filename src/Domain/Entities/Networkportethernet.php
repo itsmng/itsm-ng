@@ -17,31 +17,31 @@ class Networkportethernet
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Networkport::class)]
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
-    private ?Networkport $networkport;
+    private ?Networkport $networkport = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_devicenetworkcards_id;
+    #[ORM\Column(name: 'items_devicenetworkcards_id', type: 'integer', options: ['default' => 0])]
+    private $itemsDevicenetworkcardsId;
 
     #[ORM\ManyToOne(targetEntity: Netpoint::class)]
     #[ORM\JoinColumn(name: 'netpoints_id', referencedColumnName: 'id', nullable: true)]
-    private ?Netpoint $netpoint;
+    private ?Netpoint $netpoint = null;
 
-    #[ORM\Column(type: 'string', length: 10, nullable: true, options: ['default' => '', 'comment' => 'T, LX, SX'])]
+    #[ORM\Column(name: 'type', type: 'string', length: 10, nullable: true, options: ['default' => '', 'comment' => 'T, LX, SX'])]
     private $type;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 10, 'comment' => 'Mbit/s: 10, 100, 1000, 10000'])]
+    #[ORM\Column(name: 'speed', type: 'integer', options: ['default' => 10, 'comment' => 'Mbit/s: 10, 100, 1000, 10000'])]
     private $speed;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -50,12 +50,12 @@ class Networkportethernet
 
     public function getItemsDevicenetworkcardsId(): ?int
     {
-        return $this->items_devicenetworkcards_id;
+        return $this->itemsDevicenetworkcardsId;
     }
 
-    public function setItemsDevicenetworkcardsId(?int $items_devicenetworkcards_id): self
+    public function setItemsDevicenetworkcardsId(?int $itemsDevicenetworkcardsId): self
     {
-        $this->items_devicenetworkcards_id = $items_devicenetworkcards_id;
+        $this->itemsDevicenetworkcardsId = $itemsDevicenetworkcardsId;
 
         return $this;
     }
@@ -86,24 +86,24 @@ class Networkportethernet
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

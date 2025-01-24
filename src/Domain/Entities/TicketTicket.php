@@ -11,16 +11,16 @@ class TicketTicket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id_1;
+    #[ORM\Column(name: 'tickets_id1', type: 'integer', options: ['default' => 0])]
+    private $ticketsId1;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id_2;
+    #[ORM\Column(name: 'tickets_id2', type: 'integer', options: ['default' => 0])]
+    private $ticketsId2;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'link', type: 'integer', options: ['default' => 1])]
     private $link;
 
     public function getId(): ?int
@@ -30,24 +30,24 @@ class TicketTicket
 
     public function getTicketsId1(): ?int
     {
-        return $this->tickets_id_1;
+        return $this->ticketsId1;
     }
 
-    public function setTicketsId1(?int $tickets_id_1): self
+    public function setTicketsId1(?int $ticketsId1): self
     {
-        $this->tickets_id_1 = $tickets_id_1;
+        $this->ticketsId1 = $tickets_id_1;
 
         return $this;
     }
 
     public function getTicketsId2(): ?int
     {
-        return $this->tickets_id_2;
+        return $this->ticketsId2;
     }
 
-    public function setTicketsId2(?int $tickets_id_2): self
+    public function setTicketsId2(?int $ticketsId2): self
     {
-        $this->tickets_id_2 = $tickets_id_2;
+        $this->ticketsId2 = $tickets_id_2;
 
         return $this;
     }

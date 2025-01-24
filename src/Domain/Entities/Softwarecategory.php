@@ -11,30 +11,30 @@ class Softwarecategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
     #[ORM\ManyToOne(targetEntity: Softwarecategory::class)]
     #[ORM\JoinColumn(name: 'softwarecategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Softwarecategory $softwarecategory;
+    private ?Softwarecategory $softwarecategory = null;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'completename', type: 'text', length: 65535, nullable: true)]
     private $completename;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
     private $level;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $ancestors_cache;
+    #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
+    private $ancestorsCache;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $sons_cache;
+    #[ORM\Column(name: 'sons_cache', type: 'text', nullable: true)]
+    private $sonsCache;
 
     public function getId(): ?int
     {
@@ -91,24 +91,24 @@ class Softwarecategory
 
     public function getAncestorsCache(): ?string
     {
-        return $this->ancestors_cache;
+        return $this->ancestorsCache;
     }
 
-    public function setAncestorsCache(?string $ancestors_cache): self
+    public function setAncestorsCache(?string $ancestorsCache): self
     {
-        $this->ancestors_cache = $ancestors_cache;
+        $this->ancestorsCache = $ancestorsCache;
 
         return $this;
     }
 
     public function getSonsCache(): ?string
     {
-        return $this->sons_cache;
+        return $this->sonsCache;
     }
 
-    public function setSonsCache(?string $sons_cache): self
+    public function setSonsCache(?string $sonsCache): self
     {
-        $this->sons_cache = $sons_cache;
+        $this->sonsCache = $sonsCache;
 
         return $this;
     }

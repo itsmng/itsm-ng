@@ -14,21 +14,21 @@ class DisplayPreference
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 100)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
+    #[ORM\Column(name: 'num', type: "integer", options: ['default' => 0])]
     private $num;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
+    #[ORM\Column(name: 'rank', type: "integer", options: ['default' => 0])]
     private $rank;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
     public function getId(): ?int
     {

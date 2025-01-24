@@ -23,64 +23,64 @@ class ItemDeviceSimCard
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to various table, according to itemtype (id)'])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to various table, according to itemtype (id)'])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $devicesimcards_id;
+    #[ORM\Column(name: 'devicesimcards_id', type: 'integer', options: ['default' => 0])]
+    private $devicesimcardsId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
+    private $isDynamic;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
+    private $entitiesId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\Column(name: 'states_id', type: 'integer', options: ['default' => 0])]
+    private $statesId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
+    private $locationsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $lines_id;
+    #[ORM\Column(name: 'lines_id', type: 'integer', options: ['default' => 0])]
+    private $linesId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
+    private $usersId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\Column(name: 'groups_id', type: 'integer', options: ['default' => 0])]
+    private $groupsId;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'pin', type: 'string', length: 255, options: ['default' => ''])]
     private $pin;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'pin2', type: 'string', length: 255, options: ['default' => ''])]
     private $pin2;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'puk', type: 'string', length: 255, options: ['default' => ''])]
     private $puk;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'puk2', type: 'string', length: 255, options: ['default' => ''])]
     private $puk2;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'msin', type: 'string', length: 255, options: ['default' => ''])]
     private $msin;
 
     public function getId(): ?int
@@ -90,12 +90,12 @@ class ItemDeviceSimCard
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -114,60 +114,60 @@ class ItemDeviceSimCard
 
     public function getDevicesimcardsId(): ?int
     {
-        return $this->devicesimcards_id;
+        return $this->devicesimcardsId;
     }
 
-    public function setDevicesimcardsId(int $devicesimcards_id): self
+    public function setDevicesimcardsId(int $devicesimcardsId): self
     {
-        $this->devicesimcards_id = $devicesimcards_id;
+        $this->devicesimcardsId = $devicesimcardsId;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(bool $is_dynamic): self
+    public function setIsDynamic(bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getEntitiesId(): ?int
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntitiesId(int $entities_id): self
+    public function setEntitiesId(int $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -189,69 +189,69 @@ class ItemDeviceSimCard
         return $this->otherserial;
     }
 
-    public function setOtherSerial(string $other_serial): self
+    public function setOtherSerial(string $otherSerial): self
     {
-        $this->otherserial = $other_serial;
+        $this->otherserial = $otherSerial;
 
         return $this;
     }
 
     public function getStatesId(): ?int
     {
-        return $this->states_id;
+        return $this->statesId;
     }
 
-    public function setStatesId(int $states_id): self
+    public function setStatesId(int $statesId): self
     {
-        $this->states_id = $states_id;
+        $this->statesId = $statesId;
 
         return $this;
     }
 
     public function getLocationsId(): ?int
     {
-        return $this->locations_id;
+        return $this->locationsId;
     }
 
-    public function setLocationsId(int $locations_id): self
+    public function setLocationsId(int $locationsId): self
     {
-        $this->locations_id = $locations_id;
+        $this->locationsId = $locationsId;
 
         return $this;
     }
 
     public function getLinesId(): ?int
     {
-        return $this->lines_id;
+        return $this->linesId;
     }
 
-    public function setLinesId(int $lines_id): self
+    public function setLinesId(int $linesId): self
     {
-        $this->lines_id = $lines_id;
+        $this->linesId = $linesId;
 
         return $this;
     }
 
     public function getUsersId(): ?int
     {
-        return $this->users_id;
+        return $this->usersId;
     }
 
-    public function setUsersId(int $users_id): self
+    public function setUsersId(int $usersId): self
     {
-        $this->users_id = $users_id;
+        $this->usersId = $usersId;
 
         return $this;
     }
 
     public function getGroupsId(): ?int
     {
-        return $this->groups_id;
+        return $this->groupsId;
     }
 
-    public function setGroupsId(int $groups_id): self
+    public function setGroupsId(int $groupsId): self
     {
-        $this->groups_id = $groups_id;
+        $this->groupsId = $groupsId;
 
         return $this;
     }

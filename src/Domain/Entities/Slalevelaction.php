@@ -11,20 +11,20 @@ class Slalevelaction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Slalevel::class)]
     #[ORM\JoinColumn(name: 'slalevels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Slalevel $slalevel;
+    private ?Slalevel $slalevel = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $action_type;
+    #[ORM\Column(name: 'action_type', type: 'string', length: 255, nullable: true)]
+    private $actionType;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'field', type: 'string', length: 255, nullable: true)]
     private $field;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'value', type: 'string', length: 255, nullable: true)]
     private $value;
 
     public function getId(): ?int
@@ -34,12 +34,12 @@ class Slalevelaction
 
     public function getActionType(): ?string
     {
-        return $this->action_type;
+        return $this->actionType;
     }
 
-    public function setActionType(string $action_type): self
+    public function setActionType(string $actionType): self
     {
-        $this->action_type = $action_type;
+        $this->actionType = $actionType;
 
         return $this;
     }

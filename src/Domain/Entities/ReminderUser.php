@@ -12,16 +12,16 @@ class ReminderUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Reminder::class, inversedBy: 'reminderUsers')]
     #[ORM\JoinColumn(name: 'reminders_id', referencedColumnName: 'id', nullable: true)]
-    private ?Reminder $reminder;
+    private ?Reminder $reminder = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reminderUsers')]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
     public function getId(): ?int
     {

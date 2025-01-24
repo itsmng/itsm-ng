@@ -13,26 +13,26 @@ class ChangeSupplier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
 
     #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeSuppliers')]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Change $change;
+    private ?Change $change = null;
 
     #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'changeSuppliers')]
     #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: true)]
-    private ?Supplier $supplier;
+    private ?Supplier $supplier = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
     private $type;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $use_notification;
+    #[ORM\Column(name: 'use_notification', type: 'boolean', options: ['default' => false])]
+    private $useNotification;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $alternative_email;
+    #[ORM\Column(name: 'alternative_email', type: 'string', length: 255, nullable: true)]
+    private $alternativeEmail;
 
     public function getId(): ?int
     {
@@ -54,24 +54,24 @@ class ChangeSupplier
 
     public function getUseNotification(): ?bool
     {
-        return $this->use_notification;
+        return $this->useNotification;
     }
 
-    public function setUseNotification(bool $use_notification): self
+    public function setUseNotification(bool $useNotification): self
     {
-        $this->use_notification = $use_notification;
+        $this->useNotification = $useNotification;
 
         return $this;
     }
 
     public function getAlternativeEmail(): ?string
     {
-        return $this->alternative_email;
+        return $this->alternativeEmail;
     }
 
-    public function setAlternativeEmail(?string $alternative_email): self
+    public function setAlternativeEmail(?string $alternativeEmail): self
     {
-        $this->alternative_email = $alternative_email;
+        $this->alternativeEmail = $alternativeEmail;
 
         return $this;
     }

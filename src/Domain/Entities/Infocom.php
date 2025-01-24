@@ -20,99 +20,99 @@ class Infocom
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
     private $items_id;
 
-    #[ORM\Column(type: "string", length: 100)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 100)]
     private $itemtype;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private $buy_date;
+    #[ORM\Column(name: 'buy_date', type: "date", nullable: true)]
+    private $buyDate;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private $use_date;
+    #[ORM\Column(name: 'use_date', type: "date", nullable: true)]
+    private $useDate;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $warranty_duration;
+    #[ORM\Column(name: 'warranty_duration', type: "integer", options: ["default" => 0])]
+    private $warrantyDuration;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $warranty_info;
+    #[ORM\Column(name: 'warranty_info', type: "string", length: 255, nullable: true)]
+    private $warrantyInfo;
 
     #[ORM\ManyToOne(targetEntity: Supplier::class)]
     #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: true)]
-    private ?Supplier $supplier;
+    private ?Supplier $supplier = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $order_number;
+    #[ORM\Column(name: 'order_number', type: "string", length: 255, nullable: true)]
+    private $orderNumber;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $delivery_number;
+    #[ORM\Column(name: 'delivery_number', type: "string", length: 255, nullable: true)]
+    private $deliveryNumber;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $immo_number;
+    #[ORM\Column(name: 'immo_number', type: "string", length: 255, nullable: true)]
+    private $immoNumber;
 
-    #[ORM\Column(type: "decimal", precision: 20, scale: 4, options: ["default" => "0.0000"])]
+    #[ORM\Column(name: 'value', type: "decimal", precision: 20, scale: 4, options: ["default" => "0.0000"])]
     private $value;
 
-    #[ORM\Column(type: "decimal", precision: 20, scale: 4, options: ["default" => "0.0000"])]
-    private $warranty_value;
+    #[ORM\Column(name: 'warranty_value', type: "decimal", precision: 20, scale: 4, options: ["default" => "0.0000"])]
+    private $warrantyValue;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $sink_time;
+    #[ORM\Column(name: 'sink_time', type: "integer", options: ["default" => 0])]
+    private $sinkTime;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $sink_type;
+    #[ORM\Column(name: 'sink_type', type: "integer", options: ["default" => 0])]
+    private $sinkType;
 
-    #[ORM\Column(type: "float", options: ["default" => 0.0])]
-    private $sink_coeff;
+    #[ORM\Column(name: 'sink_coeff', type: "float", options: ["default" => 0.0])]
+    private $sinkCoeff;
 
-    #[ORM\Column(type: "text", length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: "text", length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'bill', type: "string", length: 255, nullable: true)]
     private $bill;
 
     #[ORM\ManyToOne(targetEntity: Budget::class)]
     #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
-    private ?Budget $budget;
+    private ?Budget $budget = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(name: 'alert', type: "integer", options: ["default" => 0])]
     private $alert;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private $order_date;
+    #[ORM\Column(name: 'order_date', type: "date", nullable: true)]
+    private $orderDate;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private $delivery_date;
+    #[ORM\Column(name: 'delivery_date', type: "date", nullable: true)]
+    private $deliveryDate;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private $inventory_date;
+    #[ORM\Column(name: 'inventory_date', type: "date", nullable: true)]
+    private $inventoryDate;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private $warranty_date;
+    #[ORM\Column(name: 'warranty_date', type: "date", nullable: true)]
+    private $warrantyDate;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: "datetime", nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $decommission_date;
+    #[ORM\Column(name: 'decommission_date', type: "datetime", nullable: true)]
+    private $decommissionDate;
 
     #[ORM\ManyToOne(targetEntity: BusinessCriticity::class)]
     #[ORM\JoinColumn(name: 'businesscriticities_id', referencedColumnName: 'id', nullable: true)]
-    private ?BusinessCriticity $businesscriticity;
+    private ?BusinessCriticity $businesscriticity = null;
 
     public function getId(): ?int
     {
@@ -145,72 +145,72 @@ class Infocom
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
     public function getBuyDate(): ?\DateTimeInterface
     {
-        return $this->buy_date;
+        return $this->buyDate;
     }
 
-    public function setBuyDate(\DateTimeInterface $buy_date): self
+    public function setBuyDate(\DateTimeInterface $buyDate): self
     {
-        $this->buy_date = $buy_date;
+        $this->buyDate = $buyDate;
 
         return $this;
     }
 
     public function getUseDate(): ?\DateTimeInterface
     {
-        return $this->use_date;
+        return $this->useDate;
     }
 
-    public function setUseDate(\DateTimeInterface $use_date): self
+    public function setUseDate(\DateTimeInterface $useDate): self
     {
-        $this->use_date = $use_date;
+        $this->useDate = $useDate;
 
         return $this;
     }
 
     public function getWarrantyDuration(): ?int
     {
-        return $this->warranty_duration;
+        return $this->warrantyDuration;
     }
 
-    public function setWarrantyDuration(int $warranty_duration): self
+    public function setWarrantyDuration(int $warrantyDuration): self
     {
-        $this->warranty_duration = $warranty_duration;
+        $this->warrantyDuration = $warrantyDuration;
 
         return $this;
     }
 
     public function getWarrantyInfo(): ?string
     {
-        return $this->warranty_info;
+        return $this->warrantyInfo;
     }
 
-    public function setWarrantyInfo(string $warranty_info): self
+    public function setWarrantyInfo(string $warrantyInfo): self
     {
-        $this->warranty_info = $warranty_info;
+        $this->warrantyInfo = $warrantyInfo;
 
         return $this;
     }
 
     public function getOrderNumber(): ?string
     {
-        return $this->order_number;
+        return $this->orderNumber;
     }
 
-    public function setOrderNumber(string $order_number): self
+    public function setOrderNumber(string $orderNumber): self
     {
-        $this->order_number = $order_number;
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }
@@ -229,48 +229,48 @@ class Infocom
 
     public function getWarrantyValue(): ?float
     {
-        return $this->warranty_value;
+        return $this->warrantyValue;
     }
 
-    public function setWarrantyValue(float $warranty_value): self
+    public function setWarrantyValue(float $warrantyValue): self
     {
-        $this->warranty_value = $warranty_value;
+        $this->warrantyValue = $warrantyValue;
 
         return $this;
     }
 
     public function getSinkTime(): ?int
     {
-        return $this->sink_time;
+        return $this->sinkTime;
     }
 
-    public function setSinkTime(int $sink_time): self
+    public function setSinkTime(int $sinkTime): self
     {
-        $this->sink_time = $sink_time;
+        $this->sinkTime = $sinkTime;
 
         return $this;
     }
 
     public function getSinkType(): ?string
     {
-        return $this->sink_type;
+        return $this->sinkType;
     }
 
-    public function setSinkType(string $sink_type): self
+    public function setSinkType(string $sinkType): self
     {
-        $this->sink_type = $sink_type;
+        $this->sinkType = $sinkType;
 
         return $this;
     }
 
     public function getSinkCoeff(): ?float
     {
-        return $this->sink_coeff;
+        return $this->sinkCoeff;
     }
 
-    public function setSinkCoeff(float $sink_coeff): self
+    public function setSinkCoeff(float $sinkCoeff): self
     {
-        $this->sink_coeff = $sink_coeff;
+        $this->sinkCoeff = $sinkCoeff;
 
         return $this;
     }
@@ -313,84 +313,84 @@ class Infocom
 
     public function getOrderDate(): ?\DateTimeInterface
     {
-        return $this->order_date;
+        return $this->orderDate;
     }
 
-    public function setOrderDate(\DateTimeInterface $order_date): self
+    public function setOrderDate(\DateTimeInterface $orderDate): self
     {
-        $this->order_date = $order_date;
+        $this->orderDate = $orderDate;
 
         return $this;
     }
 
     public function getDeliveryDate(): ?\DateTimeInterface
     {
-        return $this->delivery_date;
+        return $this->deliveryDate;
     }
 
-    public function setDeliveryDate(\DateTimeInterface $delivery_date): self
+    public function setDeliveryDate(\DateTimeInterface $deliveryDate): self
     {
-        $this->delivery_date = $delivery_date;
+        $this->deliveryDate = $deliveryDate;
 
         return $this;
     }
 
     public function getInventoryDate(): ?\DateTimeInterface
     {
-        return $this->inventory_date;
+        return $this->inventoryDate;
     }
 
-    public function setInventoryDate(\DateTimeInterface $inventory_date): self
+    public function setInventoryDate(\DateTimeInterface $inventoryDate): self
     {
-        $this->inventory_date = $inventory_date;
+        $this->inventoryDate = $inventoryDate;
 
         return $this;
     }
 
     public function getWarrantyDate(): ?\DateTimeInterface
     {
-        return $this->warranty_date;
+        return $this->warrantyDate;
     }
 
-    public function setWarrantyDate(\DateTimeInterface $warranty_date): self
+    public function setWarrantyDate(\DateTimeInterface $warrantyDate): self
     {
-        $this->warranty_date = $warranty_date;
+        $this->warrantyDate = $warrantyDate;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getDecommissionDate(): ?\DateTimeInterface
     {
-        return $this->decommission_date;
+        return $this->decommissionDate;
     }
 
-    public function setDecommissionDate(\DateTimeInterface $decommission_date): self
+    public function setDecommissionDate(\DateTimeInterface $decommissionDate): self
     {
-        $this->decommission_date = $decommission_date;
+        $this->decommissionDate = $decommissionDate;
 
         return $this;
     }
@@ -420,7 +420,7 @@ class Infocom
      */
     public function getDeliveryNumber()
     {
-        return $this->delivery_number;
+        return $this->deliveryNumber;
     }
 
     /**
@@ -428,9 +428,9 @@ class Infocom
      *
      * @return  self
      */
-    public function setDeliveryNumber($delivery_number)
+    public function setDeliveryNumber($deliveryNumber)
     {
-        $this->delivery_number = $delivery_number;
+        $this->deliveryNumber = $deliveryNumber;
 
         return $this;
     }
@@ -440,7 +440,7 @@ class Infocom
      */
     public function getImmoNumber()
     {
-        return $this->immo_number;
+        return $this->immoNumber;
     }
 
     /**
@@ -448,9 +448,9 @@ class Infocom
      *
      * @return  self
      */
-    public function setImmoNumber($immo_number)
+    public function setImmoNumber($immoNumber)
     {
-        $this->immo_number = $immo_number;
+        $this->immoNumber = $immoNumber;
 
         return $this;
     }

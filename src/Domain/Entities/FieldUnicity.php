@@ -12,42 +12,42 @@ class FieldUnicity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 255, options: ['default' => ''])]
     private $itemtype;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'fields', type: 'text', nullable: true)]
     private $fields;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_active;
+    #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
+    private $isActive;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $action_refuse;
+    #[ORM\Column(name: 'action_refuse', type: 'boolean', options: ['default' => 0])]
+    private $actionRefuse;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $action_notify;
+    #[ORM\Column(name: 'action_notify', type: 'boolean', options: ['default' => 0])]
+    private $actionNotify;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -75,12 +75,12 @@ class FieldUnicity
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -111,36 +111,36 @@ class FieldUnicity
 
     public function getIsActive(): ?bool
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(bool $is_active): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->is_active = $is_active;
+        $this->isActive = $isActive;
 
         return $this;
     }
 
     public function getActionRefuse(): ?bool
     {
-        return $this->action_refuse;
+        return $this->actionRefuse;
     }
 
-    public function setActionRefuse(bool $action_refuse): self
+    public function setActionRefuse(bool $actionRefuse): self
     {
-        $this->action_refuse = $action_refuse;
+        $this->actionRefuse = $actionRefuse;
 
         return $this;
     }
 
     public function getActionNotify(): ?bool
     {
-        return $this->action_notify;
+        return $this->actionNotify;
     }
 
-    public function setActionNotify(bool $action_notify): self
+    public function setActionNotify(bool $actionNotify): self
     {
-        $this->action_notify = $action_notify;
+        $this->actionNotify = $actionNotify;
 
         return $this;
     }
@@ -159,24 +159,24 @@ class FieldUnicity
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

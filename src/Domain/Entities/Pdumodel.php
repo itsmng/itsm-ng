@@ -13,50 +13,50 @@ class Pdumodel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $product_number;
+    #[ORM\Column(name: 'product_number', type: 'string', length: 255, nullable: true)]
+    private $productNumber;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'weight', type: 'integer', options: ['default' => 0])]
     private $weight;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
-    private $required_units;
+    #[ORM\Column(name: 'required_units', type: 'integer', options: ['default' => 1])]
+    private $requiredUnits;
 
-    #[ORM\Column(type: 'float', options: ['default' => 1])]
+    #[ORM\Column(name: 'depth', type: 'float', options: ['default' => 1])]
     private $depth;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $power_connections;
+    #[ORM\Column(name: 'power_connections', type: 'integer', options: ['default' => 0])]
+    private $powerConnections;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $max_power;
+    #[ORM\Column(name: 'max_power', type: 'integer', options: ['default' => 0])]
+    private $maxPower;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_half_rack;
+    #[ORM\Column(name: 'is_half_rack', type: 'boolean', options: ['default' => 0])]
+    private $isHalfRack;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $picture_front;
+    #[ORM\Column(name: 'picture_front', type: 'text', length: 65535, nullable: true)]
+    private $pictureFront;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $picture_rear;
+    #[ORM\Column(name: 'picture_rear', type: 'text', length: 65535, nullable: true)]
+    private $pictureRear;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_rackable;
+    #[ORM\Column(name: 'is_rackable', type: 'boolean', options: ['default' => 0])]
+    private $isRackable;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
 
 
@@ -91,12 +91,12 @@ class Pdumodel
 
     public function getProductNumber(): ?string
     {
-        return $this->product_number;
+        return $this->productNumber;
     }
 
-    public function setProductNumber(?string $product_number): self
+    public function setProductNumber(?string $productNumber): self
     {
-        $this->product_number = $product_number;
+        $this->productNumber = $productNumber;
 
         return $this;
     }
@@ -115,12 +115,12 @@ class Pdumodel
 
     public function getRequiredUnits(): ?int
     {
-        return $this->required_units;
+        return $this->requiredUnits;
     }
 
-    public function setRequiredUnits(?int $required_units): self
+    public function setRequiredUnits(?int $requiredUnits): self
     {
-        $this->required_units = $required_units;
+        $this->requiredUnits = $requiredUnits;
 
         return $this;
     }
@@ -139,96 +139,96 @@ class Pdumodel
 
     public function getPowerConnections(): ?int
     {
-        return $this->power_connections;
+        return $this->powerConnections;
     }
 
-    public function setPowerConnections(?int $power_connections): self
+    public function setPowerConnections(?int $powerConnections): self
     {
-        $this->power_connections = $power_connections;
+        $this->powerConnections = $powerConnections;
 
         return $this;
     }
 
     public function getMaxPower(): ?int
     {
-        return $this->max_power;
+        return $this->maxPower;
     }
 
-    public function setMaxPower(?int $max_power): self
+    public function setMaxPower(?int $maxPower): self
     {
-        $this->max_power = $max_power;
+        $this->maxPower = $maxPower;
 
         return $this;
     }
 
     public function getIsHalfRack(): ?bool
     {
-        return $this->is_half_rack;
+        return $this->isHalfRack;
     }
 
-    public function setIsHalfRack(?bool $is_half_rack): self
+    public function setIsHalfRack(?bool $isHalfRack): self
     {
-        $this->is_half_rack = $is_half_rack;
+        $this->isHalfRack = $isHalfRack;
 
         return $this;
     }
 
     public function getPictureFront(): ?string
     {
-        return $this->picture_front;
+        return $this->pictureFront;
     }
 
-    public function setPictureFront(?string $picture_front): self
+    public function setPictureFront(?string $pictureFront): self
     {
-        $this->picture_front = $picture_front;
+        $this->pictureFront = $pictureFront;
 
         return $this;
     }
 
     public function getPictureRear(): ?string
     {
-        return $this->picture_rear;
+        return $this->pictureRear;
     }
 
-    public function setPictureRear(?string $picture_rear): self
+    public function setPictureRear(?string $pictureRear): self
     {
-        $this->picture_rear = $picture_rear;
+        $this->pictureRear = $pictureRear;
 
         return $this;
     }
 
     public function getIsRackable(): ?bool
     {
-        return $this->is_rackable;
+        return $this->isRackable;
     }
 
-    public function setIsRackable(?bool $is_rackable): self
+    public function setIsRackable(?bool $isRackable): self
     {
-        $this->is_rackable = $is_rackable;
+        $this->isRackable = $isRackable;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

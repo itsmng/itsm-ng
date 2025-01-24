@@ -12,17 +12,17 @@ class Changetemplatepredefinedfield
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
     #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?ChangeTemplate $changetemplate;
+    private ?ChangeTemplate $changetemplate = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'num', type: 'integer', options: ['default' => 0])]
     private $num;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'value', type: 'text', length: 65535, nullable: true)]
     private $value;
 
     public function getId(): ?int

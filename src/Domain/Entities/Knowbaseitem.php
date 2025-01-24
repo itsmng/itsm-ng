@@ -20,40 +20,40 @@ class Knowbaseitem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Knowbaseitemcategory::class)]
     #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Knowbaseitemcategory $knowbaseitemcategory;
+    private ?Knowbaseitemcategory $knowbaseitemcategory = null;
 
-    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: 'name', type: "text", nullable: true, length: 65535)]
     private $name;
 
-    #[ORM\Column(type: "text", nullable: true)]
+    #[ORM\Column(name: 'answer', type: "text", nullable: true)]
     private $answer;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_faq;
+    #[ORM\Column(name: 'is_faq', type: "boolean", options: ["default" => 0])]
+    private $isFaq;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(name: 'view', type: "integer", options: ["default" => 0])]
     private $view;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(name: 'date', type: "datetime", nullable: true)]
     private $date;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $begin_date;
+    #[ORM\Column(name: 'begin_date', type: "datetime", nullable: true)]
+    private $beginDate;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $end_date;
+    #[ORM\Column(name: 'end_date', type: "datetime", nullable: true)]
+    private $endDate;
 
     #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: EntityKnowbaseitem::class)]
     private Collection $entityKnowbaseitems;
@@ -96,12 +96,12 @@ class Knowbaseitem
 
     public function getIsFaq(): ?bool
     {
-        return $this->is_faq;
+        return $this->isFaq;
     }
 
-    public function setIsFaq(?bool $is_faq): self
+    public function setIsFaq(?bool $isFaq): self
     {
-        $this->is_faq = $is_faq;
+        $this->isFaq = $isFaq;
         return $this;
     }
 
@@ -129,34 +129,34 @@ class Knowbaseitem
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
         return $this;
     }
 
     public function getBeginDate(): ?\DateTimeInterface
     {
-        return $this->begin_date;
+        return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $begin_date): self
+    public function setBeginDate(\DateTimeInterface $beginDate): self
     {
-        $this->begin_date = $begin_date;
+        $this->beginDate = $beginDate;
         return $this;
     }
 
     public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $end_date): self
+    public function setEndDate(\DateTimeInterface $endDate): self
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
         return $this;
     }
 

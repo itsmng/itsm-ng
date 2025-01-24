@@ -12,17 +12,17 @@ class DeviceControlModel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $product_number;
+    #[ORM\Column(name: 'product_number', type: "string", length: 255, nullable: true)]
+    private $productNumber;
 
     public function getId(): ?int
     {
@@ -55,12 +55,12 @@ class DeviceControlModel
 
     public function getProductNumber(): ?string
     {
-        return $this->product_number;
+        return $this->productNumber;
     }
 
-    public function setProductNumber(?string $product_number): self
+    public function setProductNumber(?string $productNumber): self
     {
-        $this->product_number = $product_number;
+        $this->productNumber = $productNumber;
 
         return $this;
     }

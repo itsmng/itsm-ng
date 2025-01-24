@@ -12,28 +12,28 @@ class Plugin
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(name: 'directory', type: 'string', length: 255)]
     private $directory;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(name: 'version', type: 'string', length: 255)]
     private $version;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PLUGIN_* constant'])]
+    #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PLUGIN_* constant'])]
     private $state;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'author', type: 'string', length: 255, nullable: true)]
     private $author;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'homepage', type: 'string', length: 255, nullable: true)]
     private $homepage;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'license', type: 'string', length: 255, nullable: true)]
     private $license;
 
     public function getId(): ?int

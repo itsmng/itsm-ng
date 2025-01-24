@@ -15,32 +15,32 @@ class DocumentType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'ext', type: 'string', length: 255, nullable: true)]
     private $ext;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'icon', type: 'string', length: 255, nullable: true)]
     private $icon;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'mime', type: 'string', length: 255, nullable: true)]
     private $mime;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private $is_uploadable;
+    #[ORM\Column(name: 'is_uploadable', type: 'boolean', options: ['default' => true])]
+    private $isUploadable;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime')]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -97,24 +97,24 @@ class DocumentType
 
     public function getIsUploadable(): ?bool
     {
-        return $this->is_uploadable;
+        return $this->isUploadable;
     }
 
-    public function setIsUploadable(bool $is_uploadable): self
+    public function setIsUploadable(bool $isUploadable): self
     {
-        $this->is_uploadable = $is_uploadable;
+        $this->isUploadable = $isUploadable;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -133,12 +133,12 @@ class DocumentType
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

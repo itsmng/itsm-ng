@@ -13,18 +13,18 @@ class ContractSupplier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
 
     #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'contractSuppliers')]
     #[ORM\JoinColumn(name: 'suppliers_id', referencedColumnName: 'id', nullable: true)]
-    private ?Supplier $supplier;
+    private ?Supplier $supplier = null;
 
 
     #[ORM\ManyToOne(targetEntity: Contract::class, inversedBy: 'contractSuppliers')]
     #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: true)]
-    private ?Contract $contract;
+    private ?Contract $contract = null;
 
     public function getId(): ?int
     {

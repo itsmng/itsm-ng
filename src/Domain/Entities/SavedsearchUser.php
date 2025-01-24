@@ -12,19 +12,19 @@ class SavedsearchUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'savedsearchUsers')]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
     #[ORM\ManyToOne(targetEntity: Savedsearch::class, inversedBy: 'savedsearchUsers')]
     #[ORM\JoinColumn(name: 'savedsearches_id', referencedColumnName: 'id', nullable: true)]
-    private ?Savedsearch $savedsearch;
+    private ?Savedsearch $savedsearch = null;
 
 
     public function getId(): ?int

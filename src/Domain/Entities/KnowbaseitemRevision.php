@@ -12,30 +12,30 @@ class KnowbaseitemRevision
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Knowbaseitem::class, inversedBy: 'knowbaseitemProfiles')]
     #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Knowbaseitem $knowbaseitem;
+    private ?Knowbaseitem $knowbaseitem = null;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'revision', type: 'integer')]
     private $revision;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'name', type: 'text', nullable: true, length: 65535)]
     private $name;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'answer', type: 'text', nullable: true)]
     private $answer;
 
-    #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    #[ORM\Column(name: 'language', type: 'string', length: 10, nullable: true)]
     private $language;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
+    private $usersId;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -93,24 +93,24 @@ class KnowbaseitemRevision
 
     public function getUsersId(): ?int
     {
-        return $this->users_id;
+        return $this->usersId;
     }
 
-    public function setUsersId(?int $users_id): self
+    public function setUsersId(?int $usersId): self
     {
-        $this->users_id = $users_id;
+        $this->usersId = $usersId;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

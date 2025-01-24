@@ -12,20 +12,20 @@ class Olalevelcriteria
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Olalevel::class)]
     #[ORM\JoinColumn(name: 'olalevels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Olalevel $olalevel;
+    private ?Olalevel $olalevel = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'criteria', type: 'string', length: 255, nullable: true)]
     private $criteria;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PATTERN_* and REGEX_* constant'])]
+    #[ORM\Column(name: 'condition', type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PATTERN_* and REGEX_* constant'])]
     private $condition;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'pattern', type: 'string', length: 255, nullable: true)]
     private $pattern;
 
     public function getId(): ?int

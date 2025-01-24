@@ -11,25 +11,25 @@ class TicketSatisfaction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\Column(name: 'tickets_id', type: 'integer', options: ['default' => 0])]
+    private $ticketsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
     private $type;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_begin;
+    #[ORM\Column(name: 'date_begin', type: 'datetime', nullable: true)]
+    private $dateBegin;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_answered;
+    #[ORM\Column(name: 'date_answered', type: 'datetime', nullable: true)]
+    private $dateAnswered;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'satisfaction', type: 'integer', nullable: true)]
     private $satisfaction;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
     public function getId(): ?int
@@ -39,12 +39,12 @@ class TicketSatisfaction
 
     public function getTicketsId(): ?int
     {
-        return $this->tickets_id;
+        return $this->ticketsId;
     }
 
-    public function setTicketsId(?int $tickets_id): self
+    public function setTicketsId(?int $ticketsId): self
     {
-        $this->tickets_id = $tickets_id;
+        $this->ticketsId = $ticketsId;
 
         return $this;
     }
@@ -63,24 +63,24 @@ class TicketSatisfaction
 
     public function getDateBegin(): ?\DateTime
     {
-        return $this->date_begin;
+        return $this->dateBegin;
     }
 
-    public function setDateBegin(?\DateTime $date_begin): self
+    public function setDateBegin(?\DateTime $dateBegin): self
     {
-        $this->date_begin = $date_begin;
+        $this->dateBegin = $dateBegin;
 
         return $this;
     }
 
     public function getDateAnswered(): ?\DateTime
     {
-        return $this->date_answered;
+        return $this->dateAnswered;
     }
 
-    public function setDateAnswered(?\DateTime $date_answered): self
+    public function setDateAnswered(?\DateTime $dateAnswered): self
     {
-        $this->date_answered = $date_answered;
+        $this->dateAnswered = $dateAnswered;
 
         return $this;
     }

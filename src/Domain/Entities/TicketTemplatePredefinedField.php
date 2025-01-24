@@ -11,16 +11,16 @@ class TicketTemplatePredefinedField
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickettemplates_id;
+    #[ORM\Column(name: 'tickettemplates_id', type: 'integer', options: ['default' => 0])]
+    private $tickettemplatesId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'num', type: 'integer', options: ['default' => 0])]
     private $num;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'value', type: 'text', length: 65535, nullable: true)]
     private $value;
 
     public function getId(): ?int
@@ -30,12 +30,12 @@ class TicketTemplatePredefinedField
 
     public function getTickettemplatesId(): ?int
     {
-        return $this->tickettemplates_id;
+        return $this->tickettemplatesId;
     }
 
-    public function setTickettemplatesId(?int $tickettemplates_id): self
+    public function setTickettemplatesId(?int $tickettemplatesId): self
     {
-        $this->tickettemplates_id = $tickettemplates_id;
+        $this->tickettemplatesId = $tickettemplatesId;
 
         return $this;
     }

@@ -22,98 +22,98 @@ class Contract
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'num', type: 'string', length: 255, nullable: true)]
     private $num;
 
     #[ORM\ManyToOne(targetEntity: Contracttype::class)]
     #[ORM\JoinColumn(name: 'contracttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Contracttype $contracttype;
+    private ?Contracttype $contracttype = null;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $begin_date;
+    #[ORM\Column(name: 'begin_date', type: 'date', nullable: true)]
+    private $beginDate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'duration', type: 'integer', options: ['default' => 0])]
     private $duration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'notice', type: 'integer', options: ['default' => 0])]
     private $notice;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'periodicity', type: 'integer', options: ['default' => 0])]
     private $periodicity;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'billing', type: 'integer', options: ['default' => 0])]
     private $billing;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $accounting_number;
+    #[ORM\Column(name: 'accounting_number', type: 'string', length: 255, nullable: true)]
+    private $accountingNumber;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'time', options: ['default' => '00:00:00'])]
-    private $week_begin_hour;
+    #[ORM\Column(name: 'week_begin_hour', type: 'time', options: ['default' => '00:00:00'])]
+    private $weekBeginHour;
 
-    #[ORM\Column(type: 'time', options: ['default' => '00:00:00'])]
-    private $week_end_hour;
+    #[ORM\Column(name: 'week_end_hour', type: 'time', options: ['default' => '00:00:00'])]
+    private $weekEndHour;
 
-    #[ORM\Column(type: 'time', options: ['default' => '00:00:00'])]
-    private $saturday_begin_hour;
+    #[ORM\Column(name: 'saturday_begin_hour', type: 'time', options: ['default' => '00:00:00'])]
+    private $saturdayBeginHour;
 
-    #[ORM\Column(type: 'time', options: ['default' => '00:00:00'])]
-    private $saturday_end_hour;
+    #[ORM\Column(name: 'saturday_end_hour', type: 'time', options: ['default' => '00:00:00'])]
+    private $saturdayEndHour;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $use_saturday;
+    #[ORM\Column(name: 'use_saturday', type: 'boolean', options: ['default' => 0])]
+    private $useSaturday;
 
-    #[ORM\Column(type: 'time', options: ['default' => '00:00:00'])]
-    private $monday_begin_hour;
+    #[ORM\Column(name: 'monday_begin_hour', type: 'time', options: ['default' => '00:00:00'])]
+    private $mondayBeginHour;
 
-    #[ORM\Column(type: 'time', options: ['default' => '00:00:00'])]
-    private $monday_end_hour;
+    #[ORM\Column(name: 'monday_end_hour', type: 'time', options: ['default' => '00:00:00'])]
+    private $mondayEndHour;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $use_monday;
+    #[ORM\Column(name: 'use_monday', type: 'boolean', options: ['default' => 0])]
+    private $useMonday;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $max_links_allowed;
+    #[ORM\Column(name: 'max_links_allowed', type: 'integer', options: ['default' => 0])]
+    private $maxLinksAllowed;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'alert', type: 'integer', options: ['default' => 0])]
     private $alert;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'renewal', type: 'integer', options: ['default' => 0])]
     private $renewal;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $template_name;
+    #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
+    private $templateName;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_template;
+    #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
+    private $isTemplate;
 
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
-    private ?State $state;
+    private ?State $state = null;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'contract', targetEntity: ContractSupplier::class)]
     private Collection $contractSuppliers;
@@ -125,12 +125,12 @@ class Contract
 
     public function getIsRecursive(): ?int
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(int $is_recursive): self
+    public function setIsRecursive(int $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -162,12 +162,12 @@ class Contract
 
     public function getBeginDate(): ?\DateTimeInterface
     {
-        return $this->begin_date;
+        return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $begin_date): self
+    public function setBeginDate(\DateTimeInterface $beginDate): self
     {
-        $this->begin_date = $begin_date;
+        $this->beginDate = $beginDate;
 
         return $this;
     }
@@ -234,132 +234,132 @@ class Contract
 
     public function getAccountingNumber(): ?string
     {
-        return $this->accounting_number;
+        return $this->accountingNumber;
     }
 
-    public function setAccountingNumber(?string $accounting_number): self
+    public function setAccountingNumber(?string $accountingNumber): self
     {
-        $this->accounting_number = $accounting_number;
+        $this->accountingNumber = $accountingNumber;
 
         return $this;
     }
 
     public function getIsDeleted(): ?int
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(int $is_deleted): self
+    public function setIsDeleted(int $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getWeekBeginHour(): ?\DateTimeInterface
     {
-        return $this->week_begin_hour;
+        return $this->weekBeginHour;
     }
 
-    public function setWeekBeginHour(\DateTimeInterface $week_begin_hour): self
+    public function setWeekBeginHour(\DateTimeInterface $weekBeginHour): self
     {
-        $this->week_begin_hour = $week_begin_hour;
+        $this->weekBeginHour = $weekBeginHour;
 
         return $this;
     }
 
     public function getWeekEndHour(): ?\DateTimeInterface
     {
-        return $this->week_end_hour;
+        return $this->weekEndHour;
     }
 
-    public function setWeekEndHour(\DateTimeInterface $week_end_hour): self
+    public function setWeekEndHour(\DateTimeInterface $weekEndHour): self
     {
-        $this->week_end_hour = $week_end_hour;
+        $this->weekEndHour = $weekEndHour;
 
         return $this;
     }
 
     public function getSaturdayBeginHour(): ?\DateTimeInterface
     {
-        return $this->saturday_begin_hour;
+        return $this->saturdayBeginHour;
     }
 
-    public function setSaturdayBeginHour(\DateTimeInterface $saturday_begin_hour): self
+    public function setSaturdayBeginHour(\DateTimeInterface $saturdayBeginHour): self
     {
-        $this->saturday_begin_hour = $saturday_begin_hour;
+        $this->saturdayBeginHour = $saturdayBeginHour;
 
         return $this;
     }
 
     public function getSaturdayEndHour(): ?\DateTimeInterface
     {
-        return $this->saturday_end_hour;
+        return $this->saturdayEndHour;
     }
 
-    public function setSaturdayEndHour(\DateTimeInterface $saturday_end_hour): self
+    public function setSaturdayEndHour(\DateTimeInterface $saturdayEndHour): self
     {
-        $this->saturday_end_hour = $saturday_end_hour;
+        $this->saturdayEndHour = $saturdayEndHour;
 
         return $this;
     }
 
     public function getUseSaturday(): ?int
     {
-        return $this->use_saturday;
+        return $this->useSaturday;
     }
 
-    public function setUseSaturday(int $use_saturday): self
+    public function setUseSaturday(int $useSaturday): self
     {
-        $this->use_saturday = $use_saturday;
+        $this->useSaturday = $useSaturday;
 
         return $this;
     }
 
     public function getMondayBeginHour(): ?\DateTimeInterface
     {
-        return $this->monday_begin_hour;
+        return $this->mondayBeginHour;
     }
 
-    public function setMondayBeginHour(\DateTimeInterface $monday_begin_hour): self
+    public function setMondayBeginHour(\DateTimeInterface $mondayBeginHour): self
     {
-        $this->monday_begin_hour = $monday_begin_hour;
+        $this->mondayBeginHour = $mondayBeginHour;
 
         return $this;
     }
 
     public function getMondayEndHour(): ?\DateTimeInterface
     {
-        return $this->monday_end_hour;
+        return $this->mondayEndHour;
     }
 
-    public function setMondayEndHour(\DateTimeInterface $monday_end_hour): self
+    public function setMondayEndHour(\DateTimeInterface $mondayEndHour): self
     {
-        $this->monday_end_hour = $monday_end_hour;
+        $this->mondayEndHour = $mondayEndHour;
 
         return $this;
     }
 
     public function getUseMonday(): ?int
     {
-        return $this->use_monday;
+        return $this->useMonday;
     }
 
-    public function setUseMonday(int $use_monday): self
+    public function setUseMonday(int $useMonday): self
     {
-        $this->use_monday = $use_monday;
+        $this->useMonday = $useMonday;
 
         return $this;
     }
 
     public function getMaxLinksAllowed(): ?int
     {
-        return $this->max_links_allowed;
+        return $this->maxLinksAllowed;
     }
 
-    public function setMaxLinksAllowed(int $max_links_allowed): self
+    public function setMaxLinksAllowed(int $maxLinksAllowed): self
     {
-        $this->max_links_allowed = $max_links_allowed;
+        $this->maxLinksAllowed = $maxLinksAllowed;
 
         return $this;
     }
@@ -390,24 +390,24 @@ class Contract
 
     public function getTemplateName(): ?string
     {
-        return $this->template_name;
+        return $this->templateName;
     }
 
-    public function setTemplateName(?string $template_name): self
+    public function setTemplateName(?string $templateName): self
     {
-        $this->template_name = $template_name;
+        $this->templateName = $templateName;
 
         return $this;
     }
 
     public function getIsTemplate(): ?int
     {
-        return $this->is_template;
+        return $this->isTemplate;
     }
 
-    public function setIsTemplate(int $is_template): self
+    public function setIsTemplate(int $isTemplate): self
     {
-        $this->is_template = $is_template;
+        $this->isTemplate = $isTemplate;
 
         return $this;
     }
@@ -415,24 +415,24 @@ class Contract
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

@@ -12,32 +12,32 @@ class ItemRack
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer")]
-    private $racks_id;
+    #[ORM\Column(name: 'racks_id', type: "integer")]
+    private $racksId;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 255)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer")]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer")]
+    private $itemsId;
 
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'position', type: "integer")]
     private $position;
 
-    #[ORM\Column(type: "boolean", nullable: true)]
+    #[ORM\Column(name: 'orientation', type: "boolean", nullable: true)]
     private $orientation;
 
-    #[ORM\Column(type: "string", length: 7, nullable: true)]
+    #[ORM\Column(name: 'bgcolor', type: "string", length: 7, nullable: true)]
     private $bgcolor;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
+    #[ORM\Column(name: 'hpos', type: "boolean", options: ["default" => 0])]
     private $hpos;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_reserved;
+    #[ORM\Column(name: 'is_reserved', type: "boolean", options: ["default" => 0])]
+    private $isReserved;
 
     public function getId(): ?int
     {
@@ -46,12 +46,12 @@ class ItemRack
 
     public function getRacksId(): ?int
     {
-        return $this->racks_id;
+        return $this->racksId;
     }
 
-    public function setRacksId(int $racks_id): self
+    public function setRacksId(int $racksId): self
     {
-        $this->racks_id = $racks_id;
+        $this->racksId = $racksId;
 
         return $this;
     }
@@ -70,12 +70,12 @@ class ItemRack
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -130,12 +130,12 @@ class ItemRack
 
     public function getIsReserved(): ?int
     {
-        return $this->is_reserved;
+        return $this->isReserved;
     }
 
-    public function setIsReserved(int $is_reserved): self
+    public function setIsReserved(int $isReserved): self
     {
-        $this->is_reserved = $is_reserved;
+        $this->isReserved = $isReserved;
 
         return $this;
     }

@@ -23,50 +23,50 @@ class ItilFollowup
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
-    private ?User $userEditor;
+    private ?User $userEditor = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_private;
+    #[ORM\Column(name: 'is_private', type: 'boolean', options: ['default' => 0])]
+    private $isPrivate;
 
     #[ORM\ManyToOne(targetEntity: RequestType::class)]
     #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?RequestType $requesttype;
+    private ?RequestType $requesttype = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $timeline_position;
+    #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
+    private $timelinePosition;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $sourceitems_id;
+    #[ORM\Column(name: 'sourceitems_id', type: 'integer', options: ['default' => 0])]
+    private $sourceitemsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $sourceof_items_id;
+    #[ORM\Column(name: 'sourceof_items_id', type: 'integer', options: ['default' => 0])]
+    private $sourceofItemsId;
 
     public function getId(): ?int
     {
@@ -87,12 +87,12 @@ class ItilFollowup
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -123,72 +123,72 @@ class ItilFollowup
 
     public function getIsPrivate(): ?bool
     {
-        return $this->is_private;
+        return $this->isPrivate;
     }
 
-    public function setIsPrivate(bool $is_private): self
+    public function setIsPrivate(bool $isPrivate): self
     {
-        $this->is_private = $is_private;
+        $this->isPrivate = $isPrivate;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getTimelinePosition(): ?int
     {
-        return $this->timeline_position;
+        return $this->timelinePosition;
     }
 
-    public function setTimelinePosition(int $timeline_position): self
+    public function setTimelinePosition(int $timelinePosition): self
     {
-        $this->timeline_position = $timeline_position;
+        $this->timelinePosition = $timelinePosition;
 
         return $this;
     }
 
     public function getSourceitemsId(): ?int
     {
-        return $this->sourceitems_id;
+        return $this->sourceitemsId;
     }
 
-    public function setSourceitemsId(int $source_items_id): self
+    public function setSourceitemsId(int $sourceItemsId): self
     {
-        $this->sourceitems_id = $source_items_id;
+        $this->sourceitemsId = $sourceItemsId;
 
         return $this;
     }
 
     public function getSourceofItemsId(): ?int
     {
-        return $this->sourceof_items_id;
+        return $this->sourceofItemsId;
     }
 
-    public function setSourceofItemsId(int $sourceof_items_id): self
+    public function setSourceofItemsId(int $sourceofItemsId): self
     {
-        $this->sourceof_items_id = $sourceof_items_id;
+        $this->sourceofItemsId = $sourceofItemsId;
 
         return $this;
     }

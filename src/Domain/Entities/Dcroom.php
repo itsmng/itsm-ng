@@ -17,44 +17,44 @@ class Dcroom
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
-    private ?Location $location;
+    private ?Location $location = null;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $vis_cols;
+    #[ORM\Column(name: 'vis_cols', type: 'integer', nullable: true)]
+    private $visCols;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $vis_rows;
+    #[ORM\Column(name: 'vis_rows', type: 'integer', nullable: true)]
+    private $visRows;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'blueprint', type: 'text', length: 65535, nullable: true)]
     private $blueprint;
 
     #[ORM\ManyToOne(targetEntity: Datacenter::class)]
     #[ORM\JoinColumn(name: 'datacenters_id', referencedColumnName: 'id', nullable: true)]
-    private ?Datacenter $datacenter;
+    private ?Datacenter $datacenter = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -76,12 +76,12 @@ class Dcroom
 
     public function getIsRecursive(): ?int
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(int $is_recursive): self
+    public function setIsRecursive(int $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -89,24 +89,24 @@ class Dcroom
 
     public function getVisCols(): ?int
     {
-        return $this->vis_cols;
+        return $this->visCols;
     }
 
-    public function setVisCols(int $vis_cols): self
+    public function setVisCols(int $visCols): self
     {
-        $this->vis_cols = $vis_cols;
+        $this->visCols = $visCols;
 
         return $this;
     }
 
     public function getVisRows(): ?int
     {
-        return $this->vis_rows;
+        return $this->visRows;
     }
 
-    public function setVisRows(int $vis_rows): self
+    public function setVisRows(int $visRows): self
     {
-        $this->vis_rows = $vis_rows;
+        $this->visRows = $visRows;
 
         return $this;
     }
@@ -126,36 +126,36 @@ class Dcroom
 
     public function getIsDeleted(): ?int
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(int $is_deleted): self
+    public function setIsDeleted(int $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

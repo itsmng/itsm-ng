@@ -12,22 +12,22 @@ class Dashboard
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'name', type: 'string', length: 100)]
     private $name;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(name: 'content', type: 'text')]
     private $content;
 
     #[ORM\ManyToOne(targetEntity: Profile::class)]
     #[ORM\JoinColumn(name: 'profileId', referencedColumnName: 'id', nullable: true)]
-    private ?Profile $profile;
+    private ?Profile $profile = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'userId', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
     public function getId(): ?int
     {

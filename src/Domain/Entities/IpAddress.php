@@ -18,47 +18,47 @@ class IpAddress
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: "string", length: 100)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: "smallint", nullable: true, options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'version', type: "smallint", nullable: true, options: ["unsigned" => true, "default" => 0])]
     private $version;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary_0;
+    #[ORM\Column(name: 'binary0', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $binary0;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary_1;
+    #[ORM\Column(name: 'binary1', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $binary1;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary_2;
+    #[ORM\Column(name: 'binary2', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $binary2;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary_3;
+    #[ORM\Column(name: 'binary3', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $binary3;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => false])]
+    private $isDynamic;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $mainitems_id;
+    #[ORM\Column(name: 'mainitems_id', type: "integer", options: ["default" => 0])]
+    private $mainitemsId;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'mainitemtype', type: "string", length: 255, nullable: true)]
     private $mainitemtype;
 
     #[ORM\OneToMany(mappedBy: 'ipaddress', targetEntity: IpAddressIpNetwork::class)]
@@ -71,12 +71,12 @@ class IpAddress
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -119,84 +119,84 @@ class IpAddress
 
     public function getBinary0(): ?int
     {
-        return $this->binary_0;
+        return $this->binary0;
     }
 
-    public function setBinary0(?int $binary_0): self
+    public function setBinary0(?int $binary0): self
     {
-        $this->binary_0 = $binary_0;
+        $this->binary0 = $binary_0;
 
         return $this;
     }
 
     public function getBinary1(): ?int
     {
-        return $this->binary_1;
+        return $this->binary1;
     }
 
-    public function setBinary1(?int $binary_1): self
+    public function setBinary1(?int $binary1): self
     {
-        $this->binary_1 = $binary_1;
+        $this->binary1 = $binary_1;
 
         return $this;
     }
 
     public function getBinary2(): ?int
     {
-        return $this->binary_2;
+        return $this->binary2;
     }
 
-    public function setBinary2(?int $binary_2): self
+    public function setBinary2(?int $binary2): self
     {
-        $this->binary_2 = $binary_2;
+        $this->binary2 = $binary_2;
 
         return $this;
     }
 
     public function getBinary3(): ?int
     {
-        return $this->binary_3;
+        return $this->binary3;
     }
 
-    public function setBinary3(?int $binary_3): self
+    public function setBinary3(?int $binary3): self
     {
-        $this->binary_3 = $binary_3;
+        $this->binary3 = $binary_3;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(?bool $is_deleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(?bool $is_dynamic): self
+    public function setIsDynamic(?bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getMainitemsId(): ?int
     {
-        return $this->mainitems_id;
+        return $this->mainitemsId;
     }
 
-    public function setMainitemsId(?int $mainitems_id): self
+    public function setMainitemsId(?int $mainitemsId): self
     {
-        $this->mainitems_id = $mainitems_id;
+        $this->mainitemsId = $mainitemsId;
 
         return $this;
     }

@@ -14,19 +14,19 @@ class NotificationNotificationtemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Notification::class, inversedBy: 'notificationNotificationtemplates')]
     #[ORM\JoinColumn(name: 'notifications_id', referencedColumnName: 'id', nullable: true)]
-    private ?Notification $notification;
+    private ?Notification $notification = null;
 
-    #[ORM\Column(type: 'string', length: 20, options: ['comment' => 'See Notification_NotificationTemplate::MODE_* constants'])]
+    #[ORM\Column(name: 'mode', type: 'string', length: 20, options: ['comment' => 'See Notification_NotificationTemplate::MODE_* constants'])]
     private $mode;
 
     #[ORM\ManyToOne(targetEntity: Notificationtemplate::class, inversedBy: 'notificationNotificationtemplates')]
     #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Notificationtemplate $notificationtemplate;
+    private ?Notificationtemplate $notificationtemplate = null;
 
     public function getId(): ?int
     {

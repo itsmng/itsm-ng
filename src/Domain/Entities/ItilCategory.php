@@ -29,89 +29,89 @@ class ItilCategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
+    private $isRecursive;
 
     #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?ItilCategory $itilCategory;
+    private ?ItilCategory $itilCategory = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: 'completename', type: "text", nullable: true, length: 65535)]
     private $completename;
 
-    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(name: 'level', type: "integer", options: ["default" => 0])]
     private $level;
 
     #[ORM\ManyToOne(targetEntity: Knowbaseitemcategory::class)]
     #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Knowbaseitemcategory $knowbaseitemcategory;
+    private ?Knowbaseitemcategory $knowbaseitemcategory = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
-    private ?Group $group;
+    private ?Group $group = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'code', type: "string", length: 255, nullable: true)]
     private $code;
 
-    #[ORM\Column(type: "text", nullable: true)]
-    private $ancestors_cache;
+    #[ORM\Column(name: 'ancestors_cache', type: "text", nullable: true)]
+    private $ancestorsCache;
 
-    #[ORM\Column(type: "text", nullable: true)]
-    private $sons_cache;
+    #[ORM\Column(name: 'sons_cache', type: "text", nullable: true)]
+    private $sonsCache;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 1])]
-    private $is_helpdeskvisible;
+    #[ORM\Column(name: 'is_helpdeskvisible', type: "boolean", options: ["default" => 1])]
+    private $isHelpdeskvisible;
 
     #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
     #[ORM\JoinColumn(name: 'tickettemplates_id_incident', referencedColumnName: 'id', nullable: true)]
-    private ?TicketTemplate $tickettemplateIncident;
+    private ?TicketTemplate $tickettemplateIncident = null;
 
     #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
     #[ORM\JoinColumn(name: 'tickettemplates_id_demand', referencedColumnName: 'id', nullable: true)]
-    private ?TicketTemplate $tickettemplateDemand;
+    private ?TicketTemplate $tickettemplateDemand = null;
 
     #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
     #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?ChangeTemplate $changetemplate;
+    private ?ChangeTemplate $changetemplate = null;
 
     #[ORM\ManyToOne(targetEntity: ProblemTemplate::class)]
     #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?ProblemTemplate $problemtemplate;
+    private ?ProblemTemplate $problemtemplate = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 1])]
-    private $is_incident;
+    #[ORM\Column(name: 'is_incident', type: "integer", options: ["default" => 1])]
+    private $isIncident;
 
-    #[ORM\Column(type: "integer", options: ["default" => 1])]
-    private $is_request;
+    #[ORM\Column(name: 'is_request', type: "integer", options: ["default" => 1])]
+    private $isRequest;
 
-    #[ORM\Column(type: "integer", options: ["default" => 1])]
-    private $is_problem;
+    #[ORM\Column(name: 'is_problem', type: "integer", options: ["default" => 1])]
+    private $isProblem;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 1])]
-    private $is_change;
+    #[ORM\Column(name: 'is_change', type: "boolean", options: ["default" => 1])]
+    private $isChange;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: "datetime", nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -120,12 +120,12 @@ class ItilCategory
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -147,9 +147,9 @@ class ItilCategory
         return $this->completename;
     }
 
-    public function setCompleteName(?string $complete_name): self
+    public function setCompleteName(?string $completeName): self
     {
-        $this->completename = $complete_name;
+        $this->completename = $completeName;
 
         return $this;
     }
@@ -192,108 +192,108 @@ class ItilCategory
 
     public function getAncestorsCache(): ?string
     {
-        return $this->ancestors_cache;
+        return $this->ancestorsCache;
     }
 
-    public function setAncestorsCache(?string $ancestors_cache): self
+    public function setAncestorsCache(?string $ancestorsCache): self
     {
-        $this->ancestors_cache = $ancestors_cache;
+        $this->ancestorsCache = $ancestorsCache;
 
         return $this;
     }
 
     public function getSonsCache(): ?string
     {
-        return $this->sons_cache;
+        return $this->sonsCache;
     }
 
-    public function setSonsCache(?string $sons_cache): self
+    public function setSonsCache(?string $sonsCache): self
     {
-        $this->sons_cache = $sons_cache;
+        $this->sonsCache = $sonsCache;
 
         return $this;
     }
 
     public function getIsHelpdeskVisible(): ?bool
     {
-        return $this->is_helpdeskvisible;
+        return $this->isHelpdeskvisible;
     }
 
-    public function setIsHelpdeskVisible(?bool $is_helpdesk_visible): self
+    public function setIsHelpdeskVisible(?bool $isHelpdeskVisible): self
     {
-        $this->is_helpdeskvisible = $is_helpdesk_visible;
+        $this->isHelpdeskvisible = $isHelpdeskVisible;
 
         return $this;
     }
 
     public function getIsIncident(): ?bool
     {
-        return $this->is_incident;
+        return $this->isIncident;
     }
 
-    public function setIsIncident(?bool $is_incident): self
+    public function setIsIncident(?bool $isIncident): self
     {
-        $this->is_incident = $is_incident;
+        $this->isIncident = $isIncident;
 
         return $this;
     }
 
     public function getIsRequest(): ?bool
     {
-        return $this->is_request;
+        return $this->isRequest;
     }
 
-    public function setIsRequest(?bool $is_request): self
+    public function setIsRequest(?bool $isRequest): self
     {
-        $this->is_request = $is_request;
+        $this->isRequest = $isRequest;
 
         return $this;
     }
 
     public function getIsProblem(): ?bool
     {
-        return $this->is_problem;
+        return $this->isProblem;
     }
 
-    public function setIsProblem(?bool $is_problem): self
+    public function setIsProblem(?bool $isProblem): self
     {
-        $this->is_problem = $is_problem;
+        $this->isProblem = $isProblem;
 
         return $this;
     }
 
     public function getIsChange(): ?bool
     {
-        return $this->is_change;
+        return $this->isChange;
     }
 
-    public function setIsChange(?bool $is_change): self
+    public function setIsChange(?bool $isChange): self
     {
-        $this->is_change = $is_change;
+        $this->isChange = $isChange;
 
         return $this;
     }
 
     public function getDateMod(): ?DateTime
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?DateTime $date_mod): self
+    public function setDateMod(?DateTime $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?DateTime $date_creation): self
+    public function setDateCreation(?DateTime $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

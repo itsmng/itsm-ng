@@ -28,90 +28,90 @@ class Problem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
     private $status;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'solvedate', type: 'datetime', nullable: true)]
     private $solvedate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'closedate', type: 'datetime', nullable: true)]
     private $closedate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $time_to_resolve;
+    #[ORM\Column(name: 'time_to_resolve', type: 'datetime', nullable: true)]
+    private $timeToResolve;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id_recipient', referencedColumnName: 'id', nullable: true)]
-    private ?User $userRecipient;
+    private ?User $userRecipient = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: true)]
-    private ?User $userLastupdater;
+    private ?User $userLastupdater = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'urgency', type: 'integer', options: ['default' => 1])]
     private $urgency;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'impact', type: 'integer', options: ['default' => 1])]
     private $impact;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'priority', type: 'integer', options: ['default' => 1])]
     private $priority;
 
     #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?ItilCategory $itilcategory;
+    private ?ItilCategory $itilcategory = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'impactcontent', type: 'text', nullable: true)]
     private $impactcontent;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'causecontent', type: 'text', nullable: true)]
     private $causecontent;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'symptomcontent', type: 'text', nullable: true)]
     private $symptomcontent;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
     private $actiontime;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $begin_waiting_date;
+    #[ORM\Column(name: 'begin_waiting_date', type: 'datetime', nullable: true)]
+    private $beginWaitingDate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $waiting_duration;
+    #[ORM\Column(name: 'waiting_duration', type: 'integer', options: ['default' => 0])]
+    private $waitingDuration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $close_delay_stat;
+    #[ORM\Column(name: 'close_delay_stat', type: 'integer', options: ['default' => 0])]
+    private $closeDelayStat;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $solve_delay_stat;
+    #[ORM\Column(name: 'solve_delay_stat', type: 'integer', options: ['default' => 0])]
+    private $solveDelayStat;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'problem', targetEntity: ChangeProblem::class)]
     private Collection $changeProblems;
@@ -147,26 +147,26 @@ class Problem
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
 
-    public function setIsDeleted(?bool $is_deleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
@@ -202,13 +202,13 @@ class Problem
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -253,13 +253,13 @@ class Problem
 
     public function getTimeToResolve(): ?int
     {
-        return $this->time_to_resolve;
+        return $this->timeToResolve;
     }
 
 
-    public function setTimeToResolve(?int $time_to_resolve): self
+    public function setTimeToResolve(?int $timeToResolve): self
     {
-        $this->time_to_resolve = $time_to_resolve;
+        $this->timeToResolve = $timeToResolve;
 
         return $this;
     }
@@ -357,65 +357,65 @@ class Problem
 
     public function getBeginWaitingDate(): ?\DateTimeInterface
     {
-        return $this->begin_waiting_date;
+        return $this->beginWaitingDate;
     }
 
 
-    public function setBeginWaitingDate(?\DateTimeInterface $begin_waiting_date): self
+    public function setBeginWaitingDate(?\DateTimeInterface $beginWaitingDate): self
     {
-        $this->begin_waiting_date = $begin_waiting_date;
+        $this->beginWaitingDate = $beginWaitingDate;
 
         return $this;
     }
 
     public function getWaitingDuration(): ?int
     {
-        return $this->waiting_duration;
+        return $this->waitingDuration;
     }
 
 
-    public function setWaitingDuration(?int $waiting_duration): self
+    public function setWaitingDuration(?int $waitingDuration): self
     {
-        $this->waiting_duration = $waiting_duration;
+        $this->waitingDuration = $waitingDuration;
 
         return $this;
     }
 
     public function getCloseDelayStat(): ?int
     {
-        return $this->close_delay_stat;
+        return $this->closeDelayStat;
     }
 
 
-    public function setCloseDelayStat(?int $close_delay_stat): self
+    public function setCloseDelayStat(?int $closeDelayStat): self
     {
-        $this->close_delay_stat = $close_delay_stat;
+        $this->closeDelayStat = $closeDelayStat;
 
         return $this;
     }
 
     public function getSolveDelayStat(): ?int
     {
-        return $this->solve_delay_stat;
+        return $this->solveDelayStat;
     }
 
 
-    public function setSolveDelayStat(?int $solve_delay_stat): self
+    public function setSolveDelayStat(?int $solveDelayStat): self
     {
-        $this->solve_delay_stat = $solve_delay_stat;
+        $this->solveDelayStat = $solveDelayStat;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

@@ -21,63 +21,63 @@ class Document
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => 'for display and transfert'])]
+    #[ORM\Column(name: 'filename', type: 'string', length: 255, nullable: true, options: ['comment' => 'for display and transfert'])]
     private $filename;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => 'file storage path'])]
+    #[ORM\Column(name: 'filepath', type: 'string', length: 255, nullable: true, options: ['comment' => 'file storage path'])]
     private $filepath;
 
     #[ORM\ManyToOne(targetEntity: Documentcategory::class)]
     #[ORM\JoinColumn(name: 'documentcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Documentcategory $documentcategory;
+    private ?Documentcategory $documentcategory = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'mime', type: 'string', length: 255, nullable: true)]
     private $mime;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'link', type: 'string', length: 255, nullable: true)]
     private $link;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Ticket::class)]
     #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
-    private ?Ticket $ticket;
+    private ?Ticket $ticket = null;
 
-    #[ORM\Column(type: 'string', length: 40, nullable: true, options: ['fixed' => true])]
+    #[ORM\Column(name: 'sha1sum', type: 'string', length: 40, nullable: true, options: ['fixed' => true])]
     private $sha1sum;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_blacklisted;
+    #[ORM\Column(name: 'is_blacklisted', type: 'boolean', options: ['default' => false])]
+    private $isBlacklisted;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'tag', type: 'string', length: 255, nullable: true)]
     private $tag;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'document', targetEntity: DocumentItem::class)]
     private Collection $documentItems;
@@ -96,12 +96,12 @@ class Document
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -156,12 +156,12 @@ class Document
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -180,12 +180,12 @@ class Document
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
@@ -216,12 +216,12 @@ class Document
 
     public function getIsBlacklisted(): ?bool
     {
-        return $this->is_blacklisted;
+        return $this->isBlacklisted;
     }
 
-    public function setIsBlacklisted(bool $is_blacklisted): self
+    public function setIsBlacklisted(bool $isBlacklisted): self
     {
-        $this->is_blacklisted = $is_blacklisted;
+        $this->isBlacklisted = $isBlacklisted;
 
         return $this;
     }
@@ -240,12 +240,12 @@ class Document
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

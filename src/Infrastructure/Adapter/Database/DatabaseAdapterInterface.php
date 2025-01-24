@@ -22,7 +22,8 @@ interface DatabaseAdapterInterface
     // list columns from entity
     public function listFields(): array;
     // get values from entity as array
-    public function getFields(array $content): array;
+    public function getFields(mixed $content): array;
+    public function getSettersFromFields(array $fields, object $content): array;
 
     public function save(array $fields): bool;
     public function add(array $fields): bool|array;

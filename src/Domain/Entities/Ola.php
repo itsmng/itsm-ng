@@ -15,47 +15,47 @@ class Ola
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 0])]
     private $type;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer')]
-    private $number_time;
+    #[ORM\Column(name: 'number_time', type: 'integer')]
+    private $numberTime;
 
     #[ORM\ManyToOne(targetEntity: Calendar::class)]
     #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
-    private ?Calendar $calendar;
+    private ?Calendar $calendar = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $definition_time;
+    #[ORM\Column(name: 'definition_time', type: 'string', length: 255, nullable: true)]
+    private $definitionTime;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $end_of_working_day;
+    #[ORM\Column(name: 'end_of_working_day', type: 'boolean', options: ['default' => 0])]
+    private $endOfWorkingDay;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     #[ORM\ManyToOne(targetEntity: Slm::class)]
     #[ORM\JoinColumn(name: 'slms_id', referencedColumnName: 'id', nullable: true)]
-    private ?Slm $slm;
+    private ?Slm $slm = null;
 
     public function getId(): ?int
     {
@@ -76,12 +76,12 @@ class Ola
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -112,48 +112,48 @@ class Ola
 
     public function getNumberTime(): ?int
     {
-        return $this->number_time;
+        return $this->numberTime;
     }
 
-    public function setNumberTime(?int $number_time): self
+    public function setNumberTime(?int $numberTime): self
     {
-        $this->number_time = $number_time;
+        $this->numberTime = $numberTime;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDefinitionTime(): ?string
     {
-        return $this->definition_time;
+        return $this->definitionTime;
     }
 
-    public function setDefinitionTime(?string $definition_time): self
+    public function setDefinitionTime(?string $definitionTime): self
     {
-        $this->definition_time = $definition_time;
+        $this->definitionTime = $definitionTime;
 
         return $this;
     }
 
     public function getEndOfWorkingDay(): ?bool
     {
-        return $this->end_of_working_day;
+        return $this->endOfWorkingDay;
     }
 
-    public function setEndOfWorkingDay(?bool $end_of_working_day): self
+    public function setEndOfWorkingDay(?bool $endOfWorkingDay): self
     {
-        $this->end_of_working_day = $end_of_working_day;
+        $this->endOfWorkingDay = $endOfWorkingDay;
 
         return $this;
     }
@@ -162,12 +162,12 @@ class Ola
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

@@ -13,19 +13,19 @@ class ChangeGroup
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
 
     #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeGroups')]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Change $change;
+    private ?Change $change = null;
 
     #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'changeGroups')]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
-    private ?Group $group;
+    private ?Group $group = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
     private $type;
 
     public function getId(): ?int

@@ -13,16 +13,16 @@ class IpAddressIpNetwork
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: IpAddress::class, inversedBy: 'ipaddressIpnetworks')]
     #[ORM\JoinColumn(name: 'ipaddresses_id', referencedColumnName: 'id', nullable: true)]
-    private ?IpAddress $ipaddress;
+    private ?IpAddress $ipaddress = null;
 
     #[ORM\ManyToOne(targetEntity: IpNetwork::class, inversedBy: 'ipaddressIpnetworks')]
     #[ORM\JoinColumn(name: 'ipnetworks_id', referencedColumnName: 'id', nullable: true)]
-    private ?IpNetwork $ipnetwork;
+    private ?IpNetwork $ipnetwork = null;
 
     public function getId(): ?int
     {

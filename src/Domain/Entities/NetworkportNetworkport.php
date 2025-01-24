@@ -12,16 +12,16 @@ class NetworkportNetworkport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Networkport::class, inversedBy: 'networkportNetworkports1')]
     #[ORM\JoinColumn(name: 'networkports_id_1', referencedColumnName: 'id', nullable: true)]
-    private ?Networkport $networkport1;
+    private ?Networkport $networkport1 = null;
 
     #[ORM\ManyToOne(targetEntity: Networkport::class, inversedBy: 'networkportNetworkports2')]
     #[ORM\JoinColumn(name: 'networkports_id_2', referencedColumnName: 'id', nullable: true)]
-    private ?Networkport $networkport2;
+    private ?Networkport $networkport2 = null;
 
     public function getId(): ?int
     {

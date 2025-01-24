@@ -10,38 +10,38 @@ class ImpactContext
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "text", length: 65535)]
+    #[ORM\Column(name: 'positions', type: "text", length: 65535)]
     private $positions;
 
-    #[ORM\Column(type: "float", options: ["default" => 0])]
+    #[ORM\Column(name: 'zoom', type: "float", options: ["default" => 0])]
     private $zoom;
 
-    #[ORM\Column(type: "float", options: ["default" => 0])]
-    private $pan_x;
+    #[ORM\Column(name: 'pan_x', type: "float", options: ["default" => 0])]
+    private $panX;
 
-    #[ORM\Column(type: "float", options: ["default" => 0])]
-    private $pan_y;
+    #[ORM\Column(name: 'pan_y', type: "float", options: ["default" => 0])]
+    private $panY;
 
-    #[ORM\Column(type: "string", length: 255, options: ["default" => ""])]
-    private $impact_color;
+    #[ORM\Column(name: 'impact_color', type: "string", length: 255, options: ["default" => ""])]
+    private $impactColor;
 
-    #[ORM\Column(type: "string", length: 255, options: ["default" => ""])]
-    private $depends_color;
+    #[ORM\Column(name: 'depends_color', type: "string", length: 255, options: ["default" => ""])]
+    private $dependsColor;
 
-    #[ORM\Column(type: "string", length: 255, options: ["default" => ""])]
-    private $impact_and_depends_color;
+    #[ORM\Column(name: 'impact_and_depends_color', type: "string", length: 255, options: ["default" => ""])]
+    private $impactAndDependsColor;
 
-    #[ORM\Column(type: "boolean", options: ["default" => true])]
-    private $show_depends;
+    #[ORM\Column(name: 'show_depends', type: "boolean", options: ["default" => true])]
+    private $showDepends;
 
-    #[ORM\Column(type: "boolean", options: ["default" => true])]
-    private $show_impact;
+    #[ORM\Column(name: 'show_impact', type: "boolean", options: ["default" => true])]
+    private $showImpact;
 
-    #[ORM\Column(type: "integer", options: ["default" => 5])]
-    private $max_depth;
+    #[ORM\Column(name: 'max_depth', type: "integer", options: ["default" => 5])]
+    private $maxDepth;
 
     public function getId(): ?int
     {
@@ -72,99 +72,99 @@ class ImpactContext
         return $this->zoom;
     }
 
-    public function setPanX(float $pan_x): self
+    public function setPanX(float $panX): self
     {
-        $this->pan_x = $pan_x;
+        $this->panX = $panX;
 
         return $this;
     }
 
     public function getPanX(): ?float
     {
-        return $this->pan_x;
+        return $this->panX;
     }
 
-    public function setPanY(float $pan_y): self
+    public function setPanY(float $panY): self
     {
-        $this->pan_y = $pan_y;
+        $this->panY = $panY;
 
         return $this;
     }
 
     public function getPanY(): ?float
     {
-        return $this->pan_y;
+        return $this->panY;
     }
 
-    public function setImpactColor(string $impact_color): self
+    public function setImpactColor(string $impactColor): self
     {
-        $this->impact_color = $impact_color;
+        $this->impactColor = $impactColor;
 
         return $this;
     }
 
     public function getImpactColor(): ?string
     {
-        return $this->impact_color;
+        return $this->impactColor;
     }
 
-    public function setDependsColor(string $depends_color): self
+    public function setDependsColor(string $dependsColor): self
     {
-        $this->depends_color = $depends_color;
+        $this->dependsColor = $dependsColor;
 
         return $this;
     }
 
     public function getDependsColor(): ?string
     {
-        return $this->depends_color;
+        return $this->dependsColor;
     }
 
-    public function setImpactAndDependsColor(string $impact_and_depends_color): self
+    public function setImpactAndDependsColor(string $impactAndDependsColor): self
     {
-        $this->impact_and_depends_color = $impact_and_depends_color;
+        $this->impactAndDependsColor = $impactAndDependsColor;
 
         return $this;
     }
 
     public function getImpactAndDependsColor(): ?string
     {
-        return $this->impact_and_depends_color;
+        return $this->impactAndDependsColor;
     }
 
-    public function setShowDepends(bool $show_depends): self
+    public function setShowDepends(bool $showDepends): self
     {
-        $this->show_depends = $show_depends;
+        $this->showDepends = $showDepends;
 
         return $this;
     }
 
     public function getShowDepends(): ?bool
     {
-        return $this->show_depends;
+        return $this->showDepends;
     }
 
-    public function setShowImpact(bool $show_impact): self
+    public function setShowImpact(bool $showImpact): self
     {
-        $this->show_impact = $show_impact;
+        $this->showImpact = $showImpact;
 
         return $this;
     }
 
     public function getShowImpact(): ?bool
     {
-        return $this->show_impact;
+        return $this->showImpact;
     }
 
-    public function setMaxDepth(int $max_depth): self
+    public function setMaxDepth(int $maxDepth): self
     {
-        $this->max_depth = $max_depth;
+        $this->maxDepth = $maxDepth;
 
         return $this;
     }
 
     public function getMaxDepth(): ?int
     {
-        return $this->max_depth;
+        return $this->maxDepth;
     }
 }

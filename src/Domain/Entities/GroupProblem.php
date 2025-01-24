@@ -13,18 +13,18 @@ class GroupProblem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Problem::class, inversedBy: 'groupProblems')]
     #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Problem $problem;
+    private ?Problem $problem = null;
 
     #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupProblems')]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
-    private ?Group $group;
+    private ?Group $group = null;
 
-    #[ORM\Column(type: "integer", options: ['default' => 1])]
+    #[ORM\Column(name: 'type', type: "integer", options: ['default' => 1])]
     private $type;
 
     public function getId(): ?int

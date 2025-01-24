@@ -17,48 +17,48 @@ class ChangeCost
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
 
     #[ORM\ManyToOne(targetEntity: Change::class)]
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Change $change;
+    private ?Change $change = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $begin_date;
+    #[ORM\Column(name: 'begin_date', type: 'date', nullable: true)]
+    private $beginDate;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $end_date;
+    #[ORM\Column(name: 'end_date', type: 'date', nullable: true)]
+    private $endDate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
     private $actiontime;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
-    private $cost_time;
+    #[ORM\Column(name: 'cost_time', type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
+    private $costTime;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
-    private $cost_fixed;
+    #[ORM\Column(name: 'cost_fixed', type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
+    private $costFixed;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
-    private $cost_material;
+    #[ORM\Column(name: 'cost_material', type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
+    private $costMaterial;
 
     #[ORM\ManyToOne(targetEntity: Budget::class)]
     #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
-    private ?Budget $budget;
+    private ?Budget $budget = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
     public function getId(): ?int
     {
@@ -92,24 +92,24 @@ class ChangeCost
 
     public function getBeginDate(): ?\DateTimeInterface
     {
-        return $this->begin_date;
+        return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $begin_date): self
+    public function setBeginDate(\DateTimeInterface $beginDate): self
     {
-        $this->begin_date = $begin_date;
+        $this->beginDate = $beginDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $end_date): self
+    public function setEndDate(\DateTimeInterface $endDate): self
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }
@@ -128,36 +128,36 @@ class ChangeCost
 
     public function getCostTime(): ?float
     {
-        return $this->cost_time;
+        return $this->costTime;
     }
 
-    public function setCostTime(?float $cost_time): self
+    public function setCostTime(?float $costTime): self
     {
-        $this->cost_time = $cost_time;
+        $this->costTime = $costTime;
 
         return $this;
     }
 
     public function getCostFixed(): ?float
     {
-        return $this->cost_fixed;
+        return $this->costFixed;
     }
 
-    public function setCostFixed(?float $cost_fixed): self
+    public function setCostFixed(?float $costFixed): self
     {
-        $this->cost_fixed = $cost_fixed;
+        $this->costFixed = $costFixed;
 
         return $this;
     }
 
     public function getCostMaterial(): ?float
     {
-        return $this->cost_material;
+        return $this->costMaterial;
     }
 
-    public function setCostMaterial(?float $cost_material): self
+    public function setCostMaterial(?float $costMaterial): self
     {
-        $this->cost_material = $cost_material;
+        $this->costMaterial = $costMaterial;
 
         return $this;
     }
@@ -165,12 +165,12 @@ class ChangeCost
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }

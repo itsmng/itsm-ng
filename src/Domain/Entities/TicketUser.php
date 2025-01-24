@@ -12,23 +12,23 @@ class TicketUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\Column(name: 'tickets_id', type: 'integer', options: ['default' => 0])]
+    private $ticketsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
+    private $usersId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
     private $type;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $use_notification;
+    #[ORM\Column(name: 'use_notification', type: 'boolean', options: ['default' => 1])]
+    private $useNotification;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $alternative_email;
+    #[ORM\Column(name: 'alternative_email', type: 'string', length: 255, nullable: true)]
+    private $alternativeEmail;
 
     public function getId(): ?int
     {
@@ -37,24 +37,24 @@ class TicketUser
 
     public function getTicketsId(): ?int
     {
-        return $this->tickets_id;
+        return $this->ticketsId;
     }
 
-    public function setTicketsId(?int $tickets_id): self
+    public function setTicketsId(?int $ticketsId): self
     {
-        $this->tickets_id = $tickets_id;
+        $this->ticketsId = $ticketsId;
 
         return $this;
     }
 
     public function getUsersId(): ?int
     {
-        return $this->users_id;
+        return $this->usersId;
     }
 
-    public function setUsersId(?int $users_id): self
+    public function setUsersId(?int $usersId): self
     {
-        $this->users_id = $users_id;
+        $this->usersId = $usersId;
 
         return $this;
     }
@@ -73,24 +73,24 @@ class TicketUser
 
     public function getUseNotification(): ?bool
     {
-        return $this->use_notification;
+        return $this->useNotification;
     }
 
-    public function setUseNotification(?bool $use_notification): self
+    public function setUseNotification(?bool $useNotification): self
     {
-        $this->use_notification = $use_notification;
+        $this->useNotification = $useNotification;
 
         return $this;
     }
 
     public function getAlternativeEmail(): ?string
     {
-        return $this->alternative_email;
+        return $this->alternativeEmail;
     }
 
-    public function setAlternativeEmail(?string $alternative_email): self
+    public function setAlternativeEmail(?string $alternativeEmail): self
     {
-        $this->alternative_email = $alternative_email;
+        $this->alternativeEmail = $alternativeEmail;
 
         return $this;
     }

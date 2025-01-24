@@ -14,25 +14,25 @@ class PduPlug
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Plug::class, inversedBy: 'pduPlugs')]
     #[ORM\JoinColumn(name: 'plugs_id', referencedColumnName: 'id', nullable: true)]
-    private ?Plug $plug;
+    private ?Plug $plug = null;
 
     #[ORM\ManyToOne(targetEntity: Pdu::class, inversedBy: 'pduPlugs')]
     #[ORM\JoinColumn(name: 'pdus_id', referencedColumnName: 'id', nullable: true)]
-    private ?Pdu $pdu;
+    private ?Pdu $pdu = null;
 
-    #[ORM\Column(type: 'integer', nullable: true, options: ['default' => 0])]
-    private $number_plugs;
+    #[ORM\Column(name: 'number_plugs', type: 'integer', nullable: true, options: ['default' => 0])]
+    private $numberPlugs;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -41,36 +41,36 @@ class PduPlug
 
     public function getNumberPlugs(): ?int
     {
-        return $this->number_plugs;
+        return $this->numberPlugs;
     }
 
-    public function setNumberPlugs(int $number_plugs): self
+    public function setNumberPlugs(int $numberPlugs): self
     {
-        $this->number_plugs = $number_plugs;
+        $this->numberPlugs = $numberPlugs;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

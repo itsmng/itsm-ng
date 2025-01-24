@@ -26,76 +26,76 @@ class Group
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'entityRssfeeds')]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $ldap_field;
+    #[ORM\Column(name: 'ldap_field', type: 'string', length: 255, nullable: true)]
+    private $ldapField;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
-    private $ldap_value;
+    #[ORM\Column(name: 'ldap_value', type: 'text', nullable: true, length: 65535)]
+    private $ldapValue;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
-    private $ldap_group_dn;
+    #[ORM\Column(name: 'ldap_group_dn', type: 'text', nullable: true, length: 65535)]
+    private $ldapGroupDn;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
-    private ?Group $group;
+    private ?Group $group = null;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'completename', type: 'text', nullable: true, length: 65535)]
     private $completename;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
     private $level;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $ancestors_cache;
+    #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
+    private $ancestorsCache;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $sons_cache;
+    #[ORM\Column(name: 'sons_cache', type: 'text', nullable: true)]
+    private $sonsCache;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private $is_requester;
+    #[ORM\Column(name: 'is_requester', type: 'boolean', options: ['default' => true])]
+    private $isRequester;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private $is_watcher;
+    #[ORM\Column(name: 'is_watcher', type: 'boolean', options: ['default' => true])]
+    private $isWatcher;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private $is_assign;
+    #[ORM\Column(name: 'is_assign', type: 'boolean', options: ['default' => true])]
+    private $isAssign;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private $is_task;
+    #[ORM\Column(name: 'is_task', type: 'boolean', options: ['default' => true])]
+    private $isTask;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private $is_notify;
+    #[ORM\Column(name: 'is_notify', type: 'boolean', options: ['default' => true])]
+    private $isNotify;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private $is_itemgroup;
+    #[ORM\Column(name: 'is_itemgroup', type: 'boolean', options: ['default' => true])]
+    private $isItemgroup;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private $is_usergroup;
+    #[ORM\Column(name: 'is_usergroup', type: 'boolean', options: ['default' => true])]
+    private $isUsergroup;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private $is_manager;
+    #[ORM\Column(name: 'is_manager', type: 'boolean', options: ['default' => true])]
+    private $isManager;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: ChangeGroup::class)]
     private Collection $changeGroups;
@@ -126,12 +126,12 @@ class Group
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -162,48 +162,48 @@ class Group
 
     public function getLdapField(): ?string
     {
-        return $this->ldap_field;
+        return $this->ldapField;
     }
 
-    public function setLdapField(?string $ldap_field): self
+    public function setLdapField(?string $ldapField): self
     {
-        $this->ldap_field = $ldap_field;
+        $this->ldapField = $ldapField;
 
         return $this;
     }
 
     public function getLdapValue(): ?string
     {
-        return $this->ldap_value;
+        return $this->ldapValue;
     }
 
-    public function setLdapValue(?string $ldap_value): self
+    public function setLdapValue(?string $ldapValue): self
     {
-        $this->ldap_value = $ldap_value;
+        $this->ldapValue = $ldapValue;
 
         return $this;
     }
 
     public function getLdapGroupDn(): ?string
     {
-        return $this->ldap_group_dn;
+        return $this->ldapGroupDn;
     }
 
-    public function setLdapGroupDn(?string $ldap_group_dn): self
+    public function setLdapGroupDn(?string $ldapGroupDn): self
     {
-        $this->ldap_group_dn = $ldap_group_dn;
+        $this->ldapGroupDn = $ldapGroupDn;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -234,132 +234,132 @@ class Group
 
     public function getAncestorsCache(): ?string
     {
-        return $this->ancestors_cache;
+        return $this->ancestorsCache;
     }
 
-    public function setAncestorsCache(?string $ancestors_cache): self
+    public function setAncestorsCache(?string $ancestorsCache): self
     {
-        $this->ancestors_cache = $ancestors_cache;
+        $this->ancestorsCache = $ancestorsCache;
 
         return $this;
     }
 
     public function getSonsCache(): ?string
     {
-        return $this->sons_cache;
+        return $this->sonsCache;
     }
 
-    public function setSonsCache(?string $sons_cache): self
+    public function setSonsCache(?string $sonsCache): self
     {
-        $this->sons_cache = $sons_cache;
+        $this->sonsCache = $sonsCache;
 
         return $this;
     }
 
     public function getIsRequester(): ?bool
     {
-        return $this->is_requester;
+        return $this->isRequester;
     }
 
-    public function setIsRequester(bool $is_requester): self
+    public function setIsRequester(bool $isRequester): self
     {
-        $this->is_requester = $is_requester;
+        $this->isRequester = $isRequester;
 
         return $this;
     }
 
     public function getIsWatcher(): ?bool
     {
-        return $this->is_watcher;
+        return $this->isWatcher;
     }
 
-    public function setIsWatcher(bool $is_watcher): self
+    public function setIsWatcher(bool $isWatcher): self
     {
-        $this->is_watcher = $is_watcher;
+        $this->isWatcher = $isWatcher;
 
         return $this;
     }
 
     public function getIsAssign(): ?bool
     {
-        return $this->is_assign;
+        return $this->isAssign;
     }
 
-    public function setIsAssign(bool $is_assign): self
+    public function setIsAssign(bool $isAssign): self
     {
-        $this->is_assign = $is_assign;
+        $this->isAssign = $isAssign;
 
         return $this;
     }
 
     public function getIsTask(): ?bool
     {
-        return $this->is_task;
+        return $this->isTask;
     }
 
-    public function setIsTask(bool $is_task): self
+    public function setIsTask(bool $isTask): self
     {
-        $this->is_task = $is_task;
+        $this->isTask = $isTask;
 
         return $this;
     }
 
     public function getIsNotify(): ?bool
     {
-        return $this->is_notify;
+        return $this->isNotify;
     }
 
-    public function setIsNotify(bool $is_notify): self
+    public function setIsNotify(bool $isNotify): self
     {
-        $this->is_notify = $is_notify;
+        $this->isNotify = $isNotify;
 
         return $this;
     }
 
     public function getIsItemgroup(): ?bool
     {
-        return $this->is_itemgroup;
+        return $this->isItemgroup;
     }
 
-    public function setIsItemgroup(bool $is_itemgroup): self
+    public function setIsItemgroup(bool $isItemgroup): self
     {
-        $this->is_itemgroup = $is_itemgroup;
+        $this->isItemgroup = $isItemgroup;
 
         return $this;
     }
 
     public function getIsUsergroup(): ?bool
     {
-        return $this->is_usergroup;
+        return $this->isUsergroup;
     }
 
-    public function setIsUsergroup(bool $is_usergroup): self
+    public function setIsUsergroup(bool $isUsergroup): self
     {
-        $this->is_usergroup = $is_usergroup;
+        $this->isUsergroup = $isUsergroup;
 
         return $this;
     }
 
     public function getIsManager(): ?bool
     {
-        return $this->is_manager;
+        return $this->isManager;
     }
 
-    public function setIsManager(bool $is_manager): self
+    public function setIsManager(bool $isManager): self
     {
-        $this->is_manager = $is_manager;
+        $this->isManager = $isManager;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

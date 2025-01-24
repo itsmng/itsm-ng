@@ -13,17 +13,17 @@ class ApplianceItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Appliance::class)]
     #[ORM\JoinColumn(name: 'appliances_id', referencedColumnName: 'id', nullable: true)]
-    private ?Appliance $appliance;
+    private ?Appliance $appliance = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: "string", length: 100, options: ["default" => ""])]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 100, options: ["default" => ""])]
     private $itemtype;
 
     public function getId(): ?int
@@ -33,12 +33,12 @@ class ApplianceItem
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }

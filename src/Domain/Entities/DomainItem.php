@@ -15,25 +15,25 @@ class DomainItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Domain::class, inversedBy: 'domainItems')]
     #[ORM\JoinColumn(name: 'domains_id', referencedColumnName: 'id', nullable: true)]
-    private ?Domain $domain;
+    private ?Domain $domain = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $domainrelations_id;
+    #[ORM\Column(name: 'domainrelations_id', type: 'integer', options: ['default' => 0])]
+    private $domainrelationsId;
 
     #[ORM\ManyToOne(targetEntity: DomainRelation::class)]
     #[ORM\JoinColumn(name: 'domainrelations_id', referencedColumnName: 'id', nullable: true)]
-    private ?DomainRelation $domainRelation;
+    private ?DomainRelation $domainRelation = null;
 
     public function getId(): ?int
     {
@@ -42,12 +42,12 @@ class DomainItem
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -66,12 +66,12 @@ class DomainItem
 
     public function getDomainrelationsId(): ?int
     {
-        return $this->domainrelations_id;
+        return $this->domainrelationsId;
     }
 
-    public function setDomainrelationsId(?int $domainrelations_id): self
+    public function setDomainrelationsId(?int $domainrelationsId): self
     {
-        $this->domainrelations_id = $domainrelations_id;
+        $this->domainrelationsId = $domainrelationsId;
 
         return $this;
     }

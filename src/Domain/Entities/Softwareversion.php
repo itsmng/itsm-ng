@@ -18,42 +18,42 @@ class Softwareversion
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
     #[ORM\ManyToOne(targetEntity: Software::class)]
     #[ORM\JoinColumn(name: 'softwares_id', referencedColumnName: 'id', nullable: true)]
-    private ?Software $software;
+    private ?Software $software = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\Column(name: 'states_id', type: 'integer', options: ['default' => 0])]
+    private $statesId;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $operatingsystems_id;
+    #[ORM\Column(name: 'operatingsystems_id', type: 'integer', options: ['default' => 0])]
+    private $operatingsystemsId;
 
     #[ORM\ManyToOne(targetEntity: Operatingsystem::class)]
     #[ORM\JoinColumn(name: 'operatingsystems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Operatingsystem $operatingsystem;
+    private ?Operatingsystem $operatingsystem = null;
 
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -62,24 +62,24 @@ class Softwareversion
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
     public function getStatesId(): ?int
     {
-        return $this->states_id;
+        return $this->statesId;
     }
 
-    public function setStatesId(?int $states_id): self
+    public function setStatesId(?int $statesId): self
     {
-        $this->states_id = $states_id;
+        $this->statesId = $statesId;
 
         return $this;
     }
@@ -110,36 +110,36 @@ class Softwareversion
 
     public function getOperatingsystemsId(): ?int
     {
-        return $this->operatingsystems_id;
+        return $this->operatingsystemsId;
     }
 
-    public function setOperatingsystemsId(?int $operatingsystems_id): self
+    public function setOperatingsystemsId(?int $operatingsystemsId): self
     {
-        $this->operatingsystems_id = $operatingsystems_id;
+        $this->operatingsystemsId = $operatingsystemsId;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTime
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $date_mod): self
+    public function setDateMod(?\DateTime $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $date_creation): self
+    public function setDateCreation(?\DateTime $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
