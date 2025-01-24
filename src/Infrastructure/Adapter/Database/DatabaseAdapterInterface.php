@@ -29,4 +29,7 @@ interface DatabaseAdapterInterface
     public function add(array $fields): bool|array;
 
     public function getRelations(): array;
+
+    // protected function adaptQueryObject(QueryObject $queryObject): array;
+    public function request(QueryObject $queryObject): array;
 }
