@@ -205,7 +205,6 @@ class Impact extends CommonGLPI {
       }
       $linkedItems = $item->getLinkedItems();
       $invalidNodes = [];
-      var_dump($linkedItems);
       foreach ($closeItemList as $node => $label) {
           [$linkClass, $linkId] = explode('::', $node);
           if (!isset($linkedItems[$linkClass][$linkId])) {
