@@ -135,6 +135,9 @@ var GLPIImpact = {
    // Register badges hitbox so they can be clicked
    badgesHitboxes: [],
 
+   // linked items
+   links: [],
+
    // Store selectors
    selectors: {
       // Dialogs
@@ -1486,7 +1489,7 @@ var GLPIImpact = {
    prepareNetwork: function(
       impactContainer,
       colors,
-      startNode
+      startNode,
    ) {
       // Set container
       this.impactContainer = impactContainer;
@@ -3541,25 +3544,25 @@ var GLPIImpact = {
          },
          success: function(data){
             $.each(data.items, function(index, value) {
-               var graph_id = itemtype + GLPIImpact.NODE_ID_SEPERATOR + value['id'];
-               var isHidden = hidden.indexOf(graph_id) !== -1;
-               var cssClass = "";
+              var graph_id = itemtype + GLPIImpact.NODE_ID_SEPERATOR + value['id'];
+              var isHidden = hidden.indexOf(graph_id) !== -1;
+              var cssClass = "";
 
-               if (isHidden) {
-                  cssClass = "impact-res-disabled";
-               }
+              if (isHidden) {
+                 cssClass = "impact-res-disabled";
+              }
 
-               var str = '<p class="' + cssClass + '" data-id="' + value['id'] + '" data-type="' + itemtype + '">';
-               str += '<img src="' + $(GLPIImpact.selectors.sideSearch + " img").attr('src') + '"></img>';
-               str += value["name"];
+              var str = '<p class="' + cssClass + '" data-id="' + value['id'] + '" data-type="' + itemtype + '">';
+              str += '<img src="' + $(GLPIImpact.selectors.sideSearch + " img").attr('src') + '"></img>';
+              str += value["name"];
 
-               if (isHidden) {
-                  str += '<i class="fas fa-eye-slash impact-res-hidden"></i>';
-               }
+              if (isHidden) {
+                 str += '<i class="fas fa-eye-slash impact-res-hidden"></i>';
+              }
 
-               str += "</p>";
+              str += "</p>";
 
-               $(GLPIImpact.selectors.sideSearchResults).append(str);
+              $(GLPIImpact.selectors.sideSearchResults).append(str);
             });
 
             // All data was loaded, hide "More..."

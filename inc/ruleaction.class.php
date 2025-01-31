@@ -546,6 +546,7 @@ class RuleAction extends CommonDBChild {
                   case "dropdown_priority" :
                      if ($_POST["action_type"] != 'compute') {
                         $param['name']  = 'value';
+                        $param['withmajor'] = true;
                         Ticket::dropdownPriority($param);
                      }
                      $display = true;
