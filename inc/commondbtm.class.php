@@ -600,9 +600,8 @@ class CommonDBTM extends CommonGLPI
     {
 
         // global $DB;
-        dump('addToDB method is called');
-        $nb_fields = count($this->fields);
-        dump('this fields in addToDB', $this->fields);
+        
+        $nb_fields = count($this->fields);        
         if ($nb_fields > 0) {
             $params = [];
             foreach ($this->fields as $key => $value) {
@@ -4670,10 +4669,8 @@ class CommonDBTM extends CommonGLPI
             } else {
                 $message = 'Missing entity ID!';
                 Toolbox::logError($message);
-            }
-            dump('entities_id commondbtm ligne 4692 ', $entities_id);
-            $all_fields =  FieldUnicity::getUnicityFieldsConfig(get_class($this), $entities_id);
-            dump('all fields ', $all_fields);
+            }            
+            $all_fields =  FieldUnicity::getUnicityFieldsConfig(get_class($this), $entities_id);            
             foreach ($all_fields as $key => $fields) {
                 //If there's fields to check
                 if (!empty($fields) && !empty($fields['fields'])) {
