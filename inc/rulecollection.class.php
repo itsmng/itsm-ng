@@ -72,7 +72,7 @@ class RuleCollection extends CommonDBTM
 
     /// Tab orientation : horizontal or vertical
     public $taborientation = 'horizontal';
-    
+
 
     public static function getTable($classname = null)
     {
@@ -206,104 +206,104 @@ class RuleCollection extends CommonDBTM
     //     return $criteria;
     // }
 
-    
 
-        public function getRuleListCriteria(array $options = []): QueryBuilder
-        {           
-            $adapter = $this->getAdapter();
-            if ($adapter instanceof DoctrineRelationalAdapter) {
-                $em = $adapter->getEntityManager();
-            }
-            
-            $p = [
-                'active'    => true,
-                'start'     => 0,
-                'limit'     => 0,
-                'inherited' => 1,
-                'childrens' => 0,
-                'condition' => 0,
-            ];
-        
-            foreach ($options as $key => $value) {
-                $p[$key] = $value;
-            }
-           
-            $qb = $em->createQueryBuilder();           
-            // Base query
-            $qb->select('r')
-               ->from(\Itsmng\Domain\Entities\Rule::class, 'r');
-        
-            // WHERE conditions avec vérification des types
-            if ($p['active']) {                
-                $qb->andWhere($qb->expr()->eq('r.isActive', ':isActive'))
-                   ->setParameter('isActive', 1);               
-            }
-            
-            if ($p['condition'] > 0) {                
-                $qb->andWhere('r.condition = :condition')
-                ->setParameter('condition', (int)$p['condition']);               
-                    
+
+    public function getRuleListCriteria(array $options = []): QueryBuilder
+    {
+        $adapter = $this->getAdapter();
+        if ($adapter instanceof DoctrineRelationalAdapter) {
+            $em = $adapter->getEntityManager();
+        }
+
+        $p = [
+            'active'    => true,
+            'start'     => 0,
+            'limit'     => 0,
+            'inherited' => 1,
+            'childrens' => 0,
+            'condition' => 0,
+        ];
+
+        foreach ($options as $key => $value) {
+            $p[$key] = $value;
+        }
+
+        $qb = $em->createQueryBuilder();
+        // Base query
+        $qb->select('r')
+           ->from(\Itsmng\Domain\Entities\Rule::class, 'r');
+
+        // WHERE conditions avec vérification des types
+        if ($p['active']) {
+            $qb->andWhere($qb->expr()->eq('r.isActive', ':isActive'))
+               ->setParameter('isActive', 1);
+        }
+
+        if ($p['condition'] > 0) {
+            $qb->andWhere('r.condition = :condition')
+            ->setParameter('condition', (int)$p['condition']);
+
             // Subtype condition
             $ruleClassName = $this->getRuleClassName();
             if (!empty($ruleClassName)) {
                 $qb->andWhere($qb->expr()->eq('r.subType', ':subType'))
                    ->setParameter('subType', $ruleClassName);
             }
-        
+
             // Recursive rules handling
             if (!$p['childrens']) {
                 $restrictCriteria = getEntitiesRestrictCriteria('r', 'entity', $this->entity, $p['inherited']);
-                
-                foreach ($restrictCriteria as $key => $value) {                    
+
+                foreach ($restrictCriteria as $key => $value) {
                     if (is_array($value) && count($value) === 1) {
-                        $subKey = array_key_first($value); 
-                        $realValue = $value[$subKey]; 
+                        $subKey = array_key_first($value);
+                        $realValue = $value[$subKey];
                     } else {
                         $subKey = $key;
                         $realValue = $value;
-                    }            
-                    
-                    if (strpos($subKey, '.') !== false) {
-                        $subKey = substr(strrchr($subKey, '.'), 1);
-                    }            
-                    
-                    $paramKey = preg_replace('/[^a-zA-Z0-9_]/', '_', $subKey);                  
-                                       
-                    $qb->andWhere($qb->expr()->eq('r.' . $subKey, ':' . $paramKey))
-                       ->setParameter($paramKey, $realValue);
-                }      
-             
-                             
-                } else {
-                    $sons = getSonsOf('glpi_entities', $this->entity);
-                    $qb->andWhere('r.entity IN (:sons)')
-                       ->setParameter('sons', $sons);
-                }        
-               
-                if ($this->isRuleRecursive()) {
-                    $qb->leftJoin(\Itsmng\Domain\Entities\Entity::class, 'e', 'WITH', 'e.id = r.entity');
-                    
-                    if (!$p['childrens']) {
-                        $sons = getSonsOf('glpi_entities', $this->entity);
-                        $qb->andWhere('r.entity IN (:sons)')
-                        ->setParameter('sons', $sons);
                     }
 
-                    $qb->addOrderBy('e.level', 'ASC'); 
+                    if (strpos($subKey, '.') !== false) {
+                        $subKey = substr(strrchr($subKey, '.'), 1);
+                    }
+
+                    $paramKey = preg_replace('/[^a-zA-Z0-9_]/', '_', $subKey);
+
+                    $qb->andWhere($qb->expr()->eq('r.' . $subKey, ':' . $paramKey))
+                       ->setParameter($paramKey, $realValue);
                 }
+
+
+            } else {
+                $sons = getSonsOf('glpi_entities', $this->entity);
+                $qb->andWhere('r.entity IN (:sons)')
+                   ->setParameter('sons', $sons);
             }
-        
-            $qb->addOrderBy('r.' . $this->orderby, 'ASC');
-        
-            if ($p['limit']) {
-                $qb->setMaxResults((int)$p['limit'])
-                   ->setFirstResult((int)$p['start']);
-            }                
-        
-            return $qb;
+
+            if ($this->isRuleRecursive()) {
+                $qb->leftJoin(\Itsmng\Domain\Entities\Entity::class, 'e', 'WITH', 'e.id = r.entity');
+
+                if (!$p['childrens']) {
+                    $sons = getSonsOf('glpi_entities', $this->entity);
+                    $qb->andWhere('r.entity IN (:sons)')
+                    ->setParameter('sons', $sons);
+                }
+
+                $qb->addOrderBy('e.level', 'ASC');
+            }
         }
-    
-    
+
+        $qb->addOrderBy('r.' . $this->orderby, 'ASC');
+
+        if ($p['limit']) {
+            $qb->setMaxResults((int)$p['limit'])
+               ->setFirstResult((int)$p['start']);
+        }
+
+        return $qb;
+    }
+
+
 
     /**
      * Get Collection Part : retrieve descriptions of a range of rules
@@ -366,17 +366,17 @@ class RuleCollection extends CommonDBTM
 
         // check if load required
         if (($need & $this->RuleList->load) != $need) {
-            //Select all the rules of a different type           
-           
+            //Select all the rules of a different type
+
             $criteria = $this -> getRuleListCriteria(['condition' => $condition]);
-                       
+
             // $iterator = $DB->request($criteria);
-            
+
             $iterator = $this->getAdapter()->request($criteria);
-            $query = $criteria->getQuery(); 
-            
-            $iterator = $query->getResult(); 
-                        
+            $query = $criteria->getQuery();
+
+            $iterator = $query->getResult();
+
             if (count($iterator)) {
                 $this->RuleList->list = [];
 
@@ -1609,7 +1609,7 @@ class RuleCollection extends CommonDBTM
      **/
     public function processAllRules($input = [], $output = [], $params = [], $options = [])
     {
-        
+
         // $p['condition']     = 0;
         $p['condition'] = isset($params['condition']) ? $params['condition'] : 0;
         $p['only_criteria'] = null;
@@ -1622,11 +1622,11 @@ class RuleCollection extends CommonDBTM
 
         // Get Collection datas
         $this->getCollectionDatas(1, 1, $p['condition']);
-        $input                      = $this->prepareInputDataForProcessWithPlugins($input, $params);        
+        $input                      = $this->prepareInputDataForProcessWithPlugins($input, $params);
         $output["_no_rule_matches"] = true;
         //Store rule type being processed (for plugins)
         $params['rule_itemtype']    = $this->getRuleClassName();
-        
+
         if (count($this->RuleList->list)) {
             foreach ($this->RuleList->list as $rule) {
                 //If the rule is active, process it

@@ -331,7 +331,7 @@ class Computer extends CommonDBTM
      * @return boolean
      **/
     public function showForm($ID, $options = [])
-    {        
+    {
         $form = [
            'action' => $this->getFormURL(),
            'itemtype' => $this::class,

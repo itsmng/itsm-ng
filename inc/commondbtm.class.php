@@ -196,9 +196,9 @@ class CommonDBTM extends CommonGLPI
 
         if (isset($CFG_GLPI['legacy_database']) && $CFG_GLPI['legacy_database']) {
             return new LegacySqlAdapter(get_called_class());
-            
+
         }
-        
+
         return new DoctrineRelationalAdapter(get_called_class());
     }
 
@@ -598,11 +598,11 @@ class CommonDBTM extends CommonGLPI
     **/
     public function addToDB()
     {
-        
+
         // global $DB;
         dump('addToDB method is called');
         $nb_fields = count($this->fields);
-        dump('this fields in addToDB',$this->fields);
+        dump('this fields in addToDB', $this->fields);
         if ($nb_fields > 0) {
             $params = [];
             foreach ($this->fields as $key => $value) {
@@ -633,7 +633,7 @@ class CommonDBTM extends CommonGLPI
             if ($result && isset($result['id'])) {
                 // Mettre à jour l'ID de l'objet courant
                 $this->fields['id'] = $result['id'];
-    
+
                 // Pas besoin de recharger les données depuis la base
                 return $this->fields['id'];
             }
@@ -1084,7 +1084,7 @@ class CommonDBTM extends CommonGLPI
         }
     }
 
-    
+
     // Common functions
     /**
      * Add an item in the database with all it's items.
@@ -1103,12 +1103,12 @@ class CommonDBTM extends CommonGLPI
         // if ($DB->isSlave()) {
         //     return false;
         // }
-        
+
         // This means we are not adding a cloned object
         if (!isset($input['clone'])) {
             // This means we are asked to clone the object (old way). This will clone the clone method
             // that will set the clone parameter to true
-           
+
             if (isset($input['_oldID'])) {
                 $id_to_clone = $input['_oldID'];
             }
@@ -1123,21 +1123,21 @@ class CommonDBTM extends CommonGLPI
                 return $clone_id;
             }
         }
-        
+
         // Store input in the object to be available in all sub-method / hook
         $this->input = $input;
-        
+
         // Manage the _no_history
         if (!isset($this->input['_no_history'])) {
             $this->input['_no_history'] = !$history;
-            
+
         }
 
         if (isset($this->input['add'])) {
             // Input from the interface
             // Save this data to be available if add fail
             $this->saveInput();
-           
+
         }
 
         // Call the plugin hook - $this->input can be altered
@@ -1157,23 +1157,23 @@ class CommonDBTM extends CommonGLPI
             // Call the plugin hook - $this->input can be altered
             // This hook get the data altered by the object method
             Plugin::doHook("post_prepareadd", $this);
-        }        
+        }
         if ($this->input && is_array($this->input)) {
             //Check values to inject
-            $this->filterValues(!isCommandLine());            
+            $this->filterValues(!isCommandLine());
         }
 
         //Process business rules for assets
-        $this->assetBusinessRules(\RuleAsset::ONADD);        
-        if ($this->input && is_array($this->input)) {           
+        $this->assetBusinessRules(\RuleAsset::ONADD);
+        if ($this->input && is_array($this->input)) {
             $this->fields = [];
-            
-            
-            // $table_fields = $DB->listFields($this->getTable());           
-            
-            $table_fields = $this::getAdapter()->getTableFields();            
-                       
-            // fill array for add           
+
+
+            // $table_fields = $DB->listFields($this->getTable());
+
+            $table_fields = $this::getAdapter()->getTableFields();
+
+            // fill array for add
             // foreach (array_keys($this->input) as $key) {
             //     if (
             //         ($key[0] != '_')
@@ -1181,13 +1181,13 @@ class CommonDBTM extends CommonGLPI
             //     ) {
             //         $this->fields[$key] = $this->input[$key];
             //     }
-            // }          
-            
+            // }
+
             foreach (array_keys($table_fields) as $key) {
                 if (($key[0] != '_')) {
                     $this->fields[$key] = $this->input[$key] ?? null; // Assigne null si non défini
                 }
-            }           
+            }
             // Auto set date_creation if exsist
             if (isset($table_fields['date_creation']) && !isset($this->input['date_creation'])) {
                 $this->fields['date_creation'] = $_SESSION["glpi_currenttime"];
@@ -4671,7 +4671,7 @@ class CommonDBTM extends CommonGLPI
                 $message = 'Missing entity ID!';
                 Toolbox::logError($message);
             }
-dump('entities_id commondbtm ligne 4692 ', $entities_id);
+            dump('entities_id commondbtm ligne 4692 ', $entities_id);
             $all_fields =  FieldUnicity::getUnicityFieldsConfig(get_class($this), $entities_id);
             dump('all fields ', $all_fields);
             foreach ($all_fields as $key => $fields) {
@@ -4700,7 +4700,7 @@ dump('entities_id commondbtm ligne 4692 ', $entities_id);
                             $continue = false;
                         }
                     }
-                    
+
                     if (
                         $continue
                         && count($where)
@@ -5794,9 +5794,9 @@ dump('entities_id commondbtm ligne 4692 ', $entities_id);
     private function assetBusinessRules($condition)
     {
         global $CFG_GLPI;
-        
+
         //Only process itemtype that are assets
-        
+
         if (in_array($this->getType(), $CFG_GLPI['asset_types'])) {
             $ruleasset          = new RuleAssetCollection();
             $input              = $this->input;
@@ -5810,7 +5810,7 @@ dump('entities_id commondbtm ligne 4692 ', $entities_id);
             $params = [
                'condition' => $condition
             ];
-                        
+
             $output = $ruleasset->processAllRules($input, [], $params);
             //If at least one rule has matched
             if (isset($output['_rule_process'])) {
@@ -5819,7 +5819,7 @@ dump('entities_id commondbtm ligne 4692 ', $entities_id);
                         continue;
                     }
                     //Add the rule output to the input array
-                    $this->input[$key] = $value;                   
+                    $this->input[$key] = $value;
                 }
             }
         }

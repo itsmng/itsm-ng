@@ -34,5 +34,5 @@ interface DatabaseAdapterInterface
     // protected function adaptQueryObject(QueryObject $queryObject): array;
     public function request(array | QueryBuilder $dql): \Iterator;
     public function getTableFields(): array;
-    
+
 }

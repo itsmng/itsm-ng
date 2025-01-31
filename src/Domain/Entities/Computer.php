@@ -226,7 +226,7 @@ class Computer
         return $this;
     }
 
-    
+
     public function getIsTemplate(): ?bool
     {
         return $this->isTemplate;
@@ -547,7 +547,7 @@ class Computer
 
     /**
      * Get the value of autoupdatesystem
-     */ 
+     */
     public function getAutoupdatesystem()
     {
         return $this->autoupdatesystem;
@@ -557,7 +557,7 @@ class Computer
      * Set the value of autoupdatesystem
      *
      * @return  self
-     */ 
+     */
     public function setAutoupdatesystem($autoupdatesystem)
     {
         $this->autoupdatesystem = $autoupdatesystem;

@@ -138,7 +138,6 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
     {
         return [];
     }
-   
-    
-}
 
+
+}

@@ -674,8 +674,7 @@ function getEntitiesRestrictCriteria(
         $value,
         $is_recursive,
         $complete_request
-        
-    );   
+    );
 
     // Add another layer to the array to prevent losing duplicates keys if the
     // result of the function is merged with another array

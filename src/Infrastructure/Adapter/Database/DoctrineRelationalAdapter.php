@@ -8,7 +8,6 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
 
-
 class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 {
     public string $class;
@@ -39,7 +38,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     /**
      * Get the value of em
-     */ 
+     */
     public function getEntityManager()
     {
         return $this->em;
@@ -71,7 +70,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function deleteByCriteria(array $criteria): bool
     {
         // TODO: Implement deleteByCriteria() method.
-        
+
         return false;
     }
 
@@ -80,15 +79,15 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         dump("listFields called");
         // TODO: Implement listFields() method.
-        dump($this->entityName); 
+        dump($this->entityName);
         $metadata = $this->em->getClassMetadata($this->entityName);
-        dump($metadata->getFieldNames()); 
+        dump($metadata->getFieldNames());
         return $metadata->getFieldNames();
         // return [];
     }
 
     public function getTableFields($content = null): array
-    {        
+    {
         $metadata = $this->em->getClassMetadata($this->entityName);
         $table_fields = [];
 
@@ -100,31 +99,31 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
         // relationships conversions
         foreach ($metadata->associationMappings as $fieldName => $mapping) {
-            // special case for entity            
+            // special case for entity
             if ($fieldName === 'entity') {
-                $table_fields['entities_id'] = null;                
+                $table_fields['entities_id'] = null;
                 continue;
             }
-           
+
             $snakeField = $this->toSnakeCase($fieldName);
-            
+
             // separate parts for special prefix (like "tech_")
             $parts = explode('_', $snakeField);
             $lastPart = end($parts);
-            
+
             // pluralize the last part
             $pluralLastPart = $this->plurialize($lastPart);
-            
+
             // Rebuild the field name
             array_pop($parts);
             array_push($parts, $pluralLastPart);
             $finalField = implode('_', $parts) . '_id';
-            
-            $table_fields[$finalField] = null;           
-        }        
+
+            $table_fields[$finalField] = null;
+        }
         return $table_fields;
     }
-        
+
 
     private function getPropertiesAndGetters($content): array
     {
@@ -165,16 +164,16 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $replacement = '_$0';
         return strtolower(ltrim(preg_replace($pattern, $replacement, $input), '_'));
     }
-   
+
 
     private function toCamelCase(string $input): string
     {
         if (str_ends_with($input, '_id')) {
-            $input = substr($input, 0, -3); 
+            $input = substr($input, 0, -3);
         }
 
         if (str_ends_with($input, 's')) {
-            $input = substr($input, 0, -1); 
+            $input = substr($input, 0, -1);
         }
         $parts = explode('_', $input);
         $parts = array_map('ucfirst', $parts);
@@ -185,7 +184,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     // get values from entity as array
     public function getFields($content): array
-    {        
+    {
         $propertiesAndGetters = $this->getPropertiesAndGetters($content);
         $fields = [];
 
@@ -238,7 +237,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $fields;
     }
 
-    
+
     public function getSettersFromFields(array $fields, object $content): array
     {
         $reflect = new ReflectionClass($content);
@@ -255,13 +254,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         foreach ($fields as $field => $value) {
             $originalField = $field;
             if (str_ends_with($field, '_id')) {
-                $field = substr($field, 0, -3); 
+                $field = substr($field, 0, -3);
             }
             $camelCaseField = $this->toCamelCase($field);
-           
+
 
             if (in_array($camelCaseField, $availableProperties)) {
-                $setter = 'set' . ucfirst($camelCaseField);                
+                $setter = 'set' . ucfirst($camelCaseField);
 
                 if (method_exists($content, $setter)) {
                     $setters[$originalField] = $setter;
@@ -277,21 +276,21 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         // TODO: Implement save() method.
         return false;
     }
-    
+
     public function add(array $fields): bool|array
     {
-        $entity = new $this->entityName();     
+        $entity = new $this->entityName();
         $setters = $this->getSettersFromFields($fields, $entity);
 
         // apply setters dynamically
         foreach ($setters as $field => $setter) {
-            
+
             if (isset($fields[$field])) {
                 $value = $fields[$field];
 
                 // if the field is an ID, it is transformed in integer
-                if (strpos($field, '_id') !== false) {                
-                    $value = (int) $value;                
+                if (strpos($field, '_id') !== false) {
+                    $value = (int) $value;
 
                     // Extract the name of the entity withdrawing '_id' and putting the first letter in uppercase
                     $entityName = ucfirst(str_replace('_id', '', $field));
@@ -303,7 +302,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                     if (class_exists("Itsmng\\Domain\\Entities\\$entityName")) {
                         $entityClass = "Itsmng\\Domain\\Entities\\$entityName";
                         // Search entity by its ID
-                        $relatedEntity = $this->em->getRepository($entityClass)->find($value);                  
+                        $relatedEntity = $this->em->getRepository($entityClass)->find($value);
 
                         if ($relatedEntity) {
                             $value = $relatedEntity;  // Replace ID with entity object
@@ -311,45 +310,45 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                             // If the entity is not found, we keep null
                             $value = null;
                         }
-                    } 
-                }            
+                    }
+                }
                 //Call the setter with the processed value
-                $entity->$setter($value);                
+                $entity->$setter($value);
             }
         }
 
-        try {            
+        try {
             $this->em->persist($entity);
-            $this->em->flush(); 
+            $this->em->flush();
             // dump("Entity ID after flush: " . $entity->getId());
-            
+
             return ['id' => $entity->getId()];
         } catch (\Exception $e) {
             dump('Exception message: ', $e->getMessage());
             return false;
         }
-    
+
         // return false;
     }
 
     // Fonction générique pour convertir un nom de champ en nom d'entité
     private function convertFieldToEntityName(string $fieldName): string
     {
-        $fieldName = strtolower($fieldName);        
+        $fieldName = strtolower($fieldName);
         // Separate the different parts of the name (tech_users_id becomes ['tech', 'users', 'id'])
         $parts = explode('_', $fieldName);
-        
+
         // Remove technical parts (prefixes like 'tech' and suffixes like 'id')
-        $parts = array_filter($parts, function($part) {
+        $parts = array_filter($parts, function ($part) {
             return !in_array($part, ['tech', 'id']);
         });
-        
+
         // Take the first remaining part and remove the final 's' if present.
         $entityName = reset($parts);
         if (str_ends_with($entityName, 's')) {
             $entityName = substr($entityName, 0, -1);
         }
-        
+
         // Capitalize the first letter
         return ucfirst($entityName);
     }
@@ -375,20 +374,19 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         // return [];
     }
 
-    
+
 
     public function request(array | QueryBuilder $criteria): \Iterator
-
     {
         dump('criteria in request', $criteria);
         if ($criteria instanceof QueryBuilder) {
             return new \ArrayIterator($criteria->getQuery()->getResult());
         }
-    
+
         if (!is_array($criteria)) {
             throw new \InvalidArgumentException('Expected array or QueryBuilder, got ' . gettype($criteria));
         }
-    
+
         if (empty($criteria['table'])) {
             throw new \InvalidArgumentException('The "table" key is required in the criteria array.');
         }
@@ -401,15 +399,15 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $offset = $criteria['offset'] ?? null;
 
         $qb = $this->em->createQueryBuilder();
-        
+
         $qb->select($alias)
            ->from($table, $alias);
-        
+
         dump('conditions', $conditions);
         foreach ($conditions as $field => $value) {
             dump('field', $field);
             dump('value', $value);
-            $parameterName = str_replace('.', '_', $field); 
+            $parameterName = str_replace('.', '_', $field);
             if (is_array($value)) {
                 $qb->andWhere("$alias.$field IN (:$parameterName)")
                    ->setParameter($parameterName, $value);
@@ -418,11 +416,11 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                    ->setParameter($parameterName, $value);
             }
         }
-        
+
         foreach ($orderBy as $field => $direction) {
             $qb->addOrderBy("$alias.$field", strtoupper($direction));
         }
-        
+
         if ($limit !== null) {
             $qb->setMaxResults((int)$limit);
         }
@@ -430,12 +428,12 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         if ($offset !== null) {
             $qb->setFirstResult((int)$offset);
         }
-        
+
         return $qb->getQuery()->getResult();
         // return [];
     }
-    
-    
-    
-    
+
+
+
+
 }
