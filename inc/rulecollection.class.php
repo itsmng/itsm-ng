@@ -1800,7 +1800,7 @@ class RuleCollection extends CommonDBTM
     public function prepareInputDataForProcessWithPlugins($input, $params)
     {
         global $PLUGIN_HOOKS;
-        
+
         $input = $this->prepareInputDataForProcess($input, $params);
         if (isset($PLUGIN_HOOKS['use_rules'])) {
             foreach ($PLUGIN_HOOKS['use_rules'] as $plugin => $val) {

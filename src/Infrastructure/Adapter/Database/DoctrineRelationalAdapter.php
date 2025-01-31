@@ -76,9 +76,9 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     // list columns from entity
     public function listFields(): array
-    {        
-        // TODO: Implement listFields() method.        
-        $metadata = $this->em->getClassMetadata($this->entityName);        
+    {
+        // TODO: Implement listFields() method.
+        $metadata = $this->em->getClassMetadata($this->entityName);
         return $metadata->getFieldNames();
         // return [];
     }
@@ -263,7 +263,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                     $setters[$originalField] = $setter;
                 }
             }
-        }        
+        }
         return $setters;
     }
 
@@ -373,7 +373,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
 
     public function request(array | QueryBuilder $criteria): \Iterator
-    {        
+    {
         if ($criteria instanceof QueryBuilder) {
             return new \ArrayIterator($criteria->getQuery()->getResult());
         }
@@ -398,8 +398,8 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $qb->select($alias)
            ->from($table, $alias);
 
-       
-        foreach ($conditions as $field => $value) {            
+
+        foreach ($conditions as $field => $value) {
             $parameterName = str_replace('.', '_', $field);
             if (is_array($value)) {
                 $qb->andWhere("$alias.$field IN (:$parameterName)")
