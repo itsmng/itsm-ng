@@ -65,8 +65,8 @@ class Computer
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment = null;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
-    private $dateMod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod = null;
 
     #[ORM\ManyToOne(targetEntity: Autoupdatesystem::class)]
     #[ORM\JoinColumn(name: 'autoupdatesystems_id', referencedColumnName: 'id', nullable: true)]
@@ -123,8 +123,8 @@ class Computer
     #[ORM\Column(name: 'uuid', type: 'string', length: 255, nullable: true)]
     private $uuid = null;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
-    private $dateCreation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
     private $isRecursive = false;

@@ -198,8 +198,8 @@ class CommonDBTM extends CommonGLPI
             return new LegacySqlAdapter(get_called_class());
             
         }
-        return new DoctrineRelationalAdapter(get_called_class());
         
+        return new DoctrineRelationalAdapter(get_called_class());
     }
 
     /**
@@ -602,7 +602,7 @@ class CommonDBTM extends CommonGLPI
         // global $DB;
         dump('addToDB method is called');
         $nb_fields = count($this->fields);
-        dump($this->fields);
+        dump('this fields in addToDB',$this->fields);
         if ($nb_fields > 0) {
             $params = [];
             foreach ($this->fields as $key => $value) {
@@ -1084,7 +1084,7 @@ class CommonDBTM extends CommonGLPI
         }
     }
 
-
+    
     // Common functions
     /**
      * Add an item in the database with all it's items.
@@ -1103,7 +1103,7 @@ class CommonDBTM extends CommonGLPI
         // if ($DB->isSlave()) {
         //     return false;
         // }
-        dump('add', $input, $options, $history);
+        
         // This means we are not adding a cloned object
         if (!isset($input['clone'])) {
             // This means we are asked to clone the object (old way). This will clone the clone method
@@ -1123,10 +1123,10 @@ class CommonDBTM extends CommonGLPI
                 return $clone_id;
             }
         }
-
+        
         // Store input in the object to be available in all sub-method / hook
         $this->input = $input;
-
+        
         // Manage the _no_history
         if (!isset($this->input['_no_history'])) {
             $this->input['_no_history'] = !$history;
@@ -1151,45 +1151,43 @@ class CommonDBTM extends CommonGLPI
             }
 
             $this->input = $this->prepareInputForAdd($this->input);
-            // dump($this->input);
         }
 
         if ($this->input && is_array($this->input)) {
             // Call the plugin hook - $this->input can be altered
             // This hook get the data altered by the object method
             Plugin::doHook("post_prepareadd", $this);
-        }
-        dump('step 5', $this->input);
+        }        
         if ($this->input && is_array($this->input)) {
             //Check values to inject
-            $this->filterValues(!isCommandLine());
-            dump("Step 5: returned true");
+            $this->filterValues(!isCommandLine());            
         }
 
         //Process business rules for assets
-        $this->assetBusinessRules(\RuleAsset::ONADD);
-        dump('avant étape 6', $this->input && is_array($this->input));
-        if ($this->input && is_array($this->input)) {
-            dump("Step 6: returned true");
+        $this->assetBusinessRules(\RuleAsset::ONADD);        
+        if ($this->input && is_array($this->input)) {           
             $this->fields = [];
             
             
-            // $table_fields = $DB->listFields($this->getTable());
-            dump("Before calling listFields");
-            $table_fields = $this::getAdapter()->listFields();
-            dump("After calling listFields");
-           
-            dump($table_fields);
-            // fill array for add
-            foreach (array_keys($this->input) as $key) {
-                if (
-                    ($key[0] != '_')
-                    && isset($table_fields[$key])
-                ) {
-                    $this->fields[$key] = $this->input[$key];
+            // $table_fields = $DB->listFields($this->getTable());           
+            
+            $table_fields = $this::getAdapter()->getTableFields();            
+                       
+            // fill array for add           
+            // foreach (array_keys($this->input) as $key) {
+            //     if (
+            //         ($key[0] != '_')
+            //         && isset($table_fields[$key])
+            //     ) {
+            //         $this->fields[$key] = $this->input[$key];
+            //     }
+            // }          
+            
+            foreach (array_keys($table_fields) as $key) {
+                if (($key[0] != '_')) {
+                    $this->fields[$key] = $this->input[$key] ?? null; // Assigne null si non défini
                 }
-            }
-
+            }           
             // Auto set date_creation if exsist
             if (isset($table_fields['date_creation']) && !isset($this->input['date_creation'])) {
                 $this->fields['date_creation'] = $_SESSION["glpi_currenttime"];
@@ -4449,6 +4447,12 @@ class CommonDBTM extends CommonGLPI
 
                         case 'date':
                         case 'datetime':
+                            //ajout
+                            // Si $value est un objet DateTime, le convertir en chaîne
+                            if ($value instanceof \DateTime) {
+                                $value = $value->format('Y-m-d H:i:s');  // Convertir en chaîne de caractères
+                            }
+
                             // Date is already "reformat" according to getDateFormat()
                             $pattern  = "/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})";
                             $pattern .= "([_][01][0-9]|2[0-3]:[0-5][0-9]:[0-5]?[0-9])?/";
@@ -4667,8 +4671,9 @@ class CommonDBTM extends CommonGLPI
                 $message = 'Missing entity ID!';
                 Toolbox::logError($message);
             }
-
+dump('entities_id commondbtm ligne 4692 ', $entities_id);
             $all_fields =  FieldUnicity::getUnicityFieldsConfig(get_class($this), $entities_id);
+            dump('all fields ', $all_fields);
             foreach ($all_fields as $key => $fields) {
                 //If there's fields to check
                 if (!empty($fields) && !empty($fields['fields'])) {
@@ -4695,7 +4700,7 @@ class CommonDBTM extends CommonGLPI
                             $continue = false;
                         }
                     }
-
+                    
                     if (
                         $continue
                         && count($where)
@@ -5791,10 +5796,7 @@ class CommonDBTM extends CommonGLPI
         global $CFG_GLPI;
         
         //Only process itemtype that are assets
-        dump('step 1 this input assetbusiness', $this->input);
-        // dump('getType', getType($this->input));
-        // dump('is array', is_array($this->input));
-        // dump('3e dump', $this->input && is_array($this->input));
+        
         if (in_array($this->getType(), $CFG_GLPI['asset_types'])) {
             $ruleasset          = new RuleAssetCollection();
             $input              = $this->input;
@@ -5808,11 +5810,8 @@ class CommonDBTM extends CommonGLPI
             $params = [
                'condition' => $condition
             ];
-
-            dump('assetBusinessRules input, params', $input, $params);
-            
+                        
             $output = $ruleasset->processAllRules($input, [], $params);
-            dump('output', $output);
             //If at least one rule has matched
             if (isset($output['_rule_process'])) {
                 foreach ($output as $key => $value) {
@@ -5820,8 +5819,7 @@ class CommonDBTM extends CommonGLPI
                         continue;
                     }
                     //Add the rule output to the input array
-                    $this->input[$key] = $value;
-                    dump('input fin méthode add', $this->input);
+                    $this->input[$key] = $value;                   
                 }
             }
         }

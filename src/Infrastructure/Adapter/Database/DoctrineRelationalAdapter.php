@@ -3,9 +3,11 @@
 namespace Infrastructure\Adapter\Database;
 
 use CommonDBTM;
+use ReflectionClass;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
-use ReflectionClass;
+
 
 class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 {
@@ -34,6 +36,15 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         return $this->em->getConnection();
     }
+
+    /**
+     * Get the value of em
+     */ 
+    public function getEntityManager()
+    {
+        return $this->em;
+    }
+
 
     public function findOneBy(array $criteria): mixed
     {
@@ -76,6 +87,45 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         // return [];
     }
 
+    public function getTableFields($content = null): array
+    {        
+        $metadata = $this->em->getClassMetadata($this->entityName);
+        $table_fields = [];
+
+        // simple fields conversions
+        foreach ($metadata->fieldMappings as $fieldName => $mapping) {
+            $snakeField = $this->toSnakeCase($fieldName);
+            $table_fields[$snakeField] = null;
+        }
+
+        // relationships conversions
+        foreach ($metadata->associationMappings as $fieldName => $mapping) {
+            // special case for entity            
+            if ($fieldName === 'entity') {
+                $table_fields['entities_id'] = null;                
+                continue;
+            }
+           
+            $snakeField = $this->toSnakeCase($fieldName);
+            
+            // separate parts for special prefix (like "tech_")
+            $parts = explode('_', $snakeField);
+            $lastPart = end($parts);
+            
+            // pluralize the last part
+            $pluralLastPart = $this->plurialize($lastPart);
+            
+            // Rebuild the field name
+            array_pop($parts);
+            array_push($parts, $pluralLastPart);
+            $finalField = implode('_', $parts) . '_id';
+            
+            $table_fields[$finalField] = null;           
+        }        
+        return $table_fields;
+    }
+        
+
     private function getPropertiesAndGetters($content): array
     {
         $reflect = new ReflectionClass($content);
@@ -109,12 +159,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $word;
     }
 
-   
-
-    private function toSnakeCase(string $input): string
+    protected function toSnakeCase($input): string
     {
-    return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $input));
+        $pattern = '/[A-Z]/';
+        $replacement = '_$0';
+        return strtolower(ltrim(preg_replace($pattern, $replacement, $input), '_'));
     }
+   
 
     private function toCamelCase(string $input): string
     {
@@ -145,16 +196,16 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             $snakeCaseKey = $this->toSnakeCase($property);
             $getter = $propertiesAndGetters[$property] ?? null;
 
-            // Récupérer la valeur
+            // recover the value
             if ($getter && method_exists($content, $getter)) {
                 $value = $content->$getter();
             } else {
-                // Essayer d'accéder directement à la propriété
+                // try to access directly to the property
                 $reflectionProperty->setAccessible(true);
                 $value = $reflectionProperty->getValue($content);
             }
 
-            // Vérifier les attributs ORM
+            // verify ORM attributes
             $attributes = $reflectionProperty->getAttributes();
             $relationInfo = null;
             foreach ($attributes as $attribute) {
@@ -164,20 +215,20 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 }
             }
 
-            // Gestion des relations
+            // relationships management
             if ($relationInfo !== null) {
-                // Générer la clé pluralisée avec `_id`
+                // generate the pluralized key with `_id`
                 $joinColumnName = $relationInfo['joinColumn']['name'] ?? $this->plurialize($snakeCaseKey) . '_id';
 
-                // Ajouter la clé avec l'ID ou null
+                // add the key with the ID or null
                 $fields[$joinColumnName] = ($value && method_exists($value, 'getId')) ? $value->getId() : null;
             } else {
-                // Propriété simple, y compris les valeurs 0 et null
+                // simple property, include values 0 and null
                 $fields[$snakeCaseKey] = $value;
             }
         }
 
-        // S'assurer que toutes les relations attendues ont une clé avec `_id`
+        // make sure that all expected relationships have a key with `_id`
         foreach ($fields as $key => $value) {
             if (str_ends_with($key, '_id') && !array_key_exists($key, $fields)) {
                 $fields[$key] = null;
@@ -187,31 +238,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $fields;
     }
 
-    /**
-     * Tente de détecter si une propriété correspond à une clé étrangère.
-     */
-    private function detectRelationKey($entity, string $property): bool
-    {
-        // Si Doctrine est utilisé, obtenir les métadonnées
-        if (method_exists($entity, 'getClassMetadata')) {
-            $metadata = $entity->getClassMetadata();
-            if (isset($metadata->associationMappings[$property])) {
-                return true; // Propriété correspond à une relation
-            }
-        }
-
-        // Alternative si les métadonnées Doctrine ne sont pas disponibles
-        if (property_exists($entity, $property)) {
-            $reflectionProperty = new \ReflectionProperty($entity, $property);
-            $docComment = $reflectionProperty->getDocComment();
-            if ($docComment && strpos($docComment, '@ORM\ManyToOne') !== false) {
-                return true; // Relation détectée via annotation
-            }
-        }
-
-        return false; // Pas une relation
-    }
-
+    
     public function getSettersFromFields(array $fields, object $content): array
     {
         $reflect = new ReflectionClass($content);
@@ -241,7 +268,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 }
             }
         }
-
+        dump('getSetters from fields', $setters);
         return $setters;
     }
 
@@ -250,32 +277,81 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         // TODO: Implement save() method.
         return false;
     }
+    
     public function add(array $fields): bool|array
     {
-        
-        $entity = new $this->entityName();         
-        dump($fields);        
+        $entity = new $this->entityName();     
         $setters = $this->getSettersFromFields($fields, $entity);
-        dump($setters);        
-        foreach ($setters as $field => $setter) {            
+
+        // apply setters dynamically
+        foreach ($setters as $field => $setter) {
+            
             if (isset($fields[$field])) {
-                $entity->$setter($fields[$field]);
-                dump($entity);
+                $value = $fields[$field];
+
+                // if the field is an ID, it is transformed in integer
+                if (strpos($field, '_id') !== false) {                
+                    $value = (int) $value;                
+
+                    // Extract the name of the entity withdrawing '_id' and putting the first letter in uppercase
+                    $entityName = ucfirst(str_replace('_id', '', $field));
+
+                    // Dynamically convert certain names into known entities, without having to explicitly code them
+                    $entityName = $this->convertFieldToEntityName($entityName);
+
+                    // Check if the corresponding class exists (and if it is indeed an entity)
+                    if (class_exists("Itsmng\\Domain\\Entities\\$entityName")) {
+                        $entityClass = "Itsmng\\Domain\\Entities\\$entityName";
+                        // Search entity by its ID
+                        $relatedEntity = $this->em->getRepository($entityClass)->find($value);                  
+
+                        if ($relatedEntity) {
+                            $value = $relatedEntity;  // Replace ID with entity object
+                        } else {
+                            // If the entity is not found, we keep null
+                            $value = null;
+                        }
+                    } 
+                }            
+                //Call the setter with the processed value
+                $entity->$setter($value);                
             }
         }
 
         try {            
             $this->em->persist($entity);
             $this->em->flush(); 
-            dump("Entity ID after flush: " . $entity->getId());
+            // dump("Entity ID after flush: " . $entity->getId());
             
             return ['id' => $entity->getId()];
         } catch (\Exception $e) {
-            // Gérer les erreurs d'insertion (par exemple violation de contraintes, etc.)
-            dump('message', $e);
+            dump('Exception message: ', $e->getMessage());
             return false;
         }
-    // return false;
+    
+        // return false;
+    }
+
+    // Fonction générique pour convertir un nom de champ en nom d'entité
+    private function convertFieldToEntityName(string $fieldName): string
+    {
+        $fieldName = strtolower($fieldName);        
+        // Separate the different parts of the name (tech_users_id becomes ['tech', 'users', 'id'])
+        $parts = explode('_', $fieldName);
+        
+        // Remove technical parts (prefixes like 'tech' and suffixes like 'id')
+        $parts = array_filter($parts, function($part) {
+            return !in_array($part, ['tech', 'id']);
+        });
+        
+        // Take the first remaining part and remove the final 's' if present.
+        $entityName = reset($parts);
+        if (str_ends_with($entityName, 's')) {
+            $entityName = substr($entityName, 0, -1);
+        }
+        
+        // Capitalize the first letter
+        return ucfirst($entityName);
     }
 
     public function getRelations(): array
@@ -298,4 +374,68 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
         // return [];
     }
+
+    
+
+    public function request(array | QueryBuilder $criteria): \Iterator
+
+    {
+        dump('criteria in request', $criteria);
+        if ($criteria instanceof QueryBuilder) {
+            return new \ArrayIterator($criteria->getQuery()->getResult());
+        }
+    
+        if (!is_array($criteria)) {
+            throw new \InvalidArgumentException('Expected array or QueryBuilder, got ' . gettype($criteria));
+        }
+    
+        if (empty($criteria['table'])) {
+            throw new \InvalidArgumentException('The "table" key is required in the criteria array.');
+        }
+
+        $table = $criteria['table'];
+        $alias = $criteria['alias'] ?? 't';
+        $conditions = $criteria['conditions'] ?? [];
+        $orderBy = $criteria['orderBy'] ?? [];
+        $limit = $criteria['limit'] ?? null;
+        $offset = $criteria['offset'] ?? null;
+
+        $qb = $this->em->createQueryBuilder();
+        
+        $qb->select($alias)
+           ->from($table, $alias);
+        
+        dump('conditions', $conditions);
+        foreach ($conditions as $field => $value) {
+            dump('field', $field);
+            dump('value', $value);
+            $parameterName = str_replace('.', '_', $field); 
+            if (is_array($value)) {
+                $qb->andWhere("$alias.$field IN (:$parameterName)")
+                   ->setParameter($parameterName, $value);
+            } else {
+                $qb->andWhere("$alias.$field = :$parameterName")
+                   ->setParameter($parameterName, $value);
+            }
+        }
+        
+        foreach ($orderBy as $field => $direction) {
+            $qb->addOrderBy("$alias.$field", strtoupper($direction));
+        }
+        
+        if ($limit !== null) {
+            $qb->setMaxResults((int)$limit);
+        }
+
+        if ($offset !== null) {
+            $qb->setFirstResult((int)$offset);
+        }
+        
+        return $qb->getQuery()->getResult();
+        // return [];
+    }
+    
+    
+    
+    
 }

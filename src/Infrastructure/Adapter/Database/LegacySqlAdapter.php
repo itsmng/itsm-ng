@@ -3,6 +3,7 @@
 namespace Infrastructure\Adapter\Database;
 
 use CommonDBTM;
+use Doctrine\ORM\QueryBuilder;
 use Infrastructure\Adapter\Database\DatabaseAdapterInterface;
 
 class LegacySqlAdapter implements DatabaseAdapterInterface
@@ -128,4 +129,16 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
     {
         return [];
     }
+
+    public function request(array | QueryBuilder $criteria): \Iterator
+    {
+        return new \ArrayIterator();
+    }
+    public function getTableFields(): array
+    {
+        return [];
+    }
+   
+    
 }
+
