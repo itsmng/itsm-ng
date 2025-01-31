@@ -3985,4 +3985,27 @@ class AuthLDAP extends CommonDBTM {
 
       return $users;
    }
+
+   public static function isUserInLDAP($login) {
+      $ldap_servers = self::getLdapServers();
+
+      $results       = [];
+      $limitexceeded = false;
+      foreach ($ldap_servers as $ldap_server) {
+         $values = [
+            'order' => 'DESC',
+            'start' => 0,
+            'authldaps_id' => $ldap_server['id'],
+            'base_dn' => $ldap_server['base_dn'],
+            'mode' => self::ACTION_IMPORT,
+         ];
+         $ldap_users = self::getAllUsers($values, $results, $limitexceeded, $ldap_server);
+         foreach ($ldap_users as $ldap_user) {
+             if ($ldap_user['user'] == $login) {
+                 return true;
+             }
+         }
+      }
+      return false;
+   }
 }

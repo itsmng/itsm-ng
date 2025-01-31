@@ -117,19 +117,28 @@ class Oidc extends CommonDBTM
             }
             $user = new User();
             if ($newUser) {
-             $rule = new RuleRightCollection();
-             $input = [
+               if (!$CFG_GLPI['use_noright_users_add'] && !AuthLDAP::isUserInLDAP($user_array['sub'])) {
+                  Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
+                  echo '<div class="center b">';
+                  echo __('User not authorized to connect in GLPI');
+                  echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
+                  echo '</div>';
+                  Html::nullFooter();
+                  die;
+               }
+               $rule = new RuleRightCollection();
+               $input = [
                   'authtype' => Auth::EXTERNAL,
                   'name' => $user_array['sub'],
                   '_extauth' => 1,
                   'add' => 1
                ];
-             $input = $rule->processAllRules([], Toolbox::stripslashes_deep($input), [
-                'type'   => Auth::EXTERNAL,
-                'email'  => $input["_emails"],
-                'login'  => $input["name"]
-             ]);
-             $input['_ruleright_process'] = true;
+               $input = $rule->processAllRules([], Toolbox::stripslashes_deep($input), [
+                  'type'   => Auth::EXTERNAL,
+                  'email'  => $input["_emails"],
+                  'login'  => $input["name"]
+               ]);
+               $input['_ruleright_process'] = true;
 
                $ID = $user->add($input);
             }
@@ -142,20 +151,29 @@ class Oidc extends CommonDBTM
             }
             $user = new User();
             if ($newUser) {
-             $rule = new RuleRightCollection();
+               if (!$CFG_GLPI['use_noright_users_add'] && !AuthLDAP::isUserInLDAP($user_array['sub'])) {
+                  Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
+                  echo '<div class="center b">';
+                  echo __('User not authorized to connect in GLPI');
+                  echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
+                  echo '</div>';
+                  Html::nullFooter();
+                  die;
+               }
+               $rule = new RuleRightCollection();
                $input = [
                   'authtype' => Auth::EXTERNAL,
                   'name' => $user_array['sub'],
                   '_extauth' => 1,
                   'add' => 1
                ];
-             $input = $rule->processAllRules([], Toolbox::stripslashes_deep($input), [
-                'type'   => Auth::EXTERNAL,
-                'email'  => $input["_emails"],
-                'login'  => $input["name"]
-             ]);
-             $input['_ruleright_process'] = true;
-               $ID = $user->add($input);
+                $input = $rule->processAllRules([], Toolbox::stripslashes_deep($input), [
+                   'type'   => Auth::EXTERNAL,
+                   'email'  => $input["_emails"],
+                   'login'  => $input["name"]
+                ]);
+                $input['_ruleright_process'] = true;
+                $ID = $user->add($input);
             }
          }
       }
