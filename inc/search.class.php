@@ -1674,12 +1674,13 @@ class Search
         if ($data['search']['criteria']) {
             $url .= "&criteria=" . urlencode(json_encode($data['search']['criteria']));
         }
-        if (isset($data['itemtype'])) {
+        if (isset($data['itemtype']) && class_exists($data['itemtype'])) {
             $item = new $data['itemtype']();
             if (method_exists($item, 'title')) {
                 $item->title();
             }
         }
+        
         Html::showMassiveActions($massiveactionparams);
         renderTwigTemplate('table.twig', [
            'id' => 'SearchTableFor' . $data['itemtype'],
