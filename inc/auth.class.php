@@ -266,17 +266,6 @@ class Auth extends CommonGLPI {
          if ($this->user_found) {
             $bind_result = @ldap_bind($this->ldap_connection, $dn, $password);
 
-            if ($bind_result === false) {
-               $this->addToError(
-                   AuthLDAP::buildError(
-                       $this->ldap_connection,
-                       sprintf(
-                          'Unable to bind `%s`',
-                          $dn
-                       )
-                   )
-               );
-            }
          }
 
          if ($this->user_found && $bind_result !== false) {
