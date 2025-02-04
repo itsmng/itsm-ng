@@ -184,7 +184,7 @@ class DBmysql {
    function connect($choice = null) {
       $this->connected = false;
       $this->dbh = @new mysqli();
-      $this->dbh->init();
+      $this->dbh->__construct();
       if ($this->dbssl) {
           mysqli_ssl_set(
              $this->dbh,

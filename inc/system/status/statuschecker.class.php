@@ -165,7 +165,7 @@ final class StatusChecker {
                $status['status'] = self::STATUS_OK;
                foreach ($ldap_methods as $method) {
                   try {
-                     if (AuthLDAP::tryToConnectToServer($method, $method['rootdn'],
+                     if (@AuthLDAP::tryToConnectToServer($method, $method['rootdn'],
                         Toolbox::sodiumDecrypt($method['rootdn_passwd']))) {
                         $status['servers'][$method['name']] = [
                            'status' => self::STATUS_OK
