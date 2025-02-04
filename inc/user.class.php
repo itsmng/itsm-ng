@@ -1250,7 +1250,7 @@ class User extends CommonDBTM {
 
                //get picture content in ldap
                $info = AuthLDAP::getUserByDn($ds, $this->fields['user_dn'],
-                                             [$picture_field], false);
+                                             [$picture_field]);
 
                //getUserByDn returns an array. If the picture is empty,
                //$info[$picture_field][0] is null
@@ -1501,6 +1501,23 @@ class User extends CommonDBTM {
 
          // If the groups must be retrieve from the ldap user object
          $sr = @ ldap_read($ldap_connection, $userdn, "objectClass=*", $group_fields);
+         if ($sr === false) {
+             if (ldap_errno($ldap_connection) == 32/*LDAP_NO_SUCH_OBJECT*/) {
+                trigger_error(
+                    AuthLDAP::buildError(
+                        $ldap_connection,
+                        sprintf(
+                            'Unable to read LDAP groups for user `%s` with filter `%s` and attributes `%s`',
+                            $userdn,
+                            "objectClass=*",
+                            implode('`, `', $group_fields)
+                        )
+                    ),
+                    E_USER_WARNING
+                );
+             }
+             return;
+         }
          $v  = AuthLDAP::get_entries_clean($ldap_connection, $sr);
 
          for ($i=0; $i < $v['count']; $i++) {
@@ -1649,6 +1666,23 @@ class User extends CommonDBTM {
          $f       = self::getLdapFieldNames($fields);
 
          $sr      = @ ldap_read($ldap_connection, $userdn, "objectClass=*", $f);
+         if ($sr === false) {
+             if (ldap_errno($ldap_connection) == 32/*LDAP_NO_SUCH_OBJECT*/) {
+                trigger_error(
+                    AuthLDAP::buildError(
+                        $ldap_connection,
+                        sprintf(
+                            'Unable to read LDAP groups for user `%s` with filter `%s` and attributes `%s`',
+                            $userdn,
+                            "objectClass=*",
+                            implode('`, `', $f)
+                        )
+                    ),
+                    E_USER_WARNING
+                );
+             }
+             return false;
+         }
          $v       = AuthLDAP::get_entries_clean($ldap_connection, $sr);
 
          if (!is_array($v)
@@ -1867,7 +1901,20 @@ class User extends CommonDBTM {
 
       //Perform the search
       $filter = Toolbox::unclean_cross_side_scripting_deep($filter);
-      $sr     = ldap_search($ds, $ldap_base_dn, $filter, $attrs);
+      $sr     = @ldap_search($ds, $ldap_base_dn, $filter, $attrs);
+
+      if ($sr === false) {
+          if (ldap_errno($ds) !== 32) {
+             trigger_error(
+                 AuthLDAP::buildError(
+                     $ds,
+                     'LDAP search failed'
+                 ),
+                 E_USER_WARNING
+             );
+          }
+          return $groups;
+      }
 
       //Get the result of the search as an array
       $info = AuthLDAP::get_entries_clean($ds, $sr);

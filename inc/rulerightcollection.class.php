@@ -248,6 +248,23 @@ class RuleRightCollection extends RuleCollection {
          //Get all the datas we need from ldap to process the rules
          $sz         = @ldap_read($params["connection"], $params["userdn"], "objectClass=*",
                                   $rule_fields);
+         if ($sz === false) {
+             if (ldap_errno($params_lower["connection"]) !== 32/*LDAP_NO_SUCH_OBJECT*/) {
+                trigger_error(
+                    AuthLDAP::buildError(
+                        $params_lower["connection"],
+                        sprintf(
+                                __('Unable to read LDAP directory for user `%s` with filter `%s` and attributes `%s`'),
+                                $params_lower["userdn"],
+                                'objectClass=*',
+                                implode('`, `', $rule_fields)
+                            ),
+                    ),
+                    E_USER_WARNING
+                );
+             }
+             return $rule_parameters;
+         };
          $rule_input = AuthLDAP::get_entries_clean($params["connection"], $sz);
 
          if (count($rule_input)) {
