@@ -4574,7 +4574,7 @@ JAVASCRIPT
         if ($action) {
             $out .= "<form aria-label='Items number' method='POST' action=\"$action\">";
             $out .= "<span class='responsive_hidden'>" . __('Display (number of items)') . "</span>&nbsp;";
-            $out .= Dropdown::showListLimit("submit()", false);
+            $out .= Dropdown::showListLimit("this.form.submit()", false);
         } else {
             $out .= "<form aria-label='Items number' method='POST' action =''>\n";
             $out .= "<span class='responsive_hidden'>" . __('Display (number of items)') . "</span>&nbsp;";
