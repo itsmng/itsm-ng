@@ -350,13 +350,12 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 }
 
                 // Call the setter with the processed value
-                dump('setter:', $value);
                 $entity->$setter($value);
             }
         }
 
         try {
-             
+
             dump('isManaged before flush:', $this->em->contains($entity));
             $this->em->persist($entity);
             dump('isManaged after persist:', $this->em->contains($entity));

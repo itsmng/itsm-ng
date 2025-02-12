@@ -569,7 +569,7 @@ class CommonDBTM extends CommonGLPI
     public function updateInDB($updates, $oldvalues = [])
     {
         foreach ($updates as $field) {
-            if (isset($this->fields[$field])
+            if (isset($this->fields[$field]) && isset($oldvalues[$field])
                 && $this->fields[$field] == $oldvalues[$field]) {
                 if (isset($oldvalues[$field])) {
                     unset($oldvalues[$field]);
@@ -612,9 +612,7 @@ class CommonDBTM extends CommonGLPI
                 $params[$key] = $value;
             }
 
-            // $result = $DB->insert($this->getTable(), $params);
-            // dump($this -> getAdapter());
-            $result = $this::getAdapter()->add($params);            
+            $result = $this::getAdapter()->add($params);
             // if ($result) {
             //     if (
             //         !isset($this->fields['id'])
@@ -1180,30 +1178,19 @@ class CommonDBTM extends CommonGLPI
             }
             // nouvel ajout
             //Get Entity object before creating new entity
-        
-            // dump('Session entity:', $_SESSION['glpiactive_entity']); 
+
+            // dump('Session entity:', $_SESSION['glpiactive_entity']);
             // dump('Session entity name:', $_SESSION['glpiactive_entity_name']);
-                   
+
             if (isset($_SESSION['glpiactive_entity'])) {
                 $adapter = $this::getAdapter();
-                // dump('adapter:', $adapter);
-                // dump('adapter findOneBy:', $adapter->findEntityById(['id' => $_SESSION['glpiactive_entity']]));
-                // die();
-                // dump('Current entityName:', $adapter->findEntityByName($_SESSION['glpiactive_entity_name']));
                 $entityObject = $adapter->findEntityById(['id' => $_SESSION['glpiactive_entity']]);
-                // $entityObject = $adapter->findEntityByName($_SESSION['glpiactive_entity_name']);
-                // dump('entityObject', $entityObject);
-                // die();
                 if ($entityObject) {
                     $this->input['entities_id'] = $_SESSION['glpiactive_entity'];
                 }
             }
-            // }dump('entityObject:', $entityObject);
-            // dump('input', $this->input);
-            // die();
-            //
             $entity = new $entityClassName();
-                   
+
             // Initialize the entity with the values ​​from $input
             foreach ($input as $key => $value) {
                 $setter = 'set' . ucfirst($key);
