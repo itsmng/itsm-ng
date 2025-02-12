@@ -37,7 +37,7 @@ Session::checkRight("config", READ);
 
 Html::header(__('External authentication sources'), $_SERVER['PHP_SELF'], "config", "auth", -1);
 
-echo "<table class='tab_cadre' aria-label='External authentication sources'>";
+echo "<table class='tab_cadre'>";
 echo "<tr><th>&nbsp;" . __('External authentications') . "</th></tr>";
 if (Session::haveRight("config", UPDATE)) {
     echo "<tr class='tab_bg_1'><td class='center b'>" .
