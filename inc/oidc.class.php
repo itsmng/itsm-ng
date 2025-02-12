@@ -117,7 +117,7 @@ class Oidc extends CommonDBTM
             }
             $user = new User();
             if ($newUser) {
-               if (!$CFG_GLPI['use_noright_users_add'] && !AuthLDAP::isUserInLDAP($user_array['sub'])) {
+               if (!$CFG_GLPI['is_users_auto_add']) {
                   Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
                   echo '<div class="center b">';
                   echo __('User not authorized to connect in GLPI');
@@ -151,7 +151,7 @@ class Oidc extends CommonDBTM
             }
             $user = new User();
             if ($newUser) {
-               if (!$CFG_GLPI['use_noright_users_add'] && !AuthLDAP::isUserInLDAP($user_array['sub'])) {
+               if (!$CFG_GLPI['is_users_auto_add']) {
                   Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
                   echo '<div class="center b">';
                   echo __('User not authorized to connect in GLPI');
