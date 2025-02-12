@@ -847,29 +847,28 @@ class User extends CommonDBTM {
       }
 
       // prevent changing tokens and emails from users with lower rights
-      $protected_input_keys = array_intersect(
-      [
-            'api_token',
-            '_reset_api_token',
-            'cookie_token',
-            'password_forget_token',
-            'personal_token',
-            '_reset_personal_token',
+      if (Session::getLoginUserID() !== false
+          && ((int) $input['id'] !== Session::getLoginUserID())) {
+          $protected_input_keys = [
+                'api_token',
+                '_reset_api_token',
+                'cookie_token',
+                'password_forget_token',
+                'personal_token',
+                '_reset_personal_token',
 
-            '_emails',
-            '_useremails',
-      ],
-      array_keys($input)
-      );
-      if (
-      $protected_input_keys > 0
-         && !Session::isCron() // cron context is considered safe
-         && $input['id'] !== Session::getLoginUserID()
-         && !$this->currentUserHaveMoreRightThan($input['id'])
-      ) {
-      foreach ($protected_input_keys as $input_key) {
-            unset($input[$input_key]);
-      }
+                '_emails',
+                '_useremails',
+
+                'is_active',
+          ];
+          if (count(array_intersect($protected_input_keys, array_keys($input))) > 0
+              && !$this->currentUserHaveMoreRightThan($input['id'])
+          ) {
+              foreach ($protected_input_keys as $input_key) {
+                    unset($input[$input_key]);
+              }
+          }
       }
 
       // blank password when authtype changes
