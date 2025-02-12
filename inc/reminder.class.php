@@ -636,7 +636,8 @@ class Reminder extends CommonDBVisible implements
                           '0' => __('Information'),
                           '1' => __('To do'),
                           '2' => __('Done'),
-                       ]
+                       ],
+                       'value' => $this->fields['state']
                     ],
                     __('Description') => [
                        'name' => 'text',
