@@ -284,11 +284,23 @@ class Computer extends CommonDBTM
 
 
     public function prepareInputForAdd($input)
-    {
-
+    {       
+    
         if (isset($input["id"]) && ($input["id"] > 0)) {
             $input["_oldID"] = $input["id"];
         }
+        //ajout
+        // Get entity from session
+        // if (isset($_SESSION['glpiactive_entity'])) {
+        //     $adapter = $this::getAdapter();
+        //     $entityObject = $adapter->findOneBy(['id' => $_SESSION['glpiactive_entity']]);
+            
+        //     if ($entityObject) {
+        //         $input['entity'] = $entityObject; // Store Entity object
+        //         $input['entities_id'] = $_SESSION['glpiactive_entity']; // Store ID for DB
+        //     }
+        // }
+        //fin ajout
         unset($input['id']);
         unset($input['withtemplate']);
 

@@ -134,9 +134,13 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
     {
         return new \ArrayIterator();
     }
-    public function getTableFields(): array
+    // public function getTableFields(): array
+    // {
+    //     return [];
+    // }
+    public function findEntityById(array $id): mixed
     {
-        return [];
+        return null;
     }
 
 

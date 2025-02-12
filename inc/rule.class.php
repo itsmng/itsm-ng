@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Rule as EntitiesRule;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -46,6 +48,7 @@ class Rule extends CommonDBTM
 {
     use Glpi\Features\Clonable;
 
+    public $entity = EntitiesRule::class;
     public $dohistory             = true;
 
     // Specific ones

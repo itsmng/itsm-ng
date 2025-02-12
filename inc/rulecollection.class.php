@@ -382,12 +382,13 @@ class RuleCollection extends CommonDBTM
 
                 // while ($rule = $iterator->next()) {
                 foreach ($iterator as $rule) {
+                    $fields = $this->getAdapter()->getFields($rule);
                     //For each rule, get a Rule object with all the criterias and actions
                     $tempRule = $this->getRuleClass();
 
                     if (
                         $tempRule->getRuleWithCriteriasAndActions(
-                            $rule["id"],
+                            $fields['id'],
                             $retrieve_criteria,
                             $retrieve_action
                         )
@@ -631,7 +632,7 @@ class RuleCollection extends CommonDBTM
         }
         $fields[] = __('Active');
         if ($display_entities) {
-            $fields[] = Entity::getTypeName(1);
+            $fields[] = GlobalEntity::getTypeName(1);
         } elseif ($rule->can_sort && $canedit) {
             $fields[] = __('Actions');
         }
@@ -899,7 +900,7 @@ class RuleCollection extends CommonDBTM
     {
         global $DB;
 
-        $ruleDescription = new Rule();
+        $ruleDescription = new GlobalRule();
 
         // Get actual ranking of Rule to move
         $ruleDescription->getFromDB($ID);
@@ -1167,7 +1168,7 @@ class RuleCollection extends CommonDBTM
         }
         return (in_array(
             $condition,
-            [Rule::PATTERN_IS, Rule::PATTERN_IS_NOT, Rule::PATTERN_UNDER]
+            [GlobalRule::PATTERN_IS, GlobalRule::PATTERN_IS_NOT, GlobalRule::PATTERN_UNDER]
         )
         && ($type == 'dropdown'));
     }
@@ -1466,7 +1467,7 @@ class RuleCollection extends CommonDBTM
     {
         $ruleCriteria = new RuleCriteria();
         $ruleAction   = new RuleAction();
-        $entity       = new Entity();
+        $entity       = new GlobalEntity();
 
         //get session vars
         $rules         = $_SESSION['glpi_import_rules'];
@@ -1687,7 +1688,7 @@ class RuleCollection extends CommonDBTM
                 $rule->displayCriteriaSelectPattern(
                     $criteria,
                     $criteria,
-                    Rule::PATTERN_IS,
+                    GlobalRule::PATTERN_IS,
                     isset($values[$criteria]) ? $values[$criteria] : ''
                 );
                 echo "</td></tr>\n";

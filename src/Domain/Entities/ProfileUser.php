@@ -137,10 +137,10 @@ class ProfileUser
      *
      * @return  self
      */
-    public function setEntity($entity)
+    public function setEntity(?Entity $entity): self
     {
         $this->entity = $entity;
-
         return $this;
     }
+
 }

@@ -30,8 +30,8 @@
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
  */
-
 namespace Glpi;
+use Itsmng\Domain\Entities\Event as EventEntity;
 
 use Ajax;
 use CommonDBTM;
@@ -54,7 +54,7 @@ class Event extends CommonDBTM
 {
     public static $rightname = 'logs';
 
-
+    public $entity = EventEntity::class;
 
     public static function getTypeName($nb = 0)
     {

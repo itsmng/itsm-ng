@@ -196,10 +196,10 @@ class CommonDBTM extends CommonGLPI
 
         if (isset($CFG_GLPI['legacy_database']) && $CFG_GLPI['legacy_database']) {
             return new LegacySqlAdapter(get_called_class());
-
+            
         }
-
         return new DoctrineRelationalAdapter(get_called_class());
+        
     }
 
     /**
@@ -614,8 +614,7 @@ class CommonDBTM extends CommonGLPI
 
             // $result = $DB->insert($this->getTable(), $params);
             // dump($this -> getAdapter());
-            $result = $this::getAdapter()->add($params);
-            dump($result);
+            $result = $this::getAdapter()->add($params);            
             // if ($result) {
             //     if (
             //         !isset($this->fields['id'])
@@ -1083,7 +1082,6 @@ class CommonDBTM extends CommonGLPI
         }
     }
 
-
     // Common functions
     /**
      * Add an item in the database with all it's items.
@@ -1102,6 +1100,7 @@ class CommonDBTM extends CommonGLPI
         // if ($DB->isSlave()) {
         //     return false;
         // }
+        
 
         // This means we are not adding a cloned object
         if (!isset($input['clone'])) {
@@ -1151,7 +1150,7 @@ class CommonDBTM extends CommonGLPI
 
             $this->input = $this->prepareInputForAdd($this->input);
         }
-
+        
         if ($this->input && is_array($this->input)) {
             // Call the plugin hook - $this->input can be altered
             // This hook get the data altered by the object method
@@ -1167,11 +1166,66 @@ class CommonDBTM extends CommonGLPI
         if ($this->input && is_array($this->input)) {
             $this->fields = [];
 
-
             // $table_fields = $DB->listFields($this->getTable());
+            
+            $adapter = $this::getAdapter();
+            $entityClassName = $this->entity;
+            
+            if (empty($entityClassName)) {
+                throw new \Exception("Entity class name is not defined.");
+            }
 
-            $table_fields = $this::getAdapter()->getTableFields();
-
+            if (!class_exists($entityClassName)) {
+                throw new \Exception("Class $entityClassName does not exist");
+            }
+            // nouvel ajout
+            //Get Entity object before creating new entity
+        
+            // dump('Session entity:', $_SESSION['glpiactive_entity']); 
+            // dump('Session entity name:', $_SESSION['glpiactive_entity_name']);
+                   
+            if (isset($_SESSION['glpiactive_entity'])) {
+                $adapter = $this::getAdapter();
+                // dump('adapter:', $adapter);
+                // dump('adapter findOneBy:', $adapter->findEntityById(['id' => $_SESSION['glpiactive_entity']]));
+                // die();
+                // dump('Current entityName:', $adapter->findEntityByName($_SESSION['glpiactive_entity_name']));
+                $entityObject = $adapter->findEntityById(['id' => $_SESSION['glpiactive_entity']]);
+                // $entityObject = $adapter->findEntityByName($_SESSION['glpiactive_entity_name']);
+                // dump('entityObject', $entityObject);
+                // die();
+                if ($entityObject) {
+                    $this->input['entities_id'] = $_SESSION['glpiactive_entity'];
+                }
+            }
+            // }dump('entityObject:', $entityObject);
+            // dump('input', $this->input);
+            // die();
+            //
+            $entity = new $entityClassName();
+                   
+            // Initialize the entity with the values ​​from $input
+            foreach ($input as $key => $value) {
+                $setter = 'set' . ucfirst($key);
+                if (method_exists($entity, $setter)) {
+                    $reflectionMethod = new \ReflectionMethod($entity, $setter);
+                    $parameters = $reflectionMethod->getParameters();
+                    if (count($parameters) > 0 && $parameters[0]->getType() && $parameters[0]->getType()->getName() === \DateTimeInterface::class) {
+                        try {
+                            $value = new \DateTime($value);
+                        } catch (\Exception $e) {
+                            throw new \Exception("Invalid date format for field $key: " . $e->getMessage());
+                        }
+                    }
+                    
+                    $entity->$setter($value);
+                    
+                } elseif (property_exists($entity, $key)) {
+                    $entity->$key = $value;
+                }
+                
+            }
+            $table_fields = $adapter->getFields($entity);                     
             // fill array for add
             // foreach (array_keys($this->input) as $key) {
             //     if (
@@ -1181,11 +1235,11 @@ class CommonDBTM extends CommonGLPI
             //         $this->fields[$key] = $this->input[$key];
             //     }
             // }
-
             foreach (array_keys($table_fields) as $key) {
                 if (($key[0] != '_')) {
                     $this->fields[$key] = $this->input[$key] ?? null; // Assigne null si non défini
                 }
+            
             }
             // Auto set date_creation if exsist
             if (isset($table_fields['date_creation']) && !isset($this->input['date_creation'])) {
@@ -1257,6 +1311,7 @@ class CommonDBTM extends CommonGLPI
 
         return false;
     }
+
 
     /**
      * Clone the current item multiple times
@@ -1668,12 +1723,12 @@ class CommonDBTM extends CommonGLPI
 
                                     // no break
                                 default:
-                                    $ischanged = ($DB->escape($this->fields[$key]) != $this->input[$key]);
+                                    // $ischanged = ($DB->escape($this->fields[$key]) != $this->input[$key]);
                                     break;
                             }
                         } else {
                             // No searchoption case
-                            $ischanged = ($DB->escape($this->fields[$key]) != $this->input[$key]);
+                            // $ischanged = ($DB->escape($this->fields[$key]) != $this->input[$key]);
                         }
                         if ($ischanged) {
                             if ($key != "id") {

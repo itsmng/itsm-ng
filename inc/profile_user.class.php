@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\ProfileUser;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -40,6 +42,7 @@ if (!defined('GLPI_ROOT')) {
 **/
 class Profile_User extends CommonDBRelation
 {
+    public $entity = ProfileUser::class;
     // From CommonDBTM
     public $auto_message_on_action               = false;
 

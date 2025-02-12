@@ -6,6 +6,8 @@ use CommonDBTM;
 use ReflectionClass;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Entity;
+use Itsmng\Domain\Entities\Entity as EntitiesEntity;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
 
 class DoctrineRelationalAdapter implements DatabaseAdapterInterface
@@ -47,11 +49,26 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function findOneBy(array $criteria): mixed
     {
-        $result = $this->em->find($this->entityName, $criteria);
-        return $result;
-        // $result = $this->em->getRepository($this->entityName)->findOneBy($criteria);
+        
+        // $result = $this->em->find($this->entityName, $criteria);      
+
         // return $result;
+        $result = $this->em->getRepository($this->entityName)->findOneBy($criteria);
+        
+        return $result;
     }
+
+    // public function findEntityById(array $id): ?EntitiesEntity
+    // {
+    //     return $this->em->getRepository(EntitiesEntity::class)->findOneBy(['id' => $id]);
+    // }
+
+    public function findEntityById(array $id): mixed
+    {
+        return $this->em->getRepository($this->entityName)->findOneBy(['id' => $id]);
+    }
+    
+
     public function findBy(array $criteria, array $order = null, int $limit = null): array
     {
         // TODO: Implement findBy() method.
@@ -83,43 +100,47 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         // return [];
     }
 
-    public function getTableFields($content = null): array
-    {
-        $metadata = $this->em->getClassMetadata($this->entityName);
-        $table_fields = [];
+    // public function getTableFields($content = null): array
+    // {
+    //     // dump($this->em->getMetadataFactory()->hasMetadataFor($this->entityName));
 
-        // simple fields conversions
-        foreach ($metadata->fieldMappings as $fieldName => $mapping) {
-            $snakeField = $this->toSnakeCase($fieldName);
-            $table_fields[$snakeField] = null;
-        }
+    //     $metadata = $this->em->getClassMetadata($this->entityName);
+    //     $table_fields = [];
 
-        // relationships conversions
-        foreach ($metadata->associationMappings as $fieldName => $mapping) {
-            // special case for entity
-            if ($fieldName === 'entity') {
-                $table_fields['entities_id'] = null;
-                continue;
-            }
+    //     // simple fields conversions
+    //     foreach ($metadata->fieldMappings as $fieldName => $mapping) {
+    //         $snakeField = $this->toSnakeCase($fieldName);
+    //         $table_fields[$snakeField] = null;
+    //     }
 
-            $snakeField = $this->toSnakeCase($fieldName);
+    //     // relationships conversions
+    //     foreach ($metadata->associationMappings as $fieldName => $mapping) {
+    //         // special case for entity
+    //         if ($fieldName === 'entity') {
+    //             $table_fields['entities_id'] = null;
+    //             continue;
+    //         }
 
-            // separate parts for special prefix (like "tech_")
-            $parts = explode('_', $snakeField);
-            $lastPart = end($parts);
+    //         $snakeField = $this->toSnakeCase($fieldName);
 
-            // pluralize the last part
-            $pluralLastPart = $this->plurialize($lastPart);
+    //         // separate parts for special prefix (like "tech_")
+    //         $parts = explode('_', $snakeField);
+    //         $lastPart = end($parts);
 
-            // Rebuild the field name
-            array_pop($parts);
-            array_push($parts, $pluralLastPart);
-            $finalField = implode('_', $parts) . '_id';
+    //         // pluralize the last part
+    //         $pluralLastPart = $this->plurialize($lastPart);
 
-            $table_fields[$finalField] = null;
-        }
-        return $table_fields;
-    }
+    //         // Rebuild the field name
+    //         array_pop($parts);
+    //         array_push($parts, $pluralLastPart);
+    //         $finalField = implode('_', $parts) . '_id';
+
+    //         $table_fields[$finalField] = null;
+    //     }
+    //     return $table_fields;
+    // }
+
+
 
 
     private function getPropertiesAndGetters($content): array
@@ -250,6 +271,15 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $setters = [];
         foreach ($fields as $field => $value) {
             $originalField = $field;
+            // Special case for entities_id
+            if ($field === 'entities_id') {
+                $setter = 'setEntity';
+                if (method_exists($content, $setter)) {
+                    $setters[$originalField] = $setter;
+                }
+                continue;
+            }
+
             if (str_ends_with($field, '_id')) {
                 $field = substr($field, 0, -3);
             }
@@ -308,13 +338,28 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                         }
                     }
                 }
-                //Call the setter with the processed value
+                // Convertir les chaînes de caractères en objets DateTime pour les champs de type DateTimeInterface
+                $reflectionMethod = new \ReflectionMethod($entity, $setter);
+                $parameters = $reflectionMethod->getParameters();
+                if (count($parameters) > 0 && $parameters[0]->getType() && $parameters[0]->getType()->getName() === \DateTimeInterface::class) {
+                    try {
+                        $value = new \DateTime($value);
+                    } catch (\Exception $e) {
+                        throw new \Exception("Invalid date format for field $field: " . $e->getMessage());
+                    }
+                }
+
+                // Call the setter with the processed value
+                dump('setter:', $value);
                 $entity->$setter($value);
             }
         }
 
         try {
+             
+            dump('isManaged before flush:', $this->em->contains($entity));
             $this->em->persist($entity);
+            dump('isManaged after persist:', $this->em->contains($entity));
             $this->em->flush();
             // dump("Entity ID after flush: " . $entity->getId());
 
@@ -330,16 +375,22 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     // Fonction générique pour convertir un nom de champ en nom d'entité
     private function convertFieldToEntityName(string $fieldName): string
     {
-        $fieldName = strtolower($fieldName);
-        // Separate the different parts of the name (tech_users_id becomes ['tech', 'users', 'id'])
+         $fieldName = strtolower($fieldName);
+    
+        // Special case for entities
+        if (strpos($fieldName, 'entities_id') !== false) {
+            return 'Entity';
+        }
+        
+        // Separate the different parts of the name
         $parts = explode('_', $fieldName);
 
-        // Remove technical parts (prefixes like 'tech' and suffixes like 'id')
+        // Remove technical parts
         $parts = array_filter($parts, function ($part) {
             return !in_array($part, ['tech', 'id']);
         });
 
-        // Take the first remaining part and remove the final 's' if present.
+        // Take the first remaining part and remove the final 's' if present
         $entityName = reset($parts);
         if (str_ends_with($entityName, 's')) {
             $entityName = substr($entityName, 0, -1);

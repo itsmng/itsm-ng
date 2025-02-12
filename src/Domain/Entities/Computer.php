@@ -37,7 +37,7 @@ class Computer
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity = null;
+    private ?Entity $entity= null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name = null;
@@ -328,20 +328,24 @@ class Computer
     /**
      * Get the value of entity
      */
-    public function getEntity()
+    public function getEntity(): ?Entity
     {
         return $this->entity;
     }
 
+    public function getEntityId(): int
+    {
+        return $this->entity ? $this->entity->getId() : 0;
+    }
     /**
      * Set the value of entity
      *
-     * @return  self
+     * @param Entity|null $entity
+     * @return self
      */
-    public function setEntity($entity)
+    public function setEntity(?Entity $entity): self
     {
         $this->entity = $entity;
-
         return $this;
     }
 

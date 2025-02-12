@@ -4,6 +4,8 @@ namespace Infrastructure\Adapter\Database;
 
 use CommonDBTM;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Mapping\Entity;
+use Itsmng\Domain\Entities\Entity as EntitiesEntity;
 
 interface DatabaseAdapterInterface
 {
@@ -33,6 +35,7 @@ interface DatabaseAdapterInterface
 
     // protected function adaptQueryObject(QueryObject $queryObject): array;
     public function request(array | QueryBuilder $dql): \Iterator;
-    public function getTableFields(): array;
+    // public function getTableFields(): array;
+    public function findEntityById(array $id): mixed;
 
 }
