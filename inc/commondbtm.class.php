@@ -44,8 +44,8 @@ class CommonDBTM extends CommonGLPI {
    public $right = null;
    public $input = [];
 
-   protected $updates = [];
-   protected $oldvalues = [];
+   public $updates = [];
+   public $oldvalues = [];
 
    /**
     * Data fields of the Item.
