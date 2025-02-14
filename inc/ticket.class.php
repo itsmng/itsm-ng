@@ -5076,7 +5076,7 @@ class Ticket extends CommonITILObject
                      'noLib' => 'true',
                      'name' => 'requesttypes_id',
                      'values' => getOptionForItems('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
-                     'value' => 'requesttypes_id',
+                     'value' => $this->fields['requesttypes_id'],
                      $canupdate ? '' : 'disabled' => ''
                   ],
                   __('Urgency') => [
