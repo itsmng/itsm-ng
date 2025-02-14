@@ -137,9 +137,9 @@ abstract class NotificationEventAbstract {
                               : 0;
                            $send_data['_entities_id']              = $entity;
                            $send_data['mode']                      = $data['mode'];
-                           $send_data['_locations_id']             = $item->input['locations_id'];
-                           $send_data['_groups_id']                = $item->input['_groups_id_requester'];
-                           $send_data['_itilcategories_id']        = $item->input['itilcategories_id'];
+                           $send_data['_locations_id']             = $item->input['locations_id'] ?? 0;
+                           $send_data['_groups_id']                = $item->input['_groups_id_requester'] ?? 0;
+                           $send_data['_itilcategories_id']        = $item->input['itilcategories_id'] ?? 0;
 
                            if (array_key_exists('chat', $users_infos)) {
                               Notification::sendChat($send_data);
