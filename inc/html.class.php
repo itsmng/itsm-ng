@@ -1421,7 +1421,9 @@ class Html
       }
 
 
-      Html::requireJs('hotkeys');
+      if (Session::getLoginUserID() !== false) {
+          Html::requireJs('hotkeys');
+      }
       
       if (Session::getCurrentInterface() == "helpdesk") {
          echo Html::css('public/lib/jquery.rateit.css');
