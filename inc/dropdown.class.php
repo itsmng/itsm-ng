@@ -2343,7 +2343,7 @@ class Dropdown
 
         if (!isset($post['page'])) {
             $post['page']       = 1;
-            $post['page_limit'] = $CFG_GLPI['dropdown_max'];
+            $post['page_limit'] = null;
         }
 
         $start = intval(($post['page'] - 1) * $post['page_limit']);
