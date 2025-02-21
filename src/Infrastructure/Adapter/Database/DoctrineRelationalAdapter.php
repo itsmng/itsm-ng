@@ -88,9 +88,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return [];
     }
 
-
-
-
     public function deleteByCriteria(array $criteria): bool
     {
         // TODO: Implement deleteByCriteria() method.
@@ -105,49 +102,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $metadata = $this->em->getClassMetadata($this->entityName);
         return $metadata->getFieldNames();
         // return [];
-    }
-
-    // public function getTableFields($content = null): array
-    // {
-    //     // dump($this->em->getMetadataFactory()->hasMetadataFor($this->entityName));
-
-    //     $metadata = $this->em->getClassMetadata($this->entityName);
-    //     $table_fields = [];
-
-    //     // simple fields conversions
-    //     foreach ($metadata->fieldMappings as $fieldName => $mapping) {
-    //         $snakeField = $this->toSnakeCase($fieldName);
-    //         $table_fields[$snakeField] = null;
-    //     }
-
-    //     // relationships conversions
-    //     foreach ($metadata->associationMappings as $fieldName => $mapping) {
-    //         // special case for entity
-    //         if ($fieldName === 'entity') {
-    //             $table_fields['entities_id'] = null;
-    //             continue;
-    //         }
-
-    //         $snakeField = $this->toSnakeCase($fieldName);
-
-    //         // separate parts for special prefix (like "tech_")
-    //         $parts = explode('_', $snakeField);
-    //         $lastPart = end($parts);
-
-    //         // pluralize the last part
-    //         $pluralLastPart = $this->plurialize($lastPart);
-
-    //         // Rebuild the field name
-    //         array_pop($parts);
-    //         array_push($parts, $pluralLastPart);
-    //         $finalField = implode('_', $parts) . '_id';
-
-    //         $table_fields[$finalField] = null;
-    //     }
-    //     return $table_fields;
-    // }
-
-
+    }  
 
 
     private function getPropertiesAndGetters($content): array
@@ -183,20 +138,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $word;
     }
 
-    // protected function toSnakeCase($input): string
-    // {
-    //     // Special cases first
-    // if ($input === 'profile') {
-    //     return 'profiles_id';
-    // }
-    // if ($input === 'entity') {
-    //     return 'entities_id';
-    // }
-    //     $pattern = '/[A-Z]/';
-    //     $replacement = '_$0';
-    //     return strtolower(ltrim(preg_replace($pattern, $replacement, $input), '_'));
-    // }
-
     protected function toSnakeCase($input,bool $isRelation = false): string
     {
         // //gérer l'exception createTicketOnLogin
@@ -224,26 +165,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             $input .= '_id';
         }
         return $input;
-    }
-
-    
-
-
-    // private function toCamelCase(string $input): string
-    // {
-    //     if (str_ends_with($input, '_id')) {
-    //         $input = substr($input, 0, -3);
-    //     }
-
-    //     if (str_ends_with($input, 's')) {
-    //         $input = substr($input, 0, -1);
-    //     }
-    //     $parts = explode('_', $input);
-    //     $parts = array_map('ucfirst', $parts);
-    //     $camelCase = lcfirst(implode('', $parts));
-
-    //     return $camelCase;
-    // }
+    }   
 
     private function toCamelCase(string $input): string
     {

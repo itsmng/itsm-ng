@@ -99,7 +99,7 @@ class User
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
     private $isDeleted;
 
-    #[ORM\ManyToOne(targetEntity: Profile::class)]
+    #[ORM\ManyToOne(targetEntity: Profile::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(name: 'profiles_id', referencedColumnName: 'id', nullable: true)]
     private ?Profile $profile = null;
 
