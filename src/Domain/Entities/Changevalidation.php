@@ -210,20 +210,21 @@ class Changevalidation
         return $this;
     }
 
+    
     /**
-     * Get the value of user_validate
-     */
+     * Get the value of userValidate
+     */ 
     public function getUserValidate()
     {
         return $this->userValidate;
     }
 
     /**
-     * Set the value of user_validate
+     * Set the value of userValidate
      *
      * @return  self
-     */
-    public function setUserValidate($user_validate)
+     */ 
+    public function setUserValidate($userValidate)
     {
         $this->userValidate = $userValidate;
 

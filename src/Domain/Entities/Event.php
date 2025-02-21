@@ -16,8 +16,8 @@ class Event
     #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(name: 'items_id', type: "integer", options: ['default' => 0])]
-    private $itemsId;
+    #[ORM\Column(name: 'items_id', type: "integer", nullable: false, options: ['default' => 0, 'unsigned' => true])]
+    private $itemsId = 0;
 
     #[ORM\Column(name: 'type', type: "string", length: 255, nullable: true)]
     private $type;
@@ -41,12 +41,12 @@ class Event
 
     public function getItemsId(): ?int
     {
-        return $this->itemsId;
+        return $this->itemsId ?? 0;
     }
 
     public function setItemsId(int $itemsId): self
     {
-        $this->itemsId = $itemsId;
+        $this->itemsId = $itemsId ?? 0;
 
         return $this;
     }

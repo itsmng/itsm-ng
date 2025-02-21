@@ -37,16 +37,16 @@ class IpAddress
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(name: 'binary0', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'binary_0', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $binary0;
 
-    #[ORM\Column(name: 'binary1', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'binary_1', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $binary1;
 
-    #[ORM\Column(name: 'binary2', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'binary_2', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $binary2;
 
-    #[ORM\Column(name: 'binary3', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'binary_3', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $binary3;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => false])]
@@ -124,7 +124,7 @@ class IpAddress
 
     public function setBinary0(?int $binary0): self
     {
-        $this->binary0 = $binary_0;
+        $this->binary0 = $binary0;
 
         return $this;
     }
@@ -136,7 +136,7 @@ class IpAddress
 
     public function setBinary1(?int $binary1): self
     {
-        $this->binary1 = $binary_1;
+        $this->binary1 = $binary1;
 
         return $this;
     }
@@ -148,7 +148,7 @@ class IpAddress
 
     public function setBinary2(?int $binary2): self
     {
-        $this->binary2 = $binary_2;
+        $this->binary2 = $binary2;
 
         return $this;
     }
@@ -160,7 +160,7 @@ class IpAddress
 
     public function setBinary3(?int $binary3): self
     {
-        $this->binary3 = $binary_3;
+        $this->binary3 = $binary3;
 
         return $this;
     }

@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_clusters")]
-#[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])]
-#[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
+#[ORM\Index(name: "tech_users_id", columns: ["tech_users_id"])]
+#[ORM\Index(name: "tech_groups_id", columns: ["tech_groups_id"])]
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
 #[ORM\Index(name: "states_id", columns: ["states_id"])]
 #[ORM\Index(name: "clustertypes_id", columns: ["clustertypes_id"])]

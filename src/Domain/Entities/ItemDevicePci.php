@@ -49,7 +49,7 @@ class ItemDevicePci
     #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(name: 'bus_id', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'busID', type: 'string', length: 255, nullable: true)]
     private $busID;
 
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]

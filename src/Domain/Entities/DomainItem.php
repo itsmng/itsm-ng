@@ -28,9 +28,6 @@ class DomainItem
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(name: 'domainrelations_id', type: 'integer', options: ['default' => 0])]
-    private $domainrelationsId;
-
     #[ORM\ManyToOne(targetEntity: DomainRelation::class)]
     #[ORM\JoinColumn(name: 'domainrelations_id', referencedColumnName: 'id', nullable: true)]
     private ?DomainRelation $domainRelation = null;
@@ -64,18 +61,6 @@ class DomainItem
         return $this;
     }
 
-    public function getDomainrelationsId(): ?int
-    {
-        return $this->domainrelationsId;
-    }
-
-    public function setDomainrelationsId(?int $domainrelationsId): self
-    {
-        $this->domainrelationsId = $domainrelationsId;
-
-        return $this;
-    }
-
 
     /**
      * Get the value of domain
@@ -99,7 +84,7 @@ class DomainItem
 
     /**
      * Get the value of domainRelation
-     */
+     */ 
     public function getDomainRelation()
     {
         return $this->domainRelation;
@@ -109,7 +94,7 @@ class DomainItem
      * Set the value of domainRelation
      *
      * @return  self
-     */
+     */ 
     public function setDomainRelation($domainRelation)
     {
         $this->domainRelation = $domainRelation;

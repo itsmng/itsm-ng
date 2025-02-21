@@ -12,8 +12,8 @@ use Location;
 #[ORM\Index(name: 'is_template', columns: ['is_template'])]
 #[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
 #[ORM\Index(name: 'certificatetypes_id', columns: ['certificatetypes_id'])]
-#[ORM\Index(name: 'users_id_tech', columns: ['users_id_tech'])]
-#[ORM\Index(name: 'groups_id_tech', columns: ['groups_id_tech'])]
+#[ORM\Index(name: 'tech_users_id', columns: ['tech_users_id'])]
+#[ORM\Index(name: 'tech_groups_id', columns: ['tech_groups_id'])]
 #[ORM\Index(name: 'groups_id', columns: ['groups_id'])]
 #[ORM\Index(name: 'users_id', columns: ['users_id'])]
 #[ORM\Index(name: 'locations_id', columns: ['locations_id'])]
@@ -74,7 +74,7 @@ class Certificate
     private ?User $techUser = null;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    #[ORM\JoinColumn(name: 'groups_id_tech', referencedColumnName: 'id', nullable: true, options:['comment' => 'RELATION to glpi_groups (id)'])]
+    #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true, options:['comment' => 'RELATION to glpi_groups (id)'])]
     private ?Group $techGroup;
 
 

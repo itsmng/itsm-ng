@@ -16,6 +16,8 @@ interface DatabaseAdapterInterface
 
     public function getConnection(): mixed;
 
+    public function getEntityManager();
+
     public function findOneBy(array $criteria): mixed;
     public function findBy(array $criteria, array $order = null, int $limit = null): array;
     public function findByRequest(array $request): array;

@@ -31,12 +31,16 @@
  * ---------------------------------------------------------------------
  */
 
+ use Itsmng\Domain\Entities\ApiClient as ApiClientEntity;
+
 /**
  * @since 9.1
  */
 
 class APIClient extends CommonDBTM
 {
+    public $entity = ApiClientEntity::class;
+
     public const DOLOG_DISABLED   = 0;
     public const DOLOG_LOGS       = 1;
     public const DOLOG_HISTORICAL = 2;

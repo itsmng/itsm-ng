@@ -18,9 +18,10 @@ class WifiNetwork
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
-
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
+    
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
 
@@ -45,18 +46,6 @@ class WifiNetwork
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool
@@ -143,4 +132,24 @@ class WifiNetwork
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
 }

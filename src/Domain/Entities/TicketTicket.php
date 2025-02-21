@@ -14,10 +14,10 @@ class TicketTicket
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(name: 'tickets_id1', type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'tickets_id_1', type: 'integer', options: ['default' => 0])]
     private $ticketsId1;
 
-    #[ORM\Column(name: 'tickets_id2', type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'tickets_id_2', type: 'integer', options: ['default' => 0])]
     private $ticketsId2;
 
     #[ORM\Column(name: 'link', type: 'integer', options: ['default' => 1])]
@@ -35,7 +35,7 @@ class TicketTicket
 
     public function setTicketsId1(?int $ticketsId1): self
     {
-        $this->ticketsId1 = $tickets_id_1;
+        $this->ticketsId1 = $ticketsId1;
 
         return $this;
     }
@@ -47,7 +47,7 @@ class TicketTicket
 
     public function setTicketsId2(?int $ticketsId2): self
     {
-        $this->ticketsId2 = $tickets_id_2;
+        $this->ticketsId2 = $ticketsId2;
 
         return $this;
     }

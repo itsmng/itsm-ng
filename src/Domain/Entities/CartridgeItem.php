@@ -11,11 +11,11 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "manufacturers_id", columns: ["manufacturers_id"])]
 #[ORM\Index(name: "locations_id", columns: ["locations_id"])]
-#[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])]
+#[ORM\Index(name: "tech_users_id", columns: ["tech_users_id"])]
 #[ORM\Index(name: "cartridgeitemtypes_id", columns: ["cartridgeitemtypes_id"])]
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
 #[ORM\Index(name: "alarm_threshold", columns: ["alarm_threshold"])]
-#[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
+#[ORM\Index(name: "tech_groups_id", columns: ["tech_groups_id"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class CartridgeItem

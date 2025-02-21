@@ -35,6 +35,8 @@ if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
 
+use Itsmng\Domain\Entities\Profile as EntitiesProfile;
+
 /**
  * Profile class
  **/
@@ -69,6 +71,7 @@ class Profile extends CommonDBTM
        'useshortcuts',
     ];
 
+    public $entity = EntitiesProfile::class;
 
     /// Common fields used for all profiles type
     public static $common_fields  = ['id', 'interface', 'is_default', 'name'];
@@ -139,7 +142,7 @@ class Profile extends CommonDBTM
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
-
+        
         if ($item->getType() == __CLASS__) {
             $item->cleanProfile();
             switch ($tabnum) {

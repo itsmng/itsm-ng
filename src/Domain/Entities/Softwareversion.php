@@ -41,7 +41,7 @@ class Softwareversion
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(name: 'operatingsystems_id', type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'operatingsystems_id', type: 'integer', nullable: true)]
     private $operatingsystemsId;
 
     #[ORM\ManyToOne(targetEntity: Operatingsystem::class)]

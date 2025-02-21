@@ -1071,7 +1071,7 @@ class Auth extends CommonGLPI
             $_SESSION['glpi_tz'] = $this->user->fields['timezone'];
             $DB->setTimezone($this->user->fields['timezone']);
         }
-
+       
         return $this->auth_succeded;
     }
 
@@ -1423,6 +1423,33 @@ class Auth extends CommonGLPI
             Html::redirect($CFG_GLPI['root_doc'] . '/front/updatepassword.php');
         }
 
+        //ajout
+        // if (!isset($_SESSION['glpiactiveprofile'])) {
+        //     $entities_id = 0;
+        //     $is_recursive = true;
+        //     Session::loadEntity($entities_id, $is_recursive);
+            
+        //     // $profileUserClass = 'Itsmng\Domain\Entities\ProfileUser';
+        //     $profileUserClass = new Profile_User();
+        //     $adapter = $profileUserClass::getAdapter();
+            
+        //     $defaultProfile = $adapter->findOneBy([
+        //         'user' => $_SESSION['glpiID'],
+        //         'isDefaultProfile' => true
+        //     ]);
+            
+        //     if ($defaultProfile) {
+        //         $profile = $defaultProfile->getProfile();
+        //         $_SESSION['glpiactiveprofile'] = [
+        //             'id' => $profile->getId(),
+        //             'name' => $profile->getName(),
+        //             'interface' => $profile->getInterface(),
+        //             'create_ticket_on_login' => $profile->getCreateTicketOnLogin(),
+        //             'helpdesk_hardware' => $profile->getHelpdeskHardware()
+        //         ];
+        //     }
+        // }
+        //fin ajout
         if (!$redirect) {
             if (isset($_POST['redirect']) && (strlen($_POST['redirect']) > 0)) {
                 $redirect = $_POST['redirect'];
@@ -1437,13 +1464,15 @@ class Auth extends CommonGLPI
         }
 
         // Redirect to Command Central if not post-only
+       
         if (Session::getCurrentInterface() == "helpdesk") {
             if ($_SESSION['glpiactiveprofile']['create_ticket_on_login']) {
                 Html::redirect($CFG_GLPI['root_doc'] . "/front/helpdesk.public.php?create_ticket=1");
             }
             Html::redirect($CFG_GLPI['root_doc'] . "/front/helpdesk.public.php");
-        } else {
-            if ($_SESSION['glpiactiveprofile']['create_ticket_on_login']) {
+        } else {           
+            if (isset($_SESSION['glpiactiveprofile']['create_ticket_on_login'])
+            && $_SESSION['glpiactiveprofile']['create_ticket_on_login']) {
                 Html::redirect(Ticket::getFormURL());
             }
             Html::redirect($CFG_GLPI['root_doc'] . "/front/central.php");

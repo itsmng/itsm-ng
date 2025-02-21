@@ -19,8 +19,9 @@ class TicketTemplate
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
@@ -41,18 +42,6 @@ class TicketTemplate
     public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
 
         return $this;
     }
@@ -81,4 +70,24 @@ class TicketTemplate
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
 }

@@ -42,9 +42,6 @@ class Planningexternalevent
     #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
-    private $usersId;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user = null;
@@ -137,18 +134,6 @@ class Planningexternalevent
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->usersId;
-    }
-
-    public function setUserId(?int $usersId): self
-    {
-        $this->usersId = $usersId;
 
         return $this;
     }
@@ -275,26 +260,7 @@ class Planningexternalevent
         return $this;
     }
 
-    /**
-     * Get the value of user
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Set the value of user
-     *
-     * @return  self
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
+    
     /**
      * Get the value of userGuest
      */
@@ -351,6 +317,26 @@ class Planningexternalevent
     public function setPlanningeventcategory($planningeventcategory)
     {
         $this->planningeventcategory = $planningeventcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

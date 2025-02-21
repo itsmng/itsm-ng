@@ -32,6 +32,7 @@
  */
 
 use function Termwind\render;
+use Itsmng\Domain\Entities\Appliance as ApplianceEntity;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -44,6 +45,7 @@ class Appliance extends CommonDBTM
 {
     use Glpi\Features\Clonable;
 
+    public $entity = ApplianceEntity::class;
     // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'appliance';

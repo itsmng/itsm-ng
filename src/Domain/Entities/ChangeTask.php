@@ -12,8 +12,8 @@ use TaskTemplate;
 #[ORM\Index(name: 'state', columns: ["state"])]
 #[ORM\Index(name: 'users_id', columns: ["users_id"])]
 #[ORM\Index(name: 'users_id_editor', columns: ["users_id_editor"])]
-#[ORM\Index(name: 'users_id_tech', columns: ["users_id_tech"])]
-#[ORM\Index(name: 'groups_id_tech', columns: ["groups_id_tech"])]
+#[ORM\Index(name: 'tech_users_id', columns: ["tech_users_id"])]
+#[ORM\Index(name: 'tech_groups_id', columns: ["tech_groups_id"])]
 #[ORM\Index(name: 'date', columns: ["date"])]
 #[ORM\Index(name: 'date_mod', columns: ["date_mod"])]
 #[ORM\Index(name: 'date_creation', columns: ["date_creation"])]
@@ -277,26 +277,7 @@ class ChangeTask
         return $this;
     }
 
-    /**
-     * Get the value of user_editor
-     */
-    public function getUserEditor()
-    {
-        return $this->userEditor;
-    }
-
-    /**
-     * Set the value of user_editor
-     *
-     * @return  self
-     */
-    public function setUserEditor($user_editor)
-    {
-        $this->userEditor = $userEditor;
-
-        return $this;
-    }
-
+    
     /**
      * Get the value of user
      */
@@ -373,6 +354,26 @@ class ChangeTask
     public function setTasktemplate($tasktemplate)
     {
         $this->tasktemplate = $tasktemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userEditor
+     */ 
+    public function getUserEditor()
+    {
+        return $this->userEditor;
+    }
+
+    /**
+     * Set the value of userEditor
+     *
+     * @return  self
+     */ 
+    public function setUserEditor($userEditor)
+    {
+        $this->userEditor = $userEditor;
 
         return $this;
     }

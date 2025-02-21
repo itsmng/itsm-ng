@@ -19,9 +19,9 @@ use SoftwareLicense as GlobalSoftwareLicense;
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "softwares_id_expire_number", columns: ["softwares_id", "expire", "number"])]
 #[ORM\Index(name: "locations_id", columns: ["locations_id"])]
-#[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])]
+#[ORM\Index(name: "tech_users_id", columns: ["tech_users_id"])]
 #[ORM\Index(name: "users_id", columns: ["users_id"])]
-#[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
+#[ORM\Index(name: "tech_groups_id", columns: ["tech_groups_id"])]
 #[ORM\Index(name: "groups_id", columns: ["groups_id"])]
 #[ORM\Index(name: "is_helpdesk_visible", columns: ["is_helpdesk_visible"])]
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
@@ -77,9 +77,6 @@ class Softwarelicense
     #[ORM\JoinColumn(name: 'softwareversions_id_buy', referencedColumnName: 'id', nullable: true)]
     private ?Softwareversion $softwareversionBuy = null;
 
-    #[ORM\Column(name: 'softwareversions_id_use', type: 'integer', options: ['default' => 0])]
-    private $softwareversionsIdUse;
-
     #[ORM\ManyToOne(targetEntity: Softwareversion::class)]
     #[ORM\JoinColumn(name: 'softwareversions_id_use', referencedColumnName: 'id', nullable: true)]
     private ?Softwareversion $softwareversionUse = null;
@@ -109,9 +106,6 @@ class Softwarelicense
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $techUser = null;
-
-    #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
-    private $usersId;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
@@ -239,17 +233,7 @@ class Softwarelicense
         return $this;
     }
 
-    public function getSoftwareversionsIdUse(): ?int
-    {
-        return $this->softwareversionsIdUse;
-    }
-
-    public function setSoftwareversionsIdUse(?int $softwareversionsIdUse): self
-    {
-        $this->softwareversionsIdUse = $softwareversionsIdUse;
-
-        return $this;
-    }
+    
 
     public function getExpire(): ?\DateTime
     {
@@ -319,18 +303,6 @@ class Softwarelicense
     public function setIsDeleted(?bool $isDeleted): self
     {
         $this->isDeleted = $isDeleted;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->usersId;
-    }
-
-    public function setUsersId(?int $usersId): self
-    {
-        $this->usersId = $usersId;
 
         return $this;
     }
@@ -521,25 +493,6 @@ class Softwarelicense
         return $this;
     }
 
-    /**
-     * Get the value of softwareversionUse
-     */
-    public function getSoftwareversionUse()
-    {
-        return $this->softwareversionUse;
-    }
-
-    /**
-     * Set the value of softwareversionUse
-     *
-     * @return  self
-     */
-    public function setSoftwareversionUse($softwareversionUse)
-    {
-        $this->softwareversionUse = $softwareversionUse;
-
-        return $this;
-    }
 
     /**
      * Get the value of location
@@ -557,26 +510,6 @@ class Softwarelicense
     public function setLocation($location)
     {
         $this->location = $location;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of user
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Set the value of user
-     *
-     * @return  self
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
 
         return $this;
     }
@@ -657,6 +590,46 @@ class Softwarelicense
     public function setTechUser($techUser)
     {
         $this->techUser = $techUser;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of softwareversionUse
+     */ 
+    public function getSoftwareversionUse()
+    {
+        return $this->softwareversionUse;
+    }
+
+    /**
+     * Set the value of softwareversionUse
+     *
+     * @return  self
+     */ 
+    public function setSoftwareversionUse($softwareversionUse)
+    {
+        $this->softwareversionUse = $softwareversionUse;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -31,6 +31,11 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
         return $DB;
     }
 
+    public function getEntityManager()
+    {
+        return null;
+    }
+
     public function findOneBy(array $criteria): mixed
     {
         global $DB;

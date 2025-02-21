@@ -32,10 +32,9 @@
  */
 
 use Glpi\Event;
+use Infrastructure\Adapter\Database\LegacySqlAdapter;
 use Infrastructure\Adapter\Database\DatabaseAdapterInterface;
 use Infrastructure\Adapter\Database\DoctrineRelationalAdapter;
-use Infrastructure\Adapter\Database\LegacySqlAdapter;
-use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -289,13 +288,23 @@ class CommonDBTM extends CommonGLPI
     **/
     public function getFromDB($ID)
     {
-        $item = $this::getAdapter()->findOneBy([$this->getIndexName() => Toolbox::cleanInteger($ID)]);
+        try {
+
+            $item = $this::getAdapter()->findOneBy([$this->getIndexName() => Toolbox::cleanInteger($ID)]);
+        } catch (\Exception $e) {
+            dump('error', $e->getMessage());
+            return false;
+        }
         if (isset($item)) {
             $this->fields = $this::getAdapter()->getFields($item);
+
             $this->post_getFromDB();
+            
         }
         return true;
+       
     }
+
 
     /**
      * Hydrate an object from a resultset row
@@ -347,6 +356,7 @@ class CommonDBTM extends CommonGLPI
      */
     public function getFromDBByCrit(array $crit)
     {
+
         $items = $this::getAdapter()->findBy($crit);
         if (count($items) == 1) {
             $fields = $this::getAdapter()->getFields($items[array_key_first($items)]);
@@ -1210,7 +1220,6 @@ class CommonDBTM extends CommonGLPI
                 } elseif (property_exists($entity, $key)) {
                     $entity->$key = $value;
                 }
-                
             }
             $table_fields = $adapter->getFields($entity);                     
             // fill array for add

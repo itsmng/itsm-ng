@@ -34,6 +34,7 @@
 use Glpi\Event;
 use itsmng\Csrf;
 
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -77,7 +78,7 @@ class Session
     public static function init(Auth $auth)
     {
         global $CFG_GLPI;
-
+        
         if ($auth->auth_succeded) {
             // Restart GLPI session : complete destroy to prevent lost datas
             $tosave = ['glpi_plugins', 'glpicookietest', 'phpCAS', 'glpicsrftokens',
@@ -89,6 +90,7 @@ class Session
                 }
             }
             self::destroy();
+           
             session_regenerate_id();
             self::start();
             $_SESSION = $save;
@@ -99,6 +101,8 @@ class Session
             // Normal mode for this request
             $_SESSION["glpi_use_mode"] = self::NORMAL_MODE;
             // Check ID exists and load complete user from DB (plugins...)
+            dump('test');
+
             if (
                 isset($auth->user->fields['id'])
                 && $auth->user->getFromDB($auth->user->fields['id'])
@@ -111,6 +115,7 @@ class Session
                         && (($auth->user->fields['end_date'] > $_SESSION["glpi_currenttime"])
                             || is_null($auth->user->fields['end_date'])))
                 ) {
+                    
                     $_SESSION["glpiID"]              = $auth->user->fields['id'];
                     $_SESSION["glpifriendlyname"]    = $auth->user->getFriendlyName();
                     $_SESSION["glpiname"]            = $auth->user->fields['name'];
@@ -163,6 +168,7 @@ class Session
                     self::initEntityProfiles(self::getLoginUserID());
 
                     // Use default profile if exist
+                   
                     if (isset($_SESSION['glpiprofiles'][$auth->user->fields['profiles_id']])) {
                         self::changeProfile($auth->user->fields['profiles_id']);
                     } else { // Else use first
@@ -182,6 +188,7 @@ class Session
                 $auth->addToError(__("You don't have right to connect"));
             }
         }
+       
     }
 
 

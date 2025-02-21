@@ -7,6 +7,8 @@ use ReflectionClass;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\Persistence\Proxy as DoctrineProxy;
+use Doctrine\ORM\Proxy\Proxy;
 use Itsmng\Domain\Entities\Entity as EntitiesEntity;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
 
@@ -50,12 +52,17 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function findOneBy(array $criteria): mixed
     {
         
-        // $result = $this->em->find($this->entityName, $criteria);      
-
-        // return $result;
-        $result = $this->em->getRepository($this->entityName)->findOneBy($criteria);
-        
-        return $result;
+        if (!class_exists($this->entityName)) {
+            throw new \Exception("Entity class {$this->entityName} does not exist");
+        }
+        try {
+            $repository = $this->em->getRepository($this->entityName);
+            $result = $repository->findOneBy($criteria);
+            return $result;
+        } catch (\Exception $e) {
+            dump('Error in findOneBy:', $e->getMessage());
+            return null;
+        }
     }
 
     // public function findEntityById(array $id): ?EntitiesEntity
@@ -176,13 +183,67 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $word;
     }
 
-    protected function toSnakeCase($input): string
+    // protected function toSnakeCase($input): string
+    // {
+    //     // Special cases first
+    // if ($input === 'profile') {
+    //     return 'profiles_id';
+    // }
+    // if ($input === 'entity') {
+    //     return 'entities_id';
+    // }
+    //     $pattern = '/[A-Z]/';
+    //     $replacement = '_$0';
+    //     return strtolower(ltrim(preg_replace($pattern, $replacement, $input), '_'));
+    // }
+
+    protected function toSnakeCase($input,bool $isRelation = false): string
     {
-        $pattern = '/[A-Z]/';
-        $replacement = '_$0';
-        return strtolower(ltrim(preg_replace($pattern, $replacement, $input), '_'));
+        // //gérer l'exception createTicketOnLogin
+       
+        // Ne pas ajouter _id si le mot se termine déjà par _id ou Id
+        if (str_ends_with($input, 'Id') || str_ends_with($input, '_id')) {
+            $input = preg_replace('/(Id|_id)$/', '', $input);
+        }
+
+        // Gestion du pluriel des mots finissant par "y" -> "ies"
+        if (preg_match('/y$/', $input)) {
+            $input = preg_replace('/y$/', 'ies', $input);
+        }
+
+        // Conversion CamelCase -> snake_case standard
+        $input = preg_replace('/[A-Z]/', '_$0', $input);
+        $input = strtolower(ltrim($input, '_'));
+
+        // Si c'est une relation, ajouter "_id"
+        if ($isRelation) {
+            // Si le mot se termine par "y", on a déjà appliqué le pluriel avant
+            if (!preg_match('/s$/', $input)) {
+                $input .= 's'; // Ajoute "s" pour les relations si ce n'est pas déjà au pluriel
+            }
+            $input .= '_id';
+        }
+        return $input;
     }
 
+    
+
+
+    // private function toCamelCase(string $input): string
+    // {
+    //     if (str_ends_with($input, '_id')) {
+    //         $input = substr($input, 0, -3);
+    //     }
+
+    //     if (str_ends_with($input, 's')) {
+    //         $input = substr($input, 0, -1);
+    //     }
+    //     $parts = explode('_', $input);
+    //     $parts = array_map('ucfirst', $parts);
+    //     $camelCase = lcfirst(implode('', $parts));
+
+    //     return $camelCase;
+    // }
 
     private function toCamelCase(string $input): string
     {
@@ -190,70 +251,97 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             $input = substr($input, 0, -3);
         }
 
-        if (str_ends_with($input, 's')) {
-            $input = substr($input, 0, -1);
+        // Remettre "ies" en "y" si c'est un mot au singulier
+        if (preg_match('/ies$/', $input)) {
+            $input = preg_replace('/ies$/', 'y', $input);
         }
+
         $parts = explode('_', $input);
         $parts = array_map('ucfirst', $parts);
         $camelCase = lcfirst(implode('', $parts));
 
         return $camelCase;
     }
-
+    
     // get values from entity as array
     public function getFields($content): array
     {
-        $propertiesAndGetters = $this->getPropertiesAndGetters($content);
+        if (is_array($content)) {
+            return $content;
+        }
+
         $fields = [];
 
-        $reflectionClass = new \ReflectionClass($content::class);
+        try {
+            $getters = $this->getPropertiesAndGetters($content);
 
-        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
-            $property = $reflectionProperty->getName();
-            $snakeCaseKey = $this->toSnakeCase($property);
-            $getter = $propertiesAndGetters[$property] ?? null;
+            foreach ($getters as $propertyName => $getter) {
+                if (!method_exists($content, $getter)) {
+                    continue; // Évite d’appeler un getter inexistant
+                }
 
-            // recover the value
-            if ($getter && method_exists($content, $getter)) {
-                $value = $content->$getter();
-            } else {
-                // try to access directly to the property
-                $reflectionProperty->setAccessible(true);
-                $value = $reflectionProperty->getValue($content);
-            }
+                try {
+                    $value = $content->$getter(); // Appel dynamique du getter
+                } catch (\Exception $e) {
+                    dump("Erreur lors de l'appel de $getter :", $e->getMessage());
+                    continue;
+                }
 
-            // verify ORM attributes
-            $attributes = $reflectionProperty->getAttributes();
-            $relationInfo = null;
-            foreach ($attributes as $attribute) {
-                if ($attribute->getName() === 'Doctrine\ORM\Mapping\ManyToOne') {
-                    $relationInfo = $attribute->getArguments();
-                    break;
+                // Vérifier si la propriété est une relation Doctrine
+                $isRelation = false;
+                $reflectionProperty = new \ReflectionProperty($content, $propertyName);
+                $attributes = $reflectionProperty->getAttributes();
+                foreach ($attributes as $attribute) {
+                    if (in_array($attribute->getName(), [
+                        'Doctrine\ORM\Mapping\ManyToOne',
+                        'Doctrine\ORM\Mapping\OneToOne',
+                        'Doctrine\ORM\Mapping\ManyToMany',
+                        'Doctrine\ORM\Mapping\OneToMany'
+                    ])) {
+                        $isRelation = true;
+                        break;
+                    }
+                }
+
+                // Convertir le nom en snake_case
+                $snakeCaseKey = $this->toSnakeCase($propertyName, $isRelation);
+
+                // Cas particuliers pour certaines clés
+                if ($snakeCaseKey === 'entity_id' || $snakeCaseKey === 'entity' || $snakeCaseKey === 'entities') {
+                    $snakeCaseKey = 'entities_id';
+                }
+                if (preg_match('/^priority(\d+)$/', $propertyName, $matches)) {
+                    $snakeCaseKey = 'priority_' . $matches[1];
+                }
+
+                // Gestion des valeurs selon leur type
+                if ($value instanceof \DateTime) {
+                    $value = $value->format('Y-m-d H:i:s');
+                }
+
+                if ($isRelation && $value !== null && method_exists($value, 'getId')) {
+                    $fields[$snakeCaseKey] = $value->getId();
+                } elseif (is_object($value)) {
+                    if (method_exists($value, 'getId')) {
+                        $fields[$snakeCaseKey] = $value->getId();
+                    }
+                } else {
+                    if (!($value instanceof \Closure) && !($value instanceof \Doctrine\ORM\PersistentCollection)) {
+                        $fields[$snakeCaseKey] = $value;
+                    }
                 }
             }
+            // dump('final fields'.$this->entityName, $fields);
+            return $fields;
 
-            // relationships management
-            if ($relationInfo !== null) {
-                // generate the pluralized key with `_id`
-                $joinColumnName = $relationInfo['joinColumn']['name'] ?? $this->plurialize($snakeCaseKey) . '_id';
-
-                // add the key with the ID or null
-                $fields[$joinColumnName] = ($value && method_exists($value, 'getId')) ? $value->getId() : null;
-            } else {
-                // simple property, include values 0 and null
-                $fields[$snakeCaseKey] = $value;
-            }
+        } catch (\Exception $e) {
+            dump('Error in getFields:', $e->getMessage());
+            
+            return $fields;
         }
-
-        // make sure that all expected relationships have a key with `_id`
-        foreach ($fields as $key => $value) {
-            if (str_ends_with($key, '_id') && !array_key_exists($key, $fields)) {
-                $fields[$key] = null;
-            }
-        }
-
-        return $fields;
     }
+
+
 
 
     public function getSettersFromFields(array $fields, object $content): array
@@ -304,100 +392,66 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     }
 
     public function add(array $fields): bool|array
-    {
-        $entity = new $this->entityName();
-        $setters = $this->getSettersFromFields($fields, $entity);
+{
+    
+    // Create new entity
+    $entity = new $this->entityName();
+    
+    // Transform fields using getFields
+    $transformedFields = $this->getFields($fields);
+    
+    // Get setters for fields
+    $setters = $this->getSettersFromFields($transformedFields, $entity);
 
-        // apply setters dynamically
-        foreach ($setters as $field => $setter) {
+    foreach ($setters as $field => $setter) {
+        if (!isset($transformedFields[$field])) {
+            continue;
+        }
 
-            if (isset($fields[$field])) {
-                $value = $fields[$field];
-
-                // if the field is an ID, it is transformed in integer
-                if (strpos($field, '_id') !== false) {
-                    $value = (int) $value;
-
-                    // Extract the name of the entity withdrawing '_id' and putting the first letter in uppercase
-                    $entityName = ucfirst(str_replace('_id', '', $field));
-
-                    // Dynamically convert certain names into known entities, without having to explicitly code them
-                    $entityName = $this->convertFieldToEntityName($entityName);
-
-                    // Check if the corresponding class exists (and if it is indeed an entity)
-                    if (class_exists("Itsmng\\Domain\\Entities\\$entityName")) {
-                        $entityClass = "Itsmng\\Domain\\Entities\\$entityName";
-                        // Search entity by its ID
-                        $relatedEntity = $this->em->getRepository($entityClass)->find($value);
-
-                        if ($relatedEntity) {
-                            $value = $relatedEntity;  // Replace ID with entity object
-                        } else {
-                            // If the entity is not found, we keep null
-                            $value = null;
-                        }
+        $value = $transformedFields[$field];
+        
+        try {
+            $reflectionMethod = new \ReflectionMethod($entity, $setter);
+            $parameters = $reflectionMethod->getParameters();
+            $paramType = $parameters[0]->getType();
+            
+            if ($paramType) {
+                $typeName = $paramType->getName();
+                
+                if (class_exists($typeName)) {
+                    if (is_numeric($value)) {
+                        $value = $this->em->getRepository($typeName)->find((int)$value);
+                    } elseif (is_object($value) && !($value instanceof $typeName)) {
+                        continue;
                     }
+                } elseif ($typeName === \DateTimeInterface::class) {
+                    $value = $value ? new \DateTime($value) : null;
                 }
-                // Convertir les chaînes de caractères en objets DateTime pour les champs de type DateTimeInterface
-                $reflectionMethod = new \ReflectionMethod($entity, $setter);
-                $parameters = $reflectionMethod->getParameters();
-                if (count($parameters) > 0 && $parameters[0]->getType() && $parameters[0]->getType()->getName() === \DateTimeInterface::class) {
-                    try {
-                        $value = new \DateTime($value);
-                    } catch (\Exception $e) {
-                        throw new \Exception("Invalid date format for field $field: " . $e->getMessage());
-                    }
-                }
-
-                // Call the setter with the processed value
+            }
+            
+            if ($value !== null || ($paramType && $paramType->allowsNull())) {
                 $entity->$setter($value);
             }
-        }
-
-        try {
-
-            dump('isManaged before flush:', $this->em->contains($entity));
-            $this->em->persist($entity);
-            dump('isManaged after persist:', $this->em->contains($entity));
-            $this->em->flush();
-            // dump("Entity ID after flush: " . $entity->getId());
-
-            return ['id' => $entity->getId()];
+            
         } catch (\Exception $e) {
-            dump('Exception message: ', $e->getMessage());
-            return false;
+            $e->getMessage();
+            continue;
         }
-
-        // return false;
     }
 
-    // Fonction générique pour convertir un nom de champ en nom d'entité
-    private function convertFieldToEntityName(string $fieldName): string
-    {
-         $fieldName = strtolower($fieldName);
+    try {
+        $this->em->persist($entity);
+        $this->em->flush();
+                
+        return ['id' => $entity->getId()];
+    } catch (\Exception $e) {
+        $e->getMessage();
+        return false;
+    }
+}
+
+
     
-        // Special case for entities
-        if (strpos($fieldName, 'entities_id') !== false) {
-            return 'Entity';
-        }
-        
-        // Separate the different parts of the name
-        $parts = explode('_', $fieldName);
-
-        // Remove technical parts
-        $parts = array_filter($parts, function ($part) {
-            return !in_array($part, ['tech', 'id']);
-        });
-
-        // Take the first remaining part and remove the final 's' if present
-        $entityName = reset($parts);
-        if (str_ends_with($entityName, 's')) {
-            $entityName = substr($entityName, 0, -1);
-        }
-
-        // Capitalize the first letter
-        return ucfirst($entityName);
-    }
 
     public function getRelations(): array
     {

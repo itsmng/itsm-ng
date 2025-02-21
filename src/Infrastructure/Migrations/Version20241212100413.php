@@ -1688,6 +1688,33 @@ final class Version20241212100413 extends AbstractMigration
 
 
         $this->addSql('ALTER TABLE glpi_ticketcosts ADD CONSTRAINT FK_A94AF7496145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_tickets ADD CONSTRAINT FK_ticketEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_tickets ADD CONSTRAINT FK_ticketRequesttypesD7DB FOREIGN KEY (requesttypes_id) REFERENCES glpi_requesttypes (id)');
+        $this->addSql('ALTER TABLE glpi_tickets ADD CONSTRAINT FK_ticketItilcategoriesD7DB FOREIGN KEY (itilcategories_id) REFERENCES glpi_itilcategories (id)');
+        $this->addSql('ALTER TABLE glpi_tickets ADD CONSTRAINT FK_ticketLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+
+        $this->addSql('ALTER TABLE glpi_ticketrecurrents ADD CONSTRAINT FK_ticketRecurrentEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_ticketrecurrents (id)');
+        $this->addSql('ALTER TABLE glpi_ticketrecurrents ADD CONSTRAINT FK_ticketRecurrentTickettemplatesD7DB FOREIGN KEY (tickettemplates_id) REFERENCES glpi_tickettemplates (id)');
+        $this->addSql('ALTER TABLE glpi_ticketrecurrents ADD CONSTRAINT FK_ticketRecurrentCalendarsD7DB FOREIGN KEY (calendars_id) REFERENCES glpi_calendars (id)');
+        $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksTicketD7DB FOREIGN KEY (tickets_id) REFERENCES glpi_tickets (id)');
+        $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksTaskscategoriesD7DB FOREIGN KEY (taskcategories_id) REFERENCES glpi_taskcategories (id)');
+        $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksUsersD7DB FOREIGN KEY (users_id) REFERENCES glpi_users (id)');
+        $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksUsersEditorD7DB FOREIGN KEY (users_id_editor) REFERENCES glpi_users (id)');
+        $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksUsersTechD7DB FOREIGN KEY (users_id_tech) REFERENCES glpi_users (id)');
+        $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksGroupsTechD7DB FOREIGN KEY (groups_id_tech) REFERENCES glpi_groups (id)');
+        $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksTasktemplateD7DB FOREIGN KEY (tasktemplates_id) REFERENCES glpi_tasktemplates (id)');
+        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersProfilesD7DB FOREIGN KEY (profiles_id) REFERENCES glpi_profiles (id)');
+        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersUserstitlesD7DB FOREIGN KEY (usertitles_id) REFERENCES glpi_usertitles (id)');
+        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersUsercategoriesD7DB FOREIGN KEY (usercategories_id) REFERENCES glpi_usercategories (id)');
+        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersGroupsD7DB FOREIGN KEY (groups_id) REFERENCES glpi_groups (id)');
+        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersDefaultRequestTypeD7DB FOREIGN KEY (default_requesttypes_id) REFERENCES glpi_requesttypes (id)');
+
+        $this->addSql('ALTER TABLE glpi_useremails ADD CONSTRAINT FK_usersemailsUsersD7DB FOREIGN KEY (users_id) REFERENCES glpi_users (id)');
+        $this->addSql('ALTER TABLE glpi_vlans ADD CONSTRAINT FK_vlansEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_wifinetworks ADD CONSTRAINT FK_wifinetworksEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+
         $this->addSql('ALTER TABLE glpi_users CHANGE language language VARCHAR(10) DEFAULT NULL COMMENT \'see define.php CFG_GLPI[language] array\', CHANGE csv_delimiter csv_delimiter VARCHAR(1) DEFAULT NULL, CHANGE priority_1 priority_1 VARCHAR(20) DEFAULT NULL, CHANGE priority_2 priority_2 VARCHAR(20) DEFAULT NULL, CHANGE priority_3 priority_3 VARCHAR(20) DEFAULT NULL, CHANGE priority_4 priority_4 VARCHAR(20) DEFAULT NULL, CHANGE priority_5 priority_5 VARCHAR(20) DEFAULT NULL, CHANGE priority_6 priority_6 VARCHAR(20) DEFAULT NULL, CHANGE password_forget_token password_forget_token VARCHAR(40) DEFAULT NULL, CHANGE layout layout VARCHAR(20) DEFAULT NULL, CHANGE palette palette VARCHAR(20) DEFAULT NULL, CHANGE access_custom_shortcuts access_custom_shortcuts LONGTEXT DEFAULT NULL');
     }
 

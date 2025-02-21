@@ -56,46 +56,46 @@ class IpNetwork
     #[ORM\Column(name: 'address', type: "string", length: 40, nullable: true)]
     private $address;
 
-    #[ORM\Column(name: 'address0', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'address_0', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $address0;
 
-    #[ORM\Column(name: 'address1', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'address_1', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $address1;
 
-    #[ORM\Column(name: 'address2', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'address_2', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $address2;
 
-    #[ORM\Column(name: 'address3', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'address_3', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $address3;
 
     #[ORM\Column(name: 'netmask', type: "string", length: 40, nullable: true)]
     private $netmask;
 
-    #[ORM\Column(name: 'netmask0', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'netmask_0', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $netmask0;
 
-    #[ORM\Column(name: 'netmask1', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'netmask_1', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $netmask1;
 
-    #[ORM\Column(name: 'netmask2', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'netmask_2', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $netmask2;
 
-    #[ORM\Column(name: 'netmask3', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'netmask_3', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $netmask3;
 
     #[ORM\Column(name: 'gateway', type: "string", length: 40, nullable: true)]
     private $gateway;
 
-    #[ORM\Column(name: 'gateway0', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'gateway_0', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $gateway0;
 
-    #[ORM\Column(name: 'gateway1', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'gateway_1', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $gateway1;
 
-    #[ORM\Column(name: 'gateway2', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'gateway_2', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $gateway2;
 
-    #[ORM\Column(name: 'gateway3', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'gateway_3', type: "integer", options: ["unsigned" => true, "default" => 0])]
     private $gateway3;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
@@ -240,7 +240,7 @@ class IpNetwork
 
     public function setAddress0(int $address0): self
     {
-        $this->address0 = $address_0;
+        $this->address0 = $address0;
 
         return $this;
     }
@@ -252,7 +252,7 @@ class IpNetwork
 
     public function setAddress1(int $address1): self
     {
-        $this->address1 = $address_1;
+        $this->address1 = $address1;
 
         return $this;
     }
@@ -264,7 +264,7 @@ class IpNetwork
 
     public function setAddress2(int $address2): self
     {
-        $this->address2 = $address_2;
+        $this->address2 = $address2;
 
         return $this;
     }
@@ -276,7 +276,7 @@ class IpNetwork
 
     public function setAddress3(int $address3): self
     {
-        $this->address3 = $address_3;
+        $this->address3 = $address3;
 
         return $this;
     }
@@ -300,7 +300,7 @@ class IpNetwork
 
     public function setNetmask0(int $netmask0): self
     {
-        $this->netmask0 = $netmask_0;
+        $this->netmask0 = $netmask0;
 
         return $this;
     }
@@ -312,7 +312,7 @@ class IpNetwork
 
     public function setNetmask1(int $netmask1): self
     {
-        $this->netmask1 = $netmask_1;
+        $this->netmask1 = $netmask1;
 
         return $this;
     }
@@ -324,7 +324,7 @@ class IpNetwork
 
     public function setNetmask2(int $netmask2): self
     {
-        $this->netmask2 = $netmask_2;
+        $this->netmask2 = $netmask2;
 
         return $this;
     }
@@ -336,7 +336,7 @@ class IpNetwork
 
     public function setNetmask3(int $netmask3): self
     {
-        $this->netmask3 = $netmask_3;
+        $this->netmask3 = $netmask3;
 
         return $this;
     }
@@ -360,7 +360,7 @@ class IpNetwork
 
     public function setGateway0(int $gateway0): self
     {
-        $this->gateway0 = $gateway_0;
+        $this->gateway0 = $gateway0;
 
         return $this;
     }
@@ -372,7 +372,7 @@ class IpNetwork
 
     public function setGateway1(int $gateway1): self
     {
-        $this->gateway1 = $gateway_1;
+        $this->gateway1 = $gateway1;
 
         return $this;
     }
@@ -384,7 +384,7 @@ class IpNetwork
 
     public function setGateway2(int $gateway2): self
     {
-        $this->gateway2 = $gateway_2;
+        $this->gateway2 = $gateway2;
 
         return $this;
     }
@@ -396,7 +396,7 @@ class IpNetwork
 
     public function setGateway3(int $gateway3): self
     {
-        $this->gateway3 = $gateway_3;
+        $this->gateway3 = $gateway3;
 
         return $this;
     }

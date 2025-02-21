@@ -34,8 +34,14 @@ if (!defined('GLPI_ROOT')) {
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
 **/
+ use Itsmng\Domain\Entities\ApplianceItemRelation as ApplianceItemRelationEntity;
+
+
 class Appliance_Item_Relation extends CommonDBRelation
 {
+
+    public $entity = ApplianceItemRelationEntity::class;
+
     public static $itemtype_1 = 'Appliance_Item';
     public static $items_id_1 = 'appliances_items_id';
     //static public $take_entity_1 = false;

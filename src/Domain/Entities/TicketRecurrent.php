@@ -24,8 +24,9 @@ class TicketRecurrent
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
@@ -33,8 +34,9 @@ class TicketRecurrent
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
     private $isActive;
 
-    #[ORM\Column(name: 'tickettemplates_id', type: 'integer', options: ['default' => 0])]
-    private $tickettemplatesId;
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?TicketTemplate $tickettemplate = null;
 
     #[ORM\Column(name: 'begin_date', type: 'datetime', nullable: true)]
     private $beginDate;
@@ -48,8 +50,9 @@ class TicketRecurrent
     #[ORM\Column(name: 'next_creation_date', type: 'datetime', nullable: true)]
     private $nextCreationDate;
 
-    #[ORM\Column(name: 'calendars_id', type: 'integer', options: ['default' => 0])]
-    private $calendarsId;
+    #[ORM\ManyToOne(targetEntity: Calendar::class)]
+    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
+    private ?Calendar $calendar = null;
 
     #[ORM\Column(name: 'end_date', type: 'datetime', nullable: true)]
     private $endDate;
@@ -83,18 +86,6 @@ class TicketRecurrent
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->isRecursive;
@@ -119,17 +110,6 @@ class TicketRecurrent
         return $this;
     }
 
-    public function getTickettemplatesId(): ?int
-    {
-        return $this->tickettemplatesId;
-    }
-
-    public function setTickettemplatesId(?int $tickettemplatesId): self
-    {
-        $this->tickettemplatesId = $tickettemplatesId;
-
-        return $this;
-    }
 
     public function getBeginDate(): ?\DateTime
     {
@@ -179,18 +159,6 @@ class TicketRecurrent
         return $this;
     }
 
-    public function getCalendarsId(): ?int
-    {
-        return $this->calendarsId;
-    }
-
-    public function setCalendarsId(?int $calendarsId): self
-    {
-        $this->calendarsId = $calendarsId;
-
-        return $this;
-    }
-
     public function getEndDate(): ?\DateTime
     {
         return $this->endDate;
@@ -203,4 +171,64 @@ class TicketRecurrent
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickettemplate
+     */ 
+    public function getTickettemplate()
+    {
+        return $this->tickettemplate;
+    }
+
+    /**
+     * Set the value of tickettemplate
+     *
+     * @return  self
+     */ 
+    public function setTickettemplate($tickettemplate)
+    {
+        $this->tickettemplate = $tickettemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of calendar
+     */ 
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * Set the value of calendar
+     *
+     * @return  self
+     */ 
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
 }

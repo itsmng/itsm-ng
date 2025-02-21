@@ -16,11 +16,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "groups_id", columns: ["groups_id"])]
 #[ORM\Index(name: "users_id", columns: ["users_id"])]
 #[ORM\Index(name: "locations_id", columns: ["locations_id"])]
-#[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])]
+#[ORM\Index(name: "tech_users_id", columns: ["tech_users_id"])]
 #[ORM\Index(name: "softwares_id", columns: ["softwares_id"])]
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
 #[ORM\Index(name: "is_helpdesk_visible", columns: ["is_helpdesk_visible"])]
-#[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
+#[ORM\Index(name: "tech_groups_id", columns: ["tech_groups_id"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class Software
 {

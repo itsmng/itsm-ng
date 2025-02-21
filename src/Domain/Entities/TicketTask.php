@@ -16,8 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_private", columns: ["is_private"])]
 #[ORM\Index(name: "taskcategories_id", columns: ["taskcategories_id"])]
 #[ORM\Index(name: "state", columns: ["state"])]
-#[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])]
-#[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
+#[ORM\Index(name: "tech_users_id", columns: ["tech_users_id"])]
+#[ORM\Index(name: "tech_groups_id", columns: ["tech_groups_id"])]
 #[ORM\Index(name: "begin", columns: ["begin"])]
 #[ORM\Index(name: "end", columns: ["end"])]
 #[ORM\Index(name: "tasktemplates_id", columns: ["tasktemplates_id"])]
@@ -32,20 +32,24 @@ class TicketTask
     #[ORM\Column(name: 'uuid', type: 'string', length: 255, nullable: true)]
     private $uuid;
 
-    #[ORM\Column(name: 'tickets_id', type: 'integer', options: ['default' => 0])]
-    private $ticketsId;
+    #[ORM\ManyToOne(targetEntity: Ticket::class)]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket = null;
 
-    #[ORM\Column(name: 'taskcategories_id', type: 'integer', options: ['default' => 0])]
-    private $taskcategoriesId;
+    #[ORM\ManyToOne(targetEntity: Taskcategory::class)]
+    #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Taskcategory $taskcategory = null;
 
     #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
+    
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
-    private $usersId;
-
-    #[ORM\Column(name: 'users_id_editor', type: 'integer', options: ['default' => 0])]
-    private $usersIdEditor;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
+    private ?User $userEditor = null;
 
     #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
@@ -65,11 +69,13 @@ class TicketTask
     #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 1])]
     private $state;
 
-    #[ORM\Column(name: 'users_id_tech', type: 'integer', options: ['default' => 0])]
-    private $usersIdTech;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $userTech = null;
 
-    #[ORM\Column(name: 'groups_id_tech', type: 'integer', options: ['default' => 0])]
-    private $groupsIdTech;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $groupTech = null;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -77,8 +83,9 @@ class TicketTask
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
-    #[ORM\Column(name: 'tasktemplates_id', type: 'integer', options: ['default' => 0])]
-    private $tasktemplatesId;
+    #[ORM\ManyToOne(targetEntity: Tasktemplate::class)]
+    #[ORM\JoinColumn(name: 'tasktemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Tasktemplate $tasktemplate = null;
 
     #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
     private $timelinePosition;
@@ -103,30 +110,6 @@ class TicketTask
         return $this;
     }
 
-    public function getTicketsId(): ?int
-    {
-        return $this->ticketsId;
-    }
-
-    public function setTicketsId(?int $ticketsId): self
-    {
-        $this->ticketsId = $ticketsId;
-
-        return $this;
-    }
-
-    public function getTaskcategoriesId(): ?int
-    {
-        return $this->taskcategoriesId;
-    }
-
-    public function setTaskcategoriesId(?int $taskcategoriesId): self
-    {
-        $this->taskcategoriesId = $taskcategoriesId;
-
-        return $this;
-    }
-
     public function getDate(): ?\DateTime
     {
         return $this->date;
@@ -135,30 +118,6 @@ class TicketTask
     public function setDate(?\DateTime $date): self
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->usersId;
-    }
-
-    public function setUsersId(?int $usersId): self
-    {
-        $this->usersId = $usersId;
-
-        return $this;
-    }
-
-    public function getUsersIdEditor(): ?int
-    {
-        return $this->usersIdEditor;
-    }
-
-    public function setUsersIdEditor(?int $usersIdEditor): self
-    {
-        $this->usersIdEditor = $usersIdEditor;
 
         return $this;
     }
@@ -235,30 +194,6 @@ class TicketTask
         return $this;
     }
 
-    public function getUsersIdTech(): ?int
-    {
-        return $this->usersIdTech;
-    }
-
-    public function setUsersIdTech(?int $usersIdTech): self
-    {
-        $this->usersIdTech = $usersIdTech;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groupsIdTech;
-    }
-
-    public function setGroupsIdTech(?int $groupsIdTech): self
-    {
-        $this->groupsIdTech = $groupsIdTech;
-
-        return $this;
-    }
-
     public function getDateMod(): ?\DateTime
     {
         return $this->dateMod;
@@ -279,18 +214,6 @@ class TicketTask
     public function setDateCreation(?\DateTime $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
-
-        return $this;
-    }
-
-    public function getTasktemplatesId(): ?int
-    {
-        return $this->tasktemplatesId;
-    }
-
-    public function setTasktemplatesId(?int $tasktemplatesId): self
-    {
-        $this->tasktemplatesId = $tasktemplatesId;
 
         return $this;
     }
@@ -319,4 +242,144 @@ class TicketTask
         return $this;
     }
 
+
+    /**
+     * Get the value of ticket
+     */ 
+    public function getTicket()
+    {
+        return $this->ticket;
+    }
+
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */ 
+    public function setTicket($ticket)
+    {
+        $this->ticket = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of taskcategory
+     */ 
+    public function getTaskcategory()
+    {
+        return $this->taskcategory;
+    }
+
+    /**
+     * Set the value of taskcategory
+     *
+     * @return  self
+     */ 
+    public function setTaskcategory($taskcategory)
+    {
+        $this->taskcategory = $taskcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userEditor
+     */ 
+    public function getUserEditor()
+    {
+        return $this->userEditor;
+    }
+
+    /**
+     * Set the value of userEditor
+     *
+     * @return  self
+     */ 
+    public function setUserEditor($userEditor)
+    {
+        $this->userEditor = $userEditor;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userTech
+     */ 
+    public function getUserTech()
+    {
+        return $this->userTech;
+    }
+
+    /**
+     * Set the value of userTech
+     *
+     * @return  self
+     */ 
+    public function setUserTech($userTech)
+    {
+        $this->userTech = $userTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupTech
+     */ 
+    public function getGroupTech()
+    {
+        return $this->groupTech;
+    }
+
+    /**
+     * Set the value of groupTech
+     *
+     * @return  self
+     */ 
+    public function setGroupTech($groupTech)
+    {
+        $this->groupTech = $groupTech;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tasktemplate
+     */ 
+    public function getTasktemplate()
+    {
+        return $this->tasktemplate;
+    }
+
+    /**
+     * Set the value of tasktemplate
+     *
+     * @return  self
+     */ 
+    public function setTasktemplate($tasktemplate)
+    {
+        $this->tasktemplate = $tasktemplate;
+
+        return $this;
+    }
 }

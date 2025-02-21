@@ -61,7 +61,7 @@ class ItemDeviceProcessor
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
 
-    #[ORM\Column(name: 'bus_id', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'busID', type: 'string', length: 255, nullable: true)]
     private $busID;
 
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]

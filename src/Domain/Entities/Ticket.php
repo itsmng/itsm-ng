@@ -44,8 +44,10 @@ class Ticket
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
+
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -71,8 +73,9 @@ class Ticket
     #[ORM\Column(name: 'users_id_recipient', type: 'integer', options: ['default' => 0])]
     private $usersIdRecipient;
 
-    #[ORM\Column(name: 'requesttypes_id', type: 'integer', options: ['default' => 0])]
-    private $requesttypesId;
+    #[ORM\ManyToOne(targetEntity: Requesttype::class)]
+    #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Requesttype $requesttype = null;
 
     #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
@@ -88,6 +91,11 @@ class Ticket
 
     #[ORM\Column(name: 'itilcategories_id', type: 'integer', options: ['default' => 0])]
     private $itilcategoriesId;
+
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?ItilCategory $itilcategory = null;
+
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
     private $type;
@@ -155,8 +163,9 @@ class Ticket
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
     private $isDeleted;
 
-    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
-    private $locationsId;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
     #[ORM\Column(name: 'validation_percent', type: 'integer', options: ['default' => 0])]
     private $validationPercent;
@@ -190,17 +199,7 @@ class Ticket
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
-    }
+    
 
     public function getName(): ?string
     {
@@ -294,18 +293,6 @@ class Ticket
     public function setUsersIdRecipient(?int $usersIdRecipient): self
     {
         $this->usersIdRecipient = $usersIdRecipient;
-
-        return $this;
-    }
-
-    public function getRequesttypesId(): ?int
-    {
-        return $this->requesttypesId;
-    }
-
-    public function setRequesttypesId(?int $requesttypesId): self
-    {
-        $this->requesttypesId = $requesttypesId;
 
         return $this;
     }
@@ -634,17 +621,6 @@ class Ticket
         return $this;
     }
 
-    public function getLocationsId(): ?int
-    {
-        return $this->locationsId;
-    }
-
-    public function setLocationsId(?int $locationsId): self
-    {
-        $this->locationsId = $locationsId;
-
-        return $this;
-    }
 
     public function getValidationPercent(): ?int
     {
@@ -807,6 +783,86 @@ class Ticket
     public function setSupplierTickets($supplierTickets)
     {
         $this->supplierTickets = $supplierTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of requesttype
+     */ 
+    public function getRequesttype()
+    {
+        return $this->requesttype;
+    }
+
+    /**
+     * Set the value of requesttype
+     *
+     * @return  self
+     */ 
+    public function setRequesttype($requesttype)
+    {
+        $this->requesttype = $requesttype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilcategory
+     */ 
+    public function getItilcategory()
+    {
+        return $this->itilcategory;
+    }
+
+    /**
+     * Set the value of itilcategory
+     *
+     * @return  self
+     */ 
+    public function setItilcategory($itilcategory)
+    {
+        $this->itilcategory = $itilcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
 
         return $this;
     }

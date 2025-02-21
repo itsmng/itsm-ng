@@ -31,12 +31,16 @@
  * ---------------------------------------------------------------------
  */
 
+ use Itsmng\Domain\Entities\ApplianceType as ApplianceTypeEntity;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
 
 class ApplianceType extends CommonDropdown
 {
+    public $entity = ApplianceTypeEntity::class;
+    
     public static function getTypeName($nb = 0)
     {
         return _n('Appliance type', 'Appliance types', $nb);

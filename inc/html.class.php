@@ -1519,7 +1519,7 @@ class Html
         foreach ($pluginCss as $css) {
             echo $css;
         }
-
+        
         // Custom CSS for active entity
         if ($DB instanceof DBmysql && $DB->connected) {
             $entity = new Entity();

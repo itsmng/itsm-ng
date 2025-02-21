@@ -185,7 +185,6 @@ class User extends CommonDBTM
     public function computePreferences()
     {
         global $CFG_GLPI;
-
         if (isset($this->fields['id'])) {
             foreach ($CFG_GLPI['user_pref_field'] as $f) {
                 if (is_null($this->fields[$f])) {
