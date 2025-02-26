@@ -41,7 +41,7 @@ msgstr "Pas de restriction"
 
 #: index.php:128
 msgid "SSO Login"
-msgstr "Connection en SSO"
+msgstr "Connexion en SSO"
 
 #: front/setup.auth.php:58
 msgid "Open ID connect authentication"
@@ -61,7 +61,7 @@ msgstr "Activer OpenID Connect"
 
 #: inc/auth.class.php:1689
 msgid "Forced connection with open ID connect"
-msgstr "Connection forcée avec OpenID Connect"
+msgstr "Connexion forcée avec OpenID Connect"
 
 #: ajax/subvisibility.php:66 ajax/visibility.php:91 ajax/private_public.php:67
 #: inc/rule.class.php:740 inc/ruleimportentity.class.php:172
