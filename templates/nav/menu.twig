@@ -26,7 +26,6 @@
                                                     <a data-menu-name="{{menu_name}}" data-submenu-name="{{sub_menu_name | trans}}" href="{{root_doc}}{{val['page']}}" {{val['shortcut_attr']|raw}} id='favorite-section-{{sub_menu_name}}' class="{{val['is_favorite'] ? 'section-favorite'}} {{menu[val['part']]['content'][sub_menu_name]['sub_menu_class']}}">
                                                         <i class='submenu-icon fa-fw {{val['icon']}}' aria-hidden="true"></i>
                                                         <span>{{val['title']}}</span>
-                                                        <i class="star-icon" title="add/remove favorite" aria-hidden="true"></i>
                                                     </a>
                                                 </li>
                                             {% endif %}
