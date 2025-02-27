@@ -77,12 +77,13 @@ class MailServer
      *
      * @param string  $value      connect string
      * @param boolean $forceport  force compute port if not set
+     * @param boolean $allow_plugins_protocols allow plugins protocols
      *
      * @return array  parsed arguments (address, port, mailbox, type, ssl, tls, validate-cert
      *                norsh, secure and debug) : options are empty if not set
      *                and options have boolean values if set
      **/
-    public static function parseMailServerConnectString($value, $forceport = false): array
+    public static function parseMailServerConnectString($value, $forceport = false, bool $allow_plugins_protocols = true): array
     {
 
         $tab = [];
@@ -103,7 +104,7 @@ class MailServer
         // server string is surrounded by "{}" and can be followed by a folder name
         // i.e. "{mail.domain.org/imap/ssl}INBOX", or "{mail.domain.org/pop}"
         $type = preg_replace('/^\{[^\/]+\/([^\/]+)(?:\/.+)*\}.*/', '$1', $value);
-        $tab['type'] = in_array($type, array_keys(self::getMailServerProtocols())) ? $type : '';
+        $tab['type'] = in_array($type, array_keys(self::getMailServerProtocols($allow_plugins_protocols))) ? $type : '';
 
         $tab['ssl'] = false;
         if (strstr($value, "/ssl")) {
@@ -160,10 +161,11 @@ class MailServer
      * Display a mail server configuration form
      *
      * @param string $value  host connect string ex {localhost:993/imap/ssl}INBOX
+     * @param boolean $allow_plugins_protocols
      *
      * @return array
      **/
-    public static function showMailServerConfig($value): array
+    public static function showMailServerConfig($value, bool $allow_plugins_protocols): array
     {
         $data = array();
 
@@ -177,7 +179,7 @@ class MailServer
         $data['address'] = $tab['address'];
 
         $values = [];
-        $protocols = self::getMailServerProtocols();
+        $protocols = self::getMailServerProtocols($allow_plugins_protocols);
         $data['protocols'] = $protocols;
 
         foreach ($protocols as $key => $params) {
@@ -271,11 +273,11 @@ class MailServer
      *
      * @return void
      **/
-    public static function showMailServerConfigForm($action, $fields, $is_ID, $ID)
+    public static function showMailServerConfigForm($action, $fields, $is_ID, $ID, $allow_plugins_protocols = true)
     {
-        $data = self::parseMailServerConnectString($fields["connect_string"] ?? '');
+        $data = self::parseMailServerConnectString($fields["connect_string"] ?? '', $allow_plugins_protocols);
 
-        $FromMailServerConfig = self::showMailServerConfig($fields["connect_string"] ?? '');
+        $FromMailServerConfig = self::showMailServerConfig($fields["connect_string"] ?? '', false);
         foreach ($FromMailServerConfig['protocols'] as $key => $params) {
             $protocols['/' . $key] = $params['label'];
         }

@@ -168,6 +168,7 @@ final class StatusChecker
                 if (count($ldap_methods)) {
                     $status['status'] = self::STATUS_OK;
                     foreach ($ldap_methods as $method) {
+                        $display_name = $public_only ? 'GLPI_LDAP_' . $method['id'] : $method['name'];
                         try {
                             if (
                                 AuthLDAP::tryToConnectToServer(
@@ -176,11 +177,11 @@ final class StatusChecker
                                     Toolbox::sodiumDecrypt($method['rootdn_passwd'])
                                 )
                             ) {
-                                $status['servers'][$method['name']] = [
+                                $status['servers'][$display_name] = [
                                    'status' => self::STATUS_OK
                                 ];
                             } else {
-                                $status['servers'][$method['name']] = [
+                                $status['servers'][$display_name] = [
                                    'status' => self::STATUS_PROBLEM
                                 ];
                                 $status['status'] = self::STATUS_PROBLEM;
@@ -221,6 +222,7 @@ final class StatusChecker
                     $status['status'] = self::STATUS_OK;
                     foreach ($imap_methods as $method) {
                         $param = Toolbox::parseMailServerConnectString($method['connect_string'], true);
+                        $display_name = $public_only ? 'GLPI_IMAP_' . $method['id'] : $method['name'];
                         if ($param['ssl'] === true) {
                             $host = 'ssl://' . $param['address'];
                         } elseif ($param['tls'] === true) {
@@ -229,11 +231,11 @@ final class StatusChecker
                             $host = $param['address'];
                         }
                         if ($fp = @fsockopen($host, $param['port'], $errno, $errstr, 1)) {
-                            $status['servers'][$method['name']] = [
+                            $status['servers'][$display_name] = [
                                'status' => 'OK'
                             ];
                         } else {
-                            $status['servers'][$method['name']] = [
+                            $status['servers'][$display_name] = [
                                'status' => self::STATUS_PROBLEM
                             ];
                             $status['status'] = self::STATUS_PROBLEM;
@@ -298,14 +300,15 @@ final class StatusChecker
                     $status['status'] = self::STATUS_OK;
                     $mailcol = new MailCollector();
                     foreach ($mailcollectors as $mc) {
+                        $display_name = $public_only ? 'GLPI_MAILCOLLECTOR_' . $mc['id'] : $mc['name'];
                         if ($mailcol->getFromDB($mc['id'])) {
                             try {
                                 $mailcol->connect();
-                                $status['servers'][$mc['name']] = [
+                                $status['servers'][$display_name] = [
                                    'status' => 'OK'
                                 ];
                             } catch (\Exception $e) {
-                                $status['servers'][$mc['name']] = [
+                                $status['servers'][$display_name] = [
                                    'status'       => self::STATUS_PROBLEM,
                                    'error_code'   => $e->getCode()
                                 ];

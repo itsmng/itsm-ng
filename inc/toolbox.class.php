@@ -2057,12 +2057,13 @@ class Toolbox
      *
      * @param string  $value      connect string
      * @param boolean $forceport  force compute port if not set
+     * @param boolean $allow_plugins_protocols allow plugins protocols
      *
      * @return array  parsed arguments (address, port, mailbox, type, ssl, tls, validate-cert
      *                norsh, secure and debug) : options are empty if not set
      *                and options have boolean values if set
     **/
-    public static function parseMailServerConnectString($value, $forceport = false)
+    public static function parseMailServerConnectString($value, $forceport = false, $allow_plugins_protocols = true)
     {
 
         $tab = [];
@@ -2083,7 +2084,7 @@ class Toolbox
         // server string is surrounded by "{}" and can be followed by a folder name
         // i.e. "{mail.domain.org/imap/ssl}INBOX", or "{mail.domain.org/pop}"
         $type = preg_replace('/^\{[^\/]+\/([^\/]+)(?:\/.+)*\}.*/', '$1', $value);
-        $tab['type'] = in_array($type, array_keys(self::getMailServerProtocols())) ? $type : '';
+        $tab['type'] = in_array($type, array_keys(self::getMailServerProtocols($allow_plugins_protocols))) ? $type : '';
 
         $tab['ssl'] = false;
         if (strstr($value, "/ssl")) {
@@ -2141,10 +2142,11 @@ class Toolbox
      * Display a mail server configuration form
      *
      * @param string $value  host connect string ex {localhost:993/imap/ssl}INBOX
+     * @param boolean $allow_plugins_protocols allow plugins protocols
      *
      * @return string  type of the server (imap/pop)
     **/
-    public static function showMailServerConfig($value)
+    public static function showMailServerConfig($value, $allow_plugins_protocols = true)
     {
 
         if (!Config::canUpdate()) {
@@ -2159,7 +2161,7 @@ class Toolbox
 
         echo "<tr class='tab_bg_1'><td>" . __('Connection options') . "</td><td>";
         $values = [];
-        $protocols = Toolbox::getMailServerProtocols();
+        $protocols = Toolbox::getMailServerProtocols($allow_plugins_protocols);
         foreach ($protocols as $key => $params) {
             $values['/' . $key] = $params['label'];
         }
@@ -2344,9 +2346,11 @@ class Toolbox
      *  - 'protocol_class' field is the protocol class to use (see Laminas\Mail\Protocol\Imap | Laminas\Mail\Protocol\Pop3);
      *  - 'storage_class' field is the storage class to use (see Laminas\Mail\Storage\Imap | Laminas\Mail\Storage\Pop3).
      *
+     * @param boolean $allow_plugins_protocols allow plugins protocols
+     *
      * @return array
      */
-    private static function getMailServerProtocols(): array
+    private static function getMailServerProtocols($allow_plugins_protocols = true): array
     {
         $protocols = [
            'imap' => [
@@ -2362,6 +2366,10 @@ class Toolbox
               'storage'  => 'Laminas\Mail\Storage\Pop3',
            ]
         ];
+
+        if (!$allow_plugins_protocols) {
+            return $protocols;
+        }
 
         $additionnal_protocols = Plugin::doHookFunction('mail_server_protocols', []);
         if (is_array($additionnal_protocols)) {
@@ -2404,12 +2412,13 @@ class Toolbox
      * or should be \Laminas\Mail\Protocol\Imap|\Laminas\Mail\Protocol\Pop3 for native protocols.
      *
      * @param string $protocol_type
+     * @param boolean $allow_plugins_protocols allow plugins protocols
      *
      * @return null|\Glpi\Mail\Protocol\ProtocolInterface|\Laminas\Mail\Protocol\Imap|\Laminas\Mail\Protocol\Pop3
      */
-    public static function getMailServerProtocolInstance(string $protocol_type)
+    public static function getMailServerProtocolInstance(string $protocol_type, $allow_plugins_protocols = true)
     {
-        $protocols = self::getMailServerProtocols();
+        $protocols = self::getMailServerProtocols($allow_plugins_protocols);
         if (array_key_exists($protocol_type, $protocols)) {
             $protocol = $protocols[$protocol_type]['protocol'];
             if (is_callable($protocol)) {
@@ -2438,12 +2447,13 @@ class Toolbox
      *
      * @param string $protocol_type
      * @param array  $params         Storage constructor params, as defined in AbstractStorage
+     * @param boolean $allow_plugins_protocols allow plugins protocols
      *
      * @return null|AbstractStorage
      */
-    public static function getMailServerStorageInstance(string $protocol_type, array $params): ?AbstractStorage
+    public static function getMailServerStorageInstance(string $protocol_type, array $params, bool $allow_plugins_protocols = true): ?AbstractStorage
     {
-        $protocols = self::getMailServerProtocols();
+        $protocols = self::getMailServerProtocols($allow_plugins_protocols);
         if (array_key_exists($protocol_type, $protocols)) {
             $storage = $protocols[$protocol_type]['storage'];
             if (is_callable($storage)) {
