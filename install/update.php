@@ -61,7 +61,7 @@ Config::loadLegacyConfiguration();
 $update = new Update($DB);
 $update->initSession();
 
-if (isset($_POST['update_end'])) {
+if (($_SESSION['can_process_update'] ?? false) && isset($_POST['update_end'])) {
     if (isset($_POST['send_stats'])) {
         Telemetry::enable();
     }
@@ -589,7 +589,16 @@ echo "<h3>".__('Upgrade')."</h3>";
 
 // step 1    avec bouton de confirmation
 
-if (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
+if (($_SESSION['can_process_update'] ?? false) === false) {
+    // Unexpected direct access to the form
+    echo "<div class='center'>";
+    echo "<h3><span class='migred'>" . __('Impossible to accomplish an update by this way!') . "</span>";
+    echo "<p>";
+    echo "<a class='btn btn-primary' href='../index.php'>
+        " . __('Go back to GLPI') . "
+     </a></p>";
+    echo "</div>";
+} elseif (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
 
     if (empty($from_install) && !isset($_POST["from_update"])) {
         echo "<div class='center'>";

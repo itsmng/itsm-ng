@@ -1680,7 +1680,7 @@ class Search
                 $item->title();
             }
         }
-        
+
         Html::showMassiveActions($massiveactionparams);
         renderTwigTemplate('table.twig', [
            'id' => 'SearchTableFor' . $data['itemtype'],
