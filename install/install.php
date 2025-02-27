@@ -517,6 +517,7 @@ function update1($DBname) {
 
    if (DBConnection::createMainConfig($host, $user, $password, $DBname) && !empty($DBname)) {
       $from_install = true;
+      $_SESSION['can_process_update'] = true;
       include_once(GLPI_ROOT ."/install/update.php");
 
    } else { // can't create config_db file

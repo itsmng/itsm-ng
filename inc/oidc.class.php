@@ -109,7 +109,7 @@ class Oidc extends CommonDBTM
       foreach ($iterators_config as $config) {
          if (isset($user_array[$config['name']])) {
             foreach ($iterators_users as $iterator) {
-               if ($user_array[$config['name']] == $iterator['name']) {
+               if ($user_array[$config['name']] == $iterator['name'] && $iterator['authtype'] == Auth::EXTERNAL) {
                   $ID = $iterator['id'];
                   $newUser = false;
                   break;
