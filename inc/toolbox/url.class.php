@@ -74,4 +74,30 @@ final class URL
 
         return $url;
     }
+
+    public static function isITSMNGRelativeURL(string $url): bool
+    {
+               if ($url === '') {
+           return false;
+       }
+
+       if (self::sanitizeURL($url) !== $url) {
+           return false;
+       }
+
+       $parsed_url = parse_url($url);
+
+       if (
+           $parsed_url === false
+           || array_key_exists('scheme', $parsed_url)
+           || array_key_exists('host', $parsed_url)
+           || !array_key_exists('path', $parsed_url)
+           || preg_match('#[^a-z0-9_/\.-]#i', $parsed_url['path']) === 1
+           || preg_match('#/\.#', $parsed_url['path']) === 1
+       ) {
+           return false;
+       }
+
+       return true;
+   }
 }
