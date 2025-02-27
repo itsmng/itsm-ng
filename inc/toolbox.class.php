@@ -1880,7 +1880,7 @@ class Toolbox
         }
         // redirect to URL : URL must be rawurlencoded
         $decoded_where = rawurldecode($where);
-        $redirect= self::computeRedirect($decoded_where);
+        $redirect = self::computeRedirect($decoded_where);
 
         if ($redirect === null) {
             Session::addMessageAfterRedirect('Redirection failed');
@@ -1914,7 +1914,8 @@ class Toolbox
         }
     }
 
-    private static function computeRedirect($where) {
+    private static function computeRedirect($where)
+    {
         global $CFG_GLPI;
 
         $parsed_url = parse_url($where);

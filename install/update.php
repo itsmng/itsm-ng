@@ -590,7 +590,7 @@ echo "<h3>".__('Upgrade')."</h3>";
 // step 1    avec bouton de confirmation
 
 if (($_SESSION['can_process_update'] ?? false) === false) {
-        // Unexpected direct access to the form
+    // Unexpected direct access to the form
     echo "<div class='center'>";
     echo "<h3><span class='migred'>" . __('Impossible to accomplish an update by this way!') . "</span>";
     echo "<p>";
@@ -598,7 +598,7 @@ if (($_SESSION['can_process_update'] ?? false) === false) {
         " . __('Go back to GLPI') . "
      </a></p>";
     echo "</div>";
-} else if (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
+} elseif (empty($_POST["continuer"]) && empty($_POST["from_update"])) {
 
     if (empty($from_install) && !isset($_POST["from_update"])) {
         echo "<div class='center'>";
