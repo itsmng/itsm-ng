@@ -5,11 +5,28 @@
     {{attributes.value|default('')|raw}}</textarea>
   <script>
   $(function() {
+    const {
+        ClassicEditor, Essentials, Bold,
+        Italic, BlockQuote, Heading,
+        Link, AutoLink, Image,
+        Table, List, ListProperties,
+        ImageInsert,
+        Base64UploadAdapter
+    } = CKEDITOR;
+
     if (typeof editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} !== 'undefined' && editor_{{attributes.id|default("ckEditorInstance" ~ rand)}}.config) {
         return;
     }
     ClassicEditor
       .create(document.getElementById('{{attributes.id|default("ckEditorInstance" ~ rand)}}'), {
+        licenseKey: 'GPL',
+        plugins: [
+            Essentials, Bold, Italic,
+            BlockQuote, Heading, Link,
+            AutoLink, Image, Table,
+            List, ListProperties, Base64UploadAdapter,
+            ImageInsert,
+        ],
         toolbar: ['heading',
           '|', 'bold', 'italic', 'blockQuote', 'link', 'insertImage',
           '|', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable']

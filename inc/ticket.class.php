@@ -5217,6 +5217,24 @@ class Ticket extends CommonITILObject
                      'values' => getLinkedDocumentsForItem('Ticket', $ID),
                      'col_lg' => 6,
                   ],
+
+                  __('Associated elements') =>
+                  (($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] != 0)
+                      && (count($_SESSION["glpiactiveprofile"]["helpdesk_item_type"])))
+                      && (!$tt->isHiddenField('items_id')) ?
+                  [
+                      'content' => (function () use ($tt, $options) {
+                          ob_start();
+                          $item_options = $options;
+                          $item_options['_canupdate'] = Session::haveRight('ticket', CREATE);
+                          $item_options['_tickettemplate'] = $tt; // Items form requires ticket template object in $options
+                          Item_Ticket::itemAddForm($this, $item_options);
+                          return ob_get_clean();
+                      })(),
+                      'name' => 'associated',
+                      'col_lg' => 12,
+                      'col_md' => 12,
+                 ] : [],
                ]
               ],
            ]
