@@ -42,15 +42,8 @@ Session::checkLoginUser();
 if (
     isset($_POST["urgency"])
     && isset($_POST["impact"])
-    && isset($_POST["priority"])
 ) {
     $priority = Ticket::computePriority($_POST["urgency"], $_POST["impact"]);
 
-    if ($_POST["priority"]) {
-        echo "<script type='text/javascript' >\n";
-        echo Html::jsSetDropdownValue($_POST["priority"], $priority);
-        echo "\n</script>";
-    } else {
-        echo Ticket::getPriorityName($priority);
-    }
+    echo $priority;
 }
