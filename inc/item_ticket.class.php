@@ -256,33 +256,33 @@ class Item_Ticket extends CommonItilObject_Item
         $count = 0;
 
         echo "<div id='itemAddForm$rand' class='border-1 w-100'>";
-    // Show associated item dropdowns
-    if ($canedit) {
-        echo "<div class='row'>";  // Using row for grid structure
+        // Show associated item dropdowns
+        if ($canedit) {
+            echo "<div class='row'>";  // Using row for grid structure
             echo "<div class='col-md-6'>";  // First column
-                $p = ['used'       => $params['items_id'],
-                      'rand'       => $rand,
-                      'tickets_id' => $params['id']];
-                // My items
-                if ($params['_users_id_requester'] > 0) {
-                    Item_Ticket::dropdownMyDevices($params['_users_id_requester'], $ticket->fields["entities_id"], $params['itemtype'], 0, $p);
-                }
+            $p = ['used'       => $params['items_id'],
+                  'rand'       => $rand,
+                  'tickets_id' => $params['id']];
+            // My items
+            if ($params['_users_id_requester'] > 0) {
+                Item_Ticket::dropdownMyDevices($params['_users_id_requester'], $ticket->fields["entities_id"], $params['itemtype'], 0, $p);
+            }
             echo "</div>";
 
             echo "<div class='col-md-6'>";  // Second column
-                // Global search
-                Item_Ticket::dropdownAllDevices("itemtype", $params['itemtype'], 0, 1, $params['_users_id_requester'], $ticket->fields["entities_id"], $p);
+            // Global search
+            Item_Ticket::dropdownAllDevices("itemtype", $params['itemtype'], 0, 1, $params['_users_id_requester'], $ticket->fields["entities_id"], $p);
             echo "</div>";
             echo "</div>";
 
             echo "<div class='row mt-2'>";  // New row for the information span and button
-                echo "<div class='col-12'>";
-                    echo "<span id='item_ticket_selection_information$rand'></span>";
-                echo "</div>";
+            echo "<div class='col-12'>";
+            echo "<span id='item_ticket_selection_information$rand'></span>";
+            echo "</div>";
 
-                echo "<div class='col-12 mt-2'>";  // Button in its own row, below both dropdowns
-                    echo "<a href='javascript:itemAction$rand(\"add\");' class='btn btn-info float-end'>" . _sx('button', 'Add') . "</a>";
-                echo "</div>";
+            echo "<div class='col-12 mt-2'>";  // Button in its own row, below both dropdowns
+            echo "<a href='javascript:itemAction$rand(\"add\");' class='btn btn-info float-end'>" . _sx('button', 'Add') . "</a>";
+            echo "</div>";
             echo "</div>";
         }
         // Display list
