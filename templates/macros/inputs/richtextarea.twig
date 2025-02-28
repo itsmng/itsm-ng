@@ -10,6 +10,8 @@
         Italic, BlockQuote, Heading,
         Link, AutoLink, Image,
         Table, List, ListProperties,
+        ImageInsert,
+        Base64UploadAdapter
     } = CKEDITOR;
 
     if (typeof editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} !== 'undefined' && editor_{{attributes.id|default("ckEditorInstance" ~ rand)}}.config) {
@@ -22,7 +24,8 @@
             Essentials, Bold, Italic,
             BlockQuote, Heading, Link,
             AutoLink, Image, Table,
-            List, ListProperties
+            List, ListProperties, Base64UploadAdapter,
+            ImageInsert,
         ],
         toolbar: ['heading',
           '|', 'bold', 'italic', 'blockQuote', 'link', 'insertImage',
