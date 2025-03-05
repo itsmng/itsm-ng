@@ -31,7 +31,7 @@
  * ---------------------------------------------------------------------
  */
 
- use Itsmng\Domain\Entities\ApiClient as ApiClientEntity;
+use Itsmng\Domain\Entities\ApiClient as ApiClientEntity;
 
 /**
  * @since 9.1

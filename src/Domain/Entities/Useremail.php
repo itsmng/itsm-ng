@@ -74,7 +74,7 @@ class Useremail
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -84,7 +84,7 @@ class Useremail
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

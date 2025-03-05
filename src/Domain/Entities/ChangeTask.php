@@ -277,7 +277,7 @@ class ChangeTask
         return $this;
     }
 
-    
+
     /**
      * Get the value of user
      */
@@ -360,7 +360,7 @@ class ChangeTask
 
     /**
      * Get the value of userEditor
-     */ 
+     */
     public function getUserEditor()
     {
         return $this->userEditor;
@@ -370,7 +370,7 @@ class ChangeTask
      * Set the value of userEditor
      *
      * @return  self
-     */ 
+     */
     public function setUserEditor($userEditor)
     {
         $this->userEditor = $userEditor;

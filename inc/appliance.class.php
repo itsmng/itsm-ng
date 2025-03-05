@@ -31,8 +31,9 @@
  * ---------------------------------------------------------------------
  */
 
-use function Termwind\render;
 use Itsmng\Domain\Entities\Appliance as ApplianceEntity;
+
+use function Termwind\render;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");

@@ -654,7 +654,7 @@ final class DbUtils
         $complete_request = false
     ) {
 
-        
+
         // !='0' needed because consider as empty
         if (
             !$complete_request
@@ -686,17 +686,17 @@ final class DbUtils
         // }
 
         //remplacé par:
-            // Ensure $value is string or array before strlen
-            if (!is_array($value) && (is_string($value) || is_numeric($value))) {
-                if (strlen((string)$value) == 0) {
-                    if (isset($_SESSION['glpiactiveentities'])) {
-                        $value = $_SESSION['glpiactiveentities'];
-                    } elseif (isCommandLine() || Session::isCron()) {
-                        $value = '0';
-                    }
+        // Ensure $value is string or array before strlen
+        if (!is_array($value) && (is_string($value) || is_numeric($value))) {
+            if (strlen((string)$value) == 0) {
+                if (isset($_SESSION['glpiactiveentities'])) {
+                    $value = $_SESSION['glpiactiveentities'];
+                } elseif (isCommandLine() || Session::isCron()) {
+                    $value = '0';
                 }
             }
-            //fin remplacement
+        }
+        //fin remplacement
         $crit = [$field => $value];
 
         if ($is_recursive === 'auto' && !empty($table) && $table != 'glpi_entities') {
@@ -862,7 +862,7 @@ final class DbUtils
     {
         global $DB, $GLPI_CACHE;
 
-       
+
         $ckey = 'ancestors_cache_';
         if (is_array($items_id)) {
             $ckey .= $table . '_' . md5(implode('|', $items_id));

@@ -796,7 +796,7 @@ class User
         return $this;
     }
 
-   
+
 
     public function getPasswordForgetToken(): ?string
     {
@@ -1670,7 +1670,7 @@ class User
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -1680,7 +1680,7 @@ class User
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -1690,7 +1690,7 @@ class User
 
     /**
      * Get the value of profile
-     */ 
+     */
     public function getProfile()
     {
         return $this->profile;
@@ -1700,7 +1700,7 @@ class User
      * Set the value of profile
      *
      * @return  self
-     */ 
+     */
     public function setProfile($profile)
     {
         $this->profile = $profile;
@@ -1710,7 +1710,7 @@ class User
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -1720,7 +1720,7 @@ class User
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -1730,7 +1730,7 @@ class User
 
     /**
      * Get the value of usertitle
-     */ 
+     */
     public function getUsertitle()
     {
         return $this->usertitle;
@@ -1740,7 +1740,7 @@ class User
      * Set the value of usertitle
      *
      * @return  self
-     */ 
+     */
     public function setUsertitle($usertitle)
     {
         $this->usertitle = $usertitle;
@@ -1750,7 +1750,7 @@ class User
 
     /**
      * Get the value of usercategory
-     */ 
+     */
     public function getUsercategory()
     {
         return $this->usercategory;
@@ -1760,7 +1760,7 @@ class User
      * Set the value of usercategory
      *
      * @return  self
-     */ 
+     */
     public function setUsercategory($usercategory)
     {
         $this->usercategory = $usercategory;
@@ -1770,7 +1770,7 @@ class User
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -1780,7 +1780,7 @@ class User
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;
@@ -1791,7 +1791,7 @@ class User
 
     /**
      * Get the value of defaultRequesttype
-     */ 
+     */
     public function getDefaultRequesttype()
     {
         return $this->defaultRequesttype;
@@ -1801,7 +1801,7 @@ class User
      * Set the value of defaultRequesttype
      *
      * @return  self
-     */ 
+     */
     public function setDefaultRequesttype($defaultRequesttype)
     {
         $this->defaultRequesttype = $defaultRequesttype;

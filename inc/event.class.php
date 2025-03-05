@@ -30,9 +30,10 @@
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
  */
-namespace Glpi;
-use Itsmng\Domain\Entities\Event as EventEntity;
 
+namespace Glpi;
+
+use Itsmng\Domain\Entities\Event as EventEntity;
 use Ajax;
 use CommonDBTM;
 use CronTask;

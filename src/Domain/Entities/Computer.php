@@ -37,7 +37,7 @@ class Computer
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
-    private ?Entity $entity= null;
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name = null;

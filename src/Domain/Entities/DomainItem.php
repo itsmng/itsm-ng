@@ -84,7 +84,7 @@ class DomainItem
 
     /**
      * Get the value of domainRelation
-     */ 
+     */
     public function getDomainRelation()
     {
         return $this->domainRelation;
@@ -94,7 +94,7 @@ class DomainItem
      * Set the value of domainRelation
      *
      * @return  self
-     */ 
+     */
     public function setDomainRelation($domainRelation)
     {
         $this->domainRelation = $domainRelation;

@@ -195,10 +195,10 @@ class CommonDBTM extends CommonGLPI
 
         if (isset($CFG_GLPI['legacy_database']) && $CFG_GLPI['legacy_database']) {
             return new LegacySqlAdapter(get_called_class());
-            
+
         }
         return new DoctrineRelationalAdapter(get_called_class());
-        
+
     }
 
     /**
@@ -299,10 +299,10 @@ class CommonDBTM extends CommonGLPI
             $this->fields = $this::getAdapter()->getFields($item);
 
             $this->post_getFromDB();
-            
+
         }
         return true;
-       
+
     }
 
 
@@ -1108,7 +1108,7 @@ class CommonDBTM extends CommonGLPI
         // if ($DB->isSlave()) {
         //     return false;
         // }
-        
+
 
         // This means we are not adding a cloned object
         if (!isset($input['clone'])) {
@@ -1158,7 +1158,7 @@ class CommonDBTM extends CommonGLPI
 
             $this->input = $this->prepareInputForAdd($this->input);
         }
-        
+
         if ($this->input && is_array($this->input)) {
             // Call the plugin hook - $this->input can be altered
             // This hook get the data altered by the object method
@@ -1175,10 +1175,10 @@ class CommonDBTM extends CommonGLPI
             $this->fields = [];
 
             // $table_fields = $DB->listFields($this->getTable());
-            
+
             $adapter = $this::getAdapter();
             $entityClassName = $this->entity;
-            
+
             if (empty($entityClassName)) {
                 throw new \Exception("Entity class name is not defined.");
             }
@@ -1214,14 +1214,14 @@ class CommonDBTM extends CommonGLPI
                             throw new \Exception("Invalid date format for field $key: " . $e->getMessage());
                         }
                     }
-                    
+
                     $entity->$setter($value);
-                    
+
                 } elseif (property_exists($entity, $key)) {
                     $entity->$key = $value;
                 }
             }
-            $table_fields = $adapter->getFields($entity);                     
+            $table_fields = $adapter->getFields($entity);
             // fill array for add
             // foreach (array_keys($this->input) as $key) {
             //     if (
@@ -1235,7 +1235,7 @@ class CommonDBTM extends CommonGLPI
                 if (($key[0] != '_')) {
                     $this->fields[$key] = $this->input[$key] ?? null; // Assigne null si non défini
                 }
-            
+
             }
             // Auto set date_creation if exsist
             if (isset($table_fields['date_creation']) && !isset($this->input['date_creation'])) {

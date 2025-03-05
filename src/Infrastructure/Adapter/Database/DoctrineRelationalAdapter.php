@@ -51,7 +51,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function findOneBy(array $criteria): mixed
     {
-        
+
         if (!class_exists($this->entityName)) {
             throw new \Exception("Entity class {$this->entityName} does not exist");
         }
@@ -74,7 +74,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         return $this->em->getRepository($this->entityName)->findOneBy(['id' => $id]);
     }
-    
+
 
     public function findBy(array $criteria, array $order = null, int $limit = null): array
     {
@@ -102,7 +102,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $metadata = $this->em->getClassMetadata($this->entityName);
         return $metadata->getFieldNames();
         // return [];
-    }  
+    }
 
 
     private function getPropertiesAndGetters($content): array
@@ -138,10 +138,10 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $word;
     }
 
-    protected function toSnakeCase($input,bool $isRelation = false): string
+    protected function toSnakeCase($input, bool $isRelation = false): string
     {
         // //gérer l'exception createTicketOnLogin
-       
+
         // Ne pas ajouter _id si le mot se termine déjà par _id ou Id
         if (str_ends_with($input, 'Id') || str_ends_with($input, '_id')) {
             $input = preg_replace('/(Id|_id)$/', '', $input);
@@ -165,7 +165,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             $input .= '_id';
         }
         return $input;
-    }   
+    }
 
     private function toCamelCase(string $input): string
     {
@@ -184,7 +184,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
         return $camelCase;
     }
-    
+
     // get values from entity as array
     public function getFields($content): array
     {
@@ -258,7 +258,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
         } catch (\Exception $e) {
             dump('Error in getFields:', $e->getMessage());
-            
+
             return $fields;
         }
     }
@@ -314,66 +314,66 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     }
 
     public function add(array $fields): bool|array
-{
-    
-    // Create new entity
-    $entity = new $this->entityName();
-    
-    // Transform fields using getFields
-    $transformedFields = $this->getFields($fields);
-    
-    // Get setters for fields
-    $setters = $this->getSettersFromFields($transformedFields, $entity);
+    {
 
-    foreach ($setters as $field => $setter) {
-        if (!isset($transformedFields[$field])) {
-            continue;
+        // Create new entity
+        $entity = new $this->entityName();
+
+        // Transform fields using getFields
+        $transformedFields = $this->getFields($fields);
+
+        // Get setters for fields
+        $setters = $this->getSettersFromFields($transformedFields, $entity);
+
+        foreach ($setters as $field => $setter) {
+            if (!isset($transformedFields[$field])) {
+                continue;
+            }
+
+            $value = $transformedFields[$field];
+
+            try {
+                $reflectionMethod = new \ReflectionMethod($entity, $setter);
+                $parameters = $reflectionMethod->getParameters();
+                $paramType = $parameters[0]->getType();
+
+                if ($paramType) {
+                    $typeName = $paramType->getName();
+
+                    if (class_exists($typeName)) {
+                        if (is_numeric($value)) {
+                            $value = $this->em->getRepository($typeName)->find((int)$value);
+                        } elseif (is_object($value) && !($value instanceof $typeName)) {
+                            continue;
+                        }
+                    } elseif ($typeName === \DateTimeInterface::class) {
+                        $value = $value ? new \DateTime($value) : null;
+                    }
+                }
+
+                if ($value !== null || ($paramType && $paramType->allowsNull())) {
+                    $entity->$setter($value);
+                }
+
+            } catch (\Exception $e) {
+                $e->getMessage();
+                continue;
+            }
         }
 
-        $value = $transformedFields[$field];
-        
         try {
-            $reflectionMethod = new \ReflectionMethod($entity, $setter);
-            $parameters = $reflectionMethod->getParameters();
-            $paramType = $parameters[0]->getType();
-            
-            if ($paramType) {
-                $typeName = $paramType->getName();
-                
-                if (class_exists($typeName)) {
-                    if (is_numeric($value)) {
-                        $value = $this->em->getRepository($typeName)->find((int)$value);
-                    } elseif (is_object($value) && !($value instanceof $typeName)) {
-                        continue;
-                    }
-                } elseif ($typeName === \DateTimeInterface::class) {
-                    $value = $value ? new \DateTime($value) : null;
-                }
-            }
-            
-            if ($value !== null || ($paramType && $paramType->allowsNull())) {
-                $entity->$setter($value);
-            }
-            
+            $this->em->persist($entity);
+            $this->em->flush();
+
+            return ['id' => $entity->getId()];
         } catch (\Exception $e) {
             $e->getMessage();
-            continue;
+            return false;
         }
     }
 
-    try {
-        $this->em->persist($entity);
-        $this->em->flush();
-                
-        return ['id' => $entity->getId()];
-    } catch (\Exception $e) {
-        $e->getMessage();
-        return false;
-    }
-}
 
 
-    
 
     public function getRelations(): array
     {

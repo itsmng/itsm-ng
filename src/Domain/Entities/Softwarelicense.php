@@ -233,7 +233,7 @@ class Softwarelicense
         return $this;
     }
 
-    
+
 
     public function getExpire(): ?\DateTime
     {
@@ -596,7 +596,7 @@ class Softwarelicense
 
     /**
      * Get the value of softwareversionUse
-     */ 
+     */
     public function getSoftwareversionUse()
     {
         return $this->softwareversionUse;
@@ -606,7 +606,7 @@ class Softwarelicense
      * Set the value of softwareversionUse
      *
      * @return  self
-     */ 
+     */
     public function setSoftwareversionUse($softwareversionUse)
     {
         $this->softwareversionUse = $softwareversionUse;
@@ -616,7 +616,7 @@ class Softwarelicense
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -626,7 +626,7 @@ class Softwarelicense
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

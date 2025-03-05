@@ -199,7 +199,7 @@ class Ticket
         return $this->id;
     }
 
-    
+
 
     public function getName(): ?string
     {
@@ -789,7 +789,7 @@ class Ticket
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -799,7 +799,7 @@ class Ticket
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -809,7 +809,7 @@ class Ticket
 
     /**
      * Get the value of requesttype
-     */ 
+     */
     public function getRequesttype()
     {
         return $this->requesttype;
@@ -819,7 +819,7 @@ class Ticket
      * Set the value of requesttype
      *
      * @return  self
-     */ 
+     */
     public function setRequesttype($requesttype)
     {
         $this->requesttype = $requesttype;
@@ -829,7 +829,7 @@ class Ticket
 
     /**
      * Get the value of itilcategory
-     */ 
+     */
     public function getItilcategory()
     {
         return $this->itilcategory;
@@ -839,7 +839,7 @@ class Ticket
      * Set the value of itilcategory
      *
      * @return  self
-     */ 
+     */
     public function setItilcategory($itilcategory)
     {
         $this->itilcategory = $itilcategory;
@@ -849,7 +849,7 @@ class Ticket
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -859,7 +859,7 @@ class Ticket
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;

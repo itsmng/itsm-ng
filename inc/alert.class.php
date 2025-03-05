@@ -32,7 +32,6 @@
  */
 use Itsmng\Domain\Entities\Alert as AlertEntity;
 
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -49,7 +48,7 @@ class Alert extends CommonDBTM
     public const NOTCLOSED   = 4;
     public const ACTION      = 5;
     public const PERIODICITY = 6;
-    
+
     public $entity = AlertEntity::class;
 
     public function prepareInputForAdd($input)

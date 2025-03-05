@@ -2143,7 +2143,7 @@ class Entity extends CommonTreeDropdown
 
         echo "</div>";
     }
-    
+
 
     /**
      * Returns tag containing custom CSS code applied to entity.
@@ -2152,24 +2152,24 @@ class Entity extends CommonTreeDropdown
      */
     public function getCustomCssTag()
     {
-          
+
         $enable_custom_css = self::getUsedConfig(
             'enable_custom_css',
             $this->fields['id']
         );
-       
+
 
         if (!$enable_custom_css) {
             return '';
         }
-        
+
 
         $custom_css_code = self::getUsedConfig(
             'enable_custom_css',
             $this->fields['id'],
             'custom_css_code'
         );
-        
+
         if (empty($custom_css_code)) {
             return '';
         }
@@ -2501,12 +2501,12 @@ class Entity extends CommonTreeDropdown
     **/
     public static function getUsedConfig($fieldref, $entities_id = null, $fieldval = '', $default_value = -2)
     {
-                
+
         // Get for current entity
         if ($entities_id === null) {
             $entities_id = Session::getActiveEntity();
         }
-      
+
         // for calendar
         if (empty($fieldval)) {
             $fieldval = $fieldref;
@@ -2546,7 +2546,7 @@ class Entity extends CommonTreeDropdown
                 return $ret;
             }
         }
-       
+
         return $default_value;
     }
 

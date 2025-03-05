@@ -260,7 +260,7 @@ class Planningexternalevent
         return $this;
     }
 
-    
+
     /**
      * Get the value of userGuest
      */
@@ -323,7 +323,7 @@ class Planningexternalevent
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -333,7 +333,7 @@ class Planningexternalevent
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

@@ -174,7 +174,7 @@ class TicketRecurrent
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -184,7 +184,7 @@ class TicketRecurrent
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -194,7 +194,7 @@ class TicketRecurrent
 
     /**
      * Get the value of tickettemplate
-     */ 
+     */
     public function getTickettemplate()
     {
         return $this->tickettemplate;
@@ -204,7 +204,7 @@ class TicketRecurrent
      * Set the value of tickettemplate
      *
      * @return  self
-     */ 
+     */
     public function setTickettemplate($tickettemplate)
     {
         $this->tickettemplate = $tickettemplate;
@@ -214,7 +214,7 @@ class TicketRecurrent
 
     /**
      * Get the value of calendar
-     */ 
+     */
     public function getCalendar()
     {
         return $this->calendar;
@@ -224,7 +224,7 @@ class TicketRecurrent
      * Set the value of calendar
      *
      * @return  self
-     */ 
+     */
     public function setCalendar($calendar)
     {
         $this->calendar = $calendar;
