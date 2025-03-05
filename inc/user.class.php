@@ -3144,9 +3144,19 @@ JAVASCRIPT;
             return;
 
          case 'change_authtype' :
+            $allUserHaveRight = true;
+            $userCheck = new User();
+            foreach ($ids as $id) {
+                $userCheck->getFromDB($id);
+                if (!$userCheck->canUpdateItem()) {
+                    $allUserHaveRight = false;
+                    break;
+                }
+            }
             $input = $ma->getInput();
             if (!isset($input["authtype"])
-                || !isset($input["auths_id"])) {
+                || !isset($input["auths_id"])
+                || !$allUserHaveRight) {
                $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_KO);
                $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
                return;

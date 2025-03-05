@@ -1487,9 +1487,12 @@ class Session {
     * @return boolean
     */
    static function canImpersonate($user_id) {
-
+      $user = new User();
+      $user->getFromDB($user_id);
       if ($user_id <= 0 || self::getLoginUserID() == $user_id
-          || (self::isImpersonateActive() && self::getImpersonatorId() == $user_id)) {
+          || (self::isImpersonateActive() && self::getImpersonatorId() == $user_id)
+          || !$user->canUpdateItem()
+      ) {
          return false; // Cannot impersonate invalid user, self, or already impersonated user
       }
 
