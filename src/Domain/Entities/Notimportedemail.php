@@ -13,32 +13,34 @@ class Notimportedemail
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(name: 'from', type: 'string', length: 255)]
     private $from;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(name: 'to', type: 'string', length: 255)]
     private $to;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $mailcollectors_id;
+    #[ORM\ManyToOne(targetEntity: Mailcollector::class)]
+    #[ORM\JoinColumn(name: 'mailcollectors_id', referencedColumnName: 'id', nullable: true)]
+    private ?Mailcollector $mailcollector = null;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: false)]
     private $date;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'subject', type: 'text', length: 65535, nullable: true)]
     private $subject;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(name: 'messageid', type: 'string', length: 255)]
     private $messageid;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'reason', type: 'integer', options: ['default' => 0])]
     private $reason;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -65,18 +67,6 @@ class Notimportedemail
     public function setTo(?string $to): self
     {
         $this->to = $to;
-
-        return $this;
-    }
-
-    public function getMailcollectorsId(): ?int
-    {
-        return $this->mailcollectors_id;
-    }
-
-    public function setMailcollectorsId(?int $mailcollectors_id): self
-    {
-        $this->mailcollectors_id = $mailcollectors_id;
 
         return $this;
     }
@@ -129,16 +119,43 @@ class Notimportedemail
         return $this;
     }
 
-    public function getUsersId(): ?int
+    /**
+     * Get the value of mailcollector
+     */
+    public function getMailcollector()
     {
-        return $this->users_id;
+        return $this->mailcollector;
     }
 
-    public function setUsersId(?int $users_id): self
+    /**
+     * Set the value of mailcollector
+     *
+     * @return  self
+     */
+    public function setMailcollector($mailcollector)
     {
-        $this->users_id = $users_id;
+        $this->mailcollector = $mailcollector;
 
         return $this;
     }
 
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

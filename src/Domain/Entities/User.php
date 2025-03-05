@@ -3,6 +3,9 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Itsmng\Domain\Entities\Requesttype as EntitiesRequesttype;
+use RequestType;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_users")]
@@ -29,308 +32,342 @@ class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'password', type: 'string', length: 255, nullable: true)]
     private $password;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $password_last_update;
+    #[ORM\Column(name: 'password_last_update', type: 'datetime', nullable: true)]
+    private $passwordLastUpdate;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'phone', type: 'string', length: 255, nullable: true)]
     private $phone;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'phone2', type: 'string', length: 255, nullable: true)]
     private $phone2;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'mobile', type: 'string', length: 255, nullable: true)]
     private $mobile;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'realname', type: 'string', length: 255, nullable: true)]
     private $realname;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
     private $firstname;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
+    private $locationsId;
 
-    #[ORM\Column(type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php CFG_GLPI[language] array'])]
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
+
+    #[ORM\Column(name: 'language', type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php CFG_GLPI[language] array'])]
     private $language;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $use_mode;
+    #[ORM\Column(name: 'use_mode', type: 'integer', options: ['default' => 0])]
+    private $useMode;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $list_limit;
+    #[ORM\Column(name: 'list_limit', type: 'integer', nullable: true)]
+    private $listLimit;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_active;
+    #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
+    private $isActive;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $auths_id;
+    #[ORM\Column(name: 'auths_id', type: 'integer', options: ['default' => 0])]
+    private $authsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'authtype', type: 'integer', options: ['default' => 0])]
     private $authtype;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $last_login;
+    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
+    private $lastLogin;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_sync;
+    #[ORM\Column(name: 'date_sync', type: 'datetime', nullable: true)]
+    private $dateSync;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $profiles_id;
+    #[ORM\ManyToOne(targetEntity: Profile::class, fetch: 'EAGER')]
+    #[ORM\JoinColumn(name: 'profiles_id', referencedColumnName: 'id', nullable: true)]
+    private ?Profile $profile = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $usertitles_id;
+    #[ORM\ManyToOne(targetEntity: Usertitle::class)]
+    #[ORM\JoinColumn(name: 'usertitles_id', referencedColumnName: 'id', nullable: true)]
+    private ?Usertitle $usertitle = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $usercategories_id;
+    #[ORM\ManyToOne(targetEntity: Usercategory::class)]
+    #[ORM\JoinColumn(name: 'usercategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Usercategory $usercategory = null;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $date_format;
+    #[ORM\Column(name: 'date_format', type: 'integer', nullable: true)]
+    private $dateFormat;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $number_format;
+    #[ORM\Column(name: 'number_format', type: 'integer', nullable: true)]
+    private $numberFormat;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $names_format;
+    #[ORM\Column(name: 'names_format', type: 'integer', nullable: true)]
+    private $namesFormat;
 
-    #[ORM\Column(type: 'string', length: 1, nullable: true)]
-    private $csv_delimiter;
+    #[ORM\Column(name: 'csv_delimiter', type: 'string', length: 1, nullable: true)]
+    private $csvDelimiter;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $is_ids_visible;
+    #[ORM\Column(name: 'is_ids_visible', type: 'boolean', nullable: true)]
+    private $isIdsVisible;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $use_flat_dropdowntree;
+    #[ORM\Column(name: 'use_flat_dropdowntree', type: 'boolean', nullable: true)]
+    private $useFlatDropdowntree;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $show_jobs_at_login;
+    #[ORM\Column(name: 'show_jobs_at_login', type: 'boolean', nullable: true)]
+    private $showJobsAtLogin;
 
-    #[ORM\Column(type: 'string', length: 20, nullable: true)]
-    private $priority_1;
+    #[ORM\Column(name: 'priority_1', type: 'string', length: 20, nullable: true)]
+    private $priority1;
 
-    #[ORM\Column(type: 'string', length: 20, nullable: true)]
-    private $priority_2;
+    #[ORM\Column(name: 'priority_2', type: 'string', length: 20, nullable: true)]
+    private $priority2;
 
-    #[ORM\Column(type: 'string', length: 20, nullable: true)]
-    private $priority_3;
+    #[ORM\Column(name: 'priority_3', type: 'string', length: 20, nullable: true)]
+    private $priority3;
 
-    #[ORM\Column(type: 'string', length: 20, nullable: true)]
-    private $priority_4;
+    #[ORM\Column(name: 'priority_4', type: 'string', length: 20, nullable: true)]
+    private $priority4;
 
-    #[ORM\Column(type: 'string', length: 20, nullable: true)]
-    private $priority_5;
+    #[ORM\Column(name: 'priority_5', type: 'string', length: 20, nullable: true)]
+    private $priority5;
 
-    #[ORM\Column(type: 'string', length: 20, nullable: true)]
-    private $priority_6;
+    #[ORM\Column(name: 'priority_6', type: 'string', length: 20, nullable: true)]
+    private $priority6;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $followup_private;
+    #[ORM\Column(name: 'followup_private', type: 'boolean', nullable: true)]
+    private $followupPrivate;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $task_private;
+    #[ORM\Column(name: 'task_private', type: 'boolean', nullable: true)]
+    private $taskPrivate;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $default_requesttypes_id;
+    #[ORM\ManyToOne(targetEntity: EntitiesRequesttype::class)]
+    #[ORM\JoinColumn(name: 'default_requesttypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?EntitiesRequesttype $defaultRequesttype = null;
 
-    #[ORM\Column(type: 'string', length: 40, nullable: true)]
-    private $password_forget_token;
+    #[ORM\Column(name: 'password_forget_token', type: 'string', length: 40, nullable: true)]
+    private $passwordForgetToken;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $password_forget_token_date;
+    #[ORM\Column(name: 'password_forget_token_date', type: 'datetime', nullable: true)]
+    private $passwordForgetTokenDate;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $user_dn;
+    #[ORM\Column(name: 'user_dn', type: 'text', length: 65535, nullable: true)]
+    private $userDn;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $registration_number;
+    #[ORM\Column(name: 'registration_number', type: 'string', length: 255, nullable: true)]
+    private $registrationNumber;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $show_count_on_tabs;
+    #[ORM\Column(name: 'show_count_on_tabs', type: 'boolean', nullable: true)]
+    private $showCountOnTabs;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $refresh_views;
+    #[ORM\Column(name: 'refresh_views', type: 'integer', nullable: true)]
+    private $refreshViews;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $set_default_tech;
+    #[ORM\Column(name: 'set_default_tech', type: 'boolean', nullable: true)]
+    private $setDefaultTech;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $personal_token;
+    #[ORM\Column(name: 'personal_token', type: 'string', length: 255, nullable: true)]
+    private $personalToken;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $personal_token_date;
+    #[ORM\Column(name: 'personal_token_date', type: 'datetime', nullable: true)]
+    private $personalTokenDate;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $api_token;
+    #[ORM\Column(name: 'api_token', type: 'string', length: 255, nullable: true)]
+    private $apiToken;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $api_token_date;
+    #[ORM\Column(name: 'api_token_date', type: 'datetime', nullable: true)]
+    private $apiTokenDate;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $cookie_token;
+    #[ORM\Column(name: 'cookie_token', type: 'string', length: 255, nullable: true)]
+    private $cookieToken;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $cookie_token_date;
+    #[ORM\Column(name: 'cookie_token_date', type: 'datetime', nullable: true)]
+    private $cookieTokenDate;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $display_count_on_home;
+    #[ORM\Column(name: 'display_count_on_home', type: 'integer', nullable: true)]
+    private $displayCountOnHome;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $notification_to_myself;
+    #[ORM\Column(name: 'notification_to_myself', type: 'boolean', nullable: true)]
+    private $notificationToMyself;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $duedateok_color;
+    #[ORM\Column(name: 'duedateok_color', type: 'string', length: 255, nullable: true)]
+    private $duedateokColor;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $duedatewarning_color;
+    #[ORM\Column(name: 'duedatewarning_color', type: 'string', length: 255, nullable: true)]
+    private $duedatewarningColor;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $duedatecritical_color;
+    #[ORM\Column(name: 'duedatecritical_color', type: 'string', length: 255, nullable: true)]
+    private $duedatecriticalColor;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $duedatewarning_less;
+    #[ORM\Column(name: 'duedatewarning_less', type: 'integer', nullable: true)]
+    private $duedatewarningLess;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $duedatecritical_less;
+    #[ORM\Column(name: 'duedatecritical_less', type: 'integer', nullable: true)]
+    private $duedatecriticalLess;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $duedatewarning_unit;
+    #[ORM\Column(name: 'duedatewarning_unit', type: 'string', length: 255, nullable: true)]
+    private $duedatewarningUnit;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $duedatecritical_unit;
+    #[ORM\Column(name: 'duedatecritical_unit', type: 'string', length: 255, nullable: true)]
+    private $duedatecriticalUnit;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $display_options;
+    #[ORM\Column(name: 'display_options', type: 'text', length: 65535, nullable: true)]
+    private $displayOptions;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted_ldap;
+    #[ORM\Column(name: 'is_deleted_ldap', type: 'boolean', options: ['default' => 0])]
+    private $isDeletedLdap;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'pdffont', type: 'string', length: 255, nullable: true)]
     private $pdffont;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'picture', type: 'string', length: 255, nullable: true)]
     private $picture;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $begin_date;
+    #[ORM\Column(name: 'begin_date', type: 'datetime', nullable: true)]
+    private $beginDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $end_date;
+    #[ORM\Column(name: 'end_date', type: 'datetime', nullable: true)]
+    private $endDate;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $keep_devices_when_purging_item;
+    #[ORM\Column(name: 'keep_devices_when_purging_item', type: 'boolean', nullable: true)]
+    private $keepDevicesWhenPurgingItem;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'privatebookmarkorder', type: 'text', nullable: true)]
     private $privatebookmarkorder;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[ORM\Column(name: 'backcreated', type: 'boolean', nullable: true)]
     private $backcreated;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $task_state;
+    #[ORM\Column(name: 'task_state', type: 'integer', nullable: true)]
+    private $taskState;
 
-    #[ORM\Column(type: 'string', length: 20, nullable: true)]
+    #[ORM\Column(name: 'layout', type: 'string', length: 20, nullable: true)]
     private $layout;
 
-    #[ORM\Column(type: 'string', length: 20, nullable: true)]
+    #[ORM\Column(name: 'palette', type: 'string', length: 20, nullable: true)]
     private $palette;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $set_default_requester;
+    #[ORM\Column(name: 'set_default_requester', type: 'boolean', nullable: true)]
+    private $setDefaultRequester;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $lock_autolock_mode;
+    #[ORM\Column(name: 'lock_autolock_mode', type: 'boolean', nullable: true)]
+    private $lockAutolockMode;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $lock_directunlock_notification;
+    #[ORM\Column(name: 'lock_directunlock_notification', type: 'boolean', nullable: true)]
+    private $lockDirectunlockNotification;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'boolean', nullable: true, options: ['default' => 0])]
-    private $highcontrast_css;
+    #[ORM\Column(name: 'highcontrast_css', type: 'boolean', nullable: true, options: ['default' => 0])]
+    private $highcontrastCss;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'plannings', type: 'text', length: 65535, nullable: true)]
     private $plannings;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $sync_field;
+    #[ORM\Column(name: 'sync_field', type: 'string', length: 255, nullable: true)]
+    private $syncField;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_supervisor;
+    #[ORM\Column(name: 'users_id_supervisor', type: 'integer', options: ['default' => 0])]
+    private $usersIdSupervisor;
 
-    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(name: 'timezone', type: 'string', length: 50, nullable: true)]
     private $timezone;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private $default_dashboard_central;
+    #[ORM\Column(name: 'default_dashboard_central', type: 'string', length: 100, nullable: true)]
+    private $defaultDashboardCentral;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private $default_dashboard_assets;
+    #[ORM\Column(name: 'default_dashboard_assets', type: 'string', length: 100, nullable: true)]
+    private $defaultDashboardAssets;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private $default_dashboard_helpdesk;
+    #[ORM\Column(name: 'default_dashboard_helpdesk', type: 'string', length: 100, nullable: true)]
+    private $defaultDashboardHelpdesk;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private $default_dashboard_mini_ticket;
+    #[ORM\Column(name: 'default_dashboard_mini_ticket', type: 'string', length: 100, nullable: true)]
+    private $defaultDashboardMiniTicket;
 
-    #[ORM\Column(type: 'smallint', options: ['default' => 100], nullable: true)]
-    private $access_zoom_level;
+    #[ORM\Column(name: 'access_zoom_level', type: 'smallint', options: ['default' => 100], nullable: true)]
+    private $accessZoomLevel;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private $access_font;
+    #[ORM\Column(name: 'access_font', type: 'string', length: 100, nullable: true)]
+    private $accessFont;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0], nullable: true)]
-    private $access_shortcuts;
+    #[ORM\Column(name: 'access_shortcuts', type: 'boolean', options: ['default' => 0], nullable: true)]
+    private $accessShortcuts;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $access_custom_shortcuts;
+    #[ORM\Column(name: 'access_custom_shortcuts', type: 'text', nullable: true)]
+    private $accessCustomShortcuts;
 
-    #[ORM\Column(type: 'text', nullable: true, options: ["default" => "{}"])]
-    private $menu_favorite;
+    #[ORM\Column(name: 'menu_favorite', type: 'text', nullable: true, options: ["default" => "{}"])]
+    private $menuFavorite;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ["default" => "1"])]
-    private $menu_favorite_on;
+    #[ORM\Column(name: 'menu_favorite_on', type: 'text', length: 65535, nullable: true, options: ["default" => "1"])]
+    private $menuFavoriteOn;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ["default" => "menu-left"])]
-    private $menu_position;
+    #[ORM\Column(name: 'menu_position', type: 'text', length: 65535, nullable: true, options: ["default" => "menu-left"])]
+    private $menuPosition;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ["default" => "false"])]
-    private $menu_small;
+    #[ORM\Column(name: 'menu_small', type: 'text', length: 65535, nullable: true, options: ["default" => "false"])]
+    private $menuSmall;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ["default" => "null"])]
-    private $menu_width;
+    #[ORM\Column(name: 'menu_width', type: 'text', length: 65535, nullable: true, options: ["default" => "null"])]
+    private $menuWidth;
 
-    #[ORM\Column(type: 'text', nullable: true, options: ["default" => "[]"])]
-    private $menu_open;
+    #[ORM\Column(name: 'menu_open', type: 'text', nullable: true, options: ["default" => "[]"])]
+    private $menuOpen;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $bubble_pos;
+    #[ORM\Column(name: 'bubble_pos', type: 'text', length: 65535, nullable: true)]
+    private $bubblePos;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $accessibility_menu;
+    #[ORM\Column(name: 'accessibility_menu', type: 'boolean', options: ['default' => 0])]
+    private $accessibilityMenu;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChangeUser::class)]
+    private Collection $changeUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: GroupUser::class)]
+    private Collection $groupUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: KnowbaseitemUser::class)]
+    private Collection $knowbaseitemUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ProblemUser::class)]
+    private Collection $problemUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ProfileUser::class)]
+    private Collection $profileUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ReminderUser::class)]
+    private Collection $reminderUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RssfeedUser::class)]
+    private Collection $rssfeedUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SavedsearchUser::class)]
+    private Collection $savedsearchUsers;
 
 
     public function getId(): ?int
@@ -365,12 +402,12 @@ class User
 
     public function getPasswordLastUpdate(): ?\DateTime
     {
-        return $this->password_last_update;
+        return $this->passwordLastUpdate;
     }
 
-    public function setPasswordLastUpdate(?\DateTime $password_last_update): self
+    public function setPasswordLastUpdate(?\DateTime $passwordLastUpdate): self
     {
-        $this->password_last_update = $password_last_update;
+        $this->passwordLastUpdate = $passwordLastUpdate;
 
         return $this;
     }
@@ -437,12 +474,12 @@ class User
 
     public function getLocationsId(): ?int
     {
-        return $this->locations_id;
+        return $this->locationsId;
     }
 
-    public function setLocationsId(?int $locations_id): self
+    public function setLocationsId(?int $locationsId): self
     {
-        $this->locations_id = $locations_id;
+        $this->locationsId = $locationsId;
 
         return $this;
     }
@@ -461,36 +498,36 @@ class User
 
     public function getUseMode(): ?int
     {
-        return $this->use_mode;
+        return $this->useMode;
     }
 
-    public function setUseMode(?int $use_mode): self
+    public function setUseMode(?int $useMode): self
     {
-        $this->use_mode = $use_mode;
+        $this->useMode = $useMode;
 
         return $this;
     }
 
     public function getListLimit(): ?int
     {
-        return $this->list_limit;
+        return $this->listLimit;
     }
 
-    public function setListLimit(?int $list_limit): self
+    public function setListLimit(?int $listLimit): self
     {
-        $this->list_limit = $list_limit;
+        $this->listLimit = $listLimit;
 
         return $this;
     }
 
     public function getIsActive(): ?bool
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(?bool $is_active): self
+    public function setIsActive(?bool $isActive): self
     {
-        $this->is_active = $is_active;
+        $this->isActive = $isActive;
 
         return $this;
     }
@@ -509,12 +546,12 @@ class User
 
     public function getAuthsId(): ?int
     {
-        return $this->auths_id;
+        return $this->authsId;
     }
 
-    public function setAuthsId(?int $auths_id): self
+    public function setAuthsId(?int $authsId): self
     {
-        $this->auths_id = $auths_id;
+        $this->authsId = $authsId;
 
         return $this;
     }
@@ -533,576 +570,518 @@ class User
 
     public function getLastLogin(): ?\DateTime
     {
-        return $this->last_login;
+        return $this->lastLogin;
     }
 
-    public function setLastLogin(?\DateTime $last_login): self
+    public function setLastLogin(?\DateTime $lastLogin): self
     {
-        $this->last_login = $last_login;
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTime
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $date_mod): self
+    public function setDateMod(?\DateTime $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateSync(): ?\DateTime
     {
-        return $this->date_sync;
+        return $this->dateSync;
     }
 
-    public function setDateSync(?\DateTime $date_sync): self
+    public function setDateSync(?\DateTime $dateSync): self
     {
-        $this->date_sync = $date_sync;
+        $this->dateSync = $dateSync;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(?bool $is_deleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
-
-        return $this;
-    }
-
-    public function getProfilesId(): ?int
-    {
-        return $this->profiles_id;
-    }
-
-    public function setProfilesId(?int $profiles_id): self
-    {
-        $this->profiles_id = $profiles_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getUsertitlesId(): ?int
-    {
-        return $this->usertitles_id;
-    }
-
-    public function setUsertitlesId(?int $usertitles_id): self
-    {
-        $this->usertitles_id = $usertitles_id;
-
-        return $this;
-    }
-
-    public function getUsercategoriesId(): ?int
-    {
-        return $this->usercategories_id;
-    }
-
-    public function setUsercategoriesId(?int $usercategories_id): self
-    {
-        $this->usercategories_id = $usercategories_id;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getDateFormat(): ?int
     {
-        return $this->date_format;
+        return $this->dateFormat;
     }
 
-    public function setDateFormat(?int $date_format): self
+    public function setDateFormat(?int $dateFormat): self
     {
-        $this->date_format = $date_format;
+        $this->dateFormat = $dateFormat;
 
         return $this;
     }
 
     public function getNumberFormat(): ?int
     {
-        return $this->number_format;
+        return $this->numberFormat;
     }
 
-    public function setNumberFormat(?int $number_format): self
+    public function setNumberFormat(?int $numberFormat): self
     {
-        $this->number_format = $number_format;
+        $this->numberFormat = $numberFormat;
 
         return $this;
     }
 
     public function getNamesFormat(): ?int
     {
-        return $this->names_format;
+        return $this->namesFormat;
     }
 
-    public function setNamesFormat(?int $names_format): self
+    public function setNamesFormat(?int $namesFormat): self
     {
-        $this->names_format = $names_format;
+        $this->namesFormat = $namesFormat;
 
         return $this;
     }
 
     public function getCsvDelimiter(): ?string
     {
-        return $this->csv_delimiter;
+        return $this->csvDelimiter;
     }
 
-    public function setCsvDelimiter(?string $csv_delimiter): self
+    public function setCsvDelimiter(?string $csvDelimiter): self
     {
-        $this->csv_delimiter = $csv_delimiter;
+        $this->csvDelimiter = $csvDelimiter;
 
         return $this;
     }
 
     public function getIsIdsVisible(): ?bool
     {
-        return $this->is_ids_visible;
+        return $this->isIdsVisible;
     }
 
-    public function setIsIdsVisible(?bool $is_ids_visible): self
+    public function setIsIdsVisible(?bool $isIdsVisible): self
     {
-        $this->is_ids_visible = $is_ids_visible;
+        $this->isIdsVisible = $isIdsVisible;
 
         return $this;
     }
 
     public function getUseFlatDropdowntree(): ?bool
     {
-        return $this->use_flat_dropdowntree;
+        return $this->useFlatDropdowntree;
     }
 
-    public function setUseFlatDropdowntree(?bool $use_flat_dropdowntree): self
+    public function setUseFlatDropdowntree(?bool $useFlatDropdowntree): self
     {
-        $this->use_flat_dropdowntree = $use_flat_dropdowntree;
+        $this->useFlatDropdowntree = $useFlatDropdowntree;
 
         return $this;
     }
 
     public function getShowJobsAtLogin(): ?bool
     {
-        return $this->show_jobs_at_login;
+        return $this->showJobsAtLogin;
     }
 
-    public function setShowJobsAtLogin(?bool $show_jobs_at_login): self
+    public function setShowJobsAtLogin(?bool $showJobsAtLogin): self
     {
-        $this->show_jobs_at_login = $show_jobs_at_login;
+        $this->showJobsAtLogin = $showJobsAtLogin;
 
         return $this;
     }
 
     public function getPriority1(): ?string
     {
-        return $this->priority_1;
+        return $this->priority1;
     }
 
-    public function setPriority1(?string $priority_1): self
+    public function setPriority1(?string $priority1): self
     {
-        $this->priority_1 = $priority_1;
+        $this->priority1 = $priority1;
 
         return $this;
     }
 
     public function getPriority2(): ?string
     {
-        return $this->priority_2;
+        return $this->priority2;
     }
 
-    public function setPriority2(?string $priority_2): self
+    public function setPriority2(?string $priority2): self
     {
-        $this->priority_2 = $priority_2;
+        $this->priority2 = $priority2;
 
         return $this;
     }
 
     public function getPriority3(): ?string
     {
-        return $this->priority_3;
+        return $this->priority3;
     }
 
-    public function setPriority3(?string $priority_3): self
+    public function setPriority3(?string $priority3): self
     {
-        $this->priority_3 = $priority_3;
+        $this->priority3 = $priority3;
 
         return $this;
     }
 
     public function getPriority4(): ?string
     {
-        return $this->priority_4;
+        return $this->priority4;
     }
 
-    public function setPriority4(?string $priority_4): self
+    public function setPriority4(?string $priority4): self
     {
-        $this->priority_4 = $priority_4;
+        $this->priority4 = $priority4;
 
         return $this;
     }
 
     public function getPriority5(): ?string
     {
-        return $this->priority_5;
+        return $this->priority5;
     }
 
-    public function setPriority5(?string $priority_5): self
+    public function setPriority5(?string $priority5): self
     {
-        $this->priority_5 = $priority_5;
+        $this->priority5 = $priority5;
 
         return $this;
     }
 
     public function getPriority6(): ?string
     {
-        return $this->priority_6;
+        return $this->priority6;
     }
 
-    public function setPriority6(?string $priority_6): self
+    public function setPriority6(?string $priority6): self
     {
-        $this->priority_6 = $priority_6;
+        $this->priority6 = $priority6;
 
         return $this;
     }
 
     public function getFollowupPrivate(): ?bool
     {
-        return $this->followup_private;
+        return $this->followupPrivate;
     }
 
-    public function setFollowupPrivate(?bool $followup_private): self
+    public function setFollowupPrivate(?bool $followupPrivate): self
     {
-        $this->followup_private = $followup_private;
+        $this->followupPrivate = $followupPrivate;
 
         return $this;
     }
 
     public function getTaskPrivate(): ?bool
     {
-        return $this->task_private;
+        return $this->taskPrivate;
     }
 
-    public function setTaskPrivate(?bool $task_private): self
+    public function setTaskPrivate(?bool $taskPrivate): self
     {
-        $this->task_private = $task_private;
+        $this->taskPrivate = $taskPrivate;
 
         return $this;
     }
 
-    public function getDefaultRequesttypesId(): ?int
-    {
-        return $this->default_requesttypes_id;
-    }
 
-    public function setDefaultRequesttypesId(?int $default_requesttypes_id): self
-    {
-        $this->default_requesttypes_id = $default_requesttypes_id;
-
-        return $this;
-    }
 
     public function getPasswordForgetToken(): ?string
     {
-        return $this->password_forget_token;
+        return $this->passwordForgetToken;
     }
 
-    public function setPasswordForgetToken(?string $password_forget_token): self
+    public function setPasswordForgetToken(?string $passwordForgetToken): self
     {
-        $this->password_forget_token = $password_forget_token;
+        $this->passwordForgetToken = $passwordForgetToken;
 
         return $this;
     }
 
     public function getPasswordForgetTokenDate(): ?\DateTime
     {
-        return $this->password_forget_token_date;
+        return $this->passwordForgetTokenDate;
     }
 
-    public function setPasswordForgetTokenDate(?\DateTime $password_forget_token_date): self
+    public function setPasswordForgetTokenDate(?\DateTime $passwordForgetTokenDate): self
     {
-        $this->password_forget_token_date = $password_forget_token_date;
+        $this->passwordForgetTokenDate = $passwordForgetTokenDate;
 
         return $this;
     }
 
     public function getUserDn(): ?string
     {
-        return $this->user_dn;
+        return $this->userDn;
     }
 
-    public function setUserDn(?string $user_dn): self
+    public function setUserDn(?string $userDn): self
     {
-        $this->user_dn = $user_dn;
+        $this->userDn = $userDn;
 
         return $this;
     }
 
     public function getRegistrationNumber(): ?string
     {
-        return $this->registration_number;
+        return $this->registrationNumber;
     }
 
-    public function setRegistrationNumber(?string $registration_number): self
+    public function setRegistrationNumber(?string $registrationNumber): self
     {
-        $this->registration_number = $registration_number;
+        $this->registrationNumber = $registrationNumber;
 
         return $this;
     }
 
     public function getShowCountOnTabs(): ?bool
     {
-        return $this->show_count_on_tabs;
+        return $this->showCountOnTabs;
     }
 
-    public function setShowCountOnTabs(?bool $show_count_on_tabs): self
+    public function setShowCountOnTabs(?bool $showCountOnTabs): self
     {
-        $this->show_count_on_tabs = $show_count_on_tabs;
+        $this->showCountOnTabs = $showCountOnTabs;
 
         return $this;
     }
 
     public function getRefreshViews(): ?int
     {
-        return $this->refresh_views;
+        return $this->refreshViews;
     }
 
-    public function setRefreshViews(?int $refresh_views): self
+    public function setRefreshViews(?int $refreshViews): self
     {
-        $this->refresh_views = $refresh_views;
+        $this->refreshViews = $refreshViews;
 
         return $this;
     }
 
     public function getSetDefaultTech(): ?bool
     {
-        return $this->set_default_tech;
+        return $this->setDefaultTech;
     }
 
-    public function setSetDefaultTech(?bool $set_default_tech): self
+    public function setSetDefaultTech(?bool $setDefaultTech): self
     {
-        $this->set_default_tech = $set_default_tech;
+        $this->setDefaultTech = $setDefaultTech;
 
         return $this;
     }
 
     public function getPersonalToken(): ?string
     {
-        return $this->personal_token;
+        return $this->personalToken;
     }
 
-    public function setPersonalToken(?string $personal_token): self
+    public function setPersonalToken(?string $personalToken): self
     {
-        $this->personal_token = $personal_token;
+        $this->personalToken = $personalToken;
 
         return $this;
     }
 
     public function getPersonalTokenDate(): ?\DateTime
     {
-        return $this->personal_token_date;
+        return $this->personalTokenDate;
     }
 
-    public function setPersonalTokenDate(?\DateTime $personal_token_date): self
+    public function setPersonalTokenDate(?\DateTime $personalTokenDate): self
     {
-        $this->personal_token_date = $personal_token_date;
+        $this->personalTokenDate = $personalTokenDate;
 
         return $this;
     }
 
     public function getApiToken(): ?string
     {
-        return $this->api_token;
+        return $this->apiToken;
     }
 
-    public function setApiToken(?string $api_token): self
+    public function setApiToken(?string $apiToken): self
     {
-        $this->api_token = $api_token;
+        $this->apiToken = $apiToken;
 
         return $this;
     }
 
     public function getApiTokenDate(): ?\DateTime
     {
-        return $this->api_token_date;
+        return $this->apiTokenDate;
     }
 
-    public function setApiTokenDate(?\DateTime $api_token_date): self
+    public function setApiTokenDate(?\DateTime $apiTokenDate): self
     {
-        $this->api_token_date = $api_token_date;
+        $this->apiTokenDate = $apiTokenDate;
 
         return $this;
     }
 
     public function getCookieToken(): ?string
     {
-        return $this->cookie_token;
+        return $this->cookieToken;
     }
 
-    public function setCookieToken(?string $cookie_token): self
+    public function setCookieToken(?string $cookieToken): self
     {
-        $this->cookie_token = $cookie_token;
+        $this->cookieToken = $cookieToken;
 
         return $this;
     }
 
     public function getCookieTokenDate(): ?\DateTime
     {
-        return $this->cookie_token_date;
+        return $this->cookieTokenDate;
     }
 
-    public function setCookieTokenDate(?\DateTime $cookie_token_date): self
+    public function setCookieTokenDate(?\DateTime $cookieTokenDate): self
     {
-        $this->cookie_token_date = $cookie_token_date;
+        $this->cookieTokenDate = $cookieTokenDate;
 
         return $this;
     }
 
     public function getDisplayCountOnHome(): ?int
     {
-        return $this->display_count_on_home;
+        return $this->displayCountOnHome;
     }
 
-    public function setDisplayCountOnHome(?int $display_count_on_home): self
+    public function setDisplayCountOnHome(?int $displayCountOnHome): self
     {
-        $this->display_count_on_home = $display_count_on_home;
+        $this->displayCountOnHome = $displayCountOnHome;
 
         return $this;
     }
 
     public function getNotificationToMyself(): ?bool
     {
-        return $this->notification_to_myself;
+        return $this->notificationToMyself;
     }
 
-    public function setNotificationToMyself(?bool $notification_to_myself): self
+    public function setNotificationToMyself(?bool $notificationToMyself): self
     {
-        $this->notification_to_myself = $notification_to_myself;
+        $this->notificationToMyself = $notificationToMyself;
 
         return $this;
     }
 
     public function getDuedateokColor(): ?string
     {
-        return $this->duedateok_color;
+        return $this->duedateokColor;
     }
 
-    public function setDuedateokColor(?string $duedateok_color): self
+    public function setDuedateokColor(?string $duedateokColor): self
     {
-        $this->duedateok_color = $duedateok_color;
+        $this->duedateokColor = $duedateokColor;
 
         return $this;
     }
 
     public function getDuedatewarningColor(): ?string
     {
-        return $this->duedatewarning_color;
+        return $this->duedatewarningColor;
     }
 
-    public function setDuedatewarningColor(?string $duedatewarning_color): self
+    public function setDuedatewarningColor(?string $duedatewarningColor): self
     {
-        $this->duedatewarning_color = $duedatewarning_color;
+        $this->duedatewarningColor = $duedatewarningColor;
 
         return $this;
     }
 
     public function getDuedatecriticalColor(): ?string
     {
-        return $this->duedatecritical_color;
+        return $this->duedatecriticalColor;
     }
 
-    public function setDuedatecriticalColor(?string $duedatecritical_color): self
+    public function setDuedatecriticalColor(?string $duedatecriticalColor): self
     {
-        $this->duedatecritical_color = $duedatecritical_color;
+        $this->duedatecriticalColor = $duedatecriticalColor;
 
         return $this;
     }
 
     public function getDuedatewarningLess(): ?int
     {
-        return $this->duedatewarning_less;
+        return $this->duedatewarningLess;
     }
 
-    public function setDuedatewarningLess(?int $duedatewarning_less): self
+    public function setDuedatewarningLess(?int $duedatewarningLess): self
     {
-        $this->duedatewarning_less = $duedatewarning_less;
+        $this->duedatewarningLess = $duedatewarningLess;
 
         return $this;
     }
 
     public function getDuedatecriticalLess(): ?int
     {
-        return $this->duedatecritical_less;
+        return $this->duedatecriticalLess;
     }
 
-    public function setDuedatecriticalLess(?int $duedatecritical_less): self
+    public function setDuedatecriticalLess(?int $duedatecriticalLess): self
     {
-        $this->duedatecritical_less = $duedatecritical_less;
+        $this->duedatecriticalLess = $duedatecriticalLess;
 
         return $this;
     }
 
     public function getDuedatewarningUnit(): ?string
     {
-        return $this->duedatewarning_unit;
+        return $this->duedatewarningUnit;
     }
 
-    public function setDuedatewarningUnit(?string $duedatewarning_unit): self
+    public function setDuedatewarningUnit(?string $duedatewarningUnit): self
     {
-        $this->duedatewarning_unit = $duedatewarning_unit;
+        $this->duedatewarningUnit = $duedatewarningUnit;
 
         return $this;
     }
 
     public function getDuedatecriticalUnit(): ?string
     {
-        return $this->duedatecritical_unit;
+        return $this->duedatecriticalUnit;
     }
 
-    public function setDuedatecriticalUnit(?string $duedatecritical_unit): self
+    public function setDuedatecriticalUnit(?string $duedatecriticalUnit): self
     {
-        $this->duedatecritical_unit = $duedatecritical_unit;
+        $this->duedatecriticalUnit = $duedatecriticalUnit;
 
         return $this;
     }
 
     public function getDisplayOptions(): ?string
     {
-        return $this->display_options;
+        return $this->displayOptions;
     }
 
-    public function setDisplayOptions(?string $display_options): self
+    public function setDisplayOptions(?string $displayOptions): self
     {
-        $this->display_options = $display_options;
+        $this->displayOptions = $displayOptions;
 
         return $this;
     }
 
     public function getIsDeletedLdap(): ?bool
     {
-        return $this->is_deleted_ldap;
+        return $this->isDeletedLdap;
     }
 
-    public function setIsDeletedLdap(?bool $is_deleted_ldap): self
+    public function setIsDeletedLdap(?bool $isDeletedLdap): self
     {
-        $this->is_deleted_ldap = $is_deleted_ldap;
+        $this->isDeletedLdap = $isDeletedLdap;
 
         return $this;
     }
@@ -1133,36 +1112,36 @@ class User
 
     public function getBeginDate(): ?\DateTime
     {
-        return $this->begin_date;
+        return $this->beginDate;
     }
 
-    public function setBeginDate(?\DateTime $begin_date): self
+    public function setBeginDate(?\DateTime $beginDate): self
     {
-        $this->begin_date = $begin_date;
+        $this->beginDate = $beginDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTime
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(?\DateTime $end_date): self
+    public function setEndDate(?\DateTime $endDate): self
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }
 
     public function getKeepDevicesWhenPurgingItem(): ?bool
     {
-        return $this->keep_devices_when_purging_item;
+        return $this->keepDevicesWhenPurgingItem;
     }
 
-    public function setKeepDevicesWhenPurgingItem(?bool $keep_devices_when_purging_item): self
+    public function setKeepDevicesWhenPurgingItem(?bool $keepDevicesWhenPurgingItem): self
     {
-        $this->keep_devices_when_purging_item = $keep_devices_when_purging_item;
+        $this->keepDevicesWhenPurgingItem = $keepDevicesWhenPurgingItem;
 
         return $this;
     }
@@ -1193,12 +1172,12 @@ class User
 
     public function getTaskState(): ?int
     {
-        return $this->task_state;
+        return $this->taskState;
     }
 
-    public function setTaskState(?int $task_state): self
+    public function setTaskState(?int $taskState): self
     {
-        $this->task_state = $task_state;
+        $this->taskState = $taskState;
 
         return $this;
     }
@@ -1229,60 +1208,60 @@ class User
 
     public function getSetDefaultRequester(): ?bool
     {
-        return $this->set_default_requester;
+        return $this->setDefaultRequester;
     }
 
-    public function setSetDefaultRequester(?bool $set_default_requester): self
+    public function setSetDefaultRequester(?bool $setDefaultRequester): self
     {
-        $this->set_default_requester = $set_default_requester;
+        $this->setDefaultRequester = $setDefaultRequester;
 
         return $this;
     }
 
     public function getLockAutolockMode(): ?bool
     {
-        return $this->lock_autolock_mode;
+        return $this->lockAutolockMode;
     }
 
-    public function setLockAutolockMode(?bool $lock_autolock_mode): self
+    public function setLockAutolockMode(?bool $lockAutolockMode): self
     {
-        $this->lock_autolock_mode = $lock_autolock_mode;
+        $this->lockAutolockMode = $lockAutolockMode;
 
         return $this;
     }
 
     public function getLockDirectunlockNotification(): ?bool
     {
-        return $this->lock_directunlock_notification;
+        return $this->lockDirectunlockNotification;
     }
 
-    public function setLockDirectunlockNotification(?bool $lock_directunlock_notification): self
+    public function setLockDirectunlockNotification(?bool $lockDirectunlockNotification): self
     {
-        $this->lock_directunlock_notification = $lock_directunlock_notification;
+        $this->lockDirectunlockNotification = $lockDirectunlockNotification;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $date_creation): self
+    public function setDateCreation(?\DateTime $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getHighcontrastCss(): ?bool
     {
-        return $this->highcontrast_css;
+        return $this->highcontrastCss;
     }
 
-    public function setHighcontrastCss(?bool $highcontrast_css): self
+    public function setHighcontrastCss(?bool $highcontrastCss): self
     {
-        $this->highcontrast_css = $highcontrast_css;
+        $this->highcontrastCss = $highcontrastCss;
 
         return $this;
     }
@@ -1301,36 +1280,24 @@ class User
 
     public function getSyncField(): ?string
     {
-        return $this->sync_field;
+        return $this->syncField;
     }
 
-    public function setSyncField(?string $sync_field): self
+    public function setSyncField(?string $syncField): self
     {
-        $this->sync_field = $sync_field;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(?int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
+        $this->syncField = $syncField;
 
         return $this;
     }
 
     public function getUsersIdSupervisor(): ?int
     {
-        return $this->users_id_supervisor;
+        return $this->usersIdSupervisor;
     }
 
-    public function setUsersIdSupervisor(?int $users_id_supervisor): self
+    public function setUsersIdSupervisor(?int $usersIdSupervisor): self
     {
-        $this->users_id_supervisor = $users_id_supervisor;
+        $this->usersIdSupervisor = $usersIdSupervisor;
 
         return $this;
     }
@@ -1349,194 +1316,496 @@ class User
 
     public function getDefaultDashboardCentral(): ?string
     {
-        return $this->default_dashboard_central;
+        return $this->defaultDashboardCentral;
     }
 
-    public function setDefaultDashboardCentral(?string $default_dashboard_central): self
+    public function setDefaultDashboardCentral(?string $defaultDashboardCentral): self
     {
-        $this->default_dashboard_central = $default_dashboard_central;
+        $this->defaultDashboardCentral = $defaultDashboardCentral;
 
         return $this;
     }
 
     public function getDefaultDashboardAssets(): ?string
     {
-        return $this->default_dashboard_assets;
+        return $this->defaultDashboardAssets;
     }
 
-    public function setDefaultDashboardAssets(?string $default_dashboard_assets): self
+    public function setDefaultDashboardAssets(?string $defaultDashboardAssets): self
     {
-        $this->default_dashboard_assets = $default_dashboard_assets;
+        $this->defaultDashboardAssets = $defaultDashboardAssets;
 
         return $this;
     }
 
     public function getDefaultDashboardHelpdesk(): ?string
     {
-        return $this->default_dashboard_helpdesk;
+        return $this->defaultDashboardHelpdesk;
     }
 
-    public function setDefaultDashboardHelpdesk(?string $default_dashboard_helpdesk): self
+    public function setDefaultDashboardHelpdesk(?string $defaultDashboardHelpdesk): self
     {
-        $this->default_dashboard_helpdesk = $default_dashboard_helpdesk;
+        $this->defaultDashboardHelpdesk = $defaultDashboardHelpdesk;
 
         return $this;
     }
 
     public function getDefaultDashboardMiniTicket(): ?string
     {
-        return $this->default_dashboard_mini_ticket;
+        return $this->defaultDashboardMiniTicket;
     }
 
-    public function setDefaultDashboardMiniTicket(?string $default_dashboard_mini_ticket): self
+    public function setDefaultDashboardMiniTicket(?string $defaultDashboardMiniTicket): self
     {
-        $this->default_dashboard_mini_ticket = $default_dashboard_mini_ticket;
+        $this->defaultDashboardMiniTicket = $defaultDashboardMiniTicket;
 
         return $this;
     }
 
     public function getAccessZoomLevel(): ?int
     {
-        return $this->access_zoom_level;
+        return $this->accessZoomLevel;
     }
 
-    public function setAccessZoomLevel(?int $access_zoom_level): self
+    public function setAccessZoomLevel(?int $accessZoomLevel): self
     {
-        $this->access_zoom_level = $access_zoom_level;
+        $this->accessZoomLevel = $accessZoomLevel;
 
         return $this;
     }
 
     public function getAccessFont(): ?string
     {
-        return $this->access_font;
+        return $this->accessFont;
     }
 
-    public function setAccessFont(?string $access_font): self
+    public function setAccessFont(?string $accessFont): self
     {
-        $this->access_font = $access_font;
+        $this->accessFont = $accessFont;
 
         return $this;
     }
 
     public function getAccessShortcuts(): ?bool
     {
-        return $this->access_shortcuts;
+        return $this->accessShortcuts;
     }
 
-    public function setAccessShortcuts(?bool $access_shortcuts): self
+    public function setAccessShortcuts(?bool $accessShortcuts): self
     {
-        $this->access_shortcuts = $access_shortcuts;
+        $this->accessShortcuts = $accessShortcuts;
 
         return $this;
     }
 
     public function getAccessCustomShortcuts(): ?string
     {
-        return $this->access_custom_shortcuts;
+        return $this->accessCustomShortcuts;
     }
 
-    public function setAccessCustomShortcuts(?string $access_custom_shortcuts): self
+    public function setAccessCustomShortcuts(?string $accessCustomShortcuts): self
     {
-        $this->access_custom_shortcuts = $access_custom_shortcuts;
+        $this->accessCustomShortcuts = $accessCustomShortcuts;
 
         return $this;
     }
 
     public function getMenuFavorite(): ?string
     {
-        return $this->menu_favorite;
+        return $this->menuFavorite;
     }
 
-    public function setMenuFavorite(?string $menu_favorite): self
+    public function setMenuFavorite(?string $menuFavorite): self
     {
-        $this->menu_favorite = $menu_favorite;
+        $this->menuFavorite = $menuFavorite;
 
         return $this;
     }
 
     public function getMenuFavoriteOn(): ?string
     {
-        return $this->menu_favorite_on;
+        return $this->menuFavoriteOn;
     }
 
-    public function setMenuFavoriteOn(?string $menu_favorite_on): self
+    public function setMenuFavoriteOn(?string $menuFavoriteOn): self
     {
-        $this->menu_favorite_on = $menu_favorite_on;
+        $this->menuFavoriteOn = $menuFavoriteOn;
 
         return $this;
     }
 
     public function getMenuPosition(): ?string
     {
-        return $this->menu_position;
+        return $this->menuPosition;
     }
 
-    public function setMenuPosition(?string $menu_position): self
+    public function setMenuPosition(?string $menuPosition): self
     {
-        $this->menu_position = $menu_position;
+        $this->menuPosition = $menuPosition;
 
         return $this;
     }
 
     public function getMenuSmall(): ?string
     {
-        return $this->menu_small;
+        return $this->menuSmall;
     }
 
-    public function setMenuSmall(?string $menu_small): self
+    public function setMenuSmall(?string $menuSmall): self
     {
-        $this->menu_small = $menu_small;
+        $this->menuSmall = $menuSmall;
 
         return $this;
     }
 
     public function getMenuWidth(): ?string
     {
-        return $this->menu_width;
+        return $this->menuWidth;
     }
 
-    public function setMenuWidth(?string $menu_width): self
+    public function setMenuWidth(?string $menuWidth): self
     {
-        $this->menu_width = $menu_width;
+        $this->menuWidth = $menuWidth;
 
         return $this;
     }
 
     public function getMenuOpen(): ?string
     {
-        return $this->menu_open;
+        return $this->menuOpen;
     }
 
-    public function setMenuOpen(?string $menu_open): self
+    public function setMenuOpen(?string $menuOpen): self
     {
-        $this->menu_open = $menu_open;
+        $this->menuOpen = $menuOpen;
 
         return $this;
     }
 
     public function getBubblePos(): ?string
     {
-        return $this->bubble_pos;
+        return $this->bubblePos;
     }
 
-    public function setBubblePos(?string $bubble_pos): self
+    public function setBubblePos(?string $bubblePos): self
     {
-        $this->bubble_pos = $bubble_pos;
+        $this->bubblePos = $bubblePos;
 
         return $this;
     }
 
     public function getAccessibilityMenu(): ?bool
     {
-        return $this->accessibility_menu;
+        return $this->accessibilityMenu;
     }
 
-    public function setAccessibilityMenu(?bool $accessibility_menu): self
+    public function setAccessibilityMenu(?bool $accessibilityMenu): self
     {
-        $this->accessibility_menu = $accessibility_menu;
+        $this->accessibilityMenu = $accessibilityMenu;
 
         return $this;
     }
 
+
+
+    /**
+     * Get the value of changeUsers
+     */
+    public function getChangeUsers()
+    {
+        return $this->changeUsers;
+    }
+
+    /**
+     * Set the value of changeUsers
+     *
+     * @return  self
+     */
+    public function setChangeUsers($changeUsers)
+    {
+        $this->changeUsers = $changeUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupUsers
+     */
+    public function getGroupUsers()
+    {
+        return $this->groupUsers;
+    }
+
+    /**
+     * Set the value of groupUsers
+     *
+     * @return  self
+     */
+    public function setGroupUsers($groupUsers)
+    {
+        $this->groupUsers = $groupUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemUsers
+     */
+    public function getKnowbaseitemUsers()
+    {
+        return $this->knowbaseitemUsers;
+    }
+
+    /**
+     * Set the value of knowbaseitemUsers
+     *
+     * @return  self
+     */
+    public function setKnowbaseitemUsers($knowbaseitemUsers)
+    {
+        $this->knowbaseitemUsers = $knowbaseitemUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemUsers
+     */
+    public function getProblemUsers()
+    {
+        return $this->problemUsers;
+    }
+
+    /**
+     * Set the value of problemUsers
+     *
+     * @return  self
+     */
+    public function setProblemUsers($problemUsers)
+    {
+        $this->problemUsers = $problemUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileUsers
+     */
+    public function getProfileUsers()
+    {
+        return $this->profileUsers;
+    }
+
+    /**
+     * Set the value of profileUsers
+     *
+     * @return  self
+     */
+    public function setProfileUsers($profileUsers)
+    {
+        $this->profileUsers = $profileUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of reminderUsers
+     */
+    public function getReminderUsers()
+    {
+        return $this->reminderUsers;
+    }
+
+    /**
+     * Set the value of reminderUsers
+     *
+     * @return  self
+     */
+    public function setReminderUsers($reminderUsers)
+    {
+        $this->reminderUsers = $reminderUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of rssfeedUsers
+     */
+    public function getRssfeedUsers()
+    {
+        return $this->rssfeedUsers;
+    }
+
+    /**
+     * Set the value of rssfeedUsers
+     *
+     * @return  self
+     */
+    public function setRssfeedUsers($rssfeedUsers)
+    {
+        $this->rssfeedUsers = $rssfeedUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of savedsearchUsers
+     */
+    public function getSavedsearchUsers()
+    {
+        return $this->savedsearchUsers;
+    }
+
+    /**
+     * Set the value of savedsearchUsers
+     *
+     * @return  self
+     */
+    public function setSavedsearchUsers($savedsearchUsers)
+    {
+        $this->savedsearchUsers = $savedsearchUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profile
+     */
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * Set the value of profile
+     *
+     * @return  self
+     */
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of usertitle
+     */
+    public function getUsertitle()
+    {
+        return $this->usertitle;
+    }
+
+    /**
+     * Set the value of usertitle
+     *
+     * @return  self
+     */
+    public function setUsertitle($usertitle)
+    {
+        $this->usertitle = $usertitle;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of usercategory
+     */
+    public function getUsercategory()
+    {
+        return $this->usercategory;
+    }
+
+    /**
+     * Set the value of usercategory
+     *
+     * @return  self
+     */
+    public function setUsercategory($usercategory)
+    {
+        $this->usercategory = $usercategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of defaultRequesttype
+     */
+    public function getDefaultRequesttype()
+    {
+        return $this->defaultRequesttype;
+    }
+
+    /**
+     * Set the value of defaultRequesttype
+     *
+     * @return  self
+     */
+    public function setDefaultRequesttype($defaultRequesttype)
+    {
+        $this->defaultRequesttype = $defaultRequesttype;
+
+        return $this;
+    }
 }

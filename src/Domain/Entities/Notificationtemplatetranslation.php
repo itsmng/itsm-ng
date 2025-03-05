@@ -11,39 +11,28 @@ class Notificationtemplatetranslation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $notificationtemplates_id;
+    #[ORM\ManyToOne(targetEntity: Notificationtemplate::class)]
+    #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Notificationtemplate $notificationtemplate = null;
 
-    #[ORM\Column(type: 'string', length: 10, options: ['default' => ''])]
+    #[ORM\Column(name: 'language', type: 'string', length: 10, options: ['default' => ''])]
     private $language;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(name: 'subject', type: 'string', length: 255)]
     private $subject;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $content_text;
+    #[ORM\Column(name: 'content_text', type: 'text', length: 65535, nullable: true)]
+    private $contentText;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $content_html;
+    #[ORM\Column(name: 'content_html', type: 'text', length: 65535, nullable: true)]
+    private $contentHtml;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNotificationtemplatesId(): ?int
-    {
-        return $this->notificationtemplates_id;
-    }
-
-    public function setNotificationtemplatesId(?int $notificationtemplates_id): self
-    {
-        $this->notificationtemplates_id = $notificationtemplates_id;
-
-        return $this;
     }
 
     public function getLanguage(): ?string
@@ -72,26 +61,46 @@ class Notificationtemplatetranslation
 
     public function getContentText(): ?string
     {
-        return $this->content_text;
+        return $this->contentText;
     }
 
-    public function setContentText(?string $content_text): self
+    public function setContentText(?string $contentText): self
     {
-        $this->content_text = $content_text;
+        $this->contentText = $contentText;
 
         return $this;
     }
 
     public function getContentHtml(): ?string
     {
-        return $this->content_html;
+        return $this->contentHtml;
     }
 
-    public function setContentHtml(?string $content_html): self
+    public function setContentHtml(?string $contentHtml): self
     {
-        $this->content_html = $content_html;
+        $this->contentHtml = $contentHtml;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of notificationtemplate
+     */
+    public function getNotificationtemplate()
+    {
+        return $this->notificationtemplate;
+    }
+
+    /**
+     * Set the value of notificationtemplate
+     *
+     * @return  self
+     */
+    public function setNotificationtemplate($notificationtemplate)
+    {
+        $this->notificationtemplate = $notificationtemplate;
+
+        return $this;
+    }
 }

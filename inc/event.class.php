@@ -33,6 +33,7 @@
 
 namespace Glpi;
 
+use Itsmng\Domain\Entities\Event as EventEntity;
 use Ajax;
 use CommonDBTM;
 use CronTask;
@@ -54,7 +55,7 @@ class Event extends CommonDBTM
 {
     public static $rightname = 'logs';
 
-
+    public $entity = EventEntity::class;
 
     public static function getTypeName($nb = 0)
     {

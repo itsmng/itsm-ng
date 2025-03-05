@@ -14,35 +14,35 @@ class Log
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100, options: ['default' => ''])]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100, options: ['default' => ''])]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 100, options: ['default' => ''])]
-    private $itemtype_link;
+    #[ORM\Column(name: 'itemtype_link', type: 'string', length: 100, options: ['default' => ''])]
+    private $itemtypeLink;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'see define.php HISTORY_* constant'])]
-    private $linked_action;
+    #[ORM\Column(name: 'linked_action', type: 'integer', options: ['default' => 0, 'comment' => 'see define.php HISTORY_* constant'])]
+    private $linkedAction;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $user_name;
+    #[ORM\Column(name: 'user_name', type: 'string', length: 255, nullable: true)]
+    private $userName;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'see search.constant.php for value'])]
-    private $id_search_option;
+    #[ORM\Column(name: 'id_search_option', type: 'integer', options: ['default' => 0, 'comment' => 'see search.constant.php for value'])]
+    private $idSearchOption;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $old_value;
+    #[ORM\Column(name: 'old_value', type: 'string', length: 255, nullable: true)]
+    private $oldValue;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $new_value;
+    #[ORM\Column(name: 'new_value', type: 'string', length: 255, nullable: true)]
+    private $newValue;
 
     public function getId(): ?int
     {
@@ -63,96 +63,96 @@ class Log
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
 
     public function getItemtypeLink(): ?string
     {
-        return $this->itemtype_link;
+        return $this->itemtypeLink;
     }
 
-    public function setItemtypeLink(string $itemtype_link): self
+    public function setItemtypeLink(string $itemtypeLink): self
     {
-        $this->itemtype_link = $itemtype_link;
+        $this->itemtypeLink = $itemtypeLink;
 
         return $this;
     }
 
     public function getLinkedAction(): ?int
     {
-        return $this->linked_action;
+        return $this->linkedAction;
     }
 
-    public function setLinkedAction(int $linked_action): self
+    public function setLinkedAction(int $linkedAction): self
     {
-        $this->linked_action = $linked_action;
+        $this->linkedAction = $linkedAction;
 
         return $this;
     }
 
     public function getUserName(): ?string
     {
-        return $this->user_name;
+        return $this->userName;
     }
 
-    public function setUserName(?string $user_name): self
+    public function setUserName(?string $userName): self
     {
-        $this->user_name = $user_name;
+        $this->userName = $userName;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getIdSearchOption(): ?int
     {
-        return $this->id_search_option;
+        return $this->idSearchOption;
     }
 
-    public function setIdSearchOption(int $id_search_option): self
+    public function setIdSearchOption(int $idSearchOption): self
     {
-        $this->id_search_option = $id_search_option;
+        $this->idSearchOption = $idSearchOption;
 
         return $this;
     }
 
     public function getOldValue(): ?string
     {
-        return $this->old_value;
+        return $this->oldValue;
     }
 
-    public function setOldValue(?string $old_value): self
+    public function setOldValue(?string $oldValue): self
     {
-        $this->old_value = $old_value;
+        $this->oldValue = $oldValue;
 
         return $this;
     }
 
     public function getNewValue(): ?string
     {
-        return $this->new_value;
+        return $this->newValue;
     }
 
-    public function setNewValue(?string $new_value): self
+    public function setNewValue(?string $newValue): self
     {
-        $this->new_value = $new_value;
+        $this->newValue = $newValue;
 
         return $this;
     }

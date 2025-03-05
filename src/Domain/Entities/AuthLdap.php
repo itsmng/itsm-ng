@@ -11,11 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_active", columns: ["is_active"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "sync_field", columns: ["sync_field"])]
-class AuthLdaps
+class AuthLdap
 {
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
-    #[ORM\GeneratedValue]
     private $id;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
@@ -130,28 +129,28 @@ class AuthLdaps
     private $email4_field;
 
     #[ORM\Column(name: 'location_field', type: 'string', length: 255, nullable: true)]
-    private $location_field;
+    private $locationField;
 
     #[ORM\Column(name: 'responsible_field', type: 'string', length: 255, nullable: true)]
-    private $responsible_field;
+    private $responsibleField;
 
     #[ORM\Column(name: 'pagesize', type: 'integer', options: ['default' => 0])]
     private $pagesize;
 
     #[ORM\Column(name: 'ldap_maxlimit', type: 'integer', options: ['default' => 0])]
-    private $ldap_maxlimit;
+    private $ldapMaxlimit;
 
     #[ORM\Column(name: 'can_support_pagesize', type: 'boolean', options: ['default' => false])]
-    private $can_support_pagesize;
+    private $canSupportPagesize;
 
     #[ORM\Column(name: 'picture_field', type: 'string', length: 255, nullable: true)]
-    private $picture_field;
+    private $pictureField;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
-    private $date_creation;
+    private $dateCreation;
 
     #[ORM\Column(name: 'inventory_domain', type: 'string', length: 255, nullable: true)]
-    private $inventory_domain;
+    private $inventoryDomain;
 
     public function getId(): int
     {
@@ -609,26 +608,26 @@ class AuthLdaps
         return $this;
     }
 
-    public function getLocation_field(): string
+    public function getLocationField(): string
     {
-        return $this->location_field;
+        return $this->locationField;
     }
 
-    public function setLocation_field(string $location_field): self
+    public function setLocationField(string $locationField): self
     {
-        $this->location_field = $location_field;
+        $this->locationField = $locationField;
 
         return $this;
     }
 
-    public function getResponsible_field(): string
+    public function getResponsibleField(): string
     {
-        return $this->responsible_field;
+        return $this->responsibleField;
     }
 
-    public function setResponsible_field(string $responsible_field): self
+    public function setResponsibleField(string $responsibleField): self
     {
-        $this->responsible_field = $responsible_field;
+        $this->responsibleField = $responsibleField;
 
         return $this;
     }
@@ -645,62 +644,62 @@ class AuthLdaps
         return $this;
     }
 
-    public function getLdap_maxlimit(): int
+    public function getLdapMaxlimit(): int
     {
-        return $this->ldap_maxlimit;
+        return $this->ldapMaxlimit;
     }
 
-    public function setLdap_maxlimit(int $ldap_maxlimit): self
+    public function setLdapMaxlimit(int $ldapMaxlimit): self
     {
-        $this->ldap_maxlimit = $ldap_maxlimit;
+        $this->ldapMaxlimit = $ldapMaxlimit;
 
         return $this;
     }
 
-    public function getCan_support_pagesize(): bool
+    public function getCanSupportPagesize(): bool
     {
-        return $this->can_support_pagesize;
+        return $this->canSupportPagesize;
     }
 
-    public function setCan_support_pagesize(bool $can_support_pagesize): self
+    public function setCanSupportPagesize(bool $canSupportPagesize): self
     {
-        $this->can_support_pagesize = $can_support_pagesize;
+        $this->canSupportPagesize = $canSupportPagesize;
 
         return $this;
     }
 
-    public function getPicture_field(): string
+    public function getPictureField(): string
     {
-        return $this->picture_field;
+        return $this->pictureField;
     }
 
-    public function setPicture_field(string $picture_field): self
+    public function setPictureField(string $pictureField): self
     {
-        $this->picture_field = $picture_field;
+        $this->pictureField = $pictureField;
 
         return $this;
     }
 
-    public function getDate_creation(): \DateTime
+    public function getDateCreation(): \DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDate_creation(\DateTime $date_creation): self
+    public function setDateCreation(\DateTime $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
-    public function getInventory_domain(): string
+    public function getInventoryDomain(): string
     {
-        return $this->inventory_domain;
+        return $this->inventoryDomain;
     }
 
-    public function setInventory_domain(string $inventory_domain): self
+    public function setInventoryDomain(string $inventoryDomain): self
     {
-        $this->inventory_domain = $inventory_domain;
+        $this->inventoryDomain = $inventoryDomain;
 
         return $this;
     }

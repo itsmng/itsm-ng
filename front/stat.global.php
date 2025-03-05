@@ -37,6 +37,13 @@ Html::header(__('Statistics'), $_SERVER['PHP_SELF'], "helpdesk", "stat");
 
 Session::checkRight("statistic", READ);
 
+//sanitize dates
+foreach (['date1', 'date2'] as $key) {
+    if (array_key_exists($key, $_GET) && preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)$_GET[$key]) !== 1) {
+        unset($_GET[$key]);
+    }
+}
+
 if (empty($_GET["date1"]) && empty($_GET["date2"])) {
     $year          = date("Y") - 1;
     $_GET["date1"] = date("Y-m-d", mktime(1, 0, 0, (int)date("m"), (int)date("d"), $year));
@@ -102,19 +109,19 @@ $stat->displayLineGraph(
     _x('Quantity', 'Number') . " - " . $item->getTypeName(Session::getPluralNumber()),
     array_keys($values['total']),
     [
-      [
-         'name' => _nx('ticket', 'Opened', 'Opened', Session::getPluralNumber()),
-         'data' => $values['total']
-      ], [
-         'name' => _nx('ticket', 'Solved', 'Solved', Session::getPluralNumber()),
-         'data' => $values['solved']
-      ], [
-         'name' => __('Late'),
-         'data' => $values['late']
-      ], [
-         'name' => __('Closed'),
-         'data' => $values['closed']
-      ]
+        [
+            'name' => _nx('ticket', 'Opened', 'Opened', Session::getPluralNumber()),
+            'data' => $values['total']
+        ], [
+            'name' => _nx('ticket', 'Solved', 'Solved', Session::getPluralNumber()),
+            'data' => $values['solved']
+        ], [
+            'name' => __('Late'),
+            'data' => $values['late']
+        ], [
+            'name' => __('Closed'),
+            'data' => $values['closed']
+        ]
     ]
 );
 
@@ -159,16 +166,16 @@ $stat->displayLineGraph(
     __('Average time') . " - " .  _n('Hour', 'Hours', Session::getPluralNumber()),
     array_keys($values['avgsolved']),
     [
-      [
-         'name' => __('Closure'),
-         'data' => $values['avgsolved']
-      ], [
-         'name' => __('Resolution'),
-         'data' => $values['avgclosed']
-      ], [
-         'name' => __('Real duration'),
-         'data' => $values['avgactiontime']
-      ]
+        [
+            'name' => __('Closure'),
+            'data' => $values['avgsolved']
+        ], [
+            'name' => __('Resolution'),
+            'data' => $values['avgclosed']
+        ], [
+            'name' => __('Real duration'),
+            'data' => $values['avgactiontime']
+        ]
     ]
 );
 
@@ -193,13 +200,13 @@ if ($_GET['itemtype'] == 'Ticket') {
         __('Satisfaction survey') . " - " .  __('Tickets'),
         array_keys($values['opensatisfaction']),
         [
-          [
-             'name' => _nx('survey', 'Opened', 'Opened', Session::getPluralNumber()),
-             'data' => $values['opensatisfaction']
-          ], [
-             'name' => _nx('survey', 'Answered', 'Answered', Session::getPluralNumber()),
-             'data' => $values['answersatisfaction']
-          ]
+            [
+                'name' => _nx('survey', 'Opened', 'Opened', Session::getPluralNumber()),
+                'data' => $values['opensatisfaction']
+            ], [
+                'name' => _nx('survey', 'Answered', 'Answered', Session::getPluralNumber()),
+                'data' => $values['answersatisfaction']
+            ]
         ]
     );
 
@@ -215,10 +222,10 @@ if ($_GET['itemtype'] == 'Ticket') {
         __('Satisfaction'),
         array_keys($values['avgsatisfaction']),
         [
-          [
-             'name' => __('Satisfaction'),
-             'data' => $values['avgsatisfaction']
-          ]
+            [
+                'name' => __('Satisfaction'),
+                'data' => $values['avgsatisfaction']
+            ]
         ]
     );
 }

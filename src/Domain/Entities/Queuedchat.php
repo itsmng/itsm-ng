@@ -18,61 +18,66 @@ class Queuedchat
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $notificationtemplates_id;
+    #[ORM\ManyToOne(targetEntity: Notificationtemplate::class)]
+    #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Notificationtemplate $notificationtemplate = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $itilcategories_id;
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?ItilCategory $itilcategory = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $sent_try;
+    #[ORM\Column(name: 'sent_try', type: 'integer', options: ['default' => 0])]
+    private $sentTry;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $create_time;
+    #[ORM\Column(name: 'create_time', type: 'datetime', nullable: true)]
+    private $createTime;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $send_time;
+    #[ORM\Column(name: 'send_time', type: 'datetime', nullable: true)]
+    private $sendTime;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $sent_time;
+    #[ORM\Column(name: 'sent_time', type: 'datetime', nullable: true)]
+    private $sentTime;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'ent_name', type: 'text', length: 65535, nullable: true)]
     private $entName;
 
-    #[ORM\Column(type: 'text', length:  65535, nullable: true)]
+    #[ORM\Column(name: 'ticket_title', type: 'text', length:  65535, nullable: true)]
     private $ticketTitle;
 
-    #[ORM\Column(type: 'text', length:  65535, nullable: true)]
+    #[ORM\Column(name: 'complet_name', type: 'text', length:  65535, nullable: true)]
     private $completName;
 
-    #[ORM\Column(type: 'text', length:  65535, nullable: true)]
+    #[ORM\Column(name: 'server_name', type: 'text', length:  65535, nullable: true)]
     private $serverName;
 
-    #[ORM\Column(type: 'string', length: 250, nullable: true)]
+    #[ORM\Column(name: 'hookurl', type: 'string', length: 250, nullable: true)]
     private $hookurl;
 
-    #[ORM\Column(type: 'string', length: 20, options: ['comment' => 'See Notification_NotificationTemplate::MODE_* constants'])]
+    #[ORM\Column(name: 'mode', type: 'string', length: 20, options: ['comment' => 'See Notification_NotificationTemplate::MODE_* constants'])]
     private $mode;
 
     public function getId(): ?int
@@ -94,132 +99,72 @@ class Queuedchat
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
-
-        return $this;
-    }
-
-    public function getNotificationtemplatesId(): ?int
-    {
-        return $this->notificationtemplates_id;
-    }
-
-    public function setNotificationtemplatesId(?int $notificationtemplates_id): self
-    {
-        $this->notificationtemplates_id = $notificationtemplates_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(?int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(?int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
-
-        return $this;
-    }
-
-    public function getItilcategoriesId(): ?int
-    {
-        return $this->itilcategories_id;
-    }
-
-    public function setItilcategoriesId(?int $itilcategories_id): self
-    {
-        $this->itilcategories_id = $itilcategories_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(?bool $is_deleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getSentTry(): ?int
     {
-        return $this->sent_try;
+        return $this->sentTry;
     }
 
-    public function setSentTry(?int $sent_try): self
+    public function setSentTry(?int $sentTry): self
     {
-        $this->sent_try = $sent_try;
+        $this->sentTry = $sentTry;
 
         return $this;
     }
 
     public function getCreateTime(): ?\DateTimeInterface
     {
-        return $this->create_time;
+        return $this->createTime;
     }
 
-    public function setCreateTime(?\DateTimeInterface $create_time): self
+    public function setCreateTime(?\DateTimeInterface $createTime): self
     {
-        $this->create_time = $create_time;
+        $this->createTime = $createTime;
 
         return $this;
     }
 
     public function getSendTime(): ?\DateTimeInterface
     {
-        return $this->send_time;
+        return $this->sendTime;
     }
 
-    public function setSendTime(?\DateTimeInterface $send_time): self
+    public function setSendTime(?\DateTimeInterface $sendTime): self
     {
-        $this->send_time = $send_time;
+        $this->sendTime = $sendTime;
 
         return $this;
     }
 
     public function getSentTime(): ?\DateTimeInterface
     {
-        return $this->sent_time;
+        return $this->sentTime;
     }
 
-    public function setSentTime(?\DateTimeInterface $sent_time): self
+    public function setSentTime(?\DateTimeInterface $sentTime): self
     {
-        $this->sent_time = $sent_time;
+        $this->sentTime = $sentTime;
 
         return $this;
     }
@@ -296,4 +241,104 @@ class Queuedchat
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of notificationtemplate
+     */
+    public function getNotificationtemplate()
+    {
+        return $this->notificationtemplate;
+    }
+
+    /**
+     * Set the value of notificationtemplate
+     *
+     * @return  self
+     */
+    public function setNotificationtemplate($notificationtemplate)
+    {
+        $this->notificationtemplate = $notificationtemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilcategory
+     */
+    public function getItilcategory()
+    {
+        return $this->itilcategory;
+    }
+
+    /**
+     * Set the value of itilcategory
+     *
+     * @return  self
+     */
+    public function setItilcategory($itilcategory)
+    {
+        $this->itilcategory = $itilcategory;
+
+        return $this;
+    }
 }

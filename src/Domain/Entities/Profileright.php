@@ -11,34 +11,22 @@ class Profileright
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $profiles_id;
+    #[ORM\ManyToOne(targetEntity: Profile::class)]
+    #[ORM\JoinColumn(name: 'profiles_id', referencedColumnName: 'id', nullable: true)]
+    private ?Profile $profile = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'rights', type: 'integer', options: ['default' => 0])]
     private $rights;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProfilesId(): ?int
-    {
-        return $this->profiles_id;
-    }
-
-
-    public function setProfilesId(?int $profiles_id): self
-    {
-        $this->profiles_id = $profiles_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -67,4 +55,24 @@ class Profileright
         return $this;
     }
 
+
+    /**
+     * Get the value of profile
+     */
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * Set the value of profile
+     *
+     * @return  self
+     */
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
 }

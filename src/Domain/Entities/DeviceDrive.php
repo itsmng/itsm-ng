@@ -18,41 +18,44 @@ class DeviceDrive
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'designation', type: 'string', length: 255, nullable: true)]
     private $designation;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_writer;
+    #[ORM\Column(name: 'is_writer', type: 'boolean', options: ['default' => 1])]
+    private $isWriter;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'speed', type: 'string', length: 255, nullable: true)]
     private $speed;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $interfacetypes_id;
+    #[ORM\ManyToOne(targetEntity: InterfaceType::class)]
+    #[ORM\JoinColumn(name: 'interfacetypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?InterfaceType $interfacetype = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
+    private $entitiesId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $devicedrivemodels_id;
+    #[ORM\ManyToOne(targetEntity: Devicedrivemodel::class)]
+    #[ORM\JoinColumn(name: 'devicedrivemodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Devicedrivemodel $devicedrivemodel = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -73,12 +76,12 @@ class DeviceDrive
 
     public function getIsWriter(): ?bool
     {
-        return $this->is_writer;
+        return $this->isWriter;
     }
 
-    public function setIsWriter(?bool $is_writer): self
+    public function setIsWriter(?bool $isWriter): self
     {
-        $this->is_writer = $is_writer;
+        $this->isWriter = $isWriter;
 
         return $this;
     }
@@ -107,86 +110,112 @@ class DeviceDrive
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-
-        return $this;
-    }
-
-    public function getInterfacetypesId(): ?int
-    {
-        return $this->interfacetypes_id;
-    }
-
-    public function setInterfacetypesId(?int $interfacetypes_id): self
-    {
-        $this->interfacetypes_id = $interfacetypes_id;
-
-        return $this;
-    }
 
     public function getEntitiesId(): ?int
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntitiesId(?int $entities_id): self
+    public function setEntitiesId(?int $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
-    public function getDevicedrivemodelsId(): ?int
-    {
-        return $this->devicedrivemodels_id;
-    }
-
-    public function setDevicedrivemodelsId(?int $devicedrivemodels_id): self
-    {
-        $this->devicedrivemodels_id = $devicedrivemodels_id;
-
-        return $this;
-    }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of interfacetype
+     */
+    public function getInterfacetype()
+    {
+        return $this->interfacetype;
+    }
+
+    /**
+     * Set the value of interfacetype
+     *
+     * @return  self
+     */
+    public function setInterfacetype($interfacetype)
+    {
+        $this->interfacetype = $interfacetype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicedrivemodel
+     */
+    public function getDevicedrivemodel()
+    {
+        return $this->devicedrivemodel;
+    }
+
+    /**
+     * Set the value of devicedrivemodel
+     *
+     * @return  self
+     */
+    public function setDevicedrivemodel($devicedrivemodel)
+    {
+        $this->devicedrivemodel = $devicedrivemodel;
 
         return $this;
     }

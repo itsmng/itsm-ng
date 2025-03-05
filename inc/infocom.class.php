@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Infocom as EntitiesInfocom;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -55,6 +57,8 @@ class Infocom extends CommonDBChild
     public const COPY_ORDER_DATE    = 3;
     public const COPY_DELIVERY_DATE = 4;
     public const ON_ASSET_IMPORT    = 5;
+
+    public $entity = EntitiesInfocom::class;
 
 
     /**
@@ -253,8 +257,8 @@ class Infocom extends CommonDBChild
 
         if (
             $this->getFromDBByCrit([
-            $this->getTable() . '.items_id'  => $ID,
-            $this->getTable() . '.itemtype'  => $itemtype
+            'items_id'  => $ID,
+            'itemtype'  => $itemtype
             ])
         ) {
             return true;

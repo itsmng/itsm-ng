@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_profiles')]
@@ -17,56 +18,71 @@ class Profile
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
     #[ORM\Column(name: 'interface', type: 'string', length: 255, nullable: true, options: ['default' => 'helpdesk'])]
     private $interface;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_default;
+    #[ORM\Column(name: 'is_default', type: 'boolean', options: ['default' => 0])]
+    private $isDefault;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $helpdesk_hardware;
+    #[ORM\Column(name: 'helpdesk_hardware', type: 'integer', options: ['default' => 0])]
+    private $helpdeskHardware;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $helpdesk_item_type;
+    #[ORM\Column(name: 'helpdesk_item_type', type: 'text', length: 65535, nullable: true)]
+    private $helpdeskItemType;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ['comment' => 'json encoded array of from/dest allowed status change'])]
-    private $ticket_status;
+    #[ORM\Column(name: 'ticket_status', type: 'text', length: 65535, nullable: true, options: ['comment' => 'json encoded array of from/dest allowed status change'])]
+    private $ticketStatus;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ['comment' => 'json encoded array of from/dest allowed status change'])]
-    private $problem_status;
+    #[ORM\Column(name: 'problem_status', type: 'text', length: 65535, nullable: true, options: ['comment' => 'json encoded array of from/dest allowed status change'])]
+    private $problemStatus;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $create_ticket_on_login;
+    #[ORM\Column(name: 'create_ticket_on_login', type: 'boolean', options: ['default' => 0])]
+    private $createTicketOnLogin;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickettemplates_id;
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?TicketTemplate $tickettemplate = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changetemplates_id;
+    #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
+    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?ChangeTemplate $changetemplate = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $problemtemplates_id;
+    #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
+    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?Problemtemplate $problemtemplate = null;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true, options: ['comment' => 'json encoded array of from/dest allowed status change'])]
-    private $change_status;
+    #[ORM\Column(name: 'change_status', type: 'text', length: 65535, nullable: true, options: ['comment' => 'json encoded array of from/dest allowed status change'])]
+    private $changeStatus;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $managed_domainrecordtypes;
+    #[ORM\Column(name: 'managed_domainrecordtypes', type: 'text', length: 65535, nullable: true)]
+    private $managedDomainrecordtypes;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
+
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: KnowbaseitemProfile::class)]
+    private Collection $knowbaseitemProfiles;
+
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileReminder::class)]
+    private Collection $profileReminders;
+
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileRssfeed::class)]
+    private Collection $profileRssfeeds;
+
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileUser::class)]
+    private Collection $profileUsers;
 
     public function getId(): ?int
     {
@@ -101,65 +117,65 @@ class Profile
 
     public function getIsDefault(): ?bool
     {
-        return $this->is_default;
+        return $this->isDefault;
     }
 
 
-    public function setIsDefault(?bool $is_default): self
+    public function setIsDefault(?bool $isDefault): self
     {
-        $this->is_default = $is_default;
+        $this->isDefault = $isDefault;
 
         return $this;
     }
 
     public function getHelpdeskHardware(): ?int
     {
-        return $this->helpdesk_hardware;
+        return $this->helpdeskHardware;
     }
 
 
-    public function setHelpdeskHardware(?int $helpdesk_hardware): self
+    public function setHelpdeskHardware(?int $helpdeskHardware): self
     {
-        $this->helpdesk_hardware = $helpdesk_hardware;
+        $this->helpdeskHardware = $helpdeskHardware;
 
         return $this;
     }
 
     public function getHelpdeskItemType(): ?string
     {
-        return $this->helpdesk_item_type;
+        return $this->helpdeskItemType;
     }
 
 
-    public function setHelpdeskItemType(?string $helpdesk_item_type): self
+    public function setHelpdeskItemType(?string $helpdeskItemType): self
     {
-        $this->helpdesk_item_type = $helpdesk_item_type;
+        $this->helpdeskItemType = $helpdeskItemType;
 
         return $this;
     }
 
     public function getTicketStatus(): ?string
     {
-        return $this->ticket_status;
+        return $this->ticketStatus;
     }
 
 
-    public function setTicketStatus(?string $ticket_status): self
+    public function setTicketStatus(?string $ticketStatus): self
     {
-        $this->ticket_status = $ticket_status;
+        $this->ticketStatus = $ticketStatus;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -179,104 +195,205 @@ class Profile
 
     public function getProblemStatus(): ?string
     {
-        return $this->problem_status;
+        return $this->problemStatus;
     }
 
 
-    public function setProblemStatus(?string $problem_status): self
+    public function setProblemStatus(?string $problemStatus): self
     {
-        $this->problem_status = $problem_status;
+        $this->problemStatus = $problemStatus;
 
         return $this;
     }
 
     public function getCreateTicketOnLogin(): ?bool
     {
-        return $this->create_ticket_on_login;
+        return $this->createTicketOnLogin;
     }
 
 
-    public function setCreateTicketOnLogin(?bool $create_ticket_on_login): self
+    public function setCreateTicketOnLogin(?bool $createTicketOnLogin): self
     {
-        $this->create_ticket_on_login = $create_ticket_on_login;
-
-        return $this;
-    }
-
-    public function getTicketTemplatesId(): ?int
-    {
-        return $this->tickettemplates_id;
-    }
-
-
-    public function setTicketTemplatesId(?int $tickettemplates_id): self
-    {
-        $this->tickettemplates_id = $tickettemplates_id;
-
-        return $this;
-    }
-
-    public function getChangeTemplatesId(): ?int
-    {
-        return $this->changetemplates_id;
-    }
-
-
-    public function setChangeTemplatesId(?int $changetemplates_id): self
-    {
-        $this->changetemplates_id = $changetemplates_id;
-
-        return $this;
-    }
-
-    public function getProblemTemplatesId(): ?int
-    {
-        return $this->problemtemplates_id;
-    }
-
-
-    public function setProblemTemplatesId(?int $problemtemplates_id): self
-    {
-        $this->problemtemplates_id = $problemtemplates_id;
+        $this->createTicketOnLogin = $createTicketOnLogin;
 
         return $this;
     }
 
     public function getChangeStatus(): ?string
     {
-        return $this->change_status;
+        return $this->changeStatus;
     }
 
 
-    public function setChangeStatus(?string $change_status): self
+    public function setChangeStatus(?string $changeStatus): self
     {
-        $this->change_status = $change_status;
+        $this->changeStatus = $changeStatus;
 
         return $this;
     }
 
     public function getManagedDomainRecordTypes(): ?string
     {
-        return $this->managed_domainrecordtypes;
+        return $this->managedDomainrecordtypes;
     }
 
 
-    public function setManagedDomainRecordTypes(?string $managed_domainrecordtypes): self
+    public function setManagedDomainRecordTypes(?string $managedDomainrecordtypes): self
     {
-        $this->managed_domainrecordtypes = $managed_domainrecordtypes;
+        $this->managedDomainrecordtypes = $managedDomainrecordtypes;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemProfiles
+     */
+    public function getKnowbaseitemProfiles()
+    {
+        return $this->knowbaseitemProfiles;
+    }
+
+    /**
+     * Set the value of knowbaseitemProfiles
+     *
+     * @return  self
+     */
+    public function setKnowbaseitemProfiles($knowbaseitemProfiles)
+    {
+        $this->knowbaseitemProfiles = $knowbaseitemProfiles;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickettemplate
+     */
+    public function getTickettemplate()
+    {
+        return $this->tickettemplate;
+    }
+
+    /**
+     * Set the value of tickettemplate
+     *
+     * @return  self
+     */
+    public function setTickettemplate($tickettemplate)
+    {
+        $this->tickettemplate = $tickettemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changetemplate
+     */
+    public function getChangetemplate()
+    {
+        return $this->changetemplate;
+    }
+
+    /**
+     * Set the value of changetemplate
+     *
+     * @return  self
+     */
+    public function setChangetemplate($changetemplate)
+    {
+        $this->changetemplate = $changetemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemtemplate
+     */
+    public function getProblemtemplate()
+    {
+        return $this->problemtemplate;
+    }
+
+    /**
+     * Set the value of problemtemplate
+     *
+     * @return  self
+     */
+    public function setProblemtemplate($problemtemplate)
+    {
+        $this->problemtemplate = $problemtemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileReminders
+     */
+    public function getProfileReminders()
+    {
+        return $this->profileReminders;
+    }
+
+    /**
+     * Set the value of profileReminders
+     *
+     * @return  self
+     */
+    public function setProfileReminders($profileReminders)
+    {
+        $this->profileReminders = $profileReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileRssfeeds
+     */
+    public function getProfileRssfeeds()
+    {
+        return $this->profileRssfeeds;
+    }
+
+    /**
+     * Set the value of profileRssfeeds
+     *
+     * @return  self
+     */
+    public function setProfileRssfeeds($profileRssfeeds)
+    {
+        $this->profileRssfeeds = $profileRssfeeds;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileUsers
+     */
+    public function getProfileUsers()
+    {
+        return $this->profileUsers;
+    }
+
+    /**
+     * Set the value of profileUsers
+     *
+     * @return  self
+     */
+    public function setProfileUsers($profileUsers)
+    {
+        $this->profileUsers = $profileUsers;
 
         return $this;
     }

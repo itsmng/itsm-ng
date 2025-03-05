@@ -105,7 +105,8 @@
     "autoload": {
         "psr-4": {
             "Itsmng\\": "src/",
-            "Infrastructure\\": "Infrastructure/"
+            "Infrastructure\\": "src/Infrastructure/",
+            "Domain\\": "src/Domain/"
         }
     },
     "scripts": {

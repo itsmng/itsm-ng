@@ -23,47 +23,47 @@ class ItemDeviceHardDrive
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $deviceharddrives_id;
+    #[ORM\Column(name: 'deviceharddrives_id', type: 'integer', options: ['default' => 0])]
+    private $deviceharddrivesId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'capacity', type: 'integer', options: ['default' => 0])]
     private $capacity;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
+    private $isDynamic;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
+    private $entitiesId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'busID', type: 'string', length: 255, nullable: true)]
     private $busID;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
+    private $locationsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\Column(name: 'states_id', type: 'integer', options: ['default' => 0])]
+    private $statesId;
 
     public function getId(): ?int
     {
@@ -72,12 +72,12 @@ class ItemDeviceHardDrive
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -96,12 +96,12 @@ class ItemDeviceHardDrive
 
     public function getDeviceharddrivesId(): ?int
     {
-        return $this->deviceharddrives_id;
+        return $this->deviceharddrivesId;
     }
 
-    public function setDeviceharddrivesId(int $deviceharddrives_id): self
+    public function setDeviceharddrivesId(int $deviceharddrivesId): self
     {
-        $this->deviceharddrives_id = $deviceharddrives_id;
+        $this->deviceharddrivesId = $deviceharddrivesId;
 
         return $this;
     }
@@ -132,48 +132,48 @@ class ItemDeviceHardDrive
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(bool $is_dynamic): self
+    public function setIsDynamic(bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getEntitiesId(): ?int
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntitiesId(int $entities_id): self
+    public function setEntitiesId(int $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -204,24 +204,24 @@ class ItemDeviceHardDrive
 
     public function getLocationsId(): ?int
     {
-        return $this->locations_id;
+        return $this->locationsId;
     }
 
-    public function setLocationsId(int $locations_id): self
+    public function setLocationsId(int $locationsId): self
     {
-        $this->locations_id = $locations_id;
+        $this->locationsId = $locationsId;
 
         return $this;
     }
 
     public function getStatesId(): ?int
     {
-        return $this->states_id;
+        return $this->statesId;
     }
 
-    public function setStatesId(int $states_id): self
+    public function setStatesId(int $statesId): self
     {
-        $this->states_id = $states_id;
+        $this->statesId = $statesId;
 
         return $this;
     }

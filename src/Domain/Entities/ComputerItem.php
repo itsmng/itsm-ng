@@ -15,49 +15,39 @@ class ComputerItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to various table, according to itemtype (ID)'])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to various table, according to itemtype (ID)'])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $computers_id;
+    #[ORM\ManyToOne(targetEntity: Computer::class)]
+    #[ORM\JoinColumn(name: 'computers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Computer $computer = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
+    private $isDynamic;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getComputersId(): ?int
-    {
-        return $this->computers_id;
-    }
-
-    public function setComputersId(int $computers_id): self
-    {
-        $this->computers_id = $computers_id;
-
-        return $this;
-    }
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -76,24 +66,44 @@ class ComputerItem
 
     public function getIsDeleted(): ?int
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(int $is_deleted): self
+    public function setIsDeleted(int $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?int
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(int $is_dynamic): self
+    public function setIsDynamic(int $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of computer
+     */
+    public function getComputer()
+    {
+        return $this->computer;
+    }
+
+    /**
+     * Set the value of computer
+     *
+     * @return  self
+     */
+    public function setComputer($computer)
+    {
+        $this->computer = $computer;
 
         return $this;
     }

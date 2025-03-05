@@ -14,85 +14,103 @@ class GroupUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'groupUsers')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupUsers')]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group = null;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => 0])]
+    private $isDynamic;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_manager;
+    #[ORM\Column(name: 'is_manager', type: "boolean", options: ["default" => 0])]
+    private $isManager;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_userdelegate;
+    #[ORM\Column(name: 'is_userdelegate', type: "boolean", options: ["default" => 0])]
+    private $isUserdelegate;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
-
-        return $this;
-    }
-
     public function getIsDynamic(): ?int
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(int $is_dynamic): self
+    public function setIsDynamic(int $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getIsManager(): ?int
     {
-        return $this->is_manager;
+        return $this->isManager;
     }
 
-    public function setIsManager(int $is_manager): self
+    public function setIsManager(int $isManager): self
     {
-        $this->is_manager = $is_manager;
+        $this->isManager = $isManager;
 
         return $this;
     }
 
     public function getIsUserdelegate(): ?bool
     {
-        return $this->is_userdelegate;
+        return $this->isUserdelegate;
     }
 
-    public function setIsUserdelegate(bool $is_userdelegate): self
+    public function setIsUserdelegate(bool $isUserdelegate): self
     {
-        $this->is_userdelegate = $is_userdelegate;
+        $this->isUserdelegate = $isUserdelegate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Appliance as ApplianceEntity;
+
 use function Termwind\render;
 
 if (!defined('GLPI_ROOT')) {
@@ -44,6 +46,7 @@ class Appliance extends CommonDBTM
 {
     use Glpi\Features\Clonable;
 
+    public $entity = ApplianceEntity::class;
     // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'appliance';

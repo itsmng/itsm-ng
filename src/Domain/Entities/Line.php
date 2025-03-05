@@ -14,52 +14,59 @@ class Line
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
-    private $caller_num;
+    #[ORM\Column(name: 'caller_num', type: 'string', length: 255, options: ['default' => ''])]
+    private $callerNum;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
-    private $caller_name;
+    #[ORM\Column(name: 'caller_name', type: 'string', length: 255, options: ['default' => ''])]
+    private $callerName;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $lineoperators_id;
+    #[ORM\ManyToOne(targetEntity: LineOperator::class)]
+    #[ORM\JoinColumn(name: 'lineoperators_id', referencedColumnName: 'id', nullable: true)]
+    private ?LineOperator $lineOperator = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $linetypes_id;
+    #[ORM\ManyToOne(targetEntity: LineType::class)]
+    #[ORM\JoinColumn(name: 'linetypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?LineType $lineType = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'text', options: ['default' => null], length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', options: ['default' => null], length: 65535, nullable: true)]
     private $comment;
 
     public function getId(): ?int
@@ -79,158 +86,74 @@ class Line
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getCallerNum(): ?string
     {
-        return $this->caller_num;
+        return $this->callerNum;
     }
 
-    public function setCallerNum(string $caller_num): self
+    public function setCallerNum(string $callerNum): self
     {
-        $this->caller_num = $caller_num;
+        $this->callerNum = $callerNum;
 
         return $this;
     }
 
     public function getCallerName(): ?string
     {
-        return $this->caller_name;
+        return $this->callerName;
     }
 
-    public function setCallerName(string $caller_name): self
+    public function setCallerName(string $callerName): self
     {
-        $this->caller_name = $caller_name;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
-
-        return $this;
-    }
-
-    public function getLineoperatorsId(): ?int
-    {
-        return $this->lineoperators_id;
-    }
-
-    public function setLineoperatorsId(int $lineoperators_id): self
-    {
-        $this->lineoperators_id = $lineoperators_id;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
-
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(int $states_id): self
-    {
-        $this->states_id = $states_id;
-
-        return $this;
-    }
-
-    public function getLinetypesId(): ?int
-    {
-        return $this->linetypes_id;
-    }
-
-    public function setLinetypesId(int $linetypes_id): self
-    {
-        $this->linetypes_id = $linetypes_id;
+        $this->callerName = $callerName;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -243,6 +166,146 @@ class Line
     public function setComment(string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of lineOperator
+     */
+    public function getLineOperator()
+    {
+        return $this->lineOperator;
+    }
+
+    /**
+     * Set the value of lineOperator
+     *
+     * @return  self
+     */
+    public function setLineOperator($lineOperator)
+    {
+        $this->lineOperator = $lineOperator;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of lineType
+     */
+    public function getLineType()
+    {
+        return $this->lineType;
+    }
+
+    /**
+     * Set the value of lineType
+     *
+     * @return  self
+     */
+    public function setLineType($lineType)
+    {
+        $this->lineType = $lineType;
 
         return $this;
     }

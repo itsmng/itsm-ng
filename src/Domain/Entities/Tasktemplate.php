@@ -13,79 +13,72 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "is_private", columns: ["is_private"])]
-#[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])]
-#[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
+#[ORM\Index(name: "tech_users_id", columns: ["tech_users_id"])]
+#[ORM\Index(name: "tech_groups_id", columns: ["tech_groups_id"])]
 class Tasktemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'content', type: 'text', length: 65535, nullable: true)]
     private $content;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $taskcategories_id;
+    #[ORM\ManyToOne(targetEntity: Taskcategory::class)]
+    #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Taskcategory $taskcategory = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
     private $actiontime;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
     private $state;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_private;
+    #[ORM\Column(name: 'is_private', type: 'boolean', options: ['default' => 0])]
+    private $isPrivate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_tech;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $techUser = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id_tech;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $techGroup = null;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -110,18 +103,6 @@ class Tasktemplate
     public function setContent(?string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function getTaskcategoriesId(): ?int
-    {
-        return $this->taskcategories_id;
-    }
-
-    public function setTaskcategoriesId(?int $taskcategories_id): self
-    {
-        $this->taskcategories_id = $taskcategories_id;
 
         return $this;
     }
@@ -152,24 +133,24 @@ class Tasktemplate
 
     public function getDateMod(): ?\DateTime
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $date_mod): self
+    public function setDateMod(?\DateTime $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $date_creation): self
+    public function setDateCreation(?\DateTime $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
@@ -188,38 +169,94 @@ class Tasktemplate
 
     public function getIsPrivate(): ?bool
     {
-        return $this->is_private;
+        return $this->isPrivate;
     }
 
-    public function setIsPrivate(?bool $is_private): self
+    public function setIsPrivate(?bool $isPrivate): self
     {
-        $this->is_private = $is_private;
+        $this->isPrivate = $isPrivate;
 
         return $this;
     }
 
-    public function getUsersIdTech(): ?int
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
     {
-        return $this->users_id_tech;
+        return $this->entity;
     }
 
-    public function setUsersIdTech(?int $users_id_tech): self
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
     {
-        $this->users_id_tech = $users_id_tech;
+        $this->entity = $entity;
 
         return $this;
     }
 
-    public function getGroupsIdTech(): ?int
+    /**
+     * Get the value of taskcategory
+     */
+    public function getTaskcategory()
     {
-        return $this->groups_id_tech;
+        return $this->taskcategory;
     }
 
-    public function setGroupsIdTech(?int $groups_id_tech): self
+    /**
+     * Set the value of taskcategory
+     *
+     * @return  self
+     */
+    public function setTaskcategory($taskcategory)
     {
-        $this->groups_id_tech = $groups_id_tech;
+        $this->taskcategory = $taskcategory;
 
         return $this;
     }
 
+    /**
+     * Get the value of techGroup
+     */
+    public function getTechGroup()
+    {
+        return $this->techGroup;
+    }
+
+    /**
+     * Set the value of techGroup
+     *
+     * @return  self
+     */
+    public function setTechGroup($techGroup)
+    {
+        $this->techGroup = $techGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of techUser
+     */
+    public function getTechUser()
+    {
+        return $this->techUser;
+    }
+
+    /**
+     * Set the value of techUser
+     *
+     * @return  self
+     */
+    public function setTechUser($techUser)
+    {
+        $this->techUser = $techUser;
+
+        return $this;
+    }
 }

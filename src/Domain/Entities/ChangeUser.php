@@ -13,52 +13,31 @@ class ChangeUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changes_id;
+    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeUsers')]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Change $change = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'changeUsers')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
     private $type;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $use_notification;
+    #[ORM\Column(name: 'use_notification', type: 'boolean', options: ['default' => false])]
+    private $useNotification;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $alternative_email;
+    #[ORM\Column(name: 'alternative_email', type: 'string', length: 255, nullable: true)]
+    private $alternativeEmail;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getChangesId(): ?int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
 
     public function getType(): ?int
     {
@@ -74,24 +53,64 @@ class ChangeUser
 
     public function getUseNotification(): ?bool
     {
-        return $this->use_notification;
+        return $this->useNotification;
     }
 
-    public function setUseNotification(bool $use_notification): self
+    public function setUseNotification(bool $useNotification): self
     {
-        $this->use_notification = $use_notification;
+        $this->useNotification = $useNotification;
 
         return $this;
     }
 
     public function getAlternativeEmail(): ?string
     {
-        return $this->alternative_email;
+        return $this->alternativeEmail;
     }
 
-    public function setAlternativeEmail(?string $alternative_email): self
+    public function setAlternativeEmail(?string $alternativeEmail): self
     {
-        $this->alternative_email = $alternative_email;
+        $this->alternativeEmail = $alternativeEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of change
+     */
+    public function getChange()
+    {
+        return $this->change;
+    }
+
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */
+    public function setChange($change)
+    {
+        $this->change = $change;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

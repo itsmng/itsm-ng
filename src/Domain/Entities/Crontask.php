@@ -15,53 +15,53 @@ class Crontask
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'string', length: 150, options: ['comment' => 'task name'])]
+    #[ORM\Column(name: 'name', type: 'string', length: 150, options: ['comment' => 'task name'])]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => 'second between launch'])]
+    #[ORM\Column(name: 'frequency', type: 'integer', options: ['comment' => 'second between launch'])]
     private $frequency;
 
-    #[ORM\Column(type: 'integer', nullable: true, options: ['comment' => 'task specify parameter'])]
+    #[ORM\Column(name: 'param', type: 'integer', nullable: true, options: ['comment' => 'task specify parameter'])]
     private $param;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1, 'comment' => '0:disabled, 1:waiting, 2:running'])]
+    #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 1, 'comment' => '0:disabled, 1:waiting, 2:running'])]
     private $state;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1, 'comment' => '1:internal, 2:external'])]
+    #[ORM\Column(name: 'mode', type: 'integer', options: ['default' => 1, 'comment' => '1:internal, 2:external'])]
     private $mode;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 3, 'comment' => '1:internal, 2:external, 3:both'])]
+    #[ORM\Column(name: 'allowmode', type: 'integer', options: ['default' => 3, 'comment' => '1:internal, 2:external, 3:both'])]
     private $allowmode;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'hourmin', type: 'integer', options: ['default' => 0])]
     private $hourmin;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 24])]
+    #[ORM\Column(name: 'hourmax', type: 'integer', options: ['default' => 24])]
     private $hourmax;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 30, 'comment' => 'number of days'])]
-    private $logs_lifetime;
+    #[ORM\Column(name: 'logs_lifetime', type: 'integer', options: ['default' => 30, 'comment' => 'number of days'])]
+    private $logsLifetime;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'lastrun', type: 'datetime', nullable: false)]
     private $lastrun;
 
-    #[ORM\Column(type: 'integer', nullable: true, options: ['comment' => 'last run return code'])]
+    #[ORM\Column(name: 'lastcode', type: 'integer', nullable: true, options: ['comment' => 'last run return code'])]
     private $lastcode;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -178,12 +178,12 @@ class Crontask
 
     public function getLogsLifetime(): ?int
     {
-        return $this->logs_lifetime;
+        return $this->logsLifetime;
     }
 
-    public function setLogsLifetime(int $logs_lifetime): self
+    public function setLogsLifetime(int $logsLifetime): self
     {
-        $this->logs_lifetime = $logs_lifetime;
+        $this->logsLifetime = $logsLifetime;
 
         return $this;
     }
@@ -226,24 +226,24 @@ class Crontask
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

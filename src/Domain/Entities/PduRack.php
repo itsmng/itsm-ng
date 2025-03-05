@@ -12,57 +12,35 @@ class PduRack
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $racks_id;
+    #[ORM\ManyToOne(targetEntity: Rack::class, inversedBy: 'pduRacks')]
+    #[ORM\JoinColumn(name: 'racks_id', referencedColumnName: 'id', nullable: true)]
+    private ?Rack $rack = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $pdus_id;
+    #[ORM\ManyToOne(targetEntity: Pdu::class, inversedBy: 'pduRacks')]
+    #[ORM\JoinColumn(name: 'pdus_id', referencedColumnName: 'id', nullable: true)]
+    private ?Pdu $pdu = null;
 
-    #[ORM\Column(type: 'integer', nullable: true, options: ['default' => 0])]
+    #[ORM\Column(name: 'side', type: 'integer', nullable: true, options: ['default' => 0])]
     private $side;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'position', type: 'integer')]
     private $position;
 
-    #[ORM\Column(type: 'string', length: 7, nullable: true)]
+    #[ORM\Column(name: 'bgcolor', type: 'string', length: 7, nullable: true)]
     private $bgcolor;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRacksId(): ?int
-    {
-        return $this->racks_id;
-    }
-
-    public function setRacksId(?int $racks_id): self
-    {
-        $this->racks_id = $racks_id;
-
-        return $this;
-    }
-
-    public function getPdusId(): ?int
-    {
-        return $this->pdus_id;
-    }
-
-    public function setPdusId(?int $pdus_id): self
-    {
-        $this->pdus_id = $pdus_id;
-
-        return $this;
     }
 
     public function getSide(): ?int
@@ -103,26 +81,66 @@ class PduRack
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of rack
+     */
+    public function getRack()
+    {
+        return $this->rack;
+    }
+
+    /**
+     * Set the value of rack
+     *
+     * @return  self
+     */
+    public function setRack($rack)
+    {
+        $this->rack = $rack;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pdu
+     */
+    public function getPdu()
+    {
+        return $this->pdu;
+    }
+
+    /**
+     * Set the value of pdu
+     *
+     * @return  self
+     */
+    public function setPdu($pdu)
+    {
+        $this->pdu = $pdu;
+
+        return $this;
+    }
 }

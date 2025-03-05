@@ -14,19 +14,20 @@ class Useremail
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_default;
+    #[ORM\Column(name: 'is_default', type: 'boolean', options: ['default' => 0])]
+    private $isDefault;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
+    private $isDynamic;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'email', type: 'string', length: 255, nullable: true)]
     private $email;
 
     public function getId(): ?int
@@ -34,38 +35,26 @@ class Useremail
         return $this->id;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getIsDefault(): ?bool
     {
-        return $this->is_default;
+        return $this->isDefault;
     }
 
-    public function setIsDefault(?bool $is_default): self
+    public function setIsDefault(?bool $isDefault): self
     {
-        $this->is_default = $is_default;
+        $this->isDefault = $isDefault;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(?bool $is_dynamic): self
+    public function setIsDynamic(?bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
@@ -82,4 +71,24 @@ class Useremail
         return $this;
     }
 
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

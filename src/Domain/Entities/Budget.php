@@ -21,50 +21,53 @@ class Budget
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $begin_date;
+    #[ORM\Column(name: 'begin_date', type: 'date', nullable: true)]
+    private $beginDate;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $end_date;
+    #[ORM\Column(name: 'end_date', type: 'date', nullable: true)]
+    private $endDate;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => '0.0000'])]
+    #[ORM\Column(name: 'value', type: 'decimal', precision: 20, scale: 4, options: ['default' => '0.0000'])]
     private $value;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_template;
+    #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => false])]
+    private $isTemplate;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $template_name;
+    #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
+    private $templateName;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $budgettypes_id;
+    #[ORM\ManyToOne(targetEntity: Budgettype::class)]
+    #[ORM\JoinColumn(name: 'budgettypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Budgettype $budgettype = null;
 
     public function getId(): ?int
     {
@@ -83,26 +86,15 @@ class Budget
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -121,36 +113,36 @@ class Budget
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getBeginDate(): ?\DateTimeInterface
     {
-        return $this->begin_date;
+        return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $begin_date): self
+    public function setBeginDate(\DateTimeInterface $beginDate): self
     {
-        $this->begin_date = $begin_date;
+        $this->beginDate = $beginDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $end_date): self
+    public function setEndDate(\DateTimeInterface $endDate): self
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }
@@ -169,72 +161,109 @@ class Budget
 
     public function getIsTemplate(): ?bool
     {
-        return $this->is_template;
+        return $this->isTemplate;
     }
 
-    public function setIsTemplate(bool $is_template): self
+    public function setIsTemplate(bool $isTemplate): self
     {
-        $this->is_template = $is_template;
+        $this->isTemplate = $isTemplate;
 
         return $this;
     }
 
     public function getTemplateName(): ?string
     {
-        return $this->template_name;
+        return $this->templateName;
     }
 
-    public function setTemplateName(string $template_name): self
+    public function setTemplateName(string $templateName): self
     {
-        $this->template_name = $template_name;
+        $this->templateName = $templateName;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
-    public function getLocationsId(): ?int
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
     {
-        return $this->locations_id;
+        return $this->location;
     }
 
-    public function setLocationsId(int $locations_id): self
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
     {
-        $this->locations_id = $locations_id;
+        $this->location = $location;
 
         return $this;
     }
 
-    public function getBudgettypesId(): ?int
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
     {
-        return $this->budgettypes_id;
+        return $this->entity;
     }
 
-    public function setBudgettypesId(int $budgettypes_id): self
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
     {
-        $this->budgettypes_id = $budgettypes_id;
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of budgettype
+     */
+    public function getBudgettype()
+    {
+        return $this->budgettype;
+    }
+
+    /**
+     * Set the value of budgettype
+     *
+     * @return  self
+     */
+    public function setBudgettype($budgettype)
+    {
+        $this->budgettype = $budgettype;
 
         return $this;
     }

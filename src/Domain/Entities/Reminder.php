@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_reminders')]
@@ -19,47 +20,60 @@ class Reminder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'uuid', type: 'string', length: 255, nullable: true)]
     private $uuid;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'text', type: 'text', length: 65535, nullable: true)]
     private $text;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'begin', type: 'datetime', nullable: true)]
     private $begin;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'end', type: 'datetime', nullable: true)]
     private $end;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_planned;
+    #[ORM\Column(name: 'is_planned', type: 'boolean', options: ['default' => 0])]
+    private $isPlanned;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
     private $state;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $begin_view_date;
+    #[ORM\Column(name: 'begin_view_date', type: 'datetime', nullable: true)]
+    private $beginViewDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $end_view_date;
+    #[ORM\Column(name: 'end_view_date', type: 'datetime', nullable: true)]
+    private $endViewDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
+
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: EntityReminder::class)]
+    private Collection $entityReminders;
+
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: GroupReminder::class)]
+    private Collection $groupReminders;
+
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: ProfileReminder::class)]
+    private Collection $profileReminders;
+
+    #[ORM\OneToMany(mappedBy: 'reminder', targetEntity: ReminderUser::class)]
+    private Collection $reminderUsers;
 
     public function getId(): ?int
     {
@@ -86,18 +100,6 @@ class Reminder
     public function setDate(?string $date): self
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?string
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?string $users_id): self
-    {
-        $this->users_id = $users_id;
 
         return $this;
     }
@@ -152,24 +154,24 @@ class Reminder
 
     public function getIsPlanned(): ?string
     {
-        return $this->is_planned;
+        return $this->isPlanned;
     }
 
-    public function setIsPlanned(?string $is_planned): self
+    public function setIsPlanned(?string $isPlanned): self
     {
-        $this->is_planned = $is_planned;
+        $this->isPlanned = $isPlanned;
 
         return $this;
     }
 
     public function getDateMod(): ?string
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?string $date_mod): self
+    public function setDateMod(?string $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -188,38 +190,139 @@ class Reminder
 
     public function getBeginViewDate(): ?string
     {
-        return $this->begin_view_date;
+        return $this->beginViewDate;
     }
 
-    public function setBeginViewDate(?string $begin_view_date): self
+    public function setBeginViewDate(?string $beginViewDate): self
     {
-        $this->begin_view_date = $begin_view_date;
+        $this->beginViewDate = $beginViewDate;
 
         return $this;
     }
 
     public function getEndViewDate(): ?string
     {
-        return $this->end_view_date;
+        return $this->endViewDate;
     }
 
-    public function setEndViewDate(?string $end_view_date): self
+    public function setEndViewDate(?string $endViewDate): self
     {
-        $this->end_view_date = $end_view_date;
+        $this->endViewDate = $endViewDate;
 
         return $this;
     }
 
     public function getDateCreation(): ?string
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?string $date_creation): self
+    public function setDateCreation(?string $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of entityReminders
+     */
+    public function getEntityReminders()
+    {
+        return $this->entityReminders;
+    }
+
+    /**
+     * Set the value of entityReminders
+     *
+     * @return  self
+     */
+    public function setEntityReminders($entityReminders)
+    {
+        $this->entityReminders = $entityReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupReminders
+     */
+    public function getGroupReminders()
+    {
+        return $this->groupReminders;
+    }
+
+    /**
+     * Set the value of groupReminders
+     *
+     * @return  self
+     */
+    public function setGroupReminders($groupReminders)
+    {
+        $this->groupReminders = $groupReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileReminders
+     */
+    public function getProfileReminders()
+    {
+        return $this->profileReminders;
+    }
+
+    /**
+     * Set the value of profileReminders
+     *
+     * @return  self
+     */
+    public function setProfileReminders($profileReminders)
+    {
+        $this->profileReminders = $profileReminders;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of reminderUsers
+     */
+    public function getReminderUsers()
+    {
+        return $this->reminderUsers;
+    }
+
+    /**
+     * Set the value of reminderUsers
+     *
+     * @return  self
+     */
+    public function setReminderUsers($reminderUsers)
+    {
+        $this->reminderUsers = $reminderUsers;
+
+        return $this;
+    }
 }

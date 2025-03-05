@@ -19,55 +19,55 @@ class ItemDeviceSensor
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $devicesensors_id;
+    #[ORM\Column(name: 'devicesensors_id', type: "integer", options: ["default" => 0])]
+    private $devicesensorsId;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => 0])]
+    private $isDynamic;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: "integer", options: ["default" => 0])]
+    private $entitiesId;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'serial', type: "string", length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'otherserial', type: "string", length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $locations_id;
+    #[ORM\Column(name: 'locations_id', type: "integer", options: ["default" => 0])]
+    private $locationsId;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $states_id;
+    #[ORM\Column(name: 'states_id', type: "integer", options: ["default" => 0])]
+    private $statesId;
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function getItems_id()
+    public function getItemsId()
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItems_id($items_id)
+    public function setItemsId($items_id)
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
         return $this;
     }
 
@@ -82,58 +82,58 @@ class ItemDeviceSensor
         return $this;
     }
 
-    public function getDevicesensors_id()
+    public function getDevicesensorsId()
     {
-        return $this->devicesensors_id;
+        return $this->devicesensorsId;
     }
 
-    public function setDevicesensors_id($devicesensors_id)
+    public function setDevicesensorsId($devicesensors_id)
     {
-        $this->devicesensors_id = $devicesensors_id;
+        $this->devicesensorsId = $devicesensorsId;
         return $this;
     }
 
-    public function getIs_deleted()
+    public function getIsDeleted()
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIs_deleted($is_deleted)
+    public function setIsDeleted($is_deleted)
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
         return $this;
     }
 
-    public function getIs_dynamic()
+    public function getIsDynamic()
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIs_dynamic($is_dynamic)
+    public function setIsDynamic($is_dynamic)
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
         return $this;
     }
 
-    public function getEntities_id()
+    public function getEntitiesId()
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntities_id($entities_id)
+    public function setEntitiesId($entities_id)
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
         return $this;
     }
 
-    public function getIs_recursive()
+    public function getIsRecursive()
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIs_recursive($is_recursive)
+    public function setIsRecursive($is_recursive)
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
         return $this;
     }
 
@@ -159,25 +159,25 @@ class ItemDeviceSensor
         return $this;
     }
 
-    public function getLocations_id()
+    public function getLocationsId()
     {
-        return $this->locations_id;
+        return $this->locationsId;
     }
 
-    public function setLocations_id($locations_id)
+    public function setLocationsId($locations_id)
     {
-        $this->locations_id = $locations_id;
+        $this->locationsId = $locationsId;
         return $this;
     }
 
-    public function getStates_id()
+    public function getStatesId()
     {
-        return $this->states_id;
+        return $this->statesId;
     }
 
-    public function setStates_id($states_id)
+    public function setStatesId($states_id)
     {
-        $this->states_id = $states_id;
+        $this->statesId = $statesId;
         return $this;
     }
 }

@@ -18,51 +18,43 @@ class Contractcost
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $contracts_id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Contract::class)]
+    #[ORM\JoinColumn(name: 'contracts_id', referencedColumnName: 'id', nullable: true)]
+    private ?Contract $contract = null;
+
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $begin_date;
+    #[ORM\Column(name: 'begin_date', type: 'date', nullable: true)]
+    private $beginDate;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $end_date;
+    #[ORM\Column(name: 'end_date', type: 'date', nullable: true)]
+    private $endDate;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options: ['default' => '0.0000'])]
+    #[ORM\Column(name: 'cost', type: 'decimal', precision: 20, scale: 4, options: ['default' => '0.0000'])]
     private $cost;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $budgets_id;
+    #[ORM\ManyToOne(targetEntity: Budget::class)]
+    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Budget $budget = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getContractsId(): ?int
-    {
-        return $this->contracts_id;
-    }
-
-    public function setContractsId(int $contracts_id): self
-    {
-        $this->contracts_id = $contracts_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -91,24 +83,24 @@ class Contractcost
 
     public function getBeginDate(): ?\DateTimeInterface
     {
-        return $this->begin_date;
+        return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $begin_date): self
+    public function setBeginDate(\DateTimeInterface $beginDate): self
     {
-        $this->begin_date = $begin_date;
+        $this->beginDate = $beginDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $end_date): self
+    public function setEndDate(\DateTimeInterface $endDate): self
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }
@@ -125,38 +117,75 @@ class Contractcost
         return $this;
     }
 
-    public function getBudgetsId(): ?int
-    {
-        return $this->budgets_id;
-    }
-
-    public function setBudgetsId(int $budgets_id): self
-    {
-        $this->budgets_id = $budgets_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?int
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(int $is_recursive): self
+    public function setIsRecursive(int $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contract
+     */
+    public function getContract()
+    {
+        return $this->contract;
+    }
+
+    /**
+     * Set the value of contract
+     *
+     * @return  self
+     */
+    public function setContract($contract)
+    {
+        $this->contract = $contract;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of budget
+     */
+    public function getBudget()
+    {
+        return $this->budget;
+    }
+
+    /**
+     * Set the value of budget
+     *
+     * @return  self
+     */
+    public function setBudget($budget)
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

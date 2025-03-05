@@ -12,36 +12,25 @@ class Slalevelcriteria
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slalevels_id;
+    #[ORM\ManyToOne(targetEntity: Slalevel::class)]
+    #[ORM\JoinColumn(name: 'slalevels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Slalevel $slalevel = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'criteria', type: 'string', length: 255, nullable: true)]
     private $criteria;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PATTERN_* and REGEX_* constant'])]
+    #[ORM\Column(name: 'condition', type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PATTERN_* and REGEX_* constant'])]
     private $condition;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'pattern', type: 'string', length: 255, nullable: true)]
     private $pattern;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getSlalevelsId(): ?int
-    {
-        return $this->slalevels_id;
-    }
-
-    public function setSlalevelsId(int $slalevels_id): self
-    {
-        $this->slalevels_id = $slalevels_id;
-
-        return $this;
     }
 
     public function getCriteria(): ?string
@@ -80,4 +69,24 @@ class Slalevelcriteria
         return $this;
     }
 
+
+    /**
+     * Get the value of slalevel
+     */
+    public function getSlalevel()
+    {
+        return $this->slalevel;
+    }
+
+    /**
+     * Set the value of slalevel
+     *
+     * @return  self
+     */
+    public function setSlalevel($slalevel)
+    {
+        $this->slalevel = $slalevel;
+
+        return $this;
+    }
 }

@@ -12,17 +12,18 @@ class Notificationtarget
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 0])]
     private $type;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $notifications_id;
+    #[ORM\ManyToOne(targetEntity: Notification::class)]
+    #[ORM\JoinColumn(name: 'notifications_id', referencedColumnName: 'id', nullable: true)]
+    private ?Notification $notification = null;
 
     public function getId(): ?int
     {
@@ -31,12 +32,12 @@ class Notificationtarget
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -53,16 +54,23 @@ class Notificationtarget
         return $this;
     }
 
-    public function getNotificationsId(): ?int
+    /**
+     * Get the value of notification
+     */
+    public function getNotification()
     {
-        return $this->notifications_id;
+        return $this->notification;
     }
 
-    public function setNotificationsId(?int $notifications_id): self
+    /**
+     * Set the value of notification
+     *
+     * @return  self
+     */
+    public function setNotification($notification)
     {
-        $this->notifications_id = $notifications_id;
+        $this->notification = $notification;
 
         return $this;
     }
-
 }

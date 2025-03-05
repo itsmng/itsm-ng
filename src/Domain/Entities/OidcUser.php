@@ -10,13 +10,13 @@ class OidcUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $user_id;
+    #[ORM\Column(name: 'user_id', type: 'integer', options: ['default' => 0])]
+    private $userId;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
+    #[ORM\Column(name: 'update', type: 'boolean', options: ['default' => 0])]
     private $update;
 
     public function getId(): ?int
@@ -26,12 +26,12 @@ class OidcUser
 
     public function getUserId(): ?int
     {
-        return $this->user_id;
+        return $this->userId;
     }
 
-    public function setUserId(?int $user_id): self
+    public function setUserId(?int $userId): self
     {
-        $this->user_id = $user_id;
+        $this->userId = $userId;
 
         return $this;
     }

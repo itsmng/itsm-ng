@@ -11,16 +11,16 @@ class Config
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 150, nullable: true)]
+    #[ORM\Column(name: 'context', type: 'string', length: 150, nullable: true)]
     private $context;
 
-    #[ORM\Column(type: 'string', length: 150, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 150, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'value', type: 'text', length: 65535, nullable: true)]
     private $value;
 
     public function getId(): ?int

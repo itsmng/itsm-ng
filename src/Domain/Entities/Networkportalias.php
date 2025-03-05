@@ -14,72 +14,90 @@ class Networkportalias
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $networkports_id;
+    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
+    private ?Networkport $networkport = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $networkports_id_alias;
+    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\JoinColumn(name: 'networkports_id_alias', referencedColumnName: 'id', nullable: true)]
+    private ?Networkport $networkportAlias = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNetworkportsId(): ?int
-    {
-        return $this->networkports_id;
-    }
-
-    public function setNetworkportsId(?int $networkports_id): self
-    {
-        $this->networkports_id = $networkports_id;
-
-        return $this;
-    }
-
-    public function getNetworkportsIdAlias(): ?int
-    {
-        return $this->networkports_id_alias;
-    }
-
-    public function setNetworkportsIdAlias(?int $networkports_id_alias): self
-    {
-        $this->networkports_id_alias = $networkports_id_alias;
-
-        return $this;
-    }
-
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of networkport
+     */
+    public function getNetworkport()
+    {
+        return $this->networkport;
+    }
+
+    /**
+     * Set the value of networkport
+     *
+     * @return  self
+     */
+    public function setNetworkport($networkport)
+    {
+        $this->networkport = $networkport;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportAlias
+     */
+    public function getNetworkportAlias()
+    {
+        return $this->networkportAlias;
+    }
+
+    /**
+     * Set the value of networkportAlias
+     *
+     * @return  self
+     */
+    public function setNetworkportAlias($networkportAlias)
+    {
+        $this->networkportAlias = $networkportAlias;
+
+        return $this;
+    }
 }

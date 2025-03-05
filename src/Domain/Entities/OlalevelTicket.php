@@ -13,45 +13,23 @@ class OlalevelTicket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'olalevelTickets')]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olalevels_id;
+    #[ORM\ManyToOne(targetEntity: Olalevel::class, inversedBy: 'olalevelTickets')]
+    #[ORM\JoinColumn(name: 'olalevels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Olalevel $olalevel = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTicketsId(): ?int
-    {
-        return $this->tickets_id;
-    }
-
-    public function setTicketsId(?int $tickets_id): self
-    {
-        $this->tickets_id = $tickets_id;
-
-        return $this;
-    }
-
-    public function getOlalevelsId(): ?int
-    {
-        return $this->olalevels_id;
-    }
-
-    public function setOlalevelsId(?int $olalevels_id): self
-    {
-        $this->olalevels_id = $olalevels_id;
-
-        return $this;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -66,4 +44,44 @@ class OlalevelTicket
         return $this;
     }
 
+
+    /**
+     * Get the value of ticket
+     */
+    public function getTicket()
+    {
+        return $this->ticket;
+    }
+
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */
+    public function setTicket($ticket)
+    {
+        $this->ticket = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of olalevel
+     */
+    public function getOlalevel()
+    {
+        return $this->olalevel;
+    }
+
+    /**
+     * Set the value of olalevel
+     *
+     * @return  self
+     */
+    public function setOlalevel($olalevel)
+    {
+        $this->olalevel = $olalevel;
+
+        return $this;
+    }
 }

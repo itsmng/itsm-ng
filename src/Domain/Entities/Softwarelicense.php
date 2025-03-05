@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use SoftwareLicense as GlobalSoftwareLicense;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_softwarelicenses")]
@@ -18,9 +19,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "softwares_id_expire_number", columns: ["softwares_id", "expire", "number"])]
 #[ORM\Index(name: "locations_id", columns: ["locations_id"])]
-#[ORM\Index(name: "users_id_tech", columns: ["users_id_tech"])]
+#[ORM\Index(name: "tech_users_id", columns: ["tech_users_id"])]
 #[ORM\Index(name: "users_id", columns: ["users_id"])]
-#[ORM\Index(name: "groups_id_tech", columns: ["groups_id_tech"])]
+#[ORM\Index(name: "tech_groups_id", columns: ["tech_groups_id"])]
 #[ORM\Index(name: "groups_id", columns: ["groups_id"])]
 #[ORM\Index(name: "is_helpdesk_visible", columns: ["is_helpdesk_visible"])]
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
@@ -32,143 +33,120 @@ class Softwarelicense
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $softwares_id;
+    #[ORM\ManyToOne(targetEntity: Software::class)]
+    #[ORM\JoinColumn(name: 'softwares_id', referencedColumnName: 'id', nullable: true)]
+    private ?Software $software = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $softwarelicenses_id;
+    #[ORM\ManyToOne(targetEntity: Softwarelicense::class)]
+    #[ORM\JoinColumn(name: 'softwarelicenses_id', referencedColumnName: 'id', nullable: true)]
+    private ?GlobalSoftwareLicense $softwarelicense = null;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'completename', type: 'text', length: 65535, nullable: true)]
     private $completename;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
     private $level;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'number', type: 'integer', options: ['default' => 0])]
     private $number;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $softwarelicensetypes_id;
+    #[ORM\ManyToOne(targetEntity: Softwarelicensetype::class)]
+    #[ORM\JoinColumn(name: 'softwarelicensetypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Softwarelicensetype $softwarelicensetype = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $softwareversions_id_buy;
+    #[ORM\ManyToOne(targetEntity: Softwareversion::class)]
+    #[ORM\JoinColumn(name: 'softwareversions_id_buy', referencedColumnName: 'id', nullable: true)]
+    private ?Softwareversion $softwareversionBuy = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $softwareversions_id_use;
+    #[ORM\ManyToOne(targetEntity: Softwareversion::class)]
+    #[ORM\JoinColumn(name: 'softwareversions_id_use', referencedColumnName: 'id', nullable: true)]
+    private ?Softwareversion $softwareversionUse = null;
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(name: 'expire', type: 'date', nullable: true)]
     private $expire;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_valid;
+    #[ORM\Column(name: 'is_valid', type: 'boolean', options: ['default' => 1])]
+    private $isValid;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $techUser = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_tech;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $techGroup = null;
 
+    #[ORM\Column(name: 'groups_id', type: 'integer', options: ['default' => 0])]
+    private $groupsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\Column(name: 'is_helpdesk_visible', type: 'boolean', options: ['default' => 0])]
+    private $isHelpdeskVisible;
 
+    #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
+    private $isTemplate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id_tech;
+    #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
+    private $templateName;
 
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer = null;
 
-
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_helpdesk_visible;
-
-
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_template;
-
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $template_name;
-
-
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
-
-
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $manufacturers_id;
-
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'contact', type: 'string', length: 255, nullable: true)]
     private $contact;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $contact_num;
+    #[ORM\Column(name: 'contact_num', type: 'string', length: 255, nullable: true)]
+    private $contactNum;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $allow_overquota;
+    #[ORM\Column(name: 'allow_overquota', type: 'boolean', options: ['default' => 0])]
+    private $allowOverquota;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getSoftwaresId(): ?int
-    {
-        return $this->softwares_id;
-    }
-
-    public function setSoftwaresId(?int $softwares_id): self
-    {
-        $this->softwares_id = $softwares_id;
-
-        return $this;
-    }
-
-    public function getSoftwarelicensesId(): ?int
-    {
-        return $this->softwarelicenses_id;
-    }
-
-    public function setSoftwarelicensesId(?int $softwarelicenses_id): self
-    {
-        $this->softwarelicenses_id = $softwarelicenses_id;
-
-        return $this;
     }
 
     public function getCompletename(): ?string
@@ -195,26 +173,14 @@ class Softwarelicense
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -227,18 +193,6 @@ class Softwarelicense
     public function setNumber(?int $number): self
     {
         $this->number = $number;
-
-        return $this;
-    }
-
-    public function getSoftwarelicensetypesId(): ?int
-    {
-        return $this->softwarelicensetypes_id;
-    }
-
-    public function setSoftwarelicensetypesId(?int $softwarelicensetypes_id): self
-    {
-        $this->softwarelicensetypes_id = $softwarelicensetypes_id;
 
         return $this;
     }
@@ -279,29 +233,7 @@ class Softwarelicense
         return $this;
     }
 
-    public function getSoftwareversionsIdBuy(): ?int
-    {
-        return $this->softwareversions_id_buy;
-    }
 
-    public function setSoftwareversionsIdBuy(?int $softwareversions_id_buy): self
-    {
-        $this->softwareversions_id_buy = $softwareversions_id_buy;
-
-        return $this;
-    }
-
-    public function getSoftwareversionsIdUse(): ?int
-    {
-        return $this->softwareversions_id_use;
-    }
-
-    public function setSoftwareversionsIdUse(?int $softwareversions_id_use): self
-    {
-        $this->softwareversions_id_use = $softwareversions_id_use;
-
-        return $this;
-    }
 
     public function getExpire(): ?\DateTime
     {
@@ -329,167 +261,96 @@ class Softwarelicense
 
     public function getDateMod(): ?\DateTime
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $date_mod): self
+    public function setDateMod(?\DateTime $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getIsValid(): ?bool
     {
-        return $this->is_valid;
+        return $this->isValid;
     }
 
-    public function setIsValid(?bool $is_valid): self
+    public function setIsValid(?bool $isValid): self
     {
-        $this->is_valid = $is_valid;
+        $this->isValid = $isValid;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $date_creation): self
+    public function setDateCreation(?\DateTime $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(?bool $is_deleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-    public function setLocationsId(?int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
-
-    public function getUsersIdTech(): ?int
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(?int $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(?int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getGroupsId(): ?int
     {
-        return $this->groups_id;
+        return $this->groupsId;
     }
 
-    public function setGroupsId(?int $groups_id): self
+    public function setGroupsId(?int $groupsId): self
     {
-        $this->groups_id = $groups_id;
+        $this->groupsId = $groupsId;
 
         return $this;
     }
 
     public function getIsHelpdeskVisible(): ?bool
     {
-        return $this->is_helpdesk_visible;
+        return $this->isHelpdeskVisible;
     }
 
-    public function setIsHelpdeskVisible(?bool $is_helpdesk_visible): self
+    public function setIsHelpdeskVisible(?bool $isHelpdeskVisible): self
     {
-        $this->is_helpdesk_visible = $is_helpdesk_visible;
+        $this->isHelpdeskVisible = $isHelpdeskVisible;
 
         return $this;
     }
 
     public function getIsTemplate(): ?bool
     {
-        return $this->is_template;
+        return $this->isTemplate;
     }
 
-    public function setIsTemplate(?bool $is_template): self
+    public function setIsTemplate(?bool $isTemplate): self
     {
-        $this->is_template = $is_template;
+        $this->isTemplate = $isTemplate;
 
         return $this;
     }
 
     public function getTemplateName(): ?string
     {
-        return $this->template_name;
+        return $this->templateName;
     }
 
-    public function setTemplateName(?string $template_name): self
+    public function setTemplateName(?string $templateName): self
     {
-        $this->template_name = $template_name;
-
-        return $this;
-    }
-
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(?int $states_id): self
-    {
-        $this->states_id = $states_id;
-
-        return $this;
-    }
-
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
+        $this->templateName = $templateName;
 
         return $this;
     }
@@ -508,26 +369,268 @@ class Softwarelicense
 
     public function getContactNum(): ?string
     {
-        return $this->contact_num;
+        return $this->contactNum;
     }
 
-    public function setContactNum(?string $contact_num): self
+    public function setContactNum(?string $contactNum): self
     {
-        $this->contact_num = $contact_num;
+        $this->contactNum = $contactNum;
 
         return $this;
     }
 
     public function getAllowOverquota(): ?bool
     {
-        return $this->allow_overquota;
+        return $this->allowOverquota;
     }
 
-    public function setAllowOverquota(?bool $allow_overquota): self
+    public function setAllowOverquota(?bool $allowOverquota): self
     {
-        $this->allow_overquota = $allow_overquota;
+        $this->allowOverquota = $allowOverquota;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of software
+     */
+    public function getSoftware()
+    {
+        return $this->software;
+    }
+
+    /**
+     * Set the value of software
+     *
+     * @return  self
+     */
+    public function setSoftware($software)
+    {
+        $this->software = $software;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of softwarelicense
+     */
+    public function getSoftwarelicense()
+    {
+        return $this->softwarelicense;
+    }
+
+    /**
+     * Set the value of softwarelicense
+     *
+     * @return  self
+     */
+    public function setSoftwarelicense($softwarelicense)
+    {
+        $this->softwarelicense = $softwarelicense;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of softwarelicensetype
+     */
+    public function getSoftwarelicensetype()
+    {
+        return $this->softwarelicensetype;
+    }
+
+    /**
+     * Set the value of softwarelicensetype
+     *
+     * @return  self
+     */
+    public function setSoftwarelicensetype($softwarelicensetype)
+    {
+        $this->softwarelicensetype = $softwarelicensetype;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of softwareversionBuy
+     */
+    public function getSoftwareversionBuy()
+    {
+        return $this->softwareversionBuy;
+    }
+
+    /**
+     * Set the value of softwareversionBuy
+     *
+     * @return  self
+     */
+    public function setSoftwareversionBuy($softwareversionBuy)
+    {
+        $this->softwareversionBuy = $softwareversionBuy;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of techGroup
+     */
+    public function getTechGroup()
+    {
+        return $this->techGroup;
+    }
+
+    /**
+     * Set the value of techGroup
+     *
+     * @return  self
+     */
+    public function setTechGroup($techGroup)
+    {
+        $this->techGroup = $techGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of techUser
+     */
+    public function getTechUser()
+    {
+        return $this->techUser;
+    }
+
+    /**
+     * Set the value of techUser
+     *
+     * @return  self
+     */
+    public function setTechUser($techUser)
+    {
+        $this->techUser = $techUser;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of softwareversionUse
+     */
+    public function getSoftwareversionUse()
+    {
+        return $this->softwareversionUse;
+    }
+
+    /**
+     * Set the value of softwareversionUse
+     *
+     * @return  self
+     */
+    public function setSoftwareversionUse($softwareversionUse)
+    {
+        $this->softwareversionUse = $softwareversionUse;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

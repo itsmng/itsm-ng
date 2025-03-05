@@ -15,9 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'manufacturers_id', columns: ['manufacturers_id'])]
 #[ORM\Index(name: 'applianceenvironments_id', columns: ['applianceenvironments_id'])]
 #[ORM\Index(name: 'users_id', columns: ['users_id'])]
-#[ORM\Index(name: 'users_id_tech', columns: ['users_id_tech'])]
+#[ORM\Index(name: 'tech_users_id', columns: ['tech_users_id'])]
 #[ORM\Index(name: 'groups_id', columns: ['groups_id'])]
-#[ORM\Index(name: 'groups_id_tech', columns: ['groups_id_tech'])]
+#[ORM\Index(name: 'tech_groups_id', columns: ['tech_groups_id'])]
 #[ORM\Index(name: 'states_id', columns: ['states_id'])]
 #[ORM\Index(name: 'serial', columns: ['serial'])]
 #[ORM\Index(name: 'otherserial', columns: ['otherserial'])]
@@ -28,94 +28,96 @@ class Appliance
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $appliancetypes_id;
+    #[ORM\Column(name: 'appliancetypes_id', type: 'integer', options: ['default' => 0])]
+    private $appliancetypesId;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $applianceenvironments_id;
+    #[ORM\ManyToOne(targetEntity: ApplianceEnvironment::class)]
+    #[ORM\JoinColumn(name: 'applianceenvironments_id', referencedColumnName: 'id', nullable: true)]
+    private ?ApplianceEnvironment $applianceenvironment = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_tech;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $techUser = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id_tech;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $techGroup = null;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\Column(type: 'integer', name: 'states_id', options: ['default' => 0])]
+    private $statesId;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: false)]
+    private ?State $state;
+
+    #[ORM\Column(name: 'externalidentifier', type: 'string', length: 255, nullable: true)]
     private $externalidentifier;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_helpdesk_visible;
+    #[ORM\Column(name: 'is_helpdesk_visible', type: 'boolean', options: ['default' => 1])]
+    private $isHelpdeskVisible;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
 
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?int
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(int $is_recursive): self
+    public function setIsRecursive(int $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -134,24 +136,24 @@ class Appliance
 
     public function getIsDeleted(): ?int
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(int $is_deleted): self
+    public function setIsDeleted(int $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getAppliancetypesId(): ?int
     {
-        return $this->appliancetypes_id;
+        return $this->appliancetypesId;
     }
 
-    public function setAppliancetypesId(int $appliancetypes_id): self
+    public function setAppliancetypesId(int $appliancetypesId): self
     {
-        $this->appliancetypes_id = $appliancetypes_id;
+        $this->appliancetypesId = $appliancetypesId;
 
         return $this;
     }
@@ -167,113 +169,37 @@ class Appliance
         return $this;
     }
 
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-        return $this;
-    }
-
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(int $manufacturers_id): self
-    {
-        $this->manufacturers_id = $manufacturers_id;
-        return $this;
-    }
-
-    public function getApplianceenvironmentsId(): ?int
-    {
-        return $this->applianceenvironments_id;
-    }
-
-    public function setApplianceenvironmentsId(int $applianceenvironments_id): self
-    {
-        $this->applianceenvironments_id = $applianceenvironments_id;
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-        return $this;
-    }
-
-    public function getUsersIdTech(): ?int
-    {
-        return $this->users_id_tech;
-    }
-
-    public function setUsersIdTech(int $users_id_tech): self
-    {
-        $this->users_id_tech = $users_id_tech;
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
-        return $this;
-    }
-
-    public function getGroupsIdTech(): ?int
-    {
-        return $this->groups_id_tech;
-    }
-
-    public function setGroupsIdTech(int $groups_id_tech): self
-    {
-        $this->groups_id_tech = $groups_id_tech;
-        return $this;
-    }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_mod = $date_creation;
+        $this->dateMod = $dateCreation;
         return $this;
     }
 
     public function getStatesId(): ?int
     {
-        return $this->states_id;
+        return $this->statesId;
     }
 
-    public function setStatesId(int $states_id): self
+    public function setStatesId(int $statesId): self
     {
-        $this->states_id = $states_id;
+        $this->statesId = $statesId;
         return $this;
     }
 
@@ -312,14 +238,196 @@ class Appliance
 
     public function getIsHelpdeskVisible(): ?int
     {
-        return $this->is_helpdesk_visible;
+        return $this->isHelpdeskVisible;
     }
 
-    public function setIsHelpdeskVisible(int $is_helpdesk_visible): self
+    public function setIsHelpdeskVisible(int $isHelpdeskVisible): self
     {
-        $this->is_helpdesk_visible = $is_helpdesk_visible;
+        $this->isHelpdeskVisible = $isHelpdeskVisible;
         return $this;
     }
 
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of applianceenvironment
+     */
+    public function getApplianceenvironment()
+    {
+        return $this->applianceenvironment;
+    }
+
+    /**
+     * Set the value of applianceenvironment
+     *
+     * @return  self
+     */
+    public function setApplianceenvironment($applianceenvironment)
+    {
+        $this->applianceenvironment = $applianceenvironment;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of techGroup
+     */
+    public function getTechGroup()
+    {
+        return $this->techGroup;
+    }
+
+    /**
+     * Set the value of techGroup
+     *
+     * @return  self
+     */
+    public function setTechGroup($techGroup)
+    {
+        $this->techGroup = $techGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of techUser
+     */
+    public function getTechUser()
+    {
+        return $this->techUser;
+    }
+
+    /**
+     * Set the value of techUser
+     *
+     * @return  self
+     */
+    public function setTechUser($techUser)
+    {
+        $this->techUser = $techUser;
+
+        return $this;
+    }
 }

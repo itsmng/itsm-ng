@@ -16,57 +16,48 @@ class Problemcost
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options:['default' => 0])]
-    private $problems_id;
+    #[ORM\ManyToOne(targetEntity: Problem::class)]
+    #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Problem $problem = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $begin_date;
+    #[ORM\Column(name: 'begin_date', type: 'date', nullable: true)]
+    private $beginDate;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $end_date;
+    #[ORM\Column(name: 'end_date', type: 'date', nullable: true)]
+    private $endDate;
 
-    #[ORM\Column(type: 'integer', options:['default' => 0])]
+    #[ORM\Column(name: 'actiontime', type: 'integer', options:['default' => 0])]
     private $actiontime;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options:['default' => "0.0000"])]
-    private $cost_time;
+    #[ORM\Column(name: 'cost_time', type: 'decimal', precision: 20, scale: 4, options:['default' => "0.0000"])]
+    private $costTime;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options:['default' => "0.0000"])]
-    private $cost_fixed;
+    #[ORM\Column(name: 'cost_fixed', type: 'decimal', precision: 20, scale: 4, options:['default' => "0.0000"])]
+    private $costFixed;
 
-    #[ORM\Column(type: 'decimal', precision: 20, scale: 4, options:['default' => "0.0000"])]
-    private $cost_material;
+    #[ORM\Column(name: 'cost_material', type: 'decimal', precision: 20, scale: 4, options:['default' => "0.0000"])]
+    private $costMaterial;
 
-    #[ORM\Column(type: 'integer', options:['default' => 0])]
-    private $budgets_id;
+    #[ORM\ManyToOne(targetEntity: Budget::class)]
+    #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Budget $budget = null;
 
-    #[ORM\Column(type: 'integer', options:['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProblemsId(): ?int
-    {
-        return $this->problems_id;
-    }
-
-    public function setProblemsId(?int $problems_id): self
-    {
-        $this->problems_id = $problems_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -95,24 +86,24 @@ class Problemcost
 
     public function getBeginDate(): ?\DateTimeInterface
     {
-        return $this->begin_date;
+        return $this->beginDate;
     }
 
-    public function setBeginDate(?\DateTimeInterface $begin_date): self
+    public function setBeginDate(?\DateTimeInterface $beginDate): self
     {
-        $this->begin_date = $begin_date;
+        $this->beginDate = $beginDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(?\DateTimeInterface $end_date): self
+    public function setEndDate(?\DateTimeInterface $endDate): self
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }
@@ -130,58 +121,95 @@ class Problemcost
 
     public function getCostTime(): ?float
     {
-        return $this->cost_time;
+        return $this->costTime;
     }
 
-    public function setCostTime(?float $cost_time): self
+    public function setCostTime(?float $costTime): self
     {
-        $this->cost_time = $cost_time;
+        $this->costTime = $costTime;
         return $this;
     }
 
     public function getCostFixed(): ?float
     {
-        return $this->cost_fixed;
+        return $this->costFixed;
     }
 
-    public function setCostFixed(?float $cost_fixed): self
+    public function setCostFixed(?float $costFixed): self
     {
-        $this->cost_fixed = $cost_fixed;
+        $this->costFixed = $costFixed;
         return $this;
     }
 
     public function getCostMaterial(): ?float
     {
-        return $this->cost_material;
+        return $this->costMaterial;
     }
 
-    public function setCostMaterial(?float $cost_material): self
+    public function setCostMaterial(?float $costMaterial): self
     {
-        $this->cost_material = $cost_material;
+        $this->costMaterial = $costMaterial;
         return $this;
     }
 
-    public function getBudgetsId(): ?int
+
+    /**
+     * Get the value of problem
+     */
+    public function getProblem()
     {
-        return $this->budgets_id;
+        return $this->problem;
     }
 
-    public function setBudgetsId(?int $budgets_id): self
+    /**
+     * Set the value of problem
+     *
+     * @return  self
+     */
+    public function setProblem($problem)
     {
-        $this->budgets_id = $budgets_id;
+        $this->problem = $problem;
 
         return $this;
     }
 
-    public function getEntitiesId(): ?int
+    /**
+     * Get the value of budget
+     */
+    public function getBudget()
     {
-        return $this->entities_id;
+        return $this->budget;
     }
 
-    public function setEntitiesId(?int $entities_id): self
+    /**
+     * Set the value of budget
+     *
+     * @return  self
+     */
+    public function setBudget($budget)
     {
-        $this->entities_id = $entities_id;
+        $this->budget = $budget;
+
         return $this;
     }
 
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
 }

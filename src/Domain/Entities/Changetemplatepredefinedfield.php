@@ -12,33 +12,22 @@ class Changetemplatepredefinedfield
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changetemplates_id;
+    #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
+    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?ChangeTemplate $changetemplate = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'num', type: 'integer', options: ['default' => 0])]
     private $num;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'value', type: 'text', length: 65535, nullable: true)]
     private $value;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getChangetemplatesId(): ?int
-    {
-        return $this->changetemplates_id;
-    }
-
-    public function setChangetemplatesId(int $changetemplates_id): self
-    {
-        $this->changetemplates_id = $changetemplates_id;
-
-        return $this;
     }
 
     public function getNum(): ?int
@@ -61,6 +50,26 @@ class Changetemplatepredefinedfield
     public function setValue(?string $value): self
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changetemplate
+     */
+    public function getChangetemplate()
+    {
+        return $this->changetemplate;
+    }
+
+    /**
+     * Set the value of changetemplate
+     *
+     * @return  self
+     */
+    public function setChangetemplate($changetemplate)
+    {
+        $this->changetemplate = $changetemplate;
 
         return $this;
     }

@@ -10,19 +10,19 @@ class Notificationchatconfig
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'hookurl', type: 'string', length: 255, nullable: true)]
     private $hookurl;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'chat', type: 'string', length: 255, nullable: true)]
     private $chat;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'type', type: 'string', length: 255, nullable: true)]
     private $type;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'value', type: 'string', length: 255, nullable: true)]
     private $value;
 
     public function getId(): ?int

@@ -34,7 +34,7 @@ Auth::checkAlternateAuthSystems(true, isset($_GET["redirect"]) ? $_GET["redirect
 $theme = isset($_SESSION['glpipalette']) ? $_SESSION['glpipalette'] : 'itsmng';
 
 $entity = new Entity(); // Custom CSS for root entity
-$entity->getFromDB('0');
+$entity->getFromDB(0);
 
 $css = [
     Html::scss('css/styles'),

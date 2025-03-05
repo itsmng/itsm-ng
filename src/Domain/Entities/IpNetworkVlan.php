@@ -11,40 +11,58 @@ class IpNetworkVlan
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $ipnetworks_id;
+    #[ORM\ManyToOne(targetEntity: IpNetwork::class, inversedBy: 'ipnetworkVlans')]
+    #[ORM\JoinColumn(name: 'ipnetworks_id', referencedColumnName: 'id', nullable: true)]
+    private ?IpNetwork $ipnetwork = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $vlans_id;
+    #[ORM\ManyToOne(targetEntity: Vlan::class, inversedBy: 'ipnetworkVlans')]
+    #[ORM\JoinColumn(name: 'vlans_id', referencedColumnName: 'id', nullable: true)]
+    private ?Vlan $vlan = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIpnetworksId(): ?int
+    /**
+     * Get the value of ipnetwork
+     */
+    public function getIpnetwork()
     {
-        return $this->ipnetworks_id;
+        return $this->ipnetwork;
     }
 
-    public function setIpnetworksId(int $ipnetworks_id): self
+    /**
+     * Set the value of ipnetwork
+     *
+     * @return  self
+     */
+    public function setIpnetwork($ipnetwork)
     {
-        $this->ipnetworks_id = $ipnetworks_id;
+        $this->ipnetwork = $ipnetwork;
 
         return $this;
     }
 
-    public function getVlansId(): ?int
+    /**
+     * Get the value of vlan
+     */
+    public function getVlan()
     {
-        return $this->vlans_id;
+        return $this->vlan;
     }
 
-    public function setVlansId(int $vlans_id): self
+    /**
+     * Set the value of vlan
+     *
+     * @return  self
+     */
+    public function setVlan($vlan)
     {
-        $this->vlans_id = $vlans_id;
+        $this->vlan = $vlan;
 
         return $this;
     }

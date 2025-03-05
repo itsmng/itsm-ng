@@ -12,14 +12,18 @@ class ChangeTicket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changes_id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\ManyToOne(targetEntity: Change::class, inversedBy: 'changeTickets')]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Change $change = null;
+
+
+    #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'changeTickets')]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket = null;
 
     public function getId(): int
     {
@@ -33,26 +37,44 @@ class ChangeTicket
         return $this;
     }
 
-    public function getChangesId(): int
+
+
+    /**
+     * Get the value of change
+     */
+    public function getChange()
     {
-        return $this->changes_id;
+        return $this->change;
     }
 
-    public function setChangesId(int $changes_id): self
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */
+    public function setChange($change)
     {
-        $this->changes_id = $changes_id;
+        $this->change = $change;
 
         return $this;
     }
 
-    public function getTicketsId(): int
+    /**
+     * Get the value of ticket
+     */
+    public function getTicket()
     {
-        return $this->tickets_id;
+        return $this->ticket;
     }
 
-    public function setTicketsId(int $problems_id): self
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */
+    public function setTicket($ticket)
     {
-        $this->tickets_id = $problems_id;
+        $this->ticket = $ticket;
 
         return $this;
     }

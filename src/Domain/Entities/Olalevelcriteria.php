@@ -12,36 +12,25 @@ class Olalevelcriteria
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olalevels_id;
+    #[ORM\ManyToOne(targetEntity: Olalevel::class)]
+    #[ORM\JoinColumn(name: 'olalevels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Olalevel $olalevel = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'criteria', type: 'string', length: 255, nullable: true)]
     private $criteria;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PATTERN_* and REGEX_* constant'])]
+    #[ORM\Column(name: 'condition', type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PATTERN_* and REGEX_* constant'])]
     private $condition;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'pattern', type: 'string', length: 255, nullable: true)]
     private $pattern;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getOlalevelsId(): ?int
-    {
-        return $this->olalevels_id;
-    }
-
-    public function setOlalevelsId(?int $olalevels_id): self
-    {
-        $this->olalevels_id = $olalevels_id;
-
-        return $this;
     }
 
     public function getCriteria(): ?string
@@ -80,4 +69,24 @@ class Olalevelcriteria
         return $this;
     }
 
+
+    /**
+     * Get the value of olalevel
+     */
+    public function getOlalevel()
+    {
+        return $this->olalevel;
+    }
+
+    /**
+     * Set the value of olalevel
+     *
+     * @return  self
+     */
+    public function setOlalevel($olalevel)
+    {
+        $this->olalevel = $olalevel;
+
+        return $this;
+    }
 }

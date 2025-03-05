@@ -15,42 +15,32 @@ class Reservation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $reservationitems_id;
+    #[ORM\ManyToOne(targetEntity: Reservationitem::class)]
+    #[ORM\JoinColumn(name: 'reservationitems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Reservationitem $reservationitem = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'begin', type: 'datetime', nullable: true)]
     private $begin;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'end', type: 'datetime', nullable: true)]
     private $end;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'group', type: 'integer', options: ['default' => 0])]
     private $group;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getReservationitemsId(): ?string
-    {
-        return $this->reservationitems_id;
-    }
-
-    public function setReservationitemsId(?string $reservationitems_id): self
-    {
-        $this->reservationitems_id = $reservationitems_id;
-
-        return $this;
     }
 
     public function getBegin(): ?string
@@ -73,18 +63,6 @@ class Reservation
     public function setEnd(?string $end): self
     {
         $this->end = $end;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?string
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?string $users_id): self
-    {
-        $this->users_id = $users_id;
 
         return $this;
     }
@@ -113,4 +91,44 @@ class Reservation
         return $this;
     }
 
+
+    /**
+     * Get the value of reservationitem
+     */
+    public function getReservationitem()
+    {
+        return $this->reservationitem;
+    }
+
+    /**
+     * Set the value of reservationitem
+     *
+     * @return  self
+     */
+    public function setReservationitem($reservationitem)
+    {
+        $this->reservationitem = $reservationitem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

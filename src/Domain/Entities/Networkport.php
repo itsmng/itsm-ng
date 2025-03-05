@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_networkports')]
@@ -19,47 +20,57 @@ class Networkport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $logical_number;
+    #[ORM\Column(name: 'logical_number', type: 'integer', options: ['default' => 0])]
+    private $logicalNumber;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $instantiation_type;
+    #[ORM\Column(name: 'instantiation_type', type: 'string', length: 255, nullable: true)]
+    private $instantiationType;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'mac', type: 'string', length: 255, nullable: true)]
     private $mac;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
+    private $isDynamic;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
+
+    #[ORM\OneToMany(mappedBy: 'networkport1', targetEntity: NetworkportNetworkport::class)]
+    private Collection $networkportNetworkports1;
+
+    #[ORM\OneToMany(mappedBy: 'networkport2', targetEntity: NetworkportNetworkport::class)]
+    private Collection $networkportNetworkports2;
+
+    #[ORM\OneToMany(mappedBy: 'networkport', targetEntity: NetworkportVlan::class)]
+    private Collection $networkportVlans;
 
     public function getId(): ?int
     {
@@ -68,12 +79,12 @@ class Networkport
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
     public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $itemsId;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -90,38 +101,26 @@ class Networkport
         return $this;
     }
 
-    public function getEntitiesId(): ?int
+    public function getIsRecursive(): ?bool
     {
-        return $this->entities_id;
+        return $this->isRecursive;
     }
 
-    public function setEntitiesId(int $entities_Id): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->entities_id = $entities_Id;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
-    public function getIs_recursive(): ?bool
+    public function getLogicalNumber(): ?int
     {
-        return $this->is_recursive;
+        return $this->logicalNumber;
     }
 
-    public function setIs_recursive(bool $is_recursive): self
+    public function setLogicalNumber(int $logicalNumber): self
     {
-        $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getLogical_number(): ?int
-    {
-        return $this->logical_number;
-    }
-
-    public function setLogical_number(int $logical_number): self
-    {
-        $this->logical_number = $logical_number;
+        $this->logicalNumber = $logicalNumber;
 
         return $this;
     }
@@ -138,14 +137,14 @@ class Networkport
         return $this;
     }
 
-    public function getInstantiation_type(): ?string
+    public function getInstantiationType(): ?string
     {
-        return $this->instantiation_type;
+        return $this->instantiationType;
     }
 
-    public function setInstantiation_type(string $instantiation_type): self
+    public function setInstantiationType(string $instantiationType): self
     {
-        $this->instantiation_type = $instantiation_type;
+        $this->instantiationType = $instantiationType;
 
         return $this;
     }
@@ -176,50 +175,131 @@ class Networkport
 
     public function getIsDeleted(): ?int
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(int $is_deleted): self
+    public function setIsDeleted(int $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?int
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(int $is_dynamic): self
+    public function setIsDynamic(int $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of networkportNetworkports1
+     */
+    public function getNetworkportNetworkports1()
+    {
+        return $this->networkportNetworkports1;
+    }
+
+    /**
+     * Set the value of networkportNetworkports1
+     *
+     * @return  self
+     */
+    public function setNetworkportNetworkports1($networkportNetworkports1)
+    {
+        $this->networkportNetworkports1 = $networkportNetworkports1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportNetworkports2
+     */
+    public function getNetworkportNetworkports2()
+    {
+        return $this->networkportNetworkports2;
+    }
+
+    /**
+     * Set the value of networkportNetworkports2
+     *
+     * @return  self
+     */
+    public function setNetworkportNetworkports2($networkportNetworkports2)
+    {
+        $this->networkportNetworkports2 = $networkportNetworkports2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportVlans
+     */
+    public function getNetworkportVlans()
+    {
+        return $this->networkportVlans;
+    }
+
+    /**
+     * Set the value of networkportVlans
+     *
+     * @return  self
+     */
+    public function setNetworkportVlans($networkportVlans)
+    {
+        $this->networkportVlans = $networkportVlans;
+
+        return $this;
+    }
 }

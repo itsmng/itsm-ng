@@ -10,13 +10,13 @@ class ImpactCompound
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true, options: ["default" => ""])]
+    #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true, options: ["default" => ""])]
     private $name;
 
-    #[ORM\Column(type: "string", length: 255, options: ["default" => ""])]
+    #[ORM\Column(name: 'color', type: "string", length: 255, options: ["default" => ""])]
     private $color;
 
     public function getId(): ?int

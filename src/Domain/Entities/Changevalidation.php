@@ -19,127 +19,85 @@ class Changevalidation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $changes_id;
+    #[ORM\ManyToOne(targetEntity: Change::class)]
+    #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Change $change = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_validate;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_validate', referencedColumnName: 'id', nullable: true)]
+    private ?User $userValidate = null;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $comment_submission;
+    #[ORM\Column(name: 'comment_submission', type: 'text', length: 65535, nullable: true)]
+    private $commentSubmission;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $comment_validation;
+    #[ORM\Column(name: 'comment_validation', type: 'text', length: 65535, nullable: true)]
+    private $commentValidation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 2])]
+    #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 2])]
     private $status;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $submission_date;
+    #[ORM\Column(name: 'submission_date', type: 'datetime', nullable: false)]
+    private $submissionDate;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $validation_date;
+    #[ORM\Column(name: 'validation_date', type: 'datetime', nullable: false)]
+    private $validationDate;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $timeline_position;
+    #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
+    private $timelinePosition;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?int
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(int $is_recursive): self
+    public function setIsRecursive(int $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getChangesId(): ?int
-    {
-        return $this->changes_id;
-    }
-
-    public function setChangesId(int $changes_id): self
-    {
-        $this->changes_id = $changes_id;
-
-        return $this;
-    }
-
-    public function getUsersIdValidate(): ?int
-    {
-        return $this->users_id_validate;
-    }
-
-    public function setUsersIdValidate(int $users_id_validate): self
-    {
-        $this->users_id_validate = $users_id_validate;
-
-        return $this;
-    }
 
     public function getCommentSubmission(): ?string
     {
-        return $this->comment_submission;
+        return $this->commentSubmission;
     }
 
-    public function setCommentSubmission(?string $comment_submission): self
+    public function setCommentSubmission(?string $commentSubmission): self
     {
-        $this->comment_submission = $comment_submission;
+        $this->commentSubmission = $commentSubmission;
 
         return $this;
     }
 
     public function getCommentValidation(): ?string
     {
-        return $this->comment_validation;
+        return $this->commentValidation;
     }
 
-    public function setCommentValidation(?string $comment_validation): self
+    public function setCommentValidation(?string $commentValidation): self
     {
-        $this->comment_validation = $comment_validation;
+        $this->commentValidation = $commentValidation;
 
         return $this;
     }
@@ -158,36 +116,117 @@ class Changevalidation
 
     public function getSubmissionDate(): ?\DateTimeInterface
     {
-        return $this->submission_date;
+        return $this->submissionDate;
     }
 
-    public function setSubmissionDate(\DateTimeInterface $submission_date): self
+    public function setSubmissionDate(\DateTimeInterface $submissionDate): self
     {
-        $this->submission_date = $submission_date;
+        $this->submissionDate = $submissionDate;
 
         return $this;
     }
 
     public function getValidationDate(): ?\DateTimeInterface
     {
-        return $this->validation_date;
+        return $this->validationDate;
     }
 
-    public function setValidationDate(\DateTimeInterface $validation_date): self
+    public function setValidationDate(\DateTimeInterface $validationDate): self
     {
-        $this->validation_date = $validation_date;
+        $this->validationDate = $validationDate;
 
         return $this;
     }
 
     public function getTimelinePosition(): ?int
     {
-        return $this->timeline_position;
+        return $this->timelinePosition;
     }
 
-    public function setTimelinePosition(int $timeline_position): self
+    public function setTimelinePosition(int $timelinePosition): self
     {
-        $this->timeline_position = $timeline_position;
+        $this->timelinePosition = $timelinePosition;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of change
+     */
+    public function getChange()
+    {
+        return $this->change;
+    }
+
+    /**
+     * Set the value of change
+     *
+     * @return  self
+     */
+    public function setChange($change)
+    {
+        $this->change = $change;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of userValidate
+     */
+    public function getUserValidate()
+    {
+        return $this->userValidate;
+    }
+
+    /**
+     * Set the value of userValidate
+     *
+     * @return  self
+     */
+    public function setUserValidate($userValidate)
+    {
+        $this->userValidate = $userValidate;
 
         return $this;
     }

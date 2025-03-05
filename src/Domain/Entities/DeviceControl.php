@@ -18,38 +18,42 @@ class DeviceControl
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'designation', type: 'string', length: 255, nullable: true)]
     private $designation;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_raid;
+    #[ORM\Column(name: 'is_raid', type: 'boolean', options: ['default' => 0])]
+    private $isRaid;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $manufacturers_id;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
+    private ?Manufacturer $manufacturer = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $interfacetypes_id;
+    #[ORM\ManyToOne(targetEntity: InterfaceType::class)]
+    #[ORM\JoinColumn(name: 'interfacetypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?InterfaceType $interfacetype = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $devicecontrolmodels_id;
+    #[ORM\ManyToOne(targetEntity: DeviceControlModel::class)]
+    #[ORM\JoinColumn(name: 'devicecontrolmodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?DeviceControlModel $devicecontrolmodel = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -70,12 +74,12 @@ class DeviceControl
 
     public function getIsRaid(): ?bool
     {
-        return $this->is_raid;
+        return $this->isRaid;
     }
 
     public function setIsRaid(?bool $isRaid): self
     {
-        $this->is_raid = $isRaid;
+        $this->isRaid = $isRaid;
 
         return $this;
     }
@@ -92,86 +96,120 @@ class DeviceControl
         return $this;
     }
 
-    public function getManufacturersId(): ?int
-    {
-        return $this->manufacturers_id;
-    }
-
-    public function setManufacturersId(?int $manufacturersId): self
-    {
-        $this->manufacturers_id = $manufacturersId;
-
-        return $this;
-    }
-
-    public function getInterfacetypesId(): ?int
-    {
-        return $this->interfacetypes_id;
-    }
-
-    public function setInterfacetypesId(?int $interfacetypesId): self
-    {
-        $this->interfacetypes_id = $interfacetypesId;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entities_id = $entitiesId;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
     public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $isRecursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
-    public function getDevicecontrolmodelsId(): ?int
-    {
-        return $this->devicecontrolmodels_id;
-    }
-
-    public function setDevicecontrolmodelsId(?int $devicecontrolmodelsId): self
-    {
-        $this->devicecontrolmodels_id = $devicecontrolmodelsId;
-
-        return $this;
-    }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
     public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $dateMod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
     public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $dateCreation;
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of manufacturer
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * Set the value of manufacturer
+     *
+     * @return  self
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of interfacetype
+     */
+    public function getInterfacetype()
+    {
+        return $this->interfacetype;
+    }
+
+    /**
+     * Set the value of interfacetype
+     *
+     * @return  self
+     */
+    public function setInterfacetype($interfacetype)
+    {
+        $this->interfacetype = $interfacetype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicecontrolmodel
+     */
+    public function getDevicecontrolmodel()
+    {
+        return $this->devicecontrolmodel;
+    }
+
+    /**
+     * Set the value of devicecontrolmodel
+     *
+     * @return  self
+     */
+    public function setDevicecontrolmodel($devicecontrolmodel)
+    {
+        $this->devicecontrolmodel = $devicecontrolmodel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

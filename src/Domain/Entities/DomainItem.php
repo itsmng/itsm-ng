@@ -15,46 +15,36 @@ class DomainItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $domains_id;
+    #[ORM\ManyToOne(targetEntity: Domain::class, inversedBy: 'domainItems')]
+    #[ORM\JoinColumn(name: 'domains_id', referencedColumnName: 'id', nullable: true)]
+    private ?Domain $domain = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $domainrelations_id;
+    #[ORM\ManyToOne(targetEntity: DomainRelation::class)]
+    #[ORM\JoinColumn(name: 'domainrelations_id', referencedColumnName: 'id', nullable: true)]
+    private ?DomainRelation $domainRelation = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDomainsId(): ?int
-    {
-        return $this->domains_id;
-    }
-
-    public function setDomainsId(?int $domains_id): self
-    {
-        $this->domains_id = $domains_id;
-
-        return $this;
-    }
-
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -71,16 +61,44 @@ class DomainItem
         return $this;
     }
 
-    public function getDomainrelationsId(): ?int
+
+    /**
+     * Get the value of domain
+     */
+    public function getDomain()
     {
-        return $this->domainrelations_id;
+        return $this->domain;
     }
 
-    public function setDomainrelationsId(?int $domainrelations_id): self
+    /**
+     * Set the value of domain
+     *
+     * @return  self
+     */
+    public function setDomain($domain)
     {
-        $this->domainrelations_id = $domainrelations_id;
+        $this->domain = $domain;
 
         return $this;
     }
 
+    /**
+     * Get the value of domainRelation
+     */
+    public function getDomainRelation()
+    {
+        return $this->domainRelation;
+    }
+
+    /**
+     * Set the value of domainRelation
+     *
+     * @return  self
+     */
+    public function setDomainRelation($domainRelation)
+    {
+        $this->domainRelation = $domainRelation;
+
+        return $this;
+    }
 }

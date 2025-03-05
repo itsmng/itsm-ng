@@ -31,6 +31,9 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Computer as EntitiesComputer;
+use PhpParser\Node\Expr\Instanceof_;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -55,7 +58,9 @@ class Computer extends CommonDBTM
     public $devices                     = [];
 
     public static $rightname                   = 'computer';
-    protected $usenotepad               = true;
+    protected $usenotepad        = true;
+
+    public $entity = EntitiesComputer::class;
 
     public function getCloneRelations(): array
     {
@@ -284,6 +289,18 @@ class Computer extends CommonDBTM
         if (isset($input["id"]) && ($input["id"] > 0)) {
             $input["_oldID"] = $input["id"];
         }
+        //ajout
+        // Get entity from session
+        // if (isset($_SESSION['glpiactive_entity'])) {
+        //     $adapter = $this::getAdapter();
+        //     $entityObject = $adapter->findOneBy(['id' => $_SESSION['glpiactive_entity']]);
+
+        //     if ($entityObject) {
+        //         $input['entity'] = $entityObject; // Store Entity object
+        //         $input['entities_id'] = $_SESSION['glpiactive_entity']; // Store ID for DB
+        //     }
+        // }
+        //fin ajout
         unset($input['id']);
         unset($input['withtemplate']);
 
@@ -362,10 +379,10 @@ class Computer extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "ComputerType"),
                     ],
                     __("Technician in charge of the hardware") => [
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'type' => 'select',
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields['users_id_tech'],
+                       'value' => $this->fields['tech_users_id'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     Manufacturer::getTypeName(1) => [
@@ -376,10 +393,10 @@ class Computer extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
                     __('Group in charge of the hardware') => [
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'type' => 'select',
                        'itemtype' => Group::class,
-                       'value' => $this->fields['groups_id_tech'],
+                       'value' => $this->fields['tech_groups_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
                     _n('Model', 'Models', 1) => [

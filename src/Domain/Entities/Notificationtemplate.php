@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_notificationtemplates')]
@@ -14,26 +15,29 @@ class Notificationtemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'text', length:  65535, nullable: true)]
+    #[ORM\Column(name: 'css', type: 'text', length:  65535, nullable: true)]
     private $css;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
+
+    #[ORM\OneToMany(mappedBy: 'notificationtemplate', targetEntity: NotificationNotificationtemplate::class)]
+    private Collection $notificationNotificationtemplates;
 
     public function getId(): ?int
     {
@@ -66,12 +70,12 @@ class Notificationtemplate
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -102,14 +106,34 @@ class Notificationtemplate
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of notificationNotificationtemplates
+     */
+    public function getNotificationNotificationtemplates()
+    {
+        return $this->notificationNotificationtemplates;
+    }
+
+    /**
+     * Set the value of notificationNotificationtemplates
+     *
+     * @return  self
+     */
+    public function setNotificationNotificationtemplates($notificationNotificationtemplates)
+    {
+        $this->notificationNotificationtemplates = $notificationNotificationtemplates;
+
+        return $this;
+    }
 }

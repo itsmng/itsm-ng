@@ -25,25 +25,25 @@ class ItemDeviceCase
     private int $id;
 
     #[ORM\Column(name: "items_id", type: "integer", options: ["default" => 0])]
-    private int $items_id;
+    private int $itemsId;
 
     #[ORM\Column(name: "itemtype", type: "string", length: 255, nullable: true)]
     private string $itemtype;
 
     #[ORM\Column(name: "devicecases_id", type: "integer", options: ["default" => 0])]
-    private int $devicecases_id;
+    private int $devicecasesId;
 
     #[ORM\Column(name: "is_deleted", type: "boolean", options: ["default" => 0])]
-    private bool $is_deleted;
+    private bool $isDeleted;
 
     #[ORM\Column(name: "is_dynamic", type: "boolean", options: ["default" => 0])]
-    private bool $is_dynamic;
+    private bool $isDynamic;
 
     #[ORM\Column(name: "entities_id", type: "integer", options: ["default" => 0])]
-    private int $entities_id;
+    private int $entitiesId;
 
     #[ORM\Column(name: "is_recursive", type: "boolean", options: ["default" => 0])]
-    private bool $is_recursive;
+    private bool $isRecursive;
 
     #[ORM\Column(name: "serial", type: "string", length: 255, nullable: true)]
     private string $serial;
@@ -52,10 +52,10 @@ class ItemDeviceCase
     private string $otherserial;
 
     #[ORM\Column(name: "locations_id", type: "integer", options: ["default" => 0])]
-    private int $locations_id;
+    private int $locationsId;
 
     #[ORM\Column(name: "states_id", type: "integer", options: ["default" => 0])]
-    private int $states_id;
+    private int $statesId;
 
     public function getId(): int
     {
@@ -64,12 +64,12 @@ class ItemDeviceCase
 
     public function getItemsId(): int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -88,60 +88,60 @@ class ItemDeviceCase
 
     public function getDevicecasesId(): int
     {
-        return $this->devicecases_id;
+        return $this->devicecasesId;
     }
 
-    public function setDevicecasesId(int $devicecases_id): self
+    public function setDevicecasesId(int $devicecasesId): self
     {
-        $this->devicecases_id = $devicecases_id;
+        $this->devicecasesId = $devicecasesId;
 
         return $this;
     }
 
     public function getIsDeleted(): bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(bool $is_dynamic): self
+    public function setIsDynamic(bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getEntitiesId(): int
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntitiesId(int $entities_id): self
+    public function setEntitiesId(int $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
 
     public function getIsRecursive(): bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -172,24 +172,24 @@ class ItemDeviceCase
 
     public function getLocationsId(): int
     {
-        return $this->locations_id;
+        return $this->locationsId;
     }
 
-    public function setLocationsId(int $locations_id): self
+    public function setLocationsId(int $locationsId): self
     {
-        $this->locations_id = $locations_id;
+        $this->locationsId = $locationsId;
 
         return $this;
     }
 
     public function getStatesId(): int
     {
-        return $this->states_id;
+        return $this->statesId;
     }
 
-    public function setStatesId(int $states_id): self
+    public function setStatesId(int $statesId): self
     {
-        $this->states_id = $states_id;
+        $this->statesId = $statesId;
 
         return $this;
     }

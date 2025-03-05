@@ -15,61 +15,50 @@ class Planningexternaleventtemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'text', type: 'text', length: 65535, nullable: true)]
     private $text;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'duration', type: 'integer', options: ['default' => 0])]
     private $duration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $before_time;
+    #[ORM\Column(name: 'before_time', type: 'integer', options: ['default' => 0])]
+    private $beforeTime;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'rrule', type: 'text', length: 65535, nullable: true)]
     private $rrule;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
     private $state;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $planningeventcategories_id;
+    #[ORM\ManyToOne(targetEntity: Planningeventcategory::class)]
+    #[ORM\JoinColumn(name: 'planningeventcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Planningeventcategory $planningeventcategory = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
+    #[ORM\Column(name: 'background', type: 'boolean', options: ['default' => 0])]
     private $background;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -122,12 +111,12 @@ class Planningexternaleventtemplate
 
     public function getBeforeTime(): ?int
     {
-        return $this->before_time;
+        return $this->beforeTime;
     }
 
-    public function setBeforeTime(?int $before_time): self
+    public function setBeforeTime(?int $beforeTime): self
     {
-        $this->before_time = $before_time;
+        $this->beforeTime = $beforeTime;
 
         return $this;
     }
@@ -156,18 +145,6 @@ class Planningexternaleventtemplate
         return $this;
     }
 
-    public function getPlanningeventcategoriesId(): ?int
-    {
-        return $this->planningeventcategories_id;
-    }
-
-    public function setPlanningeventcategoriesId(?int $planningeventcategories_id): self
-    {
-        $this->planningeventcategories_id = $planningeventcategories_id;
-
-        return $this;
-    }
-
     public function getBackground(): ?bool
     {
         return $this->background;
@@ -182,24 +159,64 @@ class Planningexternaleventtemplate
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of planningeventcategory
+     */
+    public function getPlanningeventcategory()
+    {
+        return $this->planningeventcategory;
+    }
+
+    /**
+     * Set the value of planningeventcategory
+     *
+     * @return  self
+     */
+    public function setPlanningeventcategory($planningeventcategory)
+    {
+        $this->planningeventcategory = $planningeventcategory;
 
         return $this;
     }

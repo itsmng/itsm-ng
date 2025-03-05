@@ -23,62 +23,67 @@ class Planningexternalevent
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'uuid', type: 'string', length: 255, nullable: true)]
     private $uuid;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $planningexternaleventtemplates_id;
+    #[ORM\Column(name: 'planningexternaleventtemplates_id', type: 'integer', options: ['default' => 0])]
+    private $planningexternaleventtemplatesId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 1])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $users_id_guests;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_guests', referencedColumnName: 'id', nullable: true)]
+    private ?User $userGuest = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'text', type: 'text', length: 65535, nullable: true)]
     private $text;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'begin', type: 'datetime', nullable: true)]
     private $begin;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'end', type: 'datetime', nullable: true)]
     private $end;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'rrule', type: 'text', length: 65535, nullable: true)]
     private $rrule;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
     private $state;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $planningeventcategories_id;
+    #[ORM\ManyToOne(targetEntity: Planningeventcategory::class)]
+    #[ORM\JoinColumn(name: 'planningeventcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Planningeventcategory $planningeventcategory = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
+    #[ORM\Column(name: 'background', type: 'boolean', options: ['default' => 0])]
     private $background;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -99,36 +104,24 @@ class Planningexternalevent
 
     public function getPlanningexternaleventtemplatesId(): ?int
     {
-        return $this->planningexternaleventtemplates_id;
+        return $this->planningexternaleventtemplatesId;
     }
 
-    public function setPlanningexternaleventtemplatesId(?int $planningexternaleventtemplates_id): self
+    public function setPlanningexternaleventtemplatesId(?int $planningexternaleventtemplatesId): self
     {
-        $this->planningexternaleventtemplates_id = $planningexternaleventtemplates_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntities(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
+        $this->planningexternaleventtemplatesId = $planningexternaleventtemplatesId;
 
         return $this;
     }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -141,42 +134,6 @@ class Planningexternalevent
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUserId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getUsersIdGuests(): ?string
-    {
-        return $this->users_id_guests;
-    }
-
-    public function setUsersIdGuests(?string $users_id_guests): self
-    {
-        $this->users_id_guests = $users_id_guests;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupsId(?int $groups_id): self
-    {
-        $this->groups_id = $groups_id;
 
         return $this;
     }
@@ -249,17 +206,6 @@ class Planningexternalevent
         return $this;
     }
 
-    public function getplanningeventcategoriesId(): ?int
-    {
-        return $this->planningeventcategories_id;
-    }
-
-    public function setPlanningeventcategoriesId(?int $planningeventcategories_id): self
-    {
-        $this->planningeventcategories_id = $planningeventcategories_id;
-        return $this;
-    }
-
     public function getBackground(): ?bool
     {
         return $this->background;
@@ -273,24 +219,125 @@ class Planningexternalevent
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of userGuest
+     */
+    public function getUserGuest()
+    {
+        return $this->userGuest;
+    }
+
+    /**
+     * Set the value of userGuest
+     *
+     * @return  self
+     */
+    public function setUserGuest($userGuest)
+    {
+        $this->userGuest = $userGuest;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of planningeventcategory
+     */
+    public function getPlanningeventcategory()
+    {
+        return $this->planningeventcategory;
+    }
+
+    /**
+     * Set the value of planningeventcategory
+     *
+     * @return  self
+     */
+    public function setPlanningeventcategory($planningeventcategory)
+    {
+        $this->planningeventcategory = $planningeventcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

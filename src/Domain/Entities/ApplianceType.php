@@ -13,22 +13,24 @@ class ApplianceType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type:"integer")]
+    #[ORM\Column(name: 'id', type:"integer")]
     private $id;
 
-    #[ORM\Column(type:"integer", options:['default' => 0])]
-    private $entities_id;
 
-    #[ORM\Column(type:"boolean", options:['default' => 0])]
-    private $is_recursive;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type:"string", length:255, options:['default' => ""])]
+    #[ORM\Column(name: 'is_recursive', type:"boolean", options:['default' => 0])]
+    private $isRecursive;
+
+    #[ORM\Column(name: 'name', type:"string", length:255, options:['default' => ""])]
     private $name;
 
-    #[ORM\Column(type:"text", nullable:true, length:65535)]
+    #[ORM\Column(name: 'comment', type:"text", nullable:true, length:65535)]
     private $comment;
 
-    #[ORM\Column(type:"string", length:255, nullable:true)]
+    #[ORM\Column(name: 'externalidentifier', type:"string", length:255, nullable:true)]
     private $externalidentifier;
 
     public function getId(): ?int
@@ -36,14 +38,11 @@ class ApplianceType
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
+
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
     public function getName(): ?string
@@ -68,16 +67,10 @@ class ApplianceType
         return $this;
     }
 
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entities_id = $entitiesId;
-
-        return $this;
-    }
 
     public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $isRecursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -99,6 +92,26 @@ class ApplianceType
     public function setExternalIdentifier(?string $externalIdentifier): self
     {
         $this->externalidentifier = $externalIdentifier;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

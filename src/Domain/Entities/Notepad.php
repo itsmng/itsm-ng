@@ -15,28 +15,33 @@ class Notepad
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_lastupdater;
+    #[ORM\Column(name: 'users_id_lastupdater', type: 'integer', options: ['default' => 0])]
+    private $usersIdLastupdater;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: true)]
+    private ?User $userLastupdater = null;
+
+    #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
 
     public function getId(): ?int
@@ -58,12 +63,12 @@ class Notepad
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -82,36 +87,24 @@ class Notepad
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getUsersIdLastupdater(): ?int
     {
-        return $this->users_id_lastupdater;
+        return $this->usersIdLastupdater;
     }
 
-    public function setUsersIdLastupdater(?int $users_id_lastupdater): self
+    public function setUsersIdLastupdater(?int $usersIdLastupdater): self
     {
-        $this->users_id_lastupdater = $users_id_lastupdater;
+        $this->usersIdLastupdater = $usersIdLastupdater;
 
         return $this;
     }
@@ -128,4 +121,44 @@ class Notepad
         return $this;
     }
 
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userLastupdater
+     */
+    public function getUserLastupdater()
+    {
+        return $this->userLastupdater;
+    }
+
+    /**
+     * Set the value of userLastupdater
+     *
+     * @return  self
+     */
+    public function setUserLastupdater($userLastupdater)
+    {
+        $this->userLastupdater = $userLastupdater;
+
+        return $this;
+    }
 }

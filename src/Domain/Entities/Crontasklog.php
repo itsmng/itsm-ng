@@ -14,28 +14,30 @@ class Crontasklog
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer')]
-    private $crontasks_id;
+    #[ORM\ManyToOne(targetEntity: Crontask::class)]
+    #[ORM\JoinColumn(name: 'crontasks_id', referencedColumnName: 'id', nullable: true)]
+    private ?Crontask $crontask = null;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => 'id of "start" event'])]
-    private $crontasklogs_id;
+    #[ORM\ManyToOne(targetEntity: Crontasklog::class)]
+    #[ORM\JoinColumn(name: 'crontasklogs_id', referencedColumnName: 'id', nullable: false, options: ['comment' => 'id of "start" event'])]
+    private ?Crontasklog $crontasklogs;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: false)]
     private $date;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => '0:start, 1:run, 2:stop'])]
+    #[ORM\Column(name: 'state', type: 'integer', options: ['comment' => '0:start, 1:run, 2:stop'])]
     private $state;
 
-    #[ORM\Column(type: 'float', options: ['comment' => 'time elapsed since start'])]
+    #[ORM\Column(name: 'elapsed', type: 'float', options: ['comment' => 'time elapsed since start'])]
     private $elapsed;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => 'for statistics'])]
+    #[ORM\Column(name: 'volume', type: 'integer', options: ['comment' => 'for statistics'])]
     private $volume;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => 'message'])]
+    #[ORM\Column(name: 'content', type: 'string', length: 255, nullable: true, options: ['comment' => 'message'])]
     private $content;
 
     public function getId(): ?int
@@ -43,29 +45,6 @@ class Crontasklog
         return $this->id;
     }
 
-    public function getCrontasksId(): ?int
-    {
-        return $this->crontasks_id;
-    }
-
-    public function setCrontasksId(int $crontasks_id): self
-    {
-        $this->crontasks_id = $crontasks_id;
-
-        return $this;
-    }
-
-    public function getCrontasklogsId(): ?int
-    {
-        return $this->crontasklogs_id;
-    }
-
-    public function setCrontasklogsId(int $crontasklogs_id): self
-    {
-        $this->crontasklogs_id = $crontasklogs_id;
-
-        return $this;
-    }
 
     public function getDate(): ?\DateTimeInterface
     {
@@ -123,6 +102,46 @@ class Crontasklog
     public function setContent(?string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of crontask
+     */
+    public function getCrontask()
+    {
+        return $this->crontask;
+    }
+
+    /**
+     * Set the value of crontask
+     *
+     * @return  self
+     */
+    public function setCrontask($crontask)
+    {
+        $this->crontask = $crontask;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of crontasklogs
+     */
+    public function getCrontasklogs()
+    {
+        return $this->crontasklogs;
+    }
+
+    /**
+     * Set the value of crontasklogs
+     *
+     * @return  self
+     */
+    public function setCrontasklogs($crontasklogs)
+    {
+        $this->crontasklogs = $crontasklogs;
 
         return $this;
     }

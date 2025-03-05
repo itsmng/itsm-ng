@@ -9,35 +9,35 @@ use Doctrine\ORM\Mapping as ORM;
 class OidcMapping
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'id', type: 'integer', options: ['default' => 0])]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $given_name;
+    #[ORM\Column(name: 'given_name', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
+    private $givenName;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $family_name;
+    #[ORM\Column(name: 'family_name', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
+    private $familyName;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
+    #[ORM\Column(name: 'picture', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $picture;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
+    #[ORM\Column(name: 'email', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $email;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
+    #[ORM\Column(name: 'locale', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $locale;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $phone_number;
+    #[ORM\Column(name: 'phone_number', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
+    private $phoneNumber;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['default' => ''])]
+    #[ORM\Column(name: 'group', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
     private $group;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
 
 
@@ -60,24 +60,24 @@ class OidcMapping
 
     public function getGivenName(): ?string
     {
-        return $this->given_name;
+        return $this->givenName;
     }
 
-    public function setGivenName(?string $given_name): self
+    public function setGivenName(?string $givenName): self
     {
-        $this->given_name = $given_name;
+        $this->givenName = $givenName;
 
         return $this;
     }
 
     public function getFamilyName(): ?string
     {
-        return $this->family_name;
+        return $this->familyName;
     }
 
-    public function setFamilyName(?string $family_name): self
+    public function setFamilyName(?string $familyName): self
     {
-        $this->family_name = $family_name;
+        $this->familyName = $familyName;
 
         return $this;
     }
@@ -120,12 +120,12 @@ class OidcMapping
 
     public function getPhoneNumber(): ?string
     {
-        return $this->phone_number;
+        return $this->phoneNumber;
     }
 
-    public function setPhoneNumber(?string $phone_number): self
+    public function setPhoneNumber(?string $phoneNumber): self
     {
-        $this->phone_number = $phone_number;
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
@@ -144,12 +144,12 @@ class OidcMapping
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }

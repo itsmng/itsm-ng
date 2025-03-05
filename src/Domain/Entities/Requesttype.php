@@ -20,41 +20,41 @@ class Requesttype
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_helpdesk_default;
+    #[ORM\Column(name: 'is_helpdesk_default', type: 'boolean', options: ['default' => 0])]
+    private $isHelpdeskDefault;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_followup_default;
+    #[ORM\Column(name: 'is_followup_default', type: 'boolean', options: ['default' => 0])]
+    private $isFollowupDefault;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_mail_default;
+    #[ORM\Column(name: 'is_mail_default', type: 'boolean', options: ['default' => 0])]
+    private $isMailDefault;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_mailfollowup_default;
+    #[ORM\Column(name: 'is_mailfollowup_default', type: 'boolean', options: ['default' => 0])]
+    private $isMailfollowupDefault;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_active;
+    #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
+    private $isActive;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_ticketheader;
+    #[ORM\Column(name: 'is_ticketheader', type: 'boolean', options: ['default' => 1])]
+    private $isTicketheader;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_itilfollowup;
+    #[ORM\Column(name: 'is_itilfollowup', type: 'boolean', options: ['default' => 1])]
+    private $isItilfollowup;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -75,84 +75,84 @@ class Requesttype
 
     public function getIsHelpdeskDefault(): ?string
     {
-        return $this->is_helpdesk_default;
+        return $this->isHelpdeskDefault;
     }
 
-    public function setIsHelpdeskDefault(?string $is_helpdesk_default): self
+    public function setIsHelpdeskDefault(?string $isHelpdeskDefault): self
     {
-        $this->is_helpdesk_default = $is_helpdesk_default;
+        $this->isHelpdeskDefault = $isHelpdeskDefault;
 
         return $this;
     }
 
     public function getIsFollowupDefault(): ?string
     {
-        return $this->is_followup_default;
+        return $this->isFollowupDefault;
     }
 
-    public function setIsFollowupDefault(?string $is_followup_default): self
+    public function setIsFollowupDefault(?string $isFollowupDefault): self
     {
-        $this->is_followup_default = $is_followup_default;
+        $this->isFollowupDefault = $isFollowupDefault;
 
         return $this;
     }
 
     public function getIsMailDefault(): ?string
     {
-        return $this->is_mail_default;
+        return $this->isMailDefault;
     }
 
-    public function setIsMailDefault(?string $is_mail_default): self
+    public function setIsMailDefault(?string $isMailDefault): self
     {
-        $this->is_mail_default = $is_mail_default;
+        $this->isMailDefault = $isMailDefault;
 
         return $this;
     }
 
     public function getIsMailfollowupDefault(): ?string
     {
-        return $this->is_mailfollowup_default;
+        return $this->isMailfollowupDefault;
     }
 
-    public function setIsMailfollowupDefault(?string $is_mailfollowup_default): self
+    public function setIsMailfollowupDefault(?string $isMailfollowupDefault): self
     {
-        $this->is_mailfollowup_default = $is_mailfollowup_default;
+        $this->isMailfollowupDefault = $isMailfollowupDefault;
 
         return $this;
     }
 
     public function getIsActive(): ?string
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(?string $is_active): self
+    public function setIsActive(?string $isActive): self
     {
-        $this->is_active = $is_active;
+        $this->isActive = $isActive;
 
         return $this;
     }
 
     public function getIsTicketheader(): ?string
     {
-        return $this->is_ticketheader;
+        return $this->isTicketheader;
     }
 
-    public function setIsTicketheader(?string $is_ticketheader): self
+    public function setIsTicketheader(?string $isTicketheader): self
     {
-        $this->is_ticketheader = $is_ticketheader;
+        $this->isTicketheader = $isTicketheader;
 
         return $this;
     }
 
     public function getIsItilfollowup(): ?string
     {
-        return $this->is_itilfollowup;
+        return $this->isItilfollowup;
     }
 
-    public function setIsItilfollowup(?string $is_itilfollowup): self
+    public function setIsItilfollowup(?string $isItilfollowup): self
     {
-        $this->is_itilfollowup = $is_itilfollowup;
+        $this->isItilfollowup = $isItilfollowup;
 
         return $this;
     }
@@ -171,24 +171,24 @@ class Requesttype
 
     public function getDateMod(): ?string
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?string $date_mod): self
+    public function setDateMod(?string $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?string
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?string $date_creation): self
+    public function setDateCreation(?string $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

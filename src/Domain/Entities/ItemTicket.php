@@ -12,17 +12,17 @@ class ItemTicket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $tickets_id;
+    #[ORM\Column(name: 'tickets_id', type: "integer", options: ["default" => 0])]
+    private $ticketsId;
 
     public function getId(): ?int
     {
@@ -43,24 +43,24 @@ class ItemTicket
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
 
     public function getTicketsId(): ?int
     {
-        return $this->tickets_id;
+        return $this->ticketsId;
     }
 
-    public function setTicketsId(?int $tickets_id): self
+    public function setTicketsId(?int $ticketsId): self
     {
-        $this->tickets_id = $tickets_id;
+        $this->ticketsId = $ticketsId;
 
         return $this;
     }

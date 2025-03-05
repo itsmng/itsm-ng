@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_ipaddresses")]
@@ -17,73 +18,65 @@ class IpAddress
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: "string", length: 100)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: "smallint", nullable: true, options: ["unsigned" => true, "default" => 0])]
+    #[ORM\Column(name: 'version', type: "smallint", nullable: true, options: ["unsigned" => true, "default" => 0])]
     private $version;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary_0;
+    #[ORM\Column(name: 'binary_0', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $binary0;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary_1;
+    #[ORM\Column(name: 'binary_1', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $binary1;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary_2;
+    #[ORM\Column(name: 'binary_2', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $binary2;
 
-    #[ORM\Column(type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary_3;
+    #[ORM\Column(name: 'binary_3', type: "integer", options: ["unsigned" => true, "default" => 0])]
+    private $binary3;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => false])]
+    private $isDynamic;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $mainitems_id;
+    #[ORM\Column(name: 'mainitems_id', type: "integer", options: ["default" => 0])]
+    private $mainitemsId;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'mainitemtype', type: "string", length: 255, nullable: true)]
     private $mainitemtype;
+
+    #[ORM\OneToMany(mappedBy: 'ipaddress', targetEntity: IpAddressIpNetwork::class)]
+    private Collection $ipaddressIpnetworks;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -126,84 +119,84 @@ class IpAddress
 
     public function getBinary0(): ?int
     {
-        return $this->binary_0;
+        return $this->binary0;
     }
 
-    public function setBinary0(?int $binary_0): self
+    public function setBinary0(?int $binary0): self
     {
-        $this->binary_0 = $binary_0;
+        $this->binary0 = $binary0;
 
         return $this;
     }
 
     public function getBinary1(): ?int
     {
-        return $this->binary_1;
+        return $this->binary1;
     }
 
-    public function setBinary1(?int $binary_1): self
+    public function setBinary1(?int $binary1): self
     {
-        $this->binary_1 = $binary_1;
+        $this->binary1 = $binary1;
 
         return $this;
     }
 
     public function getBinary2(): ?int
     {
-        return $this->binary_2;
+        return $this->binary2;
     }
 
-    public function setBinary2(?int $binary_2): self
+    public function setBinary2(?int $binary2): self
     {
-        $this->binary_2 = $binary_2;
+        $this->binary2 = $binary2;
 
         return $this;
     }
 
     public function getBinary3(): ?int
     {
-        return $this->binary_3;
+        return $this->binary3;
     }
 
-    public function setBinary3(?int $binary_3): self
+    public function setBinary3(?int $binary3): self
     {
-        $this->binary_3 = $binary_3;
+        $this->binary3 = $binary3;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(?bool $is_deleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(?bool $is_dynamic): self
+    public function setIsDynamic(?bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getMainitemsId(): ?int
     {
-        return $this->mainitems_id;
+        return $this->mainitemsId;
     }
 
-    public function setMainitemsId(?int $mainitems_id): self
+    public function setMainitemsId(?int $mainitemsId): self
     {
-        $this->mainitems_id = $mainitems_id;
+        $this->mainitemsId = $mainitemsId;
 
         return $this;
     }
@@ -216,6 +209,47 @@ class IpAddress
     public function setMainitemtype(?string $mainitemtype): self
     {
         $this->mainitemtype = $mainitemtype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of ipaddressIpnetworks
+     */
+    public function getIpaddressIpnetworks()
+    {
+        return $this->ipaddressIpnetworks;
+    }
+
+    /**
+     * Set the value of ipaddressIpnetworks
+     *
+     * @return  self
+     */
+    public function setIpaddressIpnetworks($ipaddressIpnetworks)
+    {
+        $this->ipaddressIpnetworks = $ipaddressIpnetworks;
 
         return $this;
     }

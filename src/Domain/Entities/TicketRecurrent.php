@@ -15,44 +15,47 @@ class TicketRecurrent
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_active;
+    #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
+    private $isActive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickettemplates_id;
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?TicketTemplate $tickettemplate = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $begin_date;
+    #[ORM\Column(name: 'begin_date', type: 'datetime', nullable: true)]
+    private $beginDate;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'periodicity', type: 'string', length: 255, nullable: true)]
     private $periodicity;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $create_before;
+    #[ORM\Column(name: 'create_before', type: 'integer', options: ['default' => 0])]
+    private $createBefore;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $next_creation_date;
+    #[ORM\Column(name: 'next_creation_date', type: 'datetime', nullable: true)]
+    private $nextCreationDate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $calendars_id;
+    #[ORM\ManyToOne(targetEntity: Calendar::class)]
+    #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
+    private ?Calendar $calendar = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $end_date;
+    #[ORM\Column(name: 'end_date', type: 'datetime', nullable: true)]
+    private $endDate;
 
     public function getId(): ?int
     {
@@ -83,62 +86,39 @@ class TicketRecurrent
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
     public function getIsActive(): ?bool
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(?bool $is_active): self
+    public function setIsActive(?bool $isActive): self
     {
-        $this->is_active = $is_active;
+        $this->isActive = $isActive;
 
         return $this;
     }
 
-    public function getTickettemplatesId(): ?int
-    {
-        return $this->tickettemplates_id;
-    }
-
-    public function setTickettemplatesId(?int $tickettemplates_id): self
-    {
-        $this->tickettemplates_id = $tickettemplates_id;
-
-        return $this;
-    }
 
     public function getBeginDate(): ?\DateTime
     {
-        return $this->begin_date;
+        return $this->beginDate;
     }
 
-    public function setBeginDate(?\DateTime $begin_date): self
+    public function setBeginDate(?\DateTime $beginDate): self
     {
-        $this->begin_date = $begin_date;
+        $this->beginDate = $beginDate;
 
         return $this;
     }
@@ -157,50 +137,98 @@ class TicketRecurrent
 
     public function getCreateBefore(): ?int
     {
-        return $this->create_before;
+        return $this->createBefore;
     }
 
-    public function setCreateBefore(?int $create_before): self
+    public function setCreateBefore(?int $createBefore): self
     {
-        $this->create_before = $create_before;
+        $this->createBefore = $createBefore;
 
         return $this;
     }
 
     public function getNextCreationDate(): ?\DateTime
     {
-        return $this->next_creation_date;
+        return $this->nextCreationDate;
     }
 
-    public function setNextCreationDate(?\DateTime $next_creation_date): self
+    public function setNextCreationDate(?\DateTime $nextCreationDate): self
     {
-        $this->next_creation_date = $next_creation_date;
-
-        return $this;
-    }
-
-    public function getCalendarsId(): ?int
-    {
-        return $this->calendars_id;
-    }
-
-    public function setCalendarsId(?int $calendars_id): self
-    {
-        $this->calendars_id = $calendars_id;
+        $this->nextCreationDate = $nextCreationDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTime
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(?\DateTime $end_date): self
+    public function setEndDate(?\DateTime $endDate): self
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickettemplate
+     */
+    public function getTickettemplate()
+    {
+        return $this->tickettemplate;
+    }
+
+    /**
+     * Set the value of tickettemplate
+     *
+     * @return  self
+     */
+    public function setTickettemplate($tickettemplate)
+    {
+        $this->tickettemplate = $tickettemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * Set the value of calendar
+     *
+     * @return  self
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
 }

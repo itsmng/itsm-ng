@@ -12,45 +12,35 @@ class Remindertranslation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $reminders_id;
+    #[ORM\ManyToOne(targetEntity: Reminder::class, inversedBy: 'reminderUsers')]
+    #[ORM\JoinColumn(name: 'reminders_id', referencedColumnName: 'id', nullable: true)]
+    private ?Reminder $reminder = null;
 
-    #[ORM\Column(type: 'string', length: 5, nullable: true)]
+    #[ORM\Column(name: 'language', type: 'string', length: 5, nullable: true)]
     private $language;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'text', length: 65535, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'text', type: 'text', nullable: true)]
     private $text;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRemindersId(): ?int
-    {
-        return $this->reminders_id;
-    }
-
-    public function setRemindersId(int $reminders_id): self
-    {
-        $this->reminders_id = $reminders_id;
-
-        return $this;
     }
 
     public function getLanguage(): ?string
@@ -89,40 +79,68 @@ class Remindertranslation
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of reminder
+     */
+    public function getReminder()
+    {
+        return $this->reminder;
+    }
+
+    /**
+     * Set the value of reminder
+     *
+     * @return  self
+     */
+    public function setReminder($reminder)
+    {
+        $this->reminder = $reminder;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

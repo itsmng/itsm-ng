@@ -13,25 +13,25 @@ class Event
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", nullable: false, options: ['default' => 0, 'unsigned' => true])]
+    private $itemsId = 0;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'type', type: "string", length: 255, nullable: true)]
     private $type;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(name: 'date', type: "datetime", nullable: true)]
     private $date;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'service', type: "string", length: 255, nullable: true)]
     private $service;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
+    #[ORM\Column(name: 'level', type: "integer", options: ['default' => 0])]
     private $level;
 
-    #[ORM\Column(type: "text", length: 65535, nullable: true)]
+    #[ORM\Column(name: 'message', type: "text", length: 65535, nullable: true)]
     private $message;
 
     public function getId(): ?int
@@ -41,12 +41,12 @@ class Event
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId ?? 0;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId ?? 0;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_changes')]
@@ -28,98 +29,117 @@ class Change
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
     private $status;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'solvedate', type: 'datetime', nullable: true)]
     private $solvedate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'closedate', type: 'datetime', nullable: true)]
     private $closedate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $time_to_resolve;
+    #[ORM\Column(name: 'time_to_resolve', type: 'datetime', nullable: true)]
+    private $timeToResolve;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_recipient;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_recipient', referencedColumnName: 'id', nullable: true)]
+    private ?User $userRecipient = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_lastupdater;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: true)]
+    private ?User $userLastupdater = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'urgency', type: 'integer', options: ['default' => 1])]
     private $urgency;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'impact', type: 'integer', options: ['default' => 1])]
     private $impact;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'priority', type: 'integer', options: ['default' => 1])]
     private $priority;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $itilcategories_id;
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?ItilCategory $itilCategory = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'impactcontent', type: 'text', nullable: true)]
     private $impactcontent;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'controlistcontent', type: 'text', nullable: true)]
     private $controlistcontent;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'rolloutplancontent', type: 'text', nullable: true)]
     private $rolloutplancontent;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'backoutplancontent', type: 'text', nullable: true)]
     private $backoutplancontent;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'checklistcontent', type: 'text', nullable: true)]
     private $checklistcontent;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
-    private $global_validation;
+    #[ORM\Column(name: 'global_validation', type: 'integer', options: ['default' => 1])]
+    private $globalValidation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $validation_percent;
+    #[ORM\Column(name: 'validation_percent', type: 'integer', options: ['default' => 0])]
+    private $validationPercent;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
     private $actiontime;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $begin_waiting_date;
+    #[ORM\Column(name: 'begin_waiting_date', type: 'datetime', nullable: true)]
+    private $beginWaitingDate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $waiting_duration;
+    #[ORM\Column(name: 'waiting_duration', type: 'integer', options: ['default' => 0])]
+    private $waitingDuration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $close_delay_stat;
+    #[ORM\Column(name: 'close_delay_stat', type: 'integer', options: ['default' => 0])]
+    private $closeDelayStat;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $solve_delay_stat;
+    #[ORM\Column(name: 'solve_delay_stat', type: 'integer', options: ['default' => 0])]
+    private $solveDelayStat;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeProblem::class)]
+    private Collection $changeProblems;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeGroup::class)]
+    private Collection $changeGroups;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeTicket::class)]
+    private Collection $changeTickets;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeSupplier::class)]
+    private Collection $changeSuppliers;
+
+    #[ORM\OneToMany(mappedBy: 'change', targetEntity: ChangeUser::class)]
+    private Collection $changeUsers;
 
     public function getId(): ?int
     {
@@ -145,38 +165,27 @@ class Change
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
@@ -207,12 +216,12 @@ class Change
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -255,39 +264,16 @@ class Change
 
     public function getTimeToResolve(): ?\DateTimeInterface
     {
-        return $this->time_to_resolve;
+        return $this->timeToResolve;
     }
 
-    public function setTimeToResolve(\DateTimeInterface $time_to_resolve): self
+    public function setTimeToResolve(\DateTimeInterface $timeToResolve): self
     {
-        $this->time_to_resolve = $time_to_resolve;
+        $this->timeToResolve = $timeToResolve;
 
         return $this;
     }
 
-    public function getUsersIdRecipient(): ?int
-    {
-        return $this->users_id_recipient;
-    }
-
-    public function setUsersIdRecipient(int $users_id_recipient): self
-    {
-        $this->users_id_recipient = $users_id_recipient;
-
-        return $this;
-    }
-
-    public function getUsersIdLastupdater(): ?int
-    {
-        return $this->users_id_lastupdater;
-    }
-
-    public function setUsersIdLastupdater(int $users_id_lastupdater): self
-    {
-        $this->users_id_lastupdater = $users_id_lastupdater;
-
-        return $this;
-    }
 
     public function getUrgency(): ?int
     {
@@ -325,17 +311,6 @@ class Change
         return $this;
     }
 
-    public function getItilcategoriesId(): ?int
-    {
-        return $this->itilcategories_id;
-    }
-
-    public function setItilcategoriesId(int $itilcategories_id): self
-    {
-        $this->itilcategories_id = $itilcategories_id;
-
-        return $this;
-    }
 
     public function getImpactcontent(): ?string
     {
@@ -399,24 +374,24 @@ class Change
 
     public function getGlobalValidation(): ?bool
     {
-        return $this->global_validation;
+        return $this->globalValidation;
     }
 
-    public function setGlobalValidation(bool $global_validation): self
+    public function setGlobalValidation(bool $globalValidation): self
     {
-        $this->global_validation = $global_validation;
+        $this->globalValidation = $globalValidation;
 
         return $this;
     }
 
     public function getValidationPercent(): ?int
     {
-        return $this->validation_percent;
+        return $this->validationPercent;
     }
 
-    public function setValidationPercent(int $validation_percent): self
+    public function setValidationPercent(int $validationPercent): self
     {
-        $this->validation_percent = $validation_percent;
+        $this->validationPercent = $validationPercent;
 
         return $this;
     }
@@ -435,62 +410,243 @@ class Change
 
     public function getBeginWaitingDate(): ?\DateTimeInterface
     {
-        return $this->begin_waiting_date;
+        return $this->beginWaitingDate;
     }
 
-    public function setBeginWaitingDate(\DateTimeInterface $begin_waiting_date): self
+    public function setBeginWaitingDate(\DateTimeInterface $beginWaitingDate): self
     {
-        $this->begin_waiting_date = $begin_waiting_date;
+        $this->beginWaitingDate = $beginWaitingDate;
 
         return $this;
     }
 
     public function getWaitingDuration(): ?int
     {
-        return $this->waiting_duration;
+        return $this->waitingDuration;
     }
 
-    public function setWaitingDuration(int $waiting_duration): self
+    public function setWaitingDuration(int $waitingDuration): self
     {
-        $this->waiting_duration = $waiting_duration;
+        $this->waitingDuration = $waitingDuration;
 
         return $this;
     }
 
     public function getCloseDelayStat(): ?int
     {
-        return $this->close_delay_stat;
+        return $this->closeDelayStat;
     }
 
-    public function setCloseDelayStat(int $close_delay_stat): self
+    public function setCloseDelayStat(int $closeDelayStat): self
     {
-        $this->close_delay_stat = $close_delay_stat;
+        $this->closeDelayStat = $closeDelayStat;
 
         return $this;
     }
 
     public function getSolveDelayStat(): ?int
     {
-        return $this->solve_delay_stat;
+        return $this->solveDelayStat;
     }
 
-    public function setSolveDelayStat(int $solve_delay_stat): self
+    public function setSolveDelayStat(int $solveDelayStat): self
     {
-        $this->solve_delay_stat = $solve_delay_stat;
+        $this->solveDelayStat = $solveDelayStat;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of changeTickets
+     */
+    public function getChangeTickets()
+    {
+        return $this->changeTickets;
+    }
+
+    /**
+     * Set the value of changeTickets
+     *
+     * @return  self
+     */
+    public function setChangeTickets($changeTickets)
+    {
+        $this->changeTickets = $changeTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeUsers
+     */
+    public function getChangeUsers()
+    {
+        return $this->changeUsers;
+    }
+
+    /**
+     * Set the value of changeUsers
+     *
+     * @return  self
+     */
+    public function setChangeUsers($changeUsers)
+    {
+        $this->changeUsers = $changeUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeProblems
+     */
+    public function getChangeProblems()
+    {
+        return $this->changeProblems;
+    }
+
+    /**
+     * Set the value of changeProblems
+     *
+     * @return  self
+     */
+    public function setChangeProblems($changeProblems)
+    {
+        $this->changeProblems = $changeProblems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeGroups
+     */
+    public function getChangeGroups()
+    {
+        return $this->changeGroups;
+    }
+
+    /**
+     * Set the value of changeGroups
+     *
+     * @return  self
+     */
+    public function setChangeGroups($changeGroups)
+    {
+        $this->changeGroups = $changeGroups;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeSuppliers
+     */
+    public function getChangeSuppliers()
+    {
+        return $this->changeSuppliers;
+    }
+
+    /**
+     * Set the value of changeSuppliers
+     *
+     * @return  self
+     */
+    public function setChangeSuppliers($changeSuppliers)
+    {
+        $this->changeSuppliers = $changeSuppliers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userRecipient
+     */
+    public function getUserRecipient()
+    {
+        return $this->userRecipient;
+    }
+
+    /**
+     * Set the value of userRecipient
+     *
+     * @return  self
+     */
+    public function setUserRecipient($userRecipient)
+    {
+        $this->userRecipient = $userRecipient;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userLastupdater
+     */
+    public function getUserLastupdater()
+    {
+        return $this->userLastupdater;
+    }
+
+    /**
+     * Set the value of userLastupdater
+     *
+     * @return  self
+     */
+    public function setUserLastupdater($userLastupdater)
+    {
+        $this->userLastupdater = $userLastupdater;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilCategory
+     */
+    public function getItilCategory()
+    {
+        return $this->itilCategory;
+    }
+
+    /**
+     * Set the value of itilCategory
+     *
+     * @return  self
+     */
+    public function setItilCategory($itilCategory)
+    {
+        $this->itilCategory = $itilCategory;
+
+        return $this;
+    }
 }

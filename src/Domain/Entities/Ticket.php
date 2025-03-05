@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_tickets")]
@@ -40,145 +41,165 @@ class Ticket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'closedate', type: 'datetime', nullable: true)]
     private $closedate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'solvedate', type: 'datetime', nullable: true)]
     private $solvedate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_lastupdater;
+    #[ORM\Column(name: 'users_id_lastupdater', type: 'integer', options: ['default' => 0])]
+    private $usersIdLastupdater;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
     private $status;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_recipient;
+    #[ORM\Column(name: 'users_id_recipient', type: 'integer', options: ['default' => 0])]
+    private $usersIdRecipient;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $requesttypes_id;
+    #[ORM\ManyToOne(targetEntity: Requesttype::class)]
+    #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Requesttype $requesttype = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'urgency', type: 'integer', options: ['default' => 1])]
     private $urgency;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'impact', type: 'integer', options: ['default' => 1])]
     private $impact;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'priority', type: 'integer', options: ['default' => 1])]
     private $priority;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $itilcategories_id;
+    #[ORM\Column(name: 'itilcategories_id', type: 'integer', options: ['default' => 0])]
+    private $itilcategoriesId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?ItilCategory $itilcategory = null;
+
+
+    #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
     private $type;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
-    private $global_validation;
+    #[ORM\Column(name: 'global_validation', type: 'integer', options: ['default' => 1])]
+    private $globalValidation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slas_id_ttr;
+    #[ORM\Column(name: 'slas_id_ttr', type: 'integer', options: ['default' => 0])]
+    private $slasIdTtr;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slas_id_tto;
+    #[ORM\Column(name: 'slas_id_tto', type: 'integer', options: ['default' => 0])]
+    private $slasIdTto;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slalevels_id_ttr;
+    #[ORM\Column(name: 'slalevels_id_ttr', type: 'integer', options: ['default' => 0])]
+    private $slalevelsIdTtr;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $time_to_resolve;
+    #[ORM\Column(name: 'time_to_resolve', type: 'datetime', nullable: true)]
+    private $timeToResolve;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $time_to_own;
+    #[ORM\Column(name: 'time_to_own', type: 'datetime', nullable: true)]
+    private $timeToOwn;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $begin_waiting_date;
+    #[ORM\Column(name: 'begin_waiting_date', type: 'datetime', nullable: true)]
+    private $beginWaitingDate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $sla_waiting_duration;
+    #[ORM\Column(name: 'sla_waiting_duration', type: 'integer', options: ['default' => 0])]
+    private $slaWaitingDuration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $ola_waiting_duration;
+    #[ORM\Column(name: 'ola_waiting_duration', type: 'integer', options: ['default' => 0])]
+    private $olaWaitingDuration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olas_id_tto;
+    #[ORM\Column(name: 'olas_id_tto', type: 'integer', options: ['default' => 0])]
+    private $olasIdTto;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olas_id_ttr;
+    #[ORM\Column(name: 'olas_id_ttr', type: 'integer', options: ['default' => 0])]
+    private $olasIdTtr;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olalevels_id_ttr;
+    #[ORM\Column(name: 'olalevels_id_ttr', type: 'integer', options: ['default' => 0])]
+    private $olalevelsIdTtr;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $ola_ttr_begin_date;
+    #[ORM\Column(name: 'ola_ttr_begin_date', type: 'datetime', nullable: true)]
+    private $olaTtrBeginDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $internal_time_to_resolve;
+    #[ORM\Column(name: 'internal_time_to_resolve', type: 'datetime', nullable: true)]
+    private $internalTimeToResolve;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $internal_time_to_own;
+    #[ORM\Column(name: 'internal_time_to_own', type: 'datetime', nullable: true)]
+    private $internalTimeToOwn;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $waiting_duration;
+    #[ORM\Column(name: 'waiting_duration', type: 'integer', options: ['default' => 0])]
+    private $waitingDuration;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $close_delay_stat;
+    #[ORM\Column(name: 'close_delay_stat', type: 'integer', options: ['default' => 0])]
+    private $closeDelayStat;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $solve_delay_stat;
+    #[ORM\Column(name: 'solve_delay_stat', type: 'integer', options: ['default' => 0])]
+    private $solveDelayStat;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $takeintoaccount_delay_stat;
+    #[ORM\Column(name: 'takeintoaccount_delay_stat', type: 'integer', options: ['default' => 0])]
+    private $takeintoaccountDelayStat;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
     private $actiontime;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $validation_percent;
+    #[ORM\Column(name: 'validation_percent', type: 'integer', options: ['default' => 0])]
+    private $validationPercent;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ChangeTicket::class)]
+    private Collection $changeTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: GroupTicket::class)]
+    private Collection $groupTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: OlalevelTicket::class)]
+    private Collection $olalevelTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ProblemTicket::class)]
+    private Collection $problemTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ProjecttaskTicket::class)]
+    private Collection $projecttaskTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: SlalevelTicket::class)]
+    private Collection $slalevelTickets;
+
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: SupplierTicket::class)]
+    private Collection $supplierTickets;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
 
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
 
     public function getName(): ?string
     {
@@ -230,24 +251,24 @@ class Ticket
 
     public function getDateMod(): ?\DateTime
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $date_mod): self
+    public function setDateMod(?\DateTime $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getUsersIdLastupdater(): ?int
     {
-        return $this->users_id_lastupdater;
+        return $this->usersIdLastupdater;
     }
 
-    public function setUsersIdLastupdater(?int $users_id_lastupdater): self
+    public function setUsersIdLastupdater(?int $usersIdLastupdater): self
     {
-        $this->users_id_lastupdater = $users_id_lastupdater;
+        $this->usersIdLastupdater = $usersIdLastupdater;
 
         return $this;
     }
@@ -266,24 +287,12 @@ class Ticket
 
     public function getUsersIdRecipient(): ?int
     {
-        return $this->users_id_recipient;
+        return $this->usersIdRecipient;
     }
 
-    public function setUsersIdRecipient(?int $users_id_recipient): self
+    public function setUsersIdRecipient(?int $usersIdRecipient): self
     {
-        $this->users_id_recipient = $users_id_recipient;
-
-        return $this;
-    }
-
-    public function getRequesttypesId(): ?int
-    {
-        return $this->requesttypes_id;
-    }
-
-    public function setRequesttypesId(?int $requesttypes_id): self
-    {
-        $this->requesttypes_id = $requesttypes_id;
+        $this->usersIdRecipient = $usersIdRecipient;
 
         return $this;
     }
@@ -338,12 +347,12 @@ class Ticket
 
     public function getItilcategoriesId(): ?int
     {
-        return $this->itilcategories_id;
+        return $this->itilcategoriesId;
     }
 
-    public function setItilcategoriesId(?int $itilcategories_id): self
+    public function setItilcategoriesId(?int $itilcategoriesId): self
     {
-        $this->itilcategories_id = $itilcategories_id;
+        $this->itilcategoriesId = $itilcategoriesId;
 
         return $this;
     }
@@ -362,228 +371,228 @@ class Ticket
 
     public function getGlobalValidation(): ?int
     {
-        return $this->global_validation;
+        return $this->globalValidation;
     }
 
-    public function setGlobalValidation(?int $global_validation): self
+    public function setGlobalValidation(?int $globalValidation): self
     {
-        $this->global_validation = $global_validation;
+        $this->globalValidation = $globalValidation;
 
         return $this;
     }
 
     public function getSlasIdTtr(): ?int
     {
-        return $this->slas_id_ttr;
+        return $this->slasIdTtr;
     }
 
-    public function setSlasIdTtr(?int $slas_id_ttr): self
+    public function setSlasIdTtr(?int $slasIdTtr): self
     {
-        $this->slas_id_ttr = $slas_id_ttr;
+        $this->slasIdTtr = $slasIdTtr;
 
         return $this;
     }
 
     public function getSlasIdTto(): ?int
     {
-        return $this->slas_id_tto;
+        return $this->slasIdTto;
     }
 
-    public function setSlasIdTto(?int $slas_id_tto): self
+    public function setSlasIdTto(?int $slasIdTto): self
     {
-        $this->slas_id_tto = $slas_id_tto;
+        $this->slasIdTto = $slasIdTto;
 
         return $this;
     }
 
     public function getSlalevelsIdTtr(): ?int
     {
-        return $this->slalevels_id_ttr;
+        return $this->slalevelsIdTtr;
     }
 
-    public function setSlalevelsIdTtr(?int $slalevels_id_ttr): self
+    public function setSlalevelsIdTtr(?int $slalevelsIdTtr): self
     {
-        $this->slalevels_id_ttr = $slalevels_id_ttr;
+        $this->slalevelsIdTtr = $slalevelsIdTtr;
 
         return $this;
     }
 
     public function getTimeToResolve(): ?\DateTime
     {
-        return $this->time_to_resolve;
+        return $this->timeToResolve;
     }
 
-    public function setTimeToResolve(?\DateTime $time_to_resolve): self
+    public function setTimeToResolve(?\DateTime $timeToResolve): self
     {
-        $this->time_to_resolve = $time_to_resolve;
+        $this->timeToResolve = $timeToResolve;
 
         return $this;
     }
 
     public function getTimeToOwn(): ?\DateTime
     {
-        return $this->time_to_own;
+        return $this->timeToOwn;
     }
 
-    public function setTimeToOwn(?\DateTime $time_to_own): self
+    public function setTimeToOwn(?\DateTime $timeToOwn): self
     {
-        $this->time_to_own = $time_to_own;
+        $this->timeToOwn = $timeToOwn;
 
         return $this;
     }
 
     public function getBeginWaitingDate(): ?\DateTime
     {
-        return $this->begin_waiting_date;
+        return $this->beginWaitingDate;
     }
 
-    public function setBeginWaitingDate(?\DateTime $begin_waiting_date): self
+    public function setBeginWaitingDate(?\DateTime $beginWaitingDate): self
     {
-        $this->begin_waiting_date = $begin_waiting_date;
+        $this->beginWaitingDate = $beginWaitingDate;
 
         return $this;
     }
 
     public function getSlaWaitingDuration(): ?int
     {
-        return $this->sla_waiting_duration;
+        return $this->slaWaitingDuration;
     }
 
-    public function setSlaWaitingDuration(?int $sla_waiting_duration): self
+    public function setSlaWaitingDuration(?int $slaWaitingDuration): self
     {
-        $this->sla_waiting_duration = $sla_waiting_duration;
+        $this->slaWaitingDuration = $slaWaitingDuration;
 
         return $this;
     }
 
     public function getOlaWaitingDuration(): ?int
     {
-        return $this->ola_waiting_duration;
+        return $this->olaWaitingDuration;
     }
 
-    public function setOlaWaitingDuration(?int $ola_waiting_duration): self
+    public function setOlaWaitingDuration(?int $olaWaitingDuration): self
     {
-        $this->ola_waiting_duration = $ola_waiting_duration;
+        $this->olaWaitingDuration = $olaWaitingDuration;
 
         return $this;
     }
 
     public function getOlasIdTto(): ?int
     {
-        return $this->olas_id_tto;
+        return $this->olasIdTto;
     }
 
-    public function setOlasIdTto(?int $olas_id_tto): self
+    public function setOlasIdTto(?int $olasIdTto): self
     {
-        $this->olas_id_tto = $olas_id_tto;
+        $this->olasIdTto = $olasIdTto;
 
         return $this;
     }
 
     public function getOlasIdTtr(): ?int
     {
-        return $this->olas_id_ttr;
+        return $this->olasIdTtr;
     }
 
-    public function setOlasIdTtr(?int $olas_id_ttr): self
+    public function setOlasIdTtr(?int $olasIdTtr): self
     {
-        $this->olas_id_ttr = $olas_id_ttr;
+        $this->olasIdTtr = $olasIdTtr;
 
         return $this;
     }
 
     public function getOlalevelsIdTtr(): ?int
     {
-        return $this->olalevels_id_ttr;
+        return $this->olalevelsIdTtr;
     }
 
-    public function setOlalevelsIdTtr(?int $olalevels_id_ttr): self
+    public function setOlalevelsIdTtr(?int $olalevelsIdTtr): self
     {
-        $this->olalevels_id_ttr = $olalevels_id_ttr;
+        $this->olalevelsIdTtr = $olalevelsIdTtr;
 
         return $this;
     }
 
     public function getOlaTtrBeginDate(): ?\DateTime
     {
-        return $this->ola_ttr_begin_date;
+        return $this->olaTtrBeginDate;
     }
 
-    public function setOlaTtrBeginDate(?\DateTime $ola_ttr_begin_date): self
+    public function setOlaTtrBeginDate(?\DateTime $olaTtrBeginDate): self
     {
-        $this->ola_ttr_begin_date = $ola_ttr_begin_date;
+        $this->olaTtrBeginDate = $olaTtrBeginDate;
 
         return $this;
     }
 
     public function getInternalTimeToResolve(): ?\DateTime
     {
-        return $this->internal_time_to_resolve;
+        return $this->internalTimeToResolve;
     }
 
-    public function setInternalTimeToResolve(?\DateTime $internal_time_to_resolve): self
+    public function setInternalTimeToResolve(?\DateTime $internalTimeToResolve): self
     {
-        $this->internal_time_to_resolve = $internal_time_to_resolve;
+        $this->internalTimeToResolve = $internalTimeToResolve;
 
         return $this;
     }
 
     public function getInternalTimeToOwn(): ?\DateTime
     {
-        return $this->internal_time_to_own;
+        return $this->internalTimeToOwn;
     }
 
-    public function setInternalTimeToOwn(?\DateTime $internal_time_to_own): self
+    public function setInternalTimeToOwn(?\DateTime $internalTimeToOwn): self
     {
-        $this->internal_time_to_own = $internal_time_to_own;
+        $this->internalTimeToOwn = $internalTimeToOwn;
 
         return $this;
     }
 
     public function getWaitingDuration(): ?int
     {
-        return $this->waiting_duration;
+        return $this->waitingDuration;
     }
 
-    public function setWaitingDuration(?int $waiting_duration): self
+    public function setWaitingDuration(?int $waitingDuration): self
     {
-        $this->waiting_duration = $waiting_duration;
+        $this->waitingDuration = $waitingDuration;
 
         return $this;
     }
 
     public function getCloseDelayStat(): ?int
     {
-        return $this->close_delay_stat;
+        return $this->closeDelayStat;
     }
 
-    public function setCloseDelayStat(?int $close_delay_stat): self
+    public function setCloseDelayStat(?int $closeDelayStat): self
     {
-        $this->close_delay_stat = $close_delay_stat;
+        $this->closeDelayStat = $closeDelayStat;
 
         return $this;
     }
 
     public function getSolveDelayStat(): ?int
     {
-        return $this->solve_delay_stat;
+        return $this->solveDelayStat;
     }
 
-    public function setSolveDelayStat(?int $solve_delay_stat): self
+    public function setSolveDelayStat(?int $solveDelayStat): self
     {
-        $this->solve_delay_stat = $solve_delay_stat;
+        $this->solveDelayStat = $solveDelayStat;
 
         return $this;
     }
 
     public function getTakeintoaccountDelayStat(): ?int
     {
-        return $this->takeintoaccount_delay_stat;
+        return $this->takeintoaccountDelayStat;
     }
 
-    public function setTakeintoaccountDelayStat(?int $takeintoaccount_delay_stat): self
+    public function setTakeintoaccountDelayStat(?int $takeintoaccountDelayStat): self
     {
-        $this->takeintoaccount_delay_stat = $takeintoaccount_delay_stat;
+        $this->takeintoaccountDelayStat = $takeintoaccountDelayStat;
 
         return $this;
     }
@@ -602,50 +611,259 @@ class Ticket
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(?bool $is_deleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(?int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
-
-        return $this;
-    }
 
     public function getValidationPercent(): ?int
     {
-        return $this->validation_percent;
+        return $this->validationPercent;
     }
 
-    public function setValidationPercent(?int $validation_percent): self
+    public function setValidationPercent(?int $validationPercent): self
     {
-        $this->validation_percent = $validation_percent;
+        $this->validationPercent = $validationPercent;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $date_creation): self
+    public function setDateCreation(?\DateTime $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of groupTickets
+     */
+    public function getGroupTickets()
+    {
+        return $this->groupTickets;
+    }
+
+    /**
+     * Set the value of groupTickets
+     *
+     * @return  self
+     */
+    public function setGroupTickets($groupTickets)
+    {
+        $this->groupTickets = $groupTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changeTickets
+     */
+    public function getChangeTickets()
+    {
+        return $this->changeTickets;
+    }
+
+    /**
+     * Set the value of changeTickets
+     *
+     * @return  self
+     */
+    public function setChangeTickets($changeTickets)
+    {
+        $this->changeTickets = $changeTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of olalevelTickets
+     */
+    public function getOlalevelTickets()
+    {
+        return $this->olalevelTickets;
+    }
+
+    /**
+     * Set the value of olalevelTickets
+     *
+     * @return  self
+     */
+    public function setOlalevelTickets($olalevelTickets)
+    {
+        $this->olalevelTickets = $olalevelTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemTickets
+     */
+    public function getProblemTickets()
+    {
+        return $this->problemTickets;
+    }
+
+    /**
+     * Set the value of problemTickets
+     *
+     * @return  self
+     */
+    public function setProblemTickets($problemTickets)
+    {
+        $this->problemTickets = $problemTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of projecttaskTickets
+     */
+    public function getProjecttaskTickets()
+    {
+        return $this->projecttaskTickets;
+    }
+
+    /**
+     * Set the value of projecttaskTickets
+     *
+     * @return  self
+     */
+    public function setProjecttaskTickets($projecttaskTickets)
+    {
+        $this->projecttaskTickets = $projecttaskTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slalevelTickets
+     */
+    public function getSlalevelTickets()
+    {
+        return $this->slalevelTickets;
+    }
+
+    /**
+     * Set the value of slalevelTickets
+     *
+     * @return  self
+     */
+    public function setSlalevelTickets($slalevelTickets)
+    {
+        $this->slalevelTickets = $slalevelTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of supplierTickets
+     */
+    public function getSupplierTickets()
+    {
+        return $this->supplierTickets;
+    }
+
+    /**
+     * Set the value of supplierTickets
+     *
+     * @return  self
+     */
+    public function setSupplierTickets($supplierTickets)
+    {
+        $this->supplierTickets = $supplierTickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of requesttype
+     */
+    public function getRequesttype()
+    {
+        return $this->requesttype;
+    }
+
+    /**
+     * Set the value of requesttype
+     *
+     * @return  self
+     */
+    public function setRequesttype($requesttype)
+    {
+        $this->requesttype = $requesttype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilcategory
+     */
+    public function getItilcategory()
+    {
+        return $this->itilcategory;
+    }
+
+    /**
+     * Set the value of itilcategory
+     *
+     * @return  self
+     */
+    public function setItilcategory($itilcategory)
+    {
+        $this->itilcategory = $itilcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
 }

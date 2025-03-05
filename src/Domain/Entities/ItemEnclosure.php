@@ -12,19 +12,19 @@ class ItemEnclosure
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer")]
-    private $enclosures_id;
+    #[ORM\Column(name: 'enclosures_id', type: "integer")]
+    private $enclosuresId;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 255)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer")]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer")]
+    private $itemsId;
 
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'position', type: "integer")]
     private $position;
 
     public function getId(): ?int
@@ -34,12 +34,12 @@ class ItemEnclosure
 
     public function getEnclosuresId(): ?int
     {
-        return $this->enclosures_id;
+        return $this->enclosuresId;
     }
 
-    public function setEnclosuresId(int $enclosures_id): self
+    public function setEnclosuresId(int $enclosuresId): self
     {
-        $this->enclosures_id = $enclosures_id;
+        $this->enclosuresId = $enclosuresId;
 
         return $this;
     }
@@ -58,12 +58,12 @@ class ItemEnclosure
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }

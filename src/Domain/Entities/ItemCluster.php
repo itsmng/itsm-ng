@@ -12,17 +12,17 @@ class ItemCluster
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $clusters_id;
+    #[ORM\Column(name: 'clusters_id', type: "integer", options: ["default" => 0])]
+    private $clustersId;
 
-    #[ORM\Column(type: "string", length: 100, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 100, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
+    private $itemsId;
 
     public function getId(): ?int
     {
@@ -31,12 +31,12 @@ class ItemCluster
 
     public function getClustersId(): ?int
     {
-        return $this->clusters_id;
+        return $this->clustersId;
     }
 
-    public function setClustersId(int $clusters_id): self
+    public function setClustersId(int $clustersId): self
     {
-        $this->clusters_id = $clusters_id;
+        $this->clustersId = $clustersId;
 
         return $this;
     }
@@ -55,12 +55,12 @@ class ItemCluster
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }

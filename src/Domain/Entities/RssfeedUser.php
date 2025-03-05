@@ -12,42 +12,59 @@ class RssfeedUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $rssfeeds_id;
+    #[ORM\ManyToOne(targetEntity: Rssfeed::class, inversedBy: 'rssfeedUsers')]
+    #[ORM\JoinColumn(name: 'rssfeeds_id', referencedColumnName: 'id', nullable: true)]
+    private ?Rssfeed $rssfeed = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'rssfeedUsers')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getRssfeedsId(): ?string
+    /**
+     * Get the value of rssfeed
+     */
+    public function getRssfeed()
     {
-        return $this->rssfeeds_id;
+        return $this->rssfeed;
     }
 
-    public function setRssfeedsId(?string $rssfeeds_id): self
+    /**
+     * Set the value of rssfeed
+     *
+     * @return  self
+     */
+    public function setRssfeed($rssfeed)
     {
-        $this->rssfeeds_id = $rssfeeds_id;
+        $this->rssfeed = $rssfeed;
 
         return $this;
     }
 
-    public function getUsersId(): ?string
+    /**
+     * Get the value of user
+     */
+    public function getUser()
     {
-        return $this->users_id;
+        return $this->user;
     }
 
-    public function setUsersId(?string $users_id): self
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
     {
-        $this->users_id = $users_id;
+        $this->user = $user;
 
         return $this;
     }
-
 }

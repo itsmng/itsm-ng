@@ -16,23 +16,23 @@ class ItemSoftwareLicense
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: "string", length: 100)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $softwarelicenses_id;
+    #[ORM\Column(name: 'softwarelicenses_id', type: "integer", options: ["default" => 0])]
+    private $softwarelicensesId;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: "boolean", options: ["default" => false])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => false])]
+    private $isDynamic;
 
     public function getId(): ?int
     {
@@ -41,12 +41,12 @@ class ItemSoftwareLicense
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -65,36 +65,36 @@ class ItemSoftwareLicense
 
     public function getSoftwarelicensesId(): ?int
     {
-        return $this->softwarelicenses_id;
+        return $this->softwarelicensesId;
     }
 
-    public function setSoftwarelicensesId(int $softwarelicenses_id): self
+    public function setSoftwarelicensesId(int $softwarelicensesId): self
     {
-        $this->softwarelicenses_id = $softwarelicenses_id;
+        $this->softwarelicensesId = $softwarelicensesId;
 
         return $this;
     }
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(bool $is_dynamic): self
+    public function setIsDynamic(bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }

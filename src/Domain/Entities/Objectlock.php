@@ -11,20 +11,22 @@ class Objectlock
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100, options: ['comment' => 'Type of locked object'])]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100, options: ['comment' => 'Type of locked object'])]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => 'RELATION to various tables, according to itemtype (ID)'])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['comment' => 'RELATION to various tables, according to itemtype (ID)'])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'integer', options: ['comment' => 'id of the locker'])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP', 'comment' => 'Timestamp of the lock'])]
-    private $date_mod;
+
+    #[ORM\Column(name: 'date_mod', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP', 'comment' => 'Timestamp of the lock'])]
+    private $dateMod;
 
     public function getId(): ?int
     {
@@ -45,38 +47,46 @@ class Objectlock
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(?int $items_id): self
+    public function setItemsId(?int $itemsId): self
     {
-        $this->items_id = $items_id;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

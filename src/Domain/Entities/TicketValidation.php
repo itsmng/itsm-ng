@@ -17,38 +17,38 @@ class TicketValidation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
+    private $entitiesId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
+    private $usersId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\Column(name: 'tickets_id', type: 'integer', options: ['default' => 0])]
+    private $ticketsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_validate;
+    #[ORM\Column(name: 'users_id_validate', type: 'integer', options: ['default' => 0])]
+    private $usersIdValidate;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $comment_submission;
+    #[ORM\Column(name: 'comment_submission', type: 'text', length: 65535, nullable: true)]
+    private $commentSubmission;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $comment_validation;
+    #[ORM\Column(name: 'comment_validation', type: 'text', length: 65535, nullable: true)]
+    private $commentValidation;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 2])]
+    #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 2])]
     private $status;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $submission_date;
+    #[ORM\Column(name: 'submission_date', type: 'datetime', nullable: true)]
+    private $submissionDate;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $validation_date;
+    #[ORM\Column(name: 'validation_date', type: 'datetime', nullable: true)]
+    private $validationDate;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $timeline_position;
+    #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
+    private $timelinePosition;
 
     public function getId(): ?int
     {
@@ -57,72 +57,72 @@ class TicketValidation
 
     public function getEntitiesId(): ?int
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntitiesId(?int $entities_id): self
+    public function setEntitiesId(?int $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
 
     public function getUsersId(): ?int
     {
-        return $this->users_id;
+        return $this->usersId;
     }
 
-    public function setUsersId(?int $users_id): self
+    public function setUsersId(?int $usersId): self
     {
-        $this->users_id = $users_id;
+        $this->usersId = $usersId;
 
         return $this;
     }
 
     public function getTicketsId(): ?int
     {
-        return $this->tickets_id;
+        return $this->ticketsId;
     }
 
-    public function setTicketsId(?int $tickets_id): self
+    public function setTicketsId(?int $ticketsId): self
     {
-        $this->tickets_id = $tickets_id;
+        $this->ticketsId = $ticketsId;
 
         return $this;
     }
 
     public function getUsersIdValidate(): ?int
     {
-        return $this->users_id_validate;
+        return $this->usersIdValidate;
     }
 
-    public function setUsersIdValidate(?int $users_id_validate): self
+    public function setUsersIdValidate(?int $usersIdValidate): self
     {
-        $this->users_id_validate = $users_id_validate;
+        $this->usersIdValidate = $usersIdValidate;
 
         return $this;
     }
 
     public function getCommentSubmission(): ?string
     {
-        return $this->comment_submission;
+        return $this->commentSubmission;
     }
 
-    public function setCommentSubmission(?string $comment_submission): self
+    public function setCommentSubmission(?string $commentSubmission): self
     {
-        $this->comment_submission = $comment_submission;
+        $this->commentSubmission = $commentSubmission;
 
         return $this;
     }
 
     public function getCommentValidation(): ?string
     {
-        return $this->comment_validation;
+        return $this->commentValidation;
     }
 
-    public function setCommentValidation(?string $comment_validation): self
+    public function setCommentValidation(?string $commentValidation): self
     {
-        $this->comment_validation = $comment_validation;
+        $this->commentValidation = $commentValidation;
 
         return $this;
     }
@@ -141,36 +141,36 @@ class TicketValidation
 
     public function getSubmissionDate(): ?\DateTime
     {
-        return $this->submission_date;
+        return $this->submissionDate;
     }
 
-    public function setSubmissionDate(?\DateTime $submission_date): self
+    public function setSubmissionDate(?\DateTime $submissionDate): self
     {
-        $this->submission_date = $submission_date;
+        $this->submissionDate = $submissionDate;
 
         return $this;
     }
 
     public function getValidationDate(): ?\DateTime
     {
-        return $this->validation_date;
+        return $this->validationDate;
     }
 
-    public function setValidationDate(?\DateTime $validation_date): self
+    public function setValidationDate(?\DateTime $validationDate): self
     {
-        $this->validation_date = $validation_date;
+        $this->validationDate = $validationDate;
 
         return $this;
     }
 
     public function getTimelinePosition(): ?bool
     {
-        return $this->timeline_position;
+        return $this->timelinePosition;
     }
 
-    public function setTimelinePosition(?bool $timeline_position): self
+    public function setTimelinePosition(?bool $timelinePosition): self
     {
-        $this->timeline_position = $timeline_position;
+        $this->timelinePosition = $timelinePosition;
 
         return $this;
     }

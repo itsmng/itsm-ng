@@ -31,92 +31,94 @@ class State
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $states_id;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state = null;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'completename', type: 'text', length: 65535, nullable: true)]
     private $completename;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
     private $level;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $ancestors_cache;
+    #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
+    private $ancestorsCache;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $sons_cache;
+    #[ORM\Column(name: 'sons_cache', type: 'text', nullable: true)]
+    private $sonsCache;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_computer;
+    #[ORM\Column(name: 'is_visible_computer', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleComputer;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_monitor;
+    #[ORM\Column(name: 'is_visible_monitor', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleMonitor;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_networkequipment;
+    #[ORM\Column(name: 'is_visible_networkequipment', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleNetworkequipment;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_peripheral;
+    #[ORM\Column(name: 'is_visible_peripheral', type: 'boolean', options: ['default' => 1])]
+    private $isVisiblePeripheral;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_phone;
+    #[ORM\Column(name: 'is_visible_phone', type: 'boolean', options: ['default' => 1])]
+    private $isVisiblePhone;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_printer;
+    #[ORM\Column(name: 'is_visible_printer', type: 'boolean', options: ['default' => 1])]
+    private $isVisiblePrinter;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_softwareversion;
+    #[ORM\Column(name: 'is_visible_softwareversion', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleSoftwareversion;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_softwarelicense;
+    #[ORM\Column(name: 'is_visible_softwarelicense', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleSoftwarelicense;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_line;
+    #[ORM\Column(name: 'is_visible_line', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleLine;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_certificate;
+    #[ORM\Column(name: 'is_visible_certificate', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleCertificate;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_rack;
+    #[ORM\Column(name: 'is_visible_rack', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleRack;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_passivedcequipment;
+    #[ORM\Column(name: 'is_visible_passivedcequipment', type: 'boolean', options: ['default' => 1])]
+    private $isVisiblePassivedcequipment;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_enclosure;
+    #[ORM\Column(name: 'is_visible_enclosure', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleEnclosure;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_pdu;
+    #[ORM\Column(name: 'is_visible_pdu', type: 'boolean', options: ['default' => 1])]
+    private $isVisiblePdu;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_cluster;
+    #[ORM\Column(name: 'is_visible_cluster', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleCluster;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_contract;
+    #[ORM\Column(name: 'is_visible_contract', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleContract;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_visible_appliance;
+    #[ORM\Column(name: 'is_visible_appliance', type: 'boolean', options: ['default' => 1])]
+    private $isVisibleAppliance;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -135,26 +137,14 @@ class State
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -167,18 +157,6 @@ class State
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getStatesId(): ?int
-    {
-        return $this->states_id;
-    }
-
-    public function setStatesId(?int $states_id): self
-    {
-        $this->states_id = $states_id;
 
         return $this;
     }
@@ -209,254 +187,294 @@ class State
 
     public function getAncestorsCache(): ?string
     {
-        return $this->ancestors_cache;
+        return $this->ancestorsCache;
     }
 
-    public function setAncestorsCache(?string $ancestors_cache): self
+    public function setAncestorsCache(?string $ancestorsCache): self
     {
-        $this->ancestors_cache = $ancestors_cache;
+        $this->ancestorsCache = $ancestorsCache;
 
         return $this;
     }
 
     public function getSonsCache(): ?string
     {
-        return $this->sons_cache;
+        return $this->sonsCache;
     }
 
-    public function setSonsCache(?string $sons_cache): self
+    public function setSonsCache(?string $sonsCache): self
     {
-        $this->sons_cache = $sons_cache;
+        $this->sonsCache = $sonsCache;
 
         return $this;
     }
 
     public function getIsVisibleComputer(): ?bool
     {
-        return $this->is_visible_computer;
+        return $this->isVisibleComputer;
     }
 
-    public function setIsVisibleComputer(?bool $is_visible_computer): self
+    public function setIsVisibleComputer(?bool $isVisibleComputer): self
     {
-        $this->is_visible_computer = $is_visible_computer;
+        $this->isVisibleComputer = $isVisibleComputer;
 
         return $this;
     }
 
     public function getIsVisibleMonitor(): ?bool
     {
-        return $this->is_visible_monitor;
+        return $this->isVisibleMonitor;
     }
 
-    public function setIsVisibleMonitor(?bool $is_visible_monitor): self
+    public function setIsVisibleMonitor(?bool $isVisibleMonitor): self
     {
-        $this->is_visible_monitor = $is_visible_monitor;
+        $this->isVisibleMonitor = $isVisibleMonitor;
 
         return $this;
     }
 
     public function getIsVisibleNetworkequipment(): ?bool
     {
-        return $this->is_visible_networkequipment;
+        return $this->isVisibleNetworkequipment;
     }
 
-    public function setIsVisibleNetworkequipment(?bool $is_visible_networkequipment): self
+    public function setIsVisibleNetworkequipment(?bool $isVisibleNetworkequipment): self
     {
-        $this->is_visible_networkequipment = $is_visible_networkequipment;
+        $this->isVisibleNetworkequipment = $isVisibleNetworkequipment;
 
         return $this;
     }
 
     public function getIsVisiblePeripheral(): ?bool
     {
-        return $this->is_visible_peripheral;
+        return $this->isVisiblePeripheral;
     }
 
-    public function setIsVisiblePeripheral(?bool $is_visible_peripheral): self
+    public function setIsVisiblePeripheral(?bool $isVisiblePeripheral): self
     {
-        $this->is_visible_peripheral = $is_visible_peripheral;
+        $this->isVisiblePeripheral = $isVisiblePeripheral;
 
         return $this;
     }
 
     public function getIsVisiblePhone(): ?bool
     {
-        return $this->is_visible_phone;
+        return $this->isVisiblePhone;
     }
 
-    public function setIsVisiblePhone(?bool $is_visible_phone): self
+    public function setIsVisiblePhone(?bool $isVisiblePhone): self
     {
-        $this->is_visible_phone = $is_visible_phone;
+        $this->isVisiblePhone = $isVisiblePhone;
 
         return $this;
     }
 
     public function getIsVisiblePrinter(): ?bool
     {
-        return $this->is_visible_printer;
+        return $this->isVisiblePrinter;
     }
 
-    public function setIsVisiblePrinter(?bool $is_visible_printer): self
+    public function setIsVisiblePrinter(?bool $isVisiblePrinter): self
     {
-        $this->is_visible_printer = $is_visible_printer;
+        $this->isVisiblePrinter = $isVisiblePrinter;
 
         return $this;
     }
 
     public function getIsVisibleSoftwareversion(): ?bool
     {
-        return $this->is_visible_softwareversion;
+        return $this->isVisibleSoftwareversion;
     }
 
-    public function setIsVisibleSoftwareversion(?bool $is_visible_softwareversion): self
+    public function setIsVisibleSoftwareversion(?bool $isVisibleSoftwareversion): self
     {
-        $this->is_visible_softwareversion = $is_visible_softwareversion;
+        $this->isVisibleSoftwareversion = $isVisibleSoftwareversion;
 
         return $this;
     }
 
     public function getIsVisibleSoftwarelicense(): ?bool
     {
-        return $this->is_visible_softwarelicense;
+        return $this->isVisibleSoftwarelicense;
     }
 
-    public function setIsVisibleSoftwarelicense(?bool $is_visible_softwarelicense): self
+    public function setIsVisibleSoftwarelicense(?bool $isVisibleSoftwarelicense): self
     {
-        $this->is_visible_softwarelicense = $is_visible_softwarelicense;
+        $this->isVisibleSoftwarelicense = $isVisibleSoftwarelicense;
 
         return $this;
     }
 
     public function getIsVisibleLine(): ?bool
     {
-        return $this->is_visible_line;
+        return $this->isVisibleLine;
     }
 
-    public function setIsVisibleLine(?bool $is_visible_line): self
+    public function setIsVisibleLine(?bool $isVisibleLine): self
     {
-        $this->is_visible_line = $is_visible_line;
+        $this->isVisibleLine = $isVisibleLine;
 
         return $this;
     }
 
     public function getIsVisibleCertificate(): ?bool
     {
-        return $this->is_visible_certificate;
+        return $this->isVisibleCertificate;
     }
 
-    public function setIsVisibleCertificate(?bool $is_visible_certificate): self
+    public function setIsVisibleCertificate(?bool $isVisibleCertificate): self
     {
-        $this->is_visible_certificate = $is_visible_certificate;
+        $this->isVisibleCertificate = $isVisibleCertificate;
 
         return $this;
     }
 
     public function getIsVisibleRack(): ?bool
     {
-        return $this->is_visible_rack;
+        return $this->isVisibleRack;
     }
 
-    public function setIsVisibleRack(?bool $is_visible_rack): self
+    public function setIsVisibleRack(?bool $isVisibleRack): self
     {
-        $this->is_visible_rack = $is_visible_rack;
+        $this->isVisibleRack = $isVisibleRack;
 
         return $this;
     }
 
     public function getIsVisiblePassivedcequipment(): ?bool
     {
-        return $this->is_visible_passivedcequipment;
+        return $this->isVisiblePassivedcequipment;
     }
 
-    public function setIsVisiblePassivedcequipment(?bool $is_visible_passivedcequipment): self
+    public function setIsVisiblePassivedcequipment(?bool $isVisiblePassivedcequipment): self
     {
-        $this->is_visible_passivedcequipment = $is_visible_passivedcequipment;
+        $this->isVisiblePassivedcequipment = $isVisiblePassivedcequipment;
 
         return $this;
     }
 
     public function getIsVisibleEnclosure(): ?bool
     {
-        return $this->is_visible_enclosure;
+        return $this->isVisibleEnclosure;
     }
 
-    public function setIsVisibleEnclosure(?bool $is_visible_enclosure): self
+    public function setIsVisibleEnclosure(?bool $isVisibleEnclosure): self
     {
-        $this->is_visible_enclosure = $is_visible_enclosure;
+        $this->isVisibleEnclosure = $isVisibleEnclosure;
 
         return $this;
     }
 
     public function getIsVisiblePdu(): ?bool
     {
-        return $this->is_visible_pdu;
+        return $this->isVisiblePdu;
     }
 
-    public function setIsVisiblePdu(?bool $is_visible_pdu): self
+    public function setIsVisiblePdu(?bool $isVisiblePdu): self
     {
-        $this->is_visible_pdu = $is_visible_pdu;
+        $this->isVisiblePdu = $isVisiblePdu;
 
         return $this;
     }
 
     public function getIsVisibleCluster(): ?bool
     {
-        return $this->is_visible_cluster;
+        return $this->isVisibleCluster;
     }
 
-    public function setIsVisibleCluster(?bool $is_visible_cluster): self
+    public function setIsVisibleCluster(?bool $isVisibleCluster): self
     {
-        $this->is_visible_cluster = $is_visible_cluster;
+        $this->isVisibleCluster = $isVisibleCluster;
 
         return $this;
     }
 
     public function getIsVisibleContract(): ?bool
     {
-        return $this->is_visible_contract;
+        return $this->isVisibleContract;
     }
 
-    public function setIsVisibleContract(?bool $is_visible_contract): self
+    public function setIsVisibleContract(?bool $isVisibleContract): self
     {
-        $this->is_visible_contract = $is_visible_contract;
+        $this->isVisibleContract = $isVisibleContract;
 
         return $this;
     }
 
     public function getIsVisibleAppliance(): ?bool
     {
-        return $this->is_visible_appliance;
+        return $this->isVisibleAppliance;
     }
 
-    public function setIsVisibleAppliance(?bool $is_visible_appliance): self
+    public function setIsVisibleAppliance(?bool $isVisibleAppliance): self
     {
-        $this->is_visible_appliance = $is_visible_appliance;
+        $this->isVisibleAppliance = $isVisibleAppliance;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTime
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $date_mod): self
+    public function setDateMod(?\DateTime $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $date_creation): self
+    public function setDateCreation(?\DateTime $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
 }

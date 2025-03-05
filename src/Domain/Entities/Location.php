@@ -16,71 +16,73 @@ class Location
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $locations_id;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'completename', type: 'text', nullable: true, length: 65535)]
     private $completename;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
     private $level;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $ancestors_cache;
+    #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
+    private $ancestorsCache;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $sons_cache;
+    #[ORM\Column(name: 'sons_cache', type: 'text', nullable: true)]
+    private $sonsCache;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 65535)]
+    #[ORM\Column(name: 'address', type: 'text', nullable: true, length: 65535)]
     private $address;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'postcode', type: 'string', length: 255, nullable: true)]
     private $postcode;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'town', type: 'string', length: 255, nullable: true)]
     private $town;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'state', type: 'string', length: 255, nullable: true)]
     private $state;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'country', type: 'string', length: 255, nullable: true)]
     private $country;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'building', type: 'string', length: 255, nullable: true)]
     private $building;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'room', type: 'string', length: 255, nullable: true)]
     private $room;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'latitude', type: 'string', length: 255, nullable: true)]
     private $latitude;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'longitude', type: 'string', length: 255, nullable: true)]
     private $longitude;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'altitude', type: 'string', length: 255, nullable: true)]
     private $altitude;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -94,26 +96,14 @@ class Location
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -126,18 +116,6 @@ class Location
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locations_id;
-    }
-
-    public function setLocationsId(int $locations_id): self
-    {
-        $this->locations_id = $locations_id;
 
         return $this;
     }
@@ -178,38 +156,26 @@ class Location
         return $this;
     }
 
-    public function getLocations(): ?Locations
-    {
-        return $this->locations;
-    }
-
-    public function setLocations(?Locations $locations): self
-    {
-        $this->locations = $locations;
-
-        return $this;
-    }
-
     public function getAncestorsCache(): ?string
     {
-        return $this->ancestors_cache;
+        return $this->ancestorsCache;
     }
 
-    public function setAncestorsCache(string $ancestors_cache): self
+    public function setAncestorsCache(string $ancestorsCache): self
     {
-        $this->ancestors_cache = $ancestors_cache;
+        $this->ancestorsCache = $ancestorsCache;
 
         return $this;
     }
 
     public function getSonsCache(): ?string
     {
-        return $this->sons_cache;
+        return $this->sonsCache;
     }
 
-    public function setSonsCache(string $sons_cache): self
+    public function setSonsCache(string $sonsCache): self
     {
-        $this->sons_cache = $sons_cache;
+        $this->sonsCache = $sonsCache;
 
         return $this;
     }
@@ -336,24 +302,64 @@ class Location
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
 
         return $this;
     }

@@ -29,118 +29,103 @@ class ItilCategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $itilcategories_id;
+    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?ItilCategory $itilCategory = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: 'completename', type: "text", nullable: true, length: 65535)]
     private $completename;
 
-    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(name: 'level', type: "integer", options: ["default" => 0])]
     private $level;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $knowbaseitemcategories_id;
+    #[ORM\ManyToOne(targetEntity: Knowbaseitemcategory::class)]
+    #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Knowbaseitemcategory $knowbaseitemcategory = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $groups_id;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'code', type: "string", length: 255, nullable: true)]
     private $code;
 
-    #[ORM\Column(type: "text", nullable: true)]
-    private $ancestors_cache;
+    #[ORM\Column(name: 'ancestors_cache', type: "text", nullable: true)]
+    private $ancestorsCache;
 
-    #[ORM\Column(type: "text", nullable: true)]
-    private $sons_cache;
+    #[ORM\Column(name: 'sons_cache', type: "text", nullable: true)]
+    private $sonsCache;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 1])]
-    private $is_helpdeskvisible;
+    #[ORM\Column(name: 'is_helpdeskvisible', type: "boolean", options: ["default" => 1])]
+    private $isHelpdeskvisible;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $tickettemplates_id_incident;
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id_incident', referencedColumnName: 'id', nullable: true)]
+    private ?TicketTemplate $tickettemplateIncident = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $tickettemplates_id_demand;
+    #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
+    #[ORM\JoinColumn(name: 'tickettemplates_id_demand', referencedColumnName: 'id', nullable: true)]
+    private ?TicketTemplate $tickettemplateDemand = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $changetemplates_id;
+    #[ORM\ManyToOne(targetEntity: ChangeTemplate::class)]
+    #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?ChangeTemplate $changetemplate = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $problemtemplates_id;
+    #[ORM\ManyToOne(targetEntity: ProblemTemplate::class)]
+    #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
+    private ?ProblemTemplate $problemtemplate = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 1])]
-    private $is_incident;
+    #[ORM\Column(name: 'is_incident', type: "integer", options: ["default" => 1])]
+    private $isIncident;
 
-    #[ORM\Column(type: "integer", options: ["default" => 1])]
-    private $is_request;
+    #[ORM\Column(name: 'is_request', type: "integer", options: ["default" => 1])]
+    private $isRequest;
 
-    #[ORM\Column(type: "integer", options: ["default" => 1])]
-    private $is_problem;
+    #[ORM\Column(name: 'is_problem', type: "integer", options: ["default" => 1])]
+    private $isProblem;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 1])]
-    private $is_change;
+    #[ORM\Column(name: 'is_change', type: "boolean", options: ["default" => 1])]
+    private $isChange;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: "datetime", nullable: true)]
+    private $dateCreation;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
-
-        return $this;
-    }
-
-    public function getItilCategoriesId(): ?int
-    {
-        return $this->itilcategories_id;
-    }
-
-    public function setItilCategoriesId(?int $itilcategories_id): self
-    {
-        $this->itilcategories_id = $itilcategories_id;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -162,9 +147,9 @@ class ItilCategory
         return $this->completename;
     }
 
-    public function setCompleteName(?string $complete_name): self
+    public function setCompleteName(?string $completeName): self
     {
-        $this->completename = $complete_name;
+        $this->completename = $completeName;
 
         return $this;
     }
@@ -193,42 +178,6 @@ class ItilCategory
         return $this;
     }
 
-    public function getKnowbaseitemcategoriesId(): ?int
-    {
-        return $this->knowbaseitemcategories_id;
-    }
-
-    public function setKnowbaseitemcategoriesId(?int $knowbaseitemcategories_id): self
-    {
-        $this->knowbaseitemcategories_id = $knowbaseitemcategories_id;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUserId(?int $user_id): self
-    {
-        $this->users_id = $user_id;
-
-        return $this;
-    }
-
-    public function getGroupId(): ?int
-    {
-        return $this->groups_id;
-    }
-
-    public function setGroupId(?int $group_id): self
-    {
-        $this->groups_id = $group_id;
-
-        return $this;
-    }
-
     public function getCode(): ?string
     {
         return $this->code;
@@ -243,156 +192,288 @@ class ItilCategory
 
     public function getAncestorsCache(): ?string
     {
-        return $this->ancestors_cache;
+        return $this->ancestorsCache;
     }
 
-    public function setAncestorsCache(?string $ancestors_cache): self
+    public function setAncestorsCache(?string $ancestorsCache): self
     {
-        $this->ancestors_cache = $ancestors_cache;
+        $this->ancestorsCache = $ancestorsCache;
 
         return $this;
     }
 
     public function getSonsCache(): ?string
     {
-        return $this->sons_cache;
+        return $this->sonsCache;
     }
 
-    public function setSonsCache(?string $sons_cache): self
+    public function setSonsCache(?string $sonsCache): self
     {
-        $this->sons_cache = $sons_cache;
+        $this->sonsCache = $sonsCache;
 
         return $this;
     }
 
     public function getIsHelpdeskVisible(): ?bool
     {
-        return $this->is_helpdeskvisible;
+        return $this->isHelpdeskvisible;
     }
 
-    public function setIsHelpdeskVisible(?bool $is_helpdesk_visible): self
+    public function setIsHelpdeskVisible(?bool $isHelpdeskVisible): self
     {
-        $this->is_helpdeskvisible = $is_helpdesk_visible;
-
-        return $this;
-    }
-
-    public function getTickettemplatesIdIncident(): ?int
-    {
-        return $this->tickettemplates_id_incident;
-    }
-
-    public function setTickettemplatesIdIncident(?int $tickettemplates_id_incident): self
-    {
-        $this->tickettemplates_id_incident = $tickettemplates_id_incident;
-
-        return $this;
-    }
-
-    public function getTickettemplatesIdDemand(): ?int
-    {
-        return $this->tickettemplates_id_demand;
-    }
-
-    public function setTickettemplatesIdDemand(?int $tickettemplates_id_demand): self
-    {
-        $this->tickettemplates_id_demand = $tickettemplates_id_demand;
-
-        return $this;
-    }
-
-    public function getChangetemplatesId(): ?int
-    {
-        return $this->changetemplates_id;
-    }
-
-    public function setChangetemplatesId(?int $changetemplates_id): self
-    {
-        $this->changetemplates_id = $changetemplates_id;
-
-        return $this;
-    }
-
-    public function getProblemtemplatesId(): ?int
-    {
-        return $this->problemtemplates_id;
-    }
-
-    public function setProblemtemplatesId(?int $problemtemplates_id): self
-    {
-        $this->problemtemplates_id = $problemtemplates_id;
+        $this->isHelpdeskvisible = $isHelpdeskVisible;
 
         return $this;
     }
 
     public function getIsIncident(): ?bool
     {
-        return $this->is_incident;
+        return $this->isIncident;
     }
 
-    public function setIsIncident(?bool $is_incident): self
+    public function setIsIncident(?bool $isIncident): self
     {
-        $this->is_incident = $is_incident;
+        $this->isIncident = $isIncident;
 
         return $this;
     }
 
     public function getIsRequest(): ?bool
     {
-        return $this->is_request;
+        return $this->isRequest;
     }
 
-    public function setIsRequest(?bool $is_request): self
+    public function setIsRequest(?bool $isRequest): self
     {
-        $this->is_request = $is_request;
+        $this->isRequest = $isRequest;
 
         return $this;
     }
 
     public function getIsProblem(): ?bool
     {
-        return $this->is_problem;
+        return $this->isProblem;
     }
 
-    public function setIsProblem(?bool $is_problem): self
+    public function setIsProblem(?bool $isProblem): self
     {
-        $this->is_problem = $is_problem;
+        $this->isProblem = $isProblem;
 
         return $this;
     }
 
     public function getIsChange(): ?bool
     {
-        return $this->is_change;
+        return $this->isChange;
     }
 
-    public function setIsChange(?bool $is_change): self
+    public function setIsChange(?bool $isChange): self
     {
-        $this->is_change = $is_change;
+        $this->isChange = $isChange;
 
         return $this;
     }
 
     public function getDateMod(): ?DateTime
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?DateTime $date_mod): self
+    public function setDateMod(?DateTime $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?DateTime $date_creation): self
+    public function setDateCreation(?DateTime $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilCategory
+     */
+    public function getItilCategory()
+    {
+        return $this->itilCategory;
+    }
+
+    /**
+     * Set the value of itilCategory
+     *
+     * @return  self
+     */
+    public function setItilCategory($itilCategory)
+    {
+        $this->itilCategory = $itilCategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemcategory
+     */
+    public function getKnowbaseitemcategory()
+    {
+        return $this->knowbaseitemcategory;
+    }
+
+    /**
+     * Set the value of knowbaseitemcategory
+     *
+     * @return  self
+     */
+    public function setKnowbaseitemcategory($knowbaseitemcategory)
+    {
+        $this->knowbaseitemcategory = $knowbaseitemcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickettemplateIncident
+     */
+    public function getTickettemplateIncident()
+    {
+        return $this->tickettemplateIncident;
+    }
+
+    /**
+     * Set the value of tickettemplateIncident
+     *
+     * @return  self
+     */
+    public function setTickettemplateIncident($tickettemplateIncident)
+    {
+        $this->tickettemplateIncident = $tickettemplateIncident;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickettemplateDemand
+     */
+    public function getTickettemplateDemand()
+    {
+        return $this->tickettemplateDemand;
+    }
+
+    /**
+     * Set the value of tickettemplateDemand
+     *
+     * @return  self
+     */
+    public function setTickettemplateDemand($tickettemplateDemand)
+    {
+        $this->tickettemplateDemand = $tickettemplateDemand;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of changetemplate
+     */
+    public function getChangetemplate()
+    {
+        return $this->changetemplate;
+    }
+
+    /**
+     * Set the value of changetemplate
+     *
+     * @return  self
+     */
+    public function setChangetemplate($changetemplate)
+    {
+        $this->changetemplate = $changetemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problemtemplate
+     */
+    public function getProblemtemplate()
+    {
+        return $this->problemtemplate;
+    }
+
+    /**
+     * Set the value of problemtemplate
+     *
+     * @return  self
+     */
+    public function setProblemtemplate($problemtemplate)
+    {
+        $this->problemtemplate = $problemtemplate;
 
         return $this;
     }

@@ -13,19 +13,20 @@ class Ruleaction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $rules_id;
+    #[ORM\ManyToOne(targetEntity: Rule::class)]
+    #[ORM\JoinColumn(name: 'rules_id', referencedColumnName: 'id', nullable: true)]
+    private ?Rule $rule = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => 'VALUE IN (assign, regex_result, append_regex_result, affectbyip, affectbyfqdn, affectbymac)'])]
-    private $action_type;
+    #[ORM\Column(name: 'action_type', type: 'string', length: 255, nullable: true, options: ['comment' => 'VALUE IN (assign, regex_result, append_regex_result, affectbyip, affectbyfqdn, affectbymac)'])]
+    private $actionType;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'field', type: 'string', length: 255, nullable: true)]
     private $field;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'value', type: 'string', length: 255, nullable: true)]
     private $value;
 
     public function getId(): ?int
@@ -33,26 +34,14 @@ class Ruleaction
         return $this->id;
     }
 
-    public function getRulesId(): ?string
-    {
-        return $this->rules_id;
-    }
-
-    public function setRulesId(?string $rules_id): self
-    {
-        $this->rules_id = $rules_id;
-
-        return $this;
-    }
-
     public function getActionType(): ?string
     {
-        return $this->action_type;
+        return $this->actionType;
     }
 
-    public function setActionType(?string $action_type): self
+    public function setActionType(?string $actionType): self
     {
-        $this->action_type = $action_type;
+        $this->actionType = $actionType;
 
         return $this;
     }
@@ -81,4 +70,24 @@ class Ruleaction
         return $this;
     }
 
+
+    /**
+     * Get the value of rule
+     */
+    public function getRule()
+    {
+        return $this->rule;
+    }
+
+    /**
+     * Set the value of rule
+     *
+     * @return  self
+     */
+    public function setRule($rule)
+    {
+        $this->rule = $rule;
+
+        return $this;
+    }
 }

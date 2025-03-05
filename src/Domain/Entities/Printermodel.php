@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_printermodels')]
@@ -14,23 +15,26 @@ class Printermodel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $product_number;
+    #[ORM\Column(name: 'product_number', type: 'string', length: 255, nullable: true)]
+    private $productNumber;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
+
+    #[ORM\OneToMany(mappedBy: 'printermodel', targetEntity: CartridgeItemPrintermodel::class)]
+    private Collection $cartridgeItemPrintermodels;
 
     public function getId(): ?int
     {
@@ -63,38 +67,58 @@ class Printermodel
 
     public function getProductNumber(): ?string
     {
-        return $this->product_number;
+        return $this->productNumber;
     }
 
-    public function setProductNumber(?string $product_number): self
+    public function setProductNumber(?string $productNumber): self
     {
-        $this->product_number = $product_number;
+        $this->productNumber = $productNumber;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTimeInterface $date_mod): self
+    public function setDateMod(?\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $date_creation): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
+
+    /**
+     * Get the value of cartridgeItemPrintermodels
+     */
+    public function getCartridgeItemPrintermodels()
+    {
+        return $this->cartridgeItemPrintermodels;
+    }
+
+    /**
+     * Set the value of cartridgeItemPrintermodels
+     *
+     * @return  self
+     */
+    public function setCartridgeItemPrintermodels($cartridgeItemPrintermodels)
+    {
+        $this->cartridgeItemPrintermodels = $cartridgeItemPrintermodels;
+
+        return $this;
+    }
 }

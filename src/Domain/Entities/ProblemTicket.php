@@ -12,44 +12,60 @@ class ProblemTicket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $problems_id;
+    #[ORM\ManyToOne(targetEntity: Problem::class, inversedBy: 'problemTickets')]
+    #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Problem $problem = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $tickets_id;
+    #[ORM\ManyToOne(targetEntity: Ticket::class, inversedBy: 'problemTickets')]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProblemsId(): ?int
+
+    /**
+     * Get the value of ticket
+     */
+    public function getTicket()
     {
-        return $this->problems_id;
+        return $this->ticket;
     }
 
-
-    public function setProblemsId(?int $problems_id): self
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */
+    public function setTicket($ticket)
     {
-        $this->problems_id = $problems_id;
+        $this->ticket = $ticket;
 
         return $this;
     }
 
-    public function getTicketsId(): ?int
+    /**
+     * Get the value of problem
+     */
+    public function getProblem()
     {
-        return $this->tickets_id;
+        return $this->problem;
     }
 
-
-    public function setTicketsId(?int $tickets_id): self
+    /**
+     * Set the value of problem
+     *
+     * @return  self
+     */
+    public function setProblem($problem)
     {
-        $this->tickets_id = $tickets_id;
+        $this->problem = $problem;
 
         return $this;
     }
-
 }

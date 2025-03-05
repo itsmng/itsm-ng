@@ -11,19 +11,21 @@ class Olalevelaction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olalevels_id;
+    #[ORM\ManyToOne(targetEntity: Olalevel::class)]
+    #[ORM\JoinColumn(name: 'olalevels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Olalevel $olalevel = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $action_type;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'action_type', type: 'string', length: 255, nullable: true)]
+    private $actionType;
+
+    #[ORM\Column(name: 'field', type: 'string', length: 255, nullable: true)]
     private $field;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'value', type: 'string', length: 255, nullable: true)]
     private $value;
 
     public function getId(): ?int
@@ -31,26 +33,14 @@ class Olalevelaction
         return $this->id;
     }
 
-    public function getOlalevelsId(): ?int
-    {
-        return $this->olalevels_id;
-    }
-
-    public function setOlalevelsId(?int $olalevels_id): self
-    {
-        $this->olalevels_id = $olalevels_id;
-
-        return $this;
-    }
-
     public function getActionType(): ?string
     {
-        return $this->action_type;
+        return $this->actionType;
     }
 
-    public function setActionType(?string $action_type): self
+    public function setActionType(?string $actionType): self
     {
-        $this->action_type = $action_type;
+        $this->actionType = $actionType;
 
         return $this;
     }
@@ -79,4 +69,24 @@ class Olalevelaction
         return $this;
     }
 
+
+    /**
+     * Get the value of olalevel
+     */
+    public function getOlalevel()
+    {
+        return $this->olalevel;
+    }
+
+    /**
+     * Set the value of olalevel
+     *
+     * @return  self
+     */
+    public function setOlalevel($olalevel)
+    {
+        $this->olalevel = $olalevel;
+
+        return $this;
+    }
 }

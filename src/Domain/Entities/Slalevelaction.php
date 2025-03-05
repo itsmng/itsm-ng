@@ -11,19 +11,20 @@ class Slalevelaction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $slalevels_id;
+    #[ORM\ManyToOne(targetEntity: Slalevel::class)]
+    #[ORM\JoinColumn(name: 'slalevels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Slalevel $slalevel = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $action_type;
+    #[ORM\Column(name: 'action_type', type: 'string', length: 255, nullable: true)]
+    private $actionType;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'field', type: 'string', length: 255, nullable: true)]
     private $field;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'value', type: 'string', length: 255, nullable: true)]
     private $value;
 
     public function getId(): ?int
@@ -31,26 +32,14 @@ class Slalevelaction
         return $this->id;
     }
 
-    public function getSlalevelsId(): ?int
-    {
-        return $this->slalevels_id;
-    }
-
-    public function setSlalevelsId(int $slalevels_id): self
-    {
-        $this->slalevels_id = $slalevels_id;
-
-        return $this;
-    }
-
     public function getActionType(): ?string
     {
-        return $this->action_type;
+        return $this->actionType;
     }
 
-    public function setActionType(string $action_type): self
+    public function setActionType(string $actionType): self
     {
-        $this->action_type = $action_type;
+        $this->actionType = $actionType;
 
         return $this;
     }
@@ -79,4 +68,24 @@ class Slalevelaction
         return $this;
     }
 
+
+    /**
+     * Get the value of slalevel
+     */
+    public function getSlalevel()
+    {
+        return $this->slalevel;
+    }
+
+    /**
+     * Set the value of slalevel
+     *
+     * @return  self
+     */
+    public function setSlalevel($slalevel)
+    {
+        $this->slalevel = $slalevel;
+
+        return $this;
+    }
 }

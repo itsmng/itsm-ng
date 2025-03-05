@@ -13,20 +13,20 @@ class ImpactRelation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 255, options: ["default" => ""])]
-    private $itemtype_source;
+    #[ORM\Column(name: 'itemtype_source', type: "string", length: 255, options: ["default" => ""])]
+    private $itemtypeSource;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id_source;
+    #[ORM\Column(name: 'items_id_source', type: "integer", options: ["default" => 0])]
+    private $itemsIdSource;
 
-    #[ORM\Column(type: "string", length: 255, options: ["default" => ""])]
-    private $itemtype_impacted;
+    #[ORM\Column(name: 'itemtype_impacted', type: "string", length: 255, options: ["default" => ""])]
+    private $itemtypeImpacted;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id_impacted;
+    #[ORM\Column(name: 'items_id_impacted', type: "integer", options: ["default" => 0])]
+    private $itemsIdImpacted;
 
     public function getId(): ?int
     {
@@ -35,48 +35,48 @@ class ImpactRelation
 
     public function getItemtypeSource(): ?string
     {
-        return $this->itemtype_source;
+        return $this->itemtypeSource;
     }
 
-    public function setItemtypeSource(string $itemtype_source): self
+    public function setItemtypeSource(string $itemtypeSource): self
     {
-        $this->itemtype_source = $itemtype_source;
+        $this->itemtypeSource = $itemtypeSource;
 
         return $this;
     }
 
     public function getItemsIdSource(): ?int
     {
-        return $this->items_id_source;
+        return $this->itemsIdSource;
     }
 
-    public function setItemsIdSource(int $items_id_source): self
+    public function setItemsIdSource(int $itemsIdSource): self
     {
-        $this->items_id_source = $items_id_source;
+        $this->itemsIdSource = $itemsIdSource;
 
         return $this;
     }
 
     public function getItemtypeImpacted(): ?string
     {
-        return $this->itemtype_impacted;
+        return $this->itemtypeImpacted;
     }
 
-    public function setItemtypeImpacted(string $itemtype_impacted): self
+    public function setItemtypeImpacted(string $itemtypeImpacted): self
     {
-        $this->itemtype_impacted = $itemtype_impacted;
+        $this->itemtypeImpacted = $itemtypeImpacted;
 
         return $this;
     }
 
     public function getItemsIdImpacted(): ?int
     {
-        return $this->items_id_impacted;
+        return $this->itemsIdImpacted;
     }
 
-    public function setItemsIdImpacted(int $items_id_impacted): self
+    public function setItemsIdImpacted(int $itemsIdImpacted): self
     {
-        $this->items_id_impacted = $items_id_impacted;
+        $this->itemsIdImpacted = $itemsIdImpacted;
 
         return $this;
     }

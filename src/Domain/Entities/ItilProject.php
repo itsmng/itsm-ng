@@ -12,17 +12,19 @@ class ItilProject
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 100, options: ["default" => ""])]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 100, options: ["default" => ""])]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $projects_id;
+    #[ORM\ManyToOne(targetEntity: Project::class)]
+    #[ORM\JoinColumn(name: 'projects_id', referencedColumnName: 'id', nullable: true)]
+    private ?Project $project = null;
+
 
     public function getId(): ?int
     {
@@ -43,24 +45,32 @@ class ItilProject
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
 
-    public function getProjectsId(): ?int
+    /**
+     * Get the value of project
+     */
+    public function getProject()
     {
-        return $this->projects_id;
+        return $this->project;
     }
 
-    public function setProjectsId(int $projects_id): self
+    /**
+     * Set the value of project
+     *
+     * @return  self
+     */
+    public function setProject($project)
     {
-        $this->projects_id = $projects_id;
+        $this->project = $project;
 
         return $this;
     }

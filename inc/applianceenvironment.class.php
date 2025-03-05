@@ -31,12 +31,15 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\ApplianceEnvironment as ApplianceEnvironmentEntity;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
 
 class ApplianceEnvironment extends CommonDropdown
 {
+    public $entity = ApplianceEnvironmentEntity::class;
     public static function getTypeName($nb = 0)
     {
         return _n('Appliance environment', 'Appliance environments', $nb);

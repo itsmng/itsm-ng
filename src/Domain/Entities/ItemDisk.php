@@ -24,59 +24,59 @@ class ItemDisk
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
+    private $entitiesId;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'device', type: 'string', length: 255, nullable: true)]
     private $device;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'mountpoint', type: 'string', length: 255, nullable: true)]
     private $mountpoint;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $filesystems_id;
+    #[ORM\Column(name: 'filesystems_id', type: 'integer', options: ['default' => 0])]
+    private $filesystemsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'totalsize', type: 'integer', options: ['default' => 0])]
     private $totalsize;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'freesize', type: 'integer', options: ['default' => 0])]
     private $freesize;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_deleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
+    private $isDeleted;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
+    private $isDynamic;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $encryption_status;
+    #[ORM\Column(name: 'encryption_status', type: 'integer', options: ['default' => 0])]
+    private $encryptionStatus;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $encryption_tool;
+    #[ORM\Column(name: 'encryption_tool', type: 'string', length: 255, nullable: true)]
+    private $encryptionTool;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $encryption_algorithm;
+    #[ORM\Column(name: 'encryption_algorithm', type: 'string', length: 255, nullable: true)]
+    private $encryptionAlgorithm;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $encryption_type;
+    #[ORM\Column(name: 'encryption_type', type: 'string', length: 255, nullable: true)]
+    private $encryptionType;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime')]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
+    private $dateCreation;
 
     public function getId(): ?int
     {
@@ -85,12 +85,12 @@ class ItemDisk
 
     public function getEntitiesId(): ?int
     {
-        return $this->entities_id;
+        return $this->entitiesId;
     }
 
-    public function setEntitiesId(int $entities_id): self
+    public function setEntitiesId(int $entitiesId): self
     {
-        $this->entities_id = $entities_id;
+        $this->entitiesId = $entitiesId;
 
         return $this;
     }
@@ -109,12 +109,12 @@ class ItemDisk
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
@@ -157,12 +157,12 @@ class ItemDisk
 
     public function getFilesystemsId(): ?int
     {
-        return $this->filesystems_id;
+        return $this->filesystemsId;
     }
 
-    public function setFilesystemsId(int $filesystems_id): self
+    public function setFilesystemsId(int $filesystemsId): self
     {
-        $this->filesystems_id = $filesystems_id;
+        $this->filesystemsId = $filesystemsId;
 
         return $this;
     }
@@ -193,96 +193,96 @@ class ItemDisk
 
     public function getIsDeleted(): ?bool
     {
-        return $this->is_deleted;
+        return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $is_deleted): self
+    public function setIsDeleted(bool $isDeleted): self
     {
-        $this->is_deleted = $is_deleted;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
-    public function setIsDynamic(bool $is_dynamic): self
+    public function setIsDynamic(bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getEncryptionStatus(): ?string
     {
-        return $this->encryption_status;
+        return $this->encryptionStatus;
     }
 
-    public function setEncryptionStatus(string $encryption_status): self
+    public function setEncryptionStatus(string $encryptionStatus): self
     {
-        $this->encryption_status = $encryption_status;
+        $this->encryptionStatus = $encryptionStatus;
 
         return $this;
     }
 
     public function getEncryptionTool(): ?string
     {
-        return $this->encryption_tool;
+        return $this->encryptionTool;
     }
 
-    public function setEncryptionTool(string $encryption_tool): self
+    public function setEncryptionTool(string $encryptionTool): self
     {
-        $this->encryption_tool = $encryption_tool;
+        $this->encryptionTool = $encryptionTool;
 
         return $this;
     }
 
     public function getEncryptionAlgorithm(): ?string
     {
-        return $this->encryption_algorithm;
+        return $this->encryptionAlgorithm;
     }
 
-    public function setEncryptionAlgorithm(string $encryption_algorithm): self
+    public function setEncryptionAlgorithm(string $encryptionAlgorithm): self
     {
-        $this->encryption_algorithm = $encryption_algorithm;
+        $this->encryptionAlgorithm = $encryptionAlgorithm;
 
         return $this;
     }
 
     public function getEncryptionType(): ?string
     {
-        return $this->encryption_type;
+        return $this->encryptionType;
     }
 
-    public function setEncryptionType(string $encryption_type): self
+    public function setEncryptionType(string $encryptionType): self
     {
-        $this->encryption_type = $encryption_type;
+        $this->encryptionType = $encryptionType;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

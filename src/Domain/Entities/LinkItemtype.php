@@ -12,13 +12,13 @@ class LinkItemtype
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $links_id;
+    #[ORM\Column(name: 'links_id', type: 'integer', options: ['default' => 0])]
+    private $linksId;
 
-    #[ORM\Column(type: 'string', length: 100, options: ['default' => ''])]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100, options: ['default' => ''])]
     private $itemtype;
 
     public function getId(): int
@@ -28,12 +28,12 @@ class LinkItemtype
 
     public function getLinksId(): int
     {
-        return $this->links_id;
+        return $this->linksId;
     }
 
-    public function setLinksId(int $links_id): self
+    public function setLinksId(int $linksId): self
     {
-        $this->links_id = $links_id;
+        $this->linksId = $linksId;
 
         return $this;
     }

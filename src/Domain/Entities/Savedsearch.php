@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_savedsearches')]
@@ -19,47 +20,55 @@ class Savedsearch
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'comment' => 'see SavedSearch:: constants'])]
+    #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 0, 'comment' => 'see SavedSearch:: constants'])]
     private $type;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_private;
+    #[ORM\Column(name: 'is_private', type: 'boolean', options: ['default' => 1])]
+    private $isPrivate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => -1])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'path', type: 'string', length: 255, nullable: true)]
     private $path;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'query', type: 'text', length: 65535, nullable: true)]
     private $query;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $last_execution_time;
+    #[ORM\Column(name: 'last_execution_time', type: 'integer', nullable: true)]
+    private $lastExecutionTime;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 2, 'comment' => 'Do or do not count results on list display see SavedSearch::COUNT_* constants'])]
-    private $do_count;
+    #[ORM\Column(name: 'do_count', type: 'boolean', options: ['default' => 2, 'comment' => 'Do or do not count results on list display see SavedSearch::COUNT_* constants'])]
+    private $doCount;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $last_execution_date;
+    #[ORM\Column(name: 'last_execution_date', type: 'datetime', nullable: true)]
+    private $lastExecutionDate;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'counter', type: 'integer', options: ['default' => 0])]
     private $counter;
+
+    #[ORM\OneToMany(mappedBy: 'savedsearch', targetEntity: SavedsearchAlert::class)]
+    private Collection $savedsearchAlerts;
+
+    #[ORM\OneToMany(mappedBy: 'savedsearch', targetEntity: SavedsearchUser::class)]
+    private Collection $savedsearchUsers;
 
     public function getId(): ?int
     {
@@ -102,50 +111,26 @@ class Savedsearch
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
     public function getIsPrivate(): ?bool
     {
-        return $this->is_private;
+        return $this->isPrivate;
     }
 
-    public function setIsPrivate(bool $is_private): self
+    public function setIsPrivate(bool $isPrivate): self
     {
-        $this->is_private = $is_private;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
+        $this->isPrivate = $isPrivate;
 
         return $this;
     }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $is_recursive): self
+    public function setIsRecursive(bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -176,36 +161,36 @@ class Savedsearch
 
     public function getLastExecutionTime(): ?\DateTimeInterface
     {
-        return $this->last_execution_time;
+        return $this->lastExecutionTime;
     }
 
-    public function setLastExecutionTime(\DateTimeInterface $last_execution_time): self
+    public function setLastExecutionTime(\DateTimeInterface $lastExecutionTime): self
     {
-        $this->last_execution_time = $last_execution_time;
+        $this->lastExecutionTime = $lastExecutionTime;
 
         return $this;
     }
 
     public function getDoCount(): ?bool
     {
-        return $this->do_count;
+        return $this->doCount;
     }
 
-    public function setDoCount(bool $do_count): self
+    public function setDoCount(bool $doCount): self
     {
-        $this->do_count = $do_count;
+        $this->doCount = $doCount;
 
         return $this;
     }
 
     public function getLastExecutionDate(): ?\DateTimeInterface
     {
-        return $this->last_execution_date;
+        return $this->lastExecutionDate;
     }
 
-    public function setLastExecutionDate(\DateTimeInterface $last_execution_date): self
+    public function setLastExecutionDate(\DateTimeInterface $lastExecutionDate): self
     {
-        $this->last_execution_date = $last_execution_date;
+        $this->lastExecutionDate = $lastExecutionDate;
 
         return $this;
     }
@@ -222,4 +207,84 @@ class Savedsearch
         return $this;
     }
 
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of savedsearchAlerts
+     */
+    public function getSavedsearchAlerts()
+    {
+        return $this->savedsearchAlerts;
+    }
+
+    /**
+     * Set the value of savedsearchAlerts
+     *
+     * @return  self
+     */
+    public function setSavedsearchAlerts($savedsearchAlerts)
+    {
+        $this->savedsearchAlerts = $savedsearchAlerts;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of savedsearchUsers
+     */
+    public function getSavedsearchUsers()
+    {
+        return $this->savedsearchUsers;
+    }
+
+    /**
+     * Set the value of savedsearchUsers
+     *
+     * @return  self
+     */
+    public function setSavedsearchUsers($savedsearchUsers)
+    {
+        $this->savedsearchUsers = $savedsearchUsers;
+
+        return $this;
+    }
 }

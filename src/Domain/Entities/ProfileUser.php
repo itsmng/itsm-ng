@@ -15,107 +15,131 @@ class ProfileUser
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'profileUsers')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $profiles_id;
+    #[ORM\ManyToOne(targetEntity: Profile::class, inversedBy: 'profileUsers')]
+    #[ORM\JoinColumn(name: 'profiles_id', referencedColumnName: 'id', nullable: true)]
+    private ?Profile $profile = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 1])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_dynamic;
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
+    private $isDynamic;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_default_profile;
+    #[ORM\Column(name: 'is_default_profile', type: 'boolean', options: ['default' => 0])]
+    private $isDefaultProfile;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-
-    public function setUsersId(?int $users_id): self
-    {
-        $this->users_id = $users_id;
-
-        return $this;
-    }
-
-    public function getProfilesId(): ?int
-    {
-        return $this->profiles_id;
-    }
-
-
-    public function setProfilesId(?int $profiles_id): self
-    {
-        $this->profiles_id = $profiles_id;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
 
     public function getIsDynamic(): ?bool
     {
-        return $this->is_dynamic;
+        return $this->isDynamic;
     }
 
 
-    public function setIsDynamic(?bool $is_dynamic): self
+    public function setIsDynamic(?bool $isDynamic): self
     {
-        $this->is_dynamic = $is_dynamic;
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }
 
     public function getIsDefaultProfile(): ?bool
     {
-        return $this->is_default_profile;
+        return $this->isDefaultProfile;
     }
 
 
-    public function setIsDefaultProfile(?bool $is_default_profile): self
+    public function setIsDefaultProfile(?bool $isDefaultProfile): self
     {
-        $this->is_default_profile = $is_default_profile;
+        $this->isDefaultProfile = $isDefaultProfile;
 
+        return $this;
+    }
+
+
+    /**
+     * Get the value of profile
+     */
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * Set the value of profile
+     *
+     * @return  self
+     */
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity(?Entity $entity): self
+    {
+        $this->entity = $entity;
         return $this;
     }
 

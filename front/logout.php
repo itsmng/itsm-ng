@@ -53,7 +53,7 @@ if (
     && Toolbox::canUseCAS()
 ) {
     $has_service_base_url_arg = version_compare(phpCAS::getVersion(), '1.6.0', '>=')
-         || count((new ReflectionMethod(phpCAS::class, 'client'))->getParameters()) > 6;
+        || count((new ReflectionMethod(phpCAS::class, 'client'))->getParameters()) > 6;
     if (!$has_service_base_url_arg) {
         phpCAS::client(
             $CFG_GLPI["cas_version"],
@@ -106,10 +106,21 @@ if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
         $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
         $oidc_db['scope'] = explode(',', addslashes($iterator['scope']));
         $oidc_db['logout'] = empty($iterator['logout']) ? null : $iterator['logout'];
+        $oidc_db['proxy'] = $iterator['proxy'];
+        $oidc_db['cert'] = $iterator['cert'];
     }
 
     if (isset($oidc_db)) {
         $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
+        if (is_array($oidc_db['scope'])) {
+            $oidc->addScope($oidc_db['scope']);
+        }
+        if (isset($oidc_db['proxy']) && $oidc_db['proxy'] != '') {
+            $oidc->setHttpProxy($oidc_db['proxy']);
+        }
+        if (isset($oidc_db['cert']) && $oidc_db['proxy'] != '' && file_exists($oidc_db['cert'])) {
+            $oidc->setCertPath($oidc_db['cert']);
+        }
         $sid = $_SESSION['itsm_oidc_idtoken'];
 
         Session::destroy();

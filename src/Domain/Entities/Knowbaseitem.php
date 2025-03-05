@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_knowbaseitems")]
@@ -19,53 +20,56 @@ class Knowbaseitem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $knowbaseitemcategories_id;
+    #[ORM\ManyToOne(targetEntity: Knowbaseitemcategory::class)]
+    #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: true)]
+    private ?Knowbaseitemcategory $knowbaseitemcategory = null;
 
-    #[ORM\Column(type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: 'name', type: "text", nullable: true, length: 65535)]
     private $name;
 
-    #[ORM\Column(type: "text", nullable: true)]
+    #[ORM\Column(name: 'answer', type: "text", nullable: true)]
     private $answer;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $is_faq;
+    #[ORM\Column(name: 'is_faq', type: "boolean", options: ["default" => 0])]
+    private $isFaq;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(name: 'view', type: "integer", options: ["default" => 0])]
     private $view;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(name: 'date', type: "datetime", nullable: true)]
     private $date;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $begin_date;
+    #[ORM\Column(name: 'begin_date', type: "datetime", nullable: true)]
+    private $beginDate;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private $end_date;
+    #[ORM\Column(name: 'end_date', type: "datetime", nullable: true)]
+    private $endDate;
+
+    #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: EntityKnowbaseitem::class)]
+    private Collection $entityKnowbaseitems;
+
+    #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: GroupKnowbaseItem::class)]
+    private Collection $groupKnowbaseitems;
+
+    #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: KnowbaseitemProfile::class)]
+    private Collection $knowbaseitemProfiles;
+
+    #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: KnowbaseitemUser::class)]
+    private Collection $knowbaseitemUsers;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getKnowbaseitemcategoriesId(): ?int
-    {
-        return $this->knowbaseitemcategories_id;
-    }
-
-    public function setKnowbaseitemcategoriesId(int $knowbaseitemcategories_id): self
-    {
-        $this->knowbaseitemcategories_id = $knowbaseitemcategories_id;
-        return $this;
     }
 
     public function getName(): ?string
@@ -92,23 +96,12 @@ class Knowbaseitem
 
     public function getIsFaq(): ?bool
     {
-        return $this->is_faq;
+        return $this->isFaq;
     }
 
-    public function setIsFaq(?bool $is_faq): self
+    public function setIsFaq(?bool $isFaq): self
     {
-        $this->is_faq = $is_faq;
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
+        $this->isFaq = $isFaq;
         return $this;
     }
 
@@ -136,34 +129,155 @@ class Knowbaseitem
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
         return $this;
     }
 
     public function getBeginDate(): ?\DateTimeInterface
     {
-        return $this->begin_date;
+        return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $begin_date): self
+    public function setBeginDate(\DateTimeInterface $beginDate): self
     {
-        $this->begin_date = $begin_date;
+        $this->beginDate = $beginDate;
         return $this;
     }
 
     public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $end_date): self
+    public function setEndDate(\DateTimeInterface $endDate): self
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
+        return $this;
+    }
+
+
+    /**
+     * Get the value of entityKnowbaseitems
+     */
+    public function getEntityKnowbaseitems()
+    {
+        return $this->entityKnowbaseitems;
+    }
+
+    /**
+     * Set the value of entityKnowbaseitems
+     *
+     * @return  self
+     */
+    public function setEntityKnowbaseitems($entityKnowbaseitems)
+    {
+        $this->entityKnowbaseitems = $entityKnowbaseitems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of groupKnowbaseitems
+     */
+    public function getGroupKnowbaseitems()
+    {
+        return $this->groupKnowbaseitems;
+    }
+
+    /**
+     * Set the value of groupKnowbaseitems
+     *
+     * @return  self
+     */
+    public function setGroupKnowbaseitems($groupKnowbaseitems)
+    {
+        $this->groupKnowbaseitems = $groupKnowbaseitems;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemcategory
+     */
+    public function getKnowbaseitemcategory()
+    {
+        return $this->knowbaseitemcategory;
+    }
+
+    /**
+     * Set the value of knowbaseitemcategory
+     *
+     * @return  self
+     */
+    public function setKnowbaseitemcategory($knowbaseitemcategory)
+    {
+        $this->knowbaseitemcategory = $knowbaseitemcategory;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemProfiles
+     */
+    public function getKnowbaseitemProfiles()
+    {
+        return $this->knowbaseitemProfiles;
+    }
+
+    /**
+     * Set the value of knowbaseitemProfiles
+     *
+     * @return  self
+     */
+    public function setKnowbaseitemProfiles($knowbaseitemProfiles)
+    {
+        $this->knowbaseitemProfiles = $knowbaseitemProfiles;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitemUsers
+     */
+    public function getKnowbaseitemUsers()
+    {
+        return $this->knowbaseitemUsers;
+    }
+
+    /**
+     * Set the value of knowbaseitemUsers
+     *
+     * @return  self
+     */
+    public function setKnowbaseitemUsers($knowbaseitemUsers)
+    {
+        $this->knowbaseitemUsers = $knowbaseitemUsers;
+
         return $this;
     }
 }

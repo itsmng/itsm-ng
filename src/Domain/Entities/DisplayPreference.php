@@ -14,20 +14,21 @@ class DisplayPreference
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 100)]
+    #[ORM\Column(name: 'itemtype', type: "string", length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
+    #[ORM\Column(name: 'num', type: "integer", options: ['default' => 0])]
     private $num;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
+    #[ORM\Column(name: 'rank', type: "integer", options: ['default' => 0])]
     private $rank;
 
-    #[ORM\Column(type: "integer", options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -70,14 +71,22 @@ class DisplayPreference
         return $this;
     }
 
-    public function getUsersId(): ?int
+    /**
+     * Get the value of user
+     */
+    public function getUser()
     {
-        return $this->users_id;
+        return $this->user;
     }
 
-    public function setUsersId(int $users_id): self
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
     {
-        $this->users_id = $users_id;
+        $this->user = $user;
 
         return $this;
     }

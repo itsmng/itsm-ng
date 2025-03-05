@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_olalevels')]
@@ -13,32 +14,38 @@ class Olalevel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $olas_id;
+    #[ORM\ManyToOne(targetEntity: Ola::class)]
+    #[ORM\JoinColumn(name: 'olas_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ola $ola = null;
 
-    #[ORM\Column(type: 'integer')]
-    private $execution_time;
+    #[ORM\Column(name: 'execution_time', type: 'integer')]
+    private $executionTime;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
-    private $is_active;
+    #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
+    private $isActive;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $entities_id;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $is_recursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive;
 
-    #[ORM\Column(type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php *_MATCHING constant'])]
+    #[ORM\Column(name: 'match', type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php *_MATCHING constant'])]
     private $match;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'uuid', type: 'string', length: 255, nullable: true)]
     private $uuid;
+
+    #[ORM\OneToMany(mappedBy: 'olalevel', targetEntity: OlalevelTicket::class)]
+    private Collection $olalevelTickets;
+
 
     public function getId(): ?int
     {
@@ -57,62 +64,38 @@ class Olalevel
         return $this;
     }
 
-    public function getOlasId(): ?int
-    {
-        return $this->olas_id;
-    }
-
-    public function setOlasId(?int $olas_id): self
-    {
-        $this->olas_id = $olas_id;
-
-        return $this;
-    }
-
     public function getExecutionTime(): ?int
     {
-        return $this->execution_time;
+        return $this->executionTime;
     }
 
-    public function setExecutionTime(?int $execution_time): self
+    public function setExecutionTime(?int $executionTime): self
     {
-        $this->execution_time = $execution_time;
+        $this->executionTime = $executionTime;
 
         return $this;
     }
 
     public function getIsActive(): ?bool
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(?bool $is_active): self
+    public function setIsActive(?bool $isActive): self
     {
-        $this->is_active = $is_active;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entities_id;
-    }
-
-    public function setEntitiesId(?int $entities_id): self
-    {
-        $this->entities_id = $entities_id;
+        $this->isActive = $isActive;
 
         return $this;
     }
 
     public function getIsRecursive(): ?bool
     {
-        return $this->is_recursive;
+        return $this->isRecursive;
     }
 
-    public function setIsRecursive(?bool $is_recursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->is_recursive = $is_recursive;
+        $this->isRecursive = $isRecursive;
 
         return $this;
     }
@@ -137,6 +120,66 @@ class Olalevel
     public function setUuid(?string $uuid): self
     {
         $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ola
+     */
+    public function getOla()
+    {
+        return $this->ola;
+    }
+
+    /**
+     * Set the value of ola
+     *
+     * @return  self
+     */
+    public function setOla($ola)
+    {
+        $this->ola = $ola;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of olalevelTickets
+     */
+    public function getOlalevelTickets()
+    {
+        return $this->olalevelTickets;
+    }
+
+    /**
+     * Set the value of olalevelTickets
+     *
+     * @return  self
+     */
+    public function setOlalevelTickets($olalevelTickets)
+    {
+        $this->olalevelTickets = $olalevelTickets;
 
         return $this;
     }

@@ -19,53 +19,60 @@ class ItilSolution
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $solutiontypes_id;
+    #[ORM\ManyToOne(targetEntity: Solutiontype::class)]
+    #[ORM\JoinColumn(name: 'solutiontypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Solutiontype $solutiontype = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $solutiontype_name;
+    #[ORM\Column(name: 'solutiontype_name', type: 'string', length: 255, nullable: true)]
+    private $solutiontypeName;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_creation;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    private $dateCreation;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_mod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $date_approval;
+    #[ORM\Column(name: 'date_approval', type: 'datetime', nullable: true)]
+    private $dateApproval;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $user_name;
+    #[ORM\Column(name: 'user_name', type: 'string', length: 255, nullable: true)]
+    private $userName;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_editor;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
+    private ?User $userEditor = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    private $users_id_approval;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id_approval', referencedColumnName: 'id', nullable: true)]
+    private ?User $userApproval = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $user_name_approval;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[ORM\Column(name: 'user_name_approval', type: 'string', length: 255, nullable: true)]
+    private $userNameApproval;
+
+    #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
     private $status;
 
-    #[ORM\Column(type: 'integer', nullable: true, options: ['comment' => 'Followup reference on reject or approve a solution'])]
-    private $itilfollowups_id;
+    #[ORM\ManyToOne(targetEntity: ItilFollowup::class)]
+    #[ORM\JoinColumn(name: 'itilfollowups_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'Followup reference on reject or approve a solution'])]
+    private ?ItilFollowup $itilFollowup = null;
+
 
     public function getId(): ?int
     {
@@ -86,36 +93,24 @@ class ItilSolution
 
     public function getItemsId(): ?int
     {
-        return $this->items_id;
+        return $this->itemsId;
     }
 
-    public function setItemsId(int $items_id): self
+    public function setItemsId(int $itemsId): self
     {
-        $this->items_id = $items_id;
-
-        return $this;
-    }
-
-    public function getSolutiontypesId(): ?int
-    {
-        return $this->solutiontypes_id;
-    }
-
-    public function setSolutiontypesId(int $solutiontypes_id): self
-    {
-        $this->solutiontypes_id = $solutiontypes_id;
+        $this->itemsId = $itemsId;
 
         return $this;
     }
 
     public function getSolutiontypeName(): ?string
     {
-        return $this->solutiontype_name;
+        return $this->solutiontypeName;
     }
 
-    public function setSolutiontypeName(?string $solutiontype_name): self
+    public function setSolutiontypeName(?string $solutiontypeName): self
     {
-        $this->solutiontype_name = $solutiontype_name;
+        $this->solutiontypeName = $solutiontypeName;
 
         return $this;
     }
@@ -134,96 +129,60 @@ class ItilSolution
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getDateMod(): ?\DateTimeInterface
     {
-        return $this->date_mod;
+        return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $date_mod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
-        $this->date_mod = $date_mod;
+        $this->dateMod = $dateMod;
 
         return $this;
     }
 
     public function getDateApproval(): ?\DateTimeInterface
     {
-        return $this->date_approval;
+        return $this->dateApproval;
     }
 
-    public function setDateApproval(\DateTimeInterface $date_approval): self
+    public function setDateApproval(\DateTimeInterface $dateApproval): self
     {
-        $this->date_approval = $date_approval;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->users_id;
-    }
-
-    public function setUsersId(int $users_id): self
-    {
-        $this->users_id = $users_id;
+        $this->dateApproval = $dateApproval;
 
         return $this;
     }
 
     public function getUserName(): ?string
     {
-        return $this->user_name;
+        return $this->userName;
     }
 
-    public function setUserName(string $user_name): self
+    public function setUserName(string $userName): self
     {
-        $this->user_name = $user_name;
-
-        return $this;
-    }
-
-    public function getUsersIdEditor(): ?int
-    {
-        return $this->users_id_editor;
-    }
-
-    public function setUsersIdEditor(int $user_id_editor): self
-    {
-        $this->users_id_editor = $user_id_editor;
-
-        return $this;
-    }
-
-    public function getUserIdApproval(): ?int
-    {
-        return $this->users_id_approval;
-    }
-
-    public function setUsersIdApproval(int $user_id_approval): self
-    {
-        $this->users_id_approval = $user_id_approval;
+        $this->userName = $userName;
 
         return $this;
     }
 
     public function getUsersNameApproval(): ?string
     {
-        return $this->user_name_approval;
+        return $this->userNameApproval;
     }
 
-    public function setUserNameApproval(string $user_name_approval): self
+    public function setUserNameApproval(string $userNameApproval): self
     {
-        $this->user_name_approval = $user_name_approval;
+        $this->userNameApproval = $userNameApproval;
 
         return $this;
     }
@@ -240,14 +199,102 @@ class ItilSolution
         return $this;
     }
 
-    public function getItilFollowupsId(): ?int
+    /**
+     * Get the value of solutiontype
+     */
+    public function getSolutiontype()
     {
-        return $this->itilfollowups_id;
+        return $this->solutiontype;
     }
 
-    public function setItilFollowupsId(int $itil_followups_id): self
+    /**
+     * Set the value of solutiontype
+     *
+     * @return  self
+     */
+    public function setSolutiontype($solutiontype)
     {
-        $this->itilfollowups_id = $itil_followups_id;
+        $this->solutiontype = $solutiontype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userEditor
+     */
+    public function getUserEditor()
+    {
+        return $this->userEditor;
+    }
+
+    /**
+     * Set the value of userEditor
+     *
+     * @return  self
+     */
+    public function setUserEditor($userEditor)
+    {
+        $this->userEditor = $userEditor;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userApproval
+     */
+    public function getUserApproval()
+    {
+        return $this->userApproval;
+    }
+
+    /**
+     * Set the value of userApproval
+     *
+     * @return  self
+     */
+    public function setUserApproval($userApproval)
+    {
+        $this->userApproval = $userApproval;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itilFollowup
+     */
+    public function getItilFollowup()
+    {
+        return $this->itilFollowup;
+    }
+
+    /**
+     * Set the value of itilFollowup
+     *
+     * @return  self
+     */
+    public function setItilFollowup($itilFollowup)
+    {
+        $this->itilFollowup = $itilFollowup;
 
         return $this;
     }
