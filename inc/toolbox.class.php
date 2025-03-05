@@ -177,7 +177,7 @@ class Toolbox {
     * @return string  lower case string
    **/
    static function strtolower($str) {
-      return mb_strtolower($str, "UTF-8");
+      return mb_strtolower($str ?? '', "UTF-8");
    }
 
 
