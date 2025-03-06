@@ -3144,19 +3144,9 @@ JAVASCRIPT;
             return;
 
          case 'change_authtype' :
-            $allUserHaveRight = true;
-            $userCheck = new User();
-            foreach ($ids as $id) {
-                $userCheck->getFromDB($id);
-                if (!$userCheck->canUpdateItem()) {
-                    $allUserHaveRight = false;
-                    break;
-                }
-            }
             $input = $ma->getInput();
             if (!isset($input["authtype"])
-                || !isset($input["auths_id"])
-                || !$allUserHaveRight) {
+                || !isset($input["auths_id"])) {
                $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_KO);
                $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
                return;
@@ -4286,6 +4276,14 @@ JAVASCRIPT;
 
       if (!Session::haveRight(self::$rightname, self::UPDATEAUTHENT)) {
          return false;
+      }
+      $userCheck = new User();
+      foreach ($IDs as $id) {
+          $userCheck->getFromDB($id);
+          if (!$userCheck->canUpdateItem()) {
+              return false;
+              break;
+          }
       }
 
       if (!empty($IDs)
