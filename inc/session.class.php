@@ -95,7 +95,7 @@ class Session
             $_SESSION = $save;
             $_SESSION['valid_id'] = session_id();
             // Define default time :
-            $_SESSION["glpi_currenttime"] = date("Y-m-d H:i:s");
+            $_SESSION["glpi_currenttime"] = new Datetime();
 
             // Normal mode for this request
             $_SESSION["glpi_use_mode"] = self::NORMAL_MODE;
@@ -226,7 +226,7 @@ class Session
             @session_start();
         }
         // Define current time for sync of action timing
-        $_SESSION["glpi_currenttime"] = date("Y-m-d H:i:s");
+        $_SESSION["glpi_currenttime"] = new Datetime();
     }
 
 

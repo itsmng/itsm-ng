@@ -28,7 +28,9 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 || !method_exists($parent, 'getTable')
                 || $currentClass::getTable() != $parent::getTable()
             ) {
-                $tableClass = str_replace('_', '', $currentClass::getType());
+                $classPath = explode('\\', $currentClass::getType());
+                $basename = end($classPath);
+                $tableClass = str_replace('_', '', $basename);
                 break;
             }
             $currentClass = get_parent_class($currentClass);

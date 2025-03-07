@@ -81,7 +81,7 @@ class Update extends CommonGLPI
         if (isCommandLine()) {
             // Init debug variable
             $_SESSION = ['glpilanguage' => (isset($this->args['lang']) ? $this->args['lang'] : 'en_GB')];
-            $_SESSION["glpi_currenttime"] = date("Y-m-d H:i:s");
+            $_SESSION["glpi_currenttime"] = new Datetime();
         }
     }
 
