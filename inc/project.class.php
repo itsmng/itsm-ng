@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Project as EntitiesProject;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -55,6 +57,8 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
     public const READALL                       = 1024;
 
     protected $team                     = [];
+
+    public $entity = EntitiesProject::class;
 
     public function getCloneRelations(): array
     {

@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Consumableitem as EntitiesConsumableitem;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -49,6 +51,8 @@ class ConsumableItem extends CommonDBTM
     protected $usenotepad               = true;
 
     public static $rightname                   = 'consumable';
+
+    public $entity = EntitiesConsumableitem::class;
 
 
     public static function getTypeName($nb = 0)
@@ -103,7 +107,7 @@ class ConsumableItem extends CommonDBTM
 
         $this->fields["alarm_threshold"] = Entity::getUsedConfig(
             "consumables_alert_repeat",
-            $this->fields["entities_id"],
+            $this->fields["entities_id"] ?? Session::getActiveEntity(),
             "default_consumables_alarm_threshold",
             10
         );

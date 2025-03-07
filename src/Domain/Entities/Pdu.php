@@ -51,9 +51,6 @@ class Pdu
     #[ORM\JoinColumn(name: 'pdumodels_id', referencedColumnName: 'id', nullable: true)]
     private ?Pdumodel $pdumodel = null;
 
-    #[ORM\Column(name: 'users_id_tech', type: 'integer', options: ['default' => 0])]
-    private $usersIdTech;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $techUser = null;

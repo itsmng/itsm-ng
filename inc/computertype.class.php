@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Computertype as EntitiesComputertype;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -38,6 +40,8 @@ if (!defined('GLPI_ROOT')) {
 /// Class ComputerType
 class ComputerType extends CommonDropdown
 {
+    public $entity = EntitiesComputertype::class;
+
     public static function getTypeName($nb = 0)
     {
         return _n('Computer type', 'Computer types', $nb);

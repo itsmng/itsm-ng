@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Budget as EntitiesBudget;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -49,6 +51,8 @@ class Budget extends CommonDropdown
     protected $usenotepad       = true;
 
     public $can_be_translated = false;
+
+    public $entity = EntitiesBudget::class;
 
     public function getCloneRelations(): array
     {

@@ -32,6 +32,7 @@
  */
 
 use Glpi\Event;
+use Itsmng\Domain\Entities\Document as EntitiesDocument;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -51,6 +52,7 @@ class Document extends CommonDBTM
     public static $tag_prefix                  = '#';
     protected $usenotepad               = true;
 
+    public $entity = EntitiesDocument::class;
 
     public static function getTypeName($nb = 0)
     {

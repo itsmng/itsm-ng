@@ -32,6 +32,7 @@
  */
 
 use Glpi\Event;
+use Itsmng\Domain\Entities\Knowbaseitem as EntitiesKnowbaseitem;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -59,6 +60,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
 
     public static $rightname   = 'knowbase';
 
+    public $entity = EntitiesKnowbaseitem::class;
 
     public static function getTypeName($nb = 0)
     {

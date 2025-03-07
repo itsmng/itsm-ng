@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Line as EntitiesLine;
+
 /**
  * @since 9.2
  */
@@ -47,6 +49,7 @@ class Line extends CommonDBTM
     public static $rightname                   = 'line';
     protected $usenotepad               = true;
 
+    public $entity = EntitiesLine::class;
 
     public static function getTypeName($nb = 0)
     {

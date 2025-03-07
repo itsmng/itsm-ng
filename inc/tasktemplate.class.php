@@ -98,14 +98,14 @@ class TaskTemplate extends CommonDropdown
 
            ],
            __('By') => [
-              'name'  => 'users_id_tech',
+              'name'  => 'tech_users_id',
               'type'  => 'select',
               'values' => getOptionsForUsers('own_ticket'),
               'value' => $this->fields['users_id_tech'],
               'actions' => getItemActionButtons(['info'], User::class),
            ],
            Group::getTypeName(1) => [
-              'name'  => 'groups_id_tech',
+              'name'  => 'tech_groups_id',
               'type'  => 'select',
               'itemtype' => Group::class,
               'conditions' => ['is_task' => 1],

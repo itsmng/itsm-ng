@@ -514,14 +514,12 @@ class CommonDBTM extends CommonGLPI
     **/
     public function getEmpty()
     {
-        global $DB;
-
         //make an empty database object
         $table = $this->getTable();
 
         if (
             !empty($table) &&
-            ($fields = $DB->listFields($table))
+            ($fields = $this->getAdapter()->listFields())
         ) {
             foreach (array_keys($fields) as $key) {
                 $this->fields[$key] = "";

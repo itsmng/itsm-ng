@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Certificate as EntitiesCertificate;
+
 /**
  * @since 9.2
  */
@@ -49,6 +51,8 @@ class Certificate extends CommonDBTM
     public $dohistory           = true;
     public static $rightname           = "certificate";
     protected $usenotepad       = true;
+
+    public $entity = EntitiesCertificate::class;
 
     public function getCloneRelations(): array
     {

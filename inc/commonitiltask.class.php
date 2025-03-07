@@ -1232,8 +1232,8 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                         $interv[$key][$parentitem->getForeignKeyField()]
                                                         = $item->fields[$parentitem->getForeignKeyField()];
                         $interv[$key]["users_id"]       = $data["users_id"];
-                        $interv[$key]["users_id_tech"]  = $data["users_id_tech"];
-                        $interv[$key]["groups_id_tech"]  = $data["groups_id_tech"];
+                        $interv[$key]["tech_users_id"]  = $data["tech_users_id"];
+                        $interv[$key]["tech_groups_id"]  = $data["tech_groups_id"];
 
                         if (strcmp($begin, $data["begin"]) > 0) {
                             $interv[$key]["begin"] = $begin;

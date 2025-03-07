@@ -32,6 +32,7 @@
  */
 
 use Glpi\Event;
+use Itsmng\Domain\Entities\Ticket as EntitiesTicket;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -54,6 +55,8 @@ class Ticket extends CommonITILObject
     public static $rightname                   = 'ticket';
 
     protected $userentity_oncreate      = true;
+
+    public $entity = EntitiesTicket::class;
 
     public const MATRIX_FIELD                  = 'priority_matrix';
     public const URGENCY_MASK_FIELD            = 'urgency_mask';

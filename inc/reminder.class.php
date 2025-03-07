@@ -37,8 +37,8 @@ if (!defined('GLPI_ROOT')) {
 
 use Glpi\CalDAV\Contracts\CalDAVCompatibleItemInterface;
 use Glpi\CalDAV\Traits\VobjectConverterTrait;
+use Itsmng\Domain\Entities\Reminder as EntitiesReminder;
 use Sabre\VObject\Component\VCalendar;
-use Sabre\VObject\Component\VJournal;
 use Sabre\VObject\Component\VTodo;
 
 /**
@@ -64,7 +64,7 @@ class Reminder extends CommonDBVisible implements
 
     public static $rightname    = 'reminder_public';
 
-
+    public $entity = EntitiesReminder::class;
 
     public static function getTypeName($nb = 0)
     {

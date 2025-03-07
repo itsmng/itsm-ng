@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Networkequipment as EntitiesNetworkequipment;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -51,6 +53,8 @@ class NetworkEquipment extends CommonDBTM
 
     public static $rightname                   = 'networking';
     protected $usenotepad               = true;
+
+    public $entity = EntitiesNetworkequipment::class;
 
     /** RELATIONS */
     public function getCloneRelations(): array

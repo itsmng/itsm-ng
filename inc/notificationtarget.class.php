@@ -1078,7 +1078,7 @@ class NotificationTarget extends CommonDBChild
     **/
     final public function addItemTechnicianInCharge()
     {
-        $this->addUserByField('users_id_tech', true);
+        $this->addUserByField('tech_users_id', true);
     }
 
 

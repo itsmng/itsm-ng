@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Software as EntitiesSoftware;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -48,6 +50,8 @@ class Software extends CommonDBTM
 
     public static $rightname                   = 'software';
     protected $usenotepad               = true;
+
+    public $entity = EntitiesSoftware::class;
 
     public function getCloneRelations(): array
     {

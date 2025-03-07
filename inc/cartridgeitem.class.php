@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\CartridgeItem as EntitiesCartridgeItem;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -49,6 +51,8 @@ class CartridgeItem extends CommonDBTM
     protected $usenotepad               = true;
 
     public static $rightname                   = 'cartridge';
+
+    public $entity = EntitiesCartridgeItem::class;
 
     public static function getTypeName($nb = 0)
     {
@@ -102,7 +106,7 @@ class CartridgeItem extends CommonDBTM
 
         $this->fields["alarm_threshold"] = Entity::getUsedConfig(
             "cartriges_alert_repeat",
-            $this->fields["entities_id"],
+            $this->fields["entities_id"] ?? Session::getActiveEntity(),
             "default_cartridges_alarm_threshold",
             10
         );

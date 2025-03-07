@@ -2277,7 +2277,7 @@ class Planning extends CommonGLPI
                                 case "group":
                                     $update['groups_id_tech'] = $params['new_actor_items_id'];
                                     if (strtolower($params['old_actor_itemtype']) === "user") {
-                                        $update['users_id_tech']  = 0;
+                                        $update['tech_users_id']  = 0;
                                     }
                                     break;
 
