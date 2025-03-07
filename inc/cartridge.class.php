@@ -265,7 +265,8 @@ class Cartridge extends CommonDBChild
         global $DB;
 
         // Get first unused cartridge
-        $iterator = $DB->request([
+        // $iterator = $DB->request([
+            $iterator = $this::getAdapter()->request([
            'SELECT' => ['id'],
            'FROM'   => $this->getTable(),
            'WHERE'  => [
@@ -275,7 +276,8 @@ class Cartridge extends CommonDBChild
            'LIMIT'  => 1
         ]);
 
-        if (count($iterator)) {
+        // if (count($iterator)) {
+            if (count(iterator_to_array($iterator))) {
             $result = $iterator->next();
             $cID = $result['id'];
             // Update cartridge taking care of multiple insertion
@@ -474,7 +476,8 @@ class Cartridge extends CommonDBChild
     {
         global $DB;
 
-        $row = $DB->request([
+        // $row = $DB->request([
+            $row = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'COUNT'  => 'cpt',
            'WHERE'  => ['cartridgeitems_id' => $tID]

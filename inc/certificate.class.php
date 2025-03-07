@@ -822,8 +822,9 @@ class Certificate extends CommonDBTM
         foreach (array_keys(Entity::getEntitiesToNotify('use_certificates_alert')) as $entity) {
             $before = Entity::getUsedConfig('send_certificates_alert_before_delay', $entity);
             // Check licenses
-            $result = $DB->request(
-                [
+            // $result = $DB->request(
+            $result = self::getAdapter()->request(
+               [
                   'SELECT'    => [
                      'glpi_certificates.*',
                   ],

@@ -142,12 +142,14 @@ class CartridgeItem extends CommonDBTM
     {
         global $DB;
 
-        $result = $DB->request([
+      //   $result = $DB->request([
+         $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_cartridges',
            'WHERE'  => ['cartridgeitems_id' => $id]
         ])->next();
-        return $result['cpt'];
+        return $result['cpt'];           
+
     }
 
 
@@ -464,7 +466,8 @@ class CartridgeItem extends CommonDBTM
 
             foreach (Entity::getEntitiesToNotify('cartridges_alert_repeat') as $entity => $repeat) {
                 // if you change this query, please don't forget to also change in showDebug()
-                $result = $DB->request(
+               //  $result = $DB->request(
+               $result = self::getAdapter()->request(
                     [
                       'SELECT'    => [
                          'glpi_cartridgeitems.id AS cartID',
@@ -581,7 +584,8 @@ class CartridgeItem extends CommonDBTM
     {
         global $DB;
 
-        $iterator = $DB->request([
+      //   $iterator = $DB->request([
+      $iterator = self::getAdapter()->request([
            'SELECT'       => [
               'COUNT'  => '* AS cpt',
               'glpi_locations.completename AS location',

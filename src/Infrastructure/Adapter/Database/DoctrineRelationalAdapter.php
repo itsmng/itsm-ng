@@ -310,6 +310,24 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function save(array $fields): bool
     {
         // TODO: Implement save() method.
+        // $entity = $this->findOneBy($fields);
+        // (dump('entity', $entity));
+        // die();
+        // if ($entity) {
+        //     $setters = $this->getSettersFromFields($fields, $entity);
+        //     foreach ($setters as $field => $setter) {
+        //         if (!isset($fields[$field])) {
+        //             continue;
+        //         }
+        //         $value = $fields[$field];
+        //         $entity->$setter($value);
+        //     }
+            
+        //     $this->em->persist($entity);
+        //     $this->em->flush();
+        //     return true;
+        // }
+        
         return false;
     }
 
@@ -402,54 +420,138 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         if ($criteria instanceof QueryBuilder) {
             return new \ArrayIterator($criteria->getQuery()->getResult());
-        }
-
+        }    
         if (!is_array($criteria)) {
             throw new \InvalidArgumentException('Expected array or QueryBuilder, got ' . gettype($criteria));
-        }
-
+        }    
         if (empty($criteria['table'])) {
             throw new \InvalidArgumentException('The "table" key is required in the criteria array.');
         }
-
+    
         $table = $criteria['table'];
         $alias = $criteria['alias'] ?? 't';
         $conditions = $criteria['conditions'] ?? [];
         $orderBy = $criteria['orderBy'] ?? [];
         $limit = $criteria['limit'] ?? null;
         $offset = $criteria['offset'] ?? null;
-
+    
         $qb = $this->em->createQueryBuilder();
-
-        $qb->select($alias)
-           ->from($table, $alias);
-
-
-        foreach ($conditions as $field => $value) {
-            $parameterName = str_replace('.', '_', $field);
-            if (is_array($value)) {
-                $qb->andWhere("$alias.$field IN (:$parameterName)")
-                   ->setParameter($parameterName, $value);
-            } else {
-                $qb->andWhere("$alias.$field = :$parameterName")
-                   ->setParameter($parameterName, $value);
+    
+        // Vérification et utilisation du champ 'FIELDS' si défini
+        if (!empty($criteria['FIELDS'])) {
+            if (is_array($criteria['FIELDS'])) {
+                $fields = [];
+                foreach ($criteria['FIELDS'] as $tableName => $field) {
+                    // Si c'est le nom de la table principale ou un alias
+                    if ($tableName === $table || $tableName === $alias) {
+                        $fields[] = "$alias.$field";
+                    } else {
+                        // Pour les autres tables, utiliser le nom de table directement
+                        $fields[] = "$tableName.$field";
+                    }
+                }
+                $qb->select(!empty($fields) ? implode(', ', $fields) : $alias);
+            } else if (is_string($criteria['FIELDS'])) {
+                // Si c'est une chaîne, l'utiliser directement
+                $qb->select($criteria['FIELDS']);
+            }
+        } else if (!empty($criteria['select']) && is_array($criteria['select'])) {
+            // Gestion de 'select' comme alternative à 'FIELDS'
+            $qb->select($criteria['select']);
+        } else {
+            // Par défaut, sélectionner l'entité entière
+            $qb->select($alias);
+        }
+    
+        $qb->from($table, $alias);
+    
+        // Gestion des conditions AND et OR
+        $andConditions = [];
+        $orConditions = [];
+    
+        foreach ($conditions as $key => $conditionGroup) {
+            if ($key === 'OR' && is_array($conditionGroup)) {
+                // Cas des conditions OR
+                foreach ($conditionGroup as $subIndex => $subCondition) {
+                    if (is_array($subCondition)) {
+                        // Format: ['OR' => [['t.id' => 1], ['t.id' => 2]]]
+                        foreach ($subCondition as $field => $value) {
+                            // Créer un nom de paramètre sans le point de l'alias
+                            $cleanField = str_replace('.', '_', $field);
+                            $paramName = 'or_' . $subIndex . '_' . $cleanField;
+                            
+                            // Le champ reste inchangé car il contient déjà l'alias
+                            if (is_array($value)) {
+                                $orConditions[] = "$field IN (:$paramName)";
+                            } else {
+                                $orConditions[] = "$field = :$paramName";
+                            }
+                            $qb->setParameter($paramName, $value);
+                        }
+                    } else {
+                        // Format simple: ['OR' => ['id' => 1, 'name' => 'test']]
+                        $field = $subIndex;
+                        $value = $subCondition;
+                        // Créer un nom de paramètre sans le point de l'alias
+                        $cleanField = str_replace('.', '_', $field);
+                        $paramName = 'or_' . $cleanField;
+                        
+                        // Utiliser le champ tel quel car il pourrait déjà avoir un alias
+                        if (is_array($value)) {
+                            $orConditions[] = "$field IN (:$paramName)";
+                        } else {
+                            $orConditions[] = "$field = :$paramName";
+                        }
+                        $qb->setParameter($paramName, $value);
+                    }
+                }
+            } elseif (is_string($key)) {
+                // Cas des conditions AND classiques
+                $parameterName = str_replace('.', '_', $key);
+                $fieldName = (strpos($key, '.') === false) ? "$key" : $key;
+                
+                if (is_array($conditionGroup)) {
+                    $andConditions[] = "$fieldName IN (:$parameterName)";
+                } else {
+                    $andConditions[] = "$fieldName = :$parameterName";
+                }
+                $qb->setParameter($parameterName, $conditionGroup);
             }
         }
-
-        foreach ($orderBy as $field => $direction) {
-            $qb->addOrderBy("$alias.$field", strtoupper($direction));
+    
+        // Ajout des conditions dans la requête
+        if (!empty($andConditions)) {
+            $qb->andWhere(implode(' AND ', $andConditions));
         }
-
+        if (!empty($orConditions)) {
+            // Utiliser andWhere pour les conditions OR groupées
+            if (count($orConditions) > 1) {
+                $qb->andWhere('(' . implode(' OR ', $orConditions) . ')');
+            } else if (count($orConditions) === 1) {
+                $qb->andWhere($orConditions[0]);
+            }
+        }
+    
+        // Gestion du tri et des limites
+        foreach ($orderBy as $field => $direction) {
+            $fieldName = (strpos($field, '.') === false) ? "$field" : $field;
+            $qb->addOrderBy($fieldName, strtoupper($direction));
+        }
+    
         if ($limit !== null) {
             $qb->setMaxResults((int)$limit);
         }
-
+    
         if ($offset !== null) {
             $qb->setFirstResult((int)$offset);
         }
-
-        return $qb->getQuery()->getResult();
-        // return [];
+    
+        try {
+            return new \ArrayIterator($qb->getQuery()->getResult());
+        } catch (\Exception $e) {
+            dump("Erreur dans request(): " . $e->getMessage() . "\nDQL: " . $qb->getDQL());
+            return new \ArrayIterator([]);
+        }
     }
 
 

@@ -347,7 +347,8 @@ class Budget extends CommonDropdown
             return false;
         }
 
-        $iterator = $DB->request([
+        // $iterator = $DB->request([
+            $iterator = $this::getAdapter()->request([
             'SELECT'          => 'itemtype',
             'DISTINCT'        => true,
             'FROM'            => 'glpi_infocoms',
@@ -358,7 +359,9 @@ class Budget extends CommonDropdown
             'ORDER'           => 'itemtype'
         ]);
 
-        $number = count($iterator);
+        // $number = count($iterator);
+        $number = count(iterator_to_array($iterator));
+        //
 
         echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Associated Items Table'>";
         echo "<tr><th colspan='2'>";
@@ -598,8 +601,10 @@ class Budget extends CommonDropdown
                         break;
                 }
 
-                $iterator = $DB->request($criteria);
-                $nb = count($iterator);
+                // $iterator = $DB->request($criteria);
+                $iterator = $this::getAdapter()->request($criteria);
+                // $nb = count($iterator);
+                $nb = count(iterator_to_array($iterator));
                 if ($nb > $_SESSION['glpilist_limit']) {
                     echo "<tr class='tab_bg_1'>";
                     $name = $item->getTypeName($nb);
@@ -827,8 +832,11 @@ class Budget extends CommonDropdown
                     break;
             }
 
-            $iterator = $DB->request($criteria);
-            $nb = count($iterator);
+            // $iterator = $DB->request($criteria);
+            $iterator = $this::getAdapter()->request($criteria);
+
+            // $nb = count($iterator);
+            $nb = count(iterator_to_array($iterator));
             if ($nb) {
                 $found_types[$itemtype]  = $item->getTypeName(1);
                 $totalbytypes[$itemtype] = 0;

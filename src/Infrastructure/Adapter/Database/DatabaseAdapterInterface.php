@@ -38,6 +38,6 @@ interface DatabaseAdapterInterface
     // protected function adaptQueryObject(QueryObject $queryObject): array;
     public function request(array | QueryBuilder $dql): \Iterator;
     // public function getTableFields(): array;
-    public function findEntityById(array $id): mixed;
+    // public function findEntityById(array $id): mixed;
 
 }

@@ -102,7 +102,8 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        $result = $DB->request(
+        // $result = $DB->request(
+            $result = self::getAdapter()->request(
             [
               'FROM'   => self::getTable(),
               'WHERE'  => [
@@ -192,7 +193,8 @@ class CalendarSegment extends CommonDBChild
 
         $sum = 0;
         // Do not check hour if day before the end day of after the begin day
-        $iterator = $DB->request([
+        // $iterator = $DB->request([
+            $iterator = self::getAdapter()->request([
            'SELECT' => [
               new \QueryExpression(
                   "
@@ -234,7 +236,8 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         // Do not check hour if day before the end day of after the begin day
-        $iterator = $DB->request([
+        // $iterator = $DB->request([
+            $iterator = self::getAdapter()->request([
            'SELECT' => [
               new \QueryExpression(
                   "GREATEST(" . $DB->quoteName('begin') . ", " . $DB->quoteValue($begin_time)  . ") AS " . $DB->quoteName('BEGIN')
@@ -286,7 +289,8 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         // Do not check hour if day before the end day of after the begin day
-        $result = $DB->request([
+        // $result = $DB->request([
+            $result = self::getAdapter()->request([
            'SELECT' => ['MIN' => 'begin AS minb'],
            'FROM'   => 'glpi_calendarsegments',
            'WHERE'  => [
@@ -311,7 +315,8 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         // Do not check hour if day before the end day of after the begin day
-        $result = $DB->request([
+        // $result = $DB->request([
+            $result = self::getAdapter()->request([
            'SELECT' => ['MAX' => 'end AS mend'],
            'FROM'   => 'glpi_calendarsegments',
            'WHERE'  => [
@@ -337,7 +342,8 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         // Do not check hour if day before the end day of after the begin day
-        $result = $DB->request([
+        // $result = $DB->request([
+            $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_calendarsegments',
            'WHERE'  => [
@@ -368,7 +374,8 @@ class CalendarSegment extends CommonDBChild
         $canedit = $calendar->can($ID, UPDATE);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        // $iterator = $DB->request([
+            $iterator = self::getAdapter()->request([
            'FROM'   => 'glpi_calendarsegments',
            'WHERE'  => [
               'calendars_id' => $ID
@@ -379,7 +386,8 @@ class CalendarSegment extends CommonDBChild
               'end'
            ]
         ]);
-        $numrows = count($iterator);
+        // $numrows = count($iterator);
+        $numrows = count(iterator_to_array($iterator));
 
         if ($canedit) {
             echo "<div class='firstbloc'>";

@@ -35,6 +35,8 @@ if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
 
+use Infrastructure\Adapter\Database\DoctrineRelationalAdapter;
+
 class Calendar_Holiday extends CommonDBRelation
 {
     public $auto_message_on_action = false;
@@ -79,8 +81,9 @@ class Calendar_Holiday extends CommonDBRelation
         $canedit = $calendar->can($ID, UPDATE);
 
         $rand    = mt_rand();
+      //   $iterator = $DB->request([
 
-        $iterator = $DB->request([
+       $iterator = self::getAdapter()->request([
            'SELECT' => [
               'glpi_calendars_holidays.id AS linkid',
               'glpi_holidays.*'
@@ -101,7 +104,9 @@ class Calendar_Holiday extends CommonDBRelation
            'ORDERBY'         => 'glpi_holidays.name'
         ]);
 
-        $numrows = count($iterator);
+      
+      //   $numrows = count($iterator);
+      $numrows = count(iterator_to_array($iterator));
         $holidays = [];
         $used     = [];
         while ($data = $iterator->next()) {
@@ -195,14 +200,15 @@ class Calendar_Holiday extends CommonDBRelation
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        $result = $DB->request(
+      //   $result = $DB->request(
+         $result = self::getAdapter()->request(
             [
               'FROM'   => self::getTable(),
               'WHERE'  => [
                  'calendars_id' => $oldid,
               ]
             ]
-        );
+        );     
 
         foreach ($result as $data) {
             $ch                   = new self();

@@ -31,10 +31,12 @@
  * ---------------------------------------------------------------------
  */
 
+use Doctrine\ORM\Mapping\MappedSuperclass;
 use Glpi\Event;
 use Infrastructure\Adapter\Database\LegacySqlAdapter;
 use Infrastructure\Adapter\Database\DatabaseAdapterInterface;
 use Infrastructure\Adapter\Database\DoctrineRelationalAdapter;
+use Doctrine\ORM\Mapping as ORM;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -43,6 +45,7 @@ if (!defined('GLPI_ROOT')) {
 /**
 *  Common DataBase Table Manager Class - Persistent Object
 **/
+#[ORM\MappedSuperclass]
 #[AllowDynamicProperties]
 class CommonDBTM extends CommonGLPI
 {
@@ -763,7 +766,8 @@ class CommonDBTM extends CommonGLPI
                     }
 
                     foreach ($field as $f) {
-                        $result = $DB->request(
+                        // $result = $DB->request(
+                            $result = $this::getAdapter()->request(
                             [
                               'FROM'  => $tablename,
                               'WHERE' => [$f => $this->getID()],
@@ -793,7 +797,8 @@ class CommonDBTM extends CommonGLPI
             $job         = new Ticket();
             $itemsticket = new Item_Ticket();
 
-            $iterator = $DB->request([
+            // $iterator = $DB->request([
+                $iterator = $this::getAdapter()->request([
                'FROM'   => 'glpi_items_tickets',
                'WHERE'  => [
                   'items_id'  => $this->getID(),
@@ -1849,7 +1854,8 @@ class CommonDBTM extends CommonGLPI
                     $input['is_recursive'] = $this->isRecursive();
                 }
 
-                $iterator = $DB->request($query);
+                // $iterator = $DB->request($query);
+                $iterator = $this::getAdapter()->request($query);
                 while ($data = $iterator->next()) {
                     $input['id'] = $data['id'];
                     // No history for such update
@@ -2516,7 +2522,8 @@ class CommonDBTM extends CommonGLPI
                                 $devfield  = $rel[$tablename][0]; // items_id...
                                 $typefield = $rel[$tablename][1]; // itemtype...
 
-                                $iterator = $DB->request([
+                                // $iterator = $DB->request([
+                                    $iterator = $this::getAdapter()->request([
                                    'SELECT'          => $typefield,
                                    'DISTINCT'        => true,
                                    'FROM'            => $tablename,
@@ -4852,7 +4859,11 @@ class CommonDBTM extends CommonGLPI
         if (is_array($crit) && (count($crit) > 0)) {
             $crit['FIELDS'] = [$this::getTable() => 'id'];
             $ok = true;
-            $iterator = $DB->request($this->getTable(), $crit);
+            //ajout
+            $crit['table'] = $this->getTable();
+            //fin ajout
+            // $iterator = $DB->request($this->getTable(), $crit);
+            $iterator = $this::getAdapter()->request($crit);
             foreach ($iterator as $row) {
                 if (!$this->delete($row, $force, $history)) {
                     $ok = false;
@@ -5432,11 +5443,13 @@ class CommonDBTM extends CommonGLPI
             $colspan = 2;
         }
 
-        $iterator = $DB->request($request);
+        // $iterator = $DB->request($request);
+        $iterator = self::getAdapter()->request($request);
         $blank_params = (strpos($target, '?') ? '&' : '?') . "id=-1&withtemplate=2";
         $target_blank = $target . $blank_params;
 
-        if ($add && count($iterator) == 0) {
+        // if ($add && count($iterator) == 0) {
+        if ($add && count(iterator_to_array($iterator)) == 0) {
             //if there is no template, just use blank
             Html::redirect($target_blank);
         }
