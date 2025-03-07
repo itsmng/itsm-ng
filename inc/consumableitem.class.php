@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Consumableitem as EntitiesConsumableitem;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -51,9 +49,6 @@ class ConsumableItem extends CommonDBTM
     protected $usenotepad               = true;
 
     public static $rightname                   = 'consumable';
-
-    public $entity = EntitiesConsumableitem::class;
-
 
     public static function getTypeName($nb = 0)
     {

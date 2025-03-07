@@ -3439,7 +3439,7 @@ class Config extends CommonDBTM
         $opt = [];
         if (isset($conf[$optname])) {
             $opt = json_decode($conf[$optname], true);
-            Toolbox::logDebug("CACHE CONFIG  $optname", $opt);
+            // Toolbox::logDebug("CACHE CONFIG  $optname", $opt);
         }
 
         if (!isset($opt['options']['namespace'])) {

@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\FieldUnicity as EntitiesFieldUnicity;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -49,8 +47,6 @@ class FieldUnicity extends CommonDropdown
     public $can_be_translated  = false;
 
     public static $rightname          = 'config';
-
-    public $entity = EntitiesFieldUnicity::class;
 
     public static function getTypeName($nb = 0)
     {

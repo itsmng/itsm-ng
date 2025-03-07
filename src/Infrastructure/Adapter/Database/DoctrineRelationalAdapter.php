@@ -19,7 +19,28 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         $this->class = $class;
         $this->em = EntityManagerProvider::getEntityManager();
-        $this->entityName = (new $class())->entity;
+        $entityPrefix = '\Itsmng\Domain\Entities\\';
+        $tableClass = '';
+        $currentClass = $class;
+        while (empty($tableClass)) {
+            $parent = get_parent_class($currentClass);
+            if (!$parent
+                || !method_exists($parent, 'getTable')
+                || $currentClass::getTable() != $parent::getTable()
+            ) {
+                $tableClass = str_replace('_', '', $currentClass::getType());
+                break;
+            }
+            $currentClass = get_parent_class($currentClass);
+            if (!$currentClass) {
+                throw new \Exception("Class does not have getTable function");
+            }
+        }
+        $entityName = $entityPrefix . $tableClass;
+        if (!isset($entityName) || !class_exists($entityName)) {
+            throw new \Exception("Entity class {$entityName} does not exist");
+        }
+        $this->entityName = $entityName;
     }
 
     public function getClass(): string
@@ -55,7 +76,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             $result = $repository->findOneBy($criteria);
             return $result;
         } catch (\Exception $e) {
-            dump('Error in findOneBy:', $e->getMessage());
+            throw new \Exception("Error in findOneBy: " . $e->getMessage());
             return null;
         }
     }
@@ -98,10 +119,10 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $DoctrineRelations = $metadata->getAssociationNames();
         $fields = [];
         foreach ($DoctrineFields as $field) {
-            $fields[$this->toSnakeCase($field)] = $field;
+            $fields[$this->toDbFormat($field)] = $field;
         }
         foreach ($DoctrineRelations as $relation) {
-            $fields[$this->toSnakeCase($relation, true)] = $relation;
+            $fields[$this->toDbFormat($relation, true)] = $relation;
         }
         return $fields;
     }
@@ -129,21 +150,10 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return array_combine($names, $getters);
     }
 
-    private function plurialize($word): string
-    {
-        $word = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $word));
-        if (mb_substr($word, -1, 1) == 'y') {
-            $word = mb_substr($word, 0, -1) . 'ies';
-        } else {
-            $word .= 's';
-        }
-        return $word;
-    }
-
-    protected function toSnakeCase($input, bool $isRelation = false): string
+    protected function toDbFormat($input, bool $isRelation = false): string
     {
         $input = preg_replace('/[A-Z]/', '_$0', $input);
-        $input = strtolower(ltrim($input, '_'));
+        $input = mb_strtolower(ltrim($input, '_'));
 
         if ($isRelation) {
             if (str_ends_with($input, 'y')) {
@@ -157,22 +167,18 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $input;
     }
 
-    private function toCamelCase(string $input): string
+    private function toEntityFormat(string $input, bool $expandId = true): string
     {
-        if (str_ends_with($input, '_id')) {
+        $isRelation = str_ends_with($input, 's_id');
+        if ($isRelation && $expandId) {
             $input = substr($input, 0, -3);
+            if (str_ends_with($input, 'ie')) {
+                $input = substr($input, 0, -2);
+                $input .= 'y';
+            }
         }
-
-        // Remettre "ies" en "y" si c'est un mot au singulier
-        if (preg_match('/ies$/', $input)) {
-            $input = preg_replace('/ies$/', 'y', $input);
-        }
-
-        $parts = explode('_', $input);
-        $parts = array_map('ucfirst', $parts);
-        $camelCase = lcfirst(implode('', $parts));
-
-        return $camelCase;
+        $input = lcfirst(str_replace('_', '', ucwords($input, '_')));
+        return $input;
     }
 
     // get values from entity as array
@@ -216,7 +222,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 }
 
                 // Convertir le nom en snake_case
-                $snakeCaseKey = $this->toSnakeCase($propertyName, $isRelation);
+                $snakeCaseKey = $this->toDbFormat($propertyName, $isRelation);
 
                 // Cas particuliers pour certaines clés
                 if ($snakeCaseKey === 'entity_id' || $snakeCaseKey === 'entity' || $snakeCaseKey === 'entities') {
@@ -243,7 +249,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                     }
                 }
             }
-            // dump('final fields'.$this->entityName, $fields);
             return $fields;
 
         } catch (\Exception $e) {
@@ -256,41 +261,18 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
 
 
-    public function getSettersFromFields(array $fields, object $content): array
+    public function getSettersFromFields(array $fields): array
     {
-        $reflect = new ReflectionClass($content);
-        $properties = $reflect->getProperties();
-
-        $availableProperties = array_map(
-            function ($property) {
-                return $property->getName();
-            },
-            $properties
-        );
-
         $setters = [];
-        foreach ($fields as $field => $value) {
-            $originalField = $field;
-            // Special case for entities_id
-            if ($field === 'entities_id') {
-                $setter = 'setEntity';
-                if (method_exists($content, $setter)) {
-                    $setters[$originalField] = $setter;
-                }
-                continue;
-            }
-
-            if (str_ends_with($field, '_id')) {
-                $field = substr($field, 0, -3);
-            }
-            $camelCaseField = $this->toCamelCase($field);
-
-
-            if (in_array($camelCaseField, $availableProperties)) {
-                $setter = 'set' . ucfirst($camelCaseField);
-
-                if (method_exists($content, $setter)) {
-                    $setters[$originalField] = $setter;
+        foreach ($fields as $field) {
+            $setter = 'set' . ucfirst(self::toEntityFormat($field));
+            if (method_exists($this->entityName, $setter)) {
+                $setters[$field] = $setter;
+            } else {
+                $newSetter = self::toEntityFormat($field, false);
+                $setter = 'set' . ucfirst(self::toEntityFormat($newSetter));
+                if (method_exists($this->entityName, $setter)) {
+                    $setters[$field] = $setter;
                 }
             }
         }
@@ -309,46 +291,16 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         // Create new entity
         $entity = new $this->entityName();
 
-        // Transform fields using getFields
-        $transformedFields = $this->getFields($fields);
-
         // Get setters for fields
-        $setters = $this->getSettersFromFields($transformedFields, $entity);
+        $setters = $this->getSettersFromFields(array_keys($fields));
 
         foreach ($setters as $field => $setter) {
-            if (!isset($transformedFields[$field])) {
+            if (!isset($fields[$field])) {
                 continue;
             }
 
-            $value = $transformedFields[$field];
-
-            try {
-                $reflectionMethod = new \ReflectionMethod($entity, $setter);
-                $parameters = $reflectionMethod->getParameters();
-                $paramType = $parameters[0]->getType();
-
-                if ($paramType) {
-                    $typeName = $paramType->getName();
-
-                    if (class_exists($typeName)) {
-                        if (is_numeric($value)) {
-                            $value = $this->em->getRepository($typeName)->find((int)$value);
-                        } elseif (is_object($value) && !($value instanceof $typeName)) {
-                            continue;
-                        }
-                    } elseif ($typeName === \DateTimeInterface::class) {
-                        $value = $value ? new \DateTime($value) : null;
-                    }
-                }
-
-                if ($value !== null || ($paramType && $paramType->allowsNull())) {
-                    $entity->$setter($value);
-                }
-
-            } catch (\Exception $e) {
-                $e->getMessage();
-                continue;
-            }
+            $value = $fields[$field];
+            $entity->$setter($value);
         }
 
         try {
@@ -357,7 +309,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
             return ['id' => $entity->getId()];
         } catch (\Exception $e) {
-            $e->getMessage();
+            throw new \Exception($e->getMessage());
             return false;
         }
     }

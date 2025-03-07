@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Monitor as EntitiesMonitor;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -52,8 +50,6 @@ class Monitor extends CommonDBTM
 
     public static $rightname                   = 'monitor';
     protected $usenotepad               = true;
-
-    public $entity = EntitiesMonitor::class;
 
     public function getCloneRelations(): array
     {

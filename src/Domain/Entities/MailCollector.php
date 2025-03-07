@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_active", columns: ['is_active'])]
 #[ORM\Index(name: "date_mod", columns: ['date_mod'])]
 #[ORM\Index(name: "date_creation", columns: ['date_creation'])]
-class Mailcollector
+class MailCollector
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

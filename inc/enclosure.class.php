@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Enclosure as EntitiesEnclosure;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -48,8 +46,6 @@ class Enclosure extends CommonDBTM
     // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'datacenter';
-
-    public $entity = EntitiesEnclosure::class;
 
     public function getCloneRelations(): array
     {

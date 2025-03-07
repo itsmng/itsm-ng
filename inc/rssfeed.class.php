@@ -33,7 +33,6 @@
 
 use itsmng\Timezone;
 use Glpi\Toolbox\URL;
-use Itsmng\Domain\Entities\Rssfeed as EntitiesRssfeed;
 use SimplePie\SimplePie;
 
 if (!defined('GLPI_ROOT')) {
@@ -57,8 +56,6 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
     protected $entities  = [];
 
     public static $rightname    = 'rssfeed_public';
-
-    public $entity = EntitiesRssfeed::class;
 
     public static function getTypeName($nb = 0)
     {

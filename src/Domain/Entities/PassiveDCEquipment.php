@@ -19,7 +19,7 @@ use PassiveDCEquipmentType;
 #[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
 #[ORM\Index(name: 'states_id', columns: ['states_id'])]
 #[ORM\Index(name: 'manufacturers_id', columns: ['manufacturers_id'])]
-class Passivedcequipment
+class PassiveDCEquipment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

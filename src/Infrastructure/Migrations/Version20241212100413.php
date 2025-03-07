@@ -150,6 +150,7 @@ final class Version20241212100413 extends AbstractMigration
                  ['name' => '293E8ED81421F0A5', 'origin' => 'groups_id_tech', 'ref' => 'glpi_groups'],
                  ['name' => '293E8ED8ED775E23', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
                  ['name' => '293E8ED8604D0C7C', 'origin' => 'networks_id', 'ref' => 'glpi_networks'],
+                 ['name' => '293E8ED8604E2302', 'origin' => 'autoupdatesystems_id', 'ref' => 'glpi_autoupdatesystems'],
                  ['name' => '293E8ED866A32204', 'origin' => 'computermodels_id', 'ref' => 'glpi_computermodels'],
                  ['name' => '293E8ED89B4E6864', 'origin' => 'computertypes_id', 'ref' => 'glpi_computertypes'],
                  ['name' => '293E8ED8A2A4C2E4', 'origin' => 'manufacturers_id', 'ref' => 'glpi_manufacturers'],

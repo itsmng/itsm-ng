@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\CartridgeItem as EntitiesCartridgeItem;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -51,8 +49,6 @@ class CartridgeItem extends CommonDBTM
     protected $usenotepad               = true;
 
     public static $rightname                   = 'cartridge';
-
-    public $entity = EntitiesCartridgeItem::class;
 
     public static function getTypeName($nb = 0)
     {

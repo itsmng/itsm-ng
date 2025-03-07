@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Softwarelicense as EntitiesSoftwarelicense;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -52,8 +50,6 @@ class SoftwareLicense extends CommonTreeDropdown
 
     public static $rightname                   = 'license';
     protected $usenotepad               = true;
-
-    public $entity = EntitiesSoftwarelicense::class;
 
     public function title()
     {

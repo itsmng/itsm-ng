@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\State as EntitiesState;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -45,8 +43,6 @@ class State extends CommonTreeDropdown
     public $can_be_translated       = true;
 
     public static $rightname               = 'state';
-
-    public $entity = EntitiesState::class;
 
     public static function getTypeName($nb = 0)
     {

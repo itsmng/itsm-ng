@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Supplier as EntitiesSupplier;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -47,8 +45,6 @@ class Supplier extends CommonDBTM
 
     public static $rightname           = 'contact_enterprise';
     protected $usenotepad       = true;
-
-    public $entity = EntitiesSupplier::class;
 
     /**
      * Name of the type

@@ -5,9 +5,11 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_operatingsystemeditions')]
+#[ORM\Table(name: 'glpi_operatingsystems')]
 #[ORM\Index(name: 'name', columns: ['name'])]
-class Operatingsystemedition
+#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
+class OperatingSystem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

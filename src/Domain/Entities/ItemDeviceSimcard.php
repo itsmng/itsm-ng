@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "lines_id", columns: ['lines_id'])]
 #[ORM\Index(name: "users_id", columns: ['users_id'])]
 #[ORM\Index(name: "groups_id", columns: ['groups_id'])]
-class ItemDeviceSimCard
+class ItemDeviceSimcard
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

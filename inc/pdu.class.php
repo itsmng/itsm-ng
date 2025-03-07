@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Pdu as EntitiesPdu;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -48,8 +46,6 @@ class PDU extends CommonDBTM
     // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'datacenter';
-
-    public $entity = EntitiesPdu::class;
 
     public function getCloneRelations(): array
     {

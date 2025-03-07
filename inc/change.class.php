@@ -31,7 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Change as EntitiesChange;
 use itsmng\Timezone;
 
 if (!defined('GLPI_ROOT')) {
@@ -54,8 +53,6 @@ class Change extends CommonITILObject
 
     public static $rightname                   = 'change';
     protected $usenotepad               = true;
-
-    public $entity = EntitiesChange::class;
 
     public const MATRIX_FIELD                  = 'priority_matrix';
     public const URGENCY_MASK_FIELD            = 'urgency_mask';

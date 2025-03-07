@@ -5,16 +5,19 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_operatingsystemarchitectures')]
+#[ORM\Table(name: 'glpi_operatingsystemkernelversions')]
 #[ORM\Index(name: 'name', columns: ['name'])]
-#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
-#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-class Operatingsystemarchitecture
+#[ORM\Index(name: 'operatingsystemkernels_id', columns: ['operatingsystemkernels_id'])]
+class OperatingSystemKernelVersion
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
+
+    #[ORM\ManyToOne(targetEntity: Operatingsystemkernel::class)]
+    #[ORM\JoinColumn(name: 'operatingsystemkernels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Operatingsystemkernel $operatingsystemkernel = null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -81,4 +84,24 @@ class Operatingsystemarchitecture
         return $this;
     }
 
+
+    /**
+     * Get the value of operatingsystemkernel
+     */
+    public function getOperatingsystemkernel()
+    {
+        return $this->operatingsystemkernel;
+    }
+
+    /**
+     * Set the value of operatingsystemkernel
+     *
+     * @return  self
+     */
+    public function setOperatingsystemkernel($operatingsystemkernel)
+    {
+        $this->operatingsystemkernel = $operatingsystemkernel;
+
+        return $this;
+    }
 }
