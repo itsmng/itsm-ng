@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Phone as EntitiesPhone;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -51,6 +53,8 @@ class Phone extends CommonDBTM
 
     public static $rightname                   = 'phone';
     protected $usenotepad               = true;
+
+    public $entity = EntitiesPhone::class;
 
     public function getCloneRelations(): array
     {

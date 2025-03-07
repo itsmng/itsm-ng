@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\ItemDeviceSimCard;
+
 /**
  * @since 9.2
  */
@@ -50,6 +52,8 @@ class Item_DeviceSimcard extends Item_Devices
     protected static $notable = false;
 
     public static $undisclosedFields      = ['pin', 'pin2', 'puk', 'puk2'];
+
+    public $entity = ItemDeviceSimCard::class;
 
     public static function getTypeName($nb = 0)
     {

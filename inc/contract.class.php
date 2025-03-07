@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Contract as EntitiesContract;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -48,6 +50,8 @@ class Contract extends CommonDBTM
 
     public static $rightname                   = 'contract';
     protected $usenotepad               = true;
+
+    public $entity = EntitiesContract::class;
 
     public const RENEWAL_NEVER = 0;
     public const RENEWAL_TACIT = 1;
@@ -75,7 +79,7 @@ class Contract extends CommonDBTM
 
         $this->fields["alert"] = Entity::getUsedConfig(
             "use_contracts_alert",
-            $this->fields["entities_id"],
+            $this->fields["entities_id"] ?? Session::getActiveEntity(),
             "default_contract_alert",
             0
         );

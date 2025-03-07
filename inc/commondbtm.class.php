@@ -514,14 +514,12 @@ class CommonDBTM extends CommonGLPI
     **/
     public function getEmpty()
     {
-        global $DB;
-
         //make an empty database object
         $table = $this->getTable();
 
         if (
             !empty($table) &&
-            ($fields = $DB->listFields($table))
+            ($fields = $this->getAdapter()->listFields())
         ) {
             foreach (array_keys($fields) as $key) {
                 $this->fields[$key] = "";
@@ -3716,7 +3714,7 @@ class CommonDBTM extends CommonGLPI
 
         if ($this->isField('otherserial')) {
             $toadd[] = ['name'  => __('Inventory number'),
-                             'value' => nl2br($this->getField('otherserial'))];
+                             'value' => nl2br($this->getField('otherserial') ?? '')];
         }
 
         if ($this->isField('states_id') && $this->getType() != 'State') {
@@ -3764,12 +3762,12 @@ class CommonDBTM extends CommonGLPI
 
         if ($this->isField('contact')) {
             $toadd[] = ['name'  => __('Alternate username'),
-                             'value' => nl2br($this->getField('contact'))];
+                             'value' => nl2br($this->getField('contact') ?? '')];
         }
 
         if ($this->isField('contact_num')) {
             $toadd[] = ['name'  => __('Alternate username number'),
-                             'value' => nl2br($this->getField('contact_num'))];
+                             'value' => nl2br($this->getField('contact_num') ?? '')];
         }
 
         if (Infocom::canApplyOn($this)) {
@@ -3790,7 +3788,7 @@ class CommonDBTM extends CommonGLPI
             && $this->isField('comment')
         ) {
             $toadd[] = ['name'  => __('Comments'),
-                             'value' => nl2br($this->getField('comment'))];
+                             'value' => nl2br($this->getField('comment') ?? '')];
         }
 
         if (count($toadd)) {
@@ -4327,8 +4325,6 @@ class CommonDBTM extends CommonGLPI
     **/
     public static function dropdown($options = [])
     {
-        /// TODO try to revert usage : Dropdown::show calling this function
-        /// TODO use this function instead of Dropdown::show
         $fields = [
            'type' => 'select',
            'name' => ($options['name'] ?? static::getForeignKeyField()),

@@ -278,7 +278,7 @@ class Notification_NotificationTemplate extends CommonDBRelation
         echo "<br><br>";
 
         echo NotificationTemplate::getTypeName(1) . "<br>";
-        NotificationTemplate::dropdown([
+        echo NotificationTemplate::dropdown([
            'name'       => 'notificationtemplates_id',
            'value'     => 0,
            'comment'   => 1,

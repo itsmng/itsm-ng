@@ -8,11 +8,24 @@
         {% endfor %}
       </select>
       <input type="hidden" name="_link[tickets_id_1]" value="{{attributes.ticket_id}}">
-      <select aria-label="Ticket Selector" class="form-select" id="TicketSelector_{{rand}}" name="_link[tickets_id_2]">
-        {% for value, name in attributes.options %}
-          <option value="{{value}}">{{name|raw}}
-        {% endfor %}
-      </select>
+      {% include 'macros/inputs/select.twig' with {
+          attributes: {
+              'name': '_link[tickets_id_2]',
+              'id': 'TicketSelector_' ~ rand,
+              'ajax': {
+                  'url': root_doc ~ '/ajax/getDropdownValue.php',
+                  'type': 'POST',
+                  'data': {
+                      'itemtype': 'Ticket',
+                      'display_emptychoice': true,
+                      'entity_restrict': currentEntity,
+                      'recursive': currentRecursive,
+                      'used': attributes.used ?? [],
+                  },
+              },
+              'arial-label': 'Ticket Selector'|trans
+          }
+      } only %}
     </div>
     <table id="ObjectTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
       <tbody>

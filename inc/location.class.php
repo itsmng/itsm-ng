@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Location as EntitiesLocation;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -46,7 +48,7 @@ class Location extends CommonTreeDropdown
 
     public static $rightname          = 'location';
 
-
+    public $entity = EntitiesLocation::class;
 
     public function getAdditionalFields()
     {

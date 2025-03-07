@@ -32,6 +32,7 @@
  */
 
 use Glpi\Toolbox\URL;
+use Itsmng\Domain\Entities\Domain as EntitiesDomain;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -49,6 +50,8 @@ class Domain extends CommonDropdown
     protected $usenotepadrights = true;
     protected $usenotepad       = true;
     public static $tags             = '[DOMAIN_NAME]';
+
+    public $entity = EntitiesDomain::class;
 
     public function title()
     {

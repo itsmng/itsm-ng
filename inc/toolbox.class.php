@@ -1875,146 +1875,175 @@ class Toolbox
     {
         global $CFG_GLPI;
 
-        if (!empty($where)) {
-            if (Session::getCurrentInterface()) {
-                // redirect to URL : URL must be rawurlencoded
-                $decoded_where = rawurldecode($where);
-                $matches = [];
+        if (empty($where) || !Session::getCurrentInterface()) {
+            return;
+        }
+        // redirect to URL : URL must be rawurlencoded
+        $decoded_where = rawurldecode($where);
+        $redirect = self::computeRedirect($decoded_where);
 
-                // redirect to full url -> check if it's based on glpi url
-                if (preg_match('@(([^:/].+:)?//[^/]+)(/.+)?@', $decoded_where, $matches)) {
-                    if ($matches[1] !== $CFG_GLPI['url_base']) {
-                        Session::addMessageAfterRedirect('Redirection failed');
-                        if (Session::getCurrentInterface() === "helpdesk") {
-                            Html::redirect($CFG_GLPI["root_doc"] . "/front/helpdesk.public.php");
-                        } else {
-                            Html::redirect($CFG_GLPI["root_doc"] . "/front/central.php");
-                        }
-                    } else {
-                        Html::redirect($decoded_where);
-                    }
-                }
-
-                // Redirect to relative url -> redirect with glpi url to prevent exploits
-                if ($decoded_where[0] == '/') {
-                    $redirect_to = $CFG_GLPI["url_base"] . $decoded_where;
-                    //echo $redirect_to; exit();
-                    Html::redirect($redirect_to);
-                }
-
-                $data = explode("_", $where);
-                $forcetab = '';
-                // forcetab for simple items
-                if (isset($data[2])) {
-                    $forcetab = 'forcetab=' . $data[2];
-                }
-
-                switch (Session::getCurrentInterface()) {
-                    case "helpdesk":
-                        switch (strtolower($data[0])) {
-                            // Use for compatibility with old name
-                            case "tracking":
-                            case "ticket":
-                                $data[0] = 'Ticket';
-                                // redirect to item
-                                if (
-                                    isset($data[1])
-                                    && is_numeric($data[1])
-                                    && ($data[1] > 0)
-                                ) {
-                                    // Check entity
-                                    if (
-                                        ($item = getItemForItemtype($data[0]))
-                                        && $item->isEntityAssign()
-                                    ) {
-                                        if ($item->getFromDB($data[1])) {
-                                            if (!Session::haveAccessToEntity($item->getEntityID())) {
-                                                Session::changeActiveEntities($item->getEntityID(), 1);
-                                            }
-                                        }
-                                    }
-                                    // force redirect to timeline when timeline is enabled and viewing
-                                    // Tasks or Followups
-                                    $forcetab = str_replace('TicketFollowup$1', 'Ticket$1', $forcetab);
-                                    $forcetab = str_replace('TicketTask$1', 'Ticket$1', $forcetab);
-                                    $forcetab = str_replace('ITILFollowup$1', 'Ticket$1', $forcetab);
-                                    Html::redirect(Ticket::getFormURLWithID($data[1]) . "&$forcetab");
-                                } elseif (!empty($data[0])) { // redirect to list
-                                    if ($item = getItemForItemtype($data[0])) {
-                                        $searchUrl = $item->getSearchURL();
-                                        $searchUrl .= strpos($searchUrl, '?') === false ? '?' : '&';
-                                        $searchUrl .= $forcetab;
-                                        Html::redirect($searchUrl);
-                                    }
-                                }
-
-                                Html::redirect($CFG_GLPI["root_doc"] . "/front/helpdesk.public.php");
-                                break;
-
-                            case "preference":
-                                Html::redirect($CFG_GLPI["root_doc"] . "/front/preference.php?$forcetab");
-                                break;
-
-                            case "reservation":
-                                Html::redirect(Reservation::getFormURLWithID($data[1]) . "&$forcetab");
-                                break;
-
-                            default:
-                                Html::redirect($CFG_GLPI["root_doc"] . "/front/helpdesk.public.php");
-                                break;
-                        }
-                        break;
-
-                    case "central":
-                        switch (strtolower($data[0])) {
-                            case "preference":
-                                Html::redirect($CFG_GLPI["root_doc"] . "/front/preference.php?$forcetab");
-                                break;
-
-                                // Use for compatibility with old name
-                            case "tracking":
-                                $data[0] = "Ticket";
-
-                                // no break
-                            default:
-                                // redirect to item
-                                if (
-                                    !empty($data[0])
-                                    && isset($data[1])
-                                    && is_numeric($data[1])
-                                    && ($data[1] > 0)
-                                ) {
-                                    // Check entity
-                                    if ($item = getItemForItemtype($data[0])) {
-                                        if ($item->isEntityAssign()) {
-                                            if ($item->getFromDB($data[1])) {
-                                                if (!Session::haveAccessToEntity($item->getEntityID())) {
-                                                    Session::changeActiveEntities($item->getEntityID(), 1);
-                                                }
-                                            }
-                                        }
-                                        // force redirect to timeline when timeline is enabled
-                                        $forcetab = str_replace('TicketFollowup$1', 'Ticket$1', $forcetab);
-                                        $forcetab = str_replace('TicketTask$1', 'Ticket$1', $forcetab);
-                                        $forcetab = str_replace('ITILFollowup$1', 'Ticket$1', $forcetab);
-                                        Html::redirect($item->getFormURLWithID($data[1]) . "&$forcetab");
-                                    }
-                                } elseif (!empty($data[0])) { // redirect to list
-                                    if ($item = getItemForItemtype($data[0])) {
-                                        $searchUrl = $item->getSearchURL();
-                                        $searchUrl .= strpos($searchUrl, '?') === false ? '?' : '&';
-                                        $searchUrl .= $forcetab;
-                                        Html::redirect($searchUrl);
-                                    }
-                                }
-
-                                Html::redirect($CFG_GLPI["root_doc"] . "/front/central.php");
-                                break;
-                        }
-                        break;
-                }
+        if ($redirect === null) {
+            Session::addMessageAfterRedirect('Redirection failed');
+            if (Session::getCurrentInterface() === "helpdesk") {
+                Html::redirect($CFG_GLPI["root_doc"] . "/front/helpdesk.public.php");
+            } else {
+                Html::redirect($CFG_GLPI["root_doc"] . "/front/central.php");
             }
         }
+        $matches = [];
+
+        // redirect to full url -> check if it's based on glpi url
+        if (preg_match('@(([^:/].+:)?//[^/]+)(/.+)?@', $decoded_where, $matches)) {
+            if ($matches[1] !== $CFG_GLPI['url_base']) {
+                Session::addMessageAfterRedirect('Redirection failed');
+                if (Session::getCurrentInterface() === "helpdesk") {
+                    Html::redirect($CFG_GLPI["root_doc"] . "/front/helpdesk.public.php");
+                } else {
+                    Html::redirect($CFG_GLPI["root_doc"] . "/front/central.php");
+                }
+            } else {
+                Html::redirect($decoded_where);
+            }
+        }
+
+        // Redirect to relative url -> redirect with glpi url to prevent exploits
+        if ($decoded_where[0] == '/') {
+            $redirect_to = $CFG_GLPI["url_base"] . $decoded_where;
+            //echo $redirect_to; exit();
+            Html::redirect($redirect_to);
+        }
+    }
+
+    private static function computeRedirect($where)
+    {
+        global $CFG_GLPI;
+
+        $parsed_url = parse_url($where);
+        if (!$parsed_url) {
+            if (array_key_exists('host', $parsed_url)) {
+                if (!str_starts_with($where, $CFG_GLPI['url_base'] . '/')) {
+                    return null;
+                } else {
+                    return $where;
+                }
+            }
+            if (array_key_exists('path', $parsed_url) && $parsed_url['path'][0] == '/') {
+                return Url::isITSMNGRelativeURL($where) ? $CFG_GLPI['root_doc'] . $where : null;
+            }
+        }
+
+        $data = explode("_", $where);
+        $forcetab = '';
+        // forcetab for simple items
+        if (isset($data[2])) {
+            $forcetab = 'forcetab=' . $data[2];
+        }
+
+        switch (Session::getCurrentInterface()) {
+            case "helpdesk":
+                switch (strtolower($data[0])) {
+                    // Use for compatibility with old name
+                    case "tracking":
+                    case "ticket":
+                        $data[0] = 'Ticket';
+                        // redirect to item
+                        if (
+                            isset($data[1])
+                            && is_numeric($data[1])
+                            && ($data[1] > 0)
+                        ) {
+                            // Check entity
+                            if (
+                                ($item = getItemForItemtype($data[0]))
+                                && $item->isEntityAssign()
+                            ) {
+                                if ($item->getFromDB($data[1])) {
+                                    if (!Session::haveAccessToEntity($item->getEntityID())) {
+                                        Session::changeActiveEntities($item->getEntityID(), 1);
+                                    }
+                                }
+                            }
+                            // force redirect to timeline when timeline is enabled and viewing
+                            // Tasks or Followups
+                            $forcetab = str_replace('TicketFollowup$1', 'Ticket$1', $forcetab);
+                            $forcetab = str_replace('TicketTask$1', 'Ticket$1', $forcetab);
+                            $forcetab = str_replace('ITILFollowup$1', 'Ticket$1', $forcetab);
+                            return Ticket::getFormURLWithID($data[1]) . "&$forcetab";
+                        } elseif (!empty($data[0])) { // redirect to list
+                            if ($item = getItemForItemtype($data[0])) {
+                                $searchUrl = $item->getSearchURL();
+                                $searchUrl .= strpos($searchUrl, '?') === false ? '?' : '&';
+                                $searchUrl .= $forcetab;
+                                return $searchUrl;
+                            }
+                        }
+
+                        return $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php";
+                        break;
+
+                    case "preference":
+                        return $CFG_GLPI["root_doc"] . "/front/preference.php?$forcetab";
+                        break;
+
+                    case "reservation":
+                        return Reservation::getFormURLWithID($data[1]) . "&$forcetab";
+                        break;
+
+                    default:
+                        return $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php";
+                        break;
+                }
+                break;
+
+            case "central":
+                switch (strtolower($data[0])) {
+                    case "preference":
+                        return $CFG_GLPI["root_doc"] . "/front/preference.php?$forcetab";
+                        break;
+
+                        // Use for compatibility with old name
+                    case "tracking":
+                        $data[0] = "Ticket";
+
+                        // no break
+                    default:
+                        // redirect to item
+                        if (
+                            !empty($data[0])
+                            && isset($data[1])
+                            && is_numeric($data[1])
+                            && ($data[1] > 0)
+                        ) {
+                            // Check entity
+                            if ($item = getItemForItemtype($data[0])) {
+                                if ($item->isEntityAssign()) {
+                                    if ($item->getFromDB($data[1])) {
+                                        if (!Session::haveAccessToEntity($item->getEntityID())) {
+                                            Session::changeActiveEntities($item->getEntityID(), 1);
+                                        }
+                                    }
+                                }
+                                // force redirect to timeline when timeline is enabled
+                                $forcetab = str_replace('TicketFollowup$1', 'Ticket$1', $forcetab);
+                                $forcetab = str_replace('TicketTask$1', 'Ticket$1', $forcetab);
+                                $forcetab = str_replace('ITILFollowup$1', 'Ticket$1', $forcetab);
+                                return $item->getFormURLWithID($data[1]) . "&$forcetab";
+                            }
+                        } elseif (!empty($data[0])) { // redirect to list
+                            if ($item = getItemForItemtype($data[0])) {
+                                $searchUrl = $item->getSearchURL();
+                                $searchUrl .= strpos($searchUrl, '?') === false ? '?' : '&';
+                                $searchUrl .= $forcetab;
+                                return $searchUrl;
+                            }
+                        }
+
+                        return $CFG_GLPI["root_doc"] . "/front/central.php";
+                        break;
+                }
+                break;
+        }
+        return null;
     }
 
 
@@ -2057,12 +2086,13 @@ class Toolbox
      *
      * @param string  $value      connect string
      * @param boolean $forceport  force compute port if not set
+     * @param boolean $allow_plugins_protocols allow plugins protocols
      *
      * @return array  parsed arguments (address, port, mailbox, type, ssl, tls, validate-cert
      *                norsh, secure and debug) : options are empty if not set
      *                and options have boolean values if set
     **/
-    public static function parseMailServerConnectString($value, $forceport = false)
+    public static function parseMailServerConnectString($value, $forceport = false, $allow_plugins_protocols = true)
     {
 
         $tab = [];
@@ -2083,7 +2113,7 @@ class Toolbox
         // server string is surrounded by "{}" and can be followed by a folder name
         // i.e. "{mail.domain.org/imap/ssl}INBOX", or "{mail.domain.org/pop}"
         $type = preg_replace('/^\{[^\/]+\/([^\/]+)(?:\/.+)*\}.*/', '$1', $value);
-        $tab['type'] = in_array($type, array_keys(self::getMailServerProtocols())) ? $type : '';
+        $tab['type'] = in_array($type, array_keys(self::getMailServerProtocols($allow_plugins_protocols))) ? $type : '';
 
         $tab['ssl'] = false;
         if (strstr($value, "/ssl")) {
@@ -2141,10 +2171,11 @@ class Toolbox
      * Display a mail server configuration form
      *
      * @param string $value  host connect string ex {localhost:993/imap/ssl}INBOX
+     * @param boolean $allow_plugins_protocols allow plugins protocols
      *
      * @return string  type of the server (imap/pop)
     **/
-    public static function showMailServerConfig($value)
+    public static function showMailServerConfig($value, $allow_plugins_protocols = true)
     {
 
         if (!Config::canUpdate()) {
@@ -2159,7 +2190,7 @@ class Toolbox
 
         echo "<tr class='tab_bg_1'><td>" . __('Connection options') . "</td><td>";
         $values = [];
-        $protocols = Toolbox::getMailServerProtocols();
+        $protocols = Toolbox::getMailServerProtocols($allow_plugins_protocols);
         foreach ($protocols as $key => $params) {
             $values['/' . $key] = $params['label'];
         }
@@ -2344,9 +2375,11 @@ class Toolbox
      *  - 'protocol_class' field is the protocol class to use (see Laminas\Mail\Protocol\Imap | Laminas\Mail\Protocol\Pop3);
      *  - 'storage_class' field is the storage class to use (see Laminas\Mail\Storage\Imap | Laminas\Mail\Storage\Pop3).
      *
+     * @param boolean $allow_plugins_protocols allow plugins protocols
+     *
      * @return array
      */
-    private static function getMailServerProtocols(): array
+    private static function getMailServerProtocols($allow_plugins_protocols = true): array
     {
         $protocols = [
            'imap' => [
@@ -2362,6 +2395,10 @@ class Toolbox
               'storage'  => 'Laminas\Mail\Storage\Pop3',
            ]
         ];
+
+        if (!$allow_plugins_protocols) {
+            return $protocols;
+        }
 
         $additionnal_protocols = Plugin::doHookFunction('mail_server_protocols', []);
         if (is_array($additionnal_protocols)) {
@@ -2404,12 +2441,13 @@ class Toolbox
      * or should be \Laminas\Mail\Protocol\Imap|\Laminas\Mail\Protocol\Pop3 for native protocols.
      *
      * @param string $protocol_type
+     * @param boolean $allow_plugins_protocols allow plugins protocols
      *
      * @return null|\Glpi\Mail\Protocol\ProtocolInterface|\Laminas\Mail\Protocol\Imap|\Laminas\Mail\Protocol\Pop3
      */
-    public static function getMailServerProtocolInstance(string $protocol_type)
+    public static function getMailServerProtocolInstance(string $protocol_type, $allow_plugins_protocols = true)
     {
-        $protocols = self::getMailServerProtocols();
+        $protocols = self::getMailServerProtocols($allow_plugins_protocols);
         if (array_key_exists($protocol_type, $protocols)) {
             $protocol = $protocols[$protocol_type]['protocol'];
             if (is_callable($protocol)) {
@@ -2438,12 +2476,13 @@ class Toolbox
      *
      * @param string $protocol_type
      * @param array  $params         Storage constructor params, as defined in AbstractStorage
+     * @param boolean $allow_plugins_protocols allow plugins protocols
      *
      * @return null|AbstractStorage
      */
-    public static function getMailServerStorageInstance(string $protocol_type, array $params): ?AbstractStorage
+    public static function getMailServerStorageInstance(string $protocol_type, array $params, bool $allow_plugins_protocols = true): ?AbstractStorage
     {
-        $protocols = self::getMailServerProtocols();
+        $protocols = self::getMailServerProtocols($allow_plugins_protocols);
         if (array_key_exists($protocol_type, $protocols)) {
             $storage = $protocols[$protocol_type]['storage'];
             if (is_callable($storage)) {

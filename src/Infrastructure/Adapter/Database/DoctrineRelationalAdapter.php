@@ -6,10 +6,6 @@ use CommonDBTM;
 use ReflectionClass;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\Persistence\Proxy as DoctrineProxy;
-use Doctrine\ORM\Proxy\Proxy;
-use Itsmng\Domain\Entities\Entity as EntitiesEntity;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
 
 class DoctrineRelationalAdapter implements DatabaseAdapterInterface
@@ -51,7 +47,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function findOneBy(array $criteria): mixed
     {
-
         if (!class_exists($this->entityName)) {
             throw new \Exception("Entity class {$this->entityName} does not exist");
         }
@@ -98,10 +93,17 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     // list columns from entity
     public function listFields(): array
     {
-        // TODO: Implement listFields() method.
         $metadata = $this->em->getClassMetadata($this->entityName);
-        return $metadata->getFieldNames();
-        // return [];
+        $DoctrineFields = $metadata->getFieldNames();
+        $DoctrineRelations = $metadata->getAssociationNames();
+        $fields = [];
+        foreach ($DoctrineFields as $field) {
+            $fields[$this->toSnakeCase($field)] = $field;
+        }
+        foreach ($DoctrineRelations as $relation) {
+            $fields[$this->toSnakeCase($relation, true)] = $relation;
+        }
+        return $fields;
     }
 
 
@@ -140,28 +142,16 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     protected function toSnakeCase($input, bool $isRelation = false): string
     {
-        // //gérer l'exception createTicketOnLogin
-
-        // Ne pas ajouter _id si le mot se termine déjà par _id ou Id
-        if (str_ends_with($input, 'Id') || str_ends_with($input, '_id')) {
-            $input = preg_replace('/(Id|_id)$/', '', $input);
-        }
-
-        // Gestion du pluriel des mots finissant par "y" -> "ies"
-        if (preg_match('/y$/', $input)) {
-            $input = preg_replace('/y$/', 'ies', $input);
-        }
-
-        // Conversion CamelCase -> snake_case standard
         $input = preg_replace('/[A-Z]/', '_$0', $input);
         $input = strtolower(ltrim($input, '_'));
 
-        // Si c'est une relation, ajouter "_id"
         if ($isRelation) {
-            // Si le mot se termine par "y", on a déjà appliqué le pluriel avant
-            if (!preg_match('/s$/', $input)) {
-                $input .= 's'; // Ajoute "s" pour les relations si ce n'est pas déjà au pluriel
+            if (str_ends_with($input, 'y')) {
+                $input = preg_replace('/y$/', 'ies', $input);
+            } else {
+                $input .= 's';
             }
+
             $input .= '_id';
         }
         return $input;

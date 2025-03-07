@@ -615,6 +615,8 @@ class Update extends CommonGLPI
             case "1.6.4":
             case "1.6.5":
             case "1.6.6":
+            case "1.6.7":
+            case "1.6.8":
                 include_once "{$updir}itsm_update_150_151.php";
                 update150to151();
                 // no break
@@ -624,6 +626,12 @@ class Update extends CommonGLPI
             case "2.0.3":
                 include_once "{$updir}itsm_update_151_200.php";
                 update151to200();
+                // no break
+            case "2.0.4":
+            case "2.0.5":
+            case "2.0.6":
+                include_once "{$updir}itsm_update_200_204.php";
+                update200to204();
 
                 // no break
             case ITSM_VERSION:

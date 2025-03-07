@@ -5034,13 +5034,12 @@ abstract class CommonITILObject extends CommonDBTM
 
         // Manage actors
         echo "<div class='tab_actors tab_cadre_fixe' id='mainformtable5'>";
-        echo "<div class='responsive_hidden actor_title'>" . __('Actor') . "</div>";
 
         // ====== Requesters BLOC ======
         //
         //
         echo "<span class='actor-bloc'>";
-        echo "<div class='actor-head'>";
+        echo "<p class='alert alert-secondary fs-5'>";
         if (!$is_hidden['_users_id_requester'] || !$is_hidden['_groups_id_requester']) {
             echo _n('Requester', 'Requesters', 1);
         }
@@ -5060,7 +5059,7 @@ abstract class CommonITILObject extends CommonDBTM
                 ><span class='sr-only'>" . __s('Add') . "</span></span>";
             $candeleterequester = true;
         }
-        echo "</div>"; // end .actor-head
+        echo "</p>"; // end .actor-head
 
         echo "<div class='actor-content'>";
         if ($rand_requester >= 0) {
@@ -5161,7 +5160,7 @@ abstract class CommonITILObject extends CommonDBTM
         // ====== Observers BLOC ======
 
         echo "<span class='actor-bloc'>";
-        echo "<div class='actor-head'>";
+        echo "<p class='alert alert-secondary fs-5'>";
         if (!$is_hidden['_users_id_observer'] || !$is_hidden['_groups_id_observer']) {
             echo _n('Watcher', 'Watchers', 1);
         }
@@ -5198,7 +5197,7 @@ abstract class CommonITILObject extends CommonDBTM
             );
         }
 
-        echo "</div>"; // end .actor-head
+        echo "</p>"; // end .actor-head
         echo "<div class='actor-content'>";
         if ($rand_observer >= 0) {
             $this->showActorAddForm(
@@ -5271,7 +5270,7 @@ abstract class CommonITILObject extends CommonDBTM
         // ====== Assign BLOC ======
 
         echo "<span class='actor-bloc'>";
-        echo "<div class='actor-head'>";
+        echo "<p class='alert alert-secondary fs-5'>";
         if (
             !$is_hidden['_users_id_assign']
             || !$is_hidden['_groups_id_assign']
@@ -5318,7 +5317,7 @@ abstract class CommonITILObject extends CommonDBTM
         ) {
             $candeleteassign = true;
         }
-        echo "</div>"; // end .actor-head
+        echo "</p>"; // end .actor-head
 
         echo "<div class='actor-content'>";
         if ($rand_assign >= 0) {

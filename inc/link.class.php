@@ -32,6 +32,7 @@
  */
 
 use Glpi\Toolbox\URL;
+use Itsmng\Domain\Entities\Link as EntitiesLink;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -49,6 +50,7 @@ class Link extends CommonDBTM
                               '[MAC]', '[NETWORK]', '[DOMAIN]', '[SERIAL]', '[OTHERSERIAL]',
                               '[USER]', '[GROUP]', '[REALNAME]', '[FIRSTNAME]'];
 
+    public $entity = EntitiesLink::class;
 
     public static function getTypeName($nb = 0)
     {

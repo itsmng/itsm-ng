@@ -1674,12 +1674,13 @@ class Search
         if ($data['search']['criteria']) {
             $url .= "&criteria=" . urlencode(json_encode($data['search']['criteria']));
         }
-        if (isset($data['itemtype'])) {
+        if (isset($data['itemtype']) && class_exists($data['itemtype'])) {
             $item = new $data['itemtype']();
             if (method_exists($item, 'title')) {
                 $item->title();
             }
         }
+
         Html::showMassiveActions($massiveactionparams);
         renderTwigTemplate('table.twig', [
            'id' => 'SearchTableFor' . $data['itemtype'],
@@ -7334,13 +7335,13 @@ JAVASCRIPT;
 
                     self::$search[$itemtype][24]['table']         = 'glpi_users';
                     self::$search[$itemtype][24]['field']         = 'name';
-                    self::$search[$itemtype][24]['linkfield']     = 'users_id_tech';
+                    self::$search[$itemtype][24]['linkfield']     = 'tech_users_id';
                     self::$search[$itemtype][24]['name']          = __('Technician in charge of the hardware');
                     self::$search[$itemtype][24]['condition']     = ['is_assign' => 1];
 
                     self::$search[$itemtype][49]['table']          = 'glpi_groups';
                     self::$search[$itemtype][49]['field']          = 'completename';
-                    self::$search[$itemtype][49]['linkfield']      = 'groups_id_tech';
+                    self::$search[$itemtype][49]['linkfield']      = 'tech_groups_id';
                     self::$search[$itemtype][49]['name']           = __('Group in charge of the hardware');
                     self::$search[$itemtype][49]['condition']      = ['is_assign' => 1];
                     self::$search[$itemtype][49]['datatype']       = 'dropdown';

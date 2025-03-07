@@ -189,7 +189,7 @@ class Auth extends CommonGLPI
         $oldlevel = error_reporting(16);
         // No retry (avoid lock account when password is not correct)
         try {
-            $config = Toolbox::parseMailServerConnectString($host);
+            $config = Toolbox::parseMailServerConnectString($host, false, false);
 
             $ssl = false;
             if ($config['ssl']) {
@@ -199,7 +199,7 @@ class Auth extends CommonGLPI
                 $ssl = 'TLS';
             }
 
-            $protocol = Toolbox::getMailServerProtocolInstance($config['type']);
+            $protocol = Toolbox::getMailServerProtocolInstance($config['type'], false);
             if ($protocol === null) {
                 throw new \RuntimeException(sprintf(__('Unsupported mail server type:%s.'), $config['type']));
             }
@@ -1827,7 +1827,7 @@ class Auth extends CommonGLPI
             $oidc_result = [
                'Provider'   => $_POST["provider"],
                'ClientID'   => $_POST["clientID"],
-               'ClientSecret'  => $_POST["clientSecret"],
+               'ClientSecret'  => Toolbox::sodiumEncrypt($_POST["clientSecret"]),
                'is_activate'  => $_POST["useoidc"],
                'is_forced'  => $_POST["forceoidc"],
                'scope'  => $_POST["scope"],
@@ -1843,7 +1843,7 @@ class Auth extends CommonGLPI
         foreach ($iterators as $iterator) {
             $oidc_db['Provider'] = $iterator['Provider'];
             $oidc_db['ClientID'] = $iterator['ClientID'];
-            $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
+            $oidc_db['ClientSecret'] = Toolbox::sodiumDecrypt($iterator['ClientSecret']);
             $oidc_db['is_activate'] = $iterator['is_activate'];
             $oidc_db['is_forced'] = $iterator['is_forced'];
             $oidc_db['scope'] = $iterator['scope'];

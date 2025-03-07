@@ -32,6 +32,7 @@
  */
 
 use Glpi\Event;
+use Itsmng\Domain\Entities\Ticket as EntitiesTicket;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -54,6 +55,8 @@ class Ticket extends CommonITILObject
     public static $rightname                   = 'ticket';
 
     protected $userentity_oncreate      = true;
+
+    public $entity = EntitiesTicket::class;
 
     public const MATRIX_FIELD                  = 'priority_matrix';
     public const URGENCY_MASK_FIELD            = 'urgency_mask';
@@ -1701,6 +1704,7 @@ class Ticket extends CommonITILObject
     {
         // Standard clean datas
         $input =  parent::prepareInputForAdd($input);
+        $input = $this->handleTemplateFields($input);
         if ($input === false) {
             return false;
         }
@@ -4876,7 +4880,19 @@ class Ticket extends CommonITILObject
         $display_save_btn = (!array_key_exists('locked', $options) || !$options['locked'])
            && ($canupdate || $can_requester || $canpriority || $canassign || $canassigntome);
 
-        $rand = mt_rand();
+        $priorityScript = <<<JS
+            $.ajax({
+                url: '{$CFG_GLPI["root_doc"]}/ajax/priority.php',
+                data: {
+                    urgency: $("#urgencySelect").val(),
+                    impact: $("#impactSelect").val()
+                },
+                type: 'POST',
+                success: function(data) {
+                    $("#prioritySelect").val(data);
+                }
+            });
+        JS;
 
         $formUrl = $this->getFormURL();
         $reopenLabel = __('Reopen');
@@ -5077,21 +5093,7 @@ class Ticket extends CommonITILObject
                      'noLib' => 'true',
                      'name' => 'requesttypes_id',
                      'values' => getOptionForItems('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
-                     'value' => 'requesttypes_id',
-                     $canupdate ? '' : 'disabled' => ''
-                  ],
-                  __('Urgency') => [
-                     'type' => 'select',
-                     'noLib' => 'true',
-                     'name' => 'urgency',
-                     'values' => [
-                        1 => static::getUrgencyName(1),
-                        2 => static::getUrgencyName(2),
-                        3 => static::getUrgencyName(3),
-                        4 => static::getUrgencyName(4),
-                        5 => static::getUrgencyName(5),
-                     ],
-                     'value' => $this->fields['urgency'],
+                     'value' => $this->fields['requesttypes_id'],
                      $canupdate ? '' : 'disabled' => ''
                   ],
                   !$ID ? __('Approval request') : CommonITILValidation::getTypeName(1) => !$ID ? [] : [
@@ -5103,20 +5105,6 @@ class Ticket extends CommonITILObject
                      (Session::haveRightsOr('ticketvalidation', TicketValidation::getCreateRights())
                         && $canupdate) ? '' : 'disabled' => ''
                   ],
-                  __('Impact') => [
-                     'type' => 'select',
-                     'noLib' => 'true',
-                     'name' => 'impact',
-                     'values' => [
-                        1 => static::getUrgencyName(1),
-                        2 => static::getUrgencyName(2),
-                        3 => static::getUrgencyName(3),
-                        4 => static::getUrgencyName(4),
-                        5 => static::getUrgencyName(5),
-                     ],
-                     'value' => $this->fields['impact'],
-                     $canupdate ? '' : 'disabled' => '',
-                  ],
                   Location::getTypeName(1) => [
                      'type' => 'select',
                      'noLib' => 'true',
@@ -5126,10 +5114,43 @@ class Ticket extends CommonITILObject
                      'actions' => getItemActionButtons(['info', 'add'], 'Location'),
                      $canupdate ? '' : 'disabled' => '',
                   ],
+                  __('Urgency') => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'name' => 'urgency',
+                     'id' => 'urgencySelect',
+                     'values' => [
+                        1 => static::getUrgencyName(1),
+                        2 => static::getUrgencyName(2),
+                        3 => static::getUrgencyName(3),
+                        4 => static::getUrgencyName(4),
+                        5 => static::getUrgencyName(5),
+                     ],
+                     'value' => $this->fields['urgency'],
+                     'hooks' => [ 'change' => $priorityScript, ],
+                     $canupdate ? '' : 'disabled' => ''
+                  ],
+                  __('Impact') => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'name' => 'impact',
+                     'id' => 'impactSelect',
+                     'values' => [
+                        1 => static::getUrgencyName(1),
+                        2 => static::getUrgencyName(2),
+                        3 => static::getUrgencyName(3),
+                        4 => static::getUrgencyName(4),
+                        5 => static::getUrgencyName(5),
+                     ],
+                     'value' => $this->fields['impact'],
+                     $canupdate ? '' : 'disabled' => '',
+                     'hooks' => [ 'change' => $priorityScript, ],
+                  ],
                   __('Priority') => [
                      'type' => 'select',
                      'noLib' => 'true',
                      'name' => 'priority',
+                     'id' => 'prioritySelect',
                      'values' => [
                         1 => static::getUrgencyName(1),
                         2 => static::getUrgencyName(2),
@@ -5145,52 +5166,15 @@ class Ticket extends CommonITILObject
               __('Actor') => [
                'visible' => true,
                'inputs' => [
-                  __('Requester') => [
-                     'type' => 'actorSelect',
-                     'name' => '_users_id_requester',
-                     'actorTypes' => [
-                        Dropdown::EMPTY_VALUE => 0,
-                        User::getTypeName() => 'user',
-                        Group::getTypeName() => 'group',
-                     ],
-                     'single' => $this->isNewID($ID),
-                     'values' => $this->getActorsForAction(CommonITILActor::REQUESTER),
-                     'actorTypeId' => CommonITILActor::REQUESTER,
-                     'itemType' => 'Ticket',
-                     'actorType' => 'requester',
-                     'ticketId' => $this->isNewID($ID) ? 0 : $ID,
-                  ],
-                  __('Watcher') => [
-                     'type' => 'actorSelect',
-                     'name' => '_users_id_observer',
-                     'actorTypes' => [
-                        Dropdown::EMPTY_VALUE => 0,
-                        User::getTypeName() => 'user',
-                        Group::getTypeName() => 'group',
-                     ],
-                     'single' => $this->isNewID($ID),
-                     'values' => $this->getActorsForAction(CommonITILActor::OBSERVER),
-                     'actorTypeId' => CommonITILActor::OBSERVER,
-                     'itemType' => 'Ticket',
-                     'actorType' => 'observer',
-                     'ticketId' => $this->isNewID($ID) ? 0 : $ID,
-                  ],
-                  __('Assigned to') => [
-                     'type' => 'actorSelect',
-                     'name' => '_users_id_assign',
-                     'actorTypes' => [
-                        Dropdown::EMPTY_VALUE => 0,
-                        User::getTypeName() => 'user',
-                        Group::getTypeName() => 'group',
-                        Supplier::getTypeName() => 'supplier',
-                     ],
-                     'single' => $this->isNewID($ID),
-                     'values' => $this->getActorsForAction(CommonITILActor::ASSIGN),
-                     'actorTypeId' => CommonITILActor::ASSIGN,
-                     'itemType' => 'Ticket',
-                     'actorType' => 'assign',
-                     'ticketId' => $this->isNewID($ID) ? 0 : $ID,
-                  ],
+                   '' => [
+                       'content' => (function () use ($ID, $options) {
+                           ob_start();
+                           $this->showActorsPartForm($ID, $options);
+                           return ob_get_clean();
+                       })(),
+                       'col_lg' => 12,
+                       'col_md' => 12,
+                   ]
                ]
               ],
               __('Content') => [
@@ -5236,6 +5220,24 @@ class Ticket extends CommonITILObject
                      'values' => getLinkedDocumentsForItem('Ticket', $ID),
                      'col_lg' => 6,
                   ],
+
+                  __('Associated elements') =>
+                  (($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] != 0)
+                      && (count($_SESSION["glpiactiveprofile"]["helpdesk_item_type"])))
+                      && (!$tt->isHiddenField('items_id')) ?
+                  [
+                      'content' => (function () use ($tt, $options) {
+                          ob_start();
+                          $item_options = $options;
+                          $item_options['_canupdate'] = Session::haveRight('ticket', CREATE);
+                          $item_options['_tickettemplate'] = $tt; // Items form requires ticket template object in $options
+                          Item_Ticket::itemAddForm($this, $item_options);
+                          return ob_get_clean();
+                      })(),
+                      'name' => 'associated',
+                      'col_lg' => 12,
+                      'col_md' => 12,
+                 ] : [],
                ]
               ],
            ]
