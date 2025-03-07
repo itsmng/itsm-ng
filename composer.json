@@ -62,7 +62,7 @@
         "symfony/console": "^6.0",
         "symfony/dotenv": "^6.4",
         "symfony/orm-pack": "^2.4",
-        "tecnickcom/tcpdf": "^6.2",
+        "tecnickcom/tcpdf": "^6.8",
         "twbs/bootstrap": "^5.3",
         "twig/string-extra": "^3.7",
         "twig/twig": "^3.0",

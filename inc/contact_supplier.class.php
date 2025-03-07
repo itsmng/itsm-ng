@@ -131,7 +131,7 @@ class Contact_Supplier extends CommonDBRelation
             echo "<form aria-label='Add supplier' name='contactsupplier_form$rand' id='contactsupplier_form$rand'
                 method='post' action='";
             echo Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
-            echo "<table class='tab_cadre_fixe'> aria-label='Add supplier form'";
+            echo "<table class='tab_cadre_fixe aria-label='Add supplier form''>";
             echo "<tr class='tab_bg_1'><th colspan='2'>" . __('Add a supplier') . "</tr>";
 
             echo "<tr class='tab_bg_2'><td class='center'>";

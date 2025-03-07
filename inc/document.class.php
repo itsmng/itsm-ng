@@ -437,14 +437,7 @@ class Document extends CommonDBTM
 
         $form = [
            'action' => $this->getFormURL(),
-           'buttons' => [
-              [
-                 'name' => $ID > 0 ? 'update' : 'add',
-                 'type' => 'submit',
-                 'value' => $ID > 0 ? __('Update') : __('Add'),
-                 'class' => 'btn btn-secondary'
-              ],
-           ],
+           'itemtype' => self::class,
            'content' => [
               self::getTypeName(1) => [
                  'visible' => 'true',
@@ -538,7 +531,7 @@ class Document extends CommonDBTM
               ]
            ]
         ];
-        renderTwigForm($form);
+        renderTwigForm($form, '', $this->fields);
 
         return true;
     }

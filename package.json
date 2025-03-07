@@ -5,7 +5,6 @@
     "description": "ITSM-ng dependencies",
     "license": "GPL-2.0",
     "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^41.1.0",
         "@fortawesome/fontawesome-free": "^5.15.4",
         "@fullcalendar/core": "^4.4.2",
         "@fullcalendar/daygrid": "^4.4.2",
@@ -17,6 +16,7 @@
         "chartist": "^1.3.0",
         "chartist-plugin-legend": "^0.6.2",
         "chartist-plugin-tooltips-updated": "^1.0.0",
+        "ckeditor5": "^44.2.1",
         "codemirror": "^5.51.0",
         "css-select": "^5.1.0",
         "cytoscape": "^3.26.0",

@@ -1519,7 +1519,8 @@ abstract class CommonDBRelation extends CommonDBConnexity
                             $options['nochecklimit'] = true;
                         }
                         $dropdown_method = $specificities['dropdown_method_' . $peer_number];
-                        $peertype::$dropdown_method($options);
+                        echo $peertype::$dropdown_method($options);
+                        echo "<br>";
                     }
                 }
                 // Allow any relation to display its own fields (NetworkPort_Vlan for tagged ...)

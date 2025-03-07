@@ -1967,8 +1967,8 @@ class Dropdown
                   'change' => $param['on_change'] ?? '',
                ],
                'multiple'    => $param['multiple'] ?? false,
-               $param['disabled'] ? 'disabled' : '' => true,
-               $param['noselect2'] ? 'noLib' : '' => true,
+               ($param['disabled'] ? 'disabled' : '') => true,
+               ($param['noselect2'] ? 'noLib' : '') => true,
                'style' => ($param['width'] ? ('width:' . $param['width']) : ''),
             ];
 
@@ -2343,7 +2343,7 @@ class Dropdown
 
         if (!isset($post['page'])) {
             $post['page']       = 1;
-            $post['page_limit'] = $CFG_GLPI['dropdown_max'];
+            $post['page_limit'] = null;
         }
 
         $start = intval(($post['page'] - 1) * $post['page_limit']);
@@ -2567,6 +2567,7 @@ class Dropdown
                     } else {
                         $outputval = $data['name'];
                     }
+                    $outputval = str_repeat('&nbsp;', max(($level - 1) * 2, 0)) . ($level > 1 ? '>&nbsp;' : '') . $outputval;
 
                     if (
                         $multi

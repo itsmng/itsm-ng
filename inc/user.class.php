@@ -868,6 +868,29 @@ class User extends CommonDBTM
             unset($input["password"]);
         }
 
+        // prevent changing tokens and emails from users with lower rights
+        if (Session::getLoginUserID() !== false
+            && ((int) $input['id'] !== Session::getLoginUserID())) {
+            $protected_input_keys = [
+                'api_token',
+                '_reset_api_token',
+                'cookie_token',
+                'password_forget_token',
+                'personal_token',
+                '_reset_personal_token',
+                '_emails',
+                '_useremails',
+                'is_active',
+            ];
+            if (count(array_intersect($protected_input_keys, array_keys($input))) > 0
+                && !$this->currentUserHaveMoreRightThan($input['id'])
+            ) {
+                foreach ($protected_input_keys as $input_key) {
+                    unset($input[$input_key]);
+                }
+            }
+        }
+
         // blank password when authtype changes
         if (
             isset($input["authtype"])
@@ -2477,25 +2500,24 @@ class User extends CommonDBTM
              ],
              _n('Authorization', 'Authorizations', 1) =>  [
                 'visible' => true,
-                'inputs' => (empty($ID)) ? [
-                   __('Recursive') => [
-                      'type' => 'checkbox',
-                      'name' => '_is_recursive',
-                      'value' => $this->fields['_is_recursive'],
-                   ],
+                'inputs' => ($this->isNewID($ID)) ? [
                    Profile::getTypeName(1) => [
                       'type' => 'select',
                       'name' => '_profiles_id',
                       'values' => getOptionForItems('Profile'),
-                      'value' => $this->fields['_profiles_id'],
+                      'value' => Profile::getDefault(),
                       'actions' => getItemActionButtons(['info', 'add'], 'Profile'),
                    ],
                    Entity::getTypeName(1) => [
                       'type' => 'select',
                       'name' => '_entities_id',
                       'values' => getOptionForItems('Entity'),
-                      'value' => $this->fields['_entities_id'],
                       'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
+                   ],
+                   __('Recursive') => [
+                      'type' => 'checkbox',
+                      'name' => '_is_recursive',
+                      'value' => 0,
                    ],
                 ] : [
                    __('Default profile') => ($higherrights || $ismyself) ? [

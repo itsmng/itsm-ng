@@ -11,21 +11,21 @@
 #
 #: inc/rssfeed.class.php:690 inc/authldap.class.php:734
 #: inc/authldap.class.php:742
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2019-04-24 11:58+0000\n"
-"Last-Translator: alexandre delaunay <delaunay.alexandre@gmail.com>, 2021\n"
-"Language-Team: Finnish (Finland) (https://www.transifex.com/glpi/teams/1637/"
-"fi_FI/)\n"
+"PO-Revision-Date: 2025-01-17 11:00+0000\n"
+"Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
+"Language-Team: Finnish <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
+"fi/>\n"
 "Language: fi_FI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -606,7 +606,7 @@ msgstr ""
 
 #: ajax/getMapPoint.php:75
 msgid "Location seems not geolocalized!"
-msgstr "Sijainnille ei ole määritetty maantieteellistä sijaintia"
+msgstr "Sijainti ei näytä olevan määritettynä maantieteellisellä sijainnilla!"
 
 #: ajax/getMapPoint.php:76
 msgid "Consider filling latitude and longitude on this location."
@@ -1380,7 +1380,7 @@ msgstr "Replikoi %s"
 
 #: front/migrationcleaner.php:44
 msgid "You don't need the \"migration cleaner\" tool anymore..."
-msgstr "Et tarvitse enää  \\\"Tuonnin puhdistus\\\" -työkalua ..."
+msgstr "Et tarvitse enää \\\"Tuonnin puhdistus\\\" -työkalua ..."
 
 #: front/migrationcleaner.php:48 inc/migrationcleaner.class.php:47
 msgid "Migration cleaner"
@@ -2188,7 +2188,7 @@ msgstr "Talleta ratkaisu tietämyskantaan"
 
 #: front/ticket.form.php:250 inc/notificationtargetticket.class.php:143
 msgid "New ticket"
-msgstr "Uusi tiketti:"
+msgstr "Uusi tiketti"
 
 #: front/knowbaseitem_item.form.php:52
 #, php-format
@@ -3530,7 +3530,7 @@ msgstr "Arvo"
 #: front/report.infocom.php:266 front/report.infocom.conso.php:256
 #, php-format
 msgid "%1$s account net value"
-msgstr "%1$s  tilin nettoarvo"
+msgstr "%1$s-tilin nettoarvo"
 
 #: front/report.infocom.conso.php:265 front/report.infocom.php:278
 #: front/report.infocom.php:293 front/report.infocom.conso.php:282
@@ -5510,7 +5510,7 @@ msgstr "Salasanan tulee sisältää"
 #: inc/config.class.php:1551 inc/config.class.php:1553
 #: inc/config.class.php:1715 inc/config.class.php:1717
 msgid "Password too short!"
-msgstr "Salasana on liian lyhyt"
+msgstr "Salasana liian lyhyt!"
 
 #: inc/config.class.php:1560 inc/config.class.php:1563
 #: inc/config.class.php:1724 inc/config.class.php:1727
@@ -12358,7 +12358,7 @@ msgstr "Laitteeni ja kaikki kohteet"
 
 #: inc/profile.class.php:3847 inc/profile.class.php:3850
 msgid "Select/unselect all"
-msgstr "Valitse / poista  kaikki "
+msgstr "Valitse/Poista kaikki valinnat"
 
 #: inc/profile_user.class.php:134 inc/profile_user.class.php:278
 #: inc/profile_user.class.php:141 inc/profile_user.class.php:342
@@ -12740,7 +12740,7 @@ msgstr "Yksikköön yhdistetty LDAP-suodatin (tarvittaessa)"
 
 #: inc/entity.class.php:1601 inc/entity.class.php:1622
 msgid "Autofill dates for financial and administrative information"
-msgstr "Päivämäärien automaattinen täyttö talous-  ja hallintotiedoissa"
+msgstr "Päivämäärien automaattinen täyttö talous- ja hallintotiedoissa"
 
 #: inc/entity.class.php:1604 inc/entity.class.php:1670
 #: inc/entity.class.php:1690 inc/entity.class.php:3175
@@ -14041,7 +14041,7 @@ msgstr "Suorittanut %s"
 #: inc/commonitiltask.class.php:1257
 #, php-format
 msgid "Recall on %s"
-msgstr "Muistutus  %s"
+msgstr "Muistutus %s:sta"
 
 #: inc/commonitiltask.class.php:1321 inc/commonitiltask.class.php:1322
 msgid "Planned"
@@ -14230,8 +14230,11 @@ msgstr "Käsittelyssä (aikataulutettu)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541 inc/change.class.php:543 inc/problem.class.php:698
+#, fuzzy
+#| msgid "Heading"
+msgctxt "status"
 msgid "Pending"
-msgstr ""
+msgstr "Otsikko"
 
 #: inc/problem.class.php:686 inc/problem.class.php:699
 msgctxt "status"
@@ -15093,7 +15096,7 @@ msgid ""
 "Threshold of alarm reached for the type of cartridge: %1$s - Reference %2$s "
 "- Remaining %3$d"
 msgstr ""
-"Hälytysraja on saavutettu lisätarviketyypille:  %1$s - viite %2$s – jäljellä "
+"Hälytysraja on saavutettu lisätarviketyypille: %1$s - viite %2$s – jäljellä "
 "%3$d"
 
 #. TRANS: %s is entity name
@@ -15921,11 +15924,11 @@ msgstr "Isännän ja orjan välinen ero"
 
 #: inc/notificationtargetdbconnection.class.php:91
 msgid "Slave database out of sync!"
-msgstr "Orjatietokanta ei ole synkronissa."
+msgstr "Orjatietokanta ei ole synkronissa!"
 
 #: inc/notificationtargetdbconnection.class.php:93
 msgid "The slave database is desynchronized. The difference is of:"
-msgstr "Orjatietokanta ei ole synkronissa. Ero on "
+msgstr "Orjatietokanta ei ole synkronoitu. Ero on seuraavista:"
 
 #: inc/commondbvisible.class.php:151 inc/commondbvisible.class.php:155
 msgid "Add a target"
@@ -15981,7 +15984,7 @@ msgid ""
 "Threshold of alarm reached for the type of consumable: %1$s - Reference %2$s "
 "- Remaining %3$d"
 msgstr ""
-"Hälytysraja on saavutettu kulutustarviketyypille:  %1$s - viite %2$s – "
+"Hälytysraja on saavutettu kulutustarviketyypille: %1$s - viite %2$s – "
 "jäljellä %3$d"
 
 #. TRANS: %s is entity name
@@ -16012,7 +16015,7 @@ msgstr "Ethernet-portin nopeus"
 
 #: inc/networkportethernet.class.php:225
 msgid "Twisted pair (RJ-45)"
-msgstr "Parikaapeli  (RJ-45)"
+msgstr "Parikaapeli (RJ-45)"
 
 #: inc/networkportethernet.class.php:226
 msgid "Multimode fiber"
@@ -18065,7 +18068,7 @@ msgstr ""
 #: inc/plugin.class.php:726
 #, php-format
 msgid "Plugin %1$s has been installed!"
-msgstr "Liitännäinen %1$son asennettu! "
+msgstr "Liitännäinen %1$s on asennettu!"
 
 #: inc/plugin.class.php:730 inc/plugin.class.php:2288
 msgctxt "button"
@@ -18079,17 +18082,17 @@ msgstr ""
 #: inc/plugin.class.php:736
 #, php-format
 msgid "Plugin %1$s has been installed and must be configured!"
-msgstr "Liitännäinen %1$son asennettu ja se on määritettävä! "
+msgstr "Liitännäinen %1$s on asennettu ja se on määritettävä!"
 
 #: inc/plugin.class.php:742
 #, php-format
 msgid "Plugin %1$s has no install function!"
-msgstr "Liitännäisellä %1$sei ole asennustoimintoa! "
+msgstr "Liitännäisellä %1$s ei ole asennustoimintoa!"
 
 #: inc/plugin.class.php:775
 #, php-format
 msgid "Plugin %1$s is not CSRF compliant!"
-msgstr "Liitännäinen %1$sei ole CSRF-yhteensopiva! "
+msgstr "Liitännäinen %1$s ei ole CSRF-yhteensopiva!"
 
 #: inc/plugin.class.php:796
 msgid "Plugin prerequisites are not matching, it cannot be activated."
@@ -18098,7 +18101,7 @@ msgstr ""
 #: inc/plugin.class.php:829
 #, php-format
 msgid "Plugin %1$s has been activated!"
-msgstr "Liitännäinen %1$son aktivoitu! "
+msgstr "Liitännäinen %1$s on aktivoitu!"
 
 #: inc/plugin.class.php:839
 msgid "Plugin configuration must be done, it cannot be activated."
@@ -19089,7 +19092,7 @@ msgstr "Linkitä tietämyskannan artikkeli"
 
 #: inc/rulemailcollector.class.php:83 inc/notimportedemail.class.php:157
 msgid "Subject email header"
-msgstr "Sähköpostin kenttä Subject:"
+msgstr "Aiheen sähköpostin otsikko"
 
 #: inc/rulemailcollector.class.php:88
 msgid "Email body"
@@ -19097,11 +19100,11 @@ msgstr "Sähköpostiviestin runko"
 
 #: inc/rulemailcollector.class.php:92 inc/notimportedemail.class.php:139
 msgid "From email header"
-msgstr "Sähköpostin kenttä From:"
+msgstr "Sähköpostin otsikosta"
 
 #: inc/rulemailcollector.class.php:96 inc/notimportedemail.class.php:148
 msgid "To email header"
-msgstr "Sähköpostin kenttä To:"
+msgstr "Sähköpostin otsikkoon"
 
 #: inc/rulemailcollector.class.php:100
 msgid "In-Reply-To email header"
@@ -19150,7 +19153,7 @@ msgstr "Yksikkö perustuen TAGiin"
 
 #: inc/rulemailcollector.class.php:191
 msgid "Entity based on user's profile"
-msgstr "Yksikkö perustuen  käyttäjän profiiliin"
+msgstr "Yksikkö perustuen käyttäjän profiiliin"
 
 #: inc/rulemailcollector.class.php:195 inc/rulemailcollector.class.php:200
 msgid "Reject email"
@@ -21093,7 +21096,7 @@ msgstr "Käytetty komento"
 
 #: inc/certificate.class.php:175 inc/certificate.class.php:629
 msgid "Certificate request (CSR)"
-msgstr "Varmennepyyntö  (CSR)"
+msgstr "Varmennepyyntö (CSR)"
 
 #: inc/certificate.class.php:446 inc/softwarelicense.class.php:435
 #: inc/softwarelicense.class.php:801 inc/softwarelicense.class.php:454
@@ -22926,7 +22929,7 @@ msgstr "Poista sähköpostit"
 
 #: inc/notimportedemail.class.php:174
 msgid "Message-ID email header"
-msgstr "Sähköpostin kenttä Message-ID:"
+msgstr "Viestitunnuksen sähköpostin otsikko"
 
 #: inc/notimportedemail.class.php:239
 msgid "Unable to affect the email to an entity"
@@ -23016,7 +23019,7 @@ msgstr "Käyttöjärjestelmän tuotetunnus"
 #: install/update_91_92.php:170 install/update_0905_91.php:69
 #, php-format
 msgid "Add of - %s to database"
-msgstr "Arvon   %s lisäys tietoknataan"
+msgstr "%s:n lisäys tietokantaan"
 
 #: install/update_0905_91.php:454
 msgid "date_mod and date_creation"
@@ -23994,10 +23997,8 @@ msgstr ""
 msgid "Or share the dashboard to these target objects:"
 msgstr ""
 
-#, fuzzy
-#| msgid "Empty array"
 msgid "empty card !"
-msgstr "Tyhjä taulukko"
+msgstr "tyhjä kortti!"
 
 #, fuzzy
 #| msgid "Number of rows"
@@ -24354,10 +24355,8 @@ msgid ""
 "GLPI"
 msgstr ""
 
-#, fuzzy
-#| msgid "Created on %s"
 msgid "Register on %1$s!"
-msgstr "Luotu %s"
+msgstr "Rekisteröidy %1$s:lla!"
 
 msgid "And retrieve your key to paste it below"
 msgstr ""
@@ -24582,10 +24581,10 @@ msgid "Change mode"
 msgstr "Muuttunut"
 
 msgid "Debug mode enabled"
-msgstr "Virheenkorjaustila käytössä!"
+msgstr "Viankorjaustila käytössä"
 
 msgid "Debug mode disabled"
-msgstr "Virheenkorjaustila poistettu käytöstä!"
+msgstr "Viankorjaustila poistettu käytöstä"
 
 msgid "Saved searches"
 msgstr "Tallennetut haut"
@@ -24794,13 +24793,13 @@ msgid "The server or/and user field is empty"
 msgstr "Palvelin- tai/ja käyttäjäkentät ovat tyhjät."
 
 msgid "Please select a database:"
-msgstr "Valitse tietokanta"
+msgstr "Valitse tietokanta:"
 
 msgid "Create a new database or use an existing one:"
-msgstr "Luo uusi tietokanta tai käytä olemassa olevaa"
+msgstr "Luo uusi tietokanta tai käytä olemassa olevaa:"
 
 msgid "Please select the database to update:"
-msgstr "Valitse päivitettävä tietokanta"
+msgstr "Valitse päivitettävä tietokanta:"
 
 msgid "Initialization of the database"
 msgstr "Tietokannan alustus"
@@ -24964,10 +24963,8 @@ msgstr "Tiketit"
 msgid "Tickets to validate"
 msgstr "Hyväksyttävänä olevat tikettisi"
 
-#, fuzzy
-#| msgid "New ticket"
 msgid "New widget"
-msgstr "Uusi tiketti:"
+msgstr "Uusi vimpain"
 
 #, fuzzy
 #| msgid "Add cartridges"
