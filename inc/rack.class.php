@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Rack as EntitiesRack;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -60,8 +58,6 @@ class Rack extends CommonDBTM
     // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'datacenter';
-
-    public $entity = EntitiesRack::class;
 
     public static function getTypeName($nb = 0)
     {

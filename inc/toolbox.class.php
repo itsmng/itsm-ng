@@ -2578,7 +2578,7 @@ class Toolbox
     **/
     public static function cleanInteger($integer)
     {
-        return preg_replace("/[^0-9-]/", "", $integer);
+        return preg_replace("/[^0-9-]/", "", $integer ?? '');
     }
 
 

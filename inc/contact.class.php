@@ -35,7 +35,6 @@ if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
 
-use Itsmng\Domain\Entities\Contact as EntitiesContact;
 use Sabre\VObject;
 
 /**
@@ -48,8 +47,6 @@ class Contact extends CommonDBTM
 
     public static $rightname           = 'contact_enterprise';
     protected $usenotepad       = true;
-
-    public $entity = EntitiesContact::class;
 
     public static function getTypeName($nb = 0)
     {

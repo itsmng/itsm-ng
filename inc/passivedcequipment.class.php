@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Passivedcequipment as EntitiesPassivedcequipment;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -47,8 +45,6 @@ class PassiveDCEquipment extends CommonDBTM
     // From CommonDBTM
     public $dohistory = true;
     public static $rightname = 'datacenter';
-
-    public $entity = EntitiesPassivedcequipment::class;
 
     public static function getTypeName($nb = 0)
     {

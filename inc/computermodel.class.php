@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Computermodel as EntitiesComputermodel;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -40,8 +38,6 @@ if (!defined('GLPI_ROOT')) {
 /// Class ComputerModel
 class ComputerModel extends CommonDCModelDropdown
 {
-    public $entity = EntitiesComputermodel::class;
-
     public static function getTypeName($nb = 0)
     {
         return _n('Computer model', 'Computer models', $nb);

@@ -49,7 +49,6 @@ class Contract_Item extends CommonDBRelation
     public static $itemtype_2 = 'itemtype';
     public static $items_id_2 = 'items_id';
 
-
     public function getForbiddenStandardMassiveAction()
     {
 

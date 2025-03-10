@@ -16,16 +16,16 @@ class TicketUser
     private $id;
 
     #[ORM\Column(name: 'tickets_id', type: 'integer', options: ['default' => 0])]
-    private $ticketsId;
+    private $ticketsId = 0;
 
     #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
-    private $usersId;
+    private $usersId = 0;
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
-    private $type;
+    private $type = 1;
 
     #[ORM\Column(name: 'use_notification', type: 'boolean', options: ['default' => 1])]
-    private $useNotification;
+    private $useNotification = 1;
 
     #[ORM\Column(name: 'alternative_email', type: 'string', length: 255, nullable: true)]
     private $alternativeEmail;

@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Manufacturer as EntitiesManufacturer;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -42,7 +40,6 @@ if (!defined('GLPI_ROOT')) {
 class Manufacturer extends CommonDropdown
 {
     public $can_be_translated = false;
-    public $entity = EntitiesManufacturer::class;
 
     public static function getTypeName($nb = 0)
     {

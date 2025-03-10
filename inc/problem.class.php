@@ -31,7 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Problem as EntitiesProblem;
 use itsmng\Timezone;
 
 if (!defined('GLPI_ROOT')) {
@@ -54,8 +53,6 @@ class Problem extends CommonITILObject
 
     public static $rightname            = 'problem';
     protected $usenotepad        = true;
-
-    public $entity = EntitiesProblem::class;
 
     public const MATRIX_FIELD         = 'priority_matrix';
     public const URGENCY_MASK_FIELD   = 'urgency_mask';

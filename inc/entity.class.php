@@ -32,7 +32,6 @@
  */
 
 use Glpi\Event;
-use Itsmng\Domain\Entities\Entity as EntitiesEntity;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -62,8 +61,6 @@ class Entity extends CommonTreeDropdown
 
     public const AUTO_ASSIGN_HARDWARE_CATEGORY  = 1;
     public const AUTO_ASSIGN_CATEGORY_HARDWARE  = 2;
-
-    public $entity = EntitiesEntity::class;
 
     // Array of "right required to update" => array of fields allowed
     // Missing field here couldn't be update (no right)

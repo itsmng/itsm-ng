@@ -3,7 +3,6 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use SoftwareLicense as GlobalSoftwareLicense;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_softwarelicenses")]
@@ -29,7 +28,7 @@ use SoftwareLicense as GlobalSoftwareLicense;
 #[ORM\Index(name: "manufacturers_id", columns: ["manufacturers_id"])]
 #[ORM\Index(name: "states_id", columns: ["states_id"])]
 #[ORM\Index(name: "allow_overquota", columns: ["allow_overquota"])]
-class Softwarelicense
+class SoftwareLicense
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -42,7 +41,7 @@ class Softwarelicense
 
     #[ORM\ManyToOne(targetEntity: Softwarelicense::class)]
     #[ORM\JoinColumn(name: 'softwarelicenses_id', referencedColumnName: 'id', nullable: true)]
-    private ?GlobalSoftwareLicense $softwarelicense = null;
+    private ?SoftwareLicense $softwarelicense = null;
 
     #[ORM\Column(name: 'completename', type: 'text', length: 65535, nullable: true)]
     private $completename;
@@ -73,13 +72,13 @@ class Softwarelicense
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\ManyToOne(targetEntity: Softwareversion::class)]
+    #[ORM\ManyToOne(targetEntity: SoftwareVersion::class)]
     #[ORM\JoinColumn(name: 'softwareversions_id_buy', referencedColumnName: 'id', nullable: true)]
-    private ?Softwareversion $softwareversionBuy = null;
+    private ?SoftwareVersion $softwareversionBuy = null;
 
-    #[ORM\ManyToOne(targetEntity: Softwareversion::class)]
+    #[ORM\ManyToOne(targetEntity: SoftwareVersion::class)]
     #[ORM\JoinColumn(name: 'softwareversions_id_use', referencedColumnName: 'id', nullable: true)]
-    private ?Softwareversion $softwareversionUse = null;
+    private ?SoftwareVersion $softwareversionUse = null;
 
     #[ORM\Column(name: 'expire', type: 'date', nullable: true)]
     private $expire;
@@ -476,7 +475,7 @@ class Softwarelicense
     /**
      * Get the value of softwareversionBuy
      */
-    public function getSoftwareversionBuy()
+    public function getSoftwareVersionBuy()
     {
         return $this->softwareversionBuy;
     }
@@ -486,7 +485,7 @@ class Softwarelicense
      *
      * @return  self
      */
-    public function setSoftwareversionBuy($softwareversionBuy)
+    public function setSoftwareVersionBuy($softwareversionBuy)
     {
         $this->softwareversionBuy = $softwareversionBuy;
 
@@ -597,7 +596,7 @@ class Softwarelicense
     /**
      * Get the value of softwareversionUse
      */
-    public function getSoftwareversionUse()
+    public function getSoftwareversionuse()
     {
         return $this->softwareversionUse;
     }
@@ -607,7 +606,7 @@ class Softwarelicense
      *
      * @return  self
      */
-    public function setSoftwareversionUse($softwareversionUse)
+    public function setSoftwareversionuse($softwareversionUse)
     {
         $this->softwareversionUse = $softwareversionUse;
 

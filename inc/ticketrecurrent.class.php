@@ -31,7 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\TicketRecurrent as EntitiesTicketRecurrent;
 use itsmng\Timezone;
 
 if (!defined('GLPI_ROOT')) {
@@ -57,8 +56,6 @@ class TicketRecurrent extends CommonDropdown
     public static $rightname              = 'ticketrecurrent';
 
     public $can_be_translated      = false;
-
-    public $entity = EntitiesTicketRecurrent::class;
 
     public static function getTypeName($nb = 0)
     {

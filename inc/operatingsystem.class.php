@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\Operatingsystem as EntitiesOperatingsystem;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -39,7 +41,6 @@ if (!defined('GLPI_ROOT')) {
 class OperatingSystem extends CommonDropdown
 {
     public $can_be_translated = false;
-
 
     public static function getTypeName($nb = 0)
     {

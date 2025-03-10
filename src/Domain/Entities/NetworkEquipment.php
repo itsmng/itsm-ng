@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "serial", columns: ['serial'])]
 #[ORM\Index(name: "otherserial", columns: ['otherserial'])]
 #[ORM\Index(name: "date_creation", columns: ['date_creation'])]
-class Networkequipment
+class NetworkEquipment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

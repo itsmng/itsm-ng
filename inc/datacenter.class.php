@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Datacenter as EntitiesDatacenter;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -45,8 +43,6 @@ class Datacenter extends CommonDBTM
     // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'datacenter';
-
-    public $entity = EntitiesDatacenter::class;
 
     public static function getTypeName($nb = 0)
     {

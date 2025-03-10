@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Index(name: "states_id", columns: ["states_id"])]
 #[ORM\Index(name: "manufacturers_id", columns: ["manufacturers_id"])]
 #[ORM\Index(name: "pdutypes_id", columns: ["pdutypes_id"])]
-class Pdu
+class PDU
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

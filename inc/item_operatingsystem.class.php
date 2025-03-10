@@ -1,5 +1,7 @@
 <?php
 
+use Itsmng\Domain\Entities\ItemOperatingSystem;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }

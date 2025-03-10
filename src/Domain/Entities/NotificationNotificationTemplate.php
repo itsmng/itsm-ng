@@ -10,23 +10,23 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'notifications_id', columns: ['notifications_id'])]
 #[ORM\Index(name: 'notificationtemplates_id', columns: ['notificationtemplates_id'])]
 #[ORM\Index(name: 'mode', columns: ['mode'])]
-class NotificationNotificationtemplate
+class NotificationNotificationTemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Notification::class, inversedBy: 'notificationNotificationtemplates')]
+    #[ORM\ManyToOne(targetEntity: Notification::class, inversedBy: 'notificationNotificationTemplates')]
     #[ORM\JoinColumn(name: 'notifications_id', referencedColumnName: 'id', nullable: true)]
     private ?Notification $notification = null;
 
     #[ORM\Column(name: 'mode', type: 'string', length: 20, options: ['comment' => 'See Notification_NotificationTemplate::MODE_* constants'])]
     private $mode;
 
-    #[ORM\ManyToOne(targetEntity: Notificationtemplate::class, inversedBy: 'notificationNotificationtemplates')]
+    #[ORM\ManyToOne(targetEntity: NotificationTemplate::class, inversedBy: 'notificationNotificationTemplates')]
     #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Notificationtemplate $notificationtemplate = null;
+    private ?NotificationTemplate $notificationTemplate = null;
 
     public function getId(): ?int
     {
@@ -69,9 +69,9 @@ class NotificationNotificationtemplate
     /**
      * Get the value of notificationtemplate
      */
-    public function getNotificationtemplate()
+    public function getNotificationTemplate()
     {
-        return $this->notificationtemplate;
+        return $this->notificationTemplate;
     }
 
     /**
@@ -79,9 +79,9 @@ class NotificationNotificationtemplate
      *
      * @return  self
      */
-    public function setNotificationtemplate($notificationtemplate)
+    public function setNotificationTemplate($notificationtemplate)
     {
-        $this->notificationtemplate = $notificationtemplate;
+        $this->notificationTemplate = $notificationtemplate;
 
         return $this;
     }

@@ -18,19 +18,19 @@ class ImpactItem
     private $id;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 255, options: ["default" => ""])]
-    private $itemtype;
+    private $itemtype = "";
 
     #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
-    private $itemsId;
+    private $itemsId = 0;
 
     #[ORM\Column(name: 'parent_id', type: "integer", options: ["default" => 0])]
-    private $parentId;
+    private $parentId = 0;
 
     #[ORM\Column(name: 'impactcontexts_id', type: "integer", options: ["default" => 0])]
-    private $impactcontextsId;
+    private $impactcontextsId = 0;
 
     #[ORM\Column(name: 'is_slave', type: "boolean", options: ["default" => true])]
-    private $isSlave;
+    private $isSlave = true;
 
     public function getId(): ?int
     {

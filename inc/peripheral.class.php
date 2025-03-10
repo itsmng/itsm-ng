@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Peripheral as EntitiesPeripheral;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -54,8 +52,6 @@ class Peripheral extends CommonDBTM
 
     public static $rightname                   = 'peripheral';
     protected $usenotepad               = true;
-
-    public $entity = EntitiesPeripheral::class;
 
     public function getCloneRelations(): array
     {

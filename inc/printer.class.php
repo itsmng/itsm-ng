@@ -31,8 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Printer as EntitiesPrinter;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -53,8 +51,6 @@ class Printer extends CommonDBTM
 
     public static $rightname                   = 'printer';
     protected $usenotepad               = true;
-
-    public $entity = EntitiesPrinter::class;
 
     public function getCloneRelations(): array
     {

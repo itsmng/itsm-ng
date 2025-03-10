@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "operatingsystems_id", columns: ["operatingsystems_id"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-class Softwareversion
+class SoftwareVersion
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

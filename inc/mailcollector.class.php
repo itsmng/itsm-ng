@@ -35,7 +35,6 @@ if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
 
-use Itsmng\Domain\Entities\Mailcollector as EntitiesMailcollector;
 use itsmng\MailServer;
 use LitEmoji\LitEmoji;
 use Laminas\Mail\Address;
@@ -91,8 +90,6 @@ class MailCollector extends CommonDBTM
     public $dohistory       = true;
 
     public static $rightname       = 'config';
-
-    public $entity = EntitiesMailcollector::class;
 
     // Destination folder
     public const REFUSED_FOLDER  = 'refused';
