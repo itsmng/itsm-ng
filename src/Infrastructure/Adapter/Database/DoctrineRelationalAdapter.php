@@ -163,7 +163,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $input;
     }
 
-    static private function toEntityFormat(string $input, bool $expandId = true): string
+    private static function toEntityFormat(string $input, bool $expandId = true): string
     {
         $isRelation = str_ends_with($input, 's_id');
         if ($isRelation && $expandId) {
@@ -177,7 +177,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $input;
     }
 
-    static private function getLinkedEntity(object $object, string $field): string | null
+    private static function getLinkedEntity(object $object, string $field): string | null
     {
         $entity = self::toEntityFormat($field);
         $reflectionProperty = new \ReflectionProperty($object, $entity);
@@ -196,7 +196,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return null;
     }
 
-    static private function isRelation(object $content, string $property): bool
+    private static function isRelation(object $content, string $property): bool
     {
         return self::getLinkedEntity($content, $property) !== null;
     }
@@ -220,7 +220,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 try {
                     $value = $content->$getter();
                 } catch (\Exception $e) {
-                    dump("Erreur lors de l'appel de $getter :", $e->getMessage());
+                    throw new \Exception('Cannot get value for property ' . $propertyName . ' of class ' . get_class($content));
                     continue;
                 }
 
@@ -249,8 +249,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             return $fields;
 
         } catch (\Exception $e) {
-            dump('Error in getFields:', $e->getMessage());
-
+            throw new \Exception('Error in getFields: ' . $e->getMessage());
             return $fields;
         }
     }
@@ -299,7 +298,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         if (!class_exists($entity)) {
             return $id;
-        } else if ( $id === 0 && $entity !== \Itsmng\Domain\Entities\Entity::class) {
+        } elseif ($id === 0 && $entity !== \Itsmng\Domain\Entities\Entity::class) {
             return null;
         }
         return $this->em->getReference($entity, $id);
