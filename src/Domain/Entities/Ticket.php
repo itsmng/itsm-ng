@@ -83,36 +83,33 @@ class Ticket
     private $content;
 
     #[ORM\Column(name: 'urgency', type: 'integer', options: ['default' => 1])]
-    private $urgency;
+    private $urgency = 1;
 
     #[ORM\Column(name: 'impact', type: 'integer', options: ['default' => 1])]
-    private $impact;
+    private $impact = 1;
 
     #[ORM\Column(name: 'priority', type: 'integer', options: ['default' => 1])]
-    private $priority;
-
-    #[ORM\Column(name: 'itilcategories_id', type: 'integer', options: ['default' => 0])]
-    private $itilcategoriesId;
+    private $priority = 1;
 
     #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?ItilCategory $itilcategory = null;
+    private ?ItilCategory $itilCategory = null;
 
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
-    private $type;
+    private $type = 1;
 
     #[ORM\Column(name: 'global_validation', type: 'integer', options: ['default' => 1])]
-    private $globalValidation;
+    private $globalValidation = 1;
 
     #[ORM\Column(name: 'slas_id_ttr', type: 'integer', options: ['default' => 0])]
-    private $slasIdTtr;
+    private $slasIdTtr = 0;
 
     #[ORM\Column(name: 'slas_id_tto', type: 'integer', options: ['default' => 0])]
-    private $slasIdTto;
+    private $slasIdTto = 0;
 
     #[ORM\Column(name: 'slalevels_id_ttr', type: 'integer', options: ['default' => 0])]
-    private $slalevelsIdTtr;
+    private $slalevelsIdTtr = 0;
 
     #[ORM\Column(name: 'time_to_resolve', type: 'datetime', nullable: true)]
     private $timeToResolve;
@@ -124,19 +121,19 @@ class Ticket
     private $beginWaitingDate;
 
     #[ORM\Column(name: 'sla_waiting_duration', type: 'integer', options: ['default' => 0])]
-    private $slaWaitingDuration;
+    private $slaWaitingDuration = 0;
 
     #[ORM\Column(name: 'ola_waiting_duration', type: 'integer', options: ['default' => 0])]
-    private $olaWaitingDuration;
+    private $olaWaitingDuration = 0;
 
     #[ORM\Column(name: 'olas_id_tto', type: 'integer', options: ['default' => 0])]
-    private $olasIdTto;
+    private $olasIdTto = 0;
 
     #[ORM\Column(name: 'olas_id_ttr', type: 'integer', options: ['default' => 0])]
-    private $olasIdTtr;
+    private $olasIdTtr = 0;
 
     #[ORM\Column(name: 'olalevels_id_ttr', type: 'integer', options: ['default' => 0])]
-    private $olalevelsIdTtr;
+    private $olalevelsIdTtr = 0;
 
     #[ORM\Column(name: 'ola_ttr_begin_date', type: 'datetime', nullable: true)]
     private $olaTtrBeginDate;
@@ -148,29 +145,29 @@ class Ticket
     private $internalTimeToOwn;
 
     #[ORM\Column(name: 'waiting_duration', type: 'integer', options: ['default' => 0])]
-    private $waitingDuration;
+    private $waitingDuration = 0;
 
     #[ORM\Column(name: 'close_delay_stat', type: 'integer', options: ['default' => 0])]
-    private $closeDelayStat;
+    private $closeDelayStat = 0;
 
     #[ORM\Column(name: 'solve_delay_stat', type: 'integer', options: ['default' => 0])]
-    private $solveDelayStat;
+    private $solveDelayStat = 0;
 
     #[ORM\Column(name: 'takeintoaccount_delay_stat', type: 'integer', options: ['default' => 0])]
-    private $takeintoaccountDelayStat;
+    private $takeintoaccountDelayStat = 0;
 
     #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
-    private $actiontime;
+    private $actiontime = 0;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location = null;
 
     #[ORM\Column(name: 'validation_percent', type: 'integer', options: ['default' => 0])]
-    private $validationPercent;
+    private $validationPercent = 0;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
@@ -200,8 +197,6 @@ class Ticket
     {
         return $this->id;
     }
-
-
 
     public function getName(): ?string
     {
@@ -346,18 +341,6 @@ class Ticket
     public function setPriority(?int $priority): self
     {
         $this->priority = $priority;
-
-        return $this;
-    }
-
-    public function getItilcategoriesId(): ?int
-    {
-        return $this->itilcategoriesId;
-    }
-
-    public function setItilcategoriesId(?int $itilcategoriesId): self
-    {
-        $this->itilcategoriesId = $itilcategoriesId;
 
         return $this;
     }
@@ -837,9 +820,9 @@ class Ticket
     /**
      * Get the value of itilcategory
      */
-    public function getItilcategory()
+    public function getItilCategory()
     {
-        return $this->itilcategory;
+        return $this->itilCategory;
     }
 
     /**
@@ -849,7 +832,7 @@ class Ticket
      */
     public function setItilcategory($itilcategory)
     {
-        $this->itilcategory = $itilcategory;
+        $this->itilCategory = $itilcategory;
 
         return $this;
     }

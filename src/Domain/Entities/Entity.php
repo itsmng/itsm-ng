@@ -202,9 +202,9 @@ class Entity
     #[ORM\JoinColumn(name: 'changetemplates_id', referencedColumnName: 'id', nullable: true)]
     private ?ChangeTemplate $changetemplate = null;
 
-    #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
+    #[ORM\ManyToOne(targetEntity: ProblemTemplate::class)]
     #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Problemtemplate $problemtemplate = null;
+    private ?ProblemTemplate $problemtemplate = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id_software', referencedColumnName: 'id', nullable: true)]

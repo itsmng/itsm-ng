@@ -7,16 +7,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_problemtemplatepredefinedfields')]
 #[ORM\Index(name: "problemtemplates_id", columns: ["problemtemplates_id"])]
-class Problemtemplatepredefinedfield
+class ProblemTemplatePredefinedField
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
+    #[ORM\ManyToOne(targetEntity: ProblemTemplate::class)]
     #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Problemtemplate $problemtemplate = null;
+    private ?ProblemTemplate $problemtemplate = null;
 
     #[ORM\Column(name: 'num', type: 'integer', options: ['default' => 0])]
     private $num;
