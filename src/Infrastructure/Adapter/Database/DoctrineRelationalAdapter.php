@@ -299,7 +299,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         if (!class_exists($entity)) {
             return $id;
-        } else if ( $id === 0 && $entity !== 'Itsmng\Domain\Entity\Entity') {
+        } else if ( $id === 0 && $entity !== \Itsmng\Domain\Entities\Entity::class) {
             return null;
         }
         return $this->em->getReference($entity, $id);
