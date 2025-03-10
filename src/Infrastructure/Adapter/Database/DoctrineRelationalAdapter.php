@@ -83,17 +83,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         }
     }
 
-    // public function findEntityById(array $id): ?EntitiesEntity
-    // {
-    //     return $this->em->getRepository(EntitiesEntity::class)->findOneBy(['id' => $id]);
-    // }
-
-    public function findEntityById(array $id): mixed
-    {
-        return $this->em->getRepository($this->entityName)->findOneBy(['id' => $id]);
-    }
-
-
     public function findBy(array $criteria, array $order = null, int $limit = null): array
     {
         // TODO: Implement findBy() method.
@@ -108,7 +97,12 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function deleteByCriteria(array $criteria): bool
     {
-        // TODO: Implement deleteByCriteria() method.
+        $em = $this->em;
+        $items = $this->findBy($criteria);
+        foreach ($items as $item) {
+            $em->remove($item);
+        }
+        $em->flush();
 
         return false;
     }
@@ -169,11 +163,11 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $input;
     }
 
-    private function toEntityFormat(string $input, bool $expandId = true): string
+    static private function toEntityFormat(string $input, bool $expandId = true): string
     {
         $isRelation = str_ends_with($input, 's_id');
         if ($isRelation && $expandId) {
-            $input = substr($input, 0, -3);
+            $input = substr($input, 0, -4);
             if (str_ends_with($input, 'ie')) {
                 $input = substr($input, 0, -2);
                 $input .= 'y';
@@ -183,7 +177,30 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $input;
     }
 
-    // get values from entity as array
+    static private function getLinkedEntity(object $object, string $field): string | null
+    {
+        $entity = self::toEntityFormat($field);
+        $reflectionProperty = new \ReflectionProperty($object, $entity);
+        $attributes = $reflectionProperty->getAttributes();
+        foreach ($attributes as $attribute) {
+            if (in_array($attribute->getName(), [
+                'Doctrine\ORM\Mapping\ManyToOne',
+                'Doctrine\ORM\Mapping\OneToOne',
+                'Doctrine\ORM\Mapping\ManyToMany',
+                'Doctrine\ORM\Mapping\OneToMany'
+            ])) {
+                $targetEntity = $attribute->getArguments()['targetEntity'];
+                return $targetEntity;
+            }
+        }
+        return null;
+    }
+
+    static private function isRelation(object $content, string $property): bool
+    {
+        return self::getLinkedEntity($content, $property) !== null;
+    }
+
     public function getFields($content): array
     {
         if (is_array($content)) {
@@ -197,31 +214,17 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
             foreach ($getters as $propertyName => $getter) {
                 if (!method_exists($content, $getter)) {
-                    continue; // Évite d’appeler un getter inexistant
+                    continue;
                 }
 
                 try {
-                    $value = $content->$getter(); // Appel dynamique du getter
+                    $value = $content->$getter();
                 } catch (\Exception $e) {
                     dump("Erreur lors de l'appel de $getter :", $e->getMessage());
                     continue;
                 }
 
-                // Vérifier si la propriété est une relation Doctrine
-                $isRelation = false;
-                $reflectionProperty = new \ReflectionProperty($content, $propertyName);
-                $attributes = $reflectionProperty->getAttributes();
-                foreach ($attributes as $attribute) {
-                    if (in_array($attribute->getName(), [
-                        'Doctrine\ORM\Mapping\ManyToOne',
-                        'Doctrine\ORM\Mapping\OneToOne',
-                        'Doctrine\ORM\Mapping\ManyToMany',
-                        'Doctrine\ORM\Mapping\OneToMany'
-                    ])) {
-                        $isRelation = true;
-                        break;
-                    }
-                }
+                $isRelation = self::isRelation($content, $propertyName);
 
                 // Convertir le nom en snake_case
                 $snakeCaseKey = $this->toDbFormat($propertyName, $isRelation);
@@ -252,9 +255,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         }
     }
 
-
-
-
     public function getSettersFromFields(array $fields): array
     {
         $setters = [];
@@ -279,13 +279,12 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             return false;
         }
 
-        $entity = $this->findEntityById($fields['id']);
+        $entity = $this->findOneBy(['id' => $fields['id']]);
         $setters = $this->getSettersFromFields(array_keys($fields));
 
         foreach ($fields as $field => $value) {
-            if (isset($setters[$field])) {
-                $entity->$setters[$field]($value);
-            }
+            $setter = $setters[$field];
+            $entity->$setter($value);
         }
         try {
             $this->em->persist($entity);
@@ -296,21 +295,39 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         }
     }
 
+    private function getReferencedEntity(string $entity, int $id): object | int | null
+    {
+        if (!class_exists($entity)) {
+            return $id;
+        } else if ( $id === 0 && $entity !== 'Itsmng\Domain\Entity\Entity') {
+            return null;
+        }
+        return $this->em->getReference($entity, $id);
+    }
+
     public function add(array $fields): bool|array
     {
 
-        // Create new entity
         $entity = new $this->entityName();
 
-        // Get setters for fields
         $setters = $this->getSettersFromFields(array_keys($fields));
 
+        $object = new $this->entityName();
         foreach ($setters as $field => $setter) {
             if (!isset($fields[$field])) {
                 continue;
             }
 
-            $value = $fields[$field];
+            try {
+                $linkedEntity = self::getLinkedEntity($object, $field);
+            } catch (\Exception $e) {
+                $linkedEntity = null;
+            }
+            if ($linkedEntity !== null) {
+                $value = self::getReferencedEntity($linkedEntity, intval($fields[$field]));
+            } else {
+                $value = $fields[$field];
+            }
             $entity->$setter($value);
         }
 
@@ -330,7 +347,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function getRelations(): array
     {
-        // TODO: Implement getRelations() method.
         $classMetadata = $this->em->getClassMetadata($this->entityName);
         $relations = $classMetadata->getAssociationMappings();
         $formattedRelations = [];
@@ -348,8 +364,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
         // return [];
     }
-
-
 
     public function request(array | QueryBuilder $criteria): \Iterator
     {

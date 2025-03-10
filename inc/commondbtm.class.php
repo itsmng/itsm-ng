@@ -1837,12 +1837,6 @@ class CommonDBTM extends CommonGLPI
     **/
     public function delete(array $input, $force = 0, $history = 1)
     {
-        global $DB;
-
-        if ($DB->isSlave()) {
-            return false;
-        }
-
         if (!$this->getFromDB($input[static::getIndexName()])) {
             return false;
         }
