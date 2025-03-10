@@ -5,13 +5,13 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_slas')]
-#[ORM\Index(name: "name", columns: ["name"])]
-#[ORM\Index(name: "date_mod", columns: ["date_mod"])]
-#[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-#[ORM\Index(name: "calendars_id", columns: ["calendars_id"])]
-#[ORM\Index(name: "slms_id", columns: ["slms_id"])]
-class Sla
+#[ORM\Table(name: 'glpi_olas')]
+#[ORM\Index(name: 'name', columns: ['name'])]
+#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
+#[ORM\Index(name: 'calendars_id', columns: ['calendars_id'])]
+#[ORM\Index(name: 'slms_id', columns: ['slms_id'])]
+class OLA
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -79,7 +79,7 @@ class Sla
         return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $isRecursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
         $this->isRecursive = $isRecursive;
 
@@ -91,7 +91,7 @@ class Sla
         return $this->type;
     }
 
-    public function setType(int $type): self
+    public function setType(?int $type): self
     {
         $this->type = $type;
 
@@ -115,7 +115,7 @@ class Sla
         return $this->numberTime;
     }
 
-    public function setNumberTime(int $numberTime): self
+    public function setNumberTime(?int $numberTime): self
     {
         $this->numberTime = $numberTime;
 
@@ -151,21 +151,24 @@ class Sla
         return $this->endOfWorkingDay;
     }
 
-    public function setEndOfWorkingDay(bool $endOfWorkingDay): self
+    public function setEndOfWorkingDay(?bool $endOfWorkingDay): self
     {
         $this->endOfWorkingDay = $endOfWorkingDay;
 
         return $this;
     }
 
+
+
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
+
         return $this;
     }
 

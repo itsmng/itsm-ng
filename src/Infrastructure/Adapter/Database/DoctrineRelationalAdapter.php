@@ -226,14 +226,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 // Convertir le nom en snake_case
                 $snakeCaseKey = $this->toDbFormat($propertyName, $isRelation);
 
-                // Cas particuliers pour certaines clés
-                if ($snakeCaseKey === 'entity_id' || $snakeCaseKey === 'entity' || $snakeCaseKey === 'entities') {
-                    $snakeCaseKey = 'entities_id';
-                }
-                if (preg_match('/^priority(\d+)$/', $propertyName, $matches)) {
-                    $snakeCaseKey = 'priority_' . $matches[1];
-                }
-
                 // Gestion des valeurs selon leur type
                 if ($value instanceof \DateTime) {
                     $value = $value->format('Y-m-d H:i:s');

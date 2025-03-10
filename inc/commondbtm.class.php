@@ -1127,10 +1127,10 @@ class CommonDBTM extends CommonGLPI
 
             // fill array for add
             foreach (array_keys($this->input) as $key) {
-               if (($key[0] != '_')
-                   && isset($table_fields[$key])) {
-                  $this->fields[$key] = $this->input[$key];
-               }
+                if (($key[0] != '_')
+                    && isset($table_fields[$key])) {
+                    $this->fields[$key] = $this->input[$key];
+                }
             }
 
             if ($this->checkUnicity(true, $options)) {

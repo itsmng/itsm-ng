@@ -2,10 +2,12 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_tickets")]
 #[ORM\Index(name: "date", columns: ["date"])]
 #[ORM\Index(name: "closedate", columns: ["closedate"])]
@@ -249,14 +251,17 @@ class Ticket
         return $this;
     }
 
-    public function getDateMod(): ?\DateTime
+    public function getDateMod(): DateTimeImmutable
     {
         return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $dateMod): self
+    #[ORM\PreFlush]
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTimeImmutable();
 
         return $this;
     }
@@ -634,14 +639,16 @@ class Ticket
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTime
+    public function getDateCreation(): DateTimeImmutable
     {
         return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $dateCreation): self
+    #[ORM\PrePersist]
+    #[ORM\PreFlush]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTimeImmutable();
 
         return $this;
     }

@@ -32,7 +32,6 @@
  */
 
 use Glpi\Event;
-
 use Ajax;
 use CommonDBTM;
 use CronTask;
