@@ -27,9 +27,9 @@ class Queuedchat
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
     private $itemsId;
 
-    #[ORM\ManyToOne(targetEntity: Notificationtemplate::class)]
+    #[ORM\ManyToOne(targetEntity: NotificationTemplate::class)]
     #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Notificationtemplate $notificationtemplate = null;
+    private ?NotificationTemplate $notificationTemplate = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
@@ -303,21 +303,21 @@ class Queuedchat
     }
 
     /**
-     * Get the value of notificationtemplate
+     * Get the value of notificationTemplate
      */
-    public function getNotificationtemplate()
+    public function getNotificationTemplate()
     {
-        return $this->notificationtemplate;
+        return $this->notificationTemplate;
     }
 
     /**
-     * Set the value of notificationtemplate
+     * Set the value of notificationTemplate
      *
      * @return  self
      */
-    public function setNotificationtemplate($notificationtemplate)
+    public function setNotificationTemplate($notificationtemplate)
     {
-        $this->notificationtemplate = $notificationtemplate;
+        $this->notificationTemplate = $notificationtemplate;
 
         return $this;
     }

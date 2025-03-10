@@ -1521,11 +1521,7 @@ class CommonDBTM extends CommonGLPI
     **/
     public function update(array $input, $history = 1, $options = [])
     {
-        global $DB, $GLPI_CACHE;
-
-        if ($DB->isSlave()) {
-            return false;
-        }
+        global $DB;
 
         if (!array_key_exists(static::getIndexName(), $input)) {
             return false;

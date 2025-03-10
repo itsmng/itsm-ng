@@ -275,8 +275,25 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function save(array $fields): bool
     {
-        // TODO: Implement save() method.
-        return false;
+        if (!isset($fields['id'])) {
+            return false;
+        }
+
+        $entity = $this->findEntityById($fields['id']);
+        $setters = $this->getSettersFromFields(array_keys($fields));
+
+        foreach ($fields as $field => $value) {
+            if (isset($setters[$field])) {
+                $entity->$setters[$field]($value);
+            }
+        }
+        try {
+            $this->em->persist($entity);
+            $this->em->flush();
+        } catch (\Exception $e) {
+            throw new \Exception('error: ' . $e->getMessage());
+            return false;
+        }
     }
 
     public function add(array $fields): bool|array

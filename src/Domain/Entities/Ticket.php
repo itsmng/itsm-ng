@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
@@ -192,6 +193,17 @@ class Ticket
 
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: SupplierTicket::class)]
     private Collection $supplierTickets;
+
+    public function __construct()
+    {
+        $this->changeTickets = new ArrayCollection();
+        $this->groupTickets = new ArrayCollection();
+        $this->olalevelTickets = new ArrayCollection();
+        $this->problemTickets = new ArrayCollection();
+        $this->projecttaskTickets = new ArrayCollection();
+        $this->slalevelTickets = new ArrayCollection();
+        $this->supplierTickets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
