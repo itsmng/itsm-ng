@@ -875,7 +875,16 @@ final class Version20241212100413 extends AbstractMigration
                  ['name' => 'FK_ticketRequesttypesD7DB', 'origin' => 'requesttypes_id', 'ref' => 'glpi_requesttypes'],
                  ['name' => 'FK_ticketItilcategoriesD7DB', 'origin' => 'itilcategories_id', 'ref' => 'glpi_itilcategories'],
                  ['name' => 'FK_ticketLocationsD7DB', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
-             ]
+             ],
+             'glpi_users' => [
+                 ['name' => 'FK_usersLocationsD7DB', 'origin' => 'locations_id', 'ref' => 'glpi_locations'],
+                 ['name' => 'FK_usersProfilesD7DB', 'origin' => 'profiles_id', 'ref' => 'glpi_profiles'],
+                 ['name' => 'FK_usersEntitiesD7DB', 'origin' => 'entities_id', 'ref' => 'glpi_entities'],
+                 ['name' => 'FK_usersUserstitlesD7DB', 'origin' => 'usertitles_id', 'ref' => 'glpi_usertitles'],
+                 ['name' => 'FK_usersUsercategoriesD7DB', 'origin' => 'usercategories_id', 'ref' => 'glpi_usercategories'],
+                 ['name' => 'FK_usersGroupsD7DB', 'origin' => 'groups_id', 'ref' => 'glpi_groups'],
+                 ['name' => 'FK_usersDefaultRequestTypeD7DB', 'origin' => 'default_requesttypes_id', 'ref' => 'glpi_requesttypes'],
+             ],
          ];
 
         // Désactiver les vérifications des clés étrangères
@@ -1706,13 +1715,6 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksUsersTechD7DB FOREIGN KEY (users_id_tech) REFERENCES glpi_users (id)');
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksGroupsTechD7DB FOREIGN KEY (groups_id_tech) REFERENCES glpi_groups (id)');
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksTasktemplateD7DB FOREIGN KEY (tasktemplates_id) REFERENCES glpi_tasktemplates (id)');
-        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
-        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersProfilesD7DB FOREIGN KEY (profiles_id) REFERENCES glpi_profiles (id)');
-        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersUserstitlesD7DB FOREIGN KEY (usertitles_id) REFERENCES glpi_usertitles (id)');
-        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersUsercategoriesD7DB FOREIGN KEY (usercategories_id) REFERENCES glpi_usercategories (id)');
-        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersGroupsD7DB FOREIGN KEY (groups_id) REFERENCES glpi_groups (id)');
-        $this->addSql('ALTER TABLE glpi_users ADD CONSTRAINT FK_usersDefaultRequestTypeD7DB FOREIGN KEY (default_requesttypes_id) REFERENCES glpi_requesttypes (id)');
 
         $this->addSql('ALTER TABLE glpi_useremails ADD CONSTRAINT FK_usersemailsUsersD7DB FOREIGN KEY (users_id) REFERENCES glpi_users (id)');
         $this->addSql('ALTER TABLE glpi_vlans ADD CONSTRAINT FK_vlansEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');

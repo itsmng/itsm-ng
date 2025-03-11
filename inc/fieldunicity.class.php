@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
  */
 
+use Itsmng\Domain\Entities\FieldUnicity as EntitiesFieldUnicity;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -285,25 +287,17 @@ class FieldUnicity extends CommonDropdown
     **/
     public static function getUnicityFieldsConfig($itemtype, $entities_id = 0, $check_active = true)
     {
-        global $DB;
-
         //Get the first active configuration for this itemtype
-        $request = [
-           'FROM'   => 'glpi_fieldunicities',
-           'WHERE'  => [
-              'itemtype'  => $itemtype
-           ] + getEntitiesRestrictCriteria('glpi_fieldunicities', '', $entities_id, true),
-           'ORDER'  => ['entities_id DESC']
-        ];
-
+        $dql = " SELECT f FROM " . EntitiesFieldUnicity::class . " f WHERE f.itemtype = :itemtype";
         if ($check_active) {
-            $request['WHERE']['is_active'] = 1;
+            $dql .= " AND f.isActive = 1";
         }
-        $iterator = $DB->request($request);
+        $dql .= " ORDER BY f.entity DESC";
+        $datas = self::getAdapter()->request($dql, ['itemtype' => $itemtype]);
 
         $current_entity = false;
         $return         = [];
-        while ($data = $iterator->next()) {
+        foreach ($datas as $data) {
             //First row processed
             if (!$current_entity) {
                 $current_entity = $data['entities_id'];

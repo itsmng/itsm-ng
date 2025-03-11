@@ -31,7 +31,7 @@ class Event
     private $service;
 
     #[ORM\Column(name: 'level', type: "integer", options: ['default' => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\Column(name: 'message', type: "text", length: 65535, nullable: true)]
     private $message;
@@ -65,7 +65,7 @@ class Event
         return $this;
     }
 
-    public function getDate(): DateTimeImmutable
+    public function getDate(): DateTimeImmutable | null
     {
         return $this->date;
     }

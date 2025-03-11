@@ -1570,13 +1570,6 @@ class CommonDBTM extends CommonGLPI
 
                 foreach (array_keys($this->input) as $key) {
                     if (array_key_exists($key, $this->fields)) {
-                        // Prevent history for date statement (for date for example)
-                        if (
-                            is_null($this->fields[$key])
-                            && ($this->input[$key] == 'NULL')
-                        ) {
-                            $this->fields[$key] = 'NULL';
-                        }
                         // Compare item
                         $ischanged = true;
                         $searchopt = $this->getSearchOptionByField('field', $key, $this->getTable());
@@ -1837,12 +1830,6 @@ class CommonDBTM extends CommonGLPI
     **/
     public function delete(array $input, $force = 0, $history = 1)
     {
-        global $DB;
-
-        if ($DB->isSlave()) {
-            return false;
-        }
-
         if (!$this->getFromDB($input[static::getIndexName()])) {
             return false;
         }
@@ -4319,17 +4306,6 @@ class CommonDBTM extends CommonGLPI
                 $searchOption = $this->getSearchOptionByField('field', $key);
 
                 if (
-                    isset($searchOption['datatype'])
-                    && (is_null($value) || ($value == '') || ($value == 'NULL'))
-                ) {
-                    switch ($searchOption['datatype']) {
-                        case 'date':
-                        case 'datetime':
-                            // don't use $unset', because this is not a failure
-                            $this->input[$key] = 'NULL';
-                            break;
-                    }
-                } elseif (
                     isset($searchOption['datatype'])
                            && !is_null($value)
                            && ($value != '')
