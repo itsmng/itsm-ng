@@ -317,9 +317,9 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                     $value = DateTime::createFromFormat('Y-m-d', $fields[$field]);
                 }
                 if ($value === false) {
-                    $value = NULL;
+                    $value = null;
                 }
-            } else if ($linkedEntity !== null) {
+            } elseif ($linkedEntity !== null) {
                 $value = self::getReferencedEntity($linkedEntity, intval($fields[$field]));
             } else {
                 $value = $fields[$field];
