@@ -46,8 +46,6 @@ class Supplier extends CommonDBTM
     public static $rightname           = 'contact_enterprise';
     protected $usenotepad       = true;
 
-
-
     /**
      * Name of the type
      *

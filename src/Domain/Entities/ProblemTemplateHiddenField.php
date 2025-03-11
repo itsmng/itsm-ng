@@ -5,19 +5,19 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_problemtemplatemandatoryfields')]
+#[ORM\Table(name: 'glpi_problemtemplatehiddenfields')]
 #[ORM\UniqueConstraint(name: "unicity", columns: ["problemtemplates_id", "num"])]
 #[ORM\Index(name: "problemtemplates_id", columns: ["problemtemplates_id"])]
-class Problemtemplatemandatoryfield
+class ProblemTemplateHiddenField
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Problemtemplate::class)]
+    #[ORM\ManyToOne(targetEntity: ProblemTemplate::class)]
     #[ORM\JoinColumn(name: 'problemtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Problemtemplate $problemtemplate = null;
+    private ?ProblemTemplate $problemtemplate = null;
 
     #[ORM\Column(name: 'num', type: 'integer', options: ['default' => 0])]
     private $num;

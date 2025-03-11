@@ -31,9 +31,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Itsmng\Domain\Entities\Computer as EntitiesComputer;
-use PhpParser\Node\Expr\Instanceof_;
-
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -59,8 +56,6 @@ class Computer extends CommonDBTM
 
     public static $rightname                   = 'computer';
     protected $usenotepad        = true;
-
-    public $entity = EntitiesComputer::class;
 
     public function getCloneRelations(): array
     {

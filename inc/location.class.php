@@ -46,8 +46,6 @@ class Location extends CommonTreeDropdown
 
     public static $rightname          = 'location';
 
-
-
     public function getAdditionalFields()
     {
 

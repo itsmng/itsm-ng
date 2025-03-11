@@ -49,7 +49,6 @@ class Link extends CommonDBTM
                               '[MAC]', '[NETWORK]', '[DOMAIN]', '[SERIAL]', '[OTHERSERIAL]',
                               '[USER]', '[GROUP]', '[REALNAME]', '[FIRSTNAME]'];
 
-
     public static function getTypeName($nb = 0)
     {
         return _n('External link', 'External links', $nb);

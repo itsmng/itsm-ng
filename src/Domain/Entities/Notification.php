@@ -52,8 +52,8 @@ class Notification
     #[ORM\Column(name: 'allow_response', type: 'boolean', options: ['default' => 1])]
     private $allowResponse;
 
-    #[ORM\OneToMany(mappedBy: 'notification', targetEntity: NotificationNotificationtemplate::class)]
-    private Collection $notificationNotificationtemplates;
+    #[ORM\OneToMany(mappedBy: 'notification', targetEntity: NotificationNotificationTemplate::class)]
+    private Collection $notificationNotificationTemplates;
 
     public function getId(): ?int
     {
@@ -190,21 +190,21 @@ class Notification
     }
 
     /**
-     * Get the value of notificationNotificationtemplates
+     * Get the value of notificationNotificationTemplates
      */
-    public function getNotificationNotificationtemplates()
+    public function getNotificationNotificationTemplates()
     {
-        return $this->notificationNotificationtemplates;
+        return $this->notificationNotificationTemplates;
     }
 
     /**
-     * Set the value of notificationNotificationtemplates
+     * Set the value of notificationNotificationTemplates
      *
      * @return  self
      */
-    public function setNotificationNotificationtemplates($notificationNotificationtemplates)
+    public function setNotificationNotificationTemplates($notificationNotificationTemplates)
     {
-        $this->notificationNotificationtemplates = $notificationNotificationtemplates;
+        $this->notificationNotificationTemplates = $notificationNotificationTemplates;
 
         return $this;
     }

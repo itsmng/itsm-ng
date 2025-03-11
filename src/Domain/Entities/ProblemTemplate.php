@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
-class Problemtemplate
+class ProblemTemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

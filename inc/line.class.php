@@ -47,7 +47,6 @@ class Line extends CommonDBTM
     public static $rightname                   = 'line';
     protected $usenotepad               = true;
 
-
     public static function getTypeName($nb = 0)
     {
         return _n('Line', 'Lines', $nb);

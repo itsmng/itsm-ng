@@ -27,8 +27,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2024-08-30 09:38+0000\n"
-"Last-Translator: ITSM-NG <dev@itsm-ng.com>\n"
+"PO-Revision-Date: 2025-01-11 06:00+0000\n"
+"Last-Translator: alemarch <antoine.lemarchand05@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -36,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.7.1-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -5481,7 +5481,7 @@ msgstr "Seuil de l'état avertissement"
 
 #: inc/config.class.php:1366 inc/config.class.php:1530
 msgid "Warning state unit"
-msgstr ""
+msgstr "Unité d'état d'avertissement"
 
 #: inc/config.class.php:1372 inc/config.class.php:1394
 #: inc/reservation.class.php:1025 inc/levelagreement.class.php:202
@@ -14320,6 +14320,9 @@ msgstr "En cours (Planifié)"
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541 inc/change.class.php:543 inc/problem.class.php:698
+#, fuzzy
+#| msgid "Pending"
+msgctxt "status"
 msgid "Pending"
 msgstr "En attente"
 

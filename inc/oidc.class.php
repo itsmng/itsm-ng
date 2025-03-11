@@ -56,13 +56,13 @@ class Oidc extends CommonDBTM
         foreach ($iterators as $iterator) {
             $oidc_db['Provider'] = $iterator['Provider'];
             $oidc_db['ClientID'] = $iterator['ClientID'];
-            $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
+            $oidc_db['ClientSecret'] = Toolbox::sodiumDecrypt($iterator['ClientSecret']);
             $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
             $oidc_db['proxy'] = $iterator['proxy'];
             $oidc_db['cert'] = $iterator['cert'];
         }
 
-        $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
+        $oidc = new Jumbojett\OpenIDConnectClient($oidc_db['Provider'], $oidc_db['ClientID'], $oidc_db['ClientSecret']);
         if (is_array($oidc_db['scope'])) {
             $oidc->addScope($oidc_db['scope']);
         }
@@ -91,6 +91,7 @@ class Oidc extends CommonDBTM
             echo '<div class="center b">';
             echo __('Missing or wrong fields in open ID connect config');
             echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
+            echo '<div>' . $e->getMessage() . '</div>';
             echo '</div>';
             Html::nullFooter();
             die;

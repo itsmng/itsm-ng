@@ -50,7 +50,6 @@ class ConsumableItem extends CommonDBTM
 
     public static $rightname                   = 'consumable';
 
-
     public static function getTypeName($nb = 0)
     {
         return _n('Consumable model', 'Consumable models', $nb);
@@ -103,7 +102,7 @@ class ConsumableItem extends CommonDBTM
 
         $this->fields["alarm_threshold"] = Entity::getUsedConfig(
             "consumables_alert_repeat",
-            $this->fields["entities_id"],
+            $this->fields["entities_id"] ?? Session::getActiveEntity(),
             "default_consumables_alarm_threshold",
             10
         );

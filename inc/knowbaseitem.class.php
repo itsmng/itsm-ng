@@ -59,7 +59,6 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
 
     public static $rightname   = 'knowbase';
 
-
     public static function getTypeName($nb = 0)
     {
         return __('Knowledge base');

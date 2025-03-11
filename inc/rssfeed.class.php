@@ -57,8 +57,6 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
 
     public static $rightname    = 'rssfeed_public';
 
-
-
     public static function getTypeName($nb = 0)
     {
 

@@ -250,7 +250,7 @@ class PassiveDCEquipment extends CommonDBTM
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the hardware'),
            'datatype'           => 'dropdown',
            'right'              => 'own_ticket'
@@ -268,7 +268,7 @@ class PassiveDCEquipment extends CommonDBTM
            'id'                 => '49',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge of the hardware'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'

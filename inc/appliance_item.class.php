@@ -35,14 +35,9 @@ if (!defined('GLPI_ROOT')) {
  * ---------------------------------------------------------------------
 **/
 
-use Itsmng\Domain\Entities\ApplianceItem as ApplianceItemEntity;
-
 class Appliance_Item extends CommonDBRelation
 {
     use Glpi\Features\Clonable;
-
-    public $entity = ApplianceItemEntity::class;
-
 
     public static $itemtype_1 = 'Appliance';
     public static $items_id_1 = 'appliances_id';

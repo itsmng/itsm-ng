@@ -5,7 +5,6 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Itsmng\Domain\Entities\Requesttype as EntitiesRequesttype;
-use RequestType;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_users")]
@@ -585,9 +584,11 @@ class User
         return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $dateMod): self
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new \DateTime();
 
         return $this;
     }
@@ -1247,9 +1248,10 @@ class User
         return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new \DateTime();
 
         return $this;
     }

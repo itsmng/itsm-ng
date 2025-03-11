@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "users_id_approval", columns: ['users_id_approval'])]
 #[ORM\Index(name: "status", columns: ['status'])]
 #[ORM\Index(name: "itilfollowups_id", columns: ['itilfollowups_id'])]
-class ItilSolution
+class ITILSolution
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

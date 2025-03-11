@@ -7,16 +7,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_notificationtemplatetranslations')]
 #[ORM\Index(name: 'notificationtemplates_id', columns: ['notificationtemplates_id'])]
-class Notificationtemplatetranslation
+class NotificationTemplateTranslation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Notificationtemplate::class)]
+    #[ORM\ManyToOne(targetEntity: NotificationTemplate::class)]
     #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Notificationtemplate $notificationtemplate = null;
+    private ?NotificationTemplate $notificationTemplate = null;
 
     #[ORM\Column(name: 'language', type: 'string', length: 10, options: ['default' => ''])]
     private $language;
@@ -87,9 +87,9 @@ class Notificationtemplatetranslation
     /**
      * Get the value of notificationtemplate
      */
-    public function getNotificationtemplate()
+    public function getNotificationTemplate()
     {
-        return $this->notificationtemplate;
+        return $this->notificationTemplate;
     }
 
     /**
@@ -97,9 +97,9 @@ class Notificationtemplatetranslation
      *
      * @return  self
      */
-    public function setNotificationtemplate($notificationtemplate)
+    public function setNotificationTemplate($notificationtemplate)
     {
-        $this->notificationtemplate = $notificationtemplate;
+        $this->notificationTemplate = $notificationtemplate;
 
         return $this;
     }

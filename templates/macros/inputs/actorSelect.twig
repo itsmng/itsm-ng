@@ -51,7 +51,7 @@
 
   function setActorSelectValues{{rand}}() {
     {% if attributes.single is defined and attributes.single %}
-    const name = "_" + $('#ActorTypeSelector_{{rand}}').val() + "s_id_assign";
+    const name = "_" + $('#ActorTypeSelector_{{rand}}').val() + "s_id_{{attributes.actorType}}";
     {% else %}
     const name = "_itil_{{attributes.actorType}}[" + $("#ActorTypeSelector_{{rand}}")[0].value + "s_id]";
     {% endif %}

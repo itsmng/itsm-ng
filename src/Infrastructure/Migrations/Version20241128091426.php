@@ -17,13 +17,13 @@ final class Version20241128091426 extends AbstractMigration
         return '';
     }
 
-    private function switchToDatetime($table, $column)
+    private function switchToDatetime($table, $column, $nullable = true)
     {
         $this->addSql('ALTER TABLE '.$table.' ADD temp_'.$column.' DATETIME DEFAULT NULL');
         $this->addSql('UPDATE '.$table.' SET temp_'.$column.' = '.$column.';');
         $this->addSql('UPDATE '.$table.' SET temp_'.$column.' = "0000-00-00 00:00:00" WHERE temp_'.$column.' IS NULL;');
         $this->addSql('ALTER TABLE '.$table.' DROP COLUMN '.$column.';');
-        $this->addSql('ALTER TABLE '.$table.' CHANGE temp_'.$column.' '.$column.' DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE '.$table.' CHANGE temp_'.$column.' '.$column.' DATETIME' . ($nullable ? '' : ' NOT NULL'));
         $this->addSql('CREATE INDEX '.$column.' ON '.$table.' ('.$column.')');
     }
 
@@ -83,6 +83,15 @@ final class Version20241128091426 extends AbstractMigration
         $this->addSql('CREATE INDEX field_value ON glpi_ruleactions (field, value)');
         $this->addSql('ALTER TABLE glpi_rules CHANGE `match` `match` VARCHAR(10) DEFAULT NULL COMMENT \'see define.php *_MATCHING constant\'');
         $this->addSql('ALTER TABLE glpi_slalevels CHANGE `match` `match` VARCHAR(10) DEFAULT NULL COMMENT \'see define.php *_MATCHING constant\'');
+        $this->switchToDatetime('glpi_tickets', 'date');
+        $this->switchToDatetime('glpi_tickets', 'closedate');
+        $this->switchToDatetime('glpi_tickets', 'solvedate');
+        $this->switchToDatetime('glpi_tickets', 'time_to_resolve');
+        $this->switchToDatetime('glpi_tickets', 'time_to_own');
+        $this->switchToDatetime('glpi_tickets', 'begin_waiting_date');
+        $this->switchToDatetime('glpi_tickets', 'ola_ttr_begin_date');
+        $this->switchToDatetime('glpi_tickets', 'internal_time_to_resolve');
+        $this->switchToDatetime('glpi_tickets', 'internal_time_to_own');
         $this->addSql('ALTER TABLE glpi_users CHANGE language language VARCHAR(10) DEFAULT NULL COMMENT \'see define.php CFG_GLPI[language] array\', CHANGE csv_delimiter csv_delimiter VARCHAR(1) DEFAULT NULL, CHANGE priority_1 priority_1 VARCHAR(20) DEFAULT NULL, CHANGE priority_2 priority_2 VARCHAR(20) DEFAULT NULL, CHANGE priority_3 priority_3 VARCHAR(20) DEFAULT NULL, CHANGE priority_4 priority_4 VARCHAR(20) DEFAULT NULL, CHANGE priority_5 priority_5 VARCHAR(20) DEFAULT NULL, CHANGE priority_6 priority_6 VARCHAR(20) DEFAULT NULL, CHANGE password_forget_token password_forget_token VARCHAR(40) DEFAULT NULL, CHANGE layout layout VARCHAR(20) DEFAULT NULL, CHANGE palette palette VARCHAR(20) DEFAULT NULL, CHANGE access_custom_shortcuts access_custom_shortcuts LONGTEXT DEFAULT NULL');
         $this->addSql('DROP INDEX item ON glpi_vobjects');
         $tableToSwitchToDatetime = [
@@ -95,11 +104,11 @@ final class Version20241128091426 extends AbstractMigration
             'glpi_devicegenerics', 'glpi_devicegraphiccards', 'glpi_devicenetworkcards', 'glpi_devicesensors',
             'glpi_devicesimcards', 'glpi_devicesoundcards', 'glpi_documentcategories', 'glpi_documents_items',
             'glpi_documenttypes', 'glpi_domainrecords', 'glpi_enclosuremodels', 'glpi_enclosures', 'glpi_entities',
-            'glpi_devicepowersupplies', 'glpi_items_disks', 'glpi_links', 'glpi_pdutypes', 'glpi_projects'
+            'glpi_devicepowersupplies', 'glpi_items_disks', 'glpi_links', 'glpi_pdutypes', 'glpi_projects', 'glpi_tickets',
         ];
         foreach ($tableToSwitchToDatetime as $table) {
-            $this->switchToDatetime($table, 'date_creation');
-            $this->switchToDatetime($table, 'date_mod');
+            $this->switchToDatetime($table, 'date_creation', false);
+            $this->switchToDatetime($table, 'date_mod', false);
         }
     }
 

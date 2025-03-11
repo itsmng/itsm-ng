@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_events")]
 #[Orm\Index(name: "name", columns: ["date"])]
 #[Orm\Index(name: "level", columns: ["level"])]
@@ -29,7 +31,7 @@ class Event
     private $service;
 
     #[ORM\Column(name: 'level', type: "integer", options: ['default' => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\Column(name: 'message', type: "text", length: 65535, nullable: true)]
     private $message;
@@ -63,14 +65,14 @@ class Event
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): DateTimeImmutable | null
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(): self
     {
-        $this->date = $date;
+        $this->date = new DateTimeImmutable();
 
         return $this;
     }

@@ -183,8 +183,6 @@ class CommonDBTM extends CommonGLPI
      */
     public $last_clone_index = null;
 
-    public $entity;
-
     /**
      * Constructor
     **/
@@ -194,14 +192,7 @@ class CommonDBTM extends CommonGLPI
 
     public static function getAdapter(): DatabaseAdapterInterface
     {
-        global $CFG_GLPI;
-
-        if (isset($CFG_GLPI['legacy_database']) && $CFG_GLPI['legacy_database']) {
-            return new LegacySqlAdapter(get_called_class());
-
-        }
         return new DoctrineRelationalAdapter(get_called_class());
-
     }
 
     /**
@@ -292,10 +283,9 @@ class CommonDBTM extends CommonGLPI
     public function getFromDB($ID)
     {
         try {
-
             $item = $this::getAdapter()->findOneBy([$this->getIndexName() => Toolbox::cleanInteger($ID)]);
         } catch (\Exception $e) {
-            dump('error', $e->getMessage());
+            throw new \Exception('error: ' . $e->getMessage());
             return false;
         }
         if (isset($item)) {
@@ -517,14 +507,12 @@ class CommonDBTM extends CommonGLPI
     **/
     public function getEmpty()
     {
-        global $DB;
-
         //make an empty database object
         $table = $this->getTable();
 
         if (
             !empty($table) &&
-            ($fields = $DB->listFields($table))
+            ($fields = $this->getAdapter()->listFields())
         ) {
             foreach (array_keys($fields) as $key) {
                 $this->fields[$key] = "";
@@ -611,9 +599,6 @@ class CommonDBTM extends CommonGLPI
     **/
     public function addToDB()
     {
-
-        // global $DB;
-
         $nb_fields = count($this->fields);
         if ($nb_fields > 0) {
             $params = [];
@@ -626,24 +611,9 @@ class CommonDBTM extends CommonGLPI
             }
 
             $result = $this::getAdapter()->add($params);
-            // if ($result) {
-            //     if (
-            //         !isset($this->fields['id'])
-            //           || is_null($this->fields['id'])
-            //           || ($this->fields['id'] == 0)
-            //     ) {
-            //         $this->fields['id'] = $DB->insertId();
-            //     }
-
-            //     $this->getFromDB($this->fields['id']);
-
-            //     return $this->fields['id'];
-            // }
             if ($result && isset($result['id'])) {
-                // Mettre à jour l'ID de l'objet courant
                 $this->fields['id'] = $result['id'];
 
-                // Pas besoin de recharger les données depuis la base
                 return $this->fields['id'];
             }
         }
@@ -1108,25 +1078,15 @@ class CommonDBTM extends CommonGLPI
     **/
     public function add(array $input, $options = [], $history = true)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
-        // if ($DB->isSlave()) {
-        //     return false;
-        // }
-
-
-        // This means we are not adding a cloned object
         if (!isset($input['clone'])) {
-            // This means we are asked to clone the object (old way). This will clone the clone method
-            // that will set the clone parameter to true
-
             if (isset($input['_oldID'])) {
                 $id_to_clone = $input['_oldID'];
             }
             if (isset($input['id'])) {
                 $id_to_clone = $input['id'];
             }
-            // dump($this->getFromDB($id_to_clone));
             if (isset($id_to_clone) && $this->getFromDB($id_to_clone)) {
                 if ($clone_id = $this->clone($input, $history)) {
                     $this->getFromDB($clone_id); // Load created items fields
@@ -1135,24 +1095,18 @@ class CommonDBTM extends CommonGLPI
             }
         }
 
-        // Store input in the object to be available in all sub-method / hook
         $this->input = $input;
 
-        // Manage the _no_history
         if (!isset($this->input['_no_history'])) {
             $this->input['_no_history'] = !$history;
 
         }
 
         if (isset($this->input['add'])) {
-            // Input from the interface
-            // Save this data to be available if add fail
             $this->saveInput();
 
         }
 
-        // Call the plugin hook - $this->input can be altered
-        // This hook get the data from the form, not yet altered
         Plugin::doHook("pre_item_add", $this);
 
         if ($this->input && is_array($this->input)) {
@@ -1165,91 +1119,23 @@ class CommonDBTM extends CommonGLPI
         }
 
         if ($this->input && is_array($this->input)) {
-            // Call the plugin hook - $this->input can be altered
-            // This hook get the data altered by the object method
             Plugin::doHook("post_prepareadd", $this);
         }
         if ($this->input && is_array($this->input)) {
-            //Check values to inject
             $this->filterValues(!isCommandLine());
         }
 
-        //Process business rules for assets
         $this->assetBusinessRules(\RuleAsset::ONADD);
         if ($this->input && is_array($this->input)) {
             $this->fields = [];
+            $table_fields = $this->getAdapter()->listFields();
 
-            // $table_fields = $DB->listFields($this->getTable());
-
-            $adapter = $this::getAdapter();
-            $entityClassName = $this->entity;
-
-            if (empty($entityClassName)) {
-                throw new \Exception("Entity class name is not defined.");
-            }
-
-            if (!class_exists($entityClassName)) {
-                throw new \Exception("Class $entityClassName does not exist");
-            }
-            // nouvel ajout
-            //Get Entity object before creating new entity
-
-            // dump('Session entity:', $_SESSION['glpiactive_entity']);
-            // dump('Session entity name:', $_SESSION['glpiactive_entity_name']);
-
-            if (isset($_SESSION['glpiactive_entity'])) {
-                $adapter = $this::getAdapter();
-                $entityObject = $adapter->findEntityById(['id' => $_SESSION['glpiactive_entity']]);
-                if ($entityObject) {
-                    $this->input['entities_id'] = $_SESSION['glpiactive_entity'];
-                }
-            }
-            $entity = new $entityClassName();
-
-            // Initialize the entity with the values ​​from $input
-            foreach ($input as $key => $value) {
-                $setter = 'set' . ucfirst($key);
-                if (method_exists($entity, $setter)) {
-                    $reflectionMethod = new \ReflectionMethod($entity, $setter);
-                    $parameters = $reflectionMethod->getParameters();
-                    if (count($parameters) > 0 && $parameters[0]->getType() && $parameters[0]->getType()->getName() === \DateTimeInterface::class) {
-                        try {
-                            $value = new \DateTime($value);
-                        } catch (\Exception $e) {
-                            throw new \Exception("Invalid date format for field $key: " . $e->getMessage());
-                        }
-                    }
-
-                    $entity->$setter($value);
-
-                } elseif (property_exists($entity, $key)) {
-                    $entity->$key = $value;
-                }
-            }
-            $table_fields = $adapter->getFields($entity);
             // fill array for add
-            // foreach (array_keys($this->input) as $key) {
-            //     if (
-            //         ($key[0] != '_')
-            //         && isset($table_fields[$key])
-            //     ) {
-            //         $this->fields[$key] = $this->input[$key];
-            //     }
-            // }
-            foreach (array_keys($table_fields) as $key) {
-                if (($key[0] != '_')) {
-                    $this->fields[$key] = $this->input[$key] ?? null; // Assigne null si non défini
+            foreach (array_keys($this->input) as $key) {
+                if (($key[0] != '_')
+                    && isset($table_fields[$key])) {
+                    $this->fields[$key] = $this->input[$key];
                 }
-
-            }
-            // Auto set date_creation if exsist
-            if (isset($table_fields['date_creation']) && !isset($this->input['date_creation'])) {
-                $this->fields['date_creation'] = $_SESSION["glpi_currenttime"];
-            }
-
-            // Auto set date_mod if exsist
-            if (isset($table_fields['date_mod']) && !isset($this->input['date_mod'])) {
-                $this->fields['date_mod'] = $_SESSION["glpi_currenttime"];
             }
 
             if ($this->checkUnicity(true, $options)) {
@@ -1640,11 +1526,7 @@ class CommonDBTM extends CommonGLPI
     **/
     public function update(array $input, $history = 1, $options = [])
     {
-        global $DB, $GLPI_CACHE;
-
-        if ($DB->isSlave()) {
-            return false;
-        }
+        global $DB;
 
         if (!array_key_exists(static::getIndexName(), $input)) {
             return false;
@@ -1693,13 +1575,6 @@ class CommonDBTM extends CommonGLPI
 
                 foreach (array_keys($this->input) as $key) {
                     if (array_key_exists($key, $this->fields)) {
-                        // Prevent history for date statement (for date for example)
-                        if (
-                            is_null($this->fields[$key])
-                            && ($this->input[$key] == 'NULL')
-                        ) {
-                            $this->fields[$key] = 'NULL';
-                        }
                         // Compare item
                         $ischanged = true;
                         $searchopt = $this->getSearchOptionByField('field', $key, $this->getTable());
@@ -1961,12 +1836,6 @@ class CommonDBTM extends CommonGLPI
     **/
     public function delete(array $input, $force = 0, $history = 1)
     {
-        global $DB;
-
-        if ($DB->isSlave()) {
-            return false;
-        }
-
         if (!$this->getFromDB($input[static::getIndexName()])) {
             return false;
         }
@@ -3723,7 +3592,7 @@ class CommonDBTM extends CommonGLPI
 
         if ($this->isField('otherserial')) {
             $toadd[] = ['name'  => __('Inventory number'),
-                             'value' => nl2br($this->getField('otherserial'))];
+                             'value' => nl2br($this->getField('otherserial') ?? '')];
         }
 
         if ($this->isField('states_id') && $this->getType() != 'State') {
@@ -3771,12 +3640,12 @@ class CommonDBTM extends CommonGLPI
 
         if ($this->isField('contact')) {
             $toadd[] = ['name'  => __('Alternate username'),
-                             'value' => nl2br($this->getField('contact'))];
+                             'value' => nl2br($this->getField('contact') ?? '')];
         }
 
         if ($this->isField('contact_num')) {
             $toadd[] = ['name'  => __('Alternate username number'),
-                             'value' => nl2br($this->getField('contact_num'))];
+                             'value' => nl2br($this->getField('contact_num') ?? '')];
         }
 
         if (Infocom::canApplyOn($this)) {
@@ -3797,7 +3666,7 @@ class CommonDBTM extends CommonGLPI
             && $this->isField('comment')
         ) {
             $toadd[] = ['name'  => __('Comments'),
-                             'value' => nl2br($this->getField('comment'))];
+                             'value' => nl2br($this->getField('comment') ?? '')];
         }
 
         if (count($toadd)) {
@@ -4334,8 +4203,6 @@ class CommonDBTM extends CommonGLPI
     **/
     public static function dropdown($options = [])
     {
-        /// TODO try to revert usage : Dropdown::show calling this function
-        /// TODO use this function instead of Dropdown::show
         $fields = [
            'type' => 'select',
            'name' => ($options['name'] ?? static::getForeignKeyField()),
@@ -4446,17 +4313,6 @@ class CommonDBTM extends CommonGLPI
                 $searchOption = $this->getSearchOptionByField('field', $key);
 
                 if (
-                    isset($searchOption['datatype'])
-                    && (is_null($value) || ($value == '') || ($value == 'NULL'))
-                ) {
-                    switch ($searchOption['datatype']) {
-                        case 'date':
-                        case 'datetime':
-                            // don't use $unset', because this is not a failure
-                            $this->input[$key] = 'NULL';
-                            break;
-                    }
-                } elseif (
                     isset($searchOption['datatype'])
                            && !is_null($value)
                            && ($value != '')

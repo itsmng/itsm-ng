@@ -217,6 +217,7 @@ switch ($step) {
         } elseif ($_SESSION['action'] == 'update') {
             if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])) {
                 global $DB;
+                $_SESSION['can_process_update'] = true;
                 $update = [
                     'db' => $_SESSION['databasename'],
                 ];

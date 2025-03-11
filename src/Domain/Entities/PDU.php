@@ -1,25 +1,26 @@
 <?php
 
+namespace App\Domain\Entities;
+
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use Itsmng\Domain\Entities\Passivedcequipmenttype as EntitiesPassivedcequipmenttype;
-use PassiveDCEquipmentType;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'glpi_passivedcequipments')]
-#[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
-#[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
-#[ORM\Index(name: 'locations_id', columns: ['locations_id'])]
-#[ORM\Index(name: 'passivedcequipmentmodels_id', columns: ['passivedcequipmentmodels_id'])]
-#[ORM\Index(name: 'passivedcequipmenttypes_id', columns: ['passivedcequipmenttypes_id'])]
-#[ORM\Index(name: 'tech_users_id', columns: ['tech_users_id'])]
-#[ORM\Index(name: 'tech_group_id', columns: ['tech_groups_id'])]
-#[ORM\Index(name: 'is_template', columns: ['is_template'])]
-#[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
-#[ORM\Index(name: 'states_id', columns: ['states_id'])]
-#[ORM\Index(name: 'manufacturers_id', columns: ['manufacturers_id'])]
-class Passivedcequipment
+#[ORM\Table(name: 'glpi_pdus')]
+#[ORM\Index(name: "entities_id", columns: ["entities_id"])]
+#[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
+#[ORM\Index(name: "locations_id", columns: ["locations_id"])]
+#[ORM\Index(name: "pdumodels_id", columns: ["pdumodels_id"])]
+#[ORM\Index(name: "tech_users_id", columns: ["tech_users_id"])]
+#[ORM\Index(name: "tech_group_id", columns: ["tech_groups_id"])]
+#[ORM\Index(name: "is_template", columns: ["is_template"])]
+#[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
+#[ORM\Index(name: "states_id", columns: ["states_id"])]
+#[ORM\Index(name: "manufacturers_id", columns: ["manufacturers_id"])]
+#[ORM\Index(name: "pdutypes_id", columns: ["pdutypes_id"])]
+class PDU
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,13 +47,9 @@ class Passivedcequipment
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\ManyToOne(targetEntity: Passivedcequipmentmodel::class)]
-    #[ORM\JoinColumn(name: 'passivedcequipmentmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Passivedcequipmentmodel $passivedcequipmentmodel = null;
-
-    #[ORM\ManyToOne(targetEntity: EntitiesPassivedcequipmenttype::class)]
-    #[ORM\JoinColumn(name: 'passivedcequipmenttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?EntitiesPassivedcequipmenttype $passivedcequipmenttype = null;
+    #[ORM\ManyToOne(targetEntity: Pdumodel::class)]
+    #[ORM\JoinColumn(name: 'pdumodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?Pdumodel $pdumodel = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
@@ -82,15 +79,33 @@ class Passivedcequipment
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer = null;
 
+    #[ORM\ManyToOne(targetEntity: Pdutype::class)]
+    #[ORM\JoinColumn(name: 'pdutypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?Pdutype $pdutype = null;
+
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
+    #[ORM\OneToMany(mappedBy: 'pdu', targetEntity: PduPlug::class)]
+    private Collection $pduPlugs;
+
+    #[ORM\OneToMany(mappedBy: 'pdu', targetEntity: PduRack::class)]
+    private Collection $pduRacks;
+
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -98,7 +113,7 @@ class Passivedcequipment
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -110,7 +125,7 @@ class Passivedcequipment
         return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $isRecursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
         $this->isRecursive = $isRecursive;
 
@@ -122,7 +137,7 @@ class Passivedcequipment
         return $this->serial;
     }
 
-    public function setSerial(string $serial): self
+    public function setSerial(?string $serial): self
     {
         $this->serial = $serial;
 
@@ -134,9 +149,21 @@ class Passivedcequipment
         return $this->otherserial;
     }
 
-    public function setOtherserial(string $otherserial): self
+    public function setOtherserial(?string $otherserial): self
     {
         $this->otherserial = $otherserial;
+
+        return $this;
+    }
+
+    public function getUsersIdTech(): ?int
+    {
+        return $this->usersIdTech;
+    }
+
+    public function setUsersIdTech(?int $usersIdTech): self
+    {
+        $this->usersIdTech = $usersIdTech;
 
         return $this;
     }
@@ -146,7 +173,7 @@ class Passivedcequipment
         return $this->isTemplate;
     }
 
-    public function setIsTemplate(bool $isTemplate): self
+    public function setIsTemplate(?bool $isTemplate): self
     {
         $this->isTemplate = $isTemplate;
 
@@ -158,7 +185,7 @@ class Passivedcequipment
         return $this->templateName;
     }
 
-    public function setTemplateName(string $templateName): self
+    public function setTemplateName(?string $templateName): self
     {
         $this->templateName = $templateName;
 
@@ -170,7 +197,7 @@ class Passivedcequipment
         return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $isDeleted): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
         $this->isDeleted = $isDeleted;
 
@@ -182,7 +209,7 @@ class Passivedcequipment
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
+    public function setComment(?string $comment): self
     {
         $this->comment = $comment;
 
@@ -255,64 +282,25 @@ class Passivedcequipment
     }
 
     /**
-     * Get the value of passivedcequipmentmodel
+     * Get the value of pdumodel
      */
-    public function getPassivedcequipmentmodel()
+    public function getPdumodel()
     {
-        return $this->passivedcequipmentmodel;
+        return $this->pdumodel;
     }
 
     /**
-     * Set the value of passivedcequipmentmodel
+     * Set the value of pdumodel
      *
      * @return  self
      */
-    public function setPassivedcequipmentmodel($passivedcequipmentmodel)
+    public function setPdumodel($pdumodel)
     {
-        $this->passivedcequipmentmodel = $passivedcequipmentmodel;
+        $this->pdumodel = $pdumodel;
 
         return $this;
     }
 
-    /**
-     * Get the value of passivedcequipmenttype
-     */
-    public function getPassivedcequipmenttype()
-    {
-        return $this->passivedcequipmenttype;
-    }
-
-    /**
-     * Set the value of passivedcequipmenttype
-     *
-     * @return  self
-     */
-    public function setPassivedcequipmenttype($passivedcequipmenttype)
-    {
-        $this->passivedcequipmenttype = $passivedcequipmenttype;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of techUser
-     */
-    public function getTechUse()
-    {
-        return $this->techUser;
-    }
-
-    /**
-     * Set the value of techUser
-     *
-     * @return  self
-     */
-    public function setTechUser($techUser)
-    {
-        $this->techUser = $techUser;
-
-        return $this;
-    }
 
     /**
      * Get the value of techGroup
@@ -370,6 +358,86 @@ class Passivedcequipment
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pdutype
+     */
+    public function getPdutype()
+    {
+        return $this->pdutype;
+    }
+
+    /**
+     * Set the value of pdutype
+     *
+     * @return  self
+     */
+    public function setPdutype($pdutype)
+    {
+        $this->pdutype = $pdutype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pduPlugs
+     */
+    public function getPduPlugs()
+    {
+        return $this->pduPlugs;
+    }
+
+    /**
+     * Set the value of pduPlugs
+     *
+     * @return  self
+     */
+    public function setPduPlugs($pduPlugs)
+    {
+        $this->pduPlugs = $pduPlugs;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pduRacks
+     */
+    public function getPduRacks()
+    {
+        return $this->pduRacks;
+    }
+
+    /**
+     * Set the value of pduRacks
+     *
+     * @return  self
+     */
+    public function setPduRacks($pduRacks)
+    {
+        $this->pduRacks = $pduRacks;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of techUser
+     */
+    public function getTechUser()
+    {
+        return $this->techUser;
+    }
+
+    /**
+     * Set the value of techUser
+     *
+     * @return  self
+     */
+    public function setTechUser($techUser)
+    {
+        $this->techUser = $techUser;
 
         return $this;
     }

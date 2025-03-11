@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-class Notificationtemplate
+class NotificationTemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -36,8 +36,8 @@ class Notificationtemplate
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
-    #[ORM\OneToMany(mappedBy: 'notificationtemplate', targetEntity: NotificationNotificationtemplate::class)]
-    private Collection $notificationNotificationtemplates;
+    #[ORM\OneToMany(mappedBy: 'notificationtemplate', targetEntity: NotificationNotificationTemplate::class)]
+    private Collection $notificationNotificationTemplates;
 
     public function getId(): ?int
     {
@@ -118,21 +118,21 @@ class Notificationtemplate
 
 
     /**
-     * Get the value of notificationNotificationtemplates
+     * Get the value of notificationNotificationTemplates
      */
-    public function getNotificationNotificationtemplates()
+    public function getNotificationNotificationTemplates()
     {
-        return $this->notificationNotificationtemplates;
+        return $this->notificationNotificationTemplates;
     }
 
     /**
-     * Set the value of notificationNotificationtemplates
+     * Set the value of notificationNotificationTemplates
      *
      * @return  self
      */
-    public function setNotificationNotificationtemplates($notificationNotificationtemplates)
+    public function setNotificationNotificationTemplates($notificationNotificationTemplates)
     {
-        $this->notificationNotificationtemplates = $notificationNotificationtemplates;
+        $this->notificationNotificationTemplates = $notificationNotificationTemplates;
 
         return $this;
     }

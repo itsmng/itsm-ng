@@ -77,11 +77,14 @@
                 {% if attributes.multiple %}
                 multiple: true,
                 {% endif %}
-                width: 'resolve',
             });
             {% if attributes.multiple %}
+            let values = JSON.parse('{{attributes.value|raw}}');
+            if (typeof values === 'object') {
+                values = Object.keys(values);
+            }
             $('#{{attributes.id ? attributes.id : id}}')
-                .val(JSON.parse('{{attributes.value|json_encode|raw}}'))
+                .val(values)
                 .trigger('change');
             {% endif %}
         });

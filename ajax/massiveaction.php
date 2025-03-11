@@ -72,7 +72,7 @@ if (count($actions)) {
     echo "&nbsp;";
 
     $actions = ['-1' => Dropdown::EMPTY_VALUE] + $actions;
-    $rand    = Dropdown::showFromArray('massiveaction', $actions);
+    $rand    = Dropdown::showFromArray('massiveaction', $actions, ['noselect2' => true]);
 
     echo "<br><br>";
 

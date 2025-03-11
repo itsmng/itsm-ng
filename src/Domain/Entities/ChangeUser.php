@@ -25,10 +25,10 @@ class ChangeUser
     private ?User $user = null;
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
-    private $type;
+    private $type = 1;
 
     #[ORM\Column(name: 'use_notification', type: 'boolean', options: ['default' => false])]
-    private $useNotification;
+    private $useNotification = false;
 
     #[ORM\Column(name: 'alternative_email', type: 'string', length: 255, nullable: true)]
     private $alternativeEmail;

@@ -75,7 +75,7 @@ class Contract extends CommonDBTM
 
         $this->fields["alert"] = Entity::getUsedConfig(
             "use_contracts_alert",
-            $this->fields["entities_id"],
+            $this->fields["entities_id"] ?? Session::getActiveEntity(),
             "default_contract_alert",
             0
         );

@@ -3,9 +3,6 @@
 namespace Infrastructure\Adapter\Database;
 
 use CommonDBTM;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Mapping\Entity;
-use Itsmng\Domain\Entities\Entity as EntitiesEntity;
 
 interface DatabaseAdapterInterface
 {
@@ -28,16 +25,12 @@ interface DatabaseAdapterInterface
     public function listFields(): array;
     // get values from entity as array
     public function getFields(mixed $content): array;
-    public function getSettersFromFields(array $fields, object $content): array;
+    public function getSettersFromFields(array $fields): array;
 
     public function save(array $fields): bool;
     public function add(array $fields): bool|array;
 
     public function getRelations(): array;
 
-    // protected function adaptQueryObject(QueryObject $queryObject): array;
-    public function request(array | QueryBuilder $dql): \Iterator;
-    // public function getTableFields(): array;
-    // public function findEntityById(array $id): mixed;
-
+    public function request(string $dql, array $params = []): array;
 }

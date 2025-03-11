@@ -156,7 +156,7 @@ class NotificationTemplateTranslation extends CommonDBChild
                           'type' => 'select',
                           'name' => 'language',
                           'value' => $this->fields['language'],
-                          'values' => [__('Default translation')] + Language::getLanguages(),
+                          'values' => ['' => __('Default translation')] + Language::getLanguages(),
                           'col_lg' => 12,
                           'col_md' => 12,
                       ],

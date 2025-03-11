@@ -54,7 +54,6 @@ class Problem extends CommonITILObject
     public static $rightname            = 'problem';
     protected $usenotepad        = true;
 
-
     public const MATRIX_FIELD         = 'priority_matrix';
     public const URGENCY_MASK_FIELD   = 'urgency_mask';
     public const IMPACT_MASK_FIELD    = 'impact_mask';

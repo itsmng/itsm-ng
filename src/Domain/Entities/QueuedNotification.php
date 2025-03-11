@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "send_time", columns: ["send_time"])]
 #[ORM\Index(name: "sent_time", columns: ["sent_time"])]
 #[ORM\Index(name: "mode", columns: ["mode"])]
-class Queuednotification
+class QueuedNotification
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,9 +27,9 @@ class Queuednotification
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
     private $itemsId;
 
-    #[ORM\ManyToOne(targetEntity: Notificationtemplate::class)]
+    #[ORM\ManyToOne(targetEntity: NotificationTemplate::class)]
     #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Notificationtemplate $notificationtemplate = null;
+    private ?NotificationTemplate $notificationTemplate = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
@@ -359,9 +359,9 @@ class Queuednotification
     /**
      * Get the value of notificationtemplate
      */
-    public function getNotificationtemplate()
+    public function getNotificationTemplate()
     {
-        return $this->notificationtemplate;
+        return $this->notificationTemplate;
     }
 
     /**
@@ -369,9 +369,9 @@ class Queuednotification
      *
      * @return  self
      */
-    public function setNotificationtemplate($notificationtemplate)
+    public function setNotificationTemplate($notificationTemplate)
     {
-        $this->notificationtemplate = $notificationtemplate;
+        $this->notificationTemplate = $notificationTemplate;
 
         return $this;
     }
