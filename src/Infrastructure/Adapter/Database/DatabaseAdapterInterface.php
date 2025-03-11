@@ -3,7 +3,6 @@
 namespace Infrastructure\Adapter\Database;
 
 use CommonDBTM;
-use Doctrine\ORM\QueryBuilder;
 
 interface DatabaseAdapterInterface
 {
@@ -33,5 +32,5 @@ interface DatabaseAdapterInterface
 
     public function getRelations(): array;
 
-    public function request(array | QueryBuilder $dql): \Iterator;
+    public function request(string $dql, array $params = []): array;
 }

@@ -100,7 +100,6 @@ class Session
             // Normal mode for this request
             $_SESSION["glpi_use_mode"] = self::NORMAL_MODE;
             // Check ID exists and load complete user from DB (plugins...)
-            dump('test');
 
             if (
                 isset($auth->user->fields['id'])

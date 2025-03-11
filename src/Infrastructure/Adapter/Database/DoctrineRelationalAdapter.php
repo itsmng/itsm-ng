@@ -2,10 +2,13 @@
 
 namespace Infrastructure\Adapter\Database;
 
+use ArrayIterator;
 use CommonDBTM;
+use DateTime;
 use ReflectionClass;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Html;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
 
 class DoctrineRelationalAdapter implements DatabaseAdapterInterface
@@ -85,7 +88,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function findBy(array $criteria, array $order = null, int $limit = null): array
     {
-        // TODO: Implement findBy() method.
         $result = $this->em->getRepository($this->entityName)->findBy($criteria);
         return $result;
     }
@@ -179,8 +181,8 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     private static function getLinkedEntity(object $object, string $field): string | null
     {
-        $entity = self::toEntityFormat($field);
-        $reflectionProperty = new \ReflectionProperty($object, $entity);
+        $property = self::toEntityFormat($field);
+        $reflectionProperty = new \ReflectionProperty($object, $property);
         $attributes = $reflectionProperty->getAttributes();
         foreach ($attributes as $attribute) {
             if (in_array($attribute->getName(), [
@@ -194,6 +196,27 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             }
         }
         return null;
+    }
+
+    private static function isDateFormat(object $object, string $field): bool
+    {
+        $property = self::toEntityFormat($field);
+        if (!property_exists($object, $property)) {
+            return false;
+        }
+        $reflectionProperty = new \ReflectionProperty($object, $property);
+        $attributes = $reflectionProperty->getAttributes();
+        foreach ($attributes as $attribute) {
+            if (in_array($attribute->getName(), [
+                'Doctrine\ORM\Mapping\Column',
+            ])) {
+                $type = $attribute->getArguments()['type'];
+                if ($type === 'date' || $type === 'datetime') {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private static function isRelation(object $content, string $property): bool
@@ -280,14 +303,36 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
         $entity = $this->findOneBy(['id' => $fields['id']]);
         $setters = $this->getSettersFromFields(array_keys($fields));
+        $object = new $this->entityName();
 
         foreach ($fields as $field => $value) {
+            try {
+                $linkedEntity = self::getLinkedEntity($object, $field);
+            } catch (\Exception $e) {
+                $linkedEntity = null;
+            }
+            if (self::isDateFormat($object, $field) && !($value instanceof \DateTime)) {
+                $value = DateTime::createFromFormat('Y-m-d H:i:s', $fields[$field]);
+                if ($value === false) {
+                    $value = DateTime::createFromFormat('Y-m-d', $fields[$field]);
+                }
+                if ($value === false) {
+                    $value = NULL;
+                }
+            } else if ($linkedEntity !== null) {
+                $value = self::getReferencedEntity($linkedEntity, intval($fields[$field]));
+            } else {
+                $value = $fields[$field];
+            }
             $setter = $setters[$field];
-            $entity->$setter($value);
+            if (method_exists($entity, $setter)) {
+                $entity->$setter($value);
+            }
         }
         try {
             $this->em->persist($entity);
             $this->em->flush();
+            return true;
         } catch (\Exception $e) {
             throw new \Exception('error: ' . $e->getMessage());
             return false;
@@ -364,61 +409,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         // return [];
     }
 
-    public function request(array | QueryBuilder $criteria): \Iterator
+
+    public function request(string $dql, array $params = []): array
     {
-        if ($criteria instanceof QueryBuilder) {
-            return new \ArrayIterator($criteria->getQuery()->getResult());
+        $query = $this->em->createQuery($dql);
+        foreach ($params as $key => $value) {
+            $query->setParameter($key, $value);
         }
-
-        if (!is_array($criteria)) {
-            throw new \InvalidArgumentException('Expected array or QueryBuilder, got ' . gettype($criteria));
-        }
-
-        if (empty($criteria['table'])) {
-            throw new \InvalidArgumentException('The "table" key is required in the criteria array.');
-        }
-
-        $table = $criteria['table'];
-        $alias = $criteria['alias'] ?? 't';
-        $conditions = $criteria['conditions'] ?? [];
-        $orderBy = $criteria['orderBy'] ?? [];
-        $limit = $criteria['limit'] ?? null;
-        $offset = $criteria['offset'] ?? null;
-
-        $qb = $this->em->createQueryBuilder();
-
-        $qb->select($alias)
-           ->from($table, $alias);
-
-
-        foreach ($conditions as $field => $value) {
-            $parameterName = str_replace('.', '_', $field);
-            if (is_array($value)) {
-                $qb->andWhere("$alias.$field IN (:$parameterName)")
-                   ->setParameter($parameterName, $value);
-            } else {
-                $qb->andWhere("$alias.$field = :$parameterName")
-                   ->setParameter($parameterName, $value);
-            }
-        }
-
-        foreach ($orderBy as $field => $direction) {
-            $qb->addOrderBy("$alias.$field", strtoupper($direction));
-        }
-
-        if ($limit !== null) {
-            $qb->setMaxResults((int)$limit);
-        }
-
-        if ($offset !== null) {
-            $qb->setFirstResult((int)$offset);
-        }
-
-        return $qb->getQuery()->getResult();
-        // return [];
+        return $query->getResult();
     }
-
-
-
-
 }

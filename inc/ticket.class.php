@@ -1005,24 +1005,6 @@ class Ticket extends CommonITILObject
             $input['priority'] = self::computePriority($input['urgency'], $input['impact']);
         }
 
-        $ticketDates = [
-            'date',
-            'closedate',
-            'solvedate',
-            'time_to_resolve',
-            'time_to_own',
-            'begin_waiting_date',
-            'ola_ttr_begin_date',
-            'internal_time_to_own',
-            'internal_time_to_resolve',
-        ];
-        foreach ($ticketDates as $date) {
-            if (!isset($input[$date])) {
-                continue;
-            }
-            $input[$date] = Html::switchToDateTimeFormat($input[$date]);
-        }
-
         // Security checks
         if (
             !Session::isCron()
@@ -1757,25 +1739,6 @@ class Ticket extends CommonITILObject
         }
         if (!isset($input['itemtype']) || !isset($input['items_id']) || !($input['items_id'] > 0)) {
             $input['itemtype'] = '';
-        }
-
-        $ticketDates = [
-            'date',
-            'closedate',
-            'solvedate',
-            'time_to_resolve',
-            'time_to_own',
-            'begin_waiting_date',
-            'ola_ttr_begin_date',
-            'internal_time_to_own',
-            'internal_time_to_resolve',
-        ];
-
-        foreach ($ticketDates as $date) {
-            if (!isset($input[$date])) {
-                continue;
-            }
-            $input[$date] = Html::switchToDateTimeFormat($input[$date]);
         }
 
         // Get first item location

@@ -7587,9 +7587,4 @@ JAVASCRIPT;
         ];
         return ["path" => $template_path, "args" => $twig_vars];
     }
-
-    public static function switchToDateTimeFormat($date, $format = 'Y-m-d H:i:s')
-    {
-        return DateTime::createFromFormat($format, $date);
-    }
 }
