@@ -1833,7 +1833,8 @@ class Auth extends CommonGLPI
                'scope'  => $_POST["scope"],
                'proxy'  => $_POST["proxy"],
                'cert'  => $_POST["cert"],
-               'logout'  => $_POST["logout"]
+               'logout'  => $_POST["logout"],
+               'sso_link_users' => $_POST['sso_link_users'],
             ];
             $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
         }
@@ -1850,6 +1851,7 @@ class Auth extends CommonGLPI
             $oidc_db['proxy'] = $iterator['proxy'];
             $oidc_db['cert'] = $iterator['cert'];
             $oidc_db['logout'] = $iterator['logout'];
+            $oidc_db['sso_link_users'] = $iterator['sso_link_users'];
         }
 
         $form = [
@@ -1916,6 +1918,11 @@ class Auth extends CommonGLPI
                        'name' => 'logout',
                        'type' => 'text',
                        'value' => $oidc_db['logout'] ?? '',
+                    ],
+                    __('Link accounts with other auth sources') => [
+                       'name' => 'sso_link_users',
+                       'type' => 'checkbox',
+                       'value' => $oidc_db['sso_link_users'] ?? 0,
                     ],
                  ]
               ]
