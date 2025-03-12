@@ -1162,7 +1162,7 @@ abstract class APIBaseClass extends atoum
         $input    = [];
         $computer = new Computer();
         $lastComputer = array_pop($computers_id_collection);
-        foreach ($computers_id_collection as $key => $computers_id) {
+        foreach ($computers_id_collection as $computers_id) {
             $input[] = ['id' => $computers_id['id']];
         }
         $data = $this->query(

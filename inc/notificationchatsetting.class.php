@@ -69,25 +69,25 @@ class NotificationChatSetting extends NotificationSetting
         $formValues = [];
         $groupsRaw = (new Group())->find();
         $formValues['group'] = [];
-        foreach ($groupsRaw as $key => $group) {
+        foreach ($groupsRaw as $group) {
             $formValues['group'][$group['id']] = $group['completename'];
         }
 
         $entitiesRaw = (new Entity())->find();
         $formValues['entity'] = [];
-        foreach ($entitiesRaw as $key => $entity) {
+        foreach ($entitiesRaw as $entity) {
             $formValues['entity'][$entity['id']] = $entity['completename'];
         }
 
         $locationsRaw = (new Location())->find();
         $formValues['location'] = [];
-        foreach ($locationsRaw as $key => $location) {
+        foreach ($locationsRaw as $location) {
             $formValues['location'][$location['id']] = $location['completename'];
         }
 
         $categoriesRaw = (new ITILCategory())->find();
         $formValues['category'] = [];
-        foreach ($categoriesRaw as $key => $category) {
+        foreach ($categoriesRaw as $category) {
             $formValues['category'][$category['id']] = $category['completename'];
         }
 

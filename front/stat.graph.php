@@ -466,7 +466,7 @@ $values['avgsolved'] = Stat::constructEntryValues(
     $val2
 );
 // Pass to hour values
-foreach ($values['avgsolved'] as $key => &$val) {
+foreach ($values['avgsolved'] as &$val) {
     $val = round($val / HOUR_TIMESTAMP, 2);
 }
 //Temps moyen de cloture d'intervention
