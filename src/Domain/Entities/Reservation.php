@@ -18,9 +18,9 @@ class Reservation
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Reservationitem::class)]
+    #[ORM\ManyToOne(targetEntity: ReservationItem::class)]
     #[ORM\JoinColumn(name: 'reservationitems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Reservationitem $reservationitem = null;
+    private ?ReservationItem $reservationitem = null;
 
     #[ORM\Column(name: 'begin', type: 'datetime', nullable: true)]
     private $begin;
@@ -95,7 +95,7 @@ class Reservation
     /**
      * Get the value of reservationitem
      */
-    public function getReservationitem()
+    public function getReservationItem()
     {
         return $this->reservationitem;
     }
@@ -105,7 +105,7 @@ class Reservation
      *
      * @return  self
      */
-    public function setReservationitem($reservationitem)
+    public function setReservationItem($reservationitem)
     {
         $this->reservationitem = $reservationitem;
 

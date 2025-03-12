@@ -68,7 +68,7 @@ class NetworkPortInstantiation extends CommonDBChild
 
     public static function getIndexName()
     {
-        return 'networkports_id';
+        return 'networkport';
     }
 
 

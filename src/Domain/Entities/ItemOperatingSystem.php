@@ -27,7 +27,7 @@ class ItemOperatingSystem
     private $id;
 
     #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
-    private $itemsId;
+    private $itemsId = 0;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 255, nullable: true)]
     private $itemtype;
@@ -63,16 +63,16 @@ class ItemOperatingSystem
     private $dateCreation;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
     #[ORM\Column(name: 'entities_id', type: "integer", options: ["default" => 0])]
-    private $entitiesId;
+    private $entitiesId = 0;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
 
     public function getId(): ?int
@@ -169,7 +169,7 @@ class ItemOperatingSystem
         return $this->licenseNumber;
     }
 
-    public function setLicenseNumber(string $licenseNumber): self
+    public function setLicenseNumber(string | null $licenseNumber): self
     {
         $this->licenseNumber = $licenseNumber;
 
