@@ -32,27 +32,28 @@
  */
 
 /**
- * Update ITSM-NG from 1.6.10 to 1.6.11
+ * Update ITSM-NG from 1.6.0 to 1.6.1
  *
  * @return bool for success (will die for most error)
  **/
-function update1610to1611()
+function update160to161()
 {
     /** @global Migration $migration */
     global $DB, $migration;
 
     $updateresult     = true;
 
-    if (!$DB->fieldExists('glpi_oidc_config', 'sso_link_users')) {
-        $query = "ALTER TABLE `glpi_oidc_config` ADD COLUMN (`sso_link_users` TINYINT(1) NOT NULL DEFAULT 1)";
+    $migration->displayTitle(sprintf(__('Update to %s'), '1.6.1'));
+    $migration->setVersion('1.6.1');
+
+    if (!$DB->fieldExists('glpi_oidc_config', 'logout')) {
+        $query = "ALTER TABLE `glpi_oidc_config` ADD COLUMN (`logout` varchar(255) DEFAULT NULL)";
         $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_oidc_config".$DB->error());
     }
 
-    $taskExists = $DB->queryOrDie("SELECT id AS nu FROM `glpi_crontasks` WHERE `name` = 'cleantransferorphans'");
-    if ($DB->numrows($taskExists) == 0) {
-        $query = 'INSERT INTO `glpi_crontasks` (`itemtype`, `name`, `frequency`, `state`, `mode`, `allowmode`, `hourmin`, `hourmax`, `logs_lifetime`) VALUES
-                ("Transfer", "cleantransferorphans", "3600", "1", "1", "3", "0", "24", "30")';
-        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_crontasks".$DB->error());
+    if (!$DB->fieldExists('glpi_oidc_config', 'proxy') && !$DB->fieldExists('glpi_oidc_config', 'cert')) {
+        $query = "ALTER TABLE `glpi_oidc_config` ADD COLUMN (`cert` varchar(255) DEFAULT NULL, `proxy` varchar(255) DEFAULT NULL)";
+        $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_configs".$DB->error());
     }
 
     // ************ Keep it at the end **************
