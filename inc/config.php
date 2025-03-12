@@ -202,9 +202,9 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                         //got a sha1sum on both sides... cannot know if version is older or newer
                         if (!isset($CFG_GLPI['dbversion']) || strlen(trim($CFG_GLPI['dbversion'])) < 40) {
                             //not sure this is older... User will be warned.
-                            if (trim($CFG_GLPI["version"]) < ITSM_PREVER) {
+                            if (version_compare(trim($CFG_GLPI["version"]), ITSM_PREVER, '<')) {
                                 $older = true;
-                            } elseif (trim($CFG_GLPI['version']) >= ITSM_PREVER) {
+                            } elseif (version_compare(trim($CFG_GLPI['version']), ITSM_PREVER, '>=')) {
                                 $newer = true;
                             }
                         }
@@ -215,14 +215,14 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                         } else {
                             $newer = true;
                         }
-                    } elseif (!isset($CFG_GLPI['dbversion']) || trim($CFG_GLPI["dbversion"]) < ITSM_SCHEMA_VERSION) {
+                    } elseif (!isset($CFG_GLPI['dbversion']) || version_compare(trim($CFG_GLPI["dbversion"]), ITSM_SCHEMA_VERSION, '<')) {
                         $older = true;
-                    } elseif (trim($CFG_GLPI["dbversion"]) > ITSM_SCHEMA_VERSION) {
+                    } elseif (version_compare(trim($CFG_GLPI["dbversion"]), ITSM_SCHEMA_VERSION, '>')) {
                         // test for GLPI version
                     } elseif (version_compare(trim($CFG_GLPI["dbversion"]), '10', '>=')) {  // GLPI 10 not managed
                     } elseif (version_compare(trim($CFG_GLPI["dbversion"]), '9', '>=')) {  // for GLPI 9.x
                         $older = true;
-                    } elseif (trim($CFG_GLPI["dbversion"]) > ITSM_SCHEMA_VERSION) {
+                    } elseif (version_compare(trim($CFG_GLPI["dbversion"]), '10', '>=')) {  // GLPI 10 not managed
                         $newer = true;
                     }
                 }
@@ -232,6 +232,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                     if ($dev === true) {
                         echo Config::agreeDevMessage();
                     }
+                    $_SESSION['can_process_update'] = true;
                     echo "<p class='alert alert-danger'>";
                     echo __('The version of the database is not compatible with the version of the installed files. An update is necessary.') . "</p>";
                     echo "<input type='submit' name='from_update' value=\"" . _sx('button', 'Upgrade') . "\"
