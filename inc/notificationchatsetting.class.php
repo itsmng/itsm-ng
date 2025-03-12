@@ -206,7 +206,7 @@ class NotificationChatSetting extends NotificationSetting
         $iterators = $DB->request($query);
 
         $result = [];
-        foreach ($iterators as $key => $iterator) {
+        foreach ($iterators as $iterator) {
             $res = [];
             $res['hookurl'] = $iterator['hookurl'];
             $res['chat'] = $iterator['chat'];

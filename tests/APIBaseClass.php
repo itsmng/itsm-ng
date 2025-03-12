@@ -1086,7 +1086,7 @@ abstract class APIBaseClass extends atoum
         $computers_id_collection = $this->testCreateItems();
         $input    = [];
         $computer = new Computer();
-        foreach ($computers_id_collection as $key => $computers_id) {
+        foreach ($computers_id_collection as $computers_id) {
             $input[] = ['id'          => $computers_id['id'],
                         'otherserial' => "abcdef"];
         }
@@ -1194,7 +1194,7 @@ abstract class APIBaseClass extends atoum
            ['id'  => $lastComputer['id']],
            ['id'  => $lastComputer['id'] + 1] // Non existing computer id
         ];
-        foreach ($computers_id_collection as $key => $computers_id) {
+        foreach ($computers_id_collection as $computers_id) {
             $input[] = ['id' => $computers_id['id']];
         }
         $data = $this->query(

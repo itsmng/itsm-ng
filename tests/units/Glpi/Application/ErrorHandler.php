@@ -48,7 +48,7 @@ class ErrorHandler extends \GLPITestCase
 
         $data = [
            [
-              'error_call'           => function () {
+              'error_call'           => function (): void {
                   file_get_contents('this-file-does-not-exists');
               },
               'expected_log_level'   => LogLevel::WARNING,
@@ -57,7 +57,7 @@ class ErrorHandler extends \GLPITestCase
                  . $log_suffix,
            ],
            [
-              'error_call'           => function () {
+              'error_call'           => function (): void {
                   trigger_error('this is a warning', E_USER_WARNING);
               },
               'expected_log_level'   => LogLevel::WARNING,
@@ -66,7 +66,7 @@ class ErrorHandler extends \GLPITestCase
                  . $log_suffix,
            ],
            [
-              'error_call'           => function () {
+              'error_call'           => function (): void {
                   trigger_error('some notice', E_USER_NOTICE);
               },
               'expected_log_level'   => LogLevel::NOTICE,
@@ -75,7 +75,7 @@ class ErrorHandler extends \GLPITestCase
                  . $log_suffix,
            ],
            [
-              'error_call'           => function () {
+              'error_call'           => function (): void {
                   trigger_error('this method is deprecated', E_USER_DEPRECATED);
               },
               'expected_log_level'   => LogLevel::NOTICE,
@@ -87,7 +87,7 @@ class ErrorHandler extends \GLPITestCase
 
         if (version_compare(PHP_VERSION, '8.0.0-dev', '>=')) {
             $data[] = [
-               'error_call'           => function () {
+               'error_call'           => function (): void {
                    $param = new \ReflectionParameter([\Config::class, 'getTypeName'], 0);
                    $param->isCallable();
                },
@@ -98,7 +98,7 @@ class ErrorHandler extends \GLPITestCase
             ];
         } else {
             $data[] = [
-               'error_call'           => function () {
+               'error_call'           => function (): void {
                    $inst = new class () {
                        public function nonstatic()
                        {
@@ -112,7 +112,7 @@ class ErrorHandler extends \GLPITestCase
                   . $log_suffix,
             ];
             $data[] = [
-               'error_call'           => function () {
+               'error_call'           => function (): void {
                    $a = $b;
                },
                'expected_log_level'   => LogLevel::NOTICE,
