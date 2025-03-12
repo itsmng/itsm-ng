@@ -204,9 +204,9 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                   //got a sha1sum on both sides... cannot know if version is older or newer
                   if (!isset($CFG_GLPI['dbversion']) || strlen(trim($CFG_GLPI['dbversion'])) < 40) {
                      //not sure this is older... User will be warned.
-                     if (trim($CFG_GLPI["version"]) < ITSM_PREVER) {
+                     if (version_compare(trim($CFG_GLPI["version"]), ITSM_PREVER, '<')) {
                         $older = true;
-                     } else if (trim($CFG_GLPI['version']) >= ITSM_PREVER) {
+                     } else if (version_compare(trim($CFG_GLPI['version']), ITSM_PREVER, '>=')) {
                         $newer = true;
                      }
                   }
@@ -217,7 +217,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                   } else {
                      $newer = true;
                   }
-               } else if (!isset($CFG_GLPI['dbversion']) || trim($CFG_GLPI["dbversion"]) < ITSM_SCHEMA_VERSION) {
+               } else if (!isset($CFG_GLPI['dbversion']) || version_compare(trim($CFG_GLPI["dbversion"]), ITSM_SCHEMA_VERSION, '<')) {
                   $older = true;
                   
                // test for GLPI version
@@ -225,12 +225,14 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                } else if (version_compare(trim($CFG_GLPI["dbversion"]), '9', '>=')) {  // for GLPI 9.x
                    $older = true;
                    
-               } else if (trim($CFG_GLPI["dbversion"]) > ITSM_SCHEMA_VERSION) {
+               } else if (version_compare(trim($CFG_GLPI["dbversion"]), ITSM_SCHEMA_VERSION, '>')) {
+                   echo trim($CFG_GLPI["dbversion"]) . ' ' . ITSM_SCHEMA_VERSION;
                   $newer = true;
                }
             }
 
             if ($older === true) {
+               $_SESSION['can_process_update'] = true;
                echo "<form method='post' action='".$CFG_GLPI["root_doc"]."/install/update.php'>";
                if ($dev === true) {
                   echo Config::agreeDevMessage();

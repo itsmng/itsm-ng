@@ -34,7 +34,7 @@
 // Last version of GLPI only for plugin compatibility
 define('GLPI_VERSION', '9.5.13');
 
-define('ITSM_VERSION', '1.6.10');
+define('ITSM_VERSION', '1.6.11');
 if (substr(ITSM_VERSION, -4) === '-dev') {
    //for dev version
    define('ITSM_PREVER', str_replace('-dev', '', ITSM_VERSION));
@@ -44,7 +44,7 @@ if (substr(ITSM_VERSION, -4) === '-dev') {
    );
 } else {
    //for stable version
-   define("ITSM_SCHEMA_VERSION", '1.6.5');
+   define("ITSM_SCHEMA_VERSION", '1.6.11');
 }
 
 // Current version of ITSM-NG

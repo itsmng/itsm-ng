@@ -1677,6 +1677,7 @@ class Auth extends CommonGLPI {
             'proxy'  => $_POST["proxy"],
             'cert'  => $_POST["cert"],
             'logout'  => $_POST["logout"],
+            'sso_link_users' => $_POST['sso_link_users'],
          ];
         $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
       }
@@ -1692,6 +1693,7 @@ class Auth extends CommonGLPI {
          $oidc_db['proxy'] = $iterator['proxy'];
          $oidc_db['cert'] = $iterator['cert'];
          $oidc_db['logout'] = $iterator['logout'];
+         $oidc_db['sso_link_users'] = $iterator['sso_link_users'];
       }
       
 
@@ -1719,7 +1721,7 @@ class Auth extends CommonGLPI {
       echo "<tr class='tab_bg_1'>";
       echo "<td>Provider</td>";
       echo "<td>";
-      if (isset($oidc_db['Provider'])) {
+   if (isset($oidc_db['Provider'])) {
        echo "<input type='text' id='provider' name='provider'value=". $oidc_db['Provider'] .">";
    } else {
        echo "<input type='text' id='provider' name='provider' placeholder='https://id.provider.com'>";
@@ -1779,11 +1781,16 @@ class Auth extends CommonGLPI {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __('Logout URL') . "</td>";
       echo "<td>";
-   if (isset($oidc_db['logout'])) {
-       echo "<input type='text' id='logout' name='logout'value=". str_replace(' ', '', $oidc_db['logout']) .">";
-   } else {
-       echo "<input type='text' id='logout' name='logout' placeholder='https://logout.url'>";
-   }
+      if (isset($oidc_db['logout'])) {
+          echo "<input type='text' id='logout' name='logout'value=". str_replace(' ', '', $oidc_db['logout']) .">";
+      } else {
+          echo "<input type='text' id='logout' name='logout' placeholder='https://logout.url'>";
+      }
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __('Link accounts with other auth sources') . "</td>";
+      echo "<td>";
+      Dropdown::showYesNo('sso_link_users', ($oidc_db['sso_link_users']));
       
       echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
       echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">" . '&nbsp;';
