@@ -9,16 +9,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\UniqueConstraint(name: 'networkports_id', columns: ['networkports_id'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-class Networkportdialup
+class NetworkPortDialup
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\ManyToOne(targetEntity: NetworkPort::class)]
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
-    private ?Networkport $networkport = null;
+    private ?NetworkPort $networkPort = null;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -59,9 +59,9 @@ class Networkportdialup
     /**
      * Get the value of networkport
      */
-    public function getNetworkport()
+    public function getNetworkPort()
     {
-        return $this->networkport;
+        return $this->networkPort;
     }
 
     /**
@@ -69,9 +69,9 @@ class Networkportdialup
      *
      * @return  self
      */
-    public function setNetworkport($networkport)
+    public function setNetworkPort($networkport)
     {
-        $this->networkport = $networkport;
+        $this->networkPort = $networkport;
 
         return $this;
     }

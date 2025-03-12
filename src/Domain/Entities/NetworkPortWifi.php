@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'mode', columns: ['mode'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-class Networkportwifi
+class NetworkPortWifi
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,9 +31,9 @@ class Networkportwifi
     #[ORM\JoinColumn(name: 'wifinetworks_id', referencedColumnName: 'id', nullable: true)]
     private ?WifiNetwork $wifinetwork = null;
 
-    #[ORM\ManyToOne(targetEntity: Networkportwifi::class)]
+    #[ORM\ManyToOne(targetEntity: NetworkPortwifi::class)]
     #[ORM\JoinColumn(name: 'networkportwifis_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'only useful in case of Managed node'])]
-    private ?Networkportwifi $networkportwifi = null;
+    private ?NetworkPortwifi $networkportwifi = null;
 
     #[ORM\Column(name: 'version', type: 'string', length: 20, nullable: true, options: ['comment' => 'a, a/b, a/b/g, a/b/g/n, a/b/g/n/y'])]
     private $version;
@@ -116,7 +116,7 @@ class Networkportwifi
     /**
      * Get the value of networkportwifi
      */
-    public function getNetworkportwifi()
+    public function getNetworkPortwifi()
     {
         return $this->networkportwifi;
     }
@@ -126,7 +126,7 @@ class Networkportwifi
      *
      * @return  self
      */
-    public function setNetworkportwifi($networkportwifi)
+    public function setNetworkPortwifi($networkportwifi)
     {
         $this->networkportwifi = $networkportwifi;
 
@@ -156,7 +156,7 @@ class Networkportwifi
     /**
      * Get the value of networkport
      */
-    public function getNetworkport()
+    public function getNetworkPort()
     {
         return $this->networkport;
     }
@@ -166,7 +166,7 @@ class Networkportwifi
      *
      * @return  self
      */
-    public function setNetworkport($networkport)
+    public function setNetworkPort($networkport)
     {
         $this->networkport = $networkport;
 

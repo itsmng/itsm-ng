@@ -8,20 +8,20 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'glpi_networkports_networkports')]
 #[ORM\UniqueConstraint(name: 'unicity', columns: ['networkports_id_1', 'networkports_id_2'])]
 #[ORM\Index(name: 'networkports_id_2', columns: ['networkports_id_2'])]
-class NetworkportNetworkport
+class NetworkPortNetworkPort
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Networkport::class, inversedBy: 'networkportNetworkports1')]
+    #[ORM\ManyToOne(targetEntity: NetworkPort::class, inversedBy: 'networkportNetworkPorts1')]
     #[ORM\JoinColumn(name: 'networkports_id_1', referencedColumnName: 'id', nullable: true)]
-    private ?Networkport $networkport1 = null;
+    private ?NetworkPort $networkport1 = null;
 
-    #[ORM\ManyToOne(targetEntity: Networkport::class, inversedBy: 'networkportNetworkports2')]
+    #[ORM\ManyToOne(targetEntity: NetworkPort::class, inversedBy: 'networkportNetworkPorts2')]
     #[ORM\JoinColumn(name: 'networkports_id_2', referencedColumnName: 'id', nullable: true)]
-    private ?Networkport $networkport2 = null;
+    private ?NetworkPort $networkport2 = null;
 
     public function getId(): ?int
     {
@@ -31,7 +31,7 @@ class NetworkportNetworkport
     /**
      * Get the value of networkport1
      */
-    public function getNetworkport1()
+    public function getNetworkPort1()
     {
         return $this->networkport1;
     }
@@ -41,7 +41,7 @@ class NetworkportNetworkport
      *
      * @return  self
      */
-    public function setNetworkport1($networkport1)
+    public function setNetworkPort1($networkport1)
     {
         $this->networkport1 = $networkport1;
 
@@ -51,7 +51,7 @@ class NetworkportNetworkport
     /**
      * Get the value of networkport2
      */
-    public function getNetworkport2()
+    public function getNetworkPort2()
     {
         return $this->networkport2;
     }
@@ -61,7 +61,7 @@ class NetworkportNetworkport
      *
      * @return  self
      */
-    public function setNetworkport2($networkport2)
+    public function setNetworkPort2($networkport2)
     {
         $this->networkport2 = $networkport2;
 

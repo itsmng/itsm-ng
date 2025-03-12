@@ -173,7 +173,7 @@ class Computer
         return $this->otherserial;
     }
 
-    public function setOtherserial(string $otherserial): self
+    public function setOtherserial(string | null $otherserial): self
     {
         $this->otherserial = $otherserial;
 
@@ -197,7 +197,7 @@ class Computer
         return $this->contactNum;
     }
 
-    public function setContactNum(string $contactNum): self
+    public function setContactNum(string | null $contactNum): self
     {
         $this->contactNum = $contactNum;
 
@@ -249,7 +249,7 @@ class Computer
         return $this->templateName;
     }
 
-    public function setTemplateName(string $templateName): self
+    public function setTemplateName(string | null $templateName): self
     {
         $this->templateName = $templateName;
 

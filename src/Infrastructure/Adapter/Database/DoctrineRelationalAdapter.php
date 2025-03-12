@@ -307,7 +307,11 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 $linkedEntity = null;
             }
             if (self::isDateFormat($object, $field) && !($value instanceof \DateTime)) {
-                $value = DateTime::createFromFormat('Y-m-d H:i:s', $fields[$field]);
+                if ($value === false || $value === null) {
+                    $value = null;
+                } else {
+                    $value = DateTime::createFromFormat('Y-m-d H:i:s', $fields[$field]);
+                }
                 if ($value === false) {
                     $value = DateTime::createFromFormat('Y-m-d', $fields[$field]);
                 }
@@ -319,7 +323,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             } else {
                 $value = $fields[$field];
             }
-            $setter = $setters[$field];
+            $setter = $setters[$field] ?? '';
             if (method_exists($entity, $setter)) {
                 $entity->$setter($value);
             }

@@ -13,16 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'speed', columns: ['speed'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-class Networkportfiberchannel
+class NetworkPortFiberChannel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\ManyToOne(targetEntity: NetworkPort::class)]
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
-    private ?Networkport $networkport = null;
+    private ?NetworkPort $networkport = null;
 
     #[ORM\Column(name: 'items_devicenetworkcards_id', type: 'integer', options: ['default' => 0])]
     private $itemsDevicenetworkcardsId;
@@ -112,7 +112,7 @@ class Networkportfiberchannel
     /**
      * Get the value of networkport
      */
-    public function getNetworkport()
+    public function getNetworkPort()
     {
         return $this->networkport;
     }
@@ -122,7 +122,7 @@ class Networkportfiberchannel
      *
      * @return  self
      */
-    public function setNetworkport($networkport)
+    public function setNetworkPort($networkport)
     {
         $this->networkport = $networkport;
 

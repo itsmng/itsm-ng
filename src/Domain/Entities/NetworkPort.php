@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Index(name: 'is_dynamic', columns: ['is_dynamic'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-class Networkport
+class NetworkPort
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -63,13 +63,13 @@ class Networkport
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
-    #[ORM\OneToMany(mappedBy: 'networkport1', targetEntity: NetworkportNetworkport::class)]
-    private Collection $networkportNetworkports1;
+    #[ORM\OneToMany(mappedBy: 'networkport1', targetEntity: NetworkPortNetworkPort::class)]
+    private Collection $networkportNetworkPorts1;
 
-    #[ORM\OneToMany(mappedBy: 'networkport2', targetEntity: NetworkportNetworkport::class)]
-    private Collection $networkportNetworkports2;
+    #[ORM\OneToMany(mappedBy: 'networkport2', targetEntity: NetworkPortNetworkPort::class)]
+    private Collection $networkportNetworkPorts2;
 
-    #[ORM\OneToMany(mappedBy: 'networkport', targetEntity: NetworkportVlan::class)]
+    #[ORM\OneToMany(mappedBy: 'networkport', targetEntity: NetworkPortVlan::class)]
     private Collection $networkportVlans;
 
     public function getId(): ?int
@@ -244,41 +244,41 @@ class Networkport
 
 
     /**
-     * Get the value of networkportNetworkports1
+     * Get the value of networkportNetworkPorts1
      */
-    public function getNetworkportNetworkports1()
+    public function getNetworkPortNetworkPorts1()
     {
-        return $this->networkportNetworkports1;
+        return $this->networkportNetworkPorts1;
     }
 
     /**
-     * Set the value of networkportNetworkports1
+     * Set the value of networkportNetworkPorts1
      *
      * @return  self
      */
-    public function setNetworkportNetworkports1($networkportNetworkports1)
+    public function setNetworkPortNetworkPorts1($networkportNetworkPorts1)
     {
-        $this->networkportNetworkports1 = $networkportNetworkports1;
+        $this->networkportNetworkPorts1 = $networkportNetworkPorts1;
 
         return $this;
     }
 
     /**
-     * Get the value of networkportNetworkports2
+     * Get the value of networkportNetworkPorts2
      */
-    public function getNetworkportNetworkports2()
+    public function getNetworkPortNetworkPorts2()
     {
-        return $this->networkportNetworkports2;
+        return $this->networkportNetworkPorts2;
     }
 
     /**
-     * Set the value of networkportNetworkports2
+     * Set the value of networkportNetworkPorts2
      *
      * @return  self
      */
-    public function setNetworkportNetworkports2($networkportNetworkports2)
+    public function setNetworkPortNetworkPorts2($networkportNetworkPorts2)
     {
-        $this->networkportNetworkports2 = $networkportNetworkports2;
+        $this->networkportNetworkPorts2 = $networkportNetworkPorts2;
 
         return $this;
     }
@@ -286,7 +286,7 @@ class Networkport
     /**
      * Get the value of networkportVlans
      */
-    public function getNetworkportVlans()
+    public function getNetworkPortVlans()
     {
         return $this->networkportVlans;
     }
@@ -296,7 +296,7 @@ class Networkport
      *
      * @return  self
      */
-    public function setNetworkportVlans($networkportVlans)
+    public function setNetworkPortVlans($networkportVlans)
     {
         $this->networkportVlans = $networkportVlans;
 

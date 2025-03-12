@@ -9,7 +9,7 @@ use NetworkPort;
 #[ORM\Table(name: 'glpi_networkports_vlans')]
 #[ORM\UniqueConstraint(name: 'unicity', columns: ['networkports_id', 'vlans_id'])]
 #[ORM\Index(name: 'vlans_id', columns: ['vlans_id'])]
-class NetworkportVlan
+class NetworkPortVlan
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,7 +18,7 @@ class NetworkportVlan
 
     #[ORM\ManyToOne(targetEntity: NetworkPort::class, inversedBy: 'networkportVlans')]
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
-    private ?NetworkPort $networkport = null;
+    private ?NetworkPort $networkPort = null;
 
     #[ORM\ManyToOne(targetEntity: Vlan::class, inversedBy: 'networkportVlans')]
     #[ORM\JoinColumn(name: 'vlans_id', referencedColumnName: 'id', nullable: true)]
@@ -48,9 +48,9 @@ class NetworkportVlan
     /**
      * Get the value of networkport
      */
-    public function getNetworkport()
+    public function getNetworkPort()
     {
-        return $this->networkport;
+        return $this->networkPort;
     }
 
     /**
@@ -58,9 +58,9 @@ class NetworkportVlan
      *
      * @return  self
      */
-    public function setNetworkport($networkport)
+    public function setNetworkPort($networkport)
     {
-        $this->networkport = $networkport;
+        $this->networkPort = $networkport;
 
         return $this;
     }

@@ -160,7 +160,7 @@ class Infocom
         return $this->buyDate;
     }
 
-    public function setBuyDate(\DateTimeInterface $buyDate): self
+    public function setBuyDate(\DateTimeInterface | null $buyDate): self
     {
         $this->buyDate = $buyDate;
 
@@ -172,7 +172,7 @@ class Infocom
         return $this->useDate;
     }
 
-    public function setUseDate(\DateTimeInterface $useDate): self
+    public function setUseDate(\DateTimeInterface | null $useDate): self
     {
         $this->useDate = $useDate;
 
@@ -196,7 +196,7 @@ class Infocom
         return $this->warrantyInfo;
     }
 
-    public function setWarrantyInfo(string $warrantyInfo): self
+    public function setWarrantyInfo(string | null $warrantyInfo): self
     {
         $this->warrantyInfo = $warrantyInfo;
 
@@ -208,7 +208,7 @@ class Infocom
         return $this->orderNumber;
     }
 
-    public function setOrderNumber(string $orderNumber): self
+    public function setOrderNumber(string | null $orderNumber): self
     {
         $this->orderNumber = $orderNumber;
 
@@ -280,7 +280,7 @@ class Infocom
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
+    public function setComment(string | null $comment): self
     {
         $this->comment = $comment;
 
@@ -292,7 +292,7 @@ class Infocom
         return $this->bill;
     }
 
-    public function setBill(string $bill): self
+    public function setBill(string | null $bill): self
     {
         $this->bill = $bill;
 
@@ -316,7 +316,7 @@ class Infocom
         return $this->orderDate;
     }
 
-    public function setOrderDate(\DateTimeInterface $orderDate): self
+    public function setOrderDate(\DateTimeInterface | null $orderDate): self
     {
         $this->orderDate = $orderDate;
 
@@ -328,7 +328,7 @@ class Infocom
         return $this->deliveryDate;
     }
 
-    public function setDeliveryDate(\DateTimeInterface $deliveryDate): self
+    public function setDeliveryDate(\DateTimeInterface | null $deliveryDate): self
     {
         $this->deliveryDate = $deliveryDate;
 
@@ -340,7 +340,7 @@ class Infocom
         return $this->inventoryDate;
     }
 
-    public function setInventoryDate(\DateTimeInterface $inventoryDate): self
+    public function setInventoryDate(\DateTimeInterface | null $inventoryDate): self
     {
         $this->inventoryDate = $inventoryDate;
 
@@ -352,7 +352,7 @@ class Infocom
         return $this->warrantyDate;
     }
 
-    public function setWarrantyDate(\DateTimeInterface $warrantyDate): self
+    public function setWarrantyDate(\DateTimeInterface | null $warrantyDate): self
     {
         $this->warrantyDate = $warrantyDate;
 
@@ -388,7 +388,7 @@ class Infocom
         return $this->decommissionDate;
     }
 
-    public function setDecommissionDate(\DateTimeInterface $decommissionDate): self
+    public function setDecommissionDate(\DateTimeInterface | null $decommissionDate): self
     {
         $this->decommissionDate = $decommissionDate;
 

@@ -17,13 +17,13 @@ class Netwotkportaggregate
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\ManyToOne(targetEntity: NetworkPort::class)]
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
-    private ?Networkport $networkport = null;
+    private ?NetworkPort $networkport = null;
 
-    #[ORM\ManyToOne(targetEntity: Networkport::class)]
+    #[ORM\ManyToOne(targetEntity: NetworkPort::class)]
     #[ORM\JoinColumn(name: 'networkports_id_list', referencedColumnName: 'id', nullable: true, options: ['comment' => 'array of associated networkports_id'])]
-    private ?Networkport $networkportList = null;
+    private ?NetworkPort $networkportList = null;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -64,7 +64,7 @@ class Netwotkportaggregate
     /**
      * Get the value of networkport
      */
-    public function getNetworkport()
+    public function getNetworkPort()
     {
         return $this->networkport;
     }
@@ -74,7 +74,7 @@ class Netwotkportaggregate
      *
      * @return  self
      */
-    public function setNetworkport($networkport)
+    public function setNetworkPort($networkport)
     {
         $this->networkport = $networkport;
 
@@ -84,7 +84,7 @@ class Netwotkportaggregate
     /**
      * Get the value of networkportList
      */
-    public function getNetworkportList()
+    public function getNetworkPortList()
     {
         return $this->networkportList;
     }
@@ -94,7 +94,7 @@ class Netwotkportaggregate
      *
      * @return  self
      */
-    public function setNetworkportList($networkportList)
+    public function setNetworkPortList($networkportList)
     {
         $this->networkportList = $networkportList;
 
