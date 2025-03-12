@@ -55,13 +55,13 @@ class Cluster
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\ManyToOne(targetEntity: Clustertype::class)]
+    #[ORM\ManyToOne(targetEntity: ClusterType::class)]
     #[ORM\JoinColumn(name: 'clustertypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Clustertype $clustertype = null;
+    private ?ClusterType $clustertype = null;
 
-    #[ORM\ManyToOne(targetEntity: Autoupdatesystem::class)]
+    #[ORM\ManyToOne(targetEntity: AutoUpdateSystem::class)]
     #[ORM\JoinColumn(name: 'autoupdatesystems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Autoupdatesystem $autoupdatesystem = null;
+    private ?AutoUpdateSystem $autoupdatesystem = null;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;
@@ -201,7 +201,7 @@ class Cluster
     /**
      * Get the value of autoupdatesystem
      */
-    public function getAutoupdatesystem()
+    public function getAutoUpdateSystem()
     {
         return $this->autoupdatesystem;
     }
@@ -211,7 +211,7 @@ class Cluster
      *
      * @return  self
      */
-    public function setAutoupdatesystem($autoupdatesystem)
+    public function setAutoUpdateSystem($autoupdatesystem)
     {
         $this->autoupdatesystem = $autoupdatesystem;
 
@@ -221,7 +221,7 @@ class Cluster
     /**
      * Get the value of clustertype
      */
-    public function getClustertype()
+    public function getClusterType()
     {
         return $this->clustertype;
     }
@@ -231,7 +231,7 @@ class Cluster
      *
      * @return  self
      */
-    public function setClustertype($clustertype)
+    public function setClusterType($clustertype)
     {
         $this->clustertype = $clustertype;
 

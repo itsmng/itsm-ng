@@ -49,9 +49,9 @@ class Contact
     #[ORM\Column(name: 'email', type: 'string', length: 255, nullable: true)]
     private $email;
 
-    #[ORM\ManyToOne(targetEntity: Contacttype::class)]
+    #[ORM\ManyToOne(targetEntity: ContactType::class)]
     #[ORM\JoinColumn(name: 'contacttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Contacttype $contacttype = null;
+    private ?ContactType $contacttype = null;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -340,7 +340,7 @@ class Contact
     /**
      * Get the value of contacttype
      */
-    public function getContacttype()
+    public function getContactType()
     {
         return $this->contacttype;
     }
@@ -350,7 +350,7 @@ class Contact
      *
      * @return  self
      */
-    public function setContacttype($contacttype)
+    public function setContactType($contacttype)
     {
         $this->contacttype = $contacttype;
 

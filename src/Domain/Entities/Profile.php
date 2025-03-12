@@ -67,19 +67,19 @@ class Profile
     private $changeStatus;
 
     #[ORM\Column(name: 'managed_domainrecordtypes', type: 'text', length: 65535, nullable: true)]
-    private $managedDomainrecordtypes;
+    private $managedDomainRecordTypes;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
-    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: KnowbaseitemProfile::class)]
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: KnowbaseItemProfile::class)]
     private Collection $knowbaseitemProfiles;
 
     #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileReminder::class)]
     private Collection $profileReminders;
 
-    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileRssfeed::class)]
-    private Collection $profileRssfeeds;
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileRSSFeed::class)]
+    private Collection $profileRSSFeeds;
 
     #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfileUser::class)]
     private Collection $profileUsers;
@@ -234,13 +234,13 @@ class Profile
 
     public function getManagedDomainRecordTypes(): ?string
     {
-        return $this->managedDomainrecordtypes;
+        return $this->managedDomainRecordTypes;
     }
 
 
-    public function setManagedDomainRecordTypes(?string $managedDomainrecordtypes): self
+    public function setManagedDomainRecordTypes(?string $managedDomainRecordTypes): self
     {
-        $this->managedDomainrecordtypes = $managedDomainrecordtypes;
+        $this->managedDomainRecordTypes = $managedDomainRecordTypes;
 
         return $this;
     }
@@ -261,7 +261,7 @@ class Profile
     /**
      * Get the value of knowbaseitemProfiles
      */
-    public function getKnowbaseitemProfiles()
+    public function getKnowbaseItemProfiles()
     {
         return $this->knowbaseitemProfiles;
     }
@@ -271,7 +271,7 @@ class Profile
      *
      * @return  self
      */
-    public function setKnowbaseitemProfiles($knowbaseitemProfiles)
+    public function setKnowbaseItemProfiles($knowbaseitemProfiles)
     {
         $this->knowbaseitemProfiles = $knowbaseitemProfiles;
 
@@ -359,21 +359,21 @@ class Profile
     }
 
     /**
-     * Get the value of profileRssfeeds
+     * Get the value of profileRSSFeeds
      */
-    public function getProfileRssfeeds()
+    public function getProfileRSSFeeds()
     {
-        return $this->profileRssfeeds;
+        return $this->profileRSSFeeds;
     }
 
     /**
-     * Set the value of profileRssfeeds
+     * Set the value of profileRSSFeeds
      *
      * @return  self
      */
-    public function setProfileRssfeeds($profileRssfeeds)
+    public function setProfileRSSFeeds($profileRSSFeeds)
     {
-        $this->profileRssfeeds = $profileRssfeeds;
+        $this->profileRSSFeeds = $profileRSSFeeds;
 
         return $this;
     }

@@ -15,9 +15,9 @@ class OperatingSystemKernelVersion
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Operatingsystemkernel::class)]
+    #[ORM\ManyToOne(targetEntity: OperatingSystemKernel::class)]
     #[ORM\JoinColumn(name: 'operatingsystemkernels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Operatingsystemkernel $operatingsystemkernel = null;
+    private ?OperatingSystemKernel $operatingsystemkernel = null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -88,7 +88,7 @@ class OperatingSystemKernelVersion
     /**
      * Get the value of operatingsystemkernel
      */
-    public function getOperatingsystemkernel()
+    public function getOperatingSystemKernel()
     {
         return $this->operatingsystemkernel;
     }
@@ -98,7 +98,7 @@ class OperatingSystemKernelVersion
      *
      * @return  self
      */
-    public function setOperatingsystemkernel($operatingsystemkernel)
+    public function setOperatingSystemKernel($operatingsystemkernel)
     {
         $this->operatingsystemkernel = $operatingsystemkernel;
 

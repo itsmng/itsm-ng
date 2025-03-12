@@ -24,9 +24,9 @@ class DeviceCase
     #[ORM\Column(name: 'designation', type: "string", length: 255, nullable: true)]
     private $designation;
 
-    #[ORM\ManyToOne(targetEntity: DevicecaseType::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceCaseType::class)]
     #[ORM\JoinColumn(name: 'devicecasetypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?DevicecaseType $devicecaseType = null;
+    private ?DeviceCaseType $deviceCaseType = null;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
@@ -42,9 +42,9 @@ class DeviceCase
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
     private $isRecursive;
 
-    #[ORM\ManyToOne(targetEntity: Devicecasemodel::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceCaseModel::class)]
     #[ORM\JoinColumn(name: 'devicecasemodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Devicecasemodel $devicecasemodel = null;
+    private ?DeviceCaseModel $deviceCaseModel = null;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;
@@ -152,9 +152,9 @@ class DeviceCase
     /**
      * Get the value of devicecasemodel
      */
-    public function getDevicecasemodel()
+    public function getDeviceCaseModel()
     {
-        return $this->devicecasemodel;
+        return $this->deviceCaseModel;
     }
 
     /**
@@ -162,9 +162,9 @@ class DeviceCase
      *
      * @return  self
      */
-    public function setDevicecasemodel($devicecasemodel)
+    public function setDeviceCaseModel($devicecasemodel)
     {
-        $this->devicecasemodel = $devicecasemodel;
+        $this->deviceCaseModel = $devicecasemodel;
 
         return $this;
     }
@@ -172,9 +172,9 @@ class DeviceCase
     /**
      * Get the value of devicecaseType
      */
-    public function getDevicecaseType()
+    public function getDeviceCaseType()
     {
-        return $this->devicecaseType;
+        return $this->deviceCaseType;
     }
 
     /**
@@ -182,9 +182,9 @@ class DeviceCase
      *
      * @return  self
      */
-    public function setDevicecaseType($devicecaseType)
+    public function setDeviceCaseType($devicecaseType)
     {
-        $this->devicecaseType = $devicecaseType;
+        $this->deviceCaseType = $devicecaseType;
 
         return $this;
     }

@@ -31,9 +31,9 @@ class DevicePci
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer = null;
 
-    #[ORM\ManyToOne(targetEntity: Devicenetworkcardmodel::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceNetworkCardModel::class)]
     #[ORM\JoinColumn(name: 'devicenetworkcardmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Devicenetworkcardmodel $devicenetworkcardmodel = null;
+    private ?DeviceNetworkCardModel $devicenetworkcardmodel = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
@@ -142,7 +142,7 @@ class DevicePci
     /**
      * Get the value of devicenetworkcardmodel
      */
-    public function getDevicenetworkcardmodel()
+    public function getDeviceNetworkCardModel()
     {
         return $this->devicenetworkcardmodel;
     }
@@ -152,7 +152,7 @@ class DevicePci
      *
      * @return  self
      */
-    public function setDevicenetworkcardmodel($devicenetworkcardmodel)
+    public function setDeviceNetworkCardModel($devicenetworkcardmodel)
     {
         $this->devicenetworkcardmodel = $devicenetworkcardmodel;
 

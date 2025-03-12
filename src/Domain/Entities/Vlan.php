@@ -44,7 +44,7 @@ class Vlan
     #[ORM\OneToMany(mappedBy: 'vlan', targetEntity: IpNetworkVlan::class)]
     private Collection $ipnetworkVlans;
 
-    #[ORM\OneToMany(mappedBy: 'vlan', targetEntity: NetworkportVlan::class)]
+    #[ORM\OneToMany(mappedBy: 'vlan', targetEntity: NetworkPortVlan::class)]
     private Collection $networkportVlans;
 
     public function getId(): ?int
@@ -147,7 +147,7 @@ class Vlan
     /**
      * Get the value of networkportVlans
      */
-    public function getNetworkportVlans()
+    public function getNetworkPortVlans()
     {
         return $this->networkportVlans;
     }
@@ -157,7 +157,7 @@ class Vlan
      *
      * @return  self
      */
-    public function setNetworkportVlans($networkportVlans)
+    public function setNetworkPortVlans($networkportVlans)
     {
         $this->networkportVlans = $networkportVlans;
 

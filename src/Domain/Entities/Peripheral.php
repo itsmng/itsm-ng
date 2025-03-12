@@ -70,13 +70,13 @@ class Peripheral
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location = null;
 
-    #[ORM\ManyToOne(targetEntity: Peripheraltype::class)]
+    #[ORM\ManyToOne(targetEntity: PeripheralType::class)]
     #[ORM\JoinColumn(name: 'peripheraltypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Peripheraltype $peripheraltype = null;
+    private ?PeripheralType $peripheraltype = null;
 
-    #[ORM\ManyToOne(targetEntity: peripheralmodel::class)]
+    #[ORM\ManyToOne(targetEntity: PeripheralModel::class)]
     #[ORM\JoinColumn(name: 'peripheralmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?peripheralmodel $peripheralmodel = null;
+    private ?PeripheralModel $peripheralmodel = null;
 
     #[ORM\Column(name: 'brand', type: 'string', length: 255, nullable: true)]
     private $brand;
@@ -385,7 +385,7 @@ class Peripheral
     /**
      * Get the value of peripheraltype
      */
-    public function getPeripheraltype()
+    public function getPeripheralType()
     {
         return $this->peripheraltype;
     }
@@ -395,7 +395,7 @@ class Peripheral
      *
      * @return  self
      */
-    public function setPeripheraltype($peripheraltype)
+    public function setPeripheralType($peripheraltype)
     {
         $this->peripheraltype = $peripheraltype;
 

@@ -47,9 +47,9 @@ class PDU
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\ManyToOne(targetEntity: Pdumodel::class)]
+    #[ORM\ManyToOne(targetEntity: PduModel::class)]
     #[ORM\JoinColumn(name: 'pdumodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Pdumodel $pdumodel = null;
+    private ?PduModel $pdumodel = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
@@ -79,9 +79,9 @@ class PDU
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer = null;
 
-    #[ORM\ManyToOne(targetEntity: Pdutype::class)]
+    #[ORM\ManyToOne(targetEntity: PduType::class)]
     #[ORM\JoinColumn(name: 'pdutypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Pdutype $pdutype = null;
+    private ?PduType $pdutype = null;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -284,7 +284,7 @@ class PDU
     /**
      * Get the value of pdumodel
      */
-    public function getPdumodel()
+    public function getPduModel()
     {
         return $this->pdumodel;
     }
@@ -294,7 +294,7 @@ class PDU
      *
      * @return  self
      */
-    public function setPdumodel($pdumodel)
+    public function setPduModel($pdumodel)
     {
         $this->pdumodel = $pdumodel;
 
@@ -365,7 +365,7 @@ class PDU
     /**
      * Get the value of pdutype
      */
-    public function getPdutype()
+    public function getPduType()
     {
         return $this->pdutype;
     }
@@ -375,7 +375,7 @@ class PDU
      *
      * @return  self
      */
-    public function setPdutype($pdutype)
+    public function setPduType($pdutype)
     {
         $this->pdutype = $pdutype;
 

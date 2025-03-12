@@ -282,7 +282,7 @@ class CommonDBTM extends CommonGLPI
         try {
             $item = $this::getAdapter()->findOneBy([$this->getIndexName() => Toolbox::cleanInteger($ID)]);
         } catch (\Exception $e) {
-            throw new \Exception('error: ' . $e->getMessage());
+            throw new \Exception($e->getMessage());
             return false;
         }
         if (isset($item)) {
@@ -3539,7 +3539,7 @@ class CommonDBTM extends CommonGLPI
     public function getField($field)
     {
 
-        if (array_key_exists($field, $this->fields)) {
+        if (array_key_exists($field, $this->fields ?? [])) {
             return $this->fields[$field];
         }
         return NOT_AVAILABLE;

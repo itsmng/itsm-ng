@@ -4,7 +4,7 @@ namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Itsmng\Domain\Entities\Requesttype as EntitiesRequesttype;
+use Itsmng\Domain\Entities\RequestType as EntitiesRequestType;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_users")]
@@ -159,9 +159,9 @@ class User
     #[ORM\Column(name: 'task_private', type: 'boolean', nullable: true)]
     private $taskPrivate;
 
-    #[ORM\ManyToOne(targetEntity: EntitiesRequesttype::class)]
+    #[ORM\ManyToOne(targetEntity: EntitiesRequestType::class)]
     #[ORM\JoinColumn(name: 'default_requesttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?EntitiesRequesttype $defaultRequesttype = null;
+    private ?EntitiesRequestType $defaultRequestType = null;
 
     #[ORM\Column(name: 'password_forget_token', type: 'string', length: 40, nullable: true)]
     private $passwordForgetToken;
@@ -350,7 +350,7 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: GroupUser::class)]
     private Collection $groupUsers;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: KnowbaseitemUser::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: KnowbaseItemUser::class)]
     private Collection $knowbaseitemUsers;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ProblemUser::class)]
@@ -362,10 +362,10 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ReminderUser::class)]
     private Collection $reminderUsers;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RssfeedUser::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RSSFeedUser::class)]
     private Collection $rssfeedUsers;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SavedsearchUser::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SavedSearchUser::class)]
     private Collection $savedsearchUsers;
 
 
@@ -1553,7 +1553,7 @@ class User
     /**
      * Get the value of knowbaseitemUsers
      */
-    public function getKnowbaseitemUsers()
+    public function getKnowbaseItemUsers()
     {
         return $this->knowbaseitemUsers;
     }
@@ -1563,7 +1563,7 @@ class User
      *
      * @return  self
      */
-    public function setKnowbaseitemUsers($knowbaseitemUsers)
+    public function setKnowbaseItemUsers($knowbaseitemUsers)
     {
         $this->knowbaseitemUsers = $knowbaseitemUsers;
 
@@ -1633,7 +1633,7 @@ class User
     /**
      * Get the value of rssfeedUsers
      */
-    public function getRssfeedUsers()
+    public function getRSSFeedUsers()
     {
         return $this->rssfeedUsers;
     }
@@ -1643,7 +1643,7 @@ class User
      *
      * @return  self
      */
-    public function setRssfeedUsers($rssfeedUsers)
+    public function setRSSFeedUsers($rssfeedUsers)
     {
         $this->rssfeedUsers = $rssfeedUsers;
 
@@ -1653,7 +1653,7 @@ class User
     /**
      * Get the value of savedsearchUsers
      */
-    public function getSavedsearchUsers()
+    public function getSavedSearchUsers()
     {
         return $this->savedsearchUsers;
     }
@@ -1663,7 +1663,7 @@ class User
      *
      * @return  self
      */
-    public function setSavedsearchUsers($savedsearchUsers)
+    public function setSavedSearchUsers($savedsearchUsers)
     {
         $this->savedsearchUsers = $savedsearchUsers;
 
@@ -1792,21 +1792,21 @@ class User
 
 
     /**
-     * Get the value of defaultRequesttype
+     * Get the value of defaultRequestType
      */
-    public function getDefaultRequesttype()
+    public function getDefaultRequestType()
     {
-        return $this->defaultRequesttype;
+        return $this->defaultRequestType;
     }
 
     /**
-     * Set the value of defaultRequesttype
+     * Set the value of defaultRequestType
      *
      * @return  self
      */
-    public function setDefaultRequesttype($defaultRequesttype)
+    public function setDefaultRequestType($defaultRequestType)
     {
-        $this->defaultRequesttype = $defaultRequesttype;
+        $this->defaultRequestType = $defaultRequestType;
 
         return $this;
     }

@@ -53,9 +53,9 @@ class SLA
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
-    #[ORM\ManyToOne(targetEntity: Slm::class)]
+    #[ORM\ManyToOne(targetEntity: SLM::class)]
     #[ORM\JoinColumn(name: 'slms_id', referencedColumnName: 'id', nullable: true)]
-    private ?Slm $slm = null;
+    private ?SLM $slm = null;
 
     public function getId(): ?int
     {
@@ -213,7 +213,7 @@ class SLA
     /**
      * Get the value of slm
      */
-    public function getSlm()
+    public function getSLM()
     {
         return $this->slm;
     }
@@ -223,7 +223,7 @@ class SLA
      *
      * @return  self
      */
-    public function setSlm($slm)
+    public function setSLM($slm)
     {
         $this->slm = $slm;
 

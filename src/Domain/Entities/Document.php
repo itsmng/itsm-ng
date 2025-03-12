@@ -40,9 +40,9 @@ class Document
     #[ORM\Column(name: 'filepath', type: 'string', length: 255, nullable: true, options: ['comment' => 'file storage path'])]
     private $filepath;
 
-    #[ORM\ManyToOne(targetEntity: Documentcategory::class)]
+    #[ORM\ManyToOne(targetEntity: DocumentCategory::class)]
     #[ORM\JoinColumn(name: 'documentcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Documentcategory $documentcategory = null;
+    private ?DocumentCategory $documentcategory = null;
 
     #[ORM\Column(name: 'mime', type: 'string', length: 255, nullable: true)]
     private $mime;
@@ -253,7 +253,7 @@ class Document
     /**
      * Get the value of documentcategory
      */
-    public function getDocumentcategory()
+    public function getDocumentCategory()
     {
         return $this->documentcategory;
     }
@@ -263,7 +263,7 @@ class Document
      *
      * @return  self
      */
-    public function setDocumentcategory($documentcategory)
+    public function setDocumentCategory($documentcategory)
     {
         $this->documentcategory = $documentcategory;
 

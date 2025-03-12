@@ -90,12 +90,12 @@ class ItemDeviceSoundCard
         return $this;
     }
 
-    public function getDevicesoundcardsId(): ?int
+    public function getDeviceSoundCardsId(): ?int
     {
         return $this->devicesoundcardsId;
     }
 
-    public function setDevicesoundcardsId(int $devicesoundcardsId): self
+    public function setDeviceSoundCardsId(int $devicesoundcardsId): self
     {
         $this->devicesoundcardsId = $devicesoundcardsId;
 

@@ -70,20 +70,20 @@ class Phone
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location = null;
 
-    #[ORM\ManyToOne(targetEntity: Phonetype::class)]
+    #[ORM\ManyToOne(targetEntity: PhoneType::class)]
     #[ORM\JoinColumn(name: 'phonetypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Phonetype $phonetype = null;
+    private ?PhoneType $phonetype = null;
 
-    #[ORM\ManyToOne(targetEntity: Phonemodel::class)]
+    #[ORM\ManyToOne(targetEntity: PhoneModel::class)]
     #[ORM\JoinColumn(name: 'phonemodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Phonemodel $phonemodel = null;
+    private ?PhoneModel $phonemodel = null;
 
     #[ORM\Column(name: 'brand', type: 'string', length: 255, nullable: true)]
     private $brand;
 
-    #[ORM\ManyToOne(targetEntity: Phonepowersupply::class)]
+    #[ORM\ManyToOne(targetEntity: PhonePowerSupply::class)]
     #[ORM\JoinColumn(name: 'phonepowersupplies_id', referencedColumnName: 'id', nullable: true)]
-    private ?Phonepowersupply $phonepowersupply = null;
+    private ?PhonePowerSupply $phonepowersupply = null;
 
     #[ORM\Column(name: 'number_line', type: 'string', length: 255, nullable: true)]
     private $numberLine;
@@ -423,7 +423,7 @@ class Phone
     /**
      * Get the value of phonetype
      */
-    public function getPhonetype()
+    public function getPhoneType()
     {
         return $this->phonetype;
     }
@@ -433,7 +433,7 @@ class Phone
      *
      * @return  self
      */
-    public function setPhonetype($phonetype)
+    public function setPhoneType($phonetype)
     {
         $this->phonetype = $phonetype;
 
@@ -443,7 +443,7 @@ class Phone
     /**
      * Get the value of phonemodel
      */
-    public function getPhonemodel()
+    public function getPhoneModel()
     {
         return $this->phonemodel;
     }
@@ -453,7 +453,7 @@ class Phone
      *
      * @return  self
      */
-    public function setPhonemodel($phonemodel)
+    public function setPhoneModel($phonemodel)
     {
         $this->phonemodel = $phonemodel;
 
@@ -463,7 +463,7 @@ class Phone
     /**
      * Get the value of phonepowersupply
      */
-    public function getPhonepowersupply()
+    public function getPhonePowerSupply()
     {
         return $this->phonepowersupply;
     }
@@ -473,7 +473,7 @@ class Phone
      *
      * @return  self
      */
-    public function setPhonepowersupply($phonepowersupply)
+    public function setPhonePowerSupply($phonepowersupply)
     {
         $this->phonepowersupply = $phonepowersupply;
 
