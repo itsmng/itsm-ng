@@ -60,6 +60,7 @@ class Oidc extends CommonDBTM
             $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
             $oidc_db['proxy'] = $iterator['proxy'];
             $oidc_db['cert'] = $iterator['cert'];
+            $oidc_db['sso_link_users'] = $iterator['sso_link_users'];
         }
 
         $oidc = new Jumbojett\OpenIDConnectClient($oidc_db['Provider'], $oidc_db['ClientID'], $oidc_db['ClientSecret']);
@@ -111,7 +112,8 @@ class Oidc extends CommonDBTM
 
         if (isset($user_array["name"])) {
             foreach ($iterators as $iterator) {
-                if ($user_array['name'] == $iterator['name']) {
+                $canLink = $oidc_db['sso_link_users'] || $iterator['authtype'] == Auth::EXTERNAL;
+                if ($user_array['name'] == $iterator['name'] && $canLink) {
                     $ID = $iterator['id'];
                     $newUser = false;
                 }
@@ -128,7 +130,8 @@ class Oidc extends CommonDBTM
             }
         } else {
             foreach ($iterators as $iterator) {
-                if ($user_array['sub'] == $iterator['name']) {
+                $canLink = $oidc_db['sso_link_users'] || $iterator['authtype'] == Auth::EXTERNAL;
+                if ($user_array['sub'] == $iterator['name'] && $canLink) {
                     $ID = $iterator['id'];
                     $newUser = false;
                 }
