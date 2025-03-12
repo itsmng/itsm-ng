@@ -182,6 +182,9 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     private static function getLinkedEntity(object $object, string $field): string | null
     {
         $property = self::toEntityFormat($field);
+        if (!property_exists($object, $property)) {
+            return null;
+        }
         $reflectionProperty = new \ReflectionProperty($object, $property);
         $attributes = $reflectionProperty->getAttributes();
         foreach ($attributes as $attribute) {
@@ -232,49 +235,41 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
         $fields = [];
 
-        try {
-            $getters = $this->getPropertiesAndGetters($content);
+        $getters = $this->getPropertiesAndGetters($content);
 
-            foreach ($getters as $propertyName => $getter) {
-                if (!method_exists($content, $getter)) {
-                    continue;
-                }
+        foreach ($getters as $propertyName => $getter) {
+            if (!method_exists($content, $getter)) {
+                continue;
+            }
 
-                try {
-                    $value = $content->$getter();
-                } catch (\Exception $e) {
-                    throw new \Exception('Cannot get value for property ' . $propertyName . ' of class ' . get_class($content));
-                    continue;
-                }
+            try {
+                $value = $content->$getter();
+            } catch (\Exception $e) {
+                throw new \Exception('Cannot get value for property ' . $propertyName . ' of class ' . get_class($content));
+                continue;
+            }
 
-                $isRelation = self::isRelation($content, $propertyName);
+            $isRelation = self::isRelation($content, $propertyName);
 
-                // Convertir le nom en snake_case
-                $snakeCaseKey = $this->toDbFormat($propertyName, $isRelation);
+            $snakeCaseKey = $this->toDbFormat($propertyName, $isRelation);
 
-                // Gestion des valeurs selon leur type
-                if ($value instanceof \DateTime) {
-                    $value = $value->format('Y-m-d H:i:s');
-                }
+            if ($value instanceof \DateTime) {
+                $value = $value->format('Y-m-d H:i:s');
+            }
 
-                if ($isRelation && $value !== null && method_exists($value, 'getId')) {
+            if ($isRelation && $value !== null && method_exists($value, 'getId')) {
+                $fields[$snakeCaseKey] = $value->getId();
+            } elseif (is_object($value)) {
+                if (method_exists($value, 'getId')) {
                     $fields[$snakeCaseKey] = $value->getId();
-                } elseif (is_object($value)) {
-                    if (method_exists($value, 'getId')) {
-                        $fields[$snakeCaseKey] = $value->getId();
-                    }
-                } else {
-                    if (!($value instanceof \Closure) && !($value instanceof \Doctrine\ORM\PersistentCollection)) {
-                        $fields[$snakeCaseKey] = $value;
-                    }
+                }
+            } else {
+                if (!($value instanceof \Closure) && !($value instanceof \Doctrine\ORM\PersistentCollection)) {
+                    $fields[$snakeCaseKey] = $value;
                 }
             }
-            return $fields;
-
-        } catch (\Exception $e) {
-            throw new \Exception('Error in getFields: ' . $e->getMessage());
-            return $fields;
         }
+        return $fields;
     }
 
     public function getSettersFromFields(array $fields): array
