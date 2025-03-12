@@ -4277,6 +4277,14 @@ JAVASCRIPT;
       if (!Session::haveRight(self::$rightname, self::UPDATEAUTHENT)) {
          return false;
       }
+      $userCheck = new User();
+      foreach ($IDs as $id) {
+          $userCheck->getFromDB($id);
+          if (!$userCheck->canUpdateItem()) {
+              return false;
+              break;
+          }
+      }
 
       if (!empty($IDs)
           && in_array($authtype, [Auth::DB_GLPI, Auth::LDAP, Auth::MAIL, Auth::EXTERNAL])) {

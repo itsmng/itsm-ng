@@ -174,7 +174,7 @@ class Html extends \GLPITestCase {
          // <email@domain.com> should be twice encoded
          ['From: Test User <test@glpi-project.org>', 'From: Test User test@glpi-project.org', 'From: Test User test@glpi-project.org'],
          // <a href="mailto:email@domain.com"> should be preserved
-         ['Email me @: <a href="mailto:email@domain.com">email@domain.com</a>', 'Email me @: email@domain.com', 'Email me @: <a href="denied:mailto:email@domain.com">email@domain.com</a>'],
+         ['Email me @: <a href="mailto:email@domain.com">email@domain.com</a>', 'Email me @: email@domain.com', 'Email me @: <a href="mailto:email@domain.com">email@domain.com</a>'],
       ];
    }
 
