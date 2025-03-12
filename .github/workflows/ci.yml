@@ -44,7 +44,7 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v2"
       - name: "Restore dependencies cache"
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ${{ env.APP_CONTAINER_HOME }}/.composer/cache/
@@ -115,7 +115,7 @@ jobs:
         uses: "actions/checkout@v2"
       - name: "Restore dependencies cache"
         if: env.skip != 'true'
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ${{ env.APP_CONTAINER_HOME }}/.composer/cache/
