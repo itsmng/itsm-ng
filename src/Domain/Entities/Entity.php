@@ -90,9 +90,9 @@ class Entity
     #[ORM\Column(name: 'tag', type: 'string', length: 255, nullable: true)]
     private $tag;
 
-    #[ORM\ManyToOne(targetEntity: AuthLdap::class)]
+    #[ORM\ManyToOne(targetEntity: AuthLDAP::class)]
     #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: true)]
-    private ?AuthLdap $authldap = null;
+    private ?AuthLDAP $authldap = null;
 
     #[ORM\Column(name: 'mail_domain', type: 'string', length: 255, nullable: true)]
     private $mailDomain;
@@ -261,14 +261,14 @@ class Entity
     #[ORM\Column(name: 'altitude', type: 'string', length: 255, nullable: true)]
     private $altitude;
 
-    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityKnowbaseitem::class)]
-    private Collection $entityKnowbaseitems;
+    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityKnowbaseItem::class)]
+    private Collection $entityKnowbaseItems;
 
     #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityReminder::class)]
     private Collection $entityReminders;
 
-    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityRssFeed::class)]
-    private Collection $entityRssfeeds;
+    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: EntityRSSFeed::class)]
+    private Collection $entityRSSFeeds;
 
     public function getId(): ?int
     {
@@ -1256,21 +1256,21 @@ class Entity
     }
 
     /**
-     * Get the value of entityKnowbaseitems
+     * Get the value of entityKnowbaseItems
      */
-    public function getEntityKnowbaseitems()
+    public function getEntityKnowbaseItems()
     {
-        return $this->entityKnowbaseitems;
+        return $this->entityKnowbaseItems;
     }
 
     /**
-     * Set the value of entityKnowbaseitems
+     * Set the value of entityKnowbaseItems
      *
      * @return  self
      */
-    public function setEntityKnowbaseitems($entityKnowbaseitems)
+    public function setEntityKnowbaseItems($entityKnowbaseItems)
     {
-        $this->entityKnowbaseitems = $entityKnowbaseitems;
+        $this->entityKnowbaseItems = $entityKnowbaseItems;
 
         return $this;
     }
@@ -1296,21 +1296,21 @@ class Entity
     }
 
     /**
-     * Get the value of entityRssfeeds
+     * Get the value of entityRSSFeeds
      */
-    public function getEntityRssfeeds()
+    public function getEntityRSSFeeds()
     {
-        return $this->entityRssfeeds;
+        return $this->entityRSSFeeds;
     }
 
     /**
-     * Set the value of entityRssfeeds
+     * Set the value of entityRSSFeeds
      *
      * @return  self
      */
-    public function setEntityRssfeeds($entityRssfeeds)
+    public function setEntityRSSFeeds($entityRSSFeeds)
     {
-        $this->entityRssfeeds = $entityRssfeeds;
+        $this->entityRSSFeeds = $entityRSSFeeds;
 
         return $this;
     }

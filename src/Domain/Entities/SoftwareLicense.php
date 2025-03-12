@@ -59,9 +59,9 @@ class SoftwareLicense
     #[ORM\Column(name: 'number', type: 'integer', options: ['default' => 0])]
     private $number;
 
-    #[ORM\ManyToOne(targetEntity: Softwarelicensetype::class)]
+    #[ORM\ManyToOne(targetEntity: SoftwareLicenseType::class)]
     #[ORM\JoinColumn(name: 'softwarelicensetypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Softwarelicensetype $softwarelicensetype = null;
+    private ?SoftwareLicenseType $softwarelicensetype = null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -454,7 +454,7 @@ class SoftwareLicense
     /**
      * Get the value of softwarelicensetype
      */
-    public function getSoftwarelicensetype()
+    public function getSoftwareLicenseType()
     {
         return $this->softwarelicensetype;
     }
@@ -464,7 +464,7 @@ class SoftwareLicense
      *
      * @return  self
      */
-    public function setSoftwarelicensetype($softwarelicensetype)
+    public function setSoftwareLicenseType($softwarelicensetype)
     {
         $this->softwarelicensetype = $softwarelicensetype;
 

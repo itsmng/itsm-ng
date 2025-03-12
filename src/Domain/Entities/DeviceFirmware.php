@@ -48,9 +48,9 @@ class DeviceFirmware
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
     private $isRecursive;
 
-    #[ORM\ManyToOne(targetEntity: Devicefirmwaremodel::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceFirmwareModel::class)]
     #[ORM\JoinColumn(name: 'devicefirmwaremodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Devicefirmwaremodel $devicefirmwaremodel = null;
+    private ?DeviceFirmwareModel $devicefirmwaremodel = null;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;
@@ -197,7 +197,7 @@ class DeviceFirmware
     /**
      * Get the value of devicefirmwaremodel
      */
-    public function getDevicefirmwaremodel()
+    public function getDeviceFirmwareModel()
     {
         return $this->devicefirmwaremodel;
     }
@@ -207,7 +207,7 @@ class DeviceFirmware
      *
      * @return  self
      */
-    public function setDevicefirmwaremodel($devicefirmwaremodel)
+    public function setDeviceFirmwareModel($devicefirmwaremodel)
     {
         $this->devicefirmwaremodel = $devicefirmwaremodel;
 

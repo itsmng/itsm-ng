@@ -82,9 +82,9 @@ class Problem
     #[ORM\Column(name: 'priority', type: 'integer', options: ['default' => 1])]
     private $priority;
 
-    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\ManyToOne(targetEntity: ITILCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?ItilCategory $itilcategory = null;
+    private ?ITILCategory $itilcategory = null;
 
     #[ORM\Column(name: 'impactcontent', type: 'text', nullable: true)]
     private $impactcontent;
@@ -524,7 +524,7 @@ class Problem
     /**
      * Get the value of itilcategory
      */
-    public function getItilcategory()
+    public function getITILcategory()
     {
         return $this->itilcategory;
     }
@@ -534,7 +534,7 @@ class Problem
      *
      * @return  self
      */
-    public function setItilcategory($itilcategory)
+    public function setITILcategory($itilcategory)
     {
         $this->itilcategory = $itilcategory;
 

@@ -232,7 +232,7 @@ class ItemDisk
         return $this->encryptionTool;
     }
 
-    public function setEncryptionTool(string $encryptionTool): self
+    public function setEncryptionTool(string | null $encryptionTool): self
     {
         $this->encryptionTool = $encryptionTool;
 
@@ -244,7 +244,7 @@ class ItemDisk
         return $this->encryptionAlgorithm;
     }
 
-    public function setEncryptionAlgorithm(string $encryptionAlgorithm): self
+    public function setEncryptionAlgorithm(string | null $encryptionAlgorithm): self
     {
         $this->encryptionAlgorithm = $encryptionAlgorithm;
 
@@ -256,7 +256,7 @@ class ItemDisk
         return $this->encryptionType;
     }
 
-    public function setEncryptionType(string $encryptionType): self
+    public function setEncryptionType(string | null $encryptionType): self
     {
         $this->encryptionType = $encryptionType;
 

@@ -45,9 +45,9 @@ class Enclosure
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\ManyToOne(targetEntity: Enclosuremodel::class)]
+    #[ORM\ManyToOne(targetEntity: EnclosureModel::class)]
     #[ORM\JoinColumn(name: 'enclosuremodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Enclosuremodel $enclosuremodel = null;
+    private ?EnclosureModel $enclosuremodel = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
@@ -281,7 +281,7 @@ class Enclosure
     /**
      * Get the value of enclosuremodel
      */
-    public function getEnclosuremodel()
+    public function getEnclosureModel()
     {
         return $this->enclosuremodel;
     }
@@ -291,7 +291,7 @@ class Enclosure
      *
      * @return  self
      */
-    public function setEnclosuremodel($enclosuremodel)
+    public function setEnclosureModel($enclosuremodel)
     {
         $this->enclosuremodel = $enclosuremodel;
 

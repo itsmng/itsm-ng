@@ -13,11 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "groups_id", columns: ['groups_id'])]
 #[ORM\Index(name: "users_id", columns: ['users_id'])]
 #[ORM\Index(name: "locations_id", columns: ['locations_id'])]
-#[ORM\Index(name: "networkequipmentmodels_id", columns: ['networkequipmentmodels_id'])]
+#[ORM\Index(name: "networkequipmentModels_id", columns: ['networkequipmentmodels_id'])]
 #[ORM\Index(name: "networks_id", columns: ['networks_id'])]
 #[ORM\Index(name: "states_id", columns: ['states_id'])]
 #[ORM\Index(name: "tech_users_id", columns: ['tech_users_id'])]
-#[ORM\Index(name: "networkequipmenttypes_id", columns: ['networkequipmenttypes_id'])]
+#[ORM\Index(name: "networkequipmentTypes_id", columns: ['networkequipmenttypes_id'])]
 #[ORM\Index(name: "is_deleted", columns: ['is_deleted'])]
 #[ORM\Index(name: "date_mod", columns: ['date_mod'])]
 #[ORM\Index(name: "tech_groups_id", columns: ['tech_groups_id'])]
@@ -79,13 +79,13 @@ class NetworkEquipment
     #[ORM\JoinColumn(name: 'networks_id', referencedColumnName: 'id', nullable: true)]
     private ?Network $network = null;
 
-    #[ORM\ManyToOne(targetEntity: Networkequipmenttype::class)]
-    #[ORM\JoinColumn(name: 'networkequipmenttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Networkequipmenttype $networkequipmenttype = null;
+    #[ORM\ManyToOne(targetEntity: NetworkEquipmentType::class)]
+    #[ORM\JoinColumn(name: 'networkequipmentTypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?NetworkEquipmentType $networkEquipmentType = null;
 
-    #[ORM\ManyToOne(targetEntity: Networkequipmentmodel::class)]
-    #[ORM\JoinColumn(name: 'networkequipmentmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Networkequipmentmodel $networkequipmentmodel = null;
+    #[ORM\ManyToOne(targetEntity: NetworkEquipmentModel::class)]
+    #[ORM\JoinColumn(name: 'networkequipmentModels_id', referencedColumnName: 'id', nullable: true)]
+    private ?NetworkEquipmentModel $networkEquipmentModel = null;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
@@ -390,41 +390,41 @@ class NetworkEquipment
     }
 
     /**
-     * Get the value of networkequipmenttype
+     * Get the value of networkequipmentType
      */
-    public function getNetworkequipmenttype()
+    public function getNetworkEquipmentType()
     {
-        return $this->networkequipmenttype;
+        return $this->networkEquipmentType;
     }
 
     /**
-     * Set the value of networkequipmenttype
+     * Set the value of networkequipmentType
      *
      * @return  self
      */
-    public function setNetworkequipmenttype($networkequipmenttype)
+    public function setNetworkEquipmentType($networkequipmenttype)
     {
-        $this->networkequipmenttype = $networkequipmenttype;
+        $this->networkEquipmentType = $networkequipmenttype;
 
         return $this;
     }
 
     /**
-     * Get the value of networkequipmentmodel
+     * Get the value of networkequipmentModel
      */
-    public function getNetworkequipmentmodel()
+    public function getNetworkEquipmentModel()
     {
-        return $this->networkequipmentmodel;
+        return $this->networkEquipmentModel;
     }
 
     /**
-     * Set the value of networkequipmentmodel
+     * Set the value of networkequipmentModel
      *
      * @return  self
      */
-    public function setNetworkequipmentmodel($networkequipmentmodel)
+    public function setNetworkEquipmentModel($networkequipmentmodel)
     {
-        $this->networkequipmentmodel = $networkequipmentmodel;
+        $this->networkEquipmentModel = $networkequipmentmodel;
 
         return $this;
     }

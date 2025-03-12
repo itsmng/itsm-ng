@@ -112,12 +112,12 @@ class ItemDeviceSimcard
         return $this;
     }
 
-    public function getDevicesimcardsId(): ?int
+    public function getDeviceSimcardsId(): ?int
     {
         return $this->devicesimcardsId;
     }
 
-    public function setDevicesimcardsId(int $devicesimcardsId): self
+    public function setDeviceSimcardsId(int $devicesimcardsId): self
     {
         $this->devicesimcardsId = $devicesimcardsId;
 

@@ -82,12 +82,12 @@ class ItemDeviceSensor
         return $this;
     }
 
-    public function getDevicesensorsId()
+    public function getDeviceSensorsId()
     {
         return $this->devicesensorsId;
     }
 
-    public function setDevicesensorsId($devicesensors_id)
+    public function setDeviceSensorsId($devicesensors_id)
     {
         $this->devicesensorsId = $devicesensorsId;
         return $this;

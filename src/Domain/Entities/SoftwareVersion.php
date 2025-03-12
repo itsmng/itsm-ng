@@ -44,9 +44,9 @@ class SoftwareVersion
     #[ORM\Column(name: 'operatingsystems_id', type: 'integer', nullable: true)]
     private $operatingsystemsId;
 
-    #[ORM\ManyToOne(targetEntity: Operatingsystem::class)]
+    #[ORM\ManyToOne(targetEntity: OperatingSystem::class)]
     #[ORM\JoinColumn(name: 'operatingsystems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Operatingsystem $operatingsystem = null;
+    private ?OperatingSystem $operatingsystem = null;
 
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
@@ -108,12 +108,12 @@ class SoftwareVersion
         return $this;
     }
 
-    public function getOperatingsystemsId(): ?int
+    public function getOperatingSystemsId(): ?int
     {
         return $this->operatingsystemsId;
     }
 
-    public function setOperatingsystemsId(?int $operatingsystemsId): self
+    public function setOperatingSystemsId(?int $operatingsystemsId): self
     {
         $this->operatingsystemsId = $operatingsystemsId;
 
@@ -188,7 +188,7 @@ class SoftwareVersion
     /**
      * Get the value of operatingsystem
      */
-    public function getOperatingsystem()
+    public function getOperatingSystem()
     {
         return $this->operatingsystem;
     }
@@ -198,7 +198,7 @@ class SoftwareVersion
      *
      * @return  self
      */
-    public function setOperatingsystem($operatingsystem)
+    public function setOperatingSystem($operatingsystem)
     {
         $this->operatingsystem = $operatingsystem;
 

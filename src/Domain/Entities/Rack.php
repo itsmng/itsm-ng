@@ -49,17 +49,17 @@ class Rack
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\ManyToOne(targetEntity: Rackmodel::class)]
+    #[ORM\ManyToOne(targetEntity: RackModel::class)]
     #[ORM\JoinColumn(name: 'rackmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Rackmodel $rackmodel = null;
+    private ?RackModel $rackmodel = null;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer = null;
 
-    #[ORM\ManyToOne(targetEntity: Racktype::class)]
+    #[ORM\ManyToOne(targetEntity: RackType::class)]
     #[ORM\JoinColumn(name: 'racktypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Racktype $racktype = null;
+    private ?RackType $racktype = null;
 
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
@@ -94,9 +94,9 @@ class Rack
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
     private $isDeleted;
 
-    #[ORM\ManyToOne(targetEntity: Dcroom::class)]
+    #[ORM\ManyToOne(targetEntity: DCRoom::class)]
     #[ORM\JoinColumn(name: 'dcrooms_id', referencedColumnName: 'id', nullable: true)]
-    private ?Dcroom $dcroom = null;
+    private ?DCRoom $dcroom = null;
 
     #[ORM\Column(name: 'room_orientation', type: 'integer', options: ['default' => 0])]
     private $roomOrientation;
@@ -434,7 +434,7 @@ class Rack
     /**
      * Get the value of rackmodel
      */
-    public function getRackmodel()
+    public function getRackModel()
     {
         return $this->rackmodel;
     }
@@ -444,7 +444,7 @@ class Rack
      *
      * @return  self
      */
-    public function setRackmodel($rackmodel)
+    public function setRackModel($rackmodel)
     {
         $this->rackmodel = $rackmodel;
 
@@ -474,7 +474,7 @@ class Rack
     /**
      * Get the value of racktype
      */
-    public function getRacktype()
+    public function getRackType()
     {
         return $this->racktype;
     }
@@ -484,7 +484,7 @@ class Rack
      *
      * @return  self
      */
-    public function setRacktype($racktype)
+    public function setRackType($racktype)
     {
         $this->racktype = $racktype;
 
@@ -534,7 +534,7 @@ class Rack
     /**
      * Get the value of dcroom
      */
-    public function getDcroom()
+    public function getDCRoom()
     {
         return $this->dcroom;
     }
@@ -544,7 +544,7 @@ class Rack
      *
      * @return  self
      */
-    public function setDcroom($dcroom)
+    public function setDCRoom($dcroom)
     {
         $this->dcroom = $dcroom;
 

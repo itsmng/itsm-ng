@@ -71,9 +71,9 @@ class Computer
     #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\ManyToOne(targetEntity: Autoupdatesystem::class)]
+    #[ORM\ManyToOne(targetEntity: AutoUpdateSystem::class)]
     #[ORM\JoinColumn(name: 'autoupdatesystems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Autoupdatesystem $autoupdatesystem = null;
+    private ?AutoUpdateSystem $autoupdatesystem = null;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
@@ -83,13 +83,13 @@ class Computer
     #[ORM\JoinColumn(name: 'networks_id', referencedColumnName: 'id', nullable: true)]
     private ?Network $network = null;
 
-    #[ORM\ManyToOne(targetEntity: Computermodel::class)]
+    #[ORM\ManyToOne(targetEntity: ComputerModel::class)]
     #[ORM\JoinColumn(name: 'computermodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Computermodel $computermodel = null;
+    private ?ComputerModel $computermodel = null;
 
-    #[ORM\ManyToOne(targetEntity: Computertype::class)]
+    #[ORM\ManyToOne(targetEntity: ComputerType::class)]
     #[ORM\JoinColumn(name: 'computertypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Computertype $computertype = null;
+    private ?ComputerType $computertype = null;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => false])]
     private $isTemplate = false;
@@ -173,7 +173,7 @@ class Computer
         return $this->otherserial;
     }
 
-    public function setOtherserial(string $otherserial): self
+    public function setOtherserial(string | null $otherserial): self
     {
         $this->otherserial = $otherserial;
 
@@ -197,7 +197,7 @@ class Computer
         return $this->contactNum;
     }
 
-    public function setContactNum(string $contactNum): self
+    public function setContactNum(string | null $contactNum): self
     {
         $this->contactNum = $contactNum;
 
@@ -249,7 +249,7 @@ class Computer
         return $this->templateName;
     }
 
-    public function setTemplateName(string $templateName): self
+    public function setTemplateName(string | null $templateName): self
     {
         $this->templateName = $templateName;
 
@@ -438,7 +438,7 @@ class Computer
     /**
      * Get the value of computermodel
      */
-    public function getComputermodel()
+    public function getComputerModel()
     {
         return $this->computermodel;
     }
@@ -448,7 +448,7 @@ class Computer
      *
      * @return  self
      */
-    public function setComputermodel($computermodel)
+    public function setComputerModel($computermodel)
     {
         $this->computermodel = $computermodel;
 
@@ -458,7 +458,7 @@ class Computer
     /**
      * Get the value of computertype
      */
-    public function getComputertype()
+    public function getComputerType()
     {
         return $this->computertype;
     }
@@ -468,7 +468,7 @@ class Computer
      *
      * @return  self
      */
-    public function setComputertype($computertype)
+    public function setComputerType($computertype)
     {
         $this->computertype = $computertype;
 
@@ -558,7 +558,7 @@ class Computer
     /**
      * Get the value of autoupdatesystem
      */
-    public function getAutoupdatesystem()
+    public function getAutoUpdateSystem()
     {
         return $this->autoupdatesystem;
     }
@@ -568,7 +568,7 @@ class Computer
      *
      * @return  self
      */
-    public function setAutoupdatesystem($autoupdatesystem)
+    public function setAutoUpdateSystem($autoupdatesystem)
     {
         $this->autoupdatesystem = $autoupdatesystem;
 

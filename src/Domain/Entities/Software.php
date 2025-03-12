@@ -225,12 +225,12 @@ class Software
         return $this;
     }
 
-    public function getSoftwarecategoriesId(): ?int
+    public function getSoftwareCategoriesId(): ?int
     {
         return $this->softwarecategoriesId;
     }
 
-    public function setSoftwarecategoriesId(?int $softwarecategoriesId): self
+    public function setSoftwareCategoriesId(?int $softwarecategoriesId): self
     {
         $this->softwarecategoriesId = $softwarecategoriesId;
 

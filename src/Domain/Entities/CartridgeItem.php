@@ -79,8 +79,8 @@ class CartridgeItem
     #[ORM\Column(name: 'date_creation', type: "datetime", nullable: true)]
     private $dateCreation;
 
-    #[ORM\OneToMany(mappedBy: 'cartridgeItem', targetEntity: CartridgeItemPrintermodel::class)]
-    private Collection $cartridgeItemPrintermodels;
+    #[ORM\OneToMany(mappedBy: 'cartridgeItem', targetEntity: CartridgeItemPrinterModel::class)]
+    private Collection $cartridgeItemPrinterModels;
 
     public function getId(): ?int
     {
@@ -287,21 +287,21 @@ class CartridgeItem
     }
 
     /**
-     * Get the value of cartridgeItemPrintermodels
+     * Get the value of cartridgeItemPrinterModels
      */
-    public function getCartridgeItemPrintermodels()
+    public function getCartridgeItemPrinterModels()
     {
-        return $this->cartridgeItemPrintermodels;
+        return $this->cartridgeItemPrinterModels;
     }
 
     /**
-     * Set the value of cartridgeItemPrintermodels
+     * Set the value of cartridgeItemPrinterModels
      *
      * @return  self
      */
-    public function setCartridgeItemPrintermodels($cartridgeItemPrintermodels)
+    public function setCartridgeItemPrinterModels($cartridgeItemPrinterModels)
     {
-        $this->cartridgeItemPrintermodels = $cartridgeItemPrintermodels;
+        $this->cartridgeItemPrinterModels = $cartridgeItemPrinterModels;
 
         return $this;
     }

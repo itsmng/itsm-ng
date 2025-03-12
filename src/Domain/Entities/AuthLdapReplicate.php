@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_authldapreplicates")]
 #[ORM\Index(name: "authldaps_id", columns: ["authldaps_id"])]
-class AuthLdapReplicate
+class AuthLDAPReplicate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,9 +15,9 @@ class AuthLdapReplicate
     private $id;
 
 
-    #[ORM\ManyToOne(targetEntity: AuthLdap::class)]
+    #[ORM\ManyToOne(targetEntity: AuthLDAP::class)]
     #[ORM\JoinColumn(name: 'authldaps_id', referencedColumnName: 'id', nullable: true)]
-    private ?AuthLdap $authldap = null;
+    private ?AuthLDAP $authldap = null;
 
     #[ORM\Column(name: 'host', type: "string", length: 255, nullable: true)]
     private $host;

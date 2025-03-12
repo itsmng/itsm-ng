@@ -83,9 +83,9 @@ class Change
     #[ORM\Column(name: 'priority', type: 'integer', options: ['default' => 1])]
     private $priority;
 
-    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\ManyToOne(targetEntity: ITILCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?ItilCategory $itilCategory = null;
+    private ?ITILCategory $itilCategory = null;
 
     #[ORM\Column(name: 'impactcontent', type: 'text', nullable: true)]
     private $impactcontent;
@@ -633,7 +633,7 @@ class Change
     /**
      * Get the value of itilCategory
      */
-    public function getItilCategory()
+    public function getITILCategory()
     {
         return $this->itilCategory;
     }
@@ -643,7 +643,7 @@ class Change
      *
      * @return  self
      */
-    public function setItilCategory($itilCategory)
+    public function setITILCategory($itilCategory)
     {
         $this->itilCategory = $itilCategory;
 

@@ -42,9 +42,9 @@ class ConsumableItem
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location = null;
 
-    #[ORM\ManyToOne(targetEntity: Consumableitemtype::class)]
+    #[ORM\ManyToOne(targetEntity: ConsumableItemType::class)]
     #[ORM\JoinColumn(name: 'consumableitemtypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Consumableitemtype $consumableitemtype = null;
+    private ?ConsumableItemType $consumableitemtype = null;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
@@ -234,7 +234,7 @@ class ConsumableItem
     /**
      * Get the value of consumableitemtype
      */
-    public function getConsumableitemtype()
+    public function getConsumableItemType()
     {
         return $this->consumableitemtype;
     }
@@ -244,7 +244,7 @@ class ConsumableItem
      *
      * @return  self
      */
-    public function setConsumableitemtype($consumableitemtype)
+    public function setConsumableItemType($consumableitemtype)
     {
         $this->consumableitemtype = $consumableitemtype;
 

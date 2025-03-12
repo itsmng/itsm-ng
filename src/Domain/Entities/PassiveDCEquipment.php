@@ -3,8 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use Itsmng\Domain\Entities\Passivedcequipmenttype as EntitiesPassivedcequipmenttype;
-use PassiveDCEquipmentType;
+use Itsmng\Domain\Entities\PassiveDCEquipmentType as EntitiesPassiveDCEquipmenttype;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_passivedcequipments')]
@@ -46,13 +45,13 @@ class PassiveDCEquipment
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\ManyToOne(targetEntity: Passivedcequipmentmodel::class)]
+    #[ORM\ManyToOne(targetEntity: PassiveDCEquipmentModel::class)]
     #[ORM\JoinColumn(name: 'passivedcequipmentmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Passivedcequipmentmodel $passivedcequipmentmodel = null;
+    private ?PassiveDCEquipmentModel $passivedcequipmentmodel = null;
 
-    #[ORM\ManyToOne(targetEntity: EntitiesPassivedcequipmenttype::class)]
+    #[ORM\ManyToOne(targetEntity: EntitiesPassiveDCEquipmenttype::class)]
     #[ORM\JoinColumn(name: 'passivedcequipmenttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?EntitiesPassivedcequipmenttype $passivedcequipmenttype = null;
+    private ?EntitiesPassiveDCEquipmenttype $passivedcequipmenttype = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
@@ -257,7 +256,7 @@ class PassiveDCEquipment
     /**
      * Get the value of passivedcequipmentmodel
      */
-    public function getPassivedcequipmentmodel()
+    public function getPassiveDCEquipmentModel()
     {
         return $this->passivedcequipmentmodel;
     }
@@ -267,7 +266,7 @@ class PassiveDCEquipment
      *
      * @return  self
      */
-    public function setPassivedcequipmentmodel($passivedcequipmentmodel)
+    public function setPassiveDCEquipmentModel($passivedcequipmentmodel)
     {
         $this->passivedcequipmentmodel = $passivedcequipmentmodel;
 
@@ -277,7 +276,7 @@ class PassiveDCEquipment
     /**
      * Get the value of passivedcequipmenttype
      */
-    public function getPassivedcequipmenttype()
+    public function getPassiveDCEquipmenttype()
     {
         return $this->passivedcequipmenttype;
     }
@@ -287,7 +286,7 @@ class PassiveDCEquipment
      *
      * @return  self
      */
-    public function setPassivedcequipmenttype($passivedcequipmenttype)
+    public function setPassiveDCEquipmenttype($passivedcequipmenttype)
     {
         $this->passivedcequipmenttype = $passivedcequipmenttype;
 

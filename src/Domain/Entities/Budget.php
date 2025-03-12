@@ -65,9 +65,9 @@ class Budget
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location = null;
 
-    #[ORM\ManyToOne(targetEntity: Budgettype::class)]
+    #[ORM\ManyToOne(targetEntity: BudgetType::class)]
     #[ORM\JoinColumn(name: 'budgettypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Budgettype $budgettype = null;
+    private ?BudgetType $budgettype = null;
 
     public function getId(): ?int
     {
@@ -251,7 +251,7 @@ class Budget
     /**
      * Get the value of budgettype
      */
-    public function getBudgettype()
+    public function getBudgetType()
     {
         return $this->budgettype;
     }
@@ -261,7 +261,7 @@ class Budget
      *
      * @return  self
      */
-    public function setBudgettype($budgettype)
+    public function setBudgetType($budgettype)
     {
         $this->budgettype = $budgettype;
 

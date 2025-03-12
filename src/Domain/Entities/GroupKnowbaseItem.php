@@ -17,11 +17,11 @@ class GroupKnowbaseItem
     #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Knowbaseitem::class, inversedBy: 'groupKnowbaseitems')]
+    #[ORM\ManyToOne(targetEntity: KnowbaseItem::class, inversedBy: 'groupKnowbaseItems')]
     #[ORM\JoinColumn(name: 'knowbaseitems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Knowbaseitem $knowbaseitem = null;
+    private ?KnowbaseItem $knowbaseitem = null;
 
-    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupKnowbaseitems')]
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupKnowbaseItems')]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group = null;
 
@@ -83,7 +83,7 @@ class GroupKnowbaseItem
     /**
      * Get the value of knowbaseitem
      */
-    public function getKnowbaseitem()
+    public function getKnowbaseItem()
     {
         return $this->knowbaseitem;
     }
@@ -93,7 +93,7 @@ class GroupKnowbaseItem
      *
      * @return  self
      */
-    public function setKnowbaseitem($knowbaseitem)
+    public function setKnowbaseItem($knowbaseitem)
     {
         $this->knowbaseitem = $knowbaseitem;
 

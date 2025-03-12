@@ -63,9 +63,9 @@ class Taskcategory
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
-    #[ORM\ManyToOne(targetEntity: Knowbaseitemcategory::class)]
+    #[ORM\ManyToOne(targetEntity: KnowbaseItemCategory::class)]
     #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Knowbaseitemcategory $knowbaseitemcategory = null;
+    private ?KnowbaseItemCategory $knowbaseitemcategory = null;
 
 
     public function getId(): ?int
@@ -249,7 +249,7 @@ class Taskcategory
     /**
      * Get the value of knowbaseitemcategory
      */
-    public function getKnowbaseitemcategory()
+    public function getKnowbaseItemCategory()
     {
         return $this->knowbaseitemcategory;
     }
@@ -259,7 +259,7 @@ class Taskcategory
      *
      * @return  self
      */
-    public function setKnowbaseitemcategory($knowbaseitemcategory)
+    public function setKnowbaseItemCategory($knowbaseitemcategory)
     {
         $this->knowbaseitemcategory = $knowbaseitemcategory;
 
