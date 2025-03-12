@@ -2105,22 +2105,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
         $params = static::getListForItemParams($item);
         unset($params['SELECT']);
         $params['COUNT'] = 'cpt';
-        $entity = '\Itsmng\Domain\Entities\\' . get_called_class();
-        dump($params);
-        $dql = <<<DQL
-            SELECT COUNT(t) AS cpt
-            FROM $entity t
-            LEFT JOIN \Itsmng\Domain\Entities\Contract c
-            INNER JOIN \Itsmng\Domain\Entities\Entity e
-            WHERE t.items_id = :items_id
-            AND c.itemtype = :itemtype
-            ORDER BY e.completename, c.name
-        DQL;
-        dump($dql);
-        $count = self::getAdapter()->request($dql, [
-            'items_id' => $item->fields['id'],
-            'itemtype' => $item::class,
-        ]);
         $iterator = $DB->request($params);
 
         $cpt = 0;
