@@ -45,9 +45,9 @@ class PassiveDCEquipment
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\ManyToOne(targetEntity: PassiveDCEquipmentmodel::class)]
+    #[ORM\ManyToOne(targetEntity: PassiveDCEquipmentModel::class)]
     #[ORM\JoinColumn(name: 'passivedcequipmentmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?PassiveDCEquipmentmodel $passivedcequipmentmodel = null;
+    private ?PassiveDCEquipmentModel $passivedcequipmentmodel = null;
 
     #[ORM\ManyToOne(targetEntity: EntitiesPassiveDCEquipmenttype::class)]
     #[ORM\JoinColumn(name: 'passivedcequipmenttypes_id', referencedColumnName: 'id', nullable: true)]
@@ -256,7 +256,7 @@ class PassiveDCEquipment
     /**
      * Get the value of passivedcequipmentmodel
      */
-    public function getPassiveDCEquipmentmodel()
+    public function getPassiveDCEquipmentModel()
     {
         return $this->passivedcequipmentmodel;
     }
@@ -266,7 +266,7 @@ class PassiveDCEquipment
      *
      * @return  self
      */
-    public function setPassiveDCEquipmentmodel($passivedcequipmentmodel)
+    public function setPassiveDCEquipmentModel($passivedcequipmentmodel)
     {
         $this->passivedcequipmentmodel = $passivedcequipmentmodel;
 
