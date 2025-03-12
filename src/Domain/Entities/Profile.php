@@ -240,7 +240,7 @@ class Profile
 
     public function setManagedDomainRecordTypes(?string $managedDomainRecordTypes): self
     {
-        $this->managedDomainRecordTypes = $managedDomainR:ecordTypes;
+        $this->managedDomainRecordTypes = $managedDomainRecordTypes;
 
         return $this;
     }
