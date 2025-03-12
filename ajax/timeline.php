@@ -79,7 +79,7 @@ if (($_POST['action'] ?? null) === 'change_task_state') {
     $item = getItemForItemtype($_REQUEST['type']);
     $parent = getItemForItemtype($_REQUEST['parenttype']);
 
-    $manage_locks = static function ($itemtype, $items_id) {
+    $manage_locks = static function ($itemtype, $items_id): void {
         $ol = ObjectLock::isLocked($itemtype, $items_id);
         if ($ol && (Session::getLoginUserID() != $ol->fields['users_id'])) {
             ObjectLock::setReadOnlyProfile();

@@ -248,7 +248,7 @@ class State extends CommonTreeDropdown
 
         parent::getEmpty();
         //initialize is_visible_* fields at true to keep the same behavior as in older versions
-        foreach ($this->getvisibilityFields() as $type => $field) {
+        foreach ($this->getvisibilityFields() as $field) {
             $this->fields[$field] = 1;
         }
     }
@@ -285,7 +285,7 @@ class State extends CommonTreeDropdown
         $state = new self();
         // Get visibility information from parent if not set
         if (isset($input['states_id']) && $state->getFromDB($input['states_id'])) {
-            foreach ($this->getvisibilityFields() as $type => $field) {
+            foreach ($this->getvisibilityFields() as $field) {
                 if (!isset($input[$field]) && isset($state->fields[$field])) {
                     $input[$field] = $state->fields[$field];
                 }

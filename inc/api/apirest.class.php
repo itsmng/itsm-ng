@@ -551,7 +551,7 @@ class APIRest extends API
         }
 
         // check boolean parameters
-        foreach ($parameters as $key => &$parameter) {
+        foreach ($parameters as &$parameter) {
             if ($parameter === "true") {
                 $parameter = true;
             }

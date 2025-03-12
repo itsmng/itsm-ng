@@ -164,7 +164,7 @@ function UpdateContent($DB, $duree, $rowlimit, $conv_utf8, $complete_utf8)
 
                 $data = $DB->listFields($tables[$offsettable]);
 
-                foreach ($data as $key => $val) {
+                foreach ($data as $val) {
                     if (preg_match("/^char/i", $val["Type"])) {
                         $default = "NULL";
                         if (!empty($val["Default"]) && !is_null($val["Default"])) {

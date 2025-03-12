@@ -1344,7 +1344,7 @@ function isMaintenanceUsed()
     $tables = ["glpi_computers", "glpi_monitors", "glpi_networking", "glpi_peripherals",
                     "glpi_printers"];
 
-    foreach ($tables as $key => $table) {
+    foreach ($tables as $table) {
         $query  = "SELECT `ID`
                  FROM `$table`
                  WHERE `maintenance` = '1'";
@@ -1366,7 +1366,7 @@ function dropMaintenanceField()
     $tables = ["glpi_computers", "glpi_monitors", "glpi_networking", "glpi_peripherals",
                     "glpi_printers"];
 
-    foreach ($tables as $key => $table) {
+    foreach ($tables as $table) {
         $query  = "ALTER TABLE `$table`
                  DROP `maintenance`";
         $result = $DB->queryOrDie($query, "0.5 alter for update maintenance");

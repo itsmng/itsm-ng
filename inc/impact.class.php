@@ -1391,7 +1391,7 @@ class Impact extends CommonGLPI
     ) {
         // Just update the flag if the edge already exist
         if (isset($edges[$key])) {
-            $edges[$key]['flag'] = $edges[$key]['flag'] | $direction;
+            $edges[$key]['flag'] |= $direction;
             return;
         }
 
@@ -1463,7 +1463,7 @@ class Impact extends CommonGLPI
             $impact_context = ImpactContext::findForImpactItem($impact_item);
 
             if ($impact_context) {
-                $params = $params + array_intersect_key(
+                $params += array_intersect_key(
                     $impact_context->fields,
                     [
                       'positions'                => 1,

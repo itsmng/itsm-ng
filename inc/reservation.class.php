@@ -874,7 +874,7 @@ class Reservation extends CommonDBChild
                         }
                     }
 
-                    foreach ($dates as $key => $val) {
+                    foreach ($dates as $val) {
                         $begin_time = $val['begin'];
                         $end_time   = $val['end'];
 

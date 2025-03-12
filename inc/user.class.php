@@ -1140,7 +1140,7 @@ class User extends CommonDBTM
                 // Add new dynamic profiles
                 if (count($retrieved_dynamic_profiles)) {
                     $right = new Profile_User();
-                    foreach ($retrieved_dynamic_profiles as $keyretr => $retr_profile) {
+                    foreach ($retrieved_dynamic_profiles as $retr_profile) {
                         $right->add($retr_profile);
                     }
                 }
@@ -1175,7 +1175,7 @@ class User extends CommonDBTM
             // Delete old dynamic profiles
             if (count($dynamic_profiles)) {
                 $right = new Profile_User();
-                foreach ($dynamic_profiles as $keydb => $db_profile) {
+                foreach ($dynamic_profiles as $db_profile) {
                     $right->delete($db_profile);
                 }
             }

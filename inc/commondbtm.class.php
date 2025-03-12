@@ -4578,7 +4578,7 @@ class CommonDBTM extends CommonGLPI
                 Toolbox::logError($message);
             }
             $all_fields =  FieldUnicity::getUnicityFieldsConfig(get_class($this), $entities_id);
-            foreach ($all_fields as $key => $fields) {
+            foreach ($all_fields as $fields) {
                 //If there's fields to check
                 if (!empty($fields) && !empty($fields['fields'])) {
                     $where    = [];
@@ -5274,7 +5274,7 @@ class CommonDBTM extends CommonGLPI
         ];
 
         if ($item->isEntityAssign()) {
-            $request['WHERE'] = $request['WHERE'] + getEntitiesRestrictCriteria(
+            $request['WHERE'] += getEntitiesRestrictCriteria(
                 $item->getTable(),
                 'entities_id',
                 $_SESSION['glpiactiveentities'],

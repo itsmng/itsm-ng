@@ -91,7 +91,7 @@ if (isset($itemtype)) {
 }
 
 // Helper to check required parameters
-$checkParams = function ($required) {
+$checkParams = function ($required): void {
     foreach ($required as $param) {
         if (!isset($_REQUEST[$param])) {
             Toolbox::logError("Missing $param parameter");

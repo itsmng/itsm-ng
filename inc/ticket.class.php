@@ -3505,7 +3505,7 @@ class Ticket extends CommonITILObject
                 $tokeep[] = 'validation';
             }
             $keep = false;
-            foreach ($tab as $key => &$val) {
+            foreach ($tab as &$val) {
                 if (!isset($val['table'])) {
                     $keep = in_array($val['id'], $tokeep);
                 }
@@ -3673,7 +3673,7 @@ class Ticket extends CommonITILObject
                 }
                 unset($status_db[$i]);
                 unset($do_sort[$done]);
-                $done = $done + 1;
+                $done += 1;
                 $i = -1;
             }
         }

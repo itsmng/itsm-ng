@@ -960,7 +960,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
                 return false;
             }
 
-            $criteria = $criteria + self::getVisibilityCriteria();
+            $criteria += self::getVisibilityCriteria();
 
             // Only personal on central so do not keep it
             if (Session::getCurrentInterface() == 'central') {

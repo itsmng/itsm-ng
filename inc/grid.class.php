@@ -317,7 +317,7 @@ HTML;
         ];
 
         $menu = Html::getMenuInfos();
-        array_walk($menu, static function ($firstlvl) use (&$menu_itemtypes) {
+        array_walk($menu, static function ($firstlvl) use (&$menu_itemtypes): void {
             $key = $firstlvl['title'];
             if (isset($firstlvl['types'])) {
                 $menu_itemtypes[$key] = array_merge($menu_itemtypes[$key] ?? [], $firstlvl['types']);

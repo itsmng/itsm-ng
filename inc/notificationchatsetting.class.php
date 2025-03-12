@@ -229,7 +229,7 @@ class NotificationChatSetting extends NotificationSetting
         echo "<th colspan='6'>" . "Liste des configs chats" . "</th>";
         $testLabel = __("Test");
         $deleteLabel = __("Delete");
-        foreach ($result as $key => $value) {
+        foreach ($result as $value) {
             $newValue = [
                 'chat' => $chat_modes[$value['chat']],
                 'hookurl' => $value['hookurl'],

@@ -645,7 +645,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
             if (Session::getLoginUserID()) {
                 $restrict = getEntitiesRestrictCriteria('glpi_entities_knowbaseitems', '', '', true, true);
                 if (count($restrict)) {
-                    $where['OR'] = $where['OR'] + $restrict;
+                    $where['OR'] += $restrict;
                 } else {
                     $where['glpi_entities_knowbaseitems.entities_id'] = null;
                 }

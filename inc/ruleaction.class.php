@@ -686,7 +686,7 @@ class RuleAction extends CommonDBChild
                                 }
                             }
                             $options = getOptionsForUsers(['validate_incident','validate_request']);
-                            foreach ($used as $key => $value) {
+                            foreach ($used as $value) {
                                 unset($options[$value]);
                             }
                             renderTwigTemplate('macros/input.twig', [

@@ -2106,7 +2106,7 @@ class Entity extends CommonTreeDropdown
         echo "<div id='custom_css_container' class='custom_css_container'>";
         $value = $entity->fields['enable_custom_css'];
         // wrap call in function to prevent modifying variables from current scope
-        call_user_func(function () use ($value, $ID) {
+        call_user_func(function () use ($value, $ID): void {
             $_POST  = [
                'enable_custom_css' => $value,
                'entities_id'       => $ID

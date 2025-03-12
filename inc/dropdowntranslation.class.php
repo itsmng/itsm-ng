@@ -553,7 +553,7 @@ class DropdownTranslation extends CommonDBChild
         global $DB;
 
         $options = [];
-        foreach (Search::getOptions(get_class($item)) as $id => $field) {
+        foreach (Search::getOptions(get_class($item)) as $field) {
             //Can only translate name, and fields whose datatype is text or string
             if (
                 isset($field['field'])

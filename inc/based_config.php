@@ -45,7 +45,7 @@ if (!empty($tz)) {
 
 include_once(GLPI_ROOT . "/inc/autoload.function.php");
 
-(function () {
+(function (): void {
     // Define GLPI_* constants that can be customized by admin.
     //
     // Use a self-invoking anonymous function to:

@@ -99,20 +99,20 @@ class NotificationEventChat extends NotificationEventAbstract implements Notific
                 $list['group'] = $sendChat->find(['type' => 'group', 'value' => $row['groups_id']]);
                 $list['category'] = $sendChat->find(['type' => 'category', 'value' => $row['itilcategories_id']]);
 
-                foreach ($list as $key => $value) {
-                    foreach ($value as $key => $val) {
+                foreach ($list as $value) {
+                    foreach ($value as $val) {
                         if (!in_array($val['hookurl'], $webHooks)) {
                             $webHooks[] = $val['hookurl'];
                         }
                     }
                 }
             } else {
-                foreach ($list as $key => $value) {
+                foreach ($list as $value) {
                     $webHooks[] = $value['hookurl'];
                 }
             }
 
-            foreach ($webHooks as $key => $value) {
+            foreach ($webHooks as $value) {
                 $sendChat->sendRocketNotificationNew($current->fields['ticketTitle'], $current->fields['items_id'], $current->fields['entName'], $current->fields['serverName'], $value);
             }
 

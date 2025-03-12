@@ -856,7 +856,7 @@ class Budget extends CommonDropdown
         echo "<tr class='noHover'><th colspan='$colspan'>" . __('Total spent on the budget') . "</th></tr>";
         echo "<tr><th>" . Entity::getTypeName(1) . "</th>";
         if (count($found_types)) {
-            foreach ($found_types as $type => $typename) {
+            foreach ($found_types as $typename) {
                 echo "<th>$typename</th>";
             }
         }

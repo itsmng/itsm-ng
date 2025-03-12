@@ -1056,7 +1056,7 @@ class Rule extends CommonDBTM
     public function getTitleAction()
     {
 
-        foreach ($this->getActions() as $key => $val) {
+        foreach ($this->getActions() as $val) {
             if (
                 isset($val['force_actions'])
                 && (in_array('regex_result', $val['force_actions'])
@@ -1121,7 +1121,7 @@ class Rule extends CommonDBTM
         if (
             $canedit
             && (($this->maxActionsCount() == 0)
-                || (sizeof($this->actions) < $this->maxActionsCount()))
+                || (count($this->actions) < $this->maxActionsCount()))
         ) {
             echo "<script type='text/javascript' >\n";
             echo "function viewAddAction" . $rules_id . "$rand() {\n";
@@ -1254,7 +1254,7 @@ class Rule extends CommonDBTM
 
         echo "<div class='spaced'>";
 
-        $nb = sizeof($this->criterias);
+        $nb = count($this->criterias);
 
         $massactionId = 'mass' . $this->rulecriteriaclass . $rand;
         if ($canedit && $nb) {
@@ -2200,7 +2200,7 @@ class Rule extends CommonDBTM
         echo "<td class='center b'>" . _n('Validation', 'Validations', 1) . "</td>";
         echo "</tr>\n";
 
-        foreach ($check_results as $ID => $criteria_result) {
+        foreach ($check_results as $criteria_result) {
             echo "<tr class='tab_bg_1'>";
             $criteria->getFromDB($criteria_result["id"]);
             echo $this->getMinimalCriteriaText($criteria->fields);

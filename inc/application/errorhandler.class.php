@@ -310,7 +310,7 @@ class ErrorHandler
             $exit_code = $this->exit_code;
             register_shutdown_function(
                 'register_shutdown_function',
-                function () use ($exit_code) {
+                function () use ($exit_code): void {
                     exit($exit_code);
                 }
             );

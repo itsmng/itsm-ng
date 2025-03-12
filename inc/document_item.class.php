@@ -972,7 +972,7 @@ class Document_Item extends CommonDBRelation
         ];
 
         if (Session::getLoginUserID()) {
-            $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria('glpi_documents', '', '', true);
+            $criteria['WHERE'] += getEntitiesRestrictCriteria('glpi_documents', '', '', true);
         } else {
             // Anonymous access from FAQ
             $criteria['WHERE']['glpi_documents.entities_id'] = 0;

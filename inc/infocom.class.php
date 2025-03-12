@@ -1003,7 +1003,7 @@ class Infocom extends CommonDBChild
                     //## calcul du prorata temporis en mois ##
                     // si l'annee fiscale debute au dela de l'annee courante
                     if ($date_m > $date_m2) {
-                        $date_m2 = $date_m2 + 12;
+                        $date_m2 += 12;
                     }
                     $ecartmois      = ($date_m2 - $date_m) + 1; // calcul ecart entre mois d'acquisition
                     // et debut annee fiscale

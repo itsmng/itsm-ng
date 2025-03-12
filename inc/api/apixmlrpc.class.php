@@ -334,7 +334,7 @@ class APIXmlrpc extends API
         if (is_array($response)) {
             $escaped_response = [];
             foreach ($response as $key => $value) {
-                if (is_integer($key)) {
+                if (is_int($key)) {
                     $key = " " . $key;
                 }
                 if (is_array($value)) {

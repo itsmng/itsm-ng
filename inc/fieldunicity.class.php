@@ -661,12 +661,12 @@ class FieldUnicity extends CommonDropdown
 
             foreach ($where_fields as $where_field) {
                 if (getTableNameForForeignKeyField($where_field)) {
-                    $where = $where + [
+                    $where += [
                        'NOT'          => [$where_field => null],
                        $where_field   => ['<>', 0]
                     ];
                 } else {
-                    $where = $where + [
+                    $where += [
                        'NOT'          => [$where_field => null],
                        $where_field   => ['<>', '']
                     ];

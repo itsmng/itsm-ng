@@ -350,7 +350,7 @@ class CommonGLPI
         }
 
         if (
-            !is_integer($itemtype)
+            !is_int($itemtype)
               && ($obj = getItemForItemtype($itemtype))
         ) {
             $titles = $obj->getTabNameForItem($this, $withtemplate);
@@ -677,7 +677,7 @@ class CommonGLPI
                 }
 
                 if (
-                    !is_integer($itemtype) && ($itemtype != 'empty')
+                    !is_int($itemtype) && ($itemtype != 'empty')
                     && ($obj = getItemForItemtype($itemtype))
                 ) {
                     $options['tabnum'] = $tabnum;

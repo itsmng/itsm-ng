@@ -173,7 +173,7 @@ class Item_Kanban extends CommonDBRelation
     {
         $state = self::loadStateForItem($itemtype, $items_id);
         $found = false;
-        foreach ($state as $column_index => &$col) {
+        foreach ($state as &$col) {
             if ($col['column'] === $column) {
                 $col['visible'] = true;
                 $found = true;
@@ -195,7 +195,7 @@ class Item_Kanban extends CommonDBRelation
     public static function hideColumn($itemtype, $items_id, $column)
     {
         $state = self::loadStateForItem($itemtype, $items_id);
-        foreach ($state as $column_index => &$col) {
+        foreach ($state as &$col) {
             if ($col['column'] === $column) {
                 $col['visible'] = false;
                 break;
@@ -207,7 +207,7 @@ class Item_Kanban extends CommonDBRelation
     public static function collapseColumn($itemtype, $items_id, $column)
     {
         $state = self::loadStateForItem($itemtype, $items_id);
-        foreach ($state as $column_index => &$col) {
+        foreach ($state as &$col) {
             if ($col['column'] === $column) {
                 $col['folded'] = true;
                 break;
@@ -219,7 +219,7 @@ class Item_Kanban extends CommonDBRelation
     public static function expandColumn($itemtype, $items_id, $column)
     {
         $state = self::loadStateForItem($itemtype, $items_id);
-        foreach ($state as $column_index => &$col) {
+        foreach ($state as &$col) {
             if ($col['column'] === $column) {
                 $col['folded'] = false;
                 break;

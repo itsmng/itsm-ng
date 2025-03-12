@@ -1310,7 +1310,7 @@ class Toolbox
         $bytes = [__('o'), __('Kio'), __('Mio'), __('Gio'), __('Tio')];
         foreach ($bytes as $val) {
             if ($size > 1024) {
-                $size = $size / 1024;
+                $size /= 1024;
             } else {
                 break;
             }

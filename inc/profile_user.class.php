@@ -865,7 +865,7 @@ class Profile_User extends CommonDBRelation
 
         $where = ['users_id' => $user_ID];
         if (count($sqlfilter) > 0) {
-            $where = $where + $sqlfilter;
+            $where += $sqlfilter;
         }
 
         $iterator = $DB->request([

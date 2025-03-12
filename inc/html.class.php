@@ -415,7 +415,7 @@ class Html
             return "-";
         }
 
-        $number  = doubleval($number);
+        $number  = floatval($number);
         $decimal = $CFG_GLPI["decimal_number"];
         if ($forcedecimal >= 0) {
             $decimal = $forcedecimal;
@@ -1716,7 +1716,7 @@ JAVASCRIPT;
                     if (count($items)) {
                         foreach ($items as $key => $val) {
                             if (is_array($val)) {
-                                foreach ($val as $k => $object) {
+                                foreach ($val as $object) {
                                     $menu[$key]['types'][] = $object;
                                 }
                             } else {
@@ -2273,7 +2273,7 @@ JAVASCRIPT;
         $items_per_columns = 15;
         $i                 = -1;
 
-        foreach ($menu as $part => $data) {
+        foreach ($menu as $data) {
             if (isset($data['content']) && count($data['content'])) {
                 echo "<dl>";
                 $link = "#";
@@ -3768,7 +3768,7 @@ JS;
 
         // construct timeline
         $out .= "<ul>";
-        foreach ($options['dates'] as $key => $data) {
+        foreach ($options['dates'] as $data) {
             if ($data['timestamp'] != 0) {
                 $out .= "<li class='" . $data['class'] . "'>&nbsp;";
                 $out .= "<time>" . Html::convDateTime(date("Y-m-d H:i:s", $data['timestamp'])) . "</time>";
@@ -7498,7 +7498,7 @@ JAVASCRIPT;
             $has_extension = preg_match('/\.s?css$/', $import_url);
             $imported_filepath = $basedir . '/' . $import_url;
             if (!$has_extension && is_file($imported_filepath . '.scss')) {
-                $imported_filepath = $imported_filepath . '.scss';
+                $imported_filepath .= '.scss';
             }
 
             $hash .= self::getScssFileHash($imported_filepath);

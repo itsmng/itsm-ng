@@ -462,7 +462,7 @@ class Search
 
         if (count($p['criteria']) > 0) {
             // use a recursive closure to push searchoption when using nested criteria
-            $parse_criteria = function ($criteria) use (&$parse_criteria, &$data) {
+            $parse_criteria = function ($criteria) use (&$parse_criteria, &$data): void {
                 foreach ($criteria as $criterion) {
                     // recursive call
                     if (isset($criterion['criteria'])) {
@@ -1159,7 +1159,7 @@ class Search
                 if (isset($criterion['field']) && $criterion['field'] == "all") {
                     $items = $searchopt;
                 } else { // toview case : populate toview
-                    foreach ($data['toview'] as $key2 => $val2) {
+                    foreach ($data['toview'] as $val2) {
                         $items[$val2] = $searchopt[$val2];
                     }
                 }
@@ -5206,7 +5206,7 @@ JAVASCRIPT;
         if ($meta && $meta_type::getTable() != $new_table) {
             $addmetanum = "_" . $meta_type;
             $AS         = " AS `$nt$addmetanum`";
-            $nt         = $nt . $addmetanum;
+            $nt .= $addmetanum;
         }
 
         // Do not take into account standard linkfield
@@ -5308,7 +5308,7 @@ JAVASCRIPT;
                 $from         = ["`REFTABLE`", "REFTABLE", "`NEWTABLE`", "NEWTABLE"];
                 $to           = ["`$rt`", "`$rt`", "`$nt`", "`$nt`"];
                 $addcondition = str_replace($from, $to, $condition);
-                $addcondition = $addcondition . " ";
+                $addcondition .= " ";
             }
 
             if (!isset($joinparams['jointype'])) {
@@ -7453,7 +7453,7 @@ JAVASCRIPT;
             if ($withplugins) {
                 // Search options added by plugins
                 $plugsearch = Plugin::getAddSearchOptions($itemtype);
-                $plugsearch = $plugsearch + Plugin::getAddSearchOptionsNew($itemtype);
+                $plugsearch += Plugin::getAddSearchOptionsNew($itemtype);
                 if (count($plugsearch)) {
                     self::$search[$itemtype] += ['plugins' => _n('Plugin', 'Plugins', Session::getPluralNumber())];
                     self::$search[$itemtype] += $plugsearch;
@@ -8329,7 +8329,7 @@ JAVASCRIPT;
             $val = rtrim(preg_replace('/\$$/', '', $val));
         } else {
             // Add % wildcard after searched string if not ending by a `$`
-            $val = $val . '%';
+            $val .= '%';
         }
 
         return $val;

@@ -1606,7 +1606,7 @@ class Contract extends CommonDBTM
 
         $WHERE = [];
         if ($p['entity'] >= 0) {
-            $WHERE = $WHERE + getEntitiesRestrictCriteria('glpi_contracts', 'entities_id', $p['entity'], true);
+            $WHERE += getEntitiesRestrictCriteria('glpi_contracts', 'entities_id', $p['entity'], true);
         }
         if (count($p['used'])) {
             $WHERE['NOT'] = ['glpi_contracts.id' => $p['used']];

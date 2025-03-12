@@ -519,7 +519,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                 if (isset($query_tab_save['criteria']) && count($query_tab_save['criteria'])) {
                     unset($query_tab['criteria']);
                     $new_key = 0;
-                    foreach ($query_tab_save['criteria'] as $key => $val) {
+                    foreach ($query_tab_save['criteria'] as $val) {
                         if (
                             isset($val['field'])
                             && $val['field'] != 'view'
@@ -540,7 +540,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     $meta_ok = Search::getMetaItemtypeAvailable($query_tab['itemtype']);
                     unset($query_tab['metacriteria']);
                     $new_key = 0;
-                    foreach ($query_tab_save['metacriteria'] as $key => $val) {
+                    foreach ($query_tab_save['metacriteria'] as $val) {
                         if (isset($val['itemtype'])) {
                             $opt = Search::getCleanedOptions($val['itemtype']);
                         }
@@ -952,7 +952,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             $current_type_name = NOT_AVAILABLE;
             $is_private        = null;
 
-            foreach ($searches as $key => $this->fields) {
+            foreach ($searches as $this->fields) {
                 $number++;
                 if ($current_type != $this->fields['itemtype']) {
                     $current_type      = $this->fields['itemtype'];

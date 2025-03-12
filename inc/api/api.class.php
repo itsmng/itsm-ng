@@ -2611,7 +2611,7 @@ abstract class API extends CommonGLPI
             if (is_array($value)) {
                 $value = self::parseDropdowns($value, $params);
             }
-            if (is_integer($key)) {
+            if (is_int($key)) {
                 continue;
             }
             if (isForeignKeyField($key)) {
@@ -2641,7 +2641,7 @@ abstract class API extends CommonGLPI
                     $itemtype = getItemTypeForTable($tablename);
 
                     // get hateoas
-                    if ($params['get_hateoas'] && is_integer($value)) {
+                    if ($params['get_hateoas'] && is_int($value)) {
                         $fields['links'][] = ['rel'  => $itemtype,
                                                    'href' => self::$api_url . "/$itemtype/" . $value];
                     }

@@ -207,7 +207,7 @@ class MassiveAction
                             }
                         }
                         // Count number of items !
-                        foreach ($POST['items'] as $itemtype => $ids) {
+                        foreach ($POST['items'] as $ids) {
                             $this->nb_items += count($ids);
                         }
                         break;
@@ -230,7 +230,7 @@ class MassiveAction
                                                    'ko'      => 0,
                                                    'noright' => 0,
                                                    'messages' => []];
-                        foreach ($POST['items'] as $itemtype => $ids) {
+                        foreach ($POST['items'] as $ids) {
                             $this->nb_items += count($ids);
                         }
                         if (isset($_SERVER['HTTP_REFERER'])) {

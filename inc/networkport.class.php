@@ -850,7 +850,7 @@ class NetworkPort extends CommonDBChild
                     }
                     $newValue = [];
                     foreach ($t_row->cells as $name => $cell) {
-                        foreach ($cell as $key => $value) {
+                        foreach ($cell as $value) {
                             $content = $value->content;
                             if (gettype($content) == 'array') {
                                 $classtype = $content[0]['function'][0];

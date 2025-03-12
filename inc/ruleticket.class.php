@@ -99,7 +99,7 @@ class RuleTicket extends Rule
         parent::getTitleAction();
         $showwarning = false;
         if (isset($this->actions)) {
-            foreach ($this->actions as $key => $val) {
+            foreach ($this->actions as $val) {
                 if (isset($val->fields['field'])) {
                     if (in_array($val->fields['field'], ['impact', 'urgency'])) {
                         $showwarning = true;

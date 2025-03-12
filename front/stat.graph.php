@@ -494,7 +494,7 @@ $values['avgactiontime'] = Stat::constructEntryValues(
     $val2
 );
 // Pass to hour values
-foreach ($values['avgactiontime'] as $key => &$val) {
+foreach ($values['avgactiontime'] as &$val) {
     $val = round($val / HOUR_TIMESTAMP, 2);
 }
 
@@ -523,7 +523,7 @@ if ($_GET['itemtype'] == 'Ticket') {
         $val2
     );
     // Pass to hour values
-    foreach ($values['avgtaketime'] as $key => &$val) {
+    foreach ($values['avgtaketime'] as &$val) {
         $val = round($val / HOUR_TIMESTAMP, 2);
     }
 

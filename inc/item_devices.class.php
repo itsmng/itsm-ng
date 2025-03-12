@@ -855,7 +855,7 @@ class Item_Devices extends CommonDBRelation
                           ]
                        ]
                     ];
-                    $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria(getTableForItemType($peer_type));
+                    $criteria['WHERE'] += getEntitiesRestrictCriteria(getTableForItemType($peer_type));
                 }
             } else {
                 $fk = $link->getDeviceForeignKey();
@@ -955,7 +955,7 @@ class Item_Devices extends CommonDBRelation
                       ]
                    ]
                 ];
-                $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria(getTableForItemType($peer_type));
+                $criteria['WHERE'] += getEntitiesRestrictCriteria(getTableForItemType($peer_type));
             }
         } else {
             $fk = $this->getDeviceForeignKey();

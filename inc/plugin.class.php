@@ -1165,7 +1165,7 @@ class Plugin extends CommonDBTM
             $entities    = getAllDataFromTable('glpi_entities');
             $entities[0] = "Root";
 
-            foreach ($types as $num => $name) {
+            foreach ($types as $name) {
                 $itemtable = getTableForItemType($name);
                 if (!$DB->tableExists($itemtable)) {
                     // Just for security, shouldn't append
@@ -1559,7 +1559,7 @@ class Plugin extends CommonDBTM
                 // variables used in this function.
                 // For example, if the included files contains a $plugin variable, it will
                 // replace the $plugin variable used here.
-                $include_fct = function () use ($directory, $setup_file) {
+                $include_fct = function () use ($directory, $setup_file): void {
                     self::loadLang($directory);
                     include_once($setup_file);
                 };
