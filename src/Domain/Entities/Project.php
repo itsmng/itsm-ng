@@ -54,13 +54,13 @@ class Project
     #[ORM\JoinColumn(name: 'projects_id', referencedColumnName: 'id', nullable: true)]
     private ?Project $project = null;
 
-    #[ORM\ManyToOne(targetEntity: Projectstate::class)]
+    #[ORM\ManyToOne(targetEntity: ProjectState::class)]
     #[ORM\JoinColumn(name: 'projectstates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Projectstate $projectstate = null;
+    private ?ProjectState $projectstate = null;
 
-    #[ORM\ManyToOne(targetEntity: Projecttype::class)]
+    #[ORM\ManyToOne(targetEntity: ProjectType::class)]
     #[ORM\JoinColumn(name: 'projecttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Projecttype $projecttype = null;
+    private ?ProjectType $projecttype = null;
 
     #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
@@ -407,7 +407,7 @@ class Project
     /**
      * Get the value of projectstate
      */
-    public function getProjectstate()
+    public function getProjectState()
     {
         return $this->projectstate;
     }
@@ -417,7 +417,7 @@ class Project
      *
      * @return  self
      */
-    public function setProjectstate($projectstate)
+    public function setProjectState($projectstate)
     {
         $this->projectstate = $projectstate;
 
@@ -427,7 +427,7 @@ class Project
     /**
      * Get the value of projecttype
      */
-    public function getProjecttype()
+    public function getProjectType()
     {
         return $this->projecttype;
     }
@@ -437,7 +437,7 @@ class Project
      *
      * @return  self
      */
-    public function setProjecttype($projecttype)
+    public function setProjectType($projecttype)
     {
         $this->projecttype = $projecttype;
 

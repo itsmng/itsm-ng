@@ -26,9 +26,9 @@ class DeviceGeneric
     #[ORM\Column(name: 'designation', type: "string", length: 255, nullable: true)]
     private $designation;
 
-    #[ORM\ManyToOne(targetEntity: Devicegenerictype::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceGenericType::class)]
     #[ORM\JoinColumn(name: 'devicegenerictypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Devicegenerictype $devicegenerictypes = null;
+    private ?DeviceGenericType $devicegenerictypes = null;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
@@ -52,9 +52,9 @@ class DeviceGeneric
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
     private ?State $state = null;
 
-    #[ORM\ManyToOne(targetEntity: Devicegenericmodel::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceGenericModel::class)]
     #[ORM\JoinColumn(name: 'devicegenericmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Devicegenericmodel $devicegenericmodel = null;
+    private ?DeviceGenericModel $devicegenericmodel = null;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: false)]
     private $dateMod;
@@ -138,7 +138,7 @@ class DeviceGeneric
     /**
      * Get the value of devicegenerictypes
      */
-    public function getDevicegenerictypes()
+    public function getDeviceGenericTypes()
     {
         return $this->devicegenerictypes;
     }
@@ -148,7 +148,7 @@ class DeviceGeneric
      *
      * @return  self
      */
-    public function setDevicegenerictypes($devicegenerictypes)
+    public function setDeviceGenericTypes($devicegenerictypes)
     {
         $this->devicegenerictypes = $devicegenerictypes;
 
@@ -238,7 +238,7 @@ class DeviceGeneric
     /**
      * Get the value of devicegenericmodel
      */
-    public function getDevicegenericmodel()
+    public function getDeviceGenericModel()
     {
         return $this->devicegenericmodel;
     }
@@ -248,7 +248,7 @@ class DeviceGeneric
      *
      * @return  self
      */
-    public function setDevicegenericmodel($devicegenericmodel)
+    public function setDeviceGenericModel($devicegenericmodel)
     {
         $this->devicegenericmodel = $devicegenericmodel;
 

@@ -70,7 +70,7 @@ class State
     private $isVisibleMonitor;
 
     #[ORM\Column(name: 'is_visible_networkequipment', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleNetworkequipment;
+    private $isVisibleNetworkEquipment;
 
     #[ORM\Column(name: 'is_visible_peripheral', type: 'boolean', options: ['default' => 1])]
     private $isVisiblePeripheral;
@@ -97,7 +97,7 @@ class State
     private $isVisibleRack;
 
     #[ORM\Column(name: 'is_visible_passivedcequipment', type: 'boolean', options: ['default' => 1])]
-    private $isVisiblePassivedcequipment;
+    private $isVisiblePassiveDCEquipment;
 
     #[ORM\Column(name: 'is_visible_enclosure', type: 'boolean', options: ['default' => 1])]
     private $isVisibleEnclosure;
@@ -233,14 +233,14 @@ class State
         return $this;
     }
 
-    public function getIsVisibleNetworkequipment(): ?bool
+    public function getIsVisibleNetworkEquipment(): ?bool
     {
-        return $this->isVisibleNetworkequipment;
+        return $this->isVisibleNetworkEquipment;
     }
 
-    public function setIsVisibleNetworkequipment(?bool $isVisibleNetworkequipment): self
+    public function setIsVisibleNetworkEquipment(?bool $isVisibleNetworkEquipment): self
     {
-        $this->isVisibleNetworkequipment = $isVisibleNetworkequipment;
+        $this->isVisibleNetworkEquipment = $isVisibleNetworkEquipment;
 
         return $this;
     }
@@ -341,14 +341,14 @@ class State
         return $this;
     }
 
-    public function getIsVisiblePassivedcequipment(): ?bool
+    public function getIsVisiblePassiveDCEquipment(): ?bool
     {
-        return $this->isVisiblePassivedcequipment;
+        return $this->isVisiblePassiveDCEquipment;
     }
 
-    public function setIsVisiblePassivedcequipment(?bool $isVisiblePassivedcequipment): self
+    public function setIsVisiblePassiveDCEquipment(?bool $isVisiblePassiveDCEquipment): self
     {
-        $this->isVisiblePassivedcequipment = $isVisiblePassivedcequipment;
+        $this->isVisiblePassiveDCEquipment = $isVisiblePassiveDCEquipment;
 
         return $this;
     }

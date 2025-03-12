@@ -94,12 +94,12 @@ class ItemDeviceGraphicCard
         return $this;
     }
 
-    public function getDevicegraphiccardsId(): ?int
+    public function getDeviceGraphicCardsId(): ?int
     {
         return $this->devicegraphiccardsId;
     }
 
-    public function setDevicegraphiccardsId(int $devicegraphiccardsId): self
+    public function setDeviceGraphicCardsId(int $devicegraphiccardsId): self
     {
         $this->devicegraphiccardsId = $devicegraphiccardsId;
 

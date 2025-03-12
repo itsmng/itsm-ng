@@ -33,9 +33,9 @@ class Domain
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
     private $isRecursive;
 
-    #[ORM\ManyToOne(targetEntity: Domaintype::class)]
+    #[ORM\ManyToOne(targetEntity: DomainType::class)]
     #[ORM\JoinColumn(name: 'domaintypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Domaintype $domaintype = null;
+    private ?DomainType $domaintype = null;
 
     #[ORM\Column(name: 'date_expiration', type: "datetime", nullable: true)]
     private $dateExpiration;
@@ -197,7 +197,7 @@ class Domain
     /**
      * Get the value of domaintype
      */
-    public function getDomaintype()
+    public function getDomainType()
     {
         return $this->domaintype;
     }
@@ -207,7 +207,7 @@ class Domain
      *
      * @return  self
      */
-    public function setDomaintype($domaintype)
+    public function setDomainType($domaintype)
     {
         $this->domaintype = $domaintype;
 

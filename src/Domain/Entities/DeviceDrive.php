@@ -47,9 +47,9 @@ class DeviceDrive
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
 
-    #[ORM\ManyToOne(targetEntity: Devicedrivemodel::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceDriveModel::class)]
     #[ORM\JoinColumn(name: 'devicedrivemodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Devicedrivemodel $devicedrivemodel = null;
+    private ?DeviceDriveModel $devicedrivemodel = null;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -203,7 +203,7 @@ class DeviceDrive
     /**
      * Get the value of devicedrivemodel
      */
-    public function getDevicedrivemodel()
+    public function getDeviceDriveModel()
     {
         return $this->devicedrivemodel;
     }
@@ -213,7 +213,7 @@ class DeviceDrive
      *
      * @return  self
      */
-    public function setDevicedrivemodel($devicedrivemodel)
+    public function setDeviceDriveModel($devicedrivemodel)
     {
         $this->devicedrivemodel = $devicedrivemodel;
 

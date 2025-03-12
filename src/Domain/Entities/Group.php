@@ -29,7 +29,7 @@ class Group
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'entityRssfeeds')]
+    #[ORM\ManyToOne(targetEntity: Entity::class, inversedBy: 'entityRSSFeeds')]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
@@ -101,7 +101,7 @@ class Group
     private Collection $changeGroups;
 
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupKnowbaseItem::class)]
-    private Collection $groupKnowbaseitems;
+    private Collection $groupKnowbaseItems;
 
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupProblem::class)]
     private Collection $groupProblems;
@@ -109,8 +109,8 @@ class Group
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupReminder::class)]
     private Collection $groupReminders;
 
-    #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupRssFeed::class)]
-    private Collection $groupRssfeeds;
+    #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupRSSFeed::class)]
+    private Collection $groupRSSFeeds;
 
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: GroupTicket::class)]
     private Collection $groupTickets;
@@ -366,21 +366,21 @@ class Group
 
 
     /**
-     * Get the value of groupKnowbaseitems
+     * Get the value of groupKnowbaseItems
      */
-    public function getGroupKnowbaseitems()
+    public function getGroupKnowbaseItems()
     {
-        return $this->groupKnowbaseitems;
+        return $this->groupKnowbaseItems;
     }
 
     /**
-     * Set the value of groupKnowbaseitems
+     * Set the value of groupKnowbaseItems
      *
      * @return  self
      */
-    public function setGroupKnowbaseitems($groupKnowbaseitems)
+    public function setGroupKnowbaseItems($groupKnowbaseItems)
     {
-        $this->groupKnowbaseitems = $groupKnowbaseitems;
+        $this->groupKnowbaseItems = $groupKnowbaseItems;
 
         return $this;
     }
@@ -466,21 +466,21 @@ class Group
     }
 
     /**
-     * Get the value of groupRssfeeds
+     * Get the value of groupRSSFeeds
      */
-    public function getGroupRssfeeds()
+    public function getGroupRSSFeeds()
     {
-        return $this->groupRssfeeds;
+        return $this->groupRSSFeeds;
     }
 
     /**
-     * Set the value of groupRssfeeds
+     * Set the value of groupRSSFeeds
      *
      * @return  self
      */
-    public function setGroupRssfeeds($groupRssfeeds)
+    public function setGroupRSSFeeds($groupRSSFeeds)
     {
-        $this->groupRssfeeds = $groupRssfeeds;
+        $this->groupRSSFeeds = $groupRSSFeeds;
 
         return $this;
     }

@@ -25,7 +25,7 @@ class NetworkPortWifi
     private ?NetworkPort $networkport = null;
 
     #[ORM\Column(name: 'items_devicenetworkcards_id', type: 'integer', options: ['default' => 0])]
-    private $itemsDevicenetworkcardsId;
+    private $itemsDeviceNetworkCardsId;
 
     #[ORM\ManyToOne(targetEntity: WifiNetwork::class)]
     #[ORM\JoinColumn(name: 'wifinetworks_id', referencedColumnName: 'id', nullable: true)]
@@ -52,14 +52,14 @@ class NetworkPortWifi
         return $this->id;
     }
 
-    public function getItemsDevicenetworkcardsId(): ?int
+    public function getItemsDeviceNetworkCardsId(): ?int
     {
-        return $this->itemsDevicenetworkcardsId;
+        return $this->itemsDeviceNetworkCardsId;
     }
 
-    public function setItemsDevicenetworkcardsId(?int $itemsDevicenetworkcardsId): self
+    public function setItemsDeviceNetworkCardsId(?int $itemsDeviceNetworkCardsId): self
     {
-        $this->itemsDevicenetworkcardsId = $itemsDevicenetworkcardsId;
+        $this->itemsDeviceNetworkCardsId = $itemsDeviceNetworkCardsId;
 
         return $this;
     }

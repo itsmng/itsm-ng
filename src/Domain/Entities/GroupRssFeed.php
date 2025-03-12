@@ -10,18 +10,18 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "groups_id", columns: ["groups_id"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
-class GroupRssFeed
+class GroupRSSFeed
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Rssfeed::class, inversedBy: 'groupRssfeeds')]
+    #[ORM\ManyToOne(targetEntity: RSSFeed::class, inversedBy: 'groupRSSFeeds')]
     #[ORM\JoinColumn(name: 'rssfeeds_id', referencedColumnName: 'id', nullable: true)]
-    private ?Rssfeed $rssfeed = null;
+    private ?RSSFeed $rssfeed = null;
 
-    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupRssfeeds')]
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'groupRSSFeeds')]
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group = null;
 
@@ -52,7 +52,7 @@ class GroupRssFeed
     /**
      * Get the value of rssfeed
      */
-    public function getRssfeed()
+    public function getRSSFeed()
     {
         return $this->rssfeed;
     }
@@ -62,7 +62,7 @@ class GroupRssFeed
      *
      * @return  self
      */
-    public function setRssfeed($rssfeed)
+    public function setRSSFeed($rssfeed)
     {
         $this->rssfeed = $rssfeed;
 

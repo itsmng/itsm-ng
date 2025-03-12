@@ -38,9 +38,9 @@ class NetworkName
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
 
-    #[ORM\ManyToOne(targetEntity: Fqdn::class)]
+    #[ORM\ManyToOne(targetEntity: FQDN::class)]
     #[ORM\JoinColumn(name: 'fqdns_id', referencedColumnName: 'id', nullable: true)]
-    private ?Fqdn $fqdn = null;
+    private ?FQDN $fqdn = null;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => 0])]
     private $isDeleted;
@@ -178,7 +178,7 @@ class NetworkName
     /**
      * Get the value of fqdn
      */
-    public function getFqdn()
+    public function getFQDN()
     {
         return $this->fqdn;
     }
@@ -188,7 +188,7 @@ class NetworkName
      *
      * @return  self
      */
-    public function setFqdn($fqdn)
+    public function setFQDN($fqdn)
     {
         $this->fqdn = $fqdn;
 

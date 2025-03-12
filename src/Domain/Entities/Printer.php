@@ -97,13 +97,13 @@ class Printer
     #[ORM\JoinColumn(name: 'networks_id', referencedColumnName: 'id', nullable: true)]
     private ?Network $network = null;
 
-    #[ORM\ManyToOne(targetEntity: Printertype::class)]
+    #[ORM\ManyToOne(targetEntity: PrinterType::class)]
     #[ORM\JoinColumn(name: 'printertypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Printertype $printertype = null;
+    private ?PrinterType $printertype = null;
 
-    #[ORM\ManyToOne(targetEntity: Printermodel::class)]
+    #[ORM\ManyToOne(targetEntity: PrinterModel::class)]
     #[ORM\JoinColumn(name: 'printermodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Printermodel $printermodel = null;
+    private ?PrinterModel $printermodel = null;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
@@ -497,7 +497,7 @@ class Printer
     /**
      * Get the value of printertype
      */
-    public function getPrintertype()
+    public function getPrinterType()
     {
         return $this->printertype;
     }
@@ -507,7 +507,7 @@ class Printer
      *
      * @return  self
      */
-    public function setPrintertype($printertype)
+    public function setPrinterType($printertype)
     {
         $this->printertype = $printertype;
 
@@ -517,7 +517,7 @@ class Printer
     /**
      * Get the value of printermodel
      */
-    public function getPrintermodel()
+    public function getPrinterModel()
     {
         return $this->printermodel;
     }
@@ -527,7 +527,7 @@ class Printer
      *
      * @return  self
      */
-    public function setPrintermodel($printermodel)
+    public function setPrinterModel($printermodel)
     {
         $this->printermodel = $printermodel;
 

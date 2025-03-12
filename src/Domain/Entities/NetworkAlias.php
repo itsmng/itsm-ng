@@ -27,9 +27,9 @@ class NetworkAlias
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
 
-    #[ORM\ManyToOne(targetEntity: Fqdn::class)]
+    #[ORM\ManyToOne(targetEntity: FQDN::class)]
     #[ORM\JoinColumn(name: 'fqdns_id', referencedColumnName: 'id', nullable: true)]
-    private ?Fqdn $fqdn = null;
+    private ?FQDN $fqdn = null;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
@@ -106,7 +106,7 @@ class NetworkAlias
     /**
      * Get the value of fqdn
      */
-    public function getFqdn()
+    public function getFQDN()
     {
         return $this->fqdn;
     }
@@ -116,7 +116,7 @@ class NetworkAlias
      *
      * @return  self
      */
-    public function setFqdn($fqdn)
+    public function setFQDN($fqdn)
     {
         $this->fqdn = $fqdn;
 

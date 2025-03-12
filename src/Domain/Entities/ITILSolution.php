@@ -28,9 +28,9 @@ class ITILSolution
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
     private $itemsId;
 
-    #[ORM\ManyToOne(targetEntity: Solutiontype::class)]
+    #[ORM\ManyToOne(targetEntity: SolutionType::class)]
     #[ORM\JoinColumn(name: 'solutiontypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Solutiontype $solutiontype = null;
+    private ?SolutionType $solutiontype = null;
 
     #[ORM\Column(name: 'solutiontype_name', type: 'string', length: 255, nullable: true)]
     private $solutiontypeName;
@@ -69,9 +69,9 @@ class ITILSolution
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
     private $status;
 
-    #[ORM\ManyToOne(targetEntity: ItilFollowup::class)]
+    #[ORM\ManyToOne(targetEntity: ITILFollowup::class)]
     #[ORM\JoinColumn(name: 'itilfollowups_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'Followup reference on reject or approve a solution'])]
-    private ?ItilFollowup $itilFollowup = null;
+    private ?ITILFollowup $itilFollowup = null;
 
 
     public function getId(): ?int
@@ -103,12 +103,12 @@ class ITILSolution
         return $this;
     }
 
-    public function getSolutiontypeName(): ?string
+    public function getSolutionTypeName(): ?string
     {
         return $this->solutiontypeName;
     }
 
-    public function setSolutiontypeName(?string $solutiontypeName): self
+    public function setSolutionTypeName(?string $solutiontypeName): self
     {
         $this->solutiontypeName = $solutiontypeName;
 
@@ -202,7 +202,7 @@ class ITILSolution
     /**
      * Get the value of solutiontype
      */
-    public function getSolutiontype()
+    public function getSolutionType()
     {
         return $this->solutiontype;
     }
@@ -212,7 +212,7 @@ class ITILSolution
      *
      * @return  self
      */
-    public function setSolutiontype($solutiontype)
+    public function setSolutionType($solutiontype)
     {
         $this->solutiontype = $solutiontype;
 
@@ -282,7 +282,7 @@ class ITILSolution
     /**
      * Get the value of itilFollowup
      */
-    public function getItilFollowup()
+    public function getITILFollowup()
     {
         return $this->itilFollowup;
     }
@@ -292,7 +292,7 @@ class ITILSolution
      *
      * @return  self
      */
-    public function setItilFollowup($itilFollowup)
+    public function setITILFollowup($itilFollowup)
     {
         $this->itilFollowup = $itilFollowup;
 

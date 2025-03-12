@@ -8,21 +8,21 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: "glpi_cartridgeitems_printermodels")]
 #[ORM\UniqueConstraint(name: "unicity", columns: ["printermodels_id", "cartridgeitems_id"])]
 #[ORM\Index(name: "cartridgeitems_id", columns: ["cartridgeitems_id"])]
-class CartridgeItemPrintermodel
+class CartridgeItemPrinterModel
 {
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
 
-    #[ORM\ManyToOne(targetEntity: CartridgeItem::class, inversedBy: 'cartridgeItemPrintermodels')]
+    #[ORM\ManyToOne(targetEntity: CartridgeItem::class, inversedBy: 'cartridgeItemPrinterModels')]
     #[ORM\JoinColumn(name: 'cartridgeitems_id', referencedColumnName: 'id', nullable: true)]
     private ?CartridgeItem $cartridgeItem = null;
 
 
-    #[ORM\ManyToOne(targetEntity: Printermodel::class, inversedBy: 'cartridgeItemPrintermodels')]
+    #[ORM\ManyToOne(targetEntity: PrinterModel::class, inversedBy: 'cartridgeItemPrinterModels')]
     #[ORM\JoinColumn(name: 'printermodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Printermodel $printermodel = null;
+    private ?PrinterModel $printermodel = null;
 
 
     public function getId(): ?int
@@ -54,7 +54,7 @@ class CartridgeItemPrintermodel
     /**
      * Get the value of printermodel
      */
-    public function getPrintermodel()
+    public function getPrinterModel()
     {
         return $this->printermodel;
     }
@@ -64,7 +64,7 @@ class CartridgeItemPrintermodel
      *
      * @return  self
      */
-    public function setPrintermodel($printermodel)
+    public function setPrinterModel($printermodel)
     {
         $this->printermodel = $printermodel;
 

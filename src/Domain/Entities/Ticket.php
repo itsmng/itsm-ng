@@ -76,9 +76,9 @@ class Ticket
     #[ORM\Column(name: 'users_id_recipient', type: 'integer', options: ['default' => 0])]
     private $usersIdRecipient;
 
-    #[ORM\ManyToOne(targetEntity: Requesttype::class)]
+    #[ORM\ManyToOne(targetEntity: RequestType::class)]
     #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Requesttype $requesttype = null;
+    private ?RequestType $requesttype = null;
 
     #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
@@ -92,9 +92,9 @@ class Ticket
     #[ORM\Column(name: 'priority', type: 'integer', options: ['default' => 1])]
     private $priority = 1;
 
-    #[ORM\ManyToOne(targetEntity: ItilCategory::class)]
+    #[ORM\ManyToOne(targetEntity: ITILCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?ItilCategory $itilCategory = null;
+    private ?ITILCategory $itilCategory = null;
 
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
@@ -179,16 +179,16 @@ class Ticket
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: GroupTicket::class)]
     private Collection $groupTickets;
 
-    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: OlalevelTicket::class)]
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: OlaLevelTicket::class)]
     private Collection $olalevelTickets;
 
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ProblemTicket::class)]
     private Collection $problemTickets;
 
-    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ProjecttaskTicket::class)]
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ProjectTaskTicket::class)]
     private Collection $projecttaskTickets;
 
-    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: SlalevelTicket::class)]
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: SlaLevelTicket::class)]
     private Collection $slalevelTickets;
 
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: SupplierTicket::class)]
@@ -405,12 +405,12 @@ class Ticket
         return $this;
     }
 
-    public function getSlalevelsIdTtr(): ?int
+    public function getSlaLevelsIdTtr(): ?int
     {
         return $this->slalevelsIdTtr;
     }
 
-    public function setSlalevelsIdTtr(?int $slalevelsIdTtr): self
+    public function setSlaLevelsIdTtr(?int $slalevelsIdTtr): self
     {
         $this->slalevelsIdTtr = $slalevelsIdTtr;
 
@@ -501,12 +501,12 @@ class Ticket
         return $this;
     }
 
-    public function getOlalevelsIdTtr(): ?int
+    public function getOlaLevelsIdTtr(): ?int
     {
         return $this->olalevelsIdTtr;
     }
 
-    public function setOlalevelsIdTtr(?int $olalevelsIdTtr): self
+    public function setOlaLevelsIdTtr(?int $olalevelsIdTtr): self
     {
         $this->olalevelsIdTtr = $olalevelsIdTtr;
 
@@ -692,7 +692,7 @@ class Ticket
     /**
      * Get the value of olalevelTickets
      */
-    public function getOlalevelTickets()
+    public function getOlaLevelTickets()
     {
         return $this->olalevelTickets;
     }
@@ -702,7 +702,7 @@ class Ticket
      *
      * @return  self
      */
-    public function setOlalevelTickets($olalevelTickets)
+    public function setOlaLevelTickets($olalevelTickets)
     {
         $this->olalevelTickets = $olalevelTickets;
 
@@ -732,7 +732,7 @@ class Ticket
     /**
      * Get the value of projecttaskTickets
      */
-    public function getProjecttaskTickets()
+    public function getProjectTaskTickets()
     {
         return $this->projecttaskTickets;
     }
@@ -742,7 +742,7 @@ class Ticket
      *
      * @return  self
      */
-    public function setProjecttaskTickets($projecttaskTickets)
+    public function setProjectTaskTickets($projecttaskTickets)
     {
         $this->projecttaskTickets = $projecttaskTickets;
 
@@ -752,7 +752,7 @@ class Ticket
     /**
      * Get the value of slalevelTickets
      */
-    public function getSlalevelTickets()
+    public function getSlaLevelTickets()
     {
         return $this->slalevelTickets;
     }
@@ -762,7 +762,7 @@ class Ticket
      *
      * @return  self
      */
-    public function setSlalevelTickets($slalevelTickets)
+    public function setSlaLevelTickets($slalevelTickets)
     {
         $this->slalevelTickets = $slalevelTickets;
 
@@ -812,7 +812,7 @@ class Ticket
     /**
      * Get the value of requesttype
      */
-    public function getRequesttype()
+    public function getRequestType()
     {
         return $this->requesttype;
     }
@@ -822,7 +822,7 @@ class Ticket
      *
      * @return  self
      */
-    public function setRequesttype($requesttype)
+    public function setRequestType($requesttype)
     {
         $this->requesttype = $requesttype;
 
@@ -832,7 +832,7 @@ class Ticket
     /**
      * Get the value of itilcategory
      */
-    public function getItilCategory()
+    public function getITILCategory()
     {
         return $this->itilCategory;
     }
@@ -842,7 +842,7 @@ class Ticket
      *
      * @return  self
      */
-    public function setItilcategory($itilcategory)
+    public function setITILcategory($itilcategory)
     {
         $this->itilCategory = $itilcategory;
 
