@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "item", columns: ["itemtype", "items_id", "is_deleted"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-class Networkname
+class NetworkName
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -100,7 +100,7 @@ class Networkname
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
+    public function setComment(?string $comment): self
     {
         $this->comment = $comment;
 

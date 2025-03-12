@@ -166,7 +166,7 @@ class NetworkPort
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
+    public function setComment(string | null $comment): self
     {
         $this->comment = $comment;
 

@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Index(name: "is_dynamic", columns: ["is_dynamic"])]
 #[ORM\Index(name: "item", columns: ["itemtype", "items_id", "is_deleted"])]
 #[ORM\Index(name: "mainitem", columns: ["mainitemtype", "mainitems_id", "is_deleted"])]
-class IpAddress
+class IPAddress
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

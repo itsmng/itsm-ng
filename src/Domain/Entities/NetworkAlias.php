@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "networknames_id", columns: ["networknames_id"])]
-class Networkalias
+class NetworkAlias
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,9 +20,9 @@ class Networkalias
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
-    #[ORM\ManyToOne(targetEntity: Networkname::class)]
+    #[ORM\ManyToOne(targetEntity: NetworkName::class)]
     #[ORM\JoinColumn(name: 'networknames_id', referencedColumnName: 'id', nullable: true)]
-    private ?Networkname $networkname = null;
+    private ?NetworkName $networkname = null;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
@@ -66,7 +66,7 @@ class Networkalias
     /**
      * Get the value of networkname
      */
-    public function getNetworkname()
+    public function getNetworkName()
     {
         return $this->networkname;
     }
@@ -76,7 +76,7 @@ class Networkalias
      *
      * @return  self
      */
-    public function setNetworkname($networkname)
+    public function setNetworkName($networkname)
     {
         $this->networkname = $networkname;
 
