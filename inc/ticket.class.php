@@ -4877,6 +4877,20 @@ class Ticket extends CommonITILObject
         $display_save_btn = (!array_key_exists('locked', $options) || !$options['locked'])
            && ($canupdate || $can_requester || $canpriority || $canassign || $canassigntome);
 
+        $priorityScript = <<<JS
+            $.ajax({
+                url: '{$CFG_GLPI["root_doc"]}/ajax/priority.php',
+                data: {
+                    urgency: $("#urgencySelect").val(),
+                    impact: $("#impactSelect").val()
+                },
+                type: 'POST',
+                success: function(data) {
+                    $("#prioritySelect").val(data);
+                }
+            });
+        JS;
+
         $formUrl = $this->getFormURL();
         $reopenLabel = __('Reopen');
         $form = [
@@ -5079,20 +5093,6 @@ class Ticket extends CommonITILObject
                      'value' => $this->fields['requesttypes_id'],
                      $canupdate ? '' : 'disabled' => ''
                   ],
-                  __('Urgency') => [
-                     'type' => 'select',
-                     'noLib' => 'true',
-                     'name' => 'urgency',
-                     'values' => [
-                        1 => static::getUrgencyName(1),
-                        2 => static::getUrgencyName(2),
-                        3 => static::getUrgencyName(3),
-                        4 => static::getUrgencyName(4),
-                        5 => static::getUrgencyName(5),
-                     ],
-                     'value' => $this->fields['urgency'],
-                     $canupdate ? '' : 'disabled' => ''
-                  ],
                   !$ID ? __('Approval request') : CommonITILValidation::getTypeName(1) => !$ID ? [] : [
                      'type' => 'select',
                      'noLib' => 'true',
@@ -5101,20 +5101,6 @@ class Ticket extends CommonITILObject
                      'value' => $this->fields['global_validation'],
                      (Session::haveRightsOr('ticketvalidation', TicketValidation::getCreateRights())
                         && $canupdate) ? '' : 'disabled' => ''
-                  ],
-                  __('Impact') => [
-                     'type' => 'select',
-                     'noLib' => 'true',
-                     'name' => 'impact',
-                     'values' => [
-                        1 => static::getUrgencyName(1),
-                        2 => static::getUrgencyName(2),
-                        3 => static::getUrgencyName(3),
-                        4 => static::getUrgencyName(4),
-                        5 => static::getUrgencyName(5),
-                     ],
-                     'value' => $this->fields['impact'],
-                     $canupdate ? '' : 'disabled' => '',
                   ],
                   Location::getTypeName(1) => [
                      'type' => 'select',
@@ -5125,10 +5111,43 @@ class Ticket extends CommonITILObject
                      'actions' => getItemActionButtons(['info', 'add'], 'Location'),
                      $canupdate ? '' : 'disabled' => '',
                   ],
+                  __('Urgency') => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'name' => 'urgency',
+                     'id' => 'urgencySelect',
+                     'values' => [
+                        1 => static::getUrgencyName(1),
+                        2 => static::getUrgencyName(2),
+                        3 => static::getUrgencyName(3),
+                        4 => static::getUrgencyName(4),
+                        5 => static::getUrgencyName(5),
+                     ],
+                     'value' => $this->fields['urgency'],
+                     'hooks' => [ 'change' => $priorityScript, ],
+                     $canupdate ? '' : 'disabled' => ''
+                  ],
+                  __('Impact') => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'name' => 'impact',
+                     'id' => 'impactSelect',
+                     'values' => [
+                        1 => static::getUrgencyName(1),
+                        2 => static::getUrgencyName(2),
+                        3 => static::getUrgencyName(3),
+                        4 => static::getUrgencyName(4),
+                        5 => static::getUrgencyName(5),
+                     ],
+                     'value' => $this->fields['impact'],
+                     $canupdate ? '' : 'disabled' => '',
+                     'hooks' => [ 'change' => $priorityScript, ],
+                  ],
                   __('Priority') => [
                      'type' => 'select',
                      'noLib' => 'true',
                      'name' => 'priority',
+                     'id' => 'prioritySelect',
                      'values' => [
                         1 => static::getUrgencyName(1),
                         2 => static::getUrgencyName(2),
@@ -5198,6 +5217,24 @@ class Ticket extends CommonITILObject
                      'values' => getLinkedDocumentsForItem('Ticket', $ID),
                      'col_lg' => 6,
                   ],
+
+                  __('Associated elements') =>
+                  (($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] != 0)
+                      && (count($_SESSION["glpiactiveprofile"]["helpdesk_item_type"])))
+                      && (!$tt->isHiddenField('items_id')) ?
+                  [
+                      'content' => (function () use ($tt, $options) {
+                          ob_start();
+                          $item_options = $options;
+                          $item_options['_canupdate'] = Session::haveRight('ticket', CREATE);
+                          $item_options['_tickettemplate'] = $tt; // Items form requires ticket template object in $options
+                          Item_Ticket::itemAddForm($this, $item_options);
+                          return ob_get_clean();
+                      })(),
+                      'name' => 'associated',
+                      'col_lg' => 12,
+                      'col_md' => 12,
+                 ] : [],
                ]
               ],
            ]

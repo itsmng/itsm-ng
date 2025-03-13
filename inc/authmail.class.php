@@ -181,7 +181,7 @@ class AuthMail extends CommonDBTM
             $this->getFromDB($ID);
         }
 
-        return MailServer::showMailServerConfigForm('authmail', $this->fields, $this->isNewID($ID), $ID);
+        return MailServer::showMailServerConfigForm('authmail', $this->fields, $this->isNewID($ID), $ID, false);
     }
 
     /**

@@ -608,8 +608,14 @@ class Update extends CommonGLPI
             case "1.4.0":
             case "1.5.0":
             case "1.5.1":
+                include_once "{$updir}itsm_update_150_151.php";
+                update150to151();
+                // no break
             case "1.6.0":
             case "1.6.1":
+                include_once "{$updir}itsm_update_160_161.php";
+                update160to161();
+                // no break
             case "1.6.2":
             case "1.6.3":
             case "1.6.4":
@@ -617,8 +623,11 @@ class Update extends CommonGLPI
             case "1.6.6":
             case "1.6.7":
             case "1.6.8":
-                include_once "{$updir}itsm_update_150_151.php";
-                update150to151();
+            case "1.6.9":
+            case "1.6.10":
+            case "1.6.11":
+                include_once "{$updir}itsm_update_1610_1611.php";
+                update1610to1611();
                 // no break
             case "2.0.0":
             case "2.0.1":
@@ -629,6 +638,7 @@ class Update extends CommonGLPI
                 // no break
             case "2.0.4":
             case "2.0.5":
+            case "2.0.6":
                 include_once "{$updir}itsm_update_200_204.php";
                 update200to204();
 
