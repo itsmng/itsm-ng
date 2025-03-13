@@ -20,8 +20,9 @@ class ItemKanban
     #[ORM\Column(name: 'items_id', type: "integer", nullable: true)]
     private $itemsId;
 
-    #[ORM\Column(name: 'users_id', type: "integer")]
-    private $usersId;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user= null;
 
     #[ORM\Column(name: 'state', type: "text", nullable: true, length: 65535)]
     private $state;
@@ -61,30 +62,6 @@ class ItemKanban
         return $this;
     }
 
-    public function getUsersId(): ?int
-    {
-        return $this->usersId;
-    }
-
-    public function setUsersId(?int $usersId): self
-    {
-        $this->usersId = $usersId;
-
-        return $this;
-    }
-
-    public function getState(): ?string
-    {
-        return $this->state;
-    }
-
-    public function setState(?string $state): self
-    {
-        $this->state = $state;
-
-        return $this;
-    }
-
     public function getDateMod(): ?\DateTimeInterface
     {
         return $this->dateMod;
@@ -105,6 +82,46 @@ class ItemKanban
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
 
         return $this;
     }

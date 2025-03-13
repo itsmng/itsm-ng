@@ -25,8 +25,9 @@ class GroupKnowbaseItem
     #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $group = null;
 
-    #[ORM\Column(name: 'entities_id', type: "integer", options: ['default' => -1])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ['default' => false])]
     private $isRecursive;
@@ -34,18 +35,6 @@ class GroupKnowbaseItem
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool
@@ -96,6 +85,26 @@ class GroupKnowbaseItem
     public function setKnowbaseItem($knowbaseitem)
     {
         $this->knowbaseitem = $knowbaseitem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

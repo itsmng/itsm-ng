@@ -27,8 +27,9 @@ class ItemDisk
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 255, nullable: true)]
     private $itemtype;
@@ -45,8 +46,9 @@ class ItemDisk
     #[ORM\Column(name: 'mountpoint', type: 'string', length: 255, nullable: true)]
     private $mountpoint;
 
-    #[ORM\Column(name: 'filesystems_id', type: 'integer', options: ['default' => 0])]
-    private $filesystemsId;
+    #[ORM\ManyToOne(targetEntity: Filesystem::class)]
+    #[ORM\JoinColumn(name: 'filesystems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Filesystem $filesystem = null;
 
     #[ORM\Column(name: 'totalsize', type: 'integer', options: ['default' => 0])]
     private $totalsize;
@@ -81,18 +83,6 @@ class ItemDisk
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
     }
 
     public function getItemtype(): ?string
@@ -151,18 +141,6 @@ class ItemDisk
     public function setMountpoint(?string $mountpoint): self
     {
         $this->mountpoint = $mountpoint;
-
-        return $this;
-    }
-
-    public function getFilesystemsId(): ?int
-    {
-        return $this->filesystemsId;
-    }
-
-    public function setFilesystemsId(int $filesystemsId): self
-    {
-        $this->filesystemsId = $filesystemsId;
 
         return $this;
     }
@@ -283,6 +261,46 @@ class ItemDisk
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of filesystem
+     */ 
+    public function getFilesystem()
+    {
+        return $this->filesystem;
+    }
+
+    /**
+     * Set the value of filesystem
+     *
+     * @return  self
+     */ 
+    public function setFilesystem($filesystem)
+    {
+        $this->filesystem = $filesystem;
 
         return $this;
     }

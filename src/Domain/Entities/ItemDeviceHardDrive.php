@@ -32,8 +32,9 @@ class ItemDeviceHardDrive
     #[ORM\Column(name: 'itemtype', type: 'string', length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(name: 'deviceharddrives_id', type: 'integer', options: ['default' => 0])]
-    private $deviceharddrivesId;
+    #[ORM\ManyToOne(targetEntity: DeviceHardDrive::class)]
+    #[ORM\JoinColumn(name: 'deviceharddrives_id', referencedColumnName: 'id', nullable: true)]
+    private ?DeviceHardDrive $deviceharddrive = null;
 
     #[ORM\Column(name: 'capacity', type: 'integer', options: ['default' => 0])]
     private $capacity;
@@ -47,8 +48,9 @@ class ItemDeviceHardDrive
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
     private $isDynamic;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
     private $isRecursive;
@@ -59,11 +61,13 @@ class ItemDeviceHardDrive
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
-    private $locationsId;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(name: 'states_id', type: 'integer', options: ['default' => 0])]
-    private $statesId;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state = null;
 
     public function getId(): ?int
     {
@@ -94,17 +98,6 @@ class ItemDeviceHardDrive
         return $this;
     }
 
-    public function getDeviceharddrivesId(): ?int
-    {
-        return $this->deviceharddrivesId;
-    }
-
-    public function setDeviceharddrivesId(int $deviceharddrivesId): self
-    {
-        $this->deviceharddrivesId = $deviceharddrivesId;
-
-        return $this;
-    }
 
     public function getCapacity(): ?int
     {
@@ -154,17 +147,6 @@ class ItemDeviceHardDrive
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?bool
     {
@@ -202,26 +184,82 @@ class ItemDeviceHardDrive
         return $this;
     }
 
-    public function getLocationsId(): ?int
+    /**
+     * Get the value of deviceharddrive
+     */ 
+    public function getDeviceharddrive()
     {
-        return $this->locationsId;
+        return $this->deviceharddrive;
     }
 
-    public function setLocationsId(int $locationsId): self
+    /**
+     * Set the value of deviceharddrive
+     *
+     * @return  self
+     */ 
+    public function setDeviceharddrive($deviceharddrive)
     {
-        $this->locationsId = $locationsId;
+        $this->deviceharddrive = $deviceharddrive;
 
         return $this;
     }
 
-    public function getStatesId(): ?int
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
     {
-        return $this->statesId;
+        return $this->entity;
     }
 
-    public function setStatesId(int $statesId): self
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
     {
-        $this->statesId = $statesId;
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
 
         return $this;
     }

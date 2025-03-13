@@ -32,8 +32,9 @@ class ItemDeviceSimcard
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(name: 'devicesimcards_id', type: 'integer', options: ['default' => 0])]
-    private $devicesimcardsId;
+    #[ORM\ManyToOne(targetEntity: DeviceSimcard::class)]
+    #[ORM\JoinColumn(name: 'devicesimcards_id', referencedColumnName: 'id', nullable: true)]
+    private ?DeviceSimcard $devicesimcard = null;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
     private $isDeleted;
@@ -41,8 +42,9 @@ class ItemDeviceSimcard
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
     private $isDynamic;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
     private $isRecursive;
@@ -53,20 +55,25 @@ class ItemDeviceSimcard
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(name: 'states_id', type: 'integer', options: ['default' => 0])]
-    private $statesId;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
-    private $locationsId;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state = null;
 
-    #[ORM\Column(name: 'lines_id', type: 'integer', options: ['default' => 0])]
-    private $linesId;
+    #[ORM\ManyToOne(targetEntity: Line::class)]
+    #[ORM\JoinColumn(name: 'lines_id', referencedColumnName: 'id', nullable: true)]
+    private ?Line $line = null;
 
-    #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
-    private $usersId;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $user = null;
 
-    #[ORM\Column(name: 'groups_id', type: 'integer', options: ['default' => 0])]
-    private $groupsId;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'groups_id', referencedColumnName: 'id', nullable: true)]
+    private ?Group $group = null;
 
     #[ORM\Column(name: 'pin', type: 'string', length: 255, options: ['default' => ''])]
     private $pin;
@@ -112,18 +119,6 @@ class ItemDeviceSimcard
         return $this;
     }
 
-    public function getDeviceSimcardsId(): ?int
-    {
-        return $this->devicesimcardsId;
-    }
-
-    public function setDeviceSimcardsId(int $devicesimcardsId): self
-    {
-        $this->devicesimcardsId = $devicesimcardsId;
-
-        return $this;
-    }
-
     public function getIsDeleted(): ?bool
     {
         return $this->isDeleted;
@@ -144,18 +139,6 @@ class ItemDeviceSimcard
     public function setIsDynamic(bool $isDynamic): self
     {
         $this->isDynamic = $isDynamic;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
 
         return $this;
     }
@@ -192,66 +175,6 @@ class ItemDeviceSimcard
     public function setOtherSerial(string $otherSerial): self
     {
         $this->otherserial = $otherSerial;
-
-        return $this;
-    }
-
-    public function getStatesId(): ?int
-    {
-        return $this->statesId;
-    }
-
-    public function setStatesId(int $statesId): self
-    {
-        $this->statesId = $statesId;
-
-        return $this;
-    }
-
-    public function getLocationsId(): ?int
-    {
-        return $this->locationsId;
-    }
-
-    public function setLocationsId(int $locationsId): self
-    {
-        $this->locationsId = $locationsId;
-
-        return $this;
-    }
-
-    public function getLinesId(): ?int
-    {
-        return $this->linesId;
-    }
-
-    public function setLinesId(int $linesId): self
-    {
-        $this->linesId = $linesId;
-
-        return $this;
-    }
-
-    public function getUsersId(): ?int
-    {
-        return $this->usersId;
-    }
-
-    public function setUsersId(int $usersId): self
-    {
-        $this->usersId = $usersId;
-
-        return $this;
-    }
-
-    public function getGroupsId(): ?int
-    {
-        return $this->groupsId;
-    }
-
-    public function setGroupsId(int $groupsId): self
-    {
-        $this->groupsId = $groupsId;
 
         return $this;
     }
@@ -312,6 +235,146 @@ class ItemDeviceSimcard
     public function setMsin(string $msin): self
     {
         $this->msin = $msin;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of devicesimcard
+     */ 
+    public function getDevicesimcard()
+    {
+        return $this->devicesimcard;
+    }
+
+    /**
+     * Set the value of devicesimcard
+     *
+     * @return  self
+     */ 
+    public function setDevicesimcard($devicesimcard)
+    {
+        $this->devicesimcard = $devicesimcard;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of line
+     */ 
+    public function getLine()
+    {
+        return $this->line;
+    }
+
+    /**
+     * Set the value of line
+     *
+     * @return  self
+     */ 
+    public function setLine($line)
+    {
+        $this->line = $line;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of group
+     */ 
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of group
+     *
+     * @return  self
+     */ 
+    public function setGroup($group)
+    {
+        $this->group = $group;
 
         return $this;
     }

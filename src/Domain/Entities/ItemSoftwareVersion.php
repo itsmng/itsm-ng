@@ -30,8 +30,9 @@ class ItemSoftwareVersion
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
 
-    #[ORM\Column(name: 'softwareversions_id', type: 'integer', options: ['default' => 0])]
-    private $softwareversionsId;
+    #[ORM\ManyToOne(targetEntity: SoftwareVersion::class)]
+    #[ORM\JoinColumn(name: 'softwareversions_id', referencedColumnName: 'id', nullable: true)]
+    private ?SoftwareVersion $softwareversion = null;
 
     #[ORM\Column(name: 'is_deleted_item', type: 'boolean', options: ['default' => false])]
     private $isDeletedItem;
@@ -39,8 +40,9 @@ class ItemSoftwareVersion
     #[ORM\Column(name: 'is_template_item', type: 'boolean', options: ['default' => false])]
     private $isTemplateItem;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
     private $isDeleted;
@@ -80,18 +82,6 @@ class ItemSoftwareVersion
         return $this;
     }
 
-    public function getSoftwareversionsId(): ?int
-    {
-        return $this->softwareversionsId;
-    }
-
-    public function setSoftwareversionsId(int $softwareversionsId): self
-    {
-        $this->softwareversionsId = $softwareversionsId;
-
-        return $this;
-    }
-
     public function getIsDeletedItem(): ?bool
     {
         return $this->isDeletedItem;
@@ -112,18 +102,6 @@ class ItemSoftwareVersion
     public function setIsTemplateItem(bool $isTemplateItem): self
     {
         $this->isTemplateItem = $isTemplateItem;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
 
         return $this;
     }
@@ -160,6 +138,46 @@ class ItemSoftwareVersion
     public function setDateInstall(?DateTime $dateInstall): self
     {
         $this->dateInstall = $dateInstall;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of softwareversion
+     */ 
+    public function getSoftwareversion()
+    {
+        return $this->softwareversion;
+    }
+
+    /**
+     * Set the value of softwareversion
+     *
+     * @return  self
+     */ 
+    public function setSoftwareversion($softwareversion)
+    {
+        $this->softwareversion = $softwareversion;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

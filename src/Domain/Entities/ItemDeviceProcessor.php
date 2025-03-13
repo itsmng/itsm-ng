@@ -34,8 +34,9 @@ class ItemDeviceProcessor
     #[ORM\Column(name: 'itemtype', type: 'string', length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(name: 'deviceprocessors_id', type: 'integer', options: ['default' => 0])]
-    private $deviceprocessorsId;
+    #[ORM\ManyToOne(targetEntity: DeviceProcessor::class)]
+    #[ORM\JoinColumn(name: 'deviceprocessors_id', referencedColumnName: 'id', nullable: true)]
+    private ?DeviceProcessor $deviceprocessor = null;
 
     #[ORM\Column(name: 'frequency', type: 'integer', options: ['default' => 0])]
     private $frequency;
@@ -55,8 +56,9 @@ class ItemDeviceProcessor
     #[ORM\Column(name: 'nbthreads', type: 'integer', nullable: true)]
     private $nbthreads;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
@@ -67,11 +69,13 @@ class ItemDeviceProcessor
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
-    private $locationsId;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(name: 'states_id', type: 'integer', options: ['default' => 0])]
-    private $statesId;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state = null;
 
     public function getId(): ?int
     {
@@ -98,18 +102,6 @@ class ItemDeviceProcessor
     public function setItemtype(?string $itemtype): self
     {
         $this->itemtype = $itemtype;
-
-        return $this;
-    }
-
-    public function getDeviceprocessorsId(): ?int
-    {
-        return $this->deviceprocessorsId;
-    }
-
-    public function setDeviceprocessorsId(int $deviceprocessorsId): self
-    {
-        $this->deviceprocessorsId = $deviceprocessorsId;
 
         return $this;
     }
@@ -186,18 +178,6 @@ class ItemDeviceProcessor
         return $this;
     }
 
-    public function getEntitiesId(): ?array
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(?array $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->isRecursive;
@@ -234,26 +214,82 @@ class ItemDeviceProcessor
         return $this;
     }
 
-    public function getLocationsId(): ?array
+    /**
+     * Get the value of deviceprocessor
+     */ 
+    public function getDeviceprocessor()
     {
-        return $this->locationsId;
+        return $this->deviceprocessor;
     }
 
-    public function setLocationsId(?array $locationsId): self
+    /**
+     * Set the value of deviceprocessor
+     *
+     * @return  self
+     */ 
+    public function setDeviceprocessor($deviceprocessor)
     {
-        $this->locationsId = $locationsId;
+        $this->deviceprocessor = $deviceprocessor;
 
         return $this;
     }
 
-    public function getStatesId(): ?array
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
     {
-        return $this->statesId;
+        return $this->entity;
     }
 
-    public function setStatesId(?array $statesId): self
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
     {
-        $this->statesId = $statesId;
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
 
         return $this;
     }

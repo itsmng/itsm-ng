@@ -25,8 +25,9 @@ class ProfileRSSFeed
     #[ORM\JoinColumn(name: 'profiles_id', referencedColumnName: 'id', nullable: true)]
     private ?Profile $profile = null;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => -1])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
@@ -34,19 +35,6 @@ class ProfileRSSFeed
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
     }
 
     public function getIsRecursive(): ?bool
@@ -99,6 +87,26 @@ class ProfileRSSFeed
     public function setProfile($profile)
     {
         $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

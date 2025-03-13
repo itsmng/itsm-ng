@@ -15,8 +15,10 @@ class ItemCluster
     #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(name: 'clusters_id', type: "integer", options: ["default" => 0])]
-    private $clustersId;
+    #[ORM\ManyToOne(targetEntity: Cluster::class)]
+    #[ORM\JoinColumn(name: 'clusters_id', referencedColumnName: 'id', nullable: true)]
+    private ?Cluster $cluster = null;
+
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 100, nullable: true)]
     private $itemtype;
@@ -27,18 +29,6 @@ class ItemCluster
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getClustersId(): ?int
-    {
-        return $this->clustersId;
-    }
-
-    public function setClustersId(int $clustersId): self
-    {
-        $this->clustersId = $clustersId;
-
-        return $this;
     }
 
     public function getItemtype(): ?string
@@ -61,6 +51,26 @@ class ItemCluster
     public function setItemsId(int $itemsId): self
     {
         $this->itemsId = $itemsId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of cluster
+     */ 
+    public function getCluster()
+    {
+        return $this->cluster;
+    }
+
+    /**
+     * Set the value of cluster
+     *
+     * @return  self
+     */ 
+    public function setCluster($cluster)
+    {
+        $this->cluster = $cluster;
 
         return $this;
     }

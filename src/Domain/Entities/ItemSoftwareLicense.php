@@ -25,8 +25,9 @@ class ItemSoftwareLicense
     #[ORM\Column(name: 'itemtype', type: "string", length: 100)]
     private $itemtype;
 
-    #[ORM\Column(name: 'softwarelicenses_id', type: "integer", options: ["default" => 0])]
-    private $softwarelicensesId;
+    #[ORM\ManyToOne(targetEntity: SoftwareLicense::class)]
+    #[ORM\JoinColumn(name: 'softwarelicenses_id', referencedColumnName: 'id', nullable: true)]
+    private ?SoftwareLicense $softwarelicense = null;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => false])]
     private $isDeleted;
@@ -63,18 +64,6 @@ class ItemSoftwareLicense
         return $this;
     }
 
-    public function getSoftwarelicensesId(): ?int
-    {
-        return $this->softwarelicensesId;
-    }
-
-    public function setSoftwarelicensesId(int $softwarelicensesId): self
-    {
-        $this->softwarelicensesId = $softwarelicensesId;
-
-        return $this;
-    }
-
     public function getIsDeleted(): ?bool
     {
         return $this->isDeleted;
@@ -95,6 +84,26 @@ class ItemSoftwareLicense
     public function setIsDynamic(bool $isDynamic): self
     {
         $this->isDynamic = $isDynamic;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of softwarelicense
+     */ 
+    public function getSoftwarelicense()
+    {
+        return $this->softwarelicense;
+    }
+
+    /**
+     * Set the value of softwarelicense
+     *
+     * @return  self
+     */ 
+    public function setSoftwarelicense($softwarelicense)
+    {
+        $this->softwarelicense = $softwarelicense;
 
         return $this;
     }

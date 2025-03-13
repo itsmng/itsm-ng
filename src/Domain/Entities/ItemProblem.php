@@ -15,8 +15,9 @@ class ItemProblem
     #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(name: 'problems_id', type: "integer", options: ["default" => 0])]
-    private $problemsId;
+    #[ORM\ManyToOne(targetEntity: Problem::class)]
+    #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: true)]
+    private ?Problem $problem = null;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 100, nullable: true)]
     private $itemtype;
@@ -27,18 +28,6 @@ class ItemProblem
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProblemsId(): ?int
-    {
-        return $this->problemsId;
-    }
-
-    public function setProblemsId(int $problemsId): self
-    {
-        $this->problemsId = $problemsId;
-
-        return $this;
     }
 
     public function getItemtype(): ?string
@@ -61,6 +50,26 @@ class ItemProblem
     public function setItemsId(int $itemsId): self
     {
         $this->itemsId = $itemsId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of problem
+     */ 
+    public function getProblem()
+    {
+        return $this->problem;
+    }
+
+    /**
+     * Set the value of problem
+     *
+     * @return  self
+     */ 
+    public function setProblem($problem)
+    {
+        $this->problem = $problem;
 
         return $this;
     }

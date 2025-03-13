@@ -20,14 +20,16 @@ class TicketValidation
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
     private $usersId;
 
-    #[ORM\Column(name: 'tickets_id', type: 'integer', options: ['default' => 0])]
-    private $ticketsId;
+    #[ORM\ManyToOne(targetEntity: Ticket::class)]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket = null;
 
     #[ORM\Column(name: 'users_id_validate', type: 'integer', options: ['default' => 0])]
     private $usersIdValidate;
@@ -55,18 +57,6 @@ class TicketValidation
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
-    }
-
     public function getUsersId(): ?int
     {
         return $this->usersId;
@@ -75,18 +65,6 @@ class TicketValidation
     public function setUsersId(?int $usersId): self
     {
         $this->usersId = $usersId;
-
-        return $this;
-    }
-
-    public function getTicketsId(): ?int
-    {
-        return $this->ticketsId;
-    }
-
-    public function setTicketsId(?int $ticketsId): self
-    {
-        $this->ticketsId = $ticketsId;
 
         return $this;
     }
@@ -175,4 +153,44 @@ class TicketValidation
         return $this;
     }
 
+
+    /**
+     * Get the value of entity
+     */ 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */ 
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ticket
+     */ 
+    public function getTicket()
+    {
+        return $this->ticket;
+    }
+
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */ 
+    public function setTicket($ticket)
+    {
+        $this->ticket = $ticket;
+
+        return $this;
+    }
 }
