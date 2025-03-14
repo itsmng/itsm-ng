@@ -359,8 +359,8 @@ class CalendarSegment extends CommonDBChild
         foreach ($result as $row) {
             // Récupère la valeur maximale de 'end' (MAX(cs.end))
             $mend = $row['mend'];
-    }
-    return $mend;
+        }
+        return $mend;
     }
 
     /**
@@ -399,13 +399,13 @@ class CalendarSegment extends CommonDBChild
             'calendars_id' => $calendars_id,
             'day'          => $day,
             'hour'         => $hour
-        ]);        
+        ]);
         $cpt = 0;
         foreach ($result as $row) {
             $cpt = $row['cpt'];
         }
         return $cpt > 0;
-        
+
     }
 
 
@@ -517,7 +517,7 @@ class CalendarSegment extends CommonDBChild
             Html::closeForm();
         }
         echo "</div>";
-        
+
     }
 
 

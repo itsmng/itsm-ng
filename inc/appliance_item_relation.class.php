@@ -203,10 +203,10 @@ class Appliance_Item_Relation extends CommonDBRelation
         //                    "&nbsp;-&nbsp;" . $item->getLink();
         // }
         foreach ($result as $row) {
-            $itemtype = $row['itemtype']; 
+            $itemtype = $row['itemtype'];
             $item = new $itemtype();
-            $item->getFromDB($row['itemsId']); 
-        
+            $item->getFromDB($row['itemsId']);
+
             $relations[$row['id']] = "<i class='" . $item->getIcon() . "' title='" . $item::getTypeName(1) . "'></i>" .
                                         "&nbsp;" . $item::getTypeName(1) .
                                         "&nbsp;-&nbsp;" . $item->getLink();

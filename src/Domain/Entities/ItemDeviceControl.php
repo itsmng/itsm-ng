@@ -166,10 +166,10 @@ class ItemDeviceControl
 
         return $this;
     }
-   
+
     /**
      * Get the value of devicecontrol
-     */ 
+     */
     public function getDevicecontrol()
     {
         return $this->devicecontrol;
@@ -179,7 +179,7 @@ class ItemDeviceControl
      * Set the value of devicecontrol
      *
      * @return  self
-     */ 
+     */
     public function setDevicecontrol($devicecontrol)
     {
         $this->devicecontrol = $devicecontrol;
@@ -189,7 +189,7 @@ class ItemDeviceControl
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -199,7 +199,7 @@ class ItemDeviceControl
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -209,7 +209,7 @@ class ItemDeviceControl
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -219,7 +219,7 @@ class ItemDeviceControl
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -229,7 +229,7 @@ class ItemDeviceControl
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -239,7 +239,7 @@ class ItemDeviceControl
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

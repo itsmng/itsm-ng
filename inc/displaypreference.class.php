@@ -74,10 +74,10 @@ class DisplayPreference extends CommonDBTM
             'itemtype' => $input['itemtype'],
             'users_id' => $input['users_id']
         ]);
-        foreach($results as $result) {
-        $input['rank'] = $result['maxrank'] + 1;
-        return $input;
-    }
+        foreach ($results as $result) {
+            $input['rank'] = $result['maxrank'] + 1;
+            return $input;
+        }
     }
 
 
@@ -156,7 +156,7 @@ class DisplayPreference extends CommonDBTM
         $user_prefs = [];
 
         // while ($data = $iterator->next()) {
-        foreach($results as $data) {
+        foreach ($results as $data) {
             if ($data["users_id"] != 0) {
                 $user_prefs[] = $data["num"];
             } else {
@@ -199,7 +199,7 @@ class DisplayPreference extends CommonDBTM
 
         if (count($results)) {
             // while ($data = $iterator->next()) {
-            foreach($results as $data) {
+            foreach ($results as $data) {
                 unset($data["id"]);
                 $data["userId"] = $input["users_id"];
                 $this->fields     = $data;

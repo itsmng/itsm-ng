@@ -149,7 +149,7 @@ class ItemDeviceFirmware
 
     /**
      * Get the value of devicefirmware
-     */ 
+     */
     public function getDevicefirmware()
     {
         return $this->devicefirmware;
@@ -159,7 +159,7 @@ class ItemDeviceFirmware
      * Set the value of devicefirmware
      *
      * @return  self
-     */ 
+     */
     public function setDevicefirmware($devicefirmware)
     {
         $this->devicefirmware = $devicefirmware;
@@ -169,7 +169,7 @@ class ItemDeviceFirmware
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -179,7 +179,7 @@ class ItemDeviceFirmware
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -189,7 +189,7 @@ class ItemDeviceFirmware
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -199,7 +199,7 @@ class ItemDeviceFirmware
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -209,7 +209,7 @@ class ItemDeviceFirmware
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -219,7 +219,7 @@ class ItemDeviceFirmware
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

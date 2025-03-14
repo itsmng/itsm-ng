@@ -153,7 +153,7 @@ class ItemDeviceCase
 
     /**
      * Get the value of devicecase
-     */ 
+     */
     public function getDevicecase()
     {
         return $this->devicecase;
@@ -163,7 +163,7 @@ class ItemDeviceCase
      * Set the value of devicecase
      *
      * @return  self
-     */ 
+     */
     public function setDevicecase($devicecase)
     {
         $this->devicecase = $devicecase;
@@ -173,7 +173,7 @@ class ItemDeviceCase
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -183,7 +183,7 @@ class ItemDeviceCase
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -193,7 +193,7 @@ class ItemDeviceCase
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -203,7 +203,7 @@ class ItemDeviceCase
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -213,7 +213,7 @@ class ItemDeviceCase
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -223,7 +223,7 @@ class ItemDeviceCase
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

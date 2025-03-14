@@ -130,7 +130,7 @@ class Notepad
 
     /**
      * Get the value of lastupdaterUser
-     */ 
+     */
     public function getLastupdaterUser()
     {
         return $this->lastupdaterUser;
@@ -140,7 +140,7 @@ class Notepad
      * Set the value of lastupdaterUser
      *
      * @return  self
-     */ 
+     */
     public function setLastupdaterUser($lastupdaterUser)
     {
         $this->lastupdaterUser = $lastupdaterUser;

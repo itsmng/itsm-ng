@@ -20,13 +20,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function __construct(string|CommonDBTM $class)
     {
-        $this->class = $class;               
+        $this->class = $class;
         $this->em = EntityManagerProvider::getEntityManager();
         $entityPrefix = '\Itsmng\Domain\Entities\\';
         $tableClass = '';
         $currentClass = $class;
-        while (empty($tableClass)) {           
-            $parent = get_parent_class($currentClass);            
+        while (empty($tableClass)) {
+            $parent = get_parent_class($currentClass);
             if (!$parent
                 || !method_exists($parent, 'getTable')
                 || $currentClass::getTable() != $parent::getTable()

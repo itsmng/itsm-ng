@@ -361,17 +361,17 @@ abstract class CommonITILCost extends CommonDBChild
     {
         global $DB;
 
-      //   $result = $DB->request([
-      //      'SELECT' => ['SUM' => 'actiontime AS sumtime'],
-      //      'FROM'   => $this->getTable(),
-      //      'WHERE'  => [static::$items_id => $items_id]
-      //   ])->next();
-      //   return $result['sumtime'];
-      $dql = "SELECT SUM(e.actiontime) AS sumtime 
+        //   $result = $DB->request([
+        //      'SELECT' => ['SUM' => 'actiontime AS sumtime'],
+        //      'FROM'   => $this->getTable(),
+        //      'WHERE'  => [static::$items_id => $items_id]
+        //   ])->next();
+        //   return $result['sumtime'];
+        $dql = "SELECT SUM(e.actiontime) AS sumtime 
         FROM " . get_class($this) . " e 
         WHERE e." . static::$items_id . " = :items_id";
         $result = $this->getAdapter()->request($dql, ['items_id' => $items_id]);
-         foreach ($result as $data) {
+        foreach ($result as $data) {
             return $data['sumtime'];
         }
     }

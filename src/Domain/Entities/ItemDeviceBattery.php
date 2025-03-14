@@ -125,7 +125,7 @@ class ItemDeviceBattery
         $this->isDynamic = $isDynamic;
 
         return $this;
-    }   
+    }
 
     public function getIsRecursive(): ?bool
     {
@@ -165,7 +165,7 @@ class ItemDeviceBattery
 
     /**
      * Get the value of devicebattery
-     */ 
+     */
     public function getDevicebattery()
     {
         return $this->devicebattery;
@@ -175,7 +175,7 @@ class ItemDeviceBattery
      * Set the value of devicebattery
      *
      * @return  self
-     */ 
+     */
     public function setDevicebattery($devicebattery)
     {
         $this->devicebattery = $devicebattery;
@@ -185,7 +185,7 @@ class ItemDeviceBattery
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -195,7 +195,7 @@ class ItemDeviceBattery
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -205,7 +205,7 @@ class ItemDeviceBattery
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -215,7 +215,7 @@ class ItemDeviceBattery
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -225,7 +225,7 @@ class ItemDeviceBattery
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -235,7 +235,7 @@ class ItemDeviceBattery
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

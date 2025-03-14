@@ -189,7 +189,7 @@ class CronTask extends CommonDBTM
         $result = self::getAdapter()->request($dql);
 
         // while ($data = $iterator->next()) {
-        foreach($result as $data){
+        foreach ($result as $data) {
             $types[] = $data['itemtype'];
         }
         return $types;

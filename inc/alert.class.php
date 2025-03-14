@@ -304,7 +304,7 @@ class Alert extends CommonDBTM
             //     //TRANS: %s is the date
             //     echo sprintf(__('Alert sent on %s'), Html::convDateTime($row['date']));
             // }
-            
+
             foreach ($result as $row) {
                 //TRANS: %s is the date
                 echo sprintf(__('Alert sent on %s'), Html::convDateTime($row['date']));

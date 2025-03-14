@@ -166,7 +166,7 @@ class ItemDevicePci
 
     /**
      * Get the value of devicepci
-     */ 
+     */
     public function getDevicepci()
     {
         return $this->devicepci;
@@ -176,7 +176,7 @@ class ItemDevicePci
      * Set the value of devicepci
      *
      * @return  self
-     */ 
+     */
     public function setDevicepci($devicepci)
     {
         $this->devicepci = $devicepci;
@@ -186,7 +186,7 @@ class ItemDevicePci
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -196,7 +196,7 @@ class ItemDevicePci
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -206,7 +206,7 @@ class ItemDevicePci
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -216,7 +216,7 @@ class ItemDevicePci
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -226,7 +226,7 @@ class ItemDevicePci
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -236,7 +236,7 @@ class ItemDevicePci
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

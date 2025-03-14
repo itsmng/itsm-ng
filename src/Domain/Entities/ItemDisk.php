@@ -267,7 +267,7 @@ class ItemDisk
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -277,7 +277,7 @@ class ItemDisk
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -287,7 +287,7 @@ class ItemDisk
 
     /**
      * Get the value of filesystem
-     */ 
+     */
     public function getFilesystem()
     {
         return $this->filesystem;
@@ -297,7 +297,7 @@ class ItemDisk
      * Set the value of filesystem
      *
      * @return  self
-     */ 
+     */
     public function setFilesystem($filesystem)
     {
         $this->filesystem = $filesystem;

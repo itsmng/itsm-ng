@@ -131,7 +131,7 @@ class ItemRack
 
     /**
      * Get the value of rack
-     */ 
+     */
     public function getRack()
     {
         return $this->rack;
@@ -141,7 +141,7 @@ class ItemRack
      * Set the value of rack
      *
      * @return  self
-     */ 
+     */
     public function setRack($rack)
     {
         $this->rack = $rack;

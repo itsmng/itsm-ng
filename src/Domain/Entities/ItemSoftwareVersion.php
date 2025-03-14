@@ -144,7 +144,7 @@ class ItemSoftwareVersion
 
     /**
      * Get the value of softwareversion
-     */ 
+     */
     public function getSoftwareversion()
     {
         return $this->softwareversion;
@@ -154,7 +154,7 @@ class ItemSoftwareVersion
      * Set the value of softwareversion
      *
      * @return  self
-     */ 
+     */
     public function setSoftwareversion($softwareversion)
     {
         $this->softwareversion = $softwareversion;
@@ -164,7 +164,7 @@ class ItemSoftwareVersion
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -174,7 +174,7 @@ class ItemSoftwareVersion
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

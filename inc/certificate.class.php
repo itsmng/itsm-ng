@@ -823,7 +823,7 @@ class Certificate extends CommonDBTM
             $before = Entity::getUsedConfig('send_certificates_alert_before_delay', $entity);
             // Check licenses
             $result = $DB->request(
-               [
+                [
                   'SELECT'    => [
                      'glpi_certificates.*',
                   ],

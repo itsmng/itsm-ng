@@ -57,7 +57,7 @@ class ItemCluster
 
     /**
      * Get the value of cluster
-     */ 
+     */
     public function getCluster()
     {
         return $this->cluster;
@@ -67,7 +67,7 @@ class ItemCluster
      * Set the value of cluster
      *
      * @return  self
-     */ 
+     */
     public function setCluster($cluster)
     {
         $this->cluster = $cluster;

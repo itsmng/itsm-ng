@@ -152,7 +152,7 @@ class ItemDeviceMotherboard
 
     /**
      * Get the value of devicemotherboard
-     */ 
+     */
     public function getDevicemotherboard()
     {
         return $this->devicemotherboard;
@@ -162,7 +162,7 @@ class ItemDeviceMotherboard
      * Set the value of devicemotherboard
      *
      * @return  self
-     */ 
+     */
     public function setDevicemotherboard($devicemotherboard)
     {
         $this->devicemotherboard = $devicemotherboard;
@@ -172,7 +172,7 @@ class ItemDeviceMotherboard
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -182,7 +182,7 @@ class ItemDeviceMotherboard
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -192,7 +192,7 @@ class ItemDeviceMotherboard
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -202,7 +202,7 @@ class ItemDeviceMotherboard
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -212,7 +212,7 @@ class ItemDeviceMotherboard
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -222,7 +222,7 @@ class ItemDeviceMotherboard
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

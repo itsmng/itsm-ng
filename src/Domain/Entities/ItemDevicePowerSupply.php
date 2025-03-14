@@ -153,7 +153,7 @@ class ItemDevicePowerSupply
 
     /**
      * Get the value of devicepowersupply
-     */ 
+     */
     public function getDevicepowersupply()
     {
         return $this->devicepowersupply;
@@ -163,7 +163,7 @@ class ItemDevicePowerSupply
      * Set the value of devicepowersupply
      *
      * @return  self
-     */ 
+     */
     public function setDevicepowersupply($devicepowersupply)
     {
         $this->devicepowersupply = $devicepowersupply;
@@ -173,7 +173,7 @@ class ItemDevicePowerSupply
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -183,7 +183,7 @@ class ItemDevicePowerSupply
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -193,7 +193,7 @@ class ItemDevicePowerSupply
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -203,7 +203,7 @@ class ItemDevicePowerSupply
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -213,7 +213,7 @@ class ItemDevicePowerSupply
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -223,7 +223,7 @@ class ItemDevicePowerSupply
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

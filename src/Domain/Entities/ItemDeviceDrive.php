@@ -168,7 +168,7 @@ class ItemDeviceDrive
 
     /**
      * Get the value of devicedrive
-     */ 
+     */
     public function getDevicedrive()
     {
         return $this->devicedrive;
@@ -178,7 +178,7 @@ class ItemDeviceDrive
      * Set the value of devicedrive
      *
      * @return  self
-     */ 
+     */
     public function setDevicedrive($devicedrive)
     {
         $this->devicedrive = $devicedrive;
@@ -188,7 +188,7 @@ class ItemDeviceDrive
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -198,7 +198,7 @@ class ItemDeviceDrive
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -208,7 +208,7 @@ class ItemDeviceDrive
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -218,7 +218,7 @@ class ItemDeviceDrive
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -228,7 +228,7 @@ class ItemDeviceDrive
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -238,7 +238,7 @@ class ItemDeviceDrive
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

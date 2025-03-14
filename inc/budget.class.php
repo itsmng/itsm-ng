@@ -432,12 +432,12 @@ class Budget extends CommonDropdown
                     case 'Ticket':
                     case 'Problem':
                     case 'Change':
-                        $costtable = getTableForItemType($item->getType() . 'Cost');                                                
+                        $costtable = getTableForItemType($item->getType() . 'Cost');
                         $sum = new QueryExpression(
                             "SUM(" . $DB->quoteName("$costtable.actiontime") . " * " . $DB->quoteName("$costtable.cost_time") . "/" . HOUR_TIMESTAMP . "
                         + " . $DB->quoteName("$costtable.cost_fixed") . "
                         + " . $DB->quoteName("$costtable.cost_material") . ") AS " . $DB->quoteName('value')
-                        );                         
+                        );
                         $criteria = [
                             'SELECT'       => [
                                 $item->getTable() . '.id',

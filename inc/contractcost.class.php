@@ -215,7 +215,7 @@ class ContractCost extends CommonDBChild
 
         $iterator = self::getAdapter()->request($dql, ['oldid' => $oldid]);
         // while ($data = $iterator->next()) {
-        foreach($iterator as $data) {
+        foreach ($iterator as $data) {
             $cd                   = new self();
             unset($data['id']);
             $data['contractId'] = $newid;
@@ -276,7 +276,7 @@ class ContractCost extends CommonDBChild
 
         $results = $this->getAdapter()->request($dql, ['contracts_id' => $contracts_id]);
         // if ($result = $iterator->next()) {
-        foreach($results as $result) {
+        foreach ($results as $result) {
             return $result;
         }
 
@@ -441,7 +441,7 @@ class ContractCost extends CommonDBChild
 
             $total = 0;
             // while ($data = $iterator->next()) {
-            foreach($result as $data) {
+            foreach ($result as $data) {
                 echo "<tr class='tab_bg_2' " .
                       ($canedit
                          ? "style='cursor:pointer' onClick=\"viewEditCost" . $data['contractId'] . "_" .

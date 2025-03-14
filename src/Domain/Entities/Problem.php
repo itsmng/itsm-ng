@@ -568,7 +568,7 @@ class Problem
 
     /**
      * Get the value of lastupdaterUser
-     */ 
+     */
     public function getLastupdaterUser()
     {
         return $this->lastupdaterUser;
@@ -578,7 +578,7 @@ class Problem
      * Set the value of lastupdaterUser
      *
      * @return  self
-     */ 
+     */
     public function setLastupdaterUser($lastupdaterUser)
     {
         $this->lastupdaterUser = $lastupdaterUser;
@@ -588,7 +588,7 @@ class Problem
 
     /**
      * Get the value of recipientUser
-     */ 
+     */
     public function getRecipientUser()
     {
         return $this->recipientUser;
@@ -598,7 +598,7 @@ class Problem
      * Set the value of recipientUser
      *
      * @return  self
-     */ 
+     */
     public function setRecipientUser($recipientUser)
     {
         $this->recipientUser = $recipientUser;

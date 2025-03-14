@@ -150,7 +150,7 @@ class ItemDeviceGeneric
 
     /**
      * Get the value of devicegeneric
-     */ 
+     */
     public function getDevicegeneric()
     {
         return $this->devicegeneric;
@@ -160,7 +160,7 @@ class ItemDeviceGeneric
      * Set the value of devicegeneric
      *
      * @return  self
-     */ 
+     */
     public function setDevicegeneric($devicegeneric)
     {
         $this->devicegeneric = $devicegeneric;
@@ -170,7 +170,7 @@ class ItemDeviceGeneric
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -180,7 +180,7 @@ class ItemDeviceGeneric
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -190,7 +190,7 @@ class ItemDeviceGeneric
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -200,7 +200,7 @@ class ItemDeviceGeneric
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -210,7 +210,7 @@ class ItemDeviceGeneric
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -220,7 +220,7 @@ class ItemDeviceGeneric
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

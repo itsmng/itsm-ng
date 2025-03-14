@@ -216,7 +216,7 @@ class ItemDeviceProcessor
 
     /**
      * Get the value of deviceprocessor
-     */ 
+     */
     public function getDeviceprocessor()
     {
         return $this->deviceprocessor;
@@ -226,7 +226,7 @@ class ItemDeviceProcessor
      * Set the value of deviceprocessor
      *
      * @return  self
-     */ 
+     */
     public function setDeviceprocessor($deviceprocessor)
     {
         $this->deviceprocessor = $deviceprocessor;
@@ -236,7 +236,7 @@ class ItemDeviceProcessor
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -246,7 +246,7 @@ class ItemDeviceProcessor
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -256,7 +256,7 @@ class ItemDeviceProcessor
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -266,7 +266,7 @@ class ItemDeviceProcessor
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -276,7 +276,7 @@ class ItemDeviceProcessor
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -286,7 +286,7 @@ class ItemDeviceProcessor
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

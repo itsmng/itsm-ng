@@ -240,28 +240,28 @@ class Reservation extends CommonDBChild
         // return $rand;
         do {
             $rand = mt_rand(1, mt_getrandmax());
-            
+
             $dql = "SELECT COUNT(r) as cpt
                     FROM Itsmng\\Domain\\Entities\\Reservation r
                     WHERE r.reservationitem = :reservationitems_id
                     AND r.group = :group";
-            
+
             $result = self::getAdapter()->request($dql, [
                 'reservationitems_id' => $reservationitems_id,
                 'group' => $rand
             ]);
-            
+
             $count = 0;
             foreach ($result as $row) {
                 $count = (int)$row['cpt'];
                 break;
             }
         } while ($count > 0);
-        
+
         return $rand;
     }
-    
-    
+
+
 
 
     /**
@@ -434,15 +434,15 @@ class Reservation extends CommonDBChild
         WHERE r.reservationitem = :reservationitems_id
         AND r.group = :group";
 
-        $results = self::getAdapter()->request($dql, [
-            'reservationitems_id' => $this->fields['reservationitems_id'],
-            'group'               => $this->fields['group']
-        ]);
+            $results = self::getAdapter()->request($dql, [
+                'reservationitems_id' => $this->fields['reservationitems_id'],
+                'group'               => $this->fields['group']
+            ]);
 
-        $rr = clone $this;
-        foreach ($results as $data) {
-            $rr->delete(['id' => $data['id']]);
-        }
+            $rr = clone $this;
+            foreach ($results as $data) {
+                $rr->delete(['id' => $data['id']]);
+            }
         }
     }
 
@@ -1044,7 +1044,7 @@ class Reservation extends CommonDBChild
             if (count($results)) {
                 $m = new ReservationItem();
                 // while ($data = $iterator->next()) {
-                foreach($results as $data) {
+                foreach ($results as $data) {
                     $m->getFromDB($data['id']);
 
                     if (!($item = getItemForItemtype($m->fields["itemtype"]))) {
@@ -1126,7 +1126,7 @@ class Reservation extends CommonDBChild
         if (count($results)) {
             echo "<table width='100%' aria-label='User Time Interval'>";
             // while ($row = $iterator->next()) {
-            foreach($results as $row) {
+            foreach ($results as $row) {
                 echo "<tr>";
                 $user->getFromDB($row["users_id"]);
                 $display = "";
@@ -1250,7 +1250,7 @@ class Reservation extends CommonDBChild
                 echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
                 // while ($data = $iterator->next()) {
-                foreach($results as $data) {
+                foreach ($results as $data) {
                     echo "<tr class='tab_bg_2'>";
                     echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                     echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
@@ -1321,7 +1321,7 @@ class Reservation extends CommonDBChild
                 echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
                 // while ($data = $iterator->next()) {
-                foreach($results as $data) {
+                foreach ($results as $data) {
                     echo "<tr class='tab_bg_2'>";
                     echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                     echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
@@ -1435,7 +1435,7 @@ class Reservation extends CommonDBChild
             echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
             // while ($data = $iterator->next()) {
-            foreach($results as $data) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                 echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
@@ -1531,7 +1531,7 @@ class Reservation extends CommonDBChild
             echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
             // while ($data = $iterator->next()) {
-            foreach($results as $data) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                 echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";

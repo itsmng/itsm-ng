@@ -144,7 +144,7 @@ class ItemDeviceSensor
 
     /**
      * Get the value of devicesensor
-     */ 
+     */
     public function getDevicesensor()
     {
         return $this->devicesensor;
@@ -154,7 +154,7 @@ class ItemDeviceSensor
      * Set the value of devicesensor
      *
      * @return  self
-     */ 
+     */
     public function setDevicesensor($devicesensor)
     {
         $this->devicesensor = $devicesensor;
@@ -164,7 +164,7 @@ class ItemDeviceSensor
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -174,7 +174,7 @@ class ItemDeviceSensor
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -184,7 +184,7 @@ class ItemDeviceSensor
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -194,7 +194,7 @@ class ItemDeviceSensor
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -204,7 +204,7 @@ class ItemDeviceSensor
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -214,7 +214,7 @@ class ItemDeviceSensor
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

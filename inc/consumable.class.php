@@ -294,7 +294,7 @@ class Consumable extends CommonDBChild
         $result = self::getAdapter()->request($dql, [
             'tid' => $tID
         ]);
-        foreach($result as $row) {
+        foreach ($result as $row) {
             return (int)$row['cpt'];
         }
         // return (int)$result['cpt'];
@@ -330,7 +330,7 @@ class Consumable extends CommonDBChild
             'tid' => $tID
         ]);
         $count = 0;
-        foreach($result as $row) {
+        foreach ($result as $row) {
             $count = (int)$row['cpt'];
             break;
         }
@@ -368,7 +368,7 @@ class Consumable extends CommonDBChild
 
         // Pour accéder au résultat du count
         $count = 0;
-        foreach($result as $row) {
+        foreach ($result as $row) {
             $count = (int)$row['cpt'];
             break;
         }
@@ -605,9 +605,9 @@ class Consumable extends CommonDBChild
            'START'  => (int)$start,
            'LIMIT'  => (int)$_SESSION['glpilist_limit']
         ]);
-        // $dql = "SELECT e 
-        // FROM " . self::getTable() . " e 
-        // WHERE " . $where . " 
+        // $dql = "SELECT e
+        // FROM " . self::getTable() . " e
+        // WHERE " . $where . "
         // ORDER BY " . $order;
 
         // $result = self::getAdapter()->request($dql, [
@@ -615,7 +615,7 @@ class Consumable extends CommonDBChild
         //     'limit' => (int)$_SESSION['glpilist_limit']
         // ]);
 
-        
+
         if ($canedit && $number) {
             $actions = [];
             if ($consitem->can($tID, PURGE)) {
@@ -659,7 +659,7 @@ class Consumable extends CommonDBChild
         $massive_action = [];
         if ($number) {
             while ($data = $iterator->next()) {
-            // foreach ($result as $data) {
+                // foreach ($result as $data) {
                 $newValue = [];
                 $date_in  = Html::convDate($data["date_in"]);
                 $date_out = Html::convDate($data["date_out"]);

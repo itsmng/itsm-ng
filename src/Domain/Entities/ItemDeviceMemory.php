@@ -185,7 +185,7 @@ class ItemDeviceMemory
 
     /**
      * Get the value of devicememory
-     */ 
+     */
     public function getDevicememory()
     {
         return $this->devicememory;
@@ -195,7 +195,7 @@ class ItemDeviceMemory
      * Set the value of devicememory
      *
      * @return  self
-     */ 
+     */
     public function setDevicememory($devicememory)
     {
         $this->devicememory = $devicememory;
@@ -205,7 +205,7 @@ class ItemDeviceMemory
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -215,7 +215,7 @@ class ItemDeviceMemory
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -225,7 +225,7 @@ class ItemDeviceMemory
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -235,7 +235,7 @@ class ItemDeviceMemory
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -245,7 +245,7 @@ class ItemDeviceMemory
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -255,7 +255,7 @@ class ItemDeviceMemory
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

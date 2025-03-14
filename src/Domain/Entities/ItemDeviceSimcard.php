@@ -241,7 +241,7 @@ class ItemDeviceSimcard
 
     /**
      * Get the value of devicesimcard
-     */ 
+     */
     public function getDevicesimcard()
     {
         return $this->devicesimcard;
@@ -251,7 +251,7 @@ class ItemDeviceSimcard
      * Set the value of devicesimcard
      *
      * @return  self
-     */ 
+     */
     public function setDevicesimcard($devicesimcard)
     {
         $this->devicesimcard = $devicesimcard;
@@ -261,7 +261,7 @@ class ItemDeviceSimcard
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -271,7 +271,7 @@ class ItemDeviceSimcard
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;
@@ -281,7 +281,7 @@ class ItemDeviceSimcard
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -291,7 +291,7 @@ class ItemDeviceSimcard
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -301,7 +301,7 @@ class ItemDeviceSimcard
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -311,7 +311,7 @@ class ItemDeviceSimcard
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -321,7 +321,7 @@ class ItemDeviceSimcard
 
     /**
      * Get the value of line
-     */ 
+     */
     public function getLine()
     {
         return $this->line;
@@ -331,7 +331,7 @@ class ItemDeviceSimcard
      * Set the value of line
      *
      * @return  self
-     */ 
+     */
     public function setLine($line)
     {
         $this->line = $line;
@@ -341,7 +341,7 @@ class ItemDeviceSimcard
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -351,7 +351,7 @@ class ItemDeviceSimcard
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -361,7 +361,7 @@ class ItemDeviceSimcard
 
     /**
      * Get the value of group
-     */ 
+     */
     public function getGroup()
     {
         return $this->group;
@@ -371,7 +371,7 @@ class ItemDeviceSimcard
      * Set the value of group
      *
      * @return  self
-     */ 
+     */
     public function setGroup($group)
     {
         $this->group = $group;

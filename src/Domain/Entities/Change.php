@@ -593,7 +593,7 @@ class Change
 
     /**
      * Get the value of recipientUser
-     */ 
+     */
     public function getRecipientUser()
     {
         return $this->recipientUser;
@@ -603,7 +603,7 @@ class Change
      * Set the value of recipientUser
      *
      * @return  self
-     */ 
+     */
     public function setRecipientUser($recipientUser)
     {
         $this->recipientUser = $recipientUser;
@@ -613,7 +613,7 @@ class Change
 
     /**
      * Get the value of lastupdaterUser
-     */ 
+     */
     public function getLastupdaterUser()
     {
         return $this->lastupdaterUser;
@@ -623,7 +623,7 @@ class Change
      * Set the value of lastupdaterUser
      *
      * @return  self
-     */ 
+     */
     public function setLastupdaterUser($lastupdaterUser)
     {
         $this->lastupdaterUser = $lastupdaterUser;
@@ -633,7 +633,7 @@ class Change
 
     /**
      * Get the value of itilcategory
-     */ 
+     */
     public function getItilcategory()
     {
         return $this->itilcategory;
@@ -643,7 +643,7 @@ class Change
      * Set the value of itilcategory
      *
      * @return  self
-     */ 
+     */
     public function setItilcategory($itilcategory)
     {
         $this->itilcategory = $itilcategory;

@@ -108,7 +108,8 @@ class ItemOperatingSystem
     {
         $this->itemtype = $itemtype;
 
-        return $this;    }
+        return $this;
+    }
 
 
     public function getLicenseNumber(): ?string
@@ -185,7 +186,7 @@ class ItemOperatingSystem
 
     /**
      * Get the value of operatingsystem
-     */ 
+     */
     public function getOperatingsystem()
     {
         return $this->operatingsystem;
@@ -195,7 +196,7 @@ class ItemOperatingSystem
      * Set the value of operatingsystem
      *
      * @return  self
-     */ 
+     */
     public function setOperatingsystem($operatingsystem)
     {
         $this->operatingsystem = $operatingsystem;
@@ -205,7 +206,7 @@ class ItemOperatingSystem
 
     /**
      * Get the value of operatingsystemversion
-     */ 
+     */
     public function getOperatingsystemversion()
     {
         return $this->operatingsystemversion;
@@ -215,7 +216,7 @@ class ItemOperatingSystem
      * Set the value of operatingsystemversion
      *
      * @return  self
-     */ 
+     */
     public function setOperatingsystemversion($operatingsystemversion)
     {
         $this->operatingsystemversion = $operatingsystemversion;
@@ -225,7 +226,7 @@ class ItemOperatingSystem
 
     /**
      * Get the value of operatingsystemservicepack
-     */ 
+     */
     public function getOperatingsystemservicepack()
     {
         return $this->operatingsystemservicepack;
@@ -235,7 +236,7 @@ class ItemOperatingSystem
      * Set the value of operatingsystemservicepack
      *
      * @return  self
-     */ 
+     */
     public function setOperatingsystemservicepack($operatingsystemservicepack)
     {
         $this->operatingsystemservicepack = $operatingsystemservicepack;
@@ -245,7 +246,7 @@ class ItemOperatingSystem
 
     /**
      * Get the value of operatingsystemarchitecture
-     */ 
+     */
     public function getOperatingsystemarchitecture()
     {
         return $this->operatingsystemarchitecture;
@@ -255,7 +256,7 @@ class ItemOperatingSystem
      * Set the value of operatingsystemarchitecture
      *
      * @return  self
-     */ 
+     */
     public function setOperatingsystemarchitecture($operatingsystemarchitecture)
     {
         $this->operatingsystemarchitecture = $operatingsystemarchitecture;
@@ -265,7 +266,7 @@ class ItemOperatingSystem
 
     /**
      * Get the value of licenseid
-     */ 
+     */
     public function getLicenseid()
     {
         return $this->licenseid;
@@ -275,7 +276,7 @@ class ItemOperatingSystem
      * Set the value of licenseid
      *
      * @return  self
-     */ 
+     */
     public function setLicenseid($licenseid)
     {
         $this->licenseid = $licenseid;
@@ -285,7 +286,7 @@ class ItemOperatingSystem
 
     /**
      * Get the value of operatingsystemkernelversion
-     */ 
+     */
     public function getOperatingsystemkernelversion()
     {
         return $this->operatingsystemkernelversion;
@@ -295,7 +296,7 @@ class ItemOperatingSystem
      * Set the value of operatingsystemkernelversion
      *
      * @return  self
-     */ 
+     */
     public function setOperatingsystemkernelversion($operatingsystemkernelversion)
     {
         $this->operatingsystemkernelversion = $operatingsystemkernelversion;
@@ -305,7 +306,7 @@ class ItemOperatingSystem
 
     /**
      * Get the value of operatingsystemedition
-     */ 
+     */
     public function getOperatingsystemedition()
     {
         return $this->operatingsystemedition;
@@ -315,7 +316,7 @@ class ItemOperatingSystem
      * Set the value of operatingsystemedition
      *
      * @return  self
-     */ 
+     */
     public function setOperatingsystemedition($operatingsystemedition)
     {
         $this->operatingsystemedition = $operatingsystemedition;
@@ -325,7 +326,7 @@ class ItemOperatingSystem
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -335,7 +336,7 @@ class ItemOperatingSystem
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

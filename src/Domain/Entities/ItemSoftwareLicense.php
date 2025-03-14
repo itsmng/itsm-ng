@@ -90,7 +90,7 @@ class ItemSoftwareLicense
 
     /**
      * Get the value of softwarelicense
-     */ 
+     */
     public function getSoftwarelicense()
     {
         return $this->softwarelicense;
@@ -100,7 +100,7 @@ class ItemSoftwareLicense
      * Set the value of softwarelicense
      *
      * @return  self
-     */ 
+     */
     public function setSoftwarelicense($softwarelicense)
     {
         $this->softwarelicense = $softwarelicense;

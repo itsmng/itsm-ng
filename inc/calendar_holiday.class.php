@@ -80,44 +80,44 @@ class Calendar_Holiday extends CommonDBRelation
         $canedit = $calendar->can($ID, UPDATE);
 
         $rand    = mt_rand();
-      //   $iterator = $DB->request([
+        //   $iterator = $DB->request([
 
-      //      'SELECT' => [
-      //         'glpi_calendars_holidays.id AS linkid',
-      //         'glpi_holidays.*'
-      //      ],
-      //      'DISTINCT'        => true,
-      //      'FROM'            => 'glpi_calendars_holidays',
-      //      'LEFT JOIN'       => [
-      //         'glpi_holidays'   => [
-      //            'ON' => [
-      //               'glpi_calendars_holidays'  => 'holidays_id',
-      //               'glpi_holidays'            => 'id'
-      //            ]
-      //         ]
-      //      ],
-      //      'WHERE'           => [
-      //         'glpi_calendars_holidays.calendars_id' => $ID
-      //      ],
-      //      'ORDERBY'         => 'glpi_holidays.name'
-      //   ]);
-            $dql = "SELECT t.id AS linkid, h
+        //      'SELECT' => [
+        //         'glpi_calendars_holidays.id AS linkid',
+        //         'glpi_holidays.*'
+        //      ],
+        //      'DISTINCT'        => true,
+        //      'FROM'            => 'glpi_calendars_holidays',
+        //      'LEFT JOIN'       => [
+        //         'glpi_holidays'   => [
+        //            'ON' => [
+        //               'glpi_calendars_holidays'  => 'holidays_id',
+        //               'glpi_holidays'            => 'id'
+        //            ]
+        //         ]
+        //      ],
+        //      'WHERE'           => [
+        //         'glpi_calendars_holidays.calendars_id' => $ID
+        //      ],
+        //      'ORDERBY'         => 'glpi_holidays.name'
+        //   ]);
+        $dql = "SELECT t.id AS linkid, h
             FROM Itsmng\\Domain\\Entities\\CalendarHoliday t
             LEFT JOIN t.holiday h
             WHERE t.calendar = :calendars_id
             ORDER BY h.name";
 
-            $result = self::getAdapter()->request($dql, [
-               'calendars_id' => $ID
-            ]);
+        $result = self::getAdapter()->request($dql, [
+           'calendars_id' => $ID
+        ]);
 
-      
-      //   $numrows = count($iterator);
-      $numrows = count($result);
+
+        //   $numrows = count($iterator);
+        $numrows = count($result);
         $holidays = [];
         $used     = [];
-      //   while ($data = $iterator->next()) {
-      foreach ($result as $data) {
+        //   while ($data = $iterator->next()) {
+        foreach ($result as $data) {
             $holidays[$data['id']] = $data;
             $used[$data['id']]     = $data['id'];
         }
@@ -208,21 +208,21 @@ class Calendar_Holiday extends CommonDBRelation
         global $DB;
 
         Toolbox::deprecated('Use clone');
-      //   $result = $DB->request(
-      //       [
-      //         'FROM'   => self::getTable(),
-      //         'WHERE'  => [
-      //            'calendars_id' => $oldid,
-      //         ]
-      //       ]
-      //   );     
-         $dql = "SELECT t
+        //   $result = $DB->request(
+        //       [
+        //         'FROM'   => self::getTable(),
+        //         'WHERE'  => [
+        //            'calendars_id' => $oldid,
+        //         ]
+        //       ]
+        //   );
+        $dql = "SELECT t
          FROM Itsmng\\Domain\\Entities\\CalendarHoliday t
          WHERE t.calendar = :oldid";
 
-         $result = self::getAdapter()->request($dql, [
-         'oldid' => $oldid
-         ]);
+        $result = self::getAdapter()->request($dql, [
+        'oldid' => $oldid
+        ]);
         foreach ($result as $data) {
             $ch                   = new self();
             unset($data['id']);

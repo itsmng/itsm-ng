@@ -3222,7 +3222,7 @@ class Config extends CommonDBTM
                 // 1 row = 0.78 to 0.84 config table schema
                 // return $iterator->next();
                 // Convertir l'objet entité en tableau
-                foreach($result as $row) {
+                foreach ($result as $row) {
                     // Convertir l'objet en tableau associatif
                     $row_array = [];
                     foreach (get_object_vars($row) as $key => $value) {
@@ -3245,7 +3245,7 @@ class Config extends CommonDBTM
             //     $config[$row['name']] = $row['value'];
             // }
             // return $config;
-            foreach($result as $row) {
+            foreach ($result as $row) {
                 if ('core' !== $row->getContext()) {
                     continue;
                 }

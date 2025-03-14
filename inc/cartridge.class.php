@@ -310,7 +310,7 @@ class Cartridge extends CommonDBChild
         }
         return false;
     }
-    
+
 
 
     /**
@@ -524,7 +524,7 @@ class Cartridge extends CommonDBChild
         foreach ($result as $row) {
             return $row['cpt'];
         }
-        
+
     }
 
 
@@ -636,7 +636,7 @@ class Cartridge extends CommonDBChild
         foreach ($result as $row) {
             return $row['cpt'];
         }
-        
+
     }
 
 
@@ -1301,12 +1301,12 @@ class Cartridge extends CommonDBChild
         } else {
             // $data = $iterator->next();
             foreach ($result as $data) {
-            //This entity uses global parameters -> return global config
-            if ($data['cartridges_alert_repeat'] == -1) {
-                return $CFG_GLPI['cartridges_alert_repeat'];
-            }
-            // ELSE Special configuration for this entity
-            return $data['cartridges_alert_repeat'];
+                //This entity uses global parameters -> return global config
+                if ($data['cartridges_alert_repeat'] == -1) {
+                    return $CFG_GLPI['cartridges_alert_repeat'];
+                }
+                // ELSE Special configuration for this entity
+                return $data['cartridges_alert_repeat'];
             }
         }
     }

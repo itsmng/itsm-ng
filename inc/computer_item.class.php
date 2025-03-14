@@ -305,20 +305,20 @@ class Computer_Item extends CommonDBRelation
             ]);
         }
 
-            if (count($results) > 0) {
-                $ok = true;
-                // while ($data = $iterator->next()) {
-                //     if ($this->can($data["id"], UPDATE)) {
-                //         $ok &= $this->delete($data);
-                //     }
-                foreach($results as $data) {
-                    if ($this->can($data["id"], UPDATE)) {
-                        $ok &= $this->delete($data);
-                    }
+        if (count($results) > 0) {
+            $ok = true;
+            // while ($data = $iterator->next()) {
+            //     if ($this->can($data["id"], UPDATE)) {
+            //         $ok &= $this->delete($data);
+            //     }
+            foreach ($results as $data) {
+                if ($this->can($data["id"], UPDATE)) {
+                    $ok &= $this->delete($data);
                 }
-                return $ok;
             }
-        
+            return $ok;
+        }
+
         return false;
     }
 
@@ -900,7 +900,7 @@ class Computer_Item extends CommonDBRelation
         //                 'itemtype'     => $data["itemtype"],
         //                 'items_id'     => $data["items_id"]]);
         // }
-        foreach($result as $data) {
+        foreach ($result as $data) {
             $conn = new Computer_Item();
             $conn->add(['computers_id' => $newid,
                         'itemtype'     => $data["itemtype"],
@@ -946,7 +946,7 @@ class Computer_Item extends CommonDBRelation
         //                 'itemtype'     => $data["itemtype"],
         //                 'items_id'     => $newid]);
         // }
-        foreach($result as $data) {
+        foreach ($result as $data) {
             $conn = new self();
             $conn->add(['computers_id' => $data["computersId"],
                         'itemtype'     => $data["itemtype"],

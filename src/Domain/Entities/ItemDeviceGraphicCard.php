@@ -184,7 +184,7 @@ class ItemDeviceGraphicCard
 
     /**
      * Get the value of devicegraphiccard
-     */ 
+     */
     public function getDevicegraphiccard()
     {
         return $this->devicegraphiccard;
@@ -194,7 +194,7 @@ class ItemDeviceGraphicCard
      * Set the value of devicegraphiccard
      *
      * @return  self
-     */ 
+     */
     public function setDevicegraphiccard($devicegraphiccard)
     {
         $this->devicegraphiccard = $devicegraphiccard;
@@ -204,7 +204,7 @@ class ItemDeviceGraphicCard
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -214,7 +214,7 @@ class ItemDeviceGraphicCard
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -224,7 +224,7 @@ class ItemDeviceGraphicCard
 
     /**
      * Get the value of location
-     */ 
+     */
     public function getLocation()
     {
         return $this->location;
@@ -234,7 +234,7 @@ class ItemDeviceGraphicCard
      * Set the value of location
      *
      * @return  self
-     */ 
+     */
     public function setLocation($location)
     {
         $this->location = $location;
@@ -244,7 +244,7 @@ class ItemDeviceGraphicCard
 
     /**
      * Get the value of entity
-     */ 
+     */
     public function getEntity()
     {
         return $this->entity;
@@ -254,7 +254,7 @@ class ItemDeviceGraphicCard
      * Set the value of entity
      *
      * @return  self
-     */ 
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

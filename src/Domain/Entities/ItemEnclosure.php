@@ -71,7 +71,7 @@ class ItemEnclosure
 
     /**
      * Get the value of enclosure
-     */ 
+     */
     public function getEnclosure()
     {
         return $this->enclosure;
@@ -81,7 +81,7 @@ class ItemEnclosure
      * Set the value of enclosure
      *
      * @return  self
-     */ 
+     */
     public function setEnclosure($enclosure)
     {
         $this->enclosure = $enclosure;

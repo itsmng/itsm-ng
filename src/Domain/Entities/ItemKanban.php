@@ -22,7 +22,7 @@ class ItemKanban
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $user= null;
+    private ?User $user = null;
 
     #[ORM\Column(name: 'state', type: "text", nullable: true, length: 65535)]
     private $state;
@@ -88,7 +88,7 @@ class ItemKanban
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -98,7 +98,7 @@ class ItemKanban
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -108,7 +108,7 @@ class ItemKanban
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -118,7 +118,7 @@ class ItemKanban
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;

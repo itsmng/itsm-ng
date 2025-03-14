@@ -57,7 +57,7 @@ class ItemProject
 
     /**
      * Get the value of project
-     */ 
+     */
     public function getProject()
     {
         return $this->project;
@@ -67,7 +67,7 @@ class ItemProject
      * Set the value of project
      *
      * @return  self
-     */ 
+     */
     public function setProject($project)
     {
         $this->project = $project;

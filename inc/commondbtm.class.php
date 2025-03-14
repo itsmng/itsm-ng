@@ -793,10 +793,10 @@ class CommonDBTM extends CommonGLPI
                 $itemsticket->delete(["id" => $data["id"]]);
                 if ($cnt == 1 && !$CFG_GLPI["keep_tickets_on_delete"]) {
                     $job->delete(["id" => $data["ticketsId"]]);
+                }
             }
         }
     }
-}
 
 
     /**
