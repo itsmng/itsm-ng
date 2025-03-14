@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'item', columns: ['itemtype', 'items_id'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date', columns: ['date'])]
-#[ORM\Index(name: 'users_id_lastupdater', columns: ['users_id_lastupdater'])]
+#[ORM\Index(name: 'lastupdater_users_id', columns: ['lastupdater_users_id'])]
 #[ORM\Index(name: 'users_id', columns: ['users_id'])]
 class Notepad
 {
@@ -34,12 +34,9 @@ class Notepad
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user = null;
 
-    #[ORM\Column(name: 'users_id_lastupdater', type: 'integer', options: ['default' => 0])]
-    private $usersIdLastupdater;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: true)]
-    private ?User $userLastupdater = null;
+    #[ORM\JoinColumn(name: 'lastupdater_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $lastupdaterUser = null;
 
     #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
@@ -97,18 +94,6 @@ class Notepad
         return $this;
     }
 
-    public function getUsersIdLastupdater(): ?int
-    {
-        return $this->usersIdLastupdater;
-    }
-
-    public function setUsersIdLastupdater(?int $usersIdLastupdater): self
-    {
-        $this->usersIdLastupdater = $usersIdLastupdater;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
@@ -142,22 +127,23 @@ class Notepad
         return $this;
     }
 
+
     /**
-     * Get the value of userLastupdater
-     */
-    public function getUserLastupdater()
+     * Get the value of lastupdaterUser
+     */ 
+    public function getLastupdaterUser()
     {
-        return $this->userLastupdater;
+        return $this->lastupdaterUser;
     }
 
     /**
-     * Set the value of userLastupdater
+     * Set the value of lastupdaterUser
      *
      * @return  self
-     */
-    public function setUserLastupdater($userLastupdater)
+     */ 
+    public function setLastupdaterUser($lastupdaterUser)
     {
-        $this->userLastupdater = $userLastupdater;
+        $this->lastupdaterUser = $lastupdaterUser;
 
         return $this;
     }

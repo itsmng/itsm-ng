@@ -80,9 +80,9 @@ class ProblemTask
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
-    #[ORM\ManyToOne(targetEntity: Tasktemplate::class)]
+    #[ORM\ManyToOne(targetEntity: TaskTemplate::class)]
     #[ORM\JoinColumn(name: 'tasktemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Tasktemplate $tasktemplate = null;
+    private ?TaskTemplate $tasktemplate = null;
 
     #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
     private $timelinePosition;

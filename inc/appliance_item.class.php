@@ -119,11 +119,17 @@ class Appliance_Item extends CommonDBRelation
         }
         $canedit = $appliance->canEdit($ID);
 
-        $items = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => [
-              self::$items_id_1 => $ID
-           ]
+        // $items = $DB->request([
+        //    'FROM'   => self::getTable(),
+        //    'WHERE'  => [
+        //       self::$items_id_1 => $ID
+        //    ]
+        // ]);
+        $dql = "SELECT t FROM Itsmng\\Domain\\Entities\\ApplianceItem t  
+        WHERE t." . self::$items_id_1 . " = :id";
+
+        $items = self::getAdapter()->request($dql, [
+            'id' => $ID
         ]);
 
         Session::initNavigateListItems(

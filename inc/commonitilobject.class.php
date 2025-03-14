@@ -206,7 +206,7 @@ abstract class CommonITILObject extends CommonDBTM
     public function canApprove()
     {
 
-        return (($this->fields["users_id_recipient"] === Session::getLoginUserID())
+        return (($this->fields["recipient_users_id"] === Session::getLoginUserID())
                 || $this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
                 || (isset($_SESSION["glpigroups"])
                     && $this->haveAGroup(CommonITILActor::REQUESTER, $_SESSION["glpigroups"])));
@@ -227,8 +227,8 @@ abstract class CommonITILObject extends CommonDBTM
             && (
                 $this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
                || (
-                   isset($this->fields["users_id_recipient"])
-                  && ($this->fields["users_id_recipient"] == Session::getLoginUserID())
+                   isset($this->fields["recipient_users_id"])
+                  && ($this->fields["recipient_users_id"] == Session::getLoginUserID())
                )
             )
             )
@@ -1206,7 +1206,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         // set last updater if interactive user
         if (!Session::isCron()) {
-            $input['users_id_lastupdater'] = Session::getLoginUserID();
+            $input['lastupdater_users_id'] = Session::getLoginUserID();
         }
 
         $solvedclosed = array_merge(
@@ -1767,7 +1767,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         // set last updater if interactive user
         if (!Session::isCron() && ($last_updater = Session::getLoginUserID(true))) {
-            $input['users_id_lastupdater'] = $last_updater;
+            $input['lastupdater_users_id'] = $last_updater;
         }
 
         // No Auto set Import for external source
@@ -1784,13 +1784,13 @@ abstract class CommonITILObject extends CommonDBTM
             ($uid = Session::getLoginUserID())
             && !isset($input['_auto_import'])
         ) {
-            $input["users_id_recipient"] = $uid;
+            $input["recipient_users_id"] = $uid;
         } elseif (
             isset($input["_users_id_requester"]) && $input["_users_id_requester"]
-                   && !isset($input["users_id_recipient"])
+                   && !isset($input["recipient_users_id"])
         ) {
             if (!is_array($input['_users_id_requester'])) {
-                $input["users_id_recipient"] = $input["_users_id_requester"];
+                $input["recipient_users_id"] = $input["_users_id_requester"];
             }
         }
 
@@ -2349,8 +2349,8 @@ abstract class CommonITILObject extends CommonDBTM
     {
         global $DB;
         $update = [];
-        if (isset($source->fields['users_id_lastupdater'])) {
-            $update['users_id_lastupdater'] = $source->fields['users_id_lastupdater'];
+        if (isset($source->fields['lastupdater_users_id'])) {
+            $update['lastupdater_users_id'] = $source->fields['lastupdater_users_id'];
         }
         if (isset($source->fields['status'])) {
             $update['status'] = $source->fields['status'];
@@ -3867,7 +3867,7 @@ abstract class CommonITILObject extends CommonDBTM
            'id'                 => '64',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_lastupdater',
+           'linkfield'          => 'lastupdater_users_id',
            'name'               => __('Last edit by'),
            'massiveaction'      => false,
            'datatype'           => 'dropdown',
@@ -4118,7 +4118,7 @@ abstract class CommonITILObject extends CommonDBTM
            'field'              => 'name',
            'datatype'           => 'dropdown',
            'right'              => 'all',
-           'linkfield'          => 'users_id_recipient',
+           'linkfield'          => 'recipient_users_id',
            'name'               => __('Writer')
         ];
 
@@ -5536,9 +5536,9 @@ abstract class CommonITILObject extends CommonDBTM
      *
      * @param $ID                    integer  ID of the ITIL object
      * @param $no_stat_computation   boolean  do not cumpute take into account stat (false by default)
-     * @param $users_id_lastupdater  integer  to force last_update id (default 0 = not used)
+     * @param $lastupdater_users_id  integer  to force last_update id (default 0 = not used)
     **/
-    public function updateDateMod($ID, $no_stat_computation = false, $users_id_lastupdater = 0)
+    public function updateDateMod($ID, $no_stat_computation = false, $lastupdater_users_id = 0)
     {
         global $DB;
 
@@ -5548,9 +5548,9 @@ abstract class CommonITILObject extends CommonDBTM
 
             // set last updater if interactive user
             if (!Session::isCron()) {
-                $update['users_id_lastupdater'] = Session::getLoginUserID();
-            } elseif ($users_id_lastupdater > 0) {
-                $update['users_id_lastupdater'] = $users_id_lastupdater;
+                $update['lastupdater_users_id'] = Session::getLoginUserID();
+            } elseif ($lastupdater_users_id > 0) {
+                $update['lastupdater_users_id'] = $lastupdater_users_id;
             }
 
             $DB->update(
@@ -5935,7 +5935,7 @@ abstract class CommonITILObject extends CommonDBTM
            'LEFT JOIN'       => [
               'glpi_users'   => [
                  'ON' => [
-                    $ctable        => 'users_id_recipient',
+                    $ctable        => 'recipient_users_id',
                     'glpi_users'   => 'id'
                  ]
               ]

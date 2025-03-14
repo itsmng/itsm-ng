@@ -393,7 +393,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addRecipientAddress()
     {
-        return $this->addUserByField("users_id_recipient");
+        return $this->addUserByField("recipient_users_id");
     }
 
 
@@ -1177,16 +1177,16 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
         }
 
         $data["##$objettype.openbyuser##"] = '';
-        if ($item->getField('users_id_recipient')) {
+        if ($item->getField('recipient_users_id')) {
             $user_tmp = new User();
-            $user_tmp->getFromDB($item->getField('users_id_recipient'));
+            $user_tmp->getFromDB($item->getField('recipient_users_id'));
             $data["##$objettype.openbyuser##"] = $user_tmp->getName();
         }
 
         $data["##$objettype.lastupdater##"] = '';
-        if ($item->getField('users_id_lastupdater')) {
+        if ($item->getField('lastupdater_users_id')) {
             $user_tmp = new User();
-            $user_tmp->getFromDB($item->getField('users_id_lastupdater'));
+            $user_tmp->getFromDB($item->getField('lastupdater_users_id'));
             $data["##$objettype.lastupdater##"] = $user_tmp->getName();
         }
 

@@ -124,7 +124,7 @@ switch ($_GET["type"]) {
         $title   = sprintf(__('%1$s: %2$s'), User::getTypeName(1), getUserName($_GET["id"], $showuserlink));
         break;
 
-    case "users_id_recipient":
+    case "recipient_users_id":
         $val1    = $_GET["id"];
         $val2    = "";
         $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);

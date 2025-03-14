@@ -736,8 +736,7 @@ class CommonDBTM extends CommonGLPI
                     }
 
                     foreach ($field as $f) {
-                        // $result = $DB->request(
-                            $result = $this::getAdapter()->request(
+                        $result = $DB->request(
                             [
                               'FROM'  => $tablename,
                               'WHERE' => [$f => $this->getID()],
@@ -768,23 +767,36 @@ class CommonDBTM extends CommonGLPI
             $itemsticket = new Item_Ticket();
 
             // $iterator = $DB->request([
-                $iterator = $this::getAdapter()->request([
-               'FROM'   => 'glpi_items_tickets',
-               'WHERE'  => [
-                  'items_id'  => $this->getID(),
-                  'itemtype'  => $this->getType()
-               ]
+            //    'FROM'   => 'glpi_items_tickets',
+            //    'WHERE'  => [
+            //       'items_id'  => $this->getID(),
+            //       'itemtype'  => $this->getType()
+            //    ]
+            // ]);
+            $dql = "SELECT t FROM Itsmng\\Domain\\Entities\\ItemTicket t
+            WHERE t.itemsId = :items_id
+            AND t.itemtype = :itemtype";
+
+            $results = $this::getAdapter()->request($dql, [
+                'items_id' => $this->getID(),
+                'itemtype' => $this->getType()
             ]);
 
-            while ($data = $iterator->next()) {
-                $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['tickets_id']]);
+            // while ($data = $iterator->next()) {
+            //     $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['tickets_id']]);
+            //     $itemsticket->delete(["id" => $data["id"]]);
+            //     if ($cnt == 1 && !$CFG_GLPI["keep_tickets_on_delete"]) {
+            //         $job->delete(["id" => $data["tickets_id"]]);
+            //     }
+            foreach ($results as $data) {
+                $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['ticketsId']]);
                 $itemsticket->delete(["id" => $data["id"]]);
                 if ($cnt == 1 && !$CFG_GLPI["keep_tickets_on_delete"]) {
-                    $job->delete(["id" => $data["tickets_id"]]);
-                }
+                    $job->delete(["id" => $data["ticketsId"]]);
             }
         }
     }
+}
 
 
     /**
@@ -1729,8 +1741,7 @@ class CommonDBTM extends CommonGLPI
                     $input['is_recursive'] = $this->isRecursive();
                 }
 
-                // $iterator = $DB->request($query);
-                $iterator = $this::getAdapter()->request($query);
+                $iterator = $DB->request($query);
                 while ($data = $iterator->next()) {
                     $input['id'] = $data['id'];
                     // No history for such update
@@ -2391,8 +2402,7 @@ class CommonDBTM extends CommonGLPI
                                 $devfield  = $rel[$tablename][0]; // items_id...
                                 $typefield = $rel[$tablename][1]; // itemtype...
 
-                                // $iterator = $DB->request([
-                                    $iterator = $this::getAdapter()->request([
+                                $iterator = $DB->request([
                                    'SELECT'          => $typefield,
                                    'DISTINCT'        => true,
                                    'FROM'            => $tablename,
@@ -4718,8 +4728,7 @@ class CommonDBTM extends CommonGLPI
             //ajout
             $crit['table'] = $this->getTable();
             //fin ajout
-            // $iterator = $DB->request($this->getTable(), $crit);
-            $iterator = $this::getAdapter()->request($crit);
+            $iterator = $DB->request($this->getTable(), $crit);
             foreach ($iterator as $row) {
                 if (!$this->delete($row, $force, $history)) {
                     $ok = false;
@@ -5299,8 +5308,7 @@ class CommonDBTM extends CommonGLPI
             $colspan = 2;
         }
 
-        // $iterator = $DB->request($request);
-        $iterator = self::getAdapter()->request($request);
+        $iterator = $DB->request($request);
         $blank_params = (strpos($target, '?') ? '&' : '?') . "id=-1&withtemplate=2";
         $target_blank = $target . $blank_params;
 

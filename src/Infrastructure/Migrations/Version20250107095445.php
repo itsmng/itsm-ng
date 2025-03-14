@@ -23,7 +23,7 @@ final class Version20250107095445 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_appliances RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_cartridgeitems RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_certificates RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
-        $this->addSql('ALTER TABLE glpi_changes RENAME COLUMN users_id_recipient TO recipient_users_id, RENAME COLUMN users_id_lastupdater TO lastupdater_groups_id');
+        $this->addSql('ALTER TABLE glpi_changes RENAME COLUMN users_id_recipient TO recipient_users_id, RENAME COLUMN users_id_lastupdater TO lastupdater_users_id');
         $this->addSql('ALTER TABLE glpi_changetasks RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id, RENAME COLUMN users_id_editor TO editor_users_id');
         $this->addSql('ALTER TABLE glpi_changevalidations RENAME COLUMN users_id_validate TO validate_users_id');
         $this->addSql('ALTER TABLE glpi_clusters RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
@@ -36,18 +36,20 @@ final class Version20250107095445 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_itilsolutions RENAME COLUMN users_id_editor TO editor_users_id, RENAME COLUMN users_id_approval TO approval_users_id');
         $this->addSql('ALTER TABLE glpi_monitors RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_networkequipments RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
+        $this->addSql('ALTER TABLE glpi_notepads RENAME COLUMN users_id_lastupdater TO lastupdater_users_id');
         $this->addSql('ALTER TABLE glpi_passivedcequipments RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_pdus RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_peripherals RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_phones RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_planningexternalevents RENAME COLUMN users_id_guests TO guests_users_id');
         $this->addSql('ALTER TABLE glpi_printers RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
-        $this->addSql('ALTER TABLE glpi_problems RENAME COLUMN users_id_recipient TO recipient_users_id, RENAME COLUMN users_id_lastupdater TO lastupdater_groups_id');
+        $this->addSql('ALTER TABLE glpi_problems RENAME COLUMN users_id_recipient TO recipient_users_id, RENAME COLUMN users_id_lastupdater TO lastupdater_users_id');
         $this->addSql('ALTER TABLE glpi_problemtasks RENAME COLUMN users_id_editor TO editor_users_id, RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_racks RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_softwarelicenses RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_softwares RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_tasktemplates RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
+        $this->addSql('ALTER TABLE glpi_tickets RENAME COLUMN users_id_lastupdater TO lastupdater_users_id, RENAME COLUMN users_id_recipient TO recipient_users_id');
         $this->addSql('ALTER TABLE glpi_tickettasks RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_ticketvalidations RENAME COLUMN users_id_validate TO validate_users_id');
     }

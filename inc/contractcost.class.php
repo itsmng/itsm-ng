@@ -205,14 +205,20 @@ class ContractCost extends CommonDBChild
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        $iterator = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => ['contracts_id' => $oldid]
-        ]);
-        while ($data = $iterator->next()) {
+        // $iterator = $DB->request([
+        //    'FROM'   => self::getTable(),
+        //    'WHERE'  => ['contracts_id' => $oldid]
+        // ]);
+        $dql = "SELECT cc
+        FROM Itsmng\\Domain\\Entities\\ContractCost cc
+        WHERE cc.contract = :oldid";
+
+        $iterator = self::getAdapter()->request($dql, ['oldid' => $oldid]);
+        // while ($data = $iterator->next()) {
+        foreach($iterator as $data) {
             $cd                   = new self();
             unset($data['id']);
-            $data['contracts_id'] = $newid;
+            $data['contractId'] = $newid;
             $data                 = Toolbox::addslashes_deep($data);
             $cd->add($data);
         }
@@ -258,12 +264,19 @@ class ContractCost extends CommonDBChild
     {
         global $DB;
 
-        $iterator = $DB->request([
-           'FROM'   => $this->getTable(),
-           'WHERE'  => ['contracts_id' => $contracts_id],
-           'ORDER'  => ['end_date DESC', 'id DESC']
-        ]);
-        if ($result = $iterator->next()) {
+        // $iterator = $DB->request([
+        //    'FROM'   => $this->getTable(),
+        //    'WHERE'  => ['contracts_id' => $contracts_id],
+        //    'ORDER'  => ['end_date DESC', 'id DESC']
+        // ]);
+        $dql = "SELECT cc
+        FROM Itsmng\\Domain\\Entities\\ContractCost cc
+        WHERE cc.contract = :contracts_id
+        ORDER BY cc.endDate DESC, cc.id DESC";
+
+        $results = $this->getAdapter()->request($dql, ['contracts_id' => $contracts_id]);
+        // if ($result = $iterator->next()) {
+        foreach($results as $result) {
             return $result;
         }
 
@@ -368,11 +381,17 @@ class ContractCost extends CommonDBChild
 
         echo "<div class='center'>";
 
-        $iterator = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => ['contracts_id' => $ID],
-           'ORDER'  => 'begin_date'
-        ]);
+        // $iterator = $DB->request([
+        //    'FROM'   => self::getTable(),
+        //    'WHERE'  => ['contracts_id' => $ID],
+        //    'ORDER'  => 'begin_date'
+        // ]);
+        $dql = "SELECT cc
+        FROM Itsmng\\Domain\\Entities\\ContractCost cc
+        WHERE cc.contract = :contracts_id
+        ORDER BY cc.beginDate";
+
+        $result = self::getAdapter()->request($dql, ['contracts_id' => $ID]);
         $rand   = mt_rand();
 
         if (
@@ -399,9 +418,9 @@ class ContractCost extends CommonDBChild
         }
 
         echo "<table class='tab_cadre_fixehov' aria-label='contract Information'>";
-        echo "<tr><th colspan='5'>" . self::getTypeName(count($iterator)) . "</th></tr>";
+        echo "<tr><th colspan='5'>" . self::getTypeName(count($result)) . "</th></tr>";
 
-        if (count($iterator)) {
+        if (count($result)) {
             echo "<tr><th>" . __('Name') . "</th>";
             echo "<th>" . __('Begin date') . "</th>";
             echo "<th>" . __('End date') . "</th>";
@@ -421,10 +440,11 @@ class ContractCost extends CommonDBChild
             );
 
             $total = 0;
-            while ($data = $iterator->next()) {
+            // while ($data = $iterator->next()) {
+            foreach($result as $data) {
                 echo "<tr class='tab_bg_2' " .
                       ($canedit
-                         ? "style='cursor:pointer' onClick=\"viewEditCost" . $data['contracts_id'] . "_" .
+                         ? "style='cursor:pointer' onClick=\"viewEditCost" . $data['contractId'] . "_" .
                          $data['id'] . "_$rand();\"" : '') . ">";
                 $name = (empty($data['name']) ? sprintf(
                     __('%1$s (%2$s)'),

@@ -3494,7 +3494,7 @@ class User extends CommonDBTM
            'massiveaction'      => false,
            'joinparams'         => [
               'jointype'           => 'child',
-              'linkfield'          => 'users_id_recipient'
+              'linkfield'          => 'recipient_users_id'
            ]
         ];
 

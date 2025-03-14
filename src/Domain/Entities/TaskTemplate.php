@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "is_private", columns: ["is_private"])]
 #[ORM\Index(name: "tech_users_id", columns: ["tech_users_id"])]
 #[ORM\Index(name: "tech_groups_id", columns: ["tech_groups_id"])]
-class Tasktemplate
+class TaskTemplate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

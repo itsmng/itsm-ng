@@ -282,12 +282,22 @@ class Consumable extends CommonDBChild
     {
         global $DB;
 
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => 'glpi_consumables',
-           'WHERE'  => ['consumableitems_id' => $tID]
-        ])->next();
-        return (int)$result['cpt'];
+        // $result = $DB->request([
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => 'glpi_consumables',
+        //    'WHERE'  => ['consumableitems_id' => $tID]
+        // ])->next();
+        $dql = "SELECT COUNT(t) as cpt
+        FROM Itsmng\\Domain\\Entities\\Consumable t
+        WHERE t.consumableitem = :tid";
+
+        $result = self::getAdapter()->request($dql, [
+            'tid' => $tID
+        ]);
+        foreach($result as $row) {
+            return (int)$row['cpt'];
+        }
+        // return (int)$result['cpt'];
     }
 
 
@@ -302,15 +312,28 @@ class Consumable extends CommonDBChild
     {
         global $DB;
 
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => 'glpi_consumables',
-           'WHERE'  => [
-              'consumableitems_id' => $tID,
-              'NOT'                => ['date_out' => null]
-           ]
-        ])->next();
-        return (int)$result['cpt'];
+        // $result = $DB->request([
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => 'glpi_consumables',
+        //    'WHERE'  => [
+        //       'consumableitems_id' => $tID,
+        //       'NOT'                => ['date_out' => null]
+        //    ]
+        // ])->next();
+        // return (int)$result['cpt'];
+        $dql = "SELECT COUNT(t) as cpt
+        FROM Itsmng\\Domain\\Entities\\Consumable t
+        WHERE t.consumableitem = :tid
+        AND t.dateOut IS NOT NULL";
+
+        $result = self::getAdapter()->request($dql, [
+            'tid' => $tID
+        ]);
+        $count = 0;
+        foreach($result as $row) {
+            $count = (int)$row['cpt'];
+            break;
+        }
     }
 
 
@@ -325,15 +348,30 @@ class Consumable extends CommonDBChild
     {
         global $DB;
 
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => 'glpi_consumables',
-           'WHERE'  => [
-              'consumableitems_id' => $tID,
-              'date_out'           => null
-           ]
-        ])->next();
-        return(int) $result['cpt'];
+        // $result = $DB->request([
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => 'glpi_consumables',
+        //    'WHERE'  => [
+        //       'consumableitems_id' => $tID,
+        //       'date_out'           => null
+        //    ]
+        // ])->next();
+        // return(int) $result['cpt'];
+        $dql = "SELECT COUNT(t) as cpt
+        FROM Itsmng\\Domain\\Entities\\Consumable t
+        WHERE t.consumableitem = :tid
+        AND t.dateOut IS NULL";
+
+        $result = self::getAdapter()->request($dql, [
+            'tid' => $tID
+        ]);
+
+        // Pour accéder au résultat du count
+        $count = 0;
+        foreach($result as $row) {
+            $count = (int)$row['cpt'];
+            break;
+        }
     }
 
 
@@ -385,15 +423,31 @@ class Consumable extends CommonDBChild
     {
         global $DB;
 
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => 'glpi_consumables',
-           'WHERE'  => [
-              'id'        => $cID,
-              'date_out'  => null
-           ]
-        ])->next();
-        return $result['cpt'] == 1;
+        // $result = $DB->request([
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => 'glpi_consumables',
+        //    'WHERE'  => [
+        //       'id'        => $cID,
+        //       'date_out'  => null
+        //    ]
+        // ])->next();
+        // return $result['cpt'] == 1;
+        $dql = "SELECT COUNT(t) as cpt
+        FROM Itsmng\\Domain\\Entities\\Consumable t
+        WHERE t.id = :cid
+        AND t.dateOut IS NULL";
+
+        $result = self::getAdapter()->request($dql, [
+            'cid' => $cID
+        ]);
+
+        // Récupérer la valeur du comptage
+        $count = 0;
+        foreach ($result as $row) {
+            $count = (int)$row['cpt'];
+            break;
+        }
+        return $count == 1;
     }
 
 
@@ -408,15 +462,31 @@ class Consumable extends CommonDBChild
     {
         global $DB;
 
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => 'glpi_consumables',
-           'WHERE'  => [
-              'id'     => $cID,
-              'NOT'   => ['date_out' => null]
-           ]
-        ])->next();
-        return $result['cpt'] == 1;
+        // $result = $DB->request([
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => 'glpi_consumables',
+        //    'WHERE'  => [
+        //       'id'     => $cID,
+        //       'NOT'   => ['date_out' => null]
+        //    ]
+        // ])->next();
+        // return $result['cpt'] == 1;
+        $dql = "SELECT COUNT(t) as cpt
+        FROM Itsmng\\Domain\\Entities\\Consumable t
+        WHERE t.id = :cid
+        AND t.dateOut IS NOT NULL";
+
+        $result = self::getAdapter()->request($dql, [
+            'cid' => $cID
+        ]);
+
+        // Récupérer la valeur du comptage
+        $count = 0;
+        foreach ($result as $row) {
+            $count = (int)$row['cpt'];
+            break;
+        }
+        return $count == 1;
     }
 
 
@@ -535,7 +605,17 @@ class Consumable extends CommonDBChild
            'START'  => (int)$start,
            'LIMIT'  => (int)$_SESSION['glpilist_limit']
         ]);
+        // $dql = "SELECT e 
+        // FROM " . self::getTable() . " e 
+        // WHERE " . $where . " 
+        // ORDER BY " . $order;
 
+        // $result = self::getAdapter()->request($dql, [
+        //     'start' => (int)$start,
+        //     'limit' => (int)$_SESSION['glpilist_limit']
+        // ]);
+
+        
         if ($canedit && $number) {
             $actions = [];
             if ($consitem->can($tID, PURGE)) {
@@ -579,6 +659,7 @@ class Consumable extends CommonDBChild
         $massive_action = [];
         if ($number) {
             while ($data = $iterator->next()) {
+            // foreach ($result as $data) {
                 $newValue = [];
                 $date_in  = Html::convDate($data["date_in"]);
                 $date_out = Html::convDate($data["date_out"]);

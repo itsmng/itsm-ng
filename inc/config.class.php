@@ -3208,23 +3208,48 @@ class Config extends CommonDBTM
 
             Config::forceTable('glpi_configs');
 
-            $iterator = $DB->request(['FROM' => 'glpi_configs']);
-            if ($iterator->count() === 0) {
+            // $iterator = $DB->request(['FROM' => 'glpi_configs']);
+            $dql = "SELECT t FROM Itsmng\\Domain\\Entities\\Config t";
+
+            $result = self::getAdapter()->request($dql);
+            // if ($result->count() === 0) {
+            if (count($result) === 0) {
                 return false;
             }
 
-            if ($iterator->count() === 1) {
+            // if ($iterator->count() === 1) {
+            if (count($result) === 1) {
                 // 1 row = 0.78 to 0.84 config table schema
-                return $iterator->next();
+                // return $iterator->next();
+                // Convertir l'objet entité en tableau
+                foreach($result as $row) {
+                    // Convertir l'objet en tableau associatif
+                    $row_array = [];
+                    foreach (get_object_vars($row) as $key => $value) {
+                        $row_array[$key] = $value;
+                    }
+                    return $row_array;
+                }
             }
 
             // multiple rows = 0.85+ config
             $config = [];
-            while ($row = $iterator->next()) {
-                if ('core' !== $row['context']) {
+            // while ($row = $iterator->next()) {
+            //     if ('core' !== $row['context']) {
+            //         continue;
+            //     }
+            // foreach($result as $row) {
+            //     if ('core' !== $row['context']) {
+            //         continue;
+            //     }
+            //     $config[$row['name']] = $row['value'];
+            // }
+            // return $config;
+            foreach($result as $row) {
+                if ('core' !== $row->getContext()) {
                     continue;
                 }
-                $config[$row['name']] = $row['value'];
+                $config[$row->getName()] = $row->getValue();
             }
             return $config;
         };

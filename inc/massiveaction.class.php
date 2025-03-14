@@ -1506,7 +1506,7 @@ class MassiveAction
                        'items_id'             => $id,
                        'content'              => $content,
                        'users_id'             => Session::getLoginUserID(),
-                       'users_id_lastupdater' => Session::getLoginUserID(),
+                       'lastupdater_users_id' => Session::getLoginUserID(),
                     ]);
 
                     if (!$success) {

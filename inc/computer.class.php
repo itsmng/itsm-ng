@@ -192,22 +192,30 @@ class Computer extends CommonDBTM
 
             // Propagates the changes to linked items
             foreach ($CFG_GLPI['directconnect_types'] as $type) {
-                $items_result = $DB->request(
-                    [
-                      'SELECT' => ['items_id'],
-                      'FROM'   => Computer_Item::getTable(),
-                      'WHERE'  => [
-                         'itemtype'     => $type,
-                         'computers_id' => $this->fields["id"],
-                         'is_deleted'   => 0
-                      ]
-                    ]
-                );
+                // $items_result = $DB->request(
+                //     [
+                //       'SELECT' => ['items_id'],
+                //       'FROM'   => Computer_Item::getTable(),
+                //       'WHERE'  => [
+                //          'itemtype'     => $type,
+                //          'computers_id' => $this->fields["id"],
+                //          'is_deleted'   => 0
+                //       ]
+                //     ]
+                // );
+                $dql = "SELECT t.items_id FROM Itsmng\\Domain\\Entities\\Computer t  
+                    WHERE t.itemtype = :type
+                    AND t.computer = :computers_id
+                    AND t.isDeleted = 0";
+                $items_result = $this::getAdapter()->request($dql, [
+                    'type' => $type,
+                    'computers_id' => $this->fields["id"]
+                ]);
                 $item      = new $type();
                 foreach ($items_result as $data) {
-                    $tID = $data['items_id'];
+                    $tID = $data['itemsId'];
                     $item->getFromDB($tID);
-                    if (!$item->getField('is_global')) {
+                    if (!$item->getField('isGlobal')) {
                         $changes['id'] = $item->getField('id');
                         if ($item->update($changes)) {
                             $update_done = true;
@@ -226,17 +234,25 @@ class Computer extends CommonDBTM
                 // Propagates the changes to linked devices
                 foreach ($CFG_GLPI['itemdevices'] as $device) {
                     $item = new $device();
-                    $devices_result = $DB->request(
-                        [
-                          'SELECT' => ['id'],
-                          'FROM'   => $item::getTable(),
-                          'WHERE'  => [
-                             'itemtype'     => self::getType(),
-                             'items_id'     => $this->fields["id"],
-                             'is_deleted'   => 0
-                          ]
-                        ]
-                    );
+                    // $devices_result = $DB->request(
+                    //     [
+                    //       'SELECT' => ['id'],
+                    //       'FROM'   => $item::getTable(),
+                    //       'WHERE'  => [
+                    //          'itemtype'     => self::getType(),
+                    //          'items_id'     => $this->fields["id"],
+                    //          'is_deleted'   => 0
+                    //       ]
+                    //     ]
+                    // );
+                    $dql = "SELECT t.id FROM Itsmng\\Domain\\Entities\\Computer t  
+                            WHERE t.itemtype = :itemtype
+                            AND t.itemsId = :items_id
+                            AND t.isDeleted = 0";
+                    $devices_result = self::getAdapter()->request($dql, [
+                        'itemtype' => self::getType(),
+                        'items_id' => $this->fields["id"]
+                    ]);
                     foreach ($devices_result as $data) {
                         $tID = $data['id'];
                         $item->getFromDB($tID);
@@ -473,15 +489,23 @@ class Computer extends CommonDBTM
     {
         global $DB;
 
-        $iterator = $DB->request([
-           'SELECT' => ['itemtype', 'items_id'],
-           'FROM'   => 'glpi_computers_items',
-           'WHERE'  => ['computers_id' => $this->getID()]
+        // $iterator = $DB->request([
+        //    'SELECT' => ['itemtype', 'items_id'],
+        //    'FROM'   => 'glpi_computers_items',
+        //    'WHERE'  => ['computers_id' => $this->getID()]
+        // ]);
+        $dql = "SELECT t.itemtype, t.itemsId FROM Itsmng\\Domain\\Entities\\ComputerItem t
+        WHERE t.computer = :computers_id";
+        $result = self::getAdapter()->request($dql, [
+            'computers_id' => $this->getID()
         ]);
 
         $tab = [];
-        while ($data = $iterator->next()) {
-            $tab[$data['itemtype']][$data['items_id']] = $data['items_id'];
+        // while ($data = $iterator->next()) {
+        //     $tab[$data['itemtype']][$data['items_id']] = $data['items_id'];
+        // }
+        foreach ($result as $data) {
+            $tab[$data['itemtype']][$data['itemsId']] = $data['itemsId'];
         }
         return $tab;
     }

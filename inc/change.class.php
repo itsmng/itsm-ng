@@ -346,17 +346,30 @@ class Change extends CommonITILObject
                 }
 
                 //Copy associated elements
-                $iterator = $DB->request([
-                   'FROM'   => Item_Ticket::getTable(),
-                   'WHERE'  => [
-                      'tickets_id'   => $this->input['_tickets_id']
-                   ]
+                // $iterator = $DB->request([
+                //    'FROM'   => Item_Ticket::getTable(),
+                //    'WHERE'  => [
+                //       'tickets_id'   => $this->input['_tickets_id']
+                //    ]
+                // ]);
+                $dql = "SELECT t
+                FROM Itsmng\\Domain\\Entities\\ItemTicket t
+                WHERE t.ticket = :tickets_id";
+
+                $results = self::getAdapter()->request($dql, [
+                    'tickets_id' => $this->input['_tickets_id']
                 ]);
                 $assoc = new Change_Item();
-                while ($row = $iterator->next()) {
-                    unset($row['tickets_id']);
+                // while ($row = $iterator->next()) {
+                //     unset($row['tickets_id']);
+                //     unset($row['id']);
+                //     $row['changes_id'] = $this->fields['id'];
+                //     $assoc->add(Toolbox::addslashes_deep($row));
+                // }
+                foreach ($results as $row) {
+                    unset($row['ticket']);
                     unset($row['id']);
-                    $row['changes_id'] = $this->fields['id'];
+                    $row['changesId'] = $this->fields['id'];
                     $assoc->add(Toolbox::addslashes_deep($row));
                 }
             }
@@ -370,17 +383,30 @@ class Change extends CommonITILObject
                                'changes_id'  => $this->fields['id']]);
 
                 //Copy associated elements
-                $iterator = $DB->request([
-                   'FROM'   => Item_Problem::getTable(),
-                   'WHERE'  => [
-                      'problems_id'   => $this->input['_problems_id']
-                   ]
+                // $iterator = $DB->request([
+                //    'FROM'   => Item_Problem::getTable(),
+                //    'WHERE'  => [
+                //       'problems_id'   => $this->input['_problems_id']
+                //    ]
+                // ]);
+                $dql = "SELECT t 
+                FROM Itsmng\\Domain\\Entities\\ItemProblem t 
+                WHERE t.problem = :problems_id";
+
+                $results = self::getAdapter()->request($dql, [
+                    'problems_id' => $this->input['_problems_id']
                 ]);
                 $assoc = new Change_Item();
-                while ($row = $iterator->next()) {
-                    unset($row['problems_id']);
+                // while ($row = $iterator->next()) {
+                //     unset($row['problems_id']);
+                //     unset($row['id']);
+                //     $row['changes_id'] = $this->fields['id'];
+                //     $assoc->add(Toolbox::addslashes_deep($row));
+                // }
+                foreach ($results as $row) {
+                    unset($row['problemsId']);
                     unset($row['id']);
-                    $row['changes_id'] = $this->fields['id'];
+                    $row['changesId'] = $this->fields['id'];
                     $assoc->add(Toolbox::addslashes_deep($row));
                 }
             }
@@ -944,16 +970,16 @@ class Change extends CommonITILObject
                     ],
                     __('By') => $ID ? [
                        'type' => 'select',
-                       'name' => 'users_id_recipient',
+                       'name' => 'recipient_users_id',
                        'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields["users_id_recipient"]
+                       'value' => $this->fields["recipient_users_id"]
                     ] : [],
                     __('Last update') => $ID ? [
                        'content' => Html::convDateTime($this->fields["date_mod"])
-                          . (($this->fields['users_id_lastupdater'] > 0) ? sprintf(
+                          . (($this->fields['lastupdater_users_id'] > 0) ? sprintf(
                               __('%1$s: %2$s'),
                               __('By'),
-                              getUserName($this->fields["users_id_lastupdater"], $showuserlink)
+                              getUserName($this->fields["lastupdater_users_id"], $showuserlink)
                           ) : '')
                     ] : [],
                     __('Date of solving') => ($ID

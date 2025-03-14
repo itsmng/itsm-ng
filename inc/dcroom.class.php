@@ -358,11 +358,18 @@ class DCRoom extends CommonDBTM
         }
         $canedit = $datacenter->canEdit($ID);
 
-        $rooms = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => [
-              'datacenters_id' => $datacenter->getID()
-           ]
+        // $rooms = $DB->request([
+        //    'FROM'   => self::getTable(),
+        //    'WHERE'  => [
+        //       'datacenters_id' => $datacenter->getID()
+        //    ]
+        // ]);
+        $dql = "SELECT r
+        FROM Itsmng\\Domain\\Entities\\DcRoom r
+        WHERE r.datacenter = :datacenter_id";
+
+        $rooms = self::getAdapter()->request($dql, [
+            'datacenter_id' => $datacenter->getID()
         ]);
 
         echo "<div class='firstbloc'>";
@@ -411,7 +418,8 @@ class DCRoom extends CommonDBTM
 
             $dcroom = new self();
             echo $header;
-            while ($room = $rooms->next()) {
+            // while ($room = $rooms->next()) {
+            foreach($rooms as $room) {
                 $dcroom->getFromResultSet($room);
                 echo "<tr lass='tab_bg_1'>";
                 if ($canedit) {
@@ -446,16 +454,24 @@ class DCRoom extends CommonDBTM
     {
         global $DB;
 
-        $iterator = $DB->request([
-           'FROM'   => Rack::getTable(),
-           'WHERE'  => [
-              'dcrooms_id'   => $this->getID(),
-              'is_deleted'   => 0
-           ]
+        // $iterator = $DB->request([
+        //    'FROM'   => Rack::getTable(),
+        //    'WHERE'  => [
+        //       'dcrooms_id'   => $this->getID(),
+        //       'is_deleted'   => 0
+        //    ]
+        // ]);
+        $dql = "SELECT r
+        FROM Itsmng\\Domain\\Entities\\Rack r
+        WHERE r.dcroom = :dcroom_id AND r.isDeleted = 0";
+
+        $results = self::getAdapter()->request($dql, [
+            'dcroom_id' => $this->getID()
         ]);
 
         $filled = [];
-        while ($rack = $iterator->next()) {
+        // while ($rack = $iterator->next()) {
+        foreach($results as $rack) {
             if (preg_match('/(\d+),\s?(\d+)/', $rack['position'])) {
                 $position = $rack['position'];
                 if (empty($current) || $current != $position) {

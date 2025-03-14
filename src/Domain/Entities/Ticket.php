@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Index(name: "request_type", columns: ["requesttypes_id"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
-#[ORM\Index(name: "users_id_recipient", columns: ["users_id_recipient"])]
+#[ORM\Index(name: "recipient_users_id", columns: ["recipient_users_id"])]
 #[ORM\Index(name: "solvedate", columns: ["solvedate"])]
 #[ORM\Index(name: "urgency", columns: ["urgency"])]
 #[ORM\Index(name: "impact", columns: ["impact"])]
@@ -31,7 +31,7 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Index(name: "slalevels_id_ttr", columns: ["slalevels_id_ttr"])]
 #[ORM\Index(name: "internal_time_to_resolve", columns: ["internal_time_to_resolve"])]
 #[ORM\Index(name: "internal_time_to_own", columns: ["internal_time_to_own"])]
-#[ORM\Index(name: "users_id_lastupdater", columns: ["users_id_lastupdater"])]
+#[ORM\Index(name: "lastupdater_users_id", columns: ["lastupdater_users_id"])]
 #[ORM\Index(name: "type", columns: ["type"])]
 #[ORM\Index(name: "itilcategories_id", columns: ["itilcategories_id"])]
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
@@ -67,13 +67,13 @@ class Ticket
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
 
-    #[ORM\Column(name: 'users_id_lastupdater', type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'lastupdater_users_id', type: 'integer', options: ['default' => 0])]
     private $usersIdLastupdater;
 
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
     private $status;
 
-    #[ORM\Column(name: 'users_id_recipient', type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'recipient_users_id', type: 'integer', options: ['default' => 0])]
     private $usersIdRecipient;
 
     #[ORM\ManyToOne(targetEntity: RequestType::class)]

@@ -235,36 +235,49 @@ class Change_Ticket extends CommonDBRelation
         $canedit = $change->canEdit($ID);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
-           'SELECT' => [
-              'glpi_changes_tickets.id AS linkid',
-              'glpi_tickets.*'
-           ],
-           'DISTINCT'        => true,
-           'FROM'            => 'glpi_changes_tickets',
-           'LEFT JOIN'       => [
-              'glpi_tickets' => [
-                 'ON' => [
-                    'glpi_changes_tickets'  => 'tickets_id',
-                    'glpi_tickets'          => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'           => [
-              'glpi_changes_tickets.changes_id'   => $ID
-           ],
-           'ORDERBY'          => [
-              'glpi_tickets.name'
-           ]
+        // $iterator = $DB->request([
+        //    'SELECT' => [
+        //       'glpi_changes_tickets.id AS linkid',
+        //       'glpi_tickets.*'
+        //    ],
+        //    'DISTINCT'        => true,
+        //    'FROM'            => 'glpi_changes_tickets',
+        //    'LEFT JOIN'       => [
+        //       'glpi_tickets' => [
+        //          'ON' => [
+        //             'glpi_changes_tickets'  => 'tickets_id',
+        //             'glpi_tickets'          => 'id'
+        //          ]
+        //       ]
+        //    ],
+        //    'WHERE'           => [
+        //       'glpi_changes_tickets.changes_id'   => $ID
+        //    ],
+        //    'ORDERBY'          => [
+        //       'glpi_tickets.name'
+        //    ]
+        // ]);
+        $dql = "SELECT DISTINCT ct.id AS linkid, t
+        FROM Itsmng\\Domain\\Entities\\ChangeTicket ct
+        LEFT JOIN Itsmng\\Domain\\Entities\\Ticket t WITH ct.ticket = t.id
+        WHERE ct.change = :changes_id
+        ORDER BY t.name";
+
+        $results = self::getAdapter()->request($dql, [
+            'changes_id' => $ID
         ]);
 
         $tickets = [];
         $used    = [];
-        $numrows = count($iterator);
+        $numrows = count($results);
 
-        while ($data = $iterator->next()) {
-            $tickets[$data['id']] = $data;
-            $used[$data['id']]    = $data['id'];
+        // while ($data = $iterator->next()) {
+        //     $tickets[$data['id']] = $data;
+        //     $used[$data['id']]    = $data['id'];
+        // }
+        foreach ($results as $result) {
+            $tickets[$result['id']] = $result;
+            $used[$result['id']]    = $result['id'];
         }
 
         if ($canedit) {
@@ -369,36 +382,49 @@ class Change_Ticket extends CommonDBRelation
         $canedit = $ticket->canEdit($ID);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
-           'SELECT'          => [
-              'glpi_changes_tickets.id AS linkid',
-              'glpi_changes.*'
-           ],
-           'DISTINCT'        => true,
-           'FROM'            => 'glpi_changes_tickets',
-           'LEFT JOIN'       => [
-              'glpi_changes' => [
-                 'ON' => [
-                    'glpi_changes_tickets'  => 'changes_id',
-                    'glpi_changes'          => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'           => [
-              'glpi_changes_tickets.tickets_id'   => $ID
-           ],
-           'ORDERBY'          => [
-              'glpi_changes.name'
-           ]
+        // $iterator = $DB->request([
+        //    'SELECT'          => [
+        //       'glpi_changes_tickets.id AS linkid',
+        //       'glpi_changes.*'
+        //    ],
+        //    'DISTINCT'        => true,
+        //    'FROM'            => 'glpi_changes_tickets',
+        //    'LEFT JOIN'       => [
+        //       'glpi_changes' => [
+        //          'ON' => [
+        //             'glpi_changes_tickets'  => 'changes_id',
+        //             'glpi_changes'          => 'id'
+        //          ]
+        //       ]
+        //    ],
+        //    'WHERE'           => [
+        //       'glpi_changes_tickets.tickets_id'   => $ID
+        //    ],
+        //    'ORDERBY'          => [
+        //       'glpi_changes.name'
+        //    ]
+        // ]);
+        $dql = "SELECT DISTINCT ct.id AS linkid, c
+        FROM Itsmng\\Domain\\Entities\\ChangeTicket ct
+        LEFT JOIN Itsmng\\Domain\\Entities\\Change c WITH ct.change = c.id
+        WHERE ct.ticket = :tickets_id
+        ORDER BY c.name";
+
+        $results = self::getAdapter()->request($dql, [
+            'tickets_id' => $ID
         ]);
 
         $changes = [];
         $used    = [];
-        $numrows = count($iterator);
+        $numrows = count($results);
 
-        while ($data = $iterator->next()) {
-            $changes[$data['id']] = $data;
-            $used[$data['id']]    = $data['id'];
+        // while ($data = $iterator->next()) {
+        //     $changes[$data['id']] = $data;
+        //     $used[$data['id']]    = $data['id'];
+        // }
+        foreach ($results as $result) {
+            $changes[$result['id']] = $result;
+            $used[$result['id']]    = $result['id'];
         }
 
         if ($canedit) {

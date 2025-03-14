@@ -266,46 +266,51 @@ class Cartridge extends CommonDBChild
 
         // Get first unused cartridge
         // $iterator = $DB->request([
-            $iterator = $this::getAdapter()->request([
-           'SELECT' => ['id'],
-           'FROM'   => $this->getTable(),
-           'WHERE'  => [
-              'cartridgeitems_id'  => $tID,
-              'date_use'           => null
-           ],
-           'LIMIT'  => 1
-        ]);
+        //    'SELECT' => ['id'],
+        //    'FROM'   => $this->getTable(),
+        //    'WHERE'  => [
+        //       'cartridgeitems_id'  => $tID,
+        //       'date_use'           => null
+        //    ],
+        //    'LIMIT'  => 1
+        // ]);
+        $results = self::getAdapter()->request(
+            "SELECT t FROM Itsmng\\Domain\\Entities\\Cartridge t WHERE t.cartridgeitem = :cartridgeitems_id AND t.dateUse IS NULL LIMIT 1",
+            ['cartridgeitems_id' => $tID]
+        );
 
-        // if (count($iterator)) {
-            if (count(iterator_to_array($iterator))) {
-            $result = $iterator->next();
-            $cID = $result['id'];
-            // Update cartridge taking care of multiple insertion
-            $result = $DB->update(
-                $this->getTable(),
-                [
-                  'date_use'     => date('Y-m-d'),
-                  'printers_id'  => $pID
-                ],
-                [
-                  'id'        => $cID,
-                  'date_use'  => null
-                ]
-            );
-            if ($result && ($DB->affectedRows() > 0)) {
-                $changes = [
-                   '0',
-                   '',
-                   __('Installing a cartridge'),
-                ];
-                Log::history($pID, 'Printer', $changes, 0, Log::HISTORY_LOG_SIMPLE_MESSAGE);
-                return true;
+        if (count($results)) {
+            // $result = $iterator->next();
+            foreach ($results as $result) {
+                $cID = $result['id'];
+                // Update cartridge taking care of multiple insertion
+                $result = $DB->update(
+                    $this->getTable(),
+                    [
+                    'date_use'     => date('Y-m-d'),
+                    'printers_id'  => $pID
+                    ],
+                    [
+                    'id'        => $cID,
+                    'date_use'  => null
+                    ]
+                );
+                if ($result && ($DB->affectedRows() > 0)) {
+                    $changes = [
+                    '0',
+                    '',
+                    __('Installing a cartridge'),
+                    ];
+                    Log::history($pID, 'Printer', $changes, 0, Log::HISTORY_LOG_SIMPLE_MESSAGE);
+                    return true;
+                }
             }
         } else {
             Session::addMessageAfterRedirect(__('No free cartridge'), false, ERROR);
         }
         return false;
     }
+    
 
 
     /**
@@ -477,12 +482,16 @@ class Cartridge extends CommonDBChild
         global $DB;
 
         // $row = $DB->request([
-            $row = self::getAdapter()->request([
-           'FROM'   => self::getTable(),
-           'COUNT'  => 'cpt',
-           'WHERE'  => ['cartridgeitems_id' => $tID]
-        ])->next();
-        return $row['cpt'];
+        //    'FROM'   => self::getTable(),
+        //    'COUNT'  => 'cpt',
+        //    'WHERE'  => ['cartridgeitems_id' => $tID]
+        // ])->next();
+        // return $row['cpt'];
+        $dql = "SELECT COUNT(t.id) as cpt FROM Itsmng\\Domain\\Entities\\Cartridge t WHERE t.cartridgeitem = :cartridgeitems_id";
+        $result = self::getAdapter()->request($dql, ['cartridgeitemsId' => $tID]);
+        foreach ($result as $row) {
+            return $row['cpt'];
+        }
     }
 
 
@@ -499,12 +508,23 @@ class Cartridge extends CommonDBChild
     {
         global $DB;
 
-        $row = $DB->request([
-           'FROM'   => self::getTable(),
-           'COUNT'  => 'cpt',
-           'WHERE'  => ['printers_id' => $pID]
-        ])->next();
-        return (int)$row['cpt'];
+        // $row = $DB->request([
+        //    'FROM'   => self::getTable(),
+        //    'COUNT'  => 'cpt',
+        //    'WHERE'  => ['printers_id' => $pID]
+        // ])->next();
+        // return (int)$row['cpt'];
+        $dql = "SELECT COUNT(t.id) AS cpt
+        FROM Itsmng\\Domain\\Entities\\Cartridge t
+        WHERE t.printer = :printers_id";
+
+        $result = self::getAdapter()->request($dql, [
+            'printers_id' => $pID
+        ]);
+        foreach ($result as $row) {
+            return $row['cpt'];
+        }
+        
     }
 
 
@@ -519,19 +539,31 @@ class Cartridge extends CommonDBChild
     {
         global $DB;
 
-        $row = $DB->request([
-           'SELECT' => ['id'],
-           'COUNT'  => 'cpt',
-           'FROM'   => 'glpi_cartridges',
-           'WHERE'  => [
-              'cartridgeitems_id'  => $tID,
-              'date_out'           => null,
-              'NOT'                => [
-                 'date_use'  => null
-              ]
-           ]
-        ])->next();
-        return (int)$row['cpt'];
+        // $row = $DB->request([
+        //    'SELECT' => ['id'],
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => 'glpi_cartridges',
+        //    'WHERE'  => [
+        //       'cartridgeitems_id'  => $tID,
+        //       'date_out'           => null,
+        //       'NOT'                => [
+        //          'date_use'  => null
+        //       ]
+        //    ]
+        // ])->next();
+        // return (int)$row['cpt'];
+        $dql = "SELECT COUNT(t.id) AS cpt
+        FROM Itsmng\\Domain\\Entities\\Cartridge t
+        WHERE t.cartridgeItem = :cartridge_item_id
+        AND t.dateOut IS NULL
+        AND t.dateUse IS NOT NULL";
+
+        $result = self::getAdapter()->request($dql, [
+            'cartridge_item_id' => $tID
+        ]);
+        foreach ($result as $row) {
+            return $row['cpt'];
+        }
     }
 
 
@@ -548,16 +580,28 @@ class Cartridge extends CommonDBChild
     {
         global $DB;
 
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => self::getTable(),
-           'WHERE'  => [
-              'printers_id'  => $pID,
-              'date_out'     => null,
-              'NOT'          => ['date_use' => null]
-           ]
-        ])->next();
-        return $result['cpt'];
+        // $result = $DB->request([
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => self::getTable(),
+        //    'WHERE'  => [
+        //       'printers_id'  => $pID,
+        //       'date_out'     => null,
+        //       'NOT'          => ['date_use' => null]
+        //    ]
+        // ])->next();
+        // return $result['cpt'];
+        $dql = "SELECT COUNT(t.id) AS cpt
+        FROM Itsmng\\Domain\\Entities\\Cartridge t
+        WHERE t.printer = :printer_id
+        AND t.dateOut IS NULL
+        AND t.dateUse IS NOT NULL";
+
+        $result = self::getAdapter()->request($dql, [
+            'printer_id' => $pID
+        ]);
+        foreach ($result as $row) {
+            return $row['cpt'];
+        }
     }
 
 
@@ -572,15 +616,27 @@ class Cartridge extends CommonDBChild
     {
         global $DB;
 
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => self::getTable(),
-           'WHERE'  => [
-              'cartridgeitems_id'  => $tID,
-              'NOT'                => ['date_out' => null]
-           ]
-        ])->next();
-        return $result['cpt'];
+        // $result = $DB->request([
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => self::getTable(),
+        //    'WHERE'  => [
+        //       'cartridgeitems_id'  => $tID,
+        //       'NOT'                => ['date_out' => null]
+        //    ]
+        // ])->next();
+        // return $result['cpt'];
+        $dql = "SELECT COUNT(t.id) AS cpt
+        FROM Itsmng\\Domain\\Entities\\Cartridge t
+        WHERE t.cartridgeItem = :cartridge_item_id
+        AND t.dateOut IS NOT NULL";
+
+        $result = self::getAdapter()->request($dql, [
+            'cartridge_item_id' => $tID
+        ]);
+        foreach ($result as $row) {
+            return $row['cpt'];
+        }
+        
     }
 
 
@@ -597,15 +653,26 @@ class Cartridge extends CommonDBChild
     {
         global $DB;
 
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => self::getTable(),
-           'WHERE'  => [
-              'printers_id'  => $pID,
-              'NOT'          => ['date_out' => null]
-           ]
-        ])->next();
-        return $result['cpt'];
+        // $result = $DB->request([
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => self::getTable(),
+        //    'WHERE'  => [
+        //       'printers_id'  => $pID,
+        //       'NOT'          => ['date_out' => null]
+        //    ]
+        // ])->next();
+        // return $result['cpt'];
+        $dql = "SELECT COUNT(t.id) AS cpt
+        FROM Itsmng\\Domain\\Entities\\Cartridge t
+        WHERE t.printer = :printer_id
+        AND t.dateOut IS NOT NULL";
+
+        $result = self::getAdapter()->request($dql, [
+            'printer_id' => $pID
+        ]);
+        foreach ($result as $row) {
+            return $row['cpt'];
+        }
     }
 
 
@@ -620,15 +687,26 @@ class Cartridge extends CommonDBChild
     {
         global $DB;
 
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => self::getTable(),
-           'WHERE'  => [
-              'cartridgeitems_id'  => $tID,
-              'date_use'           => null
-           ]
-        ])->next();
-        return $result['cpt'];
+        // $result = $DB->request([
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => self::getTable(),
+        //    'WHERE'  => [
+        //       'cartridgeitems_id'  => $tID,
+        //       'date_use'           => null
+        //    ]
+        // ])->next();
+        // return $result['cpt'];
+        $dql = "SELECT COUNT(t.id) AS cpt
+        FROM Itsmng\\Domain\\Entities\\Cartridge t
+        WHERE t.cartridgeItem = :cartridge_item_id
+        AND t.dateUse IS NULL";
+
+        $result = self::getAdapter()->request($dql, [
+            'cartridge_item_id' => $tID
+        ]);
+        foreach ($result as $row) {
+            return $row['cpt'];
+        }
     }
 
 
@@ -694,27 +772,34 @@ class Cartridge extends CommonDBChild
         $pages_printed    = 0;
         $nb_pages_printed = 0;
 
-        $iterator = $DB->request([
-           'SELECT' => [
-              'glpi_cartridges.*',
-              'glpi_printers.id AS printID',
-              'glpi_printers.name AS printname',
-              'glpi_printers.init_pages_counter'
-           ],
-           'FROM'   => self::gettable(),
-           'LEFT JOIN' => [
-              'glpi_printers'   => [
-                 'FKEY'   => [
-                    self::getTable()  => 'printers_id',
-                    'glpi_printers'   => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'     => $where,
-           'ORDER'     => $order
-        ]);
+        // $iterator = $DB->request([
+        //    'SELECT' => [
+        //       'glpi_cartridges.*',
+        //       'glpi_printers.id AS printID',
+        //       'glpi_printers.name AS printname',
+        //       'glpi_printers.init_pages_counter'
+        //    ],
+        //    'FROM'   => self::gettable(),
+        //    'LEFT JOIN' => [
+        //       'glpi_printers'   => [
+        //          'FKEY'   => [
+        //             self::getTable()  => 'printers_id',
+        //             'glpi_printers'   => 'id'
+        //          ]
+        //       ]
+        //    ],
+        //    'WHERE'     => $where,
+        //    'ORDER'     => $order
+        // ]);
+        $dql = "SELECT t, p.id AS printID, p.name AS printname, p.initPagesCounter
+        FROM Itsmng\\Domain\\Entities\\Cartridge t
+        LEFT JOIN t.printer p
+        WHERE $where
+        ORDER BY $order";
 
-        $number = count($iterator);
+        $results = self::getAdapter()->request($dql);
+
+        $number = count($results);
 
         $massiveActionId = 'tableForCartridgeCartridges' . rand();
         if ($canedit && $number) {
@@ -755,7 +840,8 @@ class Cartridge extends CommonDBChild
 
         $values = [];
         $massive_action = [];
-        while ($data = $iterator->next()) {
+        // while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $date_in  = Html::convDate($data["date_in"]);
             $date_use = Html::convDate($data["date_use"]);
             $date_out = Html::convDate($data["date_out"]);
@@ -901,43 +987,53 @@ class Cartridge extends CommonDBChild
         } else {
             $where['glpi_cartridges.date_out'] = null;
         }
-        $iterator = $DB->request([
-           'SELECT'    => [
-              'glpi_cartridgeitems.id AS tID',
-              'glpi_cartridgeitems.is_deleted',
-              'glpi_cartridgeitems.ref AS ref',
-              'glpi_cartridgeitems.name AS type',
-              'glpi_cartridges.id',
-              'glpi_cartridges.pages AS pages',
-              'glpi_cartridges.date_use AS date_use',
-              'glpi_cartridges.date_out AS date_out',
-              'glpi_cartridges.date_in AS date_in',
-              'glpi_cartridgeitemtypes.name AS typename'
-           ],
-           'FROM'      => self::getTable(),
-           'LEFT JOIN' => [
-              'glpi_cartridgeitems'      => [
-                 'FKEY'   => [
-                    self::getTable()        => 'cartridgeitems_id',
-                    'glpi_cartridgeitems'   => 'id'
-                 ]
-              ],
-              'glpi_cartridgeitemtypes'  => [
-                 'FKEY'   => [
-                    'glpi_cartridgeitems'      => 'cartridgeitemtypes_id',
-                    'glpi_cartridgeitemtypes'  => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'     => $where,
-           'ORDER'     => [
-              'glpi_cartridges.date_out ASC',
-              'glpi_cartridges.date_use DESC',
-              'glpi_cartridges.date_in',
-           ]
-        ]);
+        // $iterator = $DB->request([
+        //    'SELECT'    => [
+        //       'glpi_cartridgeitems.id AS tID',
+        //       'glpi_cartridgeitems.is_deleted',
+        //       'glpi_cartridgeitems.ref AS ref',
+        //       'glpi_cartridgeitems.name AS type',
+        //       'glpi_cartridges.id',
+        //       'glpi_cartridges.pages AS pages',
+        //       'glpi_cartridges.date_use AS date_use',
+        //       'glpi_cartridges.date_out AS date_out',
+        //       'glpi_cartridges.date_in AS date_in',
+        //       'glpi_cartridgeitemtypes.name AS typename'
+        //    ],
+        //    'FROM'      => self::getTable(),
+        //    'LEFT JOIN' => [
+        //       'glpi_cartridgeitems'      => [
+        //          'FKEY'   => [
+        //             self::getTable()        => 'cartridgeitems_id',
+        //             'glpi_cartridgeitems'   => 'id'
+        //          ]
+        //       ],
+        //       'glpi_cartridgeitemtypes'  => [
+        //          'FKEY'   => [
+        //             'glpi_cartridgeitems'      => 'cartridgeitemtypes_id',
+        //             'glpi_cartridgeitemtypes'  => 'id'
+        //          ]
+        //       ]
+        //    ],
+        //    'WHERE'     => $where,
+        //    'ORDER'     => [
+        //       'glpi_cartridges.date_out ASC',
+        //       'glpi_cartridges.date_use DESC',
+        //       'glpi_cartridges.date_in',
+        //    ]
+        // ]);
+        $dql = "SELECT ci.id AS tID, ci.isDeleted, ci.ref AS ref, ci.name AS type, 
+            t.id, t.pages AS pages, t.dateUse AS dateUse, t.dateOut AS dateOut,
+            t.dateIn AS dateIn, cit.name AS typename
+        FROM Itsmng\\Domain\\Entities\\Cartridge t
+        LEFT JOIN c.items ci
+        LEFT JOIN ci.type cit
+        WHERE $where
+        ORDER BY c.dateOut ASC, c.dateUse DESC, c.dateIn";
 
-        $number = count($iterator);
+        $results = self::getAdapter()->request($dql);
+
+        $number = count($results);
 
         if ($canedit && !$old) {
             $options = CartridgeItem::dropdownForPrinter($printer);
@@ -1028,7 +1124,8 @@ class Cartridge extends CommonDBChild
         $pages_printed    = 0;
         $nb_pages_printed = 0;
 
-        while ($data = $iterator->next()) {
+        // while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $cart_id    = $data["id"];
             $typename   = $data["typename"];
             $date_in    = Html::convDate($data["date_in"]);
@@ -1185,23 +1282,32 @@ class Cartridge extends CommonDBChild
         global $DB, $CFG_GLPI;
 
         //Look for parameters for this entity
-        $iterator = $DB->request([
-           'SELECT' => ['cartridges_alert_repeat'],
-           'FROM'   => 'glpi_entities',
-           'WHERE'  => ['id' => $entity]
+        // $iterator = $DB->request([
+        //    'SELECT' => ['cartridges_alert_repeat'],
+        //    'FROM'   => 'glpi_entities',
+        //    'WHERE'  => ['id' => $entity]
+        // ]);
+        $dql = "SELECT e.cartridgesAlertRepeat
+        FROM Itsmng\\Domain\\Entities\\Entity e
+        WHERE e.id = :entity";
+
+        $result = self::getAdapter()->request($dql, [
+            'entity' => $entity
         ]);
 
-        if (!count($iterator)) {
+        if (!count($result)) {
             //No specific parameters defined, taking global configuration params
             return $CFG_GLPI['cartridges_alert_repeat'];
         } else {
-            $data = $iterator->next();
+            // $data = $iterator->next();
+            foreach ($result as $data) {
             //This entity uses global parameters -> return global config
             if ($data['cartridges_alert_repeat'] == -1) {
                 return $CFG_GLPI['cartridges_alert_repeat'];
             }
             // ELSE Special configuration for this entity
             return $data['cartridges_alert_repeat'];
+            }
         }
     }
 

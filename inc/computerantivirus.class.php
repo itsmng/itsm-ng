@@ -107,12 +107,19 @@ class ComputerAntivirus extends CommonDBChild
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        $result = $DB->request(
-            [
-              'FROM'  => ComputerAntivirus::getTable(),
-              'WHERE' => ['computers_id' => $oldid],
-            ]
-        );
+      //   $result = $DB->request(
+      //       [
+      //         'FROM'  => ComputerAntivirus::getTable(),
+      //         'WHERE' => ['computers_id' => $oldid],
+      //       ]
+      //   );
+      $dql = "SELECT t 
+        FROM Itsmng\\Domain\\Entities\\ComputerAntivirus t 
+        WHERE t.computer = :computers_id";
+
+      $result = self::getAdapter()->request($dql, [
+         'computers_id' => $oldid
+      ]);
         foreach ($result as $data) {
             $antirivus            = new self();
             unset($data['id']);
@@ -407,25 +414,36 @@ class ComputerAntivirus extends CommonDBChild
 
         echo "<div class='spaced center'>";
 
-        $result = $DB->request(
-            [
-              'FROM'  => ComputerAntivirus::getTable(),
-              'WHERE' => [
-                 'computers_id' => $ID,
-                 'is_deleted'   => 0,
-              ],
-            ]
-        );
+      //   $result = $DB->request(
+      //       [
+      //         'FROM'  => ComputerAntivirus::getTable(),
+      //         'WHERE' => [
+      //            'computers_id' => $ID,
+      //            'is_deleted'   => 0,
+      //         ],
+      //       ]
+      //   );
+      $dql = "SELECT t 
+        FROM Itsmng\\Domain\\Entities\\ComputerAntivirus t 
+        WHERE t.computer = :computers_id 
+        AND t.isDeleted = 0";
+
+      $result = self::getAdapter()->request($dql, [
+         'computers_id' => $ID
+      ]);
 
         echo "<table class='tab_cadre_fixehov' aria-label='Antivirus information'>";
         $colspan = 7;
         if (Plugin::haveImport()) {
             $colspan++;
         }
-        echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName($result->numrows()) .
-             "</th></tr>";
+      //   echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName($result->numrows()) .
+      //        "</th></tr>";
+      echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName(count($result)) .
+     "</th></tr>";
 
-        if ($result->numrows() != 0) {
+      //   if ($result->numrows() != 0) {
+         if (count($result) > 0) { 
             $header = "<tr><th>" . __('Name') . "</th>";
             if (Plugin::haveImport()) {
                 $header .= "<th>" . __('Automatic inventory') . "</th>";
