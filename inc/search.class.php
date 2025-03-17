@@ -3955,7 +3955,7 @@ JAVASCRIPT;
                     if (Session::haveRight("ticket", Ticket::READMY)) {
                         $condition .= " $requester_table.users_id = '" . Session::getLoginUserID() . "'
                                     OR $observer_table.users_id = '" . Session::getLoginUserID() . "'
-                                    OR `glpi_tickets`.`users_id_recipient` = '" . Session::getLoginUserID() . "'";
+                                    OR `glpi_tickets`.`recipient_users_id` = '" . Session::getLoginUserID() . "'";
                     } else {
                         $condition .= "0=1";
                     }
@@ -4041,7 +4041,7 @@ JAVASCRIPT;
                         $condition .= " $requester_table.users_id = '" . Session::getLoginUserID() . "'
                                  OR $observer_table.users_id = '" . Session::getLoginUserID() . "'
                                  OR $assign_table.users_id = '" . Session::getLoginUserID() . "'
-                                 OR `glpi_" . $table . "`.`users_id_recipient` = '" . Session::getLoginUserID() . "'";
+                                 OR `glpi_" . $table . "`.`recipient_users_id` = '" . Session::getLoginUserID() . "'";
                         if (count($_SESSION['glpigroups'])) {
                             $my_groups_keys = "'" . implode("','", $_SESSION['glpigroups']) . "'";
                             $condition .= " OR $requestergroup_table.groups_id IN ($my_groups_keys)

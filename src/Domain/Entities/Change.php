@@ -17,13 +17,13 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Index(name: 'priority', columns: ['priority'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'itilcategories_id', columns: ['itilcategories_id'])]
-#[ORM\Index(name: 'users_id_recipient', columns: ['users_id_recipient'])]
+#[ORM\Index(name: 'recipient_users_id', columns: ['recipient_users_id'])]
 #[ORM\Index(name: 'solvedate', columns: ['solvedate'])]
 #[ORM\Index(name: 'urgency', columns: ['urgency'])]
 #[ORM\Index(name: 'impact', columns: ['impact'])]
 #[ORM\Index(name: 'time_to_resolve', columns: ['time_to_resolve'])]
 #[ORM\Index(name: 'global_validation', columns: ['global_validation'])]
-#[ORM\Index(name: 'users_id_lastupdater', columns: ['users_id_lastupdater'])]
+#[ORM\Index(name: 'lastupdater_users_id', columns: ['lastupdater_users_id'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
 class Change
 {
@@ -67,12 +67,12 @@ class Change
     private $timeToResolve;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_recipient', referencedColumnName: 'id', nullable: true)]
-    private ?User $userRecipient = null;
+    #[ORM\JoinColumn(name: 'recipient_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $recipientUser = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: true)]
-    private ?User $userLastupdater = null;
+    #[ORM\JoinColumn(name: 'lastupdater_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $lastupdaterUser = null;
 
     #[ORM\Column(name: 'urgency', type: 'integer', options: ['default' => 1])]
     private $urgency;
@@ -85,7 +85,7 @@ class Change
 
     #[ORM\ManyToOne(targetEntity: ITILCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?ITILCategory $itilCategory = null;
+    private ?ITILCategory $itilcategory = null;
 
     #[ORM\Column(name: 'impactcontent', type: 'text', nullable: true)]
     private $impactcontent;
@@ -590,62 +590,63 @@ class Change
         return $this;
     }
 
+
     /**
-     * Get the value of userRecipient
+     * Get the value of recipientUser
      */
-    public function getUserRecipient()
+    public function getRecipientUser()
     {
-        return $this->userRecipient;
+        return $this->recipientUser;
     }
 
     /**
-     * Set the value of userRecipient
+     * Set the value of recipientUser
      *
      * @return  self
      */
-    public function setUserRecipient($userRecipient)
+    public function setRecipientUser($recipientUser)
     {
-        $this->userRecipient = $userRecipient;
+        $this->recipientUser = $recipientUser;
 
         return $this;
     }
 
     /**
-     * Get the value of userLastupdater
+     * Get the value of lastupdaterUser
      */
-    public function getUserLastupdater()
+    public function getLastupdaterUser()
     {
-        return $this->userLastupdater;
+        return $this->lastupdaterUser;
     }
 
     /**
-     * Set the value of userLastupdater
+     * Set the value of lastupdaterUser
      *
      * @return  self
      */
-    public function setUserLastupdater($userLastupdater)
+    public function setLastupdaterUser($lastupdaterUser)
     {
-        $this->userLastupdater = $userLastupdater;
+        $this->lastupdaterUser = $lastupdaterUser;
 
         return $this;
     }
 
     /**
-     * Get the value of itilCategory
+     * Get the value of itilcategory
      */
-    public function getITILCategory()
+    public function getItilcategory()
     {
-        return $this->itilCategory;
+        return $this->itilcategory;
     }
 
     /**
-     * Set the value of itilCategory
+     * Set the value of itilcategory
      *
      * @return  self
      */
-    public function setITILCategory($itilCategory)
+    public function setItilcategory($itilcategory)
     {
-        $this->itilCategory = $itilCategory;
+        $this->itilcategory = $itilcategory;
 
         return $this;
     }

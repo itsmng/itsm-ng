@@ -31,8 +31,9 @@ class ItemDevicePci
     #[ORM\Column(name: 'itemtype', type: 'string', length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(name: 'devicepcis_id', type: 'integer', options: ['default' => 0])]
-    private $devicepcisId;
+    #[ORM\ManyToOne(targetEntity: DevicePci::class)]
+    #[ORM\JoinColumn(name: 'devicepcis_id', referencedColumnName: 'id', nullable: true)]
+    private ?DevicePci $devicepci = null;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
     private $isDeleted;
@@ -40,8 +41,9 @@ class ItemDevicePci
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
     private $isDynamic;
 
-    #[ORM\Column(name: 'entities_id', type: 'integer', options: ['default' => 0])]
-    private $entitiesId;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
     private $isRecursive;
@@ -55,11 +57,13 @@ class ItemDevicePci
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
-    private $locationsId;
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
+    private ?Location $location = null;
 
-    #[ORM\Column(name: 'states_id', type: 'integer', options: ['default' => 0])]
-    private $statesId;
+    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
+    private ?State $state = null;
 
     public function getId(): ?int
     {
@@ -94,17 +98,6 @@ class ItemDevicePci
         return $this;
     }
 
-    public function getDevicePcisId(): ?int
-    {
-        return $this->devicepcisId;
-    }
-
-    public function setDevicePcisId(int $devicepcisId): self
-    {
-        $this->devicepcisId = $devicepcisId;
-        return $this;
-    }
-
     public function getIsDeleted(): ?bool
     {
         return $this->isDeleted;
@@ -124,17 +117,6 @@ class ItemDevicePci
     public function setIsDynamic(bool $isDynamic): self
     {
         $this->isDynamic = $isDynamic;
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
         return $this;
     }
 
@@ -182,25 +164,83 @@ class ItemDevicePci
         return $this;
     }
 
-    public function getLocationsId(): ?int
+    /**
+     * Get the value of devicepci
+     */
+    public function getDevicepci()
     {
-        return $this->locationsId;
+        return $this->devicepci;
     }
 
-    public function setLocationsId(int $locationsId): self
+    /**
+     * Set the value of devicepci
+     *
+     * @return  self
+     */
+    public function setDevicepci($devicepci)
     {
-        $this->locationsId = $locationsId;
+        $this->devicepci = $devicepci;
+
         return $this;
     }
 
-    public function getStatesId(): ?int
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
     {
-        return $this->statesId;
+        return $this->entity;
     }
 
-    public function setStatesId(int $statesId): self
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
     {
-        $this->statesId = $statesId;
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
         return $this;
     }
 }

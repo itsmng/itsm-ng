@@ -1028,8 +1028,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_devicecontrols ADD CONSTRAINT FK_8FBFCEDF6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
         $this->addSql('ALTER TABLE glpi_devicedrives CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE interfacetypes_id interfacetypes_id INT DEFAULT NULL');
-
-
+        $this->addSql('ALTER TABLE glpi_devicedrives ADD CONSTRAINT FK_deviceDrivesEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
         $this->addSql('ALTER TABLE glpi_devicefirmwares CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE devicefirmwaretypes_id devicefirmwaretypes_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
 
@@ -1175,6 +1174,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_groups ADD CONSTRAINT FK_7286AF616145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
         $this->addSql('ALTER TABLE glpi_groups_knowbaseitems CHANGE knowbaseitems_id knowbaseitems_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE glpi_groups_knowbaseitems ADD CONSTRAINT FK_groupKnowbaseItemsEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
         $this->addSql('ALTER TABLE glpi_groups_problems CHANGE problems_id problems_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL');
@@ -1218,16 +1218,102 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2D47D3C86145D7DB ON glpi_ipnetworks (entities_id)');
         $this->addSql('CREATE INDEX IDX_2D47D3C8A992AA50 ON glpi_ipnetworks (ipnetworks_id)');
         $this->addSql('ALTER TABLE glpi_ipnetworks_vlans CHANGE ipnetworks_id ipnetworks_id INT DEFAULT NULL, CHANGE vlans_id vlans_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE glpi_items_clusters ADD CONSTRAINT FK_itemsClustersClustersD7DB FOREIGN KEY (clusters_id) REFERENCES glpi_clusters (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicebatteries ADD CONSTRAINT FK_itemsDevicebatteriesDevicebatteriesD7DB FOREIGN KEY (devicebatteries_id) REFERENCES glpi_devicebatteries (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicebatteries ADD CONSTRAINT FK_itemsDevicebatteriesEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicebatteries ADD CONSTRAINT FK_itemsDevicebatteriesLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicebatteries ADD CONSTRAINT FK_itemsDevicebatteriesStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicecases ADD CONSTRAINT FK_itemsDevicecaseDevicecasesD7DB FOREIGN KEY (devicecases_id) REFERENCES glpi_devicecases (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicecases ADD CONSTRAINT FK_itemsDevicecaseEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicecases ADD CONSTRAINT FK_itemsDevicecaseLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicecases ADD CONSTRAINT FK_itemsDevicecaseStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicecontrols ADD CONSTRAINT FK_itemsDevicecontrolDevicecontrolsD7DB FOREIGN KEY (devicecontrols_id) REFERENCES glpi_devicecontrols (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicecontrols ADD CONSTRAINT FK_itemsDevicecontrolEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicecontrols ADD CONSTRAINT FK_itemsDevicecontrolLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicecontrols ADD CONSTRAINT FK_itemsDevicecontrolStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicedrives ADD CONSTRAINT FK_itemsDevicedriveDevicedrivesD7DB FOREIGN KEY (devicedrives_id) REFERENCES glpi_devicedrives (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicedrives ADD CONSTRAINT FK_itemsDevicedriveEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicedrives ADD CONSTRAINT FK_itemsDevicedriveLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicedrives ADD CONSTRAINT FK_itemsDevicedriveStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicefirmwares ADD CONSTRAINT FK_itemsDevicefirmwareDevicefirmwaresD7DB FOREIGN KEY (devicefirmwares_id) REFERENCES glpi_devicefirmwares (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicefirmwares ADD CONSTRAINT FK_itemsDevicefirmwareEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicefirmwares ADD CONSTRAINT FK_itemsDevicefirmwareLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicefirmwares ADD CONSTRAINT FK_itemsDevicefirmwareStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicegenerics ADD CONSTRAINT FK_itemsDevicegenericDevicegenericsD7DB FOREIGN KEY (devicegenerics_id) REFERENCES glpi_devicegenerics (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicegenerics ADD CONSTRAINT FK_itemsDevicegenericEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicegenerics ADD CONSTRAINT FK_itemsDevicegenericLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicegenerics ADD CONSTRAINT FK_itemsDevicegenericStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicegraphiccards ADD CONSTRAINT FK_itemsDevicegraphiccardDevicegraphiccardsD7DB FOREIGN KEY (devicegraphiccards_id) REFERENCES glpi_devicegraphiccards (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicegraphiccards ADD CONSTRAINT FK_itemsDevicegraphiccardEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicegraphiccards ADD CONSTRAINT FK_itemsDevicegraphiccardLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicegraphiccards ADD CONSTRAINT FK_itemsDevicegraphiccardStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_deviceharddrives ADD CONSTRAINT FK_itemsDeviceharddriveDeviceharddrivesD7DB FOREIGN KEY (deviceharddrives_id) REFERENCES glpi_deviceharddrives (id)');
+        $this->addSql('ALTER TABLE glpi_items_deviceharddrives ADD CONSTRAINT FK_itemsDeviceharddriveEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_deviceharddrives ADD CONSTRAINT FK_itemsDeviceharddriveLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_deviceharddrives ADD CONSTRAINT FK_itemsDeviceharddriveStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicememories ADD CONSTRAINT FK_itemsDevicememoryDevicememoriesD7DB FOREIGN KEY (devicememories_id) REFERENCES glpi_devicememories (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicememories ADD CONSTRAINT FK_itemsDevicememoryEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicememories ADD CONSTRAINT FK_itemsDevicememoryLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicememories ADD CONSTRAINT FK_itemsDevicememoryStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicemotherboards ADD CONSTRAINT FK_itemsDevicemotherboardDevicemotherboardsD7DB FOREIGN KEY (devicemotherboards_id) REFERENCES glpi_devicemotherboards (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicemotherboards ADD CONSTRAINT FK_itemsDevicemotherboardEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicemotherboards ADD CONSTRAINT FK_itemsDevicemotherboardLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicemotherboards ADD CONSTRAINT FK_itemsDevicemotherboardStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicenetworkcards ADD CONSTRAINT FK_itemsDevicenetworkcardDevicenetworkcardsD7DB FOREIGN KEY (devicenetworkcards_id) REFERENCES glpi_devicenetworkcards (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicenetworkcards ADD CONSTRAINT FK_itemsDevicenetworkcardEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicenetworkcards ADD CONSTRAINT FK_itemsDevicenetworkcardLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicenetworkcards ADD CONSTRAINT FK_itemsDevicenetworkcardStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicepcis ADD CONSTRAINT FK_itemsDevicepciDevicepcisD7DB FOREIGN KEY (devicepcis_id) REFERENCES glpi_devicepcis (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicepcis ADD CONSTRAINT FK_itemsDevicepciEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicepcis ADD CONSTRAINT FK_itemsDevicepciLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicepcis ADD CONSTRAINT FK_itemsDevicepciStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicepowersupplies ADD CONSTRAINT FK_itemsDevicepowersupplyDevicepowersuppliesD7DB FOREIGN KEY (devicepowersupplies_id) REFERENCES glpi_devicepowersupplies (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicepowersupplies ADD CONSTRAINT FK_itemsDevicepowersupplyEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicepowersupplies ADD CONSTRAINT FK_itemsDevicepowersupplyLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicepowersupplies ADD CONSTRAINT FK_itemsDevicepowersupplyStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_deviceprocessors ADD CONSTRAINT FK_itemsDeviceprocessorDeviceprocessorsD7DB FOREIGN KEY (deviceprocessors_id) REFERENCES glpi_deviceprocessors (id)');
+        $this->addSql('ALTER TABLE glpi_items_deviceprocessors ADD CONSTRAINT FK_itemsDeviceprocessorEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_deviceprocessors ADD CONSTRAINT FK_itemsDeviceprocessorLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_deviceprocessors ADD CONSTRAINT FK_itemsDeviceprocessorStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesensors ADD CONSTRAINT FK_itemsDevicesensorDevicesensorsD7DB FOREIGN KEY (devicesensors_id) REFERENCES glpi_devicesensors (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesensors ADD CONSTRAINT FK_itemsDevicesensorEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesensors ADD CONSTRAINT FK_itemsDevicesensorLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesensors ADD CONSTRAINT FK_itemsDevicesensorStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesimcards ADD CONSTRAINT FK_itemsDevicesimcardDevicesimcardsD7DB FOREIGN KEY (devicesimcards_id) REFERENCES glpi_devicesimcards (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesimcards ADD CONSTRAINT FK_itemsDevicesimcardEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesimcards ADD CONSTRAINT FK_itemsDevicesimcardLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesimcards ADD CONSTRAINT FK_itemsDevicesimcardStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesimcards ADD CONSTRAINT FK_itemsDevicesimcardLinesD7DB FOREIGN KEY (lines_id) REFERENCES glpi_lines (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesimcards ADD CONSTRAINT FK_itemsDevicesimcardUsersD7DB FOREIGN KEY (users_id) REFERENCES glpi_users (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesimcards ADD CONSTRAINT FK_itemsDevicesimcardGroupsD7DB FOREIGN KEY (groups_id) REFERENCES glpi_groups (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesoundcards ADD CONSTRAINT FK_itemsDevicesoundcardDevicesoundcardsD7DB FOREIGN KEY (devicesoundcards_id) REFERENCES glpi_devicesoundcards (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesoundcards ADD CONSTRAINT FK_itemsDevicesoundcardEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesoundcards ADD CONSTRAINT FK_itemsDevicesoundcardLocationsD7DB FOREIGN KEY (locations_id) REFERENCES glpi_locations (id)');
+        $this->addSql('ALTER TABLE glpi_items_devicesoundcards ADD CONSTRAINT FK_itemsDevicesoundcardStatesD7DB FOREIGN KEY (states_id) REFERENCES glpi_states (id)');
+        $this->addSql('ALTER TABLE glpi_items_disks ADD CONSTRAINT FK_itemsDisksEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_disks ADD CONSTRAINT FK_itemsDisksfilesystemsD7DB FOREIGN KEY (filesystems_id) REFERENCES glpi_filesystems (id)');
+        $this->addSql('ALTER TABLE glpi_items_enclosures ADD CONSTRAINT FK_itemsEnclosuresEnclosuresD7DB FOREIGN KEY (enclosures_id) REFERENCES glpi_enclosures (id)');
+        $this->addSql('ALTER TABLE glpi_items_kanbans ADD CONSTRAINT FK_itemsKanbansUsersD7DB FOREIGN KEY (users_id) REFERENCES glpi_users (id)');
+        $this->addSql('ALTER TABLE glpi_items_operatingsystems ADD CONSTRAINT FK_itemsoperatingsystemsOperatingsystemsD7DB FOREIGN KEY (operatingsystems_id) REFERENCES glpi_operatingsystems (id)');
+        $this->addSql('ALTER TABLE glpi_items_operatingsystems ADD CONSTRAINT FK_itemsoperatingsystemsEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_operatingsystems ADD CONSTRAINT FK_itemsoperatingsystemsOperatingsystemversionsD7DB FOREIGN KEY (operatingsystemversions_id) REFERENCES glpi_operatingsystemversions (id)');
+        $this->addSql('ALTER TABLE glpi_items_operatingsystems ADD CONSTRAINT FK_itemsoperatingsystemsOperatingsystemservicepacksD7DB FOREIGN KEY (operatingsystemservicepacks_id) REFERENCES glpi_operatingsystemservicepacks (id)');
+        $this->addSql('ALTER TABLE glpi_items_operatingsystems ADD CONSTRAINT FK_itemsoperatingsystemsOperatingsystemarchitecturesD7DB FOREIGN KEY (operatingsystemarchitectures_id) REFERENCES glpi_operatingsystemarchitectures (id)');
+        $this->addSql('ALTER TABLE glpi_items_operatingsystems ADD CONSTRAINT FK_itemsoperatingsystemsOperatingsystemkernelversionsD7DB FOREIGN KEY (operatingsystemkernelversions_id) REFERENCES glpi_operatingsystemkernelversions (id)');
+        $this->addSql('ALTER TABLE glpi_items_operatingsystems ADD CONSTRAINT FK_itemsoperatingsystemsOperatingsystemeditionsD7DB FOREIGN KEY (operatingsystemeditions_id) REFERENCES glpi_operatingsystemeditions (id)');
+        $this->addSql('ALTER TABLE glpi_items_problems ADD CONSTRAINT FK_itemsproblemsProblemsD7DB FOREIGN KEY (problems_id) REFERENCES glpi_problems (id)');
+        $this->addSql('ALTER TABLE glpi_items_projects ADD CONSTRAINT FK_itemsprojectsProjectsD7DB FOREIGN KEY (projects_id) REFERENCES glpi_projects (id)');
+        $this->addSql('ALTER TABLE glpi_items_racks ADD CONSTRAINT FK_itemsracksRacksD7DB FOREIGN KEY (racks_id) REFERENCES glpi_racks (id)');
+        $this->addSql('ALTER TABLE glpi_items_softwarelicenses ADD CONSTRAINT FK_itemssoftwarelicensesSoftwarelicensesD7DB FOREIGN KEY (softwarelicenses_id) REFERENCES glpi_softwarelicenses (id)');
+        $this->addSql('ALTER TABLE glpi_items_softwareversions ADD CONSTRAINT FK_itemssoftwareversionsSoftwareversionsD7DB FOREIGN KEY (softwareversions_id) REFERENCES glpi_softwareversions (id)');
+        $this->addSql('ALTER TABLE glpi_items_softwareversions ADD CONSTRAINT FK_itemssoftwareversionsEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_items_tickets ADD CONSTRAINT FK_itemstcketsTicketsD7DB FOREIGN KEY (tickets_id) REFERENCES glpi_tickets (id)');
 
 
         $this->addSql('CREATE INDEX IDX_35A7AD8AA992AA50 ON glpi_ipnetworks_vlans (ipnetworks_id)');
         $this->addSql('CREATE INDEX IDX_35A7AD8A462B676C ON glpi_ipnetworks_vlans (vlans_id)');
         $this->addSql('ALTER TABLE glpi_itilcategories CHANGE entities_id entities_id INT DEFAULT 0, CHANGE itilcategories_id itilcategories_id INT DEFAULT NULL, CHANGE knowbaseitemcategories_id knowbaseitemcategories_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE tickettemplates_id_incident tickettemplates_id_incident INT DEFAULT NULL, CHANGE tickettemplates_id_demand tickettemplates_id_demand INT DEFAULT NULL, CHANGE changetemplates_id changetemplates_id INT DEFAULT NULL, CHANGE problemtemplates_id problemtemplates_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_itilcategories ADD CONSTRAINT FK_349D19C46145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-
-
-
-
 
 
 
@@ -1276,10 +1362,6 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_lines ADD CONSTRAINT FK_AC635CC06145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
-
-
-
-
         $this->addSql('CREATE INDEX IDX_AC635CC0F373DCF ON glpi_lines (groups_id)');
         $this->addSql('CREATE INDEX IDX_AC635CC0ED775E23 ON glpi_lines (locations_id)');
         $this->addSql('CREATE INDEX IDX_AC635CC0B17973F ON glpi_lines (states_id)');
@@ -1294,13 +1376,6 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_monitors ADD CONSTRAINT FK_CC883AB76145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
-
-
-
-
-
-
-
         $this->addSql('ALTER TABLE glpi_netpoints CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_netpoints ADD CONSTRAINT FK_69DBE45C6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
@@ -1313,14 +1388,6 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_4F9E21DC6C543AFA ON glpi_networkaliases (fqdns_id)');
         $this->addSql('ALTER TABLE glpi_networkequipments CHANGE entities_id entities_id INT DEFAULT 0, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE networks_id networks_id INT DEFAULT NULL, CHANGE networkequipmenttypes_id networkequipmenttypes_id INT DEFAULT NULL, CHANGE networkequipmentmodels_id networkequipmentmodels_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE ticket_tco ticket_tco NUMERIC(20, 4) DEFAULT \'0\'');
         $this->addSql('ALTER TABLE glpi_networkequipments ADD CONSTRAINT FK_AFE59A846145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-
-
-
-
-
-
-
-
 
 
         $this->addSql('ALTER TABLE glpi_networknames CHANGE entities_id entities_id INT DEFAULT 0, CHANGE fqdns_id fqdns_id INT DEFAULT NULL');
@@ -1397,19 +1464,8 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_passivedcequipments CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE passivedcequipmenttypes_id passivedcequipmenttypes_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_passivedcequipments ADD CONSTRAINT FK_3CF108C66145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
-
-
-
-
-
-
         $this->addSql('ALTER TABLE glpi_pdus CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE pdutypes_id pdutypes_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_pdus ADD CONSTRAINT FK_9F3AF5C16145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-
-
-
-
-
 
 
         $this->addSql('ALTER TABLE glpi_pdus_plugs CHANGE plugs_id plugs_id INT DEFAULT NULL, CHANGE pdus_id pdus_id INT DEFAULT NULL');
@@ -1425,20 +1481,8 @@ final class Version20241212100413 extends AbstractMigration
 
 
 
-
-
-
-
-
-
         $this->addSql('ALTER TABLE glpi_phones CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE phonetypes_id phonetypes_id INT DEFAULT NULL, CHANGE phonemodels_id phonemodels_id INT DEFAULT NULL, CHANGE phonepowersupplies_id phonepowersupplies_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE ticket_tco ticket_tco NUMERIC(20, 4) DEFAULT \'0\'');
-
-
-
-
-
-
-
+        $this->addSql('ALTER TABLE glpi_phones ADD CONSTRAINT FK_phonesEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
 
@@ -1456,14 +1500,6 @@ final class Version20241212100413 extends AbstractMigration
 
         $this->addSql('ALTER TABLE glpi_printers CHANGE entities_id entities_id INT DEFAULT 0, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE networks_id networks_id INT DEFAULT NULL, CHANGE printertypes_id printertypes_id INT DEFAULT NULL, CHANGE printermodels_id printermodels_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE states_id states_id INT DEFAULT NULL, CHANGE ticket_tco ticket_tco NUMERIC(20, 4) DEFAULT \'0\'');
         $this->addSql('ALTER TABLE glpi_printers ADD CONSTRAINT FK_8F8D8A3D6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-
-
-
-
-
-
-
-
 
 
         $this->addSql('ALTER TABLE glpi_problemcosts CHANGE problems_id problems_id INT DEFAULT NULL, CHANGE cost_time cost_time NUMERIC(20, 4) DEFAULT \'0\' NOT NULL, CHANGE cost_fixed cost_fixed NUMERIC(20, 4) DEFAULT \'0\' NOT NULL, CHANGE cost_material cost_material NUMERIC(20, 4) DEFAULT \'0\' NOT NULL, CHANGE budgets_id budgets_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
@@ -1493,10 +1529,6 @@ final class Version20241212100413 extends AbstractMigration
 
 
 
-
-
-
-
         $this->addSql('ALTER TABLE glpi_problemtemplatehiddenfields CHANGE problemtemplates_id problemtemplates_id INT DEFAULT NULL');
 
         $this->addSql('ALTER TABLE glpi_problemtemplatemandatoryfields CHANGE problemtemplates_id problemtemplates_id INT DEFAULT NULL');
@@ -1517,6 +1549,7 @@ final class Version20241212100413 extends AbstractMigration
 
         $this->addSql('ALTER TABLE glpi_profiles_reminders ADD CONSTRAINT FK_4A5D764F6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('ALTER TABLE glpi_profiles_rssfeeds CHANGE rssfeeds_id rssfeeds_id INT DEFAULT NULL, CHANGE profiles_id profiles_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE glpi_profiles_rssfeeds ADD CONSTRAINT FK_profilesrssfeedsEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
         $this->addSql('ALTER TABLE glpi_profiles_users CHANGE users_id users_id INT DEFAULT NULL, CHANGE profiles_id profiles_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
@@ -1647,13 +1680,6 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_softwarelicenses ADD CONSTRAINT FK_8DF16B586145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
 
 
-
-
-
-
-
-
-
         $this->addSql('CREATE INDEX IDX_8DF16B58E67D8904 ON glpi_softwarelicenses (softwares_id)');
         $this->addSql('CREATE INDEX IDX_8DF16B5844CA6F2F ON glpi_softwarelicenses (softwarelicenses_id)');
         $this->addSql('ALTER TABLE glpi_softwarelicensetypes CHANGE softwarelicensetypes_id softwarelicensetypes_id INT DEFAULT NULL, CHANGE entities_id entities_id INT DEFAULT 0');
@@ -1662,11 +1688,6 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_D4B117C36145D7DB ON glpi_softwarelicensetypes (entities_id)');
         $this->addSql('ALTER TABLE glpi_softwares CHANGE entities_id entities_id INT DEFAULT 0, CHANGE locations_id locations_id INT DEFAULT NULL, CHANGE users_id_tech users_id_tech INT DEFAULT NULL, CHANGE groups_id_tech groups_id_tech INT DEFAULT NULL, CHANGE softwares_id softwares_id INT DEFAULT NULL, CHANGE manufacturers_id manufacturers_id INT DEFAULT NULL, CHANGE users_id users_id INT DEFAULT NULL, CHANGE groups_id groups_id INT DEFAULT NULL, CHANGE ticket_tco ticket_tco NUMERIC(20, 4) DEFAULT \'0\'');
         $this->addSql('ALTER TABLE glpi_softwares ADD CONSTRAINT FK_1D851FEB6145D7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
-
-
-
-
-
 
 
         $this->addSql('ALTER TABLE glpi_softwareversions CHANGE entities_id entities_id INT DEFAULT 0, CHANGE softwares_id softwares_id INT DEFAULT NULL');
@@ -1715,6 +1736,9 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksUsersTechD7DB FOREIGN KEY (users_id_tech) REFERENCES glpi_users (id)');
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksGroupsTechD7DB FOREIGN KEY (groups_id_tech) REFERENCES glpi_groups (id)');
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksTasktemplateD7DB FOREIGN KEY (tasktemplates_id) REFERENCES glpi_tasktemplates (id)');
+        $this->addSql('ALTER TABLE glpi_ticketvalidations ADD CONSTRAINT FK_ticketvalidationEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
+        $this->addSql('ALTER TABLE glpi_ticketvalidations ADD CONSTRAINT FK_ticketvalidationTicketsD7DB FOREIGN KEY (tickets_id) REFERENCES glpi_tickets (id)');
+
 
         $this->addSql('ALTER TABLE glpi_useremails ADD CONSTRAINT FK_usersemailsUsersD7DB FOREIGN KEY (users_id) REFERENCES glpi_users (id)');
         $this->addSql('ALTER TABLE glpi_vlans ADD CONSTRAINT FK_vlansEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');

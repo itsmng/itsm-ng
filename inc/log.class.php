@@ -269,7 +269,7 @@ class Log extends CommonDBTM
            'old_value'         => $old_value,
            'new_value'         => $new_value
         ];
-        $result = $DB->insert(self::getTable(), $params);
+        $result = self::getAdapter()->add($params);
 
         if ($result && $DB->affectedRows($result) > 0) {
             return $_SESSION['glpi_maxhistory'] = $DB->insertId();

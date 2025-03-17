@@ -107,7 +107,7 @@ class ProjectTask
 
     #[ORM\ManyToOne(targetEntity: ProjectTaskTemplate::class)]
     #[ORM\JoinColumn(name: 'projecttasktemplates_id', referencedColumnName: 'id', nullable: true)]
-    private ?ProjectTaskTemlate $projecttasktemplate = null;
+    private ?ProjectTaskTemplate $projecttasktemplate = null;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
     private $isTemplate;

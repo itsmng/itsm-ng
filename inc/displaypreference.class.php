@@ -58,16 +58,26 @@ class DisplayPreference extends CommonDBTM
     {
         global $DB;
 
-        $result = $DB->request([
-           'SELECT' => ['MAX' => 'rank AS maxrank'],
-           'FROM'   => $this->getTable(),
-           'WHERE'  => [
-              'itemtype'  => $input['itemtype'],
-              'users_id'  => $input['users_id']
-           ]
-        ])->next();
-        $input['rank'] = $result['maxrank'] + 1;
-        return $input;
+        // $result = $DB->request([
+        //    'SELECT' => ['MAX' => 'rank AS maxrank'],
+        //    'FROM'   => $this->getTable(),
+        //    'WHERE'  => [
+        //       'itemtype'  => $input['itemtype'],
+        //       'users_id'  => $input['users_id']
+        //    ]
+        // ])->next();
+        $dql = "SELECT MAX(e.rank) AS maxrank
+        FROM Itsmng\\Domain\\Entities\\YourEntity e
+        WHERE e.itemtype = :itemtype AND e.users_id = :users_id";
+
+        $results = self::getAdapter()->request($dql, [
+            'itemtype' => $input['itemtype'],
+            'users_id' => $input['users_id']
+        ]);
+        foreach ($results as $result) {
+            $input['rank'] = $result['maxrank'] + 1;
+            return $input;
+        }
     }
 
 
@@ -120,22 +130,33 @@ class DisplayPreference extends CommonDBTM
     {
         global $DB;
 
-        $iterator = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => [
-              'itemtype'  => $itemtype,
-              'OR'        => [
-                 ['users_id' => $user_id],
-                 ['users_id' => 0]
-              ]
-           ],
-           'ORDER'  => ['users_id', 'rank']
+        // $iterator = $DB->request([
+        //    'FROM'   => self::getTable(),
+        //    'WHERE'  => [
+        //       'itemtype'  => $itemtype,
+        //       'OR'        => [
+        //          ['users_id' => $user_id],
+        //          ['users_id' => 0]
+        //       ]
+        //    ],
+        //    'ORDER'  => ['users_id', 'rank']
+        // ]);
+        $dql = "SELECT dp
+        FROM Itsmng\\Domain\\Entities\\DisplayPreference dp
+        WHERE dp.itemtype = :itemtype
+        AND (dp.user = :user_id OR dp.user = 0)
+        ORDER BY dp.user, dp.rank";
+
+        $results = self::getAdapter()->request($dql, [
+            'itemtype' => $itemtype,
+            'user_id'  => $user_id
         ]);
 
         $default_prefs = [];
         $user_prefs = [];
 
-        while ($data = $iterator->next()) {
+        // while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             if ($data["users_id"] != 0) {
                 $user_prefs[] = $data["num"];
             } else {
@@ -160,18 +181,27 @@ class DisplayPreference extends CommonDBTM
             return false;
         }
 
-        $iterator = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => [
-              'itemtype'  => $input['itemtype'],
-              'users_id'  => 0
-           ]
+        // $iterator = $DB->request([
+        //    'FROM'   => self::getTable(),
+        //    'WHERE'  => [
+        //       'itemtype'  => $input['itemtype'],
+        //       'users_id'  => 0
+        //    ]
+        // ]);
+        $dql = "SELECT entity
+        FROM Itsmng\\Domain\\Entities\\DisplyPreference
+        WHERE entity.itemtype = :itemtype
+        AND entity.user = 0";
+
+        $results = self::getAdapter()->request($dql, [
+            'itemtype' => $input['itemtype']
         ]);
 
-        if (count($iterator)) {
-            while ($data = $iterator->next()) {
+        if (count($results)) {
+            // while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 unset($data["id"]);
-                $data["users_id"] = $input["users_id"];
+                $data["userId"] = $input["users_id"];
                 $this->fields     = $data;
                 $this->addToDB();
             }

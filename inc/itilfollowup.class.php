@@ -1347,7 +1347,7 @@ class ITILFollowup extends CommonDBChild
                 // Subquery for recipient
                 $recipient_query = "SELECT `id`
                FROM `$table`
-               WHERE `users_id_recipient` = '$user'";
+               WHERE `recipient_users_id` = '$user'";
 
                 return "(
                `$itilfup_table`.`itemtype` = '$itemtype' AND (

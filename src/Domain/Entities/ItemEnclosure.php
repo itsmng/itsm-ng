@@ -15,8 +15,9 @@ class ItemEnclosure
     #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(name: 'enclosures_id', type: "integer")]
-    private $enclosuresId;
+    #[ORM\ManyToOne(targetEntity: Enclosure::class)]
+    #[ORM\JoinColumn(name: 'enclosures_id', referencedColumnName: 'id', nullable: true)]
+    private ?Enclosure $enclosure = null;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 255)]
     private $itemtype;
@@ -30,18 +31,6 @@ class ItemEnclosure
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEnclosuresId(): ?int
-    {
-        return $this->enclosuresId;
-    }
-
-    public function setEnclosuresId(int $enclosuresId): self
-    {
-        $this->enclosuresId = $enclosuresId;
-
-        return $this;
     }
 
     public function getItemtype(): ?string
@@ -76,6 +65,26 @@ class ItemEnclosure
     public function setPosition(int $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of enclosure
+     */
+    public function getEnclosure()
+    {
+        return $this->enclosure;
+    }
+
+    /**
+     * Set the value of enclosure
+     *
+     * @return  self
+     */
+    public function setEnclosure($enclosure)
+    {
+        $this->enclosure = $enclosure;
 
         return $this;
     }

@@ -133,15 +133,24 @@ class Contract extends CommonDBTM
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        $result = $DB->request(
-            [
-              'FROM'   => Contract_Item::getTable(),
-              'WHERE'  => [
-                 'items_id' => $oldid,
-                 'itemtype' => $itemtype,
-              ],
-            ]
-        );
+        //   $result = $DB->request(
+        //       [
+        //         'FROM'   => Contract_Item::getTable(),
+        //         'WHERE'  => [
+        //            'items_id' => $oldid,
+        //            'itemtype' => $itemtype,
+        //         ],
+        //       ]
+        //   );
+        $dql = "SELECT c
+         FROM Itsmng\\Domain\\Entities\\ContractItem c
+         WHERE c.items_id = :oldid
+         AND c.itemtype = :itemtype";
+
+        $result = self::getAdapter()->request($dql, [
+           'oldid' => $oldid,
+           'itemtype' => $itemtype,
+        ]);
         foreach ($result as $data) {
             $cd = new Contract_Item();
             unset($data['id']);
@@ -1212,21 +1221,31 @@ class Contract extends CommonDBTM
     {
         global $DB;
 
-        $iterator = $DB->request([
-           'SELECT'       => 'glpi_suppliers.id',
-           'FROM'         => 'glpi_suppliers',
-           'INNER JOIN'   => [
-              'glpi_contracts_suppliers' => [
-                 'ON' => [
-                    'glpi_contracts_suppliers' => 'suppliers_id',
-                    'glpi_suppliers'           => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'        => ['contracts_id' => $this->fields['id']]
+        //   $iterator = $DB->request([
+        //      'SELECT'       => 'glpi_suppliers.id',
+        //      'FROM'         => 'glpi_suppliers',
+        //      'INNER JOIN'   => [
+        //         'glpi_contracts_suppliers' => [
+        //            'ON' => [
+        //               'glpi_contracts_suppliers' => 'suppliers_id',
+        //               'glpi_suppliers'           => 'id'
+        //            ]
+        //         ]
+        //      ],
+        //      'WHERE'        => ['contracts_id' => $this->fields['id']]
+        //   ]);
+        $dql = "SELECT s.id
+         FROM Itsmng\\Domain\\Entities\\Supplier s
+         INNER JOIN Itsmng\\Domain\\Entities\\ContractSupplier cs
+         WITH cs.suppliers_id = s.id
+         WHERE cs.contracts_id = :contracts_id";
+
+        $results = $this->getAdapter()->request($dql, [
+           'contracts_id' => $this->fields['id']
         ]);
         $out    = "";
-        while ($data = $iterator->next()) {
+        //   while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $out .= Dropdown::getDropdownName("glpi_suppliers", $data['id']) . "<br>";
         }
         return $out;

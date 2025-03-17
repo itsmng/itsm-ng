@@ -19,12 +19,9 @@ class KnowbaseItemCategory
     #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(name: 'entities_id', type: "integer", options: ["default" => 0])]
-    private $entitiesId;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: false)]
-    private ?Entity $entity;
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
     private $isRecursive;
@@ -61,17 +58,6 @@ class KnowbaseItemCategory
         return $this->id;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?bool
     {

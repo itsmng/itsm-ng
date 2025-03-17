@@ -21,8 +21,9 @@ class ItemTicket
     #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
     private $itemsId;
 
-    #[ORM\Column(name: 'tickets_id', type: "integer", options: ["default" => 0])]
-    private $ticketsId;
+    #[ORM\ManyToOne(targetEntity: Ticket::class)]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket = null;
 
     public function getId(): ?int
     {
@@ -53,14 +54,22 @@ class ItemTicket
         return $this;
     }
 
-    public function getTicketsId(): ?int
+    /**
+     * Get the value of ticket
+     */
+    public function getTicket()
     {
-        return $this->ticketsId;
+        return $this->ticket;
     }
 
-    public function setTicketsId(?int $ticketsId): self
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */
+    public function setTicket($ticket)
     {
-        $this->ticketsId = $ticketsId;
+        $this->ticket = $ticket;
 
         return $this;
     }

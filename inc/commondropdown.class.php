@@ -219,15 +219,24 @@ abstract class CommonDropdown extends CommonDBTM
 
         // if item based on location, create item in the same entity as location
         if (isset($input['locations_id']) && !isset($input['_is_update'])) {
-            $iterator = $DB->request([
-               'SELECT' => ['entities_id'],
-               'FROM'   => 'glpi_locations',
-               'WHERE'  => [
-                  'id' => $input['locations_id']
-               ]
+            // $iterator = $DB->request([
+            //    'SELECT' => ['entities_id'],
+            //    'FROM'   => 'glpi_locations',
+            //    'WHERE'  => [
+            //       'id' => $input['locations_id']
+            //    ]
+            // ]);
+            $dql = "SELECT l.entitiesId 
+            FROM Itsmng\\Domain\\Entities\\Location l
+            WHERE l.id = :locations_id";
+            $iterator = self::getAdapter()->request($dql, [
+                'locations_id' => $input['locations_id']
             ]);
-            while ($data = $iterator->next()) {
-                $input['entities_id'] = $data['entities_id'];
+            // while ($data = $iterator->next()) {
+            //     $input['entities_id'] = $data['entities_id'];
+            // }
+            foreach ($iterator as $data) {
+                $input['entities_id'] = $data['entitiesId'];
             }
         }
 

@@ -102,19 +102,26 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        $result = $DB->request(
-            [
-              'FROM'   => self::getTable(),
-              'WHERE'  => [
-                 'calendars_id' => $oldid,
-              ]
-            ]
-        );
+        // $result = $DB->request(
+        //     [
+        //       'FROM'   => self::getTable(),
+        //       'WHERE'  => [
+        //          'calendars_id' => $oldid,
+        //       ]
+        //     ]
+        // );
+        $dql = "SELECT t
+        FROM Itsmng\\Domain\\Entities\\CalendarSegment t
+        WHERE t.calendar = :oldid";
+
+        $result = self::getAdapter()->request($dql, [
+            'oldid' => $oldid
+        ]);
 
         foreach ($result as $data) {
             $c                    = new self();
             unset($data['id']);
-            $data['calendars_id'] = $newid;
+            $data['calendarsId'] = $newid;
             $data['_no_history']  = true;
 
             $c->add($data);
@@ -193,6 +200,7 @@ class CalendarSegment extends CommonDBChild
         $sum = 0;
         // Do not check hour if day before the end day of after the begin day
         $iterator = $DB->request([
+            // $iterator = self::getAdapter()->request([
            'SELECT' => [
               new \QueryExpression(
                   "
@@ -235,6 +243,7 @@ class CalendarSegment extends CommonDBChild
 
         // Do not check hour if day before the end day of after the begin day
         $iterator = $DB->request([
+            // $iterator = self::getAdapter()->request([
            'SELECT' => [
               new \QueryExpression(
                   "GREATEST(" . $DB->quoteName('begin') . ", " . $DB->quoteValue($begin_time)  . ") AS " . $DB->quoteName('BEGIN')
@@ -286,15 +295,28 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         // Do not check hour if day before the end day of after the begin day
-        $result = $DB->request([
-           'SELECT' => ['MIN' => 'begin AS minb'],
-           'FROM'   => 'glpi_calendarsegments',
-           'WHERE'  => [
-              'calendars_id' => $calendars_id,
-              'day'          => $day
-           ]
-        ])->next();
-        return $result['minb'];
+        // $result = $DB->request([
+        //    'SELECT' => ['MIN' => 'begin AS minb'],
+        //    'FROM'   => 'glpi_calendarsegments',
+        //    'WHERE'  => [
+        //       'calendars_id' => $calendars_id,
+        //       'day'          => $day
+        //    ]
+        // ])->next();
+        $dql = "SELECT MIN(t.begin) AS minb
+        FROM Itsmng\\Domain\\Entities\\CalendarSegment t
+        WHERE t.calendar = :calendars_id
+        AND t.day = :day";
+
+        $result = self::getAdapter()->request($dql, [
+            'calendars_id' => $calendars_id,
+            'day'          => $day
+        ]);
+
+        foreach ($result as $row) {
+            // $row['minb'] contiendra la valeur retournée par MIN(cs.begin)
+            $results[] = $row['minb'];
+        }
     }
 
 
@@ -311,17 +333,35 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         // Do not check hour if day before the end day of after the begin day
-        $result = $DB->request([
-           'SELECT' => ['MAX' => 'end AS mend'],
-           'FROM'   => 'glpi_calendarsegments',
-           'WHERE'  => [
-              'calendars_id' => $calendars_id,
-              'day'          => $day
-           ]
-        ])->next();
-        return $result['mend'];
-    }
+        // $result = $DB->request([
+        //    'SELECT' => ['MAX' => 'end AS mend'],
+        //    'FROM'   => 'glpi_calendarsegments',
+        //    'WHERE'  => [
+        //       'calendars_id' => $calendars_id,
+        //       'day'          => $day
+        //    ]
+        // ])->next();
+        // return $result['mend'];
+        $dql = "SELECT MAX(t.end) AS mend
+        FROM Itsmng\\Domain\\Entities\\CalendarSegment t
+        WHERE t.calendar = :calendars_id
+        AND t.day = :day";
 
+        $result = self::getAdapter()->request($dql, [
+            'calendars_id' => $calendars_id,
+            'day'          => $day
+        ]);
+
+        // Initialisation de la variable mend
+        $mend = null;
+
+        // Boucle pour parcourir le résultat
+        foreach ($result as $row) {
+            // Récupère la valeur maximale de 'end' (MAX(cs.end))
+            $mend = $row['mend'];
+        }
+        return $mend;
+    }
 
     /**
      * Is the hour passed is a working hour ?
@@ -337,17 +377,35 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         // Do not check hour if day before the end day of after the begin day
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => 'glpi_calendarsegments',
-           'WHERE'  => [
-              'calendars_id' => $calendars_id,
-              'day'          => $day,
-              'begin'        => ['<=', $hour],
-              'end'          => ['>=', $hour]
-           ]
-        ])->next();
-        return $result['cpt'] > 0;
+        // $result = $DB->request([
+        //    'COUNT'  => 'cpt',
+        //    'FROM'   => 'glpi_calendarsegments',
+        //    'WHERE'  => [
+        //       'calendars_id' => $calendars_id,
+        //       'day'          => $day,
+        //       'begin'        => ['<=', $hour],
+        //       'end'          => ['>=', $hour]
+        //    ]
+        // ])->next();
+        // return $result['cpt'] > 0;
+        $dql = "SELECT COUNT(t.id) AS cpt
+        FROM Itsmng\\Domain\\Entities\\CalendarSegment t
+        WHERE t.calendar = :calendars_id
+        AND t.day = :day
+        AND t.begin <= :hour
+        AND t.end >= :hour";
+
+        $result = self::getAdapter()->request($dql, [
+            'calendars_id' => $calendars_id,
+            'day'          => $day,
+            'hour'         => $hour
+        ]);
+        $cpt = 0;
+        foreach ($result as $row) {
+            $cpt = $row['cpt'];
+        }
+        return $cpt > 0;
+
     }
 
 
@@ -368,19 +426,26 @@ class CalendarSegment extends CommonDBChild
         $canedit = $calendar->can($ID, UPDATE);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
-           'FROM'   => 'glpi_calendarsegments',
-           'WHERE'  => [
-              'calendars_id' => $ID
-           ],
-           'ORDER'  => [
-              'day',
-              'begin',
-              'end'
-           ]
-        ]);
-        $numrows = count($iterator);
+        // $iterator = $DB->request([
+        //    'FROM'   => 'glpi_calendarsegments',
+        //    'WHERE'  => [
+        //       'calendars_id' => $ID
+        //    ],
+        //    'ORDER'  => [
+        //       'day',
+        //       'begin',
+        //       'end'
+        //    ]
+        // ]);
+        $dql = "SELECT t
+        FROM Itsmng\\Domain\\Entities\\CalendarSegment t
+        WHERE t.calendar = :calendars_id
+        ORDER BY t.day, t.begin, t.end";
 
+        $result = self::getAdapter()->request($dql, [
+            'calendars_id' => $ID
+        ]);
+        $numrows = count($result);
         if ($canedit) {
             echo "<div class='firstbloc'>";
             echo "<form name='calendarsegment_form$rand' aria-label='Add a Schedule' id='calendarsegment_form$rand' method='post'
@@ -427,7 +492,8 @@ class CalendarSegment extends CommonDBChild
         $daysofweek = Toolbox::getDaysOfWeekArray();
 
         if ($numrows) {
-            while ($data = $iterator->next()) {
+            // while ($data = $iterator->next()) {
+            foreach ($result as $data) {
                 echo "<tr class='tab_bg_1'>";
 
                 if ($canedit) {
@@ -451,6 +517,7 @@ class CalendarSegment extends CommonDBChild
             Html::closeForm();
         }
         echo "</div>";
+
     }
 
 

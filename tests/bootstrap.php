@@ -348,33 +348,33 @@ function loadDataset()
           [
              'name'           => '_ticket01',
              'content'        => 'Content for ticket _ticket01',
-             'users_id_recipient' => TU_USER,
+             'recipient_users_id' => TU_USER,
              'entities_id'    => '_test_root_entity'
           ],
           [
              'name'           => '_ticket02',
              'content'        => 'Content for ticket _ticket02',
-             'users_id_recipient' => TU_USER,
+             'recipient_users_id' => TU_USER,
              'entities_id'    => '_test_root_entity'
           ],
           [
              'name'           => '_ticket03',
              'content'        => 'Content for ticket _ticket03',
-             'users_id_recipient' => TU_USER,
+             'recipient_users_id' => TU_USER,
              'entities_id'    => '_test_child_1'
           ],
           [
              'id'             => 100, // Force ID that will be used in imap test suite fixtures
              'name'           => '_ticket100',
              'content'        => 'Content for ticket _ticket100',
-             'users_id_recipient' => TU_USER,
+             'recipient_users_id' => TU_USER,
              'entities_id'    => '_test_root_entity'
           ],
           [
              'id'             => 101, // Force ID that will be used in imap test suite fixtures
              'name'           => '_ticket101',
              'content'        => 'Content for ticket _ticket101',
-             'users_id_recipient' => TU_USER,
+             'recipient_users_id' => TU_USER,
              'entities_id'    => '_test_root_entity'
           ],
        ], 'TicketTask' => [

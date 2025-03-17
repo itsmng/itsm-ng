@@ -31,10 +31,12 @@
  * ---------------------------------------------------------------------
  */
 
+use Doctrine\ORM\Mapping\MappedSuperclass;
 use Glpi\Event;
 use Infrastructure\Adapter\Database\LegacySqlAdapter;
 use Infrastructure\Adapter\Database\DatabaseAdapterInterface;
 use Infrastructure\Adapter\Database\DoctrineRelationalAdapter;
+use Doctrine\ORM\Mapping as ORM;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -43,6 +45,7 @@ if (!defined('GLPI_ROOT')) {
 /**
 *  Common DataBase Table Manager Class - Persistent Object
 **/
+#[ORM\MappedSuperclass]
 #[AllowDynamicProperties]
 class CommonDBTM extends CommonGLPI
 {
@@ -763,19 +766,33 @@ class CommonDBTM extends CommonGLPI
             $job         = new Ticket();
             $itemsticket = new Item_Ticket();
 
-            $iterator = $DB->request([
-               'FROM'   => 'glpi_items_tickets',
-               'WHERE'  => [
-                  'items_id'  => $this->getID(),
-                  'itemtype'  => $this->getType()
-               ]
+            // $iterator = $DB->request([
+            //    'FROM'   => 'glpi_items_tickets',
+            //    'WHERE'  => [
+            //       'items_id'  => $this->getID(),
+            //       'itemtype'  => $this->getType()
+            //    ]
+            // ]);
+            $dql = "SELECT t FROM Itsmng\\Domain\\Entities\\ItemTicket t
+            WHERE t.itemsId = :items_id
+            AND t.itemtype = :itemtype";
+
+            $results = $this::getAdapter()->request($dql, [
+                'items_id' => $this->getID(),
+                'itemtype' => $this->getType()
             ]);
 
-            while ($data = $iterator->next()) {
-                $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['tickets_id']]);
+            // while ($data = $iterator->next()) {
+            //     $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['tickets_id']]);
+            //     $itemsticket->delete(["id" => $data["id"]]);
+            //     if ($cnt == 1 && !$CFG_GLPI["keep_tickets_on_delete"]) {
+            //         $job->delete(["id" => $data["tickets_id"]]);
+            //     }
+            foreach ($results as $data) {
+                $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['ticketsId']]);
                 $itemsticket->delete(["id" => $data["id"]]);
                 if ($cnt == 1 && !$CFG_GLPI["keep_tickets_on_delete"]) {
-                    $job->delete(["id" => $data["tickets_id"]]);
+                    $job->delete(["id" => $data["ticketsId"]]);
                 }
             }
         }
@@ -4708,6 +4725,9 @@ class CommonDBTM extends CommonGLPI
         if (is_array($crit) && (count($crit) > 0)) {
             $crit['FIELDS'] = [$this::getTable() => 'id'];
             $ok = true;
+            //ajout
+            $crit['table'] = $this->getTable();
+            //fin ajout
             $iterator = $DB->request($this->getTable(), $crit);
             foreach ($iterator as $row) {
                 if (!$this->delete($row, $force, $history)) {
@@ -5292,7 +5312,8 @@ class CommonDBTM extends CommonGLPI
         $blank_params = (strpos($target, '?') ? '&' : '?') . "id=-1&withtemplate=2";
         $target_blank = $target . $blank_params;
 
-        if ($add && count($iterator) == 0) {
+        // if ($add && count($iterator) == 0) {
+        if ($add && count(iterator_to_array($iterator)) == 0) {
             //if there is no template, just use blank
             Html::redirect($target_blank);
         }

@@ -93,7 +93,7 @@ class Stat extends CommonGLPI
                 $val = $item->getUsedAuthorBetween($date1, $date2);
                 break;
 
-            case "users_id_recipient":
+            case "recipient_users_id":
                 $val = $item->getUsedRecipientBetween($date1, $date2);
                 break;
 
@@ -1079,7 +1079,7 @@ class Stat extends CommonGLPI
             case "urgency":
             case "impact":
             case "priority":
-            case "users_id_recipient":
+            case "recipient_users_id":
             case "type":
             case "itilcategories_id":
             case 'locations_id':

@@ -142,12 +142,19 @@ class CartridgeItem extends CommonDBTM
     {
         global $DB;
 
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => 'glpi_cartridges',
-           'WHERE'  => ['cartridgeitems_id' => $id]
-        ])->next();
-        return $result['cpt'];
+        //   $result = $DB->request([
+        //      'COUNT'  => 'cpt',
+        //      'FROM'   => 'glpi_cartridges',
+        //      'WHERE'  => ['cartridgeitems_id' => $id]
+        //   ])->next();
+        //   return $result['cpt'];
+        $dql = "SELECT COUNT(t) AS cpt
+         FROM Itsmng\\Domain\\Entities\\Cartridge t
+         WHERE t.cartridgeitem = :id";
+        $result = self::getAdapter()->request($dql, ['id' => $id]);
+        foreach ($result as $row) {
+            return $row['cpt'];
+        }
     }
 
 
@@ -464,40 +471,61 @@ class CartridgeItem extends CommonDBTM
 
             foreach (Entity::getEntitiesToNotify('cartridges_alert_repeat') as $entity => $repeat) {
                 // if you change this query, please don't forget to also change in showDebug()
-                $result = $DB->request(
-                    [
-                      'SELECT'    => [
-                         'glpi_cartridgeitems.id AS cartID',
-                         'glpi_cartridgeitems.entities_id AS entity',
-                         'glpi_cartridgeitems.ref AS ref',
-                         'glpi_cartridgeitems.name AS name',
-                         'glpi_cartridgeitems.alarm_threshold AS threshold',
-                         'glpi_alerts.id AS alertID',
-                         'glpi_alerts.date',
-                      ],
-                      'FROM'      => self::getTable(),
-                      'LEFT JOIN' => [
-                         'glpi_alerts' => [
-                            'FKEY' => [
-                               'glpi_alerts'         => 'items_id',
-                               'glpi_cartridgeitems' => 'id',
-                               [
-                                  'AND' => ['glpi_alerts.itemtype' => 'CartridgeItem'],
-                               ],
-                            ]
-                         ]
-                      ],
-                      'WHERE'     => [
-                         'glpi_cartridgeitems.is_deleted'      => 0,
-                         'glpi_cartridgeitems.alarm_threshold' => ['>=', 0],
-                         'glpi_cartridgeitems.entities_id'     => $entity,
-                         'OR'                                  => [
-                            ['glpi_alerts.date' => null],
-                            ['glpi_alerts.date' => ['<', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL ' . $repeat . ' second')]],
-                         ],
-                      ],
-                    ]
-                );
+                //  $result = $DB->request(
+                //      [
+                //        'SELECT'    => [
+                //           'glpi_cartridgeitems.id AS cartID',
+                //           'glpi_cartridgeitems.entities_id AS entity',
+                //           'glpi_cartridgeitems.ref AS ref',
+                //           'glpi_cartridgeitems.name AS name',
+                //           'glpi_cartridgeitems.alarm_threshold AS threshold',
+                //           'glpi_alerts.id AS alertID',
+                //           'glpi_alerts.date',
+                //        ],
+                //        'FROM'      => self::getTable(),
+                //        'LEFT JOIN' => [
+                //           'glpi_alerts' => [
+                //              'FKEY' => [
+                //                 'glpi_alerts'         => 'items_id',
+                //                 'glpi_cartridgeitems' => 'id',
+                //                 [
+                //                    'AND' => ['glpi_alerts.itemtype' => 'CartridgeItem'],
+                //                 ],
+                //              ]
+                //           ]
+                //        ],
+                //        'WHERE'     => [
+                //           'glpi_cartridgeitems.is_deleted'      => 0,
+                //           'glpi_cartridgeitems.alarm_threshold' => ['>=', 0],
+                //           'glpi_cartridgeitems.entities_id'     => $entity,
+                //           'OR'                                  => [
+                //              ['glpi_alerts.date' => null],
+                //              ['glpi_alerts.date' => ['<', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL ' . $repeat . ' second')]],
+                //           ],
+                //        ],
+                //      ]
+                //  );
+                $dql = "SELECT ci.id AS cartID, 
+               ci.entitiesId AS entity, 
+               ci.ref AS ref, 
+               ci.name AS name, 
+               ci.alarmThreshold AS threshold, 
+               a.id AS alertID, 
+               a.date
+               FROM Itsmng\\Domain\\Entities\\CartridgeItem ci
+               LEFT JOIN Itsmng\\Domain\\Entities\\Alert a WITH a.itemsId = ci.id AND a.itemtype = 'CartridgeItem'
+               WHERE ci.isDeleted = 0
+               AND ci.alarmThreshold >= 0
+               AND ci.entitiesId = :entity
+               AND (
+                     a.date IS NULL
+                     OR a.date < CURRENT_TIMESTAMP() - INTERVAL :repeat SECOND
+               )";
+
+                $result = self::getAdapter()->request($dql, [
+                   'entity' => $entity,
+                   'repeat' => $repeat,
+                ]);
 
                 $message = "";
                 $items   = [];
