@@ -130,33 +130,22 @@ class DisplayPreference extends CommonDBTM
     {
         global $DB;
 
-        // $iterator = $DB->request([
-        //    'FROM'   => self::getTable(),
-        //    'WHERE'  => [
-        //       'itemtype'  => $itemtype,
-        //       'OR'        => [
-        //          ['users_id' => $user_id],
-        //          ['users_id' => 0]
-        //       ]
-        //    ],
-        //    'ORDER'  => ['users_id', 'rank']
-        // ]);
-        $dql = "SELECT dp
-        FROM Itsmng\\Domain\\Entities\\DisplayPreference dp
-        WHERE dp.itemtype = :itemtype
-        AND (dp.user = :user_id OR dp.user = 0)
-        ORDER BY dp.user, dp.rank";
-
-        $results = self::getAdapter()->request($dql, [
-            'itemtype' => $itemtype,
-            'user_id'  => $user_id
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'itemtype'  => $itemtype,
+              'OR'        => [
+                 ['users_id' => $user_id],
+                 ['users_id' => 0]
+              ]
+           ],
+           'ORDER'  => ['users_id', 'rank']
         ]);
 
         $default_prefs = [];
         $user_prefs = [];
 
-        // while ($data = $iterator->next()) {
-        foreach ($results as $data) {
+        while ($data = $iterator->next()) {
             if ($data["users_id"] != 0) {
                 $user_prefs[] = $data["num"];
             } else {
