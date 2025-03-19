@@ -122,4 +122,3 @@ if ($json === false) {
 } else {
     echo $json;
 }
-
