@@ -48,6 +48,8 @@ class Contact extends CommonDBTM
     public static $rightname           = 'contact_enterprise';
     protected $usenotepad       = true;
 
+
+
     public static function getTypeName($nb = 0)
     {
         return _n('Contact', 'Contacts', $nb);
@@ -91,37 +93,28 @@ class Contact extends CommonDBTM
     {
         global $DB;
 
-        // $iterator = $DB->request([
-        //    'SELECT' => [
-        //       'glpi_suppliers.name',
-        //       'glpi_suppliers.address',
-        //       'glpi_suppliers.postcode',
-        //       'glpi_suppliers.town',
-        //       'glpi_suppliers.state',
-        //       'glpi_suppliers.country'
-        //    ],
-        //    'FROM'         => 'glpi_suppliers',
-        //    'INNER JOIN'   => [
-        //       'glpi_contacts_suppliers'  => [
-        //          'ON' => [
-        //             'glpi_contacts_suppliers'  => 'suppliers_id',
-        //             'glpi_suppliers'           => 'id'
-        //          ]
-        //       ]
-        //    ],
-        //    'WHERE'        => ['contacts_id' => $this->fields['id']]
-        // ]);
-        $dql = "SELECT s.name, s.address, s.postcode, s.town, s.state, s.country
-        FROM Itsmng\\Domain\\Entities\\Supplier s
-        INNER JOIN s.contactsSuppliers cs
-        WHERE cs.contact = :contacts_id";
-
-        $iterator = $this->getAdapter()->request($dql, [
-            'contacts_id' => $this->fields['id']
+        $iterator = $DB->request([
+           'SELECT' => [
+              'glpi_suppliers.name',
+              'glpi_suppliers.address',
+              'glpi_suppliers.postcode',
+              'glpi_suppliers.town',
+              'glpi_suppliers.state',
+              'glpi_suppliers.country'
+           ],
+           'FROM'         => 'glpi_suppliers',
+           'INNER JOIN'   => [
+              'glpi_contacts_suppliers'  => [
+                 'ON' => [
+                    'glpi_contacts_suppliers'  => 'suppliers_id',
+                    'glpi_suppliers'           => 'id'
+                 ]
+              ]
+           ],
+           'WHERE'        => ['contacts_id' => $this->fields['id']]
         ]);
 
-        // if ($data = $iterator->next()) {
-        foreach ($iterator as $data) {
+        if ($data = $iterator->next()) {
             return $data;
         }
     }
@@ -136,32 +129,23 @@ class Contact extends CommonDBTM
     {
         global $DB;
 
-        // $iterator = $DB->request([
-        //    'SELECT' => [
-        //       'glpi_suppliers.website AS website'
-        //    ],
-        //    'FROM'         => 'glpi_suppliers',
-        //    'INNER JOIN'   => [
-        //       'glpi_contacts_suppliers'  => [
-        //          'ON' => [
-        //             'glpi_contacts_suppliers'  => 'suppliers_id',
-        //             'glpi_suppliers'           => 'id'
-        //          ]
-        //       ]
-        //    ],
-        //    'WHERE'        => ['contacts_id' => $this->fields['id']]
-        // ]);
-        $dql = "SELECT s.website 
-        FROM Itsmng\\Domain\\Entities\\Supplier s
-        INNER JOIN s.contactsSuppliers cs
-        WHERE cs.contact = :contacts_id";
-
-        $iterator = $this->getAdapter()->request($dql, [
-            'contacts_id' => $this->fields['id']
+        $iterator = $DB->request([
+           'SELECT' => [
+              'glpi_suppliers.website AS website'
+           ],
+           'FROM'         => 'glpi_suppliers',
+           'INNER JOIN'   => [
+              'glpi_contacts_suppliers'  => [
+                 'ON' => [
+                    'glpi_contacts_suppliers'  => 'suppliers_id',
+                    'glpi_suppliers'           => 'id'
+                 ]
+              ]
+           ],
+           'WHERE'        => ['contacts_id' => $this->fields['id']]
         ]);
 
-        // if ($data = $iterator->next()) {
-        foreach ($iterator as $data) {
+        if ($data = $iterator->next()) {
             return $data['website'];
         }
         return '';

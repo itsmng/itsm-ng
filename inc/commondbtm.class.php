@@ -766,33 +766,18 @@ class CommonDBTM extends CommonGLPI
             $job         = new Ticket();
             $itemsticket = new Item_Ticket();
 
-            // $iterator = $DB->request([
-            //    'FROM'   => 'glpi_items_tickets',
-            //    'WHERE'  => [
-            //       'items_id'  => $this->getID(),
-            //       'itemtype'  => $this->getType()
-            //    ]
-            // ]);
-            $dql = "SELECT t FROM Itsmng\\Domain\\Entities\\ItemTicket t
-            WHERE t.itemsId = :items_id
-            AND t.itemtype = :itemtype";
-
-            $results = $this::getAdapter()->request($dql, [
-                'items_id' => $this->getID(),
-                'itemtype' => $this->getType()
+            $iterator = $DB->request([
+               'FROM'   => 'glpi_items_tickets',
+               'WHERE'  => [
+                  'items_id'  => $this->getID(),
+                  'itemtype'  => $this->getType()
+               ]
             ]);
-
-            // while ($data = $iterator->next()) {
-            //     $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['tickets_id']]);
-            //     $itemsticket->delete(["id" => $data["id"]]);
-            //     if ($cnt == 1 && !$CFG_GLPI["keep_tickets_on_delete"]) {
-            //         $job->delete(["id" => $data["tickets_id"]]);
-            //     }
-            foreach ($results as $data) {
-                $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['ticketsId']]);
+            while ($data = $iterator->next()) {
+                $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['tickets_id']]);
                 $itemsticket->delete(["id" => $data["id"]]);
                 if ($cnt == 1 && !$CFG_GLPI["keep_tickets_on_delete"]) {
-                    $job->delete(["id" => $data["ticketsId"]]);
+                    $job->delete(["id" => $data["tickets_id"]]);
                 }
             }
         }

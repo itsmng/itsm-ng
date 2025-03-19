@@ -49,6 +49,7 @@ class Contract_Item extends CommonDBRelation
     public static $itemtype_2 = 'itemtype';
     public static $items_id_2 = 'items_id';
 
+
     public function getForbiddenStandardMassiveAction()
     {
 
@@ -277,25 +278,16 @@ class Contract_Item extends CommonDBRelation
             $newitemtype = $itemtype;
         }
 
-        // $result = $DB->request(
-        //     [
-        //       'SELECT' => 'contracts_id',
-        //       'FROM'   => self::getTable(),
-        //       'WHERE'  => [
-        //          'items_id' => $oldid,
-        //          'itemtype' => $itemtype,
-        //       ],
-        //     ]
-        // );
-        $dql = "SELECT e.contracts_id
-        FROM Itsmng\\Domain\\Entities\\YourEntity e
-        WHERE e.items_id = :oldid
-        AND e.itemtype = :itemtype";
-
-        $result = self::getAdapter()->request($dql, [
-            'oldid' => $oldid,
-            'itemtype' => $itemtype,
-        ]);
+        $result = $DB->request(
+            [
+              'SELECT' => 'contracts_id',
+              'FROM'   => self::getTable(),
+              'WHERE'  => [
+                 'items_id' => $oldid,
+                 'itemtype' => $itemtype,
+              ],
+            ]
+        );
         foreach ($result as $data) {
             $contractitem = new self();
             $contractitem->add(['contracts_id' => $data["contracts_id"],

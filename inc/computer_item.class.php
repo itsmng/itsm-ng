@@ -285,40 +285,26 @@ class Computer_Item extends CommonDBRelation
     {
         global $DB;
 
-        // if ($item->getField('id')) {
-        //     $iterator = $DB->request([
-        //        'SELECT' => ['id'],
-        //        'FROM'   => $this->getTable(),
-        //        'WHERE'  => [
-        //           'itemtype'  => $item->getType(),
-        //           'items_id'  => $item->getID()
-        //        ]
-        //     ]);
         if ($item->getField('id')) {
-            $dql = "SELECT t.id 
-            FROM Itsmng\\Domain\\Entities\\ComputerItem t 
-            WHERE t.itemtype = :itemtype 
-            AND t.itemsId = :items_id";
-            $results = self::getAdapter()->request($dql, [
-                'itemtype' => $item->getType(),
-                'items_id' => $item->getID()
+            $iterator = $DB->request([
+               'SELECT' => ['id'],
+               'FROM'   => $this->getTable(),
+               'WHERE'  => [
+                  'itemtype'  => $item->getType(),
+                  'items_id'  => $item->getID()
+               ]
             ]);
-        }
 
-        if (count($results) > 0) {
-            $ok = true;
-            // while ($data = $iterator->next()) {
-            //     if ($this->can($data["id"], UPDATE)) {
-            //         $ok &= $this->delete($data);
-            //     }
-            foreach ($results as $data) {
-                if ($this->can($data["id"], UPDATE)) {
-                    $ok &= $this->delete($data);
+            if (count($iterator) > 0) {
+                $ok = true;
+                while ($data = $iterator->next()) {
+                    if ($this->can($data["id"], UPDATE)) {
+                        $ok &= $this->delete($data);
+                    }
                 }
+                return $ok;
             }
-            return $ok;
         }
-
         return false;
     }
 
@@ -882,29 +868,16 @@ class Computer_Item extends CommonDBRelation
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        // $iterator = $DB->request([
-        //    'FROM'   => self::getTable(),
-        //    'WHERE'  => ['computers_id' => $oldid]
-        // ]);
-        $dql = "SELECT t 
-        FROM Itsmng\\Domain\\Entities\\ComputerItem t 
-        WHERE t.computer = :computers_id";
-
-        $result = self::getAdapter()->request($dql, [
-            'computers_id' => $oldid
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => ['computers_id' => $oldid]
         ]);
 
-        // while ($data = $iterator->next()) {
-        //     $conn = new Computer_Item();
-        //     $conn->add(['computers_id' => $newid,
-        //                 'itemtype'     => $data["itemtype"],
-        //                 'items_id'     => $data["items_id"]]);
-        // }
-        foreach ($result as $data) {
+        while ($data = $iterator->next()) {
             $conn = new Computer_Item();
             $conn->add(['computers_id' => $newid,
                         'itemtype'     => $data["itemtype"],
-                        'items_id'     => $data["itemsId"]]);
+                        'items_id'     => $data["items_id"]]);
         }
     }
 
@@ -924,31 +897,17 @@ class Computer_Item extends CommonDBRelation
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        // $iterator = $DB->request([
-        //    'FROM'   => self::getTable(),
-        //    'WHERE'  => [
-        //       'itemtype'  => $itemtype,
-        //       'items_id'  => $oldid
-        //    ]
-        // ]);
-        $dql = "SELECT t FROM Itsmng\\Domain\\Entities\\ComputerItem t 
-        WHERE t.itemtype = :itemtype 
-        AND t.itemsId = :items_id";
-
-        $result = self::getAdapter()->request($dql, [
-            'itemtype' => $itemtype,
-            'items_id' => $oldid
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'itemtype'  => $itemtype,
+              'items_id'  => $oldid
+           ]
         ]);
 
-        // while ($data = $iterator->next()) {
-        //     $conn = new self();
-        //     $conn->add(['computers_id' => $data["computers_id"],
-        //                 'itemtype'     => $data["itemtype"],
-        //                 'items_id'     => $newid]);
-        // }
-        foreach ($result as $data) {
+        while ($data = $iterator->next()) {
             $conn = new self();
-            $conn->add(['computers_id' => $data["computersId"],
+            $conn->add(['computers_id' => $data["computers_id"],
                         'itemtype'     => $data["itemtype"],
                         'items_id'     => $newid]);
         }

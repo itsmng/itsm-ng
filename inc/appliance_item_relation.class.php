@@ -34,7 +34,6 @@ if (!defined('GLPI_ROOT')) {
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
 **/
-
 class Appliance_Item_Relation extends CommonDBRelation
 {
     public static $itemtype_1 = 'Appliance_Item';
@@ -180,36 +179,21 @@ class Appliance_Item_Relation extends CommonDBRelation
     {
         global $DB;
 
-        // $iterator = $DB->request([
-        //    'FROM'   => self::getTable(),
-        //    'WHERE'  => [
-        //       Appliance_Item::getForeignKeyField() => $appliances_items_id
-        //    ]
-        // ]);
-        $dql = "SELECT t FROM Itsmng\\Domain\\Entities\\ApplianceItemRelation t 
-        WHERE t.applianceItem = :appliances_items_id";
-
-        $result = self::getAdapter()->request($dql, [
-            'appliances_items_id' => $appliances_items_id
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              Appliance_Item::getForeignKeyField() => $appliances_items_id
+           ]
         ]);
 
         $relations = [];
-        // while ($row = $iterator->next()) {
-        //     $itemtype = $row['itemtype'];
-        //     $item = new $itemtype();
-        //     $item->getFromDB($row['items_id']);
-        //     $relations[$row['id']] = "<i class='" . $item->getIcon() . "' title='" . $item::getTypeName(1) . "'></i>" .
-        //                    "&nbsp;" . $item::getTypeName(1) .
-        //                    "&nbsp;-&nbsp;" . $item->getLink();
-        // }
-        foreach ($result as $row) {
+        while ($row = $iterator->next()) {
             $itemtype = $row['itemtype'];
             $item = new $itemtype();
-            $item->getFromDB($row['itemsId']);
-
+            $item->getFromDB($row['items_id']);
             $relations[$row['id']] = "<i class='" . $item->getIcon() . "' title='" . $item::getTypeName(1) . "'></i>" .
-                                        "&nbsp;" . $item::getTypeName(1) .
-                                        "&nbsp;-&nbsp;" . $item->getLink();
+                           "&nbsp;" . $item::getTypeName(1) .
+                           "&nbsp;-&nbsp;" . $item->getLink();
         }
 
         return $relations;

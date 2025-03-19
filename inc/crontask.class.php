@@ -129,8 +129,8 @@ class CronTask extends CommonDBTM
     {
 
         return $this->getFromDBByCrit([
-           'name'      => $name,
-           'itemtype'  => $itemtype
+           $this->getTable() . '.name'      => $name,
+           $this->getTable() . '.itemtype'  => $itemtype
         ]);
     }
 
@@ -178,18 +178,12 @@ class CronTask extends CommonDBTM
         global $DB;
 
         $types = [];
-        // $iterator = $DB->request([
-        //    'SELECT'          => 'itemtype',
-        //    'DISTINCT'        => true,
-        //    'FROM'            => 'glpi_crontasks'
-        // ]);
-        $dql = "SELECT DISTINCT ct.itemtype
-        FROM Itsmng\\Domain\\Entities\\CronTask ct";
-
-        $result = self::getAdapter()->request($dql);
-
-        // while ($data = $iterator->next()) {
-        foreach ($result as $data) {
+        $iterator = $DB->request([
+           'SELECT'          => 'itemtype',
+           'DISTINCT'        => true,
+           'FROM'            => 'glpi_crontasks'
+        ]);
+        while ($data = $iterator->next()) {
             $types[] = $data['itemtype'];
         }
         return $types;
@@ -497,24 +491,17 @@ class CronTask extends CommonDBTM
     {
         global $DB;
 
-        // $alert_iterator = $DB->request(
-        //     [
-        //       'FROM'      => 'glpi_alerts',
-        //       'WHERE'     => [
-        //          'items_id' => $this->fields['id'],
-        //          'itemtype' => 'CronTask',
-        //          'date'     => ['>', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL 1 day')],
-        //       ],
-        //     ]
-        // );
-        $dql = "SELECT a
-        FROM Itsmng\\Domain\\Entities\\Alert a
-        WHERE a.itemsId = :items_id
-        AND a.itemtype = 'CronTask'
-        AND a.date > CURRENT_TIMESTAMP() - 1";
-
-        $alert_result = self::getAdapter()->request($dql, ['items_id' => $this->fields['id']]);
-        if (count($alert_result) > 0) {
+        $alert_iterator = $DB->request(
+            [
+              'FROM'      => 'glpi_alerts',
+              'WHERE'     => [
+                 'items_id' => $this->fields['id'],
+                 'itemtype' => 'CronTask',
+                 'date'     => ['>', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL 1 day')],
+              ],
+            ]
+        );
+        if ($alert_iterator->count() > 0) {
             // An alert has been sent within last day, so do not send a new one to not bother administrator
             return;
         }

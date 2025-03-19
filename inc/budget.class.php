@@ -348,7 +348,6 @@ class Budget extends CommonDropdown
         }
 
         $iterator = $DB->request([
-            // $iterator = $this::getAdapter()->request([
             'SELECT'          => 'itemtype',
             'DISTINCT'        => true,
             'FROM'            => 'glpi_infocoms',
@@ -433,6 +432,7 @@ class Budget extends CommonDropdown
                     case 'Problem':
                     case 'Change':
                         $costtable = getTableForItemType($item->getType() . 'Cost');
+
                         $sum = new QueryExpression(
                             "SUM(" . $DB->quoteName("$costtable.actiontime") . " * " . $DB->quoteName("$costtable.cost_time") . "/" . HOUR_TIMESTAMP . "
                         + " . $DB->quoteName("$costtable.cost_fixed") . "
@@ -599,9 +599,7 @@ class Budget extends CommonDropdown
                 }
 
                 $iterator = $DB->request($criteria);
-                // $iterator = $this::getAdapter()->request($criteria);
                 $nb = count($iterator);
-                // $nb = count(iterator_to_array($iterator));
                 if ($nb > $_SESSION['glpilist_limit']) {
                     echo "<tr class='tab_bg_1'>";
                     $name = $item->getTypeName($nb);
@@ -830,10 +828,7 @@ class Budget extends CommonDropdown
             }
 
             $iterator = $DB->request($criteria);
-            // $iterator = $this::getAdapter()->request($criteria);
-
             $nb = count($iterator);
-            // $nb = count(iterator_to_array($iterator));
             if ($nb) {
                 $found_types[$itemtype]  = $item->getTypeName(1);
                 $totalbytypes[$itemtype] = 0;
@@ -861,7 +856,7 @@ class Budget extends CommonDropdown
         echo "<tr class='noHover'><th colspan='$colspan'>" . __('Total spent on the budget') . "</th></tr>";
         echo "<tr><th>" . Entity::getTypeName(1) . "</th>";
         if (count($found_types)) {
-            foreach ($found_types as $typename) {
+            foreach ($found_types as $type => $typename) {
                 echo "<th>$typename</th>";
             }
         }

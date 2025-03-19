@@ -223,45 +223,22 @@ class Reservation extends CommonDBChild
     {
         global $DB;
 
-        // do {
-        //     $rand = mt_rand(1, mt_getrandmax());
-
-        //     $result = $DB->request([
-        //        'COUNT'  => 'cpt',
-        //        'FROM'   => 'glpi_reservations',
-        //        'WHERE'  => [
-        //           'reservationitems_id'   => $reservationitems_id,
-        //           'group'                 => $rand
-        //        ]
-        //     ])->next();
-        //     $count = (int)$result['cpt'];
-        // } while ($count > 0);
-
-        // return $rand;
         do {
             $rand = mt_rand(1, mt_getrandmax());
 
-            $dql = "SELECT COUNT(r) as cpt
-                    FROM Itsmng\\Domain\\Entities\\Reservation r
-                    WHERE r.reservationitem = :reservationitems_id
-                    AND r.group = :group";
-
-            $result = self::getAdapter()->request($dql, [
-                'reservationitems_id' => $reservationitems_id,
-                'group' => $rand
-            ]);
-
-            $count = 0;
-            foreach ($result as $row) {
-                $count = (int)$row['cpt'];
-                break;
-            }
+            $result = $DB->request([
+               'COUNT'  => 'cpt',
+               'FROM'   => 'glpi_reservations',
+               'WHERE'  => [
+                  'reservationitems_id'   => $reservationitems_id,
+                  'group'                 => $rand
+               ]
+            ])->next();
+            $count = (int)$result['cpt'];
         } while ($count > 0);
 
         return $rand;
     }
-
-
 
 
     /**
@@ -286,29 +263,16 @@ class Reservation extends CommonDBChild
             $where['id'] = ['<>', $this->fields['id']];
         }
 
-        // $result = $DB->request([
-        //    'COUNT'  => 'cpt',
-        //    'FROM'   => $this->getTable(),
-        //    'WHERE'  => $where + [
-        //       'reservationitems_id'   => $this->fields['reservationitems_id'],
-        //       'end'                   => ['>', $this->fields['begin']],
-        //       'begin'                 => ['<', $this->fields['end']]
-        //    ]
-        // ])->next();
-        // return $result['cpt'] > 0;
-        $dql = "SELECT COUNT(r.id) AS cpt
-        FROM Itsmng\\Domain\\Entities\\Reservation r
-        WHERE r.reservationitem = :reservationitems_id
-        AND r.end > :begin
-        AND r.begin < :end";
-
-        $result = self::getAdapter()->request($dql, [
-            'reservationitems_id' => $this->fields['reservationitems_id'],
-            'begin'               => $this->fields['begin'],
-            'end'                 => $this->fields['end']
-        ]);
-
-        return $result[0]['cpt'] > 0;
+        $result = $DB->request([
+           'COUNT'  => 'cpt',
+           'FROM'   => $this->getTable(),
+           'WHERE'  => $where + [
+              'reservationitems_id'   => $this->fields['reservationitems_id'],
+              'end'                   => ['>', $this->fields['begin']],
+              'begin'                 => ['<', $this->fields['end']]
+           ]
+        ])->next();
+        return $result['cpt'] > 0;
     }
 
 
@@ -418,29 +382,15 @@ class Reservation extends CommonDBChild
         global $DB;
 
         if (isset($this->input['_delete_group']) && $this->input['_delete_group']) {
-            // $iterator = $DB->request([
-            //    'FROM'   => 'glpi_reservations',
-            //    'WHERE'  => [
-            //       'reservationitems_id'   => $this->fields['reservationitems_id'],
-            //       'group'                 => $this->fields['group']
-            //    ]
-            // ]);
-            // $rr = clone $this;
-            // while ($data = $iterator->next()) {
-            //     $rr->delete(['id' => $data['id']]);
-            // }
-            $dql = "SELECT r.id
-        FROM Itsmng\\Domain\\Entities\\Reservation r
-        WHERE r.reservationitem = :reservationitems_id
-        AND r.group = :group";
-
-            $results = self::getAdapter()->request($dql, [
-                'reservationitems_id' => $this->fields['reservationitems_id'],
-                'group'               => $this->fields['group']
+            $iterator = $DB->request([
+               'FROM'   => 'glpi_reservations',
+               'WHERE'  => [
+                  'reservationitems_id'   => $this->fields['reservationitems_id'],
+                  'group'                 => $this->fields['group']
+               ]
             ]);
-
             $rr = clone $this;
-            foreach ($results as $data) {
+            while ($data = $iterator->next()) {
                 $rr->delete(['id' => $data['id']]);
             }
         }
@@ -924,7 +874,7 @@ class Reservation extends CommonDBChild
                         }
                     }
 
-                    foreach ($dates as $val) {
+                    foreach ($dates as $key => $val) {
                         $begin_time = $val['begin'];
                         $end_time   = $val['end'];
 
@@ -1008,43 +958,29 @@ class Reservation extends CommonDBChild
             $debut = $date . " 00:00:00";
             $fin   = $date . " 23:59:59";
 
-            // $iterator = $DB->request([
-            //    'SELECT'          => 'glpi_reservationitems.id',
-            //    'DISTINCT'        => true,
-            //    'FROM'            => 'glpi_reservationitems',
-            //    'INNER JOIN'      => [
-            //       'glpi_reservations'  => [
-            //          'ON' => [
-            //             'glpi_reservationitems' => 'id',
-            //             'glpi_reservations'     => 'reservationitems_id'
-            //          ]
-            //       ]
-            //    ],
-            //    'WHERE'           => [
-            //       'is_active' => 1,
-            //       'end'       => ['>', $debut],
-            //       'begin'     => ['<', $fin]
-            //    ],
-            //    'ORDERBY'         => 'begin'
-            // ]);
-            $dql = "SELECT DISTINCT ri.id 
-            FROM Itsmng\\Domain\\Entities\\ReservationItem ri
-            INNER JOIN Itsmng\\Domain\\Entities\\Reservation r
-            WITH ri.id = r.reservationitem
-            WHERE ri.isActive = 1
-            AND r.end > :debut
-            AND r.begin < :fin
-            ORDER BY r.begin";
-
-            $results = self::getAdapter()->request($dql, [
-                'debut' => $debut,
-                'fin'   => $fin
+            $iterator = $DB->request([
+               'SELECT'          => 'glpi_reservationitems.id',
+               'DISTINCT'        => true,
+               'FROM'            => 'glpi_reservationitems',
+               'INNER JOIN'      => [
+                  'glpi_reservations'  => [
+                     'ON' => [
+                        'glpi_reservationitems' => 'id',
+                        'glpi_reservations'     => 'reservationitems_id'
+                     ]
+                  ]
+               ],
+               'WHERE'           => [
+                  'is_active' => 1,
+                  'end'       => ['>', $debut],
+                  'begin'     => ['<', $fin]
+               ],
+               'ORDERBY'         => 'begin'
             ]);
 
-            if (count($results)) {
+            if (count($iterator)) {
                 $m = new ReservationItem();
-                // while ($data = $iterator->next()) {
-                foreach ($results as $data) {
+                while ($data = $iterator->next()) {
                     $m->getFromDB($data['id']);
 
                     if (!($item = getItemForItemtype($m->fields["itemtype"]))) {
@@ -1101,32 +1037,19 @@ class Reservation extends CommonDBChild
         $debut    = $date . " 00:00:00";
         $fin      = $date . " 23:59:59";
 
-        // $iterator = $DB->request([
-        //    'FROM'   => 'glpi_reservations',
-        //    'WHERE'  => [
-        //       'end'                   => ['>', $debut],
-        //       'begin'                 => ['<', $fin],
-        //       'reservationitems_id'   => $ID
-        //    ],
-        //    'ORDER'  => 'begin'
-        // ]);
-        $dql = "SELECT r 
-        FROM Itsmng\\Domain\\Entities\\Reservation r
-        WHERE r.end > :debut
-        AND r.begin < :fin
-        AND r.reservationitem = :ID
-        ORDER BY r.begin";
-
-        $results = self::getAdapter()->request($dql, [
-            'debut' => $debut,
-            'fin'   => $fin,
-            'ID'    => $ID
+        $iterator = $DB->request([
+           'FROM'   => 'glpi_reservations',
+           'WHERE'  => [
+              'end'                   => ['>', $debut],
+              'begin'                 => ['<', $fin],
+              'reservationitems_id'   => $ID
+           ],
+           'ORDER'  => 'begin'
         ]);
 
-        if (count($results)) {
+        if (count($iterator)) {
             echo "<table width='100%' aria-label='User Time Interval'>";
-            // while ($row = $iterator->next()) {
-            foreach ($results as $row) {
+            while ($row = $iterator->next()) {
                 echo "<tr>";
                 $user->getFromDB($row["users_id"]);
                 $display = "";
@@ -1208,29 +1131,19 @@ class Reservation extends CommonDBChild
             $now = $_SESSION["glpi_currenttime"];
 
             // Print reservation in progress
-            // $iterator = $DB->request([
-            //    'FROM'   => 'glpi_reservations',
-            //    'WHERE'  => [
-            //       'end'                   => ['>', $now],
-            //       'reservationitems_id'   => $ri->fields['id']
-            //    ],
-            //    'ORDER'  => 'begin'
-            // ]);
-            $dql = "SELECT r 
-            FROM Itsmng\\Domain\\Entities\\Reservation r
-            WHERE r.end > :now
-            AND r.reservationitem = :reservationitems_id
-            ORDER BY r.begin";
-
-            $results = self::getAdapter()->request($dql, [
-                'now'                 => $now,
-                'reservationitems_id' => $ri->fields['id']
+            $iterator = $DB->request([
+               'FROM'   => 'glpi_reservations',
+               'WHERE'  => [
+                  'end'                   => ['>', $now],
+                  'reservationitems_id'   => $ri->fields['id']
+               ],
+               'ORDER'  => 'begin'
             ]);
 
             echo "<table class='tab_cadre_fixehov' aria-label='Current and future reservations'><tr><th colspan='5'>";
 
             if (
-                count($results) && $ri->fields["is_active"]
+                count($iterator) && $ri->fields["is_active"]
                 && Session::haveRight('reservation', ReservationItem::RESERVEANITEM)
             ) {
                 echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
@@ -1240,7 +1153,7 @@ class Reservation extends CommonDBChild
             }
             echo "</th></tr>\n";
 
-            if (!count($results)) {
+            if (!count($iterator)) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center' colspan='5'>" . __('No reservation') . "</td></tr>\n";
             } else {
@@ -1249,8 +1162,7 @@ class Reservation extends CommonDBChild
                 echo "<th>" . __('By') . "</th>";
                 echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
-                // while ($data = $iterator->next()) {
-                foreach ($results as $data) {
+                while ($data = $iterator->next()) {
                     echo "<tr class='tab_bg_2'>";
                     echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                     echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
@@ -1279,29 +1191,19 @@ class Reservation extends CommonDBChild
             echo "</table></div>\n";
 
             // Print old reservations
-            // $iterator = $DB->request([
-            //    'FROM'   => 'glpi_reservations',
-            //    'WHERE'  => [
-            //       'end'                   => ['<=', $now],
-            //       'reservationitems_id'   => $ri->fields['id']
-            //    ],
-            //    'ORDER'  => 'begin DESC'
-            // ]);
-            $dql = "SELECT r 
-            FROM Itsmng\\Domain\\Entities\\Reservation r
-            WHERE r.end > :now 
-            AND r.reservationitem = :reservationitems_id
-            ORDER BY r.begin DESC";
-
-            $results = self::getAdapter()->request($dql, [
-                'now'                 => $now,
-                'reservationitems_id' => $ri->fields['id']
+            $iterator = $DB->request([
+               'FROM'   => 'glpi_reservations',
+               'WHERE'  => [
+                  'end'                   => ['<=', $now],
+                  'reservationitems_id'   => $ri->fields['id']
+               ],
+               'ORDER'  => 'begin DESC'
             ]);
 
             echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='Past Reservations'><tr><th colspan='5'>";
 
             if (
-                count($results) && $ri->fields["is_active"]
+                count($iterator) && $ri->fields["is_active"]
                 && Session::haveRight('reservation', ReservationItem::RESERVEANITEM)
             ) {
                 echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
@@ -1311,7 +1213,7 @@ class Reservation extends CommonDBChild
             }
             echo "</th></tr>\n";
 
-            if (!count($results)) {
+            if (!count($iterator)) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center' colspan='5'>" . __('No reservation') . "</td></tr>\n";
             } else {
@@ -1320,8 +1222,7 @@ class Reservation extends CommonDBChild
                 echo "<th>" . __('By') . "</th>";
                 echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
-                // while ($data = $iterator->next()) {
-                foreach ($results as $data) {
+                while ($data = $iterator->next()) {
                     echo "<tr class='tab_bg_2'>";
                     echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                     echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
@@ -1373,57 +1274,44 @@ class Reservation extends CommonDBChild
         $now = $_SESSION["glpi_currenttime"];
 
         // Print reservation in progress
-        // $iterator = $DB->request([
-        //    'SELECT'    => [
-        //       'begin',
-        //       'end',
-        //       'items_id',
-        //       'glpi_reservationitems.entities_id',
-        //       'users_id',
-        //       'glpi_reservations.comment',
-        //       'reservationitems_id',
-        //       'completename'
-        //    ],
-        //    'FROM'      => 'glpi_reservations',
-        //    'LEFT JOIN' => [
-        //       'glpi_reservationitems' => [
-        //          'ON' => [
-        //             'glpi_reservationitems' => 'id',
-        //             'glpi_reservations'     => 'reservationitems_id'
-        //          ]
-        //       ],
-        //       'glpi_entities' => [
-        //          'ON' => [
-        //             'glpi_reservationitems' => 'entities_id',
-        //             'glpi_entities'         => 'id'
-        //          ]
-        //       ]
-        //    ],
-        //    'WHERE'     => [
-        //       'end'       => ['>', $now],
-        //       'users_id'  => $ID
-        //    ],
-        //    'ORDERBY'   => 'begin'
-        // ]);
-        $dql = "SELECT r.id, r.begin, r.end, r.itemsId, r.usersId, r.comment, 
-               ri.id AS reservationitemsId, ri.completename, e.id AS entitiesId 
-        FROM Itsmng\\Domain\\Entities\\Reservation r
-        LEFT JOIN r.reservationItem ri
-        LEFT JOIN ri.entity e
-        WHERE r.end > :now
-        AND r.usersId = :user_id
-        ORDER BY r.begin";
-
-        $results = self::getAdapter()->request($dql, [
-            'now'     => $now,
-            'users_id' => $ID
+        $iterator = $DB->request([
+           'SELECT'    => [
+              'begin',
+              'end',
+              'items_id',
+              'glpi_reservationitems.entities_id',
+              'users_id',
+              'glpi_reservations.comment',
+              'reservationitems_id',
+              'completename'
+           ],
+           'FROM'      => 'glpi_reservations',
+           'LEFT JOIN' => [
+              'glpi_reservationitems' => [
+                 'ON' => [
+                    'glpi_reservationitems' => 'id',
+                    'glpi_reservations'     => 'reservationitems_id'
+                 ]
+              ],
+              'glpi_entities' => [
+                 'ON' => [
+                    'glpi_reservationitems' => 'entities_id',
+                    'glpi_entities'         => 'id'
+                 ]
+              ]
+           ],
+           'WHERE'     => [
+              'end'       => ['>', $now],
+              'users_id'  => $ID
+           ],
+           'ORDERBY'   => 'begin'
         ]);
 
         $ri = new ReservationItem();
         echo "<table class='tab_cadre_fixehov' aria-label='Current and future reservations'>";
         echo "<tr><th colspan='6'>" . __('Current and future reservations') . "</th></tr>\n";
 
-        if (count($results) == 0) {
+        if (count($iterator) == 0) {
             echo "<tr class='tab_bg_2'>";
             echo "<td class='center' colspan='6'>" . __('No reservation') . "</td></tr\n>";
         } else {
@@ -1434,8 +1322,7 @@ class Reservation extends CommonDBChild
             echo "<th>" . __('By') . "</th>";
             echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
-            // while ($data = $iterator->next()) {
-            foreach ($results as $data) {
+            while ($data = $iterator->next()) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                 echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
@@ -1469,57 +1356,44 @@ class Reservation extends CommonDBChild
         echo "</table></div>\n";
 
         // Print old reservations
-        // $iterator = $DB->request([
-        //    'SELECT'    => [
-        //       'begin',
-        //       'end',
-        //       'items_id',
-        //       'glpi_reservationitems.entities_id',
-        //       'users_id',
-        //       'glpi_reservations.comment',
-        //       'reservationitems_id',
-        //       'completename'
-        //    ],
-        //    'FROM'      => 'glpi_reservations',
-        //    'LEFT JOIN' => [
-        //       'glpi_reservationitems' => [
-        //          'ON' => [
-        //             'glpi_reservationitems' => 'id',
-        //             'glpi_reservations'     => 'reservationitems_id'
-        //          ]
-        //       ],
-        //       'glpi_entities'         => [
-        //          'ON' => [
-        //             'glpi_reservationitems' => 'entities_id',
-        //             'glpi_entities'         => 'id'
-        //          ]
-        //       ]
-        //    ],
-        //    'WHERE'     => [
-        //       'end'       => ['<=', $now],
-        //       'users_id'  => $ID
-        //    ],
-        //    'ORDERBY'   => 'begin DESC'
-        // ]);
-        $dql = "SELECT r.begin, r.end, r.itemsId, r.usersId, r.comment, 
-               ri.id AS reservationitemsId, ri.completename, e.id AS entitiesId
-        FROM Itsmng\\Domain\\Entities\\Reservation r
-        LEFT JOIN r.reservationItem ri
-        LEFT JOIN ri.entity e
-        WHERE r.end <= :now
-        AND r.usersId = :user_id
-        ORDER BY r.begin DESC";
-
-        $results = self::getAdapter()->request($dql, [
-            'now'     => $now,
-            'user_id' => $ID
+        $iterator = $DB->request([
+           'SELECT'    => [
+              'begin',
+              'end',
+              'items_id',
+              'glpi_reservationitems.entities_id',
+              'users_id',
+              'glpi_reservations.comment',
+              'reservationitems_id',
+              'completename'
+           ],
+           'FROM'      => 'glpi_reservations',
+           'LEFT JOIN' => [
+              'glpi_reservationitems' => [
+                 'ON' => [
+                    'glpi_reservationitems' => 'id',
+                    'glpi_reservations'     => 'reservationitems_id'
+                 ]
+              ],
+              'glpi_entities'         => [
+                 'ON' => [
+                    'glpi_reservationitems' => 'entities_id',
+                    'glpi_entities'         => 'id'
+                 ]
+              ]
+           ],
+           'WHERE'     => [
+              'end'       => ['<=', $now],
+              'users_id'  => $ID
+           ],
+           'ORDERBY'   => 'begin DESC'
         ]);
 
         echo "<div class='spaced'>";
         echo "<table class='tab_cadre_fixehov' aria-label='Past Reservations'>";
         echo "<tr><th colspan='6'>" . __('Past reservations') . "</th></tr>\n";
 
-        if (count($results) == 0) {
+        if (count($iterator) == 0) {
             echo "<tr class='tab_bg_2'>";
             echo "<td class='center' colspan='6'>" . __('No reservation') . "</td></tr>\n";
         } else {
@@ -1530,8 +1404,7 @@ class Reservation extends CommonDBChild
             echo "<th>" . __('By') . "</th>";
             echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
-            // while ($data = $iterator->next()) {
-            foreach ($results as $data) {
+            while ($data = $iterator->next()) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                 echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";

@@ -36,1835 +36,202 @@ if (!defined('GLPI_ROOT')) {
 }
 
 /**
- *  Contract class
- */
-class Contract extends CommonDBTM
+ * Computer_Item Class
+ *
+ * Relation between Computer and Items (monitor, printer, phone, peripheral only)
+**/
+class Computer_Item extends CommonDBRelation
 {
-    use Glpi\Features\Clonable;
+    // From CommonDBRelation
+    public static $itemtype_1          = 'Computer';
+    public static $items_id_1          = 'computers_id';
 
-    // From CommonDBTM
-    public $dohistory                   = true;
-    protected static $forward_entity_to = ['ContractCost'];
+    public static $itemtype_2          = 'itemtype';
+    public static $items_id_2          = 'items_id';
+    public static $checkItem_2_Rights  = self::HAVE_VIEW_RIGHT_ON_ITEM;
 
-    public static $rightname                   = 'contract';
-    protected $usenotepad               = true;
 
-    public const RENEWAL_NEVER = 0;
-    public const RENEWAL_TACIT = 1;
-    public const RENEWAL_EXPRESS = 2;
-
-    public function getCloneRelations(): array
+    public function getForbiddenStandardMassiveAction()
     {
-        return [
-           Contract_Item::class,
-           Contract_Supplier::class,
-           ContractCost::class,
-        ];
+
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'update';
+        return $forbidden;
     }
 
 
-
-    public static function getTypeName($nb = 0)
+    /**
+     * Count connection for a Computer and an itemtype
+     *
+     * @since 0.84
+     *
+     * @param $comp   Computer object
+     * @param $item   CommonDBTM object
+     *
+     * @return integer: count
+    **/
+    public static function countForAll(Computer $comp, CommonDBTM $item)
     {
-        return _n('Contract', 'Contracts', $nb);
-    }
 
-
-    public function post_getEmpty()
-    {
-
-        $this->fields["alert"] = Entity::getUsedConfig(
-            "use_contracts_alert",
-            $this->fields["entities_id"] ?? Session::getActiveEntity(),
-            "default_contract_alert",
-            0
+        return countElementsInTable(
+            'glpi_computers_items',
+            ['computers_id' => $comp->getField('id'),
+                                     'itemtype'     => $item->getType(),
+                                     'items_id'     => $item->getField('id')]
         );
-        $this->fields["notice"] = 0;
+    }
+
+
+    public function prepareInputForAdd($input)
+    {
+        global $CFG_GLPI;
+
+        $item = static::getItemFromArray(static::$itemtype_2, static::$items_id_2, $input);
+        if (
+            !($item instanceof CommonDBTM)
+            || (($item->getField('is_global') == 0)
+                && ($this->countForItem($item) > 0))
+        ) {
+            return false;
+        }
+
+        $comp = static::getItemFromArray(static::$itemtype_1, static::$items_id_1, $input);
+        if (
+            !($comp instanceof Computer)
+            || (self::countForAll($comp, $item) > 0)
+        ) {
+            // no duplicates
+            return false;
+        }
+
+        if (!$item->getField('is_global')) {
+            // Autoupdate some fields - should be in post_addItem (here to avoid more DB access)
+            $updates = [];
+
+            if (
+                $CFG_GLPI["is_location_autoupdate"]
+                && ($comp->fields['locations_id'] != $item->getField('locations_id'))
+            ) {
+                $updates['locations_id'] = addslashes($comp->fields['locations_id']);
+                Session::addMessageAfterRedirect(
+                    __('Location updated. The connected items have been moved in the same location.'),
+                    true
+                );
+            }
+            if (
+                ($CFG_GLPI["is_user_autoupdate"]
+                 && ($comp->fields['users_id'] != $item->getField('users_id')))
+                || ($CFG_GLPI["is_group_autoupdate"]
+                    && ($comp->fields['groups_id'] != $item->getField('groups_id')))
+            ) {
+                if ($CFG_GLPI["is_user_autoupdate"]) {
+                    $updates['users_id'] = $comp->fields['users_id'];
+                }
+                if ($CFG_GLPI["is_group_autoupdate"]) {
+                    $updates['groups_id'] = $comp->fields['groups_id'];
+                }
+                Session::addMessageAfterRedirect(
+                    __('User or group updated. The connected items have been moved in the same values.'),
+                    true
+                );
+            }
+
+            if (
+                $CFG_GLPI["is_contact_autoupdate"]
+                && (($comp->fields['contact'] != $item->getField('contact'))
+                    || ($comp->fields['contact_num'] != $item->getField('contact_num')))
+            ) {
+                $updates['contact']     = addslashes($comp->fields['contact']);
+                $updates['contact_num'] = addslashes($comp->fields['contact_num']);
+                Session::addMessageAfterRedirect(
+                    __('Alternate username updated. The connected items have been updated using this alternate username.'),
+                    true
+                );
+            }
+
+            if (
+                ($CFG_GLPI["state_autoupdate_mode"] < 0)
+                && ($comp->fields['states_id'] != $item->getField('states_id'))
+            ) {
+                $updates['states_id'] = $comp->fields['states_id'];
+                Session::addMessageAfterRedirect(
+                    __('Status updated. The connected items have been updated using this status.'),
+                    true
+                );
+            }
+
+            if (
+                ($CFG_GLPI["state_autoupdate_mode"] > 0)
+                && ($item->getField('states_id') != $CFG_GLPI["state_autoupdate_mode"])
+            ) {
+                $updates['states_id'] = $CFG_GLPI["state_autoupdate_mode"];
+            }
+
+            if (count($updates)) {
+                $updates['id'] = $input['items_id'];
+                $history = true;
+                if (isset($input['_no_history']) && $input['_no_history']) {
+                    $history = false;
+                }
+                $item->update($updates, $history);
+            }
+        }
+        return parent::prepareInputForAdd($input);
     }
 
 
     public function cleanDBonPurge()
     {
-
-        $this->deleteChildrenAndRelationsFromDb(
-            [
-              Contract_Item::class,
-              Contract_Supplier::class,
-              ContractCost::class,
-            ]
-        );
-
-        // Alert does not extends CommonDBConnexity
-        $alert = new Alert();
-        $alert->cleanDBonItemDelete($this->getType(), $this->fields['id']);
-    }
-
-
-    public function defineTabs($options = [])
-    {
-
-        $ong = [];
-        $this->addDefaultFormTab($ong);
-        $this->addImpactTab($ong, $options);
-        $this->addStandardTab('ContractCost', $ong, $options);
-        $this->addStandardTab('Contract_Supplier', $ong, $options);
-        $this->addStandardTab('Contract_Item', $ong, $options);
-        $this->addStandardTab('Document_Item', $ong, $options);
-        $this->addStandardTab('Link', $ong, $options);
-        $this->addStandardTab('Notepad', $ong, $options);
-        $this->addStandardTab('KnowbaseItem_Item', $ong, $options);
-        $this->addStandardTab('Log', $ong, $options);
-
-        return $ong;
-    }
-
-    /**
-     * Duplicate all contracts from a item template to his clone
-     *
-     * @deprecated 9.5
-     * @since 9.2
-     *
-     * @param string $itemtype      itemtype of the item
-     * @param integer $oldid        ID of the item to clone
-     * @param integer $newid        ID of the item cloned
-     **/
-    public static function cloneItem($itemtype, $oldid, $newid)
-    {
-        global $DB;
-
-        Toolbox::deprecated('Use clone');
-        //   $result = $DB->request(
-        //       [
-        //         'FROM'   => Contract_Item::getTable(),
-        //         'WHERE'  => [
-        //            'items_id' => $oldid,
-        //            'itemtype' => $itemtype,
-        //         ],
-        //       ]
-        //   );
-        $dql = "SELECT c
-         FROM Itsmng\\Domain\\Entities\\ContractItem c
-         WHERE c.items_id = :oldid
-         AND c.itemtype = :itemtype";
-
-        $result = self::getAdapter()->request($dql, [
-           'oldid' => $oldid,
-           'itemtype' => $itemtype,
-        ]);
-        foreach ($result as $data) {
-            $cd = new Contract_Item();
-            unset($data['id']);
-            $data['items_id'] = $newid;
-            $data = self::checkTemplateEntity($data, $data['items_id'], $data['itemtype']);
-            $data             = Toolbox::addslashes_deep($data);
-
-            $cd->add($data);
-        }
-    }
-
-
-    public function pre_updateInDB()
-    {
-
-        // Clean end alert if begin_date is after old one
-        // Or if duration is greater than old one
-        if (
-            (isset($this->oldvalues['begin_date'])
-             && ($this->oldvalues['begin_date'] < $this->fields['begin_date']))
-            || (isset($this->oldvalues['duration'])
-                && ($this->oldvalues['duration'] < $this->fields['duration']))
-        ) {
-            $alert = new Alert();
-            $alert->clear($this->getType(), $this->fields['id'], Alert::END);
-        }
-
-        // Clean notice alert if begin_date is after old one
-        // Or if duration is greater than old one
-        // Or if notice is lesser than old one
-        if (
-            (isset($this->oldvalues['begin_date'])
-             && ($this->oldvalues['begin_date'] < $this->fields['begin_date']))
-            || (isset($this->oldvalues['duration'])
-                && ($this->oldvalues['duration'] < $this->fields['duration']))
-            || (isset($this->oldvalues['notice'])
-                && ($this->oldvalues['notice'] > $this->fields['notice']))
-        ) {
-            $alert = new Alert();
-            $alert->clear($this->getType(), $this->fields['id'], Alert::NOTICE);
-        }
-    }
-
-
-    /**
-     * Print the contract form
-     *
-     * @param $ID        integer ID of the item
-     * @param $options   array
-     *     - target filename : where to go when done.
-     *     - withtemplate boolean : template or basic item
-     *
-     *@return boolean item found
-    **/
-    public function showForm($ID, $options = [])
-    {
-
-        $form = [
-           'action' => $this->getFormURL(),
-           'itemtype' => $this::class,
-           'content' => [
-              __('Add a contract') => [
-                 'visible' => true,
-                 'inputs' => [
-                    $this->isNewID($ID) ? [] : [
-                       'type' => 'hidden',
-                       'name' => 'id',
-                       'value' => $ID
-                    ],
-                    __('Name') => [
-                       'type' => 'text',
-                       'name' => 'name',
-                       'value' => $this->fields['name'],
-                    ],
-                    ContractType::getTypeName(1) => [
-                       'type' => 'select',
-                       'name' => 'contracttypes_id',
-                       'values' => getOptionForItems('ContractType'),
-                       'value' => $this->fields['contracttypes_id'],
-                       'actions' => getItemActionButtons(['info', 'add'], "contracttype"),
-                    ],
-                    _x('phone', 'Number') => [
-                       'type' => 'text',
-                       'name' => 'num',
-                       'value' => $this->fields['num'],
-                    ],
-                    __('Status') => [
-                       'type' => 'select',
-                       'name' => 'states_id',
-                       'itemtype' => State::class,
-                       'conditions' => ['is_visible_contract' => 1],
-                       'value' => $this->fields['states_id'],
-                    ],
-                    __('Start date') => [
-                       'type' => 'date',
-                       'name' => 'begin_date',
-                       'value' => $this->fields['begin_date'],
-                    ],
-                    __('Initial contract period') => [
-                       'type' => 'number',
-                       'name' => 'duration',
-                       'min' => 0,
-                       'max' => 120,
-                       'step' => 1,
-                       'after' => __('month') . !empty($this->fields["begin_date"] ? (' -> ' . Infocom::getWarrantyExpir(
-                           $this->fields["begin_date"],
-                           $this->fields["duration"],
-                           0,
-                           true,
-                           $this->fields['renewal'] == self::RENEWAL_TACIT
-                       )) : ''),
-                       'value' => $this->fields['duration'],
-                    ],
-                    __('Notice') => [
-                       'type' => 'number',
-                       'name' => 'notice',
-                       'min' => 0,
-                       'max' => 120,
-                       'step' => 1,
-                       'after' => __('month') . !empty($this->fields["begin_date"] ? (' -> ' . Infocom::getWarrantyExpir(
-                           $this->fields["begin_date"],
-                           $this->fields["duration"],
-                           $this->fields["notice"],
-                           true,
-                           $this->fields['renewal'] == self::RENEWAL_TACIT
-                       )) : ''),
-                       'value' => $this->fields['notice'],
-                    ],
-                    __('Account number') => [
-                       'type' => 'text',
-                       'name' => 'accounting_number',
-                       'value' => $this->fields['accounting_number'],
-                    ],
-                    __('Contract renewal period') => [
-                       'type' => 'number',
-                       'name' => 'periodicity',
-                       'min' => 1,
-                       'max' => 60,
-                       'step' => 1,
-                       'after' => __('month'),
-                       'value' => $this->fields['periodicity'],
-                    ],
-                    __('Invoice period') => [
-                       'type' => 'number',
-                       'name' => 'billing',
-                       'min' => 1,
-                       'max' => 60,
-                       'step' => 1,
-                       'after' => __('month'),
-                       'value' => $this->fields['billing'],
-                    ],
-                    __('Renewal') => [
-                       'type' => 'select',
-                       'name' => 'renewal',
-                       'values' => [
-                          self::RENEWAL_NEVER => __('Never'),
-                          self::RENEWAL_TACIT => __('Tacit'),
-                          self::RENEWAL_EXPRESS => __('Express'),
-                       ],
-                       'value' => $this->fields['renewal'],
-                    ],
-                    __('Max number of items') => [
-                       'type' => 'number',
-                       'name' => 'max_links_allowed',
-                       'min' => 1,
-                       'max' => 200000,
-                       'step' => 1,
-                       'AFTER' => "(0:" . __('Unlimited'),
-                       'value' => $this->fields['max_links_allowed'],
-                    ],
-                    __('Email alarms') => (Entity::getUsedConfig("use_contracts_alert", $this->fields["entities_id"])) ?
-                       [
-                          'type' => 'select',
-                          'name' => 'alert',
-                          'values' => [
-                             Alert::END => __('End'),
-                             Alert::NOTICE => __('Notice'),
-                          ],
-                          'value' => $this->fields['alert'],
-                       ] : [],
-                    __('Comments') => [
-                       'type' => 'textarea',
-                       'name' => 'comment',
-                       'value' => $this->fields['comment'],
-                    ],
-                 ]
-              ],
-              __('Support hours') => [
-               'visible' => true,
-               'inputs' => [
-                  __('on week start') => [
-                       'type' => 'time',
-                       'name' => 'week_begin_hour',
-                       'value' => $this->fields['week_begin_hour'],
-                       'col_lg' => 6,
-                  ],
-                  __('on week end') => [
-                       'type' => 'time',
-                       'name' => 'week_end_hour',
-                       'value' => $this->fields['week_end_hour'],
-                       'col_lg' => 6,
-                  ],
-                  __('on Saturday') => [
-                       'type' => 'checkbox',
-                       'name' => 'use_saturday',
-                       'value' => $this->fields['use_saturday'],
-                  ],
-                  __('on Saturday start') => [
-                       'type' => 'time',
-                       'name' => 'saturday_begin_hour',
-                       'value' => $this->fields['saturday_begin_hour'],
-                  ],
-                  __('on Saturday end') => [
-                       'type' => 'time',
-                       'name' => 'saturday_end_hour',
-                       'value' => $this->fields['saturday_end_hour'],
-                  ],
-                  __('Sundays and holidays') => [
-                       'type' => 'checkbox',
-                       'name' => 'use_monday',
-                       'value' => $this->fields['use_monday'],
-                  ],
-                  __('on Sunday start') => [
-                       'type' => 'time',
-                       'name' => 'monday_begin_hour',
-                       'value' => $this->fields['monday_begin_hour'],
-                  ],
-                  __('on Sunday end') => [
-                       'type' => 'time',
-                       'name' => 'monday_end_hour',
-                       'value' => $this->fields['monday_end_hour'],
-                  ],
-               ]
-              ]
-           ]
-        ];
-        renderTwigForm($form, '', $this->fields);
-
-        return true;
-    }
-
-
-    public static function rawSearchOptionsToAdd()
-    {
-        global $DB;
-
-        $tab = [];
-
-        $joinparams = [
-           'beforejoin' => [
-              'table'      => 'glpi_contracts_items',
-              'joinparams' => [
-                 'jointype' => 'itemtype_item'
-              ]
-           ]
-        ];
-
-        $joinparamscost = [
-           'jointype'   => 'child',
-           'beforejoin' => [
-              'table'      => 'glpi_contracts',
-              'joinparams' => $joinparams
-           ]
-        ];
-
-        $tab[] = [
-           'id'                 => 'contract',
-           'name'               => self::getTypeName(Session::getPluralNumber())
-        ];
-
-        $tab[] = [
-           'id'                 => '139',
-           'table'              => 'glpi_contracts_items',
-           'field'              => 'id',
-           'name'               => _x('quantity', 'Number of contracts'),
-           'forcegroupby'       => true,
-           'usehaving'          => true,
-           'datatype'           => 'count',
-           'massiveaction'      => false,
-           'joinparams'         => [
-              'jointype'           => 'itemtype_item'
-           ]
-        ];
-
-        $tab[] = [
-           'id'                 => '29',
-           'table'              => 'glpi_contracts',
-           'field'              => 'name',
-           'name'               => __('Name'),
-           'forcegroupby'       => true,
-           'datatype'           => 'itemlink',
-           'massiveaction'      => false,
-           'joinparams'         => $joinparams
-        ];
-
-        $tab[] = [
-           'id'                 => '30',
-           'table'              => 'glpi_contracts',
-           'field'              => 'num',
-           'name'               => __('Number'),
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => $joinparams,
-           'datatype'           => 'string'
-        ];
-
-        $tab[] = [
-           'id'                 => '129',
-           'table'              => 'glpi_contracttypes',
-           'field'              => 'name',
-           'name'               => _n('Type', 'Types', 1),
-           'datatype'           => 'dropdown',
-           'massiveaction'      => false,
-           'joinparams'         => [
-              'beforejoin'         => [
-                 'table'              => 'glpi_contracts',
-                 'joinparams'         => $joinparams
-              ]
-           ]
-        ];
-
-        $tab[] = [
-           'id'                 => '130',
-           'table'              => 'glpi_contracts',
-           'field'              => 'duration',
-           'name'               => __('Duration'),
-           'datatype'           => 'number',
-           'max'                => '120',
-           'unit'               => 'month',
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => $joinparams
-        ];
-
-        $tab[] = [
-           'id'                 => '131',
-           'table'              => 'glpi_contracts',
-           'field'              => 'periodicity',
-                                   //TRANS: %1$s is Contract, %2$s is field name
-           'name'               => __('Periodicity'),
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => $joinparams,
-           'datatype'           => 'number',
-           'min'                => '12',
-           'max'                => '60',
-           'step'               => '12',
-           'toadd'              => [
-              0 => Dropdown::EMPTY_VALUE,
-              1 => sprintf(_n('%d month', '%d months', 1), 1),
-              2 => sprintf(_n('%d month', '%d months', 2), 2),
-              3 => sprintf(_n('%d month', '%d months', 3), 3),
-              6 => sprintf(_n('%d month', '%d months', 6), 6)
-           ],
-           'unit'               => 'month'
-        ];
-
-        $tab[] = [
-           'id'                 => '132',
-           'table'              => 'glpi_contracts',
-           'field'              => 'begin_date',
-           'name'               => __('Start date'),
-           'forcegroupby'       => true,
-           'datatype'           => 'date',
-           'maybefuture'        => true,
-           'massiveaction'      => false,
-           'joinparams'         => $joinparams
-        ];
-
-        $tab[] = [
-           'id'                 => '133',
-           'table'              => 'glpi_contracts',
-           'field'              => 'accounting_number',
-           'name'               => __('Account number'),
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'datatype'           => 'string',
-           'joinparams'         => $joinparams,
-           'autocomplete'       => true,
-        ];
-
-        $tab[] = [
-           'id'                 => '134',
-           'table'              => 'glpi_contracts',
-           'field'              => 'end_date',
-           'name'               => __('End date'),
-           'forcegroupby'       => true,
-           'datatype'           => 'date_delay',
-           'maybefuture'        => true,
-           'datafields'         => [
-              '1'                  => 'begin_date',
-              '2'                  => 'duration'
-           ],
-           'searchunit'         => 'MONTH',
-           'delayunit'          => 'MONTH',
-           'massiveaction'      => false,
-           'joinparams'         => $joinparams
-        ];
-
-        $tab[] = [
-           'id'                 => '135',
-           'table'              => 'glpi_contracts',
-           'field'              => 'notice',
-           'name'               => __('Notice'),
-           'datatype'           => 'number',
-           'max'                => '120',
-           'unit'               => 'month',
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => $joinparams
-        ];
-
-        $tab[] = [
-           'id'                 => '136',
-           'table'              => 'glpi_contractcosts',
-           'field'              => 'totalcost',
-           'name'               => _n('Cost', 'Costs', 1),
-           'forcegroupby'       => true,
-           'usehaving'          => true,
-           'datatype'           => 'decimal',
-           'massiveaction'      => false,
-           'joinparams'         => $joinparamscost,
-           'computation'        =>
-              '(SUM(' . $DB->quoteName('TABLE.cost') . ') / COUNT(' .
-              $DB->quoteName('TABLE.id') . ')) * COUNT(DISTINCT ' .
-              $DB->quoteName('TABLE.id') . ')',
-           'nometa'             => true, // cannot GROUP_CONCAT a SUM
-        ];
-
-        $tab[] = [
-           'id'                 => '137',
-           'table'              => 'glpi_contracts',
-           'field'              => 'billing',
-           'name'               => __('Invoice period'),
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => $joinparams,
-           'datatype'           => 'number',
-           'min'                => '12',
-           'max'                => '60',
-           'step'               => '12',
-           'toadd'              => [
-              0 => Dropdown::EMPTY_VALUE,
-              1 => sprintf(_n('%d month', '%d months', 1), 1),
-              2 => sprintf(_n('%d month', '%d months', 2), 2),
-              3 => sprintf(_n('%d month', '%d months', 3), 3),
-              6 => sprintf(_n('%d month', '%d months', 6), 6)
-           ],
-           'unit'               => 'month'
-        ];
-
-        $tab[] = [
-           'id'                 => '138',
-           'table'              => 'glpi_contracts',
-           'field'              => 'renewal',
-           'name'               => __('Renewal'),
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => $joinparams,
-           'datatype'           => 'specific'
-        ];
-
-        return $tab;
-    }
-
-
-    public function getSpecificMassiveActions($checkitem = null)
-    {
-
-        $isadmin = static::canUpdate();
-        $actions = parent::getSpecificMassiveActions($checkitem);
-
-        if ($isadmin) {
-            $prefix                    = 'Contract_Item' . MassiveAction::CLASS_ACTION_SEPARATOR;
-            $actions[$prefix . 'add']    = _x('button', 'Add an item');
-            $actions[$prefix . 'remove'] = _x('button', 'Remove an item');
-        }
-
-        return $actions;
-    }
-
-
-    public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
-    {
-
-        if (!is_array($values)) {
-            $values = [$field => $values];
-        }
-        $options['display'] = false;
-        switch ($field) {
-            case 'alert':
-                $options['name']  = $name;
-                $options['value'] = $values[$field];
-                return self::dropdownAlert($options);
-
-            case 'renewal':
-                $options['name']  = $name;
-                return self::dropdownContractRenewal($name, $values[$field], false);
-        }
-        return parent::getSpecificValueToSelect($field, $name, $values, $options);
-    }
-
-
-    public static function getSpecificValueToDisplay($field, $values, array $options = [])
-    {
-
-        if (!is_array($values)) {
-            $values = [$field => $values];
-        }
-        switch ($field) {
-            case 'alert':
-                return self::getAlertName($values[$field]);
-
-            case 'renewal':
-                return self::getContractRenewalName($values[$field]);
-        }
-        return parent::getSpecificValueToDisplay($field, $values, $options);
-    }
-
-
-    public function rawSearchOptions()
-    {
-        global $DB;
-
-        $tab = [];
-
-        $tab[] = [
-           'id'                 => 'common',
-           'name'               => __('Characteristics')
-        ];
-
-        $tab[] = [
-           'id'                 => '1',
-           'table'              => $this->getTable(),
-           'field'              => 'name',
-           'name'               => __('Name'),
-           'datatype'           => 'itemlink',
-           'massiveaction'      => false,
-           'autocomplete'       => true,
-        ];
-
-        $tab[] = [
-           'id'                 => '2',
-           'table'              => $this->getTable(),
-           'field'              => 'id',
-           'name'               => __('ID'),
-           'massiveaction'      => false,
-           'datatype'           => 'number'
-        ];
-
-        $tab[] = [
-           'id'                 => '3',
-           'table'              => $this->getTable(),
-           'field'              => 'num',
-           'name'               => _x('phone', 'Number'),
-           'datatype'           => 'string',
-           'autocomplete'       => true,
-        ];
-
-        $tab[] = [
-           'id'                 => '31',
-           'table'              => 'glpi_states',
-           'field'              => 'completename',
-           'name'               => __('Status'),
-           'datatype'           => 'dropdown',
-           'condition'          => ['is_visible_contract' => 1]
-        ];
-
-        $tab[] = [
-           'id'                 => '4',
-           'table'              => 'glpi_contracttypes',
-           'field'              => 'name',
-           'name'               => _n('Type', 'Types', 1),
-           'datatype'           => 'dropdown'
-        ];
-
-        $tab[] = [
-           'id'                 => '5',
-           'table'              => $this->getTable(),
-           'field'              => 'begin_date',
-           'name'               => __('Start date'),
-           'datatype'           => 'date',
-           'maybefuture'        => true
-        ];
-
-        $tab[] = [
-           'id'                 => '6',
-           'table'              => $this->getTable(),
-           'field'              => 'duration',
-           'name'               => __('Duration'),
-           'datatype'           => 'number',
-           'max'                => 120,
-           'unit'               => 'month'
-        ];
-
-        $tab[] = [
-           'id'                 => '19',
-           'table'              => $this->getTable(),
-           'field'              => 'date_mod',
-           'name'               => __('Last update'),
-           'datatype'           => 'datetime',
-           'massiveaction'      => false
-        ];
-
-        $tab[] = [
-           'id'                 => '121',
-           'table'              => $this->getTable(),
-           'field'              => 'date_creation',
-           'name'               => __('Creation date'),
-           'datatype'           => 'datetime',
-           'massiveaction'      => false
-        ];
-
-        $tab[] = [
-           'id'                 => '20',
-           'table'              => $this->getTable(),
-           'field'              => 'end_date',
-           'name'               => __('End date'),
-           'datatype'           => 'date_delay',
-           'datafields'         => [
-              '1'                  => 'begin_date',
-              '2'                  => 'duration'
-           ],
-           'searchunit'         => 'MONTH',
-           'delayunit'          => 'MONTH',
-           'maybefuture'        => true,
-           'massiveaction'      => false
-        ];
-
-        $tab[] = [
-           'id'                 => '7',
-           'table'              => $this->getTable(),
-           'field'              => 'notice',
-           'name'               => __('Notice'),
-           'datatype'           => 'number',
-           'max'                => 120,
-           'unit'               => 'month'
-        ];
-
-        $tab[] = [
-           'id'                 => '21',
-           'table'              => $this->getTable(),
-           'field'              => 'periodicity',
-           'name'               => __('Periodicity'),
-           'massiveaction'      => false,
-           'datatype'           => 'number',
-           'min'                => 12,
-           'max'                => 60,
-           'step'               => 12,
-           'toadd'              => [
-              0 => Dropdown::EMPTY_VALUE,
-              1 => sprintf(_n('%d month', '%d months', 1), 1),
-              2 => sprintf(_n('%d month', '%d months', 2), 2),
-              3 => sprintf(_n('%d month', '%d months', 3), 3),
-              6 => sprintf(_n('%d month', '%d months', 6), 6)
-           ],
-           'unit'               => 'month'
-        ];
-
-        $tab[] = [
-           'id'                 => '22',
-           'table'              => $this->getTable(),
-           'field'              => 'billing',
-           'name'               => __('Invoice period'),
-           'massiveaction'      => false,
-           'datatype'           => 'number',
-           'min'                => 12,
-           'max'                => 60,
-           'step'               => 12,
-           'toadd'              => [
-              0 => Dropdown::EMPTY_VALUE,
-              1 => sprintf(_n('%d month', '%d months', 1), 1),
-              2 => sprintf(_n('%d month', '%d months', 2), 2),
-              3 => sprintf(_n('%d month', '%d months', 3), 3),
-              6 => sprintf(_n('%d month', '%d months', 6), 6)
-           ],
-           'unit'               => 'month'
-        ];
-
-        $tab[] = [
-           'id'                 => '10',
-           'table'              => $this->getTable(),
-           'field'              => 'accounting_number',
-           'name'               => __('Account number'),
-           'datatype'           => 'string'
-        ];
-
-        $tab[] = [
-           'id'                 => '23',
-           'table'              => $this->getTable(),
-           'field'              => 'renewal',
-           'name'               => __('Renewal'),
-           'massiveaction'      => false,
-           'datatype'           => 'specific',
-           'searchtype'         => ['equals', 'notequals']
-        ];
-
-        $tab[] = [
-           'id'                 => '12',
-           'table'              => $this->getTable(),
-           'field'              => 'expire',
-           'name'               => __('Expiration'),
-           'datatype'           => 'date_delay',
-           'datafields'         => [
-              '1'                  => 'begin_date',
-              '2'                  => 'duration'
-           ],
-           'searchunit'         => 'DAY',
-           'delayunit'          => 'MONTH',
-           'maybefuture'        => true,
-           'massiveaction'      => false
-        ];
-
-        $tab[] = [
-           'id'                 => '13',
-           'table'              => $this->getTable(),
-           'field'              => 'expire_notice',
-           'name'               => __('Expiration date + notice'),
-           'datatype'           => 'date_delay',
-           'datafields'         => [
-              '1'                  => 'begin_date',
-              '2'                  => 'duration',
-              '3'                  => 'notice'
-           ],
-           'searchunit'         => 'DAY',
-           'delayunit'          => 'MONTH',
-           'maybefuture'        => true,
-           'massiveaction'      => false
-        ];
-
-        $tab[] = [
-           'id'                 => '16',
-           'table'              => $this->getTable(),
-           'field'              => 'comment',
-           'name'               => __('Comments'),
-           'datatype'           => 'text'
-        ];
-
-        $tab[] = [
-           'id'                 => '80',
-           'table'              => 'glpi_entities',
-           'field'              => 'completename',
-           'name'               => Entity::getTypeName(1),
-           'massiveaction'      => false,
-           'datatype'           => 'dropdown'
-        ];
-
-        $tab[] = [
-           'id'                 => '59',
-           'table'              => $this->getTable(),
-           'field'              => 'alert',
-           'name'               => __('Email alarms'),
-           'datatype'           => 'specific',
-           'searchtype'         => ['equals', 'notequals']
-        ];
-
-        $tab[] = [
-           'id'                 => '86',
-           'table'              => $this->getTable(),
-           'field'              => 'is_recursive',
-           'name'               => __('Child entities'),
-           'datatype'           => 'bool'
-        ];
-
-        $tab[] = [
-           'id'                 => '72',
-           'table'              => 'glpi_contracts_items',
-           'field'              => 'id',
-           'name'               => _x('quantity', 'Number of items'),
-           'forcegroupby'       => true,
-           'usehaving'          => true,
-           'datatype'           => 'count',
-           'massiveaction'      => false,
-           'joinparams'         => [
-              'jointype'           => 'child'
-           ]
-        ];
-
-        $tab[] = [
-           'id'                 => '29',
-           'table'              => 'glpi_suppliers',
-           'field'              => 'name',
-           'name'               => _n(
-               'Associated supplier',
-               'Associated suppliers',
-               Session::getPluralNumber()
-           ),
-           'forcegroupby'       => true,
-           'datatype'           => 'itemlink',
-           'massiveaction'      => false,
-           'joinparams'         => [
-              'beforejoin'         => [
-                 'table'              => 'glpi_contracts_suppliers',
-                 'joinparams'         => [
-                    'jointype'           => 'child'
-                 ]
-              ]
-           ]
-        ];
-
-        $tab[] = [
-           'id'                 => '50',
-           'table'              => $this->getTable(),
-           'field'              => 'template_name',
-           'name'               => __('Template name'),
-           'datatype'           => 'text',
-           'massiveaction'      => false,
-           'nosearch'           => true,
-           'nodisplay'          => true,
-           'autocomplete'       => true,
-        ];
-
-        // add objectlock search options
-        $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
-
-        $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());
-
-        $tab[] = [
-           'id'                 => 'cost',
-           'name'               => _n('Cost', 'Costs', 1)
-        ];
-
-        $tab[] = [
-           'id'                 => '11',
-           'table'              => 'glpi_contractcosts',
-           'field'              => 'totalcost',
-           'name'               => __('Total cost'),
-           'datatype'           => 'decimal',
-           'forcegroupby'       => true,
-           'usehaving'          => true,
-           'massiveaction'      => false,
-           'joinparams'         => [
-              'jointype'           => 'child'
-           ],
-           'computation'        =>
-              '(SUM(' . $DB->quoteName('TABLE.cost') . ') / COUNT(' .
-              $DB->quoteName('TABLE.id') . ')) * COUNT(DISTINCT ' .
-              $DB->quoteName('TABLE.id') . ')',
-           'nometa'             => true, // cannot GROUP_CONCAT a SUM
-        ];
-
-        $tab[] = [
-           'id'                 => '41',
-           'table'              => 'glpi_contractcosts',
-           'field'              => 'cost',
-           'name'               => _n('Cost', 'Costs', Session::getPluralNumber()),
-           'datatype'           => 'decimal',
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => [
-              'jointype'           => 'child'
-           ]
-        ];
-
-        $tab[] = [
-           'id'                 => '42',
-           'table'              => 'glpi_contractcosts',
-           'field'              => 'begin_date',
-           'name'               => sprintf(__('%1$s - %2$s'), _n('Cost', 'Costs', 1), __('Begin date')),
-           'datatype'           => 'date',
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => [
-              'jointype'           => 'child'
-           ]
-        ];
-
-        $tab[] = [
-           'id'                 => '43',
-           'table'              => 'glpi_contractcosts',
-           'field'              => 'end_date',
-           'name'               => sprintf(__('%1$s - %2$s'), _n('Cost', 'Costs', 1), __('End date')),
-           'datatype'           => 'date',
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => [
-              'jointype'           => 'child'
-           ]
-        ];
-
-        $tab[] = [
-           'id'                 => '44',
-           'table'              => 'glpi_contractcosts',
-           'field'              => 'name',
-           'name'               => sprintf(__('%1$s - %2$s'), _n('Cost', 'Costs', 1), __('Name')),
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => [
-              'jointype'           => 'child'
-           ],
-           'datatype'           => 'dropdown'
-        ];
-
-        $tab[] = [
-           'id'                 => '45',
-           'table'              => 'glpi_budgets',
-           'field'              => 'name',
-           'name'               => sprintf(__('%1$s - %2$s'), _n('Cost', 'Costs', 1), Budget::getTypeName(1)),
-           'datatype'           => 'dropdown',
-           'forcegroupby'       => true,
-           'massiveaction'      => false,
-           'joinparams'         => [
-              'beforejoin'         => [
-                 'table'              => 'glpi_contractcosts',
-                 'joinparams'         => [
-                    'jointype'           => 'child'
-                 ]
-              ]
-           ]
-        ];
-
-        return $tab;
-    }
-
-
-    /**
-     * Show central contract resume
-     * HTML array
-     *
-     * @return void
-     **/
-    public static function showCentral()
-    {
-        global $DB,$CFG_GLPI;
-
-        if (!Contract::canView()) {
-            return;
-        }
-
-        // No recursive contract, not in local management
-        // contrats echus depuis moins de 30j
-        $table = self::getTable();
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => $table,
-           'WHERE'  => [
-              'is_deleted'   => 0,
-              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())>-30'),
-              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())<0')
-           ] + getEntitiesRestrictCriteria($table)
-        ])->next();
-        $contract0 = $result['cpt'];
-
-        // contrats  echeance j-7
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => $table,
-           'WHERE'  => [
-              'is_deleted'   => 0,
-              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())>0'),
-              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())<=7')
-           ] + getEntitiesRestrictCriteria($table)
-        ])->next();
-        $contract7 = $result['cpt'];
-
-        // contrats echeance j -30
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => $table,
-           'WHERE'  => [
-              'is_deleted'   => 0,
-              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())>7'),
-              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())<30')
-           ] + getEntitiesRestrictCriteria($table)
-        ])->next();
-        $contract30 = $result['cpt'];
-
-        // contrats avec pr??avis echeance j-7
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => $table,
-           'WHERE'  => [
-              'is_deleted'   => 0,
-              'notice'       => ['<>', 0],
-              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL (' . $DB->quoteName("duration") . '-' . $DB->quoteName('notice') . ') MONTH),CURDATE())>0'),
-              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL (' . $DB->quoteName("duration") . '-' . $DB->quoteName('notice') . ') MONTH),CURDATE())<=7')
-           ] + getEntitiesRestrictCriteria($table)
-        ])->next();
-        $contractpre7 = $result['cpt'];
-
-        // contrats avec pr??avis echeance j -30
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
-           'FROM'   => $table,
-           'WHERE'  => [
-              'is_deleted'   => 0,
-              'notice'       => ['<>', 0],
-              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL (' . $DB->quoteName("duration") . '-' . $DB->quoteName('notice') . ') MONTH),CURDATE())>7'),
-              new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL (' . $DB->quoteName("duration") . '-' . $DB->quoteName('notice') . ') MONTH),CURDATE())<30')
-           ] + getEntitiesRestrictCriteria($table)
-        ])->next();
-        $contractpre30 = $result['cpt'];
-
-        echo "<table class='tab_cadrehov' aria-label='Contracts Table'>";
-        echo "<tr class='noHover'><th colspan='2'>";
-        echo "<p class='table-title mt-0'><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?reset=reset\">" .
-               self::getTypeName(1) . "</a></p></th></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        $options = [
-           'reset' => 'reset',
-           'sort'  => 12,
-           'order' => 'DESC',
-           'start' => 0,
-           'criteria' => [
-              [
-                 'field'      => 12,
-                 'value'      => '<0',
-                 'searchtype' => 'contains',
-              ],
-              [
-                 'field'      => 12,
-                 'link'       => 'AND',
-                 'value'      => '>-30',
-                 'searchtype' => 'contains',
-              ]
-           ]
-        ];
-        echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?" .
-                   Toolbox::append_params($options, '&amp;') . "\">" .
-                   __('Contracts expired in the last 30 days') . "</a> </td>";
-        echo "<td class='numeric'>" . $contract0 . "</td></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        $options['criteria'][0]['value'] = '>0';
-        $options['criteria'][1]['value'] = '<7';
-        echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?" .
-                   Toolbox::append_params($options, '&amp;') . "\">" .
-                   __('Contracts expiring in less than 7 days') . "</a></td>";
-        echo "<td class='numeric'>" . $contract7 . "</td></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        $options['criteria'][0]['value'] = '>6';
-        $options['criteria'][1]['value'] = '<30';
-        echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?" .
-                   Toolbox::append_params($options, '&amp;') . "\">" .
-                   __('Contracts expiring in less than 30 days') . "</a></td>";
-        echo "<td class='numeric'>" . $contract30 . "</td></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        $options['criteria'][0]['field'] = 13;
-        $options['criteria'][0]['value'] = '>0';
-        $options['criteria'][1]['field'] = 13;
-        $options['criteria'][1]['value'] = '<7';
-
-        echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?" .
-                   Toolbox::append_params($options, '&amp;') . "\">" .
-                   __('Contracts where notice begins in less than 7 days') . "</a></td>";
-        echo "<td class='numeric'>" . $contractpre7 . "</td></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        $options['criteria'][0]['value'] = '>6';
-        $options['criteria'][1]['value'] = '<30';
-        echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?" .
-                   Toolbox::append_params($options, '&amp;') . "\">" .
-                   __('Contracts where notice begins in less than 30 days') . "</a></td>";
-        echo "<td class='numeric'>" . $contractpre30 . "</td></tr>";
-        echo "</table>";
-    }
-
-
-    /**
-     * Get the entreprise name  for the contract
-     *
-     *@return string of names (HTML)
-    **/
-    public function getSuppliersNames()
-    {
-        global $DB;
-
-        //   $iterator = $DB->request([
-        //      'SELECT'       => 'glpi_suppliers.id',
-        //      'FROM'         => 'glpi_suppliers',
-        //      'INNER JOIN'   => [
-        //         'glpi_contracts_suppliers' => [
-        //            'ON' => [
-        //               'glpi_contracts_suppliers' => 'suppliers_id',
-        //               'glpi_suppliers'           => 'id'
-        //            ]
-        //         ]
-        //      ],
-        //      'WHERE'        => ['contracts_id' => $this->fields['id']]
-        //   ]);
-        $dql = "SELECT s.id
-         FROM Itsmng\\Domain\\Entities\\Supplier s
-         INNER JOIN Itsmng\\Domain\\Entities\\ContractSupplier cs
-         WITH cs.suppliers_id = s.id
-         WHERE cs.contracts_id = :contracts_id";
-
-        $results = $this->getAdapter()->request($dql, [
-           'contracts_id' => $this->fields['id']
-        ]);
-        $out    = "";
-        //   while ($data = $iterator->next()) {
-        foreach ($results as $data) {
-            $out .= Dropdown::getDropdownName("glpi_suppliers", $data['id']) . "<br>";
-        }
-        return $out;
-    }
-
-
-    public static function cronInfo($name)
-    {
-        return ['description' => __('Send alarms on contracts')];
-    }
-
-
-    /**
-     * Cron action on contracts : alert depending of the config : on notice and expire
-     *
-     * @param CronTask $task CronTask for log, if NULL display (default NULL)
-     *
-     * @return integer
-    **/
-    public static function cronContract(CronTask $task = null)
-    {
-        global $DB, $CFG_GLPI;
-
-        if (!$CFG_GLPI["use_notifications"]) {
-            return 0;
-        }
-
-        $message       = [];
-        $cron_status   = 0;
-
-        $contract_infos    = [
-           Alert::END    => [],
-           Alert::NOTICE => [],
-        ];
-        $contract_messages = [];
-
-        foreach (Entity::getEntitiesToNotify('use_contracts_alert') as $entity => $value) {
-            $before       = Entity::getUsedConfig('send_contracts_alert_before_delay', $entity);
-
-            $query_notice = [
-               'SELECT'    => [
-                  'glpi_contracts.*',
-               ],
-               'FROM'      => self::getTable(),
-               'LEFT JOIN' => [
-                  'glpi_alerts' => [
-                     'FKEY' => [
-                        'glpi_alerts'    => 'items_id',
-                        'glpi_contracts' => 'id',
-                        [
-                           'AND' => [
-                              'glpi_alerts.itemtype' => 'Contract',
-                              'glpi_alerts.type'     => Alert::NOTICE,
-                           ],
-                        ],
-                     ]
-                  ]
-               ],
-               'WHERE'     => [
-                  [
-                     'RAW' => [
-                        DBmysql::quoteName('glpi_contracts.alert') . ' & ' . pow(2, Alert::NOTICE) => ['>', 0]
-                     ]
-                  ],
-                  'glpi_alerts.date'           => null,
-                  'glpi_contracts.is_deleted'  => 0,
-                  [
-                     'NOT' => ['glpi_contracts.begin_date' => null],
-                  ],
-                  'glpi_contracts.duration'    => ['!=', 0],
-                  'glpi_contracts.notice'      => ['!=', 0],
-                  'glpi_contracts.entities_id' => $entity,
-                  [
-                     'RAW' => [
-                        'DATEDIFF(
-                         ADDDATE(
-                            ' . DBmysql::quoteName('glpi_contracts.begin_date') . ',
-                            INTERVAL ' . DBmysql::quoteName('glpi_contracts.duration') . ' MONTH
-                         ),
-                         CURDATE()
-                      )' => ['>', 0]
-                     ]
-                  ],
-                  [
-                     'RAW' => [
-                        'DATEDIFF(
-                         ADDDATE(
-                            ' . DBmysql::quoteName('glpi_contracts.begin_date') . ',
-                            INTERVAL (
-                               ' . DBmysql::quoteName('glpi_contracts.duration') . '
-                               - ' . DBmysql::quoteName('glpi_contracts.notice') . '
-                            ) MONTH
-                         ),
-                         CURDATE()
-                      )' => ['<', $before]
-                     ]
-                  ],
-               ],
-            ];
-
-            $query_end = [
-               'SELECT'    => [
-                  'glpi_contracts.*',
-               ],
-               'FROM'      => self::getTable(),
-               'LEFT JOIN' => [
-                  'glpi_alerts' => [
-                     'FKEY' => [
-                        'glpi_alerts'    => 'items_id',
-                        'glpi_contracts' => 'id',
-                        [
-                           'AND' => [
-                              'glpi_alerts.itemtype' => 'Contract',
-                              'glpi_alerts.type'     => Alert::END,
-                           ],
-                        ],
-                     ]
-                  ]
-               ],
-               'WHERE'     => [
-                  [
-                     'RAW' => [
-                        DBmysql::quoteName('glpi_contracts.alert') . ' & ' . pow(2, Alert::END) => ['>', 0]
-                     ]
-                  ],
-                  'glpi_alerts.date'           => null,
-                  'glpi_contracts.is_deleted'  => 0,
-                  [
-                     'NOT' => ['glpi_contracts.begin_date' => null],
-                  ],
-                  'glpi_contracts.duration'    => ['!=', 0],
-                  'glpi_contracts.entities_id' => $entity,
-                  [
-                     'RAW' => [
-                        'DATEDIFF(
-                         ADDDATE(
-                            ' . DBmysql::quoteName('glpi_contracts.begin_date') . ',
-                            INTERVAL ' . DBmysql::quoteName('glpi_contracts.duration') . ' MONTH
-                         ),
-                         CURDATE()
-                      )' => ['<', $before]
-                     ]
-                  ],
-               ],
-            ];
-
-            $querys = ['notice' => $query_notice,
-                            'end'    => $query_end];
-
-            foreach ($querys as $type => $query) {
-                $result = $DB->request($query);
-                foreach ($result as $data) {
-                    $entity  = $data['entities_id'];
-
-                    $message = sprintf(
-                        __('%1$s: %2$s') . "<br>\n",
-                        $data["name"],
-                        Infocom::getWarrantyExpir(
-                            $data["begin_date"],
-                            $data["duration"],
-                            $data["notice"]
-                        )
-                    );
-                    $data['items']      = Contract_Item::getItemsForContract($data['id'], $entity);
-                    $contract_infos[$type][$entity][$data['id']] = $data;
-
-                    if (!isset($contract_messages[$type][$entity])) {
-                        switch ($type) {
-                            case 'notice':
-                                $contract_messages[$type][$entity] = __('Contract entered in notice time') .
-                                                                     "<br>";
-                                break;
-
-                            case 'end':
-                                $contract_messages[$type][$entity] = __('Contract ended') . "<br>";
-                                break;
+        global $CFG_GLPI;
+
+        if (!isset($this->input['_no_auto_action'])) {
+            //Get the computer name
+            $computer = new Computer();
+            $computer->getFromDB($this->fields['computers_id']);
+
+            //Get device fields
+            if ($device = getItemForItemtype($this->fields['itemtype'])) {
+                if ($device->getFromDB($this->fields['items_id'])) {
+                    if (!$device->getField('is_global')) {
+                        $updates = [];
+                        if ($CFG_GLPI["is_location_autoclean"] && $device->isField('locations_id')) {
+                            $updates['locations_id'] = 0;
                         }
-                    }
-                    $contract_messages[$type][$entity] .= $message;
-                }
-            }
-
-            // Get contrats with periodicity alerts
-            $valPow = pow(2, Alert::PERIODICITY);
-            $query_periodicity = ['FROM' => 'glpi_contracts',
-                'WHERE' => ['alert' => ['&', $valPow],
-                    'entities_id' => $entity,
-                    'is_deleted' => 0
-                ]
-            ];
-
-            // Foreach ones :
-            foreach ($DB->request($query_periodicity) as $data) {
-                $entity = $data['entities_id'];
-
-                // For contracts with begin date and periodicity
-                if (!empty($data['begin_date']) && $data['periodicity']) {
-                    $todo = ['periodicity' => Alert::PERIODICITY];
-                    if ($data['alert'] & pow(2, Alert::NOTICE)) {
-                        $todo['periodicitynotice'] = Alert::NOTICE;
-                    }
-
-                    // For the todo...
-                    foreach ($todo as $type => $event) {
-                        /**
-                         * Previous alert
-                         */
-                        // Get previous alerts from DB
-                        $previous_alert = [
-                           $type => Alert::getAlertDate(__CLASS__, $data['id'], $event),
-                        ];
-                        // If alert never occurs...
-                        if (empty($previous_alert[$type])) {
-                            // We define it a long time ago [in a galaxy far, far away... ;-)]
-                            $previous_alert[$type] = date('Y-m-d', 0);
+                        if ($CFG_GLPI["is_user_autoclean"] && $device->isField('users_id')) {
+                            $updates['users_id'] = 0;
+                        }
+                        if ($CFG_GLPI["is_group_autoclean"] && $device->isField('groups_id')) {
+                            $updates['groups_id'] = 0;
+                        }
+                        if ($CFG_GLPI["is_contact_autoclean"] && $device->isField('contact')) {
+                            $updates['contact'] = "";
+                        }
+                        if ($CFG_GLPI["is_contact_autoclean"] && $device->isField('contact_num')) {
+                            $updates['contact_num'] = "";
+                        }
+                        if (
+                            ($CFG_GLPI["state_autoclean_mode"] < 0)
+                            && $device->isField('states_id')
+                        ) {
+                            $updates['states_id'] = 0;
                         }
 
-                        /**
-                         * Next alert
-                         */
-                        // Computation of first alert : Contract [begin date + initial duration] - Config [alert xxx days before]
-                        $initial_duration = $data['duration'] != 0 ? $data['duration'] : $data['periodicity'];
-                        $next_alert = [
-                           $type => date('Y-m-d', strtotime($data['begin_date'] . " +" . $initial_duration . " month -" . ($before) . " day")),
-                        ];
-                        // If a notice is defined
-                        if ($event == Alert::NOTICE) {
-                            // Will decrease of the Contract notice duration
-                            $next_alert[$type] = date('Y-m-d', strtotime($next_alert[$type] . " -" . ($data['notice']) . " month"));
+                        if (
+                            ($CFG_GLPI["state_autoclean_mode"] > 0)
+                            && $device->isField('states_id')
+                            && ($device->getField('states_id') != $CFG_GLPI["state_autoclean_mode"])
+                        ) {
+                            $updates['states_id'] = $CFG_GLPI["state_autoclean_mode"];
                         }
 
-                        // Computation of contract renewal
-                        while ($next_alert[$type] < $previous_alert[$type]) {
-                            // Increasing of Contract periodicity...
-                            $next_alert[$type] = date('Y-m-d', strtotime($next_alert[$type] . " +" . ($data['periodicity']) . " month"));
-                        }
-
-                        // If this date is passed : clean alerts and send again
-                        if ($next_alert[$type] <= date('Y-m-d')) {
-                            $alert = new Alert();
-                            $alert->clear(__CLASS__, $data['id'], $event);
-                            // Computation of the real date => add Config [alert xxx days before]
-                            $real_alert_date = date('Y-m-d', strtotime($next_alert[$type] . " +" . ($before) . " day"));
-                            $message = sprintf(__('%1$s: %2$s') . "<br>\n", $data["name"], Html::convDate($real_alert_date));
-                            $data['alert_date'] = $real_alert_date;
-                            $contract_infos[$type][$entity][$data['id']] = $data;
-
-                            switch ($type) {
-                                case 'periodicitynotice':
-                                    $contract_messages[$type][$entity] = __('Contract entered in notice time for period') . "<br>";
-                                    break;
-
-                                case 'periodicity':
-                                    $contract_messages[$type][$entity] = __('Contract period ended') . "<br>";
-                                    break;
-                            }
-                            $contract_messages[$type][$entity] .= $message;
+                        if (count($updates)) {
+                            $updates['id'] = $this->fields['items_id'];
+                            $device->update($updates);
                         }
                     }
                 }
             }
         }
-        foreach (
-            ['notice'            => Alert::NOTICE,
-                    'end'               => Alert::END,
-                    'periodicity'       => Alert::PERIODICITY,
-                    'periodicitynotice' => Alert::NOTICE] as $event => $type
-        ) {
-            if (isset($contract_infos[$event]) && count($contract_infos[$event])) {
-                foreach ($contract_infos[$event] as $entity => $contracts) {
-                    if (
-                        NotificationEvent::raiseEvent(
-                            $event,
-                            new self(),
-                            ['entities_id' => $entity,
-                                                            'items'       => $contracts]
-                        )
-                    ) {
-                        $message     = $contract_messages[$event][$entity];
-                        $cron_status = 1;
-                        $entityname  = Dropdown::getDropdownName("glpi_entities", $entity);
-                        if ($task) {
-                            $task->log(sprintf(__('%1$s: %2$s') . "\n", $entityname, $message));
-                            $task->addVolume(1);
-                        } else {
-                            Session::addMessageAfterRedirect(sprintf(
-                                __('%1$s: %2$s'),
-                                $entityname,
-                                $message
-                            ));
-                        }
-
-                        $alert = new Alert();
-                        $input = [
-                           'itemtype' => __CLASS__,
-                           'type'     => $type,
-                        ];
-                        foreach ($contracts as $id => $contract) {
-                            $input["items_id"] = $id;
-
-                            $alert->add($input);
-                            unset($alert->fields['id']);
-                        }
-                    } else {
-                        $entityname = Dropdown::getDropdownName('glpi_entities', $entity);
-                        //TRANS: %1$s is entity name, %2$s is the message
-                        $msg = sprintf(__('%1$s: %2$s'), $entityname, __('send contract alert failed'));
-                        if ($task) {
-                            $task->log($msg);
-                        } else {
-                            Session::addMessageAfterRedirect($msg, false, ERROR);
-                        }
-                    }
-                }
-            }
-        }
-
-        return $cron_status;
-    }
-
-
-    /**
-     * Print a select with contracts
-     *
-     * Print a select named $name with contracts options and selected value $value
-     * @param array $options
-     *    - name          : string / name of the select (default is contracts_id)
-     *    - value         : integer / preselected value (default 0)
-     *    - entity        : integer or array / restrict to a defined entity or array of entities
-     *                      (default -1 : no restriction)
-     *    - rand          : (defauolt mt_rand)
-     *    - entity_sons   : boolean / if entity restrict specified auto select its sons
-     *                      only available if entity is a single value not an array (default false)
-     *    - used          : array / Already used items ID: not to display in dropdown (default empty)
-     *    - nochecklimit  : boolean / disable limit for nomber of device (for supplier, default false)
-     *    - on_change     : string / value to transmit to "onChange"
-     *    - display       : boolean / display or return string (default true)
-     *    - expired       : boolean / display expired contract (default false)
-     *
-     * @return string|integer HTML output, or random part of dropdown ID.
-    **/
-    public static function dropdown($options = [])
-    {
-        global $DB;
-
-        //$name,$entity_restrict=-1,$alreadyused=array(),$nochecklimit=false
-        $p = [
-           'name'           => 'contracts_id',
-           'value'          => '',
-           'entity'         => '',
-           'rand'           => mt_rand(),
-           'entity_sons'    => false,
-           'used'           => [],
-           'nochecklimit'   => false,
-           'on_change'      => '',
-           'display'        => true,
-           'expired'        => false,
-        ];
-
-        if (is_array($options) && count($options)) {
-            foreach ($options as $key => $val) {
-                $p[$key] = $val;
-            }
-        }
-
-        if (
-            !($p['entity'] < 0)
-            && $p['entity_sons']
-        ) {
-            if (is_array($p['entity'])) {
-                // no translation needed (only for dev)
-                echo "entity_sons options is not available with array of entity";
-            } else {
-                $p['entity'] = getSonsOf('glpi_entities', $p['entity']);
-            }
-        }
-
-        $WHERE = [];
-        if ($p['entity'] >= 0) {
-            $WHERE += getEntitiesRestrictCriteria('glpi_contracts', 'entities_id', $p['entity'], true);
-        }
-        if (count($p['used'])) {
-            $WHERE['NOT'] = ['glpi_contracts.id' => $p['used']];
-        }
-        if (!$p['expired']) {
-            $WHERE[] = ['OR' => [
-               'glpi_contracts.renewal' => 1,
-               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName('glpi_contracts.begin_date') . ', INTERVAL ' . $DB->quoteName('glpi_contracts.duration') . ' MONTH), CURDATE()) > 0'),
-               'glpi_contracts.begin_date'   => null,
-            ]];
-        }
-
-        $iterator = $DB->request([
-           'SELECT'    => 'glpi_contracts.*',
-           'FROM'      => 'glpi_contracts',
-           'LEFT JOIN' => [
-              'glpi_entities'   => [
-                 'ON' => [
-                    'glpi_contracts'  => 'entities_id',
-                    'glpi_entities'   => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'     => array_merge([
-              'glpi_contracts.is_deleted'   => 0,
-              'glpi_contracts.is_template'  => 0
-           ], $WHERE),
-           'ORDERBY'   => [
-              'glpi_entities.completename',
-              'glpi_contracts.name ASC',
-              'glpi_contracts.begin_date DESC'
-           ]
-        ]);
-
-        $group  = '';
-        $prev   = -1;
-        $values = [];
-        while ($data = $iterator->next()) {
-            if (
-                $p['nochecklimit']
-                || ($data["max_links_allowed"] == 0)
-                || ($data["max_links_allowed"] > countElementsInTable(
-                    'glpi_contracts_items',
-                    ['contracts_id' => $data['id']]
-                ))
-            ) {
-                if ($data["entities_id"] != $prev) {
-                    $group = Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
-                    $prev = $data["entities_id"];
-                }
-
-                $name = $data["name"];
-                if (
-                    $_SESSION["glpiis_ids_visible"]
-                    || empty($data["name"])
-                ) {
-                    $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
-                }
-
-                $tmp = sprintf(__('%1$s - %2$s'), $name, $data["num"]);
-                $tmp = sprintf(__('%1$s - %2$s'), $tmp, Html::convDateTime($data["begin_date"]));
-                $values[$group][$data['id']] = $tmp;
-            }
-        }
-        return Dropdown::showFromArray(
-            $p['name'],
-            $values,
-            ['value'               => $p['value'],
-                                             'on_change'           => $p['on_change'],
-                                             'display'             => $p['display'],
-                                             'display_emptychoice' => true]
-        );
-    }
-
-
-    /**
-     * Print a select with contract renewal
-     *
-     * Print a select named $name with contract renewal options and selected value $value
-     *
-     * @param string  $name    HTML select name
-     * @param integer $value   HTML select selected value (default = 0)
-     * @param boolean $display get or display string ? (true by default)
-     *
-     * @return string|integer HTML output, or random part of dropdown ID.
-    **/
-    public static function dropdownContractRenewal($name, $value = 0, $display = true)
-    {
-
-        $values = [
-           self::RENEWAL_NEVER => __('Never'),
-           self::RENEWAL_TACIT => __('Tacit'),
-           self::RENEWAL_EXPRESS => __('Express'),
-        ];
-        return Dropdown::showFromArray($name, $values, ['value'   => $value,
-                                                          'display' => $display]);
-    }
-
-
-    /**
-     * Get the renewal type name
-     *
-     * @param $value integer   HTML select selected value
-     *
-     * @return string
-    **/
-    public static function getContractRenewalName($value)
-    {
-
-        switch ($value) {
-            case 0:
-                return __('Never');
-
-            case 1:
-                return __('Tacit');
-
-            case 2:
-                return __('Express');
-
-            default:
-                return "";
-        }
-    }
-
-
-    /**
-     * Get renewal ID by name
-     *
-     * @param string $value the name of the renewal
-     *
-     * @return integer ID of the renewal
-    **/
-    public static function getContractRenewalIDByName($value)
-    {
-
-        if (stristr($value, __('Tacit'))) {
-            return 1;
-        }
-        if (stristr($value, __('Express'))) {
-            return 2;
-        }
-        return 0;
-    }
-
-
-    /**
-     * @param array $options
-     *
-     * @return string|integer HTML output, or random part of dropdown ID.
-    **/
-    public static function dropdownAlert(array $options)
-    {
-
-        $p = [
-           'name'           => 'alert',
-           'value'          => 0,
-           'display'        => true,
-           'inherit_parent' => false,
-        ];
-
-        if (count($options)) {
-            foreach ($options as $key => $val) {
-                $p[$key] = $val;
-            }
-        }
-
-        $tab = [];
-        if ($p['inherit_parent']) {
-            $tab[Entity::CONFIG_PARENT] = __('Inheritance of the parent entity');
-        }
-
-        $tab += self::getAlertName();
-
-        return Dropdown::showFromArray($p['name'], $tab, $p);
-    }
-
-
-    /**
-     * Get the possible value for contract alert
-     *
-     * @since 0.83
-     *
-     * @param string|integer|null $val if not set, ask for all values, else for 1 value (default NULL)
-     *
-     * @return string|string[]
-    **/
-    public static function getAlertName($val = null)
-    {
-
-        $names = [
-           0                                                  => Dropdown::EMPTY_VALUE,
-           pow(2, Alert::END)                                 => __('End'),
-           pow(2, Alert::NOTICE)                              => __('Notice'),
-           (pow(2, Alert::END) + pow(2, Alert::NOTICE))       => __('End + Notice'),
-           pow(2, Alert::PERIODICITY)                         => __('Period end'),
-           pow(2, Alert::PERIODICITY) + pow(2, Alert::NOTICE) => __('Period end + Notice'),
-        ];
-
-        if (is_null($val)) {
-            return $names;
-        }
-        // Default value for display
-        $names[0] = ' ';
-
-        if (isset($names[$val])) {
-            return $names[$val];
-        }
-        // If not set and is a string return value
-        if (is_string($val)) {
-            return $val;
-        }
-        return NOT_AVAILABLE;
-    }
-
-
-    /**
-     * Display debug information for current object
-    **/
-    public function showDebug()
-    {
-
-        $options = [
-           'entities_id' => $this->getEntityID(),
-           'contracts'   => [],
-           'items'       => [],
-        ];
-        NotificationEvent::debugEvent($this, $options);
-    }
-
-
-    public function getUnallowedFieldsForUnicity()
-    {
-
-        return array_merge(
-            parent::getUnallowedFieldsForUnicity(),
-            ['begin_date', 'duration', 'entities_id', 'monday_begin_hour',
-                                 'monday_end_hour', 'saturday_begin_hour', 'saturday_end_hour',
-                                 'week_begin_hour', 'week_end_hour']
-        );
     }
 
 
@@ -1874,21 +241,774 @@ class Contract extends CommonDBTM
         $is_deleted = 0,
         CommonDBTM $checkitem = null
     ) {
+
+        $action_prefix = __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR;
+        $specificities = self::getRelationMassiveActionsSpecificities();
+
+        if (in_array($itemtype, $specificities['itemtypes'])) {
+            $actions[$action_prefix . 'add']    = "<i class='ma-icon fas fa-plug' aria-hidden='true'></i>" .
+                                                _x('button', 'Connect');
+            $actions[$action_prefix . 'remove'] = _x('button', 'Disconnect');
+        }
+        parent::getMassiveActionsForItemtype($actions, $itemtype, $is_deleted, $checkitem);
+    }
+
+
+    public static function getRelationMassiveActionsSpecificities()
+    {
+
+        $specificities              = parent::getRelationMassiveActionsSpecificities();
+
+        $specificities['itemtypes'] = ['Monitor', 'Peripheral', 'Phone', 'Printer'];
+
+        $specificities['select_items_options_2']['entity_restrict'] = $_SESSION['glpiactive_entity'];
+        $specificities['select_items_options_2']['onlyglobal']      = true;
+
+        $specificities['only_remove_all_at_once']                   = true;
+
+        // Set the labels for add_item and remove_item
+        $specificities['button_labels']['add']                      = _sx('button', 'Connect');
+        $specificities['button_labels']['remove']                   = _sx('button', 'Disconnect');
+
+        return $specificities;
+    }
+
+
+    /**
+    * Disconnect an item to its computer
+    *
+    * @param $item    CommonDBTM object: the Monitor/Phone/Peripheral/Printer
+    *
+    * @return boolean : action succeeded
+    */
+    public function disconnectForItem(CommonDBTM $item)
+    {
+        global $DB;
+
+        if ($item->getField('id')) {
+            $iterator = $DB->request([
+               'SELECT' => ['id'],
+               'FROM'   => $this->getTable(),
+               'WHERE'  => [
+                  'itemtype'  => $item->getType(),
+                  'items_id'  => $item->getID()
+               ]
+            ]);
+
+            if (count($iterator) > 0) {
+                $ok = true;
+                while ($data = $iterator->next()) {
+                    if ($this->can($data["id"], UPDATE)) {
+                        $ok &= $this->delete($data);
+                    }
+                }
+                return $ok;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     *
+     * Print the form for computers or templates connections to printers, screens or peripherals
+     *
+     * @param Computer $comp         Computer object
+     * @param boolean  $withtemplate Template or basic item (default 0)
+     *
+     * @return void
+    **/
+    public static function showForComputer(Computer $comp, $withtemplate = 0)
+    {
         global $CFG_GLPI;
 
-        if (in_array($itemtype, $CFG_GLPI["contract_types"])) {
-            if (self::canUpdate()) {
-                $action_prefix                    = 'Contract_Item' . MassiveAction::CLASS_ACTION_SEPARATOR;
-                $actions[$action_prefix . 'add']    = "<i class='ma-icon fas fa-file-contract' aria-hidden='true'></i>" .
-                                                    _x('button', 'Add a contract');
-                $actions[$action_prefix . 'remove'] = _x('button', 'Remove a contract');
+        $ID      = $comp->fields['id'];
+        $canedit = $comp->canEdit($ID);
+
+        $datas = [];
+        $used  = [];
+        foreach ($CFG_GLPI["directconnect_types"] as $itemtype) {
+            $item = new $itemtype();
+            if ($item->canView()) {
+                $iterator = self::getTypeItems($ID, $itemtype);
+
+                while ($data = $iterator->next()) {
+                    $data['assoc_itemtype'] = $itemtype;
+                    $datas[]           = $data;
+                    $used[$itemtype][] = $data['id'];
+                }
+            }
+        }
+        $AjaxUsedData = json_encode($used);
+        $number = count($datas);
+
+        if (
+            $canedit
+            && !(!empty($withtemplate) && ($withtemplate == 2))
+        ) {
+            $valuesForDropdown = [];
+            foreach ($CFG_GLPI['directconnect_types'] as $type) {
+                if ($item = getItemForItemtype($type)) {
+                    if (!$item->canView()) {
+                        continue;
+                    }
+                    $valuesForDropdown[$type] = $item->getTypeName(1);
+                }
+            }
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                  [
+                     'type'  => 'submit',
+                     'name'  => 'add',
+                     'value' => _sx('button', 'Connect'),
+                     'class' => 'btn btn-secondary',
+                  ]
+                  ],
+                  'content' => [
+                     __('Connect an item') => [
+                        'visible' => true,
+                        'inputs' => [
+                           [
+                              'type'  => 'hidden',
+                              'name'  => 'computers_id',
+                              'value' => $comp->fields['id'],
+                           ],
+                           [
+                              'type'  => 'hidden',
+                              'name'  => 'itemtype',
+                              'value' => $comp::class,
+                           ],
+                           [
+                              'type'  => 'hidden',
+                              'name'  => 'items_id',
+                              'value' => $comp->getID(),
+                           ],
+                           !empty($withtemplate) ? [
+                              'type'  => 'hidden',
+                              'name'  => '_no_history',
+                              'value' => '1',
+                           ] : [],
+                           __('Device type') => [
+                              'type' => 'select',
+                              'name' => 'itemtype',
+                              'id' => 'ItemTypeConnectDropdown',
+                              'values' => array_merge([ Dropdown::EMPTY_VALUE ], $valuesForDropdown),
+                              'value' => '',
+                              'col_lg' => 6,
+                              'hooks' => [
+                                 'change' => <<<JS
+                                 $('select[name="items_id"]').empty();
+                                 if ($('select[name="itemtype"]').val() == 0) {
+                                    $('select[name="items_id"]').prop('disabled', true);
+                                 } else {
+                                    $('select[name="items_id"]').prop('disabled', false);
+                                 }
+                                 $.ajax({
+                                    url: '{$CFG_GLPI['root_doc']}/ajax/dropdownConnect.php',
+                                    type: 'POST',
+                                    data: {
+                                       itemtype: $('select[name="itemtype"]').val(),
+                                       fromtype: 'Computer',
+                                       value: 0,
+                                       myname: 'items_id',
+                                       onlyglobal: '',
+                                       'used': JSON.parse('{$AjaxUsedData}'),
+                                       entity_restrict: {$comp->getEntityID()},
+                                    },
+                                    dataType: 'json',
+                                    success: function(data) {
+                                       $.each(data, function(key, value) {
+                                          if (typeof value === 'object') {
+                                             const group = $('#ItemConnectDropdown')
+                                                .append("<optgroup label='" + key + "'></optgroup>");
+                                             for (const j in value) {
+                                                group.append("<option value='" + j + "'>" + value[j] + "</option>");
+                                             }
+                                          } else {
+                                             $('#ItemConnectDropdown').append("<option value='" + key + "'>" + value + "</option>");
+                                          }
+
+                                       });
+                                    }
+                                 });
+                              JS,
+                              ]
+                           ],
+                           __('Device') => [
+                              'type' => 'select',
+                              'id' => 'ItemConnectDropdown',
+                              'name' => 'items_id',
+                              'values' => [],
+                              'value' => '',
+                              'col_lg' => 6,
+                              'disabled' => true,
+                           ],
+                        ],
+                     ]
+                  ]
+            ];
+            renderTwigForm($form);
+        }
+
+        if ($number) {
+            if ($canedit) {
+                $massiveactionparams                   = [
+                   'container' => "ComputerConnectionTable",
+                   'display_arrow' => false,
+                   'specific_actions' => [
+                      'purge' => __('Disconnect'),
+                   ],
+                   'is_deleted' => false,
+                ];
+
+                Html::showMassiveActions($massiveactionparams);
+            }
+            $fields = [
+               _n('Type', 'Types', 1),
+               __('Name'),
+               Entity::getTypeName(1),
+               __('Serial number'),
+               __('Inventory number'),
+            ];
+            $values = [];
+            $massiveActionValues = [];
+            foreach ($datas as $data) {
+                $linkname = $data["name"];
+                if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
+                    $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["id"]);
+                }
+                $link = $data['assoc_itemtype']::getFormURLWithID($data["id"]);
+                $massiveActionValues[$data['id']] = 'item[Computer_Item][' . $data['linkid'] . ']';
+                $values[$data['id']] = [
+                   $data['assoc_itemtype']::getTypeName(1),
+                   "<a href=\"" . $link . "\">" . $linkname . "</a>",
+                   Dropdown::getDropdownName("glpi_entities", $data['entities_id']),
+                   (isset($data["serial"]) ? "" . $data["serial"] . "" : "-"),
+                   (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-"),
+                ];
+                if (Plugin::haveImport()) {
+                    $values[$data['id']][6] = Dropdown::getYesNo($data[static::getTable() . '_is_dynamic']);
+                }
+            }
+            $twig_vars = [
+               'id' => 'ComputerConnectionTable',
+               'fields' => $fields,
+               'values' => $values,
+               'massive_action' => $massiveActionValues,
+            ];
+            if (Plugin::haveImport()) {
+                $twig_vars['fields'][] = __('Automatic inventory');
+            }
+            renderTwigTemplate('table.twig', $twig_vars);
+        }
+    }
+
+
+    /**
+     * Prints a direct connection to a computer
+     *
+     * @param $item                     CommonDBTM object: the Monitor/Phone/Peripheral/Printer
+     * @param $withtemplate    integer  withtemplate param (default 0)
+     *
+     * @return void
+    **/
+    public static function showForItem(CommonDBTM $item, $withtemplate = 0)
+    {
+        // Prints a direct connection to a computer
+        global $DB;
+
+        $comp   = new Computer();
+        $ID     = $item->getField('id');
+
+        if (!$item->can($ID, READ)) {
+            return;
+        }
+        $canedit = $item->canEdit($ID);
+        $rand    = mt_rand();
+
+        // Is global connection ?
+        $global  = $item->getField('is_global');
+
+        $used    = [];
+        $compids = [];
+        $dynamic = [];
+        $result = $DB->request(
+            [
+              'SELECT' => ['id', 'computers_id', 'is_dynamic'],
+              'FROM'   => self::getTable(),
+              'WHERE'  => [
+                 'itemtype'   => $item->getType(),
+                 'items_id'   => $ID,
+                 'is_deleted' => 0,
+              ]
+            ]
+        );
+        foreach ($result as $data) {
+            $compids[$data['id']] = $data['computers_id'];
+            $dynamic[$data['id']] = $data['is_dynamic'];
+            $used['Computer'][]   = $data['computers_id'];
+        }
+        $number = count($compids);
+        if (
+            $canedit
+            && ($global || !$number)
+            && !(!empty($withtemplate) && ($withtemplate == 2))
+        ) {
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                   [
+                       'type'  => 'submit',
+                       'name'  => 'add',
+                       'value' => _sx('button', 'Connect'),
+                       'class' => 'btn btn-secondary',
+                   ]
+               ],
+               'content' => [
+                   '' => [
+                       'visible' => true,
+                       'inputs' => [
+                           Computer::getTypeName() => [
+                               'type' => 'select',
+                               'name' => 'computers_id',
+                               'values' => getItemByEntity(Computer::class, $item->fields['entities_id']),
+                               'col_lg' => 12,
+                               'col_md' => 12,
+                           ],
+                           [
+                               'type'  => 'hidden',
+                               'name'  => 'itemtype',
+                               'value' => $item->getType(),
+                           ],
+                           [
+                               'type'  => 'hidden',
+                               'name'  => 'items_id',
+                               'value' => $ID,
+                           ],
+                       ]
+                   ]
+               ],
+            ];
+            renderTwigForm($form);
+        }
+
+        echo "<div class='spaced'>";
+        $massActionId = 'mass' . __CLASS__ . $rand;
+        if ($canedit && $number) {
+            $massiveactionparams = [
+               'num_displayed' => min($_SESSION['glpilist_limit'], $number),
+               'specific_actions' => ['purge' => _x('button', 'Disconnect')],
+               'container' => 'mass' . __CLASS__ . $rand,
+               'display_arrow' => false,
+            ];
+            Html::showMassiveActions($massiveactionparams);
+        }
+        if ($number > 0) {
+            $fields = [
+                'name' => __('Name'),
+                'entity' => Entity::getTypeName(1),
+                'serial' => __('Serial number'),
+               'otherserial' =>  __('Inventory number'),
+            ];
+            if (Plugin::haveImport()) {
+                $fields['inventory'] = __('Automatic inventory');
+            }
+            $values = [];
+            $massiveActionValues = [];
+            foreach ($compids as $key => $compid) {
+                $comp->getFromDB($compid);
+
+
+                if ($canedit) {
+                    $massiveActionValues[$key] = 'item[Computer_Item][' . $key . ']';
+                }
+                $newValue = [
+                    'name' => $comp->getLink(),
+                    'entity' => Dropdown::getDropdownName("glpi_entities", $comp->getField('entities_id')),
+                    'serial' => $comp->getField('serial'),
+                    'otherserial' => $comp->getField('otherserial'),
+                ];
+                if (Plugin::haveImport()) {
+                    $newValue['inventory'] = Dropdown::getYesNo($dynamic[$key]);
+                }
+                $values[$key] = $newValue;
+            }
+            renderTwigTemplate('table.twig', [
+               'id' => $massActionId,
+               'fields' => $fields,
+               'values' => $values,
+               'massive_action' => $massiveActionValues,
+            ]);
+        } else {
+            echo "<tr><td class='tab_bg_1 b'><i>" . __('Not connected') . "</i>";
+            echo "</td></tr>";
+        }
+    }
+
+
+    /**
+     * Unglobalize an item : duplicate item and connections
+     *
+     * @param $item   CommonDBTM object to unglobalize
+    **/
+    public static function unglobalizeItem(CommonDBTM $item)
+    {
+        global $DB;
+
+        // Update item to unit management :
+        if ($item->getField('is_global')) {
+            $input = ['id'        => $item->fields['id'],
+                           'is_global' => 0];
+            $item->update($input);
+
+            // Get connect_wire for this connection
+            $iterator = $DB->request([
+               'SELECT' => ['id'],
+               'FROM'   => self::getTable(),
+               'WHERE'  => [
+                  'items_id'  => $item->getID(),
+                  'itemtype'  => $item->getType()
+               ]
+            ]);
+
+            $first = true;
+            while ($data = $iterator->next()) {
+                if ($first) {
+                    $first = false;
+                    unset($input['id']);
+                    $conn = new self();
+                } else {
+                    $temp = clone $item;
+                    unset($temp->fields['id']);
+                    if ($newID = $temp->add($temp->fields)) {
+                        $conn->update(['id'       => $data['id'],
+                                       'items_id' => $newID]);
+                    }
+                }
             }
         }
     }
 
 
-    public static function getIcon()
+    /**
+    * Make a select box for connections
+    *
+    * @since 0.84
+    *
+    * @param string            $fromtype        from where the connection is
+    * @param string            $myname          select name
+    * @param integer|integer[] $entity_restrict Restrict to a defined entity (default = -1)
+    * @param boolean           $onlyglobal      display only global devices (used for templates) (default 0)
+    * @param integer[]         $used            Already used items ID: not to display in dropdown
+    *
+    * @return integer Random generated number used for select box ID (select box HTML is printed)
+    */
+    public static function dropdownAllConnect(
+        $fromtype,
+        $myname,
+        $entity_restrict = -1,
+        $onlyglobal = 0,
+        $used = []
+    ) {
+        global $CFG_GLPI;
+
+        $rand = mt_rand();
+
+        $options               = [];
+        $options['checkright'] = true;
+        $options['name']       = 'itemtype';
+
+        $rand = Dropdown::showItemType($CFG_GLPI['directconnect_types'], $options);
+        if ($rand) {
+            $params = ['itemtype'        => '__VALUE__',
+                            'fromtype'        => $fromtype,
+                            'value'           => 0,
+                            'myname'          => $myname,
+                            'onlyglobal'      => $onlyglobal,
+                            'entity_restrict' => $entity_restrict,
+                            'used'            => $used];
+
+            if ($onlyglobal) {
+                $params['condition'] = ['is_global' => 1];
+            }
+            Ajax::updateItemOnSelectEvent(
+                "dropdown_itemtype$rand",
+                "show_$myname$rand",
+                $CFG_GLPI["root_doc"] . "/ajax/dropdownConnect.php",
+                $params
+            );
+
+            echo "<br><div id='show_$myname$rand'>&nbsp;</div>\n";
+        }
+        return $rand;
+    }
+
+
+    /**
+    * Make a select box for connections
+    *
+    * @param string            $itemtype        type to connect
+    * @param string            $fromtype        from where the connection is
+    * @param string            $myname          select name
+    * @param integer|integer[] $entity_restrict Restrict to a defined entity (default = -1)
+    * @param boolean           $onlyglobal      display only global devices (used for templates) (default 0)
+    * @param integer[]         $used            Already used items ID: not to display in dropdown
+    *
+    * @return integer Random generated number used for select box ID (select box HTML is printed)
+    */
+    public static function dropdownConnect(
+        $itemtype,
+        $fromtype,
+        $myname,
+        $entity_restrict = -1,
+        $onlyglobal = 0,
+        $used = []
+    ) {
+        global $CFG_GLPI;
+
+        $rand     = mt_rand();
+
+        $field_id = Html::cleanId("dropdown_" . $myname . $rand);
+        $param    = [
+           'entity_restrict' => $entity_restrict,
+           'fromtype'        => $fromtype,
+           'itemtype'        => $itemtype,
+           'onlyglobal'      => $onlyglobal,
+           'used'            => $used,
+           '_idor_token'     => Session::getNewIDORToken($itemtype, [
+              'entity_restrict' => $entity_restrict,
+           ]),
+        ];
+
+        echo Html::jsAjaxDropdown(
+            $myname,
+            $field_id,
+            $CFG_GLPI['root_doc'] . "/ajax/getDropdownConnect.php",
+            $param
+        );
+
+        return $rand;
+    }
+
+
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        return "fas fa-file-signature";
+
+        // can exists for Template
+        if ($item->can($item->getField('id'), READ)) {
+            $nb = 0;
+            switch ($item->getType()) {
+                case 'Phone':
+                case 'Printer':
+                case 'Peripheral':
+                case 'Monitor':
+                    if (Computer::canView()) {
+                        if ($_SESSION['glpishow_count_on_tabs']) {
+                            $nb = self::countForItem($item);
+                        }
+                        return self::createTabEntry(
+                            _n('Connection', 'Connections', Session::getPluralNumber()),
+                            $nb
+                        );
+                    }
+                    break;
+
+                case 'Computer':
+                    if (
+                        Phone::canView()
+                        || Printer::canView()
+                        || Peripheral::canView()
+                        || Monitor::canView()
+                    ) {
+                        if ($_SESSION['glpishow_count_on_tabs']) {
+                            $nb = self::countForMainItem($item);
+                        }
+                        return self::createTabEntry(
+                            _n('Connection', 'Connections', Session::getPluralNumber()),
+                            $nb
+                        );
+                    }
+                    break;
+            }
+        }
+        return '';
+    }
+
+
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+
+        switch ($item->getType()) {
+            case 'Phone':
+            case 'Printer':
+            case 'Peripheral':
+            case 'Monitor':
+                self::showForItem($item, $withtemplate);
+                return true;
+
+            case 'Computer':
+                self::showForComputer($item, $withtemplate);
+                return true;
+        }
+    }
+
+
+    /**
+     * Duplicate connected items to computer from an item template to its clone
+     *
+     * @deprecated 9.5
+     * @since 0.84
+     *
+     * @param integer $oldid ID of the item to clone
+     * @param integer $newid ID of the item cloned
+    **/
+    public static function cloneComputer($oldid, $newid)
+    {
+        global $DB;
+
+        Toolbox::deprecated('Use clone');
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => ['computers_id' => $oldid]
+        ]);
+
+        while ($data = $iterator->next()) {
+            $conn = new Computer_Item();
+            $conn->add(['computers_id' => $newid,
+                        'itemtype'     => $data["itemtype"],
+                        'items_id'     => $data["items_id"]]);
+        }
+    }
+
+
+    /**
+     * Duplicate connected items to item from an item template to its clone
+     *
+     * @deprecated 9.5
+     * @since 0.83.3
+     *
+     * @param string  $itemtype type of the item to clone
+     * @param integer $oldid    ID of the item to clone
+     * @param integer $newid    ID of the item cloned
+    **/
+    public static function cloneItem($itemtype, $oldid, $newid)
+    {
+        global $DB;
+
+        Toolbox::deprecated('Use clone');
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'itemtype'  => $itemtype,
+              'items_id'  => $oldid
+           ]
+        ]);
+
+        while ($data = $iterator->next()) {
+            $conn = new self();
+            $conn->add(['computers_id' => $data["computers_id"],
+                        'itemtype'     => $data["itemtype"],
+                        'items_id'     => $newid]);
+        }
+    }
+
+
+    /**
+     * @since 9.1.7
+     *
+     * @param CommonDBTM $item     item linked to the computer to check
+     * @param integer[]  $entities entities to check
+     *
+     * @return boolean
+    **/
+    public static function canUnrecursSpecif(CommonDBTM $item, $entities)
+    {
+        global $DB;
+
+        if ($item instanceof Computer) {
+            // RELATION : items -> computers
+            $iterator = $DB->request([
+               'SELECT' => [
+                  'itemtype',
+                  new \QueryExpression('GROUP_CONCAT(DISTINCT ' . $DB->quoteName('items_id') . ') AS ids'),
+               ],
+               'FROM' => self::getTable(),
+               'WHERE' => [
+                  'computers_id' => $item->fields['id']
+               ],
+               'GROUP' => 'itemtype'
+            ]);
+
+            while ($data = $iterator->next()) {
+                if (!class_exists($data['itemtype'])) {
+                    continue;
+                }
+                if (
+                    countElementsInTable(
+                        $data['itemtype']::getTable(),
+                        [
+                         'id' => $data['ids'],
+                         'NOT' => ['entities_id' => $entities]
+                        ]
+                    ) > 0
+                ) {
+                    return false;
+                }
+            }
+        } else {
+            // RELATION : computers -> items
+            $iterator = $DB->request([
+               'SELECT' => [
+                  'itemtype',
+                  new \QueryExpression('GROUP_CONCAT(DISTINCT ' . $DB->quoteName('items_id') . ') AS ids'),
+                  'computers_id'
+               ],
+               'FROM' => self::getTable(),
+               'WHERE' => [
+                  'itemtype' => $item->getType(),
+                  'items_id' => $item->fields['id']
+               ],
+               'GROUP' => 'itemtype'
+            ]);
+
+            while ($data = $iterator->next()) {
+                if (
+                    countElementsInTable(
+                        "glpi_computers",
+                        ['id' => $data["computers_id"],
+                         'NOT' => ['entities_id' => $entities]]
+                    ) > 0
+                ) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+    protected static function getListForItemParams(CommonDBTM $item, $noent = false)
+    {
+        $params = parent::getListForItemParams($item, $noent);
+        $params['WHERE'][self::getTable() . '.is_deleted'] = 0;
+        return $params;
+    }
+
+    /**
+     * Get SELECT param for getTypeItemsQueryParams
+     *
+     * @param CommonDBTM $item
+     *
+     * @return array
+     */
+    public static function getTypeItemsQueryParams_Select(CommonDBTM $item): array
+    {
+        $table = static::getTable();
+        $select = parent::getTypeItemsQueryParams_Select($item);
+        $select[] = "$table.is_dynamic AS {$table}_is_dynamic";
+
+        return $select;
     }
 }

@@ -130,43 +130,31 @@ class Change_Problem extends CommonDBRelation
         $canedit = $problem->canEdit($ID);
         $rand    = mt_rand();
 
-        // $iterator = $DB->request([
-        //    'SELECT' => [
-        //       'glpi_changes_problems.id AS linkid',
-        //       'glpi_changes.*'
-        //    ],
-        //    'DISTINCT'        => true,
-        //    'FROM'            => 'glpi_changes_problems',
-        //    'LEFT JOIN'       => [
-        //       'glpi_changes' => [
-        //          'ON' => [
-        //             'glpi_changes_problems' => 'changes_id',
-        //             'glpi_changes'          => 'id'
-        //          ]
-        //       ]
-        //    ],
-        //    'WHERE'           => [
-        //       'glpi_changes_problems.problems_id' => $ID
-        //    ],
-        //    'ORDERBY'         => 'glpi_changes.name'
-        // ]);
-        $dql = "SELECT DISTINCT cp.id AS linkid, c
-        FROM Itsmng\\Domain\\Entities\\ChangeProblem cp
-        LEFT JOIN Itsmng\\Domain\\Entities\\Change c WITH cp.change = c.id
-        WHERE cp.problem = :problems_id
-        ORDER BY c.name";
-        $result = self::getAdapter()->request($dql, [
-            'problems_id' => $ID
+        $iterator = $DB->request([
+           'SELECT' => [
+              'glpi_changes_problems.id AS linkid',
+              'glpi_changes.*'
+           ],
+           'DISTINCT'        => true,
+           'FROM'            => 'glpi_changes_problems',
+           'LEFT JOIN'       => [
+              'glpi_changes' => [
+                 'ON' => [
+                    'glpi_changes_problems' => 'changes_id',
+                    'glpi_changes'          => 'id'
+                 ]
+              ]
+           ],
+           'WHERE'           => [
+              'glpi_changes_problems.problems_id' => $ID
+           ],
+           'ORDERBY'         => 'glpi_changes.name'
         ]);
 
         $changes = [];
         $used    = [];
-        $numrows = count($result);
-        // while ($data = $iterator->next()) {
-        //     $changes[$data['id']] = $data;
-        //     $used[$data['id']]    = $data['id'];
-        // }
-        foreach ($result as $data) {
+        $numrows = count($iterator);
+        while ($data = $iterator->next()) {
             $changes[$data['id']] = $data;
             $used[$data['id']]    = $data['id'];
         }
@@ -262,44 +250,31 @@ class Change_Problem extends CommonDBRelation
         $canedit = $change->canEdit($ID);
         $rand    = mt_rand();
 
-        // $iterator = $DB->request([
-        //    'SELECT' => [
-        //       'glpi_changes_problems.id AS linkid',
-        //       'glpi_problems.*'
-        //    ],
-        //    'DISTINCT'        => true,
-        //    'FROM'            => 'glpi_changes_problems',
-        //    'LEFT JOIN'       => [
-        //       'glpi_problems' => [
-        //          'ON' => [
-        //             'glpi_changes_problems' => 'problems_id',
-        //             'glpi_problems'         => 'id'
-        //          ]
-        //       ]
-        //    ],
-        //    'WHERE'           => [
-        //       'glpi_changes_problems.changes_id' => $ID
-        //    ],
-        //    'ORDERBY'         => 'glpi_problems.name'
-        // ]);
-        $dql = "SELECT DISTINCT cp.id AS linkid, p
-        FROM Itsmng\\Domain\\Entities\\ChangeProblem cp
-        LEFT JOIN Itsmng\\Domain\\Entities\\Problem p WITH cp.problem = p.id
-        WHERE cp.change = :changes_id
-        ORDER BY p.name";
-
-        $result = self::getAdapter()->request($dql, [
-            'changes_id' => $ID
+        $iterator = $DB->request([
+           'SELECT' => [
+              'glpi_changes_problems.id AS linkid',
+              'glpi_problems.*'
+           ],
+           'DISTINCT'        => true,
+           'FROM'            => 'glpi_changes_problems',
+           'LEFT JOIN'       => [
+              'glpi_problems' => [
+                 'ON' => [
+                    'glpi_changes_problems' => 'problems_id',
+                    'glpi_problems'         => 'id'
+                 ]
+              ]
+           ],
+           'WHERE'           => [
+              'glpi_changes_problems.changes_id' => $ID
+           ],
+           'ORDERBY'         => 'glpi_problems.name'
         ]);
 
         $problems = [];
         $used     = [];
-        $numrows = count($result);
-        // while ($data = $iterator->next()) {
-        //     $problems[$data['id']] = $data;
-        //     $used[$data['id']]     = $data['id'];
-        // }
-        foreach ($result as $data) {
+        $numrows = count($iterator);
+        while ($data = $iterator->next()) {
             $problems[$data['id']] = $data;
             $used[$data['id']]     = $data['id'];
         }

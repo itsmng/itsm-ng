@@ -58,26 +58,16 @@ class DisplayPreference extends CommonDBTM
     {
         global $DB;
 
-        // $result = $DB->request([
-        //    'SELECT' => ['MAX' => 'rank AS maxrank'],
-        //    'FROM'   => $this->getTable(),
-        //    'WHERE'  => [
-        //       'itemtype'  => $input['itemtype'],
-        //       'users_id'  => $input['users_id']
-        //    ]
-        // ])->next();
-        $dql = "SELECT MAX(e.rank) AS maxrank
-        FROM Itsmng\\Domain\\Entities\\YourEntity e
-        WHERE e.itemtype = :itemtype AND e.users_id = :users_id";
-
-        $results = self::getAdapter()->request($dql, [
-            'itemtype' => $input['itemtype'],
-            'users_id' => $input['users_id']
-        ]);
-        foreach ($results as $result) {
-            $input['rank'] = $result['maxrank'] + 1;
-            return $input;
-        }
+        $result = $DB->request([
+           'SELECT' => ['MAX' => 'rank AS maxrank'],
+           'FROM'   => $this->getTable(),
+           'WHERE'  => [
+              'itemtype'  => $input['itemtype'],
+              'users_id'  => $input['users_id']
+           ]
+        ])->next();
+        $input['rank'] = $result['maxrank'] + 1;
+        return $input;
     }
 
 
@@ -170,27 +160,18 @@ class DisplayPreference extends CommonDBTM
             return false;
         }
 
-        // $iterator = $DB->request([
-        //    'FROM'   => self::getTable(),
-        //    'WHERE'  => [
-        //       'itemtype'  => $input['itemtype'],
-        //       'users_id'  => 0
-        //    ]
-        // ]);
-        $dql = "SELECT entity
-        FROM Itsmng\\Domain\\Entities\\DisplyPreference
-        WHERE entity.itemtype = :itemtype
-        AND entity.user = 0";
-
-        $results = self::getAdapter()->request($dql, [
-            'itemtype' => $input['itemtype']
+        $iterator = $DB->request([
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+              'itemtype'  => $input['itemtype'],
+              'users_id'  => 0
+           ]
         ]);
 
-        if (count($results)) {
-            // while ($data = $iterator->next()) {
-            foreach ($results as $data) {
+        if (count($iterator)) {
+            while ($data = $iterator->next()) {
                 unset($data["id"]);
-                $data["userId"] = $input["users_id"];
+                $data["users_id"] = $input["users_id"];
                 $this->fields     = $data;
                 $this->addToDB();
             }

@@ -217,19 +217,8 @@ class Alert extends CommonDBTM
         if ($items_id <= 0 || $type <= 0) {
             return false;
         }
-        // $iter = $DB->request(self::getTable(), ['itemtype' => $itemtype, 'items_id' => $items_id, 'type' => $type]);
-        $iter = self::getAdapter()->request(
-            "SELECT t FROM Itsmng\\Domain\\Entities\\Alert t WHERE t.itemtype = :itemtype AND t.itemsId = :items_id AND t.type = :type",
-            [
-                'itemtype' => $itemtype,
-                'items_id' => $items_id,
-                'type' => $type
-            ]
-        );
-        // if ($row = $iter->next()) {
-        //     return $row['id'];
-        // }
-        foreach ($iter as $row) {
+        $iter = $DB->request(self::getTable(), ['itemtype' => $itemtype, 'items_id' => $items_id, 'type' => $type]);
+        if ($row = $iter->next()) {
             return $row['id'];
         }
         return false;
@@ -255,19 +244,8 @@ class Alert extends CommonDBTM
         if ($items_id <= 0 || $type <= 0) {
             return false;
         }
-        // $iter = $DB->request(self::getTable(), ['itemtype' => $itemtype, 'items_id' => $items_id, 'type' => $type]);
-        $result = self::getAdapter()->request(
-            "SELECT t FROM Itsmng\\Domain\\Entities\\Alert t WHERE t.itemtype = :itemtype AND t.itemsId = :items_id AND t.type = :type",
-            [
-                'itemtype' => $itemtype,
-                'items_id' => $items_id,
-                'type' => $type
-            ]
-        );
-        // if ($row = $iter->next()) {
-        //     return $row['date'];
-        // }
-        foreach ($result as $row) {
+        $iter = $DB->request(self::getTable(), ['itemtype' => $itemtype, 'items_id' => $items_id, 'type' => $type]);
+        if ($row = $iter->next()) {
             return $row['date'];
         }
         return false;
@@ -287,25 +265,12 @@ class Alert extends CommonDBTM
         global $DB;
 
         if ($items_id) {
-            // $iter = $DB->request(self::getTable(), ['FIELDS'   => 'date',
-            //                                         'ORDER'    => 'date DESC',
-            //                                         'LIMIT'    => 1,
-            //                                         'itemtype' => $itemtype,
-            //                                         'items_id' => $items_id]);
-            $dql = "SELECT t.date FROM Itsmng\\Domain\\Entities\\Alert t 
-            WHERE t.itemtype = :itemtype AND t.itemsId = :items_id 
-            ORDER BY t.date DESC";
-
-            $result = self::getAdapter()->request($dql, [
-                'itemtype' => $itemtype,
-                'items_id' => $items_id
-            ]);
-            // if ($row = $iter->next()) {
-            //     //TRANS: %s is the date
-            //     echo sprintf(__('Alert sent on %s'), Html::convDateTime($row['date']));
-            // }
-
-            foreach ($result as $row) {
+            $iter = $DB->request(self::getTable(), ['FIELDS'   => 'date',
+                                                    'ORDER'    => 'date DESC',
+                                                    'LIMIT'    => 1,
+                                                    'itemtype' => $itemtype,
+                                                    'items_id' => $items_id]);
+            if ($row = $iter->next()) {
                 //TRANS: %s is the date
                 echo sprintf(__('Alert sent on %s'), Html::convDateTime($row['date']));
             }
