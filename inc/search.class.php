@@ -762,7 +762,7 @@ class Search
             if ($data['search']['list_limit'] == 0) {
                 $data['search']['list_limit'] = '18446744073709551615';
             }
-            $LIMIT = " OFFSET " . (int)$data['search']['start'] . " LIMIT " . (int)$data['search']['list_limit'];
+            $LIMIT = " LIMIT " . (int)$data['search']['list_limit'] . " OFFSET " . (int)$data['search']['start'];
 
             $count = "count(DISTINCT $itemtable.id)";
             // request currentuser for SQL supervision, not displayed
@@ -1480,7 +1480,7 @@ class Search
 
                 // Parse datas
                 foreach ($newrow['raw'] as $key => $val) {
-                    if (preg_match('/item(_(\w[^\d]+))?_(\d+)(_(.+))?/', $key, $matches)) {
+                    if (preg_match('/ITEM(_(\w[^\d]+))?_(\d+)(_(.+))?/', $key, $matches)) {
                         $j = $matches[3];
                         if (isset($matches[2]) && !empty($matches[2])) {
                             $j = $matches[2] . '_' . $matches[3];
@@ -3090,7 +3090,7 @@ JAVASCRIPT;
             return false;
         }
         $table = $searchopt[$ID]["table"];
-        $NAME = strtolower("item_{$itemtype}_{$ID}");
+        $NAME = "ITEM_{$itemtype}_{$ID}";
 
         // Plugin can override core definition for its type
         if ($plug = isPluginItemType($itemtype)) {
@@ -3529,9 +3529,9 @@ JAVASCRIPT;
                     $ADDITONALFIELDS .= " IFNULL(GROUP_CONCAT(DISTINCT CONCAT(IFNULL($table$addtable.$key,
                                                                          '" . self::NULLVALUE . "'),
                                                    '" . self::SHORTSEP . "', $tocomputeid)ORDER BY $tocomputeid SEPARATOR '" . self::LONGSEP . "'), '" . self::NULLVALUE . self::SHORTSEP . "')
-                                    AS " . $NAME . "_$key, ";
+                                    AS \"" . $NAME . "_$key\", ";
                 } else {
-                    $ADDITONALFIELDS .= "$table$addtable.$key AS " . $NAME . "_$key, ";
+                    $ADDITONALFIELDS .= "$table$addtable.$key AS \"" . $NAME . "_$key\", ";
                 }
             }
         }
@@ -3563,17 +3563,17 @@ JAVASCRIPT;
                             $addaltemail
                                = "GROUP_CONCAT(DISTINCT CONCAT($ticket_user_table.users_id, ' ',
                                                         $ticket_user_table.alternative_email)
-                                                        SEPARATOR '" . self::LONGSEP . "') AS " . $NAME . "_2, ";
+                                                        SEPARATOR '" . self::LONGSEP . "') AS \"" . $NAME . "_2\", ";
                         }
                         return " GROUP_CONCAT(DISTINCT $table$addtable.id SEPARATOR '" . self::LONGSEP . "')
-                                       AS " . $NAME . ",
+                                       AS \"" . $NAME . "\",
                            $addaltemail
                            $ADDITONALFIELDS";
                     }
-                    return " $table$addtable.$field AS " . $NAME . ",
-                        $table$addtable.realname AS " . $NAME . "_realname,
-                        $table$addtable.id  AS " . $NAME . "_id,
-                        $table$addtable.firstname AS " . $NAME . "_firstname,
+                    return " $table$addtable.$field AS \"" . $NAME . "\",
+                        $table$addtable.realname AS \"" . $NAME . "_realname\",
+                        $table$addtable.id  AS \"" . $NAME . "_id\",
+                        $table$addtable.firstname AS \"" . $NAME . "_firstname\",
                         $ADDITONALFIELDS";
                 }
                 break;
@@ -3582,14 +3582,14 @@ JAVASCRIPT;
                 if ($meta) {
                     return " FLOOR(SUM($table$addtable2.$field)
                               * COUNT(DISTINCT $table$addtable2.id)
-                              / COUNT($table$addtable2.id)) AS " . $NAME . ",
-                        MIN($table$addtable2.$field) AS " . $NAME . "_min,
+                              / COUNT($table$addtable2.id)) AS \"" . $NAME . "\",
+                        MIN($table$addtable2.$field) AS \"" . $NAME . "_min\",
                          $ADDITONALFIELDS";
                 } else {
                     return " FLOOR(SUM($table$addtable.$field)
                               * COUNT(DISTINCT $table$addtable.id)
-                              / COUNT($table$addtable.id)) AS " . $NAME . ",
-                        MIN($table$addtable.$field) AS " . $NAME . "_min,
+                              / COUNT($table$addtable.id)) AS \"" . $NAME . "\",
+                        MIN($table$addtable.$field) AS \"" . $NAME . "_min\",
                          $ADDITONALFIELDS";
                 }
 
@@ -3603,13 +3603,13 @@ JAVASCRIPT;
                     if ($meta) {
                         $addtable2 = "_" . $meta_type;
                     }
-                    return " GROUP_CONCAT($table$addtable.$field SEPARATOR '" . self::LONGSEP . "') AS " . $NAME . ",
+                    return " GROUP_CONCAT($table$addtable.$field SEPARATOR '" . self::LONGSEP . "') AS \"" . $NAME . "\",
                         GROUP_CONCAT(glpi_profiles_users$addtable2.entities_id SEPARATOR '" . self::LONGSEP . "')
-                                    AS " . $NAME . "_entities_id,
+                                    AS \"" . $NAME . "_entities_id\",
                         GROUP_CONCAT(glpi_profiles_users$addtable2.is_recursive SEPARATOR '" . self::LONGSEP . "')
-                                    AS " . $NAME . "_is_recursive,
+                                    AS \"" . $NAME . "_is_recursive\",
                         GROUP_CONCAT(glpi_profiles_users$addtable2.is_dynamic SEPARATOR '" . self::LONGSEP . "')
-                                    AS " . $NAME . "_is_dynamic,
+                                    AS \"" . $NAME . "_is_dynamic\",
                         $ADDITONALFIELDS";
                 }
                 break;
@@ -3624,27 +3624,27 @@ JAVASCRIPT;
                         $addtable2 = "_" . $meta_type;
                     }
                     return " GROUP_CONCAT($table$addtable.completename SEPARATOR '" . self::LONGSEP . "')
-                                    AS " . $NAME . ",
+                                    AS \"" . $NAME . ",
                         GROUP_CONCAT(glpi_profiles_users$addtable2.profiles_id SEPARATOR '" . self::LONGSEP . "')
-                                    AS " . $NAME . "_profiles_id,
+                                    AS \"" . $NAME . "_profiles_id\",
                         GROUP_CONCAT(glpi_profiles_users$addtable2.is_recursive SEPARATOR '" . self::LONGSEP . "')
-                                    AS " . $NAME . "_is_recursive,
+                                    AS \"" . $NAME . "_is_recursive\",
                         GROUP_CONCAT(glpi_profiles_users$addtable2.is_dynamic SEPARATOR '" . self::LONGSEP . "')
-                                    AS " . $NAME . "_is_dynamic,
+                                    AS \"" . $NAME . "_is_dynamic\",
                         $ADDITONALFIELDS";
                 }
                 break;
 
             case "glpi_auth_tables.name":
                 $user_searchopt = self::getOptions('User');
-                return " glpi_users.authtype AS " . $NAME . ",
+                return " glpi_users.authtype AS \"" . $NAME . "\",
                      glpi_users.auths_id AS " . $NAME . "_auths_id,
                      glpi_authldaps" . $addtable . "_" .
                                self::computeComplexJoinID($user_searchopt[30]['joinparams']) . $addmeta . ".$field
-                              AS " . $NAME . "_" . $ID . "_ldapname,
+                              AS \"" . $NAME . "_" . $ID . "_ldapname\",
                      glpi_authmails" . $addtable . "_" .
                                self::computeComplexJoinID($user_searchopt[31]['joinparams']) . $addmeta . ".$field
-                              AS " . $NAME . "_mailname,
+                              AS \"" . $NAME . "_mailname\",
                      $ADDITONALFIELDS";
 
             case "glpi_softwareversions.name":
@@ -3652,7 +3652,7 @@ JAVASCRIPT;
                     return " GROUP_CONCAT(DISTINCT CONCAT(glpi_softwares.name, ' - ',
                                                      $table$addtable2.$field, '" . self::SHORTSEP . "',
                                                      $table$addtable2.id) SEPARATOR '" . self::LONGSEP . "')
-                                    AS " . $NAME . ",
+                                    AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                 }
                 break;
@@ -3662,13 +3662,13 @@ JAVASCRIPT;
                     return " GROUP_CONCAT(DISTINCT CONCAT(glpi_softwares.name, ' - ',
                                                      $table$addtable2.$field,'" . self::SHORTSEP . "',
                                                      $table$addtable2.id) SEPARATOR '" . self::LONGSEP . "')
-                                    AS " . $NAME . ",
+                                    AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                 }
                 return " GROUP_CONCAT(DISTINCT CONCAT($table$addtable.name, ' - ',
                                                   $table$addtable.$field, '" . self::SHORTSEP . "',
                                                   $table$addtable.id) SEPARATOR '" . self::LONGSEP . "')
-                                 AS " . $NAME . ",
+                                 AS \"" . $NAME . "\",
                      $ADDITONALFIELDS";
 
             case "glpi_states.name":
@@ -3677,13 +3677,13 @@ JAVASCRIPT;
                                                      glpi_softwareversions$addtable.name, ' - ',
                                                      $table$addtable2.$field, '" . self::SHORTSEP . "',
                                                      $table$addtable2.id) SEPARATOR '" . self::LONGSEP . "')
-                                     AS " . $NAME . ",
+                                     AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                 } elseif ($itemtype == 'Software') {
                     return " GROUP_CONCAT(DISTINCT CONCAT(glpi_softwareversions.name, ' - ',
                                                      $table$addtable.$field,'" . self::SHORTSEP . "',
                                                      $table$addtable.id) SEPARATOR '" . self::LONGSEP . "')
-                                    AS " . $NAME . ",
+                                    AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                 }
                 break;
@@ -3701,7 +3701,7 @@ JAVASCRIPT;
                   )
                   ORDER BY $table$addtable.date DESC
                   SEPARATOR '" . self::LONGSEP . "'
-               ) AS " . $NAME . ", $ADDITONALFIELDS";
+               ) AS \"" . $NAME . "\", $ADDITONALFIELDS";
                 }
                 break;
 
@@ -3758,12 +3758,12 @@ JAVASCRIPT;
                                                          INTERVAL ($table$addtable." .
                                                                           $searchopt[$ID]["datafields"][2] .
                                                                           " $add_minus) $interval)
-                                         SEPARATOR '" . self::LONGSEP . "') AS " . $NAME . ",
+                                         SEPARATOR '" . self::LONGSEP . "') AS \"" . $NAME . "\",
                            $ADDITONALFIELDS";
                     }
                     return "ADDDATE($table$addtable." . $searchopt[$ID]["datafields"][1] . ",
                                INTERVAL ($table$addtable." . $searchopt[$ID]["datafields"][2] .
-                                               " $add_minus) $interval) AS " . $NAME . ",
+                                               " $add_minus) $interval) AS \"" . $NAME . "\",
                        $ADDITONALFIELDS";
 
                 case "itemlink":
@@ -3776,17 +3776,17 @@ JAVASCRIPT;
                             $TRANS = "GROUP_CONCAT(DISTINCT CONCAT(IFNULL($tocomputetrans, '" . self::NULLVALUE . "'),
                                                              '" . self::SHORTSEP . "',$tocomputeid) ORDER BY $tocomputeid
                                              SEPARATOR '" . self::LONGSEP . "')
-                                     AS " . $NAME . "_trans_" . $field . ", ";
+                                     AS \"" . $NAME . "_trans_" . $field . "\", ";
                         }
 
                         return " GROUP_CONCAT(DISTINCT CONCAT($tocompute, '" . self::SHORTSEP . "' ,
                                                         $table$addtable.id) ORDER BY $table$addtable.id
-                                        SEPARATOR '" . self::LONGSEP . "') AS " . $NAME . ",
+                                        SEPARATOR '" . self::LONGSEP . "') AS \"" . $NAME . "\",
                            $TRANS
                            $ADDITONALFIELDS";
                     }
-                    return " $tocompute AS " . $NAME . ",
-                        $table$addtable.id AS " . $NAME . "_id,
+                    return " $tocompute AS \"" . $NAME . "\",
+                        $table$addtable.id AS \"" . $NAME . "_id\",
                         $ADDITONALFIELDS";
             }
         }
@@ -3803,19 +3803,19 @@ JAVASCRIPT;
             if (Session::haveTranslations(getItemTypeForTable($table), $field)) {
                 $TRANS = "GROUP_CONCAT(DISTINCT CONCAT(IFNULL($tocomputetrans, '" . self::NULLVALUE . "'),
                                                    '" . self::SHORTSEP . "',$tocomputeid) ORDER BY $tocomputeid SEPARATOR '" . self::LONGSEP . "')
-                                  AS " . $NAME . "_trans_" . $field . ", ";
+                                  AS \"" . $NAME . "_trans_" . $field . "\", ";
             }
             return " GROUP_CONCAT(DISTINCT CONCAT(IFNULL($tocompute, '" . self::NULLVALUE . "'),
                                                '" . self::SHORTSEP . "',$tocomputeid) ORDER BY $tocomputeid SEPARATOR '" . self::LONGSEP . "')
-                              AS " . $NAME . ",
+                              AS \"" . $NAME . "\",
                   $TRANS
                   $ADDITONALFIELDS";
         }
         $TRANS = '';
         if (Session::haveTranslations(getItemTypeForTable($table), $field)) {
-            $TRANS = $tocomputetrans . " AS " . $NAME . "_trans_" . $field . ", ";
+            $TRANS = $tocomputetrans . " AS \"" . $NAME . "_trans_" . $field . "\", ";
         }
-        return "$tocompute AS " . $NAME . ", $TRANS $ADDITONALFIELDS";
+        return "$tocompute AS \"" . $NAME . "\", $TRANS $ADDITONALFIELDS";
     }
 
 
@@ -6603,20 +6603,19 @@ JAVASCRIPT;
                         $separate = self::LBHR;
                     }
 
-                    $itemName = strtolower($ID);
-                    for ($k = 0; $k < $data[$itemName]['count']; $k++) {
-                        if (isset($data[$itemName][$k]['id'])) {
+                    for ($k = 0; $k < $data[$ID]['count']; $k++) {
+                        if (isset($data[$ID][$k]['id'])) {
                             if ($count_display) {
                                 $out .= $separate;
                             }
                             $count_display++;
-                            $page  = $linkitemtype::getFormURLWithID($data[$itemName][$k]['id']);
-                            $name  = $data[$itemName][$k]['name'];
-                            if ($_SESSION["glpiis_ids_visible"] || empty($data[$itemName][$k]['name'])) {
-                                $name = sprintf(__('%1$s (%2$s)'), $name, $data[$itemName][$k]['id']);
+                            $page  = $linkitemtype::getFormURLWithID($data[$ID][$k]['id']);
+                            $name  = $data[$ID][$k]['name'];
+                            if ($_SESSION["glpiis_ids_visible"] || empty($data[$ID][$k]['name'])) {
+                                $name = sprintf(__('%1$s (%2$s)'), $name, $data[$ID][$k]['id']);
                             }
                             $out  .= "<a id='" . $linkitemtype . "_" . $data['id'] . "_" .
-                                       $data[$itemName][$k]['id'] . "' href='$page'>" .
+                                       $data[$ID][$k]['id'] . "' href='$page'>" .
                                       $name . "</a>";
                         }
                     }
@@ -6852,9 +6851,8 @@ JAVASCRIPT;
         if (isset($so['splititems']) && $so['splititems']) {
             $separate = self::LBHR;
         }
-        $itemName = strtolower($ID);
-        for ($k = 0; $k < $data[$itemName]['count']; $k++) {
-            if (strlen(trim($data[$itemName][$k]['name'] ?? '')) > 0) {
+        for ($k = 0; $k < $data[$ID]['count']; $k++) {
+            if (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0) {
                 if ($count_display) {
                     $out .= $separate;
                 }
@@ -6863,9 +6861,9 @@ JAVASCRIPT;
                 if (isset($table)) {
                     $itemtype = getItemTypeForTable($table);
                     if ($item = getItemForItemtype($itemtype)) {
-                        $tmpdata  = $data[$itemName][$k];
+                        $tmpdata  = $data[$ID][$k];
                         // Copy name to real field
-                        $tmpdata[$field] = $data[$itemName][$k]['name'];
+                        $tmpdata[$field] = $data[$ID][$k]['name'];
 
                         $specific = $item->getSpecificValueToDisplay(
                             $field,
@@ -6883,19 +6881,19 @@ JAVASCRIPT;
                 } else {
                     if (
                         isset($so['toadd'])
-                        && isset($so['toadd'][$data[$itemName][$k]['name']])
+                        && isset($so['toadd'][$data[$ID][$k]['name']])
                     ) {
-                        $out .= $so['toadd'][$data[$itemName][$k]['name']];
+                        $out .= $so['toadd'][$data[$ID][$k]['name']];
                     } else {
                         // Empty is 0 or empty
                         if (empty($split[0]) && isset($so['emptylabel'])) {
                             $out .= $so['emptylabel'];
                         } else {
                             // Trans field exists
-                            if (isset($data[$itemName][$k]['trans']) && !empty($data[$itemName][$k]['trans'])) {
-                                $out .= $data[$itemName][$k]['trans'];
+                            if (isset($data[$ID][$k]['trans']) && !empty($data[$ID][$k]['trans'])) {
+                                $out .= $data[$ID][$k]['trans'];
                             } else {
-                                $out .= $data[$itemName][$k]['name'];
+                                $out .= $data[$ID][$k]['name'];
                             }
                         }
                     }

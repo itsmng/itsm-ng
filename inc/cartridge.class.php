@@ -677,8 +677,8 @@ class Cartridge extends CommonDBChild
         $iterator = self::getAdapter()->request([
            'SELECT' => [
               'glpi_cartridges.*',
-              'glpi_printers.id AS printid',
-              'glpi_printers.name AS printname',
+              'glpi_printers.id AS "printID"',
+              'glpi_printers.name AS "printname"',
               'glpi_printers.init_pages_counter'
            ],
            'FROM'   => self::gettable(),
@@ -748,12 +748,12 @@ class Cartridge extends CommonDBChild
             $newValue[] = $date_in;
             $newValue[] = $date_use;
             if (!is_null($date_use)) {
-                if ($data["printid"] > 0) {
+                if ($data["printID"] > 0) {
                     $printname = $data["printname"];
                     if ($_SESSION['glpiis_ids_visible'] || empty($printname)) {
-                        $printname = sprintf(__('%1$s (%2$s)'), $printname, $data["printid"]);
+                        $printname = sprintf(__('%1$s (%2$s)'), $printname, $data["printID"]);
                     }
-                    $newValue[] = "<a href='" . Printer::getFormURLWithID($data["printid"]) . "'><span class='b'>" . $printname . "</span></a>";
+                    $newValue[] = "<a href='" . Printer::getFormURLWithID($data["printID"]) . "'><span class='b'>" . $printname . "</span></a>";
                 } else {
                     $newValue[] = NOT_AVAILABLE;
                 }
