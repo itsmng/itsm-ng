@@ -54,7 +54,7 @@ if (
 
 if (isset($_POST["item_type"]) && is_array($_POST["item_type"])) {
     $all_criteria = [];
-    foreach ($_POST["item_type"] as $key => $val) {
+    foreach ($_POST["item_type"] as $val) {
         if (in_array($val, $items)) {
             $itemtable = getTableForItemType($val);
 
@@ -106,7 +106,7 @@ if (isset($_POST["item_type"]) && is_array($_POST["item_type"])) {
                "$location_field AS location" :
                new QueryExpression("'' AS " . $DB->quoteName('location')));
 
-            $criteria['LEFT JOIN'] = $criteria['LEFT JOIN'] + [
+            $criteria['LEFT JOIN'] += [
                'glpi_contracts_items'  => [
                   'ON'  => [
                      $itemtable              => 'id',
@@ -150,7 +150,7 @@ if (isset($_POST["item_type"]) && is_array($_POST["item_type"])) {
                   ]
                ]
             ];
-            $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria($itemtable);
+            $criteria['WHERE'] += getEntitiesRestrictCriteria($itemtable);
 
             if (isset($_POST["year"][0]) && ($_POST["year"][0] != 0)) {
                 $ors = [];

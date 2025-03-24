@@ -772,7 +772,7 @@ class Planning extends CommonGLPI
     {
         if ($palette = self::getPalette($palette_name)) {
             if ($color_index > count($palette)) {
-                $color_index = $color_index % count($palette);
+                $color_index %= count($palette);
             }
 
             return $palette[$color_index];

@@ -469,7 +469,7 @@ class MailServer
 
         $data[$i] = __('No import');
         for ($i = 1; $i < 100; $i++) {
-            $size = $size + 1048576;
+            $size += 1048576;
             $data[$size] = $i . ' Mio';
         }
         return $data;

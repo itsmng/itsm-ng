@@ -5,11 +5,14 @@ namespace Infrastructure\Adapter\Database;
 use ArrayIterator;
 use CommonDBTM;
 use DateTime;
+use DBmysqlIterator;
+use Doctrine\DBAL\Result;
 use ReflectionClass;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Html;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
+use Traversable;
 
 class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 {
@@ -409,12 +412,21 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     }
 
 
-    public function request(string $dql, array $params = []): array
+    public function request(array $request): Result
     {
-        $query = $this->em->createQuery($dql);
-        foreach ($params as $key => $value) {
-            $query->setParameter($key, $value);
-        }
-        return $query->getResult();
+        global $DB;
+
+        $SqlIterator = new DBmysqlIterator($DB);
+        $query = $SqlIterator->buildQuery($request);
+
+        return $this->query($query);
+    }
+
+    public function query(string $query): Result
+    {
+        $stmt = $this->em->getConnection()->prepare($query);
+        $results = $stmt->executeQuery();
+
+        return $results;
     }
 }

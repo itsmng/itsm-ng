@@ -108,7 +108,7 @@ class DBmysqlIterator implements Iterator, Countable
      * @param string|array $crit        Fields/values, ex array("id"=>1), if empty => all rows (default '')
      * @param boolean      $log         To log the request (default false)
      *
-     * @return void
+     * @return string
      */
     public function buildQuery($table, $crit = "", $log = false)
     {
@@ -329,6 +329,7 @@ class DBmysqlIterator implements Iterator, Countable
         if ($log == true || defined('GLPI_SQL_DEBUG') && GLPI_SQL_DEBUG == true) {
             Toolbox::logSqlDebug("Generated query:", $this->getSql());
         }
+        return $this->sql;
     }
 
     /**

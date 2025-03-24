@@ -110,4 +110,15 @@ $return = [
     'rows' => $formattedDatas
 ];
 
-echo json_encode($return);
+array_walk_recursive($return, function (&$value) {
+    if (is_string($value)) {
+        $value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+    }
+});
+
+$json = json_encode($return, JSON_UNESCAPED_UNICODE);
+if ($json === false) {
+    echo "JSON encode error: " . json_last_error_msg();
+} else {
+    echo $json;
+}

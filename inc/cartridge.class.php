@@ -228,8 +228,6 @@ class Cartridge extends CommonDBChild
      */
     public function backToStock(array $input, $history = 1)
     {
-        global $DB;
-
         $result = $DB->update(
             $this->getTable(),
             [
@@ -472,13 +470,11 @@ class Cartridge extends CommonDBChild
     **/
     public static function getTotalNumber($tID)
     {
-        global $DB;
-
-        $row = $DB->request([
+        $row = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'COUNT'  => 'cpt',
            'WHERE'  => ['cartridgeitems_id' => $tID]
-        ])->next();
+        ])->fetchAssociative();
         return $row['cpt'];
     }
 
@@ -494,13 +490,11 @@ class Cartridge extends CommonDBChild
     **/
     public static function getTotalNumberForPrinter($pID)
     {
-        global $DB;
-
-        $row = $DB->request([
+        $row = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'COUNT'  => 'cpt',
            'WHERE'  => ['printers_id' => $pID]
-        ])->next();
+        ])[0];
         return (int)$row['cpt'];
     }
 
@@ -514,9 +508,7 @@ class Cartridge extends CommonDBChild
     **/
     public static function getUsedNumber($tID)
     {
-        global $DB;
-
-        $row = $DB->request([
+        $row = self::getAdapter()->request([
            'SELECT' => ['id'],
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_cartridges',
@@ -527,7 +519,7 @@ class Cartridge extends CommonDBChild
                  'date_use'  => null
               ]
            ]
-        ])->next();
+        ])->fetchAssociative();
         return (int)$row['cpt'];
     }
 
@@ -543,9 +535,7 @@ class Cartridge extends CommonDBChild
     **/
     public static function getUsedNumberForPrinter($pID)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => self::getTable(),
            'WHERE'  => [
@@ -553,7 +543,7 @@ class Cartridge extends CommonDBChild
               'date_out'     => null,
               'NOT'          => ['date_use' => null]
            ]
-        ])->next();
+        ])[0];
         return $result['cpt'];
     }
 
@@ -567,16 +557,14 @@ class Cartridge extends CommonDBChild
     **/
     public static function getOldNumber($tID)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'cartridgeitems_id'  => $tID,
               'NOT'                => ['date_out' => null]
            ]
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'];
     }
 
@@ -592,16 +580,14 @@ class Cartridge extends CommonDBChild
     **/
     public static function getOldNumberForPrinter($pID)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'printers_id'  => $pID,
               'NOT'          => ['date_out' => null]
            ]
-        ])->next();
+        ])[0];
         return $result['cpt'];
     }
 
@@ -615,16 +601,14 @@ class Cartridge extends CommonDBChild
     **/
     public static function getUnusedNumber($tID)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'cartridgeitems_id'  => $tID,
               'date_use'           => null
            ]
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'];
     }
 
@@ -691,7 +675,7 @@ class Cartridge extends CommonDBChild
         $pages_printed    = 0;
         $nb_pages_printed = 0;
 
-        $iterator = $DB->request([
+        $iterator = self::getAdapter()->request([
            'SELECT' => [
               'glpi_cartridges.*',
               'glpi_printers.id AS printID',
@@ -711,7 +695,7 @@ class Cartridge extends CommonDBChild
            'ORDER'     => $order
         ]);
 
-        $number = count($iterator);
+        $number = $iterator->rowCount();
 
         $massiveActionId = 'tableForCartridgeCartridges' . rand();
         if ($canedit && $number) {
@@ -752,7 +736,7 @@ class Cartridge extends CommonDBChild
 
         $values = [];
         $massive_action = [];
-        while ($data = $iterator->next()) {
+        while ($data = $iterator->fetchAssociative()) {
             $date_in  = Html::convDate($data["date_in"]);
             $date_use = Html::convDate($data["date_use"]);
             $date_out = Html::convDate($data["date_out"]);

@@ -3,6 +3,8 @@
 namespace Infrastructure\Adapter\Database;
 
 use CommonDBTM;
+use Doctrine\DBAL\Result;
+use Traversable;
 
 interface DatabaseAdapterInterface
 {
@@ -32,5 +34,6 @@ interface DatabaseAdapterInterface
 
     public function getRelations(): array;
 
-    public function request(string $dql, array $params = []): array;
+    public function request(array $sql): Result;
+    public function query(string $sql): Result;
 }

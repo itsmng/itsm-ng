@@ -15,8 +15,9 @@ class ItemProject
     #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(name: 'projects_id', type: "integer", options: ["default" => 0])]
-    private $projectsId;
+    #[ORM\ManyToOne(targetEntity: Project::class)]
+    #[ORM\JoinColumn(name: 'projects_id', referencedColumnName: 'id', nullable: true)]
+    private ?Project $project = null;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 100, nullable: true)]
     private $itemtype;
@@ -29,17 +30,6 @@ class ItemProject
         return $this->id;
     }
 
-    public function getProjectsId(): ?int
-    {
-        return $this->projectsId;
-    }
-
-    public function setProjectsId(int $projectsId): self
-    {
-        $this->projectsId = $projectsId;
-
-        return $this;
-    }
 
     public function getItemtype(): ?string
     {
@@ -61,6 +51,26 @@ class ItemProject
     public function setItemsId(int $itemsId): self
     {
         $this->itemsId = $itemsId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Set the value of project
+     *
+     * @return  self
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
 
         return $this;
     }

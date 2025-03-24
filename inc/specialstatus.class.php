@@ -96,7 +96,7 @@ class SpecialStatus extends CommonTreeDropdown
         if (isset($_POST["update"])) {
             $before = Ticket::getAllStatusArray(false, true);
             while ($update = $iterators->next()) {
-                $checksum = $checksum + $_POST["is_active_" . $update["id"]];
+                $checksum += $_POST["is_active_" . $update["id"]];
                 $DB->update(
                     "glpi_specialstatuses",
                     ['weight' => $_POST["weight_" . $update["id"]]],

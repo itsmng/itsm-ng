@@ -56,7 +56,7 @@ if (
 if (isset($_POST["item_type"]) && is_array($_POST["item_type"])) {
     $query = [];
     $all_criteria = [];
-    foreach ($_POST["item_type"] as $key => $val) {
+    foreach ($_POST["item_type"] as $val) {
         if (!in_array($val, $items)) {
             continue;
         }

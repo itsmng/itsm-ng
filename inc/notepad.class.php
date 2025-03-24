@@ -93,7 +93,7 @@ class Notepad extends CommonDBChild
     {
 
         $input['users_id']             = Session::getLoginUserID();
-        $input['users_id_lastupdater'] = Session::getLoginUserID();
+        $input['lastupdater_users_id'] = Session::getLoginUserID();
         $input['date']                 = $_SESSION['glpi_currenttime'];
         return $input;
     }
@@ -102,7 +102,7 @@ class Notepad extends CommonDBChild
     public function prepareInputForUpdate($input)
     {
 
-        $input['users_id_lastupdater'] = Session::getLoginUserID();
+        $input['lastupdater_users_id'] = Session::getLoginUserID();
         return $input;
     }
 
@@ -196,7 +196,7 @@ class Notepad extends CommonDBChild
            'LEFT JOIN' => [
               'glpi_users'   => [
                  'ON' => [
-                    self::getTable()  => 'users_id_lastupdater',
+                    self::getTable()  => 'lastupdater_users_id',
                     'glpi_users'      => 'id'
                  ]
               ]
@@ -287,7 +287,7 @@ class Notepad extends CommonDBChild
            'id'                 => '204',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_lastupdater',
+           'linkfield'          => 'lastupdater_users_id',
            'name'               => __('Last updater'),
            'datatype'           => 'dropdown',
            'forcegroupby'       => true,
@@ -386,8 +386,8 @@ class Notepad extends CommonDBChild
 
                 echo "<div class='boxnotefloatright'>";
                 $username = NOT_AVAILABLE;
-                if ($note['users_id_lastupdater']) {
-                    $username = getUserName($note['users_id_lastupdater'], $showuserlink);
+                if ($note['lastupdater_users_id']) {
+                    $username = getUserName($note['lastupdater_users_id'], $showuserlink);
                 }
                 $update = sprintf(
                     __('Last update by %1$s on %2$s'),

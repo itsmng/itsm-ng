@@ -1194,7 +1194,7 @@ class IPAddress extends CommonDBChild
                    'ITEM.id AS item_id',
                    new \QueryExpression("'$itemtype' AS " . $DB->quoteName('item_type'))
                 ]);
-                $criteria['INNER JOIN'] = $criteria['INNER JOIN'] + [
+                $criteria['INNER JOIN'] += [
                    'glpi_networknames AS NAME'   => [
                       'ON' => [
                          'NAME'   => 'id',
@@ -1232,7 +1232,7 @@ class IPAddress extends CommonDBChild
                new \QueryExpression('NULL AS ' . $DB->quoteName('item_id')),
                new \QueryExpression("NULL AS " . $DB->quoteName('item_type')),
             ]);
-            $criteria['INNER JOIN'] = $criteria['INNER JOIN'] + [
+            $criteria['INNER JOIN'] += [
                'glpi_networknames AS NAME'   => [
                   'ON' => [
                      'NAME'   => 'id',
@@ -1265,7 +1265,7 @@ class IPAddress extends CommonDBChild
                new \QueryExpression('NULL AS ' . $DB->quoteName('item_id')),
                new \QueryExpression("NULL AS " . $DB->quoteName('item_type'))
             ]);
-            $criteria['INNER JOIN'] = $criteria['INNER JOIN'] + [
+            $criteria['INNER JOIN'] += [
                'glpi_networknames AS NAME'   => [
                   'ON' => [
                      'NAME'   => 'id',

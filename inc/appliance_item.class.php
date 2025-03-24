@@ -34,7 +34,6 @@ if (!defined('GLPI_ROOT')) {
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
 **/
-
 class Appliance_Item extends CommonDBRelation
 {
     use Glpi\Features\Clonable;

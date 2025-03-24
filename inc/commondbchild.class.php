@@ -799,7 +799,7 @@ abstract class CommonDBChild extends CommonDBConnexity
         } else {
             $value = $this->getName();
         }
-        $field_name = $field_name . "[$id]";
+        $field_name .= "[$id]";
         if ($canedit) {
             echo "<input type='text' size='40' name='$field_name' value='$value'>";
         } else {

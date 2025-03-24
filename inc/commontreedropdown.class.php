@@ -901,7 +901,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
                ]
             ];
             if ($this->isEntityAssign()) {
-                $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria(
+                $criteria['WHERE'] += getEntitiesRestrictCriteria(
                     $this->getTable(),
                     '',
                     $input['entities_id'],
@@ -926,7 +926,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
                ]
             ];
             if ($this->isEntityAssign()) {
-                $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria(
+                $criteria['WHERE'] += getEntitiesRestrictCriteria(
                     $this->getTable(),
                     '',
                     $input['entities_id'],

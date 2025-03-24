@@ -55,14 +55,14 @@ class DB extends \GLPITestCase
               ->boolean($this->testedInstance->fieldExists('glpi_configs', 'ID'))->isFalse()
               ->boolean($this->testedInstance->fieldExists('glpi_configs', 'fakeField'))->isFalse()
               ->when(
-                  function () {
+                  function (): void {
                       $this->boolean($this->testedInstance->fieldExists('fakeTable', 'id'))->isFalse();
                   }
               )->error
                  ->withType(E_USER_WARNING)
                  ->exists()
               ->when(
-                  function () {
+                  function (): void {
                       $this->boolean($this->testedInstance->fieldExists('fakeTable', 'fakeField'))->isFalse();
                   }
               )->error
@@ -224,7 +224,7 @@ class DB extends \GLPITestCase
     public function testBuildUpdateWException()
     {
         $this->exception(
-            function () {
+            function (): void {
                 $this
                    ->if($this->newTestedInstance)
                    ->then
@@ -279,7 +279,7 @@ class DB extends \GLPITestCase
     public function testBuildDeleteWException()
     {
         $this->exception(
-            function () {
+            function (): void {
                 $this
                    ->if($this->newTestedInstance)
                    ->then

@@ -42,9 +42,6 @@ class DeviceMemory
     #[ORM\JoinColumn(name: 'devicememorytypes_id', referencedColumnName: 'id', nullable: true)]
     private ?DeviceMemoryType $deviceMemoryType = null;
 
-    #[ORM\Column(name: 'entities_id', type: "integer", options: ['default' => 0])]
-    private $entitiesId;
-
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
@@ -111,18 +108,6 @@ class DeviceMemory
     public function setSizeDefault(?int $sizeDefault): self
     {
         $this->sizeDefault = $sizeDefault;
-
-        return $this;
-    }
-
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(?int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
 
         return $this;
     }

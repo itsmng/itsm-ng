@@ -32,20 +32,25 @@ class ItemOperatingSystem
     #[ORM\Column(name: 'itemtype', type: "string", length: 255, nullable: true)]
     private $itemtype;
 
-    #[ORM\Column(name: 'operatingsystems_id', type: "integer", options: ["default" => 0])]
-    private $operatingsystemsId;
+    #[ORM\ManyToOne(targetEntity: OperatingSystem::class)]
+    #[ORM\JoinColumn(name: 'operatingsystems_id', referencedColumnName: 'id', nullable: true)]
+    private ?OperatingSystem $operatingsystem = null;
 
-    #[ORM\Column(name: 'operatingsystemversions_id', type: "integer", options: ["default" => 0])]
-    private $operatingsystemversionsId;
+    #[ORM\ManyToOne(targetEntity: OperatingSystemVersion::class)]
+    #[ORM\JoinColumn(name: 'operatingsystemversions_id', referencedColumnName: 'id', nullable: true)]
+    private ?OperatingSystemVersion $operatingsystemversion = null;
 
-    #[ORM\Column(name: 'operatingsystemservicepacks_id', type: "integer", options: ["default" => 0])]
-    private $operatingsystemservicepacksId;
+    #[ORM\ManyToOne(targetEntity: OperatingSystemServicePack::class)]
+    #[ORM\JoinColumn(name: 'operatingsystemservicepacks_id', referencedColumnName: 'id', nullable: true)]
+    private ?OperatingSystemServicePack $operatingsystemservicepack = null;
 
-    #[ORM\Column(name: 'operatingsystemarchitectures_id', type: "integer", options: ["default" => 0])]
-    private $operatingsystemarchitecturesId;
+    #[ORM\ManyToOne(targetEntity: OperatingSystemArchitecture::class)]
+    #[ORM\JoinColumn(name: 'operatingsystemarchitectures_id', referencedColumnName: 'id', nullable: true)]
+    private ?OperatingSystemArchitecture $operatingsystemarchitecture = null;
 
-    #[ORM\Column(name: 'operatingsystemkernelversions_id', type: "integer", options: ["default" => 0])]
-    private $operatingsystemkernelversionsId;
+    #[ORM\ManyToOne(targetEntity: OperatingSystemKernelVersion::class)]
+    #[ORM\JoinColumn(name: 'operatingsystemkernelversions_id', referencedColumnName: 'id', nullable: true)]
+    private ?OperatingSystemKernelVersion $operatingsystemkernelversion = null;
 
     #[ORM\Column(name: 'license_number', type: "string", length: 255, nullable: true)]
     private $licenseNumber;
@@ -53,8 +58,9 @@ class ItemOperatingSystem
     #[ORM\Column(name: 'licenseid', type: "string", length: 255, nullable: true)]
     private $licenseid;
 
-    #[ORM\Column(name: 'operatingsystemeditions_id', type: "integer", options: ["default" => 0])]
-    private $operatingsystemeditionsId;
+    #[ORM\ManyToOne(targetEntity: OperatingSystemEdition::class)]
+    #[ORM\JoinColumn(name: 'operatingsystemeditions_id', referencedColumnName: 'id', nullable: true)]
+    private ?OperatingSystemEdition $operatingsystemedition = null;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;
@@ -68,8 +74,9 @@ class ItemOperatingSystem
     #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => 0])]
     private $isDynamic = 0;
 
-    #[ORM\Column(name: 'entities_id', type: "integer", options: ["default" => 0])]
-    private $entitiesId = 0;
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
     private $isRecursive = 0;
@@ -104,65 +111,6 @@ class ItemOperatingSystem
         return $this;
     }
 
-    public function getOperatingSystemsId(): ?int
-    {
-        return $this->operatingsystemsId;
-    }
-
-    public function setOperatingSystemsId(int $operatingsystemsId): self
-    {
-        $this->operatingsystemsId = $operatingsystemsId;
-
-        return $this;
-    }
-
-    public function getOperatingSystemVersionsId(): ?int
-    {
-        return $this->operatingsystemversionsId;
-    }
-
-    public function setOperatingSystemVersionsId(int $operatingsystemversionsId): self
-    {
-        $this->operatingsystemversionsId = $operatingsystemversionsId;
-
-        return $this;
-    }
-
-    public function getOperatingSystemServicePacksId(): ?int
-    {
-        return $this->operatingsystemservicepacksId;
-    }
-
-    public function setOperatingSystemServicePacksId(int $operatingsystemservicepacksId): self
-    {
-        $this->operatingsystemservicepacksId = $operatingsystemservicepacksId;
-
-        return $this;
-    }
-
-    public function getOperatingSystemArchitecturesId(): ?int
-    {
-        return $this->operatingsystemarchitecturesId;
-    }
-
-    public function setOperatingSystemArchitecturesId(int $operatingsystemarchitecturesId): self
-    {
-        $this->operatingsystemarchitecturesId = $operatingsystemarchitecturesId;
-
-        return $this;
-    }
-
-    public function getOperatingSystemKernelVersionsId(): ?int
-    {
-        return $this->operatingsystemkernelversionsId;
-    }
-
-    public function setOperatingSystemKernelVersionsId(int $operatingsystemkernelversionsId): self
-    {
-        $this->operatingsystemkernelversionsId = $operatingsystemkernelversionsId;
-
-        return $this;
-    }
 
     public function getLicenseNumber(): ?string
     {
@@ -224,18 +172,6 @@ class ItemOperatingSystem
         return $this;
     }
 
-    public function getEntitiesId(): ?int
-    {
-        return $this->entitiesId;
-    }
-
-    public function setEntitiesId(int $entitiesId): self
-    {
-        $this->entitiesId = $entitiesId;
-
-        return $this;
-    }
-
     public function getIsRecursive(): ?bool
     {
         return $this->isRecursive;
@@ -244,6 +180,166 @@ class ItemOperatingSystem
     public function setIsRecursive(bool $isRecursive): self
     {
         $this->isRecursive = $isRecursive;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of operatingsystem
+     */
+    public function getOperatingsystem()
+    {
+        return $this->operatingsystem;
+    }
+
+    /**
+     * Set the value of operatingsystem
+     *
+     * @return  self
+     */
+    public function setOperatingsystem($operatingsystem)
+    {
+        $this->operatingsystem = $operatingsystem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of operatingsystemversion
+     */
+    public function getOperatingsystemversion()
+    {
+        return $this->operatingsystemversion;
+    }
+
+    /**
+     * Set the value of operatingsystemversion
+     *
+     * @return  self
+     */
+    public function setOperatingsystemversion($operatingsystemversion)
+    {
+        $this->operatingsystemversion = $operatingsystemversion;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of operatingsystemservicepack
+     */
+    public function getOperatingsystemservicepack()
+    {
+        return $this->operatingsystemservicepack;
+    }
+
+    /**
+     * Set the value of operatingsystemservicepack
+     *
+     * @return  self
+     */
+    public function setOperatingsystemservicepack($operatingsystemservicepack)
+    {
+        $this->operatingsystemservicepack = $operatingsystemservicepack;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of operatingsystemarchitecture
+     */
+    public function getOperatingsystemarchitecture()
+    {
+        return $this->operatingsystemarchitecture;
+    }
+
+    /**
+     * Set the value of operatingsystemarchitecture
+     *
+     * @return  self
+     */
+    public function setOperatingsystemarchitecture($operatingsystemarchitecture)
+    {
+        $this->operatingsystemarchitecture = $operatingsystemarchitecture;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of licenseid
+     */
+    public function getLicenseid()
+    {
+        return $this->licenseid;
+    }
+
+    /**
+     * Set the value of licenseid
+     *
+     * @return  self
+     */
+    public function setLicenseid($licenseid)
+    {
+        $this->licenseid = $licenseid;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of operatingsystemkernelversion
+     */
+    public function getOperatingsystemkernelversion()
+    {
+        return $this->operatingsystemkernelversion;
+    }
+
+    /**
+     * Set the value of operatingsystemkernelversion
+     *
+     * @return  self
+     */
+    public function setOperatingsystemkernelversion($operatingsystemkernelversion)
+    {
+        $this->operatingsystemkernelversion = $operatingsystemkernelversion;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of operatingsystemedition
+     */
+    public function getOperatingsystemedition()
+    {
+        return $this->operatingsystemedition;
+    }
+
+    /**
+     * Set the value of operatingsystemedition
+     *
+     * @return  self
+     */
+    public function setOperatingsystemedition($operatingsystemedition)
+    {
+        $this->operatingsystemedition = $operatingsystemedition;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
 
         return $this;
     }

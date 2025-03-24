@@ -17,12 +17,12 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Index(name: "priority", columns: ["priority"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "itilcategories_id", columns: ["itilcategories_id"])]
-#[ORM\Index(name: "users_id_recipient", columns: ["users_id_recipient"])]
+#[ORM\Index(name: "recipient_users_id", columns: ["recipient_users_id"])]
 #[ORM\Index(name: "solvedate", columns: ["solvedate"])]
 #[ORM\Index(name: "urgency", columns: ["urgency"])]
 #[ORM\Index(name: "impact", columns: ["impact"])]
 #[ORM\Index(name: "time_to_resolve", columns: ["time_to_resolve"])]
-#[ORM\Index(name: "users_id_lastupdater", columns: ["users_id_lastupdater"])]
+#[ORM\Index(name: "lastupdater_users_id", columns: ["lastupdater_users_id"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class Problem
 {
@@ -66,12 +66,12 @@ class Problem
     private $timeToResolve;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_recipient', referencedColumnName: 'id', nullable: true)]
-    private ?User $userRecipient = null;
+    #[ORM\JoinColumn(name: 'recipient_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $recipientUser = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_lastupdater', referencedColumnName: 'id', nullable: true)]
-    private ?User $userLastupdater = null;
+    #[ORM\JoinColumn(name: 'lastupdater_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $lastupdaterUser = null;
 
     #[ORM\Column(name: 'urgency', type: 'integer', options: ['default' => 1])]
     private $urgency;
@@ -481,45 +481,6 @@ class Problem
         return $this;
     }
 
-    /**
-     * Get the value of userRecipient
-     */
-    public function getUserRecipient()
-    {
-        return $this->userRecipient;
-    }
-
-    /**
-     * Set the value of userRecipient
-     *
-     * @return  self
-     */
-    public function setUserRecipient($userRecipient)
-    {
-        $this->userRecipient = $userRecipient;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of userLastupdater
-     */
-    public function getUserLastupdater()
-    {
-        return $this->userLastupdater;
-    }
-
-    /**
-     * Set the value of userLastupdater
-     *
-     * @return  self
-     */
-    public function setUserLastupdater($userLastupdater)
-    {
-        $this->userLastupdater = $userLastupdater;
-
-        return $this;
-    }
 
     /**
      * Get the value of itilcategory
@@ -600,6 +561,47 @@ class Problem
     public function setProblemUsers($problemUsers)
     {
         $this->problemUsers = $problemUsers;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of lastupdaterUser
+     */
+    public function getLastupdaterUser()
+    {
+        return $this->lastupdaterUser;
+    }
+
+    /**
+     * Set the value of lastupdaterUser
+     *
+     * @return  self
+     */
+    public function setLastupdaterUser($lastupdaterUser)
+    {
+        $this->lastupdaterUser = $lastupdaterUser;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of recipientUser
+     */
+    public function getRecipientUser()
+    {
+        return $this->recipientUser;
+    }
+
+    /**
+     * Set the value of recipientUser
+     *
+     * @return  self
+     */
+    public function setRecipientUser($recipientUser)
+    {
+        $this->recipientUser = $recipientUser;
 
         return $this;
     }

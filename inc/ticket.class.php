@@ -255,7 +255,7 @@ class Ticket extends CommonITILObject
         }
         return (Session::haveRight(self::$rightname, self::READALL)
             || (Session::haveRight(self::$rightname, self::READMY)
-                && (($this->fields["users_id_recipient"] === Session::getLoginUserID())
+                && (($this->fields["recipient_users_id"] === Session::getLoginUserID())
                     || $this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
                     || $this->isUser(CommonITILActor::OBSERVER, Session::getLoginUserID())))
             || (Session::haveRight(self::$rightname, self::READGROUP)
@@ -281,7 +281,7 @@ class Ticket extends CommonITILObject
     public function canApprove()
     {
 
-        return ((($this->fields["users_id_recipient"] === Session::getLoginUserID())
+        return ((($this->fields["recipient_users_id"] === Session::getLoginUserID())
             &&  Session::haveRight('ticket', Ticket::SURVEY))
             || $this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
             || (isset($_SESSION["glpigroups"])
@@ -547,7 +547,7 @@ class Ticket extends CommonITILObject
     public function canRequesterUpdateItem()
     {
         return ($this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
-            || $this->fields["users_id_recipient"] === Session::getLoginUserID())
+            || $this->fields["recipient_users_id"] === Session::getLoginUserID())
             && $this->fields['status'] != $_SESSION['SOLVED']
             && $this->fields['status'] != $_SESSION['CLOSED']
             && $this->numberOfFollowups() == 0
@@ -609,7 +609,7 @@ class Ticket extends CommonITILObject
         if (
             Session::getCurrentInterface() == "helpdesk"
             && (!($this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
-                || $this->fields["users_id_recipient"] === Session::getLoginUserID())
+                || $this->fields["recipient_users_id"] === Session::getLoginUserID())
                 || $this->numberOfFollowups() > 0
                 || $this->numberOfTasks() > 0
                 || $this->fields["date"] != $this->fields["date_mod"])
@@ -2566,9 +2566,9 @@ class Ticket extends CommonITILObject
      *
      * @param $ID                           ID of the ticket
      * @param $no_stat_computation  boolean do not cumpute take into account stat (false by default)
-     * @param $users_id_lastupdater integer to force last_update id (default 0 = not used)
+     * @param $lastupdater_users_id integer to force last_update id (default 0 = not used)
      **/
-    public function updateDateMod($ID, $no_stat_computation = false, $users_id_lastupdater = 0)
+    public function updateDateMod($ID, $no_stat_computation = false, $lastupdater_users_id = 0)
     {
 
         if ($this->getFromDB($ID)) {
@@ -2586,7 +2586,7 @@ class Ticket extends CommonITILObject
                 );
             }
 
-            parent::updateDateMod($ID, $no_stat_computation, $users_id_lastupdater);
+            parent::updateDateMod($ID, $no_stat_computation, $lastupdater_users_id);
         }
     }
 
@@ -2648,8 +2648,8 @@ class Ticket extends CommonITILObject
             && (
                 $this->isUser(CommonITILActor::REQUESTER, $user_id)
                 || (
-                    isset($this->fields['users_id_recipient'])
-                    && ($this->fields['users_id_recipient'] == $user_id)
+                    isset($this->fields['recipient_users_id'])
+                    && ($this->fields['recipient_users_id'] == $user_id)
                 )
             )
         )
@@ -3505,7 +3505,7 @@ class Ticket extends CommonITILObject
                 $tokeep[] = 'validation';
             }
             $keep = false;
-            foreach ($tab as $key => &$val) {
+            foreach ($tab as &$val) {
                 if (!isset($val['table'])) {
                     $keep = in_array($val['id'], $tokeep);
                 }
@@ -3673,7 +3673,7 @@ class Ticket extends CommonITILObject
                 }
                 unset($status_db[$i]);
                 unset($do_sort[$done]);
-                $done = $done + 1;
+                $done += 1;
                 $i = -1;
             }
         }
@@ -3991,7 +3991,7 @@ class Ticket extends CommonITILObject
             echo "</td></tr>";
 
             echo "</table></div>";
-            echo "<input type='hidden' name='_users_id_recipient' value='" . Session::getLoginUserID() . "'>";
+            echo "<input type='hidden' name='_recipient_users_id' value='" . Session::getLoginUserID() . "'>";
         } else {
             // User as requester
             $options['_users_id_requester'] = Session::getLoginUserID();
@@ -4932,17 +4932,17 @@ class Ticket extends CommonITILObject
                         __('By') => $ID ? [
                             'type' => 'select',
                             'noLib' => 'true',
-                            'name' => 'users_id_recipient',
+                            'name' => 'recipient_users_id',
                             'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
-                            'value' => $this->fields["users_id_recipient"],
+                            'value' => $this->fields["recipient_users_id"],
                             $canupdate ? '' : 'disabled' => ''
                         ] : [],
                         __('Last update') => $ID ? [
-                            'content' => ($this->fields['users_id_lastupdater'] > 0) ?
+                            'content' => ($this->fields['lastupdater_users_id'] > 0) ?
                                 sprintf(
                                     __('%1$s by %2$s'),
                                     Html::convDateTime($this->fields["date_mod"]),
-                                    getUserName($this->fields["users_id_lastupdater"], $showuserlink)
+                                    getUserName($this->fields["lastupdater_users_id"], $showuserlink)
                                 ) : '',
                         ] : [],
                         __('Time to own') => [
@@ -5346,7 +5346,7 @@ class Ticket extends CommonITILObject
             case "toapprove": //tickets waiting for approval
                 $ORWHERE = ['AND' => $search_users_id];
                 if (!$showgrouptickets &&  Session::haveRight('ticket', Ticket::SURVEY)) {
-                    $ORWHERE[] = ['glpi_tickets.users_id_recipient' => Session::getLoginUserID()];
+                    $ORWHERE[] = ['glpi_tickets.recipient_users_id' => Session::getLoginUserID()];
                 }
                 $WHERE[] = ['OR' => $ORWHERE];
                 $WHERE['glpi_tickets.status'] = $_SESSION['SOLVED'];
@@ -5452,7 +5452,7 @@ class Ticket extends CommonITILObject
                 ];
                 $ORWHERE = ['AND' => $search_users_id];
                 if (!$showgrouptickets &&  Session::haveRight('ticket', Ticket::SURVEY)) {
-                    $ORWHERE[] = ['glpi_tickets.users_id_recipient' => Session::getLoginUserID()];
+                    $ORWHERE[] = ['glpi_tickets.recipient_users_id' => Session::getLoginUserID()];
                 }
                 $WHERE[] = ['OR' => $ORWHERE];
 
@@ -5733,7 +5733,7 @@ class Ticket extends CommonITILObject
                         $options['criteria'][1]['value']      = Session::getLoginUserID();
                         $options['criteria'][1]['link']       = 'AND';
 
-                        $options['criteria'][2]['field']      = 22; // users_id_recipient
+                        $options['criteria'][2]['field']      = 22; // recipient_users_id
                         $options['criteria'][2]['searchtype'] = 'equals';
                         $options['criteria'][2]['value']      = Session::getLoginUserID();
                         $options['criteria'][2]['link']       = 'OR';
@@ -6002,7 +6002,7 @@ class Ticket extends CommonITILObject
         if ($foruser) {
             $ORWHERE = ['OR' => [
                 'glpi_tickets_users.users_id'                => Session::getLoginUserID(),
-                'glpi_tickets.users_id_recipient'            => Session::getLoginUserID(),
+                'glpi_tickets.recipient_users_id'            => Session::getLoginUserID(),
                 'glpi_ticketvalidations.users_id_validate'   => Session::getLoginUserID()
             ]];
 
@@ -6273,7 +6273,7 @@ class Ticket extends CommonITILObject
                 // you can only see your tickets
                 if (!Session::haveRight(self::$rightname, self::READALL)) {
                     $or = [
-                        'glpi_tickets.users_id_recipient'   => Session::getLoginUserID(),
+                        'glpi_tickets.recipient_users_id'   => Session::getLoginUserID(),
                         [
                             'AND' => [
                                 'glpi_tickets_users.tickets_id'  => new \QueryExpression('glpi_tickets.id'),
@@ -7377,7 +7377,7 @@ class Ticket extends CommonITILObject
             // Subquery for recipient
             $recipient_query = "SELECT `id`
             FROM `glpi_tickets`
-            WHERE `users_id_recipient` = '$user'";
+            WHERE `recipient_users_id` = '$user'";
             $condition .= "OR `$fieldID` IN ($recipient_query) ";
         }
 
@@ -7530,7 +7530,7 @@ class Ticket extends CommonITILObject
                         'itemtype'        => 'Ticket',
                         'items_id'        => $merge_target_id,
                         'content'         => $DB->escape($ticket->fields['name'] . "\n\n" . $ticket->fields['content']),
-                        'users_id'        => $ticket->fields['users_id_recipient'],
+                        'users_id'        => $ticket->fields['recipient_users_id'],
                         'date_creation'   => $ticket->fields['date_creation'],
                         'date_mod'        => $ticket->fields['date_mod'],
                         'date'            => $ticket->fields['date_creation'],
@@ -7796,7 +7796,7 @@ class Ticket extends CommonITILObject
                             ['tu.type' => CommonITILActor::OBSERVER],
                         ]
                     ],
-                    "glpi_tickets.users_id_recipient" => Session::getLoginUserID()
+                    "glpi_tickets.recipient_users_id" => Session::getLoginUserID()
                 ]
             ];
         }

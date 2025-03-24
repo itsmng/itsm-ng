@@ -1451,17 +1451,17 @@ class Problem extends CommonITILObject
                     ],
                     __('By') => $ID ? [
                        'type' => 'select',
-                       'name' => 'users_id_recipient',
-                       'value' => $this->fields["users_id_recipient"],
+                       'name' => 'recipient_users_id',
+                       'value' => $this->fields["recipient_users_id"],
                        'values' => getOptionsForUsers('all', ['entities_id' => $this->fields["entities_id"]]),
                        'actions' => getItemActionButtons(['info'], User::class),
                     ] : [],
                     __('Last update') => $ID ? [
                        'content' => Html::convDateTime($this->fields["date_mod"])
-                          . (($this->fields['users_id_lastupdater'] > 0) ? sprintf(
+                          . (($this->fields['lastupdater_users_id'] > 0) ? sprintf(
                               __('%1$s: %2$s'),
                               __('By'),
-                              getUserName($this->fields["users_id_lastupdater"], $showuserlink)
+                              getUserName($this->fields["lastupdater_users_id"], $showuserlink)
                           ) : ''),
                     ] : [],
                     __('Date of solving') => ($ID

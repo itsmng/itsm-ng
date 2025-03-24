@@ -31,10 +31,12 @@
  * ---------------------------------------------------------------------
  */
 
+use Doctrine\ORM\Mapping\MappedSuperclass;
 use Glpi\Event;
 use Infrastructure\Adapter\Database\LegacySqlAdapter;
 use Infrastructure\Adapter\Database\DatabaseAdapterInterface;
 use Infrastructure\Adapter\Database\DoctrineRelationalAdapter;
+use Doctrine\ORM\Mapping as ORM;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -43,6 +45,7 @@ if (!defined('GLPI_ROOT')) {
 /**
 *  Common DataBase Table Manager Class - Persistent Object
 **/
+#[ORM\MappedSuperclass]
 #[AllowDynamicProperties]
 class CommonDBTM extends CommonGLPI
 {
@@ -770,7 +773,6 @@ class CommonDBTM extends CommonGLPI
                   'itemtype'  => $this->getType()
                ]
             ]);
-
             while ($data = $iterator->next()) {
                 $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['tickets_id']]);
                 $itemsticket->delete(["id" => $data["id"]]);
@@ -4578,7 +4580,7 @@ class CommonDBTM extends CommonGLPI
                 Toolbox::logError($message);
             }
             $all_fields =  FieldUnicity::getUnicityFieldsConfig(get_class($this), $entities_id);
-            foreach ($all_fields as $key => $fields) {
+            foreach ($all_fields as $fields) {
                 //If there's fields to check
                 if (!empty($fields) && !empty($fields['fields'])) {
                     $where    = [];
@@ -4708,6 +4710,9 @@ class CommonDBTM extends CommonGLPI
         if (is_array($crit) && (count($crit) > 0)) {
             $crit['FIELDS'] = [$this::getTable() => 'id'];
             $ok = true;
+            //ajout
+            $crit['table'] = $this->getTable();
+            //fin ajout
             $iterator = $DB->request($this->getTable(), $crit);
             foreach ($iterator as $row) {
                 if (!$this->delete($row, $force, $history)) {
@@ -5274,7 +5279,7 @@ class CommonDBTM extends CommonGLPI
         ];
 
         if ($item->isEntityAssign()) {
-            $request['WHERE'] = $request['WHERE'] + getEntitiesRestrictCriteria(
+            $request['WHERE'] += getEntitiesRestrictCriteria(
                 $item->getTable(),
                 'entities_id',
                 $_SESSION['glpiactiveentities'],
@@ -5292,7 +5297,8 @@ class CommonDBTM extends CommonGLPI
         $blank_params = (strpos($target, '?') ? '&' : '?') . "id=-1&withtemplate=2";
         $target_blank = $target . $blank_params;
 
-        if ($add && count($iterator) == 0) {
+        // if ($add && count($iterator) == 0) {
+        if ($add && count(iterator_to_array($iterator)) == 0) {
             //if there is no template, just use blank
             Html::redirect($target_blank);
         }

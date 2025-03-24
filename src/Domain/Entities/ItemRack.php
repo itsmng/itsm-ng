@@ -15,8 +15,9 @@ class ItemRack
     #[ORM\Column(name: 'id', type: "integer")]
     private $id;
 
-    #[ORM\Column(name: 'racks_id', type: "integer")]
-    private $racksId;
+    #[ORM\ManyToOne(targetEntity: Rack::class)]
+    #[ORM\JoinColumn(name: 'racks_id', referencedColumnName: 'id', nullable: true)]
+    private ?Rack $rack = null;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 255)]
     private $itemtype;
@@ -42,18 +43,6 @@ class ItemRack
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRacksId(): ?int
-    {
-        return $this->racksId;
-    }
-
-    public function setRacksId(int $racksId): self
-    {
-        $this->racksId = $racksId;
-
-        return $this;
     }
 
     public function getItemtype(): ?string
@@ -136,6 +125,26 @@ class ItemRack
     public function setIsReserved(int $isReserved): self
     {
         $this->isReserved = $isReserved;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of rack
+     */
+    public function getRack()
+    {
+        return $this->rack;
+    }
+
+    /**
+     * Set the value of rack
+     *
+     * @return  self
+     */
+    public function setRack($rack)
+    {
+        $this->rack = $rack;
 
         return $this;
     }

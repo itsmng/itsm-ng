@@ -32,6 +32,7 @@
  */
 
 use Glpi\Toolbox\URL;
+use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -462,7 +463,7 @@ class Search
 
         if (count($p['criteria']) > 0) {
             // use a recursive closure to push searchoption when using nested criteria
-            $parse_criteria = function ($criteria) use (&$parse_criteria, &$data) {
+            $parse_criteria = function ($criteria) use (&$parse_criteria, &$data): void {
                 foreach ($criteria as $criterion) {
                     // recursive call
                     if (isset($criterion['criteria'])) {
@@ -1159,7 +1160,7 @@ class Search
                 if (isset($criterion['field']) && $criterion['field'] == "all") {
                     $items = $searchopt;
                 } else { // toview case : populate toview
-                    foreach ($data['toview'] as $key2 => $val2) {
+                    foreach ($data['toview'] as $val2) {
                         $items[$val2] = $searchopt[$val2];
                     }
                 }
@@ -1304,8 +1305,9 @@ class Search
         $data['data'] = [];
 
         // Use a ReadOnly connection if available and configured to be used
-        $DBread = DBConnection::getReadConnection();
-        $DBread->query("SET SESSION group_concat_max_len = 16384;");
+        $em = EntityManagerProvider::getEntityManager();
+        $connection = $em->getConnection();
+        $group_concat_max_len = '16384';
 
         // directly increase group_concat_max_len to avoid double query
         if (count($data['search']['metacriteria'])) {
@@ -1314,25 +1316,27 @@ class Search
                     $metacriterion['link'] == 'AND NOT'
                     || $metacriterion['link'] == 'OR NOT'
                 ) {
-                    $DBread->query("SET SESSION group_concat_max_len = 4194304;");
+                    $group_concat_max_len = '4194304';
                     break;
                 }
             }
         }
+        $stmt = $connection->prepare("SET SESSION group_concat_max_len = {$group_concat_max_len};");
+        $stmt->executeQuery();
 
-        $DBread->execution_time = true;
-        $result = $DBread->query($data['sql']['search']);
+        //$DBread->execution_time = true;
+        $stmt = $connection->prepare($data['sql']['search']);
+        $result = $stmt->executeQuery();
         /// Check group concat limit : if warning : increase limit
-        if ($result2 = $DBread->query('SHOW WARNINGS')) {
-            if ($DBread->numrows($result2) > 0) {
-                $res = $DBread->fetchAssoc($result2);
-                if ($res['Code'] == 1260) {
-                    $DBread->query("SET SESSION group_concat_max_len = 8194304;");
-                    $DBread->execution_time = true;
-                    $result = $DBread->query($data['sql']['search']);
+        if ($warnings = $connection->prepare('SHOW WARNINGS')->executeQuery()->fetchAllAssociative()) {
+            if (count($warnings)) {
+                if ($warnings['Code'] == 1260) {
+                    $connection->prepare("SET SESSION group_concat_max_len = 8194304;")->executeStatement();
+                    //$DBread->execution_time = true;
+                    $result = $stmt->executeQuery();
                 }
 
-                if ($res['Code'] == 1116) { // too many tables
+                if ($warnings['Code'] == 1116) { // too many tables
                     echo self::showError(
                         $data['search']['display_type'],
                         __("'All' criterion is not usable with this object list, " .
@@ -1345,11 +1349,11 @@ class Search
         }
 
         if ($result) {
-            $data['data']['execution_time'] = $DBread->execution_time;
+            $data['data']['execution_time'] = 0/*$DBread->execution_time*/;
             if (isset($data['search']['savedsearches_id'])) {
                 SavedSearch::updateExecutionTime(
                     (int)$data['search']['savedsearches_id'],
-                    $DBread->execution_time
+                    $data['data']['execution_time']
                 );
             }
 
@@ -1359,17 +1363,19 @@ class Search
                 !$data['search']['no_search']
                 || $data['search']['export_all']
             ) {
-                $data['data']['totalcount'] = $DBread->numrows($result);
+                $data['data']['totalcount'] = $result->rowCount();
             } else {
                 if (
                     !isset($data['sql']['count'])
                     || (count($data['sql']['count']) == 0)
                 ) {
-                    $data['data']['totalcount'] = $DBread->numrows($result);
+                    $data['data']['totalcount'] = $result->rowCount();
                 } else {
                     foreach ($data['sql']['count'] as $sqlcount) {
-                        $result_num = $DBread->query($sqlcount);
-                        $data['data']['totalcount'] += $DBread->result($result_num, 0, 0);
+                        //$data['data']['totalcount'] += $DBread->result($result_num, 0, 0);
+                        $resultNum = $connection->prepare($sqlcount);
+                        $count = $resultNum->executeQuery()->fetchOne();
+                        $data['data']['totalcount'] += $count;
                     }
                 }
             }
@@ -1492,7 +1498,7 @@ class Search
 
             // if real search seek to begin of items to display (because of complete search)
             if (!$data['search']['no_search']) {
-                $DBread->dataSeek($result, $data['search']['start']);
+                //$DBread->dataSeek($result, $data['search']['start']);
             }
 
             $i = $data['data']['begin'];
@@ -1505,7 +1511,7 @@ class Search
             self::$output_type = $data['display_type'];
 
             while (($i < $data['data']['end'])) {
-                $row = $DBread->fetchAssoc($result);
+                $row = $result->fetchAssociative();
                 $newrow        = [];
                 $newrow['raw'] = $row;
 
@@ -1596,7 +1602,7 @@ class Search
 
             $data['data']['count'] = count($data['data']['rows']);
         } else {
-            echo $DBread->error();
+            echo $result->getError();
         }
     }
 
@@ -1611,7 +1617,6 @@ class Search
     public static function displayData(array $data)
     {
         global $CFG_GLPI;
-
 
         // Init list of items displayed
         if ($data['display_type'] == self::HTML_OUTPUT) {
@@ -3955,7 +3960,7 @@ JAVASCRIPT;
                     if (Session::haveRight("ticket", Ticket::READMY)) {
                         $condition .= " $requester_table.users_id = '" . Session::getLoginUserID() . "'
                                     OR $observer_table.users_id = '" . Session::getLoginUserID() . "'
-                                    OR `glpi_tickets`.`users_id_recipient` = '" . Session::getLoginUserID() . "'";
+                                    OR `glpi_tickets`.`recipient_users_id` = '" . Session::getLoginUserID() . "'";
                     } else {
                         $condition .= "0=1";
                     }
@@ -4041,7 +4046,7 @@ JAVASCRIPT;
                         $condition .= " $requester_table.users_id = '" . Session::getLoginUserID() . "'
                                  OR $observer_table.users_id = '" . Session::getLoginUserID() . "'
                                  OR $assign_table.users_id = '" . Session::getLoginUserID() . "'
-                                 OR `glpi_" . $table . "`.`users_id_recipient` = '" . Session::getLoginUserID() . "'";
+                                 OR `glpi_" . $table . "`.`recipient_users_id` = '" . Session::getLoginUserID() . "'";
                         if (count($_SESSION['glpigroups'])) {
                             $my_groups_keys = "'" . implode("','", $_SESSION['glpigroups']) . "'";
                             $condition .= " OR $requestergroup_table.groups_id IN ($my_groups_keys)
@@ -5206,7 +5211,7 @@ JAVASCRIPT;
         if ($meta && $meta_type::getTable() != $new_table) {
             $addmetanum = "_" . $meta_type;
             $AS         = " AS `$nt$addmetanum`";
-            $nt         = $nt . $addmetanum;
+            $nt .= $addmetanum;
         }
 
         // Do not take into account standard linkfield
@@ -5308,7 +5313,7 @@ JAVASCRIPT;
                 $from         = ["`REFTABLE`", "REFTABLE", "`NEWTABLE`", "NEWTABLE"];
                 $to           = ["`$rt`", "`$rt`", "`$nt`", "`$nt`"];
                 $addcondition = str_replace($from, $to, $condition);
-                $addcondition = $addcondition . " ";
+                $addcondition .= " ";
             }
 
             if (!isset($joinparams['jointype'])) {
@@ -7453,7 +7458,7 @@ JAVASCRIPT;
             if ($withplugins) {
                 // Search options added by plugins
                 $plugsearch = Plugin::getAddSearchOptions($itemtype);
-                $plugsearch = $plugsearch + Plugin::getAddSearchOptionsNew($itemtype);
+                $plugsearch += Plugin::getAddSearchOptionsNew($itemtype);
                 if (count($plugsearch)) {
                     self::$search[$itemtype] += ['plugins' => _n('Plugin', 'Plugins', Session::getPluralNumber())];
                     self::$search[$itemtype] += $plugsearch;
@@ -8329,7 +8334,7 @@ JAVASCRIPT;
             $val = rtrim(preg_replace('/\$$/', '', $val));
         } else {
             // Add % wildcard after searched string if not ending by a `$`
-            $val = $val . '%';
+            $val .= '%';
         }
 
         return $val;

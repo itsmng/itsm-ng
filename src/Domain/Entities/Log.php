@@ -2,6 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -114,9 +115,11 @@ class Log
         return $this->dateMod;
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PreUpdate]
+    #[ORM\PreFlush]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTimeImmutable();
 
         return $this;
     }
