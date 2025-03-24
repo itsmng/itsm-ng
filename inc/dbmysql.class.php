@@ -50,21 +50,21 @@ class DBmysql
      * @var array
      */
     private const ALLOWED_SIGNED_KEYS = [
-       // FIXME Entity preference `glpi_entities.calendars_id` inherit/never strategy should be stored in another field.
+       // FIXME Entity preference glpi_entities.calendars_id inherit/never strategy should be stored in another field.
        'glpi_calendars.id',
-       // FIXME Entity preference `glpi_entities.changetemplates_id` inherit/never strategy should be stored in another field.
+       // FIXME Entity preference glpi_entities.changetemplates_id inherit/never strategy should be stored in another field.
        'glpi_changetemplates.id',
-       // FIXME Entity preference `glpi_entities.contracts_id_default` inherit/never strategy should be stored in another field.
+       // FIXME Entity preference glpi_entities.contracts_id_default inherit/never strategy should be stored in another field.
        'glpi_contracts.id',
-       // FIXME root entity uses "-1" value for its parent (`glpi_entities.entities_id`), should be null
+       // FIXME root entity uses "-1" value for its parent (glpi_entities.entities_id), should be null
        // FIXME some entities_id foreign keys are using "-1" as default value, should be null
-       // FIXME Entity preference `glpi_entities.entities_id_software` inherit/never strategy should be stored in another field.
+       // FIXME Entity preference glpi_entities.entities_id_software inherit/never strategy should be stored in another field.
        'glpi_entities.id',
-       // FIXME Entity preference `glpi_entities.problemtemplates_id` inherit/never strategy should be stored in another field.
+       // FIXME Entity preference glpi_entities.problemtemplates_id inherit/never strategy should be stored in another field.
        'glpi_problemtemplates.id',
-       // FIXME Entity preference `glpi_entities.tickettemplates_id` inherit/never strategy should be stored in another field.
+       // FIXME Entity preference glpi_entities.tickettemplates_id inherit/never strategy should be stored in another field.
        'glpi_tickettemplates.id',
-       // FIXME Entity preference `glpi_entities.transfers_id` inherit/never strategy should be stored in another field.
+       // FIXME Entity preference glpi_entities.transfers_id inherit/never strategy should be stored in another field.
        'glpi_transfers.id',
     ];
 
@@ -226,7 +226,7 @@ class DBmysql
             $this->error     = 2;
         } else {
             if (isset($this->dbenc)) {
-                Toolbox::deprecated('Usage of alternative DB connection encoding (`DB::$dbenc` property) is deprecated.');
+                Toolbox::deprecated('Usage of alternative DB connection encoding (DB::$dbenc property) is deprecated.');
             }
             $dbenc = isset($this->dbenc) ? $this->dbenc : "utf8";
             $this->dbh->set_charset($dbenc);
@@ -749,7 +749,7 @@ class DBmysql
         if (!$this->cache_disabled && $usecache && isset($this->field_cache[$table])) {
             return $this->field_cache[$table];
         }
-        $result = $this->query("SHOW COLUMNS FROM `$table`");
+        $result = $this->query("SHOW COLUMNS FROM $table");
         if ($result) {
             if ($this->numrows($result) > 0) {
                 $this->field_cache[$table] = [];
@@ -1121,11 +1121,11 @@ class DBmysql
             trigger_error("Table $table does not exists", E_USER_WARNING);
             return false;
         }
-        $result = $this->query("SHOW CREATE TABLE `$table`");
+        $result = $this->query("SHOW CREATE TABLE $table");
         if ($result) {
             if ($this->numrows($result) > 0) {
                 $data = $this->fetchArray($result);
-                if (preg_match("/CONSTRAINT `$constraint` FOREIGN KEY/", $data[1])) {
+                if (preg_match("/CONSTRAINT $constraint FOREIGN KEY/", $data[1])) {
                     return true;
                 }
             }
@@ -1176,7 +1176,7 @@ class DBmysql
                 $field = ($n[1] === '*') ? $n[1] : self::quoteName($n[1]);
                 return "$table.$field";
             }
-            return ($name[0] == '`' ? $name : ($name === '*' ? $name : "`$name`"));
+            return ($name[0] == '' ? $name : ($name === '*' ? $name : "$name"));
         }
     }
 
@@ -1195,7 +1195,7 @@ class DBmysql
         } elseif ($value === null || $value === 'NULL' || $value === 'null') {
             $value = 'NULL';
         } elseif (is_bool($value)) {
-            // transform boolean as int (prevent `false` to be transformed to empty string)
+            // transform boolean as int (prevent false to be transformed to empty string)
             $value = "'" . (int)$value . "'";
         } else {
             //phone numbers may start with '+' and will be considered as numeric
@@ -1527,7 +1527,7 @@ class DBmysql
     public function getTableSchema($table, $structure = null)
     {
         if ($structure === null) {
-            $structure = $this->query("SHOW CREATE TABLE `$table`")->fetch_row();
+            $structure = $this->query("SHOW CREATE TABLE $table")->fetch_row();
             $structure = $structure[1];
         }
 
@@ -1930,7 +1930,7 @@ class DBmysql
      */
     public static function getQuoteNameChar(): string
     {
-        return '`';
+        return '';
     }
 
     /**
