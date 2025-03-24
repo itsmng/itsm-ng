@@ -677,7 +677,7 @@ class Cartridge extends CommonDBChild
         $iterator = self::getAdapter()->request([
            'SELECT' => [
               'glpi_cartridges.*',
-              'glpi_printers.id AS printID',
+              'glpi_printers.id AS printid',
               'glpi_printers.name AS printname',
               'glpi_printers.init_pages_counter'
            ],
