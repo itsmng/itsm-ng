@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_olalevelcriterias')]
 #[ORM\Index(name: 'olalevels_id', columns: ['olalevels_id'])]
-#[ORM\Index(name: 'condition', columns: ['condition'])]
+#[ORM\Index(name: 'conditions', columns: ['conditions'])]
 class OlaLevelCriteria
 {
     #[ORM\Id]
@@ -22,7 +22,7 @@ class OlaLevelCriteria
     #[ORM\Column(name: 'criteria', type: 'string', length: 255, nullable: true)]
     private $criteria;
 
-    #[ORM\Column(name: 'condition', type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PATTERN_* and REGEX_* constant'])]
+    #[ORM\Column(name: 'conditions', type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PATTERN_* and REGEX_* constant'])]
     private $condition;
 
     #[ORM\Column(name: 'pattern', type: 'string', length: 255, nullable: true)]
