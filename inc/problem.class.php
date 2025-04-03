@@ -327,7 +327,7 @@ class Problem extends CommonITILObject
 
     public function post_addItem()
     {
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
         parent::post_addItem();
 
@@ -353,14 +353,14 @@ class Problem extends CommonITILObject
                 }
 
                 //Copy associated elements
-                $iterator = $DB->request([
+                $request = $this::getAdapter()->request([
                    'FROM'   => Item_Ticket::getTable(),
                    'WHERE'  => [
                       'tickets_id'   => $this->input['_tickets_id']
                    ]
                 ]);
                 $assoc = new Item_Problem();
-                while ($row = $iterator->next()) {
+                while ($row = $request->fetchAssociative()) {
                     unset($row['tickets_id']);
                     unset($row['id']);
                     $row['problems_id'] = $this->fields['id'];
@@ -773,7 +773,7 @@ class Problem extends CommonITILObject
     **/
     public static function showCentralList($start, $status = "process", $showgroupproblems = true)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         if (!static::canView()) {
             return false;
@@ -862,9 +862,9 @@ class Problem extends CommonITILObject
            'WHERE'           => $WHERE + getEntitiesRestrictCriteria('glpi_problems'),
            'ORDERBY'         => 'date_mod DESC'
         ];
-        $iterator = $DB->request($criteria);
-
-        $total_row_count = count($iterator);
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        $total_row_count = count($results);
         $displayed_row_count = (int)$_SESSION['glpidisplay_count_on_home'] > 0
            ? min((int)$_SESSION['glpidisplay_count_on_home'], $total_row_count)
            : $total_row_count;
@@ -983,7 +983,10 @@ class Problem extends CommonITILObject
             echo "<th>" . _n('Requester', 'Requesters', 1) . "</th>";
             echo "<th>" . __('Description') . "</th></tr>";
             $i = 0;
-            while ($i < $displayed_row_count && ($data = $iterator->next())) {
+            foreach ($results as $data) {
+                if ($i >= $displayed_row_count) {
+                    break;
+                }
                 self::showVeryShort($data['id'], $forcetab);
                 $i++;
             }
@@ -1001,7 +1004,7 @@ class Problem extends CommonITILObject
     **/
     public static function showCentralCount($foruser = false)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         // show a tab with count of jobs in the central and give link
         if (!static::canView()) {
@@ -1059,20 +1062,20 @@ class Problem extends CommonITILObject
         $deleted_criteria = $criteria;
         $criteria['WHERE']['glpi_problems.is_deleted'] = 0;
         $deleted_criteria['WHERE']['glpi_problems.is_deleted'] = 1;
-        $iterator = $DB->request($criteria);
-        $deleted_iterator = $DB->request($deleted_criteria);
+        $request = self::getAdapter()->request($criteria);
+        $deleted_request = self::getAdapter()->request($deleted_criteria);
 
         $status = [];
         foreach (self::getAllStatusArray() as $key => $val) {
             $status[$key] = 0;
         }
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $status[$data["status"]] = $data["COUNT"];
         }
 
         $number_deleted = 0;
-        while ($data = $deleted_iterator->next()) {
+        while ($data = $deleted_request->fetchAssociative()) {
             $number_deleted += $data["COUNT"];
         }
 
@@ -1740,7 +1743,6 @@ class Problem extends CommonITILObject
     **/
     public static function showListForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        global $DB;
 
         if (!Session::haveRight(self::$rightname, self::READALL)) {
             return false;
@@ -1844,8 +1846,9 @@ class Problem extends CommonITILObject
         $criteria = self::getCommonCriteria();
         $criteria['WHERE'] = $restrict + getEntitiesRestrictCriteria(self::getTable());
         $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
-        $iterator = $DB->request($criteria);
-        $number = count($iterator);
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
 
         // Ticket for the item
         echo "<div><table class='tab_cadre_fixe' aria-label='Item'>";
@@ -1881,7 +1884,7 @@ class Problem extends CommonITILObject
         if ($number > 0) {
             self::commonListHeader(Search::HTML_OUTPUT);
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 Session::addToNavigateListItems('Problem', $data["id"]);
                 self::showShort($data["id"]);
             }
@@ -1905,8 +1908,9 @@ class Problem extends CommonITILObject
             $criteria = self::getCommonCriteria();
             $criteria['WHERE'] = ['OR' => $restrict]
                + getEntitiesRestrictCriteria(self::getTable());
-            $iterator = $DB->request($criteria);
-            $number = count($iterator);
+            $request = self::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
+            $number = count($results);
 
             echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Problems on linked items'>";
             echo "<tr><th colspan='$colspan'>";
@@ -1916,7 +1920,7 @@ class Problem extends CommonITILObject
             if ($number > 0) {
                 self::commonListHeader(Search::HTML_OUTPUT);
 
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     // Session::addToNavigateListItems(TRACKING_TYPE,$data["id"]);
                     self::showShort($data["id"]);
                 }
@@ -1981,7 +1985,7 @@ class Problem extends CommonITILObject
            'itilcategories_id'          => 0,
            'actiontime'                 => 0,
            '_add_validation'            => 0,
-           'users_id_validate'          => [],
+           'validate_users_id'          => [],
            '_tasktemplates_id'          => [],
            'items_id'                   => 0,
         ];
@@ -1999,9 +2003,8 @@ class Problem extends CommonITILObject
      */
     public function getActiveProblemsForItem($itemtype, $items_id)
     {
-        global $DB;
 
-        return $DB->request([
+        $results = self::getAdapter()->request([
            'SELECT'    => [
               $this->getTable() . '.id',
               $this->getTable() . '.name',
@@ -2027,7 +2030,8 @@ class Problem extends CommonITILObject
                  )
               ]
            ]
-        ]);
+        ])->fetchAllAssociative();
+        return $results;
     }
 
 

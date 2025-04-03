@@ -221,19 +221,17 @@ class Reservation extends CommonDBChild
     **/
     public function getUniqueGroupFor($reservationitems_id)
     {
-        global $DB;
-
         do {
             $rand = mt_rand(1, mt_getrandmax());
 
-            $result = $DB->request([
+            $result = $this::getAdapter()->request([
                'COUNT'  => 'cpt',
                'FROM'   => 'glpi_reservations',
                'WHERE'  => [
                   'reservationitems_id'   => $reservationitems_id,
                   'group'                 => $rand
                ]
-            ])->next();
+            ])->fetchAssociative();
             $count = (int)$result['cpt'];
         } while ($count > 0);
 
@@ -248,8 +246,6 @@ class Reservation extends CommonDBChild
     **/
     public function is_reserved()
     {
-        global $DB;
-
         if (
             !isset($this->fields["reservationitems_id"])
             || empty($this->fields["reservationitems_id"])
@@ -263,7 +259,7 @@ class Reservation extends CommonDBChild
             $where['id'] = ['<>', $this->fields['id']];
         }
 
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => $this->getTable(),
            'WHERE'  => $where + [
@@ -271,7 +267,7 @@ class Reservation extends CommonDBChild
               'end'                   => ['>', $this->fields['begin']],
               'begin'                 => ['<', $this->fields['end']]
            ]
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'] > 0;
     }
 
@@ -379,10 +375,8 @@ class Reservation extends CommonDBChild
 
     public function post_purgeItem()
     {
-        global $DB;
-
         if (isset($this->input['_delete_group']) && $this->input['_delete_group']) {
-            $iterator = $DB->request([
+            $result = $this::getAdapter()->request([
                'FROM'   => 'glpi_reservations',
                'WHERE'  => [
                   'reservationitems_id'   => $this->fields['reservationitems_id'],
@@ -390,7 +384,7 @@ class Reservation extends CommonDBChild
                ]
             ]);
             $rr = clone $this;
-            while ($data = $iterator->next()) {
+            while ($data = $result->fetchAssociative()) {
                 $rr->delete(['id' => $data['id']]);
             }
         }
@@ -950,15 +944,13 @@ class Reservation extends CommonDBChild
     **/
     public static function displayReservationDay($ID, $date)
     {
-        global $DB;
-
         if (!empty($ID)) {
             self::displayReservationsForAnItem($ID, $date);
         } else {
             $debut = $date . " 00:00:00";
             $fin   = $date . " 23:59:59";
 
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT'          => 'glpi_reservationitems.id',
                'DISTINCT'        => true,
                'FROM'            => 'glpi_reservationitems',
@@ -977,10 +969,10 @@ class Reservation extends CommonDBChild
                ],
                'ORDERBY'         => 'begin'
             ]);
-
-            if (count($iterator)) {
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
                 $m = new ReservationItem();
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     $m->getFromDB($data['id']);
 
                     if (!($item = getItemForItemtype($m->fields["itemtype"]))) {
@@ -1028,8 +1020,6 @@ class Reservation extends CommonDBChild
     **/
     public static function displayReservationsForAnItem($ID, $date)
     {
-        global $DB;
-
         $users_id = Session::getLoginUserID();
         $resa     = new self();
         $user     = new User();
@@ -1037,7 +1027,7 @@ class Reservation extends CommonDBChild
         $debut    = $date . " 00:00:00";
         $fin      = $date . " 23:59:59";
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_reservations',
            'WHERE'  => [
               'end'                   => ['>', $debut],
@@ -1046,10 +1036,10 @@ class Reservation extends CommonDBChild
            ],
            'ORDER'  => 'begin'
         ]);
-
-        if (count($iterator)) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
             echo "<table width='100%' aria-label='User Time Interval'>";
-            while ($row = $iterator->next()) {
+            foreach ($results as $row) {
                 echo "<tr>";
                 $user->getFromDB($row["users_id"]);
                 $display = "";
@@ -1116,7 +1106,7 @@ class Reservation extends CommonDBChild
     **/
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $resaID = 0;
         if (!Session::haveRight("reservation", READ)) {
@@ -1131,7 +1121,7 @@ class Reservation extends CommonDBChild
             $now = $_SESSION["glpi_currenttime"];
 
             // Print reservation in progress
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'FROM'   => 'glpi_reservations',
                'WHERE'  => [
                   'end'                   => ['>', $now],
@@ -1139,11 +1129,11 @@ class Reservation extends CommonDBChild
                ],
                'ORDER'  => 'begin'
             ]);
-
+            $results = $request->fetchAllAssociative();
             echo "<table class='tab_cadre_fixehov' aria-label='Current and future reservations'><tr><th colspan='5'>";
 
             if (
-                count($iterator) && $ri->fields["is_active"]
+                count($results) && $ri->fields["is_active"]
                 && Session::haveRight('reservation', ReservationItem::RESERVEANITEM)
             ) {
                 echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
@@ -1153,7 +1143,7 @@ class Reservation extends CommonDBChild
             }
             echo "</th></tr>\n";
 
-            if (!count($iterator)) {
+            if (!count($results)) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center' colspan='5'>" . __('No reservation') . "</td></tr>\n";
             } else {
@@ -1162,7 +1152,7 @@ class Reservation extends CommonDBChild
                 echo "<th>" . __('By') . "</th>";
                 echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     echo "<tr class='tab_bg_2'>";
                     echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                     echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
@@ -1191,7 +1181,7 @@ class Reservation extends CommonDBChild
             echo "</table></div>\n";
 
             // Print old reservations
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'FROM'   => 'glpi_reservations',
                'WHERE'  => [
                   'end'                   => ['<=', $now],
@@ -1199,11 +1189,11 @@ class Reservation extends CommonDBChild
                ],
                'ORDER'  => 'begin DESC'
             ]);
-
+            $results = $request->fetchAllAssociative();
             echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='Past Reservations'><tr><th colspan='5'>";
 
             if (
-                count($iterator) && $ri->fields["is_active"]
+                count($results) && $ri->fields["is_active"]
                 && Session::haveRight('reservation', ReservationItem::RESERVEANITEM)
             ) {
                 echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
@@ -1213,7 +1203,7 @@ class Reservation extends CommonDBChild
             }
             echo "</th></tr>\n";
 
-            if (!count($iterator)) {
+            if (!count($results)) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center' colspan='5'>" . __('No reservation') . "</td></tr>\n";
             } else {
@@ -1222,7 +1212,7 @@ class Reservation extends CommonDBChild
                 echo "<th>" . __('By') . "</th>";
                 echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     echo "<tr class='tab_bg_2'>";
                     echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                     echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
@@ -1262,7 +1252,7 @@ class Reservation extends CommonDBChild
     **/
     public static function showForUser($ID)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $resaID = 0;
 
@@ -1274,7 +1264,7 @@ class Reservation extends CommonDBChild
         $now = $_SESSION["glpi_currenttime"];
 
         // Print reservation in progress
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'begin',
               'end',
@@ -1306,12 +1296,12 @@ class Reservation extends CommonDBChild
            ],
            'ORDERBY'   => 'begin'
         ]);
-
+        $results = $request->fetchAllAssociative();
         $ri = new ReservationItem();
         echo "<table class='tab_cadre_fixehov' aria-label='Current and future reservations'>";
         echo "<tr><th colspan='6'>" . __('Current and future reservations') . "</th></tr>\n";
 
-        if (count($iterator) == 0) {
+        if (count($results) == 0) {
             echo "<tr class='tab_bg_2'>";
             echo "<td class='center' colspan='6'>" . __('No reservation') . "</td></tr\n>";
         } else {
@@ -1322,7 +1312,7 @@ class Reservation extends CommonDBChild
             echo "<th>" . __('By') . "</th>";
             echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                 echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
@@ -1356,7 +1346,7 @@ class Reservation extends CommonDBChild
         echo "</table></div>\n";
 
         // Print old reservations
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'begin',
               'end',
@@ -1388,12 +1378,12 @@ class Reservation extends CommonDBChild
            ],
            'ORDERBY'   => 'begin DESC'
         ]);
-
+        $results = $request->fetchAllAssociative();
         echo "<div class='spaced'>";
         echo "<table class='tab_cadre_fixehov' aria-label='Past Reservations'>";
         echo "<tr><th colspan='6'>" . __('Past reservations') . "</th></tr>\n";
 
-        if (count($iterator) == 0) {
+        if (count($results) == 0) {
             echo "<tr class='tab_bg_2'>";
             echo "<td class='center' colspan='6'>" . __('No reservation') . "</td></tr>\n";
         } else {
@@ -1404,7 +1394,7 @@ class Reservation extends CommonDBChild
             echo "<th>" . __('By') . "</th>";
             echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
                 echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";

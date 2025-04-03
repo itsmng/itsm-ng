@@ -29,7 +29,7 @@ class ReservationItem
     private $isRecursive;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $itemsId;
+    private $items_id;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -69,17 +69,7 @@ class ReservationItem
         return $this;
     }
 
-    public function getItemsId(): ?string
-    {
-        return $this->itemsId;
-    }
-
-    public function setItemsId(?string $itemsId): self
-    {
-        $this->itemsId = $itemsId;
-
-        return $this;
-    }
+    
 
     public function getComment(): ?string
     {
@@ -134,6 +124,26 @@ class ReservationItem
     public function setEntity($entity)
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of items_id
+     */ 
+    public function getItems_id()
+    {
+        return $this->items_id;
+    }
+
+    /**
+     * Set the value of items_id
+     *
+     * @return  self
+     */ 
+    public function setItems_id($items_id)
+    {
+        $this->items_id = $items_id;
 
         return $this;
     }

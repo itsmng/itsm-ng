@@ -50,7 +50,7 @@ class ContractCost
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     public function getId(): ?int
     {
@@ -86,8 +86,11 @@ class ContractCost
         return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $beginDate): self
+    public function setBeginDate(\DateTimeInterface|string|null $beginDate): self
     {
+        if (is_string($beginDate)) {
+            $beginDate = new \DateTime($beginDate);
+        }
         $this->beginDate = $beginDate;
 
         return $this;
@@ -98,8 +101,11 @@ class ContractCost
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    public function setEndDate(\DateTimeInterface|string|null $endDate): self
     {
+        if (is_string($endDate)) {
+            $endDate = new \DateTime($endDate);
+        }
         $this->endDate = $endDate;
 
         return $this;

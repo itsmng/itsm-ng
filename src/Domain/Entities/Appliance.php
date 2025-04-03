@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_appliances')]
 #[ORM\UniqueConstraint(name: 'unicity', columns: ['externalidentifier'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
@@ -36,13 +38,13 @@ class Appliance
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'appliancetypes_id', type: 'integer', options: ['default' => 0])]
     private $appliancetypesId;
@@ -78,7 +80,7 @@ class Appliance
     #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $techGroup = null;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
@@ -92,7 +94,7 @@ class Appliance
     private ?State $state;
 
     #[ORM\Column(name: 'externalidentifier', type: 'string', length: 255, nullable: true)]
-    private $externalidentifier;
+    private $externalidentifier = '';
 
     #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
@@ -101,7 +103,7 @@ class Appliance
     private $otherserial;
 
     #[ORM\Column(name: 'is_helpdesk_visible', type: 'boolean', options: ['default' => 1])]
-    private $isHelpdeskVisible;
+    private $isHelpdeskVisible = 1;
 
     public function getId(): ?int
     {
@@ -170,25 +172,30 @@ class Appliance
     }
 
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
+
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateMod = $dateCreation;
+        $this->dateCreation = new DateTime();
+
         return $this;
     }
 
@@ -208,7 +215,7 @@ class Appliance
         return $this->externalidentifier;
     }
 
-    public function setExternalIdentifier(string $externalidentifier): self
+    public function setExternalIdentifier(?string $externalidentifier): self
     {
         $this->externalidentifier = $externalidentifier;
         return $this;

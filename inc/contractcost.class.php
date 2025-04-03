@@ -202,14 +202,13 @@ class ContractCost extends CommonDBChild
     **/
     public static function cloneContract($oldid, $newid)
     {
-        global $DB;
 
         Toolbox::deprecated('Use clone');
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['contracts_id' => $oldid]
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $cd                   = new self();
             unset($data['id']);
             $data['contracts_id'] = $newid;
@@ -256,14 +255,13 @@ class ContractCost extends CommonDBChild
     **/
     public function getLastCostForContract($contracts_id)
     {
-        global $DB;
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => ['contracts_id' => $contracts_id],
            'ORDER'  => ['end_date DESC', 'id DESC']
         ]);
-        if ($result = $iterator->next()) {
+        if ($result = $request->fetchAssociative()) {
             return $result;
         }
 
@@ -368,11 +366,12 @@ class ContractCost extends CommonDBChild
 
         echo "<div class='center'>";
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['contracts_id' => $ID],
            'ORDER'  => 'begin_date'
         ]);
+        $results = $request->fetchAllAssociative();
         $rand   = mt_rand();
 
         if (
@@ -399,9 +398,9 @@ class ContractCost extends CommonDBChild
         }
 
         echo "<table class='tab_cadre_fixehov' aria-label='contract Information'>";
-        echo "<tr><th colspan='5'>" . self::getTypeName(count($iterator)) . "</th></tr>";
+        echo "<tr><th colspan='5'>" . self::getTypeName(count($results)) . "</th></tr>";
 
-        if (count($iterator)) {
+        if (count($results)) {
             echo "<tr><th>" . __('Name') . "</th>";
             echo "<th>" . __('Begin date') . "</th>";
             echo "<th>" . __('End date') . "</th>";
@@ -421,7 +420,7 @@ class ContractCost extends CommonDBChild
             );
 
             $total = 0;
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_2' " .
                       ($canedit
                          ? "style='cursor:pointer' onClick=\"viewEditCost" . $data['contracts_id'] . "_" .
