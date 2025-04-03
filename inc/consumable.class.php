@@ -280,13 +280,11 @@ class Consumable extends CommonDBChild
      **/
     public static function getTotalNumber($tID)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_consumables',
            'WHERE'  => ['consumableitems_id' => $tID]
-        ])->next();
+        ])->fetchAssociative();
         return (int)$result['cpt'];
     }
 
@@ -300,16 +298,15 @@ class Consumable extends CommonDBChild
     **/
     public static function getOldNumber($tID)
     {
-        global $DB;
 
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_consumables',
            'WHERE'  => [
               'consumableitems_id' => $tID,
               'NOT'                => ['date_out' => null]
            ]
-        ])->next();
+        ])->fetchAssociative();
         return (int)$result['cpt'];
     }
 
@@ -323,16 +320,14 @@ class Consumable extends CommonDBChild
     **/
     public static function getUnusedNumber($tID)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_consumables',
            'WHERE'  => [
               'consumableitems_id' => $tID,
               'date_out'           => null
            ]
-        ])->next();
+        ])->fetchAssociative();
         return(int) $result['cpt'];
     }
 
@@ -383,16 +378,14 @@ class Consumable extends CommonDBChild
     **/
     public static function isNew($cID)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_consumables',
            'WHERE'  => [
               'id'        => $cID,
               'date_out'  => null
            ]
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'] == 1;
     }
 
@@ -406,16 +399,14 @@ class Consumable extends CommonDBChild
     **/
     public static function isOld($cID)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_consumables',
            'WHERE'  => [
               'id'     => $cID,
               'NOT'   => ['date_out' => null]
            ]
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'] == 1;
     }
 
@@ -528,7 +519,7 @@ class Consumable extends CommonDBChild
 
         $number = countElementsInTable("glpi_consumables", $where);
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => $where,
            'ORDER'  => $order,
@@ -578,7 +569,7 @@ class Consumable extends CommonDBChild
         $values = [];
         $massive_action = [];
         if ($number) {
-            while ($data = $iterator->next()) {
+            while ($data = $result->fetchAssociative()) {
                 $newValue = [];
                 $date_in  = Html::convDate($data["date_in"]);
                 $date_out = Html::convDate($data["date_out"]);
@@ -629,7 +620,7 @@ class Consumable extends CommonDBChild
             return;
         }
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => [
               'COUNT'  => ['* AS count'],
               'consumableitems_id',
@@ -649,12 +640,12 @@ class Consumable extends CommonDBChild
         ]);
         $used = [];
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $used[$data['itemtype'] . '####' . $data['items_id']][$data["consumableitems_id"]]
                = $data["count"];
         }
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => [
               'COUNT'  => '* AS count',
               'consumableitems_id',
@@ -672,17 +663,17 @@ class Consumable extends CommonDBChild
         ]);
         $new = [];
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $new[$data["consumableitems_id"]] = $data["count"];
         }
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => 'glpi_consumableitems',
            'WHERE'  => getEntitiesRestrictCriteria('glpi_consumableitems')
         ]);
         $types = [];
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $types[$data["id"]] = $data["name"];
         }
 
