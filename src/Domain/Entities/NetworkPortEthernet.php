@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_networkportethernets')]
 #[ORM\UniqueConstraint(name: 'networkports_id', columns: ['networkports_id'])]
 #[ORM\Index(name: 'card', columns: ['items_devicenetworkcards_id'])]
@@ -24,8 +26,9 @@ class NetworkPortEthernet
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
     private ?NetworkPort $networkport = null;
 
-    #[ORM\Column(name: 'items_devicenetworkcards_id', type: 'integer', options: ['default' => 0])]
-    private $itemsDeviceNetworkCardsId;
+    #[ORM\ManyToOne(targetEntity: ItemDeviceNetworkCard::class)]
+    #[ORM\JoinColumn(name: 'items_devicenetworkcards_id', referencedColumnName: 'id', nullable: true)]
+    private $itemsDevicenetworkcard = null;
 
     #[ORM\ManyToOne(targetEntity: Netpoint::class)]
     #[ORM\JoinColumn(name: 'netpoints_id', referencedColumnName: 'id', nullable: true)]
@@ -37,10 +40,10 @@ class NetworkPortEthernet
     #[ORM\Column(name: 'speed', type: 'integer', options: ['default' => 10, 'comment' => 'Mbit/s: 10, 100, 1000, 10000'])]
     private $speed;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     public function getId(): ?int
@@ -48,18 +51,7 @@ class NetworkPortEthernet
         return $this->id;
     }
 
-    public function getItemsDeviceNetworkCardsId(): ?int
-    {
-        return $this->itemsDeviceNetworkCardsId;
-    }
-
-    public function setItemsDeviceNetworkCardsId(?int $itemsDeviceNetworkCardsId): self
-    {
-        $this->itemsDeviceNetworkCardsId = $itemsDeviceNetworkCardsId;
-
-        return $this;
-    }
-
+    
     public function getType(): ?string
     {
         return $this->type;
@@ -84,26 +76,30 @@ class NetworkPortEthernet
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -144,6 +140,27 @@ class NetworkPortEthernet
     public function setNetpoint($netpoint)
     {
         $this->netpoint = $netpoint;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of itemsDevicenetworkcard
+     */ 
+    public function getItemsDevicenetworkcard()
+    {
+        return $this->itemsDevicenetworkcard;
+    }
+
+    /**
+     * Set the value of itemsDevicenetworkcard
+     *
+     * @return  self
+     */ 
+    public function setItemsDevicenetworkcard($itemsDevicenetworkcard)
+    {
+        $this->itemsDevicenetworkcard = $itemsDevicenetworkcard;
 
         return $this;
     }

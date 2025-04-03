@@ -2,10 +2,12 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
+use Itsmng\Domain\Entities\RequestType;
 use Doctrine\ORM\Mapping as ORM;
-use RequestType;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_itilfollowups')]
 #[ORM\Index(name: "itemtype", columns: ['itemtype'])]
 #[ORM\Index(name: "item_id", columns: ['items_id'])]
@@ -14,7 +16,7 @@ use RequestType;
 #[ORM\Index(name: "date_mod", columns: ['date_mod'])]
 #[ORM\Index(name: "date_creation", columns: ['date_creation'])]
 #[ORM\Index(name: "users_id", columns: ['users_id'])]
-#[ORM\Index(name: "users_id_editor", columns: ['users_id_editor'])]
+#[ORM\Index(name: "editor_users_id", columns: ['editor_users_id'])]
 #[ORM\Index(name: "is_private", columns: ['is_private'])]
 #[ORM\Index(name: "requesttypes_id", columns: ['requesttypes_id'])]
 #[ORM\Index(name: "sourceitems_id", columns: ['sourceitems_id'])]
@@ -40,7 +42,7 @@ class ITILFollowup
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
+    #[ORM\JoinColumn(name: 'editor_users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $userEditor = null;
 
     #[ORM\Column(name: 'content', type: 'text', nullable: true)]
@@ -63,10 +65,10 @@ class ITILFollowup
     private $timelinePosition;
 
     #[ORM\Column(name: 'sourceitems_id', type: 'integer', options: ['default' => 0])]
-    private $sourceitemsId;
+    private $sourceitemsId = 0;
 
     #[ORM\Column(name: 'sourceof_items_id', type: 'integer', options: ['default' => 0])]
-    private $sourceofItemsId;
+    private $sourceofItemsId = 0;
 
     public function getId(): ?int
     {
@@ -102,8 +104,11 @@ class ITILFollowup
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(\DateTimeInterface|string|null $date): self
     {
+        if (is_string($date)) {
+        $date = new \DateTime($date);
+    }
         $this->date = $date;
 
         return $this;
@@ -133,26 +138,29 @@ class ITILFollowup
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -174,9 +182,9 @@ class ITILFollowup
         return $this->sourceitemsId;
     }
 
-    public function setSourceitemsId(int $sourceItemsId): self
+    public function setSourceitemsId(int|string $sourceItemsId): self
     {
-        $this->sourceitemsId = $sourceItemsId;
+        $this->sourceitemsId = (int) $sourceItemsId;
 
         return $this;
     }
@@ -186,9 +194,9 @@ class ITILFollowup
         return $this->sourceofItemsId;
     }
 
-    public function setSourceofItemsId(int $sourceofItemsId): self
+    public function setSourceofItemsId(int|string $sourceofItemsId): self
     {
-        $this->sourceofItemsId = $sourceofItemsId;
+        $this->sourceofItemsId = (int) $sourceofItemsId;
 
         return $this;
     }
