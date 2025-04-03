@@ -170,11 +170,11 @@ class RuleTicket extends Rule
                             $output['_add_validation'] = [$output['_add_validation']];
                         }
                         switch ($action->fields['field']) {
-                            case 'users_id_validate_requester_supervisor':
+                            case 'validate_users_id_requester_supervisor':
                                 $output['_add_validation'][] = 'requester_supervisor';
                                 break;
 
-                            case 'users_id_validate_assign_supervisor':
+                            case 'validate_users_id_assign_supervisor':
                                 $output['_add_validation'][] = 'assign_supervisor';
                                 break;
 
@@ -182,7 +182,7 @@ class RuleTicket extends Rule
                                 $output['_add_validation']['group'][] = $action->fields["value"];
                                 break;
 
-                            case 'users_id_validate':
+                            case 'validate_users_id':
                                 $output['_add_validation'][] = $action->fields["value"];
                                 break;
 
@@ -780,13 +780,13 @@ class RuleTicket extends Rule
         $actions['olas_id_tto']['type']                       = 'dropdown';
         $actions['olas_id_tto']['condition']                  = ['glpi_olas.type' => SLM::TTO];
 
-        $actions['users_id_validate']['name']                 = sprintf(
+        $actions['validate_users_id']['name']                 = sprintf(
             __('%1$s - %2$s'),
             __('Send an approval request'),
             User::getTypeName(1)
         );
-        $actions['users_id_validate']['type']                 = 'dropdown_users_validate';
-        $actions['users_id_validate']['force_actions']        = ['add_validation'];
+        $actions['validate_users_id']['type']                 = 'dropdown_users_validate';
+        $actions['validate_users_id']['force_actions']        = ['add_validation'];
 
         $actions['responsible_id_validate']['name']                 = sprintf(
             __('%1$s - %2$s'),
@@ -811,18 +811,18 @@ class RuleTicket extends Rule
         );
         $actions['validation_percent']['type']                = 'dropdown_validation_percent';
 
-        $actions['users_id_validate_requester_supervisor']['name']
+        $actions['validate_users_id_requester_supervisor']['name']
                                                = __('Approval request to requester group manager');
-        $actions['users_id_validate_requester_supervisor']['type']
+        $actions['validate_users_id_requester_supervisor']['type']
                                                = 'yesno';
-        $actions['users_id_validate_requester_supervisor']['force_actions']
+        $actions['validate_users_id_requester_supervisor']['force_actions']
                                                = ['add_validation'];
 
-        $actions['users_id_validate_assign_supervisor']['name']
+        $actions['validate_users_id_assign_supervisor']['name']
                                                = __('Approval request to technician group manager');
-        $actions['users_id_validate_assign_supervisor']['type']
+        $actions['validate_users_id_assign_supervisor']['type']
                                                = 'yesno';
-        $actions['users_id_validate_assign_supervisor']['force_actions']
+        $actions['validate_users_id_assign_supervisor']['force_actions']
                                                = ['add_validation'];
 
         $actions['locations_id']['name']                      = Location::getTypeName(1);

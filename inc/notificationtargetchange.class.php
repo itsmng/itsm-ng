@@ -231,7 +231,7 @@ class NotificationTargetChange extends NotificationTargetCommonITILObject
                                      //TRANS: %s is the user name
                          = sprintf(
                              __('An answer to an approval request was produced by %s'),
-                             Html::clean(getUserName($validation['users_id_validate']))
+                             Html::clean(getUserName($validation['validate_users_id']))
                          );
 
                 $tmp['##validation.author##']
@@ -253,7 +253,7 @@ class NotificationTargetChange extends NotificationTargetCommonITILObject
                          = Html::convDateTime($validation['validation_date']);
 
                 $tmp['##validation.validator##']
-                         =  Html::clean(getUserName($validation['users_id_validate']));
+                         =  Html::clean(getUserName($validation['validate_users_id']));
 
                 $tmp['##validation.commentvalidation##']
                          = $validation['comment_validation'];

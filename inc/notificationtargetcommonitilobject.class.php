@@ -460,7 +460,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
             $criteria = ['LEFT JOIN' => [
                User::getTable() => [
                   'ON' => [
-                     $validationtable  => 'users_id_validate',
+                     $validationtable  => 'validate_users_id',
                      User::getTable()  => 'id'
                   ]
                ]
@@ -602,10 +602,10 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
         global $DB;
 
         // In case of delete task pass user id
-        if (isset($options['task_users_id_tech'])) {
+        if (isset($options['task_tech_users_id'])) {
             $criteria = $this->getDistinctUserCriteria() + $this->getProfileJoinCriteria();
             $criteria['FROM'] = User::getTable();
-            $criteria['WHERE'][User::getTable() . '.id'] = $options['task_users_id_tech'];
+            $criteria['WHERE'][User::getTable() . '.id'] = $options['task_tech_users_id'];
 
             $iterator = $DB->request($criteria);
             while ($data = $iterator->next()) {
@@ -618,7 +618,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
                 ['INNER JOIN' => [
                   User::getTable() => [
                      'ON' => [
-                        $tasktable        => 'users_id_tech',
+                        $tasktable        => 'tech_users_id',
                         User::getTable()  => 'id'
                      ]
                   ]
@@ -650,8 +650,8 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
         global $DB;
 
         // In case of delete task pass user id
-        if (isset($options['task_groups_id_tech'])) {
-            $this->addForGroup(0, $options['task_groups_id_tech']);
+        if (isset($options['task_tech_groups_id'])) {
+            $this->addForGroup(0, $options['task_tech_groups_id']);
         } elseif (isset($options['task_id'])) {
             $tasktable = getTableForItemType($this->obj->getType() . 'Task');
             $iterator = $DB->request([
@@ -660,14 +660,14 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
                   'glpi_groups'  => [
                      'ON'  => [
                         'glpi_groups'  => 'id',
-                        $tasktable     => 'groups_id_tech'
+                        $tasktable     => 'tech_groups_id'
                      ]
                   ]
                ],
                'WHERE'        => ["$tasktable.id" => $options['task_id']]
             ]);
             while ($data = $iterator->next()) {
-                $this->addForGroup(0, $data['groups_id_tech']);
+                $this->addForGroup(0, $data['tech_groups_id']);
             }
         }
     }
@@ -1512,11 +1512,11 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
                 $tmp['##task.time##']         = Ticket::getActionTime($task['actiontime']);
                 $tmp['##task.status##']       = Planning::getState($task['state']);
 
-                $tmp['##task.user##']         = Html::clean(getUserName($task['users_id_tech']));
+                $tmp['##task.user##']         = Html::clean(getUserName($task['tech_users_id']));
                 $tmp['##task.group##']
                    = Html::clean(Toolbox::clean_cross_side_scripting_deep(Dropdown::getDropdownName(
                        "glpi_groups",
-                       $task['groups_id_tech']
+                       $task['tech_groups_id']
                    )), true, 2, false);
                 $tmp['##task.begin##']        = "";
                 $tmp['##task.end##']          = "";

@@ -226,11 +226,11 @@ abstract class LevelAgreementLevel extends RuleTicket
         unset($actions['olas_id']);
         unset($actions['slas_id']);
         // Could not be used as criteria
-        unset($actions['users_id_validate_requester_supervisor']);
-        unset($actions['users_id_validate_assign_supervisor']);
+        unset($actions['validate_users_id_requester_supervisor']);
+        unset($actions['validate_users_id_assign_supervisor']);
         unset($actions['affectobject']);
         unset($actions['groups_id_validate']);
-        unset($actions['users_id_validate']);
+        unset($actions['validate_users_id']);
         unset($actions['validation_percent']);
         $actions['status']['name']    = __('Status');
         $actions['status']['type']    = 'dropdown_status';

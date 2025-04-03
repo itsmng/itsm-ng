@@ -3996,7 +3996,7 @@ JAVASCRIPT;
                                                     TicketValidation::VALIDATEREQUEST]
                         )
                     ) {
-                        $condition .= " OR `glpi_ticketvalidations`.`users_id_validate`
+                        $condition .= " OR `glpi_ticketvalidations`.`validate_users_id`
                                           = '" . Session::getLoginUserID() . "'";
                     }
                     $condition .= ") ";
