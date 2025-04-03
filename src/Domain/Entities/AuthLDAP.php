@@ -3,8 +3,11 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use DateTimeImmutable;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_authldaps')]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "is_default", columns: ["is_default"])]
@@ -14,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 class AuthLDAP
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     private $id;
 
@@ -32,7 +36,7 @@ class AuthLDAP
     #[ORM\Column(name: 'port', type: 'integer', options: ['default' => 389])]
     private $port;
 
-    #[ORM\Column(name: 'condition', type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'conditions', type: 'text', length: 65535, nullable: true)]
     private $condition;
 
     #[ORM\Column(name: 'login_field', type: 'string', length: 255, nullable: true, options: ['default' => 'uid'])]
@@ -42,7 +46,7 @@ class AuthLDAP
     private $syncField;
 
     #[ORM\Column(name: 'use_tls', type: 'boolean', options: ['default' => false])]
-    private $useTls;
+    private $useTls = false;
 
     #[ORM\Column(name: 'group_field', type: 'string', length: 255, nullable: true)]
     private $groupField;
@@ -51,7 +55,7 @@ class AuthLDAP
     private $groupCondition;
 
     #[ORM\Column(name: 'group_search_type', type: 'integer', options: ['default' => 0])]
-    private $groupSearchType;
+    private $groupSearchType = 0;
 
     #[ORM\Column(name: 'group_member_field', type: 'string', length: 255, nullable: true)]
     private $groupMemberField;
@@ -78,13 +82,13 @@ class AuthLDAP
     private $commentField;
 
     #[ORM\Column(name: 'use_dn', type: 'boolean', options: ['default' => true])]
-    private $useDn;
+    private $useDn = true;
 
     #[ORM\Column(name: 'time_offset', type: 'integer', options: ['comment' => 'in seconds', 'default' => 0])]
-    private $timeOffset;
+    private $timeOffset = 0;
 
     #[ORM\Column(name: 'deref_option', type: 'integer', options: ['default' => 0])]
-    private $derefOptions;
+    private $derefOption = 0;
 
     #[ORM\Column(name: 'title_field', type: 'string', length: 255, nullable: true)]
     private $titleField;
@@ -135,13 +139,13 @@ class AuthLDAP
     private $responsibleField;
 
     #[ORM\Column(name: 'pagesize', type: 'integer', options: ['default' => 0])]
-    private $pagesize;
+    private $pagesize = 0;
 
     #[ORM\Column(name: 'ldap_maxlimit', type: 'integer', options: ['default' => 0])]
-    private $ldapMaxlimit;
+    private $ldapMaxlimit = 0;
 
     #[ORM\Column(name: 'can_support_pagesize', type: 'boolean', options: ['default' => false])]
-    private $canSupportPagesize;
+    private $canSupportPagesize = false;
 
     #[ORM\Column(name: 'picture_field', type: 'string', length: 255, nullable: true)]
     private $pictureField;
@@ -272,24 +276,24 @@ class AuthLDAP
         return $this;
     }
 
-    public function getGroupField(): string
+    public function getGroupField(): ?string
     {
         return $this->groupField;
     }
 
-    public function setGroupField(string $groupField): self
+    public function setGroupField(?string $groupField): self
     {
         $this->groupField = $groupField;
 
         return $this;
     }
 
-    public function getGroupCondition(): string
+    public function getGroupCondition(): ?string
     {
         return $this->groupCondition;
     }
 
-    public function setGroupCondition(string $groupCondition): self
+    public function setGroupCondition(?string $groupCondition): self
     {
         $this->groupCondition = $groupCondition;
 
@@ -308,96 +312,96 @@ class AuthLDAP
         return $this;
     }
 
-    public function getGroupMemberField(): string
+    public function getGroupMemberField(): ?string
     {
         return $this->groupMemberField;
     }
 
-    public function setGroupMemberField(string $groupMemberField): self
+    public function setGroupMemberField(?string $groupMemberField): self
     {
         $this->groupMemberField = $groupMemberField;
 
         return $this;
     }
 
-    public function getEmail1Field(): string
+    public function getEmail1Field(): ?string
     {
         return $this->email1Field;
     }
 
-    public function setEmail1Field(string $email1Field): self
+    public function setEmail1Field(?string $email1Field): self
     {
         $this->email1Field = $email1Field;
 
         return $this;
     }
 
-    public function getRealnameField(): string
+    public function getRealnameField(): ?string
     {
         return $this->realnameField;
     }
 
-    public function setRealnameField(string $realnameField): self
+    public function setRealnameField(?string $realnameField): self
     {
         $this->realnameField = $realnameField;
 
         return $this;
     }
 
-    public function getFirstnameField(): string
+    public function getFirstnameField(): ?string
     {
         return $this->firstnameField;
     }
 
-    public function setFirstnameField(string $firstnameField): self
+    public function setFirstnameField(?string $firstnameField): self
     {
         $this->firstnameField = $firstnameField;
 
         return $this;
     }
 
-    public function getPhoneField(): string
+    public function getPhoneField(): ?string
     {
         return $this->phoneField;
     }
 
-    public function setPhoneField(string $phoneField): self
+    public function setPhoneField(?string $phoneField): self
     {
         $this->phoneField = $phoneField;
 
         return $this;
     }
 
-    public function getPhone2Field(): string
+    public function getPhone2Field(): ?string
     {
         return $this->phone2Field;
     }
 
-    public function setPhone2Field(string $phone2Field): self
+    public function setPhone2Field(?string $phone2Field): self
     {
         $this->phone2Field = $phone2Field;
 
         return $this;
     }
 
-    public function getMobileField(): string
+    public function getMobileField(): ?string
     {
         return $this->mobileField;
     }
 
-    public function setMobileField(string $mobileField): self
+    public function setMobileField(?string $mobileField): self
     {
         $this->mobileField = $mobileField;
 
         return $this;
     }
 
-    public function getCommentField(): string
+    public function getCommentField(): ?string
     {
         return $this->commentField;
     }
 
-    public function setCommentField(string $commentField): self
+    public function setCommentField(?string $commentField): self
     {
         $this->commentField = $commentField;
 
@@ -428,86 +432,77 @@ class AuthLDAP
         return $this;
     }
 
-    public function getDerefOptions(): int
-    {
-        return $this->derefOptions;
-    }
 
-    public function setDerefOptions(int $derefOptions): self
-    {
-        $this->derefOptions = $derefOptions;
-
-        return $this;
-    }
-
-    public function getTitleField(): string
+    public function getTitleField(): ?string
     {
         return $this->titleField;
     }
 
-    public function setTitleField(string $titleField): self
+    public function setTitleField(?string $titleField): self
     {
         $this->titleField = $titleField;
 
         return $this;
     }
 
-    public function getCategoryField(): string
+    public function getCategoryField(): ?string
     {
         return $this->categoryField;
     }
 
-    public function setCategoryField(string $categoryField): self
+    public function setCategoryField(?string $categoryField): self
     {
         $this->categoryField = $categoryField;
 
         return $this;
     }
 
-    public function getLanguageField(): string
+    public function getLanguageField(): ?string
     {
         return $this->languageField;
     }
 
-    public function setLanguageField(string $languageField): self
+    public function setLanguageField(?string $languageField): self
     {
         $this->languageField = $languageField;
 
         return $this;
     }
 
-    public function getEntityField(): string
+    public function getEntityField(): ?string
     {
         return $this->entityField;
     }
 
-    public function setEntityField(string $entityField): self
+    public function setEntityField(?string $entityField): self
     {
         $this->entityField = $entityField;
 
         return $this;
     }
 
-    public function getEntityCondition(): string
+    public function getEntityCondition(): ?string
     {
         return $this->entityCondition;
     }
 
-    public function setEntityCondition(string $entityCondition): self
+    public function setEntityCondition(?string $entityCondition): self
     {
         $this->entityCondition = $entityCondition;
 
         return $this;
     }
 
-    public function getDateMod(): \DateTime
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTime $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
@@ -560,12 +555,12 @@ class AuthLDAP
         return $this;
     }
 
-    public function getRegistrationNumberField(): string
+    public function getRegistrationNumberField(): ?string
     {
         return $this->registrationNumberField;
     }
 
-    public function setRegistrationNumberField(string $registrationNumberField): self
+    public function setRegistrationNumberField(?string $registrationNumberField): self
     {
         $this->registrationNumberField = $registrationNumberField;
 
@@ -577,7 +572,7 @@ class AuthLDAP
         return $this->email2_field;
     }
 
-    public function setEmail2_field(string $email2_field): self
+    public function setEmail2_field(?string $email2_field): self
     {
         $this->email2_field = $email2_field;
 
@@ -589,7 +584,7 @@ class AuthLDAP
         return $this->email3_field;
     }
 
-    public function setEmail3_field(string $email3_field): self
+    public function setEmail3_field(?string $email3_field): self
     {
         $this->email3_field = $email3_field;
 
@@ -601,31 +596,31 @@ class AuthLDAP
         return $this->email4_field;
     }
 
-    public function setEmail4_field(string $email4_field): self
+    public function setEmail4_field(?string $email4_field): self
     {
         $this->email4_field = $email4_field;
 
         return $this;
     }
 
-    public function getLocationField(): string
+    public function getLocationField(): ?string
     {
         return $this->locationField;
     }
 
-    public function setLocationField(string $locationField): self
+    public function setLocationField(?string $locationField): self
     {
         $this->locationField = $locationField;
 
         return $this;
     }
 
-    public function getResponsibleField(): string
+    public function getResponsibleField(): ?string
     {
         return $this->responsibleField;
     }
 
-    public function setResponsibleField(string $responsibleField): self
+    public function setResponsibleField(?string $responsibleField): self
     {
         $this->responsibleField = $responsibleField;
 
@@ -668,38 +663,59 @@ class AuthLDAP
         return $this;
     }
 
-    public function getPictureField(): string
+    public function getPictureField(): ?string
     {
         return $this->pictureField;
     }
 
-    public function setPictureField(string $pictureField): self
+    public function setPictureField(?string $pictureField): self
     {
         $this->pictureField = $pictureField;
 
         return $this;
     }
 
-    public function getDateCreation(): \DateTime
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTime $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
 
-    public function getInventoryDomain(): string
+    public function getInventoryDomain(): ?string
     {
         return $this->inventoryDomain;
     }
 
-    public function setInventoryDomain(string $inventoryDomain): self
+    public function setInventoryDomain(?string $inventoryDomain): self
     {
         $this->inventoryDomain = $inventoryDomain;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of derefOption
+     */ 
+    public function getDerefOption()
+    {
+        return $this->derefOption;
+    }
+
+    /**
+     * Set the value of derefOption
+     *
+     * @return  self
+     */ 
+    public function setDerefOption($derefOption)
+    {
+        $this->derefOption = $derefOption;
 
         return $this;
     }

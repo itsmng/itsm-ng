@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_logs')]
 #[ORM\Index(name: "date_mod", columns: ['date_mod'])]
 #[ORM\Index(name: "itemtype_link", columns: ['itemtype_link'])]
@@ -22,7 +23,7 @@ class Log
     private $itemtype;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $itemsId;
+    private $items_id = null;
 
     #[ORM\Column(name: 'itemtype_link', type: 'string', length: 100, options: ['default' => ''])]
     private $itemtypeLink;
@@ -64,12 +65,12 @@ class Log
 
     public function getItemsId(): ?int
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId(int $itemsId): self
+    public function setItemsId(?int $items_id): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
 
         return $this;
     }
