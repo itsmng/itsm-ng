@@ -178,7 +178,7 @@ abstract class CommonITILValidation extends CommonDBChild
 
         if (
             !Session::haveRightsOr(static::$rightname, static::getCreateRights())
-            && ($this->fields["users_id_validate"] != Session::getLoginUserID())
+            && ($this->fields["validate_users_id"] != Session::getLoginUserID())
         ) {
             return false;
         }
@@ -191,20 +191,19 @@ abstract class CommonITILValidation extends CommonDBChild
     **/
     public static function canValidate($items_id)
     {
-        global $DB;
-
-        $iterator = $DB->request([
-           'SELECT' => ['users_id_validate'],
+        $request = self::getAdapter()->request([
+           'SELECT' => ['validate_users_id'],
            'FROM'   => static::getTable(),
            'WHERE'  => [
               static::$items_id    => $items_id,
-              'users_id_validate'  => Session::getLoginUserID()
+              'validate_users_id'  => Session::getLoginUserID()
            ],
            'START'  => 0,
            'LIMIT'  => 1
         ]);
 
-        if (count($iterator) > 0) {
+        $results = $request->fetchAllAssociative();
+        if (count($results) > 0) {
             return true;
         }
         return false;
@@ -234,7 +233,7 @@ abstract class CommonITILValidation extends CommonDBChild
                 $restrict = [static::$items_id => $item->getID()];
                 // No rights for create only count asign ones
                 if (!Session::haveRightsOr(static::$rightname, static::getCreateRights())) {
-                    $restrict['users_id_validate'] = Session::getLoginUserID();
+                    $restrict['validate_users_id'] = Session::getLoginUserID();
                 }
                 $nb = countElementsInTable(static::getTable(), $restrict);
             }
@@ -277,7 +276,7 @@ abstract class CommonITILValidation extends CommonDBChild
         $input["submission_date"] = $_SESSION["glpi_currenttime"];
         $input["status"]          = self::WAITING;
 
-        if (!isset($input["users_id_validate"]) || ($input["users_id_validate"] <= 0)) {
+        if (!isset($input["validate_users_id"]) || ($input["validate_users_id"] <= 0)) {
             return false;
         }
 
@@ -327,7 +326,7 @@ abstract class CommonITILValidation extends CommonDBChild
             }
             if ($mailsend) {
                 $user    = new User();
-                $user->getFromDB($this->fields["users_id_validate"]);
+                $user->getFromDB($this->fields["validate_users_id"]);
                 $email   = $user->getDefaultEmail();
                 if (!empty($email)) {
                     Session::addMessageAfterRedirect(sprintf(__('Approval request send to %s'), $user->getName()));
@@ -351,7 +350,7 @@ abstract class CommonITILValidation extends CommonDBChild
     {
 
         $forbid_fields = [];
-        if ($this->fields["users_id_validate"] == Session::getLoginUserID() && isset($input["status"])) {
+        if ($this->fields["validate_users_id"] == Session::getLoginUserID() && isset($input["status"])) {
             if (
                 ($input["status"] == self::REFUSED)
                 && (!isset($input["comment_validation"])
@@ -371,7 +370,7 @@ abstract class CommonITILValidation extends CommonDBChild
                 $input["validation_date"] = $_SESSION["glpi_currenttime"];
             }
 
-            $forbid_fields = ['entities_id', 'users_id', static::$items_id, 'users_id_validate',
+            $forbid_fields = ['entities_id', 'users_id', static::$items_id, 'validate_users_id',
                                    'comment_submission', 'submission_date', 'is_recursive'];
         } elseif (Session::haveRightsOr(static::$rightname, $this->getCreateRights())) { // Update validation request
             $forbid_fields = ['entities_id', static::$items_id, 'status', 'comment_validation',
@@ -445,7 +444,7 @@ abstract class CommonITILValidation extends CommonDBChild
     {
 
         if ($field == 'status') {
-            $username = getUserName($this->fields["users_id_validate"]);
+            $username = getUserName($this->fields["validate_users_id"]);
 
             $result   = ['0', '', ''];
             if ($this->fields["status"] == self::ACCEPTED) {
@@ -467,7 +466,7 @@ abstract class CommonITILValidation extends CommonDBChild
     public function getHistoryNameForItem(CommonDBTM $item, $case)
     {
 
-        $username = getUserName($this->fields["users_id_validate"]);
+        $username = getUserName($this->fields["validate_users_id"]);
 
         switch ($case) {
             case 'add':
@@ -596,16 +595,14 @@ abstract class CommonITILValidation extends CommonDBChild
     **/
     public static function getNumberToValidate($users_id)
     {
-        global $DB;
-
-        $row = $DB->request([
+        $row = self::getAdapter()->request([
            'FROM'   => static::getTable(),
            'COUNT'  => 'cpt',
            'WHERE'  => [
               'status'             => self::WAITING,
-              'users_id_validate'  => $users_id
+              'validate_users_id'  => $users_id
            ]
-        ])->next();
+        ])->fetchAssociative();
 
         return $row['cpt'];
     }
@@ -619,16 +616,14 @@ abstract class CommonITILValidation extends CommonDBChild
     **/
     public static function getTicketStatusNumber($items_id, $status)
     {
-        global $DB;
-
-        $row = $DB->request([
+            $row = self::getAdapter()->request([
            'FROM'   => static::getTable(),
            'COUNT'  => 'cpt',
            'WHERE'  => [
               static::$items_id => $items_id,
               'status'          => $status
            ]
-        ])->next();
+        ])->fetchAssociative();
 
         return $row['cpt'];
     }
@@ -646,19 +641,18 @@ abstract class CommonITILValidation extends CommonDBChild
     **/
     public static function alreadyExists($items_id, $users_id)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => static::getTable(),
            'WHERE'  => [
               static::$items_id    => $items_id,
-              'users_id_validate'  => $users_id
+              'validate_users_id'  => $users_id
            ],
            'START'  => 0,
            'LIMIT'  => 1
         ]);
 
-        if (count($iterator) > 0) {
+        $results = $request->fetchAllAssociative();
+        if (count($results) > 0) {
             return true;
         }
         return false;
@@ -678,7 +672,7 @@ abstract class CommonITILValidation extends CommonDBChild
         $inputs = [
            User::getTypeName() => [
               'type' => 'select',
-              'name' => 'users_id_validate',
+              'name' => 'validate_users_id',
               'values' => getOptionsForUsers(['validate_request', 'validate_incident']),
               'col_lg' => '12',
               'col_md' => '12',
@@ -741,13 +735,13 @@ abstract class CommonITILValidation extends CommonDBChild
                         $input2 = [static::$items_id      => $id,
                                         'comment_submission'   => $input['comment_submission']];
                         if ($valid->can(-1, CREATE, $input2)) {
-                            $users = $input['users_id_validate'];
+                            $users = $input['validate_users_id'];
                             if (!is_array($users)) {
                                 $users = [$users];
                             }
                             $ok = true;
                             foreach ($users as $user) {
-                                $input2["users_id_validate"] = $user;
+                                $input2["validate_users_id"] = $user;
                                 if (!$valid->add($input2)) {
                                     $ok = false;
                                 }
@@ -860,12 +854,12 @@ abstract class CommonITILValidation extends CommonDBChild
             echo "</script>\n";
         }
 
-        $iterator = $DB->Request([
+        $request = $this::getAdapter()->Request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [static::$items_id => $item->getField('id')],
            'ORDER'  => 'submission_date DESC'
         ]);
-
+        $results = $request->fetchAllAssociative();
         $colonnes = [_x('item', 'State'), __('Request date'), __('Approval requester'),
                        __('Request comments'), __('Approval status'),
                        __('Approver'), __('Approval comments')];
@@ -887,7 +881,7 @@ abstract class CommonITILValidation extends CommonDBChild
                 echo __('Send an approval request') . "</a></td></tr>\n";
             }
         }
-        if (count($iterator)) {
+        if (count($results)) {
             $header = "<tr>";
             foreach ($colonnes as $colonne) {
                 $header .= "<th>" . $colonne . "</th>";
@@ -905,7 +899,7 @@ abstract class CommonITILValidation extends CommonDBChild
                 )
             );
 
-            while ($row = $iterator->next()) {
+            foreach ($results as $row) {
                 $canedit = $this->canEdit($row["id"]);
                 Session::addToNavigateListItems($this->getType(), $row["id"]);
                 $bgcolor = self::getStatusColor($row['status']);
@@ -939,7 +933,7 @@ abstract class CommonITILValidation extends CommonDBChild
                 echo "<td>" . getUserName($row["users_id"]) . "</td>";
                 echo "<td>" . $row["comment_submission"] . "</td>";
                 echo "<td>" . Html::convDateTime($row["validation_date"]) . "</td>";
-                echo "<td>" . getUserName($row["users_id_validate"]) . "</td>";
+                echo "<td>" . getUserName($row["validate_users_id"]) . "</td>";
                 echo "<td>" . $row["comment_validation"] . "</td>";
                 echo "</tr>";
             }
@@ -976,7 +970,7 @@ abstract class CommonITILValidation extends CommonDBChild
                                && static::canCreate()
                                && ($this->fields['status'] == self::WAITING));
 
-        $validator          = ($this->fields["users_id_validate"] == Session::getLoginUserID());
+        $validator          = ($this->fields["validate_users_id"] == Session::getLoginUserID());
 
         $options['colspan'] = 1;
 
@@ -1007,8 +1001,8 @@ abstract class CommonITILValidation extends CommonDBChild
                     ] : [],
                     ($validation_admin) && ($ID > 0) ? [
                        'type' => 'hidden',
-                       'name' => 'users_id_validate',
-                       'value' => $this->fields["users_id_validate"],
+                       'name' => 'validate_users_id',
+                       'value' => $this->fields["validate_users_id"],
                     ] : [],
                     __('Approval requester') => [
                        'content' => getUserName($this->fields["users_id"]),
@@ -1019,13 +1013,13 @@ abstract class CommonITILValidation extends CommonDBChild
                        'value' => 'user',
                     ],
                     __('Approver') => ($validation_admin) ? ($ID > 0 ? [
-                       getUserName($this->fields["users_id_validate"])
+                       getUserName($this->fields["validate_users_id"])
                     ] : [
                        'type' => 'select',
-                       'name' => 'users_id_validate[]',
+                       'name' => 'validate_users_id[]',
                        'values' => getOptionsForUsers('validate_incident', ['entitites_id' => $entity]),
                     ]) : [
-                       'content' => getUserName($this->fields["users_id_validate"]),
+                       'content' => getUserName($this->fields["validate_users_id"]),
                     ],
                     __('Comments') => ($validation_admin) ? [
                        'type' => 'textarea',
@@ -1131,7 +1125,7 @@ abstract class CommonITILValidation extends CommonDBChild
            'id'                 => '7',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_validate',
+           'linkfield'          => 'validate_users_id',
            'name'               => __('Approver'),
            'datatype'           => 'itemlink',
            'right'              => [
@@ -1263,7 +1257,7 @@ abstract class CommonITILValidation extends CommonDBChild
            'id'                 => '59',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_validate',
+           'linkfield'          => 'validate_users_id',
            'name'               => __('Approver'),
            'datatype'           => 'itemlink',
            'right'              => (
@@ -1353,7 +1347,7 @@ abstract class CommonITILValidation extends CommonDBChild
      *  - entity                  : ID of entity
      *  - right                   : validation rights
      *  - groups_id               : ID of group validator
-     *  - users_id_validate       : ID of user validator
+     *  - validate_users_id       : ID of user validator
      *  - applyto
      *
      * @return void Output is printed
@@ -1368,7 +1362,7 @@ abstract class CommonITILValidation extends CommonDBChild
           'entity'            => $_SESSION['glpiactive_entity'],
           'right'             => ['validate_request', 'validate_incident'],
           'groups_id'         => 0,
-          'users_id_validate' => [],
+          'validate_users_id' => [],
           'applyto'           => 'show_validator_field',
         ];
 
@@ -1380,9 +1374,9 @@ abstract class CommonITILValidation extends CommonDBChild
                        'group' => Group::getTypeName(1)];
 
         $type  = '';
-        if (isset($params['users_id_validate']['groups_id'])) {
+        if (isset($params['validate_users_id']['groups_id'])) {
             $type = 'group';
-        } elseif (!empty($params['users_id_validate'])) {
+        } elseif (!empty($params['validate_users_id'])) {
             $type = 'user';
         }
 

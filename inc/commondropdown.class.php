@@ -215,18 +215,17 @@ abstract class CommonDropdown extends CommonDBTM
     **/
     public function prepareInputForAdd($input)
     {
-        global $DB;
 
         // if item based on location, create item in the same entity as location
         if (isset($input['locations_id']) && !isset($input['_is_update'])) {
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => ['entities_id'],
                'FROM'   => 'glpi_locations',
                'WHERE'  => [
                   'id' => $input['locations_id']
                ]
             ]);
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 $input['entities_id'] = $data['entities_id'];
             }
         }
@@ -426,8 +425,6 @@ abstract class CommonDropdown extends CommonDBTM
     **/
     public function isUsed()
     {
-        global $DB;
-
         $ID = $this->fields['id'];
 
         $RELATION = getDbRelations();
@@ -435,22 +432,22 @@ abstract class CommonDropdown extends CommonDBTM
             foreach ($RELATION[$this->getTable()] as $tablename => $field) {
                 if ($tablename[0] != '_') {
                     if (!is_array($field)) {
-                        $row = $DB->request([
+                        $request = $this::getAdapter()->request([
                            'FROM'   => $tablename,
                            'COUNT'  => 'cpt',
                            'WHERE'  => [$field => $ID]
-                        ])->next();
-                        if ($row['cpt'] > 0) {
+                        ])->fetchOne();
+                        if ($request > 0) { 
                             return true;
                         }
                     } else {
                         foreach ($field as $f) {
-                            $row = $DB->request([
+                            $request = $this::getAdapter()->request([
                                'FROM'   => $tablename,
                                'COUNT'  => 'cpt',
                                'WHERE'  => [$f => $ID]
-                            ])->next();
-                            if ($row['cpt'] > 0) {
+                            ])->fetchOne();
+                            if ($request > 0) { 
                                 return true;
                             }
                         }
@@ -556,8 +553,6 @@ abstract class CommonDropdown extends CommonDBTM
     **/
     public function findID(array &$input)
     {
-        global $DB;
-
         if (!empty($input["name"])) {
             $crit = [
                'SELECT' => 'id',
@@ -577,15 +572,14 @@ abstract class CommonDropdown extends CommonDBTM
                 );
             }
 
-            $iterator = $DB->request($crit);
-
+            $request = $this::getAdapter()->request($crit);
+            $result = $request->fetchAssociative();
             // Check twin :
-            if (count($iterator) > 0) {
-                $result = $iterator->next();
+            if ($result) {
                 return $result['id'];
             }
-        }
         return -1;
+        }
     }
 
 

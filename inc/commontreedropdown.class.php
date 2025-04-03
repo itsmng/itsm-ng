@@ -167,8 +167,6 @@ abstract class CommonTreeDropdown extends CommonDropdown
 
     public function pre_deleteItem()
     {
-        global $DB;
-
         // Not set in case of massive delete : use parent
         if (isset($this->input['_replace_by']) && $this->input['_replace_by']) {
             $parent = $this->input['_replace_by'];
@@ -179,7 +177,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
         $this->cleanParentsSons();
         $tmp  = clone $this;
 
-        $result = $DB->request(
+        $result = $this::getAdapter()->request(
             [
               'SELECT' => 'id',
               'FROM'   => $this->getTable(),
@@ -236,7 +234,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
     **/
     public function regenerateTreeUnderID($ID, $updateName, $changeParent)
     {
-        global $DB, $GLPI_CACHE;
+        global $GLPI_CACHE;
 
         //drop from sons cache when needed
         if ($changeParent && Toolbox::useCache()) {
@@ -263,7 +261,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
                 DropdownTranslation::regenerateAllCompletenameTranslationsFor($this->getType(), $ID);
             }
 
-            foreach ($DB->request($query) as $data) {
+            foreach ($this::getAdapter()->request($query) as $data) {
                 $update = [];
 
                 if ($updateName || $changeParent) {
@@ -605,16 +603,16 @@ abstract class CommonTreeDropdown extends CommonDropdown
 
         $fk   = $this->getForeignKeyField();
 
-        $result = iterator_to_array($DB->request(
+        $request = $this::getAdapter()->request(
             [
               'FROM'  => $this->getTable(),
               'WHERE' => [$fk => $ID],
               'ORDER' => 'name',
             ]
-        ));
-
+        );
+        $results = $request->fetchAllAssociative();
         $values = [];
-        foreach ($result as $data) {
+        foreach ($results as $data) {
             $newValue = ['<a href="' . $this->getFormURL() . '?id=' . $data['id'] . '">' . $data['name'] . '</a>'];
             if ($entity_assign) {
                 $newValue[] = Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
@@ -909,10 +907,13 @@ abstract class CommonTreeDropdown extends CommonDropdown
                 );
             }
             // Check twin :
-            $iterator = $DB->request($criteria);
-            if (count($iterator)) {
-                $result = $iterator->next();
-                return $result['id'];
+            $request = $this::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
+                // $result = $iterator->next();
+                foreach ($results as $result) {
+                    return $result['id'];
+                }
             }
         } elseif (isset($input['name']) && !empty($input['name'])) {
             $fk = $this->getForeignKeyField();
@@ -934,13 +935,14 @@ abstract class CommonTreeDropdown extends CommonDropdown
                 );
             }
             // Check twin :
-            $iterator = $DB->request($criteria);
-            if (count($iterator)) {
-                $result = $iterator->next();
-                return $result['id'];
+            $request = $this::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
+            if (!empty($results)) { 
+                return $results[0]['id']; 
             }
         }
         return -1;
+    
     }
 
 

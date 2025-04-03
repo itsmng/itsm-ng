@@ -893,8 +893,7 @@ abstract class CommonDBChild extends CommonDBConnexity
     **/
     public static function showChildsForItemForm(CommonDBTM $item, $field_name, $canedit = null)
     {
-        global $DB;
-
+        
         $items_id = $item->getID();
 
         if (is_null($canedit)) {
@@ -937,9 +936,9 @@ abstract class CommonDBChild extends CommonDBConnexity
             $query['WHERE']['is_deleted'] = 0;
         }
 
-        $iterator = $DB->request($query);
+        $results = self::getAdapter()->request($query);
         $count = 0;
-        while ($data = $iterator->next()) {
+        while ($data = $results->fetchAssociative()) {
             $current_item->fields = $data;
 
             if ($count) {
