@@ -403,8 +403,6 @@ class DomainRecord extends CommonDBChild
      **/
     public static function showForDomain(Domain $domain)
     {
-        global $DB;
-
         $instID = $domain->fields['id'];
         if (!$domain->can($instID, READ)) {
             return false;
@@ -413,7 +411,7 @@ class DomainRecord extends CommonDBChild
                    || count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes']);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => 'record.*',
            'FROM'      => self::getTable() . ' AS record',
            'WHERE'     => ['domains_id' => $instID],
@@ -427,8 +425,8 @@ class DomainRecord extends CommonDBChild
            ],
            'ORDER'     => ['rtype.name ASC', 'record.name ASC']
         ]);
-
-        $number = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
 
         if ($canedit) {
             $form = [
@@ -481,7 +479,7 @@ class DomainRecord extends CommonDBChild
         ];
         $values = [];
         $massive_action = [];
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $ID = "";
 
             if ($_SESSION["glpiis_ids_visible"] || empty(self::getDisplayName($domain, $data['name']))) {

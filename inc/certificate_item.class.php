@@ -305,7 +305,7 @@ class Certificate_Item extends CommonDBRelation
         ];
         $values = [];
         $massiveactionValues = [];
-        while ($type_row = $types_iterator->next()) {
+        foreach ($types_iterator as $type_row) {
             $itemtype = $type_row['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -317,7 +317,7 @@ class Certificate_Item extends CommonDBRelation
                     $soft = new Software();
                 }
 
-                while ($data = $iterator->next()) {
+                foreach ($iterator as $data) {
                     $linkname_extra = "";
                     if ($item instanceof ITILFollowup || $item instanceof ITILSolution) {
                         $linkname_extra = "(" . $item::getTypeName(1) . ")";
@@ -427,7 +427,7 @@ class Certificate_Item extends CommonDBRelation
         $is_recursive = $item->isRecursive();
 
         $iterator = self::getListForItem($item);
-        $number   = $iterator->numrows();
+        $number   = count($iterator);
         $i        = 0;
 
         $certificates = [];

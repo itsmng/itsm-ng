@@ -177,9 +177,7 @@ class Appliance_Item_Relation extends CommonDBRelation
      */
     public static function getForApplianceItem(int $appliances_items_id = 0)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               Appliance_Item::getForeignKeyField() => $appliances_items_id
@@ -187,7 +185,7 @@ class Appliance_Item_Relation extends CommonDBRelation
         ]);
 
         $relations = [];
-        while ($row = $iterator->next()) {
+        while ($row = $result->fetchAssociative()) {
             $itemtype = $row['itemtype'];
             $item = new $itemtype();
             $item->getFromDB($row['items_id']);
