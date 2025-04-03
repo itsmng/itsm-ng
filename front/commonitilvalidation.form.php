@@ -62,12 +62,12 @@ $fk       = getForeignKeyFieldForItemType($itemtype);
 if (isset($_POST["add"])) {
     $validation->check(-1, CREATE, $_POST);
     if (
-        isset($_POST['users_id_validate'])
-        && (count($_POST['users_id_validate']) > 0)
+        isset($_POST['validate_users_id'])
+        && (count($_POST['validate_users_id']) > 0)
     ) {
-        $users = $_POST['users_id_validate'];
+        $users = $_POST['validate_users_id'];
         foreach ($users as $user) {
-            $_POST['users_id_validate'] = $user;
+            $_POST['validate_users_id'] = $user;
             $validation->add($_POST);
             Event::log(
                 $validation->getField($fk),
@@ -106,7 +106,7 @@ if (isset($_POST["add"])) {
     );
     Html::back();
 } elseif (isset($_POST['approval_action'])) {
-    if ($_POST['users_id_validate'] == Session::getLoginUserID()) {
+    if ($_POST['validate_users_id'] == Session::getLoginUserID()) {
         $validation->update($_POST + [
            'status' => ($_POST['approval_action'] === 'approve') ? CommonITILValidation::ACCEPTED : CommonITILValidation::REFUSED
         ]);
