@@ -19,9 +19,9 @@ class PduRack
     #[ORM\JoinColumn(name: 'racks_id', referencedColumnName: 'id', nullable: true)]
     private ?Rack $rack = null;
 
-    #[ORM\ManyToOne(targetEntity: Pdu::class, inversedBy: 'pduRacks')]
+    #[ORM\ManyToOne(targetEntity: PDU::class, inversedBy: 'pduRacks')]
     #[ORM\JoinColumn(name: 'pdus_id', referencedColumnName: 'id', nullable: true)]
-    private ?Pdu $pdu = null;
+    private ?PDU $pdu = null;
 
     #[ORM\Column(name: 'side', type: 'integer', nullable: true, options: ['default' => 0])]
     private $side;
