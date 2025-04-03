@@ -1194,6 +1194,9 @@ class DBmysql
             $value = $value->getValue();
         } elseif ($value === null || $value === 'NULL' || $value === 'null') {
             $value = 'NULL';
+        } elseif ($value instanceof \DateTime) {
+            // Convertir les objets DateTime en chaîne formatée
+            $value = "'" . $value->format('Y-m-d H:i:s') . "'";
         } elseif (is_bool($value)) {
             // transform boolean as int (prevent `false` to be transformed to empty string)
             $value = "'" . (int)$value . "'";
