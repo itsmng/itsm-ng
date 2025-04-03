@@ -2,10 +2,12 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_cartridgeitems")]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
@@ -31,7 +33,7 @@ class CartridgeItem
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
@@ -65,13 +67,13 @@ class CartridgeItem
     private ?Group $techGroup = null;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => false])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
 
     #[ORM\Column(name: 'alarm_threshold', type: "integer", options: ["default" => 10])]
-    private $alarmThreshold;
+    private $alarmThreshold = 10;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;
@@ -154,33 +156,36 @@ class CartridgeItem
         return $this->alarmThreshold;
     }
 
-    public function setAlarmThreshold(int $alarmThreshold): self
+    public function setAlarmThreshold(int|string $alarmThreshold): self
     {
-        $this->alarmThreshold = $alarmThreshold;
+        $this->alarmThreshold = (int) $alarmThreshold;
 
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateModified): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateModified;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreated): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreated;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

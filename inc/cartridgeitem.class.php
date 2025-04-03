@@ -140,13 +140,11 @@ class CartridgeItem extends CommonDBTM
      **/
     public static function getCount($id)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_cartridges',
            'WHERE'  => ['cartridgeitems_id' => $id]
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'];
     }
 
@@ -225,11 +223,11 @@ class CartridgeItem extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
                     __('Technician in charge of the hardware') => [
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'type' => 'select',
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'entity' => $this->fields["entities_id"],
-                       'value' => $this->fields["users_id_tech"] ?? '',
+                       'value' => $this->fields["tech_users_id"] ?? '',
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     __('Comments') => [
@@ -238,10 +236,10 @@ class CartridgeItem extends CommonDBTM
                        'value' => $this->fields["comment"] ?? '',
                     ],
                     __('Group in charge of the hardware') => [
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'type' => 'select',
                        'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields["groups_id_tech"] ?? '',
+                       'value' => $this->fields["tech_groups_id"] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
                     __('Stock location') => [
@@ -372,7 +370,7 @@ class CartridgeItem extends CommonDBTM
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the hardware'),
            'datatype'           => 'dropdown',
            'right'              => 'own_ticket'
@@ -382,7 +380,7 @@ class CartridgeItem extends CommonDBTM
            'id'                 => '49',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge of the hardware'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'
@@ -455,7 +453,7 @@ class CartridgeItem extends CommonDBTM
     **/
     public static function cronCartridge($task = null)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $cron_status = 1;
         if ($CFG_GLPI["use_notifications"]) {
@@ -464,7 +462,7 @@ class CartridgeItem extends CommonDBTM
 
             foreach (Entity::getEntitiesToNotify('cartridges_alert_repeat') as $entity => $repeat) {
                 // if you change this query, please don't forget to also change in showDebug()
-                $result = $DB->request(
+                $result = self::getAdapter()->request(
                     [
                       'SELECT'    => [
                          'glpi_cartridgeitems.id AS cartID',
@@ -579,9 +577,8 @@ class CartridgeItem extends CommonDBTM
     **/
     public static function dropdownForPrinter(Printer $printer)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        
+        $request = self::getAdapter()->request([
            'SELECT'       => [
               'COUNT'  => '* AS cpt',
               'glpi_locations.completename AS location',
@@ -624,7 +621,7 @@ class CartridgeItem extends CommonDBTM
         ]);
 
         $results = [];
-        while ($data = $iterator->next()) {
+      while ($data = $request->fetchAssociative()) {
             $text = sprintf(__('%1$s - %2$s'), $data["name"], $data["ref"]);
             $text = sprintf(__('%1$s (%2$s)'), $text, $data["cpt"]);
             $text = sprintf(__('%1$s - %2$s'), $text, $data["location"]);
