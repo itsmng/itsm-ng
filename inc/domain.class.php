@@ -110,7 +110,7 @@ class Domain extends CommonDropdown
            'id'                 => '3',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge'),
            'datatype'           => 'dropdown'
         ];
@@ -163,7 +163,7 @@ class Domain extends CommonDropdown
            'id'                 => '10',
            'table'              => 'glpi_groups',
            'field'              => 'name',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'
@@ -339,10 +339,10 @@ class Domain extends CommonDropdown
                        'value' => $this->fields['date_expiration'] ?? '',
                     ],
                     __('Group in charge') => [
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'type' => 'select',
                        'itemtype' => Group::class,
-                       'value' => $this->fields['groups_id_tech'] ?? '',
+                       'value' => $this->fields['tech_groups_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
                     __('Others') => [
@@ -358,10 +358,10 @@ class Domain extends CommonDropdown
                        'actions' => getItemActionButtons(['info', 'add'], "DomainType"),
                     ],
                     __('Technician in charge') => [
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'type' => 'select',
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
-                       'value' => $this->fields['users_id_tech'] ?? '',
+                       'value' => $this->fields['tech_users_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "DomainType"),
                     ],
                     __('Comments') => [

@@ -96,9 +96,9 @@ class NotificationTargetPlanningRecall extends NotificationTarget
         $item = new $this->obj->fields['itemtype']();
         if (
             $item->getFromDB($this->obj->fields['items_id'])
-            && $item->isField('groups_id_tech')
+            && $item->isField('tech_groups_id')
         ) {
-            $this->addForGroup(0, $item->fields['groups_id_tech']);
+            $this->addForGroup(0, $item->fields['tech_groups_id']);
         }
     }
 
@@ -112,8 +112,8 @@ class NotificationTargetPlanningRecall extends NotificationTarget
         if ($item->getFromDB($this->obj->fields['items_id'])) {
             $user = new User();
             $field = '';
-            if ($item->isField('users_id_tech')) {
-                $field = 'users_id_tech';
+            if ($item->isField('tech_users_id')) {
+                $field = 'tech_users_id';
             } elseif (
                 in_array($item->getType(), ['PlanningExternalEvent', 'Reminder'])
                        && $item->isField('users_id')

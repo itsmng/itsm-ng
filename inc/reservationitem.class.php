@@ -265,7 +265,7 @@ class ReservationItem extends CommonDBChild
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the hardware'),
            'datatype'           => 'dropdown',
            'right'              => 'interface',

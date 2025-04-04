@@ -646,8 +646,8 @@ class Domain_Item extends CommonDBRelation
         $massivactionId = 'mass' . __CLASS__ . $rand;
         $fields = [
           'name' => __('Name'),
-          'groups_id_tech' => __('Group in charge'),
-          'users_id_tech' => __('Technician in charge'),
+          'tech_groups_id' => __('Group in charge'),
+          'tech_users_id' => __('Technician in charge'),
           'domaintypes_id' => _n('Type', 'Types', 1),
           'date_creation' => __('Creation date'),
           'expiration' => __('Expiration date'),

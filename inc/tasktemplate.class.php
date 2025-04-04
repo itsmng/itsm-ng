@@ -101,7 +101,7 @@ class TaskTemplate extends CommonDropdown
               'name'  => 'tech_users_id',
               'type'  => 'select',
               'values' => getOptionsForUsers('own_ticket'),
-              'value' => $this->fields['users_id_tech'],
+              'value' => $this->fields['tech_users_id'],
               'actions' => getItemActionButtons(['info'], User::class),
            ],
            Group::getTypeName(1) => [
@@ -109,7 +109,7 @@ class TaskTemplate extends CommonDropdown
               'type'  => 'select',
               'itemtype' => Group::class,
               'conditions' => ['is_task' => 1],
-              'value' => $this->fields['groups_id_tech'],
+              'value' => $this->fields['tech_groups_id'],
               'actions' => getItemActionButtons(['info', 'add'], Group::class),
            ],
         ];
@@ -149,7 +149,7 @@ class TaskTemplate extends CommonDropdown
            'id'                 => '7',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('By'),
            'datatype'           => 'dropdown',
            'right'              => 'own_ticket'
@@ -159,7 +159,7 @@ class TaskTemplate extends CommonDropdown
            'id'                 => '8',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => Group::getTypeName(1),
            'condition'          => ['is_task' => 1],
            'datatype'           => 'dropdown'
@@ -227,19 +227,19 @@ class TaskTemplate extends CommonDropdown
             case 'state':
                 Planning::dropdownState("state", $this->fields["state"]);
                 break;
-            case 'users_id_tech':
+            case 'tech_users_id':
                 User::dropdown([
-                   'name'   => "users_id_tech",
+                   'name'   => "tech_users_id",
                    'right'  => "own_ticket",
-                   'value'  => $this->fields["users_id_tech"],
+                   'value'  => $this->fields["tech_users_id"],
                    'entity' => $this->fields["entities_id"],
                 ]);
                 break;
-            case 'groups_id_tech':
+            case 'tech_groups_id':
                 Group::dropdown([
-                   'name'     => "groups_id_tech",
+                   'name'     => "tech_groups_id",
                    'condition' => ['is_task' => 1],
-                   'value'     => $this->fields["groups_id_tech"],
+                   'value'     => $this->fields["tech_groups_id"],
                    'entity'    => $this->fields["entities_id"],
                 ]);
                 break;

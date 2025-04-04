@@ -1879,16 +1879,16 @@ class Ticket extends CommonITILObject
                     // Auto assign tech from item
                     if (
                         (!isset($input['_users_id_assign']) || ($input['_users_id_assign'] == 0))
-                        && $item->isField('users_id_tech')
+                        && $item->isField('tech_users_id')
                     ) {
-                        $input['_users_id_assign'] = $item->getField('users_id_tech');
+                        $input['_users_id_assign'] = $item->getField('tech_users_id');
                     }
                     // Auto assign group from item
                     if (
                         (!isset($input['_groups_id_assign']) || ($input['_groups_id_assign'] == 0))
-                        && $item->isField('groups_id_tech')
+                        && $item->isField('tech_groups_id')
                     ) {
-                        $input['_groups_id_assign'] = $item->getField('groups_id_tech');
+                        $input['_groups_id_assign'] = $item->getField('tech_groups_id');
                     }
                 }
                 // Auto assign tech/group from Category
@@ -1940,16 +1940,16 @@ class Ticket extends CommonITILObject
                     // Auto assign tech from item
                     if (
                         (!isset($input['_users_id_assign']) || ($input['_users_id_assign'] == 0))
-                        && $item->isField('users_id_tech')
+                        && $item->isField('tech_users_id')
                     ) {
-                        $input['_users_id_assign'] = $item->getField('users_id_tech');
+                        $input['_users_id_assign'] = $item->getField('tech_users_id');
                     }
                     // Auto assign group from item
                     if (
                         (!isset($input['_groups_id_assign']) || ($input['_groups_id_assign'] == 0))
-                        && $item->isField('groups_id_tech')
+                        && $item->isField('tech_groups_id')
                     ) {
-                        $input['_groups_id_assign'] = $item->getField('groups_id_tech');
+                        $input['_groups_id_assign'] = $item->getField('tech_groups_id');
                     }
                 }
                 break;

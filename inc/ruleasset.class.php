@@ -167,14 +167,14 @@ class RuleAsset extends Rule
         $actions['groups_id']['table']          = 'glpi_groups';
         $actions['groups_id']['condition']      = ['is_itemgroup' => 1];
 
-        $actions['users_id_tech']['table']      = 'glpi_users';
-        $actions['users_id_tech']['type']       = 'dropdown_users';
-        $actions['users_id_tech']['name']       = __('Technician in charge of the hardware');
+        $actions['tech_users_id']['table']      = 'glpi_users';
+        $actions['tech_users_id']['type']       = 'dropdown_users';
+        $actions['tech_users_id']['name']       = __('Technician in charge of the hardware');
 
-        $actions['groups_id_tech']['name']      = __('Group in charge of the hardware');
-        $actions['groups_id_tech']['type']      = 'dropdown';
-        $actions['groups_id_tech']['table']     = 'glpi_groups';
-        $actions['groups_id_tech']['condition'] = ['is_assign' => 1];
+        $actions['tech_groups_id']['name']      = __('Group in charge of the hardware');
+        $actions['tech_groups_id']['type']      = 'dropdown';
+        $actions['tech_groups_id']['table']     = 'glpi_groups';
+        $actions['tech_groups_id']['condition'] = ['is_assign' => 1];
 
         $actions['comment']['table']            = '';
         $actions['comment']['field']            = 'comment';
