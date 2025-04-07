@@ -2064,6 +2064,11 @@ class Profile extends CommonDBTM
             'field'     => 'solutiontemplate'
          ],
          [
+            'itemtype'  => 'ITILFollowupTemplate',
+            'label'     => _n('Followup template', 'Followup templates', Session::getPluralNumber()),
+            'field'     => 'followuptemplate'
+         ],
+         [
             'itemtype'  => 'Calendar',
             'label'     => _n('Calendar', 'Calendars', Session::getPluralNumber()),
             'field'     => 'calendar'
