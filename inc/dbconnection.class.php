@@ -236,7 +236,7 @@ class DBConnection extends CommonDBTM
                         // no break
                     case 1: // If synced (all changes)
                         $slave  = $DBread->request($sql)->next();
-                        $master = $DB->request($sql)->next();
+                        $master = self::getAdapter()->request([$sql])->fetchAssociative();
                         if (
                             isset($slave['maxid']) && isset($master['maxid'])
                             && ($slave['maxid'] == $master['maxid'])

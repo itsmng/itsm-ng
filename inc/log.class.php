@@ -783,12 +783,11 @@ class Log extends CommonDBTM
      **/
     public static function getDistinctUserNamesValuesInItemLog(CommonDBTM $item)
     {
-        global $DB;
 
         $itemtype = $item->getType();
         $items_id = $item->getField('id');
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT'          => 'user_name',
            'DISTINCT'        => true,
            'FROM'            => self::getTable(),
@@ -800,7 +799,7 @@ class Log extends CommonDBTM
         ]);
 
         $values = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             if (empty($data['user_name'])) {
                 continue;
             }
@@ -824,14 +823,13 @@ class Log extends CommonDBTM
      **/
     public static function getDistinctAffectedFieldValuesInItemLog(CommonDBTM $item)
     {
-        global $DB;
 
         $itemtype = $item->getType();
         $items_id = $item->getField('id');
 
         $affected_fields = ['linked_action', 'itemtype_link', 'id_search_option'];
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT'  => $affected_fields,
            'FROM'    => self::getTable(),
            'WHERE'   => [
@@ -843,7 +841,7 @@ class Log extends CommonDBTM
         ]);
 
         $values = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $key = null;
             $value = null;
 
@@ -997,12 +995,10 @@ class Log extends CommonDBTM
      **/
     public static function getDistinctLinkedActionValuesInItemLog(CommonDBTM $item)
     {
-        global $DB;
-
         $itemtype = $item->getType();
         $items_id = $item->getField('id');
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT'          => 'linked_action',
            'DISTINCT'        => true,
            'FROM'            => self::getTable(),
@@ -1014,7 +1010,7 @@ class Log extends CommonDBTM
         ]);
 
         $values = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $key = $data["linked_action"];
             $value = null;
 

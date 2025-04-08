@@ -192,8 +192,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
      **/
     public static function getOppositeByTypeAndID($itemtype, $items_id, &$relations_id = null)
     {
-        global $DB;
-
+        
         if ($items_id < 0) {
             return false;
         }
@@ -201,9 +200,10 @@ abstract class CommonDBRelation extends CommonDBConnexity
         $criteria = self::getSQLCriteriaToSearchForItem($itemtype, $items_id);
 
         if ($criteria !== null) {
-            $iterator = $DB->request($criteria);
-            if (count($iterator) == 1) {
-                $line = $iterator->next();
+            $request = self::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
+            if (count($results) == 1) {
+                $line = $results[0];
                 if ($line['is_1'] == $line['is_2']) {
                     return false;
                 }
@@ -1240,8 +1240,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
         HTMLTableCell $father = null,
         array $options = []
     ) {
-        global $DB;
-
+        
         if (empty($item)) {
             if (empty($father)) {
                 return;
@@ -1252,8 +1251,9 @@ abstract class CommonDBRelation extends CommonDBConnexity
         $criteria = self::getSQLCriteriaToSearchForItem($item->getType(), $item->getID());
         if ($criteria !== null) {
             $relation = new static();
-            $iterator = $DB->request($criteria);
-            while ($line = $iterator->next()) {
+            $results = self::getAdapter()->request($criteria);
+            // foreach ($results as $line) {
+            while ($line = $results->fetchAssociative()) {
                 if ($line['is_1'] != $line['is_2']) {
                     if ($line['is_1'] == 0) {
                         $options['items_id'] = $line['items_id_1'];
@@ -1570,7 +1570,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
         CommonDBTM $item,
         array $ids
     ) {
-        global $DB;
 
         $action        = $ma->getAction();
         $input         = $ma->getInput();
@@ -1795,8 +1794,9 @@ abstract class CommonDBRelation extends CommonDBConnexity
                            'WHERE'  => $WHERE
                         ];
                     }
-                    $request        = $DB->request($criteria);
-                    $number_results = count($request);
+                    $request        = self::getAdapter()->request($criteria);
+                    $results = $request->fetchAllAssociative();
+                    $number_results = count($results);
                     if ($number_results == 0) {
                         $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
                         $ma->addMessage($link->getErrorMessage(ERROR_NOT_FOUND));
@@ -1805,7 +1805,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
                     $ok      = 0;
                     $ko      = 0;
                     $noright = 0;
-                    while ($line = $request->next()) {
+                    foreach ($results as $line) {
                         if ($link->can($line[static::getIndexName()], DELETE)) {
                             if ($link->delete(['id' => $line[static::getIndexName()]])) {
                                 $ok++;
@@ -1932,12 +1932,12 @@ abstract class CommonDBRelation extends CommonDBConnexity
      */
     public static function getListForItem(CommonDBTM $item)
     {
-        global $DB;
 
         $params = static::getListForItemParams($item);
-        $iterator = $DB->request($params);
+        $request = self::getAdapter()->request($params);
+        $results = $request->fetchAllAssociative();
 
-        return $iterator;
+        return $results;  
     }
 
     /**
@@ -1976,11 +1976,12 @@ abstract class CommonDBRelation extends CommonDBConnexity
      */
     public static function getDistinctTypes($items_id, $extra_where = [])
     {
-        global $DB;
 
         $params = static::getDistinctTypesParams($items_id, $extra_where);
-        $types_iterator = $DB->request($params);
-        return $types_iterator;
+        $results = self::getAdapter()->request($params);
+        $types_results = $results->fetchAllAssociative();
+
+    return $types_results;  
     }
 
     /**
@@ -2083,12 +2084,12 @@ abstract class CommonDBRelation extends CommonDBConnexity
      */
     public static function getTypeItems($items_id, $itemtype)
     {
-        global $DB;
 
         $params = static::getTypeItemsQueryParams($items_id, $itemtype);
-        $iterator = $DB->request($params);
+        $request = self::getAdapter()->request($params);
+        $results = $request->fetchAllAssociative();
 
-        return $iterator;
+        return $results;
     }
 
     /**
@@ -2100,15 +2101,13 @@ abstract class CommonDBRelation extends CommonDBConnexity
      */
     public static function countForItem(CommonDBTM $item)
     {
-        global $DB;
-
         $params = static::getListForItemParams($item);
         unset($params['SELECT']);
         $params['COUNT'] = 'cpt';
-        $iterator = $DB->request($params);
+        $results = self::getAdapter()->request($params);
 
         $cpt = 0;
-        while ($row = $iterator->next()) {
+        while ($row = $results->fetchAssociative()) {
             $cpt += $row['cpt'];
         }
 
@@ -2125,12 +2124,10 @@ abstract class CommonDBRelation extends CommonDBConnexity
     **/
     public static function countForMainItem(CommonDBTM $item, $extra_types_where = [])
     {
-        global $DB;
-
         $nb = 0;
 
         $types_iterator = static::getDistinctTypes($item->fields['id'], $extra_types_where);
-        while ($data = $types_iterator->next()) {
+        foreach ($types_iterator as $data) {
             if (!getItemForItemtype($data['itemtype'])) {
                 continue;
             }
@@ -2138,9 +2135,9 @@ abstract class CommonDBRelation extends CommonDBConnexity
             $params = static::getTypeItemsQueryParams($item->fields['id'], $data['itemtype']);
             unset($params['SELECT']);
             $params['COUNT'] = 'cpt';
-            $iterator = $DB->request($params);
+            $results = self::getAdapter()->request($params);
 
-            while ($row = $iterator->next()) {
+            while ($row = $results->fetchAssociative()) {
                 $nb += $row['cpt'];
             }
         }

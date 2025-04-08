@@ -263,7 +263,7 @@ class Cartridge extends CommonDBChild
         global $DB;
 
         // Get first unused cartridge
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => ['id'],
            'FROM'   => $this->getTable(),
            'WHERE'  => [
@@ -272,9 +272,9 @@ class Cartridge extends CommonDBChild
            ],
            'LIMIT'  => 1
         ]);
-
-        if (count($iterator)) {
-            $result = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            $result = $results[0];
             $cID = $result['id'];
             // Update cartridge taking care of multiple insertion
             $result = $DB->update(
@@ -881,7 +881,7 @@ class Cartridge extends CommonDBChild
         } else {
             $where['glpi_cartridges.date_out'] = null;
         }
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'glpi_cartridgeitems.id AS tID',
               'glpi_cartridgeitems.is_deleted',
@@ -916,8 +916,8 @@ class Cartridge extends CommonDBChild
               'glpi_cartridges.date_in',
            ]
         ]);
-
-        $number = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
 
         if ($canedit && !$old) {
             $options = CartridgeItem::dropdownForPrinter($printer);
@@ -1008,7 +1008,7 @@ class Cartridge extends CommonDBChild
         $pages_printed    = 0;
         $nb_pages_printed = 0;
 
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $cart_id    = $data["id"];
             $typename   = $data["typename"];
             $date_in    = Html::convDate($data["date_in"]);
@@ -1162,20 +1162,20 @@ class Cartridge extends CommonDBChild
      */
     public static function getNotificationParameters($entity = 0)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         //Look for parameters for this entity
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => ['cartridges_alert_repeat'],
            'FROM'   => 'glpi_entities',
            'WHERE'  => ['id' => $entity]
         ]);
-
-        if (!count($iterator)) {
+        $results = $request->fetchAllAssociative();
+        if (!count($results)) {
             //No specific parameters defined, taking global configuration params
             return $CFG_GLPI['cartridges_alert_repeat'];
         } else {
-            $data = $iterator->next();
+            $data = $results[0];
             //This entity uses global parameters -> return global config
             if ($data['cartridges_alert_repeat'] == -1) {
                 return $CFG_GLPI['cartridges_alert_repeat'];

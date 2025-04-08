@@ -276,9 +276,9 @@ class Software extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "SoftwareCategory"),
                     ],
                     __("Technician in charge of the software") => [
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'type' => 'select',
-                       'value' => $this->fields['users_id_tech'],
+                       'value' => $this->fields['tech_users_id'],
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
@@ -288,9 +288,9 @@ class Software extends CommonDBTM
                        'value' => $this->fields['is_helpdesk_visible'],
                     ],
                     __("Group in charge of the software") => [
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'type' => 'select',
-                       'value' => $this->fields['groups_id_tech'],
+                       'value' => $this->fields['tech_groups_id'],
                        'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
@@ -533,7 +533,7 @@ class Software extends CommonDBTM
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the software'),
            'datatype'           => 'dropdown',
            'right'              => 'own_ticket'
@@ -543,7 +543,7 @@ class Software extends CommonDBTM
            'id'                 => '49',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge of the software'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'

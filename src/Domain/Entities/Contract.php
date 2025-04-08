@@ -2,10 +2,12 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_contracts')]
 #[ORM\Index(name: 'begin_date', columns: ['begin_date'])]
 #[ORM\Index(name: 'name', columns: ['name'])]
@@ -30,7 +32,7 @@ class Contract
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -46,16 +48,16 @@ class Contract
     private $beginDate;
 
     #[ORM\Column(name: 'duration', type: 'integer', options: ['default' => 0])]
-    private $duration;
+    private $duration = 0;
 
     #[ORM\Column(name: 'notice', type: 'integer', options: ['default' => 0])]
-    private $notice;
+    private $notice = 0;
 
     #[ORM\Column(name: 'periodicity', type: 'integer', options: ['default' => 0])]
-    private $periodicity;
+    private $periodicity = 0;
 
     #[ORM\Column(name: 'billing', type: 'integer', options: ['default' => 0])]
-    private $billing;
+    private $billing = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -64,7 +66,7 @@ class Contract
     private $accountingNumber;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'week_begin_hour', type: 'time', options: ['default' => '00:00:00'])]
     private $weekBeginHour;
@@ -94,16 +96,16 @@ class Contract
     private $maxLinksAllowed;
 
     #[ORM\Column(name: 'alert', type: 'integer', options: ['default' => 0])]
-    private $alert;
+    private $alert = 0;
 
     #[ORM\Column(name: 'renewal', type: 'integer', options: ['default' => 0])]
-    private $renewal;
+    private $renewal = 0;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
     private $templateName;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = 0;
 
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
@@ -165,8 +167,11 @@ class Contract
         return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $beginDate): self
+    public function setBeginDate(\DateTimeInterface|string|null $beginDate): self
     {
+        if (is_string($beginDate)) {
+            $beginDate = new \DateTime($beginDate);
+        }
         $this->beginDate = $beginDate;
 
         return $this;
@@ -261,8 +266,11 @@ class Contract
         return $this->weekBeginHour;
     }
 
-    public function setWeekBeginHour(\DateTimeInterface $weekBeginHour): self
+    public function setWeekBeginHour(\DateTimeInterface|string|null $weekBeginHour): self
     {
+        if (is_string($weekBeginHour)) {
+            $weekBeginHour = new \DateTime($weekBeginHour);
+        }
         $this->weekBeginHour = $weekBeginHour;
 
         return $this;
@@ -273,8 +281,11 @@ class Contract
         return $this->weekEndHour;
     }
 
-    public function setWeekEndHour(\DateTimeInterface $weekEndHour): self
+    public function setWeekEndHour(\DateTimeInterface|string|null $weekEndHour): self
     {
+        if (is_string($weekEndHour)) {
+            $weekEndHour = new \DateTime($weekEndHour);
+        }
         $this->weekEndHour = $weekEndHour;
 
         return $this;
@@ -285,8 +296,11 @@ class Contract
         return $this->saturdayBeginHour;
     }
 
-    public function setSaturdayBeginHour(\DateTimeInterface $saturdayBeginHour): self
+    public function setSaturdayBeginHour(\DateTimeInterface|string|null $saturdayBeginHour): self
     {
+        if (is_string($saturdayBeginHour)) {
+            $saturdayBeginHour = new \DateTime($saturdayBeginHour);
+        }
         $this->saturdayBeginHour = $saturdayBeginHour;
 
         return $this;
@@ -297,8 +311,11 @@ class Contract
         return $this->saturdayEndHour;
     }
 
-    public function setSaturdayEndHour(\DateTimeInterface $saturdayEndHour): self
+    public function setSaturdayEndHour(\DateTimeInterface|string|null $saturdayEndHour): self
     {
+        if (is_string($saturdayEndHour)) {
+            $saturdayEndHour = new \DateTime($saturdayEndHour);
+        }
         $this->saturdayEndHour = $saturdayEndHour;
 
         return $this;
@@ -321,8 +338,11 @@ class Contract
         return $this->mondayBeginHour;
     }
 
-    public function setMondayBeginHour(\DateTimeInterface $mondayBeginHour): self
+    public function setMondayBeginHour(\DateTimeInterface|string|null $mondayBeginHour): self
     {
+        if (is_string($mondayBeginHour)) {
+            $mondayBeginHour = new \DateTime($mondayBeginHour);
+        }
         $this->mondayBeginHour = $mondayBeginHour;
 
         return $this;
@@ -333,8 +353,11 @@ class Contract
         return $this->mondayEndHour;
     }
 
-    public function setMondayEndHour(\DateTimeInterface $mondayEndHour): self
+    public function setMondayEndHour(\DateTimeInterface|string|null $mondayEndHour): self
     {
+        if (is_string($mondayEndHour)) {
+            $mondayEndHour = new \DateTime($mondayEndHour);
+        }
         $this->mondayEndHour = $mondayEndHour;
 
         return $this;
@@ -413,26 +436,29 @@ class Contract
     }
 
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

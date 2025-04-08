@@ -562,10 +562,10 @@ class Problem_Ticket extends CommonDBRelation
                     $items[$plan['id']] = $plan['id'];
                     $planned_infos .= sprintf(__('From %s') . ('<br>'), Html::convDateTime($plan['begin']));
                     $planned_infos .= sprintf(__('To %s') . ('<br>'), Html::convDateTime($plan['end']));
-                    if ($plan['users_id_tech']) {
+                    if ($plan['tech_users_id']) {
                         $planned_infos .= sprintf(
                             __('By %s') . ('<br>'),
-                            getUserName($plan['users_id_tech'])
+                            getUserName($plan['tech_users_id'])
                         );
                     }
                     $planned_infos .= "<br>";

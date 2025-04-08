@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: "glpi_ticketvalidations")]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "users_id", columns: ["users_id"])]
-#[ORM\Index(name: "users_id_validate", columns: ["users_id_validate"])]
+#[ORM\Index(name: "validate_users_id", columns: ["validate_users_id"])]
 #[ORM\Index(name: "tickets_id", columns: ["tickets_id"])]
 #[ORM\Index(name: "submission_date", columns: ["submission_date"])]
 #[ORM\Index(name: "validation_date", columns: ["validation_date"])]
@@ -31,7 +31,7 @@ class TicketValidation
     #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
     private ?Ticket $ticket = null;
 
-    #[ORM\Column(name: 'users_id_validate', type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'validate_users_id', type: 'integer', options: ['default' => 0])]
     private $usersIdValidate;
 
     #[ORM\Column(name: 'comment_submission', type: 'text', length: 65535, nullable: true)]

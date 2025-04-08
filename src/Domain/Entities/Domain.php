@@ -2,10 +2,13 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_domains")]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
@@ -31,14 +34,14 @@ class Domain
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DomainType::class)]
     #[ORM\JoinColumn(name: 'domaintypes_id', referencedColumnName: 'id', nullable: true)]
     private ?DomainType $domaintype = null;
 
     #[ORM\Column(name: 'date_expiration', type: "datetime", nullable: true)]
-    private $dateExpiration;
+    private $dateExpiration = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
@@ -52,7 +55,7 @@ class Domain
     private $others;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => false])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
@@ -107,10 +110,26 @@ class Domain
         return $this->dateExpiration;
     }
 
-    public function setDateExpiration(\DateTimeInterface $dateExpiration): self
+    public function setDateExpiration(\DateTimeInterface|string|null $dateExpiration): self
     {
-        $this->dateExpiration = $dateExpiration;
-
+        if ($dateExpiration === null || $dateExpiration === '') {
+            $this->dateExpiration = null;
+            return $this;
+        }
+    
+        if ($dateExpiration instanceof \DateTimeInterface) {
+            $this->dateExpiration = $dateExpiration;
+            return $this;
+        }
+    
+        try {
+            $this->dateExpiration = new \DateTime($dateExpiration);
+        } catch (\Exception $e) {
+            // Gérer l'erreur de façon plus gracieuse : logging et valeur par défaut
+            error_log("Erreur de conversion de date: " . $e->getMessage());
+            $this->dateExpiration = null;  // ou une date par défaut si nécessaire
+        }
+    
         return $this;
     }
 
@@ -150,26 +169,29 @@ class Domain
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
-
-    public function getDateCreation(): ?\DateTimeInterface
+    
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -238,8 +260,11 @@ class Domain
     /**
      * Get the value of domainItems
      */
-    public function getDomainItems()
+    public function getDomainItems(): Collection
     {
+        if (!isset($this->domainItems)) {
+            $this->domainItems = new ArrayCollection();
+        }
         return $this->domainItems;
     }
 
@@ -248,9 +273,9 @@ class Domain
      *
      * @return  self
      */
-    public function setDomainItems($domainItems)
+    public function setDomainItems(?Collection $domainItems): self
     {
-        $this->domainItems = $domainItems;
+        $this->domainItems = $domainItems ?? new ArrayCollection();
 
         return $this;
     }

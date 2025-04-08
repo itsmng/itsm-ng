@@ -251,7 +251,7 @@ class Certificate extends CommonDBTM
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the hardware'),
            'datatype'           => 'dropdown',
            'right'              => 'own_ticket'
@@ -270,7 +270,7 @@ class Certificate extends CommonDBTM
            'id'                 => '49',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge of the hardware'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'
@@ -522,10 +522,10 @@ class Certificate extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "Location"),
                     ],
                     __('Technician in charge of the hardware') => [
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'type' => 'select',
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
-                       'value' => $this->fields['users_id_tech'] ?? '',
+                       'value' => $this->fields['tech_users_id'] ?? '',
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     __('Types') => [
@@ -553,10 +553,10 @@ class Certificate extends CommonDBTM
                        'value' => $this->fields['otherserial'] ?? '',
                     ],
                     __('Group in charge of the hardware') => [
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'type' => 'select',
                        'values' => getOptionForItems("Group"),
-                       'value' => $this->fields['groups_id_tech'] ?? '',
+                       'value' => $this->fields['tech_groups_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
                     __('User') => [
@@ -810,7 +810,7 @@ class Certificate extends CommonDBTM
      **/
     public static function cronCertificate($task = null)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $cron_status = 1;
 
@@ -822,7 +822,7 @@ class Certificate extends CommonDBTM
         foreach (array_keys(Entity::getEntitiesToNotify('use_certificates_alert')) as $entity) {
             $before = Entity::getUsedConfig('send_certificates_alert_before_delay', $entity);
             // Check licenses
-            $result = $DB->request(
+            $result = self::getAdapter()->request(
                 [
                   'SELECT'    => [
                      'glpi_certificates.*',

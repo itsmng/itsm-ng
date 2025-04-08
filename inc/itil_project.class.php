@@ -369,11 +369,11 @@ class Itil_Project extends CommonDBRelation
                                                    ($p['output_type'] == Search::HTML_OUTPUT ? '<br>' : ''),
                             Html::convDateTime($plan['end'])
                         );
-                        if ($plan['users_id_tech']) {
+                        if ($plan['tech_users_id']) {
                             $planned_infos .= sprintf(
                                 __('By %s') .
                                                        ($p['output_type'] == Search::HTML_OUTPUT ? '<br>' : ''),
-                                getUserName($plan['users_id_tech'])
+                                getUserName($plan['tech_users_id'])
                             );
                         }
                         $planned_infos .= "<br>";

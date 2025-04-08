@@ -199,10 +199,10 @@ class Monitor extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "MonitorType"),
                     ],
                     __("Technician in charge of the hardware") => [
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'type' => 'select',
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields['users_id_tech'],
+                       'value' => $this->fields['tech_users_id'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     __("Manufacturer") => [
@@ -213,10 +213,10 @@ class Monitor extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
                     __("Group in charge of the hardware") => [
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'type' => 'select',
                        'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields['groups_id_tech'],
+                       'value' => $this->fields['tech_groups_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
                     __("Model") => [
@@ -575,7 +575,7 @@ class Monitor extends CommonDBTM
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the hardware'),
            'datatype'           => 'dropdown',
            'right'              => 'own_ticket'
@@ -585,7 +585,7 @@ class Monitor extends CommonDBTM
            'id'                 => '49',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge of the hardware'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'

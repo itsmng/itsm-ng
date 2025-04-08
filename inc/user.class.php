@@ -4360,8 +4360,8 @@ class User extends CommonDBTM
         if ($tech) {
             $type_user   = $CFG_GLPI['linkuser_tech_types'];
             $type_group  = $CFG_GLPI['linkgroup_tech_types'];
-            $field_user  = 'users_id_tech';
-            $field_group = 'groups_id_tech';
+            $field_user  = 'tech_users_id';
+            $field_group = 'tech_groups_id';
         } else {
             $type_user   = $CFG_GLPI['linkuser_types'];
             $type_group  = $CFG_GLPI['linkgroup_types'];

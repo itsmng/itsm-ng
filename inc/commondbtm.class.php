@@ -720,7 +720,7 @@ class CommonDBTM extends CommonGLPI
     // TODO FIXME TODO FIXME TODO FIXME TODO FIXME TODO
     public function cleanRelationData()
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $RELATION = getDbRelations();
         if (isset($RELATION[$this->getTable()])) {
@@ -736,7 +736,7 @@ class CommonDBTM extends CommonGLPI
                     }
 
                     foreach ($field as $f) {
-                        $result = $DB->request(
+                        $result = $this::getAdapter()->request(
                             [
                               'FROM'  => $tablename,
                               'WHERE' => [$f => $this->getID()],
@@ -766,14 +766,14 @@ class CommonDBTM extends CommonGLPI
             $job         = new Ticket();
             $itemsticket = new Item_Ticket();
 
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'FROM'   => 'glpi_items_tickets',
                'WHERE'  => [
                   'items_id'  => $this->getID(),
                   'itemtype'  => $this->getType()
                ]
             ]);
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 $cnt = countElementsInTable('glpi_items_tickets', ['tickets_id' => $data['tickets_id']]);
                 $itemsticket->delete(["id" => $data["id"]]);
                 if ($cnt == 1 && !$CFG_GLPI["keep_tickets_on_delete"]) {
@@ -1692,8 +1692,6 @@ class CommonDBTM extends CommonGLPI
     **/
     protected function forwardEntityInformations()
     {
-        global $DB;
-
         if (!isset($this->fields['id']) || !($this->fields['id'] >= 0)) {
             return false;
         }
@@ -1726,8 +1724,8 @@ class CommonDBTM extends CommonGLPI
                     $input['is_recursive'] = $this->isRecursive();
                 }
 
-                $iterator = $DB->request($query);
-                while ($data = $iterator->next()) {
+                $request = $this::getAdapter()->request($query);
+                while ($data = $request->fetchAssociative()) {
                     $input['id'] = $data['id'];
                     // No history for such update
                     $item->update($input, 0);
@@ -2321,7 +2319,7 @@ class CommonDBTM extends CommonGLPI
     **/
     public function canUnrecurs()
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $ID  = $this->fields['id'];
         if (
@@ -2387,7 +2385,7 @@ class CommonDBTM extends CommonGLPI
                                 $devfield  = $rel[$tablename][0]; // items_id...
                                 $typefield = $rel[$tablename][1]; // itemtype...
 
-                                $iterator = $DB->request([
+                                $request = $this::getAdapter()->request([
                                    'SELECT'          => $typefield,
                                    'DISTINCT'        => true,
                                    'FROM'            => $tablename,
@@ -2395,7 +2393,7 @@ class CommonDBTM extends CommonGLPI
                                 ]);
 
                                 // Search linked device of each type
-                                while ($data = $iterator->next()) {
+                                while ($data = $request->fetchAssociative()) {
                                     $itemtype  = $data[$typefield];
                                     $itemtable = getTableForItemType($itemtype);
                                     $item      = new $itemtype();
@@ -3625,8 +3623,8 @@ class CommonDBTM extends CommonGLPI
             }
         }
 
-        if ($this->isField('users_id_tech')) {
-            $tmp = getUserName($this->getField('users_id_tech'));
+        if ($this->isField('tech_users_id')) {
+            $tmp = getUserName($this->getField('tech_users_id'));
             if ((strlen($tmp) != 0) && ($tmp != '&nbsp;')) {
                 $toadd[] = ['name'  => __('Technician in charge of the hardware'),
                                  'value' => $tmp];
@@ -4713,8 +4711,8 @@ class CommonDBTM extends CommonGLPI
             //ajout
             $crit['table'] = $this->getTable();
             //fin ajout
-            $iterator = $DB->request($this->getTable(), $crit);
-            foreach ($iterator as $row) {
+            $results = $this::getAdapter()->request($crit);
+            foreach ($results as $row) {
                 if (!$this->delete($row, $force, $history)) {
                     $ok = false;
                 }
@@ -5293,12 +5291,12 @@ class CommonDBTM extends CommonGLPI
             $colspan = 2;
         }
 
-        $iterator = $DB->request($request);
+        $results = $item::getAdapter()->request($request)->fetchAllAssociative();
         $blank_params = (strpos($target, '?') ? '&' : '?') . "id=-1&withtemplate=2";
         $target_blank = $target . $blank_params;
 
         // if ($add && count($iterator) == 0) {
-        if ($add && count(iterator_to_array($iterator)) == 0) {
+        if ($add && count($results) == 0) {
             //if there is no template, just use blank
             Html::redirect($target_blank);
         }
@@ -5318,7 +5316,7 @@ class CommonDBTM extends CommonGLPI
             echo "<th>" . __('Templates') . "</th></tr>";
         }
 
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $templname = $data["template_name"];
             if ($_SESSION["glpiis_ids_visible"] || empty($data["template_name"])) {
                 $templname = sprintf(__('%1$s (%2$s)'), $templname, $data["id"]);
@@ -5757,13 +5755,14 @@ class CommonDBTM extends CommonGLPI
                 // This item is a parent higher up
                 return true;
             }
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT' => [$fk],
                'FROM'   => static::getTable(),
                'WHERE'  => ['id' => $next_parent]
             ]);
-            if ($iterator->count()) {
-                $next_parent = $iterator->next()[$fk];
+            $results = $request->fetchAllAssociative();
+            if (count($results) > 0) { 
+                $next_parent = $results[0][$fk];
             } else {
                 // Invalid parent
                 return false;
@@ -5801,13 +5800,10 @@ class CommonDBTM extends CommonGLPI
                ),
                false
            ),
-           'changes'   => iterator_to_array(
-               $change->getActiveChangesForItem(
+           'changes'   => $change->getActiveChangesForItem(
                    get_class($this),
                    $this->getID()
-               ),
-               false
-           ),
+               )->fetchAllAssociative(),
            'problems'  => iterator_to_array(
                $problem->getActiveProblemsForItem(
                    get_class($this),

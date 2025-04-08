@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_networkportwifis')]
 #[ORM\UniqueConstraint(name: 'networkports_id', columns: ['networkports_id'])]
 #[ORM\Index(name: 'card', columns: ['items_devicenetworkcards_id'])]
@@ -24,8 +26,9 @@ class NetworkPortWifi
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
     private ?NetworkPort $networkport = null;
 
-    #[ORM\Column(name: 'items_devicenetworkcards_id', type: 'integer', options: ['default' => 0])]
-    private $itemsDeviceNetworkCardsId;
+    #[ORM\ManyToOne(targetEntity: ItemDeviceNetworkCard::class)]
+    #[ORM\JoinColumn(name: 'items_devicenetworkcards_id', referencedColumnName: 'id', nullable: true)]
+    private $itemsDevicenetworkcard = null;
 
     #[ORM\ManyToOne(targetEntity: WifiNetwork::class)]
     #[ORM\JoinColumn(name: 'wifinetworks_id', referencedColumnName: 'id', nullable: true)]
@@ -52,18 +55,6 @@ class NetworkPortWifi
         return $this->id;
     }
 
-    public function getItemsDeviceNetworkCardsId(): ?int
-    {
-        return $this->itemsDeviceNetworkCardsId;
-    }
-
-    public function setItemsDeviceNetworkCardsId(?int $itemsDeviceNetworkCardsId): self
-    {
-        $this->itemsDeviceNetworkCardsId = $itemsDeviceNetworkCardsId;
-
-        return $this;
-    }
-
     public function getVersion(): ?string
     {
         return $this->version;
@@ -88,30 +79,32 @@ class NetworkPortWifi
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(?\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
-
 
     /**
      * Get the value of networkportwifi
@@ -169,6 +162,26 @@ class NetworkPortWifi
     public function setNetworkPort($networkport)
     {
         $this->networkport = $networkport;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itemsDevicenetworkcard
+     */ 
+    public function getItemsDevicenetworkcard()
+    {
+        return $this->itemsDevicenetworkcard;
+    }
+
+    /**
+     * Set the value of itemsDevicenetworkcard
+     *
+     * @return  self
+     */ 
+    public function setItemsDevicenetworkcard($itemsDevicenetworkcard)
+    {
+        $this->itemsDevicenetworkcard = $itemsDevicenetworkcard;
 
         return $this;
     }

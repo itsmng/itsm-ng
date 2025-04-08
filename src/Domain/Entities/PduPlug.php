@@ -21,9 +21,9 @@ class PduPlug
     #[ORM\JoinColumn(name: 'plugs_id', referencedColumnName: 'id', nullable: true)]
     private ?Plug $plug = null;
 
-    #[ORM\ManyToOne(targetEntity: Pdu::class, inversedBy: 'pduPlugs')]
+    #[ORM\ManyToOne(targetEntity: PDU::class, inversedBy: 'pduPlugs')]
     #[ORM\JoinColumn(name: 'pdus_id', referencedColumnName: 'id', nullable: true)]
-    private ?Pdu $pdu = null;
+    private ?PDU $pdu = null;
 
     #[ORM\Column(name: 'number_plugs', type: 'integer', nullable: true, options: ['default' => 0])]
     private $numberPlugs;

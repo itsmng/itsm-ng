@@ -62,21 +62,19 @@ class Domain extends CommonDropdown
 
     public function cleanDBonPurge()
     {
-        global $DB;
-
         $ditem = new Domain_Item();
         $ditem->deleteByCriteria(['domains_id' => $this->fields['id']]);
 
         $record = new DomainRecord();
 
-        $iterator = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => $record->getTable(),
            'WHERE'  => [
               'domains_id'   => $this->fields['id']
            ]
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $result->fetchAssociative()) {
             $row['_linked_purge'] = 1; //flag call when we remove a record from a domain
             $record->delete($row, true);
         }
@@ -112,7 +110,7 @@ class Domain extends CommonDropdown
            'id'                 => '3',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge'),
            'datatype'           => 'dropdown'
         ];
@@ -165,7 +163,7 @@ class Domain extends CommonDropdown
            'id'                 => '10',
            'table'              => 'glpi_groups',
            'field'              => 'name',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'
@@ -341,10 +339,10 @@ class Domain extends CommonDropdown
                        'value' => $this->fields['date_expiration'] ?? '',
                     ],
                     __('Group in charge') => [
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'type' => 'select',
                        'itemtype' => Group::class,
-                       'value' => $this->fields['groups_id_tech'] ?? '',
+                       'value' => $this->fields['tech_groups_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
                     __('Others') => [
@@ -360,10 +358,10 @@ class Domain extends CommonDropdown
                        'actions' => getItemActionButtons(['info', 'add'], "DomainType"),
                     ],
                     __('Technician in charge') => [
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'type' => 'select',
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
-                       'value' => $this->fields['users_id_tech'] ?? '',
+                       'value' => $this->fields['tech_users_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "DomainType"),
                     ],
                     __('Comments') => [
@@ -396,8 +394,6 @@ class Domain extends CommonDropdown
      * */
     public static function dropdownDomains($options = [])
     {
-        global $DB;
-
         $p = [
            'name'    => 'domains_id',
            'entity'  => '',
@@ -421,13 +417,13 @@ class Domain extends CommonDropdown
             $where['NOT'] = ['id' => $p['used']];
         }
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'      => self::getTable(),
            'WHERE'     => $where
         ]);
 
         $values = [0 => Dropdown::EMPTY_VALUE];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $values[$data['id']] = $data['name'];
         }
 
@@ -647,7 +643,7 @@ class Domain extends CommonDropdown
      */
     public static function cronDomainsAlert($task = null)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         if (!$CFG_GLPI["notifications_mailing"]) {
             return 0;
@@ -670,8 +666,8 @@ class Domain extends CommonDropdown
 
             foreach ($querys as $type => $query) {
                 $domain_infos[$type] = [];
-                $iterator = $DB->request($query);
-                while ($data = $iterator->next()) {
+                $result = self::getAdapter()->request($query);
+                while ($data = $result->fetchAssociative()) {
                     $message                        = $data["name"] . ": " .
                        Html::convDate($data["date_expiration"]) . "<br>\n";
                     $domain_infos[$type][$entity][] = $data;
@@ -766,9 +762,7 @@ class Domain extends CommonDropdown
 
     public static function getUsed(array $used, $domaintype)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable(),
            'WHERE'  => [
@@ -778,7 +772,7 @@ class Domain extends CommonDropdown
         ]);
 
         $used = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $used[$data['id']] = $data['id'];
         }
         return $used;

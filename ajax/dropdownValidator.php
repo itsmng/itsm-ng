@@ -44,23 +44,23 @@ Html::header_nocache();
 if (isset($_POST["validatortype"])) {
     switch ($_POST["validatortype"]) {
         case 'user':
-            if (isset($_POST['users_id_validate']['groups_id'])) {
-                $_POST['users_id_validate'] = [];
+            if (isset($_POST['validate_users_id']['groups_id'])) {
+                $_POST['validate_users_id'] = [];
             }
-            $value = (isset($_POST['users_id_validate'][0]) ? $_POST['users_id_validate'][0] : 0);
+            $value = (isset($_POST['validate_users_id'][0]) ? $_POST['validate_users_id'][0] : 0);
             echo json_encode(getOptionsForUsers($_POST['right'], $_POST['entity'] ? ['entities_id' => $_POST['entity']] : []));
             break;
 
         case 'group':
             $name = !empty($_POST['name']) ? $_POST['name'] . '[groups_id]' : 'groups_id';
-            $value = (isset($_POST['users_id_validate']['groups_id']) ? $_POST['users_id_validate']['groups_id'] : $_POST['groups_id']);
+            $value = (isset($_POST['validate_users_id']['groups_id']) ? $_POST['validate_users_id']['groups_id'] : $_POST['groups_id']);
 
             echo json_encode(getItemByEntity(Group::class, $_POST['entity'] ?? Session::getActiveEntity()));
             break;
 
         case 'list_users':
-            if (isset($_POST['users_id_validate']['groups_id'])) {
-                $_POST['users_id_validate'] = [];
+            if (isset($_POST['validate_users_id']['groups_id'])) {
+                $_POST['validate_users_id'] = [];
             }
             $opt             = ['groups_id' => $_POST["groups_id"],
                                      'right'     => $_POST['right'],
@@ -69,8 +69,8 @@ if (isset($_POST["validatortype"])) {
             $users           = [];
             $param['values'] = [];
             $values          = [];
-            if (isset($_POST['users_id_validate']) && is_array($_POST['users_id_validate'])) {
-                $values = $_POST['users_id_validate'];
+            if (isset($_POST['validate_users_id']) && is_array($_POST['validate_users_id'])) {
+                $values = $_POST['validate_users_id'];
             }
             foreach ($data_users as $data) {
                 $users[$data['id']] = formatUserName(
@@ -97,7 +97,7 @@ if (isset($_POST["validatortype"])) {
 
             $users = Toolbox::stripslashes_deep($users);
             $rand  = Dropdown::showFromArray(
-                !empty($_POST['name']) ? $_POST['name'] : 'users_id_validate',
+                !empty($_POST['name']) ? $_POST['name'] : 'validate_users_id',
                 $users,
                 $param
             );
@@ -108,7 +108,7 @@ if (isset($_POST["validatortype"])) {
                 $param_button = [
                    'validatortype'     => 'list_users',
                    'name'              => !empty($_POST['name']) ? $_POST['name'] : '',
-                   'users_id_validate' => '',
+                   'validate_users_id' => '',
                    'all_users'         => 1,
                    'groups_id'         => $_POST['groups_id'],
                    'entity'            => $_POST['entity'],

@@ -3616,6 +3616,9 @@ JS;
      **/
     public static function computeGenericDateTimeSearch($val, $force_day = false, $specifictime = '')
     {
+        if ($_SESSION["glpi_currenttime"] instanceof DateTime) {
+            $_SESSION["glpi_currenttime"] = $_SESSION["glpi_currenttime"]->format("Y-m-d H:i:s");
+        }
 
         if (empty($specifictime)) {
             $specifictime = strtotime($_SESSION["glpi_currenttime"]);

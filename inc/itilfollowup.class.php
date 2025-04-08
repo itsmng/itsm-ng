@@ -486,7 +486,7 @@ class ITILFollowup extends CommonDBChild
             ($uid = Session::getLoginUserID())
             && isset($input['content']) && ($input['content'] != $this->fields['content'])
         ) {
-            $input["users_id_editor"] = $uid;
+            $input["editor_users_id"] = $uid;
         }
 
         return $input;
@@ -518,8 +518,8 @@ class ITILFollowup extends CommonDBChild
         //Get user_id when not logged (from mailgate)
         $uid = Session::getLoginUserID();
         if ($uid === false) {
-            if (isset($this->fields['users_id_editor'])) {
-                $uid = $this->fields['users_id_editor'];
+            if (isset($this->fields['editor_users_id'])) {
+                $uid = $this->fields['editor_users_id'];
             } else {
                 $uid = $this->fields['users_id'];
             }

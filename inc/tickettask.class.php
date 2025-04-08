@@ -106,15 +106,15 @@ class TicketTask extends CommonITILTask
         if (
             Session::getCurrentInterface() == "central"
             && ($this->fields["users_id"] === Session::getLoginUserID())
-                || ($this->fields["users_id_tech"] === Session::getLoginUserID())
+                || ($this->fields["tech_users_id"] === Session::getLoginUserID())
         ) {
             return true;
         }
 
         if (
-            $this->fields["groups_id_tech"] && ($this->fields["groups_id_tech"] > 0)
+            $this->fields["tech_groups_id"] && ($this->fields["tech_groups_id"] > 0)
             && isset($_SESSION["glpigroups"])
-            && in_array($this->fields["groups_id_tech"], $_SESSION["glpigroups"])
+            && in_array($this->fields["tech_groups_id"], $_SESSION["glpigroups"])
         ) {
             return true;
         }

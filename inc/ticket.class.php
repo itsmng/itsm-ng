@@ -1879,16 +1879,16 @@ class Ticket extends CommonITILObject
                     // Auto assign tech from item
                     if (
                         (!isset($input['_users_id_assign']) || ($input['_users_id_assign'] == 0))
-                        && $item->isField('users_id_tech')
+                        && $item->isField('tech_users_id')
                     ) {
-                        $input['_users_id_assign'] = $item->getField('users_id_tech');
+                        $input['_users_id_assign'] = $item->getField('tech_users_id');
                     }
                     // Auto assign group from item
                     if (
                         (!isset($input['_groups_id_assign']) || ($input['_groups_id_assign'] == 0))
-                        && $item->isField('groups_id_tech')
+                        && $item->isField('tech_groups_id')
                     ) {
-                        $input['_groups_id_assign'] = $item->getField('groups_id_tech');
+                        $input['_groups_id_assign'] = $item->getField('tech_groups_id');
                     }
                 }
                 // Auto assign tech/group from Category
@@ -1940,16 +1940,16 @@ class Ticket extends CommonITILObject
                     // Auto assign tech from item
                     if (
                         (!isset($input['_users_id_assign']) || ($input['_users_id_assign'] == 0))
-                        && $item->isField('users_id_tech')
+                        && $item->isField('tech_users_id')
                     ) {
-                        $input['_users_id_assign'] = $item->getField('users_id_tech');
+                        $input['_users_id_assign'] = $item->getField('tech_users_id');
                     }
                     // Auto assign group from item
                     if (
                         (!isset($input['_groups_id_assign']) || ($input['_groups_id_assign'] == 0))
-                        && $item->isField('groups_id_tech')
+                        && $item->isField('tech_groups_id')
                     ) {
-                        $input['_groups_id_assign'] = $item->getField('groups_id_tech');
+                        $input['_groups_id_assign'] = $item->getField('tech_groups_id');
                     }
                 }
                 break;
@@ -2298,15 +2298,15 @@ class Ticket extends CommonITILObject
             }
 
             // Validation user added on ticket form
-            if (isset($input['users_id_validate'])) {
-                if (array_key_exists('groups_id', $input['users_id_validate'])) {
-                    foreach ($input['users_id_validate'] as $key => $validation_to_add) {
+            if (isset($input['validate_users_id'])) {
+                if (array_key_exists('groups_id', $input['validate_users_id'])) {
+                    foreach ($input['validate_users_id'] as $key => $validation_to_add) {
                         if (is_numeric($key)) {
                             $validations_to_send[] = $validation_to_add;
                         }
                     }
                 } else {
-                    foreach ($input['users_id_validate'] as $key => $validation_to_add) {
+                    foreach ($input['validate_users_id'] as $key => $validation_to_add) {
                         if (is_numeric($key)) {
                             $validations_to_send[] = $validation_to_add;
                         }
@@ -2346,7 +2346,7 @@ class Ticket extends CommonITILObject
                     foreach ($validations_to_send as $user) {
                         // Do not auto add twice same validation
                         if (!TicketValidation::alreadyExists($values['tickets_id'], $user)) {
-                            $values["users_id_validate"] = $user;
+                            $values["validate_users_id"] = $user;
                             if ($validation->add($values)) {
                                 $add_done = true;
                             }
@@ -2389,7 +2389,7 @@ class Ticket extends CommonITILObject
 
         $result = [];
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
             'FROM'      => $this->getTable(),
             'LEFT JOIN' => [
                 'glpi_items_tickets' => [
@@ -2421,8 +2421,8 @@ class Ticket extends CommonITILObject
                 ]
             ]
         ]);
-
-        while ($tick = $iterator->next()) {
+        
+        while ($tick = $request->fetchAssociative()) {
             $result[$tick['id']] = $tick['name'];
         }
 
@@ -2442,9 +2442,7 @@ class Ticket extends CommonITILObject
      **/
     public function countActiveTicketsForItem($itemtype, $items_id)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
             'COUNT'     => 'cpt',
             'FROM'      => $this->getTable(),
             'LEFT JOIN' => [
@@ -2465,7 +2463,7 @@ class Ticket extends CommonITILObject
                     )
                 ]
             ]
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'];
     }
 
@@ -2482,9 +2480,7 @@ class Ticket extends CommonITILObject
      */
     public function getActiveTicketsForItem($itemtype, $items_id, $type)
     {
-        global $DB;
-
-        return $DB->request([
+        $request = $this::getAdapter()->request([
             'SELECT'    => [
                 $this->getTable() . '.id',
                 $this->getTable() . '.name',
@@ -2512,6 +2508,8 @@ class Ticket extends CommonITILObject
                 ]
             ]
         ]);
+        $results = $request->fetchAllAssociative();
+        return $results;
     }
 
     /**
@@ -2529,7 +2527,7 @@ class Ticket extends CommonITILObject
     {
         global $DB;
 
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
             'COUNT'     => 'cpt',
             'FROM'      => $this->getTable(),
             'LEFT JOIN' => [
@@ -2554,7 +2552,7 @@ class Ticket extends CommonITILObject
                     $this->getTable() . '.solvedate' => null
                 ]
             ]
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'];
     }
 
@@ -3653,10 +3651,12 @@ class Ticket extends CommonITILObject
         global $DB;
         $done = 0;
 
-        $criteria = "SELECT * FROM glpi_specialstatuses";
-        $iterators = $DB->request($criteria);
+        $criteria = [
+            'FROM' => 'glpi_specialstatuses'
+        ];
+        $results = self::getAdapter()->request($criteria);
 
-        while ($data = $iterators->next()) {
+        while ($data = $results->fetchAssociative()) {
             $do_sort[] = $data['weight'];
             $status_db[] = $data;
         }
@@ -3755,7 +3755,7 @@ class Ticket extends CommonITILObject
 
         $totalcost = 0;
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
             'SELECT'    => 'glpi_ticketcosts.*',
             'FROM'      => 'glpi_ticketcosts',
             'LEFT JOIN' => [
@@ -3777,7 +3777,7 @@ class Ticket extends CommonITILObject
             ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $totalcost += TicketCost::computeTotalCost(
                 $data["actiontime"],
                 $data["cost_time"],
@@ -4496,7 +4496,7 @@ class Ticket extends CommonITILObject
             'olas_id_tto'               => 0,
             'olas_id_ttr'               => 0,
             '_add_validation'           => 0,
-            'users_id_validate'         => [],
+            'validate_users_id'         => [],
             'type'                      => $type,
             '_documents_id'             => [],
             '_tasktemplates_id'         => [],
@@ -5364,7 +5364,7 @@ class Ticket extends CommonITILObject
                 $WHERE = array_merge(
                     $WHERE,
                     [
-                        'users_id_validate'              => Session::getLoginUserID(),
+                        'validate_users_id'              => Session::getLoginUserID(),
                         'glpi_ticketvalidations.status'  => CommonITILValidation::WAITING,
                         'glpi_tickets.global_validation' => CommonITILValidation::WAITING,
                         'NOT'                            => [
@@ -5516,8 +5516,9 @@ class Ticket extends CommonITILObject
             $criteria = array_merge_recursive($criteria, $JOINS);
         }
 
-        $iterator = $DB->request($criteria);
-        $total_row_count = count($iterator);
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        $total_row_count = count($results);
         $displayed_row_count = (int)$_SESSION['glpidisplay_count_on_home'] > 0
             ? min((int)$_SESSION['glpidisplay_count_on_home'], $total_row_count)
             : $total_row_count;
@@ -5830,7 +5831,7 @@ class Ticket extends CommonITILObject
             if (Session::haveRight('followup', ITILFollowup::SEEPRIVATE)) {
                 $showprivate = true;
             }
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 $newValue = [];
                 $rand = mt_rand();
                 if ($job->getFromDBwithData($data['id'], 0)) {
@@ -6003,7 +6004,7 @@ class Ticket extends CommonITILObject
             $ORWHERE = ['OR' => [
                 'glpi_tickets_users.users_id'                => Session::getLoginUserID(),
                 'glpi_tickets.recipient_users_id'            => Session::getLoginUserID(),
-                'glpi_ticketvalidations.users_id_validate'   => Session::getLoginUserID()
+                'glpi_ticketvalidations.validate_users_id'   => Session::getLoginUserID()
             ]];
 
             if (
@@ -6019,20 +6020,20 @@ class Ticket extends CommonITILObject
         $deleted_criteria = $criteria;
         $criteria['WHERE']['glpi_tickets.is_deleted'] = 0;
         $deleted_criteria['WHERE']['glpi_tickets.is_deleted'] = 1;
-        $iterator = $DB->request($criteria);
-        $deleted_iterator = $DB->request($deleted_criteria);
+        $request = self::getAdapter()->request($criteria);
+        $deleted_request = self::getAdapter()->request($deleted_criteria);
 
         $status = [];
         foreach (self::getAllStatusArray() as $key => $val) {
             $status[$key] = 0;
         }
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $status[$data["status"]] = $data["COUNT"];
         }
 
         $number_deleted = 0;
-        while ($data = $deleted_iterator->next()) {
+        while ($data = $deleted_request->fetchAssociative()) {
             $number_deleted += $data["COUNT"];
         }
 
@@ -6115,8 +6116,9 @@ class Ticket extends CommonITILObject
             'is_deleted'   => 0
         ] + getEntitiesRestrictCriteria(self::getTable());
         $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
-        $iterator = $DB->request($criteria);
-        $number = count($iterator);
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
 
         if ($number > 0) {
             Session::initNavigateListItems('Ticket');
@@ -6139,7 +6141,7 @@ class Ticket extends CommonITILObject
 
             self::commonListHeader(Search::HTML_OUTPUT);
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 Session::addToNavigateListItems('Ticket', $data["id"]);
                 self::showShort($data["id"]);
             }
@@ -6306,8 +6308,9 @@ class Ticket extends CommonITILObject
         $criteria['WHERE'] = $restrict + getEntitiesRestrictCriteria(self::getTable());
         $criteria['WHERE']['glpi_tickets.is_deleted'] = 0;
         $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
-        $iterator = $DB->request($criteria);
-        $number = count($iterator);
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
 
         $colspan = 11;
         if (count($_SESSION["glpiactiveentities"]) > 1) {
@@ -6386,7 +6389,7 @@ class Ticket extends CommonITILObject
         if ($number > 0) {
             self::commonListHeader(Search::HTML_OUTPUT);
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 Session::addToNavigateListItems('Ticket', $data["id"]);
                 self::showShort($data["id"]);
             }
@@ -6413,8 +6416,9 @@ class Ticket extends CommonITILObject
             $criteria = self::getCommonCriteria();
             $criteria['WHERE'] = ['OR' => $restrict]
                 + getEntitiesRestrictCriteria(self::getTable());
-            $iterator = $DB->request($criteria);
-            $number = count($iterator);
+            $request = self::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
+            $number = count($results);
 
             echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Ticket on linked item'>";
             echo "<tr><th colspan='12'>";
@@ -6422,7 +6426,7 @@ class Ticket extends CommonITILObject
             echo "</th></tr>";
             if ($number > 0) {
                 self::commonListHeader(Search::HTML_OUTPUT);
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     // Session::addToNavigateListItems(TRACKING_TYPE,$data["id"]);
                     self::showShort($data["id"]);
                 }
@@ -6695,7 +6699,7 @@ class Ticket extends CommonITILObject
         // Recherche des entit??s
         $tot = 0;
 
-        $entities = $DB->request(
+        $entities = self::getAdapter()->request(
             [
                 'SELECT' => 'id',
                 'FROM'   => Entity::getTable(),
@@ -6733,8 +6737,8 @@ class Ticket extends CommonITILObject
                 }
 
                 $nb = 0;
-                $iterator = $DB->request($criteria);
-                while ($tick = $iterator->next()) {
+                $request = self::getAdapter()->request($criteria);
+                while ($tick = $request->fetchAssociative()) {
                     $ticket->update([
                         'id'           => $tick['id'],
                         'status'       => $_SESSION['CLOSED'],
@@ -6772,7 +6776,7 @@ class Ticket extends CommonITILObject
         // Recherche des entit??s
         $tot = 0;
         foreach (Entity::getEntitiesToNotify('notclosed_delay') as $entity => $value) {
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                 'FROM'   => self::getTable(),
                 'WHERE'  => [
                     'entities_id'  => $entity,
@@ -6788,7 +6792,7 @@ class Ticket extends CommonITILObject
                 ]
             ]);
             $tickets = [];
-            while ($tick = $iterator->next()) {
+            while ($tick = $request->fetchAssociative()) {
                 $tickets[] = $tick;
             }
 
@@ -6840,7 +6844,10 @@ class Ticket extends CommonITILObject
             $tabentities[0] = $rate;
         }
 
-        foreach ($DB->request('glpi_entities') as $entity) {
+        $request = self::getAdapter()->request([
+            'FROM' => 'glpi_entities'
+        ]);
+        foreach ($request->fetchAllAssociative() as $entity) {
             $rate   = Entity::getUsedConfig('inquest_config', $entity['id'], 'inquest_rate');
             $parent = Entity::getUsedConfig('inquest_config', $entity['id'], 'entities_id');
 
@@ -6857,7 +6864,7 @@ class Ticket extends CommonITILObject
             $max_closedate = Entity::getUsedConfig('inquest_config', $entity, 'max_closedate');
 
             $table = self::getTable();
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                 'SELECT'    => [
                     "$table.id",
                     "$table.closedate",
@@ -6893,7 +6900,7 @@ class Ticket extends CommonITILObject
             $nb            = 0;
             $max_closedate = '';
 
-            while ($tick = $iterator->next()) {
+            while ($tick = $request->fetchAssociative()) {
                 $max_closedate = $tick['closedate'];
                 if (mt_rand(1, 100) <= $rate) {
                     if (
@@ -6959,7 +6966,7 @@ class Ticket extends CommonITILObject
         //search entities
         $tot = 0;
 
-        $entities = $DB->request(
+        $entities = self::getAdapter()->request(
             [
                 'SELECT' => 'id',
                 'FROM'   => Entity::getTable(),
@@ -6982,10 +6989,10 @@ class Ticket extends CommonITILObject
                     $criteria['WHERE'][] = new \QueryExpression("ADDDATE(`closedate`, INTERVAL " . $delay . " DAY) < NOW()");
                 }
 
-                $iterator = $DB->request($criteria);
+                $request = self::getAdapter()->request($criteria);
                 $nb = 0;
 
-                foreach ($iterator as $tick) {
+                foreach ($request as $tick) {
                     $ticket->delete(
                         [
                             'id'           => $tick['id'],
@@ -7326,7 +7333,7 @@ class Ticket extends CommonITILObject
 
         // add calendars matching date creation (for business rules)
         $calendars = [];
-        $ite_calendar = $DB->request([
+        $ite_calendar = $this::getAdapter()->request([
             'SELECT' => ['id'],
             'FROM'   => Calendar::getTable(),
             'WHERE'  => getEntitiesRestrictCriteria('', '', $entities_id, true)
@@ -7431,7 +7438,7 @@ class Ticket extends CommonITILObject
             // Subquery for validator
             $validation_query = "SELECT `tickets_id`
             FROM `glpi_ticketvalidations`
-            WHERE `users_id_validate` = '$user'";
+            WHERE `validate_users_id` = '$user'";
             $condition .= "OR `$fieldID` IN ($validation_query) ";
         }
 
@@ -7856,7 +7863,7 @@ class Ticket extends CommonITILObject
         ) {
             $valid = true;
             $where_profile[] = [
-                'tv.users_id_validate' => Session::getLoginUserID(),
+                'tv.validate_users_id' => Session::getLoginUserID(),
             ];
         }
 

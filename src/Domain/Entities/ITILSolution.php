@@ -2,16 +2,18 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_itilsolutions')]
 #[ORM\Index(name: "itemtype", columns: ['itemtype'])]
 #[ORM\Index(name: "items_id", columns: ['items_id'])]
 #[ORM\Index(name: "item", columns: ['itemtype', 'items_id'])]
 #[ORM\Index(name: "solutiontypes_id", columns: ['solutiontypes_id'])]
 #[ORM\Index(name: "users_id", columns: ['users_id'])]
-#[ORM\Index(name: "users_id_editor", columns: ['users_id_editor'])]
+#[ORM\Index(name: "editor_users_id", columns: ['editor_users_id'])]
 #[ORM\Index(name: "users_id_approval", columns: ['users_id_approval'])]
 #[ORM\Index(name: "status", columns: ['status'])]
 #[ORM\Index(name: "itilfollowups_id", columns: ['itilfollowups_id'])]
@@ -55,11 +57,11 @@ class ITILSolution
     private $userName;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
+    #[ORM\JoinColumn(name: 'editor_users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $userEditor = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_approval', referencedColumnName: 'id', nullable: true)]
+    #[ORM\JoinColumn(name: 'approval_users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $userApproval = null;
 
 
@@ -127,26 +129,29 @@ class ITILSolution
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }

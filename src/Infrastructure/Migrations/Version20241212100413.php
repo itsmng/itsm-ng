@@ -1403,9 +1403,11 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_networkportdialups CHANGE networkports_id networkports_id INT DEFAULT NULL');
 
         $this->addSql('ALTER TABLE glpi_networkportethernets CHANGE networkports_id networkports_id INT DEFAULT NULL, CHANGE netpoints_id netpoints_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE glpi_networkportethernets ADD CONSTRAINT FK_networkportethernetsItemsdevicenetworkcardsD7DB FOREIGN KEY (items_devicenetworkcards_id) REFERENCES glpi_items_devicenetworkcards_id (id)');
 
 
         $this->addSql('ALTER TABLE glpi_networkportfiberchannels CHANGE networkports_id networkports_id INT DEFAULT NULL, CHANGE netpoints_id netpoints_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE glpi_networkportfiberchannels ADD CONSTRAINT FK_networkportfiberchannelsItemsdevicenetworkcardsD7DB FOREIGN KEY (items_devicenetworkcards_id) REFERENCES glpi_items_devicenetworkcards_id (id)');
 
 
         $this->addSql('ALTER TABLE glpi_networkportlocals CHANGE networkports_id networkports_id INT DEFAULT NULL');
@@ -1421,6 +1423,7 @@ final class Version20241212100413 extends AbstractMigration
 
         $this->addSql('CREATE INDEX IDX_84FF692CCE45BD77 ON glpi_networkports_vlans (networkports_id)');
         $this->addSql('ALTER TABLE glpi_networkportwifis CHANGE networkports_id networkports_id INT DEFAULT NULL, CHANGE wifinetworks_id wifinetworks_id INT DEFAULT NULL, CHANGE networkportwifis_id networkportwifis_id INT DEFAULT NULL COMMENT \'only useful in case of Managed node\'');
+        $this->addSql('ALTER TABLE glpi_networkportwifis ADD CONSTRAINT FK_networkportwifisItemsdevicenetworkcardsD7DB FOREIGN KEY (items_devicenetworkcards_id) REFERENCES glpi_items_devicenetworkcards_id (id)');
 
 
 

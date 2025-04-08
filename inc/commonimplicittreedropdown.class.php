@@ -157,7 +157,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
 
         if ($step != "add" && count($potentialSons)) { // Because there is no old sons of new node
             // First, get all my current direct sons (old ones) that are not new potential sons
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => ['id'],
                'FROM'   => $this->getTable(),
                'WHERE'  => [
@@ -166,7 +166,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
                ]
             ]);
             $oldSons = [];
-            while ($oldSon = $iterator->next()) {
+            while ($oldSon = $request->fetchAssociative()) {
                 $oldSons[] = $oldSon["id"];
             }
             if (count($oldSons) > 0) { // Then make them pointing to old parent
@@ -188,7 +188,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
         if ($step != "delete" && count($potentialSons)) { // Because ther is no new sons for deleted nodes
             // And, get all direct sons of my new Father that must be attached to me (ie : that are
             // potential sons
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => ['id'],
                'FROM'   => $this->getTable(),
                'WHERE'  => [
@@ -197,7 +197,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
                ]
             ]);
             $newSons = [];
-            while ($newSon = $iterator->next()) {
+            while ($newSon = $request->fetchAssociative()) {
                 $newSons[] = $newSon["id"];
             }
             if (count($newSons) > 0) { // Then make them pointing to me

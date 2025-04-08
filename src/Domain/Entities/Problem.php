@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
@@ -41,8 +42,8 @@ class Problem
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
 
-    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0], nullable: false)]
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
     private $status;
@@ -444,7 +445,7 @@ class Problem
     /**
      * Get the value of changeProblems
      */
-    public function getChangeProblems()
+    public function getChangeProblems(): Collection
     {
         return $this->changeProblems;
     }
@@ -605,4 +606,5 @@ class Problem
 
         return $this;
     }
+
 }

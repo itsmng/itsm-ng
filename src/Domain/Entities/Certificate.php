@@ -2,8 +2,9 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Location;
+use Itsmng\Domain\Entities\Location;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'glpi_certificates')]
@@ -49,13 +50,13 @@ class Certificate
     private $comment;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = false;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
-    private $templateName;
+    private $templateName = null;
 
 
     #[ORM\ManyToOne(targetEntity: CertificateType::class)]
@@ -219,7 +220,7 @@ class Certificate
         return $this->templateName;
     }
 
-    public function setTemplateName(string $templateName): self
+    public function setTemplateName(?string $templateName): self
     {
         $this->templateName = $templateName;
 
@@ -292,8 +293,11 @@ class Certificate
         return $this->dateExpiration;
     }
 
-    public function setDateExpiration(\DateTimeInterface $dateExpiration): self
+    public function setDateExpiration(\DateTimeInterface|string|null $dateExpiration): self
     {
+        if (is_string($dateExpiration)) {
+            $dateExpiration = new \DateTime($dateExpiration);
+        }
         $this->dateExpiration = $dateExpiration;
 
         return $this;
@@ -335,26 +339,29 @@ class Certificate
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

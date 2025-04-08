@@ -496,8 +496,8 @@ class RuleAction extends CommonDBChild
             while ($action = $iterator->next()) {
                 if (
                     isset($actions_options[$action["field"]])
-                     && ($action["field"] != 'groups_id_validate')
-                     && ($action["field"] != 'users_id_validate')
+                     && ($action["field"] != 'validate_groups_id')
+                     && ($action["field"] != 'validate_users_id')
                      && ($action["field"] != 'affectobject')
                 ) {
                     $actions[$action["field"]] = $action["field"];
@@ -676,7 +676,7 @@ class RuleAction extends CommonDBChild
                                     self::getTable(),
                                     [
                                       'action_type'           => 'add_validation',
-                                      'field'                 => 'users_id_validate',
+                                      'field'                 => 'validate_users_id',
                                       $item->getRuleIdField() => $options[$item->getRuleIdField()]
                                     ]
                                 );

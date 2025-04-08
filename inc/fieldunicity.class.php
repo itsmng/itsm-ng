@@ -300,11 +300,11 @@ class FieldUnicity extends CommonDropdown
         if ($check_active) {
             $request['WHERE']['is_active'] = 1;
         }
-        $iterator = $DB->request($request);
+        $request = self::getAdapter()->request($request);
 
         $current_entity = false;
         $return         = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             //First row processed
             if (!$current_entity) {
                 $current_entity = $data['entities_id'];
@@ -680,7 +680,7 @@ class FieldUnicity extends CommonDropdown
                 }
             }
 
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT'    => $fields,
                'COUNT'     => 'cpt',
                'FROM'      => $item->getTable(),
@@ -691,7 +691,7 @@ class FieldUnicity extends CommonDropdown
                'ORDERBY'   => 'cpt DESC'
             ]);
             $results = [];
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 if ($data['cpt'] > 1) {
                     $results[] = $data;
                 }

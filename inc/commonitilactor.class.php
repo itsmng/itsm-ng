@@ -99,15 +99,14 @@ abstract class CommonITILActor extends CommonDBRelation
     **/
     public function getActors($items_id)
     {
-        global $DB;
 
         $users = [];
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [static::getItilObjectForeignKey() => $items_id],
            'ORDER'  => 'id ASC'
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $users[$data['type']][] = $data;
         }
         return $users;
@@ -120,9 +119,7 @@ abstract class CommonITILActor extends CommonDBRelation
     **/
     public function isAlternateEmailForITILObject($items_id, $email)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [
               static::getItilObjectForeignKey()   => $items_id,
@@ -131,7 +128,8 @@ abstract class CommonITILActor extends CommonDBRelation
            'START'  => 0,
            'LIMIT'  => 1
         ]);
-        if (count($iterator) > 0) {
+        $result = $request->fetchAssociative();
+        if ($result) {
             return true;
         }
         return false;

@@ -2,10 +2,13 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_documents')]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'name', columns: ['name'])]
@@ -47,7 +50,7 @@ class Document
     #[ORM\Column(name: 'mime', type: 'string', length: 255, nullable: true)]
     private $mime;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
@@ -71,7 +74,7 @@ class Document
     private $sha1sum;
 
     #[ORM\Column(name: 'is_blacklisted', type: 'boolean', options: ['default' => false])]
-    private $isBlacklisted;
+    private $isBlacklisted = false;
 
     #[ORM\Column(name: 'tag', type: 'string', length: 255, nullable: true)]
     private $tag;
@@ -154,14 +157,16 @@ class Document
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
@@ -207,7 +212,7 @@ class Document
         return $this->sha1sum;
     }
 
-    public function setSha1sum(string $sha1sum): self
+    public function setSha1sum(?string $sha1sum): self
     {
         $this->sha1sum = $sha1sum;
 
@@ -238,17 +243,19 @@ class Document
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
+
 
     /**
      * Get the value of documentcategory
@@ -333,8 +340,11 @@ class Document
     /**
      * Get the value of documentItems
      */
-    public function getDocumentItems()
+    public function getDocumentItems(): Collection
     {
+        if (!isset($this->documentItems)) {
+            $this->documentItems = new ArrayCollection();
+        }
         return $this->documentItems;
     }
 
@@ -343,9 +353,9 @@ class Document
      *
      * @return  self
      */
-    public function setDocumentItems($documentItems)
+    public function setDocumentItems(?Collection $documentItems): self
     {
-        $this->documentItems = $documentItems;
+        $this->documentItems = $documentItems ?? new ArrayCollection();
 
         return $this;
     }

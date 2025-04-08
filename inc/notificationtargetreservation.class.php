@@ -103,11 +103,11 @@ class NotificationTargetReservation extends NotificationTarget
                                          $item->getField('entities_id')
                                      );
 
-                if ($item->isField('users_id_tech')) {
+                if ($item->isField('tech_users_id')) {
                     $this->data['##reservation.item.tech##']
                                      = Dropdown::getDropdownName(
                                          'glpi_users',
-                                         $item->getField('users_id_tech')
+                                         $item->getField('tech_users_id')
                                      );
                 }
 
