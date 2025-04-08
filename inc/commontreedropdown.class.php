@@ -937,12 +937,12 @@ abstract class CommonTreeDropdown extends CommonDropdown
             // Check twin :
             $request = $this::getAdapter()->request($criteria);
             $results = $request->fetchAllAssociative();
-            if (!empty($results)) { 
-                return $results[0]['id']; 
+            if (!empty($results)) {
+                return $results[0]['id'];
             }
         }
         return -1;
-    
+
     }
 
 

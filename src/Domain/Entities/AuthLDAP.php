@@ -702,7 +702,7 @@ class AuthLDAP
 
     /**
      * Get the value of derefOption
-     */ 
+     */
     public function getDerefOption()
     {
         return $this->derefOption;
@@ -712,7 +712,7 @@ class AuthLDAP
      * Set the value of derefOption
      *
      * @return  self
-     */ 
+     */
     public function setDerefOption($derefOption)
     {
         $this->derefOption = $derefOption;

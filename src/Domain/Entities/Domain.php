@@ -116,12 +116,12 @@ class Domain
             $this->dateExpiration = null;
             return $this;
         }
-    
+
         if ($dateExpiration instanceof \DateTimeInterface) {
             $this->dateExpiration = $dateExpiration;
             return $this;
         }
-    
+
         try {
             $this->dateExpiration = new \DateTime($dateExpiration);
         } catch (\Exception $e) {
@@ -129,7 +129,7 @@ class Domain
             error_log("Erreur de conversion de date: " . $e->getMessage());
             $this->dateExpiration = null;  // ou une date par défaut si nécessaire
         }
-    
+
         return $this;
     }
 
@@ -182,7 +182,7 @@ class Domain
 
         return $this;
     }
-    
+
     public function getDateCreation(): DateTime
     {
         return $this->dateCreation ?? new DateTime();

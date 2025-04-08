@@ -577,7 +577,7 @@ class CartridgeItem extends CommonDBTM
     **/
     public static function dropdownForPrinter(Printer $printer)
     {
-        
+
         $request = self::getAdapter()->request([
            'SELECT'       => [
               'COUNT'  => '* AS cpt',
@@ -621,7 +621,7 @@ class CartridgeItem extends CommonDBTM
         ]);
 
         $results = [];
-      while ($data = $request->fetchAssociative()) {
+        while ($data = $request->fetchAssociative()) {
             $text = sprintf(__('%1$s - %2$s'), $data["name"], $data["ref"]);
             $text = sprintf(__('%1$s (%2$s)'), $text, $data["cpt"]);
             $text = sprintf(__('%1$s - %2$s'), $text, $data["location"]);

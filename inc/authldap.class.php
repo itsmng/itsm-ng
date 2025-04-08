@@ -580,7 +580,7 @@ class AuthLDAP extends CommonDBTM
      */
     public function showFormReplicatesConfig()
     {
-        
+
         $ID     = $this->getField('id');
         $target = $this->getFormURL();
         $rand   = mt_rand();
@@ -595,7 +595,7 @@ class AuthLDAP extends CommonDBTM
            'ORDER'  => ['name']
         ]);
 
-        $itemsArray = $results->fetchAllAssociative();  
+        $itemsArray = $results->fetchAllAssociative();
         $nb = count($itemsArray);
         if ($nb > 0) {
             echo "<br>";
@@ -624,7 +624,7 @@ class AuthLDAP extends CommonDBTM
                  "<th class='center'></th></tr>";
             echo $header_begin . $header_top . $header_end;
 
-                foreach ($itemsArray as $ldap_replicate) {
+            foreach ($itemsArray as $ldap_replicate) {
                 echo "<tr class='tab_bg_1'><td class='center' width='10'>";
                 Html::showMassiveActionCheckBox('AuthLdapReplicate', $ldap_replicate["id"]);
                 echo "</td>";
@@ -2286,7 +2286,7 @@ class AuthLDAP extends CommonDBTM
         &$limitexceeded,
         $order = 'DESC'
     ) {
-       
+
         $config_ldap = new self();
         $config_ldap->getFromDB($auths_id);
         $infos       = [];
@@ -2434,7 +2434,7 @@ class AuthLDAP extends CommonDBTM
         $search_in_groups = true,
         $groups = []
     ) {
-        
+
         //First look for groups in group objects
         $extra_attribute = ($search_in_groups ? "cn" : $config_ldap->fields["group_field"]);
         $attrs           = ["dn", $extra_attribute];
@@ -2588,8 +2588,8 @@ class AuthLDAP extends CommonDBTM
            'ORDER'  => 'name ASC'
         ]);
 
-        $results = $request->fetchAllAssociative(); 
-        if(count($results)== 1){
+        $results = $request->fetchAllAssociative();
+        if (count($results) == 1) {
             //If only one server, do not show the choose ldap server window
             $ldap = $results[0];
             $_SESSION["ldap_server"] = $ldap["id"];
@@ -3125,7 +3125,7 @@ class AuthLDAP extends CommonDBTM
      */
     public static function tryLdapAuth($auth, $login, $password, $auths_id = 0, $user_dn = false, $break = true)
     {
-        
+
         //If no specific source is given, test all ldap directories
         if ($auths_id <= 0) {
             $user_found = false;
@@ -3923,7 +3923,7 @@ class AuthLDAP extends CommonDBTM
      */
     public static function getServersWithImportByEmailActive()
     {
-        
+
         $ldaps = [];
         // Always get default first
 
@@ -4079,7 +4079,7 @@ class AuthLDAP extends CommonDBTM
      */
     public static function getAllReplicateForAMaster($master_id)
     {
-        
+
         $replicates = [];
         $criteria = ['FIELDS' => ['id', 'host', 'port'],
                   'FROM'   => 'glpi_authldapreplicates',

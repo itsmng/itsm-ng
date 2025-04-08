@@ -2421,7 +2421,7 @@ class Ticket extends CommonITILObject
                 ]
             ]
         ]);
-        
+
         while ($tick = $request->fetchAssociative()) {
             $result[$tick['id']] = $tick['name'];
         }

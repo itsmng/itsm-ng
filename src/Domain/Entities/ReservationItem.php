@@ -69,7 +69,7 @@ class ReservationItem
         return $this;
     }
 
-    
+
 
     public function getComment(): ?string
     {
@@ -130,7 +130,7 @@ class ReservationItem
 
     /**
      * Get the value of items_id
-     */ 
+     */
     public function getItems_id()
     {
         return $this->items_id;
@@ -140,7 +140,7 @@ class ReservationItem
      * Set the value of items_id
      *
      * @return  self
-     */ 
+     */
     public function setItems_id($items_id)
     {
         $this->items_id = $items_id;

@@ -51,7 +51,7 @@ class NetworkPortEthernet
         return $this->id;
     }
 
-    
+
     public function getType(): ?string
     {
         return $this->type;
@@ -147,7 +147,7 @@ class NetworkPortEthernet
 
     /**
      * Get the value of itemsDevicenetworkcard
-     */ 
+     */
     public function getItemsDevicenetworkcard()
     {
         return $this->itemsDevicenetworkcard;
@@ -157,7 +157,7 @@ class NetworkPortEthernet
      * Set the value of itemsDevicenetworkcard
      *
      * @return  self
-     */ 
+     */
     public function setItemsDevicenetworkcard($itemsDevicenetworkcard)
     {
         $this->itemsDevicenetworkcard = $itemsDevicenetworkcard;

@@ -5694,20 +5694,20 @@ abstract class CommonITILObject extends CommonDBTM
                 )
                                                                 - $this->fields["waiting_duration"]);
             }
-        
-        // Not calendar defined
-        $solvedate = $this->fields['solvedate'];
-        $date = $this->fields['date'];
-        
-        // Convert DateTime objects to timestamp if needed
-        $solvedate_timestamp = ($solvedate instanceof DateTime) ? 
-            $solvedate->getTimestamp() : strtotime($solvedate);
-        $date_timestamp = ($date instanceof DateTime) ? 
-            $date->getTimestamp() : strtotime($date);
-            
-        return max(0, $solvedate_timestamp - $date_timestamp
-                      - $this->fields["waiting_duration"]);
-    }
+
+            // Not calendar defined
+            $solvedate = $this->fields['solvedate'];
+            $date = $this->fields['date'];
+
+            // Convert DateTime objects to timestamp if needed
+            $solvedate_timestamp = ($solvedate instanceof DateTime) ?
+                $solvedate->getTimestamp() : strtotime($solvedate);
+            $date_timestamp = ($date instanceof DateTime) ?
+                $date->getTimestamp() : strtotime($date);
+
+            return max(0, $solvedate_timestamp - $date_timestamp
+                          - $this->fields["waiting_duration"]);
+        }
         return 0;
     }
 

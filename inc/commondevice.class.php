@@ -490,7 +490,7 @@ abstract class CommonDevice extends CommonDropdown
         ]);
         $results = $request->fetchAllAssociative();
         if (count($results) > 0) {
-            $line = $results[0]; 
+            $line = $results[0];
             return $line['id'];
         }
 

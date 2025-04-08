@@ -118,7 +118,7 @@ abstract class CommonDBConnexity extends CommonDBTM
     **/
     public function cleanDBonItemDelete($itemtype, $items_id)
     {
-        
+
         $criteria = static::getSQLCriteriaToSearchForItem($itemtype, $items_id);
         if ($criteria !== null) {
             $input = [
@@ -205,7 +205,7 @@ abstract class CommonDBConnexity extends CommonDBTM
     {
 
         $request = self::getAdapter()->request(static::getSQLCriteriaToSearchForItem($itemtype, $items_id));
-        $results = $request->fetchAllAssociative(); 
+        $results = $request->fetchAllAssociative();
         return $results;
     }
 
