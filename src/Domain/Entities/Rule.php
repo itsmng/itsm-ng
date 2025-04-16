@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "sub_type", columns: ["sub_type"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
-#[ORM\Index(name: "conditions", columns: ["conditions"])]
+#[ORM\Index(name: "condition", columns: ["condition"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class Rule
 {
@@ -54,7 +54,7 @@ class Rule
     #[ORM\Column(name: 'uuid', type: 'string', length: 255, nullable: true)]
     private $uuid;
 
-    #[ORM\Column(name: 'conditions', type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'condition', type: 'integer', options: ['default' => 0])]
     private $condition;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]

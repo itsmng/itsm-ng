@@ -889,7 +889,7 @@ final class DbUtils
         }
 
         if ($use_cache) {
-            $iterator = $DB->request([
+            $iterator = $this::getAdapter()->request([
                'SELECT' => ['id', 'ancestors_cache', $parentIDfield],
                'FROM'   => $table,
                'WHERE'  => ['id' => $items_id]
@@ -940,7 +940,7 @@ final class DbUtils
                 $IDf = $id;
                 while ($IDf > 0) {
                     // Get next elements
-                    $iterator = $DB->request([
+                    $iterator = $this->getAdapter()->request([
                        'SELECT' => [$parentIDfield],
                        'FROM'   => $table,
                        'WHERE'  => ['id' => $IDf]

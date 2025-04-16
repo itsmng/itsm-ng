@@ -61,12 +61,12 @@ if (isset($_GET['node'])) {
             ];
 
             if ($is_recursive) {
-                $result2 = $DB->request([
+                $result2 = Entity::getAdapter()->request([
                    'FROM'   => 'glpi_entities',
                    'COUNT'  => 'cpt',
                    'WHERE'  => ['entities_id' => $ID]
                 ]);
-                $result2 = $result2->next();
+                $result2 = $result2->fetchAssociative();
                 if ($result2['cpt'] > 0) {
                     $path['children'] = true;
                     //apend a i tag (one of shortest tags) to have the is_recursive link
@@ -80,7 +80,7 @@ if (isset($_GET['node'])) {
         }
     } else { // standard node
         $node_id = preg_replace('/r$/', '', $_GET['node']);
-        $iterator = $DB->request([
+        $iterator = Entity::getAdapter()->request([
            'SELECT' => [
               'ent.id',
               'ent.name',
@@ -101,7 +101,7 @@ if (isset($_GET['node'])) {
            'ORDERBY'   => 'name'
         ]);
 
-        while ($row = $iterator->next()) {
+        while ($row = $iterator->fetchAssociative()) {
             $path = [
                'id'   => $row['id'],
                'text' => $row['name']
