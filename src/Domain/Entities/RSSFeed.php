@@ -2,10 +2,14 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_rssfeeds')]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "users_id", columns: ["users_id"])]
@@ -34,16 +38,16 @@ class RSSFeed
     private $url;
 
     #[ORM\Column(name: 'refresh_rate', type: 'integer', options: ['default' => 86400])]
-    private $refreshRate;
+    private $refreshRate = 86400;
 
     #[ORM\Column(name: 'max_items', type: 'integer', options: ['default' => 20])]
-    private $maxItems;
+    private $maxItems = 20;
 
     #[ORM\Column(name: 'have_error', type: 'boolean', options: ['default' => 0])]
-    private $haveError;
+    private $haveError = 0;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
-    private $isActive;
+    private $isActive = 0;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -104,24 +108,24 @@ class RSSFeed
         return $this;
     }
 
-    public function getRefreshRate(): ?string
+    public function getRefreshRate(): ?int
     {
         return $this->refreshRate;
     }
 
-    public function setRefreshRate(?string $refreshRate): self
+    public function setRefreshRate(?int $refreshRate): self
     {
         $this->refreshRate = $refreshRate;
 
         return $this;
     }
 
-    public function getMaxItems(): ?string
+    public function getMaxItems(): ?int
     {
         return $this->maxItems;
     }
 
-    public function setMaxItems(?string $maxItems): self
+    public function setMaxItems(?int $maxItems): self
     {
         $this->maxItems = $maxItems;
 
@@ -152,26 +156,29 @@ class RSSFeed
         return $this;
     }
 
-    public function getDateMod(): ?string
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(?string $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
-
-    public function getDateCreation(): ?string
+    
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(?string $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -180,8 +187,11 @@ class RSSFeed
     /**
      * Get the value of entityRSSFeeds
      */
-    public function getEntityRSSFeeds()
+    public function getEntityRSSFeeds(): Collection
     {
+        if (!isset($this->entityRSSFeeds)) {
+            $this->entityRSSFeeds = new ArrayCollection();
+        }
         return $this->entityRSSFeeds;
     }
 
@@ -190,9 +200,9 @@ class RSSFeed
      *
      * @return  self
      */
-    public function setEntityRSSFeeds($entityRSSFeeds)
+    public function setEntityRSSFeeds(?Collection $entityRSSFeeds): self
     {
-        $this->entityRSSFeeds = $entityRSSFeeds;
+        $this->entityRSSFeeds = $entityRSSFeeds ?? new ArrayCollection();
 
         return $this;
     }
@@ -200,8 +210,11 @@ class RSSFeed
     /**
      * Get the value of groupRSSFeeds
      */
-    public function getGroupRSSFeeds()
+    public function getGroupRSSFeeds(): Collection
     {
+        if (!isset($this->groupRSSFeeds)) {
+            $this->groupRSSFeeds = new ArrayCollection();
+        }
         return $this->groupRSSFeeds;
     }
 
@@ -210,9 +223,9 @@ class RSSFeed
      *
      * @return  self
      */
-    public function setGroupRSSFeeds($groupRSSFeeds)
+    public function setGroupRSSFeeds(?Collection $groupRSSFeeds): self
     {
-        $this->groupRSSFeeds = $groupRSSFeeds;
+        $this->groupRSSFeeds = $groupRSSFeeds ?? new ArrayCollection();
 
         return $this;
     }
@@ -220,8 +233,11 @@ class RSSFeed
     /**
      * Get the value of profileRSSFeeds
      */
-    public function getProfileRSSFeeds()
+    public function getProfileRSSFeeds(): Collection
     {
+        if (!isset($this->profileRSSFeeds)) {
+            $this->profileRSSFeeds = new ArrayCollection();
+        }
         return $this->profileRSSFeeds;
     }
 
@@ -230,9 +246,9 @@ class RSSFeed
      *
      * @return  self
      */
-    public function setProfileRSSFeeds($profileRSSFeeds)
+    public function setProfileRSSFeeds(?Collection $profileRSSFeeds)
     {
-        $this->profileRSSFeeds = $profileRSSFeeds;
+        $this->profileRSSFeeds = $profileRSSFeeds ?? new ArrayCollection();
 
         return $this;
     }
@@ -261,8 +277,11 @@ class RSSFeed
     /**
      * Get the value of rssfeedUsers
      */
-    public function getRSSFeedUsers()
+    public function getRSSFeedUsers(): Collection
     {
+        if (!isset($this->rssfeedUsers)) {
+            $this->rssfeedUsers = new ArrayCollection();
+        }
         return $this->rssfeedUsers;
     }
 
@@ -271,9 +290,9 @@ class RSSFeed
      *
      * @return  self
      */
-    public function setRSSFeedUsers($rssfeedUsers)
+    public function setRSSFeedUsers(?Collection $rssfeedUsers): self
     {
-        $this->rssfeedUsers = $rssfeedUsers;
+        $this->rssfeedUsers = $rssfeedUsers ?? new ArrayCollection();
 
         return $this;
     }

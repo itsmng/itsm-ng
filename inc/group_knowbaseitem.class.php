@@ -58,18 +58,16 @@ class Group_KnowbaseItem extends CommonDBRelation
     **/
     public static function getGroups($knowbaseitems_id)
     {
-        global $DB;
-
         $groups = [];
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'knowbaseitems_id' => $knowbaseitems_id
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $groups[$data['groups_id']][] = $data;
         }
         return $groups;

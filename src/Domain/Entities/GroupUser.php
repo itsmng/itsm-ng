@@ -26,13 +26,13 @@ class GroupUser
     private ?Group $group = null;
 
     #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
     #[ORM\Column(name: 'is_manager', type: "boolean", options: ["default" => 0])]
-    private $isManager;
+    private $isManager = 0;
 
     #[ORM\Column(name: 'is_userdelegate', type: "boolean", options: ["default" => 0])]
-    private $isUserdelegate;
+    private $isUserdelegate = 0;
 
     public function getId(): ?int
     {

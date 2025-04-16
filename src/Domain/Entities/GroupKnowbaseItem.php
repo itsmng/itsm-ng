@@ -30,7 +30,7 @@ class GroupKnowbaseItem
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ['default' => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     public function getId(): ?int
     {
@@ -92,20 +92,24 @@ class GroupKnowbaseItem
     /**
      * Get the value of entity
      */
-    public function getEntity()
+    public function getEntity(): ?Entity
     {
         return $this->entity;
     }
 
+    public function getEntityId(): int
+    {
+        return $this->entity ? $this->entity->getId() : -1;
+    }
     /**
      * Set the value of entity
      *
-     * @return  self
+     * @param Entity|null $entity
+     * @return self
      */
-    public function setEntity($entity)
+    public function setEntity(?Entity $entity): self
     {
         $this->entity = $entity;
-
         return $this;
     }
 }

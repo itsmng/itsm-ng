@@ -83,7 +83,7 @@ class Group_User extends CommonDBRelation
         global $DB;
 
         $groups = [];
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => [
               'glpi_groups.*',
               'glpi_groups_users.id AS IDD',
@@ -106,7 +106,7 @@ class Group_User extends CommonDBRelation
            ] + $condition,
            'ORDER'        => 'glpi_groups.name'
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $result->fetchAssociative()) {
             $groups[] = $row;
         }
 
@@ -130,7 +130,7 @@ class Group_User extends CommonDBRelation
 
         $users = [];
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => [
               'glpi_users.*',
               'glpi_groups_users.id AS IDD',
@@ -153,7 +153,7 @@ class Group_User extends CommonDBRelation
            ] + $condition,
            'ORDER'        => 'glpi_users.name'
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $result->fetchAssociative()) {
             $users[] = $row;
         }
 
