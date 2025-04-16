@@ -70,7 +70,7 @@ class State
     private $isVisibleMonitor;
 
     #[ORM\Column(name: 'is_visible_networkequipment', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleNetworkEquipment;
+    private $isVisibleNetworkequipment;
 
     #[ORM\Column(name: 'is_visible_peripheral', type: 'boolean', options: ['default' => 1])]
     private $isVisiblePeripheral;
@@ -233,14 +233,14 @@ class State
         return $this;
     }
 
-    public function getIsVisibleNetworkEquipment(): ?bool
+    public function getIsVisibleNetworkequipment(): ?bool
     {
-        return $this->isVisibleNetworkEquipment;
+        return $this->isVisibleNetworkequipment;
     }
 
-    public function setIsVisibleNetworkEquipment(?bool $isVisibleNetworkEquipment): self
+    public function setIsVisibleNetworkequipment(?bool $isVisibleNetworkequipment): self
     {
-        $this->isVisibleNetworkEquipment = $isVisibleNetworkEquipment;
+        $this->isVisibleNetworkequipment = $isVisibleNetworkequipment;
 
         return $this;
     }

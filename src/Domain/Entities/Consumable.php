@@ -24,9 +24,9 @@ class Consumable
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
-    #[ORM\ManyToOne(targetEntity: Consumableitem::class)]
+    #[ORM\ManyToOne(targetEntity: ConsumableItem::class)]
     #[ORM\JoinColumn(name: 'consumableitems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Consumableitem $consumableitem = null;
+    private ?ConsumableItem $consumableitem = null;
 
     #[ORM\Column(name: 'date_in', type: 'date', nullable: true)]
     private $dateIn;
