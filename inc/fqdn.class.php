@@ -169,14 +169,14 @@ class FQDN extends CommonDropdown
             $relation = $fqdn;
         }
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable(),
            'WHERE'  => ['fqdn' => $relation]
         ]);
 
         $fqdns_id_list = [];
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $fqdns_id_list[] = $line['id'];
         }
 
