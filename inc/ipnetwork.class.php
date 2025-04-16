@@ -668,7 +668,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
             $WHERE .= " AND " . $condition["where"];
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => $fields,
            'FROM'   => self::getTable(),
            'WHERE'  => $WHERE,
@@ -676,7 +676,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
         ]);
 
         $returnValues = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if (count($fields) > 1) {
                 $returnValue = [];
                 foreach ($fields as $field) {
@@ -966,14 +966,14 @@ class IPNetwork extends CommonImplicitTreeDropdown
         );
 
         // Foreach IPNetwork ...
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable()
         ]);
 
         $network = new self();
 
-        while ($network_entry = $iterator->next()) {
+        while ($network_entry = $request->fetchAssociative()) {
             if ($network->getFromDB($network_entry['id'])) {
                 $input = $network->fields;
                 // ... update it by its own entries

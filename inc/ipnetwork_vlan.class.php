@@ -94,7 +94,7 @@ class IPNetwork_Vlan extends CommonDBRelation
     **/
     public static function showForIPNetwork(IPNetwork $port)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $ID = $port->getID();
         if (!$port->can($ID, READ)) {
@@ -104,7 +104,7 @@ class IPNetwork_Vlan extends CommonDBRelation
         $canedit = $port->canEdit($ID);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               self::getTable() . '.id AS assocID',
               'glpi_vlans.*'
@@ -123,8 +123,9 @@ class IPNetwork_Vlan extends CommonDBRelation
 
         $vlans  = [];
         $used   = [];
-        $number = count($iterator);
-        while ($line = $iterator->next()) {
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
+        foreach ($results as $line) {
             $used[$line["id"]]       = $line["id"];
             $vlans[$line["assocID"]] = $line;
         }
@@ -210,15 +211,13 @@ class IPNetwork_Vlan extends CommonDBRelation
     **/
     public static function getVlansForIPNetwork($portID)
     {
-        global $DB;
-
         $vlans = [];
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'vlans_id',
            'FROM'   => self::getTable(),
            'WHERE'  => ['ipnetworks_id' => $portID]
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $vlans[$data['vlans_id']] = $data['vlans_id'];
         }
 
