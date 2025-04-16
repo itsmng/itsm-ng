@@ -169,7 +169,6 @@ class DeviceNetworkCard extends CommonDevice
     **/
     public function import(array $input)
     {
-        global $DB;
 
         if (!isset($input['designation']) || empty($input['designation'])) {
             return 0;
@@ -185,10 +184,10 @@ class DeviceNetworkCard extends CommonDevice
             $criteria['WHERE']['bandwidth'] = $input['bandwidth'];
         }
 
-        $iterator = $DB->request($criteria);
-
-        if (count($iterator) > 0) {
-            $line = $iterator->next();
+        $request = $this::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        if (count($results) > 0) {
+            $line = $results[0];
             return $line['id'];
         }
         return $this->add($input);
@@ -228,7 +227,7 @@ class DeviceNetworkCard extends CommonDevice
         HTMLTableCell $father = null,
         array $options = []
     ) {
-
+        
         $column_name = __CLASS__;
 
         if (isset($options['dont_display'][$column_name])) {
@@ -240,10 +239,9 @@ class DeviceNetworkCard extends CommonDevice
                 return;
             }
             $item = $father->getItem();
-        }
-
+        }    
         if (in_array($item->getType(), NetworkPort::getNetworkPortInstantiations())) {
-            $link = new Item_DeviceNetworkCard();
+            $link = new Item_DeviceNetworkCard();            
             if ($link->getFromDB($item->fields['items_devicenetworkcards_id'])) {
                 $device = $link->getOnePeer(1);
                 if ($device) {

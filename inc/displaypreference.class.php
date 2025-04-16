@@ -56,16 +56,14 @@ class DisplayPreference extends CommonDBTM
 
     public function prepareInputForAdd($input)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT' => ['MAX' => 'rank AS maxrank'],
            'FROM'   => $this->getTable(),
            'WHERE'  => [
               'itemtype'  => $input['itemtype'],
               'users_id'  => $input['users_id']
            ]
-        ])->next();
+        ])->fetchAssociative();
         $input['rank'] = $result['maxrank'] + 1;
         return $input;
     }
@@ -118,9 +116,8 @@ class DisplayPreference extends CommonDBTM
     **/
     public static function getForTypeUser($itemtype, $user_id)
     {
-        global $DB;
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'itemtype'  => $itemtype,
@@ -135,7 +132,7 @@ class DisplayPreference extends CommonDBTM
         $default_prefs = [];
         $user_prefs = [];
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             if ($data["users_id"] != 0) {
                 $user_prefs[] = $data["num"];
             } else {
@@ -154,22 +151,20 @@ class DisplayPreference extends CommonDBTM
     **/
     public function activatePerso(array $input)
     {
-        global $DB;
-
         if (!Session::haveRight(self::$rightname, self::PERSONAL)) {
             return false;
         }
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'itemtype'  => $input['itemtype'],
               'users_id'  => 0
            ]
         ]);
-
-        if (count($iterator)) {
-            while ($data = $iterator->next()) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            foreach ($results as $data) {
                 unset($data["id"]);
                 $data["users_id"] = $input["users_id"];
                 $this->fields     = $data;
@@ -210,13 +205,12 @@ class DisplayPreference extends CommonDBTM
     public function orderItem(array $input, $action)
     {
         global $DB;
-
         // Get current item
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT' => 'rank',
            'FROM'   => $this->getTable(),
            'WHERE'  => ['id' => $input['id']]
-        ])->next();
+        ])->fetchAssociative();
         $rank1  = $result['rank'];
 
         // Get previous or next item
@@ -237,7 +231,7 @@ class DisplayPreference extends CommonDBTM
                 return false;
         }
 
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT' => ['id', 'rank'],
            'FROM'   => $this->getTable(),
            'WHERE'  => [
@@ -246,7 +240,7 @@ class DisplayPreference extends CommonDBTM
            ] + $where,
            'ORDER'  => $order,
            'LIMIT'  => 1
-        ])->next();
+        ])->fetchAssociative();
 
         $rank2  = $result['rank'];
         $ID2    = $result['id'];
@@ -292,7 +286,7 @@ class DisplayPreference extends CommonDBTM
 
         echo "<div class='center' id='tabsbody' >";
         // Defined items
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [
               'itemtype'  => $itemtype,
@@ -300,7 +294,8 @@ class DisplayPreference extends CommonDBTM
            ],
            'ORDER'  => 'rank'
         ]);
-        $numrows = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
 
         if ($numrows == 0) {
             Session::checkRight(self::$rightname, self::PERSONAL);
@@ -378,7 +373,7 @@ class DisplayPreference extends CommonDBTM
 
             $i = 0;
             if ($numrows) {
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     if (($data["num"] != 1) && isset($searchopt[$data["num"]])) {
                         echo "<tr class='tab_bg_2'>";
                         echo "<td class='center' width='50%' >";
@@ -465,7 +460,7 @@ class DisplayPreference extends CommonDBTM
         $global_write = Session::haveRight(self::$rightname, self::GENERAL);
 
         // Defined items
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [
               'itemtype'  => $itemtype,
@@ -473,7 +468,8 @@ class DisplayPreference extends CommonDBTM
            ],
            'ORDER'  => 'rank'
         ]);
-        $numrows = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
 
         echo '<h2>' . __('Select default items to show') . '</h2>';
 
@@ -543,7 +539,7 @@ class DisplayPreference extends CommonDBTM
             $values[] = ['name' => $searchopt[80]["name"]];
         }
         $i = 0;
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $newValue = [];
             if (
                 ($data["num"] != 1)
@@ -682,11 +678,9 @@ class DisplayPreference extends CommonDBTM
     **/
     public static function showForUser($users_id)
     {
-        global $DB;
-
         $url = Toolbox::getItemTypeFormURL(__CLASS__);
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'  => ['itemtype'],
            'COUNT'   => 'nb',
            'FROM'    => self::getTable(),
@@ -695,8 +689,8 @@ class DisplayPreference extends CommonDBTM
            ],
            'GROUPBY' => 'itemtype'
         ]);
-
-        if (count($iterator) > 0) {
+        $results = $request->fetchAllAssociative();
+        if (count($results) > 0) {
             $rand = mt_rand();
             echo "<div class='spaced'>";
             Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
@@ -717,7 +711,7 @@ class DisplayPreference extends CommonDBTM
             echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
             echo "</th>";
             echo "<th colspan='2'>" . _n('Type', 'Types', 1) . "</th></tr>";
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_1'><td width='10'>";
                 Html::showMassiveActionCheckBox(__CLASS__, $data["itemtype"]);
                 echo "</td>";
