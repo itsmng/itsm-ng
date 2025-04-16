@@ -23,8 +23,8 @@ class Location
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
-    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0], nullable: false)]
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
