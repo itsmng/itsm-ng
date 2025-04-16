@@ -70,7 +70,7 @@ class ImpactRelation extends CommonDBRelation
         }
 
         // Check for duplicate
-        $it = $DB->request([
+        $results = $this::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'itemtype_source'   => $input['itemtype_source'],
@@ -79,6 +79,7 @@ class ImpactRelation extends CommonDBRelation
               'items_id_impacted' => $input['items_id_impacted']
            ]
         ]);
+        $it = $results->fetchAssociative();
         if (count($it)) {
             return false;
         }
@@ -110,10 +111,8 @@ class ImpactRelation extends CommonDBRelation
      */
     public static function getIDFromInput(array $input)
     {
-        global $DB;
-
         // Check that the link exist
-        $it = $DB->request([
+        $results = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'itemtype_source'   => $input['itemtype_source'],
@@ -122,9 +121,9 @@ class ImpactRelation extends CommonDBRelation
               'items_id_impacted' => $input['items_id_impacted']
            ]
         ]);
-
+        $it = $results->fetchAssociative();
         if (count($it)) {
-            return $it->next()['id'];
+            return $it[0]['id'];
         }
 
         return false;
