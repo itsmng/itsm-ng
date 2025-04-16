@@ -24,8 +24,10 @@ class NetworkPortFiberChannel
     #[ORM\JoinColumn(name: 'networkports_id', referencedColumnName: 'id', nullable: true)]
     private ?NetworkPort $networkport = null;
 
-    #[ORM\Column(name: 'items_devicenetworkcards_id', type: 'integer', options: ['default' => 0])]
-    private $itemsDeviceNetworkCardsId;
+    #[ORM\ManyToOne(targetEntity: ItemDeviceNetworkCard::class)]
+    #[ORM\JoinColumn(name: 'items_devicenetworkcards_id', referencedColumnName: 'id', nullable: true)]
+    private $itemsDevicenetworkcard = null;
+
 
     #[ORM\ManyToOne(targetEntity: Netpoint::class)]
     #[ORM\JoinColumn(name: 'netpoints_id', referencedColumnName: 'id', nullable: true)]
@@ -48,17 +50,6 @@ class NetworkPortFiberChannel
         return $this->id;
     }
 
-    public function getItemsDeviceNetworkCardsId(): ?int
-    {
-        return $this->itemsDeviceNetworkCardsId;
-    }
-
-    public function setItemsDeviceNetworkCardsId(?int $itemsDeviceNetworkCardsId): self
-    {
-        $this->itemsDeviceNetworkCardsId = $itemsDeviceNetworkCardsId;
-
-        return $this;
-    }
 
     public function getWwn(): ?string
     {
@@ -145,6 +136,26 @@ class NetworkPortFiberChannel
     public function setNetpoint($netpoint)
     {
         $this->netpoint = $netpoint;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of itemsDevicenetworkcard
+     */ 
+    public function getItemsDevicenetworkcard()
+    {
+        return $this->itemsDevicenetworkcard;
+    }
+
+    /**
+     * Set the value of itemsDevicenetworkcard
+     *
+     * @return  self
+     */ 
+    public function setItemsDevicenetworkcard($itemsDevicenetworkcard)
+    {
+        $this->itemsDevicenetworkcard = $itemsDevicenetworkcard;
 
         return $this;
     }

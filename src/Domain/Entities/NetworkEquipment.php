@@ -13,11 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "groups_id", columns: ['groups_id'])]
 #[ORM\Index(name: "users_id", columns: ['users_id'])]
 #[ORM\Index(name: "locations_id", columns: ['locations_id'])]
-#[ORM\Index(name: "networkequipmentModels_id", columns: ['networkequipmentmodels_id'])]
+#[ORM\Index(name: "networkequipmentmodels_id", columns: ['networkequipmentmodels_id'])]
 #[ORM\Index(name: "networks_id", columns: ['networks_id'])]
 #[ORM\Index(name: "states_id", columns: ['states_id'])]
 #[ORM\Index(name: "tech_users_id", columns: ['tech_users_id'])]
-#[ORM\Index(name: "networkequipmentTypes_id", columns: ['networkequipmenttypes_id'])]
+#[ORM\Index(name: "networkequipmenttypes_id", columns: ['networkequipmenttypes_id'])]
 #[ORM\Index(name: "is_deleted", columns: ['is_deleted'])]
 #[ORM\Index(name: "date_mod", columns: ['date_mod'])]
 #[ORM\Index(name: "tech_groups_id", columns: ['tech_groups_id'])]
@@ -80,12 +80,12 @@ class NetworkEquipment
     private ?Network $network = null;
 
     #[ORM\ManyToOne(targetEntity: NetworkEquipmentType::class)]
-    #[ORM\JoinColumn(name: 'networkequipmentTypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?NetworkEquipmentType $networkEquipmentType = null;
+    #[ORM\JoinColumn(name: 'networkequipmenttypes_id', referencedColumnName: 'id', nullable: true)]
+    private ?NetworkEquipmentType $networkequipmenttype = null;
 
     #[ORM\ManyToOne(targetEntity: NetworkEquipmentModel::class)]
-    #[ORM\JoinColumn(name: 'networkequipmentModels_id', referencedColumnName: 'id', nullable: true)]
-    private ?NetworkEquipmentModel $networkEquipmentModel = null;
+    #[ORM\JoinColumn(name: 'networkequipmentmodels_id', referencedColumnName: 'id', nullable: true)]
+    private ?NetworkEquipmentModel $networkequipmentmodel = null;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
@@ -390,41 +390,41 @@ class NetworkEquipment
     }
 
     /**
-     * Get the value of networkequipmentType
+     * Get the value of networkequipmenttype
      */
-    public function getNetworkEquipmentType()
+    public function getNetworkequipmenttype()
     {
-        return $this->networkEquipmentType;
+        return $this->networkequipmenttype;
     }
 
     /**
-     * Set the value of networkequipmentType
+     * Set the value of networkequipmenttype
      *
      * @return  self
      */
-    public function setNetworkEquipmentType($networkequipmenttype)
+    public function setNetworkequipmenttype($networkequipmenttype)
     {
-        $this->networkEquipmentType = $networkequipmenttype;
+        $this->networkequipmenttype = $networkequipmenttype;
 
         return $this;
     }
 
     /**
-     * Get the value of networkequipmentModel
+     * Get the value of networkequipmentmodel
      */
-    public function getNetworkEquipmentModel()
+    public function getNetworkequipmentmodel()
     {
-        return $this->networkEquipmentModel;
+        return $this->networkequipmentmodel;
     }
 
     /**
-     * Set the value of networkequipmentModel
+     * Set the value of networkequipmentmodel
      *
      * @return  self
      */
-    public function setNetworkEquipmentModel($networkequipmentmodel)
+    public function setNetworkequipmentmodel($networkequipmentmodel)
     {
-        $this->networkEquipmentModel = $networkequipmentmodel;
+        $this->networkequipmentmodel = $networkequipmentmodel;
 
         return $this;
     }
