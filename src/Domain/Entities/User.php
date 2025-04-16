@@ -58,9 +58,6 @@ class User
     #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
     private $firstname;
 
-    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
-    private $locationsId;
-
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location = null;
@@ -312,10 +309,10 @@ class User
     private $accessZoomLevel;
 
     #[ORM\Column(name: 'access_font', type: 'string', length: 100, nullable: true)]
-    private $accessFont;
+    private $accessFont = null;
 
     #[ORM\Column(name: 'access_shortcuts', type: 'boolean', options: ['default' => 0], nullable: true)]
-    private $accessShortcuts;
+    private $accessShortcuts = 0;
 
     #[ORM\Column(name: 'access_custom_shortcuts', type: 'text', nullable: true)]
     private $accessCustomShortcuts;
