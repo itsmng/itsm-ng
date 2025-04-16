@@ -58,17 +58,15 @@ class Entity_Reminder extends CommonDBRelation
     **/
     public static function getEntities($reminder)
     {
-        global $DB;
-
         $ent   = [];
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'reminders_id' => $reminder->fields['id']
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $ent[$data['entities_id']][] = $data;
         }
         return $ent;

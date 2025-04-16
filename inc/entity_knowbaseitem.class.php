@@ -58,18 +58,16 @@ class Entity_KnowbaseItem extends CommonDBRelation
     **/
     public static function getEntities($knowbaseitems_id)
     {
-        global $DB;
-
         $ent   = [];
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'knowbaseitems_id' => $knowbaseitems_id
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $ent[$data['entities_id']][] = $data;
         }
         return $ent;

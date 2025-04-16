@@ -58,15 +58,13 @@ class RSSFeed_User extends CommonDBRelation
     **/
     public static function getUsers($rssfeeds_id)
     {
-        global $DB;
-
         $users = [];
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['rssfeeds_id' => $rssfeeds_id]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $users[$data['users_id']][] = $data;
         }
         return $users;

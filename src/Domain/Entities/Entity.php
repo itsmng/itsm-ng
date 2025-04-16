@@ -2,10 +2,12 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_entities")]
 #[ORM\UniqueConstraint(name: "unicity", columns: ['entities_id', 'name'])]
 #[ORM\Index(name: "entities_id", columns: ['entities_id'])]
@@ -1015,26 +1017,29 @@ class Entity
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
-
-    public function getDateCreation(): ?\DateTimeInterface
+    
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -1138,20 +1143,24 @@ class Entity
     /**
      * Get the value of entity
      */
-    public function getEntity()
+    public function getEntity(): ?Entity
     {
         return $this->entity;
     }
 
+    public function getEntityId(): int
+    {
+        return $this->entity ? $this->entity->getId() : -1;
+    }
     /**
      * Set the value of entity
      *
-     * @return  self
+     * @param Entity|null $entity
+     * @return self
      */
-    public function setEntity($entity)
+    public function setEntity(?Entity $entity): self
     {
         $this->entity = $entity;
-
         return $this;
     }
 

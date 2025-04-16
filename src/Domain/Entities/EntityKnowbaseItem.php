@@ -25,7 +25,7 @@ class EntityKnowbaseItem
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     public function getId(): ?int
     {
