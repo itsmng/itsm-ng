@@ -283,7 +283,7 @@ class Calendar extends CommonDropdown
             return $result_cache[$cache_key];
         }
 
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'COUNT'        => 'cpt',
            'FROM'         => 'glpi_calendars_holidays',
            'INNER JOIN'   => [
@@ -312,8 +312,7 @@ class Calendar extends CommonDropdown
                  ]
               ]
            ]
-        ])->next();
-
+        ])->fetchAssociative();
         $is_holiday = (int)$result['cpt'] > 0;
 
         $result_cache[$cache_key] = $is_holiday;
