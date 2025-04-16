@@ -84,7 +84,7 @@ class Item_Enclosure extends CommonDBRelation
         }
         $canedit = $enclosure->canEdit($ID);
 
-        $items = $DB->request([
+        $itemsRequest = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'enclosures_id' => $enclosure->getID()
@@ -115,8 +115,8 @@ class Item_Enclosure extends CommonDBRelation
             );
             echo "</div>";
         }
-
-        $items = iterator_to_array($items);
+        $items = $itemsRequest->fetchAllAssociative();
+    
 
         if (!count($items)) {
             echo "<table class='tab_cadre_fixe' aria-label='No Item Found'><tr><th>" . __('No item found') . "</th></tr>";
@@ -171,7 +171,7 @@ class Item_Enclosure extends CommonDBRelation
 
     public function showForm($ID, $options = [])
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         echo "<div class='center'>";
 
@@ -204,21 +204,21 @@ class Item_Enclosure extends CommonDBRelation
 
         //get all used items
         $used = [];
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable()
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $used [$row['itemtype']][] = $row['items_id'];
         }
 
         // get used items by racks
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'  => Item_Rack::getTable(),
            'WHERE' => [
               'is_reserved' => 0
            ]
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $used [$row['itemtype']][] = $row['items_id'];
         }
 

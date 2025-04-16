@@ -100,14 +100,12 @@ class Item_Kanban extends CommonDBRelation
      */
     public static function loadStateForItem($itemtype, $items_id, $timestamp = null)
     {
-        global $DB;
-
         /** @var Kanban|CommonDBTM $item */
         $item = new $itemtype();
         $item->getFromDB($items_id);
         $force_global = $item->forceGlobalState();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => ['date_mod', 'state'],
            'FROM'   => 'glpi_items_kanbans',
            'WHERE'  => [
@@ -116,9 +114,9 @@ class Item_Kanban extends CommonDBRelation
               'items_id' => $items_id
            ]
         ]);
-
-        if (count($iterator)) {
-            $data = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            $data = $results[0];
             if ($timestamp !== null) {
                 if (strtotime($timestamp) < strtotime($data['date_mod'])) {
                     return json_decode($data['state'], true);

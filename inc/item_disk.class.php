@@ -123,17 +123,15 @@ class Item_Disk extends CommonDBChild
     **/
     public static function cloneItem($type, $oldid, $newid)
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'itemtype'  => $type,
               'items_id'  => $oldid
            ]
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $cd                  = new self();
             unset($data['id']);
             $data['items_id']    = $newid;
@@ -286,13 +284,11 @@ class Item_Disk extends CommonDBChild
      * @param string     $sort  Field to sort on
      * @param string     $order Sort order
      *
-     * @return DBmysqlIterator
+     * @return Doctrine\DBAL\Result
      */
-    public static function getFromItem(CommonDBTM $item, $sort = null, $order = null): DBmysqlIterator
+    public static function getFromItem(CommonDBTM $item, $sort = null, $order = null): Doctrine\DBAL\Result
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               Filesystem::getTable() . '.name AS fsname',
               self::getTable() . '.*'
@@ -311,7 +307,7 @@ class Item_Disk extends CommonDBChild
               'items_id'     => $item->fields['id']
            ]
         ]);
-        return $iterator;
+        return $request;
     }
 
     /**

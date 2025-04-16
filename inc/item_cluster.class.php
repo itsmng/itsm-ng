@@ -81,8 +81,6 @@ class Item_Cluster extends CommonDBRelation
     **/
     public static function showItems(Cluster $cluster)
     {
-        global $DB;
-
         $ID = $cluster->fields['id'];
         $rand = mt_rand();
 
@@ -94,7 +92,7 @@ class Item_Cluster extends CommonDBRelation
         }
         $canedit = $cluster->canEdit($ID);
 
-        $items = $DB->request([
+        $itemsResult = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'clusters_id' => $ID
@@ -125,8 +123,7 @@ class Item_Cluster extends CommonDBRelation
             );
             echo "</div>";
         }
-
-        $items = iterator_to_array($items);
+        $items = $itemsResult->fetchAllAssociative();
 
         if (!count($items)) {
             echo "<table class='tab_cadre_fixe' aria-label='No item Found'><tr><th>" . __('No item found') . "</th></tr>";
@@ -179,14 +176,14 @@ class Item_Cluster extends CommonDBRelation
 
     public function showForm($ID, $options = [])
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         //get all used items
         $used = [];
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable()
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $used [$row['itemtype']][] = $row['items_id'];
         }
         $jsUsed = json_encode($used);
