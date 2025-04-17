@@ -74,8 +74,6 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
 
     public function post_purgeItem()
     {
-        global $DB;
-
         parent::post_purgeItem();
 
         $itil_class = static::$itiltype;
@@ -85,7 +83,7 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
 
         // Try to delete itemtype -> delete items_id
         if ($this->fields['num'] == $itemtype_id) {
-            $iterator = $DB->request([
+            $request = $this->getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => $this->getTable(),
                'WHERE'  => [
@@ -93,8 +91,9 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
                   'num'             => $items_id_id
                ]
             ]);
-            if (count($iterator)) {
-                $result = $iterator->next();
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
+                $result = $results[0];
                 $a = new static();
                 $a->delete(['id' => $result['id']]);
             }
@@ -114,20 +113,18 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
     **/
     public function getMandatoryFields($ID, $withtypeandcategory = true)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [static::$items_id => $ID],
            'ORDER'  => 'id'
         ]);
-
+        $results = $request->fetchAllAssociative();
         $tt_class       = static::$itemtype;
         $tt             = new $tt_class();
         $allowed_fields = $tt->getAllowedFields($withtypeandcategory);
         $fields         = [];
 
-        while ($rule = $iterator->next()) {
+        foreach ($results as $rule) {
             if (isset($allowed_fields[$rule['num']])) {
                 $fields[$allowed_fields[$rule['num']]] = $rule['num'];
             }
@@ -162,8 +159,6 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
     **/
     public static function showForITILTemplate(ITILTemplate $tt, $withtemplate = 0)
     {
-        global $DB;
-
         $ID = $tt->fields['id'];
 
         if (!$tt->getFromDB($ID) || !$tt->can($ID, READ)) {
@@ -177,16 +172,16 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
 
         $rand  = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => static::getTable(),
            'WHERE'  => [static::$items_id => $ID]
         ]);
-
-        $numrows = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
 
         $mandatoryfields = [];
         $used            = [];
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $mandatoryfields[$data['id']] = $data;
             $used[$data['num']]           = $data['num'];
         }
@@ -233,7 +228,7 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
         }
         echo "<table class='tab_cadre_fixehov' aria-label='ITIL Template'>";
         echo "<tr class='noHover'><th colspan='3'>";
-        echo static::getTypeName(count($iterator));
+        echo static::getTypeName(count($results));
         echo "</th></tr>";
         if ($numrows) {
             $header_begin  = "<tr>";
