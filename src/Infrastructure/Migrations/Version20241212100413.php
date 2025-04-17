@@ -1732,6 +1732,7 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_ticketrecurrents ADD CONSTRAINT FK_ticketRecurrentEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_ticketrecurrents (id)');
         $this->addSql('ALTER TABLE glpi_ticketrecurrents ADD CONSTRAINT FK_ticketRecurrentTickettemplatesD7DB FOREIGN KEY (tickettemplates_id) REFERENCES glpi_tickettemplates (id)');
         $this->addSql('ALTER TABLE glpi_ticketrecurrents ADD CONSTRAINT FK_ticketRecurrentCalendarsD7DB FOREIGN KEY (calendars_id) REFERENCES glpi_calendars (id)');
+        $this->addSql('ALTER TABLE glpi_ticketrecurrents CHANGE calendars_id calendars_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksTicketD7DB FOREIGN KEY (tickets_id) REFERENCES glpi_tickets (id)');
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksTaskscategoriesD7DB FOREIGN KEY (taskcategories_id) REFERENCES glpi_taskcategories (id)');
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksUsersD7DB FOREIGN KEY (users_id) REFERENCES glpi_users (id)');
@@ -1739,8 +1740,12 @@ final class Version20241212100413 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksUsersTechD7DB FOREIGN KEY (users_id_tech) REFERENCES glpi_users (id)');
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksGroupsTechD7DB FOREIGN KEY (groups_id_tech) REFERENCES glpi_groups (id)');
         $this->addSql('ALTER TABLE glpi_tickettasks ADD CONSTRAINT FK_tickettasksTasktemplateD7DB FOREIGN KEY (tasktemplates_id) REFERENCES glpi_tasktemplates (id)');
+        $this->addSql('ALTER TABLE glpi_tickettasks CHANGE taskcategories_id taskcategories_id INT DEFAULT NULL, CHANGE editor_users_id editor_users_id INT DEFAULT NULL, CHANGE tasktemplates_id tasktemplates_id INT DEFAULT NULL');
+
         $this->addSql('ALTER TABLE glpi_ticketvalidations ADD CONSTRAINT FK_ticketvalidationEntitiesD7DB FOREIGN KEY (entities_id) REFERENCES glpi_entities (id)');
         $this->addSql('ALTER TABLE glpi_ticketvalidations ADD CONSTRAINT FK_ticketvalidationTicketsD7DB FOREIGN KEY (tickets_id) REFERENCES glpi_tickets (id)');
+        $this->addSql('ALTER TABLE glpi_ticketvalidations ADD CONSTRAINT FK_ticketvalidationValidateUsersD7DB FOREIGN KEY (validate_users_id) REFERENCES glpi_users (id)');
+        $this->addSql('ALTER TABLE glpi_ticketsatisfactions ADD CONSTRAINT FK_ticketsatisfactionTicketsD7DB FOREIGN KEY (tickets_id) REFERENCES glpi_tickets (id)');
 
 
         $this->addSql('ALTER TABLE glpi_useremails ADD CONSTRAINT FK_usersemailsUsersD7DB FOREIGN KEY (users_id) REFERENCES glpi_users (id)');

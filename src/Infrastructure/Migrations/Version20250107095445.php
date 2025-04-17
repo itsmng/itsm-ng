@@ -50,7 +50,7 @@ final class Version20250107095445 extends AbstractMigration
         $this->addSql('ALTER TABLE glpi_softwares RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_tasktemplates RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_tickets RENAME COLUMN users_id_lastupdater TO lastupdater_users_id, RENAME COLUMN users_id_recipient TO recipient_users_id');
-        $this->addSql('ALTER TABLE glpi_tickettasks RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
+        $this->addSql('ALTER TABLE glpi_tickettasks RENAME COLUMN users_id_editor TO editor_users_id, RENAME COLUMN users_id_tech TO tech_users_id, RENAME COLUMN groups_id_tech TO tech_groups_id');
         $this->addSql('ALTER TABLE glpi_ticketvalidations RENAME COLUMN users_id_validate TO validate_users_id');
         $this->addSql('UPDATE glpi_entities SET entities_id = NULL WHERE entities_id = -1'); 
         $this->addSql('ALTER TABLE glpi_authldaps RENAME COLUMN condition TO conditions');
