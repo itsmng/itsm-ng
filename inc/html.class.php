@@ -1861,22 +1861,22 @@ JAVASCRIPT;
             $twig_vars["can_update"] = true;
         }
 
-        $twig_vars['menu_position'] = $DB->request(
+        $twig_vars['menu_position'] = Config::getAdapter()->request(
             [
                    'SELECT' => 'menu_position',
                    'FROM'   => 'glpi_users',
                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
                ]
-        )->next()['menu_position'];
+        )->fetchAssociative()['menu_position'];
 
         if (isset($_SESSION['glpiID'])) {
-            $twig_vars['menu_favorite_on'] = $DB->request(
+            $twig_vars['menu_favorite_on'] = Config::getAdapter()->request(
                 [
                         'SELECT' => 'menu_favorite_on',
                         'FROM'   => 'glpi_users',
                         'WHERE'  => ['id' => $_SESSION["glpiID"]]
                      ]
-            )->next()['menu_favorite_on'];
+            )->fetchAssociative()['menu_favorite_on'];
             $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
         }
 
