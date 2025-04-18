@@ -2,10 +2,13 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_knowbaseitems")]
 #[ORM\Index(name: "users_id", columns: ["users_id"])]
 #[ORM\Index(name: "knowbaseitemcategories_id", columns: ["knowbaseitemcategories_id"])]
@@ -34,19 +37,19 @@ class KnowbaseItem
     private $answer;
 
     #[ORM\Column(name: 'is_faq', type: "boolean", options: ["default" => 0])]
-    private $isFaq;
+    private $isFaq = 0;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $user = null;
 
     #[ORM\Column(name: 'view', type: "integer", options: ["default" => 0])]
-    private $view;
+    private $view = 0;
 
     #[ORM\Column(name: 'date', type: "datetime", nullable: true)]
     private $date;
 
-    #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: "datetime")]
     private $dateMod;
 
     #[ORM\Column(name: 'begin_date', type: "datetime", nullable: true)]
@@ -66,6 +69,14 @@ class KnowbaseItem
 
     #[ORM\OneToMany(mappedBy: 'knowbaseitem', targetEntity: KnowbaseItemUser::class)]
     private Collection $knowbaseitemUsers;
+
+    public function __construct()
+    {
+        $this->entityKnowbaseItems = new ArrayCollection();
+        $this->groupKnowbaseItems = new ArrayCollection();
+        $this->knowbaseitemProfiles = new ArrayCollection();
+        $this->knowbaseitemUsers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,20 +132,26 @@ class KnowbaseItem
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(\DateTimeInterface|string|null $date): self
     {
+        if (is_string($date)) {
+            $date = new \DateTime($date);
+        }
         $this->date = $date;
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
+
         return $this;
     }
 
@@ -143,8 +160,11 @@ class KnowbaseItem
         return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $beginDate): self
+    public function setBeginDate(\DateTimeInterface|string|null $beginDate): self
     {
+        if (is_string($beginDate)) {
+            $beginDate = new \DateTime($beginDate);
+        }
         $this->beginDate = $beginDate;
         return $this;
     }
@@ -154,8 +174,11 @@ class KnowbaseItem
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    public function setEndDate(\DateTimeInterface|string|null $endDate): self
     {
+        if (is_string($endDate)) {
+            $endDate = new \DateTime($endDate);
+        }
         $this->endDate = $endDate;
         return $this;
     }
