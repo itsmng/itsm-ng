@@ -180,7 +180,7 @@ class Ticket extends CommonITILObject
     public function canAssign()
     {
         if (
-            isset($this->fields['is_deleted']) && ($this->fields['is_deleted'] == 1)
+            isset($this->fields['is_deleted']) && ($this->fields['is_deleted'] == true)
             || isset($this->fields['status']) && in_array($this->fields['status'], $this->getClosedStatusArray())
         ) {
             return false;
@@ -193,7 +193,7 @@ class Ticket extends CommonITILObject
     {
 
         if (
-            isset($this->fields['is_deleted']) && $this->fields['is_deleted'] == 1
+            isset($this->fields['is_deleted']) && $this->fields['is_deleted'] == true
             || isset($this->fields['status']) && in_array($this->fields['status'], $this->getClosedStatusArray())
         ) {
             return false;
@@ -755,7 +755,7 @@ class Ticket extends CommonITILObject
                                 'WHERE' => [
                                     'itemtype' => $item->getType(),
                                     'items_id' => $item->getID(),
-                                    'is_deleted' => 0
+                                    'is_deleted' => false
                                 ]
                             ]
                         );
@@ -779,7 +779,7 @@ class Ticket extends CommonITILObject
                                         'WHERE' => [
                                             'itemtype' => $type,
                                             'items_id' => $tab,
-                                            'is_deleted' => 0
+                                            'is_deleted' => false
                                         ]
                                     ]
                                 );
@@ -2498,7 +2498,7 @@ class Ticket extends CommonITILObject
             'WHERE'     => [
                 'glpi_items_tickets.itemtype'    => $itemtype,
                 'glpi_items_tickets.items_id'    => $items_id,
-                $this->getTable() . '.is_deleted' => 0,
+                $this->getTable() . '.is_deleted' => false,
                 $this->getTable() . '.type'      => $type,
                 'NOT'                         => [
                     $this->getTable() . '.status' => array_merge(
@@ -5210,7 +5210,7 @@ class Ticket extends CommonITILObject
                                 Ticket_Ticket::SON_OF => __('Son of'),
                                 Ticket_Ticket::PARENT_OF => __('Parent of'),
                             ],
-                            'options' => getOptionForItems('Ticket', ['is_deleted' => 0, 'NOT' => ['id' => $ID]]),
+                            'options' => getOptionForItems('Ticket', ['is_deleted' => false, 'NOT' => ['id' => $ID]]),
                             'values' => Ticket_Ticket::getLinkedTicketsTo($ID),
                             $canupdate ? '' : 'disabled' => '',
                             'ticket_id' => $ID,
@@ -5287,7 +5287,7 @@ class Ticket extends CommonITILObject
 
         $JOINS = [];
         $WHERE = [
-            'is_deleted' => 0
+            'is_deleted' => false
         ];
         $search_users_id = [
             'glpi_tickets_users.users_id' => Session::getLoginUserID(),
@@ -5303,8 +5303,8 @@ class Ticket extends CommonITILObject
         ];
 
         if ($showgrouptickets) {
-            $search_users_id  = [0];
-            $search_assign = [0];
+            $search_users_id  = [];
+            $search_assign = [];
 
             if (count($_SESSION['glpigroups'])) {
                 $search_assign = [
@@ -6018,8 +6018,8 @@ class Ticket extends CommonITILObject
         }
 
         $deleted_criteria = $criteria;
-        $criteria['WHERE']['glpi_tickets.is_deleted'] = 0;
-        $deleted_criteria['WHERE']['glpi_tickets.is_deleted'] = 1;
+        $criteria['WHERE']['glpi_tickets.is_deleted'] = false;
+        $deleted_criteria['WHERE']['glpi_tickets.is_deleted'] = true;
         $request = self::getAdapter()->request($criteria);
         $deleted_request = self::getAdapter()->request($deleted_criteria);
 
@@ -6092,7 +6092,7 @@ class Ticket extends CommonITILObject
         }
 
         $options['criteria'][0]['value'] = 'all';
-        $options['is_deleted']  = 1;
+        $options['is_deleted']  = true;
         echo "<tr class='tab_bg_2'>";
         echo "<td><a href=\"" . Ticket::getSearchURL() . "?" .
             Toolbox::append_params($options, '&amp;') . "\">" . __('Deleted') . "</a></td>";
@@ -6113,7 +6113,7 @@ class Ticket extends CommonITILObject
         $criteria = self::getCommonCriteria();
         $criteria['WHERE'] = [
             'status'       => $_SESSION['INCOMING'],
-            'is_deleted'   => 0
+            'is_deleted'   => false
         ] + getEntitiesRestrictCriteria(self::getTable());
         $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
         $request = self::getAdapter()->request($criteria);
@@ -6306,7 +6306,7 @@ class Ticket extends CommonITILObject
         }
 
         $criteria['WHERE'] = $restrict + getEntitiesRestrictCriteria(self::getTable());
-        $criteria['WHERE']['glpi_tickets.is_deleted'] = 0;
+        $criteria['WHERE']['glpi_tickets.is_deleted'] = false;
         $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
         $request = self::getAdapter()->request($criteria);
         $results = $request->fetchAllAssociative();
@@ -6713,7 +6713,7 @@ class Ticket extends CommonITILObject
                     'WHERE'  => [
                         'entities_id'  => $entity['id'],
                         'status'       => $_SESSION['SOLVED'],
-                        'is_deleted'   => 0
+                        'is_deleted'   => false
                     ]
                 ];
 
@@ -6780,7 +6780,7 @@ class Ticket extends CommonITILObject
                 'FROM'   => self::getTable(),
                 'WHERE'  => [
                     'entities_id'  => $entity,
-                    'is_deleted'   => 0,
+                    'is_deleted'   => false,
                     'status'       => [
                         $_SESSION['INCOMING'],
                         $_SESSION['ASSIGNED'],
@@ -6887,7 +6887,7 @@ class Ticket extends CommonITILObject
                 ],
                 'WHERE'     => [
                     "$table.entities_id"          => $entity,
-                    "$table.is_deleted"           => 0,
+                    "$table.is_deleted"           => false,
                     "$table.status"               => $_SESSION['CLOSED'],
                     "$table.closedate"            => ['>', $max_closedate],
                     new QueryExpression("ADDDATE(" . $DB->quoteName("$table.closedate") . ", INTERVAL $delay DAY) <= NOW()"),
