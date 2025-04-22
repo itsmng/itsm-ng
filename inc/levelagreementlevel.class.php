@@ -351,11 +351,9 @@ abstract class LevelAgreementLevel extends RuleTicket
     **/
     public static function getAlreadyUsedExecutionTime($las_id)
     {
-        global $DB;
-
         $result = [];
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => 'execution_time',
            'DISTINCT'        => true,
            'FROM'            => static::getTable(),
@@ -364,7 +362,7 @@ abstract class LevelAgreementLevel extends RuleTicket
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $result[$data['execution_time']] = $data['execution_time'];
         }
         return $result;
