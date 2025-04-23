@@ -200,7 +200,6 @@ class NetworkAlias extends FQDNLabel
         HTMLTableCell $father = null,
         array $options = []
     ) {
-        global $DB;
 
         if (empty($item)) {
             if (empty($father)) {
@@ -227,13 +226,13 @@ class NetworkAlias extends FQDNLabel
         $options['createRow'] = false;
         $alias                = new self();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => 'glpi_networkaliases',
            'WHERE'  => ['networknames_id' => $item->getID()]
         ]);
 
-        while ($line = $iterator->next()) {
+        while ($line = $request->fetchAssociative()) {
             if ($alias->getFromDB($line["id"])) {
                 if ($createRow) {
                     $row = $row->createRow();
@@ -267,14 +266,15 @@ class NetworkAlias extends FQDNLabel
         $canedit = $item->canEdit($ID);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_networkaliases',
            'WHERE'  => ['networknames_id' => $ID]
         ]);
-        $number = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
 
         $aliases = [];
-        while ($line = $iterator->next()) {
+        foreach ($results as $line) {
             $aliases[$line["id"]] = $line;
         }
 
@@ -387,8 +387,6 @@ class NetworkAlias extends FQDNLabel
     **/
     public static function showForFQDN(CommonGLPI $item, $withtemplate)
     {
-        global $DB;
-
         $alias   = new self();
         $address = new NetworkName();
         $item->check($item->getID(), READ);
@@ -434,7 +432,7 @@ class NetworkAlias extends FQDNLabel
                 )
             );
 
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT'    => [
                   'glpi_networkaliases.id AS alias_id',
                   'glpi_networkaliases.name AS alias',
@@ -456,7 +454,7 @@ class NetworkAlias extends FQDNLabel
                'START'     => $start
             ]);
 
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 Session::addToNavigateListItems($alias->getType(), $data["alias_id"]);
                 if ($address->getFromDB($data["address_id"])) {
                     echo "<tr class='tab_bg_1'>";

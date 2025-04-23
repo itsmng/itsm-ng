@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_networkequipments')]
 #[ORM\Index(name: "name", columns: ['name'])]
 #[ORM\Index(name: "is_template", columns: ['is_template'])]
@@ -37,7 +39,7 @@ class NetworkEquipment
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -65,7 +67,7 @@ class NetworkEquipment
     #[ORM\JoinColumn(name: 'tech_groups_id', referencedColumnName: 'id', nullable: true)]
     private ?Group $techGroup = null;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
@@ -92,10 +94,10 @@ class NetworkEquipment
     private ?Manufacturer $manufacturer = null;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = 0;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
     private $templateName;
@@ -113,12 +115,12 @@ class NetworkEquipment
     private ?State $state = null;
 
     #[ORM\Column(name: 'ticket_tco', type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"], nullable: true)]
-    private $ticketTco;
+    private $ticketTco = 0.0000;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     public function getId(): ?int
@@ -210,14 +212,30 @@ class NetworkEquipment
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
+
+        return $this;
+    }
+
+
+    public function getDateCreation(): DateTime
+    {
+        return $this->dateCreation ?? new DateTime();
+    }
+
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
+    {
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -277,7 +295,7 @@ class NetworkEquipment
         return $this->ticketTco;
     }
 
-    public function setTicketTco(float $ticketTco): self
+    public function setTicketTco(?float $ticketTco): self
     {
         $this->ticketTco = $ticketTco;
 
@@ -292,18 +310,6 @@ class NetworkEquipment
     public function setIsDynamic(bool $isDynamic): self
     {
         $this->isDynamic = $isDynamic;
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
 
         return $this;
     }

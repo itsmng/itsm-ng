@@ -79,13 +79,10 @@ class NetworkPortAlias extends NetworkPortInstantiation
 
     public function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems)
     {
-
-        global $DB;
-
         $lastItem = $recursiveItems[count($recursiveItems) - 1];
         $netport_types = ['NetworkPortEthernet', 'NetworkPortWifi'];
         foreach ($netport_types as $netport_type) {
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => [
                   'port.id',
                   'port.name',
@@ -99,15 +96,15 @@ class NetworkPortAlias extends NetworkPortInstantiation
                ],
                'ORDER'  => ['logical_number', 'name']
             ]);
-
-            if (count($iterator)) {
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
                 $array_element_name = call_user_func(
                     [$netport_type, 'getTypeName'],
-                    count($iterator)
+                    count($results)
                 );
                 $possible_ports[$array_element_name] = [];
 
-                while ($portEntry = $iterator->next()) {
+                foreach ($results as $portEntry) {
                     $macAddresses[$portEntry['id']] = $portEntry['mac'];
                     if (!empty($portEntry['mac'])) {
                         $portEntry['name'] = sprintf(

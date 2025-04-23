@@ -2,10 +2,13 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_networkports')]
 #[ORM\Index(name: 'on_device', columns: ['items_id', 'itemtype'])]
 #[ORM\Index(name: 'item', columns: ['itemtype', 'items_id'])]
@@ -24,7 +27,7 @@ class NetworkPort
     private $id;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $itemsId;
+    private $itemsId = 0;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
@@ -34,10 +37,10 @@ class NetworkPort
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'logical_number', type: 'integer', options: ['default' => 0])]
-    private $logicalNumber;
+    private $logicalNumber = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -52,15 +55,15 @@ class NetworkPort
     private $comment;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'networkport1', targetEntity: NetworkPortNetworkPort::class)]
@@ -71,6 +74,13 @@ class NetworkPort
 
     #[ORM\OneToMany(mappedBy: 'networkport', targetEntity: NetworkPortVlan::class)]
     private Collection $networkportVlans;
+
+    public function __construct()
+    {
+        $this->networkportNetworkPorts1 = new ArrayCollection();
+        $this->networkportNetworkPorts2 = new ArrayCollection();
+        $this->networkportVlans = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -154,7 +164,7 @@ class NetworkPort
         return $this->mac;
     }
 
-    public function setMac(string $mac): self
+    public function setMac(?string $mac): self
     {
         $this->mac = $mac;
 
@@ -197,26 +207,30 @@ class NetworkPort
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(?\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

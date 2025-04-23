@@ -7,15 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Table(name: 'glpi_networkportwifis')]
-#[ORM\UniqueConstraint(name: 'networkports_id', columns: ['networkports_id'])]
+#[ORM\UniqueConstraint(name:'networkports_id', columns: ['networkports_id'])]
+#[ORM\Table(name: 'glpi_networkportfiberchannels')]
 #[ORM\Index(name: 'card', columns: ['items_devicenetworkcards_id'])]
-#[ORM\Index(name: 'essid', columns: ['wifinetworks_id'])]
-#[ORM\Index(name: 'version', columns: ['version'])]
-#[ORM\Index(name: 'mode', columns: ['mode'])]
+#[ORM\Index(name: 'netpoint', columns: ['netpoints_id'])]
+#[ORM\Index(name: 'wwn', columns: ['wwn'])]
+#[ORM\Index(name: 'speed', columns: ['speed'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-class NetworkPortWifi
+class NetworkPortFiberchannel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,19 +30,16 @@ class NetworkPortWifi
     #[ORM\JoinColumn(name: 'items_devicenetworkcards_id', referencedColumnName: 'id', nullable: true)]
     private $itemsDevicenetworkcard = null;
 
-    #[ORM\ManyToOne(targetEntity: WifiNetwork::class)]
-    #[ORM\JoinColumn(name: 'wifinetworks_id', referencedColumnName: 'id', nullable: true)]
-    private ?WifiNetwork $wifinetwork = null;
 
-    #[ORM\ManyToOne(targetEntity: NetworkPortwifi::class)]
-    #[ORM\JoinColumn(name: 'networkportwifis_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'only useful in case of Managed node'])]
-    private ?NetworkPortwifi $networkportwifi = null;
+    #[ORM\ManyToOne(targetEntity: Netpoint::class)]
+    #[ORM\JoinColumn(name: 'netpoints_id', referencedColumnName: 'id', nullable: true)]
+    private ?Netpoint $netpoint = null;
 
-    #[ORM\Column(name: 'version', type: 'string', length: 20, nullable: true, options: ['comment' => 'a, a/b, a/b/g, a/b/g/n, a/b/g/n/y'])]
-    private $version;
+    #[ORM\Column(name: 'wwn', type: 'string', length: 16, options: ['default' => ''], nullable: true)]
+    private $wwn = '';
 
-    #[ORM\Column(name: 'mode', type: 'string', length: 20, nullable: true, options: ['comment' => 'ad-hoc, managed, master, repeater, secondary, monitor, auto'])]
-    private $mode;
+    #[ORM\Column(name: 'speed', type: 'integer', options: ['default' => 10, 'comment' => 'Mbit/s: 10, 100, 1000, 10000'])]
+    private $speed = 10;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
@@ -55,26 +52,27 @@ class NetworkPortWifi
         return $this->id;
     }
 
-    public function getVersion(): ?string
+
+    public function getWwn(): ?string
     {
-        return $this->version;
+        return $this->wwn;
     }
 
-    public function setVersion(?string $version): self
+    public function setWwn(?string $wwn): self
     {
-        $this->version = $version;
+        $this->wwn = $wwn;
 
         return $this;
     }
 
-    public function getMode(): ?string
+    public function getSpeed(): ?int
     {
-        return $this->mode;
+        return $this->speed;
     }
 
-    public function setMode(?string $mode): self
+    public function setSpeed(?int $speed): self
     {
-        $this->mode = $mode;
+        $this->speed = $speed;
 
         return $this;
     }
@@ -93,6 +91,7 @@ class NetworkPortWifi
         return $this;
     }
 
+
     public function getDateCreation(): DateTime
     {
         return $this->dateCreation ?? new DateTime();
@@ -106,45 +105,7 @@ class NetworkPortWifi
         return $this;
     }
 
-    /**
-     * Get the value of networkportwifi
-     */
-    public function getNetworkPortwifi()
-    {
-        return $this->networkportwifi;
-    }
 
-    /**
-     * Set the value of networkportwifi
-     *
-     * @return  self
-     */
-    public function setNetworkPortwifi($networkportwifi)
-    {
-        $this->networkportwifi = $networkportwifi;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of wifinetwork
-     */
-    public function getWifinetwork()
-    {
-        return $this->wifinetwork;
-    }
-
-    /**
-     * Set the value of wifinetwork
-     *
-     * @return  self
-     */
-    public function setWifinetwork($wifinetwork)
-    {
-        $this->wifinetwork = $wifinetwork;
-
-        return $this;
-    }
 
     /**
      * Get the value of networkport
@@ -162,6 +123,26 @@ class NetworkPortWifi
     public function setNetworkPort($networkport)
     {
         $this->networkport = $networkport;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of netpoint
+     */
+    public function getNetpoint()
+    {
+        return $this->netpoint;
+    }
+
+    /**
+     * Set the value of netpoint
+     *
+     * @return  self
+     */
+    public function setNetpoint($netpoint)
+    {
+        $this->netpoint = $netpoint;
 
         return $this;
     }

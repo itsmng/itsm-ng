@@ -201,10 +201,8 @@ class Netpoint extends CommonDropdown
     **/
     public function findID(array &$input)
     {
-        global $DB;
-
         if (!empty($input["name"])) {
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => $this->getTable(),
                'WHERE'  => [
@@ -212,10 +210,10 @@ class Netpoint extends CommonDropdown
                   'locations_id' => $input["locations_id"] ?? 0
                ] + getEntitiesRestrictCriteria($this->getTable(), $input['entities_id'], $this->maybeRecursive())
             ]);
-
+            $results = $request->fetchAllAssociative();
             // Check twin :
-            if (count($iterator)) {
-                $result = $iterator->next();
+            if (count($results)) {
+                $result = $results[0];
                 return $result['id'];
             }
         }
@@ -398,7 +396,14 @@ class Netpoint extends CommonDropdown
                 )
             );
 
-            foreach ($DB->request('glpi_netpoints', $crit) as $data) {
+            $request = self::getAdapter()->request([
+                'FROM'  => 'glpi_netpoints',
+                'WHERE' => $crit
+            ]);
+            
+            $results = $request->fetchAllAssociative();
+            
+            foreach ($results as $data) {
                 Session::addToNavigateListItems('Netpoint', $data["id"]);
                 echo "<tr class='tab_bg_1'>";
 

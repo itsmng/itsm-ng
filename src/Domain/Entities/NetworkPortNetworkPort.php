@@ -22,6 +22,7 @@ class NetworkPortNetworkPort
     #[ORM\ManyToOne(targetEntity: NetworkPort::class, inversedBy: 'networkportNetworkPorts2')]
     #[ORM\JoinColumn(name: 'networkports_id_2', referencedColumnName: 'id', nullable: true)]
     private ?NetworkPort $networkport2 = null;
+    
 
     public function getId(): ?int
     {
