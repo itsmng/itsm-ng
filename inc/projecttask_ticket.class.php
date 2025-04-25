@@ -275,7 +275,7 @@ class ProjectTask_Ticket extends CommonDBRelation
 
         $pjtasks = [];
         $used    = [];
-        while ($data = $iterator->next()) {
+      foreach ($iterator as $data) {
             $pjtasks[$data['id']] = $data;
             $used[$data['id']]    = $data['id'];
         }

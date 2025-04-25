@@ -284,9 +284,9 @@ class Item_Disk extends CommonDBChild
      * @param string     $sort  Field to sort on
      * @param string     $order Sort order
      *
-     * @return Doctrine\DBAL\Result
+     * @return Array
      */
-    public static function getFromItem(CommonDBTM $item, $sort = null, $order = null): Doctrine\DBAL\Result
+    public static function getFromItem(CommonDBTM $item, $sort = null, $order = null): Array
     {
         $request = self::getAdapter()->request([
            'SELECT'    => [
@@ -307,7 +307,7 @@ class Item_Disk extends CommonDBChild
               'items_id'     => $item->fields['id']
            ]
         ]);
-        return $request;
+        return $request->fetchAllAssociative();
     }
 
     /**

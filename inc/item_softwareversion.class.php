@@ -1194,7 +1194,7 @@ class Item_SoftwareVersion extends CommonDBRelation
 
         $values = [];
         $massive_action = [];
-        $datas = iterator_to_array($iterator);
+        $datas = $results;
         foreach ($datas as $data) {
             $licids = self::softwareByCategory(
                 $data,

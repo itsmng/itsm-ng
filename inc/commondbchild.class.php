@@ -76,7 +76,6 @@ abstract class CommonDBChild extends CommonDBConnexity
               static::$items_id  => $items_id
            ]
         ];
-
         // Check item 1 type
         $request = false;
         if (preg_match('/^itemtype/', static::$itemtype)) {

@@ -283,7 +283,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             isset($input['update'])
             && ($uid = Session::getLoginUserID())
         ) { // Change from task form
-            $input["users_id_editor"] = $uid;
+            $input["editor_users_id"] = $uid;
         }
 
         $itemtype      = $this->getItilObjectItemType();

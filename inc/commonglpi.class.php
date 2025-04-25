@@ -668,7 +668,6 @@ class CommonGLPI
                 }
 
                 $options['withtemplate'] = $withtemplate;
-
                 if ($tabnum == 'main') {
                     Plugin::doHook('pre_show_item', ['item' => $item, 'options' => &$options]);
                     $ret = $item->showForm($item->getID(), $options);
@@ -1265,7 +1264,7 @@ class CommonGLPI
         if (
             isset($options['id'])
             && !$this->isNewID($options['id'])
-        ) {
+        ) {            
             if (!$this->getFromDB($options['id'])) {
                 Html::displayNotFoundError();
             }

@@ -1159,7 +1159,7 @@ class DBmysql
             return $name->getValue();
         }
         //handle aliases
-        $names = preg_split('/\s+AS\s+/i', $name);
+        $names = is_string($name) ? preg_split('/\s+AS\s+/i', $name) : [$name];
         if (count($names) > 2) {
             throw new \RuntimeException(
                 'Invalid field name ' . $name
@@ -1170,14 +1170,14 @@ class DBmysql
             $name .= ' AS ' . self::quoteName($names[1]);
             return $name;
         } else {
-            if (strpos($name, '.')) {
+            if (is_string($name) && strpos($name, '.')) {
                 $n = explode('.', $name, 2);
                 $table = self::quoteName($n[0]);
                 $field = ($n[1] === '*') ? $n[1] : self::quoteName($n[1]);
                 return "$table.$field";
             }
-            return ($name[0] == '`' ? $name : ($name === '*' ? $name : "`$name`"));
-        }
+            return (is_string($name) && isset($name[0]) && $name[0] == '`') ? $name : 
+            ((is_string($name) && $name === '*') ? $name : "`" . (is_array($name) ? implode('.', $name) : (string)$name) . "`");       }
     }
 
     /**

@@ -1298,7 +1298,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         if (
             (($key = array_search('closedate', $this->updates)) !== false)
-            && (substr($this->fields["closedate"], 0, 16) == substr($this->oldvalues['closedate'], 0, 16))
+            && (substr($this->fields["closedate"]?? '', 0, 16) == substr($this->oldvalues['closedate']?? '', 0, 16))
         ) {
             unset($this->updates[$key]);
             unset($this->oldvalues['closedate']);
