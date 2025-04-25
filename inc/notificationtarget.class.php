@@ -791,8 +791,6 @@ class NotificationTarget extends CommonDBChild
     **/
     final public function addForGroup($manager, $group_id)
     {
-        global $DB;
-
         // members/managers of the group allowed on object entity
         // filter group with 'is_assign' (attribute can be unset after notification)
         $criteria = $this->getDistinctUserCriteria() + $this->getProfileJoinCriteria();
@@ -828,8 +826,8 @@ class NotificationTarget extends CommonDBChild
             $criteria['WHERE']['glpi_groups_users.is_manager'] = 0;
         }
 
-        $iterator = $DB->request($criteria);
-        while ($data = $iterator->next()) {
+        $request = $this::getAdapter()->request($criteria);
+        while ($data = $request->fetchAssociative()) {
             $this->addToRecipientsList($data);
         }
 
@@ -910,9 +908,11 @@ class NotificationTarget extends CommonDBChild
 
     public function addProfilesToTargets()
     {
-        global $DB;
-
-        foreach ($DB->request('glpi_profiles') as $data) {
+        $request = self::getAdapter()->request([
+            'FROM' => 'glpi_profiles'
+        ]);
+        
+        foreach ($request->fetchAllAssociative() as $data) {
             $this->addTarget(
                 $data["id"],
                 sprintf(__('%1$s: %2$s'), Profile::getTypeName(1), $data["name"]),
@@ -927,10 +927,8 @@ class NotificationTarget extends CommonDBChild
     **/
     final public function addGroupsToTargets($entity)
     {
-        global $DB;
-
         // Filter groups which can be notified and have members (as notifications are sent to members)
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => ['id', 'name'],
            'FROM'   => Group::getTable(),
            'WHERE'  => [
@@ -940,7 +938,7 @@ class NotificationTarget extends CommonDBChild
            'ORDER'  => 'name'
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             //Add group
             $this->addTarget(
                 $data["id"],
@@ -1045,8 +1043,6 @@ class NotificationTarget extends CommonDBChild
     **/
     final public function addUserByField($field, $search_in_object = false)
     {
-        global $DB;
-
         $id = [];
         if (!$search_in_object) {
             $id[] = $this->obj->getField($field);
@@ -1061,9 +1057,10 @@ class NotificationTarget extends CommonDBChild
             $criteria = $this->getDistinctUserCriteria() + $this->getProfileJoinCriteria();
             $criteria['FROM'] = User::getTable();
             $criteria['WHERE'][User::getTable() . '.id'] = $id;
-            $iterator = $DB->request($criteria);
-
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
+            
+            foreach ($results as $data) {
                 //Add the user email and language in the notified users list
                 $this->addToRecipientsList($data);
             }
@@ -1119,15 +1116,14 @@ class NotificationTarget extends CommonDBChild
      */
     final public function addForProfile($profiles_id)
     {
-        global $DB;
-
         $criteria = $this->getDistinctUserCriteria() + $this->getProfileJoinCriteria();
         $criteria['FIELDS'][] = Profile_User::getTable() . '.entities_id AS entity';
         $criteria['FROM'] = User::getTable();
         $criteria['WHERE'][Profile_User::getTable() . '.profiles_id'] = $profiles_id;
 
-        $iterator = $DB->request($criteria);
-        while ($data = $iterator->next()) {
+        $request = $this::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        foreach ($results as $data) {
             $this->addToRecipientsList($data);
         }
 
@@ -1484,9 +1480,7 @@ class NotificationTarget extends CommonDBChild
     **/
     public static function countForGroup(Group $group)
     {
-        global $DB;
-
-        $count = $DB->request([
+        $count = self::getAdapter()->request([
            'COUNT'        => 'cpt',
            'FROM'         => self::getTable(),
            'INNER JOIN'   => [
@@ -1504,7 +1498,7 @@ class NotificationTarget extends CommonDBChild
               ],
               'items_id'  => $group->getID()
            ] + getEntitiesRestrictCriteria(Notification::getTable(), '', '', true)
-        ])->next();
+        ])->fetchAssociative();
         return $count['cpt'];
     }
 
@@ -1520,13 +1514,11 @@ class NotificationTarget extends CommonDBChild
     **/
     public static function showForGroup(Group $group)
     {
-        global $DB;
-
         if (!Notification::canView()) {
             return false;
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'       => [Notification::getTable() . '.id'],
            'FROM'         => self::getTable(),
            'INNER JOIN'   => [
@@ -1545,10 +1537,10 @@ class NotificationTarget extends CommonDBChild
               'items_id'  => $group->getID()
            ] + getEntitiesRestrictCriteria(Notification::getTable(), '', '', true)
         ]);
-
+        $results = $request->fetchAllAssociative();
         echo "<table class='tab_cadre_fixe' aria-label='notification Method'>";
 
-        if (count($iterator)) {
+        if (count($results)) {
             echo "<tr><th>" . __('Name') . "</th>";
             echo "<th>" . Entity::getTypeName(1) . "</th>";
             echo "<th>" . __('Active') . "</th>";
@@ -1569,7 +1561,7 @@ class NotificationTarget extends CommonDBChild
                 )
             );
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 Session::addToNavigateListItems('Notification', $data['id']);
 
                 if ($notif->getFromDB($data['id'])) {

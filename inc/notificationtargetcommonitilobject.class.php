@@ -178,8 +178,8 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
         $criteria['WHERE']["$userlinktable.$fkfield"] = $this->obj->fields['id'];
         $criteria['WHERE']["$userlinktable.type"] = $type;
 
-        $iterator = $DB->request($criteria);
-        while ($data = $iterator->next()) {
+        $request = $this::getAdapter()->request($criteria);
+        while ($data = $request->fetchAssociative()) {
             //Add the user email and language in the notified users list
             if ($data['notif']) {
                 $author_email = UserEmail::getDefaultForUser($data['users_id']);
@@ -212,7 +212,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
         }
 
         // Anonymous user
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'alternative_email',
            'FROM'   => $userlinktable,
            'WHERE'  => [
@@ -222,7 +222,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
               'type'               => $type
            ]
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if ($this->isMailMode()) {
                 if (NotificationMailing::isUserAddressValid($data['alternative_email'])) {
                     $this->addToRecipientsList([
@@ -245,13 +245,11 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addLinkedGroupByType($type)
     {
-        global $DB;
-
         $grouplinktable = getTableForItemType($this->obj->grouplinkclass);
         $fkfield        = $this->obj->getForeignKeyField();
 
         //Look for the user by his id
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'groups_id',
            'FROM'   => $grouplinktable,
            'WHERE'  => [
@@ -260,7 +258,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             //Add the group in the notified users list
             $this->addForGroup(0, $data['groups_id']);
         }
@@ -279,12 +277,10 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addLinkedGroupWithoutSupervisorByType($type)
     {
-        global $DB;
-
         $grouplinktable = getTableForItemType($this->obj->grouplinkclass);
         $fkfield        = $this->obj->getForeignKeyField();
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'groups_id',
            'FROM'   => $grouplinktable,
            'WHERE'  => [
@@ -293,7 +289,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             //Add the group in the notified users list
             $this->addForGroup(2, $data['groups_id']);
         }
@@ -314,7 +310,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
         $grouplinktable = getTableForItemType($this->obj->grouplinkclass);
         $fkfield        = $this->obj->getForeignKeyField();
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'groups_id',
            'FROM'   => $grouplinktable,
            'WHERE'  => [
@@ -323,7 +319,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             //Add the group in the notified users list
             $this->addForGroup(1, $data['groups_id']);
         }
@@ -406,8 +402,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addSupplier($sendprivate = false)
     {
-        global $DB;
-
         if (
             !$sendprivate
             && $this->obj->countSuppliers(CommonITILActor::ASSIGN)
@@ -416,7 +410,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
             $supplierlinktable = getTableForItemType($this->obj->supplierlinkclass);
             $fkfield           = $this->obj->getForeignKeyField();
 
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT'          => [
                   'glpi_suppliers.email AS email',
                   'glpi_suppliers.name AS name'
@@ -436,7 +430,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
                ]
             ]);
 
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 $this->addToRecipientsList($data);
             }
         }
@@ -452,8 +446,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addValidationApprover($options = [])
     {
-        global $DB;
-
         if (isset($options['validation_id'])) {
             $validationtable = getTableForItemType($this->obj->getType() . 'Validation');
 
@@ -468,8 +460,8 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
             $criteria['FROM'] = $validationtable;
             $criteria['WHERE']["$validationtable.id"] = $options['validation_id'];
 
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 $this->addToRecipientsList($data);
             }
         }
@@ -484,8 +476,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
     **/
     public function addValidationRequester($options = [])
     {
-        global $DB;
-
         if (isset($options['validation_id'])) {
             $validationtable = getTableForItemType($this->obj->getType() . 'Validation');
 
@@ -500,8 +490,8 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
             $criteria['FROM'] = $validationtable;
             $criteria['WHERE']["$validationtable.id"] = $options['validation_id'];
 
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 $this->addToRecipientsList($data);
             }
         }
@@ -517,8 +507,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addFollowupAuthor($options = [])
     {
-        global $DB;
-
         if (isset($options['followup_id'])) {
             $followuptable = ITILFollowup::getTable();
 
@@ -536,8 +524,8 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
             $criteria['FROM'] = $followuptable;
             $criteria['WHERE']["$followuptable.id"] = $options['followup_id'];
 
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 $this->addToRecipientsList($data);
             }
         }
@@ -553,16 +541,14 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addTaskAuthor($options = [])
     {
-        global $DB;
-
         // In case of delete task pass user id
         if (isset($options['task_users_id'])) {
             $criteria = $this->getDistinctUserCriteria() + $this->getProfileJoinCriteria();
             $criteria['FROM'] = User::getTable();
             $criteria['WHERE'][User::getTable() . '.id'] = $options['task_users_id'];
 
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 $this->addToRecipientsList($data);
             }
         } elseif (isset($options['task_id'])) {
@@ -582,8 +568,8 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
             $criteria['FROM'] = $tasktable;
             $criteria['WHERE']["$tasktable.id"] = $options['task_id'];
 
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 $this->addToRecipientsList($data);
             }
         }
@@ -599,16 +585,14 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addTaskAssignUser($options = [])
     {
-        global $DB;
-
         // In case of delete task pass user id
         if (isset($options['task_tech_users_id'])) {
             $criteria = $this->getDistinctUserCriteria() + $this->getProfileJoinCriteria();
             $criteria['FROM'] = User::getTable();
             $criteria['WHERE'][User::getTable() . '.id'] = $options['task_tech_users_id'];
 
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 $this->addToRecipientsList($data);
             }
         } elseif (isset($options['task_id'])) {
@@ -628,8 +612,8 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
             $criteria['FROM'] = $tasktable;
             $criteria['WHERE']["$tasktable.id"] = $options['task_id'];
 
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 $this->addToRecipientsList($data);
             }
         }
@@ -647,14 +631,12 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addTaskAssignGroup($options = [])
     {
-        global $DB;
-
         // In case of delete task pass user id
         if (isset($options['task_tech_groups_id'])) {
             $this->addForGroup(0, $options['task_tech_groups_id']);
         } elseif (isset($options['task_id'])) {
             $tasktable = getTableForItemType($this->obj->getType() . 'Task');
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'FROM'   => $tasktable,
                'INNER JOIN'   => [
                   'glpi_groups'  => [
@@ -666,7 +648,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
                ],
                'WHERE'        => ["$tasktable.id" => $options['task_id']]
             ]);
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 $this->addForGroup(0, $data['tech_groups_id']);
             }
         }
@@ -675,9 +657,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
 
     public function addAdditionnalInfosForTarget()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => ['profiles_id'],
            'FROM'   => 'glpi_profilerights',
            'WHERE'  => [
@@ -686,7 +666,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $this->private_profiles[$data['profiles_id']] = $data['profiles_id'];
         }
     }
@@ -694,20 +674,19 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
 
     public function addAdditionnalUserInfo(array $data)
     {
-        global $DB;
-
         if (!isset($data['users_id']) || count($this->private_profiles) === 0) {
             return ['show_private' => 0];
         }
 
-        $result = $DB->request([
+        $request = $this::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_profiles_users',
            'WHERE'  => [
               'users_id'     => $data['users_id'],
               'profiles_id'  => $this->private_profiles
            ] + getEntitiesRestrictCriteria('glpi_profiles_users', 'entities_id', $this->getEntity(), true)
-        ])->next();
+        ]);
+        $result = $request->fetchAssociative();
 
         if ($result['cpt']) {
             return ['show_private' => 1];
@@ -1366,7 +1345,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
                   = countElementsInTableForEntity($item->getTable(), $this->getEntity(), $restrict, false);
 
             // Document
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT'    => 'glpi_documents.*',
                'FROM'      => 'glpi_documents',
                'LEFT JOIN' => [
@@ -1388,7 +1367,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
             if ($item->getType() == 'Ticket') {
                 $addtodownloadurl = "%2526tickets_id=" . $item->fields['id'];
             }
-            while ($row = $iterator->next()) {
+            while ($row = $request->fetchAssociative()) {
                 $tmp                      = [];
                 $tmp['##document.id##']   = $row['id'];
                 $tmp['##document.name##'] = $row['name'];
