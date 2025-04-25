@@ -2,10 +2,12 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_profiles')]
 #[ORM\Index(name: "interface", columns: ["interface"])]
 #[ORM\Index(name: "is_default", columns: ["is_default"])]
@@ -25,13 +27,13 @@ class Profile
     private $name;
 
     #[ORM\Column(name: 'interface', type: 'string', length: 255, nullable: true, options: ['default' => 'helpdesk'])]
-    private $interface;
+    private $interface = 'helpdesk';
 
     #[ORM\Column(name: 'is_default', type: 'boolean', options: ['default' => 0])]
-    private $isDefault;
+    private $isDefault = 0;
 
     #[ORM\Column(name: 'helpdesk_hardware', type: 'integer', options: ['default' => 0])]
-    private $helpdeskHardware;
+    private $helpdeskHardware = 0;
 
     #[ORM\Column(name: 'helpdesk_item_type', type: 'text', length: 65535, nullable: true)]
     private $helpdeskItemType;
@@ -39,7 +41,7 @@ class Profile
     #[ORM\Column(name: 'ticket_status', type: 'text', length: 65535, nullable: true, options: ['comment' => 'json encoded array of from/dest allowed status change'])]
     private $ticketStatus;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
@@ -49,7 +51,7 @@ class Profile
     private $problemStatus;
 
     #[ORM\Column(name: 'create_ticket_on_login', type: 'boolean', options: ['default' => 0])]
-    private $createTicketOnLogin;
+    private $createTicketOnLogin = 0;
 
     #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
     #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
@@ -69,7 +71,7 @@ class Profile
     #[ORM\Column(name: 'managed_domainrecordtypes', type: 'text', length: 65535, nullable: true)]
     private $managedDomainRecordTypes;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'profile', targetEntity: KnowbaseItemProfile::class)]
@@ -167,15 +169,16 @@ class Profile
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-
-    public function setDateMod(?\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
@@ -245,15 +248,15 @@ class Profile
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

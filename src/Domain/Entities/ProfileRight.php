@@ -22,7 +22,7 @@ class ProfileRight
     private $name;
 
     #[ORM\Column(name: 'rights', type: 'integer', options: ['default' => 0])]
-    private $rights;
+    private $rights = 0;
 
     public function getId(): ?int
     {
@@ -47,32 +47,39 @@ class ProfileRight
         return $this->rights;
     }
 
-
-    public function setRights(?int $rights): self
+    /**
+     * @param int|string|null $rights Les droits à définir
+     * @return self
+     */
+    public function setRights($rights): self
     {
-        $this->rights = $rights;
+        // Convertir en entier si nécessaire
+        if ($rights !== null) {
+            $this->rights = (int)$rights;
+        } else {
+            $this->rights = null;
+        }
 
         return $this;
     }
 
 
     /**
-     * Get the value of profile
+     * @return Profile|null L'objet Profile associé
      */
-    public function getProfile()
+    public function getProfile(): ?Profile
     {
         return $this->profile;
     }
 
     /**
-     * Set the value of profile
-     *
-     * @return  self
+     * @param Profile|null $profile L'objet Profile à associer
+     * @return self
      */
-    public function setProfile($profile)
+    public function setProfile(?Profile $profile): self
     {
         $this->profile = $profile;
-
         return $this;
     }
+
 }
