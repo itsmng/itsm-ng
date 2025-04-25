@@ -182,8 +182,8 @@ class Printer extends CommonDBTM
                'GROUPBY'      => 'itemtype'
             ];
 
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 $itemtable = getTableForItemType($data["itemtype"]);
                 if ($item = getItemForItemtype($data["itemtype"])) {
                     // For each itemtype which are entity dependant
@@ -448,9 +448,7 @@ class Printer extends CommonDBTM
     **/
     public function getLinkedItems()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'computers_id',
            'FROM'   => 'glpi_computers_items',
            'WHERE'  => [
@@ -459,7 +457,7 @@ class Printer extends CommonDBTM
            ]
         ]);
         $tab = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $tab['Computer'][$data['computers_id']] = $data['computers_id'];
         }
         return $tab;
@@ -801,10 +799,8 @@ class Printer extends CommonDBTM
     **/
     public function addOrRestoreFromTrash($name, $manufacturer, $entity, $comment = '')
     {
-        global $DB;
-
         //Look for the software by his name in GLPI for a specific entity
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => ['id', 'is_deleted'],
            'FROM'   => self::getTable(),
            'WHERE'  => [
@@ -813,10 +809,10 @@ class Printer extends CommonDBTM
               'entities_id'  => $entity
            ]
         ]);
-
-        if (count($iterator) > 0) {
+         $results = $request->fetchAllAssociative();
+        if (count($results) > 0) {
             //Printer already exists for this entity, get its ID
-            $data = $iterator->next();
+            $data = $results[0];
             $ID   = $data["id"];
 
             // restore software
@@ -846,15 +842,13 @@ class Printer extends CommonDBTM
     **/
     public function addPrinter($name, $manufacturer, $entity, $comment = '')
     {
-        global $DB;
-
         $manufacturer_id = 0;
         if ($manufacturer != '') {
             $manufacturer_id = Dropdown::importExternal('Manufacturer', $manufacturer);
         }
 
         //If there's a printer in a parent entity with the same name and manufacturer
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable(),
            'WHERE'  => [
@@ -863,7 +857,7 @@ class Printer extends CommonDBTM
            ] + getEntitiesRestrictCriteria(self::getTable, 'entities_id', $entity, true)
         ]);
 
-        if ($printer = $iterator->next()) {
+        if ($printer = $request->fetchAssociative()) {
             $id = $printer["id"];
         } else {
             $input["name"]             = $name;
