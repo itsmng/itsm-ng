@@ -18,7 +18,7 @@ class CalendarSegment
 
     #[ORM\ManyToOne(targetEntity: Calendar::class)]
     #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
-    private ?Calendar $calendars = null;
+    private ?Calendar $calendar = null;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
@@ -110,22 +110,23 @@ class CalendarSegment
         return $this;
     }
 
+
     /**
-     * Get the value of calendars
-     */
-    public function getCalendars()
+     * Get the value of calendar
+     */ 
+    public function getCalendar()
     {
-        return $this->calendars;
+        return $this->calendar;
     }
 
     /**
-     * Set the value of calendars
+     * Set the value of calendar
      *
      * @return  self
-     */
-    public function setCalendars($calendars)
+     */ 
+    public function setCalendar($calendar)
     {
-        $this->calendars = $calendars;
+        $this->calendar = $calendar;
 
         return $this;
     }

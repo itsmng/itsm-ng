@@ -2,10 +2,13 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\Common\Collections\Collection;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_calendars')]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
@@ -27,22 +30,27 @@ class Calendar
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
-    private $comment;
+    private $comment = null;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'cache_duration', type: 'text', length: 65535, nullable: true)]
     private $cacheDuration;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'calendar', targetEntity: CalendarHoliday::class)]
     private Collection $calendarHolidays;
+
+    public function __construct()
+    {
+        $this->calendarHolidays = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,14 +94,29 @@ class Calendar
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
+
+        return $this;
+    }
+    
+    public function getDateCreation(): DateTime
+    {
+        return $this->dateCreation ?? new DateTime();
+    }
+
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
+    {
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -106,18 +129,6 @@ class Calendar
     public function setCacheDuration(string $cacheDuration): self
     {
         $this->cacheDuration = $cacheDuration;
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
 
         return $this;
     }

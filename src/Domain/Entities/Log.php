@@ -34,7 +34,7 @@ class Log
     #[ORM\Column(name: 'user_name', type: 'string', length: 255, nullable: true)]
     private $userName;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'id_search_option', type: 'integer', options: ['default' => 0, 'comment' => 'see search.constant.php for value'])]
