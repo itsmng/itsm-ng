@@ -51,16 +51,16 @@ class Oidc extends CommonDBTM
         global $DB, $CFG_GLPI;
 
         //Get config from DB and use it to setup oidc
-        $criteria = "SELECT * FROM glpi_oidc_config";
-        $iterators = $DB->request($criteria);
-        foreach ($iterators as $iterator) {
-            $oidc_db['Provider'] = $iterator['Provider'];
-            $oidc_db['ClientID'] = $iterator['ClientID'];
-            $oidc_db['ClientSecret'] = Toolbox::sodiumDecrypt($iterator['ClientSecret']);
-            $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
-            $oidc_db['proxy'] = $iterator['proxy'];
-            $oidc_db['cert'] = $iterator['cert'];
-            $oidc_db['sso_link_users'] = $iterator['sso_link_users'];
+        $criteria = ["SELECT * FROM glpi_oidc_config"];
+        $requests = self::getAdapter()->request($criteria);
+        foreach ($requests as $request) {
+            $oidc_db['Provider'] = $request['Provider'];
+            $oidc_db['ClientID'] = $request['ClientID'];
+            $oidc_db['ClientSecret'] = Toolbox::sodiumDecrypt($request['ClientSecret']);
+            $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $request['scope'])));
+            $oidc_db['proxy'] = $request['proxy'];
+            $oidc_db['cert'] = $request['cert'];
+            $oidc_db['sso_link_users'] = $request['sso_link_users'];
         }
 
         $oidc = new Jumbojett\OpenIDConnectClient($oidc_db['Provider'], $oidc_db['ClientID'], $oidc_db['ClientSecret']);
@@ -106,15 +106,15 @@ class Oidc extends CommonDBTM
         //var_dump(self::$_user_data);
         //die;
         //Create and/or authenticated a user
-        $criteria = "SELECT * FROM glpi_users";
-        $iterators = $DB->request($criteria);
+        $criteria = ["SELECT * FROM glpi_users"];
+        $requests = self::getAdapter()->request($criteria);
         $newUser = true;
 
         if (isset($user_array["name"])) {
-            foreach ($iterators as $iterator) {
-                $canLink = $oidc_db['sso_link_users'] || $iterator['authtype'] == Auth::EXTERNAL;
-                if ($user_array['name'] == $iterator['name'] && $canLink) {
-                    $ID = $iterator['id'];
+            foreach ($requests as $request) {
+                $canLink = $oidc_db['sso_link_users'] || $request['authtype'] == Auth::EXTERNAL;
+                if ($user_array['name'] == $request['name'] && $canLink) {
+                    $ID = $request['id'];
                     $newUser = false;
                 }
             }
@@ -129,10 +129,10 @@ class Oidc extends CommonDBTM
                 $ID = $user->add($input);
             }
         } else {
-            foreach ($iterators as $iterator) {
-                $canLink = $oidc_db['sso_link_users'] || $iterator['authtype'] == Auth::EXTERNAL;
-                if ($user_array['sub'] == $iterator['name'] && $canLink) {
-                    $ID = $iterator['id'];
+            foreach ($requests as $request) {
+                $canLink = $oidc_db['sso_link_users'] || $request['authtype'] == Auth::EXTERNAL;
+                if ($user_array['sub'] == $request['name'] && $canLink) {
+                    $ID = $request['id'];
                     $newUser = false;
                 }
             }
@@ -152,12 +152,20 @@ class Oidc extends CommonDBTM
             die;
         }
 
-        $request = $DB->request('glpi_oidc_mapping');
-        while ($data = $request->next()) {
+        $request = self::getAdapter()->request([
+            'FROM' => 'glpi_oidc_mapping', 
+        ]);
+        $results = $request->fetchAllAssociative();
+
+        foreach ($results as $data) {
             $mapping_date_mod = $data["date_mod"];
         }
-        $request = $DB->request('glpi_users', ["id" => $ID]);
-        while ($data = $request->next()) {
+        $request = self::getAdapter()->request([
+            'FROM'  => 'glpi_users', 
+            'WHERE' => ['id' => $ID] 
+        ]);
+        $results = $request->fetchAllAssociative();
+        foreach ($results as $data) {
             $user_date_mod = $data["date_mod"];
         }
 
@@ -183,10 +191,10 @@ class Oidc extends CommonDBTM
     {
         global $DB;
 
-        $criteria = "SELECT * FROM glpi_oidc_mapping";
-        $iterators = $DB->request($criteria);
+        $criteria = ["SELECT * FROM glpi_oidc_mapping"];
+        $request = self::getAdapter()->request($criteria);
 
-        while ($data = $iterators->next()) {
+        while ($data = $request->fetchAssociative()) {
             $result[] = $data;
         }
 
@@ -226,9 +234,9 @@ class Oidc extends CommonDBTM
             if (isset($user_array[$result[0]["group"]])) {
                 foreach ($data = $user_array[$result[0]["group"]] as $value) {
                     $id_group_create = 0;
-                    $request = $DB->request('glpi_groups');
+                    $request = self::getAdapter()->request(['FROM' => 'glpi_groups']);
 
-                    while ($data = $request->next()) {
+                    while ($data = $request->fetchAssociative()) {
                         if ($data['name'] == $value) {
                             $id_group_create = $data['id'];
                             break;
@@ -237,9 +245,9 @@ class Oidc extends CommonDBTM
 
                     $querry = "INSERT IGNORE INTO `glpi_groups` (`id`, `name`, `completename`) VALUES ($id_group_create, '$value', '$value');";
                     $DB->queryOrDie($querry);
-                    $request = $DB->request('glpi_groups');
+                    $request = self::getAdapter()->request(['FROM' =>'glpi_groups']);
 
-                    while ($data = $request->next()) {
+                    while ($data = $request->fetchAssociative()) {
                         $id_group = $data['id'];
                         if ($data['name'] == $value) {
                             break;
@@ -252,9 +260,9 @@ class Oidc extends CommonDBTM
             }
         }
 
-        $request = $DB->request('glpi_oidc_users');
+        $request = self::getAdapter()->request(['FROM' => 'glpi_oidc_users']);
 
-        while ($data = $request->next()) {
+        while ($data = $request->fetchAssociative()) {
             $user_id = $data['id'];
 
             if ($data['user_id'] == $id) {
@@ -297,8 +305,8 @@ class Oidc extends CommonDBTM
             $DB->updateOrInsert("glpi_oidc_mapping", $oidc_result, ['id'   => 0]);
         }
 
-        $criteria = "SELECT * FROM glpi_oidc_mapping";
-        $iterators = $DB->request($criteria);
+        $criteria = ["SELECT * FROM glpi_oidc_mapping"];
+        $requests = self::getAdapter()->request($criteria);
         $oidc_db = [
             'name' => null,
             'given_name'  => null,
@@ -310,17 +318,17 @@ class Oidc extends CommonDBTM
             'group'  => null,
             'date_mod' => null,
         ];
-
-        foreach ($iterators as $iterator) {
-            $oidc_db['name'] = $iterator["name"];
-            $oidc_db['given_name']  = $iterator["given_name"];
-            $oidc_db['family_name']  = $iterator["family_name"];
-            $oidc_db['picture']  = $iterator["picture"];
-            $oidc_db['email']  = $iterator["email"];
-            $oidc_db['locale']  = $iterator["locale"];
-            $oidc_db['phone_number']  = $iterator["phone_number"];
-            $oidc_db['group']  = $iterator["group"];
-            $oidc_db['date_mod']  = $iterator["date_mod"];
+        $results = $requests->fetchAllAssociative();
+        foreach ($results as $result) {
+            $oidc_db['name'] = $result["name"];
+            $oidc_db['given_name']  = $result["given_name"];
+            $oidc_db['family_name']  = $result["family_name"];
+            $oidc_db['picture']  = $result["picture"];
+            $oidc_db['email']  = $result["email"];
+            $oidc_db['locale']  = $result["locale"];
+            $oidc_db['phone_number']  = $result["phone_number"];
+            $oidc_db['group']  = $result["group"];
+            $oidc_db['date_mod']  = $result["date_mod"];
         }
 
         $form = [

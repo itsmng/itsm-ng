@@ -77,15 +77,16 @@ class Link_Itemtype extends CommonDBChild
             return false;
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_links_itemtypes',
            'WHERE'  => ['links_id' => $links_id],
            'ORDER'  => 'itemtype'
         ]);
         $types  = [];
         $used   = [];
-        $numrows = count($iterator);
-        while ($data = $iterator->next()) {
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
+        foreach ($results as $data) {
             $types[$data['id']]      = $data;
             $used[$data['itemtype']] = $data['itemtype'];
         }

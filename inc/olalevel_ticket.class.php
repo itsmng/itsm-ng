@@ -60,9 +60,7 @@ class OlaLevel_Ticket extends CommonDBTM
     **/
     public function getFromDBForTicket($ID, $olaType)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'       => [static::getTable() . '.id'],
            'FROM'         => static::getTable(),
            'LEFT JOIN'   => [
@@ -85,8 +83,9 @@ class OlaLevel_Ticket extends CommonDBTM
            ],
            'LIMIT'        => 1
         ]);
-        if (count($iterator) == 1) {
-            $row = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results) == 1) {
+            $row = $results[0];
             return $this->getFromDB($row['id']);
         }
         return false;
@@ -105,9 +104,7 @@ class OlaLevel_Ticket extends CommonDBTM
     **/
     public function deleteForTicket($tickets_id, $olaType)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'    => 'glpi_olalevels_tickets.id',
            'FROM'      => 'glpi_olalevels_tickets',
            'LEFT JOIN' => [
@@ -130,7 +127,7 @@ class OlaLevel_Ticket extends CommonDBTM
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $this->delete(['id' => $data['id']]);
         }
     }
@@ -163,11 +160,9 @@ class OlaLevel_Ticket extends CommonDBTM
     **/
     public static function cronOlaTicket(CronTask $task)
     {
-        global $DB;
-
         $tot = 0;
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'glpi_olalevels_tickets.*',
               'glpi_olas.type AS type'
@@ -192,7 +187,7 @@ class OlaLevel_Ticket extends CommonDBTM
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $tot++;
             self::doLevelForTicket($data, $data['type']);
         }
@@ -322,8 +317,6 @@ class OlaLevel_Ticket extends CommonDBTM
      */
     public static function replayForTicket($tickets_id, $olaType)
     {
-        global $DB;
-
         $criteria = [
            'SELECT'    => 'glpi_olalevels_tickets.*',
            'FROM'      => 'glpi_olalevels_tickets',
@@ -350,10 +343,11 @@ class OlaLevel_Ticket extends CommonDBTM
 
         $number = 0;
         do {
-            $iterator = $DB->request($criteria);
-            $number = count($iterator);
+            $request = self::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
+            $number = count($results);
             if ($number == 1) {
-                $data = $iterator->next();
+                $data = $results[0];
                 self::doLevelForTicket($data, $olaType);
             }
         } while ($number == 1);

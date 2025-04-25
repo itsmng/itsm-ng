@@ -643,8 +643,6 @@ class Plugin extends CommonDBTM
      */
     public function getList(array $fields = [], array $order = ['name', 'directory'])
     {
-        global $DB;
-
         $query = [
            'FROM'   => $this->getTable()
         ];
@@ -657,8 +655,8 @@ class Plugin extends CommonDBTM
             $query['ORDER'] = $order;
         }
 
-        $iterator = $DB->request($query);
-        return iterator_to_array($iterator, false);
+        $request = self::getAdapter()->request($query);
+        return $request->fetchAllAssociative();
     }
 
 

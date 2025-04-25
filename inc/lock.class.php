@@ -99,7 +99,12 @@ class Lock extends CommonGLPI
                                 'itemtype'      => $type];
                 $params['FIELDS'] = ['id', 'items_id'];
                 $first  = true;
-                foreach ($DB->request('glpi_computers_items', $params) as $line) {
+                $request = $item::getAdapter()->request([
+                    'FROM'  => 'glpi_computers_items',
+                    'WHERE' => $params
+                ]);
+                
+                foreach ($request->fetchAllAssociative() as $line) {
                     /** @var CommonDBTM $asset */
                     $asset = new $type();
                     $asset->getFromDB($line['items_id']);
@@ -132,7 +137,12 @@ class Lock extends CommonGLPI
             ];
             $params['FIELDS'] = ['id', 'name'];
             $first  = true;
-            foreach ($DB->request($item_disk->getTable(), $params) as $line) {
+            $request = $item->getAdapter()->request([
+                'FROM'  => $item_disk->getTable(),
+                'WHERE' => $params
+            ]);
+            
+            foreach ($request->fetchAllAssociative() as $line) {
                 if ($first) {
                     echo "<tr><th colspan='2'>" . $item_disk->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
                     $first = false;
@@ -157,7 +167,12 @@ class Lock extends CommonGLPI
                             'computers_id'  => $ID];
             $params['FIELDS'] = ['id', 'name'];
             $first  = true;
-            foreach ($DB->request($computer_vm->getTable(), $params) as $line) {
+            $request = $item->getAdapter()->request([
+                'FROM'  => $computer_vm->getTable(),
+                'WHERE' => $params
+            ]);
+            
+            foreach ($request->fetchAllAssociative() as $line) {
                 if ($first) {
                     echo "<tr><th colspan='2'>" . $computer_vm->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
                     $first = false;
@@ -181,7 +196,7 @@ class Lock extends CommonGLPI
         $item_sv = new Item_SoftwareVersion();
         $item_sv_table = Item_SoftwareVersion::getTable();
 
-        $iterator = $DB->request([
+        $request = $item->getAdapter()->request([
            'SELECT'    => [
               'isv.id AS id',
               'sv.name AS version',
@@ -210,7 +225,7 @@ class Lock extends CommonGLPI
            ]
         ]);
         echo "<tr><th colspan='2'>" . Software::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             echo "<tr class='tab_bg_1'>";
 
             echo "<td class='center' width='10'>";
@@ -228,7 +243,7 @@ class Lock extends CommonGLPI
         $item_sl = new Item_SoftwareLicense();
         $item_sl_table = Item_SoftwareLicense::getTable();
 
-        $iterator = $DB->request([
+        $request = $item->getAdapter()->request([
            'SELECT'    => [
               'isl.id AS id',
               'sl.name AS version',
@@ -258,7 +273,7 @@ class Lock extends CommonGLPI
         ]);
 
         echo "<tr><th colspan='2'>" . SoftwareLicense::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             echo "<tr class='tab_bg_1'>";
 
             echo "<td class='center' width='10'>";
@@ -279,7 +294,12 @@ class Lock extends CommonGLPI
                         'items_id'   => $ID,
                         'itemtype'   => $itemtype];
         $params['FIELDS'] = ['id'];
-        foreach ($DB->request($networkport->getTable(), $params) as $line) {
+        $request = $item->getAdapter()->request([
+            'FROM'  => $networkport->getTable(),
+            'WHERE' => $params
+        ]);
+        
+        foreach ($request->fetchAllAssociative() as $line) {
             $networkport->getFromDB($line['id']);
             if ($first) {
                 echo "<tr><th colspan='2'>" . $networkport->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
@@ -301,21 +321,36 @@ class Lock extends CommonGLPI
 
         $first = true;
         $networkname = new NetworkName();
+
         $params = [
-           'glpi_networknames.is_dynamic' => 1,
-           'glpi_networknames.is_deleted' => 1,
-           'glpi_networknames.itemtype'   => 'NetworkPort',
-           'glpi_networknames.items_id'   => new QueryExpression($DB->quoteName('glpi_networkports.id')),
-           'glpi_networkports.items_id'   => $ID,
-           'glpi_networkports.itemtype'   => $itemtype
+        'SELECT' => ['glpi_networknames.id'],
+        'FROM'   => 'glpi_networknames',
+        'INNER JOIN' => [
+            'glpi_networkports' => [
+                'ON' => [
+                    'glpi_networknames' => 'items_id',
+                    'glpi_networkports' => 'id'
+                ]
+            ]
+        ],
+        'WHERE' => [
+            'glpi_networknames.is_dynamic' => 1,
+            'glpi_networknames.is_deleted' => 1,
+            'glpi_networknames.itemtype'   => 'NetworkPort',
+            'glpi_networkports.items_id'   => $ID,
+            'glpi_networkports.itemtype'   => $itemtype
+        ]
         ];
-        $params['FIELDS'] = ['glpi_networknames' => 'id'];
-        foreach ($DB->request(['glpi_networknames', 'glpi_networkports'], $params) as $line) {
-            $networkname->getFromDB($line['id']);
-            if ($first) {
-                echo "<tr><th colspan='2'>" . NetworkName::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
-                $first = false;
-            }
+
+        $request = $networkname->getAdapter()->request($params);
+
+        foreach ($request->fetchAllAssociative() as $line) {
+        $networkname->getFromDB($line['id']);
+
+        if ($first) {
+            echo "<tr><th colspan='2'>" . NetworkName::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
+            $first = false;
+        }
 
             echo "<tr class='tab_bg_1'>";
 
@@ -333,22 +368,37 @@ class Lock extends CommonGLPI
         $first  = true;
         $ipaddress = new IPAddress();
         $params = [
-           'glpi_ipaddresses.is_dynamic' => 1,
-           'glpi_ipaddresses.is_deleted' => 1,
-           'glpi_ipaddresses.itemtype'   => 'NetworkName',
-           'glpi_ipaddresses.items_id'   => new QueryExpression($DB->quoteName('glpi_networknames.id')),
-           'glpi_networknames.itemtype'  => 'NetworkPort',
-           'glpi_networknames.items_id'  => new QueryExpression($DB->quoteName('glpi_networkports.id')),
-           'glpi_networkports.items_id'  => $ID,
-           'glpi_networkports.itemtype'  => $itemtype
+        'glpi_ipaddresses.is_dynamic' => 1,
+        'glpi_ipaddresses.is_deleted' => 1,
+        'glpi_ipaddresses.itemtype'   => 'NetworkName',
+        'glpi_ipaddresses.items_id'   => 'glpi_networknames.id', 
+        'glpi_networknames.itemtype'  => 'NetworkPort',
+        'glpi_networknames.items_id'  => 'glpi_networkports.id',  
+        'glpi_networkports.items_id'  => $ID,
+        'glpi_networkports.itemtype'  => $itemtype
         ];
         $params['FIELDS'] = ['glpi_ipaddresses' => 'id'];
-        foreach (
-            $DB->request(['glpi_ipaddresses',
-                                    'glpi_networknames',
-                                    'glpi_networkports'], $params) as $line
-        ) {
-            $ipaddress->getFromDB($line['id']);
+
+        $request = $item->getAdapter()->request([
+        'SELECT' => ['glpi_ipaddresses.id'],
+        'FROM'   => 'glpi_ipaddresses',
+        'INNER JOIN' => [
+            'glpi_networknames' => [
+                'ON' => [
+                    'glpi_ipaddresses.items_id' => 'glpi_networknames.id',
+                ]
+            ],
+            'glpi_networkports' => [
+                'ON' => [
+                    'glpi_networknames.items_id' => 'glpi_networkports.id',
+                ]
+            ]
+        ],
+        'WHERE' => $params,
+        ]);
+
+        // Traitement des résultats
+        foreach ($request->fetchAllAssociative() as $line) {
             if ($first) {
                 echo "<tr><th colspan='2'>" . IPAddress::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
                 $first = false;
@@ -387,7 +437,7 @@ class Lock extends CommonGLPI
                 $associated_table = getTableForItemType($associated_type);
                 $fk               = getForeignKeyFieldForTable($associated_table);
 
-                $iterator = $DB->request([
+                $request = $item->getAdapter()->request([
                    'SELECT'    => [
                       'i.id',
                       't.designation AS name'
@@ -409,7 +459,7 @@ class Lock extends CommonGLPI
                    ]
                 ]);
 
-                while ($data = $iterator->next()) {
+                while ($data = $request->fetchAssociative()) {
                     echo "<tr class='tab_bg_1'>";
 
                     echo "<td class='center' width='10'>";
@@ -683,9 +733,8 @@ class Lock extends CommonGLPI
                         $action_valid = false;
                         foreach ($links as $infos) {
                             $infos['condition'][$infos['field']] = $id;
-                            $locked_items = $DB->request($infos['table'], $infos['condition']);
-
-                            if ($locked_items->count() === 0) {
+                            $locked_items =  $item->getAdapter()->request($infos['table'], $infos['condition'])->fetchAllAssociative();
+                            if (count($locked_items) === 0) {
                                 $action_valid = true;
                                 continue;
                             }

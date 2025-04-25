@@ -118,10 +118,8 @@ class Notepad extends CommonDBChild
      **/
     public static function cloneItem($itemtype, $oldid, $newid)
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'items_id'  => $oldid,
@@ -129,7 +127,7 @@ class Notepad extends CommonDBChild
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $cd               = new self();
             unset($data['id']);
             $data['items_id'] = $newid;
@@ -187,7 +185,7 @@ class Notepad extends CommonDBChild
         global $DB;
 
         $data = [];
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'glpi_notepads.*',
               'glpi_users.picture'
@@ -208,7 +206,7 @@ class Notepad extends CommonDBChild
            'ORDERBY'   => 'date_mod DESC'
         ]);
 
-        while ($note = $iterator->next()) {
+        while ($note = $request->fetchAssociative()) {
             $data[] = $note;
         }
         return $data;
