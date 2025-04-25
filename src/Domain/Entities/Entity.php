@@ -106,95 +106,95 @@ class Entity
     private $mailingSignature;
 
     #[ORM\Column(name: 'cartridges_alert_repeat', type: 'integer', options: ['default' => -2])]
-    private $cartridgesAlertRepeat;
+    private $cartridgesAlertRepeat = -2;
 
     #[ORM\Column(name: 'consumables_alert_repeat', type: 'integer', options: ['default' => -2])]
-    private $consumablesAlertRepeat;
+    private $consumablesAlertRepeat = -2;
 
     #[ORM\Column(name: 'use_licenses_alert', type: 'integer', options: ['default' => -2])]
-    private $useLicensesAlert;
+    private $useLicensesAlert = -2;
 
     #[ORM\Column(name: 'send_licenses_alert_before_delay', type: 'integer', options: ['default' => -2])]
-    private $sendLicensesAlertBeforeDelay;
+    private $sendLicensesAlertBeforeDelay = -2;
 
     #[ORM\Column(name: 'use_certificates_alert', type: 'integer', options: ['default' => -2])]
-    private $useCertificatesAlert;
+    private $useCertificatesAlert = -2;
 
     #[ORM\Column(name: 'send_certificates_alert_before_delay', type: 'integer', options: ['default' => -2])]
-    private $sendCertificatesAlertBeforeDelay;
+    private $sendCertificatesAlertBeforeDelay = -2;
 
     #[ORM\Column(name: 'use_contracts_alert', type: 'integer', options: ['default' => -2])]
-    private $useContractsAlert;
+    private $useContractsAlert = -2;
 
     #[ORM\Column(name: 'send_contracts_alert_before_delay', type: 'integer', options: ['default' => -2])]
-    private $sendContractsAlertBeforeDelay;
+    private $sendContractsAlertBeforeDelay = -2;
 
     #[ORM\Column(name: 'use_infocoms_alert', type: 'integer', options: ['default' => -2])]
-    private $useInfocomsAlert;
+    private $useInfocomsAlert = -2;
 
     #[ORM\Column(name: 'send_infocoms_alert_before_delay', type: 'integer', options: ['default' => -2])]
-    private $sendInfocomsAlertBeforeDelay;
+    private $sendInfocomsAlertBeforeDelay = -2;
 
     #[ORM\Column(name: 'use_reservations_alert', type: 'integer', options: ['default' => -2])]
-    private $useReservationsAlert;
+    private $useReservationsAlert = -2;
 
     #[ORM\Column(name: 'use_domains_alert', type: 'integer', options: ['default' => -2])]
-    private $useDomainsAlert;
+    private $useDomainsAlert = -2;
 
     #[ORM\Column(name: 'send_domains_alert_close_expiries_delay', type: 'integer', options: ['default' => -2])]
-    private $sendDomainsAlertCloseExpiriesDelay;
+    private $sendDomainsAlertCloseExpiriesDelay = -2;
 
     #[ORM\Column(name: 'send_domains_alert_expired_delay', type: 'integer', options: ['default' => -2])]
-    private $sendDomainsAlertExpiredDelay;
+    private $sendDomainsAlertExpiredDelay = -2;
 
     #[ORM\Column(name: 'autoclose_delay', type: 'integer', options: ['default' => -2])]
-    private $autocloseDelay;
+    private $autocloseDelay = -2;
 
     #[ORM\Column(name: 'autopurge_delay', type: 'integer', options: ['default' => -10])]
-    private $autopurgeDelay;
+    private $autopurgeDelay = -10;
 
     #[ORM\Column(name: 'notclosed_delay', type: 'integer', options: ['default' => -2])]
-    private $notclosedDelay;
+    private $notclosedDelay = -2;
 
     #[ORM\ManyToOne(targetEntity: Calendar::class)]
     #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
     private ?Calendar $calendar = null;
 
     #[ORM\Column(name: 'auto_assign_mode', type: 'integer', options: ['default' => -2])]
-    private $autoAssignMode;
+    private $autoAssignMode = -2;
 
     #[ORM\Column(name: 'tickettype', type: 'integer', options: ['default' => -2])]
-    private $tickettype;
+    private $tickettype = -2;
 
     #[ORM\Column(name: 'max_closedate', type: 'datetime', nullable: true)]
     private $maxClosedate;
 
     #[ORM\Column(name: 'inquest_config', type: 'integer', options: ['default' => -2])]
-    private $inquestConfig;
+    private $inquestConfig = -2;
 
     #[ORM\Column(name: 'inquest_rate', type: 'integer', options: ['default' => 0])]
-    private $inquestRate;
+    private $inquestRate = 0;
 
     #[ORM\Column(name: 'inquest_delay', type: 'integer', options: ['default' => -10])]
-    private $inquestDelay;
+    private $inquestDelay = -10;
 
     #[ORM\Column(name: 'inquest_url', type: 'string', length: 255, nullable: true)]
     private $inquestURL;
 
-    #[ORM\Column(name: 'autofill_warranty_date', type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofillWarrantyDate;
+    #[ORM\Column(name: 'autofill_warranty_date', type: 'string', length: 255, options: ['default' => -2])]
+    private $autofillWarrantyDate = -2;
 
-    #[ORM\Column(name: 'autofill_use_date', type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofillUseDate;
+    #[ORM\Column(name: 'autofill_use_date', type: 'string', length: 255, options: ['default' => -2])]
+    private $autofillUseDate = -2;
 
-    #[ORM\Column(name: 'autofill_buy_date', type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofillBuyDate;
+    #[ORM\Column(name: 'autofill_buy_date', type: 'string', length: 255, options: ['default' => -2])]
+    private $autofillBuyDate = -2;
 
-    #[ORM\Column(name: 'autofill_delivery_date', type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofillDeliveryDate;
+    #[ORM\Column(name: 'autofill_delivery_date', type: 'string', length: 255, options: ['default' => -2])]
+    private $autofillDeliveryDate = -2;
 
-    #[ORM\Column(name: 'autofill_order_date', type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofillOrderDate;
+    #[ORM\Column(name: 'autofill_order_date', type: 'string', length: 255, options: ['default' => -2])]
+    private $autofillOrderDate = -2;
 
     #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
     #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
@@ -213,25 +213,25 @@ class Entity
     private ?Entity $entitySoftware = null;
 
     #[ORM\Column(name: 'default_contract_alert', type: 'integer', options: ['default' => -2])]
-    private $defaultContractAlert;
+    private $defaultContractAlert = -2;
 
     #[ORM\Column(name: 'default_infocom_alert', type: 'integer', options: ['default' => -2])]
-    private $defaultInfocomAlert;
+    private $defaultInfocomAlert = -2;
 
     #[ORM\Column(name: 'default_cartridges_alarm_threshold', type: 'integer', options: ['default' => -2])]
-    private $defaultCartridgesAlarmThreshold;
+    private $defaultCartridgesAlarmThreshold = -2;
 
     #[ORM\Column(name: 'default_consumables_alarm_threshold', type: 'integer', options: ['default' => -2])]
-    private $defaultConsumablesAlarmThreshold;
+    private $defaultConsumablesAlarmThreshold = -2;
 
     #[ORM\Column(name: 'delay_send_emails', type: 'integer', options: ['default' => -2])]
-    private $delaySendEmails;
+    private $delaySendEmails = -2;
 
     #[ORM\Column(name: 'is_notif_enable_default', type: 'integer', options: ['default' => -2])]
-    private $isNotifEnableDefault;
+    private $isNotifEnableDefault = -2;
 
     #[ORM\Column(name: 'inquest_duration', type: 'integer', options: ['default' => 0])]
-    private $inquestDuration;
+    private $inquestDuration = 0;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
     private $dateMod;
@@ -239,17 +239,17 @@ class Entity
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
     private $dateCreation;
 
-    #[ORM\Column(name: 'autofill_decommission_date', type: 'string', length: 255, options: ['default' => '-2'])]
-    private $autofillDecommissionDate;
+    #[ORM\Column(name: 'autofill_decommission_date', type: 'string', length: 255, options: ['default' => -2])]
+    private $autofillDecommissionDate = -2;
 
     #[ORM\Column(name: 'suppliers_as_private', type: 'integer', options: ['default' => -2])]
-    private $suppliersAsPrivate;
+    private $suppliersAsPrivate = -2;
 
     #[ORM\Column(name: 'anonymize_support_agents', type: 'integer', options: ['default' => -2])]
-    private $anonymizeSupportAgents;
+    private $anonymizeSupportAgents = -2;
 
     #[ORM\Column(name: 'enable_custom_css', type: 'integer', options: ['default' => -2])]
-    private $enableCustomCss;
+    private $enableCustomCss = -2;
 
     #[ORM\Column(name: 'custom_css_code', type: 'text', nullable: true, length: 65535)]
     private $customCssCode;
@@ -337,7 +337,7 @@ class Entity
         return $this->sonsCache;
     }
 
-    public function setSonsCache(string $sonsCache): self
+    public function setSonsCache(?string $sonsCache): self
     {
         $this->sonsCache = $sonsCache;
 
@@ -361,7 +361,7 @@ class Entity
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 
@@ -373,7 +373,7 @@ class Entity
         return $this->postcode;
     }
 
-    public function setPostcode(string $postcode): self
+    public function setPostcode(?string $postcode): self
     {
         $this->postcode = $postcode;
 
@@ -385,7 +385,7 @@ class Entity
         return $this->town;
     }
 
-    public function setTown(string $town): self
+    public function setTown(?string $town): self
     {
         $this->town = $town;
 
@@ -397,7 +397,7 @@ class Entity
         return $this->state;
     }
 
-    public function setState(string $state): self
+    public function setState(?string $state): self
     {
         $this->state = $state;
 
@@ -409,7 +409,7 @@ class Entity
         return $this->country;
     }
 
-    public function setCountry(string $country): self
+    public function setCountry(?string $country): self
     {
         $this->country = $country;
 
@@ -421,7 +421,7 @@ class Entity
         return $this->website;
     }
 
-    public function setWebsite(string $website): self
+    public function setWebsite(?string $website): self
     {
         $this->website = $website;
 
@@ -433,7 +433,7 @@ class Entity
         return $this->phonenumber;
     }
 
-    public function setPhonenumber(string $phonenumber): self
+    public function setPhonenumber(?string $phonenumber): self
     {
         $this->phonenumber = $phonenumber;
 
@@ -445,7 +445,7 @@ class Entity
         return $this->fax;
     }
 
-    public function setFax(string $fax): self
+    public function setFax(?string $fax): self
     {
         $this->fax = $fax;
 
@@ -457,7 +457,7 @@ class Entity
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
@@ -469,7 +469,7 @@ class Entity
         return $this->adminEmail;
     }
 
-    public function setAdminEmail(string $adminEmail): self
+    public function setAdminEmail(?string $adminEmail): self
     {
         $this->adminEmail = $adminEmail;
 
@@ -481,7 +481,7 @@ class Entity
         return $this->adminEmailName;
     }
 
-    public function setAdminEmailName(string $adminEmailName): self
+    public function setAdminEmailName(?string $adminEmailName): self
     {
         $this->adminEmailName = $adminEmailName;
 
@@ -493,7 +493,7 @@ class Entity
         return $this->adminReply;
     }
 
-    public function setAdminReply(string $adminReply): self
+    public function setAdminReply(?string $adminReply): self
     {
         $this->adminReply = $adminReply;
 
@@ -505,7 +505,7 @@ class Entity
         return $this->adminReplyName;
     }
 
-    public function setAdminReplyName(string $adminReplyName): self
+    public function setAdminReplyName(?string $adminReplyName): self
     {
         $this->adminReplyName = $adminReplyName;
 
@@ -517,7 +517,7 @@ class Entity
         return $this->notificationSubjectTag;
     }
 
-    public function setNotificationSubjectTag(string $notificationSubjectTag): self
+    public function setNotificationSubjectTag(?string $notificationSubjectTag): self
     {
         $this->notificationSubjectTag = $notificationSubjectTag;
 
@@ -529,7 +529,7 @@ class Entity
         return $this->ldapDn;
     }
 
-    public function setLdapDn(string $ldapDn): self
+    public function setLdapDn(?string $ldapDn): self
     {
         $this->ldapDn = $ldapDn;
 
@@ -541,7 +541,7 @@ class Entity
         return $this->tag;
     }
 
-    public function setTag(string $tag): self
+    public function setTag(?string $tag): self
     {
         $this->tag = $tag;
 
@@ -554,7 +554,7 @@ class Entity
         return $this->mailDomain;
     }
 
-    public function setMailDomain(string $mailDomain): self
+    public function setMailDomain(?string $mailDomain): self
     {
         $this->mailDomain = $mailDomain;
 
@@ -566,7 +566,7 @@ class Entity
         return $this->entityLdapfilter;
     }
 
-    public function setEntityLdapfilter(string $entityLdapfilter): self
+    public function setEntityLdapfilter(?string $entityLdapfilter): self
     {
         $this->entityLdapfilter = $entityLdapfilter;
 
@@ -578,7 +578,7 @@ class Entity
         return $this->mailingSignature;
     }
 
-    public function setMailingSignature(string $mailingSignature): self
+    public function setMailingSignature(?string $mailingSignature): self
     {
         $this->mailingSignature = $mailingSignature;
 
@@ -866,7 +866,7 @@ class Entity
         return $this->inquestURL;
     }
 
-    public function setInquestURL(string $inquestURL): self
+    public function setInquestURL(?string $inquestURL): self
     {
         $this->inquestURL = $inquestURL;
 
@@ -878,7 +878,7 @@ class Entity
         return $this->autofillWarrantyDate;
     }
 
-    public function setAutofillWarrantyDate(string $autofillWarrantyDate): self
+    public function setAutofillWarrantyDate(?string $autofillWarrantyDate): self
     {
         $this->autofillWarrantyDate = $autofillWarrantyDate;
 
@@ -890,7 +890,7 @@ class Entity
         return $this->autofillUseDate;
     }
 
-    public function setAutofillUseDate(string $autofillUseDate): self
+    public function setAutofillUseDate(?string $autofillUseDate): self
     {
         $this->autofillUseDate = $autofillUseDate;
 
@@ -902,7 +902,7 @@ class Entity
         return $this->autofillBuyDate;
     }
 
-    public function setAutofillBuyDate(string $autofillBuyDate): self
+    public function setAutofillBuyDate(?string $autofillBuyDate): self
     {
         $this->autofillBuyDate = $autofillBuyDate;
 
@@ -914,7 +914,7 @@ class Entity
         return $this->autofillDeliveryDate;
     }
 
-    public function setAutofillDeliveryDate(string $autofillDeliveryDate): self
+    public function setAutofillDeliveryDate(?string $autofillDeliveryDate): self
     {
         $this->autofillDeliveryDate = $autofillDeliveryDate;
 
@@ -926,7 +926,7 @@ class Entity
         return $this->autofillOrderDate;
     }
 
-    public function setAutofillOrderDate(string $autofillOrderDate): self
+    public function setAutofillOrderDate(?string $autofillOrderDate): self
     {
         $this->autofillOrderDate = $autofillOrderDate;
 
@@ -1097,7 +1097,7 @@ class Entity
         return $this->customCssCode;
     }
 
-    public function setCustomCssCode(string $customCssCode): self
+    public function setCustomCssCode(?string $customCssCode): self
     {
         $this->customCssCode = $customCssCode;
 
@@ -1109,7 +1109,7 @@ class Entity
         return $this->latitude;
     }
 
-    public function setLatitude(string $latitude): self
+    public function setLatitude(?string $latitude): self
     {
         $this->latitude = $latitude;
 
@@ -1121,7 +1121,7 @@ class Entity
         return $this->longitude;
     }
 
-    public function setLongitude(string $longitude): self
+    public function setLongitude(?string $longitude): self
     {
         $this->longitude = $longitude;
 
@@ -1133,7 +1133,7 @@ class Entity
         return $this->altitude;
     }
 
-    public function setAltitude(string $altitude): self
+    public function setAltitude(?string $altitude): self
     {
         $this->altitude = $altitude;
 
