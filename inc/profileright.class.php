@@ -55,7 +55,7 @@ class ProfileRight extends CommonDBChild
      */
     public static function getAllPossibleRights()
     {
-        global $DB, $GLPI_CACHE;
+        global $GLPI_CACHE;
 
         $rights = [];
 
@@ -63,12 +63,12 @@ class ProfileRight extends CommonDBChild
             !$GLPI_CACHE->has('all_possible_rights')
             || count($GLPI_CACHE->get('all_possible_rights')) == 0
         ) {
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT'          => 'name',
                'DISTINCT'        => true,
                'FROM'            => self::getTable()
             ]);
-            while ($right = $iterator->next()) {
+            while ($right = $request->fetchAssociative()) {
                 // By default, all rights are NULL ...
                 $rights[$right['name']] = '';
             }
@@ -106,9 +106,9 @@ class ProfileRight extends CommonDBChild
         if (count($rights) > 0) {
             $query['WHERE']['name'] = $rights;
         }
-        $iterator = $DB->request($query);
+        $request = self::getAdapter()->request($query);
         $rights = [];
-        while ($right = $iterator->next()) {
+        while ($right = $request->fetchAssociative()) {
             $rights[$right['name']] = $right['rights'];
         }
         return $rights;
@@ -127,12 +127,12 @@ class ProfileRight extends CommonDBChild
         $ok = true;
         $GLPI_CACHE->set('all_possible_rights', []);
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
             'SELECT'   => ['id'],
             'FROM'     => Profile::getTable()
         ]);
 
-        while ($profile = $iterator->next()) {
+        while ($profile = $request->fetchAssociative()) {
             $profiles_id = $profile['id'];
             foreach ($rights as $name) {
                 $res = $DB->insert(
@@ -190,9 +190,15 @@ class ProfileRight extends CommonDBChild
 
         $profiles = [];
         $ok       = true;
-        foreach ($DB->request('glpi_profilerights', $condition) as $data) {
-            $profiles[] = $data['profiles_id'];
-        }
+        $request = Profile::getAdapter()->request([
+            'SELECT' => ['profiles_id'],
+            'FROM'   => 'glpi_profilerights',
+            'WHERE'  => $condition
+        ]);
+        
+        $results = $request->fetchAllAssociative();
+        $profiles = array_column($results, 'profiles_id');
+        
         if (count($profiles)) {
             $result = $DB->update(
                 'glpi_profilerights',
@@ -232,9 +238,9 @@ class ProfileRight extends CommonDBChild
            'FROM'   => self::getTable(),
            'WHERE'  => ['name' => $initialright] + $condition
         ];
-        $iterator = $DB->request($criteria);
+        $request = self::getAdapter()->request($criteria);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $profiles[$data['profiles_id']] = $data['rights'];
         }
         if (count($profiles)) {
@@ -273,7 +279,7 @@ class ProfileRight extends CommonDBChild
         ]);
 
         $expr = 'NOT EXISTS ' . $subq->getQuery();
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => 'POSSIBLE.name AS NAME',
            'DISTINCT'        => true,
            'FROM'            => 'glpi_profilerights AS POSSIBLE',
@@ -281,8 +287,8 @@ class ProfileRight extends CommonDBChild
               new \QueryExpression($expr)
            ]
         ]);
-
-        if ($iterator->count() === 0) {
+        $results = $request->fetchAllAssociative();
+        if (count($results) === 0) {
             return;
         }
 
@@ -294,7 +300,7 @@ class ProfileRight extends CommonDBChild
             ]
         );
         $stmt = $DB->prepare($query);
-        while ($right = $iterator->next()) {
+        foreach ($results as $right) {
             $stmt->bind_param('ss', $profiles_id, $right['NAME']);
             $stmt->execute();
         }

@@ -619,8 +619,6 @@ class Profile extends CommonDBTM
      **/
     public static function currentUserHaveMoreRightThan($IDs = [])
     {
-        global $DB;
-
         if (Session::isCron()) {
             return true;
         }
@@ -634,12 +632,12 @@ class Profile extends CommonDBTM
         }
         $under_profiles = [];
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => self::getUnderActiveProfileRestrictCriteria()
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $under_profiles[$data['id']] = $data['id'];
         }
 
@@ -3350,8 +3348,6 @@ class Profile extends CommonDBTM
      **/
     public static function dropdownUnder($options = [])
     {
-        global $DB;
-
         $p['name']  = 'profiles_id';
         $p['value'] = '';
         $p['rand']  = mt_rand();
@@ -3362,14 +3358,14 @@ class Profile extends CommonDBTM
             }
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => self::getUnderActiveProfileRestrictCriteria(),
            'ORDER'  => 'name'
         ]);
 
         //New rule -> get the next free ranking
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $profiles[$data['id']] = $data['name'];
         }
         Dropdown::showFromArray(
@@ -3391,10 +3387,17 @@ class Profile extends CommonDBTM
      **/
     public static function getDefault()
     {
-        global $DB;
-
-        foreach ($DB->request('glpi_profiles', ['is_default' => 1]) as $data) {
-            return $data['id'];
+        $request = Profile::getAdapter()->request([
+            'SELECT' => ['id'],
+            'FROM'   => 'glpi_profiles',
+            'WHERE'  => ['is_default' => 1],
+            'LIMIT'  => 1
+        ]);
+        
+        $result = $request->fetchAssociative();
+        
+        if ($result) {
+            return $result['id'];
         }
         return 0;
     }
@@ -3494,14 +3497,12 @@ class Profile extends CommonDBTM
      */
     public function getDomainRecordTypes()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => DomainRecordType::getTable(),
         ]);
 
         $types = [];
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $types[$row['id']] = $row['name'];
         }
         return $types;
@@ -3555,9 +3556,7 @@ class Profile extends CommonDBTM
      */
     public static function haveUserRight($user_id, $rightname, $rightvalue, $entity_id)
     {
-        global $DB;
-
-        $result = $DB->request(
+        $result = self::getAdapter()->request(
             [
               'COUNT'      => 'cpt',
               'FROM'       => 'glpi_profilerights',
@@ -3585,7 +3584,7 @@ class Profile extends CommonDBTM
             ]
         );
 
-        if (!$data = $result->next()) {
+        if (!$data = $result->fetchAssociative()) {
             return false;
         }
 
