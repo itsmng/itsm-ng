@@ -831,6 +831,8 @@ final class DbUtils {
             $ancestors = $GLPI_CACHE->get($ckey);
             if ($ancestors !== null) {
                return $ancestors;
+            } else {
+                $ancestors = [];
             }
          }
       }
@@ -856,7 +858,7 @@ final class DbUtils {
                $parent     = $row[$parentIDfield];
 
                // Return datas from cache in DB
-               if (!empty($rancestors)) {
+               if (isset($rancestors) && !empty($rancestors)) {
                   $ancestors = array_replace($ancestors, $this->importArrayFromDB($rancestors, true));
                } else {
                   $loc_id_found = [];

@@ -49,7 +49,7 @@ class NotificationTemplate extends CommonDBTM {
    //Store templates for each language
    public $templates_by_languages = [];
 
-   static $rightname = 'config';
+   static $rightname = 'notificationtemplate';
 
    public function getCloneRelations() :array {
       return [
