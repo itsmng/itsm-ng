@@ -86,7 +86,8 @@ class Ticket extends CommonITILObject
     public const SURVEY           = 131072;
     public const READDOCUMENT     = 262144;
 
-
+    protected $userentities;
+    protected $countentitiesforuser;
 
     public function getForbiddenStandardMassiveAction()
     {
