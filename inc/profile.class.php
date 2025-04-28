@@ -2089,6 +2089,11 @@ class Profile extends CommonDBTM
             'field'     => 'notification'
          ],
          [
+            'itemtype'  => 'NotificationTemplate',
+            'label'     => _n('Notification template', 'Notification templates', Session::getPluralNumber()),
+            'field'     => 'notificationtemplate'
+         ],
+         [
             'itemtype'  => 'SLM',
             'label'     => __('SLM'),
             'field'     => 'slm'
