@@ -100,14 +100,12 @@ class SavedSearch_User extends CommonDBRelation
      */
     public static function getDefault($users_id, $itemtype)
     {
-        global $DB;
-
-        $iter = $DB->request(['SELECT' => 'savedsearches_id',
+        $iter = self::getAdapter()->request(['SELECT' => 'savedsearches_id',
                               'FROM'   => 'glpi_savedsearches_users',
                               'WHERE'  => ['users_id' => $users_id,
-                                           'itemtype' => $itemtype]]);
+                                           'itemtype' => $itemtype]])->fetchAllAssociative();
         if (count($iter)) {
-            $row = $iter->next();
+            $row = $iter[0];
             // Load default bookmark for this $itemtype
             $bookmark = new SavedSearch();
             // Only get data for bookmarks
