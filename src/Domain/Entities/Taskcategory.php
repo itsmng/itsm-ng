@@ -229,7 +229,7 @@ class Taskcategory
     /**
      * Get the value of taskcategory
      */
-    public function getTaskcategory()
+    public function getTaskcategory(): ?Taskcategory
     {
         return $this->taskcategory;
     }
@@ -237,9 +237,10 @@ class Taskcategory
     /**
      * Set the value of taskcategory
      *
-     * @return  self
+     * @param Taskcategory|null $taskcategory
+     * @return self
      */
-    public function setTaskcategory($taskcategory)
+    public function setTaskcategory(?Taskcategory $taskcategory): self
     {
         $this->taskcategory = $taskcategory;
 

@@ -211,14 +211,12 @@ class ProjectCost extends CommonDBChild
     **/
     public static function cloneProject($oldid, $newid)
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['projects_id' => $oldid]
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $cd                   = new self();
             unset($data['id']);
             $data['projects_id'] = $newid;
@@ -266,16 +264,14 @@ class ProjectCost extends CommonDBChild
     **/
     public function getLastCostForProject($projects_id)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => ['projects_id' => $projects_id],
            'ORDER'  => ['end_date DESC', 'id DESC']
         ]);
-
-        if (count($iterator)) {
-            return $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            return $results[0];
         }
 
         return [];
@@ -349,7 +345,7 @@ class ProjectCost extends CommonDBChild
     **/
     public static function showForProject(Project $project, $withtemplate = 0)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $ID = $project->fields['id'];
 
@@ -363,11 +359,12 @@ class ProjectCost extends CommonDBChild
 
         echo "<div class='center'>";
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['projects_id' => $ID],
            'ORDER'  => ['begin_date']
         ]);
+        $results = $request->fetchAllAssociative();
 
         $rand   = mt_rand();
 
@@ -392,10 +389,10 @@ class ProjectCost extends CommonDBChild
         }
         $total = 0;
         echo "<table class='tab_cadre_fixehov' aria-label='Date'>";
-        echo "<tr class='noHover'><th colspan='5'>" . self::getTypeName(count($iterator)) .
+        echo "<tr class='noHover'><th colspan='5'>" . self::getTypeName(count($results)) .
               "</th></tr>";
 
-        if (count($iterator)) {
+        if (count($results)) {
             echo "<tr><th>" . __('Name') . "</th>";
             echo "<th>" . __('Begin date') . "</th>";
             echo "<th>" . __('End date') . "</th>";
@@ -414,7 +411,7 @@ class ProjectCost extends CommonDBChild
                 )
             );
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_2' " .
                       ($canedit
                          ? "style='cursor:pointer' onClick=\"viewEditCost" . $data['projects_id'] . "_" .

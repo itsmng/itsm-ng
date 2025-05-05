@@ -1189,8 +1189,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
      */
     public static function showShort($id, $options = [])
     {
-        global $DB;
-
         $p['output_type']            = Search::HTML_OUTPUT;
         $p['row_num']                = 0;
         $p['type_for_massiveaction'] = 0;
@@ -1243,12 +1241,12 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
             $first_col = '';
             $color     = '';
             if ($item->fields["projectstates_id"]) {
-                $iterator = $DB->request([
+                $request = self::getAdapter()->request([
                    'SELECT' => 'color',
                    'FROM'   => 'glpi_projectstates',
                    'WHERE'  => ['id' => $item->fields['projectstates_id']]
                 ]);
-                while ($colorrow = $iterator->next()) {
+                while ($colorrow = $request->fetchAssociative()) {
                     $color = $colorrow['color'];
                 }
                 $first_col = Dropdown::getDropdownName('glpi_projectstates', $item->fields["projectstates_id"]);
@@ -1456,20 +1454,19 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
      **/
     public function showChildren()
     {
-        global $DB;
-
         $ID   = $this->getID();
         $this->check($ID, READ);
         $rand = mt_rand();
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [
               $this->getForeignKeyField()   => $ID,
               'is_deleted'                  => 0
            ]
         ]);
-        $numrows = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
 
         if ($this->can($ID, UPDATE)) {
             echo "<div class='firstbloc'>";
@@ -1500,7 +1497,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
             );
 
             $i = 0;
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 Session::addToNavigateListItems('Project', $data["id"]);
                 Project::showShort($data['id'], ['row_num' => $i]);
                 $i++;
@@ -1866,13 +1863,18 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
     */
     public static function getDataToDisplayOnGantt($ID, $showall = true)
     {
-        global $DB;
-
         $todisplay = [];
         $project   = new self();
         if ($project->getFromDB($ID)) {
             $projects = [];
-            foreach ($DB->request('glpi_projects', ['projects_id' => $ID]) as $data) {
+            $request = static::getAdapter()->request([
+                'SELECT' => ['id'],
+                'FROM'   => 'glpi_projects',
+                'WHERE'  => ['projects_id' => $ID]
+            ]);
+            
+            $results = $request->fetchAllAssociative();
+            foreach ($results as $data) {
                 $projects += static::getDataToDisplayOnGantt($data['id']);
             }
             ksort($projects);
@@ -1975,8 +1977,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
     */
     public static function showGantt($ID)
     {
-        global $DB;
-
         if ($ID > 0) {
             $project = new Project();
             if ($project->getFromDB($ID) && $project->canView()) {
@@ -1987,7 +1987,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
         } else {
             $todisplay = [];
             // Get all root projects
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'FROM'   => 'glpi_projects',
                'WHERE'  => [
                   'projects_id'           => 0,
@@ -1995,7 +1995,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                   'is_template'           => 0
                ] + getEntitiesRestrictCriteria('glpi_projects', '', '', true)
             ]);
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 $todisplay += static::getDataToDisplayOnGantt($data['id'], false);
             }
             ksort($todisplay);
@@ -2101,8 +2101,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
 
     public static function getAllForKanban($active = true, $current_id = -1)
     {
-        global $DB;
-
         $items = [
            -1 => __('Global')
         ];
@@ -2128,24 +2126,28 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
             ];
         }
         $criteria += getEntitiesRestrictCriteria(self::getTable(), '', '', 'auto');
-        $iterator = $DB->request(array_merge_recursive([
-           'SELECT'   => [
-              'glpi_projects.id',
-              'glpi_projects.name',
-              'glpi_projects.is_deleted',
-              'glpi_projectstates.is_finished'],
-           'DISTINCT' => true,
-           'FROM'     => 'glpi_projects',
-           'LEFT JOIN' => $joins,
-           'WHERE'     => $criteria
-           ], self::getVisibilityCriteria()));
-        while ($data = $iterator->next()) {
+        $request = self::getAdapter()->request(array_merge_recursive([
+            'SELECT'    => [
+               'glpi_projects.id',
+               'glpi_projects.name',
+               'glpi_projects.is_deleted',
+               'glpi_projectstates.is_finished'
+            ],
+            'DISTINCT'  => true,
+            'FROM'      => 'glpi_projects',
+            'LEFT JOIN' => $joins,
+            'WHERE'     => $criteria
+         ], self::getVisibilityCriteria()));
+         
+         $items = [];
+         $results = $request->fetchAllAssociative();
+         foreach ($results as $data) {
             $items[$data['id']] = $data['name'];
-        }
+         }
 
         if ($current_id > -1 && !isset($items[$current_id])) {
             // Current Kanban is not in the list yet
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT'   => [
                   'glpi_projects.id',
                   'glpi_projects.name',
@@ -2153,8 +2155,9 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                'FROM'     => 'glpi_projects',
                'WHERE'     => ['id' => $current_id]
             ]);
-            if ($iterator->count()) {
-                $data = $iterator->next();
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
+                $data = $results[0];
                 $items[$data['id']] = $data['name'];
             }
         }
@@ -2185,8 +2188,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
 
     public static function getDataToDisplayOnKanban($ID, $criteria = [])
     {
-        global $DB;
-
         $items      = [];
 
         // Get sub-projects
@@ -2215,9 +2216,9 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
             $request['WHERE'] += $criteria;
         }
 
-        $iterator = $DB->request($request);
+        $request = self::getAdapter()->request($request);
         $projects = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $projects[$data['id']] = $data;
         }
         $project_ids = array_map(function ($e) {
@@ -2260,7 +2261,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
             }));
             if (count($all_ids)) {
                 $itemtable = $itemtype::getTable();
-                $all_items = $DB->request([
+                $all_items = self::getAdapter()->request([
                    'SELECT'    => $fields,
                    'FROM'      => $itemtable,
                    'WHERE'     => [
@@ -2268,7 +2269,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                    ]
                 ]);
                 $all_members[$itemtype] = [];
-                while ($data = $all_items->next()) {
+                while ($data = $all_items->fetchAssociative()) {
                     $all_members[$itemtype][] = $data;
                 }
             } else {
@@ -2687,15 +2688,15 @@ JAVASCRIPT;
            ]
         ]);
         $union = new QueryUnion([$query1, $query2], false, 'all_items');
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => [
               new QueryExpression('CAST(AVG(' . $DB->quoteName('percent_done') . ') AS UNSIGNED) AS percent_done')
            ],
            'FROM'   => $union
         ]);
-
-        if ($iterator->count()) {
-            $avg = $iterator->next()['percent_done'];
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            $avg = $results[0]['percent_done'];
             $percent_done = is_null($avg) ? 0 : $avg;
         } else {
             $percent_done = 0;
