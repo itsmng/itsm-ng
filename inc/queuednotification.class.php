@@ -177,8 +177,8 @@ class QueuedNotification extends CommonDBTM
 
                ]
             ];
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 $this->delete(['id' => $data['id']], 1);
             }
         }
@@ -539,10 +539,12 @@ class QueuedNotification extends CommonDBTM
             $query = $base_query;
             $query['WHERE']['mode'] = $mode;
 
-            $iterator = $DB->request($query);
-            if ($iterator->numRows() > 0) {
+            $request = self::getAdapter()->request($query);
+            $results = $request->fetchAllAssociative();
+
+            if (count($results) > 0) {
                 $pendings[$mode] = [];
-                while ($row = $iterator->next()) {
+                foreach ($results as $row) {
                     $pendings[$mode][] = $row;
                 }
             }
