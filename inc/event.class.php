@@ -242,7 +242,7 @@ class Event extends CommonDBTM
      **/
     public static function showForUser($user = "")
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         // Show events from $result in table form
         list($logItemtype, $logService) = self::logArray();
@@ -254,16 +254,16 @@ class Event extends CommonDBTM
         }
 
         // Query Database
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_events',
            'WHERE'  => ['message' => ['LIKE', $usersearch . '%']],
            'ORDER'  => 'date DESC',
            'LIMIT'  => (int)$_SESSION['glpilist_limit']
         ]);
-
+        $results = $request->fetchAllAssociative();
         // Number of results
-        $number = count($iterator);
-        ;
+        $number = count($results);
+        
 
         // No Events in database
         if ($number < 1) {
@@ -289,7 +289,7 @@ class Event extends CommonDBTM
         echo "<th width='10%'>" . __('Service') . "</th>";
         echo "<th width='50%'>" . __('Message') . "</th></tr>";
 
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $ID       = $data['id'];
             $items_id = $data['items_id'];
             $type     = $data['type'];

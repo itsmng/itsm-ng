@@ -455,7 +455,7 @@ class Location extends CommonTreeDropdown
         $criteria['START'] = $start;
         $criteria['LIMIT'] = $_SESSION['glpilist_limit'];
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
 
         // Execute a second request to get the total number of rows
         unset($criteria['SELECT']);
@@ -463,7 +463,7 @@ class Location extends CommonTreeDropdown
         unset($criteria['LIMIT']);
 
         $criteria['COUNT'] = 'total';
-        $number = $DB->request($criteria)->next()['total'];
+        $number = $this::getAdapter()->request($criteria)->fetchAssociative()['total'];
 
         // Mini Search engine
         echo "<table class='tab_cadre_fixe' aria-label='Search Item'>";
@@ -492,7 +492,8 @@ class Location extends CommonTreeDropdown
             echo "<th>" . __('Inventory number') . "</th>";
             echo "</tr>";
 
-            while ($data = $iterator->next()) {
+            // while ($data = $iterator->next()) {
+            foreach ($result as $data) {
                 $item = getItemForItemtype($data['type']);
                 $item->getFromDB($data['id']);
                 echo "<tr class='tab_bg_1'><td class='center top'>" . $item->getTypeName() . "</td>";

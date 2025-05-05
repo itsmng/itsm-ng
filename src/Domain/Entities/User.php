@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Itsmng\Domain\Entities\RequestType as EntitiesRequestType;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_users")]
 #[ORM\UniqueConstraint(name: "unicityloginauth", columns: ["name", "authtype", "auths_id"])]
 #[ORM\Index(name: "firstname", columns: ["firstname"])]
@@ -58,9 +59,6 @@ class User
     #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
     private $firstname;
 
-    #[ORM\Column(name: 'locations_id', type: 'integer', options: ['default' => 0])]
-    private $locationsId;
-
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
     private ?Location $location = null;
@@ -69,34 +67,34 @@ class User
     private $language;
 
     #[ORM\Column(name: 'use_mode', type: 'integer', options: ['default' => 0])]
-    private $useMode;
+    private $useMode = 0;
 
     #[ORM\Column(name: 'list_limit', type: 'integer', nullable: true)]
     private $listLimit;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
-    private $isActive;
+    private $isActive = 1;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
     #[ORM\Column(name: 'auths_id', type: 'integer', options: ['default' => 0])]
-    private $authsId;
+    private $authsId = 0;
 
     #[ORM\Column(name: 'authtype', type: 'integer', options: ['default' => 0])]
-    private $authtype;
+    private $authtype = 0;
 
     #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
     private $lastLogin;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'date_sync', type: 'datetime', nullable: true)]
     private $dateSync;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\ManyToOne(targetEntity: Profile::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(name: 'profiles_id', referencedColumnName: 'id', nullable: true)]
@@ -233,7 +231,7 @@ class User
     private $displayOptions;
 
     #[ORM\Column(name: 'is_deleted_ldap', type: 'boolean', options: ['default' => 0])]
-    private $isDeletedLdap;
+    private $isDeletedLdap = 0;
 
     #[ORM\Column(name: 'pdffont', type: 'string', length: 255, nullable: true)]
     private $pdffont;
@@ -274,11 +272,11 @@ class User
     #[ORM\Column(name: 'lock_directunlock_notification', type: 'boolean', nullable: true)]
     private $lockDirectunlockNotification;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     #[ORM\Column(name: 'highcontrast_css', type: 'boolean', nullable: true, options: ['default' => 0])]
-    private $highcontrastCss;
+    private $highcontrastCss = 0;
 
     #[ORM\Column(name: 'plannings', type: 'text', length: 65535, nullable: true)]
     private $plannings;
@@ -291,7 +289,7 @@ class User
     private ?Group $group = null;
 
     #[ORM\Column(name: 'users_id_supervisor', type: 'integer', options: ['default' => 0])]
-    private $usersIdSupervisor;
+    private $usersIdSupervisor = 0;
 
     #[ORM\Column(name: 'timezone', type: 'string', length: 50, nullable: true)]
     private $timezone;
@@ -312,37 +310,37 @@ class User
     private $accessZoomLevel;
 
     #[ORM\Column(name: 'access_font', type: 'string', length: 100, nullable: true)]
-    private $accessFont;
+    private $accessFont = null;
 
     #[ORM\Column(name: 'access_shortcuts', type: 'boolean', options: ['default' => 0], nullable: true)]
-    private $accessShortcuts;
+    private $accessShortcuts = 0;
 
     #[ORM\Column(name: 'access_custom_shortcuts', type: 'text', nullable: true)]
     private $accessCustomShortcuts;
 
     #[ORM\Column(name: 'menu_favorite', type: 'text', nullable: true, options: ["default" => "{}"])]
-    private $menuFavorite;
+    private $menuFavorite = '{}';
 
-    #[ORM\Column(name: 'menu_favorite_on', type: 'text', length: 65535, nullable: true, options: ["default" => "1"])]
-    private $menuFavoriteOn;
+    #[ORM\Column(name: 'menu_favorite_on', type: 'text', length: 65535, nullable: true, options: ["default" => 1])]
+    private $menuFavoriteOn = 1;
 
     #[ORM\Column(name: 'menu_position', type: 'text', length: 65535, nullable: true, options: ["default" => "menu-left"])]
     private $menuPosition;
 
-    #[ORM\Column(name: 'menu_small', type: 'text', length: 65535, nullable: true, options: ["default" => "false"])]
-    private $menuSmall;
+    #[ORM\Column(name: 'menu_small', type: 'text', length: 65535, nullable: true, options: ["default" => false])]
+    private $menuSmall = false;
 
-    #[ORM\Column(name: 'menu_width', type: 'text', length: 65535, nullable: true, options: ["default" => "null"])]
-    private $menuWidth;
+    #[ORM\Column(name: 'menu_width', type: 'text', length: 65535, nullable: true, options: ["default" => null])]
+    private $menuWidth = null;
 
     #[ORM\Column(name: 'menu_open', type: 'text', nullable: true, options: ["default" => "[]"])]
-    private $menuOpen;
+    private $menuOpen = "[]";
 
     #[ORM\Column(name: 'bubble_pos', type: 'text', length: 65535, nullable: true)]
     private $bubblePos;
 
     #[ORM\Column(name: 'accessibility_menu', type: 'boolean', options: ['default' => 0])]
-    private $accessibilityMenu;
+    private $accessibilityMenu = 0;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChangeUser::class)]
     private Collection $changeUsers;
@@ -471,17 +469,6 @@ class User
         return $this;
     }
 
-    public function getLocationsId(): ?int
-    {
-        return $this->locationsId;
-    }
-
-    public function setLocationsId(?int $locationsId): self
-    {
-        $this->locationsId = $locationsId;
-
-        return $this;
-    }
 
     public function getLanguage(): ?string
     {

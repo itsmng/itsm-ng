@@ -58,17 +58,15 @@ class Profile_Reminder extends CommonDBRelation
     **/
     public static function getProfiles($reminders_id)
     {
-        global $DB;
-
         $prof  = [];
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'reminders_id' => $reminders_id
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $prof[$data['profiles_id']][] = $data;
         }
         return $prof;

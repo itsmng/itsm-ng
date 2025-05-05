@@ -410,16 +410,14 @@ class KnowbaseItemTranslation extends CommonDBChild
     **/
     public static function getAlreadyTranslatedForItem($item)
     {
-        global $DB;
-
         $tab = [];
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => getTableForItemType(__CLASS__),
            'WHERE'  => ['knowbaseitems_id' => $item->getID()]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $tab[$data['language']] = $data['language'];
         }
         return $tab;

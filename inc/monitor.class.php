@@ -334,9 +334,7 @@ class Monitor extends CommonDBTM
     **/
     public function getLinkedItems()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'computers_id',
            'FROM'   => 'glpi_computers_items',
            'WHERE'  => [
@@ -345,7 +343,7 @@ class Monitor extends CommonDBTM
            ]
         ]);
         $tab = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $tab['Computer'][$data['computers_id']] = $data['computers_id'];
         }
         return $tab;

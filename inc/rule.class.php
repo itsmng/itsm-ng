@@ -169,7 +169,7 @@ class Rule extends CommonDBTM
     public static function dropdownConditions($options = [])
     {
 
-        $p['name']      = 'condition';
+        $p['name']      = 'conditions';
         $p['value']     = 0;
         $p['display']   = true;
         $p['on_change'] = '';
@@ -620,8 +620,8 @@ class Rule extends CommonDBTM
                     $entity = "";
                 }
 
-                if (isset($input['condition'])) {
-                    $condition = $input['condition'];
+                if (isset($input['conditions'])) {
+                    $condition = $input['conditions'];
                 } else {
                     $condition = 0;
                 }
@@ -629,7 +629,7 @@ class Rule extends CommonDBTM
 
                 Rule::dropdown(['sub_type'        => $input['rule_class_name'],
                                      'name'            => "ranking",
-                                     'condition'       => $condition,
+                                     'conditions'       => $condition,
                                      'entity'          => $entity,
                                      'width'           => '50%']);
                 echo "<br><br><input type='submit' name='massiveaction' class='submit' value='" .
@@ -938,8 +938,8 @@ class Rule extends CommonDBTM
                           'col_lg' => 6,
                       ],
                       __('Use rule for') => !$this->useConditions() ? [] : [
-                          'name' => 'condition',
-                          'value' => $this->fields["condition"],
+                          'name' => 'conditions',
+                          'value' => $this->fields["conditions"],
                           'type' => 'select',
                           'values' => $this->getConditionsArray(),
                           'col_lg' => 6,
@@ -1271,7 +1271,7 @@ class Rule extends CommonDBTM
 
         $fields = [
           'criterion' => _n('Criterion', 'Criteria', 1),
-          'condition' => __('Condition'),
+          'conditions' => __('Condition'),
           'reason'    => __('Reason'),
 
         ];
@@ -1298,7 +1298,7 @@ class Rule extends CommonDBTM
                'criterion' => "<button class='btn btn-sm' onclick=" .
                    "viewEditCriteria" . $criterion->fields[$this->rules_id_field] . $criterion->fields["id"] . "$rand()>" .
                    $this->getCriteriaName($criterion->fields["criteria"]) . "</button>",
-               'condition' => RuleCriteria::getConditionByID($criterion->fields["condition"], get_class($this), $criterion->fields["criteria"]),
+               'conditions' => RuleCriteria::getConditionByID($criterion->fields["conditions"], get_class($this), $criterion->fields["criteria"]),
                'reason' => $this->getCriteriaDisplayPattern($criterion->fields["criteria"], $criterion->fields["condition"], $criterion->fields["pattern"]),
             ];
             $massiveActionValues[$criterion->fields['id']] = sprintf('item[%s][%s]', $criterion::class, $criterion->fields['id']);
@@ -1707,7 +1707,7 @@ class Rule extends CommonDBTM
         if (!is_array($input[$criteria->fields["criteria"]])) {
             $value = $this->getCriteriaValue(
                 $criteria->fields["criteria"],
-                $criteria->fields["condition"],
+                $criteria->fields["conditions"],
                 $input[$criteria->fields["criteria"]]
             );
 
@@ -1721,7 +1721,7 @@ class Rule extends CommonDBTM
             //If the value is, in fact, an array of values
             // Negative condition : Need to match all condition (never be)
             if (
-                in_array($criteria->fields["condition"], [self::PATTERN_IS_NOT,
+                in_array($criteria->fields["conditions"], [self::PATTERN_IS_NOT,
                                                                self::PATTERN_NOT_CONTAIN,
                                                                self::REGEX_NOT_MATCH,
                                                                self::PATTERN_DOES_NOT_EXISTS])
@@ -1730,7 +1730,7 @@ class Rule extends CommonDBTM
                 foreach ($input[$criteria->fields["criteria"]] as $tmp) {
                     $value = $this->getCriteriaValue(
                         $criteria->fields["criteria"],
-                        $criteria->fields["condition"],
+                        $criteria->fields["conditions"],
                         $tmp
                     );
 
@@ -1750,7 +1750,7 @@ class Rule extends CommonDBTM
                 foreach ($input[$criteria->fields["criteria"]] as $crit) {
                     $value = $this->getCriteriaValue(
                         $criteria->fields["criteria"],
-                        $criteria->fields["condition"],
+                        $criteria->fields["conditions"],
                         $crit
                     );
 
@@ -2011,7 +2011,7 @@ class Rule extends CommonDBTM
         echo "<td>" . $link . "</td>";
         echo "<td>" . $this->fields["description"] . "</td>";
         if ($this->useConditions()) {
-            echo "<td>" . $this->getConditionName($this->fields["condition"]) . "</td>";
+            echo "<td>" . $this->getConditionName($this->fields["conditions"]) . "</td>";
         }
         echo "<td>" . Dropdown::getYesNo($this->fields["is_active"]) . "</td>";
 
@@ -2037,7 +2037,7 @@ class Rule extends CommonDBTM
                 Html::showSimpleForm(
                     $target,
                     ['action' => 'up',
-                                                    'condition' => $active_condition],
+                                                    'conditions' => $active_condition],
                     '',
                     ['type' => $this->fields["sub_type"],
                                            'id'   => $this->fields["id"],],
@@ -2059,7 +2059,7 @@ class Rule extends CommonDBTM
                 Html::showSimpleForm(
                     $target,
                     ['action' => 'down',
-                                                    'condition' => $active_condition],
+                                                    'conditions' => $active_condition],
                     '',
                     ['type' => $this->fields["sub_type"],
                                            'id'   => $this->fields["id"]],
@@ -2204,7 +2204,7 @@ class Rule extends CommonDBTM
             echo "<tr class='tab_bg_1'>";
             $criteria->getFromDB($criteria_result["id"]);
             echo $this->getMinimalCriteriaText($criteria->fields);
-            if ($criteria->fields['condition'] != self::PATTERN_FIND) {
+            if ($criteria->fields['conditions'] != self::PATTERN_FIND) {
                 echo "<td class='b'>" . Dropdown::getYesNo($criteria_result["result"]) . "</td></tr>\n";
             } else {
                 echo "<td class='b'>" . Dropdown::EMPTY_VALUE . "</td></tr>\n";
@@ -2306,13 +2306,13 @@ class Rule extends CommonDBTM
 
         $text  = "<td $addtotd>" . $this->getCriteriaName($fields["criteria"]) . "</td>";
         $text .= "<td $addtotd>" . RuleCriteria::getConditionByID(
-            $fields["condition"],
+            $fields["conditions"],
             get_class($this),
             $fields["criteria"]
         ) . "</td>";
         $text .= "<td $addtotd>" . $this->getCriteriaDisplayPattern(
             $fields["criteria"],
-            $fields["condition"],
+            $fields["conditions"],
             $fields["pattern"]
         ) . "</td>";
         return $text;
@@ -2492,7 +2492,7 @@ class Rule extends CommonDBTM
                     renderTwigTemplate('macros/input.twig', [
                      'type' => 'select',
                      'name' => $name,
-                     'values' => getOptionForItems(getItemTypeForTable($crit['table']), $crit['condition'] ?? []),
+                     'values' => getOptionForItems(getItemTypeForTable($crit['table']), $crit['conditions'] ?? []),
                      'value' => $value,
                     ]);
 
@@ -2817,7 +2817,7 @@ class Rule extends CommonDBTM
                     $this->displayCriteriaSelectPattern(
                         $criterion->fields['criteria'],
                         $criterion->fields['criteria'],
-                        $criterion->fields['condition'],
+                        $criterion->fields['conditions'],
                         $value,
                         true
                     );
@@ -2883,7 +2883,7 @@ class Rule extends CommonDBTM
         $p['sub_type']        = '';
         $p['name']            = 'rules_id';
         $p['entity'] = '';
-        $p['condition'] = 0;
+        $p['conditions'] = 0;
 
         if (is_array($options) && count($options)) {
             foreach ($options as $key => $val) {
@@ -2898,11 +2898,11 @@ class Rule extends CommonDBTM
         $conditions = [
            'sub_type' => $p['sub_type']
         ];
-        if ($p['condition'] > 0) {
-            $conditions['condition'] = ['&', (int)$p['condition']];
+        if ($p['conditions'] > 0) {
+            $conditions['conditions'] = ['&', (int)$p['conditions']];
         }
 
-        $p['condition'] = $conditions;
+        $p['conditions'] = $conditions;
         return Dropdown::show($p['sub_type'], $p);
     }
 

@@ -3126,11 +3126,11 @@ class Config extends CommonDBTM
             $where   = ['id' => 1];
         }
 
-        $row = $DB->request([
+        $row = self::getAdapter()->request([
            'SELECT' => [$select],
            'FROM'   => $table,
            'WHERE'  => $where
-        ])->next();
+        ])->fetchAssociative();
 
         return trim($row['version']);
     }
@@ -3148,8 +3148,6 @@ class Config extends CommonDBTM
     **/
     public static function getConfigurationValues($context, array $names = [])
     {
-        global $DB;
-
         $query = [
            'FROM'   => self::getTable(),
            'WHERE'  => [
@@ -3161,9 +3159,9 @@ class Config extends CommonDBTM
             $query['WHERE']['name'] = $names;
         }
 
-        $iterator = $DB->request($query);
+        $results = self::getAdapter()->request($query);
         $result = [];
-        while ($line = $iterator->next()) {
+        while ($line = $results->fetchAssociative()) {
             $result[$line['name']] = $line['value'];
         }
         return $result;
@@ -3208,19 +3206,20 @@ class Config extends CommonDBTM
 
             Config::forceTable('glpi_configs');
 
-            $iterator = $DB->request(['FROM' => 'glpi_configs']);
-            if ($iterator->count() === 0) {
+            $request = self::getAdapter()->request(['FROM' => 'glpi_configs']);
+            $results = $request->fetchAllAssociative();
+            if (count($results) === 0) {
                 return false;
             }
 
-            if ($iterator->count() === 1) {
+            if (count($results) === 1) {
                 // 1 row = 0.78 to 0.84 config table schema
-                return $iterator->next();
+                return $results[0];
             }
 
             // multiple rows = 0.85+ config
             $config = [];
-            while ($row = $iterator->next()) {
+            foreach ($results as $row) {
                 if ('core' !== $row['context']) {
                     continue;
                 }

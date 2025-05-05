@@ -543,12 +543,10 @@ class Item_Devices extends CommonDBRelation
      **/
     public static function getItemsAssociatedTo($itemtype, $items_id)
     {
-        global $DB;
-
         $res = [];
         foreach (self::getItemAffinities($itemtype) as $link_type) {
             $table = $link_type::getTable();
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => $table,
                'WHERE'  => [
@@ -557,7 +555,7 @@ class Item_Devices extends CommonDBRelation
                ]
             ]);
 
-            while ($row = $iterator->next()) {
+            while ($row = $request->fetchAssociative()) {
                 $input = Toolbox::addslashes_deep($row);
                 $item = new $link_type();
                 $item->getFromDB($input['id']);
@@ -579,7 +577,7 @@ class Item_Devices extends CommonDBRelation
         Toolbox::deprecated('Use clone');
         foreach (self::getItemAffinities($itemtype) as $link_type) {
             $table = $link_type::getTable();
-            $olds = $DB->request([
+            $olds = self::getAdapter()->request([
                'FROM'   => $table,
                'WHERE'  => [
                   'itemtype'  => $itemtype,
@@ -587,7 +585,7 @@ class Item_Devices extends CommonDBRelation
                ]
             ]);
 
-            while ($data = $olds->next()) {
+            while ($data = $olds->fetchAssociative()) {
                 $link = new $link_type();
                 unset($data['id']);
                 $data['items_id']     = $newid;
@@ -655,7 +653,7 @@ class Item_Devices extends CommonDBRelation
 
     public static function showForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
         $is_device = ($item instanceof CommonDevice);
 
@@ -867,7 +865,8 @@ class Item_Devices extends CommonDBRelation
                 ];
                 $criteria['ORDERBY'] = $fk;
             }
-            $datas = iterator_to_array($DB->request($criteria));
+            $request = self::getAdapter()->request($criteria);
+            $datas = $request->fetchAllAssociative();
             if (count($datas)) {
                 $massiveActionContainerId = 'mass' . __CLASS__ . rand();
                 if ($canedit) {
@@ -1117,8 +1116,8 @@ class Item_Devices extends CommonDBRelation
             $peer = null;
         }
 
-        $iterator = $DB->request($criteria);
-        while ($link = $iterator->next()) {
+        $request = $this::getAdapter()->request($criteria);
+        while ($link = $request->fetchAssociative()) {
             Session::addToNavigateListItems(static::getType(), $link["id"]);
             $this->getFromDB($link['id']);
             $current_row  = $table_group->createRow();
@@ -1212,7 +1211,7 @@ class Item_Devices extends CommonDBRelation
 
             $content = [];
             // The order is to be sure that specific documents appear first
-            $doc_iterator = $DB->request([
+            $doc_request = $this::getAdapter()->request([
                'SELECT' => 'documents_id',
                'FROM'   => 'glpi_documents_items',
                'WHERE'  => [
@@ -1230,7 +1229,7 @@ class Item_Devices extends CommonDBRelation
                'ORDER'  => 'itemtype'
             ]);
             $document = new Document();
-            while ($document_link = $doc_iterator->next()) {
+            while ($document_link = $doc_request->fetchAssociative()) {
                 if ($document->can($document_link['documents_id'], READ)) {
                     $content[] = $document->getLink();
                 }

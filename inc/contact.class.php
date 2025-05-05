@@ -91,9 +91,8 @@ class Contact extends CommonDBTM
     **/
     public function getAddress()
     {
-        global $DB;
 
-        $iterator = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT' => [
               'glpi_suppliers.name',
               'glpi_suppliers.address',
@@ -114,7 +113,7 @@ class Contact extends CommonDBTM
            'WHERE'        => ['contacts_id' => $this->fields['id']]
         ]);
 
-        if ($data = $iterator->next()) {
+        if ($data = $result->fetchAssociative()) {
             return $data;
         }
     }
@@ -129,7 +128,7 @@ class Contact extends CommonDBTM
     {
         global $DB;
 
-        $iterator = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT' => [
               'glpi_suppliers.website AS website'
            ],
@@ -145,7 +144,7 @@ class Contact extends CommonDBTM
            'WHERE'        => ['contacts_id' => $this->fields['id']]
         ]);
 
-        if ($data = $iterator->next()) {
+        if ($data = $result->fetchAssociative()) {
             return $data['website'];
         }
         return '';

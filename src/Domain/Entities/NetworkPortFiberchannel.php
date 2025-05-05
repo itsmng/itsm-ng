@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name:'networkports_id', columns: ['networkports_id'])]
 #[ORM\Table(name: 'glpi_networkportfiberchannels')]
 #[ORM\Index(name: 'card', columns: ['items_devicenetworkcards_id'])]
@@ -13,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'speed', columns: ['speed'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
-class NetworkPortFiberChannel
+class NetworkPortFiberchannel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,15 +36,15 @@ class NetworkPortFiberChannel
     private ?Netpoint $netpoint = null;
 
     #[ORM\Column(name: 'wwn', type: 'string', length: 16, options: ['default' => ''], nullable: true)]
-    private $wwn;
+    private $wwn = '';
 
     #[ORM\Column(name: 'speed', type: 'integer', options: ['default' => 10, 'comment' => 'Mbit/s: 10, 100, 1000, 10000'])]
-    private $speed;
+    private $speed = 10;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     public function getId(): ?int
@@ -75,29 +77,34 @@ class NetworkPortFiberChannel
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(?\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
+
 
 
     /**

@@ -190,8 +190,8 @@ abstract class FQDNLabel extends CommonDBChild
                 $criteria['WHERE']['fqdns_id'] = $fqdns_id;
             }
 
-            $iterator = $DB->request($criteria);
-            while ($element = $iterator->next()) {
+            $result = self::getAdapter()->request($criteria);
+            while ($element = $result->fetchAssociative()) {
                 $IDs[$class][] = $element['id'];
             }
         }

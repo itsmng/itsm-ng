@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_slas')]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
@@ -26,13 +28,13 @@ class SLA
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 0])]
-    private $type;
+    private $type = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
-    private $comment;
+    private $comment = null;
 
     #[ORM\Column(name: 'number_time', type: 'integer')]
     private $numberTime;
@@ -41,16 +43,16 @@ class SLA
     #[ORM\JoinColumn(name: 'calendars_id', referencedColumnName: 'id', nullable: true)]
     private ?Calendar $calendar = null;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'definition_time', type: 'string', length: 255, nullable: true)]
-    private $definitionTime;
+    private $definitionTime = null;
 
     #[ORM\Column(name: 'end_of_working_day', type: 'boolean', options: ['default' => 0])]
-    private $endOfWorkingDay;
+    private $endOfWorkingDay = 0;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     #[ORM\ManyToOne(targetEntity: SLM::class)]
@@ -122,14 +124,29 @@ class SLA
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
+
+        return $this;
+    }
+    
+    public function getDateCreation(): DateTime
+    {
+        return $this->dateCreation ?? new DateTime();
+    }
+
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
+    {
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -155,17 +172,6 @@ class SLA
     {
         $this->endOfWorkingDay = $endOfWorkingDay;
 
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
         return $this;
     }
 

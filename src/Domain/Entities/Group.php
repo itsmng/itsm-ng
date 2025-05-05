@@ -2,10 +2,13 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_groups')]
 #[ORM\Index(name: "name", columns: ['name'])]
 #[ORM\Index(name: "ldap_field", columns: ['ldap_field'])]
@@ -34,22 +37,22 @@ class Group
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
-    private $name;
+    private $name = null;
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
-    private $comment;
+    private $comment = null;
 
     #[ORM\Column(name: 'ldap_field', type: 'string', length: 255, nullable: true)]
-    private $ldapField;
+    private $ldapField = null;
 
     #[ORM\Column(name: 'ldap_value', type: 'text', nullable: true, length: 65535)]
-    private $ldapValue;
+    private $ldapValue = null;
 
     #[ORM\Column(name: 'ldap_group_dn', type: 'text', nullable: true, length: 65535)]
-    private $ldapGroupDn;
+    private $ldapGroupDn = null;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -59,43 +62,43 @@ class Group
     private ?Group $group = null;
 
     #[ORM\Column(name: 'completename', type: 'text', nullable: true, length: 65535)]
-    private $completename;
+    private $completename = null;
 
     #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
-    private $ancestorsCache;
+    private $ancestorsCache = null;
 
     #[ORM\Column(name: 'sons_cache', type: 'text', nullable: true)]
-    private $sonsCache;
+    private $sonsCache = null;
 
     #[ORM\Column(name: 'is_requester', type: 'boolean', options: ['default' => true])]
-    private $isRequester;
+    private $isRequester = true;
 
     #[ORM\Column(name: 'is_watcher', type: 'boolean', options: ['default' => true])]
-    private $isWatcher;
+    private $isWatcher = true;
 
     #[ORM\Column(name: 'is_assign', type: 'boolean', options: ['default' => true])]
-    private $isAssign;
+    private $isAssign = true;
 
     #[ORM\Column(name: 'is_task', type: 'boolean', options: ['default' => true])]
-    private $isTask;
+    private $isTask = true;
 
     #[ORM\Column(name: 'is_notify', type: 'boolean', options: ['default' => true])]
-    private $isNotify;
+    private $isNotify = true;
 
     #[ORM\Column(name: 'is_itemgroup', type: 'boolean', options: ['default' => true])]
-    private $isItemgroup;
+    private $isItemgroup = true;
 
     #[ORM\Column(name: 'is_usergroup', type: 'boolean', options: ['default' => true])]
-    private $isUsergroup;
+    private $isUsergroup = true;
 
     #[ORM\Column(name: 'is_manager', type: 'boolean', options: ['default' => true])]
-    private $isManager;
+    private $isManager = true;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
-    private $dateCreation;
+    private $dateCreation = null;
 
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: ChangeGroup::class)]
     private Collection $changeGroups;
@@ -196,14 +199,16 @@ class Group
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(?\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
@@ -352,14 +357,15 @@ class Group
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -368,8 +374,11 @@ class Group
     /**
      * Get the value of groupKnowbaseItems
      */
-    public function getGroupKnowbaseItems()
+    public function getGroupKnowbaseItems(): Collection
     {
+        if (!isset($this->groupKnowbaseItems)) {
+            $this->groupKnowbaseItems = new ArrayCollection();
+        }
         return $this->groupKnowbaseItems;
     }
 
@@ -378,9 +387,9 @@ class Group
      *
      * @return  self
      */
-    public function setGroupKnowbaseItems($groupKnowbaseItems)
+    public function setGroupKnowbaseItems(?Collection $groupKnowbaseItems)
     {
-        $this->groupKnowbaseItems = $groupKnowbaseItems;
+        $this->groupKnowbaseItems = $groupKnowbaseItems ?? new ArrayCollection();
 
         return $this;
     }
@@ -388,22 +397,27 @@ class Group
     /**
      * Get the value of entity
      */
-    public function getEntity()
+    public function getEntity(): ?Entity
     {
         return $this->entity;
     }
 
+    public function getEntityId(): int
+    {
+        return $this->entity ? $this->entity->getId() : -1;
+    }
     /**
      * Set the value of entity
      *
-     * @return  self
+     * @param Entity|null $entity
+     * @return self
      */
-    public function setEntity($entity)
+    public function setEntity(?Entity $entity): self
     {
         $this->entity = $entity;
-
         return $this;
     }
+
 
     /**
      * Get the value of group
@@ -428,19 +442,23 @@ class Group
     /**
      * Get the value of groupProblems
      */
-    public function getGroupProblems()
+    public function getGroupProblems(): Collection
     {
+        if (!isset($this->groupProblems)) {
+            $this->groupProblems = new ArrayCollection();
+        }
         return $this->groupProblems;
     }
+    
 
     /**
      * Set the value of groupProblems
      *
      * @return  self
      */
-    public function setGroupProblems($groupProblems)
+    public function setGroupProblems(?Collection $groupProblems): self
     {
-        $this->groupProblems = $groupProblems;
+        $this->groupProblems = $groupProblems ?? new ArrayCollection();
 
         return $this;
     }
@@ -448,8 +466,11 @@ class Group
     /**
      * Get the value of groupReminders
      */
-    public function getGroupReminders()
+    public function getGroupReminders(): Collection
     {
+        if (!isset($this->groupReminders)) {
+            $this->groupReminders = new ArrayCollection();
+        }
         return $this->groupReminders;
     }
 
@@ -458,9 +479,9 @@ class Group
      *
      * @return  self
      */
-    public function setGroupReminders($groupReminders)
+    public function setGroupReminders(?Collection $groupReminders): self
     {
-        $this->groupReminders = $groupReminders;
+        $this->groupReminders = $groupReminders ?? new ArrayCollection();
 
         return $this;
     }
@@ -468,8 +489,11 @@ class Group
     /**
      * Get the value of groupRSSFeeds
      */
-    public function getGroupRSSFeeds()
+    public function getGroupRSSFeeds(): Collection
     {
+        if (!isset($this->groupRSSFeeds)) {
+            $this->groupRSSFeeds = new ArrayCollection();
+        }
         return $this->groupRSSFeeds;
     }
 
@@ -478,9 +502,9 @@ class Group
      *
      * @return  self
      */
-    public function setGroupRSSFeeds($groupRSSFeeds)
+    public function setGroupRSSFeeds(?Collection $groupRSSFeeds): self
     {
-        $this->groupRSSFeeds = $groupRSSFeeds;
+        $this->groupRSSFeeds = $groupRSSFeeds ?? new ArrayCollection();
 
         return $this;
     }
@@ -508,8 +532,11 @@ class Group
     /**
      * Get the value of changeGroups
      */
-    public function getChangeGroups()
+    public function getChangeGroups(): Collection
     {
+        if (!isset($this->changeGroups)) {
+            $this->changeGroups = new ArrayCollection();
+        }
         return $this->changeGroups;
     }
 
@@ -518,9 +545,9 @@ class Group
      *
      * @return  self
      */
-    public function setChangeGroups($changeGroups)
+    public function setChangeGroups(?Collection $changeGroups)
     {
-        $this->changeGroups = $changeGroups;
+        $this->changeGroups = $changeGroups ?? new ArrayCollection();
 
         return $this;
     }
@@ -528,8 +555,11 @@ class Group
     /**
      * Get the value of groupUsers
      */
-    public function getGroupUsers()
+    public function getGroupUsers(): Collection
     {
+        if (!isset($this->groupUsers)) {
+            $this->groupUsers = new ArrayCollection();
+        }
         return $this->groupUsers;
     }
 
@@ -538,9 +568,9 @@ class Group
      *
      * @return  self
      */
-    public function setGroupUsers($groupUsers)
+    public function setGroupUsers(?Collection $groupUsers): self
     {
-        $this->groupUsers = $groupUsers;
+        $this->groupUsers = $groupUsers ?? new ArrayCollection();
 
         return $this;
     }

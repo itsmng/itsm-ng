@@ -102,7 +102,7 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        $result = $DB->request(
+        $result = self::getAdapter()->request(
             [
               'FROM'   => self::getTable(),
               'WHERE'  => [
@@ -192,7 +192,7 @@ class CalendarSegment extends CommonDBChild
 
         $sum = 0;
         // Do not check hour if day before the end day of after the begin day
-        $iterator = $DB->request([
+        $results = self::getAdapter()->request([
            'SELECT' => [
               new \QueryExpression(
                   "
@@ -211,7 +211,7 @@ class CalendarSegment extends CommonDBChild
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $results->fetchAssociative()) {
             list($hour, $minute, $second) = explode(':', $data['TDIFF']);
             $sum += $hour * HOUR_TIMESTAMP + $minute * MINUTE_TIMESTAMP + $second;
         }
@@ -234,7 +234,7 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         // Do not check hour if day before the end day of after the begin day
-        $iterator = $DB->request([
+        $results = self::getAdapter()->request([
            'SELECT' => [
               new \QueryExpression(
                   "GREATEST(" . $DB->quoteName('begin') . ", " . $DB->quoteValue($begin_time)  . ") AS " . $DB->quoteName('BEGIN')
@@ -252,7 +252,7 @@ class CalendarSegment extends CommonDBChild
            'ORDER'  => 'begin'
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $results->fetchAssociative()) {
             list($hour, $minute, $second) = explode(':', $data['TDIFF']);
             $tstamp = $hour * HOUR_TIMESTAMP + $minute * MINUTE_TIMESTAMP + $second;
 
@@ -283,17 +283,15 @@ class CalendarSegment extends CommonDBChild
     **/
     public static function getFirstWorkingHour($calendars_id, $day)
     {
-        global $DB;
-
         // Do not check hour if day before the end day of after the begin day
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => ['MIN' => 'begin AS minb'],
            'FROM'   => 'glpi_calendarsegments',
            'WHERE'  => [
               'calendars_id' => $calendars_id,
               'day'          => $day
            ]
-        ])->next();
+        ])->fetchAssociative();
         return $result['minb'];
     }
 
@@ -311,14 +309,14 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         // Do not check hour if day before the end day of after the begin day
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => ['MAX' => 'end AS mend'],
            'FROM'   => 'glpi_calendarsegments',
            'WHERE'  => [
               'calendars_id' => $calendars_id,
               'day'          => $day
            ]
-        ])->next();
+        ])->fetchAssociative();
         return $result['mend'];
     }
 
@@ -337,7 +335,7 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         // Do not check hour if day before the end day of after the begin day
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_calendarsegments',
            'WHERE'  => [
@@ -346,7 +344,7 @@ class CalendarSegment extends CommonDBChild
               'begin'        => ['<=', $hour],
               'end'          => ['>=', $hour]
            ]
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'] > 0;
     }
 
@@ -368,7 +366,7 @@ class CalendarSegment extends CommonDBChild
         $canedit = $calendar->can($ID, UPDATE);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_calendarsegments',
            'WHERE'  => [
               'calendars_id' => $ID
@@ -379,8 +377,8 @@ class CalendarSegment extends CommonDBChild
               'end'
            ]
         ]);
-        $numrows = count($iterator);
-
+        $results = $request->fetchAllAssociative(); 
+        $numrows = count($results);
         if ($canedit) {
             echo "<div class='firstbloc'>";
             echo "<form name='calendarsegment_form$rand' aria-label='Add a Schedule' id='calendarsegment_form$rand' method='post'
@@ -427,7 +425,7 @@ class CalendarSegment extends CommonDBChild
         $daysofweek = Toolbox::getDaysOfWeekArray();
 
         if ($numrows) {
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_1'>";
 
                 if ($canedit) {

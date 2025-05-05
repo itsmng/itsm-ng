@@ -362,10 +362,8 @@ class Item_SoftwareVersion extends CommonDBRelation
      **/
     public static function countForVersion($softwareversions_id, $entity = '')
     {
-        global $DB;
-
         $item_version_table = self::getTable(__CLASS__);
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => ['itemtype'],
            'DISTINCT'  => true,
            'FROM'      => $item_version_table,
@@ -375,7 +373,7 @@ class Item_SoftwareVersion extends CommonDBRelation
         ]);
 
         $target_types = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $target_types[] = $data['itemtype'];
         }
 
@@ -409,7 +407,7 @@ class Item_SoftwareVersion extends CommonDBRelation
             if ($item->maybeTemplate()) {
                 $request['WHERE']["$itemtable.is_template"] = 0;
             }
-            $count += $DB->request($request)->next()['cpt'];
+            $count += self::getAdapter()->request($request)->fetchAssociative()['cpt'];
         }
         return $count;
     }
@@ -424,9 +422,7 @@ class Item_SoftwareVersion extends CommonDBRelation
      **/
     public static function countForSoftware($softwares_id)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => ['itemtype'],
            'DISTINCT'  => true,
            'FROM'      => 'glpi_softwareversions',
@@ -444,7 +440,7 @@ class Item_SoftwareVersion extends CommonDBRelation
         ]);
 
         $target_types = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $target_types[] = $data['itemtype'];
         }
 
@@ -484,7 +480,7 @@ class Item_SoftwareVersion extends CommonDBRelation
             if ($item->maybeTemplate()) {
                 $request['WHERE']["$itemtable.is_template"] = 0;
             }
-            $count += $DB->request($request)->next()['cpt'];
+            $count += self::getAdapter()->request($request)->fetchAssociative()['cpt'];
         }
         return $count;
     }
@@ -746,11 +742,11 @@ class Item_SoftwareVersion extends CommonDBRelation
            'LIMIT'        => $_SESSION['glpilist_limit'],
            'START'        => $start
         ];
-        $iterator = $DB->request($criteria);
-
+        $request = self::getAdapter()->request($criteria);
+        
         $rand = mt_rand();
 
-        if ($data = $iterator->next()) {
+        if ($data = $request->fetchAssociative()) {
             $softwares_id  = $data['sID'];
             $soft          = new Software();
             $showEntity    = ($soft->getFromDB($softwares_id) && $soft->isRecursive());
@@ -927,7 +923,6 @@ class Item_SoftwareVersion extends CommonDBRelation
      **/
     public static function showForVersionByEntity(SoftwareVersion $version)
     {
-        global $DB;
 
         $softwareversions_id = $version->getField('id');
 
@@ -943,14 +938,14 @@ class Item_SoftwareVersion extends CommonDBRelation
 
         $tot = 0;
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => ['id', 'completename'],
            'FROM'   => 'glpi_entities',
            'WHERE'  => getEntitiesRestrictCriteria('glpi_entities'),
            'ORDER'  => ['completename']
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $nb = self::countForVersion($softwareversions_id, $data['id']);
             if ($nb > 0) {
                 echo "<tr class='tab_bg_2'><td>" . $data["completename"] . "</td>";
@@ -992,12 +987,10 @@ class Item_SoftwareVersion extends CommonDBRelation
      * @param string     $sort  Field to sort on
      * @param string     $order Sort order
      *
-     * @return DBmysqlIterator
+     * @return Doctrine\DBAL\Result
      */
-    public static function getFromItem(CommonDBTM $item, $sort = null, $order = null): DBmysqlIterator
+    public static function getFromItem(CommonDBTM $item, $sort = null, $order = null): Doctrine\DBAL\Result
     {
-        global $DB;
-
         $selftable     = self::getTable(__CLASS__);
 
         $select = [
@@ -1055,8 +1048,8 @@ class Item_SoftwareVersion extends CommonDBRelation
             $request['WHERE']['glpi_softwares.softwarecategories_id'] = (int)$crit;
         }
 
-        $iterator = $DB->request($request);
-        return $iterator;
+        $request = self::getAdapter()->request($request);
+        return $request;
     }
 
     /**
@@ -1069,7 +1062,7 @@ class Item_SoftwareVersion extends CommonDBRelation
      **/
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         if (!Software::canView()) {
             return;
@@ -1083,7 +1076,7 @@ class Item_SoftwareVersion extends CommonDBRelation
 
         $crit         = Session::getSavedOption(__CLASS__, 'criterion', -1);
 
-        $iterator = self::getFromItem($item);
+        $resultRequest = self::getFromItem($item);
 
         if (
             (empty($withtemplate) || ($withtemplate != 2))
@@ -1164,7 +1157,8 @@ class Item_SoftwareVersion extends CommonDBRelation
             ];
             renderTwigForm($form);
         }
-        $number = count($iterator);
+        $results = $resultRequest->fetchAllAssociative();
+        $number = count($results);
         $start  = (isset($_REQUEST['start']) ? intval($_REQUEST['start']) : 0);
         if ($start >= $number) {
             $start = 0;
@@ -1200,7 +1194,7 @@ class Item_SoftwareVersion extends CommonDBRelation
 
         $values = [];
         $massive_action = [];
-        $datas = iterator_to_array($iterator);
+        $datas = $results;
         foreach ($datas as $data) {
             $licids = self::softwareByCategory(
                 $data,
@@ -1351,8 +1345,8 @@ class Item_SoftwareVersion extends CommonDBRelation
         if ($item->maybeDeleted()) {
             $lic_request['WHERE']['glpi_items_softwarelicenses.is_deleted'] = 0;
         }
-        $lic_iterator = $DB->request($lic_request);
-
+        $lic_request = self::getAdapter()->request($lic_request);
+        
         $massActionContainerSoftwareLicense = 'massSoftwareLicense' . $rand;
         if ($canedit) {
             $actions = [
@@ -1380,7 +1374,7 @@ class Item_SoftwareVersion extends CommonDBRelation
         ];
         $values = [];
         $massive_action = [];
-        $datas = iterator_to_array($lic_iterator);
+        $data = $lic_request->fetchAllAssociative();
         foreach ($datas as $data) {
             $newValue = [
                $data['softname'],
@@ -1443,7 +1437,6 @@ class Item_SoftwareVersion extends CommonDBRelation
         $canedit,
         $display
     ) {
-        global $DB;
 
         $ID    = $data["id"];
         $verid = $data["verid"];
@@ -1470,7 +1463,7 @@ class Item_SoftwareVersion extends CommonDBRelation
             echo "</td><td>";
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'       => [
               'glpi_softwarelicenses.*',
               'glpi_softwarelicensetypes.name AS type'
@@ -1506,7 +1499,7 @@ class Item_SoftwareVersion extends CommonDBRelation
         ]);
 
         $licids = [];
-        while ($licdata = $iterator->next()) {
+        while ($licdata = $request->fetchAssociative()) {
             $licids[]  = $licdata['id'];
             $licserial = $licdata['serial'];
 
@@ -1687,10 +1680,8 @@ class Item_SoftwareVersion extends CommonDBRelation
      **/
     public static function cloneItem($itemtype, $oldid, $newid)
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_items_softwareversions',
            'WHERE'  => [
               'items_id' => $oldid,
@@ -1698,7 +1689,7 @@ class Item_SoftwareVersion extends CommonDBRelation
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $csv                  = new self();
             unset($data['id']);
             $data['itemtype'] = $itemtype;
@@ -1794,12 +1785,10 @@ class Item_SoftwareVersion extends CommonDBRelation
 
     public static function countForItem(CommonDBTM $item)
     {
-        global $DB;
-
         $params = self::getListForItemParams($item);
         unset($params['SELECT'], $params['ORDER']);
         $params['COUNT'] = 'cpt';
-        $iterator = $DB->request($params);
-        return $iterator->next()['cpt'];
+        $request = self::getAdapter()->request($params);
+        return $request->fetchAssociative()['cpt'];
     }
 }

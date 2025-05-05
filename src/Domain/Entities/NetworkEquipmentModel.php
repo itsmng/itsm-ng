@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_networkequipmentmodels')]
 #[ORM\Index(name: "name", columns: ['name'])]
 #[ORM\Index(name: "date_mod", columns: ['date_mod'])]
@@ -27,19 +29,19 @@ class NetworkEquipmentModel
     private $productNumber;
 
     #[ORM\Column(name: 'weight', type: 'integer', options: ['default' => 0])]
-    private $weight;
+    private $weight = 0;
 
     #[ORM\Column(name: 'required_units', type: 'integer', options: ['default' => 1])]
-    private $requiredUnits;
+    private $requiredUnits = 1;
 
     #[ORM\Column(name: 'depth', type: 'float', options: ['default' => 1.0])]
-    private $depth;
+    private $depth = 1.0;
 
     #[ORM\Column(name: 'power_connections', type: 'integer', options: ['default' => 0])]
-    private $powerConnections;
+    private $powerConnections = 0;
 
     #[ORM\Column(name: 'power_consumption', type: 'integer', options: ['default' => 0])]
-    private $powerConsumption;
+    private $powerConsumption = 0;
 
     #[ORM\Column(name: 'is_half_rack', type: 'boolean', options: ['default' => false])]
     private $isHalfRack;
@@ -50,10 +52,10 @@ class NetworkEquipmentModel
     #[ORM\Column(name: 'picture_rear', type: 'text', length: 65535, nullable: true)]
     private $pictureRear;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     public function getId(): ?int
@@ -193,26 +195,30 @@ class NetworkEquipmentModel
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

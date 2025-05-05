@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_printers')]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "is_template", columns: ["is_template"])]
@@ -39,12 +41,12 @@ class Printer
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options:['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'contact', type: 'string', length: 255, nullable: true)]
@@ -68,20 +70,20 @@ class Printer
     private $otherserial;
 
     #[ORM\Column(name: 'have_serial', type: 'boolean', options:['default' => 0])]
-    private $haveSerial;
+    private $haveSerial = 0;
 
     #[ORM\Column(name: 'have_parallel', type: 'boolean', options:['default' => 0])]
-    private $haveParallel;
+    private $haveParallel = 0;
 
 
     #[ORM\Column(name: 'have_usb', type: 'boolean', options:['default' => 0])]
-    private $haveUsb;
+    private $haveUsb = 0;
 
     #[ORM\Column(name: 'have_wifi', type: 'boolean', options:['default' => 0])]
-    private $haveWifi;
+    private $haveWifi = 0;
 
     #[ORM\Column(name: 'have_ethernet', type: 'boolean', options:['default' => 0])]
-    private $haveEthernet;
+    private $haveEthernet = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -110,22 +112,22 @@ class Printer
     private ?Manufacturer $manufacturer = null;
 
     #[ORM\Column(name: 'is_global', type: 'boolean', options:['default' => 0])]
-    private $isGlobal;
+    private $isGlobal = 0;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options:['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options:['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = 0;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
     private $templateName;
 
     #[ORM\Column(name: 'init_pages_counter', type: 'integer', options:['default' => 0])]
-    private $initPagesCounter;
+    private $initPagesCounter = 0;
 
     #[ORM\Column(name: 'last_pages_counter', type: 'integer', options:['default' => 0])]
-    private $lastPagesCounter;
+    private $lastPagesCounter = 0;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
@@ -140,12 +142,12 @@ class Printer
     private ?State $state = null;
 
     #[ORM\Column(name: 'ticket_tco', type: 'decimal', precision: 20, scale: 4, nullable: true, options:['default' => "0.0000"])]
-    private $ticketTco;
+    private $ticketTco = 0.0000;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options:['default' => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     public function getId(): ?int
@@ -176,14 +178,17 @@ class Printer
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(?\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
+
         return $this;
     }
 
@@ -401,14 +406,16 @@ class Printer
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
+
         return $this;
     }
 

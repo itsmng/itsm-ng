@@ -31,8 +31,9 @@ class TicketValidation
     #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
     private ?Ticket $ticket = null;
 
-    #[ORM\Column(name: 'validate_users_id', type: 'integer', options: ['default' => 0])]
-    private $usersIdValidate;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'validate_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $validateUser = null;
 
     #[ORM\Column(name: 'comment_submission', type: 'text', length: 65535, nullable: true)]
     private $commentSubmission;
@@ -65,18 +66,6 @@ class TicketValidation
     public function setUsersId(?int $usersId): self
     {
         $this->usersId = $usersId;
-
-        return $this;
-    }
-
-    public function getUsersIdValidate(): ?int
-    {
-        return $this->usersIdValidate;
-    }
-
-    public function setUsersIdValidate(?int $usersIdValidate): self
-    {
-        $this->usersIdValidate = $usersIdValidate;
 
         return $this;
     }
@@ -190,6 +179,26 @@ class TicketValidation
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of validateUser
+     */ 
+    public function getValidateUser()
+    {
+        return $this->validateUser;
+    }
+
+    /**
+     * Set the value of validateUser
+     *
+     * @return  self
+     */ 
+    public function setValidateUser($validateUser)
+    {
+        $this->validateUser = $validateUser;
 
         return $this;
     }

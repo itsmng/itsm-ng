@@ -664,7 +664,7 @@ class Notification extends CommonDBTM
     **/
     public static function getNotificationsByEventAndType($event, $itemtype, $entity)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $criteria = [
            'SELECT'    => [
@@ -711,7 +711,7 @@ class Notification extends CommonDBTM
             $criteria['WHERE'][Notification_NotificationTemplate::getTable() . '.mode'] = $restrict_modes;
         }
 
-        return $DB->request($criteria);
+        return self::getAdapter()->request($criteria)->fetchAllAssociative();
     }
 
 

@@ -338,16 +338,14 @@ class ITILCategory extends CommonTreeDropdown
     **/
     private static function getITILCategoryIDByField($field, $value)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable(),
            'WHERE'  => [$field => $value]
         ]);
-
-        if (count($iterator) == 1) {
-            $result = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results) == 1) {
+            $result = $results[0];
             return $result['id'];
         }
         return -1;
@@ -441,7 +439,7 @@ class ITILCategory extends CommonTreeDropdown
 
         echo "<div class='center'>";
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_itilcategories',
            'WHERE'  => [
               'OR' => [
@@ -453,15 +451,15 @@ class ITILCategory extends CommonTreeDropdown
            ],
            'ORDER'  => 'name'
         ]);
-
+        $results = $request->fetchAllAssociative();
         echo "<table class='tab_cadre_fixe' aria-label='Item Detail'>";
         echo "<tr><th colspan='5'>";
         $itilcategory_type = $itilcategory->getType();
         echo "<a href='" . $itilcategory_type::getSearchURL() . "'>";
-        echo self::getTypeName(count($iterator));
+        echo self::getTypeName(count($results));
         echo "</a>";
         echo "</th></tr>";
-        if (count($iterator)) {
+        if (count($results)) {
             echo "<th>" . __('Name') . "</th>";
             echo "<th>" . __('Incident') . "</th>";
             echo "<th>" . __('Request') . "</th>";
@@ -469,7 +467,7 @@ class ITILCategory extends CommonTreeDropdown
             echo "<th>" . Problem::getTypeName(1) . "</th>";
             echo "</tr>";
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_2'>";
                 $itilcategory->getFromDB($data['id']);
                 echo "<td>" . $itilcategory->getLink(['comments' => true]) . "</td>";

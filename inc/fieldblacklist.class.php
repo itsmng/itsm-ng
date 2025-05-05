@@ -469,7 +469,7 @@ class Fieldblacklist extends CommonDropdown
     {
         global $DB;
 
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_fieldblacklists',
            'WHERE'  => [
@@ -477,7 +477,7 @@ class Fieldblacklist extends CommonDropdown
               'field'     => $field,
               'value'     => $value
            ] + getEntitiesRestrictCriteria('glpi_fieldblacklists', 'entities_id', $entities_id, true)
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'] > 0;
     }
 }

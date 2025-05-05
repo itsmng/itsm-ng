@@ -53,9 +53,8 @@ class ImpactItem extends CommonDBTM
         CommonDBTM $item,
         bool $create_if_missing = true
     ) {
-        global $DB;
-
-        $it = $DB->request([
+        
+        $it = self::getAdapter()->request([
            'SELECT' => [
               'glpi_impactitems.id',
            ],
@@ -65,10 +64,9 @@ class ImpactItem extends CommonDBTM
               'glpi_impactitems.items_id' => $item->fields['id'],
            ]
         ]);
-
-        $res = $it->next();
+        $res = $it->fetchAssociative();
         $impact_item = new self();
-
+    
         if ($res) {
             $id = $res['id'];
         } elseif (!$res && $create_if_missing) {
@@ -79,7 +77,6 @@ class ImpactItem extends CommonDBTM
         } else {
             return false;
         }
-
         $impact_item->getFromDB($id);
         return $impact_item;
     }

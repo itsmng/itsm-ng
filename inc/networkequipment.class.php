@@ -248,9 +248,9 @@ class NetworkEquipment extends CommonDBTM
                'GROUPBY'      => 'itemtype'
             ];
 
-            $res = $DB->request($criteria);
+            $res = $this::getAdapter()->request($criteria);
             if ($res) {
-                while ($data = $res->next()) {
+                while ($data = $res->fetchAssociative()) {
                     $itemtable = getTableForItemType($data["itemtype"]);
                     if ($item = getItemForItemtype($data["itemtype"])) {
                         // For each itemtype which are entity dependant

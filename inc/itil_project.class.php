@@ -125,8 +125,6 @@ class Itil_Project extends CommonDBRelation
      **/
     public static function showForProject(Project $project)
     {
-        global $DB;
-
         $ID = $project->getField('id');
         if (!$project->can($ID, READ)) {
             return false;
@@ -141,7 +139,7 @@ class Itil_Project extends CommonDBRelation
             $selfTable = self::getTable();
             $itemTable = $itemtype::getTable();
 
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT'          => [
                   "$selfTable.id AS linkid",
                   "$itemTable.*"
@@ -163,12 +161,12 @@ class Itil_Project extends CommonDBRelation
                ],
                'ORDER'  => "{$itemTable}.name",
             ]);
-
-            $numrows = $iterator->count();
+            $results = $request->fetchAllAssociative();
+            $numrows = count($results);
 
             $items = [];
             $used  = [];
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 $items[$data['id']] = $data;
                 $used[$data['id']]  = $data['id'];
             }
@@ -348,7 +346,7 @@ class Itil_Project extends CommonDBRelation
                 $plan          = new $tasktype();
                 $items         = [];
 
-                $result = $DB->request(
+                $request = self::getAdapter()->request(
                     [
                       'FROM'  => $plan->getTable(),
                       'WHERE' => [
@@ -356,7 +354,7 @@ class Itil_Project extends CommonDBRelation
                       ],
                     ]
                 );
-                foreach ($result as $plan) {
+                foreach ($request as $plan) {
                     if (isset($plan['begin']) && $plan['begin']) {
                         $items[$plan['id']] = $plan['id'];
                         $planned_infos .= sprintf(
@@ -427,8 +425,6 @@ class Itil_Project extends CommonDBRelation
     **/
     public static function showForItil(CommonITILObject $itil)
     {
-        global $DB;
-
         $ID = $itil->getField('id');
         if (!$itil->can($ID, READ)) {
             return false;
@@ -440,7 +436,7 @@ class Itil_Project extends CommonDBRelation
         $selfTable = self::getTable();
         $projectTable = Project::getTable();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => [
               "$selfTable.id AS linkid",
               "$projectTable.*"
@@ -462,12 +458,12 @@ class Itil_Project extends CommonDBRelation
            ],
            'ORDER'  => "{$projectTable}.name",
         ]);
-
-        $numrows = $iterator->count();
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
 
         $projects = [];
         $used     = [];
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $projects[$data['id']] = $data;
             $used[$data['id']]     = $data['id'];
         }
@@ -578,11 +574,14 @@ class Itil_Project extends CommonDBRelation
      **/
     public static function cloneItilProject($oldid, $newid)
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
-        $itil_items = $DB->request(self::getTable(), ['WHERE'  => ['projects_id' => $oldid]]);
-        foreach ($itil_items as $data) {
+        $itil_items = $itil_items = self::getAdapter()->request([
+            'FROM'  => self::getTable(),
+            'WHERE' => [
+                'projects_id' => $oldid
+            ]
+        ]);
+        foreach ($itil_items->fetchAllAssociative() as $data) {
             unset($data['id']);
             $data['projects_id'] = $newid;
             $data                = Toolbox::addslashes_deep($data);

@@ -36,7 +36,7 @@ class QueuedNotification
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'sent_try', type: 'integer', options: ['default' => 0])]
     private $sentTry;
@@ -148,8 +148,11 @@ class QueuedNotification
         return $this->createTime;
     }
 
-    public function setCreateTime(?\DateTimeInterface $createTime): self
+    public function setCreateTime(\DateTimeInterface|string|null $createTime): self
     {
+        if (is_string($createTime)) {
+            $createTime = new \DateTime($createTime);
+        }
         $this->createTime = $createTime;
 
         return $this;
@@ -160,8 +163,11 @@ class QueuedNotification
         return $this->sendTime;
     }
 
-    public function setSendTime(?\DateTimeInterface $sendTime): self
+    public function setSendTime(\DateTimeInterface|string|null $sendTime): self
     {
+        if (is_string($sendTime)) {
+            $sendTime = new \DateTime($sendTime);
+        }
         $this->sendTime = $sendTime;
 
         return $this;
@@ -172,8 +178,11 @@ class QueuedNotification
         return $this->sentTime;
     }
 
-    public function setSentTime(?\DateTimeInterface $sentTime): self
+    public function setSentTime(\DateTimeInterface|string|null $sentTime): self
     {
+        if (is_string($sentTime)) {
+            $sentTime = new \DateTime($sentTime);
+        }
         $this->sentTime = $sentTime;
 
         return $this;

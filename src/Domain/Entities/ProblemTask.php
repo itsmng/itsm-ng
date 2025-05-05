@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\UniqueConstraint(name: "uuid", columns: ["uuid"])]
 #[ORM\Index(name: "problems_id", columns: ["problems_id"])]
 #[ORM\Index(name: "users_id", columns: ["users_id"])]
-#[ORM\Index(name: "users_id_editor", columns: ["users_id_editor"])]
+#[ORM\Index(name: "editor_users_id", columns: ["editor_users_id"])]
 #[ORM\Index(name: "tech_users_id", columns: ["tech_users_id"])]
 #[ORM\Index(name: "tech_groups_id", columns: ["tech_groups_id"])]
 #[ORM\Index(name: "date", columns: ["date"])]
@@ -54,8 +54,8 @@ class ProblemTask
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
-    private ?User $userEditor = null;
+    #[ORM\JoinColumn(name: 'editor_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $editorUser = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
@@ -262,17 +262,18 @@ class ProblemTask
     /**
      * Get the value of taskcategory
      */
-    public function getTaskcategory()
+    public function getTaskcategory(): ?Taskcategory
     {
         return $this->taskcategory;
     }
 
-    /**
+   /**
      * Set the value of taskcategory
      *
-     * @return  self
+     * @param Taskcategory|null $taskcategory
+     * @return self
      */
-    public function setTaskcategory($taskcategory)
+    public function setTaskcategory(?Taskcategory $taskcategory): self
     {
         $this->taskcategory = $taskcategory;
 
@@ -295,26 +296,6 @@ class ProblemTask
     public function setUser($user)
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of userEditor
-     */
-    public function getUserEditor()
-    {
-        return $this->userEditor;
-    }
-
-    /**
-     * Set the value of userEditor
-     *
-     * @return  self
-     */
-    public function setUserEditor($userEditor)
-    {
-        $this->userEditor = $userEditor;
 
         return $this;
     }
@@ -376,6 +357,26 @@ class ProblemTask
     public function setTechUser($techUser)
     {
         $this->techUser = $techUser;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of editorUser
+     */ 
+    public function getEditorUser()
+    {
+        return $this->editorUser;
+    }
+
+    /**
+     * Set the value of editorUser
+     *
+     * @return  self
+     */ 
+    public function setEditorUser($editorUser)
+    {
+        $this->editorUser = $editorUser;
 
         return $this;
     }

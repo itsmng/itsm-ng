@@ -383,8 +383,6 @@ class KnowbaseItem_Item extends CommonDBRelation
     **/
     public static function getItems(CommonDBTM $item, $start = 0, $limit = 0, $used = false)
     {
-        global $DB;
-
         $criteria = [
            'FROM'      => ['glpi_knowbaseitems_items'],
            'FIELDS'    => ['glpi_knowbaseitems_items' => '*'],
@@ -445,8 +443,8 @@ class KnowbaseItem_Item extends CommonDBRelation
         }
 
         $linked_items = [];
-        $results = $DB->request($criteria);
-        while ($data = $results->next()) {
+        $results = self::getAdapter()->request($criteria);
+        while ($data = $results->fetchAssociative()) {
             if ($used === false) {
                 $linked_items[] = $data;
             } else {
@@ -470,14 +468,12 @@ class KnowbaseItem_Item extends CommonDBRelation
     **/
     public static function cloneItem($itemtype, $oldid, $newid, $newitemtype = '')
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
         if (empty($newitemtype)) {
             $newitemtype = $itemtype;
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_knowbaseitems_items',
            'FIELDS' => 'knowbaseitems_id',
            'WHERE'  => [
@@ -486,7 +482,7 @@ class KnowbaseItem_Item extends CommonDBRelation
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $kb_link = new self();
             $kb_link->add(['knowbaseitems_id' => $data['knowbaseitems_id'],
                                      'itemtype'    => $newitemtype,

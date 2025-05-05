@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_monitors')]
 #[ORM\Index(name: "name", columns: ['name'])]
 #[ORM\Index(name: "is_template", columns: ['is_template'])]
@@ -39,11 +41,11 @@ class Monitor
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'contact', type: 'string', length: 255, nullable: true)]
-    private $contact;
+    private $contact = null;
 
     #[ORM\Column(name: 'contact_num', type: 'string', length: 255, nullable: true)]
     private $contactNum;
@@ -66,7 +68,7 @@ class Monitor
     private $otherserial;
 
     #[ORM\Column(name: 'size', type: 'decimal', precision: 5, scale: 2, options: ['default' => "0.00"])]
-    private $size;
+    private $size = 0.00;
 
     #[ORM\Column(name: 'have_micro', type: 'boolean', options: ['default' => false])]
     private $haveMicro;
@@ -98,24 +100,24 @@ class Monitor
 
     #[ORM\ManyToOne(targetEntity: MonitorType::class)]
     #[ORM\JoinColumn(name: 'monitortypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?MonitorType $monitorType = null;
+    private ?MonitorType $monitortype = null;
 
     #[ORM\ManyToOne(targetEntity: MonitorModel::class)]
     #[ORM\JoinColumn(name: 'monitormodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?MonitorModel $monitorModel = null;
+    private ?MonitorModel $monitormodel = null;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer = null;
 
     #[ORM\Column(name: 'is_global', type: 'boolean', options: ['default' => 0])]
-    private $isGlobal;
+    private $isGlobal = 0;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = 0;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
     private $templateName;
@@ -133,16 +135,16 @@ class Monitor
     private ?State $state = null;
 
     #[ORM\Column(name: 'ticket_tco', type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"], nullable: true)]
-    private $ticketTco;
+    private $ticketTco = 0.0000;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
-    private $isDynamic;
+    private $isDynamic = false;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     public function getId(): ?int
     {
@@ -161,14 +163,16 @@ class Monitor
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
@@ -178,7 +182,7 @@ class Monitor
         return $this->contact;
     }
 
-    public function setContact(string $contact): self
+    public function setContact(?string $contact): self
     {
         $this->contact = $contact;
 
@@ -190,7 +194,7 @@ class Monitor
         return $this->contactNum;
     }
 
-    public function setContactNum(string $contactNum): self
+    public function setContactNum(?string $contactNum): self
     {
         $this->contactNum = $contactNum;
 
@@ -382,7 +386,7 @@ class Monitor
         return $this->templateName;
     }
 
-    public function setTemplateName(string $templateName): self
+    public function setTemplateName(?string $templateName): self
     {
         $this->templateName = $templateName;
 
@@ -413,14 +417,15 @@ class Monitor
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -498,45 +503,6 @@ class Monitor
         return $this;
     }
 
-    /**
-     * Get the value of monitorType
-     */
-    public function getMonitorType()
-    {
-        return $this->monitorType;
-    }
-
-    /**
-     * Set the value of monitorType
-     *
-     * @return  self
-     */
-    public function setMonitorType($monitorType)
-    {
-        $this->monitorType = $monitorType;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of monitorModel
-     */
-    public function getMonitorModel()
-    {
-        return $this->monitorModel;
-    }
-
-    /**
-     * Set the value of monitorModel
-     *
-     * @return  self
-     */
-    public function setMonitorModel($monitorModel)
-    {
-        $this->monitorModel = $monitorModel;
-
-        return $this;
-    }
 
     /**
      * Get the value of manufacturer
@@ -634,6 +600,46 @@ class Monitor
     public function setTechUser($techUser)
     {
         $this->techUser = $techUser;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of monitortype
+     */ 
+    public function getMonitortype()
+    {
+        return $this->monitortype;
+    }
+
+    /**
+     * Set the value of monitortype
+     *
+     * @return  self
+     */ 
+    public function setMonitortype($monitortype)
+    {
+        $this->monitortype = $monitortype;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of monitormodel
+     */ 
+    public function getMonitormodel()
+    {
+        return $this->monitormodel;
+    }
+
+    /**
+     * Set the value of monitormodel
+     *
+     * @return  self
+     */ 
+    public function setMonitormodel($monitormodel)
+    {
+        $this->monitormodel = $monitormodel;
 
         return $this;
     }

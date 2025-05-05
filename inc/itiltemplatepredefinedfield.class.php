@@ -83,8 +83,6 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
 
     public function post_purgeItem()
     {
-        global $DB;
-
         parent::post_purgeItem();
 
         $itil_class = static::$itiltype;
@@ -94,7 +92,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
 
         // Try to delete itemtype -> delete items_id
         if ($this->fields['num'] == $itemtype_id) {
-            $iterator = $DB->request([
+            $request = $this->getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => $this->getTable(),
                'WHERE'  => [
@@ -102,9 +100,9 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
                   'num'             => $items_id_id
                ]
             ]);
-
-            if (count($iterator)) {
-                $result = $iterator->next();
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
+                $result = $results[0];
                 $a = new static();
                 $a->delete(['id' => $result['id']]);
             }
@@ -153,9 +151,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
     **/
     public function getPredefinedFields($ID, $withtypeandcategory = false)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [static::$items_id => $ID],
            'ORDER'  => 'id'
@@ -166,7 +162,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
         $allowed_fields = $tt->getAllowedFields($withtypeandcategory, true);
         $fields         = [];
         $multiple       = self::getMultiplePredefinedValues();
-        while ($rule = $iterator->next()) {
+        while ($rule = $request->fetchAssociative()) {
             if (isset($allowed_fields[$rule['num']])) {
                 if (in_array($rule['num'], $multiple)) {
                     if ($allowed_fields[$rule['num']] == 'items_id') {
@@ -244,7 +240,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
     **/
     public static function showForITILTemplate(ITILTemplate $tt, $withtemplate = 0)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $ID = $tt->fields['id'];
 
@@ -262,12 +258,12 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
         $itil_object   = new $itil_class();
         $rand          = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => static::getTable(),
            'WHERE'  => [static::$items_id => $ID],
            'ORDER'  => 'id'
         ]);
-
+        $results = $request->fetchAllAssociative();
         $display_options = [
            'relative_dates' => true,
            'comments'       => true,
@@ -276,8 +272,8 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
 
         $predeffields = [];
         $used         = [];
-        $numrows      = count($iterator);
-        while ($data = $iterator->next()) {
+        $numrows      = count($results);
+        foreach ($results as $data) {
             $predeffields[$data['id']] = $data;
             $used[$data['num']] = $data['num'];
         }

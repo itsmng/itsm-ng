@@ -41,7 +41,7 @@ class ITILCategory
 
     #[ORM\ManyToOne(targetEntity: ITILCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?ITILCategory $itilCategory = null;
+    private ?ITILCategory $itilcategory = null;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
@@ -323,7 +323,7 @@ class ITILCategory
      */
     public function getITILCategory()
     {
-        return $this->itilCategory;
+        return $this->itilcategory;
     }
 
     /**
@@ -331,9 +331,9 @@ class ITILCategory
      *
      * @return  self
      */
-    public function setITILCategory($itilCategory)
+    public function setITILCategory($itilcategory)
     {
-        $this->itilCategory = $itilCategory;
+        $this->itilcategory = $itilcategory;
 
         return $this;
     }

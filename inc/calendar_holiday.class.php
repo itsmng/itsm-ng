@@ -80,7 +80,7 @@ class Calendar_Holiday extends CommonDBRelation
 
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => [
               'glpi_calendars_holidays.id AS linkid',
               'glpi_holidays.*'
@@ -101,10 +101,12 @@ class Calendar_Holiday extends CommonDBRelation
            'ORDERBY'         => 'glpi_holidays.name'
         ]);
 
-        $numrows = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
         $holidays = [];
         $used     = [];
-        while ($data = $iterator->next()) {
+      //   while ($data = $iterator->next()) {
+         foreach ($results as $data) {
             $holidays[$data['id']] = $data;
             $used[$data['id']]     = $data['id'];
         }
@@ -195,7 +197,7 @@ class Calendar_Holiday extends CommonDBRelation
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        $result = $DB->request(
+        $result = self::getAdapter()->request(
             [
               'FROM'   => self::getTable(),
               'WHERE'  => [

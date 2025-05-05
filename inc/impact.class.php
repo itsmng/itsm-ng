@@ -70,8 +70,6 @@ class Impact extends CommonGLPI
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        global $DB;
-
         // Class of the current item
         $class = get_class($item);
 
@@ -101,7 +99,7 @@ class Impact extends CommonGLPI
             $total = 0;
         } elseif ($is_enabled_asset) {
             // If on an asset, get the number of its direct dependencies
-            $total = count($DB->request([
+            $total = count($item->getAdapter()->request(([
                'FROM'  => ImpactRelation::getTable(),
                'WHERE' => [
                   'OR' => [
@@ -118,7 +116,7 @@ class Impact extends CommonGLPI
                      ]
                   ]
                ]
-            ]));
+            ]))->fetchAllAssociative());
         }
 
         return self::createTabEntry(__("Impact analysis"), $total);
@@ -965,10 +963,10 @@ class Impact extends CommonGLPI
         ];
 
         // Get items
-        $rows = $DB->request($base_request + $select + $limit);
+        $rows = $item::getAdapter()->request($base_request + $select + $limit)->fetchAssociative();
 
         // Get total
-        $total = $DB->request($base_request + $count);
+        $total = $item::getAdapter()->request($base_request + $count)->fetchAssociative();
 
         return [
            "items" => iterator_to_array($rows, false),

@@ -309,19 +309,18 @@ class ProfileRight extends CommonDBChild
      */
     public static function updateProfileRights($profiles_id, array $rights = [])
     {
-
         $me = new self();
         foreach ($rights as $name => $right) {
             if (isset($right)) {
                 if (
-                    $me->getFromDBByCrit(['profiles_id'   => $profiles_id,
+                    $me->getFromDBByCrit(['id'   => $profiles_id,
                                           'name'          => $name])
                 ) {
                     $input = ['id'          => $me->getID(),
                               'rights'      => $right];
                     $me->update($input);
                 } else {
-                    $input = ['profiles_id' => $profiles_id,
+                    $input = ['id' => $profiles_id,
                               'name'        => $name,
                               'rights'      => $right];
                     $me->add($input);

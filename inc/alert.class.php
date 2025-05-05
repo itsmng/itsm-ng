@@ -212,13 +212,13 @@ class Alert extends CommonDBTM
      */
     public static function alertExists($itemtype, $items_id, $type)
     {
-        global $DB;
 
         if ($items_id <= 0 || $type <= 0) {
             return false;
         }
-        $iter = $DB->request(self::getTable(), ['itemtype' => $itemtype, 'items_id' => $items_id, 'type' => $type]);
-        if ($row = $iter->next()) {
+        $crit['table'] = self::getTable();
+        $result = self::getAdapter()->request($crit, ['itemtype' => $itemtype, 'items_id' => $items_id, 'type' => $type]);
+            if ($row = $result->fetchAssociative()) {
             return $row['id'];
         }
         return false;
@@ -239,13 +239,13 @@ class Alert extends CommonDBTM
      */
     public static function getAlertDate($itemtype, $items_id, $type)
     {
-        global $DB;
 
         if ($items_id <= 0 || $type <= 0) {
             return false;
         }
-        $iter = $DB->request(self::getTable(), ['itemtype' => $itemtype, 'items_id' => $items_id, 'type' => $type]);
-        if ($row = $iter->next()) {
+        $crit['table'] = self::getTable();
+        $result = self::getAdapter()->request($crit, ['itemtype' => $itemtype, 'items_id' => $items_id, 'type' => $type]);
+        if ($row = $result->fetchAssociative()) {
             return $row['date'];
         }
         return false;
@@ -265,12 +265,13 @@ class Alert extends CommonDBTM
         global $DB;
 
         if ($items_id) {
-            $iter = $DB->request(self::getTable(), ['FIELDS'   => 'date',
+            $crit['table'] = self::getTable();
+            $result = self::getAdapter()->request($crit, ['FIELDS'   => 'date',
                                                     'ORDER'    => 'date DESC',
                                                     'LIMIT'    => 1,
                                                     'itemtype' => $itemtype,
                                                     'items_id' => $items_id]);
-            if ($row = $iter->next()) {
+                if ($row = $result->fetchAssociative()) {
                 //TRANS: %s is the date
                 echo sprintf(__('Alert sent on %s'), Html::convDateTime($row['date']));
             }

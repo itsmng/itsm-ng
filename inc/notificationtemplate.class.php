@@ -570,9 +570,7 @@ class NotificationTemplate extends CommonDBTM
     **/
     public function getByLanguage($language)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => 'glpi_notificationtemplatetranslations',
            'WHERE'  => [
               'notificationtemplates_id' => $this->getField('id'),
@@ -581,8 +579,9 @@ class NotificationTemplate extends CommonDBTM
            'ORDER'  => 'language DESC',
            'LIMIT'  => 1
         ]);
-        if (count($iterator)) {
-            return $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            return $results[0];
         }
 
         //No template found at all!

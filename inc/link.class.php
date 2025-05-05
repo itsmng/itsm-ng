@@ -344,7 +344,7 @@ class Link extends CommonDBTM
         ) {
             $domain_table = Domain::getTable();
             $domain_item_table = Domain_Item::getTable();
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT'    => ['name'],
                'FROM'      => $domain_table,
                'LEFT JOIN' => [
@@ -358,8 +358,9 @@ class Link extends CommonDBTM
                ],
                'WHERE'     => ['items_id' => $item->getID()]
             ]);
-            if ($iterator->count()) {
-                $link = str_replace("[DOMAIN]", $iterator->next()['name'], $link);
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
+                $link = str_replace("[DOMAIN]", $results[0]['name'], $link);
             }
         }
         if (
@@ -428,7 +429,7 @@ class Link extends CommonDBTM
         $ipmac = [];
         if (get_class($item) == 'NetworkEquipment') {
             if ($replace_IP) {
-                $iterator = $DB->request([
+                $request = self::getAdapter()->request([
                    'SELECT' => [
                       'glpi_ipaddresses.id',
                       'glpi_ipaddresses.name AS ip',
@@ -451,7 +452,7 @@ class Link extends CommonDBTM
                       'glpi_networknames.itemtype'  => ['NetworkEquipment']
                    ]
                 ]);
-                while ($data2 = $iterator->next()) {
+                while ($data2 = $request->fetchAssociative()) {
                     $ipmac['ip' . $data2['id']]['ip']  = $data2["ip"];
                     $ipmac['ip' . $data2['id']]['mac'] = $item->getField('mac');
                 }
@@ -467,7 +468,7 @@ class Link extends CommonDBTM
         }
 
         if ($replace_IP) {
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT' => [
                   'glpi_ipaddresses.id',
                   'glpi_ipaddresses.name AS ip',
@@ -501,7 +502,7 @@ class Link extends CommonDBTM
                   'glpi_networkports.itemtype'  => $item->getType()
                ]
             ]);
-            while ($data2 = $iterator->next()) {
+            while ($data2 = $request->fetchAssociative()) {
                 $ipmac['ip' . $data2['id']]['ip']  = $data2["ip"];
                 $ipmac['ip' . $data2['id']]['mac'] = $data2["mac"];
             }
@@ -537,8 +538,8 @@ class Link extends CommonDBTM
                 $criteria['WHERE']['glpi_networknames.id'] = null;
             }
 
-            $iterator = $DB->request($criteria);
-            while ($data2 = $iterator->next()) {
+            $request = self::getAdapter()->request($criteria);
+            while ($data2 = $request->fetchAssociative()) {
                 $ipmac['mac' . $data2['id']]['ip']  = '';
                 $ipmac['mac' . $data2['id']]['mac'] = $data2["mac"];
             }
@@ -752,7 +753,7 @@ class Link extends CommonDBTM
 
         $restrict = self::getEntityRestrictForItem($item);
 
-        return $DB->request([
+        return self::getAdapter()->request([
            'SELECT'       => [
               'glpi_links.id',
               'glpi_links.link AS link',
@@ -773,7 +774,7 @@ class Link extends CommonDBTM
               'glpi_links_itemtypes.itemtype'  => $item->getType(),
            ] + getEntitiesRestrictCriteria('glpi_links', 'entities_id', $restrict, true),
            'ORDERBY'      => 'name'
-        ]);
+        ])->fetchAllAssociative();
     }
 
     public static function getIcon()

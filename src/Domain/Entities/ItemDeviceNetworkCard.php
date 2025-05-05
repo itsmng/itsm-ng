@@ -27,7 +27,7 @@ class ItemDeviceNetworkCard
     private $id;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $itemsId;
+    private $itemsId = 0;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 255, nullable: true)]
     private $itemtype;
@@ -40,17 +40,17 @@ class ItemDeviceNetworkCard
     private $mac;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
-    private $isDynamic;
+    private $isDynamic = false;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;

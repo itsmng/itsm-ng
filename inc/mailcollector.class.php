@@ -437,8 +437,6 @@ class MailCollector extends CommonDBTM
     **/
     public function deleteOrImportSeveralEmails($emails_ids = [], $action = 0, $entity = 0)
     {
-        global $DB;
-
         $query = [
            'FROM'   => NotImportedEmail::getTable(),
            'WHERE'  => [
@@ -448,7 +446,7 @@ class MailCollector extends CommonDBTM
         ];
 
         $todelete = [];
-        foreach ($DB->request($query) as $data) {
+        foreach ($this::getAdapter()->request($query) as $data) {
             $todelete[$data['mailcollectors_id']][$data['messageid']] = $data;
         }
 
@@ -1161,7 +1159,12 @@ class MailCollector extends CommonDBTM
 
         // Wrap content for blacklisted items
         $itemstoclean = [];
-        foreach ($DB->request('glpi_blacklistedmailcontents') as $data) {
+
+        $request = self::getAdapter()->request([
+        'FROM' => 'glpi_blacklistedmailcontents'
+        ]);
+
+        foreach ($request->fetchAllAssociative() as $data) {
             $toclean = trim($data['content']);
             if (!empty($toclean)) {
                 $itemstoclean[] = str_replace(["\r\n", "\n", "\r"], $br_marker, $toclean);
@@ -1682,23 +1685,22 @@ class MailCollector extends CommonDBTM
     **/
     public static function cronMailgate($task)
     {
-        global $DB;
-
         NotImportedEmail::deleteLog();
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_mailcollectors',
            'WHERE'  => ['is_active' => 1]
         ]);
-
+        $results = $request->fetchAllAssociative();
         $max = $task->fields['param'];
 
-        if (count($iterator) > 0) {
+        if (count($results) > 0) {
             $mc = new self();
 
-            while (
-                ($max > 0)
-                     && ($data = $iterator->next())
-            ) {
+            foreach ($results as $index => $data) {
+                if ($index >= $max) {
+                   break;
+                }
+             
                 $mc->maxfetch_emails = $max;
 
                 $task->log("Collect mails from " . $data["name"] . " (" . $data["host"] . ")\n");
@@ -1746,14 +1748,14 @@ class MailCollector extends CommonDBTM
     **/
     public static function cronMailgateError($task)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         if (!$CFG_GLPI["use_notifications"]) {
             return 0;
         }
         $cron_status   = 0;
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_mailcollectors',
            'WHERE'  => [
               'errors'    => ['>', 0],
@@ -1762,7 +1764,7 @@ class MailCollector extends CommonDBTM
         ]);
 
         $items = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $items[$data['id']]  = $data;
         }
 
@@ -1780,7 +1782,7 @@ class MailCollector extends CommonDBTM
 
     public function showSystemInformations($width)
     {
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
         // No need to translate, this part always display in english (for copy/paste to forum)
 
@@ -1815,7 +1817,11 @@ class MailCollector extends CommonDBTM
         echo "<tr class='tab_bg_2'><th>Mails receivers</th></tr>\n";
         echo "<tr class='tab_bg_1'><td><pre>\n&nbsp;\n";
 
-        foreach ($DB->request('glpi_mailcollectors') as $mc) {
+        $request = self::getAdapter()->request([
+            'FROM' => 'glpi_mailcollectors'
+        ]);
+        
+        foreach ($request->fetchAllAssociative() as $mc) {
             $msg  = "Name: '" . $mc['name'] . "'";
             $msg .= " Active: " . ($mc['is_active'] ? "Yes" : "No");
             echo wordwrap($msg . "\n", $width, "\n\t\t");
@@ -1890,8 +1896,6 @@ class MailCollector extends CommonDBTM
      */
     public static function countCollectors($active = false)
     {
-        global $DB;
-
         $criteria = [
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_mailcollectors'
@@ -1901,7 +1905,7 @@ class MailCollector extends CommonDBTM
             $criteria['WHERE'] = ['is_active' => 1];
         }
 
-        $result = $DB->request($criteria)->next();
+        $result = self::getAdapter()->request($criteria)->fetchAssociative();
 
         return (int)$result['cpt'];
     }

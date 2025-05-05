@@ -35,10 +35,10 @@ class NetworkPortEthernet
     private ?Netpoint $netpoint = null;
 
     #[ORM\Column(name: 'type', type: 'string', length: 10, nullable: true, options: ['default' => '', 'comment' => 'T, LX, SX'])]
-    private $type;
+    private $type = '';
 
     #[ORM\Column(name: 'speed', type: 'integer', options: ['default' => 10, 'comment' => 'Mbit/s: 10, 100, 1000, 10000'])]
-    private $speed;
+    private $speed = 10;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;

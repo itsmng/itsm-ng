@@ -522,7 +522,7 @@ class RuleTicket extends Rule
         $criterias['_groups_id_assign']['name']               = __('Technician group');
         $criterias['_groups_id_assign']['linkfield']          = '_groups_id_assign';
         $criterias['_groups_id_assign']['type']               = 'dropdown';
-        $criterias['_groups_id_assign']['condition']          = ['is_assign' => 1];
+        $criterias['_groups_id_assign']['conditions']          = ['is_assign' => 1];
 
         $criterias['_suppliers_id_assign']['table']           = 'glpi_suppliers';
         $criterias['_suppliers_id_assign']['field']           = 'name';
@@ -597,7 +597,7 @@ class RuleTicket extends Rule
         );
         $criterias['slas_id_ttr']['linkfield']                = 'slas_id_ttr';
         $criterias['slas_id_ttr']['type']                     = 'dropdown';
-        $criterias['slas_id_ttr']['condition']                = ['glpi_slas.type' => SLM::TTR];
+        $criterias['slas_id_ttr']['conditions']                = ['glpi_slas.type' => SLM::TTR];
 
         $criterias['slas_id_tto']['table']                    = 'glpi_slas';
         $criterias['slas_id_tto']['field']                    = 'name';
@@ -608,7 +608,7 @@ class RuleTicket extends Rule
         );
         $criterias['slas_id_tto']['linkfield']                = 'slas_id_tto';
         $criterias['slas_id_tto']['type']                     = 'dropdown';
-        $criterias['slas_id_tto']['condition']                = ['glpi_slas.type' => SLM::TTO];
+        $criterias['slas_id_tto']['conditions']                = ['glpi_slas.type' => SLM::TTO];
 
         $criterias['olas_id_ttr']['table']                    = 'glpi_olas';
         $criterias['olas_id_ttr']['field']                    = 'name';
@@ -619,7 +619,7 @@ class RuleTicket extends Rule
         );
         $criterias['olas_id_ttr']['linkfield']                = 'olas_id_ttr';
         $criterias['olas_id_ttr']['type']                     = 'dropdown';
-        $criterias['olas_id_ttr']['condition']                = ['glpi_olas.type' => SLM::TTR];
+        $criterias['olas_id_ttr']['conditions']                = ['glpi_olas.type' => SLM::TTR];
 
         $criterias['olas_id_tto']['table']                    = 'glpi_olas';
         $criterias['olas_id_tto']['field']                    = 'name';
@@ -630,7 +630,7 @@ class RuleTicket extends Rule
         );
         $criterias['olas_id_tto']['linkfield']                = 'olas_id_tto';
         $criterias['olas_id_tto']['type']                     = 'dropdown';
-        $criterias['olas_id_tto']['condition']                = ['glpi_olas.type' => SLM::TTO];
+        $criterias['olas_id_tto']['conditions']                = ['glpi_olas.type' => SLM::TTO];
 
         $criterias['_date_creation_calendars_id'] = [
            'name'            => __("Creation date is a working hour in calendar"),
@@ -672,7 +672,7 @@ class RuleTicket extends Rule
         $actions['_groups_id_requester']['name']              = _n('Requester group', 'Requester groups', 1);
         $actions['_groups_id_requester']['type']              = 'dropdown';
         $actions['_groups_id_requester']['table']             = 'glpi_groups';
-        $actions['_groups_id_requester']['condition']         = ['is_requester' => 1];
+        $actions['_groups_id_requester']['conditions']         = ['is_requester' => 1];
         $actions['_groups_id_requester']['force_actions']     = ['assign', 'append', 'fromitem', 'defaultfromuser'];
         $actions['_groups_id_requester']['permitseveral']     = ['append'];
         $actions['_groups_id_requester']['appendto']          = '_additional_groups_requesters';
@@ -688,7 +688,7 @@ class RuleTicket extends Rule
         $actions['_groups_id_assign']['table']                = 'glpi_groups';
         $actions['_groups_id_assign']['name']                 = __('Technician group');
         $actions['_groups_id_assign']['type']                 = 'dropdown';
-        $actions['_groups_id_assign']['condition']            = ['is_assign' => 1];
+        $actions['_groups_id_assign']['conditions']            = ['is_assign' => 1];
         $actions['_groups_id_assign']['force_actions']        = ['assign', 'append'];
         $actions['_groups_id_assign']['permitseveral']        = ['append'];
         $actions['_groups_id_assign']['appendto']             = '_additional_groups_assigns';
@@ -713,7 +713,7 @@ class RuleTicket extends Rule
         $actions['_groups_id_observer']['table']              = 'glpi_groups';
         $actions['_groups_id_observer']['name']               = _n('Watcher group', 'Watcher groups', 1);
         $actions['_groups_id_observer']['type']               = 'dropdown';
-        $actions['_groups_id_observer']['condition']          = ['is_watcher' => 1];
+        $actions['_groups_id_observer']['conditions']          = ['is_watcher' => 1];
         $actions['_groups_id_observer']['force_actions']      = ['assign', 'append'];
         $actions['_groups_id_observer']['permitseveral']      = ['append'];
         $actions['_groups_id_observer']['appendto']           = '_additional_groups_observers';
@@ -745,7 +745,7 @@ class RuleTicket extends Rule
         );
         $actions['slas_id_ttr']['linkfield']                  = 'slas_id_ttr';
         $actions['slas_id_ttr']['type']                       = 'dropdown';
-        $actions['slas_id_ttr']['condition']                  = ['glpi_slas.type' => SLM::TTR];
+        $actions['slas_id_ttr']['conditions']                  = ['glpi_slas.type' => SLM::TTR];
 
         $actions['slas_id_tto']['table']                      = 'glpi_slas';
         $actions['slas_id_tto']['field']                      = 'name';
@@ -756,7 +756,7 @@ class RuleTicket extends Rule
         );
         $actions['slas_id_tto']['linkfield']                  = 'slas_id_tto';
         $actions['slas_id_tto']['type']                       = 'dropdown';
-        $actions['slas_id_tto']['condition']                  = ['glpi_slas.type' => SLM::TTO];
+        $actions['slas_id_tto']['conditions']                  = ['glpi_slas.type' => SLM::TTO];
 
         $actions['olas_id_ttr']['table']                      = 'glpi_olas';
         $actions['olas_id_ttr']['field']                      = 'name';
@@ -767,7 +767,7 @@ class RuleTicket extends Rule
         );
         $actions['olas_id_ttr']['linkfield']                  = 'olas_id_ttr';
         $actions['olas_id_ttr']['type']                       = 'dropdown';
-        $actions['olas_id_ttr']['condition']                  = ['glpi_olas.type' => SLM::TTR];
+        $actions['olas_id_ttr']['conditions']                  = ['glpi_olas.type' => SLM::TTR];
 
         $actions['olas_id_tto']['table']                      = 'glpi_olas';
         $actions['olas_id_tto']['field']                      = 'name';
@@ -778,7 +778,7 @@ class RuleTicket extends Rule
         );
         $actions['olas_id_tto']['linkfield']                  = 'olas_id_tto';
         $actions['olas_id_tto']['type']                       = 'dropdown';
-        $actions['olas_id_tto']['condition']                  = ['glpi_olas.type' => SLM::TTO];
+        $actions['olas_id_tto']['conditions']                  = ['glpi_olas.type' => SLM::TTO];
 
         $actions['validate_users_id']['name']                 = sprintf(
             __('%1$s - %2$s'),

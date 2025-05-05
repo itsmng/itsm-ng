@@ -390,14 +390,14 @@ class PlanningRecall extends CommonDBChild
     **/
     public static function cronPlanningRecall($task = null)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         if (!$CFG_GLPI["use_notifications"]) {
             return 0;
         }
 
         $cron_status = 0;
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => 'glpi_planningrecalls.*',
            'FROM'      => 'glpi_planningrecalls',
            'LEFT JOIN' => [
@@ -421,7 +421,7 @@ class PlanningRecall extends CommonDBChild
         ]);
 
         $pr = new self();
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if ($pr->getFromDB($data['id']) && $pr->getItem()) {
                 $options = [];
 

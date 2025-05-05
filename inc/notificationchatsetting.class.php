@@ -202,17 +202,20 @@ class NotificationChatSetting extends NotificationSetting
         ];
         renderTwigForm($form);
 
-        $query = "SELECT * FROM glpi_notificationchatconfigs";
-        $iterators = $DB->request($query);
+        $request = self::getAdapter()->request([
+            'FROM' => 'glpi_notificationchatconfigs'
+        ]);
+        
+        $results = $request->fetchAllAssociative();
 
         $result = [];
-        foreach ($iterators as $iterator) {
+        foreach ($results as $result) {
             $res = [];
-            $res['hookurl'] = $iterator['hookurl'];
-            $res['chat'] = $iterator['chat'];
-            $res['type'] = $iterator['type'];
-            $res['value'] = $iterator['value'];
-            $res['id'] = $iterator['id'];
+            $res['hookurl'] = $result['hookurl'];
+            $res['chat'] = $result['chat'];
+            $res['type'] = $result['type'];
+            $res['value'] = $result['value'];
+            $res['id'] = $result['id'];
 
             $result[] = $res;
         }
