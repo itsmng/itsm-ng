@@ -284,7 +284,6 @@ class Item_Rack extends CommonDBRelation
             }
             echo "</tbody></table>";
         }
-
         $nb_top_pdu = count(PDU_Rack::getForRackSide($rack, PDU_Rack::SIDE_TOP));
         $nb_bot_pdu = count(PDU_Rack::getForRackSide($rack, PDU_Rack::SIDE_BOTTOM));
 

@@ -755,14 +755,15 @@ JAVASCRIPT;
      */
     public static function getForRackSide(Rack $rack, $side)
     {
-        return self::getAdapter()->request([
+        $request = self::getAdapter()->request([
            'FROM'  => self::getTable(),
            'WHERE' => [
               'racks_id' => $rack->getID(),
               'side'     => $side
            ],
            'ORDER' => 'position ASC'
-        ])->fetchAssociative();
+        ]);
+        return $request->fetchAllAssociative();
     }
 
     /**
