@@ -31,13 +31,13 @@ class ProfileUser
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 1])]
-    private $isRecursive;
+    private $isRecursive = 1;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
     #[ORM\Column(name: 'is_default_profile', type: 'boolean', options: ['default' => 0])]
-    private $isDefaultProfile;
+    private $isDefaultProfile = 0;
 
     public function getId(): ?int
     {

@@ -216,7 +216,7 @@ class Profile_User extends CommonDBRelation
 
         $values = [];
         $massiveActionValues = [];
-        while ($data = $iterator->next()) {
+        foreach ($iterator as $data) {
             $newValue = [];
 
             $link = $data["completename"];
@@ -264,7 +264,7 @@ class Profile_User extends CommonDBRelation
         if ($num > 0) {
             echo "<table class='tab_cadre_fixehov' aria-label='Data Rows'>";
 
-            while ($data = $iterator->next()) {
+            foreach ($iterator as $data) {
                 echo "<tr class='tab_bg_1'>";
                 if ($canedit) {
                     echo "<td width='10'>";

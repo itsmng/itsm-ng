@@ -185,7 +185,7 @@ class Group_User extends CommonDBRelation
         $groups = [];
         //$groups  = self::getUserGroups($ID);
         $used    = [];
-        while ($data = $iterator->next()) {
+        foreach ($iterator as $data) {
             $used[$data["id"]] = $data["id"];
             $groups[] = $data;
         }
