@@ -1373,6 +1373,7 @@ class User extends CommonDBTM
 
                         $existingUserEmail = new UserEmail();
                         $existingUserEmail->getFromDB($id);
+                        dump('existinguseremail', $existingUserEmail->fields);
                         if (
                             $existingUserEmail->getFromDB($id)
                             && $params['email'] == $existingUserEmail->fields['email']
@@ -1399,7 +1400,8 @@ class User extends CommonDBTM
                     } else {
                         $email_input['is_default'] = 0;
                     }
-                    $added = $useremail->add($email_input);
+                    // $added = $useremail->add($email_input);
+                    $added = $useremail->getAdapter()->add($email_input);
                     $userUpdated = $userUpdated || $added;
                 }
             }
