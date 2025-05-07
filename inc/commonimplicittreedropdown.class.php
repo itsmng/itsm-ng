@@ -128,6 +128,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
     private function alterElementInsideTree($step)
     {
         global $DB;
+        $adapter = $this::getAdapter();
 
         switch ($step) {
             case 'add':
@@ -157,7 +158,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
 
         if ($step != "add" && count($potentialSons)) { // Because there is no old sons of new node
             // First, get all my current direct sons (old ones) that are not new potential sons
-            $request = $this::getAdapter()->request([
+            $request = $adapter->request([
                'SELECT' => ['id'],
                'FROM'   => $this->getTable(),
                'WHERE'  => [
@@ -169,16 +170,13 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
             while ($oldSon = $request->fetchAssociative()) {
                 $oldSons[] = $oldSon["id"];
             }
-            if (count($oldSons) > 0) { // Then make them pointing to old parent
-                $DB->update(
-                    $this->getTable(),
-                    [
-                      $this->getForeignKeyField() => $oldParent
-                    ],
-                    [
-                      'id' => $oldSons
-                    ]
-                );
+            if (count($oldSons) > 0) {
+                foreach ($oldSons as $id) {
+                    $adapter->save([
+                        'id' => $id,
+                        $this->getForeignKeyField() => $oldParent
+                    ]);
+                }
                 // Then, regenerate the old sons to reflect there new ancestors
                 $this->regenerateTreeUnderID($oldParent, true, true);
                 $this->cleanParentsSons($oldParent);
@@ -188,7 +186,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
         if ($step != "delete" && count($potentialSons)) { // Because ther is no new sons for deleted nodes
             // And, get all direct sons of my new Father that must be attached to me (ie : that are
             // potential sons
-            $request = $this::getAdapter()->request([
+            $request = $adapter->request([
                'SELECT' => ['id'],
                'FROM'   => $this->getTable(),
                'WHERE'  => [
@@ -200,16 +198,13 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
             while ($newSon = $request->fetchAssociative()) {
                 $newSons[] = $newSon["id"];
             }
-            if (count($newSons) > 0) { // Then make them pointing to me
-                $DB->update(
-                    $this->getTable(),
-                    [
-                      $this->getForeignKeyField() => $this->getID()
-                    ],
-                    [
-                      'id' => $newSons
-                    ]
-                );
+            if (count($newSons) > 0) {
+                foreach ($newSons as $id) {
+                    $adapter->save([
+                        'id' => $id,
+                        $this->getForeignKeyField() => $this->getID()
+                    ]);
+                }
                 // Then, regenerate the new sons to reflect there new ancestors
                 $this->regenerateTreeUnderID($this->getID(), true, true);
                 $this->cleanParentsSons();
