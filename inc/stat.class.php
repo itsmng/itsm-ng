@@ -101,7 +101,7 @@ class Stat extends CommonGLPI
             case 'groups_tree_assign':
                 // Get all groups
                 $is_field = ($type == 'group_tree') ? 'is_requester' : 'is_assign';
-                $iterator = $DB->request([
+                $request = $item::getAdapter()->request([
                    'SELECT' => ['id', 'name'],
                    'FROM'   => 'glpi_groups',
                    'WHERE'  => [
@@ -115,7 +115,7 @@ class Stat extends CommonGLPI
                 ]);
 
                 $val    = [];
-                while ($line = $iterator->next()) {
+                while ($line = $request->fetchAssociative()) {
                     $val[] = [
                        'id'     => $line['id'],
                        'link'   => $line['name']
@@ -145,10 +145,10 @@ class Stat extends CommonGLPI
                     ];
                 }
 
-                $iterator = $DB->request($criteria);
+                $request = $item::getAdapter()->request($criteria);
 
                 $val    = [];
-                while ($line = $iterator->next()) {
+                while ($line = $request->fetchAssociative()) {
                     $val[] = [
                        'id'     => $line['id'],
                        'link'   => $line['category']
@@ -178,10 +178,10 @@ class Stat extends CommonGLPI
                     ];
                 }
 
-                $iterator = $DB->request($criteria);
+                $request = $item::getAdapter()->request($criteria);
 
                 $val    = [];
-                while ($line = $iterator->next()) {
+                while ($line = $request->fetchAssociative()) {
                     $val[] = [
                        'id'     => $line['id'],
                        'link'   => $line['location']
@@ -244,7 +244,7 @@ class Stat extends CommonGLPI
                     $device_table = $item->getTable();
 
                     //select devices IDs (table row)
-                    $iterator = $DB->request([
+                    $request = $item::getAdapter()->request([
                        'SELECT' => [
                           'id',
                           'designation'
@@ -253,7 +253,7 @@ class Stat extends CommonGLPI
                        'ORDER'  => 'designation'
                     ]);
 
-                    while ($line = $iterator->next()) {
+                    while ($line = $request->fetchAssociative()) {
                         $val[] = [
                            'id'     => $line['id'],
                            'link'   => $line['designation']
@@ -280,10 +280,10 @@ class Stat extends CommonGLPI
                         $criteria['WHERE'] = getEntitiesRestrictCriteria($table);
                     }
 
-                    $iterator = $DB->request($criteria);
+                    $request = $item::getAdapter()->request($criteria);
 
                     $val    = [];
-                    while ($line = $iterator->next()) {
+                    while ($line = $request->fetchAssociative()) {
                         $val[] = [
                            'id'     => $line['id'],
                            'link'   => $line[$field]
@@ -1501,8 +1501,8 @@ class Stat extends CommonGLPI
             $criteria = array_merge_recursive($criteria, $add_criteria);
         }
 
-        $iterator = $DB->request($criteria);
-        while ($row = $iterator->next()) {
+        $request = $item::getAdapter()->request($criteria);
+        while ($row = $request->fetchAssociative()) {
             $date             = $row['date_unix'];
             //$visites = round($row['total_visites']);
             $entrees["$date"] = $row['total_visites'];

@@ -92,21 +92,19 @@ class State extends CommonTreeDropdown
     **/
     public static function dropdownBehaviour($name, $lib = "", $value = 0)
     {
-        global $DB;
-
         $elements = ["0" => __('Keep status')];
 
         if ($lib) {
             $elements["-1"] = $lib;
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => ['id', 'name'],
            'FROM'   => 'glpi_states',
            'ORDER'  => 'name'
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $elements[$data["id"]] = sprintf(__('Set status: %s'), $data["name"]);
         }
         Dropdown::showFromArray($name, $elements, ['value' => $value]);
@@ -115,7 +113,7 @@ class State extends CommonTreeDropdown
 
     public static function showSummary()
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $state_type = $CFG_GLPI["state_types"];
         $states     = [];
@@ -134,7 +132,7 @@ class State extends CommonTreeDropdown
                         $WHERE["$table.is_template"] = 0;
                     }
                     $WHERE += getEntitiesRestrictCriteria($table);
-                    $iterator = $DB->request([
+                    $request = self::getAdapter()->request([
                        'SELECT' => [
                           'states_id',
                           'COUNT'  => '* AS cpt'
@@ -144,7 +142,7 @@ class State extends CommonTreeDropdown
                        'GROUP'  => 'states_id'
                     ]);
 
-                    while ($data = $iterator->next()) {
+                    while ($data = $request->fetchAssociative()) {
                         $states[$data["states_id"]][$itemtype] = $data["cpt"];
                     }
                 }
@@ -170,7 +168,7 @@ class State extends CommonTreeDropdown
             echo "<th>" . __('Total') . "</th>";
             echo "</tr>";
 
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'FROM'   => 'glpi_states',
                'WHERE'  => getEntitiesRestrictCriteria('glpi_states', '', '', true),
                'ORDER'  => 'completename'
@@ -194,7 +192,7 @@ class State extends CommonTreeDropdown
             }
             echo "<td class='numeric b'>$tot</td></tr>";
 
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 $tot = 0;
                 echo "<tr class='tab_bg_2'><td class='b'>";
 
@@ -536,7 +534,7 @@ class State extends CommonTreeDropdown
            'COUNT'  => 'cpt',
            'WHERE'  => $where
         ];
-        $row = $DB->request($query)->next();
+        $row = $this::getAdapter()->request($query)->fetchAssociative();
         return (int)$row['cpt'] == 0;
     }
 

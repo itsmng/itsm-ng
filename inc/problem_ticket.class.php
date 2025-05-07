@@ -383,8 +383,6 @@ class Problem_Ticket extends CommonDBRelation
     **/
     public static function showForTicket(Ticket $ticket)
     {
-        global $DB;
-
         $ID = $ticket->getField('id');
 
         if (!static::canView() || !$ticket->can($ID, READ)) {
@@ -549,7 +547,7 @@ class Problem_Ticket extends CommonDBRelation
             $plan          = new $tasktype();
             $items         = [];
 
-            $result = $DB->request(
+            $request = self::getAdapter()->request(
                 [
                   'FROM'  => $plan->getTable(),
                   'WHERE' => [
@@ -557,7 +555,8 @@ class Problem_Ticket extends CommonDBRelation
                   ],
                 ]
             );
-            foreach ($result as $plan) {
+            $results = $request->fetchAllAssociative();
+            foreach ($results as $plan) {
                 if (isset($plan['begin']) && $plan['begin']) {
                     $items[$plan['id']] = $plan['id'];
                     $planned_infos .= sprintf(__('From %s') . ('<br>'), Html::convDateTime($plan['begin']));

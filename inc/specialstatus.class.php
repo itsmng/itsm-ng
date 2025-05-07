@@ -88,14 +88,14 @@ class SpecialStatus extends CommonTreeDropdown
     public function statusForm()
     {
         global $DB, $CFG_GLPI;
-        $criteria = "SELECT * FROM glpi_specialstatuses";
-        $iterators = $DB->request($criteria);
+        $criteria = ["SELECT * FROM glpi_specialstatuses"];
+        $requests = self::getAdapter()->request($criteria);
         $checksum = 0;
         echo Html::script("js/specialstatus.js");
 
         if (isset($_POST["update"])) {
             $before = Ticket::getAllStatusArray(false, true);
-            while ($update = $iterators->next()) {
+            while ($update = $requests->fetchAssociative()) {
                 $checksum += $_POST["is_active_" . $update["id"]];
                 $DB->update(
                     "glpi_specialstatuses",
@@ -160,8 +160,8 @@ class SpecialStatus extends CommonTreeDropdown
         echo "<td><b>" . __("Delete") . "</b></td>";
         echo "</tr>";
 
-        $iterators = $DB->request($criteria);
-        while ($data = $iterators->next()) {
+        $requests = $this::getAdapter()->request($criteria);
+        while ($data = $requests->fetchAssociative()) {
             echo "<tr class='tab_bg_1'>";
             echo "<td>" . $data["name"] . "</td>";
             echo "<td><input type='number' id='weight_" . $data["id"] . "' name='weight_" . $data["id"] . "' value='" . $data["weight"] . "' min='1'></td>";
@@ -190,13 +190,13 @@ class SpecialStatus extends CommonTreeDropdown
     public static function deleteStatus($id)
     {
         $tab = Ticket::getAllStatusArray(false, true);
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
-        $criteria = "SELECT * FROM glpi_tickets";
-        $iterators = $DB->request($criteria);
+        $criteria = ["SELECT * FROM glpi_tickets"];
+        $requests = self::getAdapter()->request($criteria);
 
-        $iterators = $DB->request($criteria);
-        while ($data = $iterators->next()) {
+        $requests = self::getAdapter()->request($criteria); 
+        while ($data = $requests->fetchAssociative()) {
             if (isset($tab["id"][$data["status"]]) && $id == $tab["id"][$data["status"]]) {
                 $result[] = $tab["id"][$data["status"]];
             }
@@ -270,11 +270,11 @@ class SpecialStatus extends CommonTreeDropdown
     {
         global $DB;
 
-        $criteria = "SELECT * FROM glpi_tickets";
-        $iterators = $DB->request($criteria);
+        $criteria = ["SELECT * FROM glpi_tickets"];
+        $requests = $this::getAdapter()->request($criteria);
 
-        $iterators = $DB->request($criteria);
-        while ($data = $iterators->next()) {
+        $requests = $this::getAdapter()->request($criteria);
+        while ($data = $requests->fetchAssociative()) {
             for ($i = 0; $i < count($after["name"]) + max($after["weight"]); $i++) {
                 if (!isset($before["name"][$data["status"]])) {
                     continue;
