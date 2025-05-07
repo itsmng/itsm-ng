@@ -86,13 +86,13 @@ class Peripheral
     private ?Manufacturer $manufacturer = null;
 
     #[ORM\Column(name: 'is_global', type: 'boolean', options: ['default' => 0])]
-    private $isGlobal;
+    private $isGlobal = 0;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = 0;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
     private $templateName;
@@ -110,16 +110,16 @@ class Peripheral
     private ?State $state = null;
 
     #[ORM\Column(name: 'ticket_tco', type: 'decimal', precision: 20, scale: 4, nullable: true, options: ['default' => "0.0000"])]
-    private $ticketTco;
+    private $ticketTco = 0.0000;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
 
     public function getId(): ?int
