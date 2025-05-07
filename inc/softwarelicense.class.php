@@ -924,12 +924,12 @@ class SoftwareLicense extends CommonTreeDropdown
                   'glpi_softwares.entities_id'  => $entity
                ]
             ];
-            $iterator = $DB->request($criteria);
+            $request = self::getAdapter()->request($criteria);
 
             $message = "";
             $items   = [];
 
-            while ($license = $iterator->next()) {
+            while ($license = $request->fetchAssociative()) {
                 $name     = $license['softname'] . ' - ' . $license['name'] . ' - ' . $license['serial'];
                 //TRANS: %1$s the license name, %2$s is the expiration date
                 $message .= sprintf(
@@ -995,15 +995,13 @@ class SoftwareLicense extends CommonTreeDropdown
     */
     public static function countForVersion($softwareversions_id, $entity = '')
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_softwarelicenses',
            'WHERE'  => [
               'softwareversions_id_buy'  => $softwareversions_id
            ] + getEntitiesRestrictCriteria('glpi_softwarelicenses', '', $entity)
-        ])->next();
+        ])->fetchAssociative();
 
         return $result['cpt'];
     }
@@ -1018,9 +1016,7 @@ class SoftwareLicense extends CommonTreeDropdown
     **/
     public static function countForSoftware($softwares_id)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_softwarelicenses',
            'WHERE'  => [
@@ -1030,14 +1026,14 @@ class SoftwareLicense extends CommonTreeDropdown
            ] + getEntitiesRestrictCriteria('glpi_softwarelicenses', '', '', true)
         ]);
 
-        if ($line = $iterator->next()) {
+        if ($line = $request->fetchAssociative()) {
             if ($line['cpt'] > 0) {
                 // At least 1 unlimited license, means unlimited
                 return -1;
             }
         }
 
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => ['SUM' => 'number AS numsum'],
            'FROM'   => 'glpi_softwarelicenses',
            'WHERE'  => [
@@ -1045,7 +1041,7 @@ class SoftwareLicense extends CommonTreeDropdown
               'is_template'  => 0,
               'number'       => ['>', 0]
            ] + getEntitiesRestrictCriteria('glpi_softwarelicenses', '', '', true)
-        ])->next();
+        ])->fetchAssociative();
         return ($result['numsum'] ? $result['numsum'] : 0);
     }
 
@@ -1145,7 +1141,7 @@ class SoftwareLicense extends CommonTreeDropdown
         }
 
         $rand  = mt_rand();
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'glpi_softwarelicenses.*',
               'buyvers.name AS buyname',
@@ -1195,7 +1191,8 @@ class SoftwareLicense extends CommonTreeDropdown
            'START'     => (int)$start,
            'LIMIT'     => (int)$_SESSION['glpilist_limit']
         ]);
-        $num_displayed = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $num_displayed = count($results);
 
         if ($num_displayed) {
             // Display the pager
@@ -1241,7 +1238,8 @@ class SoftwareLicense extends CommonTreeDropdown
 
             $tot_assoc = 0;
             $tot       = 0;
-            while ($data = $iterator->next()) {
+            // while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 Session::addToNavigateListItems('SoftwareLicense', $data['id']);
                 $expired = true;
                 if (
@@ -1406,7 +1404,6 @@ class SoftwareLicense extends CommonTreeDropdown
 
     public static function getSonsOf($item)
     {
-        global $DB;
         $entity_assign = $item->isEntityAssign();
         $nb            = 0;
         $ID            = $item->getID();
@@ -1444,7 +1441,7 @@ class SoftwareLicense extends CommonTreeDropdown
         }
         $nb = 0;
 
-        foreach ($DB->request($item->getTable(), $crit) as $data) {
+        foreach (self::getAdapter()->request($item->getTable(), $crit) as $data) {
             $nb++;
             echo "<tr class='tab_bg_1'>";
             echo "<td><a href='" . $item->getFormURL();
