@@ -20,6 +20,8 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     private EntityManager $em;
     private $entityName;
+    private bool $isSpecialCase = false;
+    private ?string $fallbackTableName = null;
 
     public function __construct(string|CommonDBTM $class)
     {
@@ -45,10 +47,16 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             }
         }
         $entityName = $entityPrefix . $tableClass;
+        
         if (!isset($entityName) || !class_exists($entityName)) {
-            throw new \Exception("Entity class {$entityName} does not exist");
+            $this->entityName = null;
+            $this->isSpecialCase = true;
+            $this->fallbackTableName = $currentClass::getTable();
+            return;
         }
-        $this->entityName = $entityName;
+    
+    $this->entityName = $entityName;
+    $this->isSpecialCase = false;
     }
 
     public function getClass(): string
@@ -110,11 +118,27 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $em->flush();
 
         return false;
+        
     }
 
     // list columns from entity
     public function listFields(): array
     {
+        if ($this->isSpecialCase || $this->entityName === null) {
+           
+                $conn = $this->em->getConnection();
+                $schemaManager = $conn->createSchemaManager();
+                $columns = $schemaManager->listTableColumns($this->fallbackTableName);
+                
+                $fields = [];
+                foreach ($columns as $column) {
+                    $fieldName = $column->getName();
+                    $entityFieldName = $this->toEntityFormat($fieldName);
+                    $fields[$fieldName] = $entityFieldName;
+                }
+                
+                return $fields;            
+        }
         $metadata = $this->em->getClassMetadata($this->entityName);
         $DoctrineFields = $metadata->getFieldNames();
         $DoctrineRelations = $metadata->getAssociationNames();
@@ -153,6 +177,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     protected function toDbFormat($input, bool $isRelation = false): string
     {
+        if (preg_match('/^(phone|mobile|fax)\d+$/', $input)) {
+            return $input;
+        }
+        
+        if (preg_match('/^(priority)(\d+)$/', $input, $matches)) {
+            return $matches[1] . '_' . $matches[2];
+        }
         $input = preg_replace('/[A-Z]/', '_$0', $input);
         $input = mb_strtolower(ltrim($input, '_'));
 
@@ -177,6 +208,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 $input = substr($input, 0, -2);
                 $input .= 'y';
             }
+        }
+        if (preg_match('/^(phone|mobile|fax)\d+$/', $input)) {
+            return $input;
+        }
+        
+        if (preg_match('/^(priority)_(\d+)$/', $input, $matches)) {
+            return $matches[1] . $matches[2];
         }
         $input = lcfirst(str_replace('_', '', ucwords($input, '_')));
         return $input;
@@ -353,7 +391,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function add(array $fields): bool|array
     {
-
         $entity = new $this->entityName();
 
         $setters = $this->getSettersFromFields(array_keys($fields));
@@ -376,7 +413,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             }
             $entity->$setter($value);
         }
-
         try {
             $this->em->persist($entity);
             $this->em->flush();
@@ -417,8 +453,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         global $DB;
 
         $SqlIterator = new DBmysqlIterator($DB);
+        if ($this->isSpecialCase && $this->fallbackTableName) {
+            if (!isset($request['FROM'])) {
+                $request['FROM'] = $this->fallbackTableName;
+            }
+        }
         $query = $SqlIterator->buildQuery($request);
-
+        // dump('SQL Query', $query);
         return $this->query($query);
     }
 
