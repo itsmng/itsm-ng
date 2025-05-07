@@ -195,7 +195,7 @@ class Item_Project extends CommonDBRelation
         ];
         $values = [];
         $massiveactionValues = [];
-        while ($row = $types_iterator->next()) {
+        foreach ($types_iterator as $row) {
             $itemtype = $row['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
