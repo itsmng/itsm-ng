@@ -717,12 +717,12 @@ class Profile extends CommonDBTM
                           '0' => __('No'),
                           '1' => __('Yes'),
                               ],
-                              'value' => $this->fields['is_default']
+                              'value' => $this->fields['is_default']?? null,
                           ],
                           __('Profile\'s interface') => [
                               'name' => 'interface',
                               'type' => 'select',
-                              'value' => $this->fields['interface'],
+                              'value' => $this->fields['interface']?? null,
                           'values' => [
                           'central' => __('Standard interface'),
                           'helpdesk' => __('Simplified interface'),
@@ -736,7 +736,7 @@ class Profile extends CommonDBTM
                           '0' => __('No'),
                           '1' => __('Yes'),
                               ],
-                              'value' => $this->fields['password_update']
+                              'value' => $this->fields['password_update']?? null,
                           ],
                           __('Ticket creation form on login') => [
                               'name' => 'create_ticket_on_login',
@@ -746,7 +746,7 @@ class Profile extends CommonDBTM
                           '0' => __('No'),
                           '1' => __('Yes'),
                               ],
-                              'value' => $this->fields['create_ticket_on_login']
+                              'value' => $this->fields['create_ticket_on_login']?? null,
                           ],
                           __('Comment') => [
                           'name' => 'comment',

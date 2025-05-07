@@ -582,7 +582,6 @@ class NetworkPort extends CommonDBChild
                     $instantiations[$inst_type] = call_user_func([$inst_type, 'getTypeName']);
                 }
             }
-
             $form = [
                'action' => $netport->getFormURL(),
                'method' => 'get',

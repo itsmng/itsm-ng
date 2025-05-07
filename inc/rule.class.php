@@ -909,21 +909,21 @@ class Rule extends CommonDBTM
                   'inputs' => [
                       __('Name') => [
                           'name' => 'name',
-                          'value' => $this->fields["name"],
+                          'value' => $this->fields["name"]?? null,
                           'type' => 'text',
                           'size' => 50,
                           'col_lg' => 6,
                       ],
                       __('Description') => [
                           'name' => 'description',
-                          'value' => $this->fields["description"],
+                          'value' => $this->fields["description"]?? null,
                           'type' => 'text',
                           'size' => 50,
                           'col_lg' => 6,
                       ],
                       __('Logical operator') => [
                           'name' => 'match',
-                          'value' => $this->fields["matching"],
+                          'value' => $this->fields["matching"]?? null,
                           'type' => 'select',
                           'values' => [
                               self::AND_MATCHING => __('and'),
@@ -933,7 +933,7 @@ class Rule extends CommonDBTM
                       ],
                       __('Active') => [
                           'name' => 'is_active',
-                          'value' => $this->fields["is_active"],
+                          'value' => $this->fields["is_active"]?? null,
                           'type' => 'checkbox',
                           'col_lg' => 6,
                       ],
@@ -946,7 +946,7 @@ class Rule extends CommonDBTM
                       ],
                       __('Comments') => [
                           'name' => 'comment',
-                          'value' => $this->fields["comment"],
+                          'value' => $this->fields["comment"]?? null,
                           'type' => 'textarea',
                           'rows' => 3,
                           'col_lg' => 12,
@@ -960,7 +960,7 @@ class Rule extends CommonDBTM
                       $canedit && $this->isNewID($ID) ? [] : [
                           'type' => 'hidden',
                           'name' => 'ranking',
-                          'value' => $this->fields["ranking"],
+                          'value' => $this->fields["ranking"]?? null,
                       ],
                       $canedit && $this->isNewID($ID) ? [] : [
                           'type' => 'hidden',

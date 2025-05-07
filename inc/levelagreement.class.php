@@ -123,7 +123,7 @@ abstract class LevelAgreement extends CommonDBChild
         // get calendar from slm
         $slm = new SLM();
         if ($slm->getFromDB($this->fields['slms_id'])) {
-            $this->fields['calendars_id'] = $slm->fields['calendars_id'];
+            $this->fields['calendars_id'] = $slm->fields['calendars_id']?? null;
         }
     }
 

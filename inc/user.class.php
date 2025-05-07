@@ -2318,7 +2318,7 @@ class User extends CommonDBTM
         foreach (Profile_User::getUserEntities($this->fields['id']) as $entity) {
             $entityTmp = new Entity();
             $entityTmp->getFromDB($entity);
-            $entityUser[$entity] = $entityTmp->fields['completename'];
+            $entityUser[$entity] = $entityTmp->fields['completename']?? null;
         }
 
         $form = [
