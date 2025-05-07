@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
 #[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
 #[ORM\Index(name: 'users_id', columns: ['users_id'])]
-#[ORM\Index(name: 'users_id_validate', columns: ['users_id_validate'])]
+#[ORM\Index(name: 'validate_users_id', columns: ['validate_users_id'])]
 #[ORM\Index(name: 'changes_id', columns: ['changes_id'])]
 #[ORM\Index(name: 'submission_date', columns: ['submission_date'])]
 #[ORM\Index(name: 'validation_date', columns: ['validation_date'])]
@@ -38,7 +38,7 @@ class ChangeValidation
     private ?Change $change = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_validate', referencedColumnName: 'id', nullable: true)]
+    #[ORM\JoinColumn(name: 'validate_users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $userValidate = null;
 
     #[ORM\Column(name: 'comment_submission', type: 'text', length: 65535, nullable: true)]

@@ -2,10 +2,13 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_changes')]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
@@ -42,16 +45,16 @@ class Change
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
     private $isRecursive;
 
-    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
-    private $isDeleted;
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0], nullable: false)]
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
-    private $status;
+    private $status = 1;
 
     #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
@@ -75,13 +78,13 @@ class Change
     private ?User $lastupdaterUser = null;
 
     #[ORM\Column(name: 'urgency', type: 'integer', options: ['default' => 1])]
-    private $urgency;
+    private $urgency = 1;
 
     #[ORM\Column(name: 'impact', type: 'integer', options: ['default' => 1])]
-    private $impact;
+    private $impact = 1;
 
     #[ORM\Column(name: 'priority', type: 'integer', options: ['default' => 1])]
-    private $priority;
+    private $priority = 1;
 
     #[ORM\ManyToOne(targetEntity: ITILCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
@@ -103,25 +106,25 @@ class Change
     private $checklistcontent;
 
     #[ORM\Column(name: 'global_validation', type: 'integer', options: ['default' => 1])]
-    private $globalValidation;
+    private $globalValidation = 1;
 
     #[ORM\Column(name: 'validation_percent', type: 'integer', options: ['default' => 0])]
-    private $validationPercent;
+    private $validationPercent = 0;
 
     #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
-    private $actiontime;
+    private $actiontime = 0;
 
     #[ORM\Column(name: 'begin_waiting_date', type: 'datetime', nullable: true)]
     private $beginWaitingDate;
 
     #[ORM\Column(name: 'waiting_duration', type: 'integer', options: ['default' => 0])]
-    private $waitingDuration;
+    private $waitingDuration = 0;
 
     #[ORM\Column(name: 'close_delay_stat', type: 'integer', options: ['default' => 0])]
-    private $closeDelayStat;
+    private $closeDelayStat = 0;
 
     #[ORM\Column(name: 'solve_delay_stat', type: 'integer', options: ['default' => 0])]
-    private $solveDelayStat;
+    private $solveDelayStat = 0;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
@@ -214,14 +217,16 @@ class Change
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
@@ -231,8 +236,11 @@ class Change
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(\DateTimeInterface|string|null $date): self
     {
+        if (is_string($date)) {
+            $date = new \DateTime($date);
+        }
         $this->date = $date;
 
         return $this;
@@ -243,8 +251,11 @@ class Change
         return $this->solvedate;
     }
 
-    public function setSolvedate(\DateTimeInterface $solvedate): self
+    public function setSolvedate(\DateTimeInterface|string|null $solvedate): self
     {
+        if (is_string($solvedate)) {
+            $solvedate = new \DateTime($solvedate);
+        }
         $this->solvedate = $solvedate;
 
         return $this;
@@ -255,8 +266,11 @@ class Change
         return $this->closedate;
     }
 
-    public function setClosedate(\DateTimeInterface $closedate): self
+    public function setClosedate(\DateTimeInterface|string|null $closedate): self
     {
+        if (is_string($closedate)) {
+            $closedate = new \DateTime($closedate);
+        }
         $this->closedate = $closedate;
 
         return $this;
@@ -267,8 +281,11 @@ class Change
         return $this->timeToResolve;
     }
 
-    public function setTimeToResolve(\DateTimeInterface $timeToResolve): self
+    public function setTimeToResolve(\DateTimeInterface|string|null $timeToResolve): self
     {
+        if (is_string($timeToResolve)) {
+            $timeToResolve = new \DateTime($timeToResolve);
+        }
         $this->timeToResolve = $timeToResolve;
 
         return $this;
@@ -389,9 +406,9 @@ class Change
         return $this->validationPercent;
     }
 
-    public function setValidationPercent(int $validationPercent): self
+    public function setValidationPercent(int|string $validationPercent): self
     {
-        $this->validationPercent = $validationPercent;
+        $this->validationPercent = (int) $validationPercent;
 
         return $this;
     }
@@ -413,8 +430,11 @@ class Change
         return $this->beginWaitingDate;
     }
 
-    public function setBeginWaitingDate(\DateTimeInterface $beginWaitingDate): self
+    public function setBeginWaitingDate(\DateTimeInterface|string|null $beginWaitingDate): self
     {
+        if (is_string($beginWaitingDate)) {
+            $beginWaitingDate = new \DateTime($beginWaitingDate);
+        }
         $this->beginWaitingDate = $beginWaitingDate;
 
         return $this;
@@ -425,9 +445,9 @@ class Change
         return $this->waitingDuration;
     }
 
-    public function setWaitingDuration(int $waitingDuration): self
+    public function setWaitingDuration(int|string $waitingDuration): self
     {
-        $this->waitingDuration = $waitingDuration;
+        $this->waitingDuration = (int) $waitingDuration;
 
         return $this;
     }
@@ -437,9 +457,9 @@ class Change
         return $this->closeDelayStat;
     }
 
-    public function setCloseDelayStat(int $closeDelayStat): self
+    public function setCloseDelayStat(int|string $closeDelayStat): self
     {
-        $this->closeDelayStat = $closeDelayStat;
+        $this->closeDelayStat = (int) $closeDelayStat;
 
         return $this;
     }
@@ -449,21 +469,22 @@ class Change
         return $this->solveDelayStat;
     }
 
-    public function setSolveDelayStat(int $solveDelayStat): self
+    public function setSolveDelayStat(int|string $solveDelayStat): self
     {
-        $this->solveDelayStat = $solveDelayStat;
+        $this->solveDelayStat = (int) $solveDelayStat;
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -493,8 +514,11 @@ class Change
     /**
      * Get the value of changeTickets
      */
-    public function getChangeTickets()
+    public function getChangeTickets(): Collection
     {
+        if (!isset($this->changeTickets)) {
+            $this->changeTickets = new ArrayCollection();
+        }
         return $this->changeTickets;
     }
 
@@ -503,18 +527,20 @@ class Change
      *
      * @return  self
      */
-    public function setChangeTickets($changeTickets)
+    public function setChangeTickets(?Collection $changeTickets): self
     {
-        $this->changeTickets = $changeTickets;
-
+        $this->changeTickets = $changeTickets ?? new ArrayCollection();
         return $this;
     }
 
     /**
      * Get the value of changeUsers
      */
-    public function getChangeUsers()
+    public function getChangeUsers(): Collection
     {
+        if (!isset($this->changeUsers)) {
+            $this->changeUsers = new ArrayCollection();
+        }
         return $this->changeUsers;
     }
 
@@ -523,9 +549,9 @@ class Change
      *
      * @return  self
      */
-    public function setChangeUsers($changeUsers)
+    public function setChangeUsers(?Collection $changeUsers): self
     {
-        $this->changeUsers = $changeUsers;
+        $this->changeUsers = $changeUsers ?? new ArrayCollection();
 
         return $this;
     }
@@ -533,8 +559,11 @@ class Change
     /**
      * Get the value of changeProblems
      */
-    public function getChangeProblems()
+    public function getChangeProblems(): Collection
     {
+        if (!isset($this->changeProblems)) {
+            $this->changeProblems = new ArrayCollection();
+        }
         return $this->changeProblems;
     }
 
@@ -543,9 +572,9 @@ class Change
      *
      * @return  self
      */
-    public function setChangeProblems($changeProblems)
+    public function setChangeProblems(?Collection $changeProblems): self
     {
-        $this->changeProblems = $changeProblems;
+        $this->changeProblems = $changeProblems ?? new ArrayCollection();
 
         return $this;
     }
@@ -553,8 +582,11 @@ class Change
     /**
      * Get the value of changeGroups
      */
-    public function getChangeGroups()
+    public function getChangeGroups(): Collection
     {
+        if (!isset($this->changeGroups)) {
+            $this->changeGroups = new ArrayCollection();
+        }
         return $this->changeGroups;
     }
 
@@ -563,9 +595,9 @@ class Change
      *
      * @return  self
      */
-    public function setChangeGroups($changeGroups)
+    public function setChangeGroups(?Collection $changeGroups): self
     {
-        $this->changeGroups = $changeGroups;
+        $this->changeGroups = $changeGroups ?? new ArrayCollection();
 
         return $this;
     }
@@ -573,8 +605,11 @@ class Change
     /**
      * Get the value of changeSuppliers
      */
-    public function getChangeSuppliers()
+    public function getChangeSuppliers(): Collection
     {
+        if (!isset($this->changeSuppliers)) {
+            $this->changeSuppliers = new ArrayCollection();
+        }
         return $this->changeSuppliers;
     }
 
@@ -583,9 +618,9 @@ class Change
      *
      * @return  self
      */
-    public function setChangeSuppliers($changeSuppliers)
+    public function setChangeSuppliers(?Collection $changeSuppliers): self
     {
-        $this->changeSuppliers = $changeSuppliers;
+        $this->changeSuppliers = $changeSuppliers ?? new ArrayCollection();
 
         return $this;
     }
@@ -650,4 +685,5 @@ class Change
 
         return $this;
     }
+
 }

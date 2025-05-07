@@ -40,7 +40,7 @@ class ChangeProblem
     /**
      * Get the value of change
      */
-    public function getChange()
+    public function getChange(): ?Change
     {
         return $this->change;
     }
@@ -50,7 +50,7 @@ class ChangeProblem
      *
      * @return  self
      */
-    public function setChange($change)
+    public function setChange(?Change $change): self
     {
         $this->change = $change;
 
@@ -60,7 +60,7 @@ class ChangeProblem
     /**
      * Get the value of problem
      */
-    public function getProblem()
+    public function getProblem(): ?Problem
     {
         return $this->problem;
     }
@@ -70,7 +70,7 @@ class ChangeProblem
      *
      * @return  self
      */
-    public function setProblem($problem)
+    public function setProblem(Problem $problem): self
     {
         $this->problem = $problem;
 

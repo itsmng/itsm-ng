@@ -327,7 +327,7 @@ class Change extends CommonITILObject
 
     public function post_addItem()
     {
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
         parent::post_addItem();
 
@@ -346,18 +346,19 @@ class Change extends CommonITILObject
                 }
 
                 //Copy associated elements
-                $iterator = $DB->request([
+                $request = $this::getAdapter()->request([
                    'FROM'   => Item_Ticket::getTable(),
                    'WHERE'  => [
                       'tickets_id'   => $this->input['_tickets_id']
                    ]
                 ]);
                 $assoc = new Change_Item();
-                while ($row = $iterator->next()) {
+                while ($row = $request->fetchAssociative()) {
                     unset($row['tickets_id']);
                     unset($row['id']);
                     $row['changes_id'] = $this->fields['id'];
                     $assoc->add(Toolbox::addslashes_deep($row));
+            
                 }
             }
         }
@@ -370,14 +371,14 @@ class Change extends CommonITILObject
                                'changes_id'  => $this->fields['id']]);
 
                 //Copy associated elements
-                $iterator = $DB->request([
+                $request = $this::getAdapter()->request([
                    'FROM'   => Item_Problem::getTable(),
                    'WHERE'  => [
                       'problems_id'   => $this->input['_problems_id']
                    ]
                 ]);
                 $assoc = new Change_Item();
-                while ($row = $iterator->next()) {
+                while ($row = $request->fetchAssociative()) {
                     unset($row['problems_id']);
                     unset($row['id']);
                     $row['changes_id'] = $this->fields['id'];
@@ -944,16 +945,16 @@ class Change extends CommonITILObject
                     ],
                     __('By') => $ID ? [
                        'type' => 'select',
-                       'name' => 'users_id_recipient',
+                       'name' => 'recipient_users_id',
                        'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields["users_id_recipient"]
+                       'value' => $this->fields["recipient_users_id"]
                     ] : [],
                     __('Last update') => $ID ? [
                        'content' => Html::convDateTime($this->fields["date_mod"])
-                          . (($this->fields['users_id_lastupdater'] > 0) ? sprintf(
+                          . (($this->fields['lastupdater_users_id'] > 0) ? sprintf(
                               __('%1$s: %2$s'),
                               __('By'),
-                              getUserName($this->fields["users_id_lastupdater"], $showuserlink)
+                              getUserName($this->fields["lastupdater_users_id"], $showuserlink)
                           ) : '')
                     ] : [],
                     __('Date of solving') => ($ID
@@ -1056,7 +1057,7 @@ class Change extends CommonITILObject
                   ] : [],
                   __('Approval request') => (!$ID) ? [
                      'type' => 'select',
-                     'name' => 'users_id_validate',
+                     'name' => 'validate_users_id',
                      'values' => [
                           Dropdown::EMPTY_VALUE,
                           'user'  => User::getTypeName(1),
@@ -1376,8 +1377,7 @@ class Change extends CommonITILObject
     **/
     public static function showListForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        global $DB;
-
+        
         if (!Session::haveRight(self::$rightname, self::READALL)) {
             return false;
         }
@@ -1480,8 +1480,10 @@ class Change extends CommonITILObject
         $criteria = self::getCommonCriteria();
         $criteria['WHERE'] = $restrict + getEntitiesRestrictCriteria(self::getTable());
         $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
-        $iterator = $DB->request($criteria);
-        $number = count($iterator);
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
+
 
         // Ticket for the item
         echo "<div><table class='tab_cadre_fixe' aria-label='Changes'>";
@@ -1515,7 +1517,7 @@ class Change extends CommonITILObject
         if ($number > 0) {
             self::commonListHeader(Search::HTML_OUTPUT);
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 Session::addToNavigateListItems('Problem', $data["id"]);
                 self::showShort($data["id"]);
             }
@@ -1539,8 +1541,9 @@ class Change extends CommonITILObject
             $criteria         = self::getCommonCriteria();
             $criteria['WHERE'] = ['OR' => $restrict]
                + getEntitiesRestrictCriteria(self::getTable());
-            $iterator = $DB->request($criteria);
-            $number = count($iterator);
+            $request = self::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
+            $number = count($results);
 
             echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Changes on linked items'>";
             echo "<tr><th colspan='$colspan'>";
@@ -1550,7 +1553,7 @@ class Change extends CommonITILObject
             if ($number > 0) {
                 self::commonListHeader(Search::HTML_OUTPUT);
 
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     // Session::addToNavigateListItems(TRACKING_TYPE,$data["id"]);
                     self::showShort($data["id"]);
                 }
@@ -1608,7 +1611,7 @@ class Change extends CommonITILObject
            'itilcategories_id'          => 0,
            'actiontime'                 => 0,
            '_add_validation'            => 0,
-           'users_id_validate'          => [],
+           'validate_users_id'          => [],
            '_tasktemplates_id'          => [],
            'controlistcontent'          => '',
            'impactcontent'              => '',
@@ -1627,13 +1630,12 @@ class Change extends CommonITILObject
      * @param string $itemtype     Item type
      * @param integer $items_id    ID of the Item
      *
-     * @return DBmysqlIterator
+     * @return @return \Doctrine\DBAL\Result
      */
     public function getActiveChangesForItem($itemtype, $items_id)
     {
-        global $DB;
-
-        return $DB->request([
+       
+        return $this::getAdapter()->request([
            'SELECT'    => [
               $this->getTable() . '.id',
               $this->getTable() . '.name',
