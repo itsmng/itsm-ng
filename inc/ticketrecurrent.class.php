@@ -520,11 +520,9 @@ class TicketRecurrent extends CommonDropdown
      **/
     public static function cronTicketRecurrent($task)
     {
-        global $DB;
-
         $tot = 0;
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_ticketrecurrents',
            'WHERE'  => [
               'next_creation_date' => ['<', new \QueryExpression('NOW()')],
@@ -536,7 +534,7 @@ class TicketRecurrent extends CommonDropdown
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if (self::createTicket($data)) {
                 $tot++;
             } else {

@@ -759,10 +759,8 @@ class Ticket extends CommonITILObject
                                 ]
                             ]
                         );
-
                         // Linked items
                         $linkeditems = $item->getLinkedItems();
-
                         if (count($linkeditems)) {
                             foreach ($linkeditems as $type => $tab) {
                                 $nb += countElementsInTable(
@@ -805,10 +803,17 @@ class Ticket extends CommonITILObject
 
                 // enquete si statut clos
                 $satisfaction = new TicketSatisfaction();
-                if (
-                    $satisfaction->getFromDB($item->getID())
-                    && $item->fields['status'] == $_SESSION['CLOSED']
+                $result = $this::getAdapter()->request([
+                    'FROM'   => 'glpi_ticketsatisfactions',
+                    'WHERE'  => ['tickets_id' => $item->getID()]
+                ]);
+                $satisfaction_data = $result->fetchAssociative();
+                if ($satisfaction_data && $item->fields['status'] == $_SESSION['CLOSED']
                 ) {
+                    $satisfaction->fields = $satisfaction_data;
+                    if (isset($satisfaction_data['id'])) {
+                        $satisfaction->fields['id'] = $satisfaction_data['id'];
+                    }
                     $ong[3] = __('Satisfaction');
                 }
                 if ($item->canView()) {
@@ -1194,7 +1199,6 @@ class Ticket extends CommonITILObject
                 $changes[]                             = '_locations_id_of_requester';
                 $changes[]                             = '_groups_id_of_requester';
             }
-
             // Special case to make sure rule depending on category completename are also executed
             if (in_array('itilcategories_id', $changes)) {
                 $changes[] = 'itilcategories_id_cn';
@@ -1543,7 +1547,22 @@ class Ticket extends CommonITILObject
                 ));
             }
             // Not calendar defined
-            return max(1, strtotime($_SESSION["glpi_currenttime"]) - strtotime($this->fields['date']));
+            // Convert DateTime to timestamp if necessary
+            $date_timestamp = $this->fields['date'];
+            if ($date_timestamp instanceof DateTime) {
+                $date_timestamp = $date_timestamp->getTimestamp();
+            } else {
+                $date_timestamp = strtotime($this->fields['date']);
+            }
+            
+            $current_time = $_SESSION["glpi_currenttime"];
+            if ($current_time instanceof DateTime) {
+                $current_time = $current_time->getTimestamp();
+            } else {
+                $current_time = strtotime($_SESSION["glpi_currenttime"]);
+            }
+            
+            return max(1, $current_time - $date_timestamp);
         }
         return 0;
     }
