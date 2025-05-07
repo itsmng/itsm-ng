@@ -857,6 +857,9 @@ class CommonGLPI
         echo "<div class='form_content'>";
         echo "<div class='$class'>";
         Plugin::doHook('pre_show_item', ['item' => $this, 'options' => &$options]);
+        if ($this instanceof CommonDBTM) {
+            $this->initForm($options['id'], $options);
+        }
         $this->showForm($options['id'], $options);
         Plugin::doHook('post_show_item', ['item' => $this, 'options' => $options]);
         echo "</div>";
