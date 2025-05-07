@@ -283,6 +283,12 @@ class CommonDBTM extends CommonGLPI
     public function getFromDB($ID)
     {
         try {
+            $entityName = "\Itsmng\Domain\Entities\\" . $this->getType();
+            if (!class_exists($entityName)) {
+                $this->fields['id'] = $ID;
+                $this->post_getFromDB();
+                return true;
+            }
             $item = $this::getAdapter()->findOneBy([$this->getIndexName() => Toolbox::cleanInteger($ID)]);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
@@ -290,9 +296,7 @@ class CommonDBTM extends CommonGLPI
         }
         if (isset($item)) {
             $this->fields = $this::getAdapter()->getFields($item);
-
             $this->post_getFromDB();
-
         }
         return true;
 
@@ -666,7 +670,6 @@ class CommonDBTM extends CommonGLPI
             $this->cleanHistory();
             $this->cleanRelationData();
             $this->cleanRelationTable();
-
             $result = $this::getAdapter()->deleteByCriteria([
                 'id' => $this->fields['id']
             ]);
@@ -674,6 +677,7 @@ class CommonDBTM extends CommonGLPI
                 $this->post_deleteFromDB();
                 return true;
             }
+            
         } else {
             // Auto set date_mod if exsist
             if (isset($this->fields['date_mod'])) {
@@ -742,7 +746,8 @@ class CommonDBTM extends CommonGLPI
                               'WHERE' => [$f => $this->getID()],
                             ]
                         );
-                        foreach ($result as $data) {
+                        $rows = $result->fetchAllAssociative();
+                        foreach ($rows as $data) {
                             // Be carefull : we must use getIndexName because self::update rely on that !
                             if ($object = getItemForItemtype($itemtype)) {
                                 $idName = $object->getIndexName();
@@ -1879,7 +1884,6 @@ class CommonDBTM extends CommonGLPI
             // $input clear by a hook to cancel delete
             return false;
         }
-
         if ($this->pre_deleteItem()) {
             if ($this->deleteFromDB($force)) {
                 if ($force) {
@@ -3316,10 +3320,12 @@ class CommonDBTM extends CommonGLPI
 
         if (!isset($this->fields['id'])) {
             $this->getEmpty();
+            if (!is_array($this->fields)) {
+                $this->fields = [];
+            }
         }
         return array_key_exists('is_deleted', $this->fields);
     }
-
 
     /**
      * Is the object deleted
@@ -4702,17 +4708,15 @@ class CommonDBTM extends CommonGLPI
     **/
     public function deleteByCriteria($crit = [], $force = 0, $history = 1)
     {
-        global $DB;
 
         $ok = false;
         if (is_array($crit) && (count($crit) > 0)) {
-            $crit['FIELDS'] = [$this::getTable() => 'id'];
+            $crit['FIELDS'] = ['id'];
             $ok = true;
-            //ajout
-            $crit['table'] = $this->getTable();
-            //fin ajout
+            $crit['FROM'] = $this->getTable();
             $results = $this::getAdapter()->request($crit);
-            foreach ($results as $row) {
+            $rows = $results->fetchAllAssociative();
+            foreach ($rows as $row) {
                 if (!$this->delete($row, $force, $history)) {
                     $ok = false;
                 }
