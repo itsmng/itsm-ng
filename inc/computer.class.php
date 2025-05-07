@@ -145,7 +145,7 @@ class Computer extends CommonDBTM
 
     public function post_updateItem($history = 1)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $changes = [];
         $update_count = count($this->updates ?? []);
@@ -192,7 +192,7 @@ class Computer extends CommonDBTM
 
             // Propagates the changes to linked items
             foreach ($CFG_GLPI['directconnect_types'] as $type) {
-                $items_result = $DB->request(
+                $items_result = $this::getAdapter()->request(
                     [
                       'SELECT' => ['items_id'],
                       'FROM'   => Computer_Item::getTable(),
@@ -226,7 +226,7 @@ class Computer extends CommonDBTM
                 // Propagates the changes to linked devices
                 foreach ($CFG_GLPI['itemdevices'] as $device) {
                     $item = new $device();
-                    $devices_result = $DB->request(
+                    $devices_result = $this::getAdapter()->request(
                         [
                           'SELECT' => ['id'],
                           'FROM'   => $item::getTable(),
@@ -284,18 +284,7 @@ class Computer extends CommonDBTM
         if (isset($input["id"]) && ($input["id"] > 0)) {
             $input["_oldID"] = $input["id"];
         }
-        //ajout
-        // Get entity from session
-        // if (isset($_SESSION['glpiactive_entity'])) {
-        //     $adapter = $this::getAdapter();
-        //     $entityObject = $adapter->findOneBy(['id' => $_SESSION['glpiactive_entity']]);
-
-        //     if ($entityObject) {
-        //         $input['entity'] = $entityObject; // Store Entity object
-        //         $input['entities_id'] = $_SESSION['glpiactive_entity']; // Store ID for DB
-        //     }
-        // }
-        //fin ajout
+        
         unset($input['id']);
         unset($input['withtemplate']);
 
@@ -471,16 +460,15 @@ class Computer extends CommonDBTM
 
     public function getLinkedItems()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        
+        $result = $this::getAdapter()->request([
            'SELECT' => ['itemtype', 'items_id'],
            'FROM'   => 'glpi_computers_items',
            'WHERE'  => ['computers_id' => $this->getID()]
         ]);
 
         $tab = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $tab[$data['itemtype']][$data['items_id']] = $data['items_id'];
         }
         return $tab;
@@ -674,7 +662,7 @@ class Computer extends CommonDBTM
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the hardware'),
            'datatype'           => 'dropdown',
            'right'              => 'own_ticket'
@@ -684,7 +672,7 @@ class Computer extends CommonDBTM
            'id'                 => '49',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge of the hardware'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'

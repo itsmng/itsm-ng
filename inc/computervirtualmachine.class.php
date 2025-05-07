@@ -494,13 +494,11 @@ class ComputerVirtualMachine extends CommonDBChild
     **/
     public static function findVirtualMachine($fields = [])
     {
-        global $DB;
-
         if (!isset($fields['uuid']) || empty($fields['uuid'])) {
             return false;
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => 'glpi_computers',
            'WHERE'  => [
@@ -509,16 +507,17 @@ class ComputerVirtualMachine extends CommonDBChild
               ]
            ]
         ]);
-
+        $results = $request->fetchAllAssociative();
         //Virtual machine found, return ID
-        if (count($iterator) == 1) {
-            $result = $iterator->next();
+        if (count($results) == 1) {
+            // $result = $iterator->next();
+            $result = $results[0];
             return $result['id'];
-        } elseif (count($iterator) > 1) {
+        } elseif (count($results) > 1) {
             Toolbox::logWarning(
                 sprintf(
                     'findVirtualMachine expects to get one result, %1$s found!',
-                    count($iterator)
+                    count($results)
                 )
             );
         }
