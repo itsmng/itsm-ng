@@ -162,7 +162,7 @@ class Log extends CommonDBTM
                             $oldval = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, $oldval));
                             $values[$key] = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, $values[$key]));
                         }
-                        $changes = [$id_search_option, addslashes($oldval), $values[$key]];
+                        $changes = [$id_search_option, addslashes((string)$oldval), $values[$key]];
                     } else {
                         // other cases; link field -> get data from dropdown
                         if ($val2["table"] != 'glpi_auth_tables') {
@@ -243,7 +243,8 @@ class Log extends CommonDBTM
                 sprintf(__('%1$s (%2$s)'), getUserName($impersonator_id), $impersonator_id)
             );
         }
-
+        $old_value = ($old_value instanceof \DateTimeInterface) ? $old_value->format('Y-m-d H:i:s') : (is_object($old_value) ? (string)$old_value : $old_value);
+        $new_value = ($new_value instanceof \DateTimeInterface) ? $new_value->format('Y-m-d H:i:s') : (is_object($new_value) ? (string)$new_value : $new_value);
         $old_value = Toolbox::substr(stripslashes($old_value), 0, 180);
         $new_value = Toolbox::substr(stripslashes($new_value), 0, 180);
 
