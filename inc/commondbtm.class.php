@@ -1719,7 +1719,10 @@ class CommonDBTM extends CommonGLPI
                 if ($item->isField($this->getForeignKeyField())) {
                     $OR[] = [$this->getForeignKeyField() => $this->getID()];
                 }
-                $query['WHERE'][] = ['OR' => $OR];
+                //verif OR
+                if (!empty($OR)) {
+                    $query['WHERE'][] = ['OR' => $OR];              
+                }
 
                 $input = [
                    'entities_id'  => $this->getEntityID(),
