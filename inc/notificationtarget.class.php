@@ -911,7 +911,7 @@ class NotificationTarget extends CommonDBChild
         $request = self::getAdapter()->request([
             'FROM' => 'glpi_profiles'
         ]);
-        
+
         foreach ($request->fetchAllAssociative() as $data) {
             $this->addTarget(
                 $data["id"],
@@ -1059,7 +1059,7 @@ class NotificationTarget extends CommonDBChild
             $criteria['WHERE'][User::getTable() . '.id'] = $id;
             $request = $this::getAdapter()->request($criteria);
             $results = $request->fetchAllAssociative();
-            
+
             foreach ($results as $data) {
                 //Add the user email and language in the notified users list
                 $this->addToRecipientsList($data);

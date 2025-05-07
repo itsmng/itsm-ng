@@ -229,7 +229,7 @@ class Enclosure
 
         return $this;
     }
-    
+
     public function getDateCreation(): DateTime
     {
         return $this->dateCreation ?? new DateTime();
@@ -243,9 +243,9 @@ class Enclosure
         return $this;
     }
 
-   /**
-     * Get the value of entity
-     */
+    /**
+      * Get the value of entity
+      */
     public function getEntity(): ?Entity
     {
         return $this->entity;

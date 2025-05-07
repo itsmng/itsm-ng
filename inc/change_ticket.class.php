@@ -395,7 +395,7 @@ class Change_Ticket extends CommonDBRelation
         $used    = [];
         $results = $request->fetchAllAssociative();
         $numrows = count($results);
-        foreach($results as $data) {
+        foreach ($results as $data) {
             $changes[$data['id']] = $data;
             $used[$data['id']]    = $data['id'];
         }

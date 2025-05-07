@@ -282,7 +282,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
                     $update['level'] = $nextNodeLevel;
                 }
                 $this::getAdapter()->save([
-                    'id' => $data['id'],  
+                    'id' => $data['id'],
                     ...$update
                 ]);
                 // Translations :
@@ -321,13 +321,10 @@ abstract class CommonTreeDropdown extends CommonDropdown
         }
 
         $ancestorsArray = is_array($ancestors) ? $ancestors : [$ancestors];
-        $adapter = $this::getAdapter();
         foreach ($ancestorsArray as $ancestorID) {
-            $entity = $adapter->findOneBy(['id' => $ancestorID]);
-            if ($entity) {
-                $entity->setSonsCache(null);  
-                $adapter->save($entity);     
-            }
+            $this->getFromDB($ancestorID);
+            $this->update(['sons_cache' => null]);
+
         }
 
         //drop from sons cache when needed
@@ -936,12 +933,12 @@ abstract class CommonTreeDropdown extends CommonDropdown
             // Check twin :
             $request = $this::getAdapter()->request($criteria);
             $results = $request->fetchAllAssociative();
-            if (!empty($results)) { 
-                return $results[0]['id']; 
+            if (!empty($results)) {
+                return $results[0]['id'];
             }
         }
         return -1;
-    
+
     }
 
 

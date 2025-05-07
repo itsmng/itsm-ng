@@ -192,7 +192,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
      **/
     public static function getOppositeByTypeAndID($itemtype, $items_id, &$relations_id = null)
     {
-        
+
         if ($items_id < 0) {
             return false;
         }
@@ -1240,7 +1240,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
         HTMLTableCell $father = null,
         array $options = []
     ) {
-        
+
         if (empty($item)) {
             if (empty($father)) {
                 return;
@@ -1937,7 +1937,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
         $request = self::getAdapter()->request($params);
         $results = $request->fetchAllAssociative();
 
-        return $results;  
+        return $results;
     }
 
     /**
@@ -1981,7 +1981,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
         $results = self::getAdapter()->request($params);
         $types_results = $results->fetchAllAssociative();
 
-    return $types_results;  
+        return $types_results;
     }
 
     /**

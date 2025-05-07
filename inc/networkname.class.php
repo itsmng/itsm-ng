@@ -336,9 +336,9 @@ class NetworkName extends FQDNLabel
                         'items_id' => $this->getID()
                     ]
                 ]);
-                
+
                 $results = $request->fetchAllAssociative();
-                
+
                 foreach ($results as $data) {
                     $ip->update([
                         'id'       => $data['id'],

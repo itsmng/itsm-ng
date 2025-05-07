@@ -159,19 +159,18 @@ class CartridgeItem extends CommonDBTM
     **/
     public function addCompatibleType($cartridgeitems_id, $printermodels_id)
     {
-        global $DB;
-
         if (
             ($cartridgeitems_id > 0)
             && ($printermodels_id > 0)
         ) {
-            $params = [
+            $adapter = $this::getAdapter();
+
+            $result = $adapter->add([
                'cartridgeitems_id' => $cartridgeitems_id,
                'printermodels_id'  => $printermodels_id
-            ];
-            $result = $DB->insert('glpi_cartridgeitems_printermodels', $params);
+            ]);
 
-            if ($result && ($DB->affectedRows() > 0)) {
+            if (is_array($result) && isset($result['id'])) {
                 return true;
             }
         }
@@ -577,7 +576,7 @@ class CartridgeItem extends CommonDBTM
     **/
     public static function dropdownForPrinter(Printer $printer)
     {
-        
+
         $request = self::getAdapter()->request([
            'SELECT'       => [
               'COUNT'  => '* AS cpt',
@@ -619,9 +618,8 @@ class CartridgeItem extends CommonDBTM
            'GROUPBY'      => 'tID',
            'ORDERBY'      => ['name', 'ref']
         ]);
-
         $results = [];
-      while ($data = $request->fetchAssociative()) {
+        while ($data = $request->fetchAssociative()) {
             $text = sprintf(__('%1$s - %2$s'), $data["name"], $data["ref"]);
             $text = sprintf(__('%1$s (%2$s)'), $text, $data["cpt"]);
             $text = sprintf(__('%1$s - %2$s'), $text, $data["location"]);

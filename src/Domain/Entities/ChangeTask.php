@@ -151,7 +151,7 @@ class ChangeTask
     {
         if (is_string($begin)) {
             $begin = new \DateTime($begin);
-        $this->begin = $begin;
+            $this->begin = $begin;
         }
 
         return $this;

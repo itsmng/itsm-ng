@@ -892,7 +892,7 @@ abstract class CommonDBChild extends CommonDBConnexity
     **/
     public static function showChildsForItemForm(CommonDBTM $item, $field_name, $canedit = null)
     {
-        
+
         $items_id = $item->getID();
 
         if (is_null($canedit)) {

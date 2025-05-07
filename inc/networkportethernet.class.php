@@ -99,14 +99,14 @@ class NetworkPortEthernet extends NetworkPortInstantiation
                   'type' => 'select',
                   'name' => 'netpoints_id',
                   'itemtype' => Netpoint::class,
-                  'value' => $this->fields['netpoints_id']?? null,
+                  'value' => $this->fields['netpoints_id'] ?? null,
                   'actions' => getItemActionButtons(['info', 'add'], Netpoint::class),
                ] : [],
                DeviceNetworkCard::getTypeName(1) => !$options['several'] ? [
                   'type' => 'select',
                   'name' => 'items_devicenetworkcards_id',
                   'itemtype' => DeviceNetworkCard::class,
-                  'value' => $this->fields['items_devicenetworkcards_id']?? null,
+                  'value' => $this->fields['items_devicenetworkcards_id'] ?? null,
                   'actions' => getItemActionButtons(['info', 'add'], DeviceNetworkCard::class),
                ] : [],
             ];
@@ -129,7 +129,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
               'type' => 'select',
               'name' => 'type',
               'values' => self::getPortTypeName(),
-              'value' => $this->fields['type']?? null,
+              'value' => $this->fields['type'] ?? null,
            ],
            __('Ethernet port speed') => [
               'type' => 'select',
@@ -140,7 +140,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
                     ['speed_other_value' => self::transformPortSpeed($this->fields['speed'], true)] :
                        ['speed_other_value' => __('Other')]
               ),
-              'value' => $this->fields['speed']?? null,
+              'value' => $this->fields['speed'] ?? null,
            ],
            __('MAC') => [
               'type' => 'text',

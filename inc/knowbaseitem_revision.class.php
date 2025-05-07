@@ -159,9 +159,9 @@ class KnowbaseItem_Revision extends CommonDBTM
             'WHERE'   => $where,
             'ORDERBY' => ['id DESC']
             ]);
-            
+
         $revisions = $request->fetchAllAssociative();
-        
+
         $is_checked = true;
         foreach ($revisions as $revision) {
             // Before GLPI 9.3.1, author was not stored in revision.

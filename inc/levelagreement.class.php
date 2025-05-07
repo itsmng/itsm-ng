@@ -123,7 +123,7 @@ abstract class LevelAgreement extends CommonDBChild
         // get calendar from slm
         $slm = new SLM();
         if ($slm->getFromDB($this->fields['slms_id'])) {
-            $this->fields['calendars_id'] = $slm->fields['calendars_id']?? null;
+            $this->fields['calendars_id'] = $slm->fields['calendars_id'] ?? null;
         }
     }
 
@@ -596,9 +596,9 @@ abstract class LevelAgreement extends CommonDBChild
                'value' => $this->getID()
             ]
          ]);
-         
-         $rules_id_list = $request->fetchAllAssociative();
-         $nb = count($rules_id_list);
+
+        $rules_id_list = $request->fetchAllAssociative();
+        $nb = count($rules_id_list);
 
         echo "<div class='spaced'>";
         if (!$nb) {
@@ -729,16 +729,16 @@ abstract class LevelAgreement extends CommonDBChild
             'WHERE' => ['glpi_tickets.id' => $tickets_id],
             'LIMIT' => 1
         ]);
-        
+
         $data = $request->fetchAssociative();
-        
+
         if ($data && isset($data['id'])) {
             $item = new static();
             if ($item->getFromDB($data['id'])) {
                 return $item;
             }
         }
-        
+
         return false;
     }
 

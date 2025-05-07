@@ -495,7 +495,7 @@ class Project
 
     /**
      * Get the value of projecttemplates
-     */ 
+     */
     public function getProjecttemplates()
     {
         return $this->projecttemplates;
@@ -505,7 +505,7 @@ class Project
      * Set the value of projecttemplates
      *
      * @return  self
-     */ 
+     */
     public function setProjecttemplates($projecttemplates)
     {
         $this->projecttemplates = $projecttemplates;

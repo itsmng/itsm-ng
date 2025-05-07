@@ -101,7 +101,7 @@ class TicketSatisfaction
 
     /**
      * Get the value of ticket
-     */ 
+     */
     public function getTicket(): ?Ticket
     {
         return $this->ticket;
@@ -111,7 +111,7 @@ class TicketSatisfaction
      * Set the value of ticket
      *
      * @return  self
-     */ 
+     */
     public function setTicket(?Ticket $ticket): self
     {
         $this->ticket = $ticket;

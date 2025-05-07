@@ -677,7 +677,7 @@ class CommonDBTM extends CommonGLPI
                 $this->post_deleteFromDB();
                 return true;
             }
-            
+
         } else {
             // Auto set date_mod if exsist
             if (isset($this->fields['date_mod'])) {
@@ -1721,7 +1721,7 @@ class CommonDBTM extends CommonGLPI
                 }
                 //verif OR
                 if (!empty($OR)) {
-                    $query['WHERE'][] = ['OR' => $OR];              
+                    $query['WHERE'][] = ['OR' => $OR];
                 }
 
                 $input = [
@@ -5768,7 +5768,7 @@ class CommonDBTM extends CommonGLPI
                'WHERE'  => ['id' => $next_parent]
             ]);
             $results = $request->fetchAllAssociative();
-            if (count($results) > 0) { 
+            if (count($results) > 0) {
                 $next_parent = $results[0][$fk];
             } else {
                 // Invalid parent
@@ -5808,9 +5808,9 @@ class CommonDBTM extends CommonGLPI
                false
            ),
            'changes'   => $change->getActiveChangesForItem(
-                   get_class($this),
-                   $this->getID()
-               )->fetchAllAssociative(),
+               get_class($this),
+               $this->getID()
+           )->fetchAllAssociative(),
            'problems'  => iterator_to_array(
                $problem->getActiveProblemsForItem(
                    get_class($this),

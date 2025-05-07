@@ -1554,14 +1554,14 @@ class Ticket extends CommonITILObject
             } else {
                 $date_timestamp = strtotime($this->fields['date']);
             }
-            
+
             $current_time = $_SESSION["glpi_currenttime"];
             if ($current_time instanceof DateTime) {
                 $current_time = $current_time->getTimestamp();
             } else {
                 $current_time = strtotime($_SESSION["glpi_currenttime"]);
             }
-            
+
             return max(1, $current_time - $date_timestamp);
         }
         return 0;
@@ -2440,7 +2440,7 @@ class Ticket extends CommonITILObject
                 ]
             ]
         ]);
-        
+
         while ($tick = $request->fetchAssociative()) {
             $result[$tick['id']] = $tick['name'];
         }

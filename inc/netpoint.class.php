@@ -400,9 +400,9 @@ class Netpoint extends CommonDropdown
                 'FROM'  => 'glpi_netpoints',
                 'WHERE' => $crit
             ]);
-            
+
             $results = $request->fetchAllAssociative();
-            
+
             foreach ($results as $data) {
                 Session::addToNavigateListItems('Netpoint', $data["id"]);
                 echo "<tr class='tab_bg_1'>";

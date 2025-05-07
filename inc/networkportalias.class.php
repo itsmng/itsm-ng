@@ -135,7 +135,7 @@ class NetworkPortAlias extends NetworkPortInstantiation
                     'type' => 'select',
                     'name' => 'networkports_id_alias',
                     'values' => $checklistOptions,
-                    'value' => $this->fields['networkports_id_alias']?? null,
+                    'value' => $this->fields['networkports_id_alias'] ?? null,
                  ]
               ]
            ]

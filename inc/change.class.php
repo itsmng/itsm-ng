@@ -358,7 +358,7 @@ class Change extends CommonITILObject
                     unset($row['id']);
                     $row['changes_id'] = $this->fields['id'];
                     $assoc->add(Toolbox::addslashes_deep($row));
-            
+
                 }
             }
         }
@@ -1377,7 +1377,7 @@ class Change extends CommonITILObject
     **/
     public static function showListForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        
+
         if (!Session::haveRight(self::$rightname, self::READALL)) {
             return false;
         }
@@ -1634,7 +1634,7 @@ class Change extends CommonITILObject
      */
     public function getActiveChangesForItem($itemtype, $items_id)
     {
-       
+
         return $this::getAdapter()->request([
            'SELECT'    => [
               $this->getTable() . '.id',

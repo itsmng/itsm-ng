@@ -262,9 +262,9 @@ class RequestType extends CommonDropdown
                 'is_active'                  => 1
             ]
         ]);
-        
+
         $results = $request->fetchAllAssociative();
-        
+
         if (count($results)) {
             return $results[0]['id'];
         }

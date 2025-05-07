@@ -137,7 +137,7 @@ class NetworkPortAggregate extends NetworkPortInstantiation
                     'type' => 'checklist',
                     'name' => 'networkports_id_list',
                     'options' => $checklistOptions,
-                    'values' => $this->fields['networkports_id_list']?? [],
+                    'values' => $this->fields['networkports_id_list'] ?? [],
                  ]
               ]
            ]

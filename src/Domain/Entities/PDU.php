@@ -158,7 +158,7 @@ class PDU
         return $this;
     }
 
-   
+
     public function getIsTemplate(): ?bool
     {
         return $this->isTemplate;

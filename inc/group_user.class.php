@@ -433,7 +433,7 @@ class Group_User extends CommonDBRelation
               User::getTable() . '.name'
            ]
         ]);
-        
+
         while ($data = $request->fetchAssociative()) {
             // Add to display list, according to criterion
             if (empty($crit) || $data[$crit]) {

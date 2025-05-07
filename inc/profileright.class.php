@@ -195,10 +195,10 @@ class ProfileRight extends CommonDBChild
             'FROM'   => 'glpi_profilerights',
             'WHERE'  => $condition
         ]);
-        
+
         $results = $request->fetchAllAssociative();
         $profiles = array_column($results, 'profiles_id');
-        
+
         if (count($profiles)) {
             $result = $DB->update(
                 'glpi_profilerights',

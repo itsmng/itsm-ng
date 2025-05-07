@@ -1002,14 +1002,17 @@ class Group extends CommonTreeDropdown
                 $fields_updates['date_out'] = 'NULL';
             }
 
-            $DB->update(
-                'glpi_consumables',
-                $fields_updates,
-                [
-                  'items_id' => $this->fields['id'],
-                  'itemtype' => self::class,
-                ]
-            );
+            $adapter = $this::getAdapter();
+
+            $consumables = $adapter->findBy([
+                'items_id' => $this->fields['id'],
+                'itemtype' => self::class
+            ]);
+
+            foreach ($consumables as $consumable) {
+                $updateFields = ['id' => $consumable->getId()] + $fields_updates;
+                $adapter->save($updateFields);
+            }
         }
     }
 

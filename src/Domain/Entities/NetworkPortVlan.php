@@ -67,7 +67,7 @@ class NetworkPortVlan
 
     /**
      * Get the value of networkport
-     */ 
+     */
     public function getNetworkport()
     {
         return $this->networkport;
@@ -77,7 +77,7 @@ class NetworkPortVlan
      * Set the value of networkport
      *
      * @return  self
-     */ 
+     */
     public function setNetworkport($networkport)
     {
         $this->networkport = $networkport;

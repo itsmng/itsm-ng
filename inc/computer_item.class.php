@@ -514,7 +514,7 @@ class Computer_Item extends CommonDBRelation
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
         // Prints a direct connection to a computer
-        
+
         $comp   = new Computer();
         $ID     = $item->getField('id');
 
@@ -651,7 +651,7 @@ class Computer_Item extends CommonDBRelation
     **/
     public static function unglobalizeItem(CommonDBTM $item)
     {
-        
+
         // Update item to unit management :
         if ($item->getField('is_global')) {
             $input = ['id'        => $item->fields['id'],

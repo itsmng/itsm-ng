@@ -221,7 +221,7 @@ class PDU_Rack extends CommonDBRelation
         $notRackedResult = $this::getAdapter()->request([
             'FROM' => $this->getTable()
         ])->fetchAllAssociative();
-        
+
         foreach ($notRackedResult as $not_racked) {
             $used[] = $not_racked['pdus_id'];
         }
@@ -232,7 +232,7 @@ class PDU_Rack extends CommonDBRelation
                 'itemtype' => 'PDU'
             ]
         ])->fetchAllAssociative();
-        
+
         foreach ($rackedResult as $racked) {
             $used[] = $racked['items_id'];
         }

@@ -103,7 +103,7 @@ class Lock extends CommonGLPI
                     'FROM'  => 'glpi_computers_items',
                     'WHERE' => $params
                 ]);
-                
+
                 foreach ($request->fetchAllAssociative() as $line) {
                     /** @var CommonDBTM $asset */
                     $asset = new $type();
@@ -141,7 +141,7 @@ class Lock extends CommonGLPI
                 'FROM'  => $item_disk->getTable(),
                 'WHERE' => $params
             ]);
-            
+
             foreach ($request->fetchAllAssociative() as $line) {
                 if ($first) {
                     echo "<tr><th colspan='2'>" . $item_disk->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
@@ -171,7 +171,7 @@ class Lock extends CommonGLPI
                 'FROM'  => $computer_vm->getTable(),
                 'WHERE' => $params
             ]);
-            
+
             foreach ($request->fetchAllAssociative() as $line) {
                 if ($first) {
                     echo "<tr><th colspan='2'>" . $computer_vm->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
@@ -298,7 +298,7 @@ class Lock extends CommonGLPI
             'FROM'  => $networkport->getTable(),
             'WHERE' => $params
         ]);
-        
+
         foreach ($request->fetchAllAssociative() as $line) {
             $networkport->getFromDB($line['id']);
             if ($first) {
@@ -345,12 +345,12 @@ class Lock extends CommonGLPI
         $request = $networkname->getAdapter()->request($params);
 
         foreach ($request->fetchAllAssociative() as $line) {
-        $networkname->getFromDB($line['id']);
+            $networkname->getFromDB($line['id']);
 
-        if ($first) {
-            echo "<tr><th colspan='2'>" . NetworkName::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
-            $first = false;
-        }
+            if ($first) {
+                echo "<tr><th colspan='2'>" . NetworkName::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
+                $first = false;
+            }
 
             echo "<tr class='tab_bg_1'>";
 
@@ -371,9 +371,9 @@ class Lock extends CommonGLPI
         'glpi_ipaddresses.is_dynamic' => 1,
         'glpi_ipaddresses.is_deleted' => 1,
         'glpi_ipaddresses.itemtype'   => 'NetworkName',
-        'glpi_ipaddresses.items_id'   => 'glpi_networknames.id', 
+        'glpi_ipaddresses.items_id'   => 'glpi_networknames.id',
         'glpi_networknames.itemtype'  => 'NetworkPort',
-        'glpi_networknames.items_id'  => 'glpi_networkports.id',  
+        'glpi_networknames.items_id'  => 'glpi_networkports.id',
         'glpi_networkports.items_id'  => $ID,
         'glpi_networkports.itemtype'  => $itemtype
         ];

@@ -1698,9 +1698,9 @@ class MailCollector extends CommonDBTM
 
             foreach ($results as $index => $data) {
                 if ($index >= $max) {
-                   break;
+                    break;
                 }
-             
+
                 $mc->maxfetch_emails = $max;
 
                 $task->log("Collect mails from " . $data["name"] . " (" . $data["host"] . ")\n");
@@ -1820,7 +1820,7 @@ class MailCollector extends CommonDBTM
         $request = self::getAdapter()->request([
             'FROM' => 'glpi_mailcollectors'
         ]);
-        
+
         foreach ($request->fetchAllAssociative() as $mc) {
             $msg  = "Name: '" . $mc['name'] . "'";
             $msg .= " Active: " . ($mc['is_active'] ? "Yes" : "No");

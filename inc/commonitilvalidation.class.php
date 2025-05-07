@@ -616,12 +616,12 @@ abstract class CommonITILValidation extends CommonDBChild
     **/
     public static function getTicketStatusNumber($items_id, $status)
     {
-            $row = self::getAdapter()->request([
+        $row = self::getAdapter()->request([
            'FROM'   => static::getTable(),
            'COUNT'  => 'cpt',
            'WHERE'  => [
-              static::$items_id => $items_id,
-              'status'          => $status
+          static::$items_id => $items_id,
+          'status'          => $status
            ]
         ])->fetchAssociative();
 

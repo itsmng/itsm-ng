@@ -249,7 +249,7 @@ class Change_Item extends CommonItilObject_Item
                 case 'Supplier':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $from = 'glpi_changes_' . strtolower($item->getType() . 's');
-                        $result = $this::getAdapter()->request([        
+                        $result = $this::getAdapter()->request([
                            'COUNT'  => 'cpt',
                            'FROM'   => $from,
                            'WHERE'  => [

@@ -1118,12 +1118,12 @@ class Software extends CommonDBTM
             ]
         ]);
         $i   = 0;
-        $results = $req->fetchAllAssociative(); 
-        $nb = count($results); 
+        $results = $req->fetchAllAssociative();
+        $nb = count($results);
         if ($nb) {
             foreach ($results as $from) {
                 $found = false;
-    
+
                 // Rechercher une version similaire dans la cible
                 $destRequest = self::getAdapter()->request([
                     'FROM'  => 'glpi_softwareversions',

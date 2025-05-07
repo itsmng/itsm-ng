@@ -286,7 +286,7 @@ class Item_Disk extends CommonDBChild
      *
      * @return Array
      */
-    public static function getFromItem(CommonDBTM $item, $sort = null, $order = null): Array
+    public static function getFromItem(CommonDBTM $item, $sort = null, $order = null): array
     {
         $request = self::getAdapter()->request([
            'SELECT'    => [

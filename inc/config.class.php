@@ -3905,18 +3905,25 @@ class Config extends CommonDBTM
             && (int)$this->oldvalues['value'] === -1
         ) {
             // As passwords will now expire, consider that "now" is the reference date of expiration delay
-            $DB->update(
-                User::getTable(),
-                ['password_last_update' => $_SESSION['glpi_currenttime']],
-                ['authtype' => Auth::DB_GLPI]
-            );
+            $user = new User();
+            $users = $user::getAdapter()->findBy(['authtype' => Auth::DB_GLPI]);
+
+            foreach ($users as $entity) {
+                $user = new User();
+                if ($user->getFromDB($entity->getId())) {
+                    $user->update(['id' => $entity->getId(), 'password_last_update' => $_SESSION['glpi_currenttime']]);
+                }
+            }
 
             // Activate passwordexpiration automated task
-            $DB->update(
-                CronTask::getTable(),
-                ['state' => 1,],
-                ['name' => 'passwordexpiration']
-            );
+            $cron = new CronTask();
+            $entity = $cron::getAdapter()->findOneBy(['name' => 'passwordexpiration']);
+
+            if ($entity) {
+                if ($cron->getFromDB($entity->getId())) {
+                    $cron->update(['id' => $entity->getId(), 'state' => 1]);
+                }
+            }
         }
 
         if (array_key_exists('value', $this->oldvalues)) {

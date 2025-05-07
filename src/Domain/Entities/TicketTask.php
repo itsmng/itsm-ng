@@ -326,7 +326,7 @@ class TicketTask
 
     /**
      * Get the value of editorUser
-     */ 
+     */
     public function getEditorUser()
     {
         return $this->editorUser;
@@ -336,7 +336,7 @@ class TicketTask
      * Set the value of editorUser
      *
      * @return  self
-     */ 
+     */
     public function setEditorUser($editorUser)
     {
         $this->editorUser = $editorUser;
@@ -346,7 +346,7 @@ class TicketTask
 
     /**
      * Get the value of techGroup
-     */ 
+     */
     public function getTechGroup()
     {
         return $this->techGroup;
@@ -356,7 +356,7 @@ class TicketTask
      * Set the value of techGroup
      *
      * @return  self
-     */ 
+     */
     public function setTechGroup($techGroup)
     {
         $this->techGroup = $techGroup;
@@ -366,7 +366,7 @@ class TicketTask
 
     /**
      * Get the value of techUser
-     */ 
+     */
     public function getTechUser()
     {
         return $this->techUser;
@@ -376,7 +376,7 @@ class TicketTask
      * Set the value of techUser
      *
      * @return  self
-     */ 
+     */
     public function setTechUser($techUser)
     {
         $this->techUser = $techUser;

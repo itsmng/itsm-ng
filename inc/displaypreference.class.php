@@ -246,17 +246,15 @@ class DisplayPreference extends CommonDBTM
         $ID2    = $result['id'];
 
         // Update items
-        $DB->update(
-            $this->getTable(),
-            ['rank' => $rank2],
-            ['id' => $input['id']]
-        );
+        $this::getAdapter()->save([
+            'id'   => $input['id'],
+            'rank' => $rank2
+        ]);
 
-        $DB->update(
-            $this->getTable(),
-            ['rank' => $rank1],
-            ['id' => $ID2]
-        );
+        $this::getAdapter()->save([
+            'id'   => $ID2,
+            'rank' => $rank1
+        ]);
     }
 
 

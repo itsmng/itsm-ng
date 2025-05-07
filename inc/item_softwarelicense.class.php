@@ -848,7 +848,7 @@ class Item_SoftwareLicense extends CommonDBRelation
            'START'        => $start
         ];
         $request = self::getAdapter()->request($criteria);
-        $dataList = $request->fetchAllAssociative(); 
+        $dataList = $request->fetchAllAssociative();
 
         if (!empty($dataList)) {
             if ($canedit) {

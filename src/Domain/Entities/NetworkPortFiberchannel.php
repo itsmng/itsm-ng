@@ -149,7 +149,7 @@ class NetworkPortFiberchannel
 
     /**
      * Get the value of itemsDevicenetworkcard
-     */ 
+     */
     public function getItemsDevicenetworkcard()
     {
         return $this->itemsDevicenetworkcard;
@@ -159,7 +159,7 @@ class NetworkPortFiberchannel
      * Set the value of itemsDevicenetworkcard
      *
      * @return  self
-     */ 
+     */
     public function setItemsDevicenetworkcard($itemsDevicenetworkcard)
     {
         $this->itemsDevicenetworkcard = $itemsDevicenetworkcard;

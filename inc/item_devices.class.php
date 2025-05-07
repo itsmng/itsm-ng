@@ -82,20 +82,20 @@ class Item_Devices extends CommonDBRelation
     public static function getTable($classname = null)
     {
         $called_class = $classname ?? get_called_class();
-        
+
         if (strpos($called_class, 'Item_Device') === 0) {
             $deviceType = str_replace('Item_', '', $called_class);
-                       
+
             $lastChar = substr(strtolower($deviceType), -1);
             if ($lastChar === 'y') {
-                
-            $deviceType = substr($deviceType, 0, -1) . 'ies';
-            return 'glpi_items_' . strtolower($deviceType);            
+
+                $deviceType = substr($deviceType, 0, -1) . 'ies';
+                return 'glpi_items_' . strtolower($deviceType);
             }
-            
+
             return 'glpi_items_' . strtolower($deviceType) . 's';
         }
-        
+
         // Default behavior for other classes
         return parent::getTable($classname);
     }
@@ -849,7 +849,7 @@ class Item_Devices extends CommonDBRelation
 
         foreach (self::getItemAffinities($item->getType()) as $link_type) {
             $link = getItemForItemtype($link_type);
-            $table = $link_type::getTable();   
+            $table = $link_type::getTable();
             $criteria = [
                'SELECT' => "$table.*",
                'FROM'   => $table

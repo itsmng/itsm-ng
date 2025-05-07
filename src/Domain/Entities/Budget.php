@@ -132,8 +132,8 @@ class Budget
     public function setBeginDate(\DateTimeInterface|string|null $beginDate): self
     {
         if (is_string($beginDate)) {
-        $beginDate = new \DateTime($beginDate);
-    }
+            $beginDate = new \DateTime($beginDate);
+        }
         $this->beginDate = $beginDate;
 
         return $this;

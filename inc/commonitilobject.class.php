@@ -1298,7 +1298,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         if (
             (($key = array_search('closedate', $this->updates)) !== false)
-            && (substr($this->fields["closedate"]?? '', 0, 16) == substr($this->oldvalues['closedate']?? '', 0, 16))
+            && (substr($this->fields["closedate"] ?? '', 0, 16) == substr($this->oldvalues['closedate'] ?? '', 0, 16))
         ) {
             unset($this->updates[$key]);
             unset($this->oldvalues['closedate']);
@@ -1716,7 +1716,7 @@ abstract class CommonITILObject extends CommonDBTM
                 ],
                 'LIMIT' => 1
             ])->fetchAssociative();
-        
+
             if ($solution && isset($solution['id'])) {
                 $adapter->save([
                     'id'                => $solution['id'],
@@ -5694,20 +5694,20 @@ abstract class CommonITILObject extends CommonDBTM
                 )
                                                                 - $this->fields["waiting_duration"]);
             }
-        
-        // Not calendar defined
-        $solvedate = $this->fields['solvedate'];
-        $date = $this->fields['date'];
-        
-        // Convert DateTime objects to timestamp if needed
-        $solvedate_timestamp = ($solvedate instanceof DateTime) ? 
-            $solvedate->getTimestamp() : strtotime($solvedate);
-        $date_timestamp = ($date instanceof DateTime) ? 
-            $date->getTimestamp() : strtotime($date);
-            
-        return max(0, $solvedate_timestamp - $date_timestamp
-                      - $this->fields["waiting_duration"]);
-    }
+
+            // Not calendar defined
+            $solvedate = $this->fields['solvedate'];
+            $date = $this->fields['date'];
+
+            // Convert DateTime objects to timestamp if needed
+            $solvedate_timestamp = ($solvedate instanceof DateTime) ?
+                $solvedate->getTimestamp() : strtotime($solvedate);
+            $date_timestamp = ($date instanceof DateTime) ?
+                $date->getTimestamp() : strtotime($date);
+
+            return max(0, $solvedate_timestamp - $date_timestamp
+                          - $this->fields["waiting_duration"]);
+        }
         return 0;
     }
 

@@ -168,7 +168,7 @@ class NetworkPortWifi
 
     /**
      * Get the value of itemsDevicenetworkcard
-     */ 
+     */
     public function getItemsDevicenetworkcard()
     {
         return $this->itemsDevicenetworkcard;
@@ -178,7 +178,7 @@ class NetworkPortWifi
      * Set the value of itemsDevicenetworkcard
      *
      * @return  self
-     */ 
+     */
     public function setItemsDevicenetworkcard($itemsDevicenetworkcard)
     {
         $this->itemsDevicenetworkcard = $itemsDevicenetworkcard;

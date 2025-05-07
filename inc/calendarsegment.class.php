@@ -377,7 +377,7 @@ class CalendarSegment extends CommonDBChild
               'end'
            ]
         ]);
-        $results = $request->fetchAllAssociative(); 
+        $results = $request->fetchAllAssociative();
         $numrows = count($results);
         if ($canedit) {
             echo "<div class='firstbloc'>";

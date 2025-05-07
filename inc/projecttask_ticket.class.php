@@ -273,7 +273,7 @@ class ProjectTask_Ticket extends CommonDBRelation
 
         $pjtasks = [];
         $used    = [];
-      foreach ($iterator as $data) {
+        foreach ($iterator as $data) {
             $pjtasks[$data['id']] = $data;
             $used[$data['id']]    = $data['id'];
         }
@@ -295,7 +295,7 @@ class ProjectTask_Ticket extends CommonDBRelation
                 ]
             );
             $finished_states_ids = [];
-            $finished_states_it = $request->fetchAllAssociative();            
+            $finished_states_it = $request->fetchAllAssociative();
             foreach ($finished_states_it as $finished_state) {
                 $finished_states_ids[] = $finished_state['id'];
             }

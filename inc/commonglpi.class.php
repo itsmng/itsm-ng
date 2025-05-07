@@ -1267,7 +1267,7 @@ class CommonGLPI
         if (
             isset($options['id'])
             && !$this->isNewID($options['id'])
-        ) {            
+        ) {
             if (!$this->getFromDB($options['id'])) {
                 Html::displayNotFoundError();
             }

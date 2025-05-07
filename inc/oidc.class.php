@@ -153,7 +153,7 @@ class Oidc extends CommonDBTM
         }
 
         $request = self::getAdapter()->request([
-            'FROM' => 'glpi_oidc_mapping', 
+            'FROM' => 'glpi_oidc_mapping',
         ]);
         $results = $request->fetchAllAssociative();
 
@@ -161,8 +161,8 @@ class Oidc extends CommonDBTM
             $mapping_date_mod = $data["date_mod"];
         }
         $request = self::getAdapter()->request([
-            'FROM'  => 'glpi_users', 
-            'WHERE' => ['id' => $ID] 
+            'FROM'  => 'glpi_users',
+            'WHERE' => ['id' => $ID]
         ]);
         $results = $request->fetchAllAssociative();
         foreach ($results as $data) {
@@ -245,7 +245,7 @@ class Oidc extends CommonDBTM
 
                     $querry = "INSERT IGNORE INTO `glpi_groups` (`id`, `name`, `completename`) VALUES ($id_group_create, '$value', '$value');";
                     $DB->queryOrDie($querry);
-                    $request = self::getAdapter()->request(['FROM' =>'glpi_groups']);
+                    $request = self::getAdapter()->request(['FROM' => 'glpi_groups']);
 
                     while ($data = $request->fetchAssociative()) {
                         $id_group = $data['id'];

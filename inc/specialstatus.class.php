@@ -195,7 +195,7 @@ class SpecialStatus extends CommonTreeDropdown
         $criteria = ["SELECT * FROM glpi_tickets"];
         $requests = self::getAdapter()->request($criteria);
 
-        $requests = self::getAdapter()->request($criteria); 
+        $requests = self::getAdapter()->request($criteria);
         while ($data = $requests->fetchAssociative()) {
             if (isset($tab["id"][$data["status"]]) && $id == $tab["id"][$data["status"]]) {
                 $result[] = $tab["id"][$data["status"]];

@@ -1872,7 +1872,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                 'FROM'   => 'glpi_projects',
                 'WHERE'  => ['projects_id' => $ID]
             ]);
-            
+
             $results = $request->fetchAllAssociative();
             foreach ($results as $data) {
                 $projects += static::getDataToDisplayOnGantt($data['id']);
@@ -2138,12 +2138,12 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
             'LEFT JOIN' => $joins,
             'WHERE'     => $criteria
          ], self::getVisibilityCriteria()));
-         
-         $items = [];
-         $results = $request->fetchAllAssociative();
-         foreach ($results as $data) {
+
+        $items = [];
+        $results = $request->fetchAllAssociative();
+        foreach ($results as $data) {
             $items[$data['id']] = $data['name'];
-         }
+        }
 
         if ($current_id > -1 && !isset($items[$current_id])) {
             // Current Kanban is not in the list yet

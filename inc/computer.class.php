@@ -284,7 +284,7 @@ class Computer extends CommonDBTM
         if (isset($input["id"]) && ($input["id"] > 0)) {
             $input["_oldID"] = $input["id"];
         }
-        
+
         unset($input['id']);
         unset($input['withtemplate']);
 
@@ -460,7 +460,7 @@ class Computer extends CommonDBTM
 
     public function getLinkedItems()
     {
-        
+
         $result = $this::getAdapter()->request([
            'SELECT' => ['itemtype', 'items_id'],
            'FROM'   => 'glpi_computers_items',

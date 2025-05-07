@@ -2318,7 +2318,7 @@ class User extends CommonDBTM
         foreach (Profile_User::getUserEntities($this->fields['id']) as $entity) {
             $entityTmp = new Entity();
             $entityTmp->getFromDB($entity);
-            $entityUser[$entity] = $entityTmp->fields['completename']?? null;
+            $entityUser[$entity] = $entityTmp->fields['completename'] ?? null;
         }
 
         $form = [
@@ -5314,15 +5314,15 @@ class User extends CommonDBTM
                       'is_deleted' => 0,
                       'name'       => array_keys($passwords)];
 
-                      $request = self::getAdapter()->request([
-                        'SELECT' => ['id', 'name', 'password'],
-                        'FROM'   => 'glpi_users',
-                        'WHERE'  => $crit
+        $request = self::getAdapter()->request([
+          'SELECT' => ['id', 'name', 'password'],
+          'FROM'   => 'glpi_users',
+          'WHERE'  => $crit
                     ]);
-                    
-                    $rows = $request->fetchAllAssociative();
-                    
-                    foreach ($rows as $data) {
+
+        $rows = $request->fetchAllAssociative();
+
+        foreach ($rows as $data) {
             if (Auth::checkPassword($passwords[strtolower($data['name'])], $data['password'])) {
                 $default_password_set[] = $data['name'];
             }

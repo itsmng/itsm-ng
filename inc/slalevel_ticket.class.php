@@ -157,7 +157,7 @@ class SlaLevel_Ticket extends CommonDBTM
     {
         $tot = 0;
 
-        $request= self::getAdapter()->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'glpi_slalevels_tickets.*',
               'glpi_slas.type AS type',

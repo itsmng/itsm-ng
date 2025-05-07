@@ -295,7 +295,7 @@ class Ticket
         return $this;
     }
 
-   
+
     public function getContent(): ?string
     {
         return $this->content;
@@ -873,11 +873,11 @@ class Ticket
         return $this;
     }
 
-   
+
 
     /**
      * Get the value of lastupdaterUsersId
-     */ 
+     */
     public function getLastupdaterUsersId()
     {
         return $this->lastupdaterUsersId;
@@ -887,7 +887,7 @@ class Ticket
      * Set the value of lastupdaterUsersId
      *
      * @return  self
-     */ 
+     */
     public function setLastupdaterUsersId($lastupdaterUsersId)
     {
         $this->lastupdaterUsersId = $lastupdaterUsersId;
@@ -897,7 +897,7 @@ class Ticket
 
     /**
      * Get the value of recipientUsersId
-     */ 
+     */
     public function getRecipientUsersId()
     {
         return $this->recipientUsersId;
@@ -907,7 +907,7 @@ class Ticket
      * Set the value of recipientUsersId
      *
      * @return  self
-     */ 
+     */
     public function setRecipientUsersId($recipientUsersId)
     {
         $this->recipientUsersId = $recipientUsersId;

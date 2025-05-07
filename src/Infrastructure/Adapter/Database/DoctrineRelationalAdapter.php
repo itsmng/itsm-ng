@@ -47,16 +47,16 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             }
         }
         $entityName = $entityPrefix . $tableClass;
-        
+
         if (!isset($entityName) || !class_exists($entityName)) {
             $this->entityName = null;
             $this->isSpecialCase = true;
             $this->fallbackTableName = $currentClass::getTable();
             return;
         }
-    
-    $this->entityName = $entityName;
-    $this->isSpecialCase = false;
+
+        $this->entityName = $entityName;
+        $this->isSpecialCase = false;
     }
 
     public function getClass(): string
@@ -118,26 +118,26 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $em->flush();
 
         return false;
-        
+
     }
 
     // list columns from entity
     public function listFields(): array
     {
         if ($this->isSpecialCase || $this->entityName === null) {
-           
-                $conn = $this->em->getConnection();
-                $schemaManager = $conn->createSchemaManager();
-                $columns = $schemaManager->listTableColumns($this->fallbackTableName);
-                
-                $fields = [];
-                foreach ($columns as $column) {
-                    $fieldName = $column->getName();
-                    $entityFieldName = $this->toEntityFormat($fieldName);
-                    $fields[$fieldName] = $entityFieldName;
-                }
-                
-                return $fields;            
+
+            $conn = $this->em->getConnection();
+            $schemaManager = $conn->createSchemaManager();
+            $columns = $schemaManager->listTableColumns($this->fallbackTableName);
+
+            $fields = [];
+            foreach ($columns as $column) {
+                $fieldName = $column->getName();
+                $entityFieldName = $this->toEntityFormat($fieldName);
+                $fields[$fieldName] = $entityFieldName;
+            }
+
+            return $fields;
         }
         $metadata = $this->em->getClassMetadata($this->entityName);
         $DoctrineFields = $metadata->getFieldNames();
@@ -180,7 +180,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         if (preg_match('/^(phone|mobile|fax)\d+$/', $input)) {
             return $input;
         }
-        
+
         if (preg_match('/^(priority)(\d+)$/', $input, $matches)) {
             return $matches[1] . '_' . $matches[2];
         }
@@ -212,7 +212,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         if (preg_match('/^(phone|mobile|fax)\d+$/', $input)) {
             return $input;
         }
-        
+
         if (preg_match('/^(priority)_(\d+)$/', $input, $matches)) {
             return $matches[1] . $matches[2];
         }

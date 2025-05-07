@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use Itsmng\Domain\Entities\RequestType as EntitiesRequestType;
 use Doctrine\Common\Collections\ArrayCollection;
 
-
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_users")]

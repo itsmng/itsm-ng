@@ -100,7 +100,7 @@ class Datacenter
 
         return $this;
     }
-    
+
     public function getDateCreation(): DateTime
     {
         return $this->dateCreation ?? new DateTime();
@@ -114,7 +114,7 @@ class Datacenter
         return $this;
     }
 
-      /**
+    /**
      * Get the value of entity
      */
     public function getEntity(): ?Entity

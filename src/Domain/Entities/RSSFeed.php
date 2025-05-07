@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_rssfeeds')]
@@ -169,7 +168,7 @@ class RSSFeed
 
         return $this;
     }
-    
+
     public function getDateCreation(): DateTime
     {
         return $this->dateCreation ?? new DateTime();

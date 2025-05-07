@@ -229,10 +229,10 @@ class NotificationTemplateTranslation extends CommonDBChild
             'FROM'  => 'glpi_notificationtemplatetranslations',
             'WHERE' => ['notificationtemplates_id' => $nID]
          ]);
-         
-         $results = $request->fetchAllAssociative();
-         
-         foreach ($results as $data) {
+
+        $results = $request->fetchAllAssociative();
+
+        foreach ($results as $data) {
             $link = '';
             if ($this->getFromDB($data['id'])) {
                 Session::addToNavigateListItems('NotificationTemplateTranslation', $data['id']);

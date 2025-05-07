@@ -175,7 +175,7 @@ abstract class ITILTemplateHiddenField extends ITILTemplateField
            'FROM'   => static::getTable(),
            'WHERE'  => [static::$items_id => $ID]
         ]);
-        $results =$request->fetchAllAssociative();
+        $results = $request->fetchAllAssociative();
         $numrows = count($results);
 
         $hiddenfields = [];

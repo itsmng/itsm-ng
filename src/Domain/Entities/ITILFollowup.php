@@ -107,8 +107,8 @@ class ITILFollowup
     public function setDate(\DateTimeInterface|string|null $date): self
     {
         if (is_string($date)) {
-        $date = new \DateTime($date);
-    }
+            $date = new \DateTime($date);
+        }
         $this->date = $date;
 
         return $this;

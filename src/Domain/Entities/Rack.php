@@ -361,7 +361,7 @@ class Rack
 
         return $this;
     }
-    
+
     public function getDateCreation(): DateTime
     {
         return $this->dateCreation ?? new DateTime();

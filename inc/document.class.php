@@ -616,7 +616,7 @@ class Document extends CommonDBTM
             ]);
             $results = $request->fetchAllAssociative();
             if (count($results) > 0) {
-                $icon = $results[0]['icon']; 
+                $icon = $results[0]['icon'];
                 if (!file_exists(GLPI_ROOT . "/pics/icones/$icon")) {
                     $icon = "defaut-dist.png";
                 }
@@ -665,7 +665,7 @@ class Document extends CommonDBTM
             ]
         );
         $doc_data = $doc_request->fetchAssociative();
-        if(!$doc_data) {
+        if (!$doc_data) {
             return false;
         }
         return $this->getFromDB($doc_data['id']);

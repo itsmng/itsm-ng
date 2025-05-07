@@ -1499,16 +1499,16 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
         if ($task->getFromDB($ID)) {
             $subtasks = [];
             $request = self::getAdapter()->request([
-                'SELECT' => '*', 
+                'SELECT' => '*',
                 'FROM'   => 'glpi_projecttasks',
                 'WHERE'  => [
                     'projecttasks_id' => $ID
                 ],
                 'ORDER'  => ['plan_start_date', 'real_start_date']
             ]);
-            
-            $results = $request->fetchAllAssociative(); 
-            
+
+            $results = $request->fetchAllAssociative();
+
             foreach ($results as $data) {
                 $subtasks += static::getDataToDisplayOnGantt($data['id']);
             }
@@ -1601,7 +1601,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
         $task      = new self();
         // Get all tasks without father
         $request = self::getAdapter()->request([
-            'SELECT' => '*', 
+            'SELECT' => '*',
             'FROM'   => 'glpi_projecttasks',
             'WHERE'  => [
                 'projects_id'     => $ID,
@@ -1615,7 +1615,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                 $todisplay += static::getDataToDisplayOnGantt($data['id']);
             }
         }
-        
+
         return $todisplay;
     }
 

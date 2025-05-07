@@ -158,7 +158,7 @@ class Change_Problem extends CommonDBRelation
             $changes[$data['id']] = $data;
             $used[$data['id']]    = $data['id'];
         }
-        
+
         if ($canedit) {
             echo "<div class='firstbloc'>";
 
@@ -279,7 +279,7 @@ class Change_Problem extends CommonDBRelation
             $problems[$data['id']] = $data;
             $used[$data['id']]     = $data['id'];
         }
-        
+
         if ($canedit) {
             $form = [
                'action' => Toolbox::getItemTypeFormURL(__CLASS__),

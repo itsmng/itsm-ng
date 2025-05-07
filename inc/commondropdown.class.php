@@ -437,7 +437,7 @@ abstract class CommonDropdown extends CommonDBTM
                            'COUNT'  => 'cpt',
                            'WHERE'  => [$field => $ID]
                         ])->fetchAssociative();
-                        if ($request > 0) { 
+                        if ($request > 0) {
                             return true;
                         }
                     } else {
@@ -447,7 +447,7 @@ abstract class CommonDropdown extends CommonDBTM
                                'COUNT'  => 'cpt',
                                'WHERE'  => [$f => $ID]
                             ])->fetchAssociative();
-                            if ($request > 0) { 
+                            if ($request > 0) {
                                 return true;
                             }
                         }
@@ -578,7 +578,7 @@ abstract class CommonDropdown extends CommonDBTM
             if ($result) {
                 return $result['id'];
             }
-        return -1;
+            return -1;
         }
     }
 
