@@ -55,7 +55,7 @@ final class Version20250107095445 extends AbstractMigration
         $this->addSql('UPDATE glpi_entities SET entities_id = NULL WHERE entities_id = -1'); 
         $this->addSql('ALTER TABLE glpi_authldaps RENAME COLUMN condition TO conditions');
         $this->addSql('ALTER TABLE glpi_olalevelcriterias RENAME COLUMN condition TO conditions');
-        $this->addSql('ALTER TABLE glpi_rules RENAME COLUMN condition TO conditions');
+        $this->addSql('ALTER TABLE glpi_rules RENAME COLUMN condition TO conditions, RENAME COLUMN `match` TO matching');
         $this->addSql('ALTER TABLE glpi_rulecriterias RENAME COLUMN condition TO conditions');
         $this->addSql('ALTER TABLE glpi_slalevelcriterias RENAME COLUMN condition TO conditions');
 
