@@ -76,8 +76,6 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
     **/
     public function replayRulesOnExistingDB($offset = 0, $maxtime = 0, $items = [], $params = [])
     {
-        global $DB;
-
         if (isCommandLine()) {
             printf(__('Replay rules on existing database started on %s') . "\n", date("r"));
         }
@@ -114,11 +112,11 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
             $criteria['LIMIT'] = 999999999;
         }
 
-        $iterator = $DB->request($criteria);
-        $nb   = count($iterator) + $offset;
-        $step = (($nb > 1000) ? 50 : (($nb > 20) ? floor(count($iterator) / 20) : 1));
+        $request = $this::getAdapter()->request($criteria)->fetchAllAssociative();
+        $nb   = count($request) + $offset;
+        $step = (($nb > 1000) ? 50 : (($nb > 20) ? floor(count($request) / 20) : 1));
 
-        while ($input = $iterator->next()) {
+        foreach ($request as $input) {
             if (!($i % $step)) {
                 if (isCommandLine()) {
                     //TRANS: %1$s is a date, %2$s is a row, %3$s is total row, %4$s is memory
@@ -147,18 +145,18 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
             if (self::somethingHasChanged($res_rule, $input)) {
                 $IDs = [];
                 //Find all the printers in the database with the same name and manufacturer
-                $print_iterator = $DB->request([
+                $print_iterator = $this::getAdapter()->request([
                    'SELECT' => 'id',
                    'FROM'   => 'glpi_printers',
                    'WHERE'  => [
                       'name'               => $input['name'],
                       'manufacturers_id'   => $input['manufacturers_id']
                    ]
-                ]);
+                ])->fetchAllAssociative();
 
                 if (count($print_iterator)) {
                     //Store all the printer's IDs in an array
-                    while ($result = $print_iterator->next()) {
+                    foreach ($print_iterator as $result) {
                         $IDs[] = $result["id"];
                     }
                     //Replay dictionnary on all the printers
@@ -217,12 +215,10 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
     **/
     public function replayDictionnaryOnPrintersByID(array $IDs, $res_rule = [])
     {
-        global $DB;
-
         $new_printers  = [];
         $delete_ids    = [];
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'    => [
               'glpi_printers.id',
               'glpi_printers.name',
@@ -245,7 +241,7 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
            ]
         ]);
 
-        while ($printer = $iterator->next()) {
+        while ($printer = $request->fetchAssociative()) {
             //For each printer
             $this->replayDictionnaryOnOnePrinter($new_printers, $res_rule, $printer, $delete_ids);
         }

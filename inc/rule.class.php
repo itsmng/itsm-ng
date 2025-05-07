@@ -923,7 +923,7 @@ class Rule extends CommonDBTM
                       ],
                       __('Logical operator') => [
                           'name' => 'match',
-                          'value' => $this->fields["match"],
+                          'value' => $this->fields["matching"],
                           'type' => 'select',
                           'values' => [
                               self::AND_MATCHING => __('and'),
@@ -1299,7 +1299,7 @@ class Rule extends CommonDBTM
                    "viewEditCriteria" . $criterion->fields[$this->rules_id_field] . $criterion->fields["id"] . "$rand()>" .
                    $this->getCriteriaName($criterion->fields["criteria"]) . "</button>",
                'conditions' => RuleCriteria::getConditionByID($criterion->fields["conditions"], get_class($this), $criterion->fields["criteria"]),
-               'reason' => $this->getCriteriaDisplayPattern($criterion->fields["criteria"], $criterion->fields["condition"], $criterion->fields["pattern"]),
+               'reason' => $this->getCriteriaDisplayPattern($criterion->fields["criteria"], $criterion->fields["conditions"], $criterion->fields["pattern"]),
             ];
             $massiveActionValues[$criterion->fields['id']] = sprintf('item[%s][%s]', $criterion::class, $criterion->fields['id']);
         }
@@ -2113,16 +2113,14 @@ class Rule extends CommonDBTM
     **/
     public function getNextRanking()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => ['MAX' => 'ranking AS rank'],
            'FROM'   => self::getTable(),
            'WHERE'  => ['sub_type' => $this->getType()]
         ]);
-
-        if (count($iterator)) {
-            $data = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            $data = $results[0];
             return $data["rank"] + 1;
         }
         return 0;
@@ -3030,9 +3028,9 @@ class Rule extends CommonDBTM
             $query['WHERE'][getTableForItemType($this->ruleactionclass) . '.' . $field] = $value;
         }
 
-        $iterator = $DB->request($query);
+        $request = $this::getAdapter()->request($query);
 
-        while ($rule = $iterator->next()) {
+        while ($rule = $request->fetchAssociative()) {
             $affect_rule = new Rule();
             $affect_rule->getRuleWithCriteriasAndActions($rule["id"], 0, 1);
             $rules[]     = $affect_rule;
@@ -3263,7 +3261,7 @@ class Rule extends CommonDBTM
                 ]
             );
         } else {
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT' => [$fieldid],
                'FROM'   => $table,
                'WHERE'  => [
@@ -3271,11 +3269,11 @@ class Rule extends CommonDBTM
                   $fieldfield => ['LIKE', $field]
                ]
             ]);
-
-            if (count($iterator) > 0) {
+            $results = $request->fetchAllAssociative();
+            if (count($results) > 0) {
                 $input['is_active'] = 0;
 
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     $input['id'] = $data[$fieldid];
                     $ruleitem->update($input);
                 }

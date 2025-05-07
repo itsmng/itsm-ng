@@ -340,14 +340,12 @@ class RuleCriteria extends CommonDBChild
     **/
     public function getRuleCriterias($rules_id)
     {
-        global $DB;
-
         $rules_list = [];
         $params = ['FROM'  => $this->getTable(),
                    'WHERE' => [static::$items_id => $rules_id],
                    'ORDER' => 'id'
                   ];
-        foreach ($DB->request($params) as $rule) {
+        foreach ($this::getAdapter()->request($params)->fetchAllAssociative() as $rule) {
             $tmp          = new self();
             $tmp->fields  = $rule;
             $rules_list[] = $tmp;
