@@ -35,10 +35,10 @@ class ItemRack
     private $bgcolor;
 
     #[ORM\Column(name: 'hpos', type: "boolean", options: ["default" => 0])]
-    private $hpos;
+    private $hpos = 0;
 
     #[ORM\Column(name: 'is_reserved', type: "boolean", options: ["default" => 0])]
-    private $isReserved;
+    private $isReserved = 0;
 
     public function getId(): ?int
     {

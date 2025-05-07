@@ -44,16 +44,16 @@ class Certificate
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted = false;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate = false;
+    private $isTemplate = 0;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
     private $templateName = null;
@@ -102,7 +102,7 @@ class Certificate
     private ?Group $group = null;
 
     #[ORM\Column(name: 'is_autosign', type: 'boolean', options: ['default' => 0])]
-    private $isAutosign;
+    private $isAutosign = 0;
 
     #[ORM\Column(name: 'date_expiration', type: 'date', nullable: true)]
     private $dateExpiration;
@@ -172,7 +172,7 @@ class Certificate
         return $this->isRecursive;
     }
 
-    public function setIsRecursive(bool $isRecursive): self
+    public function setIsRecursive(?bool $isRecursive): self
     {
         $this->isRecursive = $isRecursive;
 
