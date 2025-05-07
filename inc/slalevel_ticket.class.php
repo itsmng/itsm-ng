@@ -56,9 +56,7 @@ class SlaLevel_Ticket extends CommonDBTM
     **/
     public function getFromDBForTicket($ID, $slaType)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'       => [static::getTable() . '.id'],
            'FROM'         => static::getTable(),
            'LEFT JOIN'   => [
@@ -80,9 +78,9 @@ class SlaLevel_Ticket extends CommonDBTM
               'glpi_slas.type'                    => $slaType
            ],
            'LIMIT'        => 1
-        ]);
-        if (count($iterator) == 1) {
-            $row = $iterator->next();
+        ])->fetchAllAssociative();
+        if (count($request) == 1) {
+            $row = $request[0];
             return $this->getFromDB($row['id']);
         }
         return false;
@@ -101,9 +99,7 @@ class SlaLevel_Ticket extends CommonDBTM
     **/
     public function deleteForTicket($tickets_id, $slaType)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'    => 'glpi_slalevels_tickets.id',
            'FROM'      => 'glpi_slalevels_tickets',
            'LEFT JOIN' => [
@@ -126,7 +122,7 @@ class SlaLevel_Ticket extends CommonDBTM
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $this->delete(['id' => $data['id']]);
         }
     }
@@ -159,11 +155,9 @@ class SlaLevel_Ticket extends CommonDBTM
     **/
     public static function cronSlaTicket(CronTask $task)
     {
-        global $DB;
-
         $tot = 0;
 
-        $iterator = $DB->request([
+        $request= self::getAdapter()->request([
            'SELECT'    => [
               'glpi_slalevels_tickets.*',
               'glpi_slas.type AS type',
@@ -188,7 +182,7 @@ class SlaLevel_Ticket extends CommonDBTM
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $tot++;
             self::doLevelForTicket($data, $data['type']);
         }
@@ -344,10 +338,10 @@ class SlaLevel_Ticket extends CommonDBTM
 
         $number = 0;
         do {
-            $iterator = $DB->request($criteria);
-            $number = count($iterator);
+            $request = self::getAdapter()->request($criteria)->fetchAllAssociative();
+            $number = count($request);
             if ($number == 1) {
-                $data = $iterator->next();
+                $data = $request[0];
                 self::doLevelForTicket($data, $slaType);
             }
         } while ($number == 1);
