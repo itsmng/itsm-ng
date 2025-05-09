@@ -2529,7 +2529,7 @@ class Entity extends CommonTreeDropdown
         if ($entities_id > 0) {
             if ($entity->getFromDB($entities_id)) {
                 $parent_id = isset($entity->fields['entities_id']) ? $entity->fields['entities_id'] : null;
-                
+
                 if ($parent_id > 0) {
                     $ret = self::getUsedConfig(
                         $fieldref,

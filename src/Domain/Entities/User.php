@@ -5,6 +5,7 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Itsmng\Domain\Entities\RequestType as EntitiesRequestType;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
@@ -159,7 +160,7 @@ class User
 
     #[ORM\ManyToOne(targetEntity: EntitiesRequestType::class)]
     #[ORM\JoinColumn(name: 'default_requesttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?EntitiesRequestType $defaultRequestType = null;
+    private ?EntitiesRequestType $defaultRequesttype = null;
 
     #[ORM\Column(name: 'password_forget_token', type: 'string', length: 40, nullable: true)]
     private $passwordForgetToken;
@@ -325,7 +326,7 @@ class User
     private $menuFavoriteOn = 1;
 
     #[ORM\Column(name: 'menu_position', type: 'text', length: 65535, nullable: true, options: ["default" => "menu-left"])]
-    private $menuPosition;
+    private $menuPosition = "menu-left";
 
     #[ORM\Column(name: 'menu_small', type: 'text', length: 65535, nullable: true, options: ["default" => false])]
     private $menuSmall = false;
@@ -365,6 +366,18 @@ class User
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SavedSearchUser::class)]
     private Collection $savedsearchUsers;
+
+    public function __construct()
+    {
+        $this->changeUsers = new ArrayCollection();
+        $this->groupUsers = new ArrayCollection();
+        $this->knowbaseitemUsers = new ArrayCollection();
+        $this->problemUsers = new ArrayCollection();
+        $this->profileUsers = new ArrayCollection();
+        $this->reminderUsers = new ArrayCollection();
+        $this->rssfeedUsers = new ArrayCollection();
+        $this->savedsearchUsers = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -1103,8 +1116,11 @@ class User
         return $this->beginDate;
     }
 
-    public function setBeginDate(?\DateTime $beginDate): self
+    public function setBeginDate(\DateTimeInterface|string|null $beginDate): self
     {
+        if (is_string($beginDate)) {
+            $beginDate = new \DateTime($beginDate);
+        }
         $this->beginDate = $beginDate;
 
         return $this;
@@ -1115,8 +1131,11 @@ class User
         return $this->endDate;
     }
 
-    public function setEndDate(?\DateTime $endDate): self
+    public function setEndDate(\DateTimeInterface|string|null $endDate): self
     {
+        if (is_string($endDate)) {
+            $endDate = new \DateTime($endDate);
+        }
         $this->endDate = $endDate;
 
         return $this;
@@ -1779,21 +1798,21 @@ class User
 
 
     /**
-     * Get the value of defaultRequestType
+     * Get the value of defaultRequesttype
      */
-    public function getDefaultRequestType()
+    public function getDefaultRequesttype(): ?EntitiesRequestType
     {
-        return $this->defaultRequestType;
+        return $this->defaultRequesttype;
     }
 
     /**
-     * Set the value of defaultRequestType
+     * Set the value of defaultRequesttype
      *
      * @return  self
      */
-    public function setDefaultRequestType($defaultRequestType)
+    public function setDefaultRequesttype(?EntitiesRequestType $defaultRequesttype): self
     {
-        $this->defaultRequestType = $defaultRequestType;
+        $this->defaultRequesttype = $defaultRequesttype;
 
         return $this;
     }

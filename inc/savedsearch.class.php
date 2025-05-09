@@ -627,7 +627,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
         ) {
             $dd = new SavedSearch_User();
             // Is default view for this itemtype already exists ?
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => 'glpi_savedsearches_users',
                'WHERE'  => [
@@ -636,7 +636,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                ]
             ]);
 
-            if ($result = $iterator->next()) {
+            if ($result = $request->fetchAssociative()) {
                 // already exists update it
                 $updateID = $result['id'];
                 $dd->update([
@@ -663,15 +663,13 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     **/
     public function unmarkDefault($ID)
     {
-        global $DB;
-
         if (
             $this->getFromDB($ID)
             && ($this->fields['type'] != self::URI)
         ) {
             $dd = new SavedSearch_User();
             // Is default view for this itemtype already exists ?
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => 'glpi_savedsearches_users',
                'WHERE'  => [
@@ -681,7 +679,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                ]
             ]);
 
-            if ($result = $iterator->next()) {
+            if ($result = $request->fetchAssociative()) {
                 // already exists delete it
                 $deleteID = $result['id'];
                 $dd->delete(['id' => $deleteID]);
@@ -755,24 +753,24 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                "$table.is_private"  => 0,
             ] + getEntitiesRestrictCriteria($table, '', '', true);
         }
-        $public_iterator = $DB->request($public_criteria);
+        $public_iterator = $this::getAdapter()->request($public_criteria)->fetchAllAssociative();
 
         $private_criteria = $criteria;
         $private_criteria['WHERE'] = [
            "$table.is_private"  => 1,
            "$table.users_id"    => Session::getLoginUserID()
         ] + getEntitiesRestrictCriteria($table, '', '', true);
-        $private_iterator = $DB->request($private_criteria);
+        $private_iterator = $this::getAdapter()->request($private_criteria)->fetchAllAssociative();
 
         // get saved searches
         $searches = ['private'   => [],
                      'public'    => []];
 
-        while ($data = $private_iterator->next()) {
+        foreach ($private_iterator as $data) {
             $searches['private'][$data['id']] = $data;
         }
 
-        while ($data = $public_iterator->next()) {
+        foreach ($public_iterator as $data) {
             $searches['public'][$data['id']] = $data;
         }
 
@@ -1136,15 +1134,13 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     **/
     public static function getUsedItemtypes()
     {
-        global $DB;
-
         $types = [];
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => 'itemtype',
            'DISTINCT'        => true,
            'FROM'            => static::getTable()
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $types[] = $data['itemtype'];
         }
         return $types;
@@ -1332,12 +1328,12 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             $lastdate = new \DateTime($task->getField('lastrun'));
             $lastdate->sub(new \DateInterval('P7D'));
 
-            $iterator = $DB->request(['FROM'   => self::getTable(),
+            $request = self::getAdapter()->request(['FROM'   => self::getTable(),
                                       'FIELDS' => ['id', 'query', 'itemtype', 'type'],
                                       'WHERE'  => ['last_execution_date'
-                                                   => ['<' , $lastdate->format('Y-m-d H:i:s')]]]);
+                                                   => ['<' , $lastdate->format('Y-m-d H:i:s')]]])->fetchAllAssociative();
 
-            if ($iterator->numrows()) {
+            if (count($request)) {
                 //prepare variables we'll use
                 $self = new self();
                 $now = date('Y-m-d H:i:s');

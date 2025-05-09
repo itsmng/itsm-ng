@@ -37,7 +37,7 @@ class ProjectCost
     private $endDate;
 
     #[ORM\Column(name: 'cost', type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
-    private $cost;
+    private $cost = 0.0000;
 
     #[ORM\ManyToOne(targetEntity: Budget::class)]
     #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]
@@ -48,7 +48,7 @@ class ProjectCost
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     public function getId(): ?int
     {
@@ -87,8 +87,11 @@ class ProjectCost
     }
 
 
-    public function setBeginDate(?\DateTimeInterface $beginDate): self
+    public function setBeginDate(\DateTimeInterface|string|null $beginDate): self
     {
+        if (is_string($beginDate)) {
+            $beginDate = new \DateTime($beginDate);
+        }
         $this->beginDate = $beginDate;
 
         return $this;
@@ -100,8 +103,11 @@ class ProjectCost
     }
 
 
-    public function setEndDate(?\DateTimeInterface $endDate): self
+    public function setEndDate(\DateTimeInterface|string|null $endDate): self
     {
+        if (is_string($endDate)) {
+            $endDate = new \DateTime($endDate);
+        }
         $this->endDate = $endDate;
 
         return $this;

@@ -218,7 +218,7 @@ class Alert extends CommonDBTM
         }
         $crit['table'] = self::getTable();
         $result = self::getAdapter()->request($crit, ['itemtype' => $itemtype, 'items_id' => $items_id, 'type' => $type]);
-            if ($row = $result->fetchAssociative()) {
+        if ($row = $result->fetchAssociative()) {
             return $row['id'];
         }
         return false;
@@ -271,7 +271,7 @@ class Alert extends CommonDBTM
                                                     'LIMIT'    => 1,
                                                     'itemtype' => $itemtype,
                                                     'items_id' => $items_id]);
-                if ($row = $result->fetchAssociative()) {
+            if ($row = $result->fetchAssociative()) {
                 //TRANS: %s is the date
                 echo sprintf(__('Alert sent on %s'), Html::convDateTime($row['date']));
             }

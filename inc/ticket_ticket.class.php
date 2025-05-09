@@ -154,14 +154,12 @@ class Ticket_Ticket extends CommonDBRelation
     **/
     public static function getLinkedTicketsTo($ID)
     {
-        global $DB;
-
         // Make new database object and fill variables
         if (empty($ID)) {
             return false;
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'OR'  => [
@@ -172,7 +170,7 @@ class Ticket_Ticket extends CommonDBRelation
         ]);
         $tickets = [];
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $ticket = new Ticket();
             if ($data['tickets_id_1'] != $ID) {
                 $ticket->getFromDB($data['tickets_id_1']);
@@ -411,9 +409,7 @@ class Ticket_Ticket extends CommonDBRelation
      */
     public function countOpenChildren($pid)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'COUNT'        => 'cpt',
            'FROM'         => $this->getTable() . ' AS links',
            'INNER JOIN'   => [
@@ -431,7 +427,7 @@ class Ticket_Ticket extends CommonDBRelation
                  'tickets.status'  => Ticket::getClosedStatusArray() + Ticket::getSolvedStatusArray()
               ]
            ]
-        ])->next();
+        ])->fetchAssociative();
         return (int)$result['cpt'];
     }
 

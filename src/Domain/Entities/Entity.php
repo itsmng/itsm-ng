@@ -30,7 +30,7 @@ class Entity
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'completename', type: 'text', nullable: true, length: 65535)]
-    private $completename;
+    private $completename = null;
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
@@ -1030,7 +1030,7 @@ class Entity
 
         return $this;
     }
-    
+
     public function getDateCreation(): DateTime
     {
         return $this->dateCreation ?? new DateTime();

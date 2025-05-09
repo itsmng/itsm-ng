@@ -301,10 +301,10 @@ class SoftwareVersion extends CommonDBChild
             $criteria['WHERE']['NOT'] = ['glpi_softwareversions.id' => $p['used']];
         }
 
-        $iterator = $DB->request($criteria);
+        $request = self::getAdapter()->request($criteria);
 
         $values = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $ID     = $data['id'];
             $output = $data['name'];
 
@@ -329,8 +329,6 @@ class SoftwareVersion extends CommonDBChild
     **/
     public static function showForSoftware(Software $soft)
     {
-        global $DB;
-
         $softwares_id = $soft->getField('id');
 
         if (!$soft->can($softwares_id, READ)) {
@@ -350,7 +348,7 @@ class SoftwareVersion extends CommonDBChild
          HTML;
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'glpi_softwareversions.*',
               'glpi_states.name AS sname'
@@ -368,7 +366,7 @@ class SoftwareVersion extends CommonDBChild
               'softwares_id' => $softwares_id
            ],
            'ORDERBY'   => 'name'
-        ]);
+        ])->fetchAllAssociative();
 
         Session::initNavigateListItems(
             'SoftwareVersion',
@@ -381,7 +379,7 @@ class SoftwareVersion extends CommonDBChild
             )
         );
 
-        if (count($iterator)) {
+        if (count($request)) {
             echo "<table class='tab_cadre_fixehov' aria-label='Comments'><tr>";
             echo "<th>" . self::getTypeName(Session::getPluralNumber()) . "</th>";
             echo "<th>" . __('Status') . "</th>";

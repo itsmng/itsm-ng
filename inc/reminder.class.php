@@ -883,8 +883,8 @@ class Reminder extends CommonDBVisible implements
             $criteria['SELECT'][] = "glpi_remindertranslations.text AS transtext";
         }
 
-        $iterator = $DB->request($criteria);
-        $nb = count($iterator);
+        $request = self::getAdapter()->request($criteria)->fetchAllAssociative();
+        $nb = count($request);
 
         echo "<br><table class='tab_cadrehov' aria-label='Reminders'>";
         echo "<tr class='noHover'><th><div class='relative'><span>$titre</span>";
@@ -1005,10 +1005,7 @@ class Reminder extends CommonDBVisible implements
      */
     private static function getItemsAsVCalendars(array $query)
     {
-
-        global $DB;
-
-        $reminder_iterator = $DB->request($query);
+        $reminder_iterator = self::getAdapter()->request($query)->fetchAllAssociative();
 
         $vcalendars = [];
         foreach ($reminder_iterator as $reminder) {

@@ -531,7 +531,7 @@ class Rack extends CommonDBTM
     **/
     public static function showForRoom(DCRoom $room)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $room_id = $room->getID();
         $rand = mt_rand();
@@ -544,13 +544,13 @@ class Rack extends CommonDBTM
         }
         $canedit = $room->canEdit($room_id);
 
-        $racks = $DB->request([
+        $racks = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'dcrooms_id'   => $room->getID(),
               'is_deleted'   => 0
            ]
-        ]);
+        ])->fetchAssociative();
 
         Session::initNavigateListItems(
             self::getType(),
@@ -981,9 +981,7 @@ JAVASCRIPT;
      */
     public function getFilled($itemtype = null, $items_id = null)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => Item_Rack::getTable(),
            'WHERE'  => [
               'racks_id'   => $this->getID()
@@ -991,7 +989,7 @@ JAVASCRIPT;
         ]);
 
         $filled = [];
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $item = new $row['itemtype']();
             if (!$item->getFromDB($row['items_id'])) {
                 continue;

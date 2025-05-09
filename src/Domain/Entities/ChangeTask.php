@@ -2,16 +2,18 @@
 
 namespace Itsmng\Domain\Entities;
 
-use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 use TaskTemplate;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_changetasks")]
 #[ORM\UniqueConstraint(name: "uuid", columns: ["uuid"])]
 #[ORM\Index(name: 'changes_id', columns: ["changes_id"])]
 #[ORM\Index(name: 'state', columns: ["state"])]
 #[ORM\Index(name: 'users_id', columns: ["users_id"])]
-#[ORM\Index(name: 'users_id_editor', columns: ["users_id_editor"])]
+#[ORM\Index(name: 'editor_users_id', columns: ["editor_users_id"])]
 #[ORM\Index(name: 'tech_users_id', columns: ["tech_users_id"])]
 #[ORM\Index(name: 'tech_groups_id', columns: ["tech_groups_id"])]
 #[ORM\Index(name: 'date', columns: ["date"])]
@@ -41,7 +43,7 @@ class ChangeTask
     private ?Taskcategory $taskcategory = null;
 
     #[ORM\Column(name: 'state', type: "integer", options: ["default" => 0])]
-    private $state;
+    private $state = 0;
 
     #[ORM\Column(name: 'date', type: "datetime", nullable: true)]
     private $date;
@@ -57,7 +59,7 @@ class ChangeTask
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'users_id_editor', referencedColumnName: 'id', nullable: true)]
+    #[ORM\JoinColumn(name: 'editor_users_id', referencedColumnName: 'id', nullable: true)]
     private ?User $userEditor = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -72,7 +74,7 @@ class ChangeTask
     private $content;
 
     #[ORM\Column(name: 'actiontime', type: "integer", options: ["default" => 0])]
-    private $actiontime;
+    private $actiontime = 0;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;
@@ -143,9 +145,14 @@ class ChangeTask
         return $this->begin;
     }
 
-    public function setBegin(\DateTimeInterface $begin): self
+
+
+    public function setBegin(\DateTimeInterface|string|null $begin): self
     {
-        $this->begin = $begin;
+        if (is_string($begin)) {
+            $begin = new \DateTime($begin);
+            $this->begin = $begin;
+        }
 
         return $this;
     }
@@ -155,9 +162,12 @@ class ChangeTask
         return $this->end;
     }
 
-    public function setEnd(\DateTimeInterface $end): self
+    public function setEnd(\DateTimeInterface|string|null $end): self
     {
-        $this->end = $end;
+        if (is_string($end)) {
+            $end = new \DateTime($end);
+            $this->end = $end;
+        }
 
         return $this;
     }
@@ -186,26 +196,29 @@ class ChangeTask
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -260,7 +273,7 @@ class ChangeTask
     /**
      * Get the value of taskcategory
      */
-    public function getTaskcategory()
+    public function getTaskcategory(): ?Taskcategory
     {
         return $this->taskcategory;
     }
@@ -268,9 +281,10 @@ class ChangeTask
     /**
      * Set the value of taskcategory
      *
-     * @return  self
+     * @param Taskcategory|null $taskcategory
+     * @return self
      */
-    public function setTaskcategory($taskcategory)
+    public function setTaskcategory(?Taskcategory $taskcategory): self
     {
         $this->taskcategory = $taskcategory;
 

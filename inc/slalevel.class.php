@@ -123,14 +123,14 @@ class SlaLevel extends LevelAgreementLevel
             echo "</div>";
         }
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'slas_id'   => $ID
            ],
            'ORDER'  => 'execution_time'
-        ]);
-        $numrows = count($iterator);
+        ])->fetchAllAssociative();
+        $numrows = count($request);
 
         echo "<div class='spaced'>";
         if ($canedit && $numrows) {
@@ -291,9 +291,7 @@ class SlaLevel extends LevelAgreementLevel
     **/
     public static function getFirstSlaLevel($slas_id)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable(),
            'WHERE'  => [
@@ -304,7 +302,7 @@ class SlaLevel extends LevelAgreementLevel
            'LIMIT'  => 1
         ]);
 
-        if ($result = $iterator->next()) {
+        if ($result = $request->fetchAssociative()) {
             return $result['id'];
         }
         return 0;
@@ -323,16 +321,16 @@ class SlaLevel extends LevelAgreementLevel
     {
         global $DB;
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'execution_time',
            'FROM'   => self::getTable(),
            'WHERE'  => ['id' => $slalevels_id]
         ]);
 
-        if ($result = $iterator->next()) {
+        if ($result = $request->fetchAssociative()) {
             $execution_time = $result['execution_time'];
 
-            $lvl_iterator = $DB->request([
+            $lvl_iterator = self::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => self::getTable(),
                'WHERE'  => [
@@ -345,7 +343,7 @@ class SlaLevel extends LevelAgreementLevel
                'LIMIT'  => 1
             ]);
 
-            if ($result = $lvl_iterator->next()) {
+            if ($result = $lvl_iterator->fetchAssociative()) {
                 return $result['id'];
             }
         }

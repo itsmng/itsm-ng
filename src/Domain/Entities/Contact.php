@@ -303,7 +303,7 @@ class Contact
         return $this;
     }
 
-      /**
+    /**
      * Get the value of entity
      */
     public function getEntity(): ?Entity

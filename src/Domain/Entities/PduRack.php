@@ -24,7 +24,7 @@ class PduRack
     private ?PDU $pdu = null;
 
     #[ORM\Column(name: 'side', type: 'integer', nullable: true, options: ['default' => 0])]
-    private $side;
+    private $side = 0;
 
     #[ORM\Column(name: 'position', type: 'integer')]
     private $position;

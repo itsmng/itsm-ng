@@ -2,10 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use DateTimeImmutable;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
@@ -56,32 +57,32 @@ class Ticket
     private $name;
 
     #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
-    private $date;
+    private $date = null;
 
     #[ORM\Column(name: 'closedate', type: 'datetime', nullable: true)]
-    private $closedate;
+    private $closedate = null;
 
     #[ORM\Column(name: 'solvedate', type: 'datetime', nullable: true)]
-    private $solvedate;
+    private $solvedate = null;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'lastupdater_users_id', type: 'integer', options: ['default' => 0])]
-    private $usersIdLastupdater;
+    private $lastupdaterUsersId = 0;
 
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
-    private $status;
+    private $status = 1;
 
     #[ORM\Column(name: 'recipient_users_id', type: 'integer', options: ['default' => 0])]
-    private $usersIdRecipient;
+    private $recipientUsersId = 0;
 
     #[ORM\ManyToOne(targetEntity: RequestType::class)]
     #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
     private ?RequestType $requesttype = null;
 
     #[ORM\Column(name: 'content', type: 'text', nullable: true)]
-    private $content;
+    private $content = null;
 
     #[ORM\Column(name: 'urgency', type: 'integer', options: ['default' => 1])]
     private $urgency = 1;
@@ -94,7 +95,7 @@ class Ticket
 
     #[ORM\ManyToOne(targetEntity: ITILCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?ITILCategory $itilCategory = null;
+    private ?ITILCategory $itilcategory = null;
 
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
@@ -113,13 +114,13 @@ class Ticket
     private $slalevelsIdTtr = 0;
 
     #[ORM\Column(name: 'time_to_resolve', type: 'datetime', nullable: true)]
-    private $timeToResolve;
+    private $timeToResolve = null;
 
     #[ORM\Column(name: 'time_to_own', type: 'datetime', nullable: true)]
-    private $timeToOwn;
+    private $timeToOwn = null;
 
     #[ORM\Column(name: 'begin_waiting_date', type: 'datetime', nullable: true)]
-    private $beginWaitingDate;
+    private $beginWaitingDate = null;
 
     #[ORM\Column(name: 'sla_waiting_duration', type: 'integer', options: ['default' => 0])]
     private $slaWaitingDuration = 0;
@@ -137,13 +138,13 @@ class Ticket
     private $olalevelsIdTtr = 0;
 
     #[ORM\Column(name: 'ola_ttr_begin_date', type: 'datetime', nullable: true)]
-    private $olaTtrBeginDate;
+    private $olaTtrBeginDate = null;
 
     #[ORM\Column(name: 'internal_time_to_resolve', type: 'datetime', nullable: true)]
-    private $internalTimeToResolve;
+    private $internalTimeToResolve = null;
 
     #[ORM\Column(name: 'internal_time_to_own', type: 'datetime', nullable: true)]
-    private $internalTimeToOwn;
+    private $internalTimeToOwn = null;
 
     #[ORM\Column(name: 'waiting_duration', type: 'integer', options: ['default' => 0])]
     private $waitingDuration = 0;
@@ -170,7 +171,7 @@ class Ticket
     #[ORM\Column(name: 'validation_percent', type: 'integer', options: ['default' => 0])]
     private $validationPercent = 0;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: ChangeTicket::class)]
@@ -222,68 +223,65 @@ class Ticket
         return $this;
     }
 
-    public function getDate(): ?\DateTime
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(?\DateTime $date): self
+    public function setDate(\DateTimeInterface|string|null $date): self
     {
+        if (is_string($date)) {
+            $date = new \DateTime($date);
+        }
         $this->date = $date;
 
         return $this;
     }
 
-    public function getClosedate(): ?\DateTime
+    public function getClosedate(): ?\DateTimeInterface
     {
         return $this->closedate;
     }
 
-    public function setClosedate(?\DateTime $closedate): self
+    public function setClosedate(\DateTimeInterface|string|null $closedate): self
     {
+        if (is_string($closedate)) {
+            $closedate = new \DateTime($closedate);
+        }
         $this->closedate = $closedate;
 
         return $this;
     }
 
-    public function getSolvedate(): ?\DateTime
+    public function getSolvedate(): ?\DateTimeInterface
     {
         return $this->solvedate;
     }
 
-    public function setSolvedate(?\DateTime $solvedate): self
+    public function setSolvedate(\DateTimeInterface|string|null $solvedate): self
     {
+        if (is_string($solvedate)) {
+            $solvedate = new \DateTime($solvedate);
+        }
         $this->solvedate = $solvedate;
 
         return $this;
     }
 
-    public function getDateMod(): DateTimeImmutable
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    #[ORM\PreFlush]
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function setDateMod(): self
     {
-        $this->dateMod = new DateTimeImmutable();
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getUsersIdLastupdater(): ?int
-    {
-        return $this->usersIdLastupdater;
-    }
-
-    public function setUsersIdLastupdater(?int $usersIdLastupdater): self
-    {
-        $this->usersIdLastupdater = $usersIdLastupdater;
-
-        return $this;
-    }
 
     public function getStatus(): ?int
     {
@@ -297,17 +295,6 @@ class Ticket
         return $this;
     }
 
-    public function getUsersIdRecipient(): ?int
-    {
-        return $this->usersIdRecipient;
-    }
-
-    public function setUsersIdRecipient(?int $usersIdRecipient): self
-    {
-        $this->usersIdRecipient = $usersIdRecipient;
-
-        return $this;
-    }
 
     public function getContent(): ?string
     {
@@ -417,37 +404,46 @@ class Ticket
         return $this;
     }
 
-    public function getTimeToResolve(): ?\DateTime
+    public function getTimeToResolve(): ?\DateTimeInterface
     {
         return $this->timeToResolve;
     }
 
-    public function setTimeToResolve(?\DateTime $timeToResolve): self
+    public function setTimeToResolve(\DateTimeInterface|string|null $timeToResolve): self
     {
+        if (is_string($timeToResolve)) {
+            $timeToResolve = new \DateTime($timeToResolve);
+        }
         $this->timeToResolve = $timeToResolve;
 
         return $this;
     }
 
-    public function getTimeToOwn(): ?\DateTime
+    public function getTimeToOwn(): ?\DateTimeInterface
     {
         return $this->timeToOwn;
     }
 
-    public function setTimeToOwn(?\DateTime $timeToOwn): self
+    public function setTimeToOwn(\DateTimeInterface|string|null $timeToOwn): self
     {
+        if (is_string($timeToOwn)) {
+            $timeToOwn = new \DateTime($timeToOwn);
+        }
         $this->timeToOwn = $timeToOwn;
 
         return $this;
     }
 
-    public function getBeginWaitingDate(): ?\DateTime
+    public function getBeginWaitingDate(): ?\DateTimeInterface
     {
         return $this->beginWaitingDate;
     }
 
-    public function setBeginWaitingDate(?\DateTime $beginWaitingDate): self
+    public function setBeginWaitingDate(\DateTimeInterface|string|null $beginWaitingDate): self
     {
+        if (is_string($beginWaitingDate)) {
+            $beginWaitingDate = new \DateTime($beginWaitingDate);
+        }
         $this->beginWaitingDate = $beginWaitingDate;
 
         return $this;
@@ -513,37 +509,46 @@ class Ticket
         return $this;
     }
 
-    public function getOlaTtrBeginDate(): ?\DateTime
+    public function getOlaTtrBeginDate(): ?\DateTimeInterface
     {
         return $this->olaTtrBeginDate;
     }
 
-    public function setOlaTtrBeginDate(?\DateTime $olaTtrBeginDate): self
+    public function setOlaTtrBeginDate(\DateTimeInterface|string|null $olaTtrBeginDate): self
     {
+        if (is_string($olaTtrBeginDate)) {
+            $olaTtrBeginDate = new \DateTime($olaTtrBeginDate);
+        }
         $this->olaTtrBeginDate = $olaTtrBeginDate;
 
         return $this;
     }
 
-    public function getInternalTimeToResolve(): ?\DateTime
+    public function getInternalTimeToResolve(): ?\DateTimeInterface
     {
         return $this->internalTimeToResolve;
     }
 
-    public function setInternalTimeToResolve(?\DateTime $internalTimeToResolve): self
+    public function setInternalTimeToResolve(\DateTimeInterface|string|null $internalTimeToResolve): self
     {
+        if (is_string($internalTimeToResolve)) {
+            $internalTimeToResolve = new \DateTime($internalTimeToResolve);
+        }
         $this->internalTimeToResolve = $internalTimeToResolve;
 
         return $this;
     }
 
-    public function getInternalTimeToOwn(): ?\DateTime
+    public function getInternalTimeToOwn(): ?\DateTimeInterface
     {
         return $this->internalTimeToOwn;
     }
 
-    public function setInternalTimeToOwn(?\DateTime $internalTimeToOwn): self
+    public function setInternalTimeToOwn(\DateTimeInterface|string|null $internalTimeToOwn): self
     {
+        if (is_string($internalTimeToOwn)) {
+            $internalTimeToOwn = new \DateTime($internalTimeToOwn);
+        }
         $this->internalTimeToOwn = $internalTimeToOwn;
 
         return $this;
@@ -634,16 +639,15 @@ class Ticket
         return $this;
     }
 
-    public function getDateCreation(): DateTimeImmutable
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
     #[ORM\PrePersist]
-    #[ORM\PreFlush]
     public function setDateCreation(): self
     {
-        $this->dateCreation = new DateTimeImmutable();
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -834,7 +838,7 @@ class Ticket
      */
     public function getITILCategory()
     {
-        return $this->itilCategory;
+        return $this->itilcategory;
     }
 
     /**
@@ -844,7 +848,7 @@ class Ticket
      */
     public function setITILcategory($itilcategory)
     {
-        $this->itilCategory = $itilcategory;
+        $this->itilcategory = $itilcategory;
 
         return $this;
     }
@@ -865,6 +869,48 @@ class Ticket
     public function setLocation($location)
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of lastupdaterUsersId
+     */
+    public function getLastupdaterUsersId()
+    {
+        return $this->lastupdaterUsersId;
+    }
+
+    /**
+     * Set the value of lastupdaterUsersId
+     *
+     * @return  self
+     */
+    public function setLastupdaterUsersId($lastupdaterUsersId)
+    {
+        $this->lastupdaterUsersId = $lastupdaterUsersId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of recipientUsersId
+     */
+    public function getRecipientUsersId()
+    {
+        return $this->recipientUsersId;
+    }
+
+    /**
+     * Set the value of recipientUsersId
+     *
+     * @return  self
+     */
+    public function setRecipientUsersId($recipientUsersId)
+    {
+        $this->recipientUsersId = $recipientUsersId;
 
         return $this;
     }

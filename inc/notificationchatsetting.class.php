@@ -205,7 +205,7 @@ class NotificationChatSetting extends NotificationSetting
         $request = self::getAdapter()->request([
             'FROM' => 'glpi_notificationchatconfigs'
         ]);
-        
+
         $results = $request->fetchAllAssociative();
 
         $result = [];

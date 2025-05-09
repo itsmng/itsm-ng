@@ -57,19 +57,29 @@ class CronTaskLog extends CommonDBTM
     **/
     public static function cleanOld($id, $days)
     {
-        global $DB;
+        $adapter = self::getAdapter();
+        $timestamp = time() - ($days * DAY_TIMESTAMP);
 
-        $secs      = $days * DAY_TIMESTAMP;
+        $sql = "
+            SELECT id FROM glpi_crontasklogs
+            WHERE crontasks_id = :id
+            AND UNIX_TIMESTAMP(date) < :threshold
+        ";
 
-        $result = $DB->delete(
-            'glpi_crontasklogs',
-            [
-              'crontasks_id' => $id,
-              new \QueryExpression("UNIX_TIMESTAMP(" . $DB->quoteName("date") . ") < UNIX_TIMESTAMP()-$secs")
-            ]
-        );
+        $result = $adapter->query($sql, [
+            'id' => $id,
+            'threshold' => $timestamp
+        ]);
 
-        return $result ? $DB->affectedRows() : 0;
+        $rows = $result->fetchAllAssociative();
+        $count = 0;
+
+        foreach ($rows as $row) {
+            $adapter->deleteByCriteria(['id' => $row['id']]);
+            $count++;
+        }
+
+        return $count;
     }
 
 

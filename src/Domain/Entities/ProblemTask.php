@@ -267,12 +267,12 @@ class ProblemTask
         return $this->taskcategory;
     }
 
-   /**
-     * Set the value of taskcategory
-     *
-     * @param Taskcategory|null $taskcategory
-     * @return self
-     */
+    /**
+      * Set the value of taskcategory
+      *
+      * @param Taskcategory|null $taskcategory
+      * @return self
+      */
     public function setTaskcategory(?Taskcategory $taskcategory): self
     {
         $this->taskcategory = $taskcategory;
@@ -363,7 +363,7 @@ class ProblemTask
 
     /**
      * Get the value of editorUser
-     */ 
+     */
     public function getEditorUser()
     {
         return $this->editorUser;
@@ -373,7 +373,7 @@ class ProblemTask
      * Set the value of editorUser
      *
      * @return  self
-     */ 
+     */
     public function setEditorUser($editorUser)
     {
         $this->editorUser = $editorUser;

@@ -489,7 +489,6 @@ class User extends CommonDBTM
         string $email,
         array $condition = []
     ): array {
-        global $DB;
 
         $query = [
            'SELECT'    => self::getTable() . '.id',
@@ -505,7 +504,8 @@ class User extends CommonDBTM
            'WHERE' => [UserEmail::getTable() . '.email' => $email] + $condition
         ];
 
-        $data = iterator_to_array($DB->request($query));
+        $request = self::getAdapter()->request($query);
+        $data = $request->fetchAllAssociative();
         return array_column($data, 'id');
     }
 
@@ -651,7 +651,7 @@ class User extends CommonDBTM
         }
 
         // Check if user does not exists
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [
               'name'      => $input['name'],
@@ -660,8 +660,8 @@ class User extends CommonDBTM
            ],
            'LIMIT'  => 1
         ]);
-
-        if (count($iterator)) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
             Session::addMessageAfterRedirect(
                 __('Unable to add. The user already exists.'),
                 false,
@@ -1191,8 +1191,6 @@ class User extends CommonDBTM
      */
     public function syncLdapGroups()
     {
-        global $DB;
-
         // input["_groups"] not set when update from user.form or preference
         if (
             isset($this->fields["authtype"])
@@ -1208,7 +1206,7 @@ class User extends CommonDBTM
                     $this->input["_groups"] = array_unique($this->input["_groups"]);
 
                     // Delete not available groups like to LDAP
-                    $iterator = $DB->request([
+                    $request = $this::getAdapter()->request([
                        'SELECT'    => [
                           'glpi_groups_users.id',
                           'glpi_groups_users.groups_id',
@@ -1229,7 +1227,7 @@ class User extends CommonDBTM
                     ]);
 
                     $groupuser = new Group_User();
-                    while ($data =  $iterator->next()) {
+                    while ($data =  $request->fetchAssociative()) {
                         if (in_array($data["groups_id"], $this->input["_groups"])) {
                             // Delete found item in order not to add it again
                             unset($this->input["_groups"][array_search(
@@ -1375,6 +1373,7 @@ class User extends CommonDBTM
 
                         $existingUserEmail = new UserEmail();
                         $existingUserEmail->getFromDB($id);
+                        dump('existinguseremail', $existingUserEmail->fields);
                         if (
                             $existingUserEmail->getFromDB($id)
                             && $params['email'] == $existingUserEmail->fields['email']
@@ -1401,7 +1400,8 @@ class User extends CommonDBTM
                     } else {
                         $email_input['is_default'] = 0;
                     }
-                    $added = $useremail->add($email_input);
+                    // $added = $useremail->add($email_input);
+                    $added = $useremail->getAdapter()->add($email_input);
                     $userUpdated = $userUpdated || $added;
                 }
             }
@@ -1423,8 +1423,6 @@ class User extends CommonDBTM
      */
     public function syncDynamicEmails()
     {
-        global $DB;
-
         $userUpdated = false;
 
         // input["_emails"] not set when update from user.form or preference
@@ -1454,7 +1452,7 @@ class User extends CommonDBTM
                     $this->input["_emails"] = $unique_emails;
 
                     // Delete not available groups like to LDAP
-                    $iterator = $DB->request([
+                    $request = $this::getAdapter()->request([
                        'SELECT' => [
                           'id',
                           'users_id',
@@ -1466,7 +1464,7 @@ class User extends CommonDBTM
                     ]);
 
                     $useremail = new UserEmail();
-                    while ($data = $iterator->next()) {
+                    while ($data = $request->fetchAssociative()) {
                         // Do a case insensitive comparison as email may be stored with a different case
                         $i = array_search(strtolower($data["email"]), array_map('strtolower', $this->input["_emails"]));
                         if ($i !== false) {
@@ -1541,7 +1539,7 @@ class User extends CommonDBTM
         global $DB;
 
         // Search in DB the ldap_field we need to search for in LDAP
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'          => 'ldap_field',
            'DISTINCT'        => true,
            'FROM'            => 'glpi_groups',
@@ -1550,7 +1548,7 @@ class User extends CommonDBTM
         ]);
         $group_fields = [];
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $group_fields[] = Toolbox::strtolower($data["ldap_field"]);
         }
         if (count($group_fields)) {
@@ -1577,13 +1575,13 @@ class User extends CommonDBTM
                         ($ldap_method["group_field"] == 'dn')
                         && (count($v[$i]['ou']) > 0)
                     ) {
-                        $group_iterator = $DB->request([
+                        $group_request = $this::getAdapter()->request([
                            'SELECT' => 'id',
                            'FROM'   => 'glpi_groups',
                            'WHERE'  => ['ldap_group_dn' => Toolbox::addslashes_deep($v[$i]['ou'])]
                         ]);
 
-                        while ($group = $group_iterator->next()) {
+                        while ($group = $group_request->fetchAssociative()) {
                             $this->fields["_groups"][] = $group['id'];
                         }
                     }
@@ -1608,7 +1606,7 @@ class User extends CommonDBTM
                                                     $DB::quoteName('ldap_value'))
                             ];
                         }
-                        $group_iterator = $DB->request([
+                        $group_request = $this::getAdapter()->request([
                            'SELECT' => 'id',
                            'FROM'   => 'glpi_groups',
                            'WHERE'  => [
@@ -1617,7 +1615,7 @@ class User extends CommonDBTM
                            ]
                         ]);
 
-                        while ($group = $group_iterator->next()) {
+                        while ($group = $group_request->fetchAssociative()) {
                             $this->fields["_groups"][] = $group['id'];
                         }
                     }
@@ -1640,8 +1638,6 @@ class User extends CommonDBTM
      */
     private function getFromLDAPGroupDiscret($ldap_connection, array $ldap_method, $userdn, $login)
     {
-        global $DB;
-
         // No group_member_field : unable to get group
         if (empty($ldap_method["group_member_field"])) {
             return false;
@@ -1669,13 +1665,13 @@ class User extends CommonDBTM
                 && is_array($result[$ldap_method["group_member_field"]])
                 && (count($result[$ldap_method["group_member_field"]]) > 0)
             ) {
-                $iterator = $DB->request([
+                $request = $this::getAdapter()->request([
                   'SELECT' => 'id',
                   'FROM'   => 'glpi_groups',
                   'WHERE'  => ['ldap_group_dn' => Toolbox::addslashes_deep($result[$ldap_method["group_member_field"]])]
                 ]);
 
-                while ($group = $iterator->next()) {
+                while ($group = $request->fetchAssociative()) {
                     $this->fields["_groups"][] = $group['id'];
                 }
             }
@@ -2288,7 +2284,7 @@ class User extends CommonDBTM
             $timezones = $DB->getTimezones();
         }
 
-        $emails = iterator_to_array($DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => [
               'id',
               'is_default',
@@ -2296,7 +2292,8 @@ class User extends CommonDBTM
            ],
            'FROM'   => 'glpi_useremails',
            'WHERE'  => ['users_id' => $ID]
-        ]));
+        ]);
+        $emails = $request->fetchAllAssociative();
         $emailsValues = [];
         $defaultEmailTitle = __('Default email');
         foreach ($emails as $email) {
@@ -2321,7 +2318,7 @@ class User extends CommonDBTM
         foreach (Profile_User::getUserEntities($this->fields['id']) as $entity) {
             $entityTmp = new Entity();
             $entityTmp->getFromDB($entity);
-            $entityUser[$entity] = $entityTmp->fields['completename'];
+            $entityUser[$entity] = $entityTmp->fields['completename'] ?? null;
         }
 
         $form = [
@@ -2717,7 +2714,7 @@ class User extends CommonDBTM
                 $User_profile[$row[0]] = $row[1];
             }
 
-            $emails = iterator_to_array($DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => [
                   'id',
                   'is_default',
@@ -2725,7 +2722,8 @@ class User extends CommonDBTM
                ],
                'FROM'   => 'glpi_useremails',
                'WHERE'  => ['users_id' => $ID]
-            ]));
+            ]);
+            $emails = $request->fetchAllAssociative();
             $emailsValues = [];
             $defaultEmailTitle = __('Default email');
             foreach ($emails as $email) {
@@ -2920,19 +2918,17 @@ class User extends CommonDBTM
 
     public function pre_updateInDB()
     {
-        global $DB;
-
         if (($key = array_search('name', $this->updates)) !== false) {
             /// Check if user does not exists
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'FROM'   => $this->getTable(),
                'WHERE'  => [
                   'name'   => $this->input['name'],
                   'id'     => ['<>', $this->input['id']]
                ]
             ]);
-
-            if (count($iterator)) {
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
                 //To display a message
                 $this->fields['name'] = $this->oldvalues['name'];
                 unset($this->updates[$key]);
@@ -3586,9 +3582,7 @@ class User extends CommonDBTM
      */
     public static function getDelegateGroupsForUser($entities_id = '')
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => 'glpi_groups_users.groups_id',
            'DISTINCT'        => true,
            'FROM'            => 'glpi_groups_users',
@@ -3607,7 +3601,7 @@ class User extends CommonDBTM
         ]);
 
         $groups = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $groups[$data['groups_id']] = $data['groups_id'];
         }
         return $groups;
@@ -3670,7 +3664,7 @@ class User extends CommonDBTM
                 $groups = self::getDelegateGroupsForUser($entity_restrict);
                 $users  = [];
                 if (count($groups)) {
-                    $iterator = $DB->request([
+                    $request = self::getAdapter()->request([
                        'SELECT'    => 'glpi_users.id',
                        'FROM'      => 'glpi_groups_users',
                        'LEFT JOIN' => [
@@ -3686,7 +3680,7 @@ class User extends CommonDBTM
                           'glpi_groups_users.users_id'  => ['<>', Session::getLoginUserID()]
                        ]
                     ]);
-                    while ($data = $iterator->next()) {
+                    while ($data = $request->fetchAssociative()) {
                         $users[$data["id"]] = $data["id"];
                     }
                 }
@@ -3707,7 +3701,7 @@ class User extends CommonDBTM
                 }
                 $users  = [];
                 if (count($groups)) {
-                    $iterator = $DB->request([
+                    $request = self::getAdapter()->request([
                        'SELECT'    => 'glpi_users.id',
                        'FROM'      => 'glpi_groups_users',
                        'LEFT JOIN' => [
@@ -3723,7 +3717,7 @@ class User extends CommonDBTM
                           'glpi_groups_users.users_id'  => ['<>', Session::getLoginUserID()]
                        ]
                     ]);
-                    while ($data = $iterator->next()) {
+                    while ($data = $request->fetchAssociative()) {
                         $users[$data["id"]] = $data["id"];
                     }
                 }
@@ -3986,7 +3980,7 @@ class User extends CommonDBTM
             }
         }
         $criteria['WHERE'] = $WHERE;
-        return $DB->request($criteria);
+        return self::getAdapter()->request($criteria)->fetchAllAssociative();
     }
 
 
@@ -4353,7 +4347,7 @@ class User extends CommonDBTM
      */
     public function showItems($tech)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $ID = $this->getField('id');
 
@@ -4372,7 +4366,7 @@ class User extends CommonDBTM
         $group_where = "";
         $groups      = [];
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'    => [
               'glpi_groups_users.groups_id',
               'glpi_groups.name'
@@ -4388,10 +4382,11 @@ class User extends CommonDBTM
            ],
            'WHERE'     => ['glpi_groups_users.users_id' => $ID]
         ]);
-        $number = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
 
         $group_where = [];
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $group_where[$field_group][] = $data['groups_id'];
             $groups[$data["groups_id"]] = $data["name"];
         }
@@ -4424,11 +4419,11 @@ class User extends CommonDBTM
                     $iterator_params['WHERE']['is_deleted'] = 0;
                 }
 
-                $item_iterator = $DB->request($iterator_params);
+                $item_request = $this::getAdapter()->request($iterator_params)->fetchAllAssociative();
 
                 $type_name = $item->getTypeName();
 
-                while ($data = $item_iterator->next()) {
+                foreach ($item_request as $data) {
                     $cansee = $item->can($data["id"], READ);
                     $link   = $data["name"];
                     if ($cansee) {
@@ -4506,11 +4501,11 @@ class User extends CommonDBTM
                         $iterator_params['WHERE']['is_deleted'] = 0;
                     }
 
-                    $group_iterator = $DB->request($iterator_params);
+                    $group_request = $this::getAdapter()->request($iterator_params)->fetchAllAssociative();
 
                     $type_name = $item->getTypeName();
 
-                    while ($data = $group_iterator->next()) {
+                    foreach ($group_request as $data) {
                         $nb++;
                         $cansee = $item->can($data["id"], READ);
                         $link   = $data["name"];
@@ -4577,7 +4572,7 @@ class User extends CommonDBTM
     {
         global $DB, $CFG_GLPI;
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => 'users_id AS id',
            'FROM'      => 'glpi_useremails',
            'LEFT JOIN' => [
@@ -4593,10 +4588,10 @@ class User extends CommonDBTM
            ],
            'ORDER'     => ['glpi_users.is_active DESC', 'is_deleted ASC']
         ]);
-
+        $results = $request->fetchAllAssociative();
         //User still exists in DB
-        if (count($iterator)) {
-            $result = $iterator->next();
+        if (count($results)) {
+            $result = $results[0];
             return $result['id'];
         } else {
             if ($CFG_GLPI["is_users_auto_add"]) {
@@ -4721,20 +4716,18 @@ class User extends CommonDBTM
      */
     public static function getIdByField($field, $value, $escape = true)
     {
-        global $DB;
-
         if ($escape) {
             $value = addslashes($value);
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable(),
            'WHERE'  => [$field => $value]
         ]);
-
-        if (count($iterator) == 1) {
-            $row = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results) == 1) {
+            $row = $results[0];
             return (int)$row['id'];
         }
         return false;
@@ -5217,16 +5210,14 @@ class User extends CommonDBTM
      */
     public static function getUniqueToken($field = 'personal_token')
     {
-        global $DB;
-
         $ok = false;
         do {
             $key    = Toolbox::getRandomString(40);
-            $row = $DB->request([
+            $row = self::getAdapter()->request([
                'COUNT'  => 'cpt',
                'FROM'   => self::getTable(),
                'WHERE'  => [$field => $key]
-            ])->next();
+            ])->fetchAssociative();
 
             if ($row['cpt'] == 0) {
                 return $key;
@@ -5313,20 +5304,25 @@ class User extends CommonDBTM
      */
     public static function checkDefaultPasswords()
     {
-        global $DB;
-
         $passwords = ['itsm'      => 'itsm',
                            'tech'      => 'tech',
                            'normal'    => 'normal',
                            'post-only' => 'postonly'];
         $default_password_set = [];
 
-        $crit = ['FIELDS'     => ['name', 'password'],
-                      'is_active'  => 1,
+        $crit = ['is_active'  => 1,
                       'is_deleted' => 0,
                       'name'       => array_keys($passwords)];
 
-        foreach ($DB->request('glpi_users', $crit) as $data) {
+        $request = self::getAdapter()->request([
+          'SELECT' => ['id', 'name', 'password'],
+          'FROM'   => 'glpi_users',
+          'WHERE'  => $crit
+                    ]);
+
+        $rows = $request->fetchAllAssociative();
+
+        foreach ($rows as $data) {
             if (Auth::checkPassword($passwords[strtolower($data['name'])], $data['password'])) {
                 $default_password_set[] = $data['name'];
             }
@@ -5630,7 +5626,7 @@ class User extends CommonDBTM
                   'COUNT'  => 'cpt',
                 ]
             );
-            $to_notify_count = $DB->request($to_notify_count_request)->next()['cpt'];
+            $to_notify_count = self::getAdapter()->request($to_notify_count_request)->fetchAssociative()['cpt'];
 
             $notification_data_request  = array_merge(
                 $notification_request,
@@ -5642,9 +5638,9 @@ class User extends CommonDBTM
                   'LIMIT'     => $notification_limit,
                 ]
             );
-            $notification_data_iterator = $DB->request($notification_data_request);
+            $notification_data_request = self::getAdapter()->request($notification_data_request)->fetchAllAssociative();
 
-            foreach ($notification_data_iterator as $notification_data) {
+            foreach ($notification_data_request as $notification_data) {
                 $user_id  = $notification_data['user_id'];
                 $alert_id = $notification_data['alert_id'];
 
@@ -5873,7 +5869,7 @@ class User extends CommonDBTM
 
         // Find users which match the given token and asked for a password reset
         // less than one day ago
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable(),
            'WHERE'  => [
@@ -5881,14 +5877,13 @@ class User extends CommonDBTM
               new \QueryExpression('NOW() < ADDDATE(' . $DB->quoteName('password_forget_token_date') . ', INTERVAL 1 DAY)')
            ]
         ]);
-
+        $data = $request->fetchAllAssociative();
         // Check that we found exactly one user
-        if (count($iterator) !== 1) {
+        if (count($data) !== 1) {
             return null;
         }
 
         // Get first row, should use current() when updated to GLPI 10
-        $data = iterator_to_array($iterator);
         $data = array_pop($data);
 
         // Try to load the user

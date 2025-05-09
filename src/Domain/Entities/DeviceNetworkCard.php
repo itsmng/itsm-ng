@@ -171,9 +171,9 @@ class DeviceNetworkCard
         return $this;
     }
 
-     /**
-     * Get the value of entity
-     */
+    /**
+    * Get the value of entity
+    */
     public function getEntity(): ?Entity
     {
         return $this->entity;

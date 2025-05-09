@@ -120,8 +120,8 @@ class Computer
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true)]
     private ?State $state = null;
 
-    #[ORM\Column(name: 'ticket_tco', type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"], nullable: true)]
-    private $ticketTco = null;
+    #[ORM\Column(name: 'ticket_tco', type: 'decimal', precision: 20, scale: 4, options: ['default' => 0.0000], nullable: true)]
+    private $ticketTco = 0.0000;
 
     #[ORM\Column(name: 'uuid', type: 'string', length: 255, nullable: true)]
     private $uuid = null;
@@ -231,6 +231,18 @@ class Computer
         return $this;
     }
 
+    public function getDateCreation(): DateTime
+    {
+        return $this->dateCreation ?? new DateTime();
+    }
+
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
+    {
+        $this->dateCreation = new DateTime();
+
+        return $this;
+    }
 
     public function getIsTemplate(): ?bool
     {
@@ -306,18 +318,6 @@ class Computer
         return $this;
     }
 
-    public function getDateCreation(): DateTime
-    {
-        return $this->dateCreation ?? new DateTime();
-    }
-
-    #[ORM\PrePersist]
-    public function setDateCreation(): self
-    {
-        $this->dateCreation = new DateTime();
-
-        return $this;
-    }
 
     public function getIsRecursive(): ?bool
     {
@@ -341,7 +341,7 @@ class Computer
 
     public function getEntityId(): int
     {
-        return $this->entity ? $this->entity->getId() : 0;
+        return $this->entity ? $this->entity->getId() : -1;
     }
     /**
      * Set the value of entity

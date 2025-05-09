@@ -228,19 +228,19 @@ class CronTask extends CommonDBTM
             pcntl_signal(SIGTERM, [$this, 'signal']);
         }
 
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'state'  => self::STATE_RUNNING,
-              'lastrun'   => new \QueryExpression('DATE_FORMAT(NOW(),\'%Y-%m-%d %H:%i:00\')')
+        $result = $this::getAdapter()->request([
+            'UPDATE' => $this->getTable(),
+            'SET'    => [
+               'state'   => self::STATE_RUNNING,
+               'lastrun' => date('Y-m-d H:i:00'),
             ],
-            [
-              'id'  => $this->fields['id'],
-              'NOT' => ['state' => self::STATE_RUNNING]
+            'WHERE'  => [
+               'id'  => $this->fields['id'],
+               'NOT' => ['state' => self::STATE_RUNNING],
             ]
-        );
+         ]);
 
-        if ($DB->affectedRows($result) > 0) {
+        if ($result->rowCount() > 0) {
             $this->timer  = microtime(true);
             $this->volume = 0;
             $log = new CronTaskLog();
@@ -308,18 +308,17 @@ class CronTask extends CommonDBTM
             return false;
         }
 
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'state'  => $this->fields['state']
-            ],
-            [
-              'id'     => $this->fields['id'],
-              'state'  => self::STATE_RUNNING
-            ]
-        );
+        $task = $this::getAdapter()->findOneBy([
+            'id'    => $this->fields['id'],
+            'state' => self::STATE_RUNNING
+        ]);
 
-        if ($DB->affectedRows($result) > 0) {
+        if ($task) {
+            $task->setState($this->fields['state']);
+            $this::getAdapter()->save([
+                'id'    => $this->fields['id'],
+                'state' => $this->fields['state']
+            ]);
             // No gettext for log but add gettext line to be parsed for pot generation
             // order is important for insertion in english in the database
             if ($log_state === CronTaskLog::STATE_ERROR) {

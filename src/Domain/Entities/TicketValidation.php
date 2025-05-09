@@ -185,7 +185,7 @@ class TicketValidation
 
     /**
      * Get the value of validateUser
-     */ 
+     */
     public function getValidateUser()
     {
         return $this->validateUser;
@@ -195,7 +195,7 @@ class TicketValidation
      * Set the value of validateUser
      *
      * @return  self
-     */ 
+     */
     public function setValidateUser($validateUser)
     {
         $this->validateUser = $validateUser;

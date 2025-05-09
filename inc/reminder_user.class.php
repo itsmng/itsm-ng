@@ -58,18 +58,16 @@ class Reminder_User extends CommonDBRelation
     **/
     public static function getUsers($reminders_id)
     {
-        global $DB;
-
         $users = [];
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'reminders_id' => $reminders_id
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $users[$data['users_id']][] = $data;
         }
         return $users;

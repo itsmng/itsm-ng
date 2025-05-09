@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_consumables')]
 #[ORM\Index(name: 'date_in', columns: ['date_in'])]
 #[ORM\Index(name: 'date_out', columns: ['date_out'])]
@@ -38,12 +40,12 @@ class Consumable
     private $itemtype;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $itemsId;
+    private $itemsId = 0;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     public function getId(): ?int
@@ -57,8 +59,11 @@ class Consumable
         return $this->dateIn;
     }
 
-    public function setDateIn(\DateTimeInterface $dateIn): self
+    public function setDateIn(\DateTimeInterface|string|null $dateIn): self
     {
+        if (is_string($dateIn)) {
+            $dateIn = new \DateTime($dateIn);
+        }
         $this->dateIn = $dateIn;
 
         return $this;
@@ -69,8 +74,11 @@ class Consumable
         return $this->dateOut;
     }
 
-    public function setDateOut(\DateTimeInterface $dateOut): self
+    public function setDateOut(\DateTimeInterface|string|null $dateOut): self
     {
+        if (is_string($dateOut)) {
+            $dateOut = new \DateTime($dateOut);
+        }
         $this->dateOut = $dateOut;
 
         return $this;
@@ -100,26 +108,29 @@ class Consumable
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

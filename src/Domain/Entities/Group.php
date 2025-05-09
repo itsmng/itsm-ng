@@ -449,7 +449,7 @@ class Group
         }
         return $this->groupProblems;
     }
-    
+
 
     /**
      * Set the value of groupProblems

@@ -809,7 +809,7 @@ class Printer extends CommonDBTM
               'entities_id'  => $entity
            ]
         ]);
-         $results = $request->fetchAllAssociative();
+        $results = $request->fetchAllAssociative();
         if (count($results) > 0) {
             //Printer already exists for this entity, get its ID
             $data = $results[0];

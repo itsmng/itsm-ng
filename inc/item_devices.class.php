@@ -73,6 +73,33 @@ class Item_Devices extends CommonDBRelation
 
     public static $mustBeAttached_2 = false; // Mandatory to display creation form
 
+    /**
+     * Method to get the table name even when no entity exists for Doctrine
+     * This helps bypass the entity check in DoctrineRelationalAdapter
+     *
+     * @return string Table name
+     */
+    public static function getTable($classname = null)
+    {
+        $called_class = $classname ?? get_called_class();
+
+        if (strpos($called_class, 'Item_Device') === 0) {
+            $deviceType = str_replace('Item_', '', $called_class);
+
+            $lastChar = substr(strtolower($deviceType), -1);
+            if ($lastChar === 'y') {
+
+                $deviceType = substr($deviceType, 0, -1) . 'ies';
+                return 'glpi_items_' . strtolower($deviceType);
+            }
+
+            return 'glpi_items_' . strtolower($deviceType) . 's';
+        }
+
+        // Default behavior for other classes
+        return parent::getTable($classname);
+    }
+
     protected function computeFriendlyName()
     {
         $itemtype = static::$itemtype_2;
@@ -822,7 +849,7 @@ class Item_Devices extends CommonDBRelation
 
         foreach (self::getItemAffinities($item->getType()) as $link_type) {
             $link = getItemForItemtype($link_type);
-            $table = $link->getTable();
+            $table = $link_type::getTable();
             $criteria = [
                'SELECT' => "$table.*",
                'FROM'   => $table

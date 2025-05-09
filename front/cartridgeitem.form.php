@@ -103,7 +103,6 @@ if (isset($_POST["add"])) {
     $cartype->redirectToList();
 } elseif (isset($_POST["update"])) {
     $cartype->check($_POST["id"], UPDATE);
-
     if ($cartype->update($_POST)) {
         Event::log(
             $_POST["id"],

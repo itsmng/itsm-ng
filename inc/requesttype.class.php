@@ -250,14 +250,23 @@ class RequestType extends CommonDropdown
     **/
     public static function getDefault($source)
     {
-        global $DB;
-
         if (!in_array($source, ['mail', 'mailfollowup', 'helpdesk', 'followup'])) {
             return 0;
         }
 
-        foreach ($DB->request('glpi_requesttypes', ['is_' . $source . '_default' => 1, 'is_active' => 1]) as $data) {
-            return $data['id'];
+        $request = self::getAdapter()->request([
+            'SELECT' => ['id'],
+            'FROM'   => 'glpi_requesttypes',
+            'WHERE'  => [
+                'is_' . $source . '_default' => 1,
+                'is_active'                  => 1
+            ]
+        ]);
+
+        $results = $request->fetchAllAssociative();
+
+        if (count($results)) {
+            return $results[0]['id'];
         }
         return 0;
     }

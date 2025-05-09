@@ -64,7 +64,7 @@ class NetworkPortDialup
 
     /**
      * Get the value of networkport
-     */ 
+     */
     public function getNetworkport()
     {
         return $this->networkport;
@@ -74,7 +74,7 @@ class NetworkPortDialup
      * Set the value of networkport
      *
      * @return  self
-     */ 
+     */
     public function setNetworkport($networkport)
     {
         $this->networkport = $networkport;

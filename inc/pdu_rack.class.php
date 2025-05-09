@@ -221,7 +221,7 @@ class PDU_Rack extends CommonDBRelation
         $notRackedResult = $this::getAdapter()->request([
             'FROM' => $this->getTable()
         ])->fetchAllAssociative();
-        
+
         foreach ($notRackedResult as $not_racked) {
             $used[] = $not_racked['pdus_id'];
         }
@@ -232,7 +232,7 @@ class PDU_Rack extends CommonDBRelation
                 'itemtype' => 'PDU'
             ]
         ])->fetchAllAssociative();
-        
+
         foreach ($rackedResult as $racked) {
             $used[] = $racked['items_id'];
         }
@@ -755,14 +755,15 @@ JAVASCRIPT;
      */
     public static function getForRackSide(Rack $rack, $side)
     {
-        return self::getAdapter()->request([
+        $request = self::getAdapter()->request([
            'FROM'  => self::getTable(),
            'WHERE' => [
               'racks_id' => $rack->getID(),
               'side'     => $side
            ],
            'ORDER' => 'position ASC'
-        ])->fetchAssociative();
+        ]);
+        return $request->fetchAllAssociative();
     }
 
     /**

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "email", columns: ["email"])]
 #[ORM\Index(name: "is_default", columns: ["is_default"])]
 #[ORM\Index(name: "is_dynamic", columns: ["is_dynamic"])]
-class Useremail
+class UserEmail
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,13 +22,13 @@ class Useremail
     private ?User $user = null;
 
     #[ORM\Column(name: 'is_default', type: 'boolean', options: ['default' => 0])]
-    private $isDefault;
+    private $isDefault = 0;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
     #[ORM\Column(name: 'email', type: 'string', length: 255, nullable: true)]
-    private $email;
+    private $email = null;
 
     public function getId(): ?int
     {

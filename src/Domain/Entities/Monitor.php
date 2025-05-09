@@ -606,7 +606,7 @@ class Monitor
 
     /**
      * Get the value of monitortype
-     */ 
+     */
     public function getMonitortype()
     {
         return $this->monitortype;
@@ -616,7 +616,7 @@ class Monitor
      * Set the value of monitortype
      *
      * @return  self
-     */ 
+     */
     public function setMonitortype($monitortype)
     {
         $this->monitortype = $monitortype;
@@ -626,7 +626,7 @@ class Monitor
 
     /**
      * Get the value of monitormodel
-     */ 
+     */
     public function getMonitormodel()
     {
         return $this->monitormodel;
@@ -636,7 +636,7 @@ class Monitor
      * Set the value of monitormodel
      *
      * @return  self
-     */ 
+     */
     public function setMonitormodel($monitormodel)
     {
         $this->monitormodel = $monitormodel;

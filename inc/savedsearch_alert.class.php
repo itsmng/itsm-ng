@@ -197,8 +197,6 @@ class SavedSearch_Alert extends CommonDBChild
     **/
     public static function showForSavedSearch(SavedSearch $search, $withtemplate = 0)
     {
-        global $DB;
-
         $ID = $search->getID();
 
         if (
@@ -213,15 +211,15 @@ class SavedSearch_Alert extends CommonDBChild
 
         echo "<div class='firstbloc'>";
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => Notification::getTable(),
            'WHERE'  => [
               'itemtype'  => self::getType(),
               'event'     => 'alert' . ($search->getField('is_private') ? '' : '_' . $search->getID())
            ]
         ]);
-
-        if (!$iterator->numRows()) {
+        $results = $request->fetchAllAssociative();
+        if (!count($results)) {
             echo "<span class='required'><strong>" . __('Notification does not exists!') . "</strong></span>";
             if ($canedit) {
                 echo "<br/><a href='{$search->getFormURLWithID($search->fields['id'])}&amp;create_notif=true'>"
@@ -229,9 +227,9 @@ class SavedSearch_Alert extends CommonDBChild
                 $canedit = false;
             }
         } else {
-            echo _n('Notification used:', 'Notifications used:', $iterator->numRows()) . "&nbsp;";
+            echo _n('Notification used:', 'Notifications used:', count($results)) . "&nbsp;";
             $first = true;
-            while ($row = $iterator->next()) {
+            foreach ($results as $row) {
                 if (!$first) {
                     echo ', ';
                 }
@@ -257,16 +255,16 @@ class SavedSearch_Alert extends CommonDBChild
             echo "</a></div>\n";
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['savedsearches_id' => $ID]
-        ]);
+        ])->fetchAllAssociative();
 
         echo "<table class='tab_cadre_fixehov' aria-label'Tables for active item'>";
 
         $colspan = 4;
-        if ($iterator->numrows()) {
-            echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName($iterator->numrows()) .
+        if (count($request)) {
+            echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName(count($request)) .
                "</th></tr>";
 
             $header = "<tr><th>" . __('Name') . "</th>";
@@ -277,7 +275,7 @@ class SavedSearch_Alert extends CommonDBChild
             echo $header;
 
             $alert = new self();
-            while ($data = $iterator->next()) {
+            foreach ($request as $data) {
                 $alert->getFromDB($data['id']);
                 echo "<tr class='tab_bg_2'>";
                 echo "<td>" . $alert->getLink() . "</td>";
@@ -368,14 +366,12 @@ class SavedSearch_Alert extends CommonDBChild
      */
     public static function cronSavedSearchesAlerts($task)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['is_active' => true]
-        ]);
+        ])->fetchAllAssociative();
 
-        if ($iterator->numrows()) {
+        if (count($request)) {
             $savedsearch = new SavedSearch();
 
             if (!isset($_SESSION['glpiname'])) {
@@ -386,7 +382,7 @@ class SavedSearch_Alert extends CommonDBChild
             // Will save $_SESSION and $CFG_GLPI cron context into an array
             $context = self::saveContext();
 
-            while ($row = $iterator->next()) {
+            foreach ($request as $row) {
                 //execute saved search to get results
                 try {
                     $savedsearch->getFromDB($row['savedsearches_id']);

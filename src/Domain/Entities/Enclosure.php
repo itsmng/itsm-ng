@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_enclosures')]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
 #[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
@@ -33,7 +35,7 @@ class Enclosure
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
@@ -58,19 +60,19 @@ class Enclosure
     private ?Group $techGroup = null;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = 0;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
-    private $templateName;
+    private $templateName = null;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'orientation', type: 'boolean', nullable: true)]
-    private $orientation;
+    private $orientation = null;
 
     #[ORM\Column(name: 'power_supplies', type: 'boolean', options: ['default' => 0])]
-    private $powerSupplies;
+    private $powerSupplies = 0;
 
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'RELATION to states (id)'])]
@@ -159,7 +161,7 @@ class Enclosure
         return $this->templateName;
     }
 
-    public function setTemplateName(string $templateName): self
+    public function setTemplateName(?string $templateName): self
     {
         $this->templateName = $templateName;
 
@@ -183,7 +185,7 @@ class Enclosure
         return $this->orientation;
     }
 
-    public function setOrientation(int $orientation): self
+    public function setOrientation(?int $orientation): self
     {
         $this->orientation = $orientation;
 
@@ -214,49 +216,57 @@ class Enclosure
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
 
     /**
-     * Get the value of entity
-     */
-    public function getEntity()
+      * Get the value of entity
+      */
+    public function getEntity(): ?Entity
     {
         return $this->entity;
     }
 
+    public function getEntityId(): int
+    {
+        return $this->entity ? $this->entity->getId() : -1;
+    }
     /**
      * Set the value of entity
      *
-     * @return  self
+     * @param Entity|null $entity
+     * @return self
      */
-    public function setEntity($entity)
+    public function setEntity(?Entity $entity): self
     {
         $this->entity = $entity;
-
         return $this;
     }
+
 
     /**
      * Get the value of location

@@ -265,7 +265,7 @@ class RuleImportComputer extends Rule
     **/
     public function findWithGlobalCriteria($input)
     {
-        global $DB, $PLUGIN_HOOKS;
+        global $PLUGIN_HOOKS;
 
         $complex_criterias = [];
         $continue          = true;
@@ -413,10 +413,10 @@ class RuleImportComputer extends Rule
             }
         }
 
-        $result_glpi = $DB->request($it_criteria);
+        $result_glpi = $this::getAdapter()->request($it_criteria)->fetchAllAssociative();
 
         if (count($result_glpi)) {
-            while ($data = $result_glpi->next()) {
+            foreach ($result_glpi as $data) {
                 $this->criterias_results['found_computers'][] = $data['id'];
             }
             return true;

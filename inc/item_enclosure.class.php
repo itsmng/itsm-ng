@@ -116,7 +116,7 @@ class Item_Enclosure extends CommonDBRelation
             echo "</div>";
         }
         $items = $itemsRequest->fetchAllAssociative();
-    
+
 
         if (!count($items)) {
             echo "<table class='tab_cadre_fixe' aria-label='No Item Found'><tr><th>" . __('No item found') . "</th></tr>";

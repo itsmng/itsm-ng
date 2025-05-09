@@ -85,7 +85,7 @@ class Rack
     private $depth;
 
     #[ORM\Column(name: 'number_units', type: 'integer', nullable: true, options: ['default' => 0])]
-    private $numberUnits;
+    private $numberUnits = 0;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
     private $isTemplate = 0;
@@ -101,7 +101,7 @@ class Rack
     private ?DCRoom $dcroom = null;
 
     #[ORM\Column(name: 'room_orientation', type: 'integer', options: ['default' => 0])]
-    private $roomOrientation;
+    private $roomOrientation = 0;
 
     #[ORM\Column(name: 'position', type: 'string', length: 50, nullable: true)]
     private $position;
@@ -110,13 +110,13 @@ class Rack
     private $bgcolor;
 
     #[ORM\Column(name: 'max_power', type: 'integer', options: ['default' => 0])]
-    private $maxPower;
+    private $maxPower = 0;
 
     #[ORM\Column(name: 'mesured_power', type: 'integer', options: ['default' => 0])]
-    private $mesuredPower;
+    private $mesuredPower = 0;
 
     #[ORM\Column(name: 'max_weight', type: 'integer', options: ['default' => 0])]
-    private $maxWeight;
+    private $maxWeight = 0;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;

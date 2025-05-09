@@ -94,10 +94,8 @@ class UserEmail extends CommonDBChild
     **/
     public static function getDefaultForUser($users_id)
     {
-        global $DB;
-
         // Get default one
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'users_id'     => $users_id,
@@ -106,7 +104,7 @@ class UserEmail extends CommonDBChild
            'LIMIT'  => 1
         ]);
 
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             return $row['email'];
         }
 
@@ -123,18 +121,16 @@ class UserEmail extends CommonDBChild
     **/
     public static function getAllForUser($users_id)
     {
-        global $DB;
-
         $emails = [];
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'users_id'     => $users_id,
            ]
         ]);
 
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $emails[] = $row['email'];
         }
 
@@ -152,9 +148,7 @@ class UserEmail extends CommonDBChild
     **/
     public static function isEmailForUser($users_id, $email)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'users_id'  => $users_id,
@@ -162,8 +156,8 @@ class UserEmail extends CommonDBChild
            ],
            'LIMIT'  => 1
         ]);
-
-        if (count($iterator)) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
             return true;
         }
 

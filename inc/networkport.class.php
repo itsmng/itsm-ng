@@ -218,7 +218,7 @@ class NetworkPort extends CommonDBChild
             ) {
                 $ip = new IPAddress();
                 // Update IPAddress
-                $adapter = $this::getAdapter(); 
+                $adapter = $this::getAdapter();
 
                 $networknames = $adapter->request([
                     'FROM'  => 'glpi_networknames',
@@ -582,7 +582,6 @@ class NetworkPort extends CommonDBChild
                     $instantiations[$inst_type] = call_user_func([$inst_type, 'getTypeName']);
                 }
             }
-
             $form = [
                'action' => $netport->getFormURL(),
                'method' => 'get',
@@ -1229,7 +1228,7 @@ class NetworkPort extends CommonDBChild
             }
 
             $npv = new NetworkPort_Vlan();
-            $adapter = $npv->getAdapter(); 
+            $adapter = $npv->getAdapter();
 
             $vlans = $adapter->request([
                 'FROM'  => $npv->getTable(),

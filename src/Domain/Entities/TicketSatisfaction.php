@@ -14,8 +14,9 @@ class TicketSatisfaction
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(name: 'tickets_id', type: 'integer', options: ['default' => 0])]
-    private $ticketsId;
+    #[ORM\ManyToOne(targetEntity: Ticket::class)]
+    #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
+    private ?Ticket $ticket = null;
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
     private $type;
@@ -35,18 +36,6 @@ class TicketSatisfaction
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTicketsId(): ?int
-    {
-        return $this->ticketsId;
-    }
-
-    public function setTicketsId(?int $ticketsId): self
-    {
-        $this->ticketsId = $ticketsId;
-
-        return $this;
     }
 
     public function getType(): ?int
@@ -109,4 +98,24 @@ class TicketSatisfaction
         return $this;
     }
 
+
+    /**
+     * Get the value of ticket
+     */
+    public function getTicket(): ?Ticket
+    {
+        return $this->ticket;
+    }
+
+    /**
+     * Set the value of ticket
+     *
+     * @return  self
+     */
+    public function setTicket(?Ticket $ticket): self
+    {
+        $this->ticket = $ticket;
+
+        return $this;
+    }
 }

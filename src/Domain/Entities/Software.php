@@ -34,7 +34,7 @@ class Software
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -55,7 +55,7 @@ class Software
     private ?Group $techGroup = null;
 
     #[ORM\Column(name: 'is_update', type: 'boolean', options: ['default' => 0])]
-    private $isUpdate;
+    private $isUpdate = 0;
 
     #[ORM\ManyToOne(targetEntity: Software::class)]
     #[ORM\JoinColumn(name: 'softwares_id', referencedColumnName: 'id', nullable: true)]
@@ -66,10 +66,10 @@ class Software
     private ?Manufacturer $manufacturer = null;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = 0;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
     private $templateName;
@@ -89,13 +89,13 @@ class Software
     private $ticketTco;
 
     #[ORM\Column(name: 'is_helpdesk_visible', type: 'boolean', options: ['default' => 1])]
-    private $isHelpdeskVisible;
+    private $isHelpdeskVisible = 1;
 
     #[ORM\Column(name: 'softwarecategories_id', type: 'integer', options: ['default' => 0])]
-    private $softwarecategoriesId;
+    private $softwarecategoriesId = 0;
 
     #[ORM\Column(name: 'is_valid', type: 'boolean', options: ['default' => 1])]
-    private $isValid;
+    private $isValid = 1;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;

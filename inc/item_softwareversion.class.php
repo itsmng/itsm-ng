@@ -743,7 +743,7 @@ class Item_SoftwareVersion extends CommonDBRelation
            'START'        => $start
         ];
         $request = self::getAdapter()->request($criteria);
-        
+
         $rand = mt_rand();
 
         if ($data = $request->fetchAssociative()) {
@@ -1346,7 +1346,7 @@ class Item_SoftwareVersion extends CommonDBRelation
             $lic_request['WHERE']['glpi_items_softwarelicenses.is_deleted'] = 0;
         }
         $lic_request = self::getAdapter()->request($lic_request);
-        
+
         $massActionContainerSoftwareLicense = 'massSoftwareLicense' . $rand;
         if ($canedit) {
             $actions = [

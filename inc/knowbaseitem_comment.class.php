@@ -241,22 +241,22 @@ class KnowbaseItem_Comment extends CommonDBTM
             'language'          => $lang,
             'parent_comment_id' => $parent
          ];
-         
-         $request = self::getAdapter()->request([
-            'FROM'   => 'glpi_knowbaseitems_comments',
-            'WHERE'  => $where,
-            'ORDERBY' => ['id ASC']
-         ]);
-         
-         $comments = [];
-         $results = $request->fetchAllAssociative();
-         
-         foreach ($results as $db_comment) {
-             $db_comment['answers'] = self::getCommentsForKbItem($kbitem_id, $lang, $db_comment['id']);
-             $comments[] = $db_comment;
-         }
-         
-         return $comments;
+
+        $request = self::getAdapter()->request([
+           'FROM'   => 'glpi_knowbaseitems_comments',
+           'WHERE'  => $where,
+           'ORDERBY' => ['id ASC']
+        ]);
+
+        $comments = [];
+        $results = $request->fetchAllAssociative();
+
+        foreach ($results as $db_comment) {
+            $db_comment['answers'] = self::getCommentsForKbItem($kbitem_id, $lang, $db_comment['id']);
+            $comments[] = $db_comment;
+        }
+
+        return $comments;
     }
 
     /**

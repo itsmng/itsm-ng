@@ -775,9 +775,9 @@ class Software extends CommonDBTM
     **/
     public static function dropdownLicenseToInstall($myname, $entity_restrict)
     {
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => [
               'glpi_softwares.id',
               'glpi_softwares.name'
@@ -800,7 +800,7 @@ class Software extends CommonDBTM
         ]);
 
         $values = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $softwares_id          = $data["id"];
             $values[$softwares_id] = $data["name"];
         }
@@ -896,7 +896,6 @@ class Software extends CommonDBTM
         $is_recursive = false,
         $is_helpdesk_visible = null
     ) {
-        global $DB;
 
         //Look for the software by his name in GLPI for a specific entity
         $manufacturer_id = 0;
@@ -904,7 +903,7 @@ class Software extends CommonDBTM
             $manufacturer_id = Dropdown::import('Manufacturer', ['name' => $manufacturer]);
         }
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => [
               'glpi_softwares.id',
               'glpi_softwares.is_deleted'
@@ -916,10 +915,10 @@ class Software extends CommonDBTM
               'is_template'        => 0
            ] + getEntitiesRestrictCriteria('glpi_softwares', 'entities_id', $entity, true)
         ]);
-
-        if (count($iterator)) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
             //Software already exists for this entity, get his ID
-            $data = $iterator->next();
+            $data = $results[0];
             $ID   = $data["id"];
 
             // restore software
@@ -1009,14 +1008,12 @@ class Software extends CommonDBTM
     **/
     public function showMergeCandidates()
     {
-        global $DB;
-
         $ID   = $this->getField('id');
         $this->check($ID, UPDATE);
         $rand = mt_rand();
 
         echo "<div class='center'>";
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'    => [
               'glpi_softwares.id',
               'glpi_softwares.name',
@@ -1044,7 +1041,8 @@ class Software extends CommonDBTM
            ),
            'ORDERBY'   => 'entity'
         ]);
-        $nb = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $nb = count($results);
 
         if ($nb) {
             $link = Toolbox::getItemTypeFormURL('Software');
@@ -1068,7 +1066,7 @@ class Software extends CommonDBTM
             echo "<th>" . _n('Installation', 'Installations', Session::getPluralNumber()) . "</th>";
             echo "<th>" . SoftwareLicense::getTypeName(Session::getPluralNumber()) . "</th></tr>";
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td>" . Html::getMassiveActionCheckBox(__CLASS__, $data["id"]) . "</td>";
                 echo "<td><a href='" . $link . "?id=" . $data["id"] . "'>" . $data["name"] . "</a></td>";
@@ -1113,20 +1111,29 @@ class Software extends CommonDBTM
         $item = array_keys($item);
 
         // Search for software version
-        $req = $DB->request("glpi_softwareversions", ["softwares_id" => $item]);
+        $req = self::getAdapter()->request([
+            'FROM'  => 'glpi_softwareversions',
+            'WHERE' => [
+                'softwares_id' => $item
+            ]
+        ]);
         $i   = 0;
-
-        if ($nb = $req->numrows()) {
-            foreach ($req as $from) {
+        $results = $req->fetchAllAssociative();
+        $nb = count($results);
+        if ($nb) {
+            foreach ($results as $from) {
                 $found = false;
 
-                foreach (
-                    $DB->request(
-                        "glpi_softwareversions",
-                        ["softwares_id" => $ID,
-                                            "name"         => $from["name"]]
-                    ) as $dest
-                ) {
+                // Rechercher une version similaire dans la cible
+                $destRequest = self::getAdapter()->request([
+                    'FROM'  => 'glpi_softwareversions',
+                    'WHERE' => [
+                        'softwares_id' => $ID,
+                        'name'         => $from["name"]
+                    ]
+                ]);
+                $dests = $destRequest->fetchAllAssociative();
+                foreach ($dests as $dest) {
                     // Update version ID on License
                     $DB->update(
                         'glpi_softwarelicenses',

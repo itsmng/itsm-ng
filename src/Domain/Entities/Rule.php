@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_rules')]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "is_active", columns: ["is_active"])]
@@ -25,10 +27,10 @@ class Rule
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'sub_type', type: 'string', length: 255, options: ['default' => ''])]
-    private $subType;
+    private $subType = '';
 
     #[ORM\Column(name: 'ranking', type: 'integer', options: ['default' => 0])]
-    private $ranking;
+    private $ranking = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -36,11 +38,11 @@ class Rule
     #[ORM\Column(name: 'description', type: 'text', length: 65535, nullable: true)]
     private $description;
 
-    #[ORM\Column(name: 'match', type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php *_MATCHING constant'])]
+    #[ORM\Column(name: 'matching', type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php *_MATCHING constant'])]
     private $match;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
-    private $isActive;
+    private $isActive = 1;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -49,13 +51,13 @@ class Rule
     private $dateMod;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'uuid', type: 'string', length: 255, nullable: true)]
     private $uuid;
 
-    #[ORM\Column(name: 'condition', type: 'integer', options: ['default' => 0])]
-    private $condition;
+    #[ORM\Column(name: 'conditions', type: 'integer', options: ['default' => 0])]
+    private $condition = 0;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
@@ -149,18 +151,19 @@ class Rule
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
-
     public function getIsRecursive(): ?bool
     {
         return $this->isRecursive;
@@ -198,17 +201,19 @@ class Rule
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
+
 
 
     /**

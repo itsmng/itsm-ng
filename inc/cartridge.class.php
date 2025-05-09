@@ -228,19 +228,27 @@ class Cartridge extends CommonDBChild
      */
     public function backToStock(array $input, $history = 1)
     {
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'date_out'     => 'NULL',
-              'date_use'     => 'NULL',
-              'printers_id'  => 0
-            ],
-            [
-              'id' => $input['id']
-            ]
-        );
-        if ($result && ($DB->affectedRows() > 0)) {
-            return true;
+        $adapter = $this::getAdapter();
+
+        $rows = $adapter->request([
+            'SELECT' => ['id'],
+            'FROM'   => $this->getTable(),
+            'WHERE'  => ['id' => $input['id']]
+        ])->fetchAllAssociative();
+
+        if (count($rows)) {
+            $id = $rows[0]['id'];
+
+            $updated = $adapter->save([
+                'id'          => $id,
+                'date_out'    => null,
+                'date_use'    => null,
+                'printers_id' => 0
+            ]);
+
+            if ($updated) {
+                return true;
+            }
         }
         return false;
     }
@@ -277,18 +285,27 @@ class Cartridge extends CommonDBChild
             $result = $results[0];
             $cID = $result['id'];
             // Update cartridge taking care of multiple insertion
-            $result = $DB->update(
-                $this->getTable(),
-                [
-                  'date_use'     => date('Y-m-d'),
-                  'printers_id'  => $pID
-                ],
-                [
-                  'id'        => $cID,
-                  'date_use'  => null
+            $adapter = $this::getAdapter();
+            $rows = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'id'        => $cID,
+                    'date_use'  => null
                 ]
-            );
-            if ($result && ($DB->affectedRows() > 0)) {
+            ])->fetchAllAssociative();
+
+            $cartridgeUpdated = false;
+            if (count($rows)) {
+                $id = $rows[0]['id'];
+                $cartridgeUpdated = $adapter->save([
+                    'id'          => $id,
+                    'date_use'    => date('Y-m-d'),
+                    'printers_id' => $pID
+                ]);
+            }
+
+            if ($cartridgeUpdated) {
                 $changes = [
                    '0',
                    '',
@@ -313,7 +330,6 @@ class Cartridge extends CommonDBChild
     **/
     public function uninstall($ID)
     {
-        global $DB;
 
         if ($this->getFromDB($ID)) {
             $printer = new Printer();
@@ -322,36 +338,36 @@ class Cartridge extends CommonDBChild
                 $toadd['pages'] = $printer->fields['last_pages_counter'];
             }
 
-            $result = $DB->update(
-                $this->getTable(),
-                [
-                  'date_out'  => date('Y-m-d')
-                ] + $toadd,
-                [
-                  'id'  => $ID
-                ]
-            );
+            $adapter = $this::getAdapter();
 
-            if (
-                $result
-                && ($DB->affectedRows() > 0)
-            ) {
-                $changes = [
-                   '0',
-                   '',
-                   __('Uninstalling a cartridge'),
-                ];
-                Log::history(
-                    $this->getField("printers_id"),
-                    'Printer',
-                    $changes,
-                    0,
-                    Log::HISTORY_LOG_SIMPLE_MESSAGE
-                );
+            $rows = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => ['id' => $ID]
+            ])->fetchAllAssociative();
+            if (count($rows)) {
+                $fieldsToSave = ['id' => $ID, 'date_out' => date('Y-m-d')] + $toadd;
 
-                return true;
+                $updated = $adapter->save($fieldsToSave);
+
+                if ($updated) {
+                    $changes = [
+                    '0',
+                    '',
+                    __('Uninstalling a cartridge'),
+                    ];
+                    Log::history(
+                        $this->getField("printers_id"),
+                        'Printer',
+                        $changes,
+                        0,
+                        Log::HISTORY_LOG_SIMPLE_MESSAGE
+                    );
+
+                    return true;
+                }
+                return false;
             }
-            return false;
         }
     }
 

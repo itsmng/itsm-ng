@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_projects')]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "code", columns: ["code"])]
@@ -89,13 +91,13 @@ class Project
     private $realStartDate;
 
     #[ORM\Column(name: 'percent_done', type: 'integer', options: ['default' => 0])]
-    private $percentDone;
+    private $percentDone = 0;
 
     #[ORM\Column(name: 'auto_percent_done', type: 'boolean', options: ['default' => 0])]
-    private $autoPercentDone;
+    private $autoPercentDone = 0;
 
     #[ORM\Column(name: 'show_on_global_gantt', type: 'boolean', options: ['default' => 0])]
-    private $showOnGlobalGantt;
+    private $showOnGlobalGantt = 0;
 
     #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
@@ -104,16 +106,16 @@ class Project
     private $comment;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', options: ['default' => null])]
     private $dateCreation;
 
     #[ORM\Column(name: 'projecttemplates_id', type: 'integer', options: ['default' => 0])]
-    private $projecttemplatesId;
+    private $projecttemplates = 0;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = 0;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
     private $templateName;
@@ -176,21 +178,26 @@ class Project
         return $this->date;
     }
 
-    public function setDate(?\DateTimeInterface $date): self
+    public function setDate(\DateTimeInterface|string|null $date): self
     {
+        if (is_string($date)) {
+            $date = new \DateTime($date);
+        }
         $this->date = $date;
 
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(?\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
@@ -200,8 +207,11 @@ class Project
         return $this->planStartDate;
     }
 
-    public function setPlanStartDate(?\DateTimeInterface $planStartDate): self
+    public function setPlanStartDate(\DateTimeInterface|string|null $planStartDate): self
     {
+        if (is_string($planStartDate)) {
+            $planStartDate = new \DateTime($planStartDate);
+        }
         $this->planStartDate = $planStartDate;
 
         return $this;
@@ -212,8 +222,11 @@ class Project
         return $this->planEndDate;
     }
 
-    public function setPlanEndDate(?\DateTimeInterface $planEndDate): self
+    public function setPlanEndDate(\DateTimeInterface|string|null $planEndDate): self
     {
+        if (is_string($planEndDate)) {
+            $planEndDate = new \DateTime($planEndDate);
+        }
         $this->planEndDate = $planEndDate;
 
         return $this;
@@ -224,8 +237,11 @@ class Project
         return $this->realStartDate;
     }
 
-    public function setRealStartDate(?\DateTimeInterface $realStartDate): self
+    public function setRealStartDate(\DateTimeInterface|string|null $realStartDate): self
     {
+        if (is_string($realStartDate)) {
+            $realStartDate = new \DateTime($realStartDate);
+        }
         $this->realStartDate = $realStartDate;
 
         return $this;
@@ -236,8 +252,11 @@ class Project
         return $this->realEndDate;
     }
 
-    public function setRealEndDate(?\DateTimeInterface $realEndDate): self
+    public function setRealEndDate(\DateTimeInterface|string|null $realEndDate): self
     {
+        if (is_string($realEndDate)) {
+            $realEndDate = new \DateTime($realEndDate);
+        }
         $this->realEndDate = $realEndDate;
 
         return $this;
@@ -315,29 +334,19 @@ class Project
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
 
-    public function getProjectTemplatesId(): ?int
-    {
-        return $this->projecttemplatesId;
-    }
-
-    public function setProjectTemplatesId(?int $projecttemplatesId): self
-    {
-        $this->projecttemplatesId = $projecttemplatesId;
-
-        return $this;
-    }
 
     public function getIsTemplate(): ?bool
     {
@@ -480,6 +489,26 @@ class Project
     public function setGroup($group)
     {
         $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of projecttemplates
+     */
+    public function getProjecttemplates()
+    {
+        return $this->projecttemplates;
+    }
+
+    /**
+     * Set the value of projecttemplates
+     *
+     * @return  self
+     */
+    public function setProjecttemplates($projecttemplates)
+    {
+        $this->projecttemplates = $projecttemplates;
 
         return $this;
     }

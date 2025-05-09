@@ -577,12 +577,12 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                 'WHERE'  => ['tickets_id' => $item->getField('id')]
             ]);
             $satisfaction_data = $result->fetchAssociative();
-            
+
             if ($satisfaction_data) {
                 $inquest->fields = $satisfaction_data;
-            if (isset($satisfaction_data['id'])) {
-                $inquest->fields['id'] = $satisfaction_data['id'];
-            }
+                if (isset($satisfaction_data['id'])) {
+                    $inquest->fields['id'] = $satisfaction_data['id'];
+                }
 
                 // internal inquest
                 if ($inquest->fields['type'] == 1) {

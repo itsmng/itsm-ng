@@ -119,20 +119,17 @@ class Consumable extends CommonDBChild
      */
     public function backToStock(array $input, $history = 1)
     {
-        global $DB;
+        $adapter = $this::getAdapter();
 
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'date_out' => 'NULL'
-            ],
-            [
-              'id' => $input['id']
-            ]
-        );
-        if ($result) {
+        $fields = [
+            'id'        => $input['id'],
+            'date_out'  => null
+        ];
+
+        if ($adapter->save($fields)) {
             return true;
         }
+
         return false;
     }
 
@@ -161,24 +158,18 @@ class Consumable extends CommonDBChild
     **/
     public function out($ID, $itemtype = '', $items_id = 0)
     {
-        global $DB;
 
-        if (
-            !empty($itemtype)
-            && ($items_id > 0)
-        ) {
-            $result = $DB->update(
-                $this->getTable(),
-                [
-                  'date_out'  => date('Y-m-d'),
-                  'itemtype'  => $itemtype,
-                  'items_id'  => $items_id
-                ],
-                [
-                  'id' => $ID
-                ]
-            );
-            if ($result) {
+        if (!empty($itemtype) && ($items_id > 0)) {
+            $adapter = $this::getAdapter();
+
+            $fields = [
+                'id'        => $ID,
+                'date_out'  => date('Y-m-d'),
+                'itemtype'  => $itemtype,
+                'items_id'  => $items_id
+            ];
+
+            if ($adapter->save($fields)) {
                 return true;
             }
         }
