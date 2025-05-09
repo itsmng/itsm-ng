@@ -455,7 +455,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             }
         }
         $query = $SqlIterator->buildQuery($request);
-        // dump('SQL Query', $query);
         return $this->query($query);
     }
 

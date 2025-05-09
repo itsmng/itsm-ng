@@ -1177,7 +1177,7 @@ class DBmysql
                 return "$table.$field";
             }
             return (is_string($name) && isset($name[0]) && $name[0] == '`') ? $name :
-            ((is_string($name) && $name === '*') ? $name : "`" . (is_array($name) ? implode('.', $name) : (string)$name) . "`");
+            ((is_string($name) && $name === '*') ? $name : (is_array($name) ? implode('.', $name) : (string)$name));
         }
     }
 

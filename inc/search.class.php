@@ -353,7 +353,7 @@ class Search
         $p['sort']                = '1'; //
         $p['order']               = 'ASC';//
         $p['start']               = 0;//
-        $p['is_deleted']          = 0;
+        $p['is_deleted']          = false;
         $p['export_all']          = 0;
         if (class_exists($itemtype)) {
             $p['target']       = $itemtype::getSearchURL();
@@ -384,7 +384,7 @@ class Search
                     break;
                 case 'is_deleted':
                     if ($val == 1) {
-                        $p[$key] = '1';
+                        $p[$key] = 'true';
                     }
                     break;
                 default:
@@ -675,7 +675,7 @@ class Search
                 $LINK  = " ";
                 $first = false;
             }
-            $COMMONWHERE .= $LINK . "$itemtable.is_template = 0 ";
+            $COMMONWHERE .= $LINK . "$itemtable.is_template = false ";
         }
 
         // Add Restrict to current entities
@@ -803,12 +803,12 @@ class Search
 
                             // Add deleted if item have it
                             if ($citem && $citem->maybeDeleted()) {
-                                $query_num .= " AND $ctable.is_deleted = 0 ";
+                                $query_num .= " AND $ctable.is_deleted = false ";
                             }
 
                             // Remove template items
                             if ($citem && $citem->maybeTemplate()) {
-                                $query_num .= " AND $ctable.is_template = 0 ";
+                                $query_num .= " AND $ctable.is_template = false ";
                             }
                         } else {// Ref table case
                             $reftable = $data['itemtype']::getTable();
@@ -900,12 +900,12 @@ class Search
 
                         // Add deleted if item have it
                         if ($citem && $citem->maybeDeleted()) {
-                            $tmpquery .= " AND $ctable.is_deleted = 0 ";
+                            $tmpquery .= " AND $ctable.is_deleted = false ";
                         }
 
                         // Remove template items
                         if ($citem && $citem->maybeTemplate()) {
-                            $tmpquery .= " AND $ctable.is_template = 0 ";
+                            $tmpquery .= " AND $ctable.is_template = false ";
                         }
 
                         $tmpquery .= $GROUPBY .
@@ -1633,7 +1633,7 @@ class Search
         $massiveactionparams = $data['search']['massiveactionparams'] + [
            'container'      => 'SearchTableFor' . $data['itemtype'],
            'display_arrow'  => false,
-           'is_deleted'     => $data['search']['is_deleted'],
+           'is_deleted'     => $data['search']['is_deleted'] == 1,
            'itemtype'       => $data['itemtype']
         ];
         $can_trash = isset($data['item']->fields['is_deleted']);
@@ -1655,7 +1655,7 @@ class Search
            'fields' => $fields,
            'url' => $url,
            'can_trash' => $can_trash,
-           'is_trash' => $data['search']['is_deleted'],
+           'is_trash' => $data['search']['is_deleted'] == 1,
            'massive_action' => $massiveActionValues,
            'itemtype' => $data['itemtype'],
            'column_edit' => true,
@@ -2190,7 +2190,7 @@ class Search
 
         // Default values of parameters
         $p['sort']         = '';
-        $p['is_deleted']   = 0;
+        $p['is_deleted']   = false;
         $p['as_map']       = 0;
         $p['criteria']     = [];
         $p['metacriteria'] = [];
@@ -3257,7 +3257,7 @@ JAVASCRIPT;
         }
 
         if (isset($CFG_GLPI["union_search_type"][$itemtype])) {
-            return " ORDER BY ITEM_{$itemtype}_{$ID} $order ";
+            return " ORDER BY \"ITEM_{$itemtype}_{$ID}\" $order ";
         }
 
         // Plugin can override core definition for its type
@@ -3346,7 +3346,7 @@ JAVASCRIPT;
             }
         }
 
-        return " ORDER BY ITEM_{$itemtype}_{$ID} $order ";
+        return " ORDER BY \"ITEM_{$itemtype}_{$ID}\" $order ";
     }
 
 
@@ -3856,7 +3856,7 @@ JAVASCRIPT;
             case 'ProjectTask':
                 $condition  = '';
                 $teamtable  = 'glpi_projecttaskteams';
-                $condition .= "glpi_projects.is_template = 0";
+                $condition .= "glpi_projects.is_template = false";
                 $condition .= " AND (($teamtable.itemtype = 'User'
                              AND $teamtable.items_id = '" . Session::getLoginUserID() . "')";
                 if (count($_SESSION['glpigroups'])) {
@@ -6939,7 +6939,7 @@ JAVASCRIPT;
         $default_values["start"]       = 0;
         $default_values["order"]       = "ASC";
         $default_values["sort"]        = 1;
-        $default_values["is_deleted"]  = 0;
+        $default_values["is_deleted"]  = false;
         $default_values["as_map"]      = 0;
 
         if (isset($params['start'])) {
