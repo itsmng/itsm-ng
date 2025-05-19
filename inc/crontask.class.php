@@ -316,7 +316,7 @@ class CronTask extends CommonDBTM
                 'id'    => $this->fields['id'],
                 'state' => $this->fields['state']
             ]);
-            
+
             if ($updated) {
                 // No gettext for log but add gettext line to be parsed for pot generation
                 // order is important for insertion in english in the database

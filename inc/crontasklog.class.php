@@ -59,9 +59,9 @@ class CronTaskLog extends CommonDBTM
     {
         $secs = $days * DAY_TIMESTAMP;
         $count = 0;
-        
+
         $adapter = self::getAdapter();
-        
+
         $request = $adapter->request([
             'SELECT' => ['id'],
             'FROM'   => 'glpi_crontasklogs',
@@ -70,7 +70,7 @@ class CronTaskLog extends CommonDBTM
                 new \QueryExpression("UNIX_TIMESTAMP(date) < UNIX_TIMESTAMP()-$secs")
             ]
         ]);
-        
+
         foreach ($request->fetchAllAssociative() as $data) {
             $log = new self();
             if ($log->getFromDB($data['id'])) {
@@ -79,7 +79,7 @@ class CronTaskLog extends CommonDBTM
                 }
             }
         }
-        
+
         return $count;
     }
 

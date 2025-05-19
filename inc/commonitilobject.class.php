@@ -2367,7 +2367,7 @@ abstract class CommonITILObject extends CommonDBTM
             $update['status'] = $source->fields['status'];
         }
         $update['id'] = $this->getID();
-    
+
         $this->update($update);
     }
 

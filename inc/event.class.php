@@ -128,7 +128,7 @@ class Event extends CommonDBTM
     {
         $secs = $day * DAY_TIMESTAMP;
         $count = 0;
-        
+
         $adapter = self::getAdapter();
         $query = $adapter->request([
             'SELECT' => ['id'],
@@ -137,7 +137,7 @@ class Event extends CommonDBTM
                 new \QueryExpression("UNIX_TIMESTAMP(date) < UNIX_TIMESTAMP()-$secs")
             ]
         ]);
-        
+
         foreach ($query->fetchAllAssociative() as $data) {
             $event = new self();
             if ($event->getFromDB($data['id'])) {
@@ -146,7 +146,7 @@ class Event extends CommonDBTM
                 }
             }
         }
-        
+
         return $count;
     }
 
