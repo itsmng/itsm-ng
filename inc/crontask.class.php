@@ -302,51 +302,51 @@ class CronTask extends CommonDBTM
     **/
     public function end($retcode, int $log_state = CronTaskLog::STATE_STOP)
     {
-        global $DB;
 
         if (!isset($this->fields['id'])) {
             return false;
         }
 
-        $task = $this::getAdapter()->findOneBy([
+        $crontask = new self();
+        if ($crontask->getFromDBByCrit([
             'id'    => $this->fields['id'],
             'state' => self::STATE_RUNNING
-        ]);
-
-        if ($task) {
-            $task->setState($this->fields['state']);
-            $this::getAdapter()->save([
+        ])) {
+            $updated = $this->update([
                 'id'    => $this->fields['id'],
                 'state' => $this->fields['state']
             ]);
-            // No gettext for log but add gettext line to be parsed for pot generation
-            // order is important for insertion in english in the database
-            if ($log_state === CronTaskLog::STATE_ERROR) {
-                $content = __('Execution error');
-                $content = 'Execution error';
-            } elseif (is_null($retcode)) {
-                $content = __('Action aborted');
-                $content = 'Action aborted';
-            } elseif ($retcode < 0) {
-                $content = __('Action completed, partially processed');
-                $content = 'Action completed, partially processed';
-            } elseif ($retcode > 0) {
-                $content = __('Action completed, fully processed');
-                $content = 'Action completed, fully processed';
-            } else {
-                $content = __('Action completed, no processing required');
-                $content = 'Action completed, no processing required';
-            }
+            
+            if ($updated) {
+                // No gettext for log but add gettext line to be parsed for pot generation
+                // order is important for insertion in english in the database
+                if ($log_state === CronTaskLog::STATE_ERROR) {
+                    $content = __('Execution error');
+                    $content = 'Execution error';
+                } elseif (is_null($retcode)) {
+                    $content = __('Action aborted');
+                    $content = 'Action aborted';
+                } elseif ($retcode < 0) {
+                    $content = __('Action completed, partially processed');
+                    $content = 'Action completed, partially processed';
+                } elseif ($retcode > 0) {
+                    $content = __('Action completed, fully processed');
+                    $content = 'Action completed, fully processed';
+                } else {
+                    $content = __('Action completed, no processing required');
+                    $content = 'Action completed, no processing required';
+                }
 
-            $log = new CronTaskLog();
-            $log->add(['crontasks_id'    => $this->fields['id'],
-                            'date'            => $_SESSION['glpi_currenttime'],
-                            'content'         => $content,
-                            'crontasklogs_id' => $this->startlog,
-                            'state'           => $log_state,
-                            'volume'          => $this->volume,
-                            'elapsed'         => (microtime(true) - $this->timer)]);
-            return true;
+                $log = new CronTaskLog();
+                $log->add(['crontasks_id'    => $this->fields['id'],
+                                'date'            => $_SESSION['glpi_currenttime'],
+                                'content'         => $content,
+                                'crontasklogs_id' => $this->startlog,
+                                'state'           => $log_state,
+                                'volume'          => $this->volume,
+                                'elapsed'         => (microtime(true) - $this->timer)]);
+                return true;
+            }
         }
         return false;
     }

@@ -1685,14 +1685,25 @@ abstract class CommonITILObject extends CommonDBTM
                 'LIMIT'  => 1
             ])->fetchAssociative();
 
-            if ($target && isset($target['id'])) {
-                $adapter->save([
-                    'id'                => $target['id'],
-                    'status'            => CommonITILValidation::REFUSED,
-                    'users_id_approval' => $users_id_reject,
-                    'date_approval'     => date('Y-m-d H:i:s')
-                ]);
-            }
+            $this->update([
+                ITILSolution::getTable(),
+                [
+                  'status'             => CommonITILValidation::REFUSED,
+                  'users_id_approval'  => $users_id_reject,
+                  'date_approval'      => date('Y-m-d H:i:s')
+                ],
+                [
+                  'WHERE'  => [
+                     'itemtype'  => static::getType(),
+                     'items_id'  => $this->getID()
+                  ],
+                  'ORDER'  => [
+                     'date_creation DESC',
+                     'id DESC'
+                  ],
+                  'LIMIT'  => 1
+                ]
+            ]);
 
             //Delete existing survey
             $inquest = new TicketSatisfaction();
@@ -1700,26 +1711,17 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         if (isset($this->input['_accepted'])) {
-            //Mark last solution as approved
-            $adapter = $this::getAdapter();
-
-            $solution = $adapter->request([
-                'SELECT' => ['id'],
-                'FROM'   => ITILSolution::getTable(),
-                'WHERE'  => [
-                    'itemtype' => static::getType(),
-                    'items_id' => $this->getID()
-                ],
-                'ORDER' => [
-                    'date_creation DESC',
-                    'id DESC'
-                ],
+            // Mark last solution as approved
+            $solution = new ITILSolution();
+            if ($solution->getFromDBByCrit([
+                'itemtype'  => static::getType(),
+                'items_id'  => $this->getID()
+            ], [
+                'ORDER' => ['date_creation DESC', 'id DESC'],
                 'LIMIT' => 1
-            ])->fetchAssociative();
-
-            if ($solution && isset($solution['id'])) {
-                $adapter->save([
-                    'id'                => $solution['id'],
+            ])) {
+                $solution->update([
+                    'id'                => $solution->getID(),
                     'status'            => CommonITILValidation::ACCEPTED,
                     'users_id_approval' => Session::getLoginUserID(),
                     'date_approval'     => date('Y-m-d H:i:s')
@@ -2364,9 +2366,9 @@ abstract class CommonITILObject extends CommonDBTM
         if (isset($source->fields['status'])) {
             $update['status'] = $source->fields['status'];
         }
-        $this::getAdapter()->save([
-            'id' => $this->getID()
-        ] + $update);
+        $update['id'] = $this->getID();
+    
+        $this->update($update);
     }
 
 
@@ -5563,9 +5565,11 @@ abstract class CommonITILObject extends CommonDBTM
                 $update['lastupdater_users_id'] = $lastupdater_users_id;
             }
 
-            $this::getAdapter()->save([
-                'id' => $this->getID()
-            ] + $update);
+            $this->update([
+                $this->getTable(),
+                $update,
+                ['id' => $this->getID()]
+            ]);
         }
     }
 
@@ -5594,7 +5598,7 @@ abstract class CommonITILObject extends CommonDBTM
             $tot += $sum;
         }
 
-        $result = $this::getAdapter()->save([
+        $result = $this->update([
             'id'         => $ID,
             'actiontime' => $tot
         ]);

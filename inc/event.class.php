@@ -126,26 +126,27 @@ class Event extends CommonDBTM
     **/
     public static function cleanOld($day)
     {
-        $adapter = self::getAdapter();
-        $timestamp = time() - ($day * DAY_TIMESTAMP);
-
-        $sql = "
-            SELECT id FROM glpi_events
-            WHERE UNIX_TIMESTAMP(date) < :threshold
-        ";
-
-        $result = $adapter->query($sql, [
-            'threshold' => $timestamp
-        ]);
-
-        $rows = $result->fetchAllAssociative();
+        $secs = $day * DAY_TIMESTAMP;
         $count = 0;
-
-        foreach ($rows as $row) {
-            $adapter->deleteByCriteria(['id' => $row['id']]);
-            $count++;
+        
+        $adapter = self::getAdapter();
+        $query = $adapter->request([
+            'SELECT' => ['id'],
+            'FROM'   => 'glpi_events',
+            'WHERE'  => [
+                new \QueryExpression("UNIX_TIMESTAMP(date) < UNIX_TIMESTAMP()-$secs")
+            ]
+        ]);
+        
+        foreach ($query->fetchAllAssociative() as $data) {
+            $event = new self();
+            if ($event->getFromDB($data['id'])) {
+                if ($event->deleteFromDB()) {
+                    $count++;
+                }
+            }
         }
-
+        
         return $count;
     }
 

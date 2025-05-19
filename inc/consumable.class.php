@@ -119,14 +119,13 @@ class Consumable extends CommonDBChild
      */
     public function backToStock(array $input, $history = 1)
     {
-        $adapter = $this::getAdapter();
 
         $fields = [
             'id'        => $input['id'],
             'date_out'  => null
         ];
 
-        if ($adapter->save($fields)) {
+        if ($this->update($fields)) {
             return true;
         }
 
@@ -160,7 +159,6 @@ class Consumable extends CommonDBChild
     {
 
         if (!empty($itemtype) && ($items_id > 0)) {
-            $adapter = $this::getAdapter();
 
             $fields = [
                 'id'        => $ID,
@@ -169,7 +167,7 @@ class Consumable extends CommonDBChild
                 'items_id'  => $items_id
             ];
 
-            if ($adapter->save($fields)) {
+            if ($this->update($fields)) {
                 return true;
             }
         }
