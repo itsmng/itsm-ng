@@ -159,22 +159,17 @@ class CartridgeItem extends CommonDBTM
     **/
     public function addCompatibleType($cartridgeitems_id, $printermodels_id)
     {
-        if (
-            ($cartridgeitems_id > 0)
-            && ($printermodels_id > 0)
-        ) {
-            $adapter = $this::getAdapter();
-
-            $result = $adapter->add([
-               'cartridgeitems_id' => $cartridgeitems_id,
-               'printermodels_id'  => $printermodels_id
-            ]);
-
-            if (is_array($result) && isset($result['id'])) {
-                return true;
+         if (($cartridgeitems_id > 0) && ($printermodels_id > 0)) {
+            $link = new CartridgeItem_PrinterModel();
+            
+            $link->fields['cartridgeitems_id'] = $cartridgeitems_id;
+            $link->fields['printermodels_id'] = $printermodels_id;
+            
+            if ($link->addToDB()) {
+               return true;
             }
-        }
-        return false;
+      }
+      return false;
     }
 
 
