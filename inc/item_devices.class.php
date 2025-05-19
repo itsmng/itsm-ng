@@ -599,8 +599,6 @@ class Item_Devices extends CommonDBRelation
      **/
     public static function cloneItem($itemtype, $oldid, $newid)
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
         foreach (self::getItemAffinities($itemtype) as $link_type) {
             $table = $link_type::getTable();
@@ -1025,7 +1023,6 @@ class Item_Devices extends CommonDBRelation
         HTMLTableSuperHeader $delete_column = null,
         $dynamic_column
     ) {
-        global $DB;
 
         $is_device = ($item instanceof CommonDevice);
 
@@ -1516,23 +1513,30 @@ class Item_Devices extends CommonDBRelation
      **/
     public static function cleanItemDeviceDBOnItemDelete($itemtype, $items_id, $unaffect)
     {
-        global $DB;
-
         foreach (self::getItemAffinities($itemtype) as $link_type) {
             $link = getItemForItemtype($link_type);
             if ($link) {
                 if ($unaffect) {
-                    $DB->update(
-                        $link->getTable(),
-                        [
-                          'items_id'  => 0,
-                          'itemtype'  => ''
-                        ],
-                        [
-                          'items_id'  => $items_id,
-                          'itemtype'  => $itemtype
+                    $adapter = $link::getAdapter();
+                    $items = $adapter->request([
+                        'SELECT' => ['id'],
+                        'FROM'   => $link->getTable(),
+                        'WHERE'  => [
+                            'items_id'  => $items_id,
+                            'itemtype'  => $itemtype
                         ]
-                    );
+                    ]);
+                    
+                    foreach ($items->fetchAllAssociative() as $data) {
+                        $item_device = new $link_type();
+                        if ($item_device->getFromDB($data['id'])) {
+                            $item_device->update([
+                                'id'        => $data['id'],
+                                'items_id'  => 0,
+                                'itemtype'  => ''
+                            ]);
+                        }
+                    }
                 } else {
                     $link->cleanDBOnItemDelete($itemtype, $items_id);
                 }

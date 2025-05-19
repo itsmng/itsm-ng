@@ -934,17 +934,24 @@ class Plugin extends CommonDBTM
     **/
     public function unactivateAll()
     {
-        global $DB;
-
-        $DB->update(
-            $this->getTable(),
-            [
-              'state' => self::NOTACTIVATED
-            ],
-            [
-              'state' => self::ACTIVATED
+        $adapter = $this::getAdapter();
+        $plugins = $adapter->request([
+            'SELECT' => ['id'],
+            'FROM'   => $this->getTable(),
+            'WHERE'  => [
+                'state' => self::ACTIVATED
             ]
-        );
+        ]);
+        
+        foreach ($plugins->fetchAllAssociative() as $data) {
+            $plugin = new self();
+            if ($plugin->getFromDB($data['id'])) {
+                $plugin->update([
+                    'id'    => $data['id'],
+                    'state' => self::NOTACTIVATED
+                ]);
+            }
+        }    
 
         $dirs = array_keys(self::$activated_plugins);
         foreach ($dirs as $dir) {

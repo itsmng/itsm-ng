@@ -209,15 +209,24 @@ class Profile extends CommonDBTM
         }
 
         if (in_array('is_default', $this->updates) && ($this->input["is_default"] == 1)) {
-            $DB->update(
-                $this->getTable(),
-                [
-                  'is_default' => 0
-                ],
-                [
-                  'id' => ['<>', $this->input['id']]
+            $adapter = self::getAdapter();
+            $profiles = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'id' => ['<>', $this->input['id']]
                 ]
-            );
+            ]);
+            
+            foreach ($profiles->fetchAllAssociative() as $data) {
+                $profile = new self();
+                if ($profile->getFromDB($data['id'])) {
+                    $profile->update([
+                        'id'         => $data['id'],
+                        'is_default' => 0
+                    ]);
+                }
+            }
         }
 
         // To avoid log out and login when rights change (very useful in debug mode)
@@ -240,22 +249,29 @@ class Profile extends CommonDBTM
 
     public function post_addItem()
     {
-        global $DB;
-
         $rights = ProfileRight::getAllPossibleRights();
         ProfileRight::updateProfileRights($this->fields['id'], $rights);
         unset($this->profileRight);
 
         if (isset($this->fields['is_default']) && ($this->fields["is_default"] == 1)) {
-            $DB->update(
-                $this->getTable(),
-                [
-                  'is_default' => 0
-                ],
-                [
-                  'id' => ['<>', $this->fields['id']]
+            $adapter = self::getAdapter();
+            $profiles = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'id' => ['<>', $this->fields['id']]
                 ]
-            );
+            ]);
+            
+            foreach ($profiles->fetchAllAssociative() as $data) {
+                $profile = new self();
+                if ($profile->getFromDB($data['id'])) {
+                    $profile->update([
+                        'id'         => $data['id'],
+                        'is_default' => 0
+                    ]);
+                }
+            }
         }
     }
 
