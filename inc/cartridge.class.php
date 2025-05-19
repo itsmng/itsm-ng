@@ -239,7 +239,7 @@ class Cartridge extends CommonDBChild
         if (count($rows)) {
             $id = $rows[0]['id'];
 
-            $updated = $adapter->save([
+            $updated = $this->update([
                 'id'          => $id,
                 'date_out'    => null,
                 'date_use'    => null,
@@ -298,7 +298,7 @@ class Cartridge extends CommonDBChild
             $cartridgeUpdated = false;
             if (count($rows)) {
                 $id = $rows[0]['id'];
-                $cartridgeUpdated = $adapter->save([
+                $cartridgeUpdated = $this->update([
                     'id'          => $id,
                     'date_use'    => date('Y-m-d'),
                     'printers_id' => $pID
@@ -348,7 +348,7 @@ class Cartridge extends CommonDBChild
             if (count($rows)) {
                 $fieldsToSave = ['id' => $ID, 'date_out' => date('Y-m-d')] + $toadd;
 
-                $updated = $adapter->save($fieldsToSave);
+                $updated = $this->update($fieldsToSave);
 
                 if ($updated) {
                     $changes = [

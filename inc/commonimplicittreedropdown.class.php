@@ -127,7 +127,6 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
     // Key function to manage the children of the node
     private function alterElementInsideTree($step)
     {
-        global $DB;
         $adapter = $this::getAdapter();
 
         switch ($step) {
@@ -172,7 +171,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
             }
             if (count($oldSons) > 0) {
                 foreach ($oldSons as $id) {
-                    $adapter->save([
+                    $this->update([
                         'id' => $id,
                         $this->getForeignKeyField() => $oldParent
                     ]);
@@ -200,7 +199,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
             }
             if (count($newSons) > 0) {
                 foreach ($newSons as $id) {
-                    $adapter->save([
+                    $this->update([
                         'id' => $id,
                         $this->getForeignKeyField() => $this->getID()
                     ]);

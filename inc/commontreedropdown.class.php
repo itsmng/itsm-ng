@@ -281,10 +281,9 @@ abstract class CommonTreeDropdown extends CommonDropdown
                     // And we must update the level of the current node ...
                     $update['level'] = $nextNodeLevel;
                 }
-                $this::getAdapter()->save([
-                    'id' => $data['id'],
-                    ...$update
-                ]);
+                if ($this->getFromDB($data['id'])) {
+                    $this->update($update);
+                }
                 // Translations :
                 if (Session::haveTranslations($this->getType(), 'completename')) {
                     DropdownTranslation::regenerateAllCompletenameTranslationsFor($this->getType(), $data['id']);
