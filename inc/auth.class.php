@@ -1423,33 +1423,7 @@ class Auth extends CommonGLPI
             Html::redirect($CFG_GLPI['root_doc'] . '/front/updatepassword.php');
         }
 
-        //ajout
-        // if (!isset($_SESSION['glpiactiveprofile'])) {
-        //     $entities_id = 0;
-        //     $is_recursive = true;
-        //     Session::loadEntity($entities_id, $is_recursive);
-
-        //     // $profileUserClass = 'Itsmng\Domain\Entities\ProfileUser';
-        //     $profileUserClass = new Profile_User();
-        //     $adapter = $profileUserClass::getAdapter();
-
-        //     $defaultProfile = $adapter->findOneBy([
-        //         'user' => $_SESSION['glpiID'],
-        //         'isDefaultProfile' => true
-        //     ]);
-
-        //     if ($defaultProfile) {
-        //         $profile = $defaultProfile->getProfile();
-        //         $_SESSION['glpiactiveprofile'] = [
-        //             'id' => $profile->getId(),
-        //             'name' => $profile->getName(),
-        //             'interface' => $profile->getInterface(),
-        //             'create_ticket_on_login' => $profile->getCreateTicketOnLogin(),
-        //             'helpdesk_hardware' => $profile->getHelpdeskHardware()
-        //         ];
-        //     }
-        // }
-        //fin ajout
+        
         if (!$redirect) {
             if (isset($_POST['redirect']) && (strlen($_POST['redirect']) > 0)) {
                 $redirect = $_POST['redirect'];
