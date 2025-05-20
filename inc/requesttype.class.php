@@ -178,13 +178,23 @@ class RequestType extends CommonDropdown
         }
 
         if (count($update)) {
-            $DB->update(
-                $this->getTable(),
-                $update,
-                [
-                  'id' => ['<>', $this->fields['id']]
+            $adapter = self::getAdapter();
+            $types = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'id' => ['<>', $this->fields['id']]
                 ]
-            );
+            ]);
+            
+            foreach ($types->fetchAllAssociative() as $data) {
+                $requestType = new self();
+                if ($requestType->getFromDB($data['id'])) {
+                    $updateData = $update;
+                    $updateData['id'] = $data['id'];
+                    $requestType->update($updateData);
+                }
+            }
         }
     }
 
@@ -230,13 +240,24 @@ class RequestType extends CommonDropdown
         }
 
         if (count($update)) {
-            $DB->update(
-                $this->getTable(),
-                $update,
-                [
-                  'id' => ['<>', $this->fields['id']]
+            $adapter = self::getAdapter();
+            $types = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'id' => ['<>', $this->fields['id']]
                 ]
-            );
+            ]);
+            
+            // Mettre à jour chaque type de demande individuellement
+            foreach ($types->fetchAllAssociative() as $data) {
+                $requestType = new self();
+                if ($requestType->getFromDB($data['id'])) {
+                    $updateData = $update;
+                    $updateData['id'] = $data['id'];
+                    $requestType->update($updateData);
+                }
+            }
         }
     }
 

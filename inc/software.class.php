@@ -1111,7 +1111,8 @@ class Software extends CommonDBTM
         $item = array_keys($item);
 
         // Search for software version
-        $req = self::getAdapter()->request([
+        $adapter = self::getAdapter();
+        $req = $adapter->request([
             'FROM'  => 'glpi_softwareversions',
             'WHERE' => [
                 'softwares_id' => $item
@@ -1135,58 +1136,79 @@ class Software extends CommonDBTM
                 $dests = $destRequest->fetchAllAssociative();
                 foreach ($dests as $dest) {
                     // Update version ID on License
-                    $DB->update(
-                        'glpi_softwarelicenses',
-                        [
-                          'softwareversions_id_buy' => $dest['id']
-                        ],
-                        [
-                          'softwareversions_id_buy' => $from['id']
+                    $licenses_buy = $adapter->request([
+                        'SELECT' => ['id'],
+                        'FROM'   => 'glpi_softwarelicenses',
+                        'WHERE'  => [
+                            'softwareversions_id_buy' => $from['id']
                         ]
-                    );
+                    ]);
+                    
+                    foreach ($licenses_buy->fetchAllAssociative() as $license_data) {
+                        $license = new SoftwareLicense();
+                        if ($license->getFromDB($license_data['id'])) {
+                            $license->update([
+                                'id'                    => $license_data['id'],
+                                'softwareversions_id_buy' => $dest['id']
+                            ]);
+                        }
+                    }
 
-                    $DB->update(
-                        'glpi_softwarelicenses',
-                        [
-                          'softwareversions_id_use' => $dest['id']
-                        ],
-                        [
-                          'softwareversions_id_use' => $from['id']
+                    $licenses_use = $adapter->request([
+                        'SELECT' => ['id'],
+                        'FROM'   => 'glpi_softwarelicenses',
+                        'WHERE'  => [
+                            'softwareversions_id_use' => $from['id']
                         ]
-                    );
+                    ]);
+                    
+                    foreach ($licenses_use->fetchAllAssociative() as $license_data) {
+                        $license = new SoftwareLicense();
+                        if ($license->getFromDB($license_data['id'])) {
+                            $license->update([
+                                'id'                    => $license_data['id'],
+                                'softwareversions_id_use' => $dest['id']
+                            ]);
+                        }
+                    }
 
                     // Move installation to existing version in destination software
-                    $found = $DB->update(
-                        'glpi_items_softwareversions',
-                        [
-                          'softwareversions_id' => $dest['id']
-                        ],
-                        [
-                          'softwareversions_id' => $from['id']
+                     $installations = $adapter->request([
+                        'SELECT' => ['id'],
+                        'FROM'   => 'glpi_items_softwareversions',
+                        'WHERE'  => [
+                            'softwareversions_id' => $from['id']
                         ]
-                    );
+                    ]);
+                    
+                    $found = false;
+                    foreach ($installations->fetchAllAssociative() as $install_data) {
+                        $install = new Item_SoftwareVersion();
+                        if ($install->getFromDB($install_data['id'])) {
+                            if ($install->update([
+                                'id'                 => $install_data['id'],
+                                'softwareversions_id' => $dest['id']
+                            ])) {
+                                $found = true;
+                            }
+                        }
+                    }
                 }
 
                 if ($found) {
                     // Installation has be moved, delete the source version
-                    $result = $DB->delete(
-                        'glpi_softwareversions',
-                        [
-                          'id'  => $from['id']
-                        ]
-                    );
+                    $version = new SoftwareVersion();
+                    $result = $version->delete(["id" => $from['id']]);
                 } else {
                     // Move version to destination software
-                    $result = $DB->update(
-                        'glpi_softwareversions',
-                        [
-                          'softwares_id' => $ID,
-                          'entities_id'  => $this->getField('entities_id')
-                        ],
-                        [
-                          'id' => $from['id']
-                        ]
-                    );
+                    $version = new SoftwareVersion();
+                    if ($version->getFromDB($from['id'])) {
+                        $result = $version->update([
+                            'id'           => $from['id'],
+                            'softwares_id' => $ID,
+                            'entities_id'  => $this->getField('entities_id')
+                        ]);
+                    }
                 }
 
                 if ($result) {
@@ -1199,15 +1221,29 @@ class Software extends CommonDBTM
         }
 
         // Move software license
-        $result = $DB->update(
-            'glpi_softwarelicenses',
-            [
-              'softwares_id' => $ID
-            ],
-            [
-              'softwares_id' => $item
+        $adapter = self::getAdapter();
+        $licenses = $adapter->request([
+            'SELECT' => ['id'],
+            'FROM'   => 'glpi_softwarelicenses',
+            'WHERE'  => [
+                'softwares_id' => $item
             ]
-        );
+        ]);
+
+        $license_update_success = true;
+        foreach ($licenses->fetchAllAssociative() as $license_data) {
+            $license = new SoftwareLicense();
+            if ($license->getFromDB($license_data['id'])) {
+                if (!$license->update([
+                    'id'           => $license_data['id'],
+                    'softwares_id' => $ID
+                ])) {
+                    $license_update_success = false;
+                }
+            }
+        }
+
+        $result = $license_update_success;
 
         if ($result) {
             $i++;
