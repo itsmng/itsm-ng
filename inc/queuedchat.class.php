@@ -516,14 +516,27 @@ class QueuedChat extends CommonDBTM
         if ($task->fields['param'] > 0) {
             $secs      = $task->fields['param'] * DAY_TIMESTAMP;
             $send_time = date("U") - $secs;
-            $DB->delete(
-                self::getTable(),
-                [
+            $adapter = self::getAdapter();
+            $chats = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => self::getTable(),
+                'WHERE'  => [
                     'is_deleted'   => 1,
-                    new \QueryExpression('(UNIX_TIMESTAMP(' . $DB->quoteName('send_time') . ') < ' . $DB->quoteValue($send_time) . ')')
+                    'RAW' => [
+                        'UNIX_TIMESTAMP(' . $DB->quoteName('send_time') . ') < ' . $DB->quoteValue($send_time)
+                    ]
                 ]
-            );
-            $vol = $DB->affectedRows();
+            ]);
+            
+            // Supprimer chaque chat individuellement
+            foreach ($chats->fetchAllAssociative() as $data) {
+                $chat = new self();
+                if ($chat->getFromDB($data['id'])) {
+                    if ($chat->deleteFromDB()) {
+                        $vol++;
+                    }
+                }
+            }
         }
 
         $task->setVolume($vol);
