@@ -799,20 +799,28 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                        'name' => 'users_id',
                        'value' => Session::getLoginUserID(),
                     ],
-                    ($item != null
-                       && $item = getItemForItemtype($options['item_itemtype'])
-                       && $item->getFromDB($options['item_items_id'])) ? [
-                       'type' => 'hidden',
-                       'name' => '_itemtype',
-                       'value' => $item->getType(),
-                    ] : [],
-                    ($item != null
-                       && $item = getItemForItemtype($options['item_itemtype'])
-                       && $item->getFromDB($options['item_items_id'])) ? [
-                       'type' => 'hidden',
-                       'name' => '_items_id',
-                       'value' => $item->getID(),
-                    ] : [],
+                    ($item != null) ? (function() use ($options, $item) {
+                        $itemobj = getItemForItemtype($options['item_itemtype']);
+                        if ($itemobj && $itemobj->getFromDB($options['item_items_id'])) {
+                            return [
+                                'type' => 'hidden',
+                                'name' => '_itemtype',
+                                'value' => $itemobj->getType(),
+                            ];
+                        }
+                        return [];
+                    })() : [],
+                    ($item != null) ? (function() use ($options, $item) {
+                        $itemobj = getItemForItemtype($options['item_itemtype']);
+                        if ($itemobj && $itemobj->getFromDB($options['item_items_id'])) {
+                            return [
+                                'type' => 'hidden',
+                                'name' => '_items_id',
+                                'value' => $itemobj->getID(),
+                            ];
+                        }
+                        return [];
+                    })() : [],
                  ]
               ],
               self::getTypeName(1) => [
@@ -850,17 +858,21 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                            $this->fields["view"]
                        ),
                     ] : [],
-                    __('Add link') => ($item != null
-                       && $item = getItemForItemtype($options['item_itemtype'])
-                       && $item->getFromDB($options['item_items_id'])) ? [
-                       'type' => 'checkbox',
-                       'name' => '_do_item_link',
-                       'value' => 1,
-                       'after' => sprintf(
-                           __('link with %1$s'),
-                           $item->getLink()
-                       ),
-                    ] : [],
+                    __('Add link') => ($item != null) ? (function() use ($options, $item) {
+                        $itemobj = getItemForItemtype($options['item_itemtype']);
+                        if ($itemobj && $itemobj->getFromDB($options['item_items_id'])) {
+                            return [
+                                'type' => 'checkbox',
+                                'name' => '_do_item_link',
+                                'value' => 1,
+                                'after' => sprintf(
+                                    __('link with %1$s'),
+                                    $itemobj->getLink()
+                                ),
+                            ];
+                        }
+                        return [];
+                    })() : [],
                     __('Visible since') => [
                        'type' => 'datetime-local',
                        'name' => 'begin_date',
