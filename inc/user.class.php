@@ -325,8 +325,8 @@ class User extends CommonDBTM
         foreach ($entities as $ent) {
             if (Session::haveAccessToEntity($ent)) {
                 $all   = false;
-                $DB->delete(
-                    'glpi_profiles_users',
+                $profile_user = new Profile_User();
+                $profile_user->deleteByCriteria(
                     [
                       'users_id'     => $this->fields['id'],
                       'entities_id'  => $ent
@@ -361,19 +361,18 @@ class User extends CommonDBTM
         );
 
         // Set no user to public bookmark
-        $DB->update(
-            SavedSearch::getTable(),
+        $saved_search = new SavedSearch();
+        $saved_search->update(
             [
-              'users_id' => 0
-            ],
-            [
-              'users_id' => $this->fields['id']
+              'users_id'   => $this->fields['id'],
+              'is_private' => 0,
             ]
         );
+    
 
         // Set no user to consumables
-        $DB->update(
-            'glpi_consumables',
+        $consumable = new Consumable();
+        $consumable->update(
             [
               'items_id' => 0,
               'itemtype' => 'NULL',
@@ -2144,16 +2143,12 @@ class User extends CommonDBTM
      */
     public function blankPassword()
     {
-        global $DB;
-
         if (!empty($this->fields["name"])) {
-            $DB->update(
-                $this->getTable(),
+            $user = new User();
+            $user->update(
                 [
+                  'id'       => $this->fields['id'],
                   'password' => ''
-                ],
-                [
-                  'name' => $this->fields['name']
                 ]
             );
         }
@@ -5678,27 +5673,30 @@ class User extends CommonDBTM
 
         // Disable users if their password has expire for too long.
         if (-1 !== $lock_delay) {
-            $DB->update(
-                self::getTable(),
-                [
-                  'is_active'         => 0,
-                  'cookie_token'      => null,
-                  'cookie_token_date' => null,
-                ],
-                [
-                  'is_deleted' => 0,
-                  'is_active'  => 1,
-                  'authtype'   => Auth::DB_GLPI,
-                  new QueryExpression(
-                      sprintf(
-                          'NOW() > ADDDATE(ADDDATE(%s, INTERVAL %d DAY), INTERVAL %s DAY)',
-                          $DB->quoteName(self::getTableField('password_last_update')),
-                          $expiration_delay,
-                          $lock_delay
-                      )
-                  ),
-                ]
-            );
+            $user = new User();
+            $criteria = [
+                'is_deleted' => 0,
+                'is_active'  => 1,
+                'authtype'   => Auth::DB_GLPI,
+                new QueryExpression(
+                    sprintf(
+                        'NOW() > ADDDATE(ADDDATE(%s, INTERVAL %d DAY), INTERVAL %s DAY)',
+                        $DB->quoteName(self::getTableField('password_last_update')),
+                        $expiration_delay,
+                        $lock_delay
+                    )
+                ),
+            ];
+            $user_to_update = $user->find($criteria);
+            foreach ($user_to_update as $data) {
+                $user->update([
+                    'id'        => $data['id'],
+                    'is_active' => 0,
+                    'cookie_token'      => null,
+                    'cookie_token_date' => null,
+                ]);
+            }
+            
         }
 
         return -1 !== $notice_time && $to_notify_count > $notification_limit

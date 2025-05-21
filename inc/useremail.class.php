@@ -313,23 +313,22 @@ class UserEmail extends CommonDBChild
 
     public function post_updateItem($history = 1)
     {
-        global $DB;
-
         // if default is set : unsed others for the users
         if (
             in_array('is_default', $this->updates)
             && ($this->input["is_default"] == 1)
         ) {
-            $DB->update(
-                $this->getTable(),
-                [
-                  'is_default' => 0
-                ],
-                [
+            $useremail = new Useremail();
+            $emails_to_update = $useremail->find([
                   'id'        => ['<>', $this->input['id']],
                   'users_id'  => $this->fields['users_id']
-                ]
-            );
+                ]);
+            foreach ($emails_to_update as $data) {
+                $useremail->update([
+                  'id'        => $data['id'],
+                  'is_default' => 0
+                ]);
+            }
         }
 
         parent::post_updateItem($history);
@@ -342,16 +341,17 @@ class UserEmail extends CommonDBChild
 
         // if default is set : unset others for the users
         if (isset($this->fields['is_default']) && ($this->fields["is_default"] == 1)) {
-            $DB->update(
-                $this->getTable(),
-                [
-                  'is_default' => 0
-                ],
-                [
+            $useremail = new Useremail();
+            $emails_to_update = $useremail->find([
                   'id'        => ['<>', $this->fields['id']],
                   'users_id'  => $this->fields['users_id']
-                ]
-            );
+                ]);
+            foreach ($emails_to_update as $data) {
+                $useremail->update([
+                  'id'        => $data['id'],
+                  'is_default' => 0
+                ]);
+            }
         }
 
         parent::post_addItem();
@@ -360,23 +360,20 @@ class UserEmail extends CommonDBChild
 
     public function post_deleteFromDB()
     {
-        global $DB;
-
         // if default is set : set default to another one
         if ($this->fields["is_default"] == 1) {
-            $DB->update(
-                $this->getTable(),
-                [
-                  'is_default'   => 1
-                ],
-                [
-                  'WHERE'  => [
-                     'id'        => ['<>', $this->fields['id']],
-                     'users_id'  => $this->fields['users_id']
-                  ],
-                  'LIMIT'  => 1
-                ]
-            );
+            $useremail = new Useremail();
+            $emails_to_update = $useremail->find([
+                'id'        => ['<>', $this->fields['id']],
+                'users_id'  => $this->fields['users_id']
+            ], [], 1);
+            if (count($emails_to_update) > 0) {
+            $first_email = reset($emails_to_update); 
+            $useremail->update([
+                'id'         => $first_email['id'],
+                'is_default' => 1
+                ]);
+            }
         }
 
         parent::post_deleteFromDB();
