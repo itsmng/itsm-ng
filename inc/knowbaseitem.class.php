@@ -939,7 +939,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                                        $("<optgroup></optgroup>")
                                           .attr("label", key)
                                     );
-                                    foreach (const [key, value] of Object.entries(value.children)) {
+                                    for (const [key, value] of Object.entries(value.children)) {
                                        group.append(
                                           $("<option></option>")
                                              .attr("value", key)
