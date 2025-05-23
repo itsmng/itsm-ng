@@ -273,7 +273,7 @@ JAVASCRIPT;
             'items_count'
         );
 
-        $cat_iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'SELECT' => [
               KnowbaseItemCategory::getTableField('id'),
               KnowbaseItemCategory::getTableField('name'),
@@ -286,6 +286,7 @@ JAVASCRIPT;
               KnowbaseItemCategory::getTableField('name'),
            ]
         ]);
+        $cat_iterator = $request->fetchAllAssociative();
 
         $inst = new KnowbaseItemCategory();
         $categories = [];
@@ -318,7 +319,7 @@ JAVASCRIPT;
         }
 
         // Add root category (which is not a real category)
-        $root_items_count = $DB->request(
+        $root_items_count = config::getAdapter()->request(
             array_merge_recursive(
                 [
                   'SELECT' => ['COUNT DISTINCT' => KnowbaseItem::getTableField('id') . ' as cpt'],
@@ -329,7 +330,7 @@ JAVASCRIPT;
                 ],
                 $kbitem_visibility_crit
             )
-        )->next();
+        )->fetchAssociative();
         $categories[] = [
            'id'          => '0',
            'name'        => __('Root category'),

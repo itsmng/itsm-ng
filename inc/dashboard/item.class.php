@@ -54,17 +54,15 @@ class Item extends \CommonDBChild
      */
     public static function getForDashboard(int $dashboards_id = 0): array
     {
-        global $DB;
-
-        $di_iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'  => self::getTable(),
            'WHERE' => [
               'dashboards_dashboards_id' => $dashboards_id
            ]
         ]);
-
+        $di_request = $request->fetchAllAssociative();
         $items = [];
-        foreach ($di_iterator as $item) {
+        foreach ($di_request as $item) {
             unset($item['id']);
             $item['card_options'] = importArrayFromDB($item['card_options']);
             $items[] = $item;

@@ -511,7 +511,7 @@ class Session
             return;
         }
 
-        $iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'SELECT'          => [
               'glpi_profiles.id',
               'glpi_profiles.name'
@@ -531,12 +531,12 @@ class Session
            ],
            'ORDERBY'         => 'glpi_profiles.name'
         ]);
-
-        if (count($iterator)) {
-            while ($data = $iterator->next()) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            foreach ($results as $data) {
                 $key = $data['id'];
                 $_SESSION['glpiprofiles'][$key]['name'] = $data['name'];
-                $entities_iterator = $DB->request([
+                $entities_request = config::getAdapter()->request([
                    'SELECT'    => [
                       'glpi_profiles_users.entities_id AS eID',
                       'glpi_profiles_users.id AS kID',
@@ -559,7 +559,7 @@ class Session
                    'ORDERBY'   => 'glpi_entities.completename'
                 ]);
 
-                while ($data = $entities_iterator->next()) {
+                while ($data = $entities_request->fetchAssociative()) {
                     // Do not override existing entity if define as recursive
                     if (
                         !isset($_SESSION['glpiprofiles'][$key]['entities'][$data['eID']])
@@ -584,11 +584,9 @@ class Session
     **/
     public static function loadGroups()
     {
-        global $DB;
-
         $_SESSION["glpigroups"] = [];
 
-        $iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'SELECT'    => Group_User::getTable() . '.groups_id',
            'FROM'      => Group_User::getTable(),
            'LEFT JOIN' => [
@@ -609,7 +607,7 @@ class Session
            )
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $_SESSION["glpigroups"][] = $data["groups_id"];
         }
     }

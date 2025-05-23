@@ -1861,22 +1861,22 @@ JAVASCRIPT;
             $twig_vars["can_update"] = true;
         }
 
-        $twig_vars['menu_position'] = $DB->request(
+        $twig_vars['menu_position'] = config::getAdapter()->request(
             [
                    'SELECT' => 'menu_position',
                    'FROM'   => 'glpi_users',
                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
                ]
-        )->next()['menu_position'];
+        )->fetchAssociative()['menu_position'];
 
         if (isset($_SESSION['glpiID'])) {
-            $twig_vars['menu_favorite_on'] = $DB->request(
+            $twig_vars['menu_favorite_on'] = config::getAdapter()->request(
                 [
                         'SELECT' => 'menu_favorite_on',
                         'FROM'   => 'glpi_users',
                         'WHERE'  => ['id' => $_SESSION["glpiID"]]
                      ]
-            )->next()['menu_favorite_on'];
+            )->fetchAssociative()['menu_favorite_on'];
             $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
         }
 
@@ -7141,22 +7141,22 @@ JAVASCRIPT;
         $already_used_shortcut = ['1'];
 
         if (isset($_SESSION['glpiID'])) {
-            $menu_favorites = $DB->request(
+            $menu_favorites = config::getAdapter()->request(
                 [
                    'SELECT' => 'menu_favorite',
                    'FROM'   => 'glpi_users',
                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
                 ]
             );
-            $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'], true);
-            $menu_collapse = $DB->request(
+            $menu_favorites = json_decode($menu_favorites->fetchAssociative()['menu_favorite'], true);
+            $menu_collapse = config::getAdapter()->request(
                 [
                  'SELECT' => 'menu_open',
                  'FROM'   => 'glpi_users',
                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
                 ]
             );
-            $menu_collapse = json_decode($menu_collapse->next()['menu_open'], true);
+            $menu_collapse = json_decode($menu_collapse->fetchAssociative()['menu_open'], true);
         } else {
             $menu_favorites = [];
             $menu_collapse = [];
@@ -7298,13 +7298,13 @@ JAVASCRIPT;
         "option" => $option, "sector" => $sector];
         $twig_vars['links'] = $links;
 
-        $twig_vars['menu_small'] = $DB->request(
+        $twig_vars['menu_small'] = config::getAdapter()->request(
             [
                     'SELECT' => 'menu_small',
                     'FROM'   => 'glpi_users',
                     'WHERE'  => ['id' => $_SESSION["glpiID"]]
                  ]
-        )->next()['menu_small'];
+        )->fetchAssociative()['menu_small'];
         $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
 
         // TODO: add profile selector

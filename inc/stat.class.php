@@ -1558,7 +1558,7 @@ class Stat extends CommonGLPI
         }
         $date1 .= " 00:00:00";
 
-        $iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'SELECT' => [
               'glpi_items_tickets.itemtype',
               'glpi_items_tickets.items_id',
@@ -1585,7 +1585,8 @@ class Stat extends CommonGLPI
            ],
            'ORDER'  => 'NB DESC'
         ]);
-        $numrows = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
 
         if ($numrows > 0) {
             if ($output_type == Search::HTML_OUTPUT) {
@@ -1622,7 +1623,7 @@ class Stat extends CommonGLPI
             for ($i = $start; ($i < $numrows) && ($i < $end_display); $i++) {
                 $item_num = 1;
                 // Get data and increment loop variables
-                $data = $iterator->next();
+                $data = $results[$i];
                 if (!($item = getItemForItemtype($data["itemtype"]))) {
                     continue;
                 }

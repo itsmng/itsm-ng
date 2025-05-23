@@ -658,7 +658,7 @@ abstract class API extends CommonGLPI
             && in_array($itemtype, $CFG_GLPI['itemdeviceharddrive_types'])
         ) {
             // build query to retrive filesystems
-            $fs_iterator = $DB->request([
+            $fs_request = config::getAdapter()->request([
                'SELECT'    => [
                   'glpi_filesystems.name AS fsname',
                   'glpi_items_disks.*'
@@ -679,7 +679,7 @@ abstract class API extends CommonGLPI
                ]
             ]);
             $fields['_disks'] = [];
-            while ($data = $fs_iterator->next()) {
+            while ($data = $fs_request->fetchAssociative()) {
                 unset($data['items_id']);
                 unset($data['is_deleted']);
                 $fields['_disks'][] = ['name' => $data];
@@ -696,7 +696,7 @@ abstract class API extends CommonGLPI
             if (!Software::canView()) {
                 $fields['_softwares'] = $this->arrayRightError();
             } else {
-                $soft_iterator = $DB->request([
+                $soft_request = config::getAdapter()->request([
                    'SELECT'    => [
                       'glpi_softwares.softwarecategories_id',
                       'glpi_softwares.id AS softwares_id',
@@ -730,7 +730,7 @@ abstract class API extends CommonGLPI
                       'glpi_softwareversions.name'
                    ]
                 ]);
-                while ($data = $soft_iterator->next()) {
+                while ($data = $soft_request->fetchAssociative()) {
                     $fields['_softwares'][] = $data;
                 }
             }
@@ -747,7 +747,7 @@ abstract class API extends CommonGLPI
                 $connect_item = new $connect_type();
                 if ($connect_item->canView()) {
                     $connect_table = getTableForItemType($connect_type);
-                    $iterator = $DB->request([
+                    $request = config::getAdapter()->request([
                        'SELECT'    => [
                           'glpi_computers_items.id AS assoc_id',
                           'glpi_computers_items.computers_id AS assoc_computers_id',
@@ -771,7 +771,7 @@ abstract class API extends CommonGLPI
                           'glpi_computers_items.is_deleted'   => 0
                        ]
                     ]);
-                    while ($data = $iterator->next()) {
+                    while ($data = $request->fetchAssociative()) {
                         $fields['_connections'][$connect_type][] = $data;
                     }
                 }
@@ -789,7 +789,7 @@ abstract class API extends CommonGLPI
             } else {
                 foreach (NetworkPort::getNetworkPortInstantiations() as $networkport_type) {
                     $netport_table = $networkport_type::getTable();
-                    $netp_iterator = $DB->request([
+                    $netp_iterator = config::getAdapter()->request([
                        'SELECT'    => [
                           'netp.id AS netport_id',
                           'netp.entities_id',
@@ -818,14 +818,14 @@ abstract class API extends CommonGLPI
                        ]
                     ]);
 
-                    while ($data = $netp_iterator->next()) {
+                    while ($data = $netp_iterator->fetchAssocitaive()) {
                         if (isset($data['netport_id'])) {
                             // append network name
                             $concat_expr = new QueryExpression(
                                 "GROUP_CONCAT(CONCAT(" . $DB->quoteName('ipadr.id') . ", " . $DB->quoteValue(Search::SHORTSEP) . " , " . $DB->quoteName('ipadr.name') . ")
                         SEPARATOR " . $DB->quoteValue(Search::LONGSEP) . ") AS " . $DB->quoteName('ipadresses')
                             );
-                            $netn_iterator = $DB->request([
+                            $request = config::getAdapter()->request([
                                'SELECT'    => [
                                   $concat_expr,
                                   'netn.id AS networknames_id',
@@ -878,9 +878,9 @@ abstract class API extends CommonGLPI
                                   'fqdn.fqdn'
                                ]
                             ]);
-
-                            if (count($netn_iterator)) {
-                                $data_netn = $netn_iterator->next();
+                            $netn_request = $request->fetchAllAssociative();
+                            if (count($netn_request)) {
+                                $data_netn = $netn_request[0];
 
                                 $raw_ipadresses = explode(Search::LONGSEP, $data_netn['ipadresses']);
                                 $ipadresses = [];
@@ -889,7 +889,7 @@ abstract class API extends CommonGLPI
 
                                     //find ip network attached to these ip
                                     $ipnetworks = [];
-                                    $ipnet_iterator = $DB->request([
+                                    $ipnet_request = config::getAdapter()->request([
                                        'SELECT'       => [
                                           'ipnet.id',
                                           'ipnet.completename',
@@ -913,7 +913,7 @@ abstract class API extends CommonGLPI
                                           'ipadnet.ipaddresses_id'  => $ipadress[0]
                                        ]
                                     ]);
-                                    while ($data_ipnet = $ipnet_iterator->next()) {
+                                    while ($data_ipnet = $ipnet_request->fetchAssociative()) {
                                         $ipnetworks[] = $data_ipnet;
                                     }
 
@@ -969,7 +969,7 @@ abstract class API extends CommonGLPI
             if (!Contract::canView()) {
                 $fields['_contracts'] = $this->arrayRightError();
             } else {
-                $iterator = $DB->request([
+                $request = config::getAdapter()->request([
                    'SELECT'    => ['glpi_contracts_items.*'],
                    'FROM'      => 'glpi_contracts_items',
                    'LEFT JOIN' => [
@@ -992,7 +992,7 @@ abstract class API extends CommonGLPI
                    ] + getEntitiesRestrictCriteria('glpi_contracts', '', '', true),
                    'ORDERBY'   => 'glpi_contracts.name'
                 ]);
-                while ($data = $iterator->next()) {
+                while ($data = $request->fetchAssociative()) {
                     $fields['_contracts'][] = $data;
                 }
             }
@@ -1022,7 +1022,7 @@ abstract class API extends CommonGLPI
                        'timeline_position' => ['>', CommonITILObject::NO_TIMELINE], // skip inlined images
                     ];
                 }
-                $doc_iterator = $DB->request([
+                $doc_iterator = config::getAdapter()->request([
                    'SELECT'    => [
                       'glpi_documents_items.id AS assocID',
                       'glpi_documents_items.date_creation AS assocdate',
@@ -1054,7 +1054,7 @@ abstract class API extends CommonGLPI
                    ],
                    'WHERE'     => $doc_criteria,
                 ]);
-                while ($data = $doc_iterator->next()) {
+                while ($data = $doc_iterator->fetchAssociative()) {
                     $fields['_documents'][] = $data;
                 }
             }
@@ -1074,8 +1074,8 @@ abstract class API extends CommonGLPI
                    'glpi_items_tickets.items_id' => $id,
                    'glpi_items_tickets.itemtype' => $itemtype
                 ] + getEntitiesRestrictCriteria(Ticket::getTable());
-                $iterator = $DB->request($criteria);
-                while ($data = $iterator->next()) {
+                $request = config::getAdapter()->request($criteria);
+                while ($data = $request->fetchAssociative()) {
                     $fields['_tickets'][] = $data;
                 }
             }
@@ -1095,8 +1095,8 @@ abstract class API extends CommonGLPI
                    'glpi_items_problems.items_id' => $id,
                    'glpi_items_problems.itemtype' => $itemtype
                 ] + getEntitiesRestrictCriteria(Problem::getTable());
-                $iterator = $DB->request($criteria);
-                while ($data = $iterator->next()) {
+                $request = config::getAdapter()->request($criteria);
+                while ($data = $request->fetchAssociative()) {
                     $fields['_problems'][] = $data;
                 }
             }
@@ -1116,8 +1116,8 @@ abstract class API extends CommonGLPI
                    'glpi_changes_items.items_id' => $id,
                    'glpi_changes_items.itemtype' => $itemtype
                 ] + getEntitiesRestrictCriteria(Change::getTable());
-                $iterator = $DB->request($criteria);
-                while ($data = $iterator->next()) {
+                $request = config::getAdapter()->request($criteria);
+                while ($data = $request->fetchAssociative()) {
                     $fields['_changes'][] = $data;
                 }
             }

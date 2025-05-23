@@ -542,12 +542,12 @@ trait PlanningEvent
             ];
         }
 
-        $iterator = $DB->request($criteria);
-
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
         $events_toadd = [];
 
-        if (count($iterator)) {
-            while ($data = $iterator->next()) {
+        if (count($results)) {
+            foreach ($results as $data) {
                 if ($event_obj->getFromDB($data["id"]) && $event_obj->canViewItem()) {
                     $key = $data["begin"] .
                            "$$" . $itemtype .

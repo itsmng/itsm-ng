@@ -399,8 +399,8 @@ class Dropdown
                'FROM'   => $table,
                'WHERE'  => ["$table.id" => $id]
             ] + $JOIN;
-            $iterator = $DB->request($criteria);
-
+            $request = config::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
             /// TODO review comment management...
             /// TODO getDropdownName need to return only name
             /// When needed to use comment use class instead : getComments function
@@ -408,8 +408,8 @@ class Dropdown
             /// TODO CommonDBTM : review getComments to be recursive and add informations from class hierarchy
             /// getUserName have the same system : clean it too
             /// Need to study the problem
-            if (count($iterator)) {
-                $data = $iterator->next();
+            if (count($results)) {
+                $data = $results[0];
                 if ($translate && !empty($data['transname'])) {
                     $name = $data['transname'];
                 } else {
@@ -593,13 +593,13 @@ class Dropdown
                     $field = 'completename';
                 }
 
-                $iterator = $DB->request([
+                $request = config::getAdapter()->request([
                    'SELECT' => ['id', $field],
                    'FROM'   => $table,
                    'WHERE'  => ['id' => $ids]
                 ]);
 
-                while ($data = $iterator->next()) {
+                while ($data = $request->fetchAssociative()) {
                     $tabs[$data['id']] = $data[$field];
                 }
             }
@@ -684,14 +684,14 @@ class Dropdown
             }
         }
 
-        $iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'SELECT'          => $p['field'],
            'DISTINCT'        => true,
            'FROM'            => getTableForItemType($itemtype_ref)
         ]);
 
         $tabs = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $tabs[$data[$p['field']]] = $data[$p['field']];
         }
         return self::showItemTypes($name, $tabs, ['value' => $p['value']]);
@@ -2527,9 +2527,8 @@ class Dropdown
             if (count($ljoin)) {
                 $criteria['LEFT JOIN'] = $ljoin;
             }
-            $iterator = $DB->request($criteria);
-
-            // Empty search text : display first
+            $request = config::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();            
             if ($post['page'] == 1 && empty($post['searchText'])) {
                 if (isset($post['display_emptychoice']) && $post['display_emptychoice']) {
                     $datas[] = [
@@ -2554,11 +2553,11 @@ class Dropdown
 
             // Ignore first item for all pages except first page
             $firstitem = (($post['page'] > 1));
-            if (count($iterator)) {
+            if (count($results)) {
                 $prev             = -1;
                 $firstitem_entity = -1;
 
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     $ID    = $data['id'];
                     $level = $data['level'];
 
@@ -2705,6 +2704,7 @@ class Dropdown
                     }
                     $firstitem = false;
                 }
+                
             }
 
             if ($multi) {
@@ -2935,8 +2935,8 @@ class Dropdown
                 $criteria['ORDERBY'] = ["$table.$field"];
             }
 
-            $iterator = $DB->request($criteria);
-
+            $request = config::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
             // Display first if no search
             if ($post['page'] == 1 && empty($post['searchText'])) {
                 if (!isset($post['display_emptychoice']) || $post['display_emptychoice']) {
@@ -2959,10 +2959,11 @@ class Dropdown
 
             $datastoadd = [];
 
-            if (count($iterator)) {
+            if (count($results)) {
                 $prev = -1;
 
-                while ($data = $iterator->next()) {
+                // while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     if (
                         $multi
                         && ($data["entities_id"] != $prev)
@@ -3054,7 +3055,6 @@ class Dropdown
         $ret['results'] = Toolbox::unclean_cross_side_scripting_deep($datas);
         $ret['count']   = $count;
         $ret['pagination']['more']    = ($count >= $post['page_limit']);
-
         return ($json === true) ? json_encode($ret) : $ret;
     }
 
@@ -3357,14 +3357,14 @@ class Dropdown
         $start = intval(($post['page'] - 1) * $post['page_limit']);
         $limit = intval($post['page_limit']);
 
-        $iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'FROM'   => $post['table'],
            'WHERE'  => $where,
            'ORDER'  => $item->getNameField(),
            'LIMIT'  => $limit,
            'START'  => $start
         ]);
-
+        $results = $request->fetchAllAssociative();
         $results = [];
 
         // Display first if no search
@@ -3375,8 +3375,8 @@ class Dropdown
             ];
         }
         $count = 0;
-        if (count($iterator)) {
-            while ($data = $iterator->next()) {
+        if (count($results)) {
+            foreach ($results as $data) {
                 $output = $data[$item->getNameField()];
 
                 if (isset($data['contact']) && !empty($data['contact'])) {
@@ -3514,8 +3514,8 @@ class Dropdown
             $criteria['WHERE']['glpi_netpoints.locations_id'] = $post['locations_id'];
         }
 
-        $iterator = $DB->request($criteria);
-
+        $request = config::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
         // Display first if no search
         if (empty($post['searchText'])) {
             if ($post['page'] == 1) {
@@ -3527,8 +3527,8 @@ class Dropdown
         }
 
         $count = 0;
-        if (count($iterator)) {
-            while ($data = $iterator->next()) {
+        if (count($results)) {
+            foreach ($results as $data) {
                 $output     = $data['netpname'];
                 $loc        = $data['loc'];
                 $ID         = $data['id'];

@@ -56,15 +56,15 @@ class Right extends \CommonDBChild
     {
         global $DB;
 
-        $dr_iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'  => self::getTable(),
            'WHERE' => [
               'dashboards_dashboards_id' => $dashboards_id
            ]
         ]);
-
+        $dr_request = $request->fetchAllAssociative();
         $rights = [];
-        foreach ($dr_iterator as $right) {
+        foreach ($dr_request as $right) {
             unset($right['id']);
             $rights[] = $right;
         }

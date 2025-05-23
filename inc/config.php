@@ -259,8 +259,8 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
     //set Status session var
     SpecialStatus::oldStatusOrder();
 
-    $request = $DB->request('glpi_oidc_users');
-    while ($data = $request->next()) {
+    $request = config::getAdapter()->request(['FROM' => 'glpi_oidc_users']);
+    while ($data = $request->fetchAssociative()) {
         if (isset($_SESSION['glpiID'])) {
             if ($data['user_id'] == $_SESSION['glpiID']) {
                 if ($data['update'] == 0) {

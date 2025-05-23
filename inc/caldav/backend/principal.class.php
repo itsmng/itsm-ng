@@ -131,7 +131,8 @@ class Principal extends AbstractBackend
 
         $members_uris = [];
 
-        $groups_iterator = $DB->request(
+        $group = new \Group();
+        $request = $group::getAdapter()->request(
             [
               'FROM'  => \Group::getTable(),
               'WHERE' => [
@@ -145,11 +146,13 @@ class Principal extends AbstractBackend
               ),
             ]
         );
-        foreach ($groups_iterator as $group_fields) {
+        $groups_request = $request->fetchAllAssociative();
+        foreach ($groups_request as $group_fields) {
             $members_uris[] = $this->getGroupPrincipalUri($group_fields['id']);
         }
 
-        $users_iterator = $DB->request(
+        $user = new \User();
+        $request = $user->getAdapter()->request(
             [
               'SELECT'     => [\User::getTableField('name')],
               'FROM'       => \User::getTable(),
@@ -166,7 +169,8 @@ class Principal extends AbstractBackend
               ]
             ]
         );
-        foreach ($users_iterator as $user_fields) {
+        $users_request = $request->fetchAllAssociative();
+        foreach ($users_request as $user_fields) {
             $members_uris[] = $this->getUserPrincipalUri($user_fields['name']);
         }
 
@@ -220,11 +224,11 @@ class Principal extends AbstractBackend
                 return []; // No groups if principal is not a user or a group
                 break;
         }
-
-        $groups_iterator = $DB->request($groups_query);
-
+        $group = new \Group();
+        $request = $group->getAdapter()->request($groups_query);
+        $groups_request = $request->fetchAllAssociative();
         $groups_uris = [];
-        foreach ($groups_iterator as $group_fields) {
+        foreach ($groups_request as $group_fields) {
             $groups_uris[] = $this->getGroupPrincipalUri($group_fields['id']);
         }
         return $groups_uris;

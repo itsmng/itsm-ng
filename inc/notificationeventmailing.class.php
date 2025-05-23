@@ -91,16 +91,16 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
 
     public static function getEntityAdminsData($entity)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
-        $iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'FROM'   => 'glpi_entities',
            'WHERE'  => ['id' => $entity]
         ]);
 
         $admins = [];
 
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             if (NotificationMailing::isUserAddressValid($row['admin_email'])) {
                 $admins[] = [
                    'language'  => $CFG_GLPI['language'],
@@ -172,14 +172,14 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                         ];
                     }
                 }
-                $doc_items_iterator = $DB->request(
+                $doc_items_request = config::getAdapter()->request(
                     [
                       'SELECT' => ['documents_id'],
                       'FROM'   => Document_Item::getTable(),
                       'WHERE'  => $doc_crit,
                     ]
-                );
-                foreach ($doc_items_iterator as $doc_item) {
+                )->fetchAllAssociative();
+                foreach ($doc_items_request as $doc_item) {
                     $documents_ids[] = $doc_item['documents_id'];
                 }
             }
