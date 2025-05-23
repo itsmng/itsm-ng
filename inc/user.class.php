@@ -3857,8 +3857,8 @@ class User extends CommonDBTM
             $WHERE = array_merge(
                 $WHERE,
                 [
-                  'glpi_users.is_deleted' => 0,
-                  'glpi_users.is_active'  => 1,
+                  'glpi_users.is_deleted' => 'false',
+                  'glpi_users.is_active'  => 'true',
                   [
                      'OR' => [
                         ['glpi_users.begin_date' => null],

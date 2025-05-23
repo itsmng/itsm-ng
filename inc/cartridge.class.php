@@ -525,7 +525,6 @@ class Cartridge extends CommonDBChild
     public static function getUsedNumber($tID)
     {
         $row = self::getAdapter()->request([
-           'SELECT' => ['id'],
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_cartridges',
            'WHERE'  => [
@@ -693,8 +692,8 @@ class Cartridge extends CommonDBChild
         $iterator = self::getAdapter()->request([
            'SELECT' => [
               'glpi_cartridges.*',
-              'glpi_printers.id AS printID',
-              'glpi_printers.name AS printname',
+              'glpi_printers.id AS "printID"',
+              'glpi_printers.name AS "printname"',
               'glpi_printers.init_pages_counter'
            ],
            'FROM'   => self::gettable(),

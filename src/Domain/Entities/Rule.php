@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "sub_type", columns: ["sub_type"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
-#[ORM\Index(name: "conditions", columns: ["conditions"])]
+#[ORM\Index(name: "condition", columns: ["condition"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 class Rule
 {

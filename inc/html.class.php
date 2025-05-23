@@ -1861,7 +1861,7 @@ JAVASCRIPT;
             $twig_vars["can_update"] = true;
         }
 
-        $twig_vars['menu_position'] = config::getAdapter()->request(
+        $twig_vars['menu_position'] = Config::getAdapter()->request(
             [
                    'SELECT' => 'menu_position',
                    'FROM'   => 'glpi_users',
@@ -1870,7 +1870,7 @@ JAVASCRIPT;
         )->fetchAssociative()['menu_position'];
 
         if (isset($_SESSION['glpiID'])) {
-            $twig_vars['menu_favorite_on'] = config::getAdapter()->request(
+            $twig_vars['menu_favorite_on'] = Config::getAdapter()->request(
                 [
                         'SELECT' => 'menu_favorite_on',
                         'FROM'   => 'glpi_users',

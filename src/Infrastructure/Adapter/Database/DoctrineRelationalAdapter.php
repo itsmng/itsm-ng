@@ -2,17 +2,13 @@
 
 namespace Infrastructure\Adapter\Database;
 
-use ArrayIterator;
 use CommonDBTM;
 use DateTime;
 use DBmysqlIterator;
 use Doctrine\DBAL\Result;
 use ReflectionClass;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
-use Html;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
-use Traversable;
 
 class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 {
@@ -459,7 +455,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             }
         }
         $query = $SqlIterator->buildQuery($request);
-        // dump('SQL Query', $query);
         return $this->query($query);
     }
 
