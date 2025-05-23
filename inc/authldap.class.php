@@ -3843,11 +3843,9 @@ class AuthLDAP extends CommonDBTM
 
     public function post_updateItem($history = 1)
     {
-        global $DB;
-
         if (in_array('is_default', $this->updates) && $this->input["is_default"] == 1) {
-            $DB->update(
-                $this->getTable(),
+            $authldap = new authldap();
+            $authldap->update(
                 ['is_default' => 0],
                 ['id' => ['<>', $this->input['id']]]
             );
@@ -3859,8 +3857,8 @@ class AuthLDAP extends CommonDBTM
         global $DB;
 
         if (isset($this->fields['is_default']) && $this->fields["is_default"] == 1) {
-            $DB->update(
-                $this->getTable(),
+            $authldap = new authldap();
+            $authldap->update(
                 ['is_default' => 0],
                 ['id' => ['<>', $this->fields['id']]]
             );

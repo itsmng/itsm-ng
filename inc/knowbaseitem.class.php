@@ -985,17 +985,10 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
     **/
     public function addToFaq()
     {
-        global $DB;
-
-        $DB->update(
-            $this->getTable(),
-            [
-              'is_faq' => 1
-            ],
-            [
-              'id' => $this->fields['id']
-            ]
-        );
+        $this->update([
+            'id'     => $this->fields['id'],
+            'is_faq' => 1
+        ]);
     }
 
     /**
@@ -1008,15 +1001,10 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
         global $DB;
 
         //update counter view
-        $DB->update(
-            'glpi_knowbaseitems',
-            [
-              'view'   => new \QueryExpression($DB->quoteName('view') . ' + 1')
-            ],
-            [
-              'id' => $this->getID()
-            ]
-        );
+        $this->update([
+            'id'    => $this->getID(),
+            'view'  => new \QueryExpression($DB->quoteName('view') . ' + 1')
+        ]);
     }
 
 
@@ -1481,8 +1469,8 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                        'FROM'      => 'glpi_knowbaseitems',
                        'WHERE'     => $search_where
                     ];
-                    $search_iterator = $DB->request($search_criteria);
-                    $numrows_search = $search_iterator->next()['cpt'];
+                    $search_iterator = self::getAdapter()->request($search_criteria);
+                    $numrows_search = $search_iterator->fetchAssociative()['cpt'];
 
                     if ($numrows_search <= 0) {// not result this fulltext try with alternate search
                         $search1 = [/* 1 */   '/\\\"/',
@@ -1964,12 +1952,13 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
             $criteria['SELECT'][] = 'glpi_knowbaseitemtranslations.answer AS transanswer';
         }
 
-        $iterator = $DB->request($criteria);
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
 
-        if (count($iterator)) {
+        if (count($results)) {
             echo "<table class='tab_cadrehov' aria-label='Recent Popular'>";
             echo "<tr class='noHover'><th>" . $title . "</th></tr>";
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 $name = $data['name'];
 
                 if (isset($data['transname']) && !empty($data['transname'])) {
@@ -2221,16 +2210,17 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
             $kbi = new self();
         }
 
-        $ids = $DB->request([
+        $request = config::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable(),
            'WHERE'  => ['knowbaseitemcategories_id' => $category_id],
         ]);
+        $results = $request->fetchAllAssociative();
 
         // Get array of ids
         $ids = array_map(function ($row) {
             return $row['id'];
-        }, iterator_to_array($ids, false));
+        }, $results);
 
         // Filter on canViewItem
         $ids = array_filter($ids, function ($id) use ($kbi) {

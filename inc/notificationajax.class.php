@@ -118,11 +118,11 @@ class NotificationAjax implements NotificationInterface
      */
     public static function getMyNotifications()
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $return = [];
         if ($CFG_GLPI['notifications_ajax']) {
-            $iterator = $DB->request([
+            $request = config::getAdapter()->request([
                'FROM'   => 'glpi_queuednotifications',
                'WHERE'  => [
                   'is_deleted'   => false,
@@ -130,9 +130,9 @@ class NotificationAjax implements NotificationInterface
                   'mode'         => Notification_NotificationTemplate::MODE_AJAX
                ]
             ]);
-
-            if ($iterator->numrows()) {
-                while ($row = $iterator->next()) {
+            $results = $request->fetchAllAssociative();
+            if (count($results) > 0) {
+                foreach ($results as $row) {
                     $url = null;
                     if (
                         $row['itemtype'] != 'NotificationAjax' &&
@@ -168,11 +168,9 @@ class NotificationAjax implements NotificationInterface
      */
     public static function raisedNotification($id)
     {
-        global $DB;
-
         $now = date('Y-m-d H:i:s');
-        $DB->update(
-            'glpi_queuednotifications',
+        $queuednotification = new QueuedNotification();
+        $queuednotification->update(
             [
               'sent_time'    => $now,
               'is_deleted'   => 1

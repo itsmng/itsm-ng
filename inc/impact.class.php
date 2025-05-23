@@ -1208,14 +1208,14 @@ class Impact extends CommonGLPI
         }
 
         // Get relations of the current node
-        $relations = $DB->request([
+        $relations = ImpactRelation::getAdapter()->request([
            'FROM'   => ImpactRelation::getTable(),
            'WHERE'  => [
               'itemtype_' . $target => get_class($node),
               'items_id_' . $target => $node->fields['id']
            ]
         ]);
-
+        $relations = $relations->fetchAllAssociative();
         // Add current code to the graph if we found at least one impact relation
         if (count($relations)) {
             self::addNode($nodes, $node);
@@ -1684,17 +1684,18 @@ class Impact extends CommonGLPI
         }
 
         // Remove each relations
-        $DB->delete(\ImpactRelation::getTable(), [
-           'OR' => [
-              [
-                 'itemtype_source' => get_class($item),
-                 'items_id_source' => $item->fields['id']
-              ],
-              [
-                 'itemtype_impacted' => get_class($item),
-                 'items_id_impacted' => $item->fields['id']
-              ],
-           ]
+        $impact_relation = new ImpactRelation();
+        $impact_relation->deleteByCriteria([
+            'OR' => [
+                [
+                    'itemtype_source' => get_class($item),
+                    'items_id_source' => $item->fields['id']
+                ],
+                [
+                    'itemtype_impacted' => get_class($item),
+                    'items_id_impacted' => $item->fields['id']
+                ],
+            ]
         ]);
 
         // Remove associated ImpactItem
@@ -1712,19 +1713,14 @@ class Impact extends CommonGLPI
             $impact_item->fields['impactcontexts_id'] != 0
             && $impact_item->fields['is_slave'] != 0
         ) {
-            $DB->update(
-                ImpactItem::getTable(),
-                [
-                  'impactcontexts_id' => 0,
-                ],
-                [
-                  'impactcontexts_id' => $impact_item->fields['impactcontexts_id'],
-                ]
+            $impact_item_obj = new ImpactItem();
+            $impact_item_obj->update(
+                ['impactcontexts_id' => 0],
+                ['impactcontexts_id' => $impact_item->fields['impactcontexts_id']]
             );
 
-            $DB->delete(ImpactContext::getTable(), [
-               'id' => $impact_item->fields['impactcontexts_id']
-            ]);
+            $impact_context = new ImpactContext();
+            $impact_context->delete(['id' => $impact_item->fields['impactcontexts_id']]);
         }
 
         // Delete group if less than two children remaining
@@ -1734,19 +1730,13 @@ class Impact extends CommonGLPI
             ]);
 
             if ($count < 2) {
-                $DB->update(
-                    ImpactItem::getTable(),
-                    [
-                      'parent_id' => 0,
-                    ],
-                    [
-                      'parent_id' => $impact_item->fields['parent_id']
-                    ]
+                $impact_item = new ImpactItem();
+                $impact_item->update(
+                    ['parent_id' => 0], 
+                    ['parent_id' => $impact_item->fields['parent_id']]
                 );
-
-                $DB->delete(ImpactCompound::getTable(), [
-                   'id' => $impact_item->fields['parent_id']
-                ]);
+                $impact_compound = new ImpactCompound();
+                $impact_compound->delete(['id' => $impact_item->fields['parent_id']]);
             }
         }
     }
