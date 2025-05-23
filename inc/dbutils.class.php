@@ -889,13 +889,13 @@ final class DbUtils
         }
 
         if ($use_cache) {
-            $iterator = $this::getAdapter()->request([
+            $iterator = Config::getAdapter()->request([
                'SELECT' => ['id', 'ancestors_cache', $parentIDfield],
                'FROM'   => $table,
                'WHERE'  => ['id' => $items_id]
             ]);
 
-            while ($row = $iterator->next()) {
+            while ($row = $iterator->fetchAssociative()) {
                 if ($row['id'] > 0) {
                     $rancestors = $row['ancestors_cache'];
                     $parent     = $row[$parentIDfield];
