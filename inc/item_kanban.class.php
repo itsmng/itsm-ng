@@ -76,14 +76,21 @@ class Item_Kanban extends CommonDBRelation
            'itemtype' => $itemtype,
            'items_id' => $items_id
         ];
-        if (countElementsInTable('glpi_items_kanbans', $criteria)) {
-            $DB->update('glpi_items_kanbans', [
-               'date_mod'  => $_SESSION['glpi_currenttime']
-            ] + $common_input, $criteria);
+        $kanban_item = new self();
+        if ($kanban_item->getFromDBByCrit($criteria)) {
+            $update_data = [
+                'id'        => $kanban_item->getID(),
+                'date_mod'  => $_SESSION['glpi_currenttime']
+            ] + $common_input;
+            
+            $kanban_item->update($update_data);
         } else {
-            $DB->insert('glpi_items_kanbans', [
-               'date_creation'   => $_SESSION['glpi_currenttime']
-            ] + $common_input);
+            $kanban_item = new self();
+            $kanban_item->fields = [
+                'date_creation'   => $_SESSION['glpi_currenttime']
+            ] + $common_input;
+            
+            $kanban_item->addToDB();
         }
         return true;
     }

@@ -952,27 +952,30 @@ class IPNetwork extends CommonImplicitTreeDropdown
     **/
     public static function recreateTree()
     {
-        global $DB;
+        $adapter = self::getAdapter();
+        $request = $adapter->request([
+        'SELECT' => ['id', 'name'],
+        'FROM'   => self::getTable()
+        ]);
 
-        // Reset the tree
-        $DB->update(
-            'glpi_ipnetworks',
-            [
-              'ipnetworks_id'   => 0,
-              'level'           => 1,
-              'completename'    => new \QueryExpression($DB->quoteName('name'))
-            ],
-            [true]
-        );
+        foreach ($request->fetchAllAssociative() as $data) {
+            $network = new self();
+            if ($network->getFromDB($data['id'])) {
+                $network->update([
+                    'id'             => $data['id'],
+                    'ipnetworks_id'  => 0,
+                    'level'          => 1,
+                    'completename'   => $data['name'] 
+                ]);
+            }
+        }
 
-        // Foreach IPNetwork ...
         $request = self::getAdapter()->request([
-           'SELECT' => 'id',
-           'FROM'   => self::getTable()
+        'SELECT' => 'id',
+        'FROM'   => self::getTable()
         ]);
 
         $network = new self();
-
         while ($network_entry = $request->fetchAssociative()) {
             if ($network->getFromDB($network_entry['id'])) {
                 $input = $network->fields;

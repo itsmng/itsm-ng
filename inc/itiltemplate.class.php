@@ -736,15 +736,19 @@ abstract class ITILTemplate extends CommonDropdown
         foreach ($source as $merge => $data) {
             foreach ($data as $key => $val) {
                 if (!array_key_exists($key, $target[$merge])) {
-                    $DB->update(
-                        'glpi_' . $itiltype . 'template' . $merge,
-                        [
-                          $itiltype . 'templates_id' => $target_id
-                        ],
-                        [
-                          'id' => $val['id']
-                        ]
-                    );
+                    $classname = 'ITILTemplate' . ucfirst($merge);
+                    if (class_exists($itiltype . $classname)) {
+                        $classname = $itiltype . $classname;
+                    }
+                    
+                    $field_obj = new $classname();
+                    
+                    if ($field_obj->getFromDB($val['id'])) {
+                        $field_obj->update([
+                            'id' => $val['id'],
+                            $itiltype . 'templates_id' => $target_id
+                        ]);
+                    }
                 }
             }
         }
@@ -786,23 +790,19 @@ abstract class ITILTemplate extends CommonDropdown
         }
 
         // Merge
-        $template = new static();
+        $itil_category = new ITILCategory();
         foreach ($source as $merge => $data) {
             foreach ($data as $key => $val) {
-                $template->getFromDB($target_id);
                 if (
                     !array_key_exists($key, $target[$merge])
                     && in_array($val['entities_id'], $_SESSION['glpiactiveentities'])
                 ) {
-                    $DB->update(
-                        'glpi_itilcategories',
-                        [
-                          $merge => $target_id
-                        ],
-                        [
-                          'id' => $val['id']
-                        ]
-                    );
+                    if ($itil_category->getFromDB($val['id'])) {
+                        $itil_category->update([
+                            'id'    => $val['id'],
+                            $merge  => $target_id
+                        ]);
+                    }
                 }
             }
         }

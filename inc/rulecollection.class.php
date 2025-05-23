@@ -747,19 +747,35 @@ class RuleCollection extends CommonDBTM
      **/
     public function deleteRuleOrder($ranking)
     {
-        global $DB;
-
-        $result = $DB->update(
-            'glpi_rules',
-            [
-                'ranking' => new \QueryExpression($DB->quoteName('ranking') . ' - 1')
-            ],
-            [
+        $adapter = self::getAdapter();
+    
+        $rules = $adapter->request([
+            'SELECT' => ['id', 'ranking'],
+            'FROM'   => 'glpi_rules',
+            'WHERE'  => [
                 'sub_type'  => $this->getRuleClassName(),
                 'ranking'   => ['>', $ranking]
             ]
-        );
-        return $result;
+        ]);
+        
+        $rule_obj = $this->getRuleClass();
+        $success = true;
+        
+        foreach ($rules->fetchAllAssociative() as $data) {
+            $rule = new $rule_obj();
+            if ($rule->getFromDB($data['id'])) {
+                $update = [
+                    'id'      => $data['id'],
+                    'ranking' => $data['ranking'] - 1
+                ];
+                
+                if (!$rule->update($update)) {
+                    $success = false;
+                }
+            }
+        }
+        
+        return $success;
     }
 
 
@@ -1507,7 +1523,7 @@ class RuleCollection extends CommonDBTM
             foreach ($this->RuleList->list as $rule) {
                 //If the rule is active, process it
 
-                if ($rule->fields["is_active"]) {
+                if ($rule->fields["is_active"]?? '') {
                     $output["_rule_process"] = false;
                     $rule->process($input, $output, $params, $p);
 

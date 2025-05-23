@@ -92,8 +92,6 @@ class ProfileRight extends CommonDBChild
     **/
     public static function getProfileRights($profiles_id, array $rights = [])
     {
-        global $DB;
-
         if (!version_compare(Config::getCurrentDBVersion(), '0.84', '>=')) {
             //table does not exists.
             return [];
@@ -135,14 +133,14 @@ class ProfileRight extends CommonDBChild
         while ($profile = $request->fetchAssociative()) {
             $profiles_id = $profile['id'];
             foreach ($rights as $name) {
-                $res = $DB->insert(
-                    self::getTable(),
-                    [
-                      'profiles_id'  => $profiles_id,
-                      'name'         => $name
-                    ]
-                );
-                if (!$res) {
+                $profileRight = new self();
+            
+                $profileRight->fields = [
+                    'profiles_id'  => $profiles_id,
+                    'name'         => $name
+                ];
+                
+                if (!$profileRight->addToDB()) {
                     $ok = false;
                 }
             }
@@ -158,19 +156,27 @@ class ProfileRight extends CommonDBChild
     **/
     public static function deleteProfileRights(array $rights)
     {
-        global $DB, $GLPI_CACHE;
+        global $GLPI_CACHE;
 
         $GLPI_CACHE->set('all_possible_rights', []);
         $ok = true;
         foreach ($rights as $name) {
-            $result = $DB->delete(
-                self::getTable(),
-                [
-                  'name' => $name
+            $adapter = self::getAdapter();
+            $items = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => self::getTable(),
+                'WHERE'  => [
+                    'name' => $name
                 ]
-            );
-            if (!$result) {
-                $ok = false;
+            ]);
+            
+            foreach ($items->fetchAllAssociative() as $data) {
+                $profileRight = new self();
+                if ($profileRight->getFromDB($data['id'])) {
+                    if (!$profileRight->deleteFromDB()) {
+                        $ok = false;
+                    }
+                }
             }
         }
         return $ok;
@@ -186,8 +192,6 @@ class ProfileRight extends CommonDBChild
     **/
     public static function updateProfileRightAsOtherRight($right, $value, $condition)
     {
-        global $DB;
-
         $profiles = [];
         $ok       = true;
         $request = Profile::getAdapter()->request([
@@ -200,20 +204,23 @@ class ProfileRight extends CommonDBChild
         $profiles = array_column($results, 'profiles_id');
 
         if (count($profiles)) {
-            $result = $DB->update(
-                'glpi_profilerights',
-                [
-                  'rights' => new \QueryExpression($DB->quoteName('rights') . ' | ' . (int)$value)
-                ],
-                [
-                  'name'         => $right,
-                  'profiles_id'  => $profiles
-                ]
-            );
-            if (!$result) {
-                $ok = false;
+        foreach ($profiles as $profiles_id) {
+            $profileRight = new self();
+            if ($profileRight->getFromDBByCrit([
+                'profiles_id' => $profiles_id,
+                'name'        => $right
+            ])) {
+                $new_rights = $profileRight->fields['rights'] | (int)$value;
+                
+                if (!$profileRight->update([
+                    'id'     => $profileRight->getID(),
+                    'rights' => $new_rights
+                ])) {
+                    $ok = false;
+                }
             }
         }
+    }
         return $ok;
     }
 
@@ -229,8 +236,6 @@ class ProfileRight extends CommonDBChild
     **/
     public static function updateProfileRightsAsOtherRights($newright, $initialright, array $condition = [])
     {
-        global $DB;
-
         $profiles = [];
         $ok       = true;
 
@@ -244,22 +249,22 @@ class ProfileRight extends CommonDBChild
             $profiles[$data['profiles_id']] = $data['rights'];
         }
         if (count($profiles)) {
-            foreach ($profiles as $key => $val) {
-                $res = $DB->update(
-                    self::getTable(),
-                    [
-                      'rights' => $val
-                    ],
-                    [
-                      'profiles_id'  => $key,
-                      'name'         => $newright
-                    ]
-                );
-                if (!$res) {
-                    $ok = false;
+            foreach ($profiles as $profiles_id => $rights_value) {
+                $profileRight = new self();
+                if ($profileRight->getFromDBByCrit([
+                    'profiles_id'  => $profiles_id,
+                    'name'         => $newright
+                ])) {
+                    if (!$profileRight->update([
+                        'id'     => $profileRight->getID(),
+                        'rights' => $rights_value
+                    ])) {
+                        $ok = false;
+                    }
                 }
             }
         }
+        
         return $ok;
     }
 

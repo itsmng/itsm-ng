@@ -133,6 +133,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
     public function replayRulesOnExistingDBForModel($offset = 0, $maxtime = 0)
     {
         global $DB;
+        $adapter = self::getAdapter();
 
         if (isCommandLine()) {
             printf(__('Replay rules on existing database started on %s') . "\n", date("r"));
@@ -226,11 +227,24 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                     } else {
                         $where['manufacturers_id'] = $data['idmanu'];
                     }
-                    $DB->update(
-                        $model_table,
-                        [$model_field => $ID],
-                        $where
-                    );
+                    $items = $adapter->request([
+                        'SELECT' => ['id'],
+                        'FROM'   => $model_table,
+                        'WHERE'  => $where
+                    ]);
+                    foreach ($items->fetchAllAssociative() as $item_data) {
+                        $itemtype = getItemTypeForTable($model_table);
+                        $item = new $itemtype();
+                        
+                        if ($item->getFromDB($item_data['id'])) {
+                            $item->update([
+                                'id' => $item_data['id'],
+                                $model_field => $ID
+                            ]);
+                        }
+                    }
+                } else {
+                    $tocheck[$data["id"]] = [$ID];
                 }
 
                 $i++;
@@ -243,7 +257,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
             }
 
             foreach ($tocheck as $ID => $tab) {
-                $result = $this::getAdapter()->request([
+                $result = $adapter->request([
                    'COUNT'  => 'cpt',
                    'FROM'   => $model_table,
                    'WHERE'  => [$model_field => $ID]
@@ -256,18 +270,18 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                     $result
                     && ($result['cpt'] == 0)
                 ) {
-                    $DB->delete(
-                        $this->item_table,
-                        [
-                          'id'  => $ID
-                        ]
-                    );
+                     $itemtype = getItemTypeForTable($this->item_table);
+                    $item = new $itemtype();
+                    
+                    if ($item->getFromDB($ID)) {
+                        $item->delete(['id' => $ID]);
+                    }
                     $deletecartmodel  = true;
                 }
 
                 // Manage cartridge assoc Update items
                 if ($this->getRuleClassName() == 'RuleDictionnaryPrinterModel') {
-                    $request2 = $this::getAdapter()->request([
+                    $request2 = $adapter->request([
                        'FROM'   => 'glpi_cartridgeitems_printermodels',
                        'WHERE'  => ['printermodels_id' => $ID]
                     ])->fetchAllAssociative();
@@ -280,12 +294,10 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                         }
                         // Delete cartrodges_assoc
                         if ($deletecartmodel) {
-                            $DB->delete(
-                                'glpi_cartridgeitems_printermodels',
-                                [
-                                  'printermodels_id'   => $ID
-                                ]
-                            );
+                             $cartridgeItemPrinterModel = new CartridgeItem_PrinterModel();
+                            $cartridgeItemPrinterModel->deleteByCriteria([
+                                'printermodels_id' => $ID
+                            ]);
                         }
                         // Add new assoc
                         $ct = new CartridgeItem();

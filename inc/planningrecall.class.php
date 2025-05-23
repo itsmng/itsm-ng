@@ -223,26 +223,37 @@ class PlanningRecall extends CommonDBChild
     **/
     public static function managePlanningUpdates($itemtype, $items_id, $begin)
     {
-        global $DB;
-
         if (isset($_SESSION['glpiplanningreminder_isavailable'])) {
             unset($_SESSION['glpiplanningreminder_isavailable']);
         }
 
         //nedds DB::update() to support SQL functions to get migrated
-        $result = $DB->update(
-            'glpi_planningrecalls',
-            [
-              'when'   => new \QueryExpression(
-                  "DATE_SUB('$begin', INTERVAL " . $DB->quoteName('before_time') . " SECOND)"
-              ),
-            ],
-            [
-              'itemtype'  => $itemtype,
-              'items_id'  => $items_id
+        $adapter = self::getAdapter();
+        $recalls = $adapter->request([
+            'SELECT' => ['id', 'before_time'],
+            'FROM'   => 'glpi_planningrecalls',
+            'WHERE'  => [
+                'itemtype'  => $itemtype,
+                'items_id'  => $items_id
             ]
-        );
-        return $result;
+        ]);
+
+        $success = true;
+        foreach ($recalls->fetchAllAssociative() as $data) {
+            $when = date("Y-m-d H:i:s", strtotime($begin) - $data['before_time']);
+            
+            $recall = new self();
+            if ($recall->getFromDB($data['id'])) {
+                if (!$recall->update([
+                    'id'    => $data['id'],
+                    'when'  => $when
+                ])) {
+                    $success = false;
+                }
+            }
+        }
+        
+        return $success;
     }
 
 

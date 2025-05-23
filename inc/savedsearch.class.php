@@ -697,15 +697,27 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     **/
     public function unmarkDefaults(array $ids)
     {
-        global $DB;
-
         if (Session::haveRight('config', UPDATE)) {
-            return $DB->delete(
-                'glpi_savedsearches_users',
-                [
-                  'savedsearches_id'   => $ids
+            $adapter = self::getAdapter();
+            $searches = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => 'glpi_savedsearches_users',
+                'WHERE'  => [
+                    'savedsearches_id' => $ids
                 ]
-            );
+            ]);
+            
+            $success = true;
+            foreach ($searches->fetchAllAssociative() as $data) {
+                $savedSearch_User = new SavedSearch_User();
+                if ($savedSearch_User->getFromDB($data['id'])) {
+                    if (!$savedSearch_User->delete(['id' => $data['id']])) {
+                        $success = false;
+                    }
+                }
+            }
+            
+            return $success;
         }
     }
 
@@ -1157,20 +1169,19 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     **/
     public static function updateExecutionTime($id, $time)
     {
-        global $DB;
-
         if ($_SESSION['glpishow_count_on_tabs']) {
-            $DB->update(
-                static::getTable(),
-                [
-                  'last_execution_time'   => $time,
-                  'last_execution_date'   => date('Y-m-d H:i:s'),
-                  'counter'               => new \QueryExpression($DB->quoteName('counter') . ' + 1')
-                ],
-                [
-                  'id' => $id
-                ]
-            );
+            $savedSearch = new self();
+            if ($savedSearch->getFromDB($id)) {
+                // On doit gérer le compteur de manière spéciale car on ne peut pas faire +1 directement
+                $counter = $savedSearch->fields['counter'] + 1;
+                
+                $savedSearch->update([
+                    'id'                   => $id,
+                    'last_execution_time'  => $time,
+                    'last_execution_date'  => date('Y-m-d H:i:s'),
+                    'counter'              => $counter
+                ]);
+            }
         }
     }
 
@@ -1258,18 +1269,31 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
      */
     public function setDoCount(array $ids, $do_count)
     {
-        global $DB;
-
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'do_count' => $do_count
-            ],
-            [
-              'id' => $ids
+        $adapter = self::getAdapter();
+        $searches = $adapter->request([
+            'SELECT' => ['id'],
+            'FROM'   => $this->getTable(),
+            'WHERE'  => [
+                'id' => $ids
             ]
-        );
-        return $result;
+        ]);
+        
+        $success = true;
+        foreach ($searches->fetchAllAssociative() as $data) {
+            $savedSearch = new self();
+            if ($savedSearch->getFromDB($data['id'])) {
+                $update = [
+                    'id'       => $data['id'],
+                    'do_count' => $do_count
+                ];
+                
+                if (!$savedSearch->update($update)) {
+                    $success = false;
+                }
+            }
+        }
+        
+        return $success;
     }
 
 
@@ -1284,19 +1308,32 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
      */
     public function setEntityRecur(array $ids, $eid, $recur)
     {
-        global $DB;
-
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'entities_id'  => $eid,
-              'is_recursive' => $recur
-            ],
-            [
-              'id' => $ids
+        $adapter = self::getAdapter();
+        $searches = $adapter->request([
+            'SELECT' => ['id'],
+            'FROM'   => $this->getTable(),
+            'WHERE'  => [
+                'id' => $ids
             ]
-        );
-        return $result;
+        ]);
+        
+        $success = true;
+        foreach ($searches->fetchAllAssociative() as $data) {
+            $savedSearch = new self();
+            if ($savedSearch->getFromDB($data['id'])) {
+                $update = [
+                    'id'           => $data['id'],
+                    'entities_id'  => $eid,
+                    'is_recursive' => $recur
+                ];
+                
+                if (!$savedSearch->update($update)) {
+                    $success = false;
+                }
+            }
+        }
+        
+        return $success;
     }
 
 
