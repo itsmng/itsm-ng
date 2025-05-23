@@ -660,7 +660,6 @@ class Cartridge extends CommonDBChild
     **/
     public static function showForCartridgeItem(CartridgeItem $cartitem, $show_old = 0)
     {
-        global $DB;
 
         $tID = $cartitem->getField('id');
         if (!$cartitem->can($tID, READ)) {
