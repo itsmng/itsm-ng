@@ -229,17 +229,16 @@ class SpecialStatus extends CommonTreeDropdown
 
     public function addStatus()
     {
-        global $DB;
-
         if (isset($_POST["update"])) {
             $before = Ticket::getAllStatusArray(false, true);
             $status_db = [
+               'id'       => 0,
                'name'   => $_POST["name"],
                'weight'   => $_POST["weight"],
                'is_active'  => $_POST["is_active"],
                'color'  => $_POST["color"]
             ];
-            $DB->updateOrInsert("glpi_specialstatuses", $status_db, ['id'   => 0]);
+           $this::getAdapter()->save(["glpi_specialstatuses"], $status_db);
             Session::addMessageAfterRedirect(
                 sprintf(__("Status has been added!")),
                 true,

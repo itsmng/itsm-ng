@@ -193,88 +193,109 @@ class Oidc extends CommonDBTM
 
         $criteria = ["SELECT * FROM glpi_oidc_mapping"];
         $request = self::getAdapter()->request($criteria);
-
-        while ($data = $request->fetchAssociative()) {
-            $result[] = $data;
-        }
-
-        if (isset($result)) {
-            if (isset($user_array[$result[0]["name"]])) {
-                $DB->updateOrInsert("glpi_users", ['name' => $DB->escape($user_array[$result[0]["name"]])], ['id' => $id]);
-            }
-
-            if (isset($user_array[$result[0]["given_name"]])) {
-                $DB->updateOrInsert("glpi_users", ['firstname' => $DB->escape($user_array[$result[0]["given_name"]])], ['id' => $id]);
-            }
-
-            if (isset($user_array[$result[0]["family_name"]])) {
-                $DB->updateOrInsert("glpi_users", ['realname' => $DB->escape($user_array[$result[0]["family_name"]])], ['id' => $id]);
-            }
-
-            if (isset($user_array[$result[0]["picture"]])) {
-                $DB->updateOrInsert("glpi_users", ['picture' => $DB->escape($user_array[$result[0]["picture"]])], ['id' => $id]);
-            }
-
-            if (isset($user_array[$result[0]["email"]])) {
-                $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '" . $user_array[$result[0]["email"]] . "');";
-                $DB->queryOrDie($querry);
-            }
-
-            if (isset($user_array[$result[0]["locale"]])) {
-                $DB->updateOrInsert("glpi_users", ['language' => $DB->escape($user_array[$result[0]["locale"]])], ['id' => $id]);
-            }
-
-            if (isset($user_array[$result[0]["phone_number"]])) {
-                $DB->updateOrInsert("glpi_users", ['phone' => $DB->escape($user_array[$result[0]["phone_number"]])], ['id' => $id]);
-            }
-
-            $DB->updateOrInsert("glpi_users", ['date_mod' => $_SESSION["glpi_currenttime"]], ['id' => $id]);
-
-
-            if (isset($user_array[$result[0]["group"]])) {
-                foreach ($data = $user_array[$result[0]["group"]] as $value) {
-                    $id_group_create = 0;
-                    $request = self::getAdapter()->request(['FROM' => 'glpi_groups']);
-
-                    while ($data = $request->fetchAssociative()) {
-                        if ($data['name'] == $value) {
-                            $id_group_create = $data['id'];
-                            break;
+        $results = $request->fetchAllAssociative();
+            
+            if (!empty($results)) {
+                $result = $results[0];
+                $user_data = ['id' => $id];                
+                $fields_to_update = [
+                    'name'      => 'name',
+                    'given_name' => 'firstname',
+                    'family_name' => 'realname',
+                    'picture'   => 'picture',
+                    'locale'    => 'language',
+                    'phone_number' => 'phone'
+                ];                
+                foreach ($fields_to_update as $oidc_field => $db_field) {
+                    if (isset($user_array[$result[$oidc_field]])) {
+                        $user_data[$db_field] = $user_array[$result[$oidc_field]];
+                    }
+                }                
+                $user_data['date_mod'] = $_SESSION["glpi_currenttime"];
+                
+                if (count($user_data) > 1) { 
+                    self::getAdapter()->save(['glpi_users'], $user_data);
+                }                
+                if (isset($user_array[$result["email"]])) {
+                    $email_data = [
+                        'id' => 0,
+                        'users_id' => $id,
+                        'is_default' => 0,
+                        'is_dynamic' => 0,
+                        'email' => $user_array[$result["email"]]
+                    ];                    
+                    $email_exists = self::getAdapter()->request([
+                        'COUNT' => 'cpt',
+                        'FROM' => 'glpi_useremails',
+                        'WHERE' => [
+                            'users_id' => $id,
+                            'email' => $user_array[$result["email"]]
+                        ]
+                    ])->fetchAssociative();
+                    
+                    if ($email_exists['cpt'] == 0) {
+                        self::getAdapter()->save(['glpi_useremails'], $email_data);
+                    }
+                }                
+                if (isset($user_array[$result["group"]])) {
+                    foreach ($user_array[$result["group"]] as $value) {
+                        $group_request = self::getAdapter()->request([
+                            'FROM' => 'glpi_groups',
+                            'WHERE' => ['name' => $value]
+                        ]);
+                        $group_results = $group_request->fetchAllAssociative();
+                        
+                        $id_group = 0;
+                        if (count($group_results) > 0) {
+                            $id_group = $group_results[0]['id'];
+                        } else {
+                            $group_data = [
+                                'name' => $value,
+                                'completename' => $value
+                            ];
+                            self::getAdapter()->save(['glpi_groups'], $group_data);                            
+                            $new_group = self::getAdapter()->request([
+                                'FROM' => 'glpi_groups',
+                                'WHERE' => ['name' => $value]
+                            ])->fetchAllAssociative();
+                            
+                            if (count($new_group) > 0) {
+                                $id_group = $new_group[0]['id'];
+                            }
+                        }                        
+                        if ($id_group > 0) {
+                            $group_user_exists = self::getAdapter()->request([
+                                'COUNT' => 'cpt',
+                                'FROM' => 'glpi_groups_users',
+                                'WHERE' => [
+                                    'users_id' => $id,
+                                    'groups_id' => $id_group
+                                ]
+                            ])->fetchAssociative();                            
+                            if ($group_user_exists['cpt'] == 0) {
+                                $group_user_data = [
+                                    'users_id' => $id,
+                                    'groups_id' => $id_group
+                                ];
+                                self::getAdapter()->save(['glpi_groups_users'], $group_user_data);
+                            }
                         }
                     }
-
-                    $querry = "INSERT IGNORE INTO `glpi_groups` (`id`, `name`, `completename`) VALUES ($id_group_create, '$value', '$value');";
-                    $DB->queryOrDie($querry);
-                    $request = self::getAdapter()->request(['FROM' => 'glpi_groups']);
-
-                    while ($data = $request->fetchAssociative()) {
-                        $id_group = $data['id'];
-                        if ($data['name'] == $value) {
-                            break;
-                        }
-                    }
-
-                    $querry = "INSERT IGNORE INTO `glpi_groups_users` (`id`, `users_id`, `groups_id`) VALUES ('0', '$id', '$id_group');";
-                    $DB->queryOrDie($querry);
                 }
-            }
-        }
-
-        $request = self::getAdapter()->request(['FROM' => 'glpi_oidc_users']);
-
-        while ($data = $request->fetchAssociative()) {
-            $user_id = $data['id'];
-
-            if ($data['user_id'] == $id) {
-                $find = true;
-            }
-        }
-
-        if (!isset($find)) {
-            $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => 0]);
-        } else {
-            $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => $user_id]);
-        }
+            }            
+            $oidc_users = self::getAdapter()->request([
+                'FROM' => 'glpi_oidc_users',
+                'WHERE' => ['user_id' => $id]
+            ])->fetchAllAssociative();
+            
+            $oidc_user_data = [
+                'user_id' => $id,
+                'update' => 1
+            ];            
+            if (count($oidc_users) > 0) {
+                $oidc_user_data['id'] = $oidc_users[0]['id'];
+            }            
+            self::getAdapter()->save(['glpi_oidc_users'], $oidc_user_data);
     }
 
     /**
@@ -292,6 +313,7 @@ class Oidc extends CommonDBTM
 
         if (isset($_POST["update"])) {
             $oidc_result = [
+                'id' => 0,
                 'name' => $_POST["name"],
                 'given_name'  => $_POST["given_name"],
                 'family_name'  => $_POST["family_name"],
@@ -302,7 +324,7 @@ class Oidc extends CommonDBTM
                 'group'  => $_POST["group"],
                 'date_mod' => $_SESSION["glpi_currenttime"],
             ];
-            $DB->updateOrInsert("glpi_oidc_mapping", $oidc_result, ['id'   => 0]);
+             self::getAdapter()->save(['glpi_oidc_mapping'], $oidc_result);
         }
 
         $criteria = ["SELECT * FROM glpi_oidc_mapping"];

@@ -1816,7 +1816,16 @@ class Auth extends CommonGLPI
                'logout'  => $_POST["logout"],
                'sso_link_users' => $_POST['sso_link_users'],
             ];
-            $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
+            $exists = config::getAdapter()->request([
+                'COUNT'  => 'cpt',
+                'FROM'   => 'glpi_oidc_config',
+            ])->fetchAssociative();
+            
+            if ($exists['cpt'] > 0) {
+                $oidc_result['id'] = 0;
+            }
+            
+            config::getAdapter()->save(['glpi_oidc_config'], $oidc_result);
         }
         $criteria = ["SELECT * FROM glpi_oidc_config"];
         $results = config::getAdapter()->request($criteria);
