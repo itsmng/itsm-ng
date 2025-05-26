@@ -621,12 +621,10 @@ class FieldUnicity extends CommonDropdown
     **/
     public static function deleteForItemtype($itemtype)
     {
-        global $DB;
-
-        $DB->delete(
-            self::getTable(),
+        $fieldUnicity = new self();
+        $fieldUnicity->deleteByCriteria(
             [
-              'itemtype'  => ['LIKE', "%Plugin$itemtype%"]
+                'itemtype' => ['LIKE', "%Plugin$itemtype%"]
             ]
         );
     }

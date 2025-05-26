@@ -3197,8 +3197,8 @@ class Dropdown
             ];
         }
 
-        $iterator = $DB->request($criteria);
-
+        $request = Config::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
         $results = [];
         // Display first if no search
         if (empty($post['searchText'])) {
@@ -3207,11 +3207,11 @@ class Dropdown
                'text' => Dropdown::EMPTY_VALUE
             ];
         }
-        if (count($iterator)) {
+        if (count($results)) {
             $prev       = -1;
             $datatoadd = [];
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 if ($multi && ($data["entities_id"] != $prev)) {
                     if (count($datatoadd)) {
                         $results[] = [
