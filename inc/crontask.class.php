@@ -388,7 +388,7 @@ class CronTask extends CommonDBTM
     {
         global $DB;
 
-        $hour_criteria = new QueryExpression('hour(curtime())');
+       $hour_criteria = new QueryExpression($this::getAdapter()->getCurrentHourExpression());
 
         $itemtype_orwhere = [
            // Core crontasks
@@ -457,23 +457,23 @@ class CronTask extends CommonDBTM
                ]]
             ]];
             $WHERE[] = ['OR' => [
-               'lastrun'   => null,
-               new \QueryExpression('unix_timestamp(' . $DB->quoteName('lastrun') . ') + ' . $DB->quoteName('frequency') . ' <= unix_timestamp(now())')
+            'lastrun'   => null,
+            new \QueryExpression($this::getAdapter()->getUnixTimestamp('lastrun') . ' + ' . $DB->quoteName('frequency') . ' <= ' . $this::getAdapter()->getUnixTimestamp('now()'))
             ]];
         }
 
         $request = $this::getAdapter()->request([
-           'SELECT' => [
-              '*',
-              new \QueryExpression("LOCATE('Plugin', " . $DB->quoteName('itemtype') . ") AS ISPLUGIN")
-           ],
-           'FROM'   => $this->getTable(),
-           'WHERE'  => $WHERE,
-           // Core task before plugins
-           'ORDER'  => [
-              'ISPLUGIN',
-              new \QueryExpression('unix_timestamp(' . $DB->quoteName('lastrun') . ')+' . $DB->quoteName('frequency') . '')
-           ]
+            'SELECT' => [
+                '*',
+                new \QueryExpression($this::getAdapter()->getPositionExpression('Plugin', 'itemtype', 'ISPLUGIN'))
+            ],
+            'FROM'   => $this->getTable(),
+            'WHERE'  => $WHERE,
+            // Core task before plugins
+            'ORDER'  => [
+                'ISPLUGIN',
+                new \QueryExpression($this::getAdapter()->getDateAdd('lastrun', 'frequency', 'SECOND'))
+            ]
         ]);
 
         if ($row = $request->fetchAssociative()) {
