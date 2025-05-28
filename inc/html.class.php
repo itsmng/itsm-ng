@@ -3832,15 +3832,17 @@ JS;
                   'extraparams' => ['target' => $target]
                 ]
             );
-            $active_entity = addslashes($_SESSION["glpiactive_entity_name"]);
-            $entity_shortname = $_SESSION["glpiactive_entity_shortname"];
-            echo <<<HTML
-            <div class='profile-selector'>
-               <a onclick='entity_window.dialog("open")' href='#modal_entity_content' title="$active_entity" class='entity-select' id="global_entity_select">
-                  $entity_shortname
-               </a>
-            </div>
-         HTML;
+            if (!empty($_SESSION['glpiactive_entity_name'])) {
+                $active_entity = addslashes($_SESSION["glpiactive_entity_name"]);
+                $entity_shortname = $_SESSION["glpiactive_entity_shortname"];
+                echo <<<HTML
+                <div class='profile-selector'>
+                <a onclick='entity_window.dialog("open")' href='#modal_entity_content' title="$active_entity" class='entity-select' id="global_entity_select">
+                    $entity_shortname
+                </a>
+                </div>
+            HTML;
+            }
         }
     }
 
