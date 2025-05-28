@@ -377,39 +377,37 @@ class Auth extends CommonGLPI
         $pass_expiration_delay = (int)$CFG_GLPI['password_expiration_delay'];
         $lock_delay            = (int)$CFG_GLPI['password_expiration_lock_delay'];
 
-        // SQL query
         $user = new User();
         $adapter = $user->getAdapter();
 
-        $result = $adapter->request([
-              'SELECT' => [
-                 'id',
-                 'password',
-                 new QueryExpression(
-                     sprintf(
-                         'ADDDATE(%s, INTERVAL %d DAY) AS ' . $DB->quoteName('password_expiration_date'),
-                         $DB->quoteName('password_last_update'),
-                         $pass_expiration_delay
-                     )
-                 ),
-                 new QueryExpression(
-                     sprintf(
-                         'ADDDATE(%s, INTERVAL %d DAY) AS ' . $DB->quoteName('lock_date'),
-                         $DB->quoteName('password_last_update'),
-                         $pass_expiration_delay + $lock_delay
-                     )
-                 )
-              ],
-              'FROM'   => User::getTable(),
-              'WHERE'  =>  [
-                 'name'     => $name,
-                 'authtype' => self::DB_GLPI,
-                 'auths_id' => 0,
-              ]
-            ]
+        $passwordExpirationExpr = $adapter->getDateAdd(
+            'password_last_update',
+            $pass_expiration_delay,
+            'DAY',
+            'password_expiration_date'
         );
 
-        // Have we a result ?
+        $lockDateExpr = $adapter->getDateAdd(
+            'password_last_update',
+            $pass_expiration_delay + $lock_delay,
+            'DAY',
+            'lock_date'
+        );
+            $result = $adapter->request([
+                'SELECT' => [
+                    'id',
+                    'password',
+                    new \QueryExpression($passwordExpirationExpr),
+                    new \QueryExpression($lockDateExpr)
+                ],
+                'FROM'   => User::getTable(),
+                'WHERE'  => [
+                    'name'     => $name,
+                    'authtype' => self::DB_GLPI,
+                    'auths_id' => 0,
+                ]
+                ]);        
+
         if ($result->rowcount() === 1) {
             $row = $result->fetchAssociative();
             $password_db = $row['password'];
