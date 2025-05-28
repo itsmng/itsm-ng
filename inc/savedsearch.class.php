@@ -1399,7 +1399,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                 if (!$in_transaction) {
                     $DB->beginTransaction();
                 }
-                while ($row = $iterator->next()) {
+                foreach ($request as $row) {
                     try {
                         $self->fields = $row;
                         if ($data = $self->execute(true)) {
