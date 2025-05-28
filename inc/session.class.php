@@ -538,11 +538,13 @@ class Session
                 $_SESSION['glpiprofiles'][$key]['name'] = $data['name'];
                 $entities_request = config::getAdapter()->request([
                    'SELECT'    => [
-                      'glpi_profiles_users.entities_id AS eID',
-                      'glpi_profiles_users.id AS kID',
-                      'glpi_profiles_users.is_recursive',
-                      'glpi_entities.*'
-                   ],
+                      'glpi_profiles_users.entities_id', 
+                        'glpi_profiles_users.id',          
+                        'glpi_profiles_users.is_recursive',
+                        'glpi_entities.id AS entity_id',    
+                        'glpi_entities.name',
+                        'glpi_entities.completename'
+                    ],
                    'FROM'      => 'glpi_profiles_users',
                    'LEFT JOIN' => [
                       'glpi_entities'   => [
@@ -560,18 +562,38 @@ class Session
                 ]);
 
                 while ($data = $entities_request->fetchAssociative()) {
+                    $entity_id = $data['entities_id'];
                     // Do not override existing entity if define as recursive
                     if (
                         !isset($_SESSION['glpiprofiles'][$key]['entities'][$data['eID']])
                         || $data['is_recursive']
                     ) {
-                        $_SESSION['glpiprofiles'][$key]['entities'][$data['eID']] = [
-                           'id'           => $data['eID'],
-                           'name'         => $data['name'],
-                           'is_recursive' => $data['is_recursive']
-                        ];
+                        $_SESSION['glpiprofiles'][$key]['entities'][$entity_id] = [
+                            'id'           => $entity_id,
+                            'name'         => $data['name'] ?? '',
+                            'is_recursive' => $data['is_recursive']
+                            ];
                     }
                 }
+            }
+        }
+        if (isset($_SESSION['glpiprofiles']) && count($_SESSION['glpiprofiles']) > 0) {
+            $has_entities = false;
+            foreach ($_SESSION['glpiprofiles'] as $profile) {
+                if (isset($profile['entities']) && count($profile['entities']) > 0) {
+                    $has_entities = true;
+                    break;
+                }
+            }
+            
+            if (!$has_entities) {
+                // Add root entity to first profile
+                $first_profile_id = array_key_first($_SESSION['glpiprofiles']);
+                $_SESSION['glpiprofiles'][$first_profile_id]['entities'][0] = [
+                    'id'           => 0,
+                    'name'         => 'Root entity',
+                    'is_recursive' => 1
+                ];
             }
         }
     }
@@ -1708,7 +1730,6 @@ class Session
         ?bool $is_recursive
     ) {
         $user = new User();
-
         // Try to load from token
         if (!$user->getFromDBByToken($token, $token_type)) {
             return false;
