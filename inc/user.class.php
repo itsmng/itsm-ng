@@ -2961,7 +2961,7 @@ class User extends CommonDBTM
         ) {
             // extauth ldap case
             if (
-                $_SESSION["glpiextauth"]
+                !empty($_SESSION["glpiextauth"])
                 && ($this->fields["authtype"] == Auth::LDAP
                     || Auth::isAlternateAuth($this->fields["authtype"]))
             ) {
@@ -3751,10 +3751,12 @@ class User extends CommonDBTM
                     switch ($r) {
                         case 'own_ticket':
                             $ORWHERE[] = [
+                                array_merge(
                                [
-                                  'glpi_profilerights.name'     => 'ticket',
-                                  'glpi_profilerights.rights'   => ['&', Ticket::OWN]
-                               ] + getEntitiesRestrictCriteria('glpi_profiles_users', '', $entity_restrict, 1)
+                                    'glpi_profilerights.name' => 'ticket',
+                                ],
+                                self::getAdapter()->getRightExpression('glpi_profilerights.rights', Ticket::OWN)
+                               ) + getEntitiesRestrictCriteria('glpi_profiles_users', '', $entity_restrict, 1)
                             ];
                             break;
 
