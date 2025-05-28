@@ -327,7 +327,6 @@ class Search
         $data = self::prepareDatasForSearch($itemtype, $params, $forcedisplay);
         self::constructSQL($data);
         self::constructData($data);
-
         return $data;
     }
 
