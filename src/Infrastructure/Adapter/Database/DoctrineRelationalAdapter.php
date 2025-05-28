@@ -9,6 +9,7 @@ use Doctrine\DBAL\Result;
 use ReflectionClass;
 use Doctrine\ORM\EntityManager;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
+use Laminas\Stdlib\Glob;
 
 class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 {
@@ -82,6 +83,24 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         if (!class_exists($this->entityName)) {
             throw new \Exception("Entity class {$this->entityName} does not exist");
+        }
+
+         // Sanitize criteria for PostgreSQL compatibility
+        foreach ($criteria as $key => $value) {
+            // Convert empty strings to null for ID fields
+            if ($value === '' && (
+                $key === 'id' || 
+                substr($key, -3) === '_id' || 
+                substr($key, -2) === 'id'
+            )) {
+                $criteria[$key] = null;
+            }
+            
+            // Convert string numbers to integers for numeric fields
+            if (is_string($value) && is_numeric($value) && 
+                ($key === 'id' || substr($key, -3) === '_id' || substr($key, -2) === 'id')) {
+                $criteria[$key] = (int)$value;
+            }
         }
         try {
             $repository = $this->em->getRepository($this->entityName);
@@ -462,7 +481,76 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         $stmt = $this->em->getConnection()->prepare($query);
         $results = $stmt->executeQuery();
-
         return $results;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string {
+        Global $DB;
+        // PostgreSQL uses the syntax: date_field + INTERVAL 'value unit'
+        $date_field = $DB->quoteName($date);
+        $unit = strtolower($unit);
+        
+        // Ensure unit is singular for PostgreSQL syntax
+        if (substr($unit, -1) === 's' && $unit != 'hours' && $unit != 'minutes' && $unit != 'seconds') {
+            $unit = substr($unit, 0, -1);
+        }
+        
+         if (is_string($interval) && !is_numeric($interval) && !preg_match('/^\d/', $interval)) {
+            // PostgreSQL: date + (column || ' unit')::interval
+            $expression = "$date_field + (" . $DB->quoteName($interval) . " || ' $unit')::interval";
+        } else {
+            // PostgreSQL: date + INTERVAL 'value unit'
+            $expression = "$date_field + INTERVAL '$interval $unit'";
+        }
+        
+        if ($alias !== null) {
+            $expression .= ' AS ' . $DB->quoteName($alias);
+        }
+        
+        return $expression;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPositionExpression(string $substring, string $string, ?string $alias = null): string {
+        // PostgreSQL syntax: POSITION(substring IN string)
+        Global $DB;
+        $expr = sprintf(
+            "POSITION(%s IN %s)",
+            $DB->quote($substring),
+            $DB->quoteName($string)
+        );
+        
+        if ($alias !== null) {
+            $expr .= ' AS ' . $DB->quoteName($alias);
+        }
+        
+        return $expr;
+    }
+
+    public function getCurrentHourExpression(): string {
+        return 'EXTRACT(HOUR FROM CURRENT_TIME)';
+    }
+
+    public function getUnixTimestamp(string $field, ?string $alias = null): string {
+        Global $DB;
+        $expr = sprintf(
+            "EXTRACT(EPOCH FROM %s)",
+            $DB->quoteName($field)
+        );
+        
+        if ($alias !== null) {
+            $expr .= ' AS ' . $DB->quoteName($alias);
+        }
+        
+        return $expr;
+    }
+
+    public function getRightExpression(string $field, int $value): array {
+        return ["($field & $value)" => ['>', 0]];
     }
 }

@@ -5,6 +5,7 @@ namespace Infrastructure\Adapter\Database;
 use CommonDBTM;
 use Doctrine\ORM\QueryBuilder;
 use Infrastructure\Adapter\Database\DatabaseAdapterInterface;
+use Laminas\Stdlib\Glob;
 
 class LegacySqlAdapter implements DatabaseAdapterInterface
 {
@@ -148,5 +149,64 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string {
+        Global $DB;
+        // MySQL uses the syntax: DATE_ADD(date_field, INTERVAL value unit)
+        $date_field = $DB->quoteName($date);
+        
+        // Standardize unit to MySQL format
+        $unit = strtoupper($unit);
+        
+        $expression = "DATE_ADD($date_field, INTERVAL $interval $unit)";
+        
+        if ($alias !== null) {
+            $expression .= ' AS ' . $DB->quoteName($alias);
+        }
+        
+        return $expression;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getPositionExpression(string $substring, string $string, ?string $alias = null): string {
+        // MySQL syntax: LOCATE(substring, string)
+        global $DB;
+        $expr = sprintf(
+            "LOCATE(%s, %s)",
+            $DB->quote($substring),
+            $DB->quoteName($string)
+        );
+        
+        if ($alias !== null) {
+            $expr .= ' AS ' . $DB->quoteName($alias);
+        }
+        
+        return $expr;
+    }
+
+    public function getCurrentHourExpression(): string {
+        return 'hour(curtime())';
+    }
+
+    public function getUnixTimestamp(string $field, ?string $alias = null): string {
+        Global $DB;
+        $expr = sprintf(
+            "UNIX_TIMESTAMP(%s)",
+            $DB->quoteName($field)
+        );
+        
+        if ($alias !== null) {
+            $expr .= ' AS ' . $DB->quoteName($alias);
+        }
+        
+        return $expr;
+    }
+
+    public function getRightExpression(string $field, int $value): array {
+        return [$field => ['&', $value]];
+    }
 }

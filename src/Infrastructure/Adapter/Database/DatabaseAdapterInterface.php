@@ -36,4 +36,9 @@ interface DatabaseAdapterInterface
 
     public function request(array $sql): Result;
     public function query(string $sql): Result;
+    public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string;
+    public function getPositionExpression(string $substring, string $string, ?string $alias = null): string;
+    public function getCurrentHourExpression(): string;
+    public function getUnixTimestamp(string $field, ?string $alias = null): string;
+    public function getRightExpression(string $field, int $value): array;
 }
