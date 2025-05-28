@@ -1181,24 +1181,31 @@ class Planning extends CommonGLPI
      */
     public static function showAddGroupUsersForm()
     {
+        global $DB;
+        
         echo Group::getTypeName(1) . " : <br>";
-
-        $condition = ['is_task' => 1];
-        // filter groups
-        if (!Session::haveRight('planning', self::READALL)) {
-            $condition['id'] = $_SESSION['glpigroups'];
-        }
-
-        Group::dropdown([
-           'entity'      => $_SESSION['glpiactive_entity'],
-           'entity_sons' => $_SESSION['glpiactive_entity_recursive'],
-           'condition'   => $condition
+    
+        $groups = $DB->request([
+            'FROM'   => 'glpi_groups',
+            'WHERE'  => [
+                'entities_id' => $_SESSION['glpiactive_entity']
+            ],
+            'ORDER'  => 'name'
         ]);
+    
+        echo "<select name='groups_id' id='dropdown_groups_id'>";
+        echo "<option value='0'>-----</option>";
+        
+        foreach ($groups as $group) {
+            echo "<option value='" . $group['id'] . "'>" . $group['name'] . "</option>";
+        }
+        
+        echo "</select>";
+        
         echo "<br /><br />";
         echo Html::hidden('action', ['value' => 'send_add_group_users_form']);
         echo Html::submit(_sx('button', 'Add'));
     }
-
 
     /**
      * Recieve 'All users of a group' data from self::showAddGroupUsersForm and save them to session and DB
@@ -1279,19 +1286,43 @@ class Planning extends CommonGLPI
      */
     public static function showAddGroupForm()
     {
-
-        $condition = ['is_task' => 1];
-        // filter groups
-        if (!Session::haveRight('planning', self::READALL)) {
-            $condition['id'] = $_SESSION['glpigroups'];
-        }
-
+        global $DB;
+        
         echo Group::getTypeName(1) . " : <br>";
-        Group::dropdown([
-           'entity'      => $_SESSION['glpiactive_entity'],
-           'entity_sons' => $_SESSION['glpiactive_entity_recursive'],
-           'condition'   => $condition
+    
+        $where_condition = [
+            'entities_id' => $_SESSION['glpiactive_entity']
+        ];
+        
+        if (!Session::haveRight('planning', self::READALL)) {
+            if (isset($_SESSION['glpigroups']) && is_array($_SESSION['glpigroups']) && !empty($_SESSION['glpigroups'])) {
+                $where_condition['id'] = $_SESSION['glpigroups'];
+            } else {
+                echo "<select name='groups_id' id='dropdown_groups_id'>";
+                echo "<option value='0'>-----</option>";
+                echo "</select>";
+                echo "<br /><br />";
+                echo Html::hidden('action', ['value' => 'send_add_group_form']);
+                echo Html::submit(_sx('button', 'Add'));
+                return;
+            }
+        }
+    
+        $groups = $DB->request([
+            'FROM'   => 'glpi_groups',
+            'WHERE'  => $where_condition,
+            'ORDER'  => 'name'
         ]);
+    
+        echo "<select name='groups_id' id='dropdown_groups_id'>";
+        echo "<option value='0'>-----</option>";
+        
+        foreach ($groups as $group) {
+            echo "<option value='" . $group['id'] . "'>" . $group['name'] . "</option>";
+        }
+        
+        echo "</select>";
+        
         echo "<br /><br />";
         echo Html::hidden('action', ['value' => 'send_add_group_form']);
         echo Html::submit(_sx('button', 'Add'));
