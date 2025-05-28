@@ -677,16 +677,7 @@ final class DbUtils
             $field = "$table.$field";
         }
 
-        // if (!is_array($value) && strlen($value) == 0) {
-        //     if (isset($_SESSION['glpiactiveentities'])) {
-        //         $value = $_SESSION['glpiactiveentities'];
-        //     } elseif (isCommandLine() || Session::isCron()) {
-        //         $value = '0'; // If value is not set, fallback to root entity in cron / command line
-        //     }
-        // }
-
-        //remplacé par:
-        // Ensure $value is string or array before strlen
+        
         if (!is_array($value) && (is_string($value) || is_numeric($value))) {
             if (strlen((string)$value) == 0) {
                 if (isset($_SESSION['glpiactiveentities'])) {
@@ -696,7 +687,11 @@ final class DbUtils
                 }
             }
         }
-        //fin remplacement
+        // If $value is an empty array => return impossible criteria 
+        if (is_array($value) && count($value) === 0) {
+            // Valeur impossible pour éviter "IN ()" vide
+            return [$field => -1]; 
+        }
         $crit = [$field => $value];
 
         if ($is_recursive === 'auto' && !empty($table) && $table != 'glpi_entities') {
@@ -734,6 +729,15 @@ final class DbUtils
                 }
             }
         }
+         // last verification before return
+        if (
+            isset($crit[$field])
+            && is_array($crit[$field])
+            && empty($crit[$field])
+        ) {
+            return [$field => -1];
+        }
+
         return $crit;
     }
 
@@ -894,7 +898,6 @@ final class DbUtils
                'FROM'   => $table,
                'WHERE'  => ['id' => $items_id]
             ]);
-
             while ($row = $iterator->fetchAssociative()) {
                 if ($row['id'] > 0) {
                     $rancestors = $row['ancestors_cache'];
