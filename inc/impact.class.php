@@ -248,7 +248,7 @@ class Impact extends CommonGLPI
         $impact_item = ImpactItem::findForItem($item);
         $impact_context = ImpactContext::findForImpactItem($impact_item);
 
-        if (!$impact_context) {
+        if (!$impact_context || !isset($impact_context->fields) || !isset($impact_context->fields['max_depth'])) {
             $max_depth = self::DEFAULT_DEPTH;
         } else {
             $max_depth = $impact_context->fields['max_depth'];
