@@ -2147,10 +2147,19 @@ class Entity extends CommonTreeDropdown
      */
     public function getCustomCssTag()
     {
-
+        if (!isset($this->fields) || !is_array($this->fields)) {
+            return '';
+        }
+        
+        if (!isset($this->fields['id'])) {
+            return '';
+        }
+    
+        $entity_id = $this->fields['id'];
+        
         $enable_custom_css = self::getUsedConfig(
             'enable_custom_css',
-            $this->fields['id']
+            $entity_id
         );
 
 
@@ -2161,7 +2170,7 @@ class Entity extends CommonTreeDropdown
 
         $custom_css_code = self::getUsedConfig(
             'enable_custom_css',
-            $this->fields['id'],
+             $entity_id,
             'custom_css_code'
         );
 
@@ -2506,43 +2515,44 @@ class Entity extends CommonTreeDropdown
 
         $entity = new self();
         // Search in entity data of the current entity
-        if ($entity->getFromDB($entities_id)) {
-            // Value is defined : use it
-            if (isset($entity->fields[$fieldref])) {
-                // Numerical value
-                if (
-                    is_numeric($default_value)
-                    && ($entity->fields[$fieldref] != self::CONFIG_PARENT)
-                ) {
-                    return $entity->fields[$fieldval];
+        if (!empty($entities_id) && ctype_digit((string)$entities_id)) {
+            if ($entity->getFromDB((int)$entities_id)) {
+                // Value is defined : use it
+                if (isset($entity->fields[$fieldref])) {
+                    // Numerical value
+                    if (
+                        is_numeric($default_value)
+                        && ($entity->fields[$fieldref] != self::CONFIG_PARENT)
+                    ) {
+                        return $entity->fields[$fieldval];
+                    }
+                    // String value
+                    if (
+                        !is_numeric($default_value)
+                        && $entity->fields[$fieldref]
+                    ) {
+                        return $entity->fields[$fieldval];
+                    }
                 }
-                // String value
-                if (
-                    !is_numeric($default_value)
-                    && $entity->fields[$fieldref]
-                ) {
-                    return $entity->fields[$fieldval];
+            }
+            // Entity data not found or not defined : search in parent one
+            if ($entities_id > 0) {
+                if ($entity->getFromDB($entities_id)) {
+                    $parent_id = isset($entity->fields['entities_id']) ? $entity->fields['entities_id'] : null;
+
+                    if ($parent_id > 0) {
+                        $ret = self::getUsedConfig(
+                            $fieldref,
+                            $parent_id,
+                            $fieldval,
+                            $default_value
+                        );
+                        return $ret;
+                    }
                 }
             }
         }
-        // Entity data not found or not defined : search in parent one
-        if ($entities_id > 0) {
-            if ($entity->getFromDB($entities_id)) {
-                $parent_id = isset($entity->fields['entities_id']) ? $entity->fields['entities_id'] : null;
-
-                if ($parent_id > 0) {
-                    $ret = self::getUsedConfig(
-                        $fieldref,
-                        $parent_id,
-                        $fieldval,
-                        $default_value
-                    );
-                    return $ret;
-                }
-            }
-        }
-
-        return $default_value;
+            return $default_value;
     }
 
 
