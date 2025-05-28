@@ -79,11 +79,12 @@ $formattedDatas = [];
 $params['as_map'] = '0';
 
 $datas = Search::getDatas($itemtype, $params);
-
 foreach ($datas['data']['rows'] as $row) {
     $newData = [$row['id'] => $row['id']];
+    
     if (
         !isset($row['entities_id'])
+        || $row['entities_id'] === 0
         || in_array($row['entities_id'], $_SESSION['glpiactiveentities'])
     ) {
         $newData['value'] = 'item[' . $itemtype . '][' . $row['id'] . ']';
@@ -109,13 +110,12 @@ $return = [
     'total' => $datas['data']['totalcount'],
     'rows' => $formattedDatas
 ];
-
 array_walk_recursive($return, function (&$value) {
     if (is_string($value)) {
         $value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
     }
-});
 
+});
 $json = json_encode($return, JSON_UNESCAPED_UNICODE);
 if ($json === false) {
     echo "JSON encode error: " . json_last_error_msg();
