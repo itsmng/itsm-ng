@@ -472,4 +472,5 @@ class Central extends CommonGLPI
             <?php
         }
     }
+    
 }
