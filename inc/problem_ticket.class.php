@@ -402,7 +402,7 @@ class Problem_Ticket extends CommonDBRelation
             $used[$problem['id']] = $problem['id'];
         }
         if ($canedit) {
-            $options = getOptionForItems(Change::class, Change::getOpenCriteria());
+            $options = getOptionForItems(Problem::class, Problem::getOpenCriteria());
             foreach ($used as $id) {
                 if (isset($options[$id])) {
                     unset($options[$id]);
@@ -418,7 +418,7 @@ class Problem_Ticket extends CommonDBRelation
                   ]
                ],
                'content' => [
-                  __('Add a change') => [
+                  __('Add a Problem') => [
                      'visible' => true,
                      'inputs' => [
                         [
@@ -426,13 +426,13 @@ class Problem_Ticket extends CommonDBRelation
                            'name' => 'tickets_id',
                            'value' => $ID,
                         ],
-                        Change::getTypeName() => [
+                        Problem::getTypeName() => [
                            'type' => 'select',
                            'name' => 'problems_id',
                            'values' => $options,
-                           'actions' => getItemActionButtons(['info'], Change::class)
+                           'actions' => getItemActionButtons(['info'], Problem::class)
                         ],
-                        '' => Session::haveRight('change', CREATE) ? [
+                        '' => Session::haveRight('problem', CREATE) ? [
                            'content' => "<a href='" . Toolbox::getItemTypeFormURL('Problem') . "?tickets_id={$ID}'>"
                               . __('Create a problem from this ticket') . '</a>',
                         ] : []
