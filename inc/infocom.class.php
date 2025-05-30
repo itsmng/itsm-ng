@@ -1289,15 +1289,16 @@ class Infocom extends CommonDBChild
                                    'value' => $ic->fields["comment"],
                                 ],
                                 __('Amortization type') => $withtemplate != 2 ? [
-                                   'type' => 'number',
-                                   'name' => 'sink_type',
-                                   'min' => 0,
-                                   'max' => 15,
-                                   'step' => 1,
-                                   'after' => __('years'),
-                                   'value' => $ic->fields["sink_type"],
+                                    'type' => 'select',
+                                    'name' => 'sink_type',
+                                    'values' => [
+                                        '' => '-----',
+                                        2 => __('Linear'),
+                                        1 => __('Decreasing')
+                                    ],
+                                    'value' => $ic->fields["sink_type"],
                                 ] : [
-                                   'content' => self::getAmortTypeName($ic->fields["sink_type"])
+                                    'content' => self::getAmortTypeName($ic->fields["sink_type"])
                                 ],
                                 __('Amortization duration') => $withtemplate != 2 ? [
                                    'type' => 'number',
