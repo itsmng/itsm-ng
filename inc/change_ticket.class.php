@@ -409,37 +409,48 @@ class Change_Ticket extends CommonDBRelation
                 }
             }
             $form = [
-               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-               'buttons' => [
-                  [
-                     'name' => 'add',
-                     'value' => _sx('button', 'Add'),
-                     'class' => 'btn btn-secondary',
-                  ]
-               ],
-               'content' => [
-                  __('Add a change') => [
-                     'visible' => true,
-                     'inputs' => [
-                        [
-                           'type' => 'hidden',
-                           'name' => 'tickets_id',
-                           'value' => $ID,
-                        ],
-                        Change::getTypeName() => [
-                           'type' => 'select',
-                           'name' => 'changes_id',
-                           'values' => $options,
-                           'actions' => getItemActionButtons(['info'], Change::class)
-                        ],
-                        '' => Session::haveRight('change', CREATE) ? [
-                           'content' => "<a href='" . Toolbox::getItemTypeFormURL('Change') . "?tickets_id={$ID}'>"
-                              . __('Create a change from this ticket') . '</a>',
-                        ] : []
-                     ]
-                  ]
-               ]
-            ];
+                'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+                'buttons' => [
+                   [
+                      'name' => 'add',
+                      'value' => _sx('button', 'Add'),
+                      'class' => 'btn btn-secondary',
+                   ]
+                ],
+                'content' => [
+                   __('Add a change') => [
+                      'visible' => true,
+                      'inputs' => [
+                         [
+                            'type' => 'hidden',
+                            'name' => 'tickets_id',
+                            'value' => $ID,
+                         ],
+                         Change::getTypeName() => [
+                            'type' => 'select',
+                            'name' => 'changes_id',
+                            'values' => $options,
+                            'actions' => getItemActionButtons(['info'], Change::class)
+                         ],
+                         '' => Session::haveRight('change', CREATE) ? [
+                            'content' => (function() use ($ID) {
+                               $ticket = new Ticket();
+                               if ($ticket->getFromDB($ID)) {
+                                  return "<a href='" . Toolbox::getItemTypeFormURL('Change') . 
+                                         "?tickets_id={$ID}" .
+                                         "&name=" . urlencode($ticket->fields['name']) .
+                                         "&content=" . urlencode($ticket->fields['content']) .
+                                         "&entities_id=" . $ticket->fields['entities_id'] . "'>" .
+                                         __('Create a change from this ticket') . '</a>';
+                               }
+                               return "<a href='" . Toolbox::getItemTypeFormURL('Change') . "?tickets_id={$ID}'>" .
+                                      __('Create a change from this ticket') . '</a>';
+                            })(),
+                         ] : []
+                      ]
+                   ]
+                ]
+             ];
             renderTwigForm($form);
         }
 
