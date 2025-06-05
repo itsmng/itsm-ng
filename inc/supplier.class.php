@@ -178,11 +178,6 @@ class Supplier extends CommonDBTM
                        'type' => 'text',
                        'value' => $this->fields['town']
                     ],
-                    __('State') => [
-                       'name' => 'state',
-                       'type' => 'text',
-                       'value' => $this->fields['state']
-                    ],
                     __('Country') => [
                        'name' => 'country',
                        'type' => 'text',
