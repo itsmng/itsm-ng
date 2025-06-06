@@ -293,7 +293,7 @@ class Computer extends CommonDBTM
 
     public function cleanDBonPurge()
     {
-
+        
         $this->deleteChildrenAndRelationsFromDb(
             [
               Certificate_Item::class,
@@ -451,8 +451,28 @@ class Computer extends CommonDBTM
               ],
            ]
         ];
-
-        renderTwigForm($form, '', $this->fields);
+        $additionnalHtml = '';
+    
+        if (isset($this->fields['is_deleted']) && $this->fields['is_deleted'] == 1) {
+            if ($this->can($ID, PURGE)) {
+                if (in_array($this->getType(), Item_Devices::getConcernedItems())) {
+                    $checked = '';
+                    if (!empty($_SESSION['glpikeep_devices_when_purging_item'])) {
+                        $checked = ' checked';
+                    }
+                    
+                    $additionnalHtml .= '<div class="form-check mt-3">';
+                    $additionnalHtml .= '<input type="checkbox" name="keep_devices" value="1" id="keep_devices" class="form-check-input"' . $checked . '>';
+                    $additionnalHtml .= '<label for="keep_devices" class="form-check-label">';
+                    $additionnalHtml .= __('Keep the devices while deleting this item');
+                    $additionnalHtml .= '</label>';
+                    $additionnalHtml .= '&nbsp;<i class="fas fa-info-circle" title="' . __('Check to keep the devices while deleting this item') . '"></i>';
+                    $additionnalHtml .= '</div>';
+                }
+            }
+        }
+    
+        renderTwigForm($form, $additionnalHtml, $this->fields);
         return true;
     }
 
