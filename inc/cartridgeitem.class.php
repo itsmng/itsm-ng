@@ -240,7 +240,7 @@ class CartridgeItem extends CommonDBTM
                     __('Group in charge of the hardware') => [
                        'name' => 'groups_id_tech',
                        'type' => 'select',
-                       'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
+                       'values' => getOptionForItems('Group', ['is_assign' => 1,]),
                        'value' => $this->fields["groups_id_tech"] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
