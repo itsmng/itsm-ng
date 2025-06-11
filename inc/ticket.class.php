@@ -7165,18 +7165,15 @@ class Ticket extends CommonITILObject
      */
     public function getValueToSelect($field_id_or_search_options, $name = '', $values = '', $options = [])
 {
-    // AJOUT : Gestion spéciale des champs de date
     if (isset($field_id_or_search_options['field']) && isset($field_id_or_search_options['datatype'])) {
         $dateFields = [
             'date', 'closedate', 'solvedate', 'date_mod', 'time_to_resolve',
             'time_to_own', 'internal_time_to_resolve', 'internal_time_to_own'
         ];
         
-        // Si c'est un champ de date de ticket
         if (in_array($field_id_or_search_options['field'], $dateFields) && 
             $field_id_or_search_options['datatype'] === 'date') {
             
-            // Forcer l'affichage date simple (sans heure)
             return Html::showDateField($name, [
                 'value' => $values,
                 'display' => false,
@@ -7185,9 +7182,7 @@ class Ticket extends CommonITILObject
             ] + $options);
         }
     }
-    // FIN AJOUT
-
-    // Code existant inchangé
+    
     if (isset($field_id_or_search_options['linkfield'])) {
         switch ($field_id_or_search_options['linkfield']) {
             case 'requesttypes_id':

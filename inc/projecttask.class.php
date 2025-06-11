@@ -1473,7 +1473,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                 
                 dropdown.html('<option value=\"0\">" . __('Loading...') . "</option>');
                 
-                // Utiliser les paramètres corrects pour getDropdownValue.php
                 var ajaxParams = {
                     itemtype: itemtype,
                     display_emptychoice: 1,
@@ -1540,7 +1539,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                             
                             dropdown.html(options);
                         } else {
-                            // Format inattendu
                             console.warn('Unexpected data format:', data);
                             dropdown.html('<option value=\"0\">" . __('No items found') . "</option>');
                         }
