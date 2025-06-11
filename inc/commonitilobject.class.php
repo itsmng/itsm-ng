@@ -3766,7 +3766,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'date',
            'name'               => __('Opening date'),
-           'datatype'           => 'datetime',
+           'datatype'           => 'date',
            'massiveaction'      => false
         ];
 
@@ -3775,7 +3775,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'closedate',
            'name'               => __('Closing date'),
-           'datatype'           => 'datetime',
+           'datatype'           => 'date',
            'massiveaction'      => false
         ];
 
@@ -3784,7 +3784,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'time_to_resolve',
            'name'               => __('Time to resolve'),
-           'datatype'           => 'datetime',
+           'datatype'           => 'date',
            'maybefuture'        => true,
            'massiveaction'      => false,
            'additionalfields'   => ['status']
@@ -3815,7 +3815,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'solvedate',
            'name'               => __('Resolution date'),
-           'datatype'           => 'datetime',
+           'datatype'           => 'date',
            'massiveaction'      => false
         ];
 
@@ -3824,7 +3824,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'date_mod',
            'name'               => __('Last update'),
-           'datatype'           => 'datetime',
+           'datatype'           => 'date',
            'massiveaction'      => false
         ];
 

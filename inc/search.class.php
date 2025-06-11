@@ -4630,10 +4630,12 @@ JAVASCRIPT;
                     }
                     break;
 
-                case "datetime":
-                case "date":
-                case "date_delay":
-                    if ($searchopt[$ID]["datatype"] == 'datetime') {
+                    case "datetime":
+                        case "date":
+                        case "date_delay":
+                            if ($searchopt[$ID]["datatype"] == 'datetime' || 
+                                ($searchopt[$ID]["datatype"] == 'date' && $inittable == 'glpi_tickets')) {
+                        
                         // Specific search for datetime
                         if (in_array($searchtype, ['equals', 'notequals'])) {
                             $val = preg_replace("/:00$/", '', $val);
