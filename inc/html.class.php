@@ -1995,6 +1995,7 @@ JAVASCRIPT;
         echo Html::script("node_modules/select2/dist/js/select2.min.js");
         echo Html::script("node_modules/tableexport.jquery.plugin/tableExport.min.js");
         echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
+        echo Html::script("vendor/wenzhixin/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.min.js");
         echo Html::script("vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js");
         echo Html::script("src/ngFunctions.js");
         echo Html::script("node_modules/gridstack/dist/gridstack-all.js");

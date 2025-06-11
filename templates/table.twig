@@ -22,6 +22,8 @@
 	{% endif %}
 	<table aria-label="data"
 		id="{{id}}"
+		data-cookie="true"
+		data-cookie-id-table="{{id}}"
 		class="table table-striped table-bordered table-hover"
 		{% if height %}
 		data-height="{{height}}"
@@ -86,6 +88,7 @@
 </div>
 
 <script src="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"></script>
+<script src="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.min.js"></script>
 <script>
 	window.icons = {
 		columns: 'fas fa-columns',
@@ -110,7 +113,10 @@
 			} else {
 				init = true;
 			}
-			table.bootstrapTable('hideAllColumns');
+			table.bootstrapTable({
+				cookieStorage: 'localStorage'
+			});
+
 			const columns = table.bootstrapTable('getHiddenColumns');
 			for (column of columns) {
 				if (init || togglesArray.has(parseInt(column.field))) {
