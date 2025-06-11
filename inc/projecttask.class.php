@@ -1422,10 +1422,10 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
             echo "<table class='tab_cadre_fixe' aria-label='Add a team member'>";
             echo "<tr class='tab_bg_1'><th colspan='3'>" . __('Add a team member') . "</tr>";
             echo "<tr class='tab_bg_2'>";
-            
+
             echo "<td width='40%'>";
             echo __('Type') . "<br>";
-            
+
             $types_for_dropdown = [];
             foreach (ProjectTaskTeam::$available_types as $type) {
                 if (class_exists($type)) {
@@ -1433,10 +1433,10 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                     $types_for_dropdown[$type] = $item->getTypeName(1);
                 }
             }
-            
+
             Dropdown::showFromArray(
-                'itemtype', 
-                $types_for_dropdown, 
+                'itemtype',
+                $types_for_dropdown,
                 [
                     'display_emptychoice' => true,
                     'emptylabel' => __('Select a type...'),
@@ -1444,24 +1444,24 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                 ]
             );
             echo "</td>";
-            
+
             echo "<td width='40%'>";
             echo __('Member') . "<br>";
             echo "<select name='items_id' id='dropdown_items_id_$rand' class='form-select'>";
             echo "<option value='0'>" . __('Select a type first...') . "</option>";
             echo "</select>";
             echo "</td>";
-            
+
             echo "<td width='20%'>";
             echo "<br>";
             echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='btn btn-primary'>";
             echo "</td>";
-            
+
             echo "</tr>";
             echo "</table>";
             Html::closeForm();
             echo "</div>";
-            
+
             echo Html::scriptBlock("
             function updateItemsDropdown$rand(itemtype) {
                 var dropdown = $('#dropdown_items_id_$rand');
@@ -1477,8 +1477,8 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                 var ajaxParams = {
                     itemtype: itemtype,
                     display_emptychoice: 1,
-                    entity_restrict: " . ($task->fields['is_recursive'] 
-                        ? json_encode(getSonsOf('glpi_entities', $task->fields['entities_id'])) 
+                    entity_restrict: " . ($task->fields['is_recursive']
+                        ? json_encode(getSonsOf('glpi_entities', $task->fields['entities_id']))
                         : $task->fields['entities_id']) . ",
                     myname: 'items_id',
                     rand: '$rand'
@@ -1553,7 +1553,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
             }
             ");
         }
-        
+
         echo "<div class='spaced'>";
         if ($canedit && $nb) {
             Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
