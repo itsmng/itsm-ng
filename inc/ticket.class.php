@@ -7164,58 +7164,58 @@ class Ticket extends CommonITILObject
      * @since 9.1
      */
     public function getValueToSelect($field_id_or_search_options, $name = '', $values = '', $options = [])
-{
-    // AJOUT : Gestion spéciale des champs de date
-    if (isset($field_id_or_search_options['field']) && isset($field_id_or_search_options['datatype'])) {
-        $dateFields = [
-            'date', 'closedate', 'solvedate', 'date_mod', 'time_to_resolve',
-            'time_to_own', 'internal_time_to_resolve', 'internal_time_to_own'
-        ];
-        
-        // Si c'est un champ de date de ticket
-        if (in_array($field_id_or_search_options['field'], $dateFields) && 
-            $field_id_or_search_options['datatype'] === 'date') {
-            
-            // Forcer l'affichage date simple (sans heure)
-            return Html::showDateField($name, [
-                'value' => $values,
-                'display' => false,
-                'showtime' => false,
-                'relative_dates' => isset($options['relative_dates']) ? $options['relative_dates'] : false
-            ] + $options);
-        }
-    }
-    // FIN AJOUT
+    {
+        // AJOUT : Gestion spéciale des champs de date
+        if (isset($field_id_or_search_options['field']) && isset($field_id_or_search_options['datatype'])) {
+            $dateFields = [
+                'date', 'closedate', 'solvedate', 'date_mod', 'time_to_resolve',
+                'time_to_own', 'internal_time_to_resolve', 'internal_time_to_own'
+            ];
 
-    // Code existant inchangé
-    if (isset($field_id_or_search_options['linkfield'])) {
-        switch ($field_id_or_search_options['linkfield']) {
-            case 'requesttypes_id':
-                if (isset($field_id_or_search_options['joinparams']) && Toolbox::in_array_recursive('glpi_itilfollowups', $field_id_or_search_options['joinparams'])) {
-                    $opt = ['is_itilfollowup' => 1];
-                } else {
-                    $opt = [
-                       'OR' => [
-                          'is_mail_default' => 1,
-                          'is_ticketheader' => 1
-                       ]
-                    ];
-                }
-                if ($field_id_or_search_options['linkfield']  == $name) {
-                    $opt['is_active'] = 1;
-                }
-                if (isset($options['condition'])) {
-                    if (!is_array($options['condition'])) {
-                        $options['condition'] = [$options['condition']];
-                    }
-                    $opt = array_merge($opt, $options['condition']);
-                }
-                $options['condition'] = $opt;
-                break;
+            // Si c'est un champ de date de ticket
+            if (in_array($field_id_or_search_options['field'], $dateFields) &&
+                $field_id_or_search_options['datatype'] === 'date') {
+
+                // Forcer l'affichage date simple (sans heure)
+                return Html::showDateField($name, [
+                    'value' => $values,
+                    'display' => false,
+                    'showtime' => false,
+                    'relative_dates' => isset($options['relative_dates']) ? $options['relative_dates'] : false
+                ] + $options);
+            }
         }
+        // FIN AJOUT
+
+        // Code existant inchangé
+        if (isset($field_id_or_search_options['linkfield'])) {
+            switch ($field_id_or_search_options['linkfield']) {
+                case 'requesttypes_id':
+                    if (isset($field_id_or_search_options['joinparams']) && Toolbox::in_array_recursive('glpi_itilfollowups', $field_id_or_search_options['joinparams'])) {
+                        $opt = ['is_itilfollowup' => 1];
+                    } else {
+                        $opt = [
+                           'OR' => [
+                              'is_mail_default' => 1,
+                              'is_ticketheader' => 1
+                           ]
+                        ];
+                    }
+                    if ($field_id_or_search_options['linkfield']  == $name) {
+                        $opt['is_active'] = 1;
+                    }
+                    if (isset($options['condition'])) {
+                        if (!is_array($options['condition'])) {
+                            $options['condition'] = [$options['condition']];
+                        }
+                        $opt = array_merge($opt, $options['condition']);
+                    }
+                    $options['condition'] = $opt;
+                    break;
+            }
+        }
+        return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
     }
-    return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
-}
 
     public function showStatsDates()
     {
