@@ -30,7 +30,7 @@ class ItemOperatingSystem
     private $itemsId = 0;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 255, nullable: true)]
-    private $itemtype;
+    private $itemtype = null;
 
     #[ORM\ManyToOne(targetEntity: OperatingSystem::class)]
     #[ORM\JoinColumn(name: 'operatingsystems_id', referencedColumnName: 'id', nullable: true)]
