@@ -463,7 +463,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     }
 
 
-    public function request(array $request): Result
+    public function request(array $request): mixed
     {
         global $DB;
 
@@ -483,10 +483,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $results = $stmt->executeQuery();
         return $results;
     }
-
-    /**
-     * {@inheritDoc}
-     */
+    
     public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string {
         Global $DB;
         // PostgreSQL uses the syntax: date_field + INTERVAL 'value unit'
@@ -552,5 +549,97 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function getRightExpression(string $field, int $value): array {
         return ["($field & $value)" => ['>', 0]];
+    }
+
+    public function getGroupConcat(string $field, string $separator = ', ', ?string $order_by = null, bool $distinct = true): string
+    {
+        $has_distinct = stripos($field, 'DISTINCT') !== false;
+        $field = $has_distinct ? $field : ($distinct ? "DISTINCT $field" : $field);
+        
+        $escaped_separator = "'" . str_replace("'", "''", $separator) . "'";
+
+        // For PostgreSQL with DISTINCT, the ORDER BY must use the same field
+        // or an expression that appears in the argument list
+        if ($has_distinct || $distinct) {
+            if (!empty($order_by)) {
+                // If it's just a constant (like '$$##$$'), it needs to be removed
+                if (preg_match('/^[\'"](.*?)[\'"]\s*$/', $order_by)) {
+                    // Do not use ORDER BY for constants
+                    return "STRING_AGG($field, $escaped_separator)";
+                } else {
+                    // Use the same field for ORDER BY
+                    $field_without_distinct = preg_replace('/DISTINCT\s+/i', '', $field);
+                    return "STRING_AGG($field, $escaped_separator ORDER BY $field_without_distinct)";
+                }
+            } else {
+                return "STRING_AGG($field, $escaped_separator)";
+            }
+        } else {
+            if (!empty($order_by)) {
+                return "STRING_AGG($field, $escaped_separator ORDER BY $order_by)";
+            } else {
+                return "STRING_AGG($field, $escaped_separator)";
+            }
+        }
+    }
+
+     public function concat(array $exprs): string
+    {
+        return implode(" || ", $exprs);
+    }
+
+     public function dateAdd(string $date, string $interval_unit, string $interval): string
+    {
+        return "($date + ($interval || ' $interval_unit')::interval)";
+    }
+
+     public function ifnull(string $expr, string $default): string
+    {
+        return "COALESCE($expr, $default)";
+    }
+
+    /**
+     * Fix GROUP BY clause for PostgreSQL by adding all non-aggregated columns from SELECT
+     * PostgreSQL requires all columns in the SELECT clause to also appear in the GROUP BY 
+     * clause unless they are used in an aggregate function.
+     *
+     * @param string $select  The SELECT part of the query
+     * @param string $groupBy The current GROUP BY part of the query
+     *
+     * @return string The modified GROUP BY clause
+     */
+    public function fixPostgreSQLGroupBy($select, $groupBy)
+    {
+        if (strpos(get_class($this), 'DoctrineRelational') === false) {
+            return $groupBy;
+        }        
+        if (empty($groupBy)) {
+            return $groupBy;
+        }        
+        // Explicitly add glpi_entities.completename to the GROUP BY if it is present in the SELECT
+        if (strpos($select, 'glpi_entities.completename') !== false && 
+            strpos($groupBy, 'glpi_entities.completename') === false) {
+            $groupBy .= ", glpi_entities.completename";
+        }
+
+        // Search for all columns in the SELECT that are not in aggregate functions
+        if (preg_match_all('/\b([a-zA-Z0-9_]+\.[a-zA-Z0-9_]+)\s+AS\s+"[^"]+"/i', $select, $matches)) {
+            foreach ($matches[1] as $column) {
+                // Ignore columns already in the GROUP BY or those in aggregate functions
+                if (
+                    strpos($groupBy, $column) === false && 
+                    !preg_match('/STRING_AGG\s*\(\s*' . preg_quote($column, '/') . '/i', $select) &&
+                    !preg_match('/COUNT\s*\(\s*' . preg_quote($column, '/') . '/i', $select) &&
+                    !preg_match('/SUM\s*\(\s*' . preg_quote($column, '/') . '/i', $select) &&
+                    !preg_match('/MIN\s*\(\s*' . preg_quote($column, '/') . '/i', $select) &&
+                    !preg_match('/MAX\s*\(\s*' . preg_quote($column, '/') . '/i', $select) &&
+                    !preg_match('/AVG\s*\(\s*' . preg_quote($column, '/') . '/i', $select)
+                ) {
+                    $groupBy .= ", $column";
+                }
+            }
+        }
+        
+        return $groupBy;
     }
 }

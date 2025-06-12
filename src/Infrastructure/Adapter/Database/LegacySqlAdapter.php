@@ -131,12 +131,12 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
         return [];
     }
 
-    public function getSettersFromFields(array $fields, object $content): array
+    public function getSettersFromFields(array $fields): array
     {
         return [];
     }
 
-    public function request(array | QueryBuilder $criteria): \Iterator
+    public function request(array | QueryBuilder $criteria): mixed
     {
         return new \ArrayIterator();
     }
@@ -148,10 +148,7 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
     {
         return null;
     }
-
-    /**
-     * {@inheritDoc}
-     */
+    
     public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string {
         Global $DB;
         // MySQL uses the syntax: DATE_ADD(date_field, INTERVAL value unit)
@@ -208,5 +205,31 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
 
     public function getRightExpression(string $field, int $value): array {
         return [$field => ['&', $value]];
+    }
+
+    public function getGroupConcat(string $field, string $separator = ', ', ?string $order_by = null, bool $distinct = true): string
+    {
+        global $DB;
+        
+        $distinct_str = $distinct ? 'DISTINCT ' : '';
+        $order_clause = $order_by ? " ORDER BY $order_by" : "";
+        
+        // MySQL syntax for GROUP_CONCAT
+        return "GROUP_CONCAT($distinct_str$field$order_clause SEPARATOR " . $DB->quote($separator) . ")";
+    }
+
+     public function concat(array $exprs): string
+    {
+        return "CONCAT(" . implode(", ", $exprs) . ")";
+    }
+
+    public function dateAdd(string $date, string $interval_unit, string $interval): string
+    {
+        return "ADDDATE($date, INTERVAL $interval $interval_unit)";
+    }
+
+    public function ifnull(string $expr, string $default): string
+    {
+        return "IFNULL($expr, $default)";
     }
 }
