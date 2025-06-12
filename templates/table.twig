@@ -96,6 +96,14 @@
 	}
 
 	$(function() {
+		// Make sure to initialize the table after the DOM is ready!!
+		setTimeout(function() {
+			$('#{{id}}').bootstrapTable({
+                loadingTemplate: function () { return '<div class="spinner-border mt-5" role="status"><span class="visually-hidden">Loading...</span></div>' },
+				cookieStorage: 'localStorage'
+			});
+		}, 200);
+
 		{% if not minimal %}
 			const toggles = sessionStorage.getItem('{{itemtype}}-toggles');
 			var togglesArray = new Set();
@@ -107,11 +115,7 @@
 			} else {
 				init = true;
 			}
-			table.bootstrapTable({
-				loadingTemplate: function () { return '<div class="spinner-border mt-5" role="status"><span class="visually-hidden">Loading...</span></div>' },
-				cookieStorage: 'localStorage'
-			});
-
+			table.bootstrapTable('hideAllColumns');
 			const columns = table.bootstrapTable('getHiddenColumns');
 			for (column of columns) {
 				if (init || togglesArray.has(parseInt(column.field))) {
@@ -179,12 +183,14 @@
 
 	{% if massive_action is defined %}
 	function VerifyMassiveAction{{rand}}(value, row, index) {
-		row.value = row._data?.value;
+		if (!row.value && row._data.value) {
+			row.value = row._data.value;
+		}
 		if (!row.value) {
 			return {
 				disabled: true
 			}
-		}
+		};
 	}
 	{% endif %}
 </script>
