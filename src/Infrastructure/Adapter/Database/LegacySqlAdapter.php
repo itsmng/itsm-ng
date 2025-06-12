@@ -148,28 +148,30 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
     {
         return null;
     }
-    
-    public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string {
-        Global $DB;
+
+    public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string
+    {
+        global $DB;
         // MySQL uses the syntax: DATE_ADD(date_field, INTERVAL value unit)
         $date_field = $DB->quoteName($date);
-        
+
         // Standardize unit to MySQL format
         $unit = strtoupper($unit);
-        
+
         $expression = "DATE_ADD($date_field, INTERVAL $interval $unit)";
-        
+
         if ($alias !== null) {
             $expression .= ' AS ' . $DB->quoteName($alias);
         }
-        
+
         return $expression;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getPositionExpression(string $substring, string $string, ?string $alias = null): string {
+    public function getPositionExpression(string $substring, string $string, ?string $alias = null): string
+    {
         // MySQL syntax: LOCATE(substring, string)
         global $DB;
         $expr = sprintf(
@@ -177,48 +179,51 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
             $DB->quote($substring),
             $DB->quoteName($string)
         );
-        
+
         if ($alias !== null) {
             $expr .= ' AS ' . $DB->quoteName($alias);
         }
-        
+
         return $expr;
     }
 
-    public function getCurrentHourExpression(): string {
+    public function getCurrentHourExpression(): string
+    {
         return 'hour(curtime())';
     }
 
-    public function getUnixTimestamp(string $field, ?string $alias = null): string {
-        Global $DB;
+    public function getUnixTimestamp(string $field, ?string $alias = null): string
+    {
+        global $DB;
         $expr = sprintf(
             "UNIX_TIMESTAMP(%s)",
             $DB->quoteName($field)
         );
-        
+
         if ($alias !== null) {
             $expr .= ' AS ' . $DB->quoteName($alias);
         }
-        
+
         return $expr;
     }
 
-    public function getRightExpression(string $field, int $value): array {
+    public function getRightExpression(string $field, int $value): array
+    {
         return [$field => ['&', $value]];
     }
 
     public function getGroupConcat(string $field, string $separator = ', ', ?string $order_by = null, bool $distinct = true): string
     {
         global $DB;
-        
+
         $distinct_str = $distinct ? 'DISTINCT ' : '';
         $order_clause = $order_by ? " ORDER BY $order_by" : "";
-        
+
         // MySQL syntax for GROUP_CONCAT
         return "GROUP_CONCAT($distinct_str$field$order_clause SEPARATOR " . $DB->quote($separator) . ")";
     }
 
-     public function concat(array $exprs): string
+    public function concat(array $exprs): string
     {
         return "CONCAT(" . implode(", ", $exprs) . ")";
     }

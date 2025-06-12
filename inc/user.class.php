@@ -368,7 +368,7 @@ class User extends CommonDBTM
               'is_private' => 0,
             ]
         );
-    
+
 
         // Set no user to consumables
         $consumable = new Consumable();
@@ -3752,11 +3752,11 @@ class User extends CommonDBTM
                         case 'own_ticket':
                             $ORWHERE[] = [
                                 array_merge(
-                               [
+                                    [
                                     'glpi_profilerights.name' => 'ticket',
                                 ],
-                                self::getAdapter()->getRightExpression('glpi_profilerights.rights', Ticket::OWN)
-                               ) + getEntitiesRestrictCriteria('glpi_profiles_users', '', $entity_restrict, 1)
+                                    self::getAdapter()->getRightExpression('glpi_profilerights.rights', Ticket::OWN)
+                                ) + getEntitiesRestrictCriteria('glpi_profiles_users', '', $entity_restrict, 1)
                             ];
                             break;
 
@@ -4259,7 +4259,7 @@ class User extends CommonDBTM
             !empty($IDs)
             && in_array($authtype, [Auth::DB_GLPI, Auth::LDAP, Auth::MAIL, Auth::EXTERNAL])
         ) {
-            $user = new User();            
+            $user = new User();
             $result = $user->update(
                 [
                   'id'              => $IDs,
@@ -4267,7 +4267,8 @@ class User extends CommonDBTM
                   'auths_id'        => $server,
                   'password'        => '',
                   'is_deleted_ldap' => 0
-                ]);
+                ]
+            );
             if ($result) {
                 foreach ($IDs as $ID) {
                     $changes = [
@@ -5695,7 +5696,7 @@ class User extends CommonDBTM
                     'cookie_token_date' => null,
                 ]);
             }
-            
+
         }
 
         return -1 !== $notice_time && $to_notify_count > $notification_limit

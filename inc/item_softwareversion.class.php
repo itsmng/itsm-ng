@@ -335,38 +335,38 @@ class Item_SoftwareVersion extends CommonDBRelation
         $item = new $itemtype();
         if ($item->getFromDB($items_id)) {
             $adapter = $this::getAdapter();
-        $items = $adapter->request([
-            'SELECT' => ['id'],
-            'FROM'   => $this->getTable(),
-            'WHERE'  => [
-                'items_id' => $items_id,
-                'itemtype' => $itemtype
-            ]
-        ]);
-        
-        $updated = false;
-        $count = 0;
-        $total = 0;
-        
-        foreach ($items->fetchAllAssociative() as $data) {
-            $total++;
-            $version_item = new self();
-            if ($version_item->getFromDB($data['id'])) {
-                $result = $version_item->update([
-                    'id'               => $data['id'],
-                    'is_template_item' => $item->maybeTemplate() ? $item->getField('is_template') : 0,
-                    'is_deleted_item'  => $item->maybeDeleted() ? $item->getField('is_deleted') : 0
-                ]);
-                
-                if ($result) {
-                    $count++;
+            $items = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'items_id' => $items_id,
+                    'itemtype' => $itemtype
+                ]
+            ]);
+
+            $updated = false;
+            $count = 0;
+            $total = 0;
+
+            foreach ($items->fetchAllAssociative() as $data) {
+                $total++;
+                $version_item = new self();
+                if ($version_item->getFromDB($data['id'])) {
+                    $result = $version_item->update([
+                        'id'               => $data['id'],
+                        'is_template_item' => $item->maybeTemplate() ? $item->getField('is_template') : 0,
+                        'is_deleted_item'  => $item->maybeDeleted() ? $item->getField('is_deleted') : 0
+                    ]);
+
+                    if ($result) {
+                        $count++;
+                    }
                 }
             }
+
+            return ($count > 0);
         }
-        
-        return ($count > 0);
-    }
-    return false;
+        return false;
     }
 
     /**

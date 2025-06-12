@@ -965,7 +965,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
                     'id'             => $data['id'],
                     'ipnetworks_id'  => 0,
                     'level'          => 1,
-                    'completename'   => $data['name'] 
+                    'completename'   => $data['name']
                 ]);
             }
         }

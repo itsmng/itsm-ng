@@ -2528,7 +2528,7 @@ class Dropdown
                 $criteria['LEFT JOIN'] = $ljoin;
             }
             $request = config::getAdapter()->request($criteria);
-            $results = $request->fetchAllAssociative();            
+            $results = $request->fetchAllAssociative();
             if ($post['page'] == 1 && empty($post['searchText'])) {
                 if (isset($post['display_emptychoice']) && $post['display_emptychoice']) {
                     $datas[] = [
@@ -2704,7 +2704,7 @@ class Dropdown
                     }
                     $firstitem = false;
                 }
-                
+
             }
 
             if ($multi) {

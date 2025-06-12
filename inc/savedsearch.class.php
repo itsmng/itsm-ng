@@ -706,7 +706,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     'savedsearches_id' => $ids
                 ]
             ]);
-            
+
             $success = true;
             foreach ($searches->fetchAllAssociative() as $data) {
                 $savedSearch_User = new SavedSearch_User();
@@ -716,7 +716,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     }
                 }
             }
-            
+
             return $success;
         }
     }
@@ -1174,7 +1174,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             if ($savedSearch->getFromDB($id)) {
                 // On doit gérer le compteur de manière spéciale car on ne peut pas faire +1 directement
                 $counter = $savedSearch->fields['counter'] + 1;
-                
+
                 $savedSearch->update([
                     'id'                   => $id,
                     'last_execution_time'  => $time,
@@ -1277,7 +1277,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                 'id' => $ids
             ]
         ]);
-        
+
         $success = true;
         foreach ($searches->fetchAllAssociative() as $data) {
             $savedSearch = new self();
@@ -1286,13 +1286,13 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     'id'       => $data['id'],
                     'do_count' => $do_count
                 ];
-                
+
                 if (!$savedSearch->update($update)) {
                     $success = false;
                 }
             }
         }
-        
+
         return $success;
     }
 
@@ -1316,7 +1316,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                 'id' => $ids
             ]
         ]);
-        
+
         $success = true;
         foreach ($searches->fetchAllAssociative() as $data) {
             $savedSearch = new self();
@@ -1326,13 +1326,13 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     'entities_id'  => $eid,
                     'is_recursive' => $recur
                 ];
-                
+
                 if (!$savedSearch->update($update)) {
                     $success = false;
                 }
             }
         }
-        
+
         return $success;
     }
 

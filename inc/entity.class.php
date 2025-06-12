@@ -2150,13 +2150,13 @@ class Entity extends CommonTreeDropdown
         if (!isset($this->fields) || !is_array($this->fields)) {
             return '';
         }
-        
+
         if (!isset($this->fields['id'])) {
             return '';
         }
-    
+
         $entity_id = $this->fields['id'];
-        
+
         $enable_custom_css = self::getUsedConfig(
             'enable_custom_css',
             $entity_id
@@ -2170,7 +2170,7 @@ class Entity extends CommonTreeDropdown
 
         $custom_css_code = self::getUsedConfig(
             'enable_custom_css',
-             $entity_id,
+            $entity_id,
             'custom_css_code'
         );
 
@@ -2552,7 +2552,7 @@ class Entity extends CommonTreeDropdown
                 }
             }
         }
-            return $default_value;
+        return $default_value;
     }
 
 

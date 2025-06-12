@@ -217,7 +217,7 @@ class Profile extends CommonDBTM
                     'id' => ['<>', $this->input['id']]
                 ]
             ]);
-            
+
             foreach ($profiles->fetchAllAssociative() as $data) {
                 $profile = new self();
                 if ($profile->getFromDB($data['id'])) {
@@ -262,7 +262,7 @@ class Profile extends CommonDBTM
                     'id' => ['<>', $this->fields['id']]
                 ]
             ]);
-            
+
             foreach ($profiles->fetchAllAssociative() as $data) {
                 $profile = new self();
                 if ($profile->getFromDB($data['id'])) {

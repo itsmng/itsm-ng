@@ -216,7 +216,7 @@ class Link_Itemtype extends CommonDBChild
                 'itemtype'  => ['LIKE', "%Plugin$itemtype%"]
             ]
         ]);
-        
+
         foreach ($items->fetchAllAssociative() as $data) {
             $link_itemtype = new self();
             if ($link_itemtype->getFromDB($data['id'])) {

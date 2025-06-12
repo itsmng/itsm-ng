@@ -368,11 +368,11 @@ class UserEmail extends CommonDBChild
                 'users_id'  => $this->fields['users_id']
             ], [], 1);
             if (count($emails_to_update) > 0) {
-            $first_email = reset($emails_to_update); 
-            $useremail->update([
-                'id'         => $first_email['id'],
-                'is_default' => 1
-                ]);
+                $first_email = reset($emails_to_update);
+                $useremail->update([
+                    'id'         => $first_email['id'],
+                    'is_default' => 1
+                    ]);
             }
         }
 

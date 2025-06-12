@@ -538,10 +538,10 @@ class Session
                 $_SESSION['glpiprofiles'][$key]['name'] = $data['name'];
                 $entities_request = config::getAdapter()->request([
                    'SELECT'    => [
-                      'glpi_profiles_users.entities_id', 
-                        'glpi_profiles_users.id',          
+                      'glpi_profiles_users.entities_id',
+                        'glpi_profiles_users.id',
                         'glpi_profiles_users.is_recursive',
-                        'glpi_entities.id AS entity_id',    
+                        'glpi_entities.id AS entity_id',
                         'glpi_entities.name',
                         'glpi_entities.completename'
                     ],
@@ -585,7 +585,7 @@ class Session
                     break;
                 }
             }
-            
+
             if (!$has_entities) {
                 // Add root entity to first profile
                 $first_profile_id = array_key_first($_SESSION['glpiprofiles']);

@@ -241,7 +241,7 @@ class PlanningRecall extends CommonDBChild
         $success = true;
         foreach ($recalls->fetchAllAssociative() as $data) {
             $when = date("Y-m-d H:i:s", strtotime($begin) - $data['before_time']);
-            
+
             $recall = new self();
             if ($recall->getFromDB($data['id'])) {
                 if (!$recall->update([
@@ -252,7 +252,7 @@ class PlanningRecall extends CommonDBChild
                 }
             }
         }
-        
+
         return $success;
     }
 

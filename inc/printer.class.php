@@ -242,25 +242,25 @@ class Printer extends CommonDBTM
 
     public function cleanDBonPurge()
     {
-         $cartridge = new Cartridge();
-         $adapter = $cartridge::getAdapter();
-         $cartridges = $adapter->request([
-            'SELECT' => ['id'],
-            'FROM'   => 'glpi_cartridges',
-            'WHERE'  => [
-                  'printers_id' => $this->fields['id']
-            ]
-         ]);
-         
-         foreach ($cartridges->fetchAllAssociative() as $data) {
+        $cartridge = new Cartridge();
+        $adapter = $cartridge::getAdapter();
+        $cartridges = $adapter->request([
+           'SELECT' => ['id'],
+           'FROM'   => 'glpi_cartridges',
+           'WHERE'  => [
+                 'printers_id' => $this->fields['id']
+           ]
+        ]);
+
+        foreach ($cartridges->fetchAllAssociative() as $data) {
             $cartridge = new Cartridge();
             if ($cartridge->getFromDB($data['id'])) {
-                  $cartridge->update([
-                     'id'         => $data['id'],
-                     'printers_id' => null
-                  ]);
+                $cartridge->update([
+                   'id'         => $data['id'],
+                   'printers_id' => null
+                ]);
             }
-         }
+        }
 
         $this->deleteChildrenAndRelationsFromDb(
             [

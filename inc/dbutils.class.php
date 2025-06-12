@@ -677,7 +677,7 @@ final class DbUtils
             $field = "$table.$field";
         }
 
-        
+
         if (!is_array($value) && (is_string($value) || is_numeric($value))) {
             if (strlen((string)$value) == 0) {
                 if (isset($_SESSION['glpiactiveentities'])) {
@@ -687,10 +687,10 @@ final class DbUtils
                 }
             }
         }
-        // If $value is an empty array => return impossible criteria 
+        // If $value is an empty array => return impossible criteria
         if (is_array($value) && count($value) === 0) {
             // Valeur impossible pour éviter "IN ()" vide
-            return [$field => -1]; 
+            return [$field => -1];
         }
         $crit = [$field => $value];
 
@@ -729,7 +729,7 @@ final class DbUtils
                 }
             }
         }
-         // last verification before return
+        // last verification before return
         if (
             isset($crit[$field])
             && is_array($crit[$field])

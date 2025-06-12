@@ -85,19 +85,19 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             throw new \Exception("Entity class {$this->entityName} does not exist");
         }
 
-         // Sanitize criteria for PostgreSQL compatibility
+        // Sanitize criteria for PostgreSQL compatibility
         foreach ($criteria as $key => $value) {
             // Convert empty strings to null for ID fields
             if ($value === '' && (
-                $key === 'id' || 
-                substr($key, -3) === '_id' || 
+                $key === 'id' ||
+                substr($key, -3) === '_id' ||
                 substr($key, -2) === 'id'
             )) {
                 $criteria[$key] = null;
             }
-            
+
             // Convert string numbers to integers for numeric fields
-            if (is_string($value) && is_numeric($value) && 
+            if (is_string($value) && is_numeric($value) &&
                 ($key === 'id' || substr($key, -3) === '_id' || substr($key, -2) === 'id')) {
                 $criteria[$key] = (int)$value;
             }
@@ -483,71 +483,76 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $results = $stmt->executeQuery();
         return $results;
     }
-    
-    public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string {
-        Global $DB;
+
+    public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string
+    {
+        global $DB;
         // PostgreSQL uses the syntax: date_field + INTERVAL 'value unit'
         $date_field = $DB->quoteName($date);
         $unit = strtolower($unit);
-        
+
         // Ensure unit is singular for PostgreSQL syntax
         if (substr($unit, -1) === 's' && $unit != 'hours' && $unit != 'minutes' && $unit != 'seconds') {
             $unit = substr($unit, 0, -1);
         }
-        
-         if (is_string($interval) && !is_numeric($interval) && !preg_match('/^\d/', $interval)) {
+
+        if (is_string($interval) && !is_numeric($interval) && !preg_match('/^\d/', $interval)) {
             // PostgreSQL: date + (column || ' unit')::interval
             $expression = "$date_field + (" . $DB->quoteName($interval) . " || ' $unit')::interval";
         } else {
             // PostgreSQL: date + INTERVAL 'value unit'
             $expression = "$date_field + INTERVAL '$interval $unit'";
         }
-        
+
         if ($alias !== null) {
             $expression .= ' AS ' . $DB->quoteName($alias);
         }
-        
+
         return $expression;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getPositionExpression(string $substring, string $string, ?string $alias = null): string {
+    public function getPositionExpression(string $substring, string $string, ?string $alias = null): string
+    {
         // PostgreSQL syntax: POSITION(substring IN string)
-        Global $DB;
+        global $DB;
         $expr = sprintf(
             "POSITION(%s IN %s)",
             $DB->quote($substring),
             $DB->quoteName($string)
         );
-        
+
         if ($alias !== null) {
             $expr .= ' AS ' . $DB->quoteName($alias);
         }
-        
+
         return $expr;
     }
 
-    public function getCurrentHourExpression(): string {
+    public function getCurrentHourExpression(): string
+    {
         return 'EXTRACT(HOUR FROM CURRENT_TIME)';
     }
 
-    public function getUnixTimestamp(string $field, ?string $alias = null): string {
-        Global $DB;
+    public function getUnixTimestamp(string $field, ?string $alias = null): string
+    {
+        global $DB;
         $expr = sprintf(
             "EXTRACT(EPOCH FROM %s)",
             $DB->quoteName($field)
         );
-        
+
         if ($alias !== null) {
             $expr .= ' AS ' . $DB->quoteName($alias);
         }
-        
+
         return $expr;
     }
 
-    public function getRightExpression(string $field, int $value): array {
+    public function getRightExpression(string $field, int $value): array
+    {
         return ["($field & $value)" => ['>', 0]];
     }
 
@@ -555,7 +560,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         $has_distinct = stripos($field, 'DISTINCT') !== false;
         $field = $has_distinct ? $field : ($distinct ? "DISTINCT $field" : $field);
-        
+
         $escaped_separator = "'" . str_replace("'", "''", $separator) . "'";
 
         // For PostgreSQL with DISTINCT, the ORDER BY must use the same field
@@ -583,24 +588,24 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         }
     }
 
-     public function concat(array $exprs): string
+    public function concat(array $exprs): string
     {
         return implode(" || ", $exprs);
     }
 
-     public function dateAdd(string $date, string $interval_unit, string $interval): string
+    public function dateAdd(string $date, string $interval_unit, string $interval): string
     {
         return "($date + ($interval || ' $interval_unit')::interval)";
     }
 
-     public function ifnull(string $expr, string $default): string
+    public function ifnull(string $expr, string $default): string
     {
         return "COALESCE($expr, $default)";
     }
 
     /**
      * Fix GROUP BY clause for PostgreSQL by adding all non-aggregated columns from SELECT
-     * PostgreSQL requires all columns in the SELECT clause to also appear in the GROUP BY 
+     * PostgreSQL requires all columns in the SELECT clause to also appear in the GROUP BY
      * clause unless they are used in an aggregate function.
      *
      * @param string $select  The SELECT part of the query
@@ -612,12 +617,12 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         if (strpos(get_class($this), 'DoctrineRelational') === false) {
             return $groupBy;
-        }        
+        }
         if (empty($groupBy)) {
             return $groupBy;
-        }        
+        }
         // Explicitly add glpi_entities.completename to the GROUP BY if it is present in the SELECT
-        if (strpos($select, 'glpi_entities.completename') !== false && 
+        if (strpos($select, 'glpi_entities.completename') !== false &&
             strpos($groupBy, 'glpi_entities.completename') === false) {
             $groupBy .= ", glpi_entities.completename";
         }
@@ -627,7 +632,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             foreach ($matches[1] as $column) {
                 // Ignore columns already in the GROUP BY or those in aggregate functions
                 if (
-                    strpos($groupBy, $column) === false && 
+                    strpos($groupBy, $column) === false &&
                     !preg_match('/STRING_AGG\s*\(\s*' . preg_quote($column, '/') . '/i', $select) &&
                     !preg_match('/COUNT\s*\(\s*' . preg_quote($column, '/') . '/i', $select) &&
                     !preg_match('/SUM\s*\(\s*' . preg_quote($column, '/') . '/i', $select) &&
@@ -639,7 +644,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 }
             }
         }
-        
+
         return $groupBy;
     }
 }

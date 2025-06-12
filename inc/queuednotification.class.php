@@ -624,7 +624,7 @@ class QueuedNotification extends CommonDBTM
                     ]
                 ]
             ]);
-            
+
             foreach ($notifications->fetchAllAssociative() as $data) {
                 $notif = new self();
                 if ($notif->getFromDB($data['id'])) {

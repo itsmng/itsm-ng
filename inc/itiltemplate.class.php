@@ -740,9 +740,9 @@ abstract class ITILTemplate extends CommonDropdown
                     if (class_exists($itiltype . $classname)) {
                         $classname = $itiltype . $classname;
                     }
-                    
+
                     $field_obj = new $classname();
-                    
+
                     if ($field_obj->getFromDB($val['id'])) {
                         $field_obj->update([
                             'id' => $val['id'],

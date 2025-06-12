@@ -999,7 +999,7 @@ class Search
                      $ORDER .
                      $LIMIT;
         }
-        
+
         $data['sql']['search'] = $QUERY;
     }
 
@@ -1586,7 +1586,7 @@ class Search
     public static function displayData(array $data)
     {
         global $CFG_GLPI;
-        
+
         // Init list of items displayed
         if ($data['display_type'] == self::HTML_OUTPUT) {
             Session::initNavigateListItems($data['itemtype']);
@@ -3633,23 +3633,23 @@ JAVASCRIPT;
                         "NULL"
                     ) . " AS \"" . $NAME . "\",
                         " . $adapter->getGroupConcat(
-                            "glpi_profiles_users$addtable2.entities_id",
-                            "",
-                            "'" . self::LONGSEP . "'",
-                            "NULL"
-                        ) . " AS \"" . $NAME . "_entities_id\",
+                        "glpi_profiles_users$addtable2.entities_id",
+                        "",
+                        "'" . self::LONGSEP . "'",
+                        "NULL"
+                    ) . " AS \"" . $NAME . "_entities_id\",
                         " . $adapter->getGroupConcat(
-                            "glpi_profiles_users$addtable2.is_recursive",
-                            "",
-                            "'" . self::LONGSEP . "'",
-                            "NULL"
-                        ) . " AS \"" . $NAME . "_is_recursive\",
+                        "glpi_profiles_users$addtable2.is_recursive",
+                        "",
+                        "'" . self::LONGSEP . "'",
+                        "NULL"
+                    ) . " AS \"" . $NAME . "_is_recursive\",
                         " . $adapter->getGroupConcat(
-                            "glpi_profiles_users$addtable2.is_dynamic",
-                            "",
-                            "'" . self::LONGSEP . "'",
-                            "NULL"
-                        ) . " AS \"" . $NAME . "_is_dynamic\",
+                        "glpi_profiles_users$addtable2.is_dynamic",
+                        "",
+                        "'" . self::LONGSEP . "'",
+                        "NULL"
+                    ) . " AS \"" . $NAME . "_is_dynamic\",
                         $ADDITONALFIELDS";
                 }
                 break;
@@ -3666,27 +3666,27 @@ JAVASCRIPT;
                     return " " . $adapter->getGroupConcat(
                         "$table$addtable.completename",
                         self::LONGSEP,
-                        "$table$addtable.id", 
-                        false 
+                        "$table$addtable.id",
+                        false
                     ) . " AS \"" . $NAME . "\",
                         " . $adapter->getGroupConcat(
-                            "glpi_profiles_users$addtable2.profiles_id",
-                            self::LONGSEP,
-                            "glpi_profiles_users$addtable2.id",
-                            false 
-                        ) . " AS \"" . $NAME . "_profiles_id\",
+                        "glpi_profiles_users$addtable2.profiles_id",
+                        self::LONGSEP,
+                        "glpi_profiles_users$addtable2.id",
+                        false
+                    ) . " AS \"" . $NAME . "_profiles_id\",
                         " . $adapter->getGroupConcat(
-                            "glpi_profiles_users$addtable2.is_recursive",
-                            self::LONGSEP,
-                            "glpi_profiles_users$addtable2.id",
-                            false
-                        ) . " AS \"" . $NAME . "_is_recursive\",
+                        "glpi_profiles_users$addtable2.is_recursive",
+                        self::LONGSEP,
+                        "glpi_profiles_users$addtable2.id",
+                        false
+                    ) . " AS \"" . $NAME . "_is_recursive\",
                         " . $adapter->getGroupConcat(
-                            "glpi_profiles_users$addtable2.is_dynamic",
-                            self::LONGSEP, 
-                            "glpi_profiles_users$addtable2.id",
-                            false
-                        ) . " AS \"" . $NAME . "_is_dynamic\",
+                        "glpi_profiles_users$addtable2.is_dynamic",
+                        self::LONGSEP,
+                        "glpi_profiles_users$addtable2.id",
+                        false
+                    ) . " AS \"" . $NAME . "_is_dynamic\",
                         $ADDITONALFIELDS";
                 }
                 break;
@@ -3737,14 +3737,14 @@ JAVASCRIPT;
                     ) . " AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                 }
-               return " " . $adapter->getGroupConcat(
+                return " " . $adapter->getGroupConcat(
                     "DISTINCT " . $adapter->concat([
-                        "$table$addtable.name",
-                        "' - '",
-                        "$table$addtable.$field",
-                        "'" . self::SHORTSEP . "'",
-                        "$table$addtable.id"
-                    ]),
+                         "$table$addtable.name",
+                         "' - '",
+                         "$table$addtable.$field",
+                         "'" . self::SHORTSEP . "'",
+                         "$table$addtable.id"
+                     ]),
                     "",
                     "'" . self::LONGSEP . "'",
                     "NULL"
@@ -3754,7 +3754,7 @@ JAVASCRIPT;
             case "glpi_states.name":
                 if ($meta && ($meta_type == 'Software')) {
                     return " " . $adapter->getGroupConcat(
-                    "DISTINCT " . $adapter->concat([
+                        "DISTINCT " . $adapter->concat([
                         "glpi_softwares.name",
                         "' - '",
                         "glpi_softwareversions$addtable.name",
@@ -3763,19 +3763,19 @@ JAVASCRIPT;
                         "'" . self::SHORTSEP . "'",
                         "$table$addtable2.id"
                     ]),
-                    "",
-                    "'" . self::LONGSEP . "'",
-                    "NULL"
-                ) . " AS \"" . $NAME . "\",
+                        "",
+                        "'" . self::LONGSEP . "'",
+                        "NULL"
+                    ) . " AS \"" . $NAME . "\",
                     $ADDITONALFIELDS";
                 } elseif ($itemtype == 'Software') {
-                     return " " . $adapter->getGroupConcat(
+                    return " " . $adapter->getGroupConcat(
                         "DISTINCT " . $adapter->concat([
-                            "glpi_softwareversions.name",
-                            "' - '",
-                            "$table$addtable.$field",
-                            "'" . self::SHORTSEP . "'",
-                            "$table$addtable.id"
+                           "glpi_softwareversions.name",
+                           "' - '",
+                           "$table$addtable.$field",
+                           "'" . self::SHORTSEP . "'",
+                           "$table$addtable.id"
                         ]),
                         "",
                         "'" . self::LONGSEP . "'",
@@ -3863,7 +3863,7 @@ JAVASCRIPT;
                         ) . " AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                     }
-                   return $adapter->dateAdd(
+                    return $adapter->dateAdd(
                         "$table$addtable." . $searchopt[$ID]["datafields"][1],
                         "$interval",
                         "($table$addtable." . $searchopt[$ID]["datafields"][2] . " $add_minus)"

@@ -1732,7 +1732,7 @@ class Impact extends CommonGLPI
             if ($count < 2) {
                 $impact_item = new ImpactItem();
                 $impact_item->update(
-                    ['parent_id' => 0], 
+                    ['parent_id' => 0],
                     ['parent_id' => $impact_item->fields['parent_id']]
                 );
                 $impact_compound = new ImpactCompound();

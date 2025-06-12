@@ -81,7 +81,7 @@ $params['as_map'] = '0';
 $datas = Search::getDatas($itemtype, $params);
 foreach ($datas['data']['rows'] as $row) {
     $newData = [$row['id'] => $row['id']];
-    
+
     if (
         !isset($row['entities_id'])
         || $row['entities_id'] === 0

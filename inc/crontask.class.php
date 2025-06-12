@@ -388,7 +388,7 @@ class CronTask extends CommonDBTM
     {
         global $DB;
 
-       $hour_criteria = new QueryExpression($this::getAdapter()->getCurrentHourExpression());
+        $hour_criteria = new QueryExpression($this::getAdapter()->getCurrentHourExpression());
 
         $itemtype_orwhere = [
            // Core crontasks

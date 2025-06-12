@@ -108,7 +108,7 @@ class SpecialStatus extends CommonTreeDropdown
                         'weight'   => $_POST["weight_" . $update["id"]],
                         'is_active' => $_POST["is_active_" . $update["id"]]
                     ]);
-                    
+
                     // Mettre à jour la couleur si définie
                     if (isset($_POST["color_" . $update["id"]])) {
                         $specialStatus->update([
@@ -238,7 +238,7 @@ class SpecialStatus extends CommonTreeDropdown
                'is_active'  => $_POST["is_active"],
                'color'  => $_POST["color"]
             ];
-           $this::getAdapter()->save(["glpi_specialstatuses"], $status_db);
+            $this::getAdapter()->save(["glpi_specialstatuses"], $status_db);
             Session::addMessageAfterRedirect(
                 sprintf(__("Status has been added!")),
                 true,

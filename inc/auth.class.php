@@ -140,7 +140,8 @@ class Auth extends CommonGLPI
         global $DB;
 
         $user = new User();
-        $result = $user->getAdapter()->request([
+        $result = $user->getAdapter()->request(
+            [
             'SELECT' => 'glpi_users.*',
             'FROM'   => 'users',
             'WHERE'    => $options,
@@ -393,20 +394,20 @@ class Auth extends CommonGLPI
             'DAY',
             'lock_date'
         );
-            $result = $adapter->request([
-                'SELECT' => [
-                    'id',
-                    'password',
-                    new \QueryExpression($passwordExpirationExpr),
-                    new \QueryExpression($lockDateExpr)
-                ],
-                'FROM'   => User::getTable(),
-                'WHERE'  => [
-                    'name'     => $name,
-                    'authtype' => self::DB_GLPI,
-                    'auths_id' => 0,
-                ]
-                ]);        
+        $result = $adapter->request([
+            'SELECT' => [
+                'id',
+                'password',
+                new \QueryExpression($passwordExpirationExpr),
+                new \QueryExpression($lockDateExpr)
+            ],
+            'FROM'   => User::getTable(),
+            'WHERE'  => [
+                'name'     => $name,
+                'authtype' => self::DB_GLPI,
+                'auths_id' => 0,
+            ]
+            ]);
 
         if ($result->rowcount() === 1) {
             $row = $result->fetchAssociative();
@@ -1129,7 +1130,7 @@ class Auth extends CommonGLPI
            'WHERE'  => [
               'is_active' => 1
            ]
-        ])->fetchAssociative();    
+        ])->fetchAssociative();
 
         if ($result['cpt'] > 0) {
             $methods[self::MAIL] = __('Authentication on mail server');
@@ -1426,7 +1427,7 @@ class Auth extends CommonGLPI
             Html::redirect($CFG_GLPI['root_doc'] . '/front/updatepassword.php');
         }
 
-        
+
         if (!$redirect) {
             if (isset($_POST['redirect']) && (strlen($_POST['redirect']) > 0)) {
                 $redirect = $_POST['redirect'];
@@ -1818,11 +1819,11 @@ class Auth extends CommonGLPI
                 'COUNT'  => 'cpt',
                 'FROM'   => 'glpi_oidc_config',
             ])->fetchAssociative();
-            
+
             if ($exists['cpt'] > 0) {
                 $oidc_result['id'] = 0;
             }
-            
+
             config::getAdapter()->save(['glpi_oidc_config'], $oidc_result);
         }
         $criteria = ["SELECT * FROM glpi_oidc_config"];

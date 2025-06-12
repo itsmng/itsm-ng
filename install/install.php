@@ -247,7 +247,7 @@ switch ($step) {
         $DB = new DB();
 
         $url_base = str_replace("/install/install.php", "", $_SERVER['HTTP_REFERER']);
-        
+
         $config = new Config();
         $config->update(
             ['value' => $DB->escape($url_base)],

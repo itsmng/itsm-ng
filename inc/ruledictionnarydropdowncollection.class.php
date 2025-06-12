@@ -235,7 +235,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                     foreach ($items->fetchAllAssociative() as $item_data) {
                         $itemtype = getItemTypeForTable($model_table);
                         $item = new $itemtype();
-                        
+
                         if ($item->getFromDB($item_data['id'])) {
                             $item->update([
                                 'id' => $item_data['id'],
@@ -270,9 +270,9 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                     $result
                     && ($result['cpt'] == 0)
                 ) {
-                     $itemtype = getItemTypeForTable($this->item_table);
+                    $itemtype = getItemTypeForTable($this->item_table);
                     $item = new $itemtype();
-                    
+
                     if ($item->getFromDB($ID)) {
                         $item->delete(['id' => $ID]);
                     }
@@ -294,7 +294,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                         }
                         // Delete cartrodges_assoc
                         if ($deletecartmodel) {
-                             $cartridgeItemPrinterModel = new CartridgeItem_PrinterModel();
+                            $cartridgeItemPrinterModel = new CartridgeItem_PrinterModel();
                             $cartridgeItemPrinterModel->deleteByCriteria([
                                 'printermodels_id' => $ID
                             ]);

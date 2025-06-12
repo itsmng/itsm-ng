@@ -134,12 +134,12 @@ class ProfileRight extends CommonDBChild
             $profiles_id = $profile['id'];
             foreach ($rights as $name) {
                 $profileRight = new self();
-            
+
                 $profileRight->fields = [
                     'profiles_id'  => $profiles_id,
                     'name'         => $name
                 ];
-                
+
                 if (!$profileRight->addToDB()) {
                     $ok = false;
                 }
@@ -169,7 +169,7 @@ class ProfileRight extends CommonDBChild
                     'name' => $name
                 ]
             ]);
-            
+
             foreach ($items->fetchAllAssociative() as $data) {
                 $profileRight = new self();
                 if ($profileRight->getFromDB($data['id'])) {
@@ -204,23 +204,23 @@ class ProfileRight extends CommonDBChild
         $profiles = array_column($results, 'profiles_id');
 
         if (count($profiles)) {
-        foreach ($profiles as $profiles_id) {
-            $profileRight = new self();
-            if ($profileRight->getFromDBByCrit([
-                'profiles_id' => $profiles_id,
-                'name'        => $right
-            ])) {
-                $new_rights = $profileRight->fields['rights'] | (int)$value;
-                
-                if (!$profileRight->update([
-                    'id'     => $profileRight->getID(),
-                    'rights' => $new_rights
+            foreach ($profiles as $profiles_id) {
+                $profileRight = new self();
+                if ($profileRight->getFromDBByCrit([
+                    'profiles_id' => $profiles_id,
+                    'name'        => $right
                 ])) {
-                    $ok = false;
+                    $new_rights = $profileRight->fields['rights'] | (int)$value;
+
+                    if (!$profileRight->update([
+                        'id'     => $profileRight->getID(),
+                        'rights' => $new_rights
+                    ])) {
+                        $ok = false;
+                    }
                 }
             }
         }
-    }
         return $ok;
     }
 
@@ -264,7 +264,7 @@ class ProfileRight extends CommonDBChild
                 }
             }
         }
-        
+
         return $ok;
     }
 

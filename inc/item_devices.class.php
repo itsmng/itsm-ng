@@ -1526,7 +1526,7 @@ class Item_Devices extends CommonDBRelation
                             'itemtype'  => $itemtype
                         ]
                     ]);
-                    
+
                     foreach ($items->fetchAllAssociative() as $data) {
                         $item_device = new $link_type();
                         if ($item_device->getFromDB($data['id'])) {
