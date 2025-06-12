@@ -123,7 +123,7 @@ class DisplayPreference extends CommonDBTM
               'itemtype'  => $itemtype,
               'OR'        => [
                  ['users_id' => $user_id],
-                 ['users_id' => 0]
+                 ['users_id' => null]
               ]
            ],
            'ORDER'  => ['users_id', 'rank']
