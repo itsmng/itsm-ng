@@ -1867,7 +1867,7 @@ JAVASCRIPT;
                    'FROM'   => 'glpi_users',
                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
                ]
-        )->next()['menu_position'] ?? 'menu-left';
+        )->next()['menu_position'];
 
         if (isset($_SESSION['glpiID'])) {
             $twig_vars['menu_favorite_on'] = $DB->request(
@@ -1876,7 +1876,7 @@ JAVASCRIPT;
                         'FROM'   => 'glpi_users',
                         'WHERE'  => ['id' => $_SESSION["glpiID"]]
                      ]
-            )->next()['menu_favorite_on'] ?? '1';
+            )->next()['menu_favorite_on'];
             $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
         }
 
@@ -1995,7 +1995,6 @@ JAVASCRIPT;
         echo Html::script("node_modules/select2/dist/js/select2.min.js");
         echo Html::script("node_modules/tableexport.jquery.plugin/tableExport.min.js");
         echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
-        echo Html::script("vendor/wenzhixin/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.min.js");
         echo Html::script("vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js");
         echo Html::script("src/ngFunctions.js");
         echo Html::script("node_modules/gridstack/dist/gridstack-all.js");
@@ -7146,7 +7145,7 @@ JAVASCRIPT;
                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
                 ]
             );
-            $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'] ?? '{}', true);
+            $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'], true);
             $menu_collapse = $DB->request(
                 [
                  'SELECT' => 'menu_open',
@@ -7154,7 +7153,7 @@ JAVASCRIPT;
                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
                 ]
             );
-            $menu_collapse = json_decode($menu_collapse->next()['menu_open'] ?? '[]', true);
+            $menu_collapse = json_decode($menu_collapse->next()['menu_open'], true);
         } else {
             $menu_favorites = [];
             $menu_collapse = [];
@@ -7302,7 +7301,7 @@ JAVASCRIPT;
                     'FROM'   => 'glpi_users',
                     'WHERE'  => ['id' => $_SESSION["glpiID"]]
                  ]
-        )->next()['menu_small'] ?? 'false';
+        )->next()['menu_small'];
         $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
 
         // TODO: add profile selector

@@ -14,7 +14,7 @@ $favorites = $DB->request(
     ]
 );
 
-$favorites = json_decode($favorites->next()['menu_favorite'] ?? '{}', true);
+$favorites = json_decode($favorites->next()['menu_favorite'], true);
 if (is_null($favorites)) {
     $favorites = [];
 }

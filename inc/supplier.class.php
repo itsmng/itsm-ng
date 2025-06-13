@@ -115,7 +115,6 @@ class Supplier extends CommonDBTM
 
         $form = [
            'action' => Toolbox::getItemTypeFormURL('supplier'),
-           'itemtype' => Supplier::class,
            'buttons' => [
               [
                  'type' => 'submit',
@@ -205,7 +204,7 @@ class Supplier extends CommonDBTM
               ]
            ]
         ];
-        renderTwigForm($form, '', $this->fields);
+        renderTwigForm($form);
 
         return true;
     }
