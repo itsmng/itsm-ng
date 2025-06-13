@@ -4437,7 +4437,7 @@ class User extends CommonDBTM
                         $linked_component->getFromDB($data[getForeignKeyFieldForItemType($itemtype::getDeviceType())]);
                         $link = $linked_component->fields['designation'] . " (" . $data['id'] . ")";
                     } else {
-                       $link   = $data["name"];
+                        $link   = $data["name"];
                     }
                     if ($cansee) {
                         $link_item = $item::getFormURLWithID($data['id']);
