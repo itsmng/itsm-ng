@@ -5092,6 +5092,7 @@ class Ticket extends CommonITILObject
                      'name' => 'requesttypes_id',
                      'values' => getOptionForItems('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
                      'value' => $this->fields['requesttypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'RequestType'),
                      $canupdate ? '' : 'disabled' => ''
                   ],
                   !$ID ? __('Approval request') : CommonITILValidation::getTypeName(1) => !$ID ? [] : [
@@ -7165,19 +7166,16 @@ class Ticket extends CommonITILObject
      */
     public function getValueToSelect($field_id_or_search_options, $name = '', $values = '', $options = [])
     {
-        // AJOUT : Gestion spéciale des champs de date
-        if (isset($field_id_or_search_options['field']) && isset($field_id_or_search_options['datatype'])) {
+            if (isset($field_id_or_search_options['field']) && isset($field_id_or_search_options['datatype'])) {
             $dateFields = [
                 'date', 'closedate', 'solvedate', 'date_mod', 'time_to_resolve',
                 'time_to_own', 'internal_time_to_resolve', 'internal_time_to_own'
             ];
 
-            // Si c'est un champ de date de ticket
-            if (in_array($field_id_or_search_options['field'], $dateFields) &&
+                if (in_array($field_id_or_search_options['field'], $dateFields) &&
                 $field_id_or_search_options['datatype'] === 'date') {
 
-                // Forcer l'affichage date simple (sans heure)
-                return Html::showDateField($name, [
+                    return Html::showDateField($name, [
                     'value' => $values,
                     'display' => false,
                     'showtime' => false,
@@ -7185,10 +7183,8 @@ class Ticket extends CommonITILObject
                 ] + $options);
             }
         }
-        // FIN AJOUT
-
-        // Code existant inchangé
-        if (isset($field_id_or_search_options['linkfield'])) {
+        
+            if (isset($field_id_or_search_options['linkfield'])) {
             switch ($field_id_or_search_options['linkfield']) {
                 case 'requesttypes_id':
                     if (isset($field_id_or_search_options['joinparams']) && Toolbox::in_array_recursive('glpi_itilfollowups', $field_id_or_search_options['joinparams'])) {
