@@ -47,12 +47,24 @@ function update151to200(): bool
     $migration->displayTitle(sprintf(__('Update to %s'), '2.0.0'));
     $migration->setVersion('2.0.0');
 
+        // This migration used to work as follows:
+    // $userModifications = [
+    //     'menu_favorite' => "longtext default '{}'",
+    //     'menu_favorite_on' => "text default '1'",
+    //     'menu_position' => "text default 'menu-left'",
+    //     'menu_small' => "text default 'false'",
+    //     'menu_open' => "longtext default '[]'",
+    // ];
+    // However, the use of default values on TEXT and LONGTEXT fields is not supported in MySQL.
+    // Though it is supported in MariaDB, we want to ensure compatibility with MySQL as well.
+    // Therefore, we will not set default values for these fields.
+
     $userModifications = [
-        'menu_favorite' => "longtext default '{}'",
-        'menu_favorite_on' => "text default '1'",
-        'menu_position' => "text default 'menu-left'",
-        'menu_small' => "text default 'false'",
-        'menu_open' => "longtext default '[]'",
+        'menu_favorite' => "longtext",
+        'menu_favorite_on' => "text",
+        'menu_position' => "text",
+        'menu_small' => "text",
+        'menu_open' => "longtext",
     ];
     foreach ($userModifications as $field => $definition) {
         if (!$DB->fieldExists('glpi_users', $field)) {
