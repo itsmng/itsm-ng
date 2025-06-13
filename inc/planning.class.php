@@ -1182,9 +1182,9 @@ class Planning extends CommonGLPI
     public static function showAddGroupUsersForm()
     {
         global $DB;
-        
+
         echo Group::getTypeName(1) . " : <br>";
-    
+
         $groups = $DB->request([
             'FROM'   => 'glpi_groups',
             'WHERE'  => [
@@ -1192,16 +1192,16 @@ class Planning extends CommonGLPI
             ],
             'ORDER'  => 'name'
         ]);
-    
+
         echo "<select name='groups_id' id='dropdown_groups_id'>";
         echo "<option value='0'>-----</option>";
-        
+
         foreach ($groups as $group) {
             echo "<option value='" . $group['id'] . "'>" . $group['name'] . "</option>";
         }
-        
+
         echo "</select>";
-        
+
         echo "<br /><br />";
         echo Html::hidden('action', ['value' => 'send_add_group_users_form']);
         echo Html::submit(_sx('button', 'Add'));
@@ -1287,13 +1287,13 @@ class Planning extends CommonGLPI
     public static function showAddGroupForm()
     {
         global $DB;
-        
+
         echo Group::getTypeName(1) . " : <br>";
-    
+
         $where_condition = [
             'entities_id' => $_SESSION['glpiactive_entity']
         ];
-        
+
         if (!Session::haveRight('planning', self::READALL)) {
             if (isset($_SESSION['glpigroups']) && is_array($_SESSION['glpigroups']) && !empty($_SESSION['glpigroups'])) {
                 $where_condition['id'] = $_SESSION['glpigroups'];
@@ -1307,22 +1307,22 @@ class Planning extends CommonGLPI
                 return;
             }
         }
-    
+
         $groups = $DB->request([
             'FROM'   => 'glpi_groups',
             'WHERE'  => $where_condition,
             'ORDER'  => 'name'
         ]);
-    
+
         echo "<select name='groups_id' id='dropdown_groups_id'>";
         echo "<option value='0'>-----</option>";
-        
+
         foreach ($groups as $group) {
             echo "<option value='" . $group['id'] . "'>" . $group['name'] . "</option>";
         }
-        
+
         echo "</select>";
-        
+
         echo "<br /><br />";
         echo Html::hidden('action', ['value' => 'send_add_group_form']);
         echo Html::submit(_sx('button', 'Add'));

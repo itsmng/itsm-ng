@@ -407,31 +407,26 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                        'name' => 'url',
                        'value' => $options['url'],
                     ] : [],
-                    $this->isNewID($ID) ? [
-                       'type' => 'hidden',
-                       'name' => 'id',
-                       'value' => $ID,
-                    ] : [],
                     __('Name') => [
                        'type' => 'text',
                        'name' => 'name',
-                       'value' => $this->fields['name'],
+                            'value' => $this->fields['name'] ?? '',
                     ],
                     __('Do count') => (Session::haveRight("config", UPDATE)) ? [
                        'type' => 'select',
                        'name' => 'do_count',
                        'values' => [
-                          self::COUNT_AUTO  => __('Auto'),
-                          self::COUNT_YES   => __('Yes'),
-                          self::COUNT_NO    => __('No')
+                                self::COUNT_AUTO => __('Auto'),
+                                self::COUNT_YES => __('Yes'),
+                                self::COUNT_NO => __('No')
                        ],
-                       'value' => $this->fields['do_count']
+                            'value' => $this->fields['do_count'] ?? self::COUNT_NO,
                     ] : [],
                     __('Visibility') => $this->canCreate() ? [
                        'type' => 'select',
                        'name' => 'is_private',
                        'values' => [__('Public'), __('Private')],
-                       'value' => $this->fields['is_private'],
+                            'value' => $this->fields['is_private'] ?? 0,
                     ] : [
                        'content' => $this->fields['is_private'] ? __('Private') : __('Public')
                     ],
@@ -439,24 +434,14 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                        'type' => 'select',
                        'name' => 'entities_id',
                        'values' => getOptionForItems(Entity::class),
-                       'value' => $this->fields['entities_id'],
+                            'value' => $this->fields['entities_id'] ?? 0,
                        'actions' => getItemActionButtons(['info', 'add'], Entity::class),
                        ] : [],
                     __('Child entities') => [
                        'type' => 'checkbox',
                        'name' => 'is_recursive',
-                       'value' => $this->fields['is_recursive'],
-                    ],
-                    ($ID > 0) ? [] : [
-                       'type' => 'hidden',
-                       'name' => 'users_id',
-                       'value' => $this->fields['users_id'],
-                    ],
-                    ($ID <= 0 && !self::canCreate()) ? [
-                       'type' => 'hidden',
-                       'name' => 'is_private',
-                       'value' => 1,
-                    ] : []
+                            'value' => $this->fields['is_recursive'] ?? 0,
+                        ]
                  ]
               ]
            ]
