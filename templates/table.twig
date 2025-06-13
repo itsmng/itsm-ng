@@ -22,8 +22,6 @@
 	{% endif %}
 	<table aria-label="data"
 		id="{{id}}"
-		data-cookie="true"
-		data-cookie-id-table="{{id}}"
 		class="table table-striped table-bordered table-hover"
 		{% if height %}
 		data-height="{{height}}"
@@ -88,7 +86,6 @@
 </div>
 
 <script src="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"></script>
-<script src="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.min.js"></script>
 <script>
 	window.icons = {
 		columns: 'fas fa-columns',
@@ -96,12 +93,10 @@
 	}
 
 	$(function() {
-		// Make sure to initialize the table after the DOM is ready!!
 		setTimeout(function() {
 			$('#{{id}}').bootstrapTable({
-                loadingTemplate: function () { return '<div class="spinner-border mt-5" role="status"><span class="visually-hidden">Loading...</span></div>' },
-				cookieStorage: 'localStorage'
-			});
+                loadingTemplate: function () { return '<div class="spinner-border mt-5" role="status"><span class="visually-hidden">Loading...</span></div>' }
+            });
 		}, 200);
 
 		{% if not minimal %}

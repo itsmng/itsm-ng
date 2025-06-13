@@ -341,12 +341,8 @@ class Ajax
                width: " . $param['width'] . ",
                draggable: true,
                resizeable: true,
-                open: function(ev, ui) {
-                    $('#Iframe$domid').attr('src','$url').removeClass('hidden');
-                    $('#Iframe$domid').on('load', function() {
-                        $(this).contents().find('body').css('overflow-y', 'scroll');
-                    });
-                },";
+               open: function(ev, ui){
+               $('#Iframe$domid').attr('src','$url').removeClass('hidden');},";
         if ($param['reloadonclose']) {
             $out .= "close: function(ev, ui) { window.location.reload() },";
         }

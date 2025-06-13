@@ -799,7 +799,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                        'name' => 'users_id',
                        'value' => Session::getLoginUserID(),
                     ],
-                    ($item != null) ? (function () use ($options, $item) {
+                    ($item != null) ? (function() use ($options, $item) {
                         $itemobj = getItemForItemtype($options['item_itemtype']);
                         if ($itemobj && $itemobj->getFromDB($options['item_items_id'])) {
                             return [
@@ -810,7 +810,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                         }
                         return [];
                     })() : [],
-                    ($item != null) ? (function () use ($options, $item) {
+                    ($item != null) ? (function() use ($options, $item) {
                         $itemobj = getItemForItemtype($options['item_itemtype']);
                         if ($itemobj && $itemobj->getFromDB($options['item_items_id'])) {
                             return [
@@ -858,7 +858,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                            $this->fields["view"]
                        ),
                     ] : [],
-                    __('Add link') => ($item != null) ? (function () use ($options, $item) {
+                    __('Add link') => ($item != null) ? (function() use ($options, $item) {
                         $itemobj = getItemForItemtype($options['item_itemtype']);
                         if ($itemobj && $itemobj->getFromDB($options['item_items_id'])) {
                             return [
