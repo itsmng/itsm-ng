@@ -5092,6 +5092,7 @@ class Ticket extends CommonITILObject
                      'name' => 'requesttypes_id',
                      'values' => getOptionForItems('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
                      'value' => $this->fields['requesttypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'RequestType'),
                      $canupdate ? '' : 'disabled' => ''
                   ],
                   !$ID ? __('Approval request') : CommonITILValidation::getTypeName(1) => !$ID ? [] : [
