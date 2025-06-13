@@ -6527,6 +6527,12 @@ JAVASCRIPT;
                         false
                     );
 
+                case 'glpi_cartridgeitems._virtual':
+                    return Cartridge::getCount(
+                        $data["id"],
+                        $data[$ID][0]['alarm_threshold'],
+                        true);
+
                 case 'glpi_printers._virtual':
                     return Cartridge::getCountForPrinter(
                         $data["id"],
