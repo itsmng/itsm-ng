@@ -1803,6 +1803,68 @@ class Ticket extends CommonITILObject
 
         $rules = new RuleTicketCollection($input['entities_id']);
 
+        //  --- Change V2 actor fields to standard V1 fields
+        if (isset($input["_itil_assign"])) {
+            if (isset($input["_itil_assign"]["_type"])) {
+                $field = $input["_itil_assign"]["_type"];
+                switch ($field) {
+                    case 'user':
+                        if (isset($input["_itil_assign"]["users_id"])) {
+                            $input['_users_id_assign'] = $input["_itil_assign"]["users_id"];
+                        }
+                        break;
+
+                    case 'group':
+                        if (isset($input["_itil_assign"]["groups_id"])) {
+                            $input['_groups_id_assign'] = $input["_itil_assign"]["groups_id"];
+                        }
+                        break;
+
+                    case 'supplier':
+                        if (isset($input["_itil_assign"]["suppliers_id"])) {
+                            $input['_suppliers_id_assign'] = $input["_itil_assign"]["suppliers_id"];
+                        }
+                        break;
+                }
+            }
+        }
+        if (isset($input["_itil_requester"])) {
+            if (isset($input["_itil_requester"]["_type"])) {
+                $field = $input["_itil_requester"]["_type"];
+                switch ($field) {
+                    case 'user':
+                        if (isset($input["_itil_requester"]["users_id"])) {
+                            $input['_users_id_requester'] = $input["_itil_requester"]["users_id"];
+                        }
+                        break;
+
+                    case 'group':
+                        if (isset($input["_itil_requester"]["groups_id"])) {
+                            $input['_groups_id_of_requester'] = $input["_itil_requester"]["groups_id"];
+                        }
+                        break;
+                }
+            }
+        }
+        if (isset($input["_itil_observer"])) {
+            if (isset($input["_itil_observer"]["_type"])) {
+                $field = $input["_itil_observer"]["_type"];
+                switch ($field) {
+                    case 'user':
+                        if (isset($input["_itil_observer"]["users_id"])) {
+                            $input['_users_id_observer'] = $input["_itil_observer"]["users_id"];
+                        }
+                        break;
+
+                    case 'group':
+                        if (isset($input["_itil_observer"]["groups_id"])) {
+                            $input['_groups_id_observer'] = $input["_itil_observer"]["groups_id"];
+                        }
+                        break;
+                }
+            }
+        }
+
         // Set unset variables with are needed
         $tmprequester = 0;
         $user = new User();
