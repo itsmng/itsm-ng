@@ -7166,24 +7166,24 @@ class Ticket extends CommonITILObject
      */
     public function getValueToSelect($field_id_or_search_options, $name = '', $values = '', $options = [])
     {
-            if (isset($field_id_or_search_options['field']) && isset($field_id_or_search_options['datatype'])) {
+        if (isset($field_id_or_search_options['field']) && isset($field_id_or_search_options['datatype'])) {
             $dateFields = [
                 'date', 'closedate', 'solvedate', 'date_mod', 'time_to_resolve',
                 'time_to_own', 'internal_time_to_resolve', 'internal_time_to_own'
             ];
 
-                if (in_array($field_id_or_search_options['field'], $dateFields) &&
-                $field_id_or_search_options['datatype'] === 'date') {
+            if (in_array($field_id_or_search_options['field'], $dateFields) &&
+            $field_id_or_search_options['datatype'] === 'date') {
 
-                    return Html::showDateField($name, [
-                    'value' => $values,
-                    'display' => false,
-                    'showtime' => false,
-                    'relative_dates' => isset($options['relative_dates']) ? $options['relative_dates'] : false
+                return Html::showDateField($name, [
+                'value' => $values,
+                'display' => false,
+                'showtime' => false,
+                'relative_dates' => isset($options['relative_dates']) ? $options['relative_dates'] : false
                 ] + $options);
             }
         }
-        
+
         if (isset($field_id_or_search_options['linkfield'])) {
             switch ($field_id_or_search_options['linkfield']) {
                 case 'requesttypes_id':
@@ -7206,11 +7206,11 @@ class Ticket extends CommonITILObject
                         }
                         $options['condition'] = $opt;
                         break;
+                    }
+                    return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
+            }
         }
-        return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
-     }
     }
-}
 
     public function showStatsDates()
     {

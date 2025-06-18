@@ -7486,7 +7486,7 @@ abstract class CommonITILObject extends CommonDBTM
             echo "<li class='followup' style='font-family: $font;' role='button' tabindex='0'
                   onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"ITILFollowup\");'
                   onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
-                  . "<i class='far fa-comment' aria-hidden='true'></i>" . _n('Followup', 'Followups', 1) . 
+                  . "<i class='far fa-comment' aria-hidden='true'></i>" . _n('Followup', 'Followups', 1) .
                   "</li>";
             if ($canuse_shortcuts) {
                 echo "<script>
@@ -7496,12 +7496,12 @@ abstract class CommonITILObject extends CommonDBTM
                 });</script>";
             }
         }
-        
+
         if ($canadd_task) {
             echo "<li class='task' style='font-family: $font;' role='button' tabindex='0'
                   onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"$taskClass\");'
                   onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
-                  . "<i class='far fa-check-square' aria-hidden='true'></i>" . _n('Task', 'Tasks', 1) . 
+                  . "<i class='far fa-check-square' aria-hidden='true'></i>" . _n('Task', 'Tasks', 1) .
                   "</li>";
             if ($canuse_shortcuts) {
                 echo "<script>
@@ -7511,12 +7511,12 @@ abstract class CommonITILObject extends CommonDBTM
                 });</script>";
             }
         }
-        
+
         if ($canadd_document) {
             echo "<li class='document' style='font-family: $font;' role='button' tabindex='0'
                   onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"Document_Item\");'
                   onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
-                  . "<i class='fa fa-paperclip' aria-hidden='true'></i>" . Document::getTypeName(1) . 
+                  . "<i class='fa fa-paperclip' aria-hidden='true'></i>" . Document::getTypeName(1) .
                   "</li>";
             if ($canuse_shortcuts) {
                 echo "<script>
@@ -7526,12 +7526,12 @@ abstract class CommonITILObject extends CommonDBTM
                 });</script>";
             }
         }
-        
+
         if ($canadd_validation) {
             echo "<li class='validation' style='font-family: $font;' role='button' tabindex='0'
                   onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"$validation_class\");'
                   onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
-                  . "<i class='far fa-thumbs-up' aria-hidden='true'></i>" . _n('Approval', 'Approvals', 1) . 
+                  . "<i class='far fa-thumbs-up' aria-hidden='true'></i>" . _n('Approval', 'Approvals', 1) .
                   "</li>";
             if ($canuse_shortcuts) {
                 echo "<script>
@@ -7541,12 +7541,12 @@ abstract class CommonITILObject extends CommonDBTM
                 });</script>";
             }
         }
-        
+
         if ($canadd_solution) {
             echo "<li class='solution' style='font-family: $font;' role='button' tabindex='0'
                   onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"Solution\");'
                   onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
-                  . "<i class='fa fa-check' aria-hidden='true'></i>" . _n('Solution', 'Solutions', 1) . 
+                  . "<i class='fa fa-check' aria-hidden='true'></i>" . _n('Solution', 'Solutions', 1) .
                   "</li>";
             if ($canuse_shortcuts) {
                 echo "<script>
@@ -7556,7 +7556,7 @@ abstract class CommonITILObject extends CommonDBTM
                 });</script>";
             }
         }
-        
+
         if ($canuse_shortcuts) {
             echo "<li class='shortcutpop' style='font-family: $font;' role='button' tabindex='0'
                   onclick=\"alert('" .
@@ -7568,9 +7568,9 @@ abstract class CommonITILObject extends CommonDBTM
                   onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
                   . __('Shortcuts') . "</li>";
         }
-        
+
         Plugin::doHook('timeline_actions', ['item' => $this, 'rand' => $rand]);
-        
+
         echo "</ul>"; // timeline_choices
         echo "<div class='clear'>&nbsp;</div>";
         //total_actiontime stat

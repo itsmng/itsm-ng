@@ -47,7 +47,7 @@ function update151to200(): bool
     $migration->displayTitle(sprintf(__('Update to %s'), '2.0.0'));
     $migration->setVersion('2.0.0');
 
-        // This migration used to work as follows:
+    // This migration used to work as follows:
     // $userModifications = [
     //     'menu_favorite' => "longtext default '{}'",
     //     'menu_favorite_on' => "text default '1'",
