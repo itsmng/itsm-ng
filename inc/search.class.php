@@ -4630,12 +4630,12 @@ JAVASCRIPT;
                     }
                     break;
 
-                    case "datetime":
-                        case "date":
-                        case "date_delay":
-                            if ($searchopt[$ID]["datatype"] == 'datetime' || 
-                                ($searchopt[$ID]["datatype"] == 'date' && $inittable == 'glpi_tickets')) {
-                        
+                case "datetime":
+                case "date":
+                case "date_delay":
+                    if ($searchopt[$ID]["datatype"] == 'datetime' ||
+                        ($searchopt[$ID]["datatype"] == 'date' && $inittable == 'glpi_tickets')) {
+
                         // Specific search for datetime
                         if (in_array($searchtype, ['equals', 'notequals'])) {
                             $val = preg_replace("/:00$/", '', $val);
@@ -6531,7 +6531,8 @@ JAVASCRIPT;
                     return Cartridge::getCount(
                         $data["id"],
                         $data[$ID][0]['alarm_threshold'],
-                        true);
+                        true
+                    );
 
                 case 'glpi_printers._virtual':
                     return Cartridge::getCountForPrinter(
