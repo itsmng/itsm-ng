@@ -2546,6 +2546,7 @@ JAVASCRIPT;
                  'name' => "criteria{$prefix}[$num][link]",
                  'values' => Search::getLogicalOperators(($num == 0)),
                  'value' => isset($criteria["link"]) ? $criteria["link"] : '',
+                 'noLib' => true,
               ],
               [
                  'type' => 'select',
@@ -2553,6 +2554,7 @@ JAVASCRIPT;
                  'name' => "criteria{$prefix}[$num][field]",
                  'values' => $values,
                  'value' => $value,
+                 'noLib' => true,
                  'hooks' => [
                     'change' => <<<JS
                      $.ajax({
@@ -2683,6 +2685,7 @@ JAVASCRIPT;
            'as_map' => $p['as_map'],
            'rowid' => $rowid,
            'spanid' => $spanid,
+           'noLib' => true,
            'meta' => true,
            'inputs' => [
               [
@@ -2695,6 +2698,7 @@ JAVASCRIPT;
                  'name' => "criteria{$prefix}[$num][link]",
                  'values' => Search::getLogicalOperators(($num == 0)),
                  'value' => isset($criteria["link"]) ? $criteria["link"] : '',
+                 'noLib' => true,
               ],
               [
                  'type' => 'select',
@@ -2702,6 +2706,7 @@ JAVASCRIPT;
                  'name' => "criteria{$prefix}[$num][itemtype]",
                  'values' => $values,
                  'value' => $value,
+                 'noLib' => true,
                  'hooks' => [
                     'change' => <<<JS
                      $.ajax({
@@ -2939,7 +2944,7 @@ JAVASCRIPT;
             $searchtype_name = "{$fieldname}{$prefix}[$num][searchtype]";
             $rands = Dropdown::showFromArray($searchtype_name, $actions, [
                'value' => $request["searchtype"],
-               'width' => '105px'
+               'width' => '180px',
             ]);
             $fieldsearch_id = Html::cleanId("dropdown_$searchtype_name$rands");
         }
