@@ -1963,6 +1963,7 @@ class Dropdown
                'id'          => $field_id,
                'aria-label'  => $field_name,
                'title'       => Html::entities_deep($param['tooltip'] ?? $field_name),
+               'noLib'       => true,
                'hooks'       => [
                   'change' => $param['on_change'] ?? '',
                ],
