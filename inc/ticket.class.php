@@ -3070,6 +3070,7 @@ class Ticket extends CommonITILObject
            'datatype'           => 'specific',
            'comments'           => true,
            'nosort'             => true,
+           'noLib'              => true,
            'nosearch'           => true,
            'additionalfields'   => ['itemtype'],
            'joinparams'         => [
@@ -3086,6 +3087,8 @@ class Ticket extends CommonITILObject
            'name'               => _n('Associated item type', 'Associated item types', Session::getPluralNumber()),
            'datatype'           => 'itemtypename',
            'itemtype_list'      => 'ticket_types',
+           'noLib'              => true,
+           'noLib'              => true,
            'nosort'             => true,
            'additionalfields'   => ['itemtype'],
            'joinparams'         => [
