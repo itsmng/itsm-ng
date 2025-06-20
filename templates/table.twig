@@ -332,16 +332,6 @@ $(document).ready(function() {
             <div class="fixed-table-toolbar">
                 <div class="float-left bs-bars">
                     <div id="toolbar{{ rand }}" class="btn-group">
-                        ${canTrash ? html`
-                            <button
-                                type="button"
-                                class="btn btn-secondary ${isTrash ? 'active' : ''}"
-                                onclick="toogle('is_deleted', '', '', ''); if (document.forms['searchform${itemtype}']) { document.forms['searchform${itemtype}'].submit(); }"
-                                title="${isTrash ? 'Show normal items' : 'Show trash content'}"
-                            >
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        ` : ''}
                         ${hasMassiveAction && !radio ? html`
                             <button
                                 type="button"
@@ -365,9 +355,14 @@ $(document).ready(function() {
                     </div>
                 </div>
                 <div class="float-right btn-group columns columns-right">
-                    ${showExport ? html`
-                        <button type="button" class="btn btn-secondary" id="export-table" title="Export">
-                            <i class="fas fa-file-export"></i>
+                    ${canTrash ? html`
+                        <button
+                            type="button"
+                            class="btn btn-secondary${isTrash ? ' active btn-danger' : ''}"
+                            onclick="toogle('is_deleted', '', '', ''); if (document.forms['searchform${itemtype}']) { document.forms['searchform${itemtype}'].submit(); }"
+                            title="${isTrash ? 'Show normal items' : 'Show trash content'}"
+                        >
+                            <i class="fas fa-trash-alt"></i>
                         </button>
                     ` : ''}
                     <div class="btn-group keep-open">
@@ -403,6 +398,11 @@ $(document).ready(function() {
                             `)}
                         </div>
                     </div>
+                    ${showExport ? html`
+                        <button type="button" class="btn btn-secondary" id="export-table" title="Export">
+                            <i class="fas fa-file-export"></i>
+                        </button>
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -601,7 +601,12 @@ $(document).ready(function() {
 
     const renderTable = () => {
         htmlInjectionMap.clear();
-        const tableHTML = html`<div>${(!minimal || !noToolBar) ? renderToolbar() : ''}${renderTableElement()}${((url && table.getPageCount() > 1) || (!url && values.length > table.getState().pagination.pageSize)) ? renderPagination() : ''}</div>`;
+        const tableHTML = html`
+        <div>
+            ${(!minimal || !noToolBar) ? renderToolbar() : ''}
+            ${renderTableElement()}
+            ${((url && table.options.data.length > 15) || (!url && values.length > 15)) ? renderPagination() : ''}
+        </div>`;
         let finalHTML = tableHTML;
         htmlInjectionMap.forEach((htmlContent, marker) => { finalHTML = finalHTML.replace(marker, htmlContent); });
         wrapperElement.innerHTML = finalHTML;
