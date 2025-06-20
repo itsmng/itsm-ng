@@ -601,7 +601,12 @@ $(document).ready(function() {
 
     const renderTable = () => {
         htmlInjectionMap.clear();
-        const tableHTML = html`<div>${(!minimal || !noToolBar) ? renderToolbar() : ''}${renderTableElement()}${((url && table.getPageCount() > 1) || (!url && values.length > table.getState().pagination.pageSize)) ? renderPagination() : ''}</div>`;
+        const tableHTML = html`
+        <div>
+            ${(!minimal || !noToolBar) ? renderToolbar() : ''}
+            ${renderTableElement()}
+            ${((url && table.options.data.length > 15) || (!url && values.length > 15)) ? renderPagination() : ''}
+        </div>`;
         let finalHTML = tableHTML;
         htmlInjectionMap.forEach((htmlContent, marker) => { finalHTML = finalHTML.replace(marker, htmlContent); });
         wrapperElement.innerHTML = finalHTML;
