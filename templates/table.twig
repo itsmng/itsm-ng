@@ -146,7 +146,8 @@ $(document).ready(function() {
     };
 
     const useTable = (options) => {
-        const resolvedOptions = { state: {}, onStateChange: () => {}, getCoreRowModel: getCoreRowModel(), getPaginationRowModel: getPaginationRowModel(), getSortedRowModel: getSortedRowModel(), ...options };
+        const { data, ...restOptions } = options;
+        const resolvedOptions = { state: {}, onStateChange: () => {}, getCoreRowModel: getCoreRowModel(), getPaginationRowModel: getPaginationRowModel(), getSortedRowModel: getSortedRowModel(), data, ...restOptions };
         const { pagination, sorting, visibility } = loadState();
         if (pagination) resolvedOptions.initialState.pagination = pagination;
         if (sorting) resolvedOptions.initialState.sorting = sorting;
@@ -158,8 +159,8 @@ $(document).ready(function() {
         {{ id }}_state.subscribe((currentState) => {
             tableInstance.setOptions((prev) => ({
                 ...prev,
-                ...options,
-                state: { ...currentState, ...options.state },
+                ...restOptions,
+                state: { ...currentState, ...restOptions.state },
                 onStateChange: (updater) => {
                     let newState = typeof updater === 'function' ? updater(currentState) : updater;
                     const oldState = currentState;
