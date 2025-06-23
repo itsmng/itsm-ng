@@ -212,10 +212,10 @@ abstract class CommonItilObject_Item extends CommonDBRelation
                        'col_md' => 12,
                     ]
                  ];
-                 foreach ($inputs as $input) {
-                     renderTwigTemplate('macros/wrappedInput.twig', ['title' => '', 'input' => $input]);
-                 }
-                 echo "</span>\n";
+                foreach ($inputs as $input) {
+                    renderTwigTemplate('macros/wrappedInput.twig', ['title' => '', 'input' => $input]);
+                }
+                echo "</span>\n";
             }
             echo "</div>";
         }
