@@ -106,7 +106,58 @@ if (
             $values = $_POST['additionalvalues'];
         }
         $values[$search["field"]] = '';
-        echo $item->getValueToSelect($search, $fieldname, $values, $options);
+        
+        function getValueToSelectFixed($item, $search, $fieldname, $values, $options) {
+            $field = $search['field'];
+            $value = is_array($values) ? ($values[$field] ?? '') : $values;
+            
+            switch ($search['datatype'] ?? 'specific') {
+                case "dropdown":
+                    $itemtype = getItemTypeForTable($search['table']);
+                    if ($itemtype && class_exists($itemtype)) {
+                        $params = [
+                            'name' => $fieldname,
+                            'value' => $value,
+                            'display' => false
+                        ];
+                        
+                        if (isset($options['entity'])) {
+                            $params['entity'] = $options['entity'];
+                        }
+                        if ($itemtype == 'User' && isset($search['right'])) {
+                            $params['right'] = $search['right'];
+                        }
+                        
+                        return $itemtype::dropdown($params);
+                    }
+                    break;
+                    
+                case "specific":
+                    $itemtype = getItemTypeForTable($search['table']);
+                    if ($itemtype && ($itemObj = getItemForItemtype($itemtype))) {
+                        return $itemObj->getSpecificValueToSelect($search['field'], $fieldname, $values, $options);
+                    }
+                    break;
+                    
+                case "text":
+                    return "<textarea name='$fieldname' class='form-control'>" . htmlspecialchars($value) . "</textarea>";
+                    
+                case "bool":
+                    return Dropdown::showYesNo($fieldname, $value, -1, ['display' => false]);
+                    
+                case "date":
+                case "datetime":
+                    return Html::showDateTimeField($fieldname, ['value' => $value, 'maybeempty' => true]);
+                    
+                default:
+                    return "<input type='text' name='$fieldname' value='" . htmlspecialchars($value) . "' class='form-control' />";
+            }
+            
+            return "<input type='text' name='$fieldname' value='" . htmlspecialchars($value) . "' class='form-control' />";
+        }
+        
+        $result = getValueToSelectFixed($item, $search, $fieldname, $values, $options);
+        echo $result;
     }
 
     echo "<input type='hidden' name='field' value='$fieldname'>";
