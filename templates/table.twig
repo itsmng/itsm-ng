@@ -54,6 +54,7 @@ $(document).ready(function() {
     }
 
     let table;
+    let serverTotal = null;
 
     const htmlInjectionMap = new Map();
     const renderRawHTML = (htmlString) => {
@@ -131,6 +132,7 @@ $(document).ready(function() {
         try {
             const response = await fetch(fetchUrl.toString());
             const result = await response.json();
+            serverTotal = result.total;
             table.setOptions(prev => ({
                 ...prev,
                 data: result.rows,
@@ -139,6 +141,7 @@ $(document).ready(function() {
         } catch (error) {
             console.error("Failed to fetch table data:", error);
             table.setOptions(prev => ({ ...prev, data: [] }));
+            serverTotal = 0;
         } finally {
             renderLoading(false);
             renderTable();
@@ -601,11 +604,12 @@ $(document).ready(function() {
 
     const renderTable = () => {
         htmlInjectionMap.clear();
+        const shouldPaginate = url ? (serverTotal !== null && serverTotal > table.getState().pagination.pageSize) : (values.length > table.getState().pagination.pageSize);
         const tableHTML = html`
         <div>
             ${(!minimal || !noToolBar) ? renderToolbar() : ''}
             ${renderTableElement()}
-            ${((url && table.options.data.length > 15) || (!url && values.length > 15)) ? renderPagination() : ''}
+            ${shouldPaginate ? renderPagination() : ''}
         </div>`;
         let finalHTML = tableHTML;
         htmlInjectionMap.forEach((htmlContent, marker) => { finalHTML = finalHTML.replace(marker, htmlContent); });
