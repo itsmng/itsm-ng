@@ -1540,7 +1540,6 @@ class Item_Ticket extends CommonItilObject_Item
            'datatype'           => 'specific',
            'noLib'              => true,
            'comments'           => true,
-           'noLib'              => true,
            'nosort'             => true,
            'additionalfields'   => ['itemtype']
         ];
