@@ -3088,7 +3088,6 @@ class Ticket extends CommonITILObject
            'datatype'           => 'itemtypename',
            'itemtype_list'      => 'ticket_types',
            'noLib'              => true,
-           'noLib'              => true,
            'nosort'             => true,
            'additionalfields'   => ['itemtype'],
            'joinparams'         => [
