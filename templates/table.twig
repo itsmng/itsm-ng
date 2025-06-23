@@ -413,7 +413,7 @@ $(document).ready(function() {
 
     const renderTableElement = () => {
         return html`
-            <div class="fixed-table-container">
+            <div class="fixed-table-container" style="overflow-x: scroll;">
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
                         ${table.getHeaderGroups().map(headerGroup => html`
