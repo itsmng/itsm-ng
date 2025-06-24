@@ -57,13 +57,18 @@ $(document).ready(function() {
     let serverTotal = null;
 
     const htmlInjectionMap = new Map();
+    function decodeHtml(html) {
+        const txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
     const renderRawHTML = (htmlString) => {
         if (typeof htmlString === 'string' && /<[^>]*>/.test(htmlString)) {
             const marker = `__HTML_CONTENT_${Math.random().toString(36).substr(2, 9)}__`;
             htmlInjectionMap.set(marker, htmlString);
             return marker;
         }
-        return htmlString;
+        return decodeHtml(htmlString);
     };
 
     const flexRender = (comp, props) => (typeof comp === 'function' ? comp(props) : comp);
