@@ -64,7 +64,7 @@ $(document).ready(function() {
     }
     const renderRawHTML = (htmlString) => {
         if (typeof htmlString === 'string' && /<[^>]*>/.test(htmlString)) {
-            const marker = `__HTML_CONTENT_${Math.random().toString(36).substr(2, 9)}__`;
+            const marker = `__HTML_CONTENT_${Math.random().toString(36).substring(2, 10)}__`;
             htmlInjectionMap.set(marker, htmlString);
             return marker;
         }
@@ -200,7 +200,7 @@ $(document).ready(function() {
     } else if (hasMassiveAction) {
         columns.push(columnHelper.display({ id: 'select', header: () => html`<input type="checkbox" id="select-all" />`, cell: info => html`<input type="checkbox" class="row-select" data-row-id="${info.row.id}" />` }));
     }
-    const dataColumns = fieldKeys.map(field => columnHelper.accessor(String(field), { header: () => html`${fields[field]}`, cell: info => renderRawHTML(info.getValue()) }));
+    const dataColumns = fieldKeys.map(field => columnHelper.accessor(String(field), { header: () => html`${decodeHtml(fields[field])}`, cell: info => renderRawHTML(info.getValue()) }));
     columns = columns.concat(dataColumns);
 
     const data = Object.values(values).map(value => {
@@ -299,14 +299,15 @@ $(document).ready(function() {
                         <li
                             class="page-item page-pre ${!table.getCanPreviousPage() ? 'disabled' : ''}"
                             onclick="${table.getCanPreviousPage() ? 'table.previousPage()' : ''}"
+                            style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
                         >
-                            <a class="page-link" aria-label="previous page">‹</a>
+                            <a class="page-link" aria-label="previous page" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">‹</a>
                         </li>
                         ${pages.map(page => {
                             if (page === '...') {
                                 return html`
-                                    <li class="page-item page-last-separator disabled">
-                                        <a class="page-link">...</a>
+                                    <li class="page-item page-last-separator disabled" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
+                                        <a class="page-link" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">...</a>
                                     </li>
                                 `;
                             }
@@ -314,16 +315,18 @@ $(document).ready(function() {
                                 <li
                                     class="page-item ${page === currentPage ? 'active' : ''}"
                                     onclick="table.setPageIndex(${page - 1})"
+                                    style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
                                 >
-                                    <a class="page-link" aria-label="to page ${page}">${page}</a>
+                                    <a class="page-link" aria-label="to page ${page}" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">${page}</a>
                                 </li>
                             `;
                         })}
                         <li
                             class="page-item page-next ${!table.getCanNextPage() ? 'disabled' : ''}"
                             onclick="${table.getCanNextPage() ? 'table.nextPage()' : ''}"
+                            style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
                         >
-                            <a class="page-link" aria-label="next page">›</a>
+                            <a class="page-link" aria-label="next page" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">›</a>
                         </li>
                     </ul>
                 </div>
