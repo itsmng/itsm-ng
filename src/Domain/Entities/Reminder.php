@@ -2,10 +2,12 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_reminders')]
 #[ORM\UniqueConstraint(name: 'uuid', columns: ['uuid'])]
 #[ORM\Index(name: "date", columns: ["date"])]
@@ -48,7 +50,7 @@ class Reminder
     #[ORM\Column(name: 'is_planned', type: 'boolean', options: ['default' => 0])]
     private $isPlanned;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
@@ -92,13 +94,16 @@ class Reminder
         return $this;
     }
 
-    public function getDate(): ?string
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(?string $date): self
+    public function setDate(\DateTimeInterface|string|null $date): self
     {
+        if (is_string($date)) {
+            $date = new \DateTime($date);
+        }
         $this->date = $date;
 
         return $this;
@@ -164,14 +169,16 @@ class Reminder
         return $this;
     }
 
-    public function getDateMod(): ?string
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(?string $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
@@ -212,14 +219,15 @@ class Reminder
         return $this;
     }
 
-    public function getDateCreation(): ?string
+     public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(?string $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

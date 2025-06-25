@@ -50,9 +50,9 @@ class DeviceBattery
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
 
-    #[ORM\ManyToOne(targetEntity: DeviceBatterymodel::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceBatteryModel::class)]
     #[ORM\JoinColumn(name: 'devicebatterymodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?DeviceBatterymodel $deviceBatteryModel = null;
+    private ?DeviceBatteryModel $deviceBatteryModel = null;
 
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
