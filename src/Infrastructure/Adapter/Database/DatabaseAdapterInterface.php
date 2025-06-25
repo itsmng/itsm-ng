@@ -43,6 +43,10 @@ interface DatabaseAdapterInterface
     public function getRightExpression(string $field, int $value): array;
     public function getGroupConcat(string $field, string $separator = ', ', ?string $order_by = null, bool $distinct = true): string;
     public function concat(array $exprs): string;
-    public function dateAdd(string $date, string $interval_unit, string $interval): string;
+    // public function dateAdd(string $date, string $interval_unit, string $interval): string;
     public function ifnull(string $expr, string $default): string;
+    public function fixPostgreSQLGroupBy(string $select, string $group_by): string;
+    public function fixPostgreSQLCompleteOrderBy(string $select, string $order_by, ?string $full_query = null): array;
+    public function getBooleanValue($value): string;
+    public function getDateCriteria(string $field, $begin = null, $end = null): array;
 }

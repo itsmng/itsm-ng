@@ -144,6 +144,8 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
     // {
     //     return [];
     // }
+
+    
     public function findEntityById(array $id): mixed
     {
         return null;
@@ -214,27 +216,103 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
 
     public function getGroupConcat(string $field, string $separator = ', ', ?string $order_by = null, bool $distinct = true): string
     {
-        global $DB;
-
-        $distinct_str = $distinct ? 'DISTINCT ' : '';
-        $order_clause = $order_by ? " ORDER BY $order_by" : "";
-
-        // MySQL syntax for GROUP_CONCAT
-        return "GROUP_CONCAT($distinct_str$field$order_clause SEPARATOR " . $DB->quote($separator) . ")";
-    }
+        // Check if DISTINCT is already in the field
+        $has_distinct = stripos($field, 'DISTINCT') !== false;
+        $field = $has_distinct ? $field : ($distinct ? "DISTINCT $field" : $field);
+        
+        // Escape the separator for SQL
+        $escaped_separator = "'" . str_replace("'", "''", $separator) . "'";
+        
+        // Generate the GROUP_CONCAT function
+        $sql = "GROUP_CONCAT($field";
+        
+        // Add ORDER BY if provided
+        if (!empty($order_by)) {
+            $sql .= " ORDER BY $order_by";
+        }
+        
+        // Add separator
+        $sql .= " SEPARATOR $escaped_separator)";
+        
+        return $sql;
+    }    
 
     public function concat(array $exprs): string
     {
         return "CONCAT(" . implode(", ", $exprs) . ")";
     }
 
-    public function dateAdd(string $date, string $interval_unit, string $interval): string
-    {
-        return "ADDDATE($date, INTERVAL $interval $interval_unit)";
-    }
+    // public function dateAdd(string $date, string $interval_unit, string $interval): string
+    // {
+    //     return "ADDDATE($date, INTERVAL $interval $interval_unit)";
+    // }
 
     public function ifnull(string $expr, string $default): string
     {
         return "IFNULL($expr, $default)";
+    }
+
+    /**
+     * Fix ORDER BY clause for DISTINCT - not needed for MySQL/MariaDB
+     */
+    public function fixPostgreSQLCompleteOrderBy(string $select, string $order_by, ?string $full_query = null): array
+    {
+        // No fix needed for MySQL/MariaDB
+        return ['order_by' => $order_by, 'select' => $select];
+    }
+
+    /**
+     * Fix GROUP BY clause - not needed for MySQL/MariaDB
+     */
+    public function fixPostgreSQLGroupBy(string $select, string $group_by): string
+    {
+        // No fix needed for MySQL/MariaDB
+        return $group_by;
+    }
+
+    public function getBooleanValue($value): string
+    {
+        // Pour MySQL, retourner '1' ou '0'
+        return (bool)$value ? '1' : '0';
+    }
+
+    /**
+     * Génère des critères de filtre pour un intervalle de dates
+     * Version pour l'adaptateur legacy MySQL/MariaDB
+     *
+     * @param string $field Le nom du champ de date
+     * @param string|null $begin Date de début (format YYYY-MM-DD [HH:MM:SS])
+     * @param string|null $end Date de fin (format YYYY-MM-DD [HH:MM:SS])
+     * @return array Les critères pour le filtre de date
+     */
+    public function getDateCriteria(string $field, $begin = null, $end = null): array
+    {
+        global $DB;
+        $date_pattern = '/^\d{4}-\d{2}-\d{2}( \d{2}:\d{2}:\d{2})?$/';
+        $criteria = [];
+
+        if (is_string($begin) && preg_match($date_pattern, $begin) === 1) {
+            $criteria[] = [$field => ['>=', $begin]];
+        } elseif ($begin !== null && $begin !== '') {
+            trigger_error(
+                sprintf('Invalid begin date value: %s', json_encode($begin)),
+                E_USER_WARNING
+            );
+        }
+
+        if (is_string($end) && preg_match($date_pattern, $end) === 1) {
+            // Pour MySQL, on utilise toujours ADDDATE
+            $end_expr = new \QueryExpression(
+                "ADDDATE(" . $DB->quote($end) . ", INTERVAL 1 DAY)"
+            );
+            $criteria[] = [$field => ['<=', $end_expr]];
+        } elseif ($end !== null && $end !== '') {
+            trigger_error(
+                sprintf('Invalid end date value: %s', json_encode($end)),
+                E_USER_WARNING
+            );
+        }
+
+        return $criteria;
     }
 }
