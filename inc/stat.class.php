@@ -916,6 +916,7 @@ class Stat extends CommonGLPI
         array $add_criteria = []
     ) {
         $DB = \DBConnection::getReadConnection();
+        $adapter = Config::getAdapter();
 
         if (!$item = getItemForItemtype($itemtype)) {
             return;
@@ -1193,11 +1194,9 @@ class Stat extends CommonGLPI
 
         switch ($type) {
             case "inter_total":
-                $WHERE[] = getDateCriteria("$table.date", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.date", $begin, $end);
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.date") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.date", '%Y-%m', 'date_unix');
 
                 $criteria = [
                    'SELECT'    => [
@@ -1206,7 +1205,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.date"],
                    'ORDERBY'   => "$table.date"
                 ];
                 break;
@@ -1214,11 +1213,9 @@ class Stat extends CommonGLPI
             case "inter_solved":
                 $WHERE["$table.status"] = $solved_status;
                 $WHERE[] = ['NOT' => ["$table.solvedate" => null]];
-                $WHERE[] = getDateCriteria("$table.solvedate", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.solvedate", $begin, $end);
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.solvedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.solvedate", '%Y-%m', 'date_unix');
 
                 $criteria = [
                    'SELECT'    => [
@@ -1227,7 +1224,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.solvedate"],
                    'ORDERBY'   => "$table.solvedate"
                 ];
                 break;
@@ -1240,12 +1237,10 @@ class Stat extends CommonGLPI
                       "$table.time_to_resolve"   => null
                    ]
                 ];
-                $WHERE[] = getDateCriteria("$table.solvedate", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.solvedate", $begin, $end);
                 $WHERE[] = new QueryExpression("$table.solvedate > $table.time_to_resolve");
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.solvedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.solvedate", '%Y-%m', 'date_unix');
 
                 $criteria = [
                    'SELECT'    => [
@@ -1254,7 +1249,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.solvedate"],
                    'ORDERBY'   => "$table.solvedate"
                 ];
                 break;
@@ -1262,11 +1257,9 @@ class Stat extends CommonGLPI
             case "inter_closed":
                 $WHERE["$table.status"] = $closed_status;
                 $WHERE[] = ['NOT' => ["$table.closedate" => null]];
-                $WHERE[] = getDateCriteria("$table.closedate", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.closedate", $begin, $end);
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.closedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.closedate", '%Y-%m', 'date_unix');
 
                 $criteria = [
                    'SELECT'    => [
@@ -1275,7 +1268,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.closedate"],
                    'ORDERBY'   => "$table.closedate"
                 ];
                 break;
@@ -1284,11 +1277,9 @@ class Stat extends CommonGLPI
                 $WHERE["$table.status"] = $solved_status;
                 $WHERE["$table.actiontime"] = ['>', 0];
                 $WHERE[] = ['NOT' => ["$table.solvedate" => null]];
-                $WHERE[] = getDateCriteria("$table.solvedate", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.solvedate", $begin, $end);
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.solvedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.solvedate", '%Y-%m', 'date_unix');
 
                 $criteria = [
                    'SELECT'    => [
@@ -1297,7 +1288,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.solvedate"],
                    'ORDERBY'   => "$table.solvedate"
                 ];
                 break;
@@ -1305,11 +1296,9 @@ class Stat extends CommonGLPI
             case "inter_avgsolvedtime":
                 $WHERE["$table.status"] = $solved_status;
                 $WHERE[] = ['NOT' => ["$table.solvedate" => null]];
-                $WHERE[] = getDateCriteria("$table.solvedate", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.solvedate", $begin, $end);
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.solvedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.solvedate", '%Y-%m', 'date_unix');
 
                 $criteria = [
                    'SELECT'    => [
@@ -1318,7 +1307,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.solvedate"],
                    'ORDERBY'   => "$table.solvedate"
                 ];
                 break;
@@ -1326,11 +1315,9 @@ class Stat extends CommonGLPI
             case "inter_avgclosedtime":
                 $WHERE["$table.status"] = $closed_status;
                 $WHERE[] = ['NOT' => ["$table.closedate" => null]];
-                $WHERE[] = getDateCriteria("$table.closedate", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.closedate", $begin, $end);
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.closedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.closedate", '%Y-%m', 'date_unix');
 
                 $criteria = [
                    'SELECT'    => [
@@ -1339,7 +1326,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.closedate"],
                    'ORDERBY'   => "$table.closedate"
                 ];
                 break;
@@ -1351,11 +1338,9 @@ class Stat extends CommonGLPI
                     $actiontime_table = $table;
                 }
                 $WHERE["$actiontime_table.actiontime"] = ['>', 0];
-                $WHERE[] = getDateCriteria("$table.solvedate", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.solvedate", $begin, $end);
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.solvedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.solvedate", '%Y-%m', 'date_unix');
 
                 $criteria = [
                    'SELECT'    => [
@@ -1364,7 +1349,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.solvedate"],
                    'ORDERBY'   => "$table.solvedate"
                 ];
                 break;
@@ -1372,11 +1357,9 @@ class Stat extends CommonGLPI
             case "inter_avgtakeaccount":
                 $WHERE["$table.status"] = $solved_status;
                 $WHERE[] = ['NOT' => ["$table.solvedate" => null]];
-                $WHERE[] = getDateCriteria("$table.solvedate", $begin, $end);
-
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.solvedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $WHERE[] = $adapter->getDateCriteria("$table.solvedate", $begin, $end);
+                
+                $date_unix = $adapter->getFormattedDateExpression("$table.solvedate", '%Y-%m', 'date_unix');
 
                 $criteria = [
                    'SELECT'    => [
@@ -1385,7 +1368,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.solvedate"],
                    'ORDERBY'   => "$table.solvedate"
                 ];
                 break;
@@ -1393,11 +1376,9 @@ class Stat extends CommonGLPI
             case "inter_opensatisfaction":
                 $WHERE["$table.status"] = $closed_status;
                 $WHERE[] = ['NOT' => ["$table.closedate" => null]];
-                $WHERE[] = getDateCriteria("$table.closedate", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.closedate", $begin, $end);
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.closedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.closedate", '%Y-%m', 'date_unix');
 
                 $INNERJOIN['glpi_ticketsatisfactions'] = [
                    'ON' => [
@@ -1413,7 +1394,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.closedate"],
                    'ORDERBY'   => "$table.closedate"
                 ];
                 break;
@@ -1425,11 +1406,9 @@ class Stat extends CommonGLPI
                    ['NOT' => ["glpi_ticketsatisfactions.date_answered"  => null]],
                 ];
 
-                $WHERE[] = getDateCriteria("$table.closedate", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.closedate", $begin, $end);
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.closedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.closedate", '%Y-%m', 'date_unix');
 
                 $INNERJOIN['glpi_ticketsatisfactions'] = [
                    'ON' => [
@@ -1445,7 +1424,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.closedate"],
                    'ORDERBY'   => "$table.closedate"
                 ];
                 break;
@@ -1458,11 +1437,9 @@ class Stat extends CommonGLPI
                       "glpi_ticketsatisfactions.date_answered" => null
                    ]
                 ];
-                $WHERE[] = getDateCriteria("$table.closedate", $begin, $end);
+                $WHERE[] = $adapter->getDateCriteria("$table.closedate", $begin, $end);
 
-                $date_unix = new QueryExpression(
-                    "FROM_UNIXTIME(UNIX_TIMESTAMP(" . $DB->quoteName("$table.closedate") . "),'%Y-%m') AS " . $DB->quoteName('date_unix')
-                );
+                $date_unix = $adapter->getFormattedDateExpression("$table.closedate", '%Y-%m', 'date_unix');
 
                 $INNERJOIN['glpi_ticketsatisfactions'] = [
                    'ON' => [
@@ -1478,7 +1455,7 @@ class Stat extends CommonGLPI
                    ],
                    'FROM'      => $table,
                    'WHERE'     => $WHERE,
-                   'GROUPBY'   => 'date_unix',
+                   'GROUPBY'   => ['date_unix', "$table.closedate"],
                    'ORDERBY'   => "$table.closedate"
                 ];
                 break;
