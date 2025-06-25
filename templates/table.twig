@@ -200,7 +200,7 @@ $(document).ready(function() {
     } else if (hasMassiveAction) {
         columns.push(columnHelper.display({ id: 'select', header: () => html`<input type="checkbox" id="select-all" />`, cell: info => html`<input type="checkbox" class="row-select" data-row-id="${info.row.id}" />` }));
     }
-    const dataColumns = fieldKeys.map(field => columnHelper.accessor(String(field), { header: () => html`${decodeHtml(fields[field])}`, cell: info => renderRawHTML(info.getValue()) }));
+    const dataColumns = fieldKeys.map(field => columnHelper.accessor(String(field), { header: () => html`${renderRawHTML(fields[field])}`, cell: info => renderRawHTML(info.getValue() ?? "") }));
     columns = columns.concat(dataColumns);
 
     const data = Object.values(values).map(value => {
@@ -358,7 +358,7 @@ $(document).ready(function() {
                                 type="button"
                                 class="btn btn-secondary"
                                 aria-label="Options"
-                                onclick="document.getElementById('search-config-${itemtype}').dialog('open')"
+                                onclick="$('#search-config-${itemtype}').dialog('open')"
                             >
                                 <i class="fas fa-wrench" title="Options"></i>
                             </button>
