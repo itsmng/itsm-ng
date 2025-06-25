@@ -324,6 +324,9 @@ class Contract_Item extends CommonDBRelation
         $canedit = $item->can($ID, UPDATE);
         $iterator = self::getListForItem($item);
         $number = count($iterator);
+        $adapter = Config::getAdapter();
+        $date_expr = $adapter->getDateAdd('begin_date', 'duration', 'month');
+
 
         $contracts = [];
         $used      = [];
@@ -367,7 +370,7 @@ class Contract_Item extends CommonDBRelation
                            'values' => getOptionForItems('Contract', array_merge([
                               'OR' => [
                                  'renewal' => 1,
-                                 new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName('begin_date') . ', INTERVAL ' . $DB->quoteName('duration') . ' MONTH), CURDATE()) > 0'),
+                                new \QueryExpression("($date_expr) > CURRENT_DATE"),
                                  'begin_date'   => null,
                               ],
                               'is_deleted' => 0,
