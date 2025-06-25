@@ -213,7 +213,9 @@ abstract class ITILTemplateHiddenField extends ITILTemplateField
         if ($canedit && $numrows) {
             Html::openMassiveActionsForm('mass' . $ttm->getType() . $rand);
             $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-                                         'container'     => 'mass' . $ttm->getType() . $rand];
+                'container'     => 'mass' . $ttm->getType() . $rand,
+                'deprecated' => true
+            ];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixehov' aria-label='Number ITIL Template'>";
