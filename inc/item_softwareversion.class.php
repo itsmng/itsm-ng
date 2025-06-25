@@ -585,9 +585,9 @@ class Item_SoftwareVersion extends CommonDBRelation
             $sort = "`" . implode("` $order,`", $tmp) . "`";
         } else {
             if ($crit == "softwares_id") {
-                $sort = "`entity` $order, `version`, `itemname`";
+                $sort = "entity $order, version, itemname";
             } else {
-                $sort = "`entity` $order, `itemname`";
+                $sort = "entity $order, itemname";
             }
         }
 
@@ -762,9 +762,10 @@ class Item_SoftwareVersion extends CommonDBRelation
         $request = self::getAdapter()->request($criteria);
 
         $rand = mt_rand();
-
-        if ($data = $request->fetchAssociative()) {
-            $softwares_id  = $data['sID'];
+        $results = self::getAdapter()->request($criteria)->fetchAllAssociative();
+        if (count($results)) {
+            $data = $results[0];
+            $softwares_id  = $data['sID']?? null;
             $soft          = new Software();
             $showEntity    = ($soft->getFromDB($softwares_id) && $soft->isRecursive());
             $linkUser      = User::canView();
@@ -843,8 +844,8 @@ class Item_SoftwareVersion extends CommonDBRelation
             $header_end .= "</tr>\n";
             echo $header_begin . $header_top . $header_end;
 
-            do {
-                Session::addToNavigateListItems($data['item_type'], $data["iID"]);
+            foreach ($results as $data) {
+                Session::addToNavigateListItems($data['item_type'], $data["iID"]?? null);
 
                 echo "<tr class='tab_bg_2'>";
                 if ($canedit) {
@@ -854,7 +855,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                 }
 
                 if ($crit == "softwares_id") {
-                    echo "<td><a href='" . SoftwareVersion::getFormURLWithID($data['vID']) . "'>" .
+                    echo "<td><a href='" . SoftwareVersion::getFormURLWithID($data['vID']?? null) . "'>" .
                        $data['version'] . "</a></td>";
                 }
 
@@ -866,7 +867,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                 echo "<td>{$data['item_type']}</td>";
 
                 if ($canshowitems[$data['item_type']]) {
-                    echo "<td><a href='" . $data['item_type']::getFormURLWithID($data['iID']) . "'>$itemname</a></td>";
+                    echo "<td><a href='" . $data['item_type']::getFormURLWithID($data['iID']?? null) . "'>$itemname</a></td>";
                 } else {
                     echo "<td>" . $itemname . "</td>";
                 }
@@ -889,8 +890,8 @@ class Item_SoftwareVersion extends CommonDBRelation
 
                 $lics = Item_SoftwareLicense::getLicenseForInstallation(
                     $data['item_type'],
-                    $data['iID'],
-                    $data['vID']
+                    $data['iID']?? null,
+                    $data['vID']?? null
                 );
                 echo "<td>";
 
@@ -912,7 +913,7 @@ class Item_SoftwareVersion extends CommonDBRelation
 
                 echo "<td>" . Html::convDate($data['date_install']) . "</td>";
                 echo "</tr>\n";
-            } while ($data = $iterator->next());
+            }
 
             echo $header_begin . $header_bottom . $header_end;
 
