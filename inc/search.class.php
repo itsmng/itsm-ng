@@ -556,6 +556,7 @@ class Search
     public static function constructSQL(array &$data)
     {
         global $CFG_GLPI, $DB;
+        $adapter = Config::getAdapter();
 
         if (!isset($data['itemtype'])) {
             return false;
@@ -609,7 +610,7 @@ class Search
 
         // Add default join
         $COMMONLEFTJOIN = self::addDefaultJoin($data['itemtype'], $itemtable, $already_link_tables);
-        $FROM          .= $COMMONLEFTJOIN;
+        $FROM          .= " " .$COMMONLEFTJOIN;
 
         // Add all table for toview items
         foreach ($data['tocompute'] as $val) {
@@ -655,7 +656,6 @@ class Search
         // default string
         $COMMONWHERE = self::addDefaultWhere($data['itemtype']);
         $first       = empty($COMMONWHERE);
-
         // Add deleted if item have it
         if ($data['item'] && $data['item']->maybeDeleted()) {
             $LINK = " AND ";
@@ -728,7 +728,8 @@ class Search
 
         //// 7 - Manage GROUP BY
         $GROUPBY = "";
-        // Meta Search / Search All / Count tickets
+
+              // Meta Search / Search All / Count tickets
         $criteria_with_meta = array_filter($data['search']['criteria'], function ($criterion) {
             return isset($criterion['meta'])
                    && $criterion['meta'];
@@ -766,7 +767,7 @@ class Search
             // request currentuser for SQL supervision, not displayed
             $query_num = "SELECT $count,
                               '" . Toolbox::addslashes_deep($_SESSION['glpiname']) . "' AS currentuser
-                       FROM $itemtable" .
+                       FROM $itemtable" . " ".
                           $COMMONLEFTJOIN;
 
             $first     = true;
@@ -796,9 +797,10 @@ class Search
                                 $ctable,
                                 $tmpquery
                             );
-                            $query_num  = str_replace($data['itemtype'], $ctype, $query_num);
-                            $query_num .= " AND $ctable.id IS NOT NULL ";
-
+                            $query_num = str_replace($data['itemtype'], $ctype, $query_num);
+                                
+                                $query_num .= " AND $ctable.id IS NOT NULL ";
+                            
                             // Add deleted if item have it
                             if ($citem && $citem->maybeDeleted()) {
                                 $query_num .= " AND $ctable.is_deleted = false ";
@@ -866,19 +868,13 @@ class Search
                 $WHERE = ' WHERE ' . $WHERE . ' ';
             }
             $first = false;
+       
         }
 
         if (!empty($HAVING)) {
             $HAVING = ' HAVING ' . $HAVING;
         }
-
-        if (!empty($GROUPBY)) {
-            $adapter = Config::getAdapter();
-            if (method_exists($adapter, 'fixPostgreSQLGroupBy')) {
-                $GROUPBY = $adapter->fixPostgreSQLGroupBy($SELECT, $GROUPBY);
-            }
-        }
-
+       
         // Create QUERY
         if (isset($CFG_GLPI["union_search_type"][$data['itemtype']])) {
             $first = true;
@@ -900,7 +896,6 @@ class Search
                         $tmpquery = $SELECT . ", '$ctype' AS TYPE " .
                                     $FROM .
                                     $WHERE;
-
                         $tmpquery .= " AND $ctable.id IS NOT NULL ";
 
                         // Add deleted if item have it
@@ -991,15 +986,39 @@ class Search
             $QUERY .= str_replace($CFG_GLPI["union_search_type"][$data['itemtype']] . ".", "", $ORDER) .
                       $LIMIT;
         } else {
+            // Fix PostgreSQL ORDER BY for DISTINCT
+            if (method_exists($adapter, 'fixPostgreSQLCompleteOrderBy')) {
+                $result = $adapter->fixPostgreSQLCompleteOrderBy($SELECT, $ORDER, $SELECT . $FROM . $WHERE);
+                $SELECT = $result['select'];
+            }
+            
+            if (method_exists($adapter, 'fixPostgreSQLGroupBy')) {
+                $GROUPBY = $adapter->fixPostgreSQLGroupBy($SELECT, $GROUPBY);
+            }
             $QUERY = $SELECT .
                      $FROM .
                      $WHERE .
-                     $GROUPBY .
+                     $GROUPBY . 
                      $HAVING .
                      $ORDER .
                      $LIMIT;
+        } 
+        
+        if (isset($data['sql']['count']) && is_array($data['sql']['count'])) {
+        // Adapt all counting queries for PostgreSQL
+        foreach ($data['sql']['count'] as $i => $count_query) {
+            // Apply PostgreSQL adaptation via the adapter
+            // if (method_exists($adapter, 'adaptQueryForPostgreSQL')) {
+            if($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+                $data['sql']['count'][$i] = $adapter->adaptQueryForPostgreSQL($count_query);
+            }
         }
-
+        // if (method_exists($adapter, 'adaptQueryForPostgreSQL')) {
+        if($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            // Also adapt the main QUERY before assigning it
+            $QUERY = $adapter->adaptQueryForPostgreSQL($QUERY);
+        }
+        }
         $data['sql']['search'] = $QUERY;
     }
 
@@ -1305,6 +1324,8 @@ class Search
     **/
     public static function constructData(array &$data, $onlycount = false)
     {
+        $adapter = Config::getAdapter();
+
         if (!isset($data['sql']) || !isset($data['sql']['search'])) {
             return false;
         }
@@ -1481,6 +1502,9 @@ class Search
 
             while (($i < $data['data']['end'])) {
                 $row = $result->fetchAssociative();
+                if (method_exists($adapter, 'makeResultKeysInsensitive') && $row !== false && $adapter !== null) {
+                    $row = $adapter->makeResultKeysInsensitive($row);
+                }
                 $newrow        = [];
                 $newrow['raw'] = $row;
 
@@ -1563,6 +1587,33 @@ class Search
                         $val['id'],
                         $newrow
                     );
+                }
+
+                if ($data['itemtype'] == 'User') {                    
+                    foreach ($data['data']['rows'] as &$newrow) {
+                        $user_id = $newrow['id'] ?? null;
+                        
+                        if ($user_id) {
+                            // For each column that could contain a username
+                            foreach ($data['data']['cols'] as $col) {
+                                $col_key = "{$col['itemtype']}_{$col['id']}";
+
+                                // If this column exists and could be a username
+                                if (isset($newrow[$col_key]['displayname']) &&
+                                    is_string($newrow[$col_key]['displayname']) &&
+                                    !strpos($newrow[$col_key]['displayname'], '<a href')) {
+
+                                    // Create an explicit HTML link
+                                    $display_name = strip_tags($newrow[$col_key]['displayname']);
+                                    $newrow[$col_key]['displayname'] = sprintf(
+                                        '<a href="user.form.php?id=%d">%s</a>',
+                                        $user_id,
+                                        $display_name
+                                    );
+                                }
+                            }
+                        }
+                    }
                 }
 
                 $data['data']['rows'][$i] = $newrow;
@@ -2872,7 +2923,11 @@ JAVASCRIPT;
         $num    = (int) $request['num'];
         $prefix = isset($p['prefix_crit']) ? $p['prefix_crit'] : '';
 
-        if (!is_subclass_of($request['itemtype'], 'CommonDBTM')) {
+        // if (!is_subclass_of($request['itemtype'], 'CommonDBTM')) {
+        //     throw new \RuntimeException('Invalid itemtype provided!');
+        // }
+        $special_itemtypes = ['AllAssets'];
+        if (!in_array($request['itemtype'], $special_itemtypes) && !is_subclass_of($request['itemtype'], 'CommonDBTM')) {
             throw new \RuntimeException('Invalid itemtype provided!');
         }
 
@@ -3471,6 +3526,7 @@ JAVASCRIPT;
         $complexjoin = '';
         $adapter = Config::getAdapter();
 
+        
         if (isset($searchopt[$ID]['joinparams'])) {
             $complexjoin = self::computeComplexJoinID($searchopt[$ID]['joinparams']);
         }
@@ -3557,43 +3613,53 @@ JAVASCRIPT;
         switch ($table . "." . $field) {
             case "glpi_users.name":
                 if ($itemtype != 'User') {
-                    if ((isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])) {
-                        $addaltemail = "";
-                        if (
-                            (($itemtype == 'Ticket') || ($itemtype == 'Problem'))
-                            && isset($searchopt[$ID]['joinparams']['beforejoin']['table'])
-                            && (($searchopt[$ID]['joinparams']['beforejoin']['table']
-                                  == 'glpi_tickets_users')
-                                || ($searchopt[$ID]['joinparams']['beforejoin']['table']
-                                      == 'glpi_problems_users')
-                                || ($searchopt[$ID]['joinparams']['beforejoin']['table']
-                                      == 'glpi_changes_users'))
-                        ) { // For tickets_users
-                            $ticket_user_table
-                               = $searchopt[$ID]['joinparams']['beforejoin']['table'] .
-                                 "_" . self::computeComplexJoinID($searchopt[$ID]['joinparams']['beforejoin']
-                                                                          ['joinparams']) . $addmeta;
-                            $addaltemail = $adapter->getGroupConcat(
-                                "DISTINCT " . $adapter->concat([
-                                    "$ticket_user_table.users_id",
-                                    "' '",
-                                    "$ticket_user_table.alternative_email"
-                                ]),
-                                "",
-                                "'" . self::LONGSEP . "'",
-                                "NULL"
-                            ) . " AS \"" . $NAME . "_2\", ";
-                        }
-                        return " " . $adapter->getGroupConcat(
-                            "DISTINCT $table$addtable.id",
-                            "",
-                            "'" . self::LONGSEP . "'",
-                            "NULL"
+                    // Added raw column for ORDER BY in addition to column with alias
+                    return " $table$addtable.$field, 
+                        $table$addtable.$field AS \"" . $NAME . "\",
+                        $table$addtable.$field AS \"" . $NAME . "_name\",
+                        $table$addtable.realname AS \"" . $NAME . "_realname\",
+                        $table$addtable.id AS \"" . $NAME . "_id\",
+                        $table$addtable.firstname AS \"" . $NAME . "_firstname\",
+                        $ADDITONALFIELDS";
+                } else if ((isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])) {
+                    $addaltemail = "";
+                    if (
+                        (($itemtype == 'Ticket') || ($itemtype == 'Problem'))
+                        && isset($searchopt[$ID]['joinparams']['beforejoin']['table'])
+                        && (($searchopt[$ID]['joinparams']['beforejoin']['table'] == 'glpi_tickets_users')
+                            || ($searchopt[$ID]['joinparams']['beforejoin']['table'] == 'glpi_problems_users')
+                            || ($searchopt[$ID]['joinparams']['beforejoin']['table'] == 'glpi_changes_users'))
+                    ) { // For tickets_users
+                        $ticket_user_table = $searchopt[$ID]['joinparams']['beforejoin']['table'] . 
+                                            "_" . self::computeComplexJoinID($searchopt[$ID]['joinparams']['beforejoin']
+                                                                        ['joinparams']) . $addmeta;
+                        
+                         $concat_expr = $adapter->concat([
+                            "$ticket_user_table.users_id", 
+                            "' '",
+                            "$ticket_user_table.alternative_email"
+                        ]);
+                        
+                        $addaltemail = $adapter->getGroupConcat(
+                            "DISTINCT " . $concat_expr,
+                            self::LONGSEP,
+                            "$ticket_user_table.users_id" 
+                        ) . " AS \"" . $NAME . "_2\", ";
+                    }
+                    // $id_field = "$table$addtable.id";
+                    // Added raw column for ORDER BY without alias
+                    return "
+                        $table$addtable.$field,
+                        " . $adapter->getGroupConcat(
+                            "DISTINCT $table$addtable.id", 
+                            self::LONGSEP,
+                            "$table$addtable.id"  
                         ) . " AS \"" . $NAME . "\",
                         $addaltemail
                         $ADDITONALFIELDS";
-                    }
+                } else {
                     return " $table$addtable.$field AS \"" . $NAME . "\",
+                        $table$addtable.$field AS \"" . $NAME . "_name\",
                         $table$addtable.realname AS \"" . $NAME . "_realname\",
                         $table$addtable.id  AS \"" . $NAME . "_id\",
                         $table$addtable.firstname AS \"" . $NAME . "_firstname\",
@@ -3852,7 +3918,7 @@ JAVASCRIPT;
                         || (isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])
                     ) {
                         return " " . $adapter->getGroupConcat(
-                            "DISTINCT " . $adapter->dateAdd(
+                            "DISTINCT " . $adapter->getDateAdd(
                                 "$table$addtable." . $searchopt[$ID]["datafields"][1],
                                 "$interval",
                                 "($table$addtable." . $searchopt[$ID]["datafields"][2] . " $add_minus)"
@@ -3863,7 +3929,7 @@ JAVASCRIPT;
                         ) . " AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                     }
-                    return $adapter->dateAdd(
+                    return $adapter->getDateAdd(
                         "$table$addtable." . $searchopt[$ID]["datafields"][1],
                         "$interval",
                         "($table$addtable." . $searchopt[$ID]["datafields"][2] . " $add_minus)"
@@ -5906,6 +5972,34 @@ JAVASCRIPT;
     ) {
         global $CFG_GLPI;
 
+         // If AllAssets, specific adaptation
+    if ($itemtype == 'AllAssets') {
+        // Determine the real type
+        $real_type = $data['raw']['type'] ?? null;
+        
+        if ($real_type !== null) {
+            // Try to use the data with the real type directly
+            $real_itemtype_id = "{$real_type}_{$ID}";
+
+            // If the data with the real type exists
+            if (isset($data[$real_itemtype_id])) {
+                // Simulate a call with the real type
+                return self::giveItem($real_type, $ID, $data, $meta, $addobjectparams);
+            }
+
+            // Otherwise, try to transfer the data from AllAssets to the real type
+            if (isset($data["AllAssets_$ID"])) {
+                $data[$real_itemtype_id] = $data["AllAssets_$ID"];
+                return self::giveItem($real_type, $ID, $data, $meta, $addobjectparams);
+            }
+
+            // As a last resort, try to access the raw data directly
+            if (isset($data['raw']["ITEM_AllAssets_$ID"])) {
+                return $data['raw']["ITEM_AllAssets_$ID"];
+            }
+        }
+    }
+
         $searchopt = &self::getOptions($itemtype);
         if (
             $itemtype == 'AllAssets' || isset($CFG_GLPI["union_search_type"][$itemtype])
@@ -5921,8 +6015,8 @@ JAVASCRIPT;
 
             // Search option may not exists in subtype
             // This is the case for "Inventory number" for a Software listed from ReservationItem search
-            $subtype_so = &self::getOptions($data["TYPE"]);
-            if (!array_key_exists($ID, $subtype_so)) {
+            $subtype_so = &self::getOptions($data["TYPE"]?? null);
+            if (!is_array($subtype_so) || !array_key_exists($ID, $subtype_so)) {
                 return '';
             }
 
@@ -6889,6 +6983,45 @@ JAVASCRIPT;
                 case "number":
                     $out           = "";
                     $count_display = 0;
+                    // Verify if the index exists before accessing it
+                    if (!isset($data[$ID]) || !isset($data[$ID]['count'])) {
+                        // Attempt to find a compatible identifier
+                        $found = false;
+                        // If it's a Software_xx type identifier, try the snake_case convention
+                        if (preg_match('/^([A-Z][a-zA-Z]+)_(\d+)$/', $ID, $matches)) {
+                            $alternative_id = strtolower($matches[1]) . "s_id";
+                            if (isset($data[$alternative_id]) && isset($data[$alternative_id]['count'])) {
+                                $ID = $alternative_id; 
+                                $found = true;
+                                Toolbox::logDebug("Using alternative ID: $alternative_id instead of $ID");
+                            }
+                        }
+                        // If still not found, search by partial match
+                        if (!$found) {
+                            foreach (array_keys($data) as $key) {
+                                // Ignore metadata keys like 'raw', 'count', etc.
+                                if ($key === 'raw' || $key === 'count' || $key === 'display') {
+                                    continue;
+                                }
+
+                                // Search for a match case-insensitively
+                                if (stripos($key, str_replace('_', '', $ID)) !== false) {
+                                    if (isset($data[$key]) && isset($data[$key]['count'])) {
+                                        $ID = $key;
+                                        $found = true;
+                                        Toolbox::logDebug("Found similar ID: $key for $ID");
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        // If no compatible identifier is found
+                        if (!$found) {
+                            Toolbox::logWarning("Index $ID not found in data array in Search::giveItem()");
+                            return ""; // Return an empty string or a default value
+                        }
+                    }
                     for ($k = 0; $k < $data[$ID]['count']; $k++) {
                         if (strlen(trim($data[$ID][$k]['name'])) > 0) {
                             if ($count_display) {
@@ -7561,39 +7694,53 @@ JAVASCRIPT;
 
             // Complete linkfield if not define
             if (is_null($item)) { // Special union type
-                $itemtable = $CFG_GLPI['union_search_type'][$itemtype];
+               if (isset($CFG_GLPI['union_search_type']) && 
+                    is_array($CFG_GLPI['union_search_type']) && 
+                    isset($CFG_GLPI['union_search_type'][$itemtype])) {
+                    $itemtable = $CFG_GLPI['union_search_type'][$itemtype];
+                } else {
+                    // Default value or error handling
+                    $itemtable = '';
+                }
             } else {
-                if ($item = getItemForItemtype($itemtype)) {
+                // Use == for testing, not = for reassignment
+                $temp_item = getItemForItemtype($itemtype);
+                if ($temp_item !== false) {
+                    $item = $temp_item;
                     $itemtable = $item->getTable();
+                } else {
+                    $itemtable = '';
                 }
             }
-
-            foreach (self::$search[$itemtype] as $key => $val) {
-                if (!is_array($val) || count($val) == 1) {
-                    // skip sub-menu
-                    continue;
-                }
-                // Compatibility before 0.80 : Force massive action to false if linkfield is empty :
-                if (isset($val['linkfield']) && empty($val['linkfield'])) {
-                    self::$search[$itemtype][$key]['massiveaction'] = false;
-                }
-
-                // Set default linkfield
-                if (!isset($val['linkfield']) || empty($val['linkfield'])) {
-                    if (
-                        (strcmp($itemtable, $val['table']) == 0)
-                        && (!isset($val['joinparams']) || (count($val['joinparams']) == 0))
-                    ) {
-                        self::$search[$itemtype][$key]['linkfield'] = $val['field'];
-                    } else {
-                        self::$search[$itemtype][$key]['linkfield'] = getForeignKeyFieldForTable($val['table']);
+            if (isset(self::$search[$itemtype]) && is_array(self::$search[$itemtype])) {
+                foreach (self::$search[$itemtype] as $key => $val) {
+                    if (!is_array($val) || count($val) == 1) {
+                        // skip sub-menu
+                        continue;
                     }
-                }
-                // Add default joinparams
-                if (!isset($val['joinparams'])) {
-                    self::$search[$itemtype][$key]['joinparams'] = [];
-                }
+                    // Compatibility before 0.80 : Force massive action to false if linkfield is empty :
+                    if (isset($val['linkfield']) && empty($val['linkfield'])) {
+                        self::$search[$itemtype][$key]['massiveaction'] = false;
+                    }
+
+                    // Set default linkfield
+                    if (!isset($val['linkfield']) || empty($val['linkfield'])) {
+                        if (
+                            (strcmp($itemtable, $val['table']) == 0)
+                            && (!isset($val['joinparams']) || (count($val['joinparams']) == 0))
+                        ) {
+                            self::$search[$itemtype][$key]['linkfield'] = $val['field'];
+                        } else {
+                            self::$search[$itemtype][$key]['linkfield'] = getForeignKeyFieldForTable($val['table']);
+                        }
+                    }
+                    // Add default joinparams
+                    if (!isset($val['joinparams'])) {
+                        self::$search[$itemtype][$key]['joinparams'] = [];
+                    }
+                } 
             }
+           
         }
 
         return self::$search[$itemtype];
