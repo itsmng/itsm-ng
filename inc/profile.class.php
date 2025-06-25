@@ -571,6 +571,7 @@ class Profile extends CommonDBTM
      **/
     public static function getUnderActiveProfileRestrictCriteria()
     {
+        $adapter = self::getAdapter();
 
         // Not logged -> no profile to see
         if (!isset($_SESSION['glpiactiveprofile'])) {
@@ -579,7 +580,7 @@ class Profile extends CommonDBTM
 
         // Profile right : may modify profile so can attach all profile
         if (Profile::canCreate()) {
-            return [1];
+           return ['(TRUE)'];
         }
 
         $criteria = ['glpi_profiles.interface' => Session::getCurrentInterface()];
