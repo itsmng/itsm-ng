@@ -5856,6 +5856,7 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedAuthorBetween($date1 = '', $date2 = '')
     {
+        $adapter = $this::getAdapter();
         $linkclass = new $this->userlinkclass();
         $linktable = $linkclass->getTable();
 
@@ -5902,8 +5903,8 @@ abstract class CommonITILObject extends CommonDBTM
         if (!empty($date1) || !empty($date2)) {
             $criteria['WHERE'][] = [
                'OR' => [
-                  getDateCriteria("$ctable.date", $date1, $date2),
-                  getDateCriteria("$ctable.closedate", $date1, $date2),
+                  $adapter->getDateCriteria("$ctable.date", $date1, $date2),
+                  $adapter->getDateCriteria("$ctable.closedate", $date1, $date2),
                ]
             ];
         }
