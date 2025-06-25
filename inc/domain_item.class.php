@@ -552,7 +552,7 @@ class Domain_Item extends CommonDBRelation
         $domain  = new Domain();
         $used    = [];
         foreach ($results as $data) {
-            $domains[$data['assocID']] = $data;
+            $domains[$data['assocID']?? null] = $data;
             $used[$data['id']]         = $data['id'];
         }
 

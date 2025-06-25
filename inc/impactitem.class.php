@@ -53,6 +53,11 @@ class ImpactItem extends CommonDBTM
         CommonDBTM $item,
         bool $create_if_missing = true
     ) {
+        $items_id = $item->fields['id'] ?? null;
+        
+        if ($items_id === null) {
+            return new self();
+        }
 
         $it = self::getAdapter()->request([
            'SELECT' => [
@@ -61,7 +66,7 @@ class ImpactItem extends CommonDBTM
            'FROM' => self::getTable(),
            'WHERE'  => [
               'glpi_impactitems.itemtype' => get_class($item),
-              'glpi_impactitems.items_id' => $item->fields['id'],
+              'glpi_impactitems.items_id' => $items_id
            ]
         ]);
         $res = $it->fetchAssociative();
@@ -72,11 +77,14 @@ class ImpactItem extends CommonDBTM
         } elseif (!$res && $create_if_missing) {
             $id = $impact_item->add([
                'itemtype' => get_class($item),
-               'items_id' => $item->fields['id']
+               'items_id' => $items_id
             ]);
         } else {
             return false;
         }
+        if (!$id) {
+        return new self();
+    }
         $impact_item->getFromDB($id);
         return $impact_item;
     }

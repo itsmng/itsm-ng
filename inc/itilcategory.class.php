@@ -116,13 +116,13 @@ class ITILCategory extends CommonTreeDropdown
               'type' => 'select',
               'name' => 'tickettemplates_id_demand',
               'values' => getOptionForItems('TicketTemplate'),
-              'value' => $this->fields['tickettemplates_id_demand']
+              'value' => $this->fields['tickettemplates_id_demand']?? null
            ],
            __('Template for an incident') => [
               'type' => 'select',
               'name' => 'tickettemplates_id_incident',
               'values' => getOptionForItems('TicketTemplate'),
-              'value' => $this->fields['tickettemplates_id_incident']
+              'value' => $this->fields['tickettemplates_id_incident']?? null
            ],
            __('Template for a change') => [
               'type' => 'select',

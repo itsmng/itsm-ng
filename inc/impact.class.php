@@ -1212,7 +1212,7 @@ class Impact extends CommonGLPI
            'FROM'   => ImpactRelation::getTable(),
            'WHERE'  => [
               'itemtype_' . $target => get_class($node),
-              'items_id_' . $target => $node->fields['id']
+              'items_id_' . $target => $node->fields['id'] ?? null
            ]
         ]);
         $relations = $relations->fetchAllAssociative();
@@ -1343,8 +1343,8 @@ class Impact extends CommonGLPI
         $impact_item = ImpactItem::findForItem($item);
 
         // Load node position and parent
-        $new_node['impactitem_id'] = $impact_item->fields['id'];
-        $new_node['parent']        = $impact_item->fields['parent_id'];
+        $new_node['impactitem_id'] = $impact_item->fields['id'] ?? null;
+        $new_node['parent']        = $impact_item->fields['parent_id'] ?? null;
 
         // If the node has a parent, add it to the node list aswell
         if (!empty($new_node['parent'])) {
@@ -1635,7 +1635,7 @@ class Impact extends CommonGLPI
      */
     public static function getNodeID(CommonDBTM $item)
     {
-        return get_class($item) . self::NODE_ID_DELIMITER . $item->fields['id'];
+        return get_class($item) . self::NODE_ID_DELIMITER . ($item->fields['id'] ?? null);
     }
 
     /**

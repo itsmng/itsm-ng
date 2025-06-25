@@ -309,10 +309,9 @@ final class DbUtils
            . '(' . preg_quote(NS_GLPI, '/') . '|' . preg_quote(NS_PLUG, '/') . ')' // start with GLPI core or plugin namespace
            . preg_quote('\\', '/') // followed by an additionnal \
            . '/';
-        if (preg_match($sanitized_namespaced_pattern, $itemtype)) {
+        if (is_string($itemtype) && $itemtype !== null && preg_match($sanitized_namespaced_pattern, $itemtype)) {
             $itemtype = stripslashes($itemtype);
         }
-
         if (!is_subclass_of($itemtype, CommonGLPI::class, true)) {
             // Only CommonGLPI sublasses are valid itemtypes
             return false;

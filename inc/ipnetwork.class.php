@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
 * */
 
+use Laminas\Validator\IsArray;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -116,7 +118,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
 
         if (!isset($this->address)) {
             $this->address = new IPAddress();
-            if (!$this->address->setAddressFromArray($this->fields, "version", "address", "address")) {
+            if (is_array($this->fields) && !$this->address->setAddressFromArray($this->fields, "version", "address", "address")) {
                 return false;
             }
         }
@@ -129,7 +131,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
 
         if (!isset($this->netmask)) {
             $this->netmask = new IPNetmask();
-            if (!$this->netmask->setAddressFromArray($this->fields, "version", "netmask", "netmask")) {
+            if (is_array($this->fields) && !$this->netmask->setAddressFromArray($this->fields, "version", "netmask", "netmask")) {
                 return false;
             }
         }
@@ -1057,7 +1059,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
         $options['createRow'] = false;
         $network              = new self();
 
-        foreach (self::searchNetworksContainingIP($item) as $networks_id) {
+        foreach ((array) self::searchNetworksContainingIP($item) as $networks_id) {
             if ($network->getFromDB($networks_id)) {
                 $address = $network->getAddress();
                 $netmask = $network->getNetmask();
@@ -1078,7 +1080,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
                     $netmask->getTextual()
                 );
 
-                if ($network->fields['addressable'] == 1) {
+                if ($network->fields['addressable'] ?? null == 1) {
                     $content = "<span class='b'>" . $content . "</span>";
                 }
                 $content = sprintf(__('%1$s - %2$s'), $content, $network->getLink());

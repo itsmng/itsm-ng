@@ -242,7 +242,7 @@ class DeviceNetworkCard extends CommonDevice
         }
         if (in_array($item->getType(), NetworkPort::getNetworkPortInstantiations())) {
             $link = new Item_DeviceNetworkCard();
-            if ($link->getFromDB($item->fields['items_devicenetworkcards_id'])) {
+            if ($link->getFromDB($item->fields['items_devicenetworkcards_id']?? null)) {
                 $device = $link->getOnePeer(1);
                 if ($device) {
                     $row->addCell($row->getHeaderByName($column_name), $device->getLink(), $father);
