@@ -881,8 +881,6 @@ class Cartridge extends CommonDBChild
     **/
     public static function showForPrinter(Printer $printer, $old = 0)
     {
-        global $DB, $CFG_GLPI;
-
         $instID = $printer->getField('id');
         if (!self::canView()) {
             return false;

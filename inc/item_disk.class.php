@@ -320,8 +320,6 @@ class Item_Disk extends CommonDBChild
     **/
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        global $DB;
-
         $ID = $item->fields['id'];
         $itemtype = $item->getType();
 
@@ -346,16 +344,16 @@ class Item_Disk extends CommonDBChild
 
         echo "<div class='center'>";
 
-        $iterator = self::getFromItem($item);
+        $results = self::getFromItem($item);
         echo "<table class='tab_cadre_fixehov' aria-label='Item Detail'>";
         $colspan = 8;
         if (Plugin::haveImport()) {
             $colspan++;
         }
-        echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName(count($iterator)) .
+        echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName(count($results)) .
               "</th></tr>";
 
-        if (count($iterator)) {
+        if (count($results)) {
             $header = "<tr><th>" . __('Name') . "</th>";
             if (Plugin::haveImport()) {
                 $header .= "<th>" . __('Automatic inventory') . "</th>";
@@ -382,7 +380,7 @@ class Item_Disk extends CommonDBChild
             );
 
             $disk = new self();
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 $disk->getFromResultSet($data);
                 echo "<tr class='tab_bg_2" . (isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'") . "'>";
                 echo "<td>" . $disk->getLink() . "</td>";
