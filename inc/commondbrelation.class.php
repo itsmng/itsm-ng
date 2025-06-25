@@ -125,7 +125,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
             $conditions[] = $where1;
             $it = new \DBmysqlIterator($DB);
             $fields[]     = new \QueryExpression(
-                'IF(' . $it->analyseCrit($where1) . ', 1, 0) AS is_1'
+                'CASE WHEN ' . $it->analyseCrit($where1) . ' THEN 1 ELSE 0 END AS is_1'
             );
         } else {
             $fields[] = new \QueryExpression('0 AS is_1');
@@ -153,7 +153,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
             $conditions[] = $where2;
             $it = new \DBmysqlIterator($DB);
             $fields[]     = new \QueryExpression(
-                'IF(' . $it->analyseCrit($where2) . ', 1, 0) AS is_2'
+                'CASE WHEN ' . $it->analyseCrit($where2) . ' THEN 1 ELSE 0 END AS is_2'
             );
         } else {
             $fields[] = new \QueryExpression('0 AS is_2');
