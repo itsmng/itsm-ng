@@ -5054,6 +5054,9 @@ class Ticket extends CommonITILObject
                      'name' => 'itilcategories_id',
                      'actions' => getItemActionButtons(['info', 'add'], 'ITILCategory'),
                      $canupdate || $can_requester ? '' : 'disabled' => '',
+                     'hooks' => [
+                         'change' => $this->isNewID($ID) ? 'this.form.submit();' : ''
+                     ],
                      'init' => <<<JS
                     $('#dropdownForTicketCategory').val('');
                     $.ajax({
@@ -5243,7 +5246,7 @@ class Ticket extends CommonITILObject
               ],
            ]
         ];
-        renderTwigForm($form, '', $this->fields);
+        renderTwigForm($form, '', $this->fields, $tt);
         return true;
     }
 
