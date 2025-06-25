@@ -45,6 +45,7 @@ class Item_DeviceSimcard extends Item_Devices {
 
    static public $itemtype_2 = 'DeviceSimcard';
    static public $items_id_2 = 'devicesimcards_id';
+   static public $rightname = 'device';
 
    static protected $notable = false;
 
