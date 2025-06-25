@@ -4420,7 +4420,13 @@ class User extends CommonDBTM
 
                 foreach ($item_request as $data) {
                     $cansee = $item->can($data["id"], READ);
-                    $link   = $data["name"];
+                    if (!isset($data["name"])) {
+                        $linked_component = new ($itemtype::getDeviceType())();
+                        $linked_component->getFromDB($data[getForeignKeyFieldForItemType($itemtype::getDeviceType())]);
+                        $link = $linked_component->fields['designation'] . " (" . $data['id'] . ")";
+                    } else {
+                        $link   = $data["name"];
+                    }
                     if ($cansee) {
                         $link_item = $item::getFormURLWithID($data['id']);
                         if ($_SESSION["glpiis_ids_visible"] || empty($link)) {

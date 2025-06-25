@@ -602,8 +602,11 @@ class AuthLDAP extends CommonDBTM
 
             echo "<div class='center'>";
             Html::openMassiveActionsForm('massAuthLdapReplicate' . $rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $nb),
-                                         'container'     => 'massAuthLdapReplicate' . $rand];
+            $massiveactionparams = [
+                'num_displayed' => min($_SESSION['glpilist_limit'], $nb),
+                'container'     => 'massAuthLdapReplicate' . $rand,
+                'deprecated' => true,
+            ];
             Html::showMassiveActions($massiveactionparams);
             echo "<input type='hidden' name='id' value='$ID'>";
             echo "<table class='tab_cadre_fixehov' aria-label='List of LDAP directory replicates'>";

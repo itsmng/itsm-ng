@@ -2571,6 +2571,7 @@ JAVASCRIPT;
                  'name' => "criteria{$prefix}[$num][link]",
                  'values' => Search::getLogicalOperators(($num == 0)),
                  'value' => isset($criteria["link"]) ? $criteria["link"] : '',
+                 'noLib' => true,
               ],
               [
                  'type' => 'select',
@@ -2578,6 +2579,7 @@ JAVASCRIPT;
                  'name' => "criteria{$prefix}[$num][field]",
                  'values' => $values,
                  'value' => $value,
+                 'noLib' => true,
                  'hooks' => [
                     'change' => <<<JS
                      $.ajax({
@@ -2708,6 +2710,7 @@ JAVASCRIPT;
            'as_map' => $p['as_map'],
            'rowid' => $rowid,
            'spanid' => $spanid,
+           'noLib' => true,
            'meta' => true,
            'inputs' => [
               [
@@ -2720,6 +2723,7 @@ JAVASCRIPT;
                  'name' => "criteria{$prefix}[$num][link]",
                  'values' => Search::getLogicalOperators(($num == 0)),
                  'value' => isset($criteria["link"]) ? $criteria["link"] : '',
+                 'noLib' => true,
               ],
               [
                  'type' => 'select',
@@ -2727,6 +2731,7 @@ JAVASCRIPT;
                  'name' => "criteria{$prefix}[$num][itemtype]",
                  'values' => $values,
                  'value' => $value,
+                 'noLib' => true,
                  'hooks' => [
                     'change' => <<<JS
                      $.ajax({
@@ -2968,7 +2973,7 @@ JAVASCRIPT;
             $searchtype_name = "{$fieldname}{$prefix}[$num][searchtype]";
             $rands = Dropdown::showFromArray($searchtype_name, $actions, [
                'value' => $request["searchtype"],
-               'width' => '105px'
+               'width' => '180px',
             ]);
             $fieldsearch_id = Html::cleanId("dropdown_$searchtype_name$rands");
         }
@@ -4798,7 +4803,9 @@ JAVASCRIPT;
                 case "datetime":
                 case "date":
                 case "date_delay":
-                    if ($searchopt[$ID]["datatype"] == 'datetime') {
+                    if ($searchopt[$ID]["datatype"] == 'datetime' ||
+                        ($searchopt[$ID]["datatype"] == 'date' && $inittable == 'glpi_tickets')) {
+
                         // Specific search for datetime
                         if (in_array($searchtype, ['equals', 'notequals'])) {
                             $val = preg_replace("/:00$/", '', $val);
@@ -6716,6 +6723,13 @@ JAVASCRIPT;
                     return Html::timestampToString(
                         ProjectTask::getTotalEffectiveDurationForProject($data["id"]),
                         false
+                    );
+
+                case 'glpi_cartridgeitems._virtual':
+                    return Cartridge::getCount(
+                        $data["id"],
+                        $data[$ID][0]['alarm_threshold'],
+                        true
                     );
 
                 case 'glpi_printers._virtual':

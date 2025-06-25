@@ -86,7 +86,8 @@ class Ticket extends CommonITILObject
     public const SURVEY           = 131072;
     public const READDOCUMENT     = 262144;
 
-
+    protected $userentities;
+    protected $countentitiesforuser;
 
     public function getForbiddenStandardMassiveAction()
     {
@@ -2949,14 +2950,14 @@ class Ticket extends CommonITILObject
         $tab = array_merge($tab, $this->getSearchOptionsMain());
 
         $tab[] = [
-            'id'                 => '155',
-            'table'              => $this->getTable(),
-            'field'              => 'time_to_own',
-            'name'               => __('Time to own'),
-            'datatype'           => 'datetime',
-            'maybefuture'        => true,
-            'massiveaction'      => false,
-            'additionalfields'   => ['status']
+           'id'                 => '155',
+           'table'              => $this->getTable(),
+           'field'              => 'time_to_own',
+           'name'               => __('Time to own'),
+           'datatype'           => 'date',
+           'maybefuture'        => true,
+           'massiveaction'      => false,
+           'additionalfields'   => ['status']
         ];
 
         $tab[] = [
@@ -2980,14 +2981,14 @@ class Ticket extends CommonITILObject
         ];
 
         $tab[] = [
-            'id'                 => '180',
-            'table'              => $this->getTable(),
-            'field'              => 'internal_time_to_resolve',
-            'name'               => __('Internal time to resolve'),
-            'datatype'           => 'datetime',
-            'maybefuture'        => true,
-            'massiveaction'      => false,
-            'additionalfields'   => ['status']
+           'id'                 => '180',
+           'table'              => $this->getTable(),
+           'field'              => 'internal_time_to_resolve',
+           'name'               => __('Internal time to resolve'),
+           'datatype'           => 'date',
+           'maybefuture'        => true,
+           'massiveaction'      => false,
+           'additionalfields'   => ['status']
         ];
 
         $tab[] = [
@@ -3011,14 +3012,14 @@ class Ticket extends CommonITILObject
         ];
 
         $tab[] = [
-            'id'                 => '185',
-            'table'              => $this->getTable(),
-            'field'              => 'internal_time_to_own',
-            'name'               => __('Internal time to own'),
-            'datatype'           => 'datetime',
-            'maybefuture'        => true,
-            'massiveaction'      => false,
-            'additionalfields'   => ['status']
+           'id'                 => '185',
+           'table'              => $this->getTable(),
+           'field'              => 'internal_time_to_own',
+           'name'               => __('Internal time to own'),
+           'datatype'           => 'date',
+           'maybefuture'        => true,
+           'massiveaction'      => false,
+           'additionalfields'   => ['status']
         ];
 
         $tab[] = [
@@ -3043,20 +3044,20 @@ class Ticket extends CommonITILObject
 
         $max_date = '99999999';
         $tab[] = [
-            'id'                 => '188',
-            'table'              => $this->getTable(),
-            'field'              => 'next_escalation_level',
-            'name'               => __('Next escalation level'),
-            'datatype'           => 'datetime',
-            'usehaving'          => true,
-            'maybefuture'        => true,
-            'massiveaction'      => false,
-            // Get least value from TTO/TTR fields:
-            // - use TTO fields only if ticket not already taken into account,
-            // - use TTR fields only if ticket not already solved,
-            // - replace NULL or not kept values with 99999999 to be sure that they will not be returned by the LEAST function,
-            // - replace 99999999 by empty string to keep only valid values.
-            'computation'        => "REPLACE(
+           'id'                 => '188',
+           'table'              => $this->getTable(),
+           'field'              => 'next_escalation_level',
+           'name'               => __('Next escalation level'),
+           'datatype'           => 'date',
+           'usehaving'          => true,
+           'maybefuture'        => true,
+           'massiveaction'      => false,
+           // Get least value from TTO/TTR fields:
+           // - use TTO fields only if ticket not already taken into account,
+           // - use TTR fields only if ticket not already solved,
+           // - replace NULL or not kept values with 99999999 to be sure that they will not be returned by the LEAST function,
+           // - replace 99999999 by empty string to keep only valid values.
+           'computation'        => "REPLACE(
             LEAST(
                IF(" . $DB->quoteName('TABLE.takeintoaccount_delay_stat') . " <= 0,
                   COALESCE(" . $DB->quoteName('TABLE.time_to_own') . ", $max_date),
@@ -3083,36 +3084,38 @@ class Ticket extends CommonITILObject
         ];
 
         $tab[] = [
-            'id'                 => '13',
-            'table'              => 'glpi_items_tickets',
-            'field'              => 'items_id',
-            'name'               => _n('Associated element', 'Associated elements', Session::getPluralNumber()),
-            'datatype'           => 'specific',
-            'comments'           => true,
-            'nosort'             => true,
-            'nosearch'           => true,
-            'additionalfields'   => ['itemtype'],
-            'joinparams'         => [
-                'jointype'           => 'child'
-            ],
-            'forcegroupby'       => true,
-            'massiveaction'      => false
+           'id'                 => '13',
+           'table'              => 'glpi_items_tickets',
+           'field'              => 'items_id',
+           'name'               => _n('Associated element', 'Associated elements', Session::getPluralNumber()),
+           'datatype'           => 'specific',
+           'comments'           => true,
+           'nosort'             => true,
+           'noLib'              => true,
+           'nosearch'           => true,
+           'additionalfields'   => ['itemtype'],
+           'joinparams'         => [
+              'jointype'           => 'child'
+           ],
+           'forcegroupby'       => true,
+           'massiveaction'      => false
         ];
 
         $tab[] = [
-            'id'                 => '131',
-            'table'              => 'glpi_items_tickets',
-            'field'              => 'itemtype',
-            'name'               => _n('Associated item type', 'Associated item types', Session::getPluralNumber()),
-            'datatype'           => 'itemtypename',
-            'itemtype_list'      => 'ticket_types',
-            'nosort'             => true,
-            'additionalfields'   => ['itemtype'],
-            'joinparams'         => [
-                'jointype'           => 'child'
-            ],
-            'forcegroupby'       => true,
-            'massiveaction'      => false
+           'id'                 => '131',
+           'table'              => 'glpi_items_tickets',
+           'field'              => 'itemtype',
+           'name'               => _n('Associated item type', 'Associated item types', Session::getPluralNumber()),
+           'datatype'           => 'itemtypename',
+           'itemtype_list'      => 'ticket_types',
+           'noLib'              => true,
+           'nosort'             => true,
+           'additionalfields'   => ['itemtype'],
+           'joinparams'         => [
+              'jointype'           => 'child'
+           ],
+           'forcegroupby'       => true,
+           'massiveaction'      => false
         ];
 
         $tab[] = [
@@ -3285,27 +3288,27 @@ class Ticket extends CommonITILObject
         ];
 
         $tab[] = [
-            'id'                 => '60',
-            'table'              => 'glpi_ticketsatisfactions',
-            'field'              => 'date_begin',
-            'name'               => __('Creation date'),
-            'datatype'           => 'datetime',
-            'massiveaction'      => false,
-            'joinparams'         => [
-                'jointype'           => 'child'
-            ]
+           'id'                 => '60',
+           'table'              => 'glpi_ticketsatisfactions',
+           'field'              => 'date_begin',
+           'name'               => __('Creation date'),
+           'datatype'           => 'date',
+           'massiveaction'      => false,
+           'joinparams'         => [
+              'jointype'           => 'child'
+           ]
         ];
 
         $tab[] = [
-            'id'                 => '61',
-            'table'              => 'glpi_ticketsatisfactions',
-            'field'              => 'date_answered',
-            'name'               => __('Response date'),
-            'datatype'           => 'datetime',
-            'massiveaction'      => false,
-            'joinparams'         => [
-                'jointype'           => 'child'
-            ]
+           'id'                 => '61',
+           'table'              => 'glpi_ticketsatisfactions',
+           'field'              => 'date_answered',
+           'name'               => __('Response date'),
+           'datatype'           => 'date',
+           'massiveaction'      => false,
+           'joinparams'         => [
+              'jointype'           => 'child'
+           ]
         ];
 
         $tab[] = [
@@ -5068,16 +5071,19 @@ class Ticket extends CommonITILObject
                       }
                     });
                   JS,
-                            ]
-                        ],
-                        __('Category') => [
-                            'type' => 'select',
-                            'noLib' => 'true',
-                            'id' => 'dropdownForTicketCategory',
-                            'name' => 'itilcategories_id',
-                            'actions' => getItemActionButtons(['info', 'add'], 'ITILCategory'),
-                            $canupdate || $can_requester ? '' : 'disabled' => '',
-                            'init' => <<<JS
+                     ]
+                  ],
+                  __('Category') => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'id' => 'dropdownForTicketCategory',
+                     'name' => 'itilcategories_id',
+                     'actions' => getItemActionButtons(['info', 'add'], 'ITILCategory'),
+                     $canupdate || $can_requester ? '' : 'disabled' => '',
+                     'hooks' => [
+                         'change' => $this->isNewID($ID) ? 'this.form.submit();' : ''
+                     ],
+                     'init' => <<<JS
                     $('#dropdownForTicketCategory').val('');
                     $.ajax({
                       url: '{$CFG_GLPI["root_doc"]}/ajax/dropdownTicketCategories.php',
@@ -5110,139 +5116,140 @@ class Ticket extends CommonITILObject
                         <a href="{$formUrl}?id={$ID}&_openfollowup=1&forcetab=Ticket$1"
                         >{$reopenLabel}</a>
                      HTML : '',
-                        ],
-                        RequestType::getTypeName(1) => [
-                            'type' => 'select',
-                            'noLib' => 'true',
-                            'name' => 'requesttypes_id',
-                            'values' => getOptionForItems('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
-                            'value' => $this->fields['requesttypes_id'],
-                            $canupdate ? '' : 'disabled' => ''
-                        ],
-                        !$ID ? __('Approval request') : CommonITILValidation::getTypeName(1) => !$ID ? [] : [
-                            'type' => 'select',
-                            'noLib' => 'true',
-                            'name' => 'global_validation',
-                            'values' => CommonITILValidation::getAllStatusArray(false, true),
-                            'value' => $this->fields['global_validation'],
-                            (Session::haveRightsOr('ticketvalidation', TicketValidation::getCreateRights())
-                                && $canupdate) ? '' : 'disabled' => ''
-                        ],
-                        Location::getTypeName(1) => [
-                            'type' => 'select',
-                            'noLib' => 'true',
-                            'name' => 'locations_id',
-                            'itemtype' => Location::class,
-                            'value' => $this->fields['locations_id'],
-                            'actions' => getItemActionButtons(['info', 'add'], 'Location'),
-                            $canupdate ? '' : 'disabled' => '',
-                        ],
-                        __('Urgency') => [
-                            'type' => 'select',
-                            'noLib' => 'true',
-                            'name' => 'urgency',
-                            'id' => 'urgencySelect',
-                            'values' => [
-                                1 => static::getUrgencyName(1),
-                                2 => static::getUrgencyName(2),
-                                3 => static::getUrgencyName(3),
-                                4 => static::getUrgencyName(4),
-                                5 => static::getUrgencyName(5),
-                            ],
-                            'value' => $this->fields['urgency'],
-                            'hooks' => ['change' => $priorityScript,],
-                            $canupdate ? '' : 'disabled' => ''
-                        ],
-                        __('Impact') => [
-                            'type' => 'select',
-                            'noLib' => 'true',
-                            'name' => 'impact',
-                            'id' => 'impactSelect',
-                            'values' => [
-                                1 => static::getUrgencyName(1),
-                                2 => static::getUrgencyName(2),
-                                3 => static::getUrgencyName(3),
-                                4 => static::getUrgencyName(4),
-                                5 => static::getUrgencyName(5),
-                            ],
-                            'value' => $this->fields['impact'],
-                            $canupdate ? '' : 'disabled' => '',
-                            'hooks' => ['change' => $priorityScript,],
-                        ],
-                        __('Priority') => [
-                            'type' => 'select',
-                            'noLib' => 'true',
-                            'name' => 'priority',
-                            'id' => 'prioritySelect',
-                            'values' => [
-                                1 => static::getUrgencyName(1),
-                                2 => static::getUrgencyName(2),
-                                3 => static::getUrgencyName(3),
-                                4 => static::getUrgencyName(4),
-                                5 => static::getUrgencyName(5),
-                            ],
-                            'value' => $this->fields['priority'],
-                            $canupdate ? '' : 'disabled' => '',
-                        ],
-                    ],
-                ],
-                __('Actor') => [
-                    'visible' => true,
-                    'inputs' => [
-                        '' => [
-                            'content' => (function () use ($ID, $options) {
-                                ob_start();
-                                $this->showActorsPartForm($ID, $options);
-                                return ob_get_clean();
-                            })(),
-                            'col_lg' => 12,
-                            'col_md' => 12,
-                        ]
-                    ]
-                ],
-                __('Content') => [
-                    'visible' => true,
-                    'inputs' => [
-                        __('Title') => [
-                            'type' => 'text',
-                            'name' => 'name',
-                            'value' => $this->fields['name'],
-                            $canupdate ? '' : 'disabled' => '',
-                            'col_lg' => 12,
-                            'col_md' => 12,
-                        ],
-                        __('Description') => [
-                            'type' => 'richtextarea',
-                            'name' => 'content',
-                            'value' => $this->fields['content'],
-                            $canupdate ? '' : 'disabled' => '',
-                            'col_lg' => 12,
-                            'col_md' => 12,
-                            'required' => true,
-                        ],
-                        _n('Linked ticket', 'Linked tickets', Session::getPluralNumber()) => [
-                            'type' => 'ticketSelect',
-                            'name' => '_link',
-                            'relations' => [
-                                Ticket_Ticket::LINK_TO => __('Linked to'),
-                                Ticket_Ticket::DUPLICATE_WITH => __('Duplicates'),
-                                Ticket_Ticket::SON_OF => __('Son of'),
-                                Ticket_Ticket::PARENT_OF => __('Parent of'),
-                            ],
-                            'options' => getOptionForItems('Ticket', ['is_deleted' => false, 'NOT' => ['id' => $ID]]),
-                            'values' => Ticket_Ticket::getLinkedTicketsTo($ID),
-                            $canupdate ? '' : 'disabled' => '',
-                            'ticket_id' => $ID,
-                            'col_lg' => 6,
-                        ],
-                        sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
-                            'type' => 'file',
-                            'name' => 'files',
-                            'id' => 'fileSelectorForDocument',
-                            'multiple' => true,
-                            'values' => getLinkedDocumentsForItem('Ticket', $ID),
-                            'col_lg' => 6,
-                        ],
+                  ],
+                  RequestType::getTypeName(1) => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'name' => 'requesttypes_id',
+                     'values' => getOptionForItems('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
+                     'value' => $this->fields['requesttypes_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'RequestType'),
+                     $canupdate ? '' : 'disabled' => ''
+                  ],
+                  !$ID ? __('Approval request') : CommonITILValidation::getTypeName(1) => !$ID ? [] : [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'name' => 'global_validation',
+                     'values' => CommonITILValidation::getAllStatusArray(false, true),
+                     'value' => $this->fields['global_validation'],
+                     (Session::haveRightsOr('ticketvalidation', TicketValidation::getCreateRights())
+                        && $canupdate) ? '' : 'disabled' => ''
+                  ],
+                  Location::getTypeName(1) => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'name' => 'locations_id',
+                     'itemtype' => Location::class,
+                     'value' => $this->fields['locations_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], 'Location'),
+                     $canupdate ? '' : 'disabled' => '',
+                  ],
+                  __('Urgency') => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'name' => 'urgency',
+                     'id' => 'urgencySelect',
+                     'values' => [
+                        1 => static::getUrgencyName(1),
+                        2 => static::getUrgencyName(2),
+                        3 => static::getUrgencyName(3),
+                        4 => static::getUrgencyName(4),
+                        5 => static::getUrgencyName(5),
+                     ],
+                     'value' => $this->fields['urgency'],
+                     'hooks' => [ 'change' => $priorityScript, ],
+                     $canupdate ? '' : 'disabled' => ''
+                  ],
+                  __('Impact') => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'name' => 'impact',
+                     'id' => 'impactSelect',
+                     'values' => [
+                        1 => static::getUrgencyName(1),
+                        2 => static::getUrgencyName(2),
+                        3 => static::getUrgencyName(3),
+                        4 => static::getUrgencyName(4),
+                        5 => static::getUrgencyName(5),
+                     ],
+                     'value' => $this->fields['impact'],
+                     $canupdate ? '' : 'disabled' => '',
+                     'hooks' => [ 'change' => $priorityScript, ],
+                  ],
+                  __('Priority') => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'name' => 'priority',
+                     'id' => 'prioritySelect',
+                     'values' => [
+                        1 => static::getUrgencyName(1),
+                        2 => static::getUrgencyName(2),
+                        3 => static::getUrgencyName(3),
+                        4 => static::getUrgencyName(4),
+                        5 => static::getUrgencyName(5),
+                     ],
+                     'value' => $this->fields['priority'],
+                     $canupdate ? '' : 'disabled' => '',
+                  ],
+               ],
+              ],
+              __('Actor') => [
+               'visible' => true,
+               'inputs' => [
+                   '' => [
+                       'content' => (function () use ($ID, $options) {
+                           ob_start();
+                           $this->showActorsPartForm($ID, $options);
+                           return ob_get_clean();
+                       })(),
+                       'col_lg' => 12,
+                       'col_md' => 12,
+                   ]
+               ]
+              ],
+              __('Content') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Title') => [
+                     'type' => 'text',
+                     'name' => 'name',
+                     'value' => $this->fields['name'],
+                     $canupdate ? '' : 'disabled' => '',
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                  ],
+                  __('Description') => [
+                     'type' => 'richtextarea',
+                     'name' => 'content',
+                     'value' => $this->fields['content'],
+                     $canupdate ? '' : 'disabled' => '',
+                     'col_lg' => 12,
+                     'col_md' => 12,
+                     'required' => true,
+                  ],
+                  _n('Linked ticket', 'Linked tickets', Session::getPluralNumber()) => [
+                     'type' => 'ticketSelect',
+                     'name' => '_link',
+                     'relations' => [
+                        Ticket_Ticket::LINK_TO => __('Linked to'),
+                        Ticket_Ticket::DUPLICATE_WITH => __('Duplicates'),
+                        Ticket_Ticket::SON_OF => __('Son of'),
+                        Ticket_Ticket::PARENT_OF => __('Parent of'),
+                     ],
+                     'options' => getOptionForItems('Ticket', ['is_deleted' => 0, 'NOT' => ['id' => $ID]]),
+                     'values' => Ticket_Ticket::getLinkedTicketsTo($ID),
+                     $canupdate ? '' : 'disabled' => '',
+                     'ticket_id' => $ID,
+                     'col_lg' => 6,
+                  ],
+                  sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
+                     'type' => 'file',
+                     'name' => 'files',
+                     'id' => 'fileSelectorForDocument',
+                     'multiple' => true,
+                     'values' => getLinkedDocumentsForItem('Ticket', $ID),
+                     'col_lg' => 6,
+                  ],
 
                         __('Associated elements') => (($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] != 0)
                             && (count($_SESSION["glpiactiveprofile"]["helpdesk_item_type"])))
@@ -5264,7 +5271,7 @@ class Ticket extends CommonITILObject
                 ],
             ]
         ];
-        renderTwigForm($form, '', $this->fields);
+        renderTwigForm($form, '', $this->fields, $tt);
         return true;
     }
 
@@ -7198,6 +7205,24 @@ class Ticket extends CommonITILObject
      */
     public function getValueToSelect($field_id_or_search_options, $name = '', $values = '', $options = [])
     {
+        if (isset($field_id_or_search_options['field']) && isset($field_id_or_search_options['datatype'])) {
+            $dateFields = [
+                'date', 'closedate', 'solvedate', 'date_mod', 'time_to_resolve',
+                'time_to_own', 'internal_time_to_resolve', 'internal_time_to_own'
+            ];
+
+            if (in_array($field_id_or_search_options['field'], $dateFields) &&
+            $field_id_or_search_options['datatype'] === 'date') {
+
+                return Html::showDateField($name, [
+                'value' => $values,
+                'display' => false,
+                'showtime' => false,
+                'relative_dates' => isset($options['relative_dates']) ? $options['relative_dates'] : false
+                ] + $options);
+            }
+        }
+
         if (isset($field_id_or_search_options['linkfield'])) {
             switch ($field_id_or_search_options['linkfield']) {
                 case 'requesttypes_id':
@@ -7218,13 +7243,12 @@ class Ticket extends CommonITILObject
                         if (!is_array($options['condition'])) {
                             $options['condition'] = [$options['condition']];
                         }
-                        $opt = array_merge($opt, $options['condition']);
+                        $options['condition'] = $opt;
+                        break;
                     }
-                    $options['condition'] = $opt;
-                    break;
+                    return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
             }
         }
-        return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
     }
 
     public function showStatsDates()

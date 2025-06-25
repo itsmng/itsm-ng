@@ -1747,6 +1747,68 @@ abstract class CommonITILObject extends CommonDBTM
             return false;
         }
 
+        //  --- Change V2 actor fields to standard V1 fields
+        if (isset($input["_itil_assign"])) {
+            if (isset($input["_itil_assign"]["_type"])) {
+                $field = $input["_itil_assign"]["_type"];
+                switch ($field) {
+                    case 'user':
+                        if (isset($input["_itil_assign"]["users_id"])) {
+                            $input['_users_id_assign'] = $input["_itil_assign"]["users_id"];
+                        }
+                        break;
+
+                    case 'group':
+                        if (isset($input["_itil_assign"]["groups_id"])) {
+                            $input['_groups_id_assign'] = $input["_itil_assign"]["groups_id"];
+                        }
+                        break;
+
+                    case 'supplier':
+                        if (isset($input["_itil_assign"]["suppliers_id"])) {
+                            $input['_suppliers_id_assign'] = $input["_itil_assign"]["suppliers_id"];
+                        }
+                        break;
+                }
+            }
+        }
+        if (isset($input["_itil_requester"])) {
+            if (isset($input["_itil_requester"]["_type"])) {
+                $field = $input["_itil_requester"]["_type"];
+                switch ($field) {
+                    case 'user':
+                        if (isset($input["_itil_requester"]["users_id"])) {
+                            $input['_users_id_requester'] = $input["_itil_requester"]["users_id"];
+                        }
+                        break;
+
+                    case 'group':
+                        if (isset($input["_itil_requester"]["groups_id"])) {
+                            $input['_groups_id_of_requester'] = $input["_itil_requester"]["groups_id"];
+                        }
+                        break;
+                }
+            }
+        }
+        if (isset($input["_itil_observer"])) {
+            if (isset($input["_itil_observer"]["_type"])) {
+                $field = $input["_itil_observer"]["_type"];
+                switch ($field) {
+                    case 'user':
+                        if (isset($input["_itil_observer"]["users_id"])) {
+                            $input['_users_id_observer'] = $input["_itil_observer"]["users_id"];
+                        }
+                        break;
+
+                    case 'group':
+                        if (isset($input["_itil_observer"]["groups_id"])) {
+                            $input['_groups_id_observer'] = $input["_itil_observer"]["groups_id"];
+                        }
+                        break;
+                }
+            }
+        }
+
         // save value before clean;
         $title = ltrim($input['name']);
 
@@ -3775,7 +3837,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'date',
            'name'               => __('Opening date'),
-           'datatype'           => 'datetime',
+           'datatype'           => 'date',
            'massiveaction'      => false
         ];
 
@@ -3784,7 +3846,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'closedate',
            'name'               => __('Closing date'),
-           'datatype'           => 'datetime',
+           'datatype'           => 'date',
            'massiveaction'      => false
         ];
 
@@ -3793,7 +3855,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'time_to_resolve',
            'name'               => __('Time to resolve'),
-           'datatype'           => 'datetime',
+           'datatype'           => 'date',
            'maybefuture'        => true,
            'massiveaction'      => false,
            'additionalfields'   => ['status']
@@ -3824,7 +3886,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'solvedate',
            'name'               => __('Resolution date'),
-           'datatype'           => 'datetime',
+           'datatype'           => 'date',
            'massiveaction'      => false
         ];
 
@@ -3833,7 +3895,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'date_mod',
            'name'               => __('Last update'),
-           'datatype'           => 'datetime',
+           'datatype'           => 'date',
            'massiveaction'      => false
         ];
 
@@ -7413,77 +7475,92 @@ abstract class CommonITILObject extends CommonDBTM
             echo "<h2 style='font-family: $font;'>" . _sx('button', 'Add') . " : </h2>";
         }
         if ($canadd_fup) {
-            echo "<li class='followup' style='font-family: $font;' onclick='" .
-                 "javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"ITILFollowup\");'>"
-                 . "<i class='far fa-comment' aria-hidden='true'></i>" . _n('Followup', 'Followups', 1);
-            echo "</li>";
+            echo "<li class='followup' style='font-family: $font;' role='button' tabindex='0'
+                  onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"ITILFollowup\");'
+                  onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
+                  . "<i class='far fa-comment' aria-hidden='true'></i>" . _n('Followup', 'Followups', 1) .
+                  "</li>";
             if ($canuse_shortcuts) {
                 echo "<script>
-            hotkeys('shift+f', function(e, h) {
-               e.preventDefault();
-               $('.followup').trigger('click');
-            });</script>";
+                hotkeys('shift+f', function(e, h) {
+                   e.preventDefault();
+                   $('.followup').trigger('click');
+                });</script>";
             }
         }
 
         if ($canadd_task) {
-            echo "<li class='task' style='font-family: $font;' onclick='" .
-                 "javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"$taskClass\");'>"
-                 . "<i class='far fa-check-square' aria-hidden='true'></i>" . _n('Task', 'Tasks', 1) . "</li>";
+            echo "<li class='task' style='font-family: $font;' role='button' tabindex='0'
+                  onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"$taskClass\");'
+                  onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
+                  . "<i class='far fa-check-square' aria-hidden='true'></i>" . _n('Task', 'Tasks', 1) .
+                  "</li>";
             if ($canuse_shortcuts) {
                 echo "<script>
-            hotkeys('shift+t', function(e, h) {
-               e.preventDefault();
-               $('.task').trigger('click');
-            });</script>";
+                hotkeys('shift+t', function(e, h) {
+                   e.preventDefault();
+                   $('.task').trigger('click');
+                });</script>";
             }
         }
+
         if ($canadd_document) {
-            echo "<li class='document' style='font-family: $font;' onclick='" .
-                 "javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"Document_Item\");'>"
-                 . "<i class='fa fa-paperclip' aria-hidden='true'></i>" . Document::getTypeName(1) . "</li>";
+            echo "<li class='document' style='font-family: $font;' role='button' tabindex='0'
+                  onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"Document_Item\");'
+                  onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
+                  . "<i class='fa fa-paperclip' aria-hidden='true'></i>" . Document::getTypeName(1) .
+                  "</li>";
             if ($canuse_shortcuts) {
                 echo "<script>
-            hotkeys('shift+d', function(e, h) {
-               e.preventDefault();
-               $('.document').trigger('click');
-            });</script>";
+                hotkeys('shift+d', function(e, h) {
+                   e.preventDefault();
+                   $('.document').trigger('click');
+                });</script>";
             }
         }
+
         if ($canadd_validation) {
-            echo "<li class='validation' style='font-family: $font;' onclick='" .
-               "javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"$validation_class\");'>"
-               . "<i class='far fa-thumbs-up' aria-hidden='true'></i>" . _n('Approval', 'Approvals', 1) . "</li>";
+            echo "<li class='validation' style='font-family: $font;' role='button' tabindex='0'
+                  onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"$validation_class\");'
+                  onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
+                  . "<i class='far fa-thumbs-up' aria-hidden='true'></i>" . _n('Approval', 'Approvals', 1) .
+                  "</li>";
             if ($canuse_shortcuts) {
                 echo "<script>
-            hotkeys('shift+a', function(e, h) {
-               e.preventDefault();
-               $('.validation').trigger('click');
-            });</script>";
+                hotkeys('shift+a', function(e, h) {
+                   e.preventDefault();
+                   $('.validation').trigger('click');
+                });</script>";
             }
         }
+
         if ($canadd_solution) {
-            echo "<li class='solution' style='font-family: $font;' onclick='" .
-                 "javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"Solution\");'>"
-                 . "<i class='fa fa-check' aria-hidden='true'></i>" . _n('Solution', 'Solutions', 1) . "</li>";
+            echo "<li class='solution' style='font-family: $font;' role='button' tabindex='0'
+                  onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"Solution\");'
+                  onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
+                  . "<i class='fa fa-check' aria-hidden='true'></i>" . _n('Solution', 'Solutions', 1) .
+                  "</li>";
             if ($canuse_shortcuts) {
                 echo "<script>
-            hotkeys('shift+s', function(e, h) {
-               e.preventDefault();
-               $('.solution').trigger('click');
-            });</script>";
+                hotkeys('shift+s', function(e, h) {
+                   e.preventDefault();
+                   $('.solution').trigger('click');
+                });</script>";
             }
         }
+
         if ($canuse_shortcuts) {
-            echo "<li class='shortcutpop' style='font-family: $font;' onclick=\"" .
-                  "alert('" .
+            echo "<li class='shortcutpop' style='font-family: $font;' role='button' tabindex='0'
+                  onclick=\"alert('" .
                   "<kbd>SHIFT</kbd>+<kbd>F</kbd> : Followup <br> " .
                   "<kbd>SHIFT</kbd>+<kbd>T</kbd> : Task <br> " .
                   "<kbd>SHIFT</kbd>+<kbd>D</kbd> : Document <br> " .
                   "<kbd>SHIFT</kbd>+<kbd>A</kbd> : Approval <br> " .
-                  "<kbd>SHIFT</kbd>+<kbd>S</kbd> : Solution');\">" .
-                  __('Shortcuts') . "</li>";
+                  "<kbd>SHIFT</kbd>+<kbd>S</kbd> : Solution');\"
+                  onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
+                  . __('Shortcuts') . "</li>";
         }
+
         Plugin::doHook('timeline_actions', ['item' => $this, 'rand' => $rand]);
 
         echo "</ul>"; // timeline_choices

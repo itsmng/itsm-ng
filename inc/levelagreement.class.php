@@ -498,7 +498,8 @@ abstract class LevelAgreement extends CommonDBChild
         if (count($laList)) {
             if ($canedit) {
                 Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                $massiveactionparams = ['container' => 'mass' . __CLASS__ . $rand];
+                $massiveactionparams = ['container' => 'mass' . __CLASS__ . $rand,
+                                        'deprecated'    => true,];
                 Html::showMassiveActions($massiveactionparams);
             }
 

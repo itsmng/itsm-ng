@@ -1,191 +1,709 @@
-<div class="table-container">
-	{% if not id %}
-		{% set id = 'table' ~ random() %}
-	{% endif %}
-	{% set rand=random() %}
-	{% if not minimal or noToolBar is not defined %}
-	<div
-		id="toolbar{{rand}}"
-		class="btn-group"
-		>
-		{% if massive_action is defined %}
-		<button type="button" aria-label="Actions" class="btn btn-secondary" onclick="massiveaction_window{{id}}.dialog('open')">
-			<i class="fas fa-hammer" title="Actions"></i>
-		</button>
-		{% endif %}
-		{% if column_edit is defined %}
-		<button type="button" class="btn btn-secondary" aria-label="Options" onclick="$('#search-config-{{itemtype}}').dialog('open')">
-			<i class="fas fa-wrench" title="Options"></i>
-		</button>
-		{% endif %}
-	</div>
-	{% endif %}
-	<table aria-label="data"
-		id="{{id}}"
-		class="table table-striped table-bordered table-hover"
-		{% if height %}
-		data-height="{{height}}"
-		{% endif %}
-		{% if not minimal %}
-            {% if noToolBar is not defined %}
-                data-toolbar="#toolbar{{rand}}"
-                data-show-columns-toggle-all="true"
-                data-click-to-select="true"
-                data-show-export="true"
-                data-show-columns="true"
-            {% endif %}
-			{% if not height %}
-				data-pagination="true"
-				show-extended-pagination="true"
-			{% endif %}
-			data-sortable="true"
-            data-page-size="{{pageSize is defined ? pageSize : 15}}"
-			data-icons="icons"
-		{% endif %}
-		{% if url is defined %}
-			data-url="{{url}}"
-			data-side-pagination="server"
-		{% endif %}
-		{% if is_trash is defined %} data-buttons="buttons{{rand}}" {% endif %}
-		>
-		<thead>
-			<tr>
-				{% if massive_action is defined %}
-					<th data-field="state" data-checkbox="true" data-formatter="VerifyMassiveAction{{rand}}"></th>
-				{% elseif radio %}
-					<th data-radio="true" data-field="select"></th>
-				{% endif %}
-				{% for state, field in fields %}
-					<th {% if not minimal %} data-sortable="true" {% endif  %}
-						data-field='{{state}}' >{{ field|raw }}</th>
-				{% endfor %}
-			</tr>
-		</thead>
-		{% if url is not defined %}
-		<tbody class="table-{{ (is_trash == 1) ? 'primary' : 'light' }}">
-			{% for key, value in values %}
-				<tr
-				{% if massive_action is defined %}
-					data-id="{{key}}" data-value='{{massive_action[key]}}'
-				{% endif %}
-				>
-					{% if (massive_action is defined or radio is defined) %}
-						<td></td>
-					{% endif %}
-					{% for col in fields|keys %}
-						<td>{{ value[col] | raw }}</td>
-					{% endfor %}
-				</tr>
-			{% endfor %}
-		</tbody>
-		{% endif %}
-	</table>
-	{% if radio is defined %}
-    <input id="table_input{{id}}" type="hidden" name="{{radio}}" value=''>
-	{% endif %}
-</div>
+{% if not id %}
+  {% set id = 'table' ~ random() %}
+{% endif %}
+{% set rand=random() %}
+<div class="bootstrap-table bootstrap5" id="{{ id }}"></div>
+{% if radio is defined and radio %}
+<input id="table_input{{id}}" type="hidden" name="{{radio}}" value=''>
+{% endif %}
 
-<script src="{{root_doc}}/vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"></script>
+<script src="{{root_doc}}/node_modules/@tanstack/table-core/build/umd/index.production.js"></script>
+<script src="{{root_doc}}/public/lib/nanostores.js"></script>
+<script src="{{root_doc}}/node_modules/htm/dist/htm.umd.js"></script>
+<script src="{{root_doc}}/node_modules/vhtml/dist/vhtml.min.js"></script>
 <script>
-	window.icons = {
-		columns: 'fas fa-columns',
-		export: 'fas fa-file-export',
-	}
+let massiveActionSelection_{{ id }} = [];
+window['{{ id }}_getMassiveActionSelection'] = function() {
+    return massiveActionSelection_{{ id }};
+};
+$(document).ready(function() {
+    const { createColumnHelper, createTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel } = TableCore;
+    const { atom } = Nanostores;
+    const html = htm.bind(vhtml);
+    const {{ id }}_state = atom({});
+    const wrapperElement = document.getElementById('{{ id }}');
 
-	$(function() {
-		setTimeout(function() {
-			$('#{{id}}').bootstrapTable({
-                loadingTemplate: function () { return '<div class="spinner-border mt-5" role="status"><span class="visually-hidden">Loading...</span></div>' }
+    const trimmedId = '{{ id }}'.replace(/\d+$/, '');
+    const fields_array = [
+        {% for key, value in fields %}
+            [{{ key|json_encode|raw }}, {{ value|json_encode|raw }}],
+        {% endfor %}
+    ];
+    const fields = Object.fromEntries(fields_array);
+    const fieldKeys = fields_array.map(p => p[0]);
+
+    const values = {{ url ? '[]' : values|json_encode|raw }};
+    const massiveAction = {{ massive_action is defined ? massive_action|json_encode|raw : "[]" }};
+    const radio = {{ radio is defined and radio ? 'true' : 'false' }};
+    const columnEdit = {{ column_edit is defined ? (column_edit ? "true" : "false") : "false" }};
+    const minimal = {{ minimal is defined ? (minimal ? "true" : "false") : "false" }};
+    const isTrash = {{ is_trash is defined ? (is_trash ? "true" : "false") : "false" }};
+    const canTrash = {{ can_trash is defined ? (can_trash ? "true" : "false") : "false" }};
+    const noToolBar = {{ noToolBar is defined ? (noToolBar ? "true" : "false") : "false" }};
+    const url = {{ url is defined ? url|json_encode|raw : "null" }};
+    const itemtype = {{ itemtype is defined ? itemtype|json_encode|raw : "''" }};
+    const showExport = {{ show_export is defined ? (show_export ? "true" : "false") : "false" }};
+    const hasMassiveAction = {{ massive_action is defined ? 'true' : 'false' }};
+
+    if (!url && hasMassiveAction) {
+        Object.keys(values).forEach(key => {
+            if (values[key]) {
+                values[key].value = massiveAction[key];
+            }
+        });
+    }
+
+    let table;
+    let serverTotal = null;
+
+    const htmlInjectionMap = new Map();
+    function decodeHtml(html) {
+        const txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+    const renderRawHTML = (htmlString) => {
+        if (typeof htmlString === 'string' && /<[^>]*>/.test(htmlString)) {
+            const marker = `__HTML_CONTENT_${Math.random().toString(36).substring(2, 10)}__`;
+            htmlInjectionMap.set(marker, htmlString);
+            return marker;
+        }
+        return decodeHtml(htmlString);
+    };
+
+    const flexRender = (comp, props) => (typeof comp === 'function' ? comp(props) : comp);
+
+    const storeState = (state) => {
+        const keySuffix = itemtype || trimmedId;
+        localStorage.setItem('tableState_pagination_' + keySuffix, JSON.stringify(state.pagination));
+        localStorage.setItem('tableState_sorting_' + keySuffix, JSON.stringify(state.sorting));
+        localStorage.setItem('tableState_visibility_' + keySuffix, JSON.stringify(state.columnVisibility));
+    };
+
+    const loadState = () => {
+        const keySuffix = itemtype || trimmedId;
+        const pagination = JSON.parse(localStorage.getItem('tableState_pagination_' + keySuffix) || 'null');
+        const sorting = JSON.parse(localStorage.getItem('tableState_sorting_' + keySuffix) || 'null');
+        const visibility = JSON.parse(localStorage.getItem('tableState_visibility_' + keySuffix) || 'null');
+        return { pagination, sorting, visibility };
+    };
+
+    const renderLoading = (isLoading) => {
+        const tableContainer = wrapperElement.querySelector('.fixed-table-container');
+        if (!tableContainer) {
+            return;
+        }
+        let overlay = tableContainer.querySelector('.loading-overlay');
+        if (isLoading) {
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'loading-overlay';
+                overlay.style.position = 'absolute';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.background = 'rgba(255, 255, 255, 0.8)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '10';
+                overlay.innerHTML = '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>';
+                tableContainer.style.position = 'relative';
+                tableContainer.appendChild(overlay);
+            }
+        } else if (overlay) {
+            tableContainer.removeChild(overlay);
+        }
+    };
+
+    const fetchDataAndRender = async () => {
+        if (!url) return;
+        renderLoading(true);
+
+        const state = table.getState();
+        const { pageIndex, pageSize } = state.pagination;
+        const { sorting } = state;
+
+        const fetchUrl = new URL(url.replace(/&amp;/g, '&'), window.location.origin);
+        fetchUrl.searchParams.set('offset', pageIndex * pageSize);
+        fetchUrl.searchParams.set('limit', pageSize);
+
+        if (sorting && sorting.length > 0) {
+            fetchUrl.searchParams.set('sort', sorting[0].id);
+            fetchUrl.searchParams.set('order', sorting[0].desc ? 'desc' : 'asc');
+        }
+
+        try {
+            const response = await fetch(fetchUrl.toString());
+            const result = await response.json();
+            serverTotal = result.total;
+            table.setOptions(prev => ({
+                ...prev,
+                data: result.rows,
+                pageCount: Math.ceil(result.total / pageSize),
+            }));
+        } catch (error) {
+            console.error("Failed to fetch table data:", error);
+            table.setOptions(prev => ({ ...prev, data: [] }));
+            serverTotal = 0;
+        } finally {
+            renderLoading(false);
+            renderTable();
+        }
+    };
+
+    const useTable = (options) => {
+        const { data, ...restOptions } = options;
+        const resolvedOptions = { state: {}, onStateChange: () => {}, getCoreRowModel: getCoreRowModel(), getPaginationRowModel: getPaginationRowModel(), getSortedRowModel: getSortedRowModel(), data, ...restOptions };
+        const { pagination, sorting, visibility } = loadState();
+        if (pagination) resolvedOptions.initialState.pagination = pagination;
+        if (sorting) resolvedOptions.initialState.sorting = sorting;
+        if (visibility) resolvedOptions.initialState.columnVisibility = visibility;
+
+        const tableInstance = createTable(resolvedOptions);
+        {{ id }}_state.set(tableInstance.initialState);
+
+        {{ id }}_state.subscribe((currentState) => {
+            tableInstance.setOptions((prev) => ({
+                ...prev,
+                ...restOptions,
+                state: { ...currentState, ...restOptions.state },
+                onStateChange: (updater) => {
+                    let newState = typeof updater === 'function' ? updater(currentState) : updater;
+                    const oldState = currentState;
+
+                    if (url) {
+                        const paginationChanged = JSON.stringify(oldState.pagination) !== JSON.stringify(newState.pagination);
+                        const sortingChanged = JSON.stringify(oldState.sorting) !== JSON.stringify(newState.sorting);
+                        if (paginationChanged || sortingChanged) {
+                            if (paginationChanged) massiveActionSelection_{{ id }} = [];
+                            {{ id }}_state.set(newState);
+                            storeState(newState);
+                            fetchDataAndRender();
+                            return;
+                        }
+                    }
+                    {{ id }}_state.set(newState);
+                    storeState(newState);
+                    renderTable();
+                },
+            }));
+        });
+        return tableInstance;
+    };
+
+    const columnHelper = createColumnHelper();
+    let columns = [];
+    if (radio) {
+        columns.push(columnHelper.display({ id: 'select', cell: info => html`<input type="radio" name="row-select-{{id}}" class="row-select" data-row-id="${info.row.id}" />` }));
+    } else if (hasMassiveAction) {
+        columns.push(columnHelper.display({ id: 'select', header: () => html`<input type="checkbox" id="select-all" />`, cell: info => html`<input type="checkbox" class="row-select" data-row-id="${info.row.id}" />` }));
+    }
+    const dataColumns = fieldKeys.map(field => columnHelper.accessor(String(field), { header: () => html`${decodeHtml(fields[field])}`, cell: info => renderRawHTML(info.getValue()) }));
+    columns = columns.concat(dataColumns);
+
+    const data = Object.values(values).map(value => {
+        const row = {};
+        fieldKeys.forEach(field => {
+            row[String(field)] = value[String(field)];
+        });
+        if (value.value) {
+            row.value = value.value;
+        }
+        return row;
+    });
+
+    table = useTable({
+        data,
+        columns,
+        manualPagination: !!url,
+        manualSorting: !!url,
+        initialState: {
+            pagination: {
+                pageSize: {{pageSize is defined ? pageSize : 15}}
+            }
+        }
+    });
+
+    const renderPagination = () => {
+        const totalPages = table.getPageCount();
+        const currentPage = table.getState().pagination.pageIndex + 1;
+        const pageSize = table.getState().pagination.pageSize;
+        const totalRows = table.getFilteredRowModel().rows.length;
+        const startRow = table.getState().pagination.pageIndex * pageSize + 1;
+        const endRow = Math.min((table.getState().pagination.pageIndex + 1) * pageSize, totalRows);
+
+        const maxVisibleItems = 7;
+        const pages = [];
+
+        if (totalPages <= maxVisibleItems) {
+            for (let i = 1; i <= totalPages; i++) {
+                pages.push(i);
+            }
+        } else {
+            pages.push(1);
+            let remainingSlots = maxVisibleItems - 3;
+
+            if (currentPage > 4) {
+                pages.push('...');
+                remainingSlots--;
+            }
+
+            const startPage = Math.max(2, currentPage - Math.floor(remainingSlots / 2));
+            const endPage = Math.min(totalPages - 1, startPage + remainingSlots - 1);
+
+            for (let i = startPage; i <= endPage; i++) {
+                pages.push(i);
+            }
+
+            if (endPage < totalPages - 1) {
+                pages.push('...');
+            }
+
+            pages.push(totalPages);
+        }
+
+        const pageSizeOptions = [15, 25, 50, 100];
+
+        return html`
+            <div class="fixed-table-pagination">
+                <div class="float-left pagination-detail">
+                    <span class="pagination-info">
+                        Showing ${startRow} to ${endRow} of ${totalRows} entries
+                    </span>
+                    <div class="page-list">
+                        <div class="dropdown dropup">
+                            <button
+                                class="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                            >
+                                ${pageSize}
+                            </button>
+                            <div class="dropdown-menu">
+                                ${pageSizeOptions.map(size => html`
+                                    <a
+                                        class="dropdown-item"
+                                        onclick="table.setPageSize(${size})"
+                                    >
+                                        ${size}
+                                    </a>
+                                `)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-right pagination">
+                    <ul class="pagination">
+                        <li
+                            class="page-item page-pre ${!table.getCanPreviousPage() ? 'disabled' : ''}"
+                            onclick="${table.getCanPreviousPage() ? 'table.previousPage()' : ''}"
+                            style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
+                        >
+                            <a class="page-link" aria-label="previous page" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">‹</a>
+                        </li>
+                        ${pages.map(page => {
+                            if (page === '...') {
+                                return html`
+                                    <li class="page-item page-last-separator disabled" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
+                                        <a class="page-link" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">...</a>
+                                    </li>
+                                `;
+                            }
+                            return html`
+                                <li
+                                    class="page-item ${page === currentPage ? 'active' : ''}"
+                                    onclick="table.setPageIndex(${page - 1})"
+                                    style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
+                                >
+                                    <a class="page-link" aria-label="to page ${page}" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">${page}</a>
+                                </li>
+                            `;
+                        })}
+                        <li
+                            class="page-item page-next ${!table.getCanNextPage() ? 'disabled' : ''}"
+                            onclick="${table.getCanNextPage() ? 'table.nextPage()' : ''}"
+                            style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
+                        >
+                            <a class="page-link" aria-label="next page" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">›</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        `;
+    };
+
+    const renderToolbar = () => {
+        const visibleColumns = table.getAllColumns().filter(column =>
+            column.id !== 'select' && !(isTrash && column.id === 'trash')
+        );
+
+        return html`
+            <div class="fixed-table-toolbar">
+                <div class="float-left bs-bars">
+                    <div id="toolbar{{ rand }}" class="btn-group">
+                        ${hasMassiveAction && !radio ? html`
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                aria-label="Actions"
+                                onclick="massiveaction_window{{ id }}.dialog('open')"
+                            >
+                                <i class="fas fa-hammer" title="Actions"></i>
+                            </button>
+                        ` : ''}
+                        ${columnEdit ? html`
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                aria-label="Options"
+                                onclick="document.getElementById('search-config-${itemtype}').dialog('open')"
+                            >
+                                <i class="fas fa-wrench" title="Options"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+                <div class="float-right btn-group columns columns-right">
+                    ${canTrash ? html`
+                        <button
+                            type="button"
+                            class="btn btn-secondary${isTrash ? ' active btn-danger' : ''}"
+                            onclick="toogle('is_deleted', '', '', ''); if (document.forms['searchform${itemtype}']) { document.forms['searchform${itemtype}'].submit(); }"
+                            title="${isTrash ? 'Show normal items' : 'Show trash content'}"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    ` : ''}
+                    <div class="btn-group keep-open">
+                        <button
+                            type="button"
+                            class="btn btn-secondary dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                        >
+                            <i class="bi fas fa-columns"></i> <span class="caret"></span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <label class="dropdown-item dropdown-item-marker">
+                                <input
+                                    type="checkbox"
+                                    checked
+                                    data-column="all"
+                                    onchange="toggleAllColumns(event)"
+                                />
+                                Toggle All
+                            </label>
+                            <div class="dropdown-divider"></div>
+                            ${visibleColumns.map(column => html`
+                                <label class="dropdown-item dropdown-item-marker">
+                                    <input
+                                        type="checkbox"
+                                        checked="${column.getIsVisible()}"
+                                        onchange="column.toggleVisibility(event.target.checked)"
+                                        data-column-id="${column.id}"
+                                    />
+                                    <span>${fields[column.id]}</span>
+                                </label>
+                            `)}
+                        </div>
+                    </div>
+                    ${showExport ? html`
+                        <button type="button" class="btn btn-secondary" id="export-table" title="Export">
+                            <i class="fas fa-file-export"></i>
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    };
+
+    const renderTableElement = () => {
+        return html`
+            <div class="fixed-table-container" style="overflow-x: scroll;">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        ${table.getHeaderGroups().map(headerGroup => html`
+                            <tr>
+                                ${headerGroup.headers.map(header => {
+                                    const isSelectColumn = header.id === 'select';
+                                    const canSort = header.column.getCanSort();
+                                    const sortingState = header.column.getIsSorted();
+
+                                    let thClasses = '';
+                                    let thInnerClasses = 'th-inner';
+
+                                    if (isSelectColumn) {
+                                        thClasses = 'bs-checkbox';
+                                    } else if (canSort) {
+                                        thInnerClasses += ' sortable both';
+                                        if (sortingState === 'asc') {
+                                            thInnerClasses += ' asc';
+                                        } else if (sortingState === 'desc') {
+                                            thInnerClasses += ' desc';
+                                        }
+                                    }
+
+                                    return html`
+                                        <th
+                                            class="${thClasses}"
+                                            data-field="${header.column.id}"
+                                            style="${isSelectColumn ? 'width: 36px' : ''}"
+                                        >
+                                            <div class="${thInnerClasses}">
+                                                ${flexRender(header.column.columnDef.header, header.getContext())}
+                                            </div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                    `;
+                                })}
+                            </tr>
+                        `)}
+                    </thead>
+                    ${table.getRowModel().rows.length === 0 ? html`
+                        <tbody class="table-light">
+                            <tr class="no-records-found">
+                                <td colspan="${table.getAllColumns().length}">
+                                    No matching records found
+                                </td>
+                            </tr>
+                        </tbody>
+                    ` : html`
+                    <tbody class="table-light">
+                        ${table.getRowModel().rows.map(row => html`
+                            <tr>
+                                ${row.getVisibleCells().map(cell => {
+                                    const isSelectColumn = cell.column.id === 'select';
+                                    const isDisabled = isSelectColumn && !radio && hasMassiveAction && !row.original.value;
+
+                                    return html`
+                                        <td
+                                            class="${isSelectColumn ? 'bs-checkbox' : ''}"
+                                            style="${isSelectColumn ? 'width: 36px' : ''}"
+                                        >
+                                            ${isSelectColumn && isDisabled ?
+                                                html`<input type="checkbox" class="row-select" data-row-id="${row.id}" disabled />` :
+                                                flexRender(cell.column.columnDef.cell, cell.getContext())
+                                            }
+                                        </td>
+                                    `;
+                                })}
+                            </tr>
+                        `)}
+                    </tbody>
+                    `}
+                </table>
+            </div>
+        `;
+    };
+
+    const exportToCsv = () => {
+        const dataToExport = table.getFilteredRowModel().rows.map(row => row.original);
+        if (dataToExport.length === 0) {
+            return;
+        }
+        const headers = Object.keys(fields);
+        const csvRows = [];
+        csvRows.push(headers.map(h => fields[h]).join(','));
+
+        for (const row of dataToExport) {
+            const values = headers.map(header => {
+                let value = row[header];
+                if (typeof value === 'string') {
+                    const tempEl = document.createElement('div');
+                    tempEl.innerHTML = value;
+                    value = tempEl.textContent || tempEl.innerText || '';
+                }
+                return JSON.stringify(value);
             });
-		}, 200);
+            csvRows.push(values.join(','));
+        }
 
-		{% if not minimal %}
-			const toggles = sessionStorage.getItem('{{itemtype}}-toggles');
-			var togglesArray = new Set();
-			var init = false;
-			const table = $('#{{id}}');
+        const csvContent = csvRows.join('\n');
 
-			if (toggles) {
-				togglesArray = new Set(JSON.parse(toggles));
-			} else {
-				init = true;
-			}
-			table.bootstrapTable('hideAllColumns');
-			const columns = table.bootstrapTable('getHiddenColumns');
-			for (column of columns) {
-				if (init || togglesArray.has(parseInt(column.field))) {
-					table.bootstrapTable('showColumn', column.field);
-					if (init) {
-						togglesArray.add(parseInt(column.field));
-					}
-				}
-			}
-			if (init) {
-				sessionStorage.setItem('{{itemtype}}-toggles', JSON.stringify(Array.from(togglesArray)));
-			}
-		{% endif %}
-	});
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', (itemtype || 'export') + '.csv');
+        link.style.visibility = 'hidden';
+        wrapperElement.appendChild(link);
+        link.click();
+        wrapperElement.removeChild(link);
+    };
 
-	{% if radio is defined %}
-	$('form').on("submit", function() {
-		selection = $('#{{id}}').bootstrapTable('getSelections');
-		selection.forEach(array => {
-			Object.keys(array).forEach(key => {
-				if (key.includes("_data")) {
-					delete array[key];
-				}
-			})
-		});
-		$('#table_input{{id}}').val(JSON.stringify(selection));
-	});
-	{% endif %}
+    const toggleAllColumns = (event) => {
+        const isChecked = event.target.checked;
+        table.getAllColumns().forEach((column) => {
+            if (column.id === 'select' || (isTrash && column.id === 'trash')) {
+                return;
+            }
+            column.toggleVisibility(isChecked);
+        });
+    };
 
-	{% if not minimal %}
-		$('#{{id}}').on('column-switch.bs.table', function (e, field, checked) {
-			const toggles = sessionStorage.getItem('{{itemtype}}-toggles');
-			var togglesArray = new Set();
-			if (toggles) {
-				const test = JSON.parse(toggles);
-				togglesArray = new Set(test);
-			}
-			togglesArray.delete(field);
-			if (checked) {
-				togglesArray.add(field);
-			}
-			sessionStorage.setItem('{{itemtype}}-toggles', JSON.stringify(Array.from(togglesArray)));
-		});
+    const handleSelectAll = (event) => {
+        if (!hasMassiveAction) {
+            event.target.checked = false;
+            return;
+        }
+        const isChecked = event.target.checked;
+        const checkboxes = wrapperElement.querySelectorAll('.row-select');
+        checkboxes.forEach((checkbox) => {
+            if (!checkbox.disabled) {
+                checkbox.checked = isChecked;
+            }
+        });
+        if (isChecked) {
+            massiveActionSelection_{{ id }} = table.getRowModel().rows
+                .filter(row => {
+                    const checkbox = wrapperElement.querySelector(`.row-select[data-row-id="${row.id}"]`);
+                    return checkbox && !checkbox.disabled;
+                })
+                .map(row => row.original);
+        } else {
+            massiveActionSelection_{{ id }} = [];
+        }
+        // Set select-all checked state after DOM updates
+        setTimeout(() => {
+            const selectAllCheckbox = wrapperElement.querySelector('#select-all');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = isChecked;
+            }
+        }, 0);
+    };
 
-		{% if is_trash is defined and can_trash %}
-			function buttons{{rand}}() {
-				buttons = {
-					btnshowTrash: {
-						text: 'Show trash',
-						icon: 'fas fa-trash-alt',
-						event: function () {
-							toogle('is_deleted', '', '', '');
-							document.forms['searchform{{ itemtype }}'].submit();
-						},
-						attributes: {
-							title: {{ 'Show trash content'|trans|json_encode|raw }},
-							style: {{ (is_trash == 1) ? 'background : #7b081d'|json_encode|raw : ''|json_encode|raw }}
-						}
-					}
-				}
-				return buttons;
-			}
-		{% endif %}
-	{% endif %}
+    const updateMassiveActionSelection = (rowId, isSelected) => {
+        const row = table.getRowModel().rowsById[rowId];
+        if (!row) return;
+        const massiveActionId = row.original.value;
 
-	{% if massive_action is defined %}
-	function VerifyMassiveAction{{rand}}(value, row, index) {
-		if (!row.value && row._data.value) {
-			row.value = row._data.value;
-		}
-		if (!row.value) {
-			return {
-				disabled: true
-			}
-		};
-	}
-	{% endif %}
+        if (isSelected) {
+            if (!massiveActionSelection_{{ id }}.some(item => item.value === massiveActionId)) {
+                massiveActionSelection_{{ id }}.push(row.original);
+            }
+        } else {
+            massiveActionSelection_{{ id }} = massiveActionSelection_{{ id }}.filter(item => item.value !== massiveActionId);
+        }
+        // Update select-all checkbox state
+        const checkboxes = wrapperElement.querySelectorAll('.row-select');
+        const allChecked = Array.from(checkboxes).filter(cb => !cb.disabled).every(cb => cb.checked);
+        const selectAllCheckbox = wrapperElement.querySelector('#select-all');
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = allChecked;
+        }
+    };
+
+    const handleRowSelection = (event) => {
+        const checkbox = event.target;
+        const rowId = checkbox.getAttribute('data-row-id');
+        const isSelected = checkbox.checked;
+        if (!radio) {
+            updateMassiveActionSelection(rowId, isSelected);
+        }
+    };
+
+    const initializeRowSelectionEvents = () => {
+        wrapperElement.querySelectorAll('.row-select').forEach(checkbox => {
+            checkbox.addEventListener('change', handleRowSelection);
+        });
+    };
+
+    const renderTable = () => {
+        htmlInjectionMap.clear();
+        const shouldPaginate = url ? (serverTotal !== null && serverTotal > table.getState().pagination.pageSize) : (values.length > table.getState().pagination.pageSize);
+        const tableHTML = html`
+        <div>
+            ${(!minimal || !noToolBar) ? renderToolbar() : ''}
+            ${renderTableElement()}
+            ${shouldPaginate ? renderPagination() : ''}
+        </div>`;
+        let finalHTML = tableHTML;
+        htmlInjectionMap.forEach((htmlContent, marker) => { finalHTML = finalHTML.replace(marker, htmlContent); });
+        wrapperElement.innerHTML = finalHTML;
+
+        const selectAllCheckbox = wrapperElement.querySelector('#select-all');
+        if (selectAllCheckbox) selectAllCheckbox.addEventListener('change', handleSelectAll);
+
+        const exportButton = wrapperElement.querySelector('#export-table');
+        if (exportButton) exportButton.addEventListener('click', exportToCsv);
+
+        initializeRowSelectionEvents();
+        wrapperElement.querySelectorAll('[data-column-id]').forEach(checkbox => {
+            const columnId = checkbox.getAttribute('data-column-id');
+            const column = table.getAllColumns().find(col => col.id === columnId);
+            if (column) {
+                checkbox.onchange = (event) => {
+                    column.toggleVisibility(event.target.checked);
+                };
+            }
+        });
+        wrapperElement.querySelectorAll('th[data-field] .sortable').forEach(element => {
+            const fieldName = element.closest('th').getAttribute('data-field');
+            const column = table.getAllColumns().find(col => col.id === fieldName);
+            if (column && column.getCanSort()) {
+                element.onclick = () => {
+                    column.toggleSorting();
+                };
+            }
+        });
+        wrapperElement.querySelectorAll('.page-item:not(.disabled)').forEach(item => {
+            if (item.classList.contains('page-pre')) {
+                item.onclick = () => {
+                    if (table.getCanPreviousPage()) {
+                        table.previousPage();
+                    }
+                };
+            } else if (item.classList.contains('page-next')) {
+                item.onclick = () => {
+                    if (table.getCanNextPage()) {
+                        table.nextPage();
+                    }
+                };
+            } else if (!item.classList.contains('page-last-separator')) {
+                const pageText = item.querySelector('.page-link').textContent;
+                if (!isNaN(pageText)) {
+                    item.onclick = () => {
+                        table.setPageIndex(parseInt(pageText) - 1);
+                    };
+                }
+            }
+        });
+        wrapperElement.querySelectorAll('.dropdown-item').forEach(item => {
+            const size = parseInt(item.textContent);
+            if ([15, 25, 50, 100].includes(size)) {
+                item.onclick = () => {
+                    table.setPageSize(size);
+                };
+            }
+        });
+    };
+
+    if (url) {
+        renderTable();
+        fetchDataAndRender();
+    } else {
+        renderTable();
+    }
+
+    if (radio) {
+        const form = wrapperElement.closest('form');
+        if (form) {
+            form.addEventListener('submit', () => {
+                const input = document.getElementById('table_input{{id}}');
+                if (input) {
+                    const selectedRadio = wrapperElement.querySelector('.row-select:checked');
+                    if (selectedRadio) {
+                        const rowId = selectedRadio.getAttribute('data-row-id');
+                        const selectedRow = data[rowId];
+                        input.value = JSON.stringify([selectedRow]);
+                    } else {
+                        input.value = '[]';
+                    }
+                }
+            });
+        }
+    }
+});
 </script>

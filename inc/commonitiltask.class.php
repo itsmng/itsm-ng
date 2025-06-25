@@ -1708,7 +1708,8 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                           Planning::INFO => _n('Information', 'Information', 1),
                           Planning::TODO => __('To do'),
                           Planning::DONE => __('Done')
-                       ]
+                       ],
+                       'value' => Planning::TODO,
                     ] : [],
                     __('Private') => ($this->maybePrivate()) ? [
                        'type' => 'checkbox',

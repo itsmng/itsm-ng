@@ -397,6 +397,10 @@ class Cartridge extends CommonDBChild
             }
 
 
+            // TODO: currently we basically always use the nohtml parameter
+            //       problem being that the HTML table is rendered directly
+            //       and in our case we want to return a string, so we just
+            //       use the nohtml option as a fallback.
             if (!$nohtml) {
                 $fields = [
                    __('Total'),
