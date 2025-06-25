@@ -1826,7 +1826,10 @@ class Auth extends CommonGLPI
 
             config::getAdapter()->save(['glpi_oidc_config'], $oidc_result);
         }
-        $criteria = ["SELECT * FROM glpi_oidc_config"];
+        $criteria = [
+            'SELECT' => '*',
+            'FROM'   => 'glpi_oidc_config'
+        ];
         $results = config::getAdapter()->request($criteria);
         $oidc_db = [];
         foreach ($results as $result) {
