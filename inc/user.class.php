@@ -3815,7 +3815,7 @@ class User extends CommonDBTM
                             $ORWHERE[] = [
                                [
                                   'glpi_profilerights.name'     => 'project',
-                                  'glpi_profilerights.rights'   => ['&', Project::READMY]
+                                  'glpi_profilerights.rights'   => ['&', Project::READMY] !=0
                                ] + getEntitiesRestrictCriteria('glpi_profiles_users', '', $entity_restrict, 1)
                             ];
                             break;

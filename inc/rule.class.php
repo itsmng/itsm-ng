@@ -952,11 +952,13 @@ class Rule extends CommonDBTM
                           'col_lg' => 12,
                           'col_md' => 12,
                       ],
-                      __('Last update') => !$this->fields["date_mod"] ? [] : [
-                          'content' => Html::convDateTime($this->fields["date_mod"]),
-                          'col_lg' => 12,
-                          'col_md' => 12,
-                      ],
+                      ($this->fields["date_mod"] ?? null) ? [
+                        __('Last update') => [
+                            'content' => Html::convDateTime($this->fields["date_mod"]),
+                            'col_lg'  => 12,
+                            'col_md'  => 12,
+                        ]
+                    ] : [],
                       $canedit && $this->isNewID($ID) ? [] : [
                           'type' => 'hidden',
                           'name' => 'ranking',
