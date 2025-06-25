@@ -47,11 +47,14 @@ function expandSelect(&$select, $fields = [])
     return $select;
 }
 
-function expandForm($form, $fields = [])
+function expandForm($form, $fields = [], $template = null)
 {
     foreach ($form['content'] as $contentKey => $content) {
         if (isset($content['inputs'])) {
             foreach ($content['inputs'] as $inputKey => $input) {
+                if (isset($template) && $template->isHiddenField($input['name'])) {
+                    $form['content'][$contentKey]['inputs'][$inputKey]['type'] = 'hidden';
+                }
                 if ($input['type'] ?? '' == 'select') {
                     expandSelect($form['content'][$contentKey]['inputs'][$inputKey], $fields);
                 }
@@ -238,7 +241,7 @@ function renderTwigTemplate($path, $vars, $root = '/templates')
 /**
  * @return string
  */
-function renderTwigForm($form, $additionnalHtml = '', $fields = [])
+function renderTwigForm($form, $additionnalHtml = '', $fields = [], $template = null)
 {
     global $CFG_GLPI;
 
@@ -327,7 +330,7 @@ function renderTwigForm($form, $additionnalHtml = '', $fields = [])
     }
     try {
         echo $twig->render('form.twig', [
-            'form' => expandForm($form, $fields),
+            'form' => expandForm($form, $fields, $template),
             'preItemFormHtml' => $preItemFormHtml ?? '',
             'additionnalHtml' => $additionnalHtml,
             'root_doc' => $CFG_GLPI['root_doc'],
