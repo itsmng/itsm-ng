@@ -765,7 +765,7 @@ class Item_SoftwareVersion extends CommonDBRelation
         $results = self::getAdapter()->request($criteria)->fetchAllAssociative();
         if (count($results)) {
             $data = $results[0];
-            $softwares_id  = $data['sID']?? null;
+            $softwares_id  = $data['sID'] ?? null;
             $soft          = new Software();
             $showEntity    = ($soft->getFromDB($softwares_id) && $soft->isRecursive());
             $linkUser      = User::canView();
@@ -845,7 +845,7 @@ class Item_SoftwareVersion extends CommonDBRelation
             echo $header_begin . $header_top . $header_end;
 
             foreach ($results as $data) {
-                Session::addToNavigateListItems($data['item_type'], $data["iID"]?? null);
+                Session::addToNavigateListItems($data['item_type'], $data["iID"] ?? null);
 
                 echo "<tr class='tab_bg_2'>";
                 if ($canedit) {
@@ -855,7 +855,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                 }
 
                 if ($crit == "softwares_id") {
-                    echo "<td><a href='" . SoftwareVersion::getFormURLWithID($data['vID']?? null) . "'>" .
+                    echo "<td><a href='" . SoftwareVersion::getFormURLWithID($data['vID'] ?? null) . "'>" .
                        $data['version'] . "</a></td>";
                 }
 
@@ -867,7 +867,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                 echo "<td>{$data['item_type']}</td>";
 
                 if ($canshowitems[$data['item_type']]) {
-                    echo "<td><a href='" . $data['item_type']::getFormURLWithID($data['iID']?? null) . "'>$itemname</a></td>";
+                    echo "<td><a href='" . $data['item_type']::getFormURLWithID($data['iID'] ?? null) . "'>$itemname</a></td>";
                 } else {
                     echo "<td>" . $itemname . "</td>";
                 }
@@ -890,8 +890,8 @@ class Item_SoftwareVersion extends CommonDBRelation
 
                 $lics = Item_SoftwareLicense::getLicenseForInstallation(
                     $data['item_type'],
-                    $data['iID']?? null,
-                    $data['vID']?? null
+                    $data['iID'] ?? null,
+                    $data['vID'] ?? null
                 );
                 echo "<td>";
 

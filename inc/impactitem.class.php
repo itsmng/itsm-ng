@@ -54,7 +54,7 @@ class ImpactItem extends CommonDBTM
         bool $create_if_missing = true
     ) {
         $items_id = $item->fields['id'] ?? null;
-        
+
         if ($items_id === null) {
             return new self();
         }
@@ -83,8 +83,8 @@ class ImpactItem extends CommonDBTM
             return false;
         }
         if (!$id) {
-        return new self();
-    }
+            return new self();
+        }
         $impact_item->getFromDB($id);
         return $impact_item;
     }

@@ -182,7 +182,7 @@ class Item_OperatingSystem extends CommonDBRelation
         $os = [];
         //   while ($data = $iterator->next()) {
         foreach ($results as $data) {
-            $os[$data['assocID']?? null] = $data;
+            $os[$data['assocID'] ?? null] = $data;
         }
 
         $canedit = $item->canEdit($item->getID());

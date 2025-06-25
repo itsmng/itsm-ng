@@ -68,14 +68,14 @@ class DeviceMemory extends CommonDevice
                  'name'  => 'devicememorytypes_id',
                  'type'  => 'select',
                  'values' => getOptionForItems('DeviceMemoryType'),
-                 'value' => $this->fields['devicememorytypes_id']?? null,
+                 'value' => $this->fields['devicememorytypes_id'] ?? null,
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceMemoryType')
               ],
               _n('Model', 'Models', 1) => [
                  'name'  => 'devicememorymodels_id',
                  'type'  => 'select',
                  'values' => getOptionForItems('DeviceMemoryModel'),
-                 'value' => $this->fields['devicememorymodels_id']?? null,
+                 'value' => $this->fields['devicememorymodels_id'] ?? null,
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceMemoryModel')
               ]
             ]

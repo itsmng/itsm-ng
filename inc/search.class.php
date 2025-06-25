@@ -729,7 +729,7 @@ class Search
         //// 7 - Manage GROUP BY
         $GROUPBY = "";
 
-              // Meta Search / Search All / Count tickets
+        // Meta Search / Search All / Count tickets
         $criteria_with_meta = array_filter($data['search']['criteria'], function ($criterion) {
             return isset($criterion['meta'])
                    && $criterion['meta'];
@@ -798,9 +798,9 @@ class Search
                                 $tmpquery
                             );
                             $query_num = str_replace($data['itemtype'], $ctype, $query_num);
-                                
-                                $query_num .= " AND $ctable.id IS NOT NULL ";
-                            
+
+                            $query_num .= " AND $ctable.id IS NOT NULL ";
+
                             // Add deleted if item have it
                             if ($citem && $citem->maybeDeleted()) {
                                 $query_num .= " AND $ctable.is_deleted = false ";
@@ -868,13 +868,13 @@ class Search
                 $WHERE = ' WHERE ' . $WHERE . ' ';
             }
             $first = false;
-       
+
         }
 
         if (!empty($HAVING)) {
             $HAVING = ' HAVING ' . $HAVING;
         }
-       
+
         // Create QUERY
         if (isset($CFG_GLPI["union_search_type"][$data['itemtype']])) {
             $first = true;
@@ -991,33 +991,33 @@ class Search
                 $result = $adapter->fixPostgreSQLCompleteOrderBy($SELECT, $ORDER, $SELECT . $FROM . $WHERE);
                 $SELECT = $result['select'];
             }
-            
+
             if (method_exists($adapter, 'fixPostgreSQLGroupBy')) {
                 $GROUPBY = $adapter->fixPostgreSQLGroupBy($SELECT, $GROUPBY);
             }
             $QUERY = $SELECT .
                      $FROM .
                      $WHERE .
-                     $GROUPBY . 
+                     $GROUPBY .
                      $HAVING .
                      $ORDER .
                      $LIMIT;
-        } 
-        
+        }
+
         if (isset($data['sql']['count']) && is_array($data['sql']['count'])) {
-        // Adapt all counting queries for PostgreSQL
-        foreach ($data['sql']['count'] as $i => $count_query) {
-            // Apply PostgreSQL adaptation via the adapter
-            // if (method_exists($adapter, 'adaptQueryForPostgreSQL')) {
-            if($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
-                $data['sql']['count'][$i] = $adapter->adaptQueryForPostgreSQL($count_query);
+            // Adapt all counting queries for PostgreSQL
+            foreach ($data['sql']['count'] as $i => $count_query) {
+                // Apply PostgreSQL adaptation via the adapter
+                // if (method_exists($adapter, 'adaptQueryForPostgreSQL')) {
+                if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+                    $data['sql']['count'][$i] = $adapter->adaptQueryForPostgreSQL($count_query);
+                }
             }
-        }
-        // if (method_exists($adapter, 'adaptQueryForPostgreSQL')) {
-        if($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
-            // Also adapt the main QUERY before assigning it
-            $QUERY = $adapter->adaptQueryForPostgreSQL($QUERY);
-        }
+            // if (method_exists($adapter, 'adaptQueryForPostgreSQL')) {
+            if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+                // Also adapt the main QUERY before assigning it
+                $QUERY = $adapter->adaptQueryForPostgreSQL($QUERY);
+            }
         }
         $data['sql']['search'] = $QUERY;
     }
@@ -1589,10 +1589,10 @@ class Search
                     );
                 }
 
-                if ($data['itemtype'] == 'User') {                    
+                if ($data['itemtype'] == 'User') {
                     foreach ($data['data']['rows'] as &$newrow) {
                         $user_id = $newrow['id'] ?? null;
-                        
+
                         if ($user_id) {
                             // For each column that could contain a username
                             foreach ($data['data']['cols'] as $col) {
@@ -3526,7 +3526,7 @@ JAVASCRIPT;
         $complexjoin = '';
         $adapter = Config::getAdapter();
 
-        
+
         if (isset($searchopt[$ID]['joinparams'])) {
             $complexjoin = self::computeComplexJoinID($searchopt[$ID]['joinparams']);
         }
@@ -3621,7 +3621,7 @@ JAVASCRIPT;
                         $table$addtable.id AS \"" . $NAME . "_id\",
                         $table$addtable.firstname AS \"" . $NAME . "_firstname\",
                         $ADDITONALFIELDS";
-                } else if ((isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])) {
+                } elseif ((isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])) {
                     $addaltemail = "";
                     if (
                         (($itemtype == 'Ticket') || ($itemtype == 'Problem'))
@@ -3630,20 +3630,20 @@ JAVASCRIPT;
                             || ($searchopt[$ID]['joinparams']['beforejoin']['table'] == 'glpi_problems_users')
                             || ($searchopt[$ID]['joinparams']['beforejoin']['table'] == 'glpi_changes_users'))
                     ) { // For tickets_users
-                        $ticket_user_table = $searchopt[$ID]['joinparams']['beforejoin']['table'] . 
+                        $ticket_user_table = $searchopt[$ID]['joinparams']['beforejoin']['table'] .
                                             "_" . self::computeComplexJoinID($searchopt[$ID]['joinparams']['beforejoin']
                                                                         ['joinparams']) . $addmeta;
-                        
-                         $concat_expr = $adapter->concat([
-                            "$ticket_user_table.users_id", 
-                            "' '",
-                            "$ticket_user_table.alternative_email"
+
+                        $concat_expr = $adapter->concat([
+                           "$ticket_user_table.users_id",
+                           "' '",
+                           "$ticket_user_table.alternative_email"
                         ]);
-                        
+
                         $addaltemail = $adapter->getGroupConcat(
                             "DISTINCT " . $concat_expr,
                             self::LONGSEP,
-                            "$ticket_user_table.users_id" 
+                            "$ticket_user_table.users_id"
                         ) . " AS \"" . $NAME . "_2\", ";
                     }
                     // $id_field = "$table$addtable.id";
@@ -3651,10 +3651,10 @@ JAVASCRIPT;
                     return "
                         $table$addtable.$field,
                         " . $adapter->getGroupConcat(
-                            "DISTINCT $table$addtable.id", 
-                            self::LONGSEP,
-                            "$table$addtable.id"  
-                        ) . " AS \"" . $NAME . "\",
+                        "DISTINCT $table$addtable.id",
+                        self::LONGSEP,
+                        "$table$addtable.id"
+                    ) . " AS \"" . $NAME . "\",
                         $addaltemail
                         $ADDITONALFIELDS";
                 } else {
@@ -5972,33 +5972,33 @@ JAVASCRIPT;
     ) {
         global $CFG_GLPI;
 
-         // If AllAssets, specific adaptation
-    if ($itemtype == 'AllAssets') {
-        // Determine the real type
-        $real_type = $data['raw']['type'] ?? null;
-        
-        if ($real_type !== null) {
-            // Try to use the data with the real type directly
-            $real_itemtype_id = "{$real_type}_{$ID}";
+        // If AllAssets, specific adaptation
+        if ($itemtype == 'AllAssets') {
+            // Determine the real type
+            $real_type = $data['raw']['type'] ?? null;
 
-            // If the data with the real type exists
-            if (isset($data[$real_itemtype_id])) {
-                // Simulate a call with the real type
-                return self::giveItem($real_type, $ID, $data, $meta, $addobjectparams);
-            }
+            if ($real_type !== null) {
+                // Try to use the data with the real type directly
+                $real_itemtype_id = "{$real_type}_{$ID}";
 
-            // Otherwise, try to transfer the data from AllAssets to the real type
-            if (isset($data["AllAssets_$ID"])) {
-                $data[$real_itemtype_id] = $data["AllAssets_$ID"];
-                return self::giveItem($real_type, $ID, $data, $meta, $addobjectparams);
-            }
+                // If the data with the real type exists
+                if (isset($data[$real_itemtype_id])) {
+                    // Simulate a call with the real type
+                    return self::giveItem($real_type, $ID, $data, $meta, $addobjectparams);
+                }
 
-            // As a last resort, try to access the raw data directly
-            if (isset($data['raw']["ITEM_AllAssets_$ID"])) {
-                return $data['raw']["ITEM_AllAssets_$ID"];
+                // Otherwise, try to transfer the data from AllAssets to the real type
+                if (isset($data["AllAssets_$ID"])) {
+                    $data[$real_itemtype_id] = $data["AllAssets_$ID"];
+                    return self::giveItem($real_type, $ID, $data, $meta, $addobjectparams);
+                }
+
+                // As a last resort, try to access the raw data directly
+                if (isset($data['raw']["ITEM_AllAssets_$ID"])) {
+                    return $data['raw']["ITEM_AllAssets_$ID"];
+                }
             }
         }
-    }
 
         $searchopt = &self::getOptions($itemtype);
         if (
@@ -6015,7 +6015,7 @@ JAVASCRIPT;
 
             // Search option may not exists in subtype
             // This is the case for "Inventory number" for a Software listed from ReservationItem search
-            $subtype_so = &self::getOptions($data["TYPE"]?? null);
+            $subtype_so = &self::getOptions($data["TYPE"] ?? null);
             if (!is_array($subtype_so) || !array_key_exists($ID, $subtype_so)) {
                 return '';
             }
@@ -6991,7 +6991,7 @@ JAVASCRIPT;
                         if (preg_match('/^([A-Z][a-zA-Z]+)_(\d+)$/', $ID, $matches)) {
                             $alternative_id = strtolower($matches[1]) . "s_id";
                             if (isset($data[$alternative_id]) && isset($data[$alternative_id]['count'])) {
-                                $ID = $alternative_id; 
+                                $ID = $alternative_id;
                                 $found = true;
                                 Toolbox::logDebug("Using alternative ID: $alternative_id instead of $ID");
                             }
@@ -7694,9 +7694,9 @@ JAVASCRIPT;
 
             // Complete linkfield if not define
             if (is_null($item)) { // Special union type
-               if (isset($CFG_GLPI['union_search_type']) && 
-                    is_array($CFG_GLPI['union_search_type']) && 
-                    isset($CFG_GLPI['union_search_type'][$itemtype])) {
+                if (isset($CFG_GLPI['union_search_type']) &&
+                     is_array($CFG_GLPI['union_search_type']) &&
+                     isset($CFG_GLPI['union_search_type'][$itemtype])) {
                     $itemtable = $CFG_GLPI['union_search_type'][$itemtype];
                 } else {
                     // Default value or error handling
@@ -7738,9 +7738,9 @@ JAVASCRIPT;
                     if (!isset($val['joinparams'])) {
                         self::$search[$itemtype][$key]['joinparams'] = [];
                     }
-                } 
+                }
             }
-           
+
         }
 
         return self::$search[$itemtype];

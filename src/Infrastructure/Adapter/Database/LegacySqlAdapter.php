@@ -145,7 +145,7 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
     //     return [];
     // }
 
-    
+
     public function findEntityById(array $id): mixed
     {
         return null;
@@ -219,23 +219,23 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
         // Check if DISTINCT is already in the field
         $has_distinct = stripos($field, 'DISTINCT') !== false;
         $field = $has_distinct ? $field : ($distinct ? "DISTINCT $field" : $field);
-        
+
         // Escape the separator for SQL
         $escaped_separator = "'" . str_replace("'", "''", $separator) . "'";
-        
+
         // Generate the GROUP_CONCAT function
         $sql = "GROUP_CONCAT($field";
-        
+
         // Add ORDER BY if provided
         if (!empty($order_by)) {
             $sql .= " ORDER BY $order_by";
         }
-        
+
         // Add separator
         $sql .= " SEPARATOR $escaped_separator)";
-        
+
         return $sql;
-    }    
+    }
 
     public function concat(array $exprs): string
     {

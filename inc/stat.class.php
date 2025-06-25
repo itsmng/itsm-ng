@@ -1358,7 +1358,7 @@ class Stat extends CommonGLPI
                 $WHERE["$table.status"] = $solved_status;
                 $WHERE[] = ['NOT' => ["$table.solvedate" => null]];
                 $WHERE[] = $adapter->getDateCriteria("$table.solvedate", $begin, $end);
-                
+
                 $date_unix = $adapter->getFormattedDateExpression("$table.solvedate", '%Y-%m', 'date_unix');
 
                 $criteria = [

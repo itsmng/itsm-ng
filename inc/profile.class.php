@@ -580,7 +580,7 @@ class Profile extends CommonDBTM
 
         // Profile right : may modify profile so can attach all profile
         if (Profile::canCreate()) {
-           return ['(TRUE)'];
+            return ['(TRUE)'];
         }
 
         $criteria = ['glpi_profiles.interface' => Session::getCurrentInterface()];

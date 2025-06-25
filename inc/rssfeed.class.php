@@ -324,7 +324,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
             ];
             $orwhere[] = [
                 'glpi_profiles_rssfeeds.profiles_id' => $_SESSION["glpiactiveprofile"]['id'],
-                'OR' => $ors !=0
+                'OR' => $ors != 0
             ];
         }
 

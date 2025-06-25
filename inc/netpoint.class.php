@@ -485,7 +485,7 @@ class Netpoint extends CommonDropdown
 
         $row->addCell(
             $row->getHeaderByName($column_name),
-            Dropdown::getDropdownName("glpi_netpoints", $item->fields["netpoints_id"]?? null),
+            Dropdown::getDropdownName("glpi_netpoints", $item->fields["netpoints_id"] ?? null),
             $father
         );
     }

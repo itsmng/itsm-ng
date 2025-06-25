@@ -96,10 +96,10 @@ class Lock extends CommonGLPI
                                 'computers_id'  => $ID,
                                 'itemtype'      => $type];
                 $first  = true;
-               $request = $item::getAdapter()->request([
-                'FROM'   => 'glpi_computers_items',
-                'FIELDS' => ['id', 'items_id'],
-                'WHERE'  => $params
+                $request = $item::getAdapter()->request([
+                 'FROM'   => 'glpi_computers_items',
+                 'FIELDS' => ['id', 'items_id'],
+                 'WHERE'  => $params
             ]);
 
                 foreach ($request->fetchAllAssociative() as $line) {
@@ -134,11 +134,11 @@ class Lock extends CommonGLPI
                'itemtype'     => $itemtype
             ];
             $first  = true;
-           $request = $item->getAdapter()->request([
-                'FROM'   => $item_disk->getTable(),
-                'FIELDS' => ['id', 'name'],
-                'WHERE'  => $params
-            ]);
+            $request = $item->getAdapter()->request([
+                 'FROM'   => $item_disk->getTable(),
+                 'FIELDS' => ['id', 'name'],
+                 'WHERE'  => $params
+             ]);
 
             foreach ($request->fetchAllAssociative() as $line) {
                 if ($first) {
@@ -296,7 +296,7 @@ class Lock extends CommonGLPI
             'FIELDS' => ['id'],
             'WHERE' => $params
         ]);
-        
+
 
         foreach ($request->fetchAllAssociative() as $line) {
             $networkport->getFromDB($line['id']);
@@ -376,7 +376,7 @@ class Lock extends CommonGLPI
         'glpi_networkports.items_id'  => $ID,
         'glpi_networkports.itemtype'  => $itemtype
         ];
-        
+
         $request = $item->getAdapter()->request([
         'SELECT' => ['glpi_ipaddresses.id'],
         'FROM'   => 'glpi_ipaddresses',
