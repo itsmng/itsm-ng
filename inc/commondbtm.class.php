@@ -192,6 +192,7 @@ class CommonDBTM extends CommonGLPI
 
     public static function getAdapter(): DatabaseAdapterInterface
     {
+        // return new LegacySqlAdapter(get_called_class());
         return new DoctrineRelationalAdapter(get_called_class());
     }
 
@@ -3256,7 +3257,7 @@ class CommonDBTM extends CommonGLPI
     {
 
         if ($this->isEntityAssign()) {
-            return $this->fields["entities_id"];
+            return is_array($this->fields["entities_id"]);
         }
         return  -1;
     }
@@ -3274,7 +3275,7 @@ class CommonDBTM extends CommonGLPI
         if (!array_key_exists('id', $this->fields ?? [])) {
             $this->getEmpty();
         }
-        return array_key_exists('entities_id', $this->fields);
+        return is_array($this->fields) && array_key_exists('entities_id', $this->fields);
     }
 
 
