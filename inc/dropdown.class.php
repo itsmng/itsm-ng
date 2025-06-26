@@ -225,7 +225,9 @@ class Dropdown
                     )
                 );
             }
+            $output .= "<span class='input-group-text'>";
             $output .= Html::showToolTip($comment, $options_tooltip);
+            $output .= "</span>";
 
             if (
                 ($item instanceof CommonDropdown)
