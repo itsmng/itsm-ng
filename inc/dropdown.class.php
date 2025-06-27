@@ -389,7 +389,9 @@ class Dropdown
                     $JOIN = ['LEFT JOIN' => $JOINS];
                 }
             }
-
+            if (!is_numeric($id)) {
+                return ''; 
+            }
             $criteria = [
                'SELECT' => [
                   "$table.*",
@@ -397,7 +399,7 @@ class Dropdown
                   $SELECTCOMMENT
                ],
                'FROM'   => $table,
-               'WHERE'  => ["$table.id" => $id]
+               'WHERE'  => ["$table.id" => (int)$id]
             ] + $JOIN;
             $request = config::getAdapter()->request($criteria);
             $results = $request->fetchAllAssociative();

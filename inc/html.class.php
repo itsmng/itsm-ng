@@ -4220,6 +4220,7 @@ JAVASCRIPT
         $content = Toolbox::convertImageToTag($content);
 
         // If is html content
+        $content = $content ?? '';
         if ($content != strip_tags($content)) {
             $content = Toolbox::getHtmlToDisplay($content);
         }

@@ -7275,7 +7275,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $user->fields["access_font"];
+            $font = $user->fields["access_font"]?? null;
         }
 
         echo "<div class='filter_timeline'>";
@@ -7318,7 +7318,7 @@ abstract class CommonITILObject extends CommonDBTM
         $user->getFromDB(Session::getLoginUserID());
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $user->fields["access_font"];
+            $font = $user->fields["access_font"]?? null;
         }
         echo "<h2 style='font-family: $font;'>" . __("Actions historical") . " : </h2>";
         $this->filterTimeline();
@@ -7465,10 +7465,10 @@ abstract class CommonITILObject extends CommonDBTM
         $user = new User();
         $user->getFromDB(Session::getLoginUserID());
 
-        $canuse_shortcuts = $user->fields['access_shortcuts'];
+        $canuse_shortcuts = $user->fields['access_shortcuts']?? null;
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $user->fields["access_font"];
+            $font = $user->fields["access_font"]?? null;
         }
 
         if ($canadd_fup || $canadd_task || $canadd_document || $canadd_solution) {
@@ -7860,7 +7860,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $thisUser->fields["access_font"];
+            $font = $thisUser->fields["access_font"]?? null;
         }
 
         $timeline_index = 0;
