@@ -365,7 +365,7 @@ class Domain_Item extends CommonDBRelation
                             $newValue[] = Dropdown::getDropdownName("glpi_entities", $data['entity']);
                         }
                         $values[] = $newValue;
-                        $massive_action[] = sprintf('item[%s][%s]', self::class, $data['id']);
+                        $massive_action[] = sprintf('item[%s][%s]', self::class, $data['items_id']);
                     }
                 }
             }
@@ -552,7 +552,7 @@ class Domain_Item extends CommonDBRelation
         $domain  = new Domain();
         $used    = [];
         foreach ($results as $data) {
-            $domains[$data['assocID']] = $data;
+            $domains[$data['assocID'] ?? null] = $data;
             $used[$data['id']]         = $data['id'];
         }
 

@@ -365,7 +365,7 @@ class Transfer extends CommonDBTM
                 "$itemtable.id" => null,
                 'glpi_computers_items.itemtype' => $itemtype
                 ];
-                
+
                 $orphaned_items = $computer_item->find($criteria, [], 0, 0, $join);
                 foreach ($orphaned_items as $data) {
                     $computer_item->delete(['id' => $data['id']], true);
@@ -419,7 +419,7 @@ class Transfer extends CommonDBTM
 
 
             // Clean DB
-           $version = new SoftwareVersion();
+            $version = new SoftwareVersion();
             $join = [
                 'LEFT JOIN' => [
                     'glpi_softwares' => [
@@ -438,7 +438,7 @@ class Transfer extends CommonDBTM
             foreach ($CFG_GLPI['software_types'] as $itemtype) {
                 $itemtable = getTableForItemType($itemtype);
                 // Clean DB
-                 $item_version = new Item_SoftwareVersion();
+                $item_version = new Item_SoftwareVersion();
                 $join = [
                     'LEFT JOIN' => [
                         $itemtable => [
@@ -618,7 +618,7 @@ class Transfer extends CommonDBTM
                     $itemtable = getTableForItemType($itemtype);
 
                     // Clean DB
-                     $contract_item = new Contract_Item();
+                    $contract_item = new Contract_Item();
                     $join = [
                         'LEFT JOIN' => [
                             $itemtable => [
@@ -942,7 +942,7 @@ class Transfer extends CommonDBTM
         if ($this->options['keep_contact']) {
             $contact_suppliers = [];
             // Clean DB
-           $contact_supplier = new Contact_Supplier();
+            $contact_supplier = new Contact_Supplier();
             $join = [
                 'LEFT JOIN' => [
                     'glpi_contacts' => [
@@ -1015,7 +1015,7 @@ class Transfer extends CommonDBTM
                 if (isset($this->needtobe_transfer[$itemtype]) && count($this->needtobe_transfer[$itemtype])) {
                     $itemtable = getTableForItemType($itemtype);
                     // Clean DB
-                   $document_item = new Document_Item();
+                    $document_item = new Document_Item();
                     $join = [
                         'LEFT JOIN' => [
                             $itemtable => [
@@ -1283,7 +1283,7 @@ class Transfer extends CommonDBTM
                 $data = Toolbox::addslashes_deep($location->fields);
 
                 $input['entities_id']  = $this->to;
-                $input['completename'] = $data['completename']?? '';
+                $input['completename'] = $data['completename'] ?? '';
                 $newID                 = $location->findID($input);
 
                 if ($newID < 0) {
@@ -2175,7 +2175,7 @@ class Transfer extends CommonDBTM
                 // Update links
                 if ($ID == $newID) {
                     if ($item_ID != $newdocID) {
-                         $document_item = new Document_Item();
+                        $document_item = new Document_Item();
                         $document_item->update([
                             'id' => $data['id'],
                             'documents_id' => $newdocID
@@ -2192,7 +2192,7 @@ class Transfer extends CommonDBTM
                             'itemtype'     => $itemtype
                         ]);
                     } else { // same doc for new item update link
-                         $document_item = new Document_Item();
+                        $document_item = new Document_Item();
                         $document_item->update([
                             'id' => $data['id'],
                             'items_id' => $newID
@@ -2385,7 +2385,7 @@ class Transfer extends CommonDBTM
                         // Call Disconnect for global device (no disconnect behavior, but history )
                         $conn = new Computer_Item();
                         $conn->delete(['id' => $data['id'], '_no_auto_action' => true]);
-    
+
 
                         $need_clean_process = true;
 
@@ -3140,8 +3140,8 @@ class Transfer extends CommonDBTM
                         $contacts_suppliers->update([
                             'id'           => $data['id'],
                             'suppliers_id' => $newID
-                        ]);                        
-                        
+                        ]);
+
                     }
                 }
 

@@ -527,7 +527,7 @@ class QueuedChat extends CommonDBTM
                     ]
                 ]
             ]);
-            
+
             // Supprimer chaque chat individuellement
             foreach ($chats->fetchAllAssociative() as $data) {
                 $chat = new self();

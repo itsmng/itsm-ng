@@ -368,7 +368,7 @@ class User extends CommonDBTM
               'is_private' => 0,
             ]
         );
-    
+
 
         // Set no user to consumables
         $consumable = new Consumable();
@@ -2961,7 +2961,7 @@ class User extends CommonDBTM
         ) {
             // extauth ldap case
             if (
-                $_SESSION["glpiextauth"]
+                !empty($_SESSION["glpiextauth"])
                 && ($this->fields["authtype"] == Auth::LDAP
                     || Auth::isAlternateAuth($this->fields["authtype"]))
             ) {
@@ -3751,10 +3751,12 @@ class User extends CommonDBTM
                     switch ($r) {
                         case 'own_ticket':
                             $ORWHERE[] = [
-                               [
-                                  'glpi_profilerights.name'     => 'ticket',
-                                  'glpi_profilerights.rights'   => ['&', Ticket::OWN]
-                               ] + getEntitiesRestrictCriteria('glpi_profiles_users', '', $entity_restrict, 1)
+                                array_merge(
+                                    [
+                                    'glpi_profilerights.name' => 'ticket',
+                                ],
+                                    self::getAdapter()->getRightExpression('glpi_profilerights.rights', Ticket::OWN)
+                                ) + getEntitiesRestrictCriteria('glpi_profiles_users', '', $entity_restrict, 1)
                             ];
                             break;
 
@@ -3813,7 +3815,7 @@ class User extends CommonDBTM
                             $ORWHERE[] = [
                                [
                                   'glpi_profilerights.name'     => 'project',
-                                  'glpi_profilerights.rights'   => ['&', Project::READMY]
+                                  'glpi_profilerights.rights'   => ['&', Project::READMY] != 0
                                ] + getEntitiesRestrictCriteria('glpi_profiles_users', '', $entity_restrict, 1)
                             ];
                             break;
@@ -4257,7 +4259,7 @@ class User extends CommonDBTM
             !empty($IDs)
             && in_array($authtype, [Auth::DB_GLPI, Auth::LDAP, Auth::MAIL, Auth::EXTERNAL])
         ) {
-            $user = new User();            
+            $user = new User();
             $result = $user->update(
                 [
                   'id'              => $IDs,
@@ -4265,7 +4267,8 @@ class User extends CommonDBTM
                   'auths_id'        => $server,
                   'password'        => '',
                   'is_deleted_ldap' => 0
-                ]);
+                ]
+            );
             if ($result) {
                 foreach ($IDs as $ID) {
                     $changes = [
@@ -4417,7 +4420,13 @@ class User extends CommonDBTM
 
                 foreach ($item_request as $data) {
                     $cansee = $item->can($data["id"], READ);
-                    $link   = $data["name"];
+                    if (!isset($data["name"])) {
+                        $linked_component = new ($itemtype::getDeviceType())();
+                        $linked_component->getFromDB($data[getForeignKeyFieldForItemType($itemtype::getDeviceType())]);
+                        $link = $linked_component->fields['designation'] . " (" . $data['id'] . ")";
+                    } else {
+                        $link   = $data["name"];
+                    }
                     if ($cansee) {
                         $link_item = $item::getFormURLWithID($data['id']);
                         if ($_SESSION["glpiis_ids_visible"] || empty($link)) {
@@ -5693,7 +5702,7 @@ class User extends CommonDBTM
                     'cookie_token_date' => null,
                 ]);
             }
-            
+
         }
 
         return -1 !== $notice_time && $to_notify_count > $notification_limit

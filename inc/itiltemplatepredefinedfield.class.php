@@ -330,6 +330,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
         if ($canedit && $numrows) {
             Html::openMassiveActionsForm('mass' . static::getType() . $rand);
             $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
+                                          'deprecated'    => true,
                                           'container'     => 'mass' . static::getType() . $rand];
             Html::showMassiveActions($massiveactionparams);
         }

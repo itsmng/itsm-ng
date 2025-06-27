@@ -51,9 +51,9 @@ class DeviceHardDrive
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
 
-    #[ORM\ManyToOne(targetEntity: DeviceharddriveModel::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceHardDriveModel::class)]
     #[ORM\JoinColumn(name: 'deviceharddrivemodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?DeviceharddriveModel $deviceharddrivemodel = null;
+    private ?DeviceHardDriveModel $deviceharddrivemodel = null;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;

@@ -942,7 +942,7 @@ class Plugin extends CommonDBTM
                 'state' => self::ACTIVATED
             ]
         ]);
-        
+
         foreach ($plugins->fetchAllAssociative() as $data) {
             $plugin = new self();
             if ($plugin->getFromDB($data['id'])) {
@@ -951,7 +951,7 @@ class Plugin extends CommonDBTM
                     'state' => self::NOTACTIVATED
                 ]);
             }
-        }    
+        }
 
         $dirs = array_keys(self::$activated_plugins);
         foreach ($dirs as $dir) {

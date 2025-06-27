@@ -3,8 +3,8 @@
 <li class="{{meta is defined ? 'metacriteria' : 'normalcriteria'}} {{addclass}} mb-3 mx-auto" style="width: fit-content" id="{{rowid}}">
     <input id="is_deleted" type="hidden" name="is_deleted" value="{{is_deleted}}">
     <input id="as_map" type="hidden" name="as_map" value="{{as_map}}">
-    <div class="input-container d-flex flex-column">
-        <div class="input-group me-2 flex flex-nowrap flex-grow-0" style="flex: 0 0 0; height: 2rem;">
+    <div class="input-container d-flex flex-row">
+        <div class="input-group">
             {% if not from_meta %}
                 <i class="far fa-minus-square remove-search-criteria input-group-text"
                     role="button"

@@ -764,14 +764,14 @@ class Reservation extends CommonDBChild
                       ] : [],
                       __('Start date') => [
                           'type'  => 'datetime-local',
-                          'name'  => __('Start date'),
+                          'name'  => 'resa[begin]',
                           'value' => $resa->fields["begin"],
                           'min'   => date('Y-m-d H:00:00'),
                       ],
                       __('End date') => [
                           'type'  => 'datetime-local',
                           'id'    => 'entTimeStamp',
-                          'name'  =>  __('End date'),
+                          'name'  =>  'resa[end]',
                           'value' => $resa->fields["end"],
                           'min'   => $this->fields["begin"] ?? date('Y-m-d H:00:00'),
                       ],

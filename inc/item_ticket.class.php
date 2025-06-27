@@ -1548,6 +1548,7 @@ class Item_Ticket extends CommonItilObject_Item
            'field'              => 'items_id',
            'name'               => _n('Associated element', 'Associated elements', Session::getPluralNumber()),
            'datatype'           => 'specific',
+           'noLib'              => true,
            'comments'           => true,
            'nosort'             => true,
            'additionalfields'   => ['itemtype']

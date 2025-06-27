@@ -388,7 +388,10 @@ class SoftwareVersion extends CommonDBChild
             echo "<th>" . __('Comments') . "</th>";
             echo "</tr>\n";
 
-            for ($tot = $nb = 0; $data = $iterator->next(); $tot += $nb) {
+            $tot = 0;
+            $nb  = 0;
+            foreach ($request as $data) {
+                $tot += $nb;
                 Session::addToNavigateListItems('SoftwareVersion', $data['id']);
                 $nb = Item_SoftwareVersion::countForVersion($data['id']);
 

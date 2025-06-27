@@ -188,7 +188,7 @@ class PurgeLogs extends CommonDBTM
                     'linked_action' => Log::HISTORY_CREATE_ITEM
                 ] + $month
             ]);
-            
+
             foreach ($logs->fetchAllAssociative() as $data) {
                 $log = new Log();
                 if ($log->getFromDB($data['id'])) {
@@ -224,7 +224,7 @@ class PurgeLogs extends CommonDBTM
                     ]
                 ] + $month
             ]);
-            
+
             foreach ($logs->fetchAllAssociative() as $data) {
                 $log = new Log();
                 if ($log->getFromDB($data['id'])) {
@@ -249,7 +249,7 @@ class PurgeLogs extends CommonDBTM
                     ]
                 ] + $month
             ]);
-            
+
             foreach ($logs->fetchAllAssociative() as $data) {
                 $log = new Log();
                 if ($log->getFromDB($data['id'])) {
@@ -269,7 +269,7 @@ class PurgeLogs extends CommonDBTM
                     'linked_action' => Log::HISTORY_LOG_SIMPLE_MESSAGE
                 ] + $month
             ]);
-            
+
             foreach ($logs->fetchAllAssociative() as $data) {
                 $log = new Log();
                 if ($log->getFromDB($data['id'])) {
@@ -289,7 +289,7 @@ class PurgeLogs extends CommonDBTM
                     'linked_action' => Log::HISTORY_ADD_RELATION
                 ] + $month
             ]);
-            
+
             foreach ($logs->fetchAllAssociative() as $data) {
                 $log = new Log();
                 if ($log->getFromDB($data['id'])) {
@@ -328,7 +328,7 @@ class PurgeLogs extends CommonDBTM
                         'linked_action' => $key
                     ] + $month
                 ]);
-                
+
                 foreach ($logs->fetchAllAssociative() as $data) {
                     $log = new Log();
                     if ($log->getFromDB($data['id'])) {
@@ -365,7 +365,7 @@ class PurgeLogs extends CommonDBTM
                         'linked_action' => $key
                     ] + $month
                 ]);
-                
+
                 // Supprimer chaque log individuellement
                 foreach ($logs->fetchAllAssociative() as $data) {
                     $log = new Log();
@@ -406,7 +406,7 @@ class PurgeLogs extends CommonDBTM
                         'linked_action' => $key
                     ] + $month
                 ]);
-                
+
                 foreach ($logs->fetchAllAssociative() as $data) {
                     $log = new Log();
                     if ($log->getFromDB($data['id'])) {
@@ -441,7 +441,7 @@ class PurgeLogs extends CommonDBTM
                         'id_search_option' => $key
                     ] + $month
                 ]);
-                
+
                 foreach ($logs->fetchAllAssociative() as $data) {
                     $log = new Log();
                     if ($log->getFromDB($data['id'])) {
@@ -472,7 +472,7 @@ class PurgeLogs extends CommonDBTM
                     'itemtype' => ['LIKE', 'Plugin%']
                 ] + $month
             ]);
-            
+
             foreach ($logs->fetchAllAssociative() as $data) {
                 $log = new Log();
                 if ($log->getFromDB($data['id'])) {
@@ -502,7 +502,7 @@ class PurgeLogs extends CommonDBTM
                     'itemtype' => ['LIKE', 'Plugin%']
                 ] + $month
             ]);
-            
+
             foreach ($logs->fetchAllAssociative() as $data) {
                 $log = new Log();
                 if ($log->getFromDB($data['id'])) {

@@ -40,9 +40,9 @@ class DeviceSoundCard
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
     private $isRecursive;
 
-    #[ORM\ManyToOne(targetEntity: DeviceSoundCardmodel::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceSoundCardModel::class)]
     #[ORM\JoinColumn(name: 'devicesoundcardmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?DeviceSoundCardmodel $devicesoundcardmodel = null;
+    private ?DeviceSoundCardModel $devicesoundcardmodel = null;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
     private $dateMod;

@@ -397,6 +397,10 @@ class Cartridge extends CommonDBChild
             }
 
 
+            // TODO: currently we basically always use the nohtml parameter
+            //       problem being that the HTML table is rendered directly
+            //       and in our case we want to return a string, so we just
+            //       use the nohtml option as a fallback.
             if (!$nohtml) {
                 $fields = [
                    __('Total'),
@@ -881,8 +885,6 @@ class Cartridge extends CommonDBChild
     **/
     public static function showForPrinter(Printer $printer, $old = 0)
     {
-        global $DB, $CFG_GLPI;
-
         $instID = $printer->getField('id');
         if (!self::canView()) {
             return false;

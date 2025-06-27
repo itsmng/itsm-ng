@@ -186,7 +186,7 @@ class RequestType extends CommonDropdown
                     'id' => ['<>', $this->fields['id']]
                 ]
             ]);
-            
+
             foreach ($types->fetchAllAssociative() as $data) {
                 $requestType = new self();
                 if ($requestType->getFromDB($data['id'])) {
@@ -248,7 +248,7 @@ class RequestType extends CommonDropdown
                     'id' => ['<>', $this->fields['id']]
                 ]
             ]);
-            
+
             // Mettre à jour chaque type de demande individuellement
             foreach ($types->fetchAllAssociative() as $data) {
                 $requestType = new self();

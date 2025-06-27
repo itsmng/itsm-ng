@@ -1,4 +1,4 @@
-{% macro input(name, value, type = "text", class, id, placeholder, required, autocomplete = "on", checked) %} 
+{% macro input(name, value, type = "text", class, id, placeholder, required, autocomplete = "on", checked) %}
     <input  class="{{ class }}" id="{{ id }}" type="{{ type }}" name="{{ name }}" value="{{ value|e }}" placeholder="{{ palceholder }}" {{ required ? "required"}} {{checked ? 'checked'}} "autocomplete"="{{ autocomplete }}"/>
 {% endmacro %}
 
@@ -13,20 +13,20 @@
     <button type="{{ type }}" name="{{ name }}" aria-label="{{ name }}" value="{{ value|e }}" class="btn btn-warning submit"/><i class="fas fa-circle-o-notch fa-spin" aria-hidden="true"></i>{{text}}</button>
     {% endif %}
 {% endmacro %}
-    
-{# 
+
+{#
     args    = {}    : the overall argument of the table such as the class, whether row searching should be enabled, data export enable etc...
-    header  = {     : header contain your column name (title) and the options of the argument of this column such as whether it should be sortable, 
+    header  = {     : header contain your column name (title) and the options of the argument of this column such as whether it should be sortable,
                     the default value of a cell if no value is provided etc. The argument and titles are in different lists and are linked by their index.
-                    Even if a column as no argument, you have to pass an empty as the argument to maintain the index linking. 
+                    Even if a column as no argument, you have to pass an empty as the argument to maintain the index linking.
                 args    :   [], : list of argument for the column.
                 titles  :   []  : the title of the column.
               },
     body    = {     : same as header for the body.
                 args    :   [], : list of argument for the row, usually none
-                rows    :   []  : 2D list of row containing cells. ex: [['Emile', 'Zola', 62], ['Marcel', 'Proust', 41]] 
+                rows    :   []  : 2D list of row containing cells. ex: [['Emile', 'Zola', 62], ['Marcel', 'Proust', 41]]
               }
-    Both the table args and the column args have default values, check them in the macro 
+    Both the table args and the column args have default values, check them in the macro
 #}open
 {% macro table(args = {}, header = {args : [], titles : []}, body = {args : [], rows : []}) %}
 
@@ -69,9 +69,9 @@
         </table>
     </div>
     <input id="table_input" type="hidden" name="{{args.post_name}}" value=''>
-    <script>   
+    <script>
         $('form').on("submit", function() {
-            selection = $('#table').bootstrapTable('getSelections');
+            selection = window[table + '_getMassiveActionSelection']();
             selection.forEach(array => {
             Object.keys(array).forEach(key => {
                     if (key.includes("_data")) {

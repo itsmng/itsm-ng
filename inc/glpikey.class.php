@@ -265,7 +265,7 @@ class GLPIKey
                     $pass = Toolbox::sodiumEncrypt($this->decryptUsingLegacyKey($value, $old_key));
                 }
                 $itemtype = getItemTypeForTable($table);
-            
+
                 if (class_exists($itemtype)) {
                     $item = new $itemtype();
                     $success = $item->update([

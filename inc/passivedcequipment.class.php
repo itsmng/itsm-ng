@@ -116,7 +116,7 @@ class PassiveDCEquipment extends CommonDBTM
                        'name' => 'tech_users_id',
                        'type' => 'select',
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields['tech_users_id'],
+                       'value' => $this->fields['tech_users_id'] ?? null,
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     Manufacturer::getTypeName(1) => [

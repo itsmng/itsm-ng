@@ -63,46 +63,45 @@
     } else {
       $("#ActorSelector_{{rand}}").attr("disabled", false);
     };
+    
     $.ajax({
       url: "{{root_doc}}/ajax/dropdownItilActors.php",
       type: "POST",
       data: {
         type: $("#ActorTypeSelector_{{rand}}").val(),
-        actorType: '{{attributes.actorType}}',
+        actortype: '{{attributes.actorType}}',
         actorTypeId: '{{attributes.actorTypeId}}',
         itemtype: '{{attributes.itemType}}',
         ticketId: '{{attributes.ticketId}}',
+        entity_restrict: '{{entity_id}}',
+        use_notif: '1',
+        allow_email: false
       },
       success: function (data) {
-        jsonData = JSON.parse(data);
-        $("#ActorSelector_{{rand}}").empty();
-        for (const key in jsonData) {
-          if (typeof jsonData[key] === "object") {
-              let optgroup = $("#ActorSelector_{{rand}}").append(
-                $("<optgroup>", {
-                  label: key,
-                })
-              );
-              for (const subkey in jsonData[key]) {
-                optgroup.append(
-                  $("<option>", {
-                    value: subkey,
-                    text: jsonData[key][subkey],
-                  })
-                );
-              }
-          } else {
-              $("#ActorSelector_{{rand}}").append(
-                $("<option>", {
-                  value: key,
-                  text: jsonData[key],
-                })
-              );
+        let tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data;
+        
+        let newSelect = tempDiv.querySelector('select');
+        
+        if (newSelect) {
+          let currentSelect = document.getElementById('ActorSelector_{{rand}}');
+          currentSelect.innerHTML = '';
+          
+          Array.from(newSelect.children).forEach(child => {
+            currentSelect.appendChild(child.cloneNode(true));
+          });
+          
+          if (newSelect.name) {
+            currentSelect.name = newSelect.name;
           }
         }
       },
+      error: function(xhr, status, error) {
+        console.error('AJAX Error:', status, error);
+        $("#ActorSelector_{{rand}}").empty();
+      }
     });
-  }
+}
   $(document).ready(() => {
     setActorSelectValues{{rand}}()
     // add all already present actors

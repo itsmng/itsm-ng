@@ -177,12 +177,12 @@ class Monitor extends CommonDBTM
                        'placeholder' => ''
                     ],
                     __("Status") => [
-                       'name' => 'states_id',
-                       'type' => 'select',
-                       'values' => getOptionForItems('State', ['is_visible_monitor' => 1, 'entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields['states_id'],
-                       'actions' => getItemActionButtons(['info', 'add'], "State"),
-                    ],
+                     'name' => 'states_id',
+                     'type' => 'select',
+                     'values' => getOptionForItems('State', ['is_visible_monitor' => 1]),
+                     'value' => $this->fields['states_id'],
+                     'actions' => getItemActionButtons(['info', 'add'], "State"),
+                 ],
                     __("Location") => [
                        'name' => 'locations_id',
                        'id' => 'locations_id_dropdown',

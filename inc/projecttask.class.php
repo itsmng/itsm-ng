@@ -1391,8 +1391,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
     **/
     public function showTeam(ProjectTask $task)
     {
-        /// TODO : permit to simple add member of project team ?
-
+        global $CFG_GLPI;
         $ID      = $task->fields['id'];
         $canedit = $task->canEdit($ID);
 
@@ -1403,36 +1402,148 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
         if ($canedit) {
             echo "<div class='firstbloc'>";
             echo "<form aria-label='Project task Team' name='projecttaskteam_form$rand' id='projecttaskteam_form$rand' ";
-            echo " method='post' action='" . Toolbox::getItemTypeFormURL('ProjectTaskTeam') . "'>";
+            echo " method='post' action='" . $CFG_GLPI['root_doc'] . "/front/projecttaskteam.form.php'>";
             echo "<input type='hidden' name='projecttasks_id' value='$ID'>";
             echo "<table class='tab_cadre_fixe' aria-label='Add a team member'>";
-            echo "<tr class='tab_bg_1'><th colspan='2'>" . __('Add a team member') . "</tr>";
-            echo "<tr class='tab_bg_2'><td>";
+            echo "<tr class='tab_bg_1'><th colspan='3'>" . __('Add a team member') . "</tr>";
+            echo "<tr class='tab_bg_2'>";
 
-            $params = ['itemtypes'       => ProjectTeam::$available_types,
-                            'entity_restrict' => ($task->fields['is_recursive']
-                                                  ? getSonsOf(
-                                                      'glpi_entities',
-                                                      $task->fields['entities_id']
-                                                  )
-                                                  : $task->fields['entities_id']),
-                            'checkright'      => true];
-            $addrand = Dropdown::showSelectItemFromItemtypes($params);
+            echo "<td width='40%'>";
+            echo __('Type') . "<br>";
 
+            $types_for_dropdown = [];
+            foreach (ProjectTaskTeam::$available_types as $type) {
+                if (class_exists($type)) {
+                    $item = new $type();
+                    $types_for_dropdown[$type] = $item->getTypeName(1);
+                }
+            }
+
+            Dropdown::showFromArray(
+                'itemtype',
+                $types_for_dropdown,
+                [
+                    'display_emptychoice' => true,
+                    'emptylabel' => __('Select a type...'),
+                    'on_change' => 'updateItemsDropdown' . $rand . '(this.value)'
+                ]
+            );
             echo "</td>";
+
+            echo "<td width='40%'>";
+            echo __('Member') . "<br>";
+            echo "<select name='items_id' id='dropdown_items_id_$rand' class='form-select'>";
+            echo "<option value='0'>" . __('Select a type first...') . "</option>";
+            echo "</select>";
+            echo "</td>";
+
             echo "<td width='20%'>";
-            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
+            echo "<br>";
+            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='btn btn-primary'>";
             echo "</td>";
+
             echo "</tr>";
             echo "</table>";
             Html::closeForm();
             echo "</div>";
+
+            echo Html::scriptBlock("
+            function updateItemsDropdown$rand(itemtype) {
+                var dropdown = $('#dropdown_items_id_$rand');
+                
+                if (!itemtype || itemtype == '0') {
+                    dropdown.html('<option value=\"0\">" . __('Select a type first...') . "</option>');
+                    return;
+                }
+                
+                dropdown.html('<option value=\"0\">" . __('Loading...') . "</option>');
+                
+                var ajaxParams = {
+                    itemtype: itemtype,
+                    display_emptychoice: 1,
+                    entity_restrict: " . ($task->fields['is_recursive']
+                        ? json_encode(getSonsOf('glpi_entities', $task->fields['entities_id']))
+                        : $task->fields['entities_id']) . ",
+                    myname: 'items_id',
+                    rand: '$rand'
+                };
+                
+                $.ajax({
+                    url: '" . $CFG_GLPI['root_doc'] . "/ajax/getDropdownValue.php',
+                    method: 'POST',
+                    data: ajaxParams,
+                    success: function(data) {
+
+                        if (typeof data === 'string') {
+                            if (data && data.trim() !== '') {
+                                dropdown.html(data);
+                            } else {
+                                dropdown.html('<option value=\"0\">" . __('No items found') . "</option>');
+                            }
+                        } else if (typeof data === 'object' && data.results) {
+                            var options = '<option value=\"0\">" . __('Select an item...') . "</option>';
+                            
+                            if (data.results && data.results.length > 0) {
+                                data.results.forEach(function(item) {
+                                    if (item.children && Array.isArray(item.children)) {
+                                        item.children.forEach(function(child) {
+                                            var itemId = child.id;
+                                            var itemText = child.text || child.name || child.label;
+                                            
+                                            if (itemId && itemText && itemId !== '0') {
+                                                options += '<option value=\"' + itemId + '\">' + itemText + '</option>';
+                                            }
+                                        });
+                                    } else {
+                                        var itemId, itemText;
+                                        
+                                        if (item.id && item.text) {
+                                            itemId = item.id;
+                                            itemText = item.text;
+                                        } else if (item.id && item.name) {
+                                            itemId = item.id;
+                                            itemText = item.name;
+                                        } else if (typeof item === 'object') {
+                                            itemId = item.id || item.value || item[0];
+                                            itemText = item.text || item.name || item.label || item[1] || item.id;
+                                        } else {
+                                            itemId = item;
+                                            itemText = item;
+                                        }
+                                        
+                                        if (itemId && itemText && itemId !== '0') {
+                                            options += '<option value=\"' + itemId + '\">' + itemText + '</option>';
+                                        }
+                                    }
+                                });
+                            }
+                            
+                            if (options === '<option value=\"0\">" . __('Select an item...') . "</option>') {
+                                options = '<option value=\"0\">" . __('No items found') . "</option>';
+                            }
+                            
+                            dropdown.html(options);
+                        } else {
+                            console.warn('Unexpected data format:', data);
+                            dropdown.html('<option value=\"0\">" . __('No items found') . "</option>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', status, error, xhr.responseText);
+                        dropdown.html('<option value=\"0\">" . __('Error loading items') . "</option>');
+                    }
+                });
+            }
+            ");
         }
+
         echo "<div class='spaced'>";
         if ($canedit && $nb) {
             Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $nb),
-                                         'container'     => 'mass' . __CLASS__ . $rand];
+            $massiveactionparams = [
+                'num_displayed' => min($_SESSION['glpilist_limit'], $nb),
+                'container'     => 'mass' . __CLASS__ . $rand
+            ];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixehov' aria-label='Type and member'>";
@@ -1480,8 +1591,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
         }
 
         echo "</div>";
-        // Add items
-
         return true;
     }
 

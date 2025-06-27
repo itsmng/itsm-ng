@@ -389,7 +389,9 @@ class Dropdown
                     $JOIN = ['LEFT JOIN' => $JOINS];
                 }
             }
-
+            if (!is_numeric($id)) {
+                return ''; 
+            }
             $criteria = [
                'SELECT' => [
                   "$table.*",
@@ -397,7 +399,7 @@ class Dropdown
                   $SELECTCOMMENT
                ],
                'FROM'   => $table,
-               'WHERE'  => ["$table.id" => $id]
+               'WHERE'  => ["$table.id" => (int)$id]
             ] + $JOIN;
             $request = config::getAdapter()->request($criteria);
             $results = $request->fetchAllAssociative();
@@ -1963,6 +1965,7 @@ class Dropdown
                'id'          => $field_id,
                'aria-label'  => $field_name,
                'title'       => Html::entities_deep($param['tooltip'] ?? $field_name),
+               'noLib'       => true,
                'hooks'       => [
                   'change' => $param['on_change'] ?? '',
                ],
@@ -2528,7 +2531,7 @@ class Dropdown
                 $criteria['LEFT JOIN'] = $ljoin;
             }
             $request = config::getAdapter()->request($criteria);
-            $results = $request->fetchAllAssociative();            
+            $results = $request->fetchAllAssociative();
             if ($post['page'] == 1 && empty($post['searchText'])) {
                 if (isset($post['display_emptychoice']) && $post['display_emptychoice']) {
                     $datas[] = [
@@ -2704,7 +2707,7 @@ class Dropdown
                     }
                     $firstitem = false;
                 }
-                
+
             }
 
             if ($multi) {

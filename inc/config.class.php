@@ -1026,7 +1026,8 @@ class Config extends CommonDBTM
                         'name' => "_matrix_{$urgency}_{$impact}",
                         'type' => 'select',
                         'values' => $urgencynames,
-                        'value' => $CFG_GLPI['priority_matrix'][$urgency][$impact]
+                        'value' => $CFG_GLPI['priority_matrix'][$urgency][$impact],
+                        'noLib' => true
                     ]);
                     $content = ob_get_clean();
                     $matrix[$urgency][$impact] = [
@@ -1135,87 +1136,6 @@ class Config extends CommonDBTM
         ];
         //debug matrix
         renderTwigForm($form);
-        // if ($canedit) {
-        //    echo "<form name='form' action=\"".Toolbox::getItemTypeFormURL(__CLASS__)."\" method='post' data-track-changes='true'>";
-        // }
-        // echo "<div class='center spaced' id='tabsbody'>";
-
-        // echo "<table class='tab_cadre_fixe'>";
-        // echo "<tr><th colspan='7'>" . __('Matrix of calculus for priority');
-        // echo "<input type='hidden' name='_matrix' value='1'></th></tr>";
-
-        // echo "<tr class='tab_bg_2'>";
-        // echo "<td class='b right' colspan='2'>".__('Impact')."</td>";
-
-        // $isimpact = [];
-        // for ($impact=5; $impact>=1; $impact--) {
-        //    echo "<td class='center'>".Ticket::getImpactName($impact).'<br>';
-
-        //    if ($impact==3) {
-        //       $isimpact[3] = 1;
-        //       echo "<input type='hidden' name='_impact_3' value='1'>";
-
-        //    } else {
-        //       $isimpact[$impact] = (($CFG_GLPI['impact_mask']&(1<<$impact)) >0);
-        //       Dropdown::showYesNo("_impact_{$impact}", $isimpact[$impact]);
-        //    }
-        //    echo "</td>";
-        // }
-        // echo "</tr>";
-
-        // echo "<tr class='tab_bg_1'>";
-        // echo "<td class='b' colspan='2'>".__('Urgency')."</td>";
-
-        // for ($impact=5; $impact>=1; $impact--) {
-        //    echo "<td>&nbsp;</td>";
-        // }
-        // echo "</tr>";
-
-        // $isurgency = [];
-        // for ($urgency=5; $urgency>=1; $urgency--) {
-        //    echo "<tr class='tab_bg_1'>";
-        //    echo "<td>".Ticket::getUrgencyName($urgency)."&nbsp;</td>";
-        //    echo "<td>";
-
-        //    if ($urgency==3) {
-        //       $isurgency[3] = 1;
-        //       echo "<input type='hidden' name='_urgency_3' value='1'>";
-
-        //    } else {
-        //       $isurgency[$urgency] = (($CFG_GLPI['urgency_mask']&(1<<$urgency)) >0);
-        //       Dropdown::showYesNo("_urgency_{$urgency}", $isurgency[$urgency]);
-        //    }
-        //    echo "</td>";
-
-        //    for ($impact=5; $impact>=1; $impact--) {
-        //       $pri = round(($urgency+$impact)/2);
-
-        //       if (isset($CFG_GLPI['priority_matrix'][$urgency][$impact])) {
-        //          $pri = $CFG_GLPI['priority_matrix'][$urgency][$impact];
-        //       }
-
-        //       if ($isurgency[$urgency] && $isimpact[$impact]) {
-        //          $bgcolor=$_SESSION["glpipriority_$pri"];
-        //          echo "<td class='center' bgcolor='$bgcolor'>";
-        //          Ticket::dropdownPriority(['value' => $pri,
-        //                                         'name'  => "_matrix_{$urgency}_{$impact}"]);
-        //          echo "</td>";
-        //       } else {
-        //          echo "<td><input type='hidden' name='_matrix_{$urgency}_{$impact}' value='$pri'>
-        //                </td>";
-        //       }
-        //    }
-        //    echo "</tr>\n";
-        // }
-        // if ($canedit) {
-        //    echo "<tr class='tab_bg_2'>";
-        //    echo "<td colspan='7' class='center'>";
-        //    echo "<input type='submit' name='update' class='submit' value=\""._sx('button', 'Save')."\">";
-        //    echo "</td></tr>";
-        // }
-
-        // echo "</table></div>";
-        // Html::closeForm();
     }
 
 

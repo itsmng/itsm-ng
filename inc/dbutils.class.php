@@ -309,10 +309,9 @@ final class DbUtils
            . '(' . preg_quote(NS_GLPI, '/') . '|' . preg_quote(NS_PLUG, '/') . ')' // start with GLPI core or plugin namespace
            . preg_quote('\\', '/') // followed by an additionnal \
            . '/';
-        if (preg_match($sanitized_namespaced_pattern, $itemtype)) {
+        if (is_string($itemtype) && $itemtype !== null && preg_match($sanitized_namespaced_pattern, $itemtype)) {
             $itemtype = stripslashes($itemtype);
         }
-
         if (!is_subclass_of($itemtype, CommonGLPI::class, true)) {
             // Only CommonGLPI sublasses are valid itemtypes
             return false;
@@ -677,16 +676,7 @@ final class DbUtils
             $field = "$table.$field";
         }
 
-        // if (!is_array($value) && strlen($value) == 0) {
-        //     if (isset($_SESSION['glpiactiveentities'])) {
-        //         $value = $_SESSION['glpiactiveentities'];
-        //     } elseif (isCommandLine() || Session::isCron()) {
-        //         $value = '0'; // If value is not set, fallback to root entity in cron / command line
-        //     }
-        // }
 
-        //remplacé par:
-        // Ensure $value is string or array before strlen
         if (!is_array($value) && (is_string($value) || is_numeric($value))) {
             if (strlen((string)$value) == 0) {
                 if (isset($_SESSION['glpiactiveentities'])) {
@@ -696,7 +686,11 @@ final class DbUtils
                 }
             }
         }
-        //fin remplacement
+        // If $value is an empty array => return impossible criteria
+        if (is_array($value) && count($value) === 0) {
+            // Valeur impossible pour éviter "IN ()" vide
+            return [$field => -1];
+        }
         $crit = [$field => $value];
 
         if ($is_recursive === 'auto' && !empty($table) && $table != 'glpi_entities') {
@@ -734,6 +728,15 @@ final class DbUtils
                 }
             }
         }
+        // last verification before return
+        if (
+            isset($crit[$field])
+            && is_array($crit[$field])
+            && empty($crit[$field])
+        ) {
+            return [$field => -1];
+        }
+
         return $crit;
     }
 
@@ -876,6 +879,8 @@ final class DbUtils
                 $ancestors = $GLPI_CACHE->get($ckey);
                 if ($ancestors !== null) {
                     return $ancestors;
+                } else {
+                    $ancestors = [];
                 }
             }
         }
@@ -894,14 +899,13 @@ final class DbUtils
                'FROM'   => $table,
                'WHERE'  => ['id' => $items_id]
             ]);
-
             while ($row = $iterator->fetchAssociative()) {
                 if ($row['id'] > 0) {
                     $rancestors = $row['ancestors_cache'];
                     $parent     = $row[$parentIDfield];
 
                     // Return datas from cache in DB
-                    if (!empty($rancestors)) {
+                    if (isset($rancestors) && !empty($rancestors)) {
                         $ancestors = array_replace($ancestors, $this->importArrayFromDB($rancestors, true));
                     } else {
                         $loc_id_found = [];

@@ -82,14 +82,14 @@ class Item_Kanban extends CommonDBRelation
                 'id'        => $kanban_item->getID(),
                 'date_mod'  => $_SESSION['glpi_currenttime']
             ] + $common_input;
-            
+
             $kanban_item->update($update_data);
         } else {
             $kanban_item = new self();
             $kanban_item->fields = [
                 'date_creation'   => $_SESSION['glpi_currenttime']
             ] + $common_input;
-            
+
             $kanban_item->addToDB();
         }
         return true;

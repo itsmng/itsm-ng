@@ -952,11 +952,13 @@ class Rule extends CommonDBTM
                           'col_lg' => 12,
                           'col_md' => 12,
                       ],
-                      __('Last update') => !$this->fields["date_mod"] ? [] : [
-                          'content' => Html::convDateTime($this->fields["date_mod"]),
-                          'col_lg' => 12,
-                          'col_md' => 12,
-                      ],
+                      ($this->fields["date_mod"] ?? null) ? [
+                        __('Last update') => [
+                            'content' => Html::convDateTime($this->fields["date_mod"]),
+                            'col_lg'  => 12,
+                            'col_md'  => 12,
+                        ]
+                    ] : [],
                       $canedit && $this->isNewID($ID) ? [] : [
                           'type' => 'hidden',
                           'name' => 'ranking',
@@ -3250,13 +3252,13 @@ class Rule extends CommonDBTM
         }
 
         if (isset($item->input['_replace_by']) && ($item->input['_replace_by'] > 0)) {
-             $items = $adapter->request([
-                'SELECT' => [$fieldid],
-                'FROM'   => $table,
-                'WHERE'  => [
-                    $valfield   => $item->getField('id'),
-                    $fieldfield => ['LIKE', $field]
-                ]
+            $items = $adapter->request([
+               'SELECT' => [$fieldid],
+               'FROM'   => $table,
+               'WHERE'  => [
+                   $valfield   => $item->getField('id'),
+                   $fieldfield => ['LIKE', $field]
+               ]
             ]);
             foreach ($items->fetchAllAssociative() as $data) {
                 $input = [

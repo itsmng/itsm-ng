@@ -1143,7 +1143,7 @@ class Software extends CommonDBTM
                             'softwareversions_id_buy' => $from['id']
                         ]
                     ]);
-                    
+
                     foreach ($licenses_buy->fetchAllAssociative() as $license_data) {
                         $license = new SoftwareLicense();
                         if ($license->getFromDB($license_data['id'])) {
@@ -1161,7 +1161,7 @@ class Software extends CommonDBTM
                             'softwareversions_id_use' => $from['id']
                         ]
                     ]);
-                    
+
                     foreach ($licenses_use->fetchAllAssociative() as $license_data) {
                         $license = new SoftwareLicense();
                         if ($license->getFromDB($license_data['id'])) {
@@ -1173,14 +1173,14 @@ class Software extends CommonDBTM
                     }
 
                     // Move installation to existing version in destination software
-                     $installations = $adapter->request([
-                        'SELECT' => ['id'],
-                        'FROM'   => 'glpi_items_softwareversions',
-                        'WHERE'  => [
-                            'softwareversions_id' => $from['id']
-                        ]
+                    $installations = $adapter->request([
+                       'SELECT' => ['id'],
+                       'FROM'   => 'glpi_items_softwareversions',
+                       'WHERE'  => [
+                           'softwareversions_id' => $from['id']
+                       ]
                     ]);
-                    
+
                     $found = false;
                     foreach ($installations->fetchAllAssociative() as $install_data) {
                         $install = new Item_SoftwareVersion();

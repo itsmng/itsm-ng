@@ -217,7 +217,7 @@ class Profile extends CommonDBTM
                     'id' => ['<>', $this->input['id']]
                 ]
             ]);
-            
+
             foreach ($profiles->fetchAllAssociative() as $data) {
                 $profile = new self();
                 if ($profile->getFromDB($data['id'])) {
@@ -262,7 +262,7 @@ class Profile extends CommonDBTM
                     'id' => ['<>', $this->fields['id']]
                 ]
             ]);
-            
+
             foreach ($profiles->fetchAllAssociative() as $data) {
                 $profile = new self();
                 if ($profile->getFromDB($data['id'])) {
@@ -571,6 +571,7 @@ class Profile extends CommonDBTM
      **/
     public static function getUnderActiveProfileRestrictCriteria()
     {
+        $adapter = self::getAdapter();
 
         // Not logged -> no profile to see
         if (!isset($_SESSION['glpiactiveprofile'])) {
@@ -579,7 +580,7 @@ class Profile extends CommonDBTM
 
         // Profile right : may modify profile so can attach all profile
         if (Profile::canCreate()) {
-            return [1];
+            return ['(TRUE)'];
         }
 
         $criteria = ['glpi_profiles.interface' => Session::getCurrentInterface()];
@@ -2109,6 +2110,11 @@ class Profile extends CommonDBTM
               'field'     => 'solutiontemplate'
            ],
            [
+            'itemtype'  => 'ITILFollowupTemplate',
+            'label'     => _n('Followup template', 'Followup templates', Session::getPluralNumber()),
+            'field'     => 'followuptemplate'
+           ],
+           [
               'itemtype'  => 'Calendar',
               'label'     => _n('Calendar', 'Calendars', Session::getPluralNumber()),
               'field'     => 'calendar'
@@ -2127,6 +2133,11 @@ class Profile extends CommonDBTM
               'itemtype'  => 'Notification',
               'label'     => _n('Notification', 'Notifications', Session::getPluralNumber()),
               'field'     => 'notification'
+           ],
+           [
+            'itemtype'  => 'NotificationTemplate',
+            'label'     => _n('Notification template', 'Notification templates', Session::getPluralNumber()),
+            'field'     => 'notificationtemplate'
            ],
            [
               'itemtype'  => 'SLM',

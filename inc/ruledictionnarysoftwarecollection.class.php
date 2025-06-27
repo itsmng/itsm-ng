@@ -523,7 +523,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                 }
 
                 //Change ID of the version in glpi_items_softwareversions
-               $adapter = self::getAdapter();
+                $adapter = self::getAdapter();
                 $items = $adapter->request([
                     'SELECT' => ['id'],
                     'FROM'   => $item_softwareversion_table,
@@ -531,7 +531,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                         'softwareversions_id' => $version_id
                     ]
                 ]);
-                
+
                 foreach ($items->fetchAllAssociative() as $data) {
                     $item_version = new Item_SoftwareVersion();
                     if ($item_version->getFromDB($data['id'])) {
@@ -551,7 +551,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                         'softwareversions_id_buy' => $version_id
                     ]
                 ]);
-                
+
                 foreach ($licenses_buy->fetchAllAssociative() as $data) {
                     $license = new SoftwareLicense();
                     if ($license->getFromDB($data['id'])) {
@@ -569,7 +569,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                         'softwareversions_id_use' => $version_id
                     ]
                 ]);
-                
+
                 foreach ($licenses_use->fetchAllAssociative() as $data) {
                     $license = new SoftwareLicense();
                     if ($license->getFromDB($data['id'])) {
@@ -610,24 +610,24 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
         //Transfer licenses to new software if needed
         if ($old_software_id != $new_software_id) {
             $adapter = self::getAdapter();
-        $licenses = $adapter->request([
-            'SELECT' => ['id'],
-            'FROM'   => 'glpi_softwarelicenses',
-            'WHERE'  => [
-                'softwares_id' => $old_software_id
-            ]
-        ]);
-        
-        foreach ($licenses->fetchAllAssociative() as $data) {
-            $license = new SoftwareLicense();
-            if ($license->getFromDB($data['id'])) {
-                $license->update([
-                    'id'           => $data['id'],
-                    'softwares_id' => $new_software_id
-                ]);
+            $licenses = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => 'glpi_softwarelicenses',
+                'WHERE'  => [
+                    'softwares_id' => $old_software_id
+                ]
+            ]);
+
+            foreach ($licenses->fetchAllAssociative() as $data) {
+                $license = new SoftwareLicense();
+                if ($license->getFromDB($data['id'])) {
+                    $license->update([
+                        'id'           => $data['id'],
+                        'softwares_id' => $new_software_id
+                    ]);
+                }
             }
         }
-    }
         return true;
     }
 

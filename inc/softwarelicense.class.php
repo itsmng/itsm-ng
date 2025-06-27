@@ -424,14 +424,14 @@ class SoftwareLicense extends CommonTreeDropdown
                        'name' => 'softwareversions_id_use',
                        'itemtype' => SoftwareVersion::class,
                        'conditions' => ['softwares_id' => $this->fields['softwares_id']],
-                       'value' => $this->fields["softwareversions_id_use"],
+                       'value' => $this->fields["softwareversions_id_use"]?? null,
                     ],
                     __('Purchase version') => [
                        'type' => 'select',
                        'name' => 'softwareversions_id_buy',
                        'itemtype' => SoftwareVersion::class,
                        'conditions' => ['softwares_id' => $this->fields['softwares_id']],
-                       'value' => $this->fields["softwareversions_id_buy"],
+                       'value' => $this->fields["softwareversions_id_buy"]?? null,
                     ],
                     _x('quantity', 'Number') . ' (0 = ' . __('Unlimited') . ')' => [
                        'type' => 'number',
@@ -1441,7 +1441,7 @@ class SoftwareLicense extends CommonTreeDropdown
         }
         $nb = 0;
 
-        foreach (self::getAdapter()->request($item->getTable(), $crit) as $data) {
+        foreach (self::getAdapter()->request([$item->getTable(), $crit])->fetchAllAssociative() as $data) {
             $nb++;
             echo "<tr class='tab_bg_1'>";
             echo "<td><a href='" . $item->getFormURL();

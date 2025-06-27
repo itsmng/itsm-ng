@@ -1867,7 +1867,7 @@ JAVASCRIPT;
                    'FROM'   => 'glpi_users',
                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
                ]
-        )->fetchAssociative()['menu_position'];
+        )->fetchAssociative()['menu_position'] ?? 'menu-left';
 
         if (isset($_SESSION['glpiID'])) {
             $twig_vars['menu_favorite_on'] = Config::getAdapter()->request(
@@ -1876,7 +1876,7 @@ JAVASCRIPT;
                         'FROM'   => 'glpi_users',
                         'WHERE'  => ['id' => $_SESSION["glpiID"]]
                      ]
-            )->fetchAssociative()['menu_favorite_on'];
+            )->fetchAssociative()['menu_favorite_on'] ?? 1;
             $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
         }
 
@@ -1991,10 +1991,14 @@ JAVASCRIPT;
         self::displayDebugInfos();
         self::loadJavascript();
         echo Html::script("node_modules/jquery-ui-dist/jquery-ui.min.js");
+        echo Html::script("node_modules/@tanstack/table-core/build/umd/index.production.js");
+        echo Html::script("node_modules/htm/dist/htm.umd.js");
+        echo Html::script("node_modules/vhtml/dist/vhtml.min.js");
         echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
         echo Html::script("node_modules/select2/dist/js/select2.min.js");
         echo Html::script("node_modules/tableexport.jquery.plugin/tableExport.min.js");
         echo Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js");
+        echo Html::script("vendor/wenzhixin/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.min.js");
         echo Html::script("vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js");
         echo Html::script("src/ngFunctions.js");
         echo Html::script("node_modules/gridstack/dist/gridstack-all.js");
@@ -2885,7 +2889,7 @@ JAVASCRIPT;
                         }
                     });
                JS : <<<JS
-                  let rows = $("#$identifier").bootstrapTable('getSelections');
+                  let rows = window['$identifier'+'_getMassiveActionSelection']();
                   for (let i = 0; i < rows.length; i++) {
                      fields[rows[i].value] = 1;
                   }
@@ -3832,15 +3836,17 @@ JS;
                   'extraparams' => ['target' => $target]
                 ]
             );
-            $active_entity = addslashes($_SESSION["glpiactive_entity_name"]);
-            $entity_shortname = $_SESSION["glpiactive_entity_shortname"];
-            echo <<<HTML
-            <div class='profile-selector'>
-               <a onclick='entity_window.dialog("open")' href='#modal_entity_content' title="$active_entity" class='entity-select' id="global_entity_select">
-                  $entity_shortname
-               </a>
-            </div>
-         HTML;
+            if (!empty($_SESSION['glpiactive_entity_name'])) {
+                $active_entity = addslashes($_SESSION["glpiactive_entity_name"]);
+                $entity_shortname = $_SESSION["glpiactive_entity_shortname"];
+                echo <<<HTML
+                <div class='profile-selector'>
+                <a onclick='entity_window.dialog("open")' href='#modal_entity_content' title="$active_entity" class='entity-select' id="global_entity_select">
+                    $entity_shortname
+                </a>
+                </div>
+            HTML;
+            }
         }
     }
 
@@ -4214,6 +4220,7 @@ JAVASCRIPT
         $content = Toolbox::convertImageToTag($content);
 
         // If is html content
+        $content = $content ?? '';
         if ($content != strip_tags($content)) {
             $content = Toolbox::getHtmlToDisplay($content);
         }
@@ -7148,7 +7155,7 @@ JAVASCRIPT;
                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
                 ]
             );
-            $menu_favorites = json_decode($menu_favorites->fetchAssociative()['menu_favorite'], true);
+            $menu_favorites = json_decode($menu_favorites->fetchAssociative()['menu_favorite'] ?? '{}', true);
             $menu_collapse = config::getAdapter()->request(
                 [
                  'SELECT' => 'menu_open',
@@ -7156,7 +7163,7 @@ JAVASCRIPT;
                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
                 ]
             );
-            $menu_collapse = json_decode($menu_collapse->fetchAssociative()['menu_open'], true);
+            $menu_collapse = json_decode($menu_collapse->fetchAssociative()['menu_open'] ?? '[]', true);
         } else {
             $menu_favorites = [];
             $menu_collapse = [];
@@ -7304,7 +7311,7 @@ JAVASCRIPT;
                     'FROM'   => 'glpi_users',
                     'WHERE'  => ['id' => $_SESSION["glpiID"]]
                  ]
-        )->fetchAssociative()['menu_small'];
+        )->fetchAssociative()['menu_small'] ?? 'false';
         $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
 
         // TODO: add profile selector

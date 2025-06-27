@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Itsmng\Domain\Entities\RequestType as EntitiesRequestType;
 use Doctrine\Common\Collections\ArrayCollection;
+use DateTime;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
@@ -37,28 +38,28 @@ class User
     private $id;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
-    private $name;
+    private $name = null;
 
     #[ORM\Column(name: 'password', type: 'string', length: 255, nullable: true)]
-    private $password;
+    private $password = null;
 
     #[ORM\Column(name: 'password_last_update', type: 'datetime', nullable: true)]
-    private $passwordLastUpdate;
+    private $passwordLastUpdate = null;
 
     #[ORM\Column(name: 'phone', type: 'string', length: 255, nullable: true)]
-    private $phone;
+    private $phone = null;
 
     #[ORM\Column(name: 'phone2', type: 'string', length: 255, nullable: true)]
-    private $phone2;
+    private $phone2 = null;
 
     #[ORM\Column(name: 'mobile', type: 'string', length: 255, nullable: true)]
-    private $mobile;
+    private $mobile = null;
 
     #[ORM\Column(name: 'realname', type: 'string', length: 255, nullable: true)]
-    private $realname;
+    private $realname = null;
 
     #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
-    private $firstname;
+    private $firstname = null;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
@@ -308,7 +309,7 @@ class User
     private $defaultDashboardMiniTicket;
 
     #[ORM\Column(name: 'access_zoom_level', type: 'smallint', options: ['default' => 100], nullable: true)]
-    private $accessZoomLevel;
+    private $accessZoomLevel = 100;
 
     #[ORM\Column(name: 'access_font', type: 'string', length: 100, nullable: true)]
     private $accessFont = null;
@@ -1739,7 +1740,7 @@ class User
     /**
      * Get the value of usertitle
      */
-    public function getUsertitle()
+    public function getUsertitle(): ?Usertitle
     {
         return $this->usertitle;
     }
@@ -1747,9 +1748,10 @@ class User
     /**
      * Set the value of usertitle
      *
-     * @return  self
+     * @param ?Usertitle $usertitle
+     * @return self
      */
-    public function setUsertitle($usertitle)
+    public function setUsertitle(?Usertitle $usertitle): self
     {
         $this->usertitle = $usertitle;
 
