@@ -145,7 +145,7 @@ class LegacySqlAdapter implements DatabaseAdapterInterface
     //     return [];
     // }
 
-
+    
     public function findEntityById(array $id): mixed
     {
         return null;

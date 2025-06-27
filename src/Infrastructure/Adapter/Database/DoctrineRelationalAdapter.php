@@ -473,17 +473,24 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 $request['FROM'] = $this->fallbackTableName;
             }
         }
+       
         // PostgreSQL correction for GROUP BY and ORDER BY
         if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
-            // If the query contents GROUP BY and columns in SELECT
-            if (isset($request['SELECT']) && isset($request['GROUP'])) {
-                $originalSelect = is_array($request['SELECT']) ? implode(', ', $request['SELECT']) : $request['SELECT'];
-                $originalGroup = is_array($request['GROUP']) ? implode(', ', $request['GROUP']) : $request['GROUP'];
-
-                $modifiedGroup = $this->fixPostgreSQLGroupBy($originalSelect, $originalGroup);
-                $request['GROUP'] = $modifiedGroup;
+            // If the query contains WHERE and binary operations
+            if (isset($request['WHERE'])) {
+                $request['WHERE'] = $this->fixBitwiseInCriteria($request['WHERE']);
             }
-        }
+                // If the query contents GROUP BY and columns in SELECT
+                if (isset($request['SELECT']) && isset($request['GROUP'])) {
+                    $originalSelect = is_array($request['SELECT']) ? implode(', ', $request['SELECT']) : $request['SELECT'];
+                    $originalGroup = is_array($request['GROUP']) ? implode(', ', $request['GROUP']) : $request['GROUP'];
+
+                    $modifiedGroup = $this->fixPostgreSQLGroupBy($originalSelect, $originalGroup);
+                    $request['GROUP'] = $modifiedGroup;
+                }
+                
+            }
+            
         $query = $SqlIterator->buildQuery($request);
         return $this->query($query);
     }
@@ -491,6 +498,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function query(string $query): Result
     {
         if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            // Handle incorrect boolean values ​​in comparisons
+
+            // Replace strings like '-1' used in boolean comparisons
+            $query = preg_replace('/(\w+)\s*(>|<|>=|<=)\s*[\'\"](-?\d+)[\'\"]/', '$1 $2 $3', $query);
+            // Correction for single quotes around numbers in bitwise operations
+            $query = preg_replace('/(\s+)(\w+\.?\w*)\s*&\s*\'(\d+)\'/', '$1$2 & $3', $query);
+            
             // Apply fixes befor execute the query
             if (preg_match("/\w+\.items_id\s*=\s*'\w+\.\w+'/i", $query)) {
                 $query = $this->fixTableFieldReferences($query);
@@ -512,12 +526,15 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                     $query = str_replace("GROUP BY $group_by", "GROUP BY $fixed_group_by", $query);
                 }
             }
+            $query = str_replace('AND timeline_position > -1', 'AND timeline_position = TRUE', $query);
+
         }
         $stmt = $this->em->getConnection()->prepare($query);
         $results = $stmt->executeQuery();
         return $results;
     }
-
+    
+    
     /**
      * Fixes table.field reference issues in quotes
      *
@@ -535,6 +552,52 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return $query;
     }
 
+    /**
+     * Prepares array values before they reach quoteName()
+     *
+     * @param mixed $name Name to quote (string or array)
+     * @return mixed Prepared name
+     */
+    public function prepareQuoteName($name)
+    {
+        // Cas spécial pour les tableaux de SoftwareLicense
+        if (is_array($name) && (isset($name['table']) || isset($name['tables']))) {
+            $table_key = isset($name['table']) ? 'table' : 'tables';
+            return $name[$table_key];
+        }
+        
+        return $name;
+    }
+
+    /**
+     * Corrects bitwise operations in query criteria for PostgreSQL
+     *
+     * @param array $criteria The criteria to correct
+     * @return array The corrected criteria
+     */
+    private function fixBitwiseInCriteria(array $criteria): array
+    {
+        $fixed_criteria = [];
+        
+        foreach ($criteria as $key => $value) {
+            // Verify if $value is an array and has the format ['&', value]
+            if (is_array($value) && !empty($value) && isset($value[0]) && $value[0] === '&' && isset($value[1])) {
+                // Special case: ['&', value]
+                // For PostgreSQL, we replace it with a QueryExpression
+                $fixed_criteria[] = new \QueryExpression("($key & {$value[1]}) > 0");
+            } elseif (is_array($value)) {
+                // RRecursion for sub-criteria (AND, OR, etc.)
+                $fixed_criteria[$key] = $this->fixBitwiseInCriteria($value);
+            } else {
+                // Copy as is the other criteria
+                $fixed_criteria[$key] = $value;
+            }
+        }
+        
+        return $fixed_criteria;
+    }
+
+   
 
     public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string
     {
