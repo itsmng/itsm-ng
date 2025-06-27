@@ -1176,7 +1176,8 @@ class DBmysql
                 $field = ($n[1] === '*') ? $n[1] : self::quoteName($n[1]);
                 return "$table.$field";
             }
-            return (is_string($name) && isset($name[0]) && $name[0] == '`') ? $name :
+
+             return (is_string($name) && isset($name[0]) && $name[0] == '`') ? $name :
             ((is_string($name) && $name === '*') ? $name : (is_array($name) ? implode('.', $name) : (string)$name));
         }
     }

@@ -185,7 +185,7 @@ class Item_Problem extends CommonItilObject_Item
         ];
         $values = [];
         $massive_action = [];
-        while ($row = $types_iterator->next()) {
+        foreach ($types_iterator as $row) {
             $itemtype = $row['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
