@@ -52,7 +52,7 @@ function expandForm($form, $fields = [], $template = null)
     foreach ($form['content'] as $contentKey => $content) {
         if (isset($content['inputs'])) {
             foreach ($content['inputs'] as $inputKey => $input) {
-                if (isset($template) && $template->isHiddenField($input['name'])) {
+                if (isset($template) && $template->isHiddenField($input['name']?? null)) {
                     $form['content'][$contentKey]['inputs'][$inputKey]['type'] = 'hidden';
                 }
                 if ($input['type'] ?? '' == 'select') {
