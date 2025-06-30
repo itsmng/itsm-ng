@@ -7213,6 +7213,8 @@ class Ticket extends CommonITILObject
                         break;
                     }
                     return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
+                default:
+                    return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
             }
         }
     }
