@@ -737,6 +737,7 @@ class Document_Item extends CommonDBRelation
                            'type' => 'file',
                            'name' => 'files',
                            'id' => 'fileSelectorForDocument',
+                           'data-max-size' => Document::getMaxUploadSizeInBytes(),
                            'multiple' => 'multiple',
                            'col_lg' => 6,
                         ],

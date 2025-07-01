@@ -496,6 +496,7 @@ class Document extends CommonDBTM
                        'type' => 'file',
                        'name' => 'files',
                        'id' => 'fileSelectorForDocument',
+                       'data-max-size' => self::getMaxUploadSizeInBytes(),
                     ],
                  ],
               ],
@@ -549,6 +550,13 @@ class Document extends CommonDBTM
         return sprintf(__('%s Mio max'), round($max_size, 1));
     }
 
+    /**
+     * Get max upload size from config in bytes
+     * @return int
+     */
+    public static function getMaxUploadSizeInBytes() {
+        return Toolbox::return_bytes_from_ini_vars(ini_get('upload_max_filesize'));
+    }
 
     /**
      * Send a document to navigator
