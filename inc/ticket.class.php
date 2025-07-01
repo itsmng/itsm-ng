@@ -5220,6 +5220,7 @@ class Ticket extends CommonITILObject
                      'type' => 'file',
                      'name' => 'files',
                      'id' => 'fileSelectorForDocument',
+                     'data-max-size' => Document::getMaxUploadSizeInBytes(),
                      'multiple' => true,
                      'values' => getLinkedDocumentsForItem('Ticket', $ID),
                      'col_lg' => 6,
