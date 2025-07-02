@@ -284,6 +284,13 @@ class NetworkEquipment extends CommonDBTM
     {
         $title = self::getTypeName(1);
 
+        $autoinventory_information = '';
+        if ($ID && $this->fields['is_dynamic']) {
+            ob_start();
+            Plugin::doHook("autoinventory_information", $this);
+            $autoinventory_information = ob_get_clean();
+        }
+
         $form = [
            'action' => $this->getFormURL(),
            'itemtype' => $this::class,
@@ -402,7 +409,11 @@ class NetworkEquipment extends CommonDBTM
            ]
         ];
 
-        renderTwigForm($form, '', $this->fields);
+        $additionalHtml = '';
+
+        $additionalHtml .= $autoinventory_information;
+
+        renderTwigForm($form, $additionalHtml, $this->fields);
         return true;
     }
 
