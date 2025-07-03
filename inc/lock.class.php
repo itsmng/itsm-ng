@@ -598,7 +598,7 @@ class Lock extends CommonGLPI
         array &$actions,
         $itemtype,
         $is_deleted = 0,
-        CommonDBTM $checkitem = null
+        CommonDBTM|null $checkitem = null
     ) {
 
         $action_name = __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'unlock';
