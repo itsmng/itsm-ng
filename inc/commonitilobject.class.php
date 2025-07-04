@@ -838,7 +838,7 @@ abstract class CommonITILObject extends CommonDBTM
                 }
 
                 // Can only update initial fields if no followup or task already added
-                if ($this->canUpdateItem()) {
+                if ($this->canUpdateItem() || ($this->canCreateItem() && Session::getCurrentInterface() == "helpdesk")) {
                     $allowed_fields[] = 'content';
                     $allowed_fields[] = 'urgency';
                     $allowed_fields[] = 'priority'; // automatic recalculate if user changes urgence
