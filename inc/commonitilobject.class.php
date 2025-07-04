@@ -801,6 +801,7 @@ abstract class CommonITILObject extends CommonDBTM
             && (!Session::haveRight(static::$rightname, UPDATE)
               // Closed tickets
               || in_array($this->fields['status'], $this->getClosedStatusArray()))
+            && Session::getCurrentInterface() != "helpdesk"
         ) {
             $allowed_fields                    = ['id'];
             $check_allowed_fields_for_template = true;
@@ -838,7 +839,7 @@ abstract class CommonITILObject extends CommonDBTM
                 }
 
                 // Can only update initial fields if no followup or task already added
-                if ($this->canUpdateItem() || ($this->canCreateItem() && Session::getCurrentInterface() == "helpdesk")) {
+                if ($this->canUpdateItem()) {
                     $allowed_fields[] = 'content';
                     $allowed_fields[] = 'urgency';
                     $allowed_fields[] = 'priority'; // automatic recalculate if user changes urgence
