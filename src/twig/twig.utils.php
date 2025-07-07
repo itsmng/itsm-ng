@@ -63,7 +63,9 @@ function expandForm($form, $fields = [], $template = null)
                 if (strpos(strtolower($inputKey), 'sla') !== false && 
                     (strpos(strtolower($inputKey), 'time') !== false || 
                      strpos(strtolower($inputKey), 'own') !== false || 
-                     strpos(strtolower($inputKey), 'resolve') !== false)) {
+                     strpos(strtolower($inputKey), 'resolve') !== false ||
+                     strpos(strtolower($inputKey), 'tto') !== false ||
+                     strpos(strtolower($inputKey), 'ttr') !== false)) {
                     $shouldHide = true;
                 }
                 
