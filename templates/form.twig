@@ -5,14 +5,16 @@
         {{preItemFormHtml|raw}}
     </div>
 	{% for key, bloc in form.content  %}
-		<div class="container mb-3" {% for name, value in bloc.attributes %} {{name}}="{{value}}" {% endfor %}>
+		<div class="form-section" {% for name, value in bloc.attributes %} {{name}}="{{value}}" {% endfor %}>
 			{% if bloc.visible %}
-				<h2 class="text-start">{{key|raw}}</h2>
+				<h2 class="form-section-header">{{key|raw}}</h2>
 			{% endif %}
-			<div class="row row-cols-{{col}}">
-				{% for title, input in bloc.inputs %}
-					{{ wrappedInput(title, input, root_doc) }}
-				{% endfor %}
+			<div class="form-section-content">
+				<div class="row row-cols-{{col}}">
+					{% for title, input in bloc.inputs %}
+						{{ wrappedInput(title, input, root_doc) }}
+					{% endfor %}
+				</div>
 			</div>
 		</div>
 	{% endfor %}
