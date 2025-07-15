@@ -42,7 +42,7 @@ $(document).ready(function() {
     const noToolBar = {{ noToolBar is defined ? (noToolBar ? "true" : "false") : "false" }};
     const url = {{ url is defined ? url|json_encode|raw : "null" }};
     const itemtype = {{ itemtype is defined ? itemtype|json_encode|raw : "''" }};
-    const showExport = {{ show_export is defined ? (show_export ? "true" : "false") : "false" }};
+    const showExport = {{ show_export is defined ? (show_export ? "true" : "false") : "true" }};
     const hasMassiveAction = {{ massive_action is defined ? 'true' : 'false' }};
 
     if (!url && hasMassiveAction) {
