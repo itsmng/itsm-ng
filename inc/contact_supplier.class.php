@@ -251,10 +251,10 @@ class Contact_Supplier extends CommonDBRelation
 
         $contacts = [];
         $options = getItemByEntity(Contact::class, $supplier->fields['entities_id']);
-        while ($data = $iterator->next()) {
+        foreach ($iterator as $data) {
             unset($options[$data['id']]);
             $contacts[$data['linkid']] = $data;
-        };
+        }
 
         if ($canedit) {
             $form = [

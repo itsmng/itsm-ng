@@ -133,7 +133,7 @@ class Contract_Supplier extends CommonDBRelation
            'entities_id' => $supplier->fields["entities_id"],
            'is_recursive' => $supplier->fields["is_recursive"]
         ]);
-        while ($data = $iterator->next()) {
+        foreach ($iterator as $data) {
             unset($options[$data['id']]);
             $contracts[$data['linkid']] = $data;
         };

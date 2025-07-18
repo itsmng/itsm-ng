@@ -706,7 +706,7 @@ class Budget extends CommonDropdown
         $entitiestype_values = [];
         $found_types         = [];
 
-        while ($types = $types_iterator->next()) {
+        foreach ($types_iterator as $types) {
             $itemtypes[] = $types['itemtype'];
         }
 
