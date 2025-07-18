@@ -1006,7 +1006,7 @@ trait PlanningEvent
            ]
         ];
 
-        if (!count($this->fields)) {
+        if (!is_array($this->fields) || !count($this->fields)) {
             $this->getEmpty();
         }
 
