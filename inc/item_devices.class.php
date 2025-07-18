@@ -682,6 +682,8 @@ class Item_Devices extends CommonDBRelation
 
         $is_device = ($item instanceof CommonDevice);
 
+        $peer_type = '';
+
         $ID = $item->getField('id');
 
         $devtypes = [];
