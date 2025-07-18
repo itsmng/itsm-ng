@@ -467,6 +467,33 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         global $DB;
 
+         // Handle PostgreSQL reserved keywords in column names
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            // List of PostgreSQL reserved keywords that appear in your queries
+            $pg_keywords = ['end', 'begin', 'user', 'comment', 'order', 'group', 'limit', 'offset', 'where'];
+            
+            // Quote column names in SELECT clause if they're reserved words
+            if (isset($request['SELECT']) && is_array($request['SELECT'])) {
+                foreach ($request['SELECT'] as $key => $field) {
+                    if (in_array(strtolower($field), $pg_keywords) && strpos($field, '.') === false) {
+                        $request['SELECT'][$key] = '"' . $field . '"';
+                    }
+                }
+            }
+            
+            // Quote column names in WHERE clause if they're reserved words
+            if (isset($request['WHERE']) && is_array($request['WHERE'])) {
+                $fixed_where = [];
+                foreach ($request['WHERE'] as $key => $value) {
+                    if (in_array(strtolower($key), $pg_keywords) && strpos($key, '.') === false) {
+                        $fixed_where['"' . $key . '"'] = $value;
+                    } else {
+                        $fixed_where[$key] = $value;
+                    }
+                }
+                $request['WHERE'] = $fixed_where;
+            }
+        }
         $SqlIterator = new DBmysqlIterator($DB);
         if ($this->isSpecialCase && $this->fallbackTableName) {
             if (!isset($request['FROM'])) {
@@ -476,6 +503,8 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
        
         // PostgreSQL correction for GROUP BY and ORDER BY
         if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            // Add sanitization for empty IN clauses
+            $request = $this->sanitizeEmptyIn($request);
             // If the query contains WHERE and binary operations
             if (isset($request['WHERE'])) {
                 $request['WHERE'] = $this->fixBitwiseInCriteria($request['WHERE']);
@@ -498,14 +527,42 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function query(string $query): Result
     {
         if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            // Correction directe pour IFNULL dans les requêtes SQL
+            $query = preg_replace('/IFNULL\s*\(([^,]+),\s*([^)]+)\)/i', 'COALESCE($1::text, $2)', $query);
             // Handle incorrect boolean values ​​in comparisons
 
             // Replace strings like '-1' used in boolean comparisons
             $query = preg_replace('/(\w+)\s*(>|<|>=|<=)\s*[\'\"](-?\d+)[\'\"]/', '$1 $2 $3', $query);
             // Correction for single quotes around numbers in bitwise operations
             $query = preg_replace('/(\s+)(\w+\.?\w*)\s*&\s*\'(\d+)\'/', '$1$2 & $3', $query);
+
+            // Convert empty strings to NULL when used with numeric fields
+            $query = preg_replace('/(\w+_id)\s*=\s*[\'\"][\'\"]/', '$1 IS NULL', $query);
+            $query = preg_replace('/(\w+\.\w+_id)\s*=\s*[\'\"][\'\"]/', '$1 IS NULL', $query);
             
-            // Apply fixes befor execute the query
+            // Also handle numeric comparisons with empty strings for any field ending with _id
+            $query = preg_replace('/(\w+_id)\s*(!=|<>)\s*[\'\"][\'\"]/', '$1 IS NOT NULL', $query);
+            $query = preg_replace('/(\w+\.\w+_id)\s*(!=|<>)\s*[\'\"][\'\"]/', '$1 IS NOT NULL', $query);
+            
+            // Fix for SELECT DISTINCT with ORDER BY
+            if (stripos($query, 'SELECT DISTINCT') !== false && stripos($query, 'ORDER BY') !== false) {
+                // Extract SELECT part
+                if (preg_match('/SELECT\s+DISTINCT(.*?)FROM/is', $query, $select_matches)) {
+                    $select_part = 'SELECT DISTINCT' . $select_matches[1];
+                    
+                    // Extract ORDER BY part
+                    if (preg_match('/ORDER\s+BY\s+(.*?)(?:LIMIT|\s*$)/is', $query, $order_matches)) {
+                        $order_part = 'ORDER BY ' . $order_matches[1];
+                        
+                        // Apply the fix
+                        $fixed_parts = $this->fixPostgreSQLCompleteOrderBy($select_part, $order_part, $query);
+                        
+                        // Replace the original parts in the query
+                        $query = str_replace($select_part, $fixed_parts['select'], $query);
+                    }
+                }
+            }
+            // Apply fixes before executing the query
             if (preg_match("/\w+\.items_id\s*=\s*'\w+\.\w+'/i", $query)) {
                 $query = $this->fixTableFieldReferences($query);
             }
@@ -535,6 +592,50 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     }
     
     
+    /**
+     * Handle empty arrays for IN clauses before they reach DBmysqlIterator
+     * 
+     * @param array $request The request array to sanitize
+     * @return array Modified request with safe IN clauses
+     */
+    private function sanitizeEmptyIn(array $request): array
+    {
+        // Process WHERE clause
+        if (isset($request['WHERE']) && is_array($request['WHERE'])) {
+            $request['WHERE'] = $this->processEmptyInClauses($request['WHERE']);
+        }
+        
+        // Process HAVING clause
+        if (isset($request['HAVING']) && is_array($request['HAVING'])) {
+            $request['HAVING'] = $this->processEmptyInClauses($request['HAVING']);
+        }
+        
+        return $request;
+    }
+
+    /**
+     * Process array to detect and fix empty IN clauses
+     * 
+     * @param array $criteria The criteria array to process
+     * @return array Modified criteria with safe IN clauses
+     */
+    private function processEmptyInClauses(array $criteria): array
+    {
+        foreach ($criteria as $key => $value) {
+            if (is_array($value)) {
+                if (count($value) === 0) {
+                    // Empty array for IN clause, replace with FALSE condition
+                    $criteria[$key] = ['=', 0]; // This will create "field = 0" which always evaluates to FALSE for positive IDs
+                } else if ($key === 'OR' || $key === 'AND') {
+                    // Process logical operators recursively
+                    $criteria[$key] = $this->processEmptyInClauses($value);
+                }
+            }
+        }
+        
+        return $criteria;
+    }
+
     /**
      * Fixes table.field reference issues in quotes
      *
@@ -723,7 +824,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         }
         // Default case (MySQL or non-ID for PostgreSQL)
         return "COALESCE($expr, $default)";
-
     }
 
     /**
