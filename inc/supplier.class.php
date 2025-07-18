@@ -465,7 +465,7 @@ class Supplier extends CommonDBTM
                   <img src='" . $CFG_GLPI["root_doc"] . "/pics/web.png' class='middle' alt=\"" .
                __s('Web') . "\" title=\"" . __s('Web') . "\"></a>&nbsp;&nbsp;";
         }
-        if ($this->can($this->fields['id'], READ)) {
+        if ($this->can($this->fields['id'] ?? null, READ)) {
             $ret .= "<a href='" . Supplier::getFormURLWithID($this->fields['id']) . "'>
                   <img src='" . $CFG_GLPI["root_doc"] . "/pics/edit.png' class='middle' alt=\"" .
                __s('Update') . "\" title=\"" . __s('Update') . "\"></a>";
@@ -508,7 +508,7 @@ class Supplier extends CommonDBTM
         echo "</tr>";
 
         $num = 0;
-        while ($row = $types_iterator->next()) {
+         foreach ($types_iterator as $row) {
             $itemtype = $row['itemtype'];
 
             if (!($item = getItemForItemtype($itemtype))) {
