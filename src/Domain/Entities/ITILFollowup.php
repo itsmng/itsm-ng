@@ -55,14 +55,14 @@ class ITILFollowup
     #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
     private ?RequestType $requesttype = null;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
-    private $timelinePosition;
+    private $timelinePosition = 0;
 
     #[ORM\Column(name: 'sourceitems_id', type: 'integer', options: ['default' => 0])]
     private $sourceitemsId = 0;

@@ -377,8 +377,11 @@ class Problem
     }
 
 
-    public function setBeginWaitingDate(?\DateTimeInterface $beginWaitingDate): self
+    public function setBeginWaitingDate(\DateTimeInterface|string|null $beginWaitingDate): self
     {
+         if (is_string($beginWaitingDate)) {
+            $beginWaitingDate = new DateTime($beginWaitingDate);
+        }
         $this->beginWaitingDate = $beginWaitingDate;
 
         return $this;
@@ -390,9 +393,9 @@ class Problem
     }
 
 
-    public function setWaitingDuration(?int $waitingDuration): self
+    public function setWaitingDuration(int|string $waitingDuration): self
     {
-        $this->waitingDuration = $waitingDuration;
+        $this->waitingDuration = (int) $waitingDuration;
 
         return $this;
     }
@@ -403,9 +406,9 @@ class Problem
     }
 
 
-    public function setCloseDelayStat(?int $closeDelayStat): self
+    public function setCloseDelayStat(int|string $closeDelayStat): self
     {
-        $this->closeDelayStat = $closeDelayStat;
+        $this->closeDelayStat = (int) $closeDelayStat;
 
         return $this;
     }
@@ -416,9 +419,9 @@ class Problem
     }
 
 
-    public function setSolveDelayStat(?int $solveDelayStat): self
+    public function setSolveDelayStat(int|string $solveDelayStat): self
     {
-        $this->solveDelayStat = $solveDelayStat;
+        $this->solveDelayStat = (int) $solveDelayStat;
 
         return $this;
     }
@@ -441,7 +444,7 @@ class Problem
     /**
      * Get the value of groupProblems
      */
-    public function getGroupProblems()
+    public function getGroupProblems(): Collection
     {
         return $this->groupProblems;
     }
@@ -451,9 +454,9 @@ class Problem
      *
      * @return  self
      */
-    public function setGroupProblems($groupProblems)
+    public function setGroupProblems(?Collection $groupProblems): self
     {
-        $this->groupProblems = $groupProblems;
+        $this->groupProblems = $groupProblems ?? new ArrayCollection();
 
         return $this;
     }
@@ -471,9 +474,9 @@ class Problem
      *
      * @return  self
      */
-    public function setChangeProblems($changeProblems)
+    public function setChangeProblems(?Collection $changeProblems): self
     {
-        $this->changeProblems = $changeProblems;
+        $this->changeProblems = $changeProblems ?? new ArrayCollection();
 
         return $this;
     }
@@ -525,7 +528,7 @@ class Problem
     /**
      * Get the value of problemTickets
      */
-    public function getProblemTickets()
+    public function getProblemTickets(): Collection
     {
         return $this->problemTickets;
     }
@@ -535,9 +538,9 @@ class Problem
      *
      * @return  self
      */
-    public function setProblemTickets($problemTickets)
+    public function setProblemTickets(?Collection $problemTickets): self
     {
-        $this->problemTickets = $problemTickets;
+        $this->problemTickets = $problemTickets ?? new ArrayCollection();
 
         return $this;
     }
@@ -545,7 +548,7 @@ class Problem
     /**
      * Get the value of problemSuppliers
      */
-    public function getProblemSuppliers()
+    public function getProblemSuppliers(): Collection
     {
         return $this->problemSuppliers;
     }
@@ -555,9 +558,9 @@ class Problem
      *
      * @return  self
      */
-    public function setProblemSuppliers($problemSuppliers)
+    public function setProblemSuppliers(?Collection $problemSuppliers): self
     {
-        $this->problemSuppliers = $problemSuppliers;
+        $this->problemSuppliers = $problemSuppliers ?? new ArrayCollection();
 
         return $this;
     }
@@ -565,7 +568,7 @@ class Problem
     /**
      * Get the value of problemUsers
      */
-    public function getProblemUsers()
+    public function getProblemUsers(): Collection
     {
         return $this->problemUsers;
     }
@@ -575,9 +578,9 @@ class Problem
      *
      * @return  self
      */
-    public function setProblemUsers($problemUsers)
+    public function setProblemUsers(?Collection $problemUsers): self
     {
-        $this->problemUsers = $problemUsers;
+        $this->problemUsers = $problemUsers ?? new ArrayCollection();
 
         return $this;
     }

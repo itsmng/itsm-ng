@@ -28,7 +28,7 @@ class ITILSolution
     private $itemtype;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $itemsId;
+    private $items_id = 0;
 
     #[ORM\ManyToOne(targetEntity: SolutionType::class)]
     #[ORM\JoinColumn(name: 'solutiontypes_id', referencedColumnName: 'id', nullable: true)]
@@ -95,12 +95,12 @@ class ITILSolution
 
     public function getItemsId(): ?int
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
     public function setItemsId(int $itemsId): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $itemsId;
 
         return $this;
     }
@@ -173,7 +173,7 @@ class ITILSolution
         return $this->userName;
     }
 
-    public function setUserName(string $userName): self
+    public function setUserName(string | null $userName): self
     {
         $this->userName = $userName;
 
