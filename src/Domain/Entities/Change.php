@@ -284,7 +284,7 @@ class Change
     public function setTimeToResolve(\DateTimeInterface|string|null $timeToResolve): self
     {
         if (is_string($timeToResolve)) {
-            $timeToResolve = new \DateTime($timeToResolve);
+            $timeToResolve = new DateTime($timeToResolve);
         }
         $this->timeToResolve = $timeToResolve;
 

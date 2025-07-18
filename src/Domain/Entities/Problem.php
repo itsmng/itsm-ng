@@ -2,11 +2,13 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_problems')]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
@@ -201,15 +203,16 @@ class Problem
 
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-
-    public function setDateMod(?\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
@@ -220,8 +223,11 @@ class Problem
     }
 
 
-    public function setDate(?\DateTimeInterface $date): self
+    public function setDate(\DateTimeInterface|string|null $date): self
     {
+        if (is_string($date)) {
+            $date = new DateTime($date);
+        }
         $this->date = $date;
 
         return $this;
@@ -233,8 +239,11 @@ class Problem
     }
 
 
-    public function setSolvedate(?\DateTimeInterface $solvedate): self
+    public function setSolvedate(\DateTimeInterface|string|null $solvedate): self
     {
+        if (is_string($solvedate)) {
+            $solvedate = new DateTime($solvedate);
+        }
         $this->solvedate = $solvedate;
 
         return $this;
@@ -245,21 +254,27 @@ class Problem
         return $this->closedate;
     }
 
-    public function setClosedate(?\DateTimeInterface $closedate): self
+    public function setClosedate(\DateTimeInterface|string|null $closedate): self
     {
+        if (is_string($closedate)) {
+            $closedate = new DateTime($closedate);
+        }
         $this->closedate = $closedate;
 
         return $this;
     }
 
-    public function getTimeToResolve(): ?int
+    public function getTimeToResolve(): ?\DateTimeInterface
     {
         return $this->timeToResolve;
     }
 
 
-    public function setTimeToResolve(?int $timeToResolve): self
+    public function setTimeToResolve(\DateTimeInterface|string|null  $timeToResolve): self
     {
+        if (is_string($timeToResolve)) {
+            $timeToResolve = new DateTime($timeToResolve);
+        }
         $this->timeToResolve = $timeToResolve;
 
         return $this;
@@ -408,18 +423,19 @@ class Problem
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
+
 
 
     /**

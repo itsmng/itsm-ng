@@ -38,7 +38,7 @@ class Rule
     #[ORM\Column(name: 'description', type: 'text', length: 65535, nullable: true)]
     private $description;
 
-    #[ORM\Column(name: 'matching', type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php *_MATCHING constant'])]
+    #[ORM\Column(name: 'match', type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php *_MATCHING constant'])]
     private $match;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]

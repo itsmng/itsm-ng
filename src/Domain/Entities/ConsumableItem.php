@@ -138,9 +138,9 @@ class ConsumableItem
         return $this->alarmThreshold;
     }
 
-    public function setAlarmThreshold(int $alarmThreshold): self
+    public function setAlarmThreshold(int|string $alarmThreshold): self
     {
-        $this->alarmThreshold = $alarmThreshold;
+        $this->alarmThreshold = (int) $alarmThreshold;
 
         return $this;
     }
