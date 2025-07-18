@@ -480,7 +480,7 @@ class Certificate_Item extends CommonDBRelation
                             [
                                'type' => 'hidden',
                                'name' => 'is_recursive',
-                               'value' => $item->fields['is_recursive']
+                               'value' => $item->fields['is_recursive'] ?? null
                             ],
                             [
                                'type' => 'hidden',

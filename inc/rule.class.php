@@ -939,7 +939,7 @@ class Rule extends CommonDBTM
                       ],
                       __('Use rule for') => !$this->useConditions() ? [] : [
                           'name' => 'conditions',
-                          'value' => $this->fields["conditions"],
+                          'value' => $this->fields["conditions"] ?? null,
                           'type' => 'select',
                           'values' => $this->getConditionsArray(),
                           'col_lg' => 6,
@@ -1300,8 +1300,8 @@ class Rule extends CommonDBTM
                'criterion' => "<button class='btn btn-sm' onclick=" .
                    "viewEditCriteria" . $criterion->fields[$this->rules_id_field] . $criterion->fields["id"] . "$rand()>" .
                    $this->getCriteriaName($criterion->fields["criteria"]) . "</button>",
-               'conditions' => RuleCriteria::getConditionByID($criterion->fields["conditions"], get_class($this), $criterion->fields["criteria"]),
-               'reason' => $this->getCriteriaDisplayPattern($criterion->fields["criteria"], $criterion->fields["conditions"], $criterion->fields["pattern"]),
+               'conditions' => RuleCriteria::getConditionByID($criterion->fields["conditions"]?? null, get_class($this), $criterion->fields["criteria"]),
+               'reason' => $this->getCriteriaDisplayPattern($criterion->fields["criteria"], $criterion->fields["conditions"]?? null, $criterion->fields["pattern"]),
             ];
             $massiveActionValues[$criterion->fields['id']] = sprintf('item[%s][%s]', $criterion::class, $criterion->fields['id']);
         }
@@ -3505,7 +3505,7 @@ class Rule extends CommonDBTM
     {
 
         echo "<div class='spaced'>";
-        printf(__('%1$s: %2$s'), "<b>UUID</b>", $this->fields['uuid']);
+        printf(__('%1$s: %2$s'), "<b>UUID</b>", $this->fields['uuid']?? null);
         echo "</div>";
     }
 

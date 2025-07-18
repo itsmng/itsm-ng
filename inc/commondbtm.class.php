@@ -3257,7 +3257,7 @@ class CommonDBTM extends CommonGLPI
     {
 
         if ($this->isEntityAssign()) {
-            return is_array($this->fields["entities_id"]);
+            return is_array($this->fields["entities_id"] ?? null);
         }
         return  -1;
     }
@@ -3307,7 +3307,7 @@ class CommonDBTM extends CommonGLPI
     {
 
         if ($this->maybeRecursive()) {
-            return $this->fields["is_recursive"];
+            return $this->fields["is_recursive"] ?? false;
         }
         // Return integer value to be used to fill is_recursive field
         return 0;

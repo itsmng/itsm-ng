@@ -98,7 +98,6 @@ class Consumable extends CommonDBChild
 
     public function prepareInputForAdd($input)
     {
-
         $item = new ConsumableItem();
         if ($item->getFromDB($input["consumableitems_id"])) {
             return ["consumableitems_id" => $item->fields["id"],

@@ -81,7 +81,7 @@ class RequestType extends CommonDropdown
            __('Request source visible for followups') => [
               'name'  => 'is_itilfollowup',
               'type'  => 'checkbox',
-              'value' => $this->fields['is_itilfollowup']
+              'value' => $this->fields['is_itilfollowup'] ?? null
            ],
         ];
     }

@@ -6566,7 +6566,7 @@ JAVASCRIPT;
                     }
                     if (Session::haveRight('reservation', UPDATE)) {
                         return "<a title=\"" . __s('Modify the comment') . "\"
-                           href='" . ReservationItem::getFormURLWithID($data['refID']) . "' >" . $text . "</a>";
+                           href='" . ReservationItem::getFormURLWithID($data['refID']?? null) . "' >" . $text . "</a>";
                     }
                     return $text;
 
@@ -6770,7 +6770,7 @@ JAVASCRIPT;
                 case 'glpi_reservationitems._virtual':
                     if ($data[$ID][0]['is_active']) {
                         return "<a href='reservation.php?reservationitems_id=" .
-                                                $data["refID"] . "' title=\"" . __s('See planning') . "\">" .
+                                                ($data["refID"] ?? '') . "' title=\"" . __s('See planning') . "\">" .
                                                 "<i class='far fa-calendar-alt' aria-hidden='true'></i><span class='sr-only'>" . __('See planning') . "</span></a>";
                     } else {
                         return "&nbsp;";
@@ -7037,7 +7037,7 @@ JAVASCRIPT;
                         }
                     }
                     for ($k = 0; $k < $data[$ID]['count']; $k++) {
-                        if (strlen(trim($data[$ID][$k]['name'])) > 0) {
+                        if (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0) {
                             if ($count_display) {
                                 $out .= self::LBBR;
                             }

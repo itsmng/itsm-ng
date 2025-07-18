@@ -99,7 +99,6 @@ class ConsumableItem extends CommonDBTM
 
     public function post_getEmpty()
     {
-
         $this->fields["alarm_threshold"] = Entity::getUsedConfig(
             "consumables_alert_repeat",
             $this->fields["entities_id"] ?? Session::getActiveEntity(),

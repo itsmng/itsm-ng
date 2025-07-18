@@ -2617,7 +2617,7 @@ class Dropdown
                                     if ($item->getFromDB($work_parentID)) {
                                         // Do not do for first item for next page load
                                         if (!$firstitem) {
-                                            $title = $item->fields['completename'];
+                                            $title = $item->fields['completename']?? null;
 
                                             $selection_text = $title;
 
@@ -2633,11 +2633,11 @@ class Dropdown
                                                 $title = sprintf(__('%1$s - %2$s'), $title, $addcomment);
                                             }
                                             $output2 = DropdownTranslation::getTranslatedValue(
-                                                $item->fields['id'],
+                                                $item->fields['id']?? null,
                                                 $post['itemtype'],
                                                 'name',
                                                 $_SESSION['glpilanguage'],
-                                                $item->fields['name']
+                                                $item->fields['name']?? null
                                             );
 
                                             $temp = ['id'       => $work_parentID,
@@ -2651,9 +2651,9 @@ class Dropdown
                                             }
                                             array_unshift($parent_datas, $temp);
                                         }
-                                        $last_level_displayed[$work_level] = $item->fields['id'];
+                                        $last_level_displayed[$work_level] = $item->fields['id']?? null;
                                         $work_level--;
-                                        $work_parentID = $item->fields[$item->getForeignKeyField()];
+                                        $work_parentID = $item->fields[$item->getForeignKeyField()]?? null;
                                     } else { // Error getting item : stop
                                         $work_level = -1;
                                     }
