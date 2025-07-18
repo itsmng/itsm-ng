@@ -1298,8 +1298,16 @@ abstract class CommonITILObject extends CommonDBTM
 
         if (
             (($key = array_search('closedate', $this->updates)) !== false)
-            && (substr($this->fields["closedate"] ?? '', 0, 16) == substr($this->oldvalues['closedate'] ?? '', 0, 16))
-        ) {
+            && (
+                // Convert DateTime objects to string if needed
+                (is_string($this->fields["closedate"] ?? '') && is_string($this->oldvalues['closedate'] ?? '') &&
+                substr($this->fields["closedate"], 0, 16) == substr($this->oldvalues['closedate'], 0, 16))
+                ||
+                // Handle DateTime objects by formatting them
+                (($this->fields["closedate"] ?? null) instanceof DateTime && ($this->oldvalues['closedate'] ?? null) instanceof DateTime &&
+                $this->fields["closedate"]->format('Y-m-d H:i') == $this->oldvalues['closedate']->format('Y-m-d H:i'))
+            )
+            ) {
             unset($this->updates[$key]);
             unset($this->oldvalues['closedate']);
         }
@@ -5784,28 +5792,29 @@ abstract class CommonITILObject extends CommonDBTM
     public function computeCloseDelayStat()
     {
 
-        if (
-            isset($this->fields['id'])
-            && !empty($this->fields['date'])
-            && !empty($this->fields['closedate'])
-        ) {
+         if (isset($this->fields['id']) && !empty($this->fields['date']) && !empty($this->fields['closedate'])) {
             $calendars_id = $this->getCalendar();
-            $calendar     = new Calendar();
+            $calendar = new Calendar();
 
             // Using calendar
-            if (
-                ($calendars_id > 0)
-                && $calendar->getFromDB($calendars_id)
-            ) {
+            if (($calendars_id > 0) && $calendar->getFromDB($calendars_id)) {
                 return max(0, $calendar->getActiveTimeBetween(
                     $this->fields['date'],
                     $this->fields['closedate']
-                )
-                                                                 - $this->fields["waiting_duration"]);
+                ) - $this->fields["waiting_duration"]);
             }
+
             // Not calendar defined
-            return max(0, strtotime($this->fields['closedate']) - strtotime($this->fields['date'])
-                          - $this->fields["waiting_duration"]);
+            $closedate = $this->fields['closedate'];
+            $date = $this->fields['date'];
+            
+            // Convert DateTime objects to timestamp if needed
+            $closedate_timestamp = ($closedate instanceof DateTime) ? 
+                $closedate->getTimestamp() : strtotime($closedate);
+            $date_timestamp = ($date instanceof DateTime) ? 
+                $date->getTimestamp() : strtotime($date);
+                
+            return max(0, $closedate_timestamp - $date_timestamp - $this->fields["waiting_duration"]);
         }
         return 0;
     }
