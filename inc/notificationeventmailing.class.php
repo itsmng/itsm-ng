@@ -141,8 +141,7 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
             $mmail->AddCustomHeader("In-Reply-To: <GLPI-" . $current->fields["itemtype"] . "-" .
                                     $current->fields["items_id"] . ">");
 
-            $mmail->SetFrom($current->fields['sender'], $current->fields['sendername']);
-
+            $mmail->SetFrom($current->fields['sender'] ?? '', $current->fields['sendername'] ?? '');
             if ($current->fields['replyto']) {
                 $mmail->AddReplyTo($current->fields['replyto'], $current->fields['replytoname']);
             }
