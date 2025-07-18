@@ -15,8 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "date", columns: ["date"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-#[ORM\Index(name: "begin", columns: ["begin"])]
-#[ORM\Index(name: "end", columns: ["end"])]
+#[ORM\Index(name: '"begin"', columns: ["begin"])]
+#[ORM\Index(name: '"end"', columns: ["end"])]
 #[ORM\Index(name: "state", columns: ["state"])]
 #[ORM\Index(name: "taskcategories_id", columns: ["taskcategories_id"])]
 #[ORM\Index(name: "tasktemplates_id", columns: ["tasktemplates_id"])]
@@ -43,10 +43,10 @@ class ProblemTask
     #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(name: 'begin', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: '"begin"', type: 'datetime', nullable: true)]
     private $begin;
 
-    #[ORM\Column(name: 'end', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: '"end"', type: 'datetime', nullable: true)]
     private $end;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -72,7 +72,7 @@ class ProblemTask
     private $actiontime;
 
     #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
-    private $state;
+    private $state = 0;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
