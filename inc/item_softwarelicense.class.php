@@ -589,7 +589,7 @@ class Item_SoftwareLicense extends CommonDBRelation
             $tmp  = explode(",", $_GET["sort"]);
             $sort = "`" . implode("` $order,`", $tmp) . "`";
         } else {
-            $sort = "`entity` $order, `itemname`";
+            $sort = "entity $order, itemname";
         }
 
         //SoftwareLicense ID
