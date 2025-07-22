@@ -3500,10 +3500,6 @@ class Profile extends CommonDBTM
                 unset($CFG_GLPI["ticket_types"][$key]);
             }
         }
-        // Add impersonation right
-        $values['impersonate'] = ['short' => __('Impersonate'),
-                                       'long'  => __('Allow to impersonate other users')];
-
         return $values;
     }
 
