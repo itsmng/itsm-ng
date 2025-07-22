@@ -1908,6 +1908,12 @@ class Profile extends CommonDBTM
               'itemtype'  => 'Log',
               'label'     => Log::getTypeName(Session::getPluralNumber()),
               'field'     => 'logs'
+           ],
+           [
+              'itemtype'  => 'impersonate',
+              'label'     => __('Impersonate'),
+              'field'     => 'impersonate',
+              'rights'    => [Session::IMPERSONATE => __('Allow to impersonate other users')]
            ]
         ];
         $matrix_options['title'] = __('Administration');

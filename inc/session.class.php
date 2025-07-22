@@ -48,6 +48,9 @@ class Session
     public const TRANSLATION_MODE  = 1; // no more used
     public const DEBUG_MODE        = 2;
 
+    // Impersonation right
+    public const IMPERSONATE       = 1024;
+
 
     /**
      * Destroy the current session
@@ -1537,7 +1540,6 @@ class Session
      */
     public static function canImpersonate($user_id)
     {
-
         if (
             $user_id <= 0 || self::getLoginUserID() == $user_id
             || (self::isImpersonateActive() && self::getImpersonatorId() == $user_id)
@@ -1545,10 +1547,8 @@ class Session
             return false; // Cannot impersonate invalid user, self, or already impersonated user
         }
 
-        // For now we do not check more than config update right, but we may
-        // implement more fine checks in the future.
-
-        return self::haveRight(Config::$rightname, UPDATE);
+        // Check for the specific impersonation right
+        return self::haveRight('impersonate', self::IMPERSONATE);
     }
 
     /**
