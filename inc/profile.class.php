@@ -1908,6 +1908,12 @@ class Profile extends CommonDBTM
               'itemtype'  => 'Log',
               'label'     => Log::getTypeName(Session::getPluralNumber()),
               'field'     => 'logs'
+           ],
+           [
+              'itemtype'  => 'impersonate',
+              'label'     => __('Impersonate'),
+              'field'     => 'impersonate',
+              'rights'    => [Session::IMPERSONATE => __('Allow to impersonate other users')]
            ]
         ];
         $matrix_options['title'] = __('Administration');
@@ -3494,6 +3500,10 @@ class Profile extends CommonDBTM
                 unset($CFG_GLPI["ticket_types"][$key]);
             }
         }
+        // Add impersonation right
+        $values['impersonate'] = ['short' => __('Impersonate'),
+                                       'long'  => __('Allow to impersonate other users')];
+
         return $values;
     }
 
