@@ -1509,7 +1509,7 @@ class Dropdown
            ],
            __('Component') => [
               'type' => 'select',
-              'name' => 'items_id',
+              'name' => $params['items_id_name'],
               'id' => 'selectItemForTicketMassiveAction',
               'values' => [],
               'col_lg' => 6,
