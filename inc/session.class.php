@@ -46,6 +46,8 @@ class Session {
    const TRANSLATION_MODE  = 1; // no more used
    const DEBUG_MODE        = 2;
 
+   // Impersonation right
+   public const IMPERSONATE       = 1024;
 
    /**
     * Destroy the current session
@@ -1496,10 +1498,8 @@ class Session {
          return false; // Cannot impersonate invalid user, self, or already impersonated user
       }
 
-      // For now we do not check more than config update right, but we may
-      // implement more fine checks in the future.
-
-      return self::haveRight(Config::$rightname, UPDATE);
+      // Check for the specific impersonation right
+      return self::haveRight('impersonate', self::IMPERSONATE);
    }
 
    /**
