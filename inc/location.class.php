@@ -53,7 +53,7 @@ class Location extends CommonTreeDropdown
            __('As child of') => [
               'name'  => $this->getForeignKeyField(),
               'type'  => 'select',
-              'values'  => getOptionForItems('Location', ['NOT' => ['id' => $this->getID()]]),
+              'values'  => getOptionForItems('Location', ['NOT' => ['id' => $this->getID() ?: 0]]),
               'value' => $this->fields[$this->getForeignKeyField()],
            ],
            __('Address') => [

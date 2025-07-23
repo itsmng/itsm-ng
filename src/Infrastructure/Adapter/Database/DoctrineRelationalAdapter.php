@@ -543,6 +543,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function query(string $query): Result
     {
         if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            
             // Correction directe pour IFNULL dans les requêtes SQL
             $query = preg_replace('/IFNULL\s*\(([^,]+),\s*([^)]+)\)/i', 'COALESCE($1::text, $2)', $query);
             // Handle incorrect boolean values ​​in comparisons
