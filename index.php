@@ -153,12 +153,12 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    }
    echo '<p class="login_input" id="login_input_name">
          <label for="login_name" class="sr-only">'.__('Login').'</label>
-         <input type="text" name="'.$namfield.'" id="login_name" class="fr-input" required="required"
+         <input type="text" name="'.$namfield.'" id="login_name" required="required"
                 placeholder="'.__('Login').'" autofocus="autofocus" />
          </p>';
    echo '<p class="login_input" id="login_input_password">
          <label for="login_password" class="sr-only">'.__('Password').'</label>
-         <input type="password" name="'.$pwdfield.'" id="login_password" class="fr-input"required="required"
+         <input type="password" name="'.$pwdfield.'" id="login_password" required="required"
                 placeholder="'.__('Password').'"  />
          </p>';
 
@@ -189,7 +189,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
             </p>';
    }
    echo '<p class="login_input">
-         <input type="submit" name="submit" value="'._sx('button', 'Post').'" class="submitlog" />
+         <input type="submit" name="submit" value="'._sx('button', 'Post').'" class="submit" />
          </p>';
 
    if ($CFG_GLPI["notifications_mailing"]
