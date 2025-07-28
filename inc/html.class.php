@@ -3254,6 +3254,8 @@ HTML;
             weekNumbers: true,
             locale: getFlatPickerLocale("{$locale['language']}", "{$locale['region']}"),
             minuteIncrement: "{$p['timestep']}",
+            defaultHour: new Date().getHours(),
+            defaultMinute: new Date().getMinutes(),
             {$min_attr}
             {$max_attr}
             onChange: function(selectedDates, dateStr, instance) {
