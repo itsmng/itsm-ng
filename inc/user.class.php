@@ -3087,6 +3087,9 @@ JAVASCRIPT;
          $actions['Group_User'.MassiveAction::CLASS_ACTION_SEPARATOR.'change_group_user']
                                                          = "<i class='ma-icon fas fa-users-cog'></i>".
                                                            __("Move to group");
+         $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'change_timezone']
+                                                         = "<i class='ma-icon fas fa-clock'></i>".
+                                                           __('Change the time zone');
       }
 
       if (Session::haveRight(self::$rightname, self::UPDATEAUTHENT)) {
@@ -3100,7 +3103,7 @@ JAVASCRIPT;
    }
 
    static function showMassiveActionsSubForm(MassiveAction $ma) {
-      global $CFG_GLPI;
+      global $CFG_GLPI, $DB;
 
       switch ($ma->getAction()) {
          case 'change_authtype' :
@@ -3113,6 +3116,25 @@ JAVASCRIPT;
             echo "<span id='show_massiveaction_field'><br><br>";
             echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction'])."</span>";
             return true;
+            
+         case 'change_timezone':
+            $tz_warning = '';
+            $tz_available = $DB->areTimezonesAvailable($tz_warning);
+            if ($tz_available) {
+               $timezones = $DB->getTimezones();
+               $timezones[null] = __('Use server configuration');
+               Dropdown::showFromArray('timezone', $timezones, [
+                  'display_emptychoice' => true,
+                  'emptylabel'          => __('Use server configuration')
+               ]);
+               echo "<br><br>";
+               echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+               return true;
+            }
+            echo "<div class='error'>";
+            echo ($tz_warning == '') ? __('No time zones are available. Please check your database configuration.') : $tz_warning;
+            echo "</div>";
+            return false;
       }
       return parent::showMassiveActionsSubForm($ma);
    }
@@ -3160,6 +3182,36 @@ JAVASCRIPT;
             } else {
                $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_NORIGHT);
                $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+            }
+            return;
+            
+         case 'change_timezone':
+            $input = $ma->getInput();
+            if (!isset($input["timezone"])) {
+               $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_KO);
+               $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
+               return;
+            }
+            
+            $timezone = $input["timezone"];
+            // Convert empty string to NULL for database storage
+            if ($timezone === '') {
+               $timezone = 'NULL';
+            }
+            
+            foreach ($ids as $id) {
+               if ($item->can($id, UPDATE)) {
+                  // Update the user's timezone
+                  if ($item->update(['id' => $id, 'timezone' => $timezone])) {
+                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
+                  } else {
+                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                     $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
+                  }
+               } else {
+                  $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
+                  $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+               }
             }
             return;
       }
