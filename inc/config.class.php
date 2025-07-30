@@ -3296,6 +3296,11 @@ class Config extends CommonDBTM {
          }
       }
 
+      // Set default TTL to 10 minutes if not already set
+      if (!isset($opt['options']['ttl'])) {
+         $storage->getOptions()->setTtl(600);
+      }
+
       if ($psr16) {
          return new SimpleCache($storage, GLPI_CACHE_DIR, !$skip_integrity_checks);
       } else {
