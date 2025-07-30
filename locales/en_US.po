@@ -19600,6 +19600,12 @@ msgstr "Start typing to find a menu"
 msgid "Change mode"
 msgstr "Change mode"
 
+msgid "No time zones are available. Please check your database configuration."
+msgstr "No time zones are available. Please check your database configuration."
+
+msgid "Change the time zone"
+msgstr "Change the time zone"
+
 #: inc/html.class.php:6917
 msgid "Debug mode enabled"
 msgstr "Debug mode enabled"

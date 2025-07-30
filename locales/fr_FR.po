@@ -19799,6 +19799,12 @@ msgstr "Commencez à taper pour trouver un menu"
 msgid "Change mode"
 msgstr "Changer de mode"
 
+msgid "No time zones are available. Please check your database configuration."
+msgstr "Aucun fuseau horaire n'est disponible. Veuillez vérifier votre configuration de base de données."
+
+msgid "Change the time zone"
+msgstr "Changer le fuseau horaire"
+
 #: inc/html.class.php:6917
 msgid "Debug mode enabled"
 msgstr "Mode débug actif"
