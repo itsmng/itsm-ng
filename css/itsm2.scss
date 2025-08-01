@@ -1475,10 +1475,8 @@ div.chip > p {
     }
 }
 
-.form-control {
-    width: 100% !important;
+.form-section .form-control,
+.form-section .form-select {
+    width: 100%;
 }
 
-.form-select {
-    width: 100% !important;
-}
