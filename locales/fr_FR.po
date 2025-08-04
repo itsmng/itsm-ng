@@ -22392,6 +22392,14 @@ msgstr "Confirmation mot de passe"
 msgid "Time zone"
 msgstr "Fuseau horaire"
 
+#: inc/user.class.php:3076
+msgid "No time zones are available. Please check your database configuration."
+msgstr "Aucun fuseau horaire n'est disponible. Veuillez vérifier votre configuration de base de données."
+
+#: inc/user.class.php:3030
+msgid "Change the time zone"
+msgstr "Changer le fuseau horaire"
+
 #: inc/user.class.php:2280
 msgid "Valid since"
 msgstr "Valide depuis"
