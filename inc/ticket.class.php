@@ -4946,7 +4946,7 @@ class Ticket extends CommonITILObject
                      'name' => 'time_to_own',
                      'id' => rand(),
                      'value' => $this->fields["time_to_own"],
-                     'col_lg' => 6,
+                     'col_lg' => 8,
                     ],
                     __('SLA') . ' (' . __('Time to own') . ')' => [
                         'content' => (function () use ($tt, $canupdate) {
@@ -4960,7 +4960,7 @@ class Ticket extends CommonITILObject
                      'name' => 'time_to_resolve',
                      'id' => rand(),
                      'value' => $this->fields["time_to_resolve"],
-                     'col_lg' => 6,
+                     'col_lg' => 8
                     ],
                     __('SLA') . ' (' . __('Time to resolve') . ')' => [
                     'content' => (function () use ($tt, $canupdate) {
@@ -4974,7 +4974,7 @@ class Ticket extends CommonITILObject
                      'name' => 'time_to_resolve',
                      'id' => rand(),
                      'value' => $this->fields["time_to_resolve"],
-                     'col_lg' => 6,
+                     'col_lg' => 8
                     ],
                     __('SLA') . ' (' . __('Internal time to own') . ')' => [
                     'content' => (function () use ($tt, $canupdate) {
@@ -4988,7 +4988,7 @@ class Ticket extends CommonITILObject
                      'name' => 'time_to_resolve',
                      'id' => rand(),
                      'value' => $this->fields["time_to_resolve"],
-                     'col_lg' => 6,
+                     'col_lg' => 8
                     ],
                     __('SLA') . ' (' . __('Internal time to resolve') . ')' => [
                     'content' => (function () use ($tt, $canupdate) {
