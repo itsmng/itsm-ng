@@ -807,9 +807,8 @@ class User extends CommonDBTM
             if (isset($picture) && !empty($picture) && $picture['path'] != $this->fields['picture']) {
                 if (Document::isImage($picture['path'])) {
                     unlink(GLPI_PICTURE_DIR . '/' . $this->fields['picture']);
-                    $uploadedPath = str_replace(GLPI_DOC_DIR . '/', '', GLPI_PICTURE_DIR) .
-                         '/' . ItsmngUploadHandler::uploadFile($picture['path'], $picture['name'], ItsmngUploadHandler::PICTURE);
-                    $input['picture'] = $uploadedPath;
+                    $uploadedFileName = ItsmngUploadHandler::uploadFile($picture['path'], $picture['name'], ItsmngUploadHandler::PICTURE);
+                    $input['picture'] = ltrim($uploadedFileName, '/');
                 } else {
                     Session::addMessageAfterRedirect(
                         __('The file is not an image file.'),
@@ -2259,7 +2258,7 @@ class User extends CommonDBTM
         $formtitle = $this->getTypeName(1);
 
         if ($ID > 0) {
-            $formtitle .= "&nbsp;<a class='pointer far fa-address-card fa-lg' target='_blank' href='" .
+            $formtitle .= "&nbsp;<a class='text-light pointer far fa-address-card fa-lg' target='_blank' href='" .
                           User::getFormURLWithID($ID) . "&amp;getvcard=1' title='" . __s('Download user VCard') .
                           "'><span class='sr-only'>" . __('Vcard') . "</span></a>";
             if (Session::canImpersonate($ID)) {
@@ -2338,6 +2337,11 @@ class User extends CommonDBTM
                       'name' => 'authtype',
                       'value' => 1,
                    ],
+                   __('Active') => (!GLPI_DEMO_MODE) ? [
+                    'type' => 'checkbox',
+                    'name' => 'is_active',
+                    'value' => $this->fields['is_active'],
+                 ] : [],
                    __('Login') => [
                       'type' => ($this->fields["name"] == ""
                       || !empty($this->fields["password"])
@@ -2367,30 +2371,42 @@ class User extends CommonDBTM
                       'value' => $this->fields['realname'],
                    ],
                    __('First name') => [
-                      'type' => 'text',
-                      'name' => 'firstname',
-                      'value' => $this->fields['firstname'],
-                   ],
-                   __('Password') => (self::canUpdate()
-                      && (!$extauth || empty($ID))
-                      && $caneditpassword)
-                         ? [
-                            'type' => 'password',
-                            'name' => 'password',
-                            'value' => '',
-                            'size' => '20',
-                            'col_lg' => 6,
-                   ] : [],
-                   __('Password confirmation') => (self::canUpdate()
-                      && (!$extauth || empty($ID))
-                      && $caneditpassword)
-                         ? [
-                            'type' => 'password',
-                            'name' => 'password2',
-                            'value' => '',
-                            'size' => '20',
-                            'col_lg' => 6,
-                   ] : [],
+                    'type' => 'text',
+                    'name' => 'firstname',
+                    'value' => $this->fields['firstname'],
+                 ],
+                __('Password') => (self::canUpdate()
+                   && (!$extauth || empty($ID))
+                   && $caneditpassword)
+                      ? [
+                         'type' => 'password',
+                         'name' => 'password',
+                         'value' => '',
+                         'size' => '20',
+                         'col_lg' => 4,
+                ] : [],
+                __('Password confirmation') => (self::canUpdate()
+                   && (!$extauth || empty($ID))
+                   && $caneditpassword)
+                      ? [
+                         'type' => 'password',
+                         'name' => 'password2',
+                         'value' => '',
+                         'size' => '20',
+                         'col_lg' => 4,
+                ] : [],
+                __('Picture') => [
+                    'type' => 'imageUpload',
+                    'name' => 'picture',
+                    'accept' => 'image/*',
+                ],
+                __('Picture') => [
+                    'id' => 'pictureFilePicker',
+                    'type' => 'imageUpload',
+                    'name' => 'picture',
+                    'accept' => 'image/*',
+                    'value' => $this->fields['picture'] ?? '',  // ← Ajoutez cette ligne
+                ],
                    __('Time zone') => ($tz_available || Session::haveRight("config", READ)) ? ($tz_available ? [
                       'type' => 'select',
                       'name' => 'timezone',
@@ -2399,11 +2415,6 @@ class User extends CommonDBTM
                    ] : [
                       'content' => "<img src=\"{$CFG_GLPI['root_doc']}/pics/warning_min.png\">"
                    ]) : [],
-                   __('Active') => (!GLPI_DEMO_MODE) ? [
-                      'type' => 'checkbox',
-                      'name' => 'is_active',
-                      'value' => $this->fields['is_active'],
-                   ] : [],
                    _n('Email', 'Emails', Session::getPluralNumber()) => [
                       'type' => 'multiSelect',
                       'name' => '_useremails',
@@ -2432,14 +2443,14 @@ class User extends CommonDBTM
                       'name' => 'begin_date',
                       'id' => 'BeginDatePicker',
                       'value' => $this->fields['begin_date'],
-                      'col_lg' => 6,
+                      'col_lg' => 4,
                    ] : [],
                    __('Valid until') => (!GLPI_DEMO_MODE) ? [
                       'type' => 'datetime-local',
                       'name' => 'end_date',
                       'id' => 'EndDatePicker',
                       'value' => $this->fields['end_date'],
-                      'col_lg' => 6,
+                      'col_lg' => 4,
                    ] : [],
                    Phone::getTypeName(1) => [
                       'type' => 'text',
@@ -2768,6 +2779,11 @@ class User extends CommonDBTM
                            'name' => 'realname',
                            'type' => 'text',
                            'value' => $this->fields['realname'] ?? '',
+                        ],
+                        __('Picture') => [
+                            'type' => 'imageUpload',
+                            'name' => 'picture',
+                            'accept' => 'image/*',
                         ],
                         __('First name') => [
                            'name' => 'firstname',
@@ -5405,16 +5421,19 @@ class User extends CommonDBTM
      * @return string
      */
     public static function getURLForPicture($picture)
-    {
-        global $CFG_GLPI;
+{
+    global $CFG_GLPI;
 
-        $url = Toolbox::getPictureUrl($picture);
-        if (null !== $url) {
-            return $url;
-        }
-
+    if (empty($picture) || $picture === 'NULL') {
         return $CFG_GLPI["root_doc"] . "/pics/picture.png";
     }
+
+    // Nettoyer le chemin - enlever les _pictures/ en double
+    $clean_picture = str_replace('_pictures//', '', $picture);
+    $clean_picture = str_replace('_pictures/_pictures/', '_pictures/', $clean_picture);
+    
+    return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $clean_picture;
+}
 
 
     /**
@@ -5427,22 +5446,23 @@ class User extends CommonDBTM
      * @return string
      */
     public static function getThumbnailURLForPicture($picture)
-    {
-        global $CFG_GLPI;
+{
+    global $CFG_GLPI;
 
-        // prevent xss
-        $picture = Html::cleanInputText($picture);
-
-        if (!empty($picture)) {
-            $tmp = explode(".", $picture);
-            if (count($tmp) == 2) {
-                return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $tmp[0] .
-                       "_min." . $tmp[1];
-            }
-            return $CFG_GLPI["root_doc"] . "/pics/picture_min.png";
-        }
+    if (empty($picture) || $picture === 'NULL') {
         return $CFG_GLPI["root_doc"] . "/pics/picture_min.png";
     }
+
+    // Nettoyer le chemin
+    $clean_picture = str_replace('_pictures//', '', $picture);
+    $clean_picture = str_replace('_pictures/_pictures/', '_pictures/', $clean_picture);
+    
+    // Essayer la miniature
+    $path_info = pathinfo($clean_picture);
+    $thumb_picture = $path_info['dirname'] . '/' . $path_info['filename'] . '_min.' . $path_info['extension'];
+    
+    return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $thumb_picture;
+}
 
 
     /**
