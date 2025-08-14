@@ -1442,7 +1442,14 @@ div.chip > p {
 }
 
 .form-section-content .row {
-    gap: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.form-section-content .row > [class*="col-"] {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 20px;
 }
 
 .form-section {
