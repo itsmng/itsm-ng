@@ -1,15 +1,17 @@
 {% macro imageUpload(attributes, root_doc) %}
   {% set rand=random() %}
-  <div class="flex flex-col">
-      <div class="input-group">
+  <div class="flex flex-col w-100">
+      <div class="d-flex align-items-center w-100">
         <input class='form-control h-100' type="file" {% for name, value in attributes|filter((v, k) => k != 'values') %} {{name}}="{{value}}" {% endfor %}/>
-        <input type="checkbox" class="btn-check" name="_blank_{{attributes.name}}" value="1" id="clearPictureFor{{attributes.name}}"/>
-        <label class="btn btn-outline-danger" for="clearPictureFor{{attributes.name}}">{{"Clear"|trans}}</label>
+        <input type="checkbox" class="btn-check d-none" name="_blank_{{attributes.name}}" value="1" id="clearPictureFor{{attributes.name}}{{rand}}"/>
+        <button type="button" class="btn btn-outline-danger btn-sm ms-2" onclick="document.getElementById('clearPictureFor{{attributes.name}}{{rand}}').checked = true; document.getElementById('clearPictureFor{{attributes.name}}{{rand}}').dispatchEvent(new Event('change'));" aria-label="{{'Clear'|trans}}">
+          <i class="fas fa-trash"></i>
+        </button>
       </div>
       {% if attributes.value %}
-        <img class="img-thumbnail" src="{{root_doc}}{{ attributes.external ? '' : '/front/document.send.php?file=' }}{{attributes.value}}" alt="Preview of {{attributes.name}}"></img>
+        <img class="img-thumbnail mt-2" src="{{root_doc}}{{ attributes.external ? '' : '/front/document.send.php?file=' }}{{attributes.value}}" alt="Preview of {{attributes.name}}"></img>
       {% elseif attributes.docId %}
-        <img class="img-thumbnail" src="{{root_doc}}/front/document.send.php?docid={{attributes.docId}}" alt="Preview of {{attributes.name}}"></img>
+        <img class="img-thumbnail mt-2" src="{{root_doc}}/front/document.send.php?docid={{attributes.docId}}" alt="Preview of {{attributes.name}}"></img>
       {% endif %}
   </div>
   <script>
@@ -28,13 +30,21 @@
         contentType: false,
         success: function(data) {
         // add an hidden input containing the data for all files
-            if ($('#hiddenInputForFiles').length == 0) {
+            if ($('#hiddenInputForFiles{{rand}}').length == 0) {
                 $('#{{attributes.id}}').after('<input type="hidden" id="hiddenInputForFiles{{rand}}" name="{{attributes.name}}" value="">');
             }
             $('#hiddenInputForFiles{{rand}}').val(data);
         }
       });
-    })
+    });
+
+    $('#clearPictureFor{{attributes.name}}{{rand}}').on('change', function() {
+      if (this.checked) {
+        $('#{{attributes.id}}').val('');
+        $('#hiddenInputForFiles{{rand}}').val('');
+        $('.img-thumbnail').hide();
+      }
+    });
   </script>
 {% endmacro %}
 {{ _self.imageUpload(attributes, root_doc) }}
