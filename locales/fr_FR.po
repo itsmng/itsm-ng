@@ -25079,3 +25079,6 @@ msgstr "Activer / Désactiver la navigation"
 
 #~ msgid "Remove actor %s"
 #~ msgstr "Supprimer l'acteur %s"
+
+msgid "Allow to impersonate other users"
+msgstr "Autoriser la prise d'identité d'autres utilisateurs"
