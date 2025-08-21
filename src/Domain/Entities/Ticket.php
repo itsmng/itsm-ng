@@ -32,7 +32,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 #[ORM\Index(name: "slalevels_id_ttr", columns: ["slalevels_id_ttr"])]
 #[ORM\Index(name: "internal_time_to_resolve", columns: ["internal_time_to_resolve"])]
 #[ORM\Index(name: "internal_time_to_own", columns: ["internal_time_to_own"])]
-#[ORM\Index(name: "users_id_lastupdater", columns: ["users_id_lastupdater"])]
+#[ORM\Index(name: "lastupdater_users_id", columns: ["lastupdater_users_id"])]
 #[ORM\Index(name: "type", columns: ["type"])]
 #[ORM\Index(name: "itilcategories_id", columns: ["itilcategories_id"])]
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
@@ -68,7 +68,7 @@ class Ticket
     #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\Column(name: 'users_id_lastupdater', type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'lastupdater_users_id', type: 'integer', options: ['default' => 0])]
     private $lastupdaterUsersId = 0;
 
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
