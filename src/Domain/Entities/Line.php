@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_lines')]
 #[ORM\Index(name: "entities_id", columns: ['entities_id'])]
 #[ORM\Index(name: "is_recursive", columns: ['is_recursive'])]
@@ -25,16 +27,16 @@ class Line
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'caller_num', type: 'string', length: 255, options: ['default' => ''])]
-    private $callerNum;
+    private $callerNum = '';
 
     #[ORM\Column(name: 'caller_name', type: 'string', length: 255, options: ['default' => ''])]
-    private $callerName;
+    private $callerName = '';
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
@@ -134,26 +136,29 @@ class Line
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+     public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }

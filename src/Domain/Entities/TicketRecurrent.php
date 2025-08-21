@@ -5,6 +5,7 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_ticketrecurrents")]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
 #[ORM\Index(name: "is_recursive", columns: ["is_recursive"])]
@@ -111,14 +112,20 @@ class TicketRecurrent
     }
 
 
-    public function getBeginDate(): ?\DateTime
+    public function getBeginDate(): ?\DateTimeInterface
     {
         return $this->beginDate;
     }
 
-    public function setBeginDate(?\DateTime $beginDate): self
+    public function setBeginDate(\DateTimeInterface|string|null $beginDate): self
     {
+        if ($beginDate === null || $beginDate === '' || $beginDate === 'NULL') {
+            $this->beginDate = null;
+        } elseif (is_string($beginDate)) {
+                $beginDate = new \DateTime($beginDate);
+        } else {
         $this->beginDate = $beginDate;
+    }
 
         return $this;
     }
@@ -147,26 +154,38 @@ class TicketRecurrent
         return $this;
     }
 
-    public function getNextCreationDate(): ?\DateTime
+    public function getNextCreationDate(): ?\DateTimeInterface
     {
         return $this->nextCreationDate;
     }
 
-    public function setNextCreationDate(?\DateTime $nextCreationDate): self
+    public function setNextCreationDate(\DateTimeInterface|string|null $nextCreationDate): self
     {
-        $this->nextCreationDate = $nextCreationDate;
+        if ($nextCreationDate === null || $nextCreationDate === '' || $nextCreationDate === 'NULL') {
+            $this->nextCreationDate = null;
+        } elseif (is_string($nextCreationDate)) {
+            $nextCreationDate = new \DateTime($nextCreationDate);
+        } else {
+            $this->nextCreationDate = $nextCreationDate;
+        }
 
         return $this;
     }
 
-    public function getEndDate(): ?\DateTime
+    public function getEndDate(): ?\DateTimeInterface
     {
         return $this->endDate;
     }
 
-    public function setEndDate(?\DateTime $endDate): self
+    public function setEndDate(\DateTimeInterface|string|null $endDate): self
     {
-        $this->endDate = $endDate;
+         if ($endDate === null || $endDate === '' || $endDate === 'NULL') {
+        $this->endDate = null;
+        } elseif (is_string($endDate)) {
+            $endDate = new \DateTime($endDate);
+        } else {
+            $this->endDate = $endDate;
+        }
 
         return $this;
     }

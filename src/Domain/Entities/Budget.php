@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_budgets')]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
@@ -132,7 +133,7 @@ class Budget
     public function setBeginDate(\DateTimeInterface|string|null $beginDate): self
     {
         if (is_string($beginDate)) {
-            $beginDate = new \DateTime($beginDate);
+            $beginDate = new DateTime($beginDate);
         }
         $this->beginDate = $beginDate;
 
@@ -147,7 +148,7 @@ class Budget
     public function setEndDate(\DateTimeInterface|string|null $endDate): self
     {
         if (is_string($endDate)) {
-            $endDate = new \DateTime($endDate);
+            $endDate = new DateTime($endDate);
         }
         $this->endDate = $endDate;
 
