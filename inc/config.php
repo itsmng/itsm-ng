@@ -40,6 +40,11 @@ global $CFG_GLPI, $GLPI, $GLPI_CACHE, $DB;
 
 include_once(GLPI_ROOT . "/inc/based_config.php");
 include_once(GLPI_ROOT . "/inc/dbconnection.class.php");
+// Load environment variables early so DB_DRIVER is available before DB connection
+// This allows selecting the correct SQL adapter (MySQL vs PostgreSQL)
+if (file_exists(GLPI_ROOT . '/src/Infrastructure/Env.php')) {
+    include_once GLPI_ROOT . '/src/Infrastructure/Env.php';
+}
 
 Session::setPath();
 Session::start();

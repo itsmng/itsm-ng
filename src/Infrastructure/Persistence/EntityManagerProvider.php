@@ -51,6 +51,19 @@ class EntityManagerProvider
                 throw new \Exception('Could not connect to database');
             }
 
+            // Ensure PostgreSQL looks into the right schema when tables are not in "public"
+            // Configure via DB_SCHEMA env var (e.g., DB_SCHEMA=orm_test) to set search_path accordingly
+            if (($connectionParams['driver'] ?? null) === 'pdo_pgsql') {
+                $schema = $_ENV['DB_SCHEMA'] ?? null;
+                if (is_string($schema) && $schema !== '') {
+                    // Validate identifier (simple safe pattern to avoid SQL injection on SET search_path)
+                    if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $schema)) {
+                        throw new \InvalidArgumentException('Invalid DB_SCHEMA value');
+                    }
+                    $connection->executeStatement(sprintf('SET search_path TO %s, public', $schema));
+                }
+            }
+
             self::$entityManager = new (EntityManager::class)($connection, $config);
         }
 

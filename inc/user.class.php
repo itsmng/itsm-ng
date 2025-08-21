@@ -38,6 +38,7 @@ if (!defined('GLPI_ROOT')) {
 use Sabre\VObject;
 use Glpi\Exception\ForgetPasswordException;
 use Glpi\Exception\PasswordTooWeakException;
+use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
 
 class User extends CommonDBTM
 {
@@ -5305,26 +5306,47 @@ class User extends CommonDBTM
      */
     public static function checkDefaultPasswords()
     {
-        $passwords = ['itsm'      => 'itsm',
-                           'tech'      => 'tech',
-                           'normal'    => 'normal',
-                           'post-only' => 'postonly'];
+        $passwords = [
+            'itsm'      => 'itsm',
+            'tech'      => 'tech',
+            'normal'    => 'normal',
+            'post-only' => 'postonly'
+        ];
+
         $default_password_set = [];
 
-        $crit = ['is_active'  => 1,
-                      'is_deleted' => 0,
-                      'name'       => array_keys($passwords)];
+        // Build programmatic criteria like the previous $crit array
+        // and translate it into Doctrine QueryBuilder conditions
+        $em = EntityManagerProvider::getEntityManager();
+        $qb = $em->createQueryBuilder();
 
-        $request = self::getAdapter()->request([
-          'SELECT' => ['id', 'name', 'password'],
-          'FROM'   => 'glpi_users',
-          'WHERE'  => $crit
-                    ]);
+        $qb->select('u.id AS id', 'u.name AS name', 'u.password AS password')
+           ->from(Itsmng\Domain\Entities\User::class, 'u');
 
-        $rows = $request->fetchAllAssociative();
+        // Programmatic criteria definition (mimics the former $crit)
+        $crit = [
+            'u.isActive' => true,
+            'u.isDeleted' => false,
+            'u.name' => array_keys($passwords),
+        ];
+
+        // Apply criteria to the QueryBuilder
+        $paramIndex = 0;
+        foreach ($crit as $field => $value) {
+            $param = 'p' . $paramIndex++;
+            if (is_array($value)) {
+                $qb->andWhere($qb->expr()->in($field, ':' . $param));
+            } else {
+                $qb->andWhere($qb->expr()->eq($field, ':' . $param));
+            }
+            $qb->setParameter($param, $value);
+        }
+
+        $rows = $qb->getQuery()->getArrayResult();
 
         foreach ($rows as $data) {
-            if (Auth::checkPassword($passwords[strtolower($data['name'])], $data['password'])) {
+            $login = strtolower($data['name']);
+            if (isset($passwords[$login]) && Auth::checkPassword($passwords[$login], $data['password'])) {
                 $default_password_set[] = $data['name'];
             }
         }
