@@ -381,7 +381,9 @@ class Search
                     break;
                 case 'is_deleted':
                     if ($val == 1) {
-                        $p[$key] = 'true';
+                        $p[$key] = true;
+                    } else {
+                        $p[$key] = false;  
                     }
                     break;
                 default:
@@ -663,7 +665,8 @@ class Search
                 $LINK  = " ";
                 $first = false;
             }
-            $COMMONWHERE .= $LINK . "$itemtable.is_deleted = " . ((int)$data['search']['is_deleted'] ? 'true' : 'false') . " ";
+
+            $COMMONWHERE .= $LINK . "$itemtable.is_deleted = " . ((int)$data['search']['is_deleted'] ? 'TRUE' : 'FALSE') . " ";
         }
 
         // Remove template items
@@ -689,15 +692,15 @@ class Search
             } elseif (isset($CFG_GLPI["union_search_type"][$data['itemtype']])) {
                 // Will be replace below in Union/Recursivity Hack
                 $COMMONWHERE .= $LINK . " ENTITYRESTRICT ";
-            } else {
-                $COMMONWHERE .= getEntitiesRestrictRequest(
+            } else {               
+                   $COMMONWHERE .= getEntitiesRestrictRequest(
                     $LINK,
                     $itemtable,
                     '',
                     '',
                     $data['item']->maybeRecursive() && $data['item']->isField('is_recursive')
-                );
-            }
+                );   
+            }           
         }
         $WHERE  = "";
         $HAVING = "";
@@ -803,12 +806,12 @@ class Search
 
                             // Add deleted if item have it
                             if ($citem && $citem->maybeDeleted()) {
-                                $query_num .= " AND $ctable.is_deleted = false ";
+                                $query_num .= " AND $ctable.is_deleted = FALSE ";
                             }
 
                             // Remove template items
                             if ($citem && $citem->maybeTemplate()) {
-                                $query_num .= " AND $ctable.is_template = false ";
+                                $query_num .= " AND $ctable.is_template = FALSE ";
                             }
                         } else {// Ref table case
                             $reftable = $data['itemtype']::getTable();
@@ -900,12 +903,12 @@ class Search
 
                         // Add deleted if item have it
                         if ($citem && $citem->maybeDeleted()) {
-                            $tmpquery .= " AND $ctable.is_deleted = false ";
+                            $tmpquery .= " AND $ctable.is_deleted = FALSE ";
                         }
 
                         // Remove template items
                         if ($citem && $citem->maybeTemplate()) {
-                            $tmpquery .= " AND $ctable.is_template = false ";
+                            $tmpquery .= " AND $ctable.is_template = FALSE ";
                         }
 
                         $tmpquery .= $GROUPBY .
@@ -1019,6 +1022,7 @@ class Search
                 $QUERY = $adapter->adaptQueryForPostgreSQL($QUERY);
             }
         }
+    
         $data['sql']['search'] = $QUERY;
     }
 
@@ -1637,7 +1641,6 @@ class Search
     public static function displayData(array $data)
     {
         global $CFG_GLPI;
-
         // Init list of items displayed
         if ($data['display_type'] == self::HTML_OUTPUT) {
             Session::initNavigateListItems($data['itemtype']);
@@ -1655,7 +1658,7 @@ class Search
 
             $row_num++;
             $col_num = 0;
-            $value[$row_num] = [];
+            $values[$row_num] = [];
 
             if (
                 !isset($row['entities_id'])
@@ -1671,7 +1674,7 @@ class Search
 
                 if (isset($row[$colkey]['displayname']) && $row[$colkey]['displayname']) {
                     $values[$row_num][$col_num] = $row[$colkey]['displayname'];
-                }
+                } 
                 $col_num++;
             }
         }
@@ -1694,7 +1697,6 @@ class Search
            'itemtype'       => $data['itemtype']
         ];
         $can_trash = isset($data['item']->fields['is_deleted']);
-
         $url = $CFG_GLPI['root_doc'] . "/src/search/search.ajax.php?itemtype={$data['itemtype']}&deleted={$data['search']['is_deleted']}";
         if ($data['search']['criteria']) {
             $url .= "&criteria=" . urlencode(json_encode($data['search']['criteria']));
@@ -1705,12 +1707,34 @@ class Search
                 $item->title();
             }
         }
+        // DEBUG FINAL pour comprendre le mappage
+        // if ($data['itemtype'] === 'Peripheral') {
+        //     dump("🔍 STRUCTURE DEBUG:");
+        //     dump("Fields keys: " , (array_keys($fields)));
+        //     dump("Values keys: " , (array_keys($values)));
+        //     dump("First value structure: " , (($values[1] ?? [])));
+        //     dump("MassiveAction keys: " , (array_keys($massiveActionValues)));
+        // }
+        // 🔍 DEBUG FINAL avant template
+        // if ($data['itemtype'] === 'Computer' && $data['search']['is_deleted'] == 1) {
+        //     dump("=== DEBUG FINAL AVANT TEMPLATE ===");
+        //     dump("Nombre de fields: " , count($fields));
+        //     dump("Nombre de values: " , count($values));
+        //     dump("Premier field: " , (array_slice($fields, 0, 3, true)));
+        //     dump("Première value: " , ($values[1] ?? []));
+        //     dump("URL: " , ($url ?? 'NULL'));
+        //     dump("can_trash: " , ($can_trash ? 'OUI' : 'NON'));
+        //     dump("is_trash: " , ($data['search']['is_deleted'] == 1 ? 'OUI' : 'NON'));
+        //     dump("=== FIN DEBUG ===");
+        // }
 
+        
         Html::showMassiveActions($massiveactionparams);
         renderTwigTemplate('table.twig', [
            'id' => 'SearchTableFor' . $data['itemtype'],
            'fields' => $fields,
            'url' => $url,
+           'values' => $values,
            'can_trash' => $can_trash,
            'is_trash' => $data['search']['is_deleted'] == 1,
            'massive_action' => $massiveActionValues,
@@ -1743,6 +1767,7 @@ class Search
                   "<span class='lever'></span>" .
                   "</label>" .
                "</div>";
+               
     }
 
 
@@ -4322,7 +4347,6 @@ JAVASCRIPT;
                 }
                 break;
         }
-
         /* Hook to restrict user right on current itemtype */
         list($itemtype, $condition) = Plugin::doHookFunction('add_default_where', [$itemtype, $condition]);
         return $condition;

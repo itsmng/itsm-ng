@@ -614,7 +614,6 @@ class CommonDBTM extends CommonGLPI
                 }
                 $params[$key] = $value;
             }
-
             $result = $this::getAdapter()->add($params);
             if ($result && isset($result['id'])) {
                 $this->fields['id'] = $result['id'];
@@ -634,7 +633,7 @@ class CommonDBTM extends CommonGLPI
     public function restoreInDB()
     {
         if ($this->maybeDeleted()) {
-            $this->fields['is_deleted'] = 0;
+            $this->fields['is_deleted'] = false;
             // Auto set date_mod if exsist
             if (isset($this->fields['date_mod'])) {
                 $this->fields['date_mod'] = $_SESSION["glpi_currenttime"];
@@ -684,7 +683,7 @@ class CommonDBTM extends CommonGLPI
             if (isset($this->fields['date_mod'])) {
                 $this->fields['date_mod'] = $_SESSION["glpi_currenttime"];
             }
-            $this->fields['is_deleted'] = 1;
+            $this->fields['is_deleted'] = true;
 
             $result = $this::getAdapter()->save($this->fields);
 
