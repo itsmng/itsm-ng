@@ -1307,7 +1307,7 @@ abstract class CommonITILObject extends CommonDBTM
                 (($this->fields["closedate"] ?? null) instanceof DateTime && ($this->oldvalues['closedate'] ?? null) instanceof DateTime &&
                 $this->fields["closedate"]->format('Y-m-d H:i') == $this->oldvalues['closedate']->format('Y-m-d H:i'))
             )
-            ) {
+        ) {
             unset($this->updates[$key]);
             unset($this->oldvalues['closedate']);
         }
@@ -5792,7 +5792,7 @@ abstract class CommonITILObject extends CommonDBTM
     public function computeCloseDelayStat()
     {
 
-         if (isset($this->fields['id']) && !empty($this->fields['date']) && !empty($this->fields['closedate'])) {
+        if (isset($this->fields['id']) && !empty($this->fields['date']) && !empty($this->fields['closedate'])) {
             $calendars_id = $this->getCalendar();
             $calendar = new Calendar();
 
@@ -5807,13 +5807,13 @@ abstract class CommonITILObject extends CommonDBTM
             // Not calendar defined
             $closedate = $this->fields['closedate'];
             $date = $this->fields['date'];
-            
+
             // Convert DateTime objects to timestamp if needed
-            $closedate_timestamp = ($closedate instanceof DateTime) ? 
+            $closedate_timestamp = ($closedate instanceof DateTime) ?
                 $closedate->getTimestamp() : strtotime($closedate);
-            $date_timestamp = ($date instanceof DateTime) ? 
+            $date_timestamp = ($date instanceof DateTime) ?
                 $date->getTimestamp() : strtotime($date);
-                
+
             return max(0, $closedate_timestamp - $date_timestamp - $this->fields["waiting_duration"]);
         }
         return 0;
@@ -7284,7 +7284,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $user->fields["access_font"]?? null;
+            $font = $user->fields["access_font"] ?? null;
         }
 
         echo "<div class='filter_timeline'>";
@@ -7327,7 +7327,7 @@ abstract class CommonITILObject extends CommonDBTM
         $user->getFromDB(Session::getLoginUserID());
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $user->fields["access_font"]?? null;
+            $font = $user->fields["access_font"] ?? null;
         }
         echo "<h2 style='font-family: $font;'>" . __("Actions historical") . " : </h2>";
         $this->filterTimeline();
@@ -7474,10 +7474,10 @@ abstract class CommonITILObject extends CommonDBTM
         $user = new User();
         $user->getFromDB(Session::getLoginUserID());
 
-        $canuse_shortcuts = $user->fields['access_shortcuts']?? null;
+        $canuse_shortcuts = $user->fields['access_shortcuts'] ?? null;
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $user->fields["access_font"]?? null;
+            $font = $user->fields["access_font"] ?? null;
         }
 
         if ($canadd_fup || $canadd_task || $canadd_document || $canadd_solution) {
@@ -7869,7 +7869,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $thisUser->fields["access_font"]?? null;
+            $font = $thisUser->fields["access_font"] ?? null;
         }
 
         $timeline_index = 0;

@@ -862,8 +862,8 @@ class Item_SoftwareLicense extends CommonDBRelation
                     'is_deleted' => false,
                     'display_arrow' => false
                     ];
-                
-                    
+
+
                     // show transfer only if multi licenses for this software
                     if (self::countLicenses($data['softid']) > 1) {
                         $massiveactionparams['specific_actions'][__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'move_license'] = _x('button', 'Move');
@@ -900,37 +900,37 @@ class Item_SoftwareLicense extends CommonDBRelation
                 $fields[] = User::getTypeName();
                 $values = [];
                 $massiveactionValues = [];
-                
-                    $newValue = [];
-                    $newValue[] = $data['itemtype'];
-                    if ($canshowitems[$data['item_type']]) {
-                        $newValue[] = "<a href='" . $data['item_type']::getFormURLWithID($data['iID']) . "'>"
-                                                . $data['itemname'] . "</a>";
-                    } else {
-                        $newValue[] = $data['itemname'];
-                    }
 
-                    if ($showEntity) {
-                        $newValue[] = $data['entity'];
-                    }
-                    $newValue = array_merge($newValue, [
-                    $data['serial'],
-                    $data['otherserial'],
-                    $data['location'],
-                    $data['state'],
-                    $data['groupe'],
-                    formatUserName(
-                        $data['userid'],
-                        $data['username'],
-                        $data['userrealname'],
-                        $data['userfirstname'],
-                        $linkUser
-                    )
-                    ]);
+                $newValue = [];
+                $newValue[] = $data['itemtype'];
+                if ($canshowitems[$data['item_type']]) {
+                    $newValue[] = "<a href='" . $data['item_type']::getFormURLWithID($data['iID']) . "'>"
+                                            . $data['itemname'] . "</a>";
+                } else {
+                    $newValue[] = $data['itemname'];
+                }
 
-                    $values[] = $newValue;
-                    $massiveactionValues[] = sprintf('item[%s][%s]', $data['itemtype'], $data['items_id']);
-            } 
+                if ($showEntity) {
+                    $newValue[] = $data['entity'];
+                }
+                $newValue = array_merge($newValue, [
+                $data['serial'],
+                $data['otherserial'],
+                $data['location'],
+                $data['state'],
+                $data['groupe'],
+                formatUserName(
+                    $data['userid'],
+                    $data['username'],
+                    $data['userrealname'],
+                    $data['userfirstname'],
+                    $linkUser
+                )
+                ]);
+
+                $values[] = $newValue;
+                $massiveactionValues[] = sprintf('item[%s][%s]', $data['itemtype'], $data['items_id']);
+            }
             renderTwigTemplate('table.twig', [
                'id' => 'tableForSoftwareLicenceItem',
                'fields' => $fields,

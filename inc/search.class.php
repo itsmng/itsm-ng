@@ -6566,7 +6566,7 @@ JAVASCRIPT;
                     }
                     if (Session::haveRight('reservation', UPDATE)) {
                         return "<a title=\"" . __s('Modify the comment') . "\"
-                           href='" . ReservationItem::getFormURLWithID($data['refID']?? null) . "' >" . $text . "</a>";
+                           href='" . ReservationItem::getFormURLWithID($data['refID'] ?? null) . "' >" . $text . "</a>";
                     }
                     return $text;
 

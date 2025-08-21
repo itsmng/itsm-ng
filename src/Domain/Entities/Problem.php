@@ -379,7 +379,7 @@ class Problem
 
     public function setBeginWaitingDate(\DateTimeInterface|string|null $beginWaitingDate): self
     {
-         if (is_string($beginWaitingDate)) {
+        if (is_string($beginWaitingDate)) {
             $beginWaitingDate = new DateTime($beginWaitingDate);
         }
         $this->beginWaitingDate = $beginWaitingDate;

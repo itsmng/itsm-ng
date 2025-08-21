@@ -2435,8 +2435,8 @@ class Ticket extends CommonITILObject
                         'NOT' => [$this->getTable() . '.solvedate' => null],
                         new \QueryExpression(
                             $this::getAdapter()->getDateAdd(
-                                $this->getTable() . ".solvedate", 
-                                $days, 
+                                $this->getTable() . ".solvedate",
+                                $days,
                                 "DAY"
                             ) . " > NOW()"
                         )

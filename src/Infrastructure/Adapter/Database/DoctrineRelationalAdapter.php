@@ -483,11 +483,11 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     {
         global $DB;
 
-         // Handle PostgreSQL reserved keywords in column names
+        // Handle PostgreSQL reserved keywords in column names
         if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
             // List of PostgreSQL reserved keywords that appear in your queries
             $pg_keywords = ['end', 'begin', 'user', 'comment', 'order', 'group', 'limit', 'offset', 'where'];
-            
+
             // Quote column names in SELECT clause if they're reserved words
             if (isset($request['SELECT']) && is_array($request['SELECT'])) {
                 foreach ($request['SELECT'] as $key => $field) {
@@ -496,7 +496,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                     }
                 }
             }
-            
+
             // Quote column names in WHERE clause if they're reserved words
             if (isset($request['WHERE']) && is_array($request['WHERE'])) {
                 $fixed_where = [];
@@ -516,7 +516,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 $request['FROM'] = $this->fallbackTableName;
             }
         }
-       
+
         // PostgreSQL correction for GROUP BY and ORDER BY
         if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
             // Add sanitization for empty IN clauses
@@ -525,17 +525,17 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             if (isset($request['WHERE'])) {
                 $request['WHERE'] = $this->fixBitwiseInCriteria($request['WHERE']);
             }
-                // If the query contents GROUP BY and columns in SELECT
-                if (isset($request['SELECT']) && isset($request['GROUP'])) {
-                    $originalSelect = is_array($request['SELECT']) ? implode(', ', $request['SELECT']) : $request['SELECT'];
-                    $originalGroup = is_array($request['GROUP']) ? implode(', ', $request['GROUP']) : $request['GROUP'];
+            // If the query contents GROUP BY and columns in SELECT
+            if (isset($request['SELECT']) && isset($request['GROUP'])) {
+                $originalSelect = is_array($request['SELECT']) ? implode(', ', $request['SELECT']) : $request['SELECT'];
+                $originalGroup = is_array($request['GROUP']) ? implode(', ', $request['GROUP']) : $request['GROUP'];
 
-                    $modifiedGroup = $this->fixPostgreSQLGroupBy($originalSelect, $originalGroup);
-                    $request['GROUP'] = $modifiedGroup;
-                }
-                
+                $modifiedGroup = $this->fixPostgreSQLGroupBy($originalSelect, $originalGroup);
+                $request['GROUP'] = $modifiedGroup;
             }
-            
+
+        }
+
         $query = $SqlIterator->buildQuery($request);
         return $this->query($query);
     }
@@ -555,24 +555,24 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             // Convert empty strings to NULL when used with numeric fields
             $query = preg_replace('/(\w+_id)\s*=\s*[\'\"][\'\"]/', '$1 IS NULL', $query);
             $query = preg_replace('/(\w+\.\w+_id)\s*=\s*[\'\"][\'\"]/', '$1 IS NULL', $query);
-            
+
             // Also handle numeric comparisons with empty strings for any field ending with _id
             $query = preg_replace('/(\w+_id)\s*(!=|<>)\s*[\'\"][\'\"]/', '$1 IS NOT NULL', $query);
             $query = preg_replace('/(\w+\.\w+_id)\s*(!=|<>)\s*[\'\"][\'\"]/', '$1 IS NOT NULL', $query);
-            
+
             // Fix for SELECT DISTINCT with ORDER BY
             if (stripos($query, 'SELECT DISTINCT') !== false && stripos($query, 'ORDER BY') !== false) {
                 // Extract SELECT part
                 if (preg_match('/SELECT\s+DISTINCT(.*?)FROM/is', $query, $select_matches)) {
                     $select_part = 'SELECT DISTINCT' . $select_matches[1];
-                    
+
                     // Extract ORDER BY part
                     if (preg_match('/ORDER\s+BY\s+(.*?)(?:LIMIT|\s*$)/is', $query, $order_matches)) {
                         $order_part = 'ORDER BY ' . $order_matches[1];
-                        
+
                         // Apply the fix
                         $fixed_parts = $this->fixPostgreSQLCompleteOrderBy($select_part, $order_part, $query);
-                        
+
                         // Replace the original parts in the query
                         $query = str_replace($select_part, $fixed_parts['select'], $query);
                     }
@@ -606,11 +606,11 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         $results = $stmt->executeQuery();
         return $results;
     }
-    
-    
+
+
     /**
      * Handle empty arrays for IN clauses before they reach DBmysqlIterator
-     * 
+     *
      * @param array $request The request array to sanitize
      * @return array Modified request with safe IN clauses
      */
@@ -620,18 +620,18 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         if (isset($request['WHERE']) && is_array($request['WHERE'])) {
             $request['WHERE'] = $this->processEmptyInClauses($request['WHERE']);
         }
-        
+
         // Process HAVING clause
         if (isset($request['HAVING']) && is_array($request['HAVING'])) {
             $request['HAVING'] = $this->processEmptyInClauses($request['HAVING']);
         }
-        
+
         return $request;
     }
 
     /**
      * Process array to detect and fix empty IN clauses
-     * 
+     *
      * @param array $criteria The criteria array to process
      * @return array Modified criteria with safe IN clauses
      */
@@ -642,13 +642,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 if (count($value) === 0) {
                     // Empty array for IN clause, replace with FALSE condition
                     $criteria[$key] = ['=', 0]; // This will create "field = 0" which always evaluates to FALSE for positive IDs
-                } else if ($key === 'OR' || $key === 'AND') {
+                } elseif ($key === 'OR' || $key === 'AND') {
                     // Process logical operators recursively
                     $criteria[$key] = $this->processEmptyInClauses($value);
                 }
             }
         }
-        
+
         return $criteria;
     }
 
@@ -682,7 +682,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             $table_key = isset($name['table']) ? 'table' : 'tables';
             return $name[$table_key];
         }
-        
+
         return $name;
     }
 
@@ -695,7 +695,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     private function fixBitwiseInCriteria(array $criteria): array
     {
         $fixed_criteria = [];
-        
+
         foreach ($criteria as $key => $value) {
             // Verify if $value is an array and has the format ['&', value]
             if (is_array($value) && !empty($value) && isset($value[0]) && $value[0] === '&' && isset($value[1])) {
@@ -710,11 +710,11 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 $fixed_criteria[$key] = $value;
             }
         }
-        
+
         return $fixed_criteria;
     }
 
-   
+
 
     public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string
     {

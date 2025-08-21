@@ -508,7 +508,7 @@ class Supplier extends CommonDBTM
         echo "</tr>";
 
         $num = 0;
-         foreach ($types_iterator as $row) {
+        foreach ($types_iterator as $row) {
             $itemtype = $row['itemtype'];
 
             if (!($item = getItemForItemtype($itemtype))) {

@@ -5,7 +5,6 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
-
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_peripherals')]
@@ -300,7 +299,7 @@ class Peripheral
         return $this;
     }
 
-     public function getDateCreation(): DateTime
+    public function getDateCreation(): DateTime
     {
         return $this->dateCreation ?? new DateTime();
     }

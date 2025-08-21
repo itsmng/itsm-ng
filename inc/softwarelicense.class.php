@@ -424,14 +424,14 @@ class SoftwareLicense extends CommonTreeDropdown
                        'name' => 'softwareversions_id_use',
                        'itemtype' => SoftwareVersion::class,
                        'conditions' => ['softwares_id' => $this->fields['softwares_id']],
-                       'value' => $this->fields["softwareversions_id_use"]?? null,
+                       'value' => $this->fields["softwareversions_id_use"] ?? null,
                     ],
                     __('Purchase version') => [
                        'type' => 'select',
                        'name' => 'softwareversions_id_buy',
                        'itemtype' => SoftwareVersion::class,
                        'conditions' => ['softwares_id' => $this->fields['softwares_id']],
-                       'value' => $this->fields["softwareversions_id_buy"]?? null,
+                       'value' => $this->fields["softwareversions_id_buy"] ?? null,
                     ],
                     _x('quantity', 'Number') . ' (0 = ' . __('Unlimited') . ')' => [
                        'type' => 'number',

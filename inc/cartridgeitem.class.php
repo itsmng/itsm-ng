@@ -219,8 +219,8 @@ class CartridgeItem extends CommonDBTM
                     __('Technician in charge of the hardware') => [
                        'name' => 'tech_users_id',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']?? null]),
-                       'entity' => $this->fields["entities_id"]?? null,
+                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id'] ?? null]),
+                       'entity' => $this->fields["entities_id"] ?? null,
                        'value' => $this->fields["tech_users_id"] ?? '',
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
@@ -239,7 +239,7 @@ class CartridgeItem extends CommonDBTM
                     __('Stock location') => [
                        'name' => 'locations_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']?? null]),
+                       'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id'] ?? null]),
                        'value' => $this->fields["locations_id"] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "Location"),
                     ],

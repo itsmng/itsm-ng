@@ -694,7 +694,7 @@ abstract class CommonITILCost extends CommonDBChild
            __('Total cost')
         ];
         $values = [[
-           CommonITILObject::getActionTime($item->fields['actiontime']?? null),
+           CommonITILObject::getActionTime($item->fields['actiontime'] ?? null),
            CommonITILObject::getActionTime($total_time),
            Html::formatNumber($total_costtime),
            Html::formatNumber($total_fixed),
