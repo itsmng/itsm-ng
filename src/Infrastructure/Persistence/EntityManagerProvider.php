@@ -44,6 +44,12 @@ class EntityManagerProvider
                 isDevMode: true
             );
 
+            $config->addCustomStringFunction('TO_TSVECTOR', \Itsmng\Doctrine\DQL\ToTsVectorFunction::class);
+            $config->addCustomStringFunction('PLAINTO_TSQUERY', \Itsmng\Doctrine\DQL\PlainToTsQueryFunction::class);
+            $config->addCustomStringFunction('TS_MATCH', \Itsmng\Doctrine\DQL\TsMatchFunction::class);
+            // TS_RANK returns a numeric score -> register as numeric function so it can be used in ORDER BY or arithmetic
+            $config->addCustomNumericFunction('TS_RANK', \Itsmng\Doctrine\DQL\TsRankFunction::class);
+
             $connectionParams = self::getEntityManagerConfig();
             $connection = DriverManager::getConnection($connectionParams, $config);
             $connection->connect();
