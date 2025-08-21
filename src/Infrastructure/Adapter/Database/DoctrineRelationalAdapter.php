@@ -421,7 +421,24 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             } catch (\Exception $e) {
                 $linkedEntity = null;
             }
-            if ($linkedEntity !== null) {
+            if (self::isDateFormat($object, $field) && !($fields[$field] instanceof \DateTime)) {
+                $value = $fields[$field];
+                if ($value === false || $value === null) {
+                    $value = null;
+                } else {
+                    $value = DateTime::createFromFormat('Y-m-d H:i:s', $fields[$field]);
+                }
+                if ($value === false) {
+                    $value = DateTime::createFromFormat('Y-m-d', $fields[$field]);
+                }
+                if ($value === false) {
+                    $value = null;
+                }
+                // If parsing failed and value is null, skip setting to avoid TypeError on non-nullable setters
+                if ($value === null) {
+                    continue;
+                }
+            } elseif ($linkedEntity !== null) {
                 $value = self::getReferencedEntity($linkedEntity, intval($fields[$field]));
             } else {
                 $value = $fields[$field];
@@ -435,7 +452,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             return ['id' => $entity->getId()];
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
-            return false;
         }
     }
 
