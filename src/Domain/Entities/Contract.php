@@ -93,7 +93,7 @@ class Contract
     private $useMonday;
 
     #[ORM\Column(name: 'max_links_allowed', type: 'integer', options: ['default' => 0])]
-    private $maxLinksAllowed;
+    private $maxLinksAllowed = 0;
 
     #[ORM\Column(name: 'alert', type: 'integer', options: ['default' => 0])]
     private $alert = 0;
@@ -170,7 +170,7 @@ class Contract
     public function setBeginDate(\DateTimeInterface|string|null $beginDate): self
     {
         if (is_string($beginDate)) {
-            $beginDate = new \DateTime($beginDate);
+            $beginDate = new DateTime($beginDate);
         }
         $this->beginDate = $beginDate;
 
@@ -269,7 +269,7 @@ class Contract
     public function setWeekBeginHour(\DateTimeInterface|string|null $weekBeginHour): self
     {
         if (is_string($weekBeginHour)) {
-            $weekBeginHour = new \DateTime($weekBeginHour);
+            $weekBeginHour = new DateTime($weekBeginHour);
         }
         $this->weekBeginHour = $weekBeginHour;
 
@@ -284,7 +284,7 @@ class Contract
     public function setWeekEndHour(\DateTimeInterface|string|null $weekEndHour): self
     {
         if (is_string($weekEndHour)) {
-            $weekEndHour = new \DateTime($weekEndHour);
+            $weekEndHour = new DateTime($weekEndHour);
         }
         $this->weekEndHour = $weekEndHour;
 
@@ -299,7 +299,7 @@ class Contract
     public function setSaturdayBeginHour(\DateTimeInterface|string|null $saturdayBeginHour): self
     {
         if (is_string($saturdayBeginHour)) {
-            $saturdayBeginHour = new \DateTime($saturdayBeginHour);
+            $saturdayBeginHour = new DateTime($saturdayBeginHour);
         }
         $this->saturdayBeginHour = $saturdayBeginHour;
 
@@ -314,7 +314,7 @@ class Contract
     public function setSaturdayEndHour(\DateTimeInterface|string|null $saturdayEndHour): self
     {
         if (is_string($saturdayEndHour)) {
-            $saturdayEndHour = new \DateTime($saturdayEndHour);
+            $saturdayEndHour = new DateTime($saturdayEndHour);
         }
         $this->saturdayEndHour = $saturdayEndHour;
 
@@ -341,7 +341,7 @@ class Contract
     public function setMondayBeginHour(\DateTimeInterface|string|null $mondayBeginHour): self
     {
         if (is_string($mondayBeginHour)) {
-            $mondayBeginHour = new \DateTime($mondayBeginHour);
+            $mondayBeginHour = new DateTime($mondayBeginHour);
         }
         $this->mondayBeginHour = $mondayBeginHour;
 
@@ -356,7 +356,7 @@ class Contract
     public function setMondayEndHour(\DateTimeInterface|string|null $mondayEndHour): self
     {
         if (is_string($mondayEndHour)) {
-            $mondayEndHour = new \DateTime($mondayEndHour);
+            $mondayEndHour = new DateTime($mondayEndHour);
         }
         $this->mondayEndHour = $mondayEndHour;
 
@@ -380,9 +380,9 @@ class Contract
         return $this->maxLinksAllowed;
     }
 
-    public function setMaxLinksAllowed(int $maxLinksAllowed): self
+    public function setMaxLinksAllowed(int |string|null $maxLinksAllowed): self
     {
-        $this->maxLinksAllowed = $maxLinksAllowed;
+        $this->maxLinksAllowed = (int) $maxLinksAllowed;
 
         return $this;
     }

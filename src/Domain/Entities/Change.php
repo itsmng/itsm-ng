@@ -239,7 +239,7 @@ class Change
     public function setDate(\DateTimeInterface|string|null $date): self
     {
         if (is_string($date)) {
-            $date = new \DateTime($date);
+            $date = new DateTime($date);
         }
         $this->date = $date;
 
@@ -254,7 +254,7 @@ class Change
     public function setSolvedate(\DateTimeInterface|string|null $solvedate): self
     {
         if (is_string($solvedate)) {
-            $solvedate = new \DateTime($solvedate);
+            $solvedate = new DateTime($solvedate);
         }
         $this->solvedate = $solvedate;
 
@@ -269,7 +269,7 @@ class Change
     public function setClosedate(\DateTimeInterface|string|null $closedate): self
     {
         if (is_string($closedate)) {
-            $closedate = new \DateTime($closedate);
+            $closedate = new DateTime($closedate);
         }
         $this->closedate = $closedate;
 
@@ -433,7 +433,7 @@ class Change
     public function setBeginWaitingDate(\DateTimeInterface|string|null $beginWaitingDate): self
     {
         if (is_string($beginWaitingDate)) {
-            $beginWaitingDate = new \DateTime($beginWaitingDate);
+            $beginWaitingDate = new DateTime($beginWaitingDate);
         }
         $this->beginWaitingDate = $beginWaitingDate;
 
