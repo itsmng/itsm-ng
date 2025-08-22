@@ -1345,29 +1345,21 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
                   = countElementsInTableForEntity($item->getTable(), $this->getEntity(), $restrict, false);
 
             // Document
-            $request = $this::getAdapter()->request([
-               'SELECT'    => 'glpi_documents.*',
-               'FROM'      => 'glpi_documents',
-               'LEFT JOIN' => [
-                  'glpi_documents_items'  => [
-                     'ON' => [
-                        'glpi_documents_items'  => 'documents_id',
-                        'glpi_documents'        => 'id'
-                     ]
-                  ]
-               ],
-               'WHERE'     => [
-                  $item->getAssociatedDocumentsCriteria(),
-                  'timeline_position' => ['>', CommonITILObject::NO_TIMELINE], // skip inlined images
-               ]
-            ]);
+            $entityManager = $this::getAdapter()->getEntityManager();
+            $dql = "SELECT d FROM Itsmng\Domain\Entities\Document d 
+            LEFT JOIN Itsmng\Domain\Entities\DocumentItem di WITH di.document = d.id 
+            WHERE di.itemtype = :itemtype AND di.itemsId = :items_id AND di.timelinePosition = true";
+            $documents = $entityManager->createQuery($dql)
+                ->setParameter('itemtype', $item->getType())
+                ->setParameter('items_id', $item->getID())
+                ->getResult();
 
             $data["documents"] = [];
             $addtodownloadurl   = '';
             if ($item->getType() == 'Ticket') {
                 $addtodownloadurl = "%2526tickets_id=" . $item->fields['id'];
             }
-            while ($row = $request->fetchAssociative()) {
+            foreach ($documents as $row) {
                 $tmp                      = [];
                 $tmp['##document.id##']   = $row['id'];
                 $tmp['##document.name##'] = $row['name'];
