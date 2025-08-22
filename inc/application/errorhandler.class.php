@@ -427,11 +427,15 @@ class ErrorHandler
            E_USER_ERROR        => 'User Error',
            E_USER_WARNING      => 'User Warning',
            E_USER_NOTICE       => 'User Notice',
-           E_STRICT            => 'Runtime Notice',
            E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
            E_DEPRECATED        => 'Deprecated function',
            E_USER_DEPRECATED   => 'User deprecated function',
         ];
+
+        // Gérer E_STRICT seulement si défini (PHP < 8)
+        if (version_compare(PHP_VERSION, '8.0.0', '<') && defined('E_STRICT')) {
+            $map[E_STRICT] = 'Runtime Notice';
+        }
 
         return $map[$error_code] ?? 'Unknown error';
     }
