@@ -9,7 +9,7 @@ use Doctrine\DBAL\Result;
 use ReflectionClass;
 use Doctrine\ORM\EntityManager;
 use Itsmng\Infrastructure\Persistence\EntityManagerProvider;
-use Laminas\Stdlib\Glob;
+use QueryExpression;
 
 class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 {
@@ -456,8 +456,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     }
 
 
-
-
     public function getRelations(): array
     {
         $classMetadata = $this->em->getClassMetadata($this->entityName);
@@ -541,8 +539,8 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     }
 
     public function query(string $query): Result
-    {
-        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+    {        
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {             
             
             // Correction directe pour IFNULL dans les requêtes SQL
             $query = preg_replace('/IFNULL\s*\(([^,]+),\s*([^)]+)\)/i', 'COALESCE($1::text, $2)', $query);
@@ -600,15 +598,303 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                     $query = str_replace("GROUP BY $group_by", "GROUP BY $fixed_group_by", $query);
                 }
             }
-            $query = str_replace('AND timeline_position > -1', 'AND timeline_position = TRUE', $query);
+            $query = $this->adaptQueryForPostgreSQL($query);
+            // $query = str_replace('AND timeline_position > -1', 'AND timeline_position = TRUE', $query);
+
 
         }
+        
         $stmt = $this->em->getConnection()->prepare($query);
         $results = $stmt->executeQuery();
         return $results;
     }
+    
+
+    /**
+     * Fix GROUP BY clause for PostgreSQL by adding all non-aggregated columns from SELECT
+     * PostgreSQL requires all columns in the SELECT clause to also appear in the GROUP BY
+     * clause unless they are used in an aggregate function.
+     *
+     * @param string $select  The SELECT part of the query
+     * @param string $groupBy The current GROUP BY part of the query
+     *
+     * @return string The modified GROUP BY clause
+     */
+    public function fixPostgreSQLGroupBy($select, $groupBy): string
+    {
+        // Return unchanged if GROUP BY is empty
+        if (empty($groupBy)) {
+            return $groupBy;
+        }
+
+        // Pattern to find different column formats in SELECT
+        $patterns = [
+            // "table.column format AS alias"
+            '/\b([a-zA-Z0-9_]+\.[a-zA-Z0-9_]+)\s+AS\s+"?[^",]+"?/i',
+
+            // "table.column" format without alias
+            '/\bFROM\b.+?\b([a-zA-Z0-9_]+\.[a-zA-Z0-9_]+)\b(?!\s*\()/i',
+
+            // "column format AS alias" (without table)
+            '/\b([a-zA-Z0-9_]+)\s+AS\s+"?[^",]+"?/i',
+
+            // Extract columns from a simple list like "col1, col2, col3"
+            '/\bSELECT\s+((?:[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)?\s*,\s*)*[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)?)\s+FROM\b/is'
+        ];
+
+        $columns_to_add = [];
+
+        // For each pattern, extract the corresponding columns
+        foreach ($patterns as $pattern) {
+            if (preg_match_all($pattern, $select, $matches)) {
+                foreach ($matches[1] as $match) {
+                    // If this is a comma-separated list of columns (last pattern)
+                    if (strpos($match, ',') !== false) {
+                        $cols = explode(',', $match);
+                        foreach ($cols as $col) {
+                            $col = trim($col);
+                            if (!empty($col)) {
+                                $columns_to_add[] = $col;
+                            }
+                        }
+                    } else {
+                        $columns_to_add[] = $match;
+                    }
+                }
+            }
+        }
+
+        // List of aggregation functions to check
+        $agg_functions = ['STRING_AGG', 'COUNT', 'SUM', 'MIN', 'MAX', 'AVG', 'ARRAY_AGG', 'GROUP_CONCAT'];
+
+        // Filter columns and add only those that are not already in GROUP BY
+        // and that are not used in aggregate functions
+        foreach ($columns_to_add as $column) {
+            if (
+                !empty($column) &&
+                strpos($groupBy, $column) === false
+            ) {
+                // Check if the column is used in an aggregate function
+                $skip = false;
+                foreach ($agg_functions as $func) {
+                    if (preg_match('/' . $func . '\s*\(\s*(?:DISTINCT\s+)?' . preg_quote($column, '/') . '/i', $select)) {
+                        $skip = true;
+                        break;
+                    }
+                }
+
+                // If the column is not used in an aggregate function, add it to the GROUP BY
+                if (!$skip) {
+                    $groupBy .= ", $column";
+                }
+            }
+        }
+
+        return $groupBy;
+    }
+
+    /**
+     * Fixes PostgreSQL queries using SELECT DISTINCT with ORDER BY by ensuring
+     * all columns referenced in the ORDER BY clause are also present in the SELECT clause.
+     *
+     * PostgreSQL requires that when using SELECT DISTINCT, every column in the ORDER BY
+     * must be part of the SELECT list. If this condition is not met, the query fails.
+     *
+     * @param string      $select      The SELECT part of the SQL query.
+     * @param string      $order_by    The ORDER BY clause of the SQL query.
+     * @param string|null $full_query  Optional full SQL query (not used internally).
+     *
+     * @return array Returns an array with two keys:
+     *               - 'select': The possibly modified SELECT clause including missing ORDER BY columns.
+     *               - 'order_by': The original ORDER BY clause.
+     */
+    public function fixPostgreSQLCompleteOrderBy(string $select, string $order_by, ?string $full_query = null): array
+    {
+        // Skip if no ORDER BY or no DISTINCT
+        if (empty($order_by) || stripos($select, 'DISTINCT') === false) {
+            return ['order_by' => $order_by, 'select' => $select];
+        }
+
+        // Extract columns from ORDER BY clause
+        $order_columns = [];
+        if (preg_match('/ORDER\s+BY\s+(.+?)(?:\s+LIMIT|\s*$)/is', $order_by, $matches)) {
+            $parts = explode(',', $matches[1]);
+            foreach ($parts as $part) {
+                $clean_part = preg_replace('/\s+(ASC|DESC)$/i', '', trim($part));
+                if (preg_match('/([a-zA-Z0-9_]+\.[a-zA-Z0-9_]+)/', $clean_part, $col_match)) {
+                    $order_columns[] = $col_match[1];
+                }
+            }
+        }
+
+        // Check which columns we need to add to SELECT
+        $missing_columns = [];
+        foreach ($order_columns as $column) {
+            // Check if column already exists in SELECT (not in functions)
+            $quoted_column = preg_quote($column, '/');
+
+            // Various patterns to check for column presence
+            $patterns = [
+                "/\b$quoted_column\b\s+AS/i",          // Column AS alias
+                "/\b$quoted_column\b\s*,/i",           // Column followed by comma
+                "/\b$quoted_column\b\s+FROM/i",        // Column followed by FROM
+                "/\b$quoted_column\b\s*$/i",           // Column at the end
+                "/SELECT.*\b$quoted_column\b.*FROM/is" // Column anywhere in SELECT
+            ];
+
+            $found = false;
+            foreach ($patterns as $pattern) {
+                if (preg_match($pattern, $select)) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            // If not found and not in aggregation, add it with a special alias
+            if (!$found && !preg_match("/STRING_AGG\s*\(\s*.*$quoted_column.*\)/is", $select)) {
+                $missing_columns[] = "$column AS \"__orderby_" . str_replace('.', '_', $column) . "\"";
+            }
+        }
+
+        // Add missing columns to SELECT
+        if (!empty($missing_columns)) {
+            $modified_select = rtrim($select);
+            // Ensure we don't add an extra comma if SELECT already ends with one
+            if (substr($modified_select, -1) !== ',') {
+                $modified_select .= ', ';
+            }
+            $modified_select .= implode(', ', $missing_columns);
+
+            return ['order_by' => $order_by, 'select' => $modified_select];
+        }
+
+        return ['order_by' => $order_by, 'select' => $select];
+    }
+
+    public function getBooleanValue($value): string
+    {
+        // For PostgreSQL, return 'true' or 'false'
+        return (bool)$value ? 'true' : 'false';
+    }
+
+    public function adaptQueryForPostgreSQL(string $query): string
+    {
+        // First replace backticks with double quotes
+        if (strpos($query, '`') !== false) {
+            $query = str_replace('`', '"', $query);
+        }
+
+        $query = $this->fixBooleanFields($query);
+        
+        // Handle problematic WHERE and AND conditions for PostgreSQL
+        // These regular expressions capture all possible cases
+
+        // Replace WHERE (1) and variants
+        $query = preg_replace('/WHERE\s*\(\s*1\s*\)/i', 'WHERE (TRUE)', $query);
+
+        // Replace AND (1) and variants
+        $query = preg_replace('/AND\s*\(\s*1\s*\)/i', 'AND (TRUE)', $query);
+
+        // Replace OR (1) and variants
+        $query = preg_replace('/OR\s*\(\s*1\s*\)/i', 'OR (TRUE)', $query);
+
+        // Replace WHERE 1 (without parentheses)
+        $query = preg_replace('/WHERE\s+1(\s|$)/i', 'WHERE TRUE$1', $query);
+
+        // Replace AND 1 (without parentheses)
+        $query = preg_replace('/AND\s+1(\s|$)/i', 'AND TRUE$1', $query);
+
+        // Replace OR 1 (without parentheses)
+        $query = preg_replace('/OR\s+1(\s|$)/i', 'OR TRUE$1', $query);
+
+        // Special case: WHERE (1) AND -> replace with just WHERE
+        $query = preg_replace('/WHERE\s*\(\s*1\s*\)\s*AND/i', 'WHERE', $query);
 
 
+        return $query;
+    }
+
+
+    private function fixBooleanFields(string $query): string
+    {
+
+        // 1. TRAITER timeline_position EN PREMIER (une seule fois)
+       $timeline_patterns = [
+            // Patterns avec AND
+            "/AND\s+timeline_position\s*>\s*-1\b/" => "AND timeline_position = TRUE",
+            "/AND\s*\(\s*timeline_position\s*>\s*-1\s*\)/" => "AND (timeline_position = TRUE)",
+            
+            // Patterns avec WHERE
+            "/WHERE\s+timeline_position\s*>\s*-1\b/" => "WHERE timeline_position = TRUE",
+            "/WHERE\s*\(\s*timeline_position\s*>\s*-1\s*\)/" => "WHERE (timeline_position = TRUE)",
+            
+            // Patterns avec nom de table
+            "/\b(\w+\.)timeline_position\s*>\s*-1\b/" => "$1timeline_position = TRUE",
+            "/\b(\w+\.)timeline_position\s*=\s*0\b/" => "$1timeline_position = FALSE",
+            
+            // Patterns sans nom de table
+            "/\btimeline_position\s*>\s*-1\b/" => "timeline_position = TRUE",
+            "/\btimeline_position\s*=\s*0\b/" => "timeline_position = FALSE",
+            
+            // Pattern générique pour capturer TOUS les cas
+            "/timeline_position\s*>\s*-1/" => "timeline_position = TRUE",
+        ];
+        
+         foreach ($timeline_patterns as $pattern => $replacement) {
+            $query = preg_replace($pattern, $replacement, $query);
+        }
+        
+        // AJOUTEZ aussi des str_replace() pour les cas non capturés par les regex
+        $query = str_replace('timeline_position > -1', 'timeline_position = TRUE', $query);
+        $query = str_replace('(timeline_position > -1)', '(timeline_position = TRUE)', $query);
+    
+        
+        $boolFields = [
+            'is_deleted', 'is_template', 'is_recursive', 'is_active',
+            'is_dynamic', 'is_valid', 'is_deleted_item', 'is_template_item',
+            'is_active_item', 'is_recursive_item', 'is_dynamic_item',
+            'is_valid_item', 'is_fixed', 'is_imported', 'is_global'
+        ];
+
+        foreach ($boolFields as $field) {
+            // Patterns pour capturer TOUS les cas possibles
+            $regex_patterns = [
+            "/\b$field\s*=\s*true\b/i" => "$field = TRUE",
+            "/\b$field\s*=\s*false\b/i" => "$field = FALSE",
+            "/\b(\w+\.)$field\s*=\s*1\b/" => "$1$field = " . $this->getBooleanValue(true),
+            "/\b(\w+\.)$field\s*=\s*0\b/" => "$1$field = " . $this->getBooleanValue(false),
+            "/\b(\w+\.)\"$field\"\s*=\s*1\b/" => "$1\"$field\" = " . $this->getBooleanValue(true),
+            "/\b(\w+\.)\"$field\"\s*=\s*0\b/" => "$1\"$field\" = " . $this->getBooleanValue(false),
+            "/\b$field\s*=\s*1\b/" => "$field = " . $this->getBooleanValue(true),
+            "/\b$field\s*=\s*0\b/" => "$field = " . $this->getBooleanValue(false),
+            "/\"$field\"\s*=\s*1\b/" => "\"$field\" = " . $this->getBooleanValue(true),
+            "/\"$field\"\s*=\s*0\b/" => "\"$field\" = " . $this->getBooleanValue(false),
+            "/\b(\w+\.)$field\s*=\s*'1'/" => "$1$field = " . $this->getBooleanValue(true),
+            "/\b(\w+\.)$field\s*=\s*'0'/" => "$1$field = " . $this->getBooleanValue(false),
+            "/\b$field\s*=\s*'1'/" => "$field = " . $this->getBooleanValue(true),
+            "/\b$field\s*=\s*'0'/" => "$field = " . $this->getBooleanValue(false),
+        ];
+         // B. PATTERNS STRING REPLACE (chaînes simples)
+        $string_patterns = [
+            ".$field = 0" => ".$field = " . $this->getBooleanValue(false),
+            ".$field = 1" => ".$field = " . $this->getBooleanValue(true),
+            ".$field=0"   => ".$field=" . $this->getBooleanValue(false),
+            ".$field=1"   => ".$field=" . $this->getBooleanValue(true),
+            ".\"$field\" = 0" => ".\"$field\" = " . $this->getBooleanValue(false),
+            ".\"$field\" = 1" => ".\"$field\" = " . $this->getBooleanValue(true),
+            ".\"$field\"=0"   => ".\"$field\"=" . $this->getBooleanValue(false),
+            ".\"$field\"=1"   => ".\"$field\"=" . $this->getBooleanValue(true)
+        ];
+        
+        // Appliquer les remplacements de chaînes
+        foreach ($string_patterns as $search => $replace) {
+            $query = str_replace($search, $replace, $query);
+        }
+        }       
+               
+        return $query;
+    }
+    
     /**
      * Handle empty arrays for IN clauses before they reach DBmysqlIterator
      *
@@ -843,238 +1129,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return "COALESCE($expr, $default)";
     }
 
-    /**
-     * Fix GROUP BY clause for PostgreSQL by adding all non-aggregated columns from SELECT
-     * PostgreSQL requires all columns in the SELECT clause to also appear in the GROUP BY
-     * clause unless they are used in an aggregate function.
-     *
-     * @param string $select  The SELECT part of the query
-     * @param string $groupBy The current GROUP BY part of the query
-     *
-     * @return string The modified GROUP BY clause
-     */
-    public function fixPostgreSQLGroupBy($select, $groupBy): string
-    {
-        // Return unchanged if GROUP BY is empty
-        if (empty($groupBy)) {
-            return $groupBy;
-        }
-
-        // Pattern to find different column formats in SELECT
-        $patterns = [
-            // "table.column format AS alias"
-            '/\b([a-zA-Z0-9_]+\.[a-zA-Z0-9_]+)\s+AS\s+"?[^",]+"?/i',
-
-            // "table.column" format without alias
-            '/\bFROM\b.+?\b([a-zA-Z0-9_]+\.[a-zA-Z0-9_]+)\b(?!\s*\()/i',
-
-            // "column format AS alias" (without table)
-            '/\b([a-zA-Z0-9_]+)\s+AS\s+"?[^",]+"?/i',
-
-            // Extract columns from a simple list like "col1, col2, col3"
-            '/\bSELECT\s+((?:[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)?\s*,\s*)*[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)?)\s+FROM\b/is'
-        ];
-
-        $columns_to_add = [];
-
-        // For each pattern, extract the corresponding columns
-        foreach ($patterns as $pattern) {
-            if (preg_match_all($pattern, $select, $matches)) {
-                foreach ($matches[1] as $match) {
-                    // If this is a comma-separated list of columns (last pattern)
-                    if (strpos($match, ',') !== false) {
-                        $cols = explode(',', $match);
-                        foreach ($cols as $col) {
-                            $col = trim($col);
-                            if (!empty($col)) {
-                                $columns_to_add[] = $col;
-                            }
-                        }
-                    } else {
-                        $columns_to_add[] = $match;
-                    }
-                }
-            }
-        }
-
-        // List of aggregation functions to check
-        $agg_functions = ['STRING_AGG', 'COUNT', 'SUM', 'MIN', 'MAX', 'AVG', 'ARRAY_AGG', 'GROUP_CONCAT'];
-
-        // Filter columns and add only those that are not already in GROUP BY
-        // and that are not used in aggregate functions
-        foreach ($columns_to_add as $column) {
-            if (
-                !empty($column) &&
-                strpos($groupBy, $column) === false
-            ) {
-                // Check if the column is used in an aggregate function
-                $skip = false;
-                foreach ($agg_functions as $func) {
-                    if (preg_match('/' . $func . '\s*\(\s*(?:DISTINCT\s+)?' . preg_quote($column, '/') . '/i', $select)) {
-                        $skip = true;
-                        break;
-                    }
-                }
-
-                // If the column is not used in an aggregate function, add it to the GROUP BY
-                if (!$skip) {
-                    $groupBy .= ", $column";
-                }
-            }
-        }
-
-        return $groupBy;
-    }
-
-    /**
-     * Fixes PostgreSQL queries using SELECT DISTINCT with ORDER BY by ensuring
-     * all columns referenced in the ORDER BY clause are also present in the SELECT clause.
-     *
-     * PostgreSQL requires that when using SELECT DISTINCT, every column in the ORDER BY
-     * must be part of the SELECT list. If this condition is not met, the query fails.
-     *
-     * @param string      $select      The SELECT part of the SQL query.
-     * @param string      $order_by    The ORDER BY clause of the SQL query.
-     * @param string|null $full_query  Optional full SQL query (not used internally).
-     *
-     * @return array Returns an array with two keys:
-     *               - 'select': The possibly modified SELECT clause including missing ORDER BY columns.
-     *               - 'order_by': The original ORDER BY clause.
-     */
-    public function fixPostgreSQLCompleteOrderBy(string $select, string $order_by, ?string $full_query = null): array
-    {
-        // Skip if no ORDER BY or no DISTINCT
-        if (empty($order_by) || stripos($select, 'DISTINCT') === false) {
-            return ['order_by' => $order_by, 'select' => $select];
-        }
-
-        // Extract columns from ORDER BY clause
-        $order_columns = [];
-        if (preg_match('/ORDER\s+BY\s+(.+?)(?:\s+LIMIT|\s*$)/is', $order_by, $matches)) {
-            $parts = explode(',', $matches[1]);
-            foreach ($parts as $part) {
-                $clean_part = preg_replace('/\s+(ASC|DESC)$/i', '', trim($part));
-                if (preg_match('/([a-zA-Z0-9_]+\.[a-zA-Z0-9_]+)/', $clean_part, $col_match)) {
-                    $order_columns[] = $col_match[1];
-                }
-            }
-        }
-
-        // Check which columns we need to add to SELECT
-        $missing_columns = [];
-        foreach ($order_columns as $column) {
-            // Check if column already exists in SELECT (not in functions)
-            $quoted_column = preg_quote($column, '/');
-
-            // Various patterns to check for column presence
-            $patterns = [
-                "/\b$quoted_column\b\s+AS/i",          // Column AS alias
-                "/\b$quoted_column\b\s*,/i",           // Column followed by comma
-                "/\b$quoted_column\b\s+FROM/i",        // Column followed by FROM
-                "/\b$quoted_column\b\s*$/i",           // Column at the end
-                "/SELECT.*\b$quoted_column\b.*FROM/is" // Column anywhere in SELECT
-            ];
-
-            $found = false;
-            foreach ($patterns as $pattern) {
-                if (preg_match($pattern, $select)) {
-                    $found = true;
-                    break;
-                }
-            }
-
-            // If not found and not in aggregation, add it with a special alias
-            if (!$found && !preg_match("/STRING_AGG\s*\(\s*.*$quoted_column.*\)/is", $select)) {
-                $missing_columns[] = "$column AS \"__orderby_" . str_replace('.', '_', $column) . "\"";
-            }
-        }
-
-        // Add missing columns to SELECT
-        if (!empty($missing_columns)) {
-            $modified_select = rtrim($select);
-            // Ensure we don't add an extra comma if SELECT already ends with one
-            if (substr($modified_select, -1) !== ',') {
-                $modified_select .= ', ';
-            }
-            $modified_select .= implode(', ', $missing_columns);
-
-            return ['order_by' => $order_by, 'select' => $modified_select];
-        }
-
-        return ['order_by' => $order_by, 'select' => $select];
-    }
-
-    public function getBooleanValue($value): string
-    {
-        // For PostgreSQL, return 'true' or 'false'
-        return (bool)$value ? 'true' : 'false';
-    }
-
-    public function adaptQueryForPostgreSQL(string $query): string
-    {
-        // First replace backticks with double quotes
-        if (strpos($query, '`') !== false) {
-            $query = str_replace('`', '"', $query);
-        }
-
-        // List of boolean fields to process
-        $boolFields = [
-            'is_deleted', 'is_template', 'is_recursive', 'is_active',
-            'is_dynamic', 'is_valid', 'is_deleted_item', 'is_template_item',
-            'is_active_item', 'is_recursive_item', 'is_dynamic_item',
-            'is_valid_item', 'is_fixed', 'is_imported', 'is_global'
-        ];
-
-        // For each boolean field
-        foreach ($boolFields as $field) {
-            // Replacements with different syntaxes
-            $patterns = [
-                // Without quotes
-                ".$field = 0" => ".$field = " . $this->getBooleanValue(false),
-                ".$field = 1" => ".$field = " . $this->getBooleanValue(true),
-                ".$field=0"   => ".$field=" . $this->getBooleanValue(false),
-                ".$field=1"   => ".$field=" . $this->getBooleanValue(true),
-
-                // With quotes
-                ".\"$field\" = 0" => ".\"$field\" = " . $this->getBooleanValue(false),
-                ".\"$field\" = 1" => ".\"$field\" = " . $this->getBooleanValue(true),
-                ".\"$field\"=0"   => ".\"$field\"=" . $this->getBooleanValue(false),
-                ".\"$field\"=1"   => ".\"$field\"=" . $this->getBooleanValue(true)
-            ];
-
-            // Apply all replacements
-            foreach ($patterns as $search => $replace) {
-                $query = str_replace($search, $replace, $query);
-            }
-        }
-        // Handle problematic WHERE and AND conditions for PostgreSQL
-        // These regular expressions capture all possible cases
-
-        // Replace WHERE (1) and variants
-        $query = preg_replace('/WHERE\s*\(\s*1\s*\)/i', 'WHERE (TRUE)', $query);
-
-        // Replace AND (1) and variants
-        $query = preg_replace('/AND\s*\(\s*1\s*\)/i', 'AND (TRUE)', $query);
-
-        // Replace OR (1) and variants
-        $query = preg_replace('/OR\s*\(\s*1\s*\)/i', 'OR (TRUE)', $query);
-
-        // Replace WHERE 1 (without parentheses)
-        $query = preg_replace('/WHERE\s+1(\s|$)/i', 'WHERE TRUE$1', $query);
-
-        // Replace AND 1 (without parentheses)
-        $query = preg_replace('/AND\s+1(\s|$)/i', 'AND TRUE$1', $query);
-
-        // Replace OR 1 (without parentheses)
-        $query = preg_replace('/OR\s+1(\s|$)/i', 'OR TRUE$1', $query);
-
-        // Special case: WHERE (1) AND -> replace with just WHERE
-        $query = preg_replace('/WHERE\s*\(\s*1\s*\)\s*AND/i', 'WHERE', $query);
-
-
-        return $query;
-    }
-
+    
 
     /**
      * Makes the keys of a query result insensitive to case for PostgreSQL
@@ -1253,6 +1308,9 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             $expr .= " AS $alias";
         }
 
-        return new \QueryExpression($expr);
+        return new QueryExpression($expr);
     }
+
+   
+    
 }
