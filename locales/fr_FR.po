@@ -25082,3 +25082,9 @@ msgstr "Activer / Désactiver la navigation"
 
 msgid "Allow to impersonate other users"
 msgstr "Autoriser la prise d'identité d'autres utilisateurs"
+
+msgid "Choose File"
+msgstr "Choisir un fichier"
+
+msgid "No file chosen"
+msgstr "Aucun fichier choisi"
