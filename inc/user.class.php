@@ -2337,20 +2337,20 @@ class User extends CommonDBTM
                       'name' => 'authtype',
                       'value' => 1,
                    ],
-                   __('Active') => (!GLPI_DEMO_MODE) ? [
-                    'type' => 'checkbox',
-                    'name' => 'is_active',
-                    'value' => $this->fields['is_active'],
-                 ] : [],
                    __('Login') => [
-                      'type' => ($this->fields["name"] == ""
-                      || !empty($this->fields["password"])
-                      || ($this->fields["authtype"] == Auth::DB_GLPI))
-                      ? 'text'
-                      : 'hidden',
-                      'name' => 'name',
-                      'value' => $this->fields['name'],
-                   ],
+                       'type' => ($this->fields["name"] == ""
+                       || !empty($this->fields["password"])
+                       || ($this->fields["authtype"] == Auth::DB_GLPI))
+                       ? 'text'
+                       : 'hidden',
+                       'name' => 'name',
+                       'value' => $this->fields['name'],
+                    ],
+                    __('Active') => (!GLPI_DEMO_MODE) ? [
+                     'type' => 'checkbox',
+                     'name' => 'is_active',
+                     'value' => $this->fields['is_active'],
+                  ] : [],
                    $this->isNewID($ID) ? [] : [
                       'type' => 'hidden',
                       'name' => 'id',
@@ -2365,6 +2365,18 @@ class User extends CommonDBTM
                          'value' => $this->fields['sync_field'],
                          (self::canUpdate() && (!$extauth || empty($ID))) ? 'disabled' : '',
                    ] : [],
+                   __('Picture') => [
+                       'type' => 'imageUpload',
+                       'name' => 'picture',
+                       'accept' => 'image/*',
+                   ],
+                   __('Picture') => [
+                       'id' => 'pictureFilePicker',
+                       'type' => 'imageUpload',
+                       'name' => 'picture',
+                       'accept' => 'image/*',
+                       'value' => $this->fields['picture'] ?? '',  // ← Ajoutez cette ligne
+                   ],
                    __('Surname') => [
                       'type' => 'text',
                       'name' => 'realname',
@@ -2374,6 +2386,29 @@ class User extends CommonDBTM
                     'type' => 'text',
                     'name' => 'firstname',
                     'value' => $this->fields['firstname'],
+                 ],
+                 _n('Email', 'Emails', Session::getPluralNumber()) => [
+                    'type' => 'multiSelect',
+                    'name' => '_useremails',
+                    'inputs' => [
+                       [
+                          'name' => 'current_useremails',
+                          'type' => 'email',
+                       ]
+                    ],
+                    'values' => $emailsValues,
+                    'getInputAdd' => <<<JS
+                  function () {
+                     let re = /\S+@\S+\.\S+/;
+                     if (!$('input[name="current_useremails"]').val() || !re.test($('input[name="current_useremails"]').val())) {
+                        return;
+                     }
+                     var values = {};
+                     var title = "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='-1'>" +
+                                 "<input type='email' class='form-control' name='_useremails[-1]' value='" + $('input[name="current_useremails"]').val() + "'>";
+                     return {values, title};
+                  }
+                  JS,
                  ],
                 __('Password') => (self::canUpdate()
                    && (!$extauth || empty($ID))
@@ -2395,18 +2430,13 @@ class User extends CommonDBTM
                          'size' => '20',
                          'col_lg' => 4,
                 ] : [],
-                __('Picture') => [
-                    'type' => 'imageUpload',
-                    'name' => 'picture',
-                    'accept' => 'image/*',
-                ],
-                __('Picture') => [
-                    'id' => 'pictureFilePicker',
-                    'type' => 'imageUpload',
-                    'name' => 'picture',
-                    'accept' => 'image/*',
-                    'value' => $this->fields['picture'] ?? '',  // ← Ajoutez cette ligne
-                ],
+                Location::getTypeName(1) => (!empty($ID)) ? [
+                    'type' => 'select',
+                    'name' => 'locations_id',
+                    'itemtype' => Location::class,
+                    'value' => $this->fields['locations_id'],
+                    'actions' => getItemActionButtons(['info', 'add'], 'Location'),
+                 ] : [],
                    __('Time zone') => ($tz_available || Session::haveRight("config", READ)) ? ($tz_available ? [
                       'type' => 'select',
                       'name' => 'timezone',
@@ -2415,29 +2445,6 @@ class User extends CommonDBTM
                    ] : [
                       'content' => "<img src=\"{$CFG_GLPI['root_doc']}/pics/warning_min.png\">"
                    ]) : [],
-                   _n('Email', 'Emails', Session::getPluralNumber()) => [
-                      'type' => 'multiSelect',
-                      'name' => '_useremails',
-                      'inputs' => [
-                         [
-                            'name' => 'current_useremails',
-                            'type' => 'email',
-                         ]
-                      ],
-                      'values' => $emailsValues,
-                      'getInputAdd' => <<<JS
-                    function () {
-                       let re = /\S+@\S+\.\S+/;
-                       if (!$('input[name="current_useremails"]').val() || !re.test($('input[name="current_useremails"]').val())) {
-                          return;
-                       }
-                       var values = {};
-                       var title = "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='-1'>" +
-                                   "<input type='email' class='form-control' name='_useremails[-1]' value='" + $('input[name="current_useremails"]').val() + "'>";
-                       return {values, title};
-                    }
-                    JS,
-                   ],
                    __('Valid since') => (!GLPI_DEMO_MODE) ? [
                       'type' => 'datetime-local',
                       'name' => 'begin_date',
@@ -2498,13 +2505,6 @@ class User extends CommonDBTM
                       'value' => $this->fields['usertitles_id'],
                       'actions' => getItemActionButtons(['info', 'add'], 'UserTitle'),
                    ],
-                   Location::getTypeName(1) => (!empty($ID)) ? [
-                      'type' => 'select',
-                      'name' => 'locations_id',
-                      'itemtype' => Location::class,
-                      'value' => $this->fields['locations_id'],
-                      'actions' => getItemActionButtons(['info', 'add'], 'Location'),
-                   ] : [],
                 ]
              ],
              _n('Authorization', 'Authorizations', 1) =>  [
