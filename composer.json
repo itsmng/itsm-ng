@@ -106,7 +106,9 @@
         "psr-4": {
             "Itsmng\\": "src/",
             "Infrastructure\\": "src/Infrastructure/",
-            "Domain\\": "src/Domain/"
+            "Domain\\": "src/Domain/",
+            "Helper\\": "src/Helper/",
+            "Doctrine\\": "src/Doctrine/"
         }
     },
     "scripts": {
