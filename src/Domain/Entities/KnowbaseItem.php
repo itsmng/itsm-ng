@@ -30,7 +30,7 @@ class KnowbaseItem
     #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: true)]
     private ?KnowbaseItemCategory $knowbaseitemcategory = null;
 
-    #[ORM\Column(name: 'name', type: "text", nullable: true, length: 65535)]
+    #[ORM\Column(name: '`name`', type: "text", nullable: true, length: 65535)]
     private $name;
 
     #[ORM\Column(name: 'answer', type: "text", nullable: true)]

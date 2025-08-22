@@ -51,7 +51,7 @@ class ChangeTask
     #[ORM\Column(name: 'begin', type: "datetime", nullable: true)]
     private $begin;
 
-    #[ORM\Column(name: 'end', type: "datetime", nullable: true)]
+    #[ORM\Column(name: '`end`', type: "datetime", nullable: true)]
     private $end;
 
     #[ORM\ManyToOne(targetEntity: User::class)]

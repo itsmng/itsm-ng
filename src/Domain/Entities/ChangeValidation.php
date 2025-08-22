@@ -39,7 +39,7 @@ class ChangeValidation
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'validate_users_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $userValidate = null;
+    private ?User $validateUser = null;
 
     #[ORM\Column(name: 'comment_submission', type: 'text', length: 65535, nullable: true)]
     private $commentSubmission;
@@ -211,22 +211,24 @@ class ChangeValidation
     }
 
 
+
+
     /**
-     * Get the value of userValidate
-     */
-    public function getUserValidate()
+     * Get the value of validateUser
+     */ 
+    public function getValidateUser()
     {
-        return $this->userValidate;
+        return $this->validateUser;
     }
 
     /**
-     * Set the value of userValidate
+     * Set the value of validateUser
      *
      * @return  self
-     */
-    public function setUserValidate($userValidate)
+     */ 
+    public function setValidateUser($validateUser)
     {
-        $this->userValidate = $userValidate;
+        $this->validateUser = $validateUser;
 
         return $this;
     }

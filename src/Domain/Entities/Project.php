@@ -4,6 +4,7 @@ namespace Itsmng\Domain\Entities;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use ProjectType;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
@@ -43,14 +44,14 @@ class Project
     private $code;
 
     #[ORM\Column(name: 'priority', type: 'integer', options: ['default' => 1])]
-    private $priority;
+    private $priority = 1;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
-    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: Project::class)]
     #[ORM\JoinColumn(name: 'projects_id', referencedColumnName: 'id', nullable: true)]
@@ -154,6 +155,7 @@ class Project
         return $this->priority;
     }
 
+    
     public function setPriority(?int $priority): self
     {
         $this->priority = $priority;
@@ -166,9 +168,18 @@ class Project
         return $this->isRecursive;
     }
 
+    /**
+     * Set the value of isRecursive
+     * @param bool|int|string|null $isRecursive
+     * @return self
+     */
     public function setIsRecursive(?bool $isRecursive): self
     {
-        $this->isRecursive = $isRecursive;
+        if ($isRecursive === null || $isRecursive === '') {
+            $this->isRecursive = false;
+        } else {
+            $this->isRecursive = (bool)$isRecursive;
+        }
 
         return $this;
     }
@@ -181,7 +192,7 @@ class Project
     public function setDate(\DateTimeInterface|string|null $date): self
     {
         if (is_string($date)) {
-            $date = new \DateTime($date);
+            $date = new DateTime($date);
         }
         $this->date = $date;
 
@@ -210,7 +221,7 @@ class Project
     public function setPlanStartDate(\DateTimeInterface|string|null $planStartDate): self
     {
         if (is_string($planStartDate)) {
-            $planStartDate = new \DateTime($planStartDate);
+            $planStartDate = new DateTime($planStartDate);
         }
         $this->planStartDate = $planStartDate;
 
@@ -225,7 +236,7 @@ class Project
     public function setPlanEndDate(\DateTimeInterface|string|null $planEndDate): self
     {
         if (is_string($planEndDate)) {
-            $planEndDate = new \DateTime($planEndDate);
+            $planEndDate = new DateTime($planEndDate);
         }
         $this->planEndDate = $planEndDate;
 
@@ -240,7 +251,7 @@ class Project
     public function setRealStartDate(\DateTimeInterface|string|null $realStartDate): self
     {
         if (is_string($realStartDate)) {
-            $realStartDate = new \DateTime($realStartDate);
+            $realStartDate = new DateTime($realStartDate);
         }
         $this->realStartDate = $realStartDate;
 
@@ -252,10 +263,10 @@ class Project
         return $this->realEndDate;
     }
 
-    public function setRealEndDate(\DateTimeInterface|string|null $realEndDate): self
+    public function setRealEndDate(\DateTimeInterface|string $realEndDate): self
     {
         if (is_string($realEndDate)) {
-            $realEndDate = new \DateTime($realEndDate);
+            $realEndDate = new DateTime($realEndDate);
         }
         $this->realEndDate = $realEndDate;
 
@@ -267,9 +278,14 @@ class Project
         return $this->percentDone;
     }
 
+    
     public function setPercentDone(?int $percentDone): self
     {
-        $this->percentDone = $percentDone;
+        if ($percentDone === null || $percentDone === '') {
+            $this->percentDone = 0;
+        } else {
+            $this->percentDone = (int)$percentDone;
+        }
 
         return $this;
     }
@@ -279,10 +295,19 @@ class Project
         return $this->autoPercentDone;
     }
 
+    /**
+     * Set the value of entity
+     *
+     * @param bool|int|string|null $autoPercentDone
+     * @return self
+     */
     public function setAutoPercentDone(?bool $autoPercentDone): self
     {
-        $this->autoPercentDone = $autoPercentDone;
-
+        if ($autoPercentDone === null || $autoPercentDone === '') {
+            $this->autoPercentDone = 0;
+        } else {
+            $this->autoPercentDone = (bool)$autoPercentDone;
+        }
         return $this;
     }
 
@@ -293,7 +318,11 @@ class Project
 
     public function setShowOnGlobalGantt(?bool $showOnGlobalGantt): self
     {
-        $this->showOnGlobalGantt = $showOnGlobalGantt;
+        if ($showOnGlobalGantt === null || $showOnGlobalGantt === '') {
+            $this->showOnGlobalGantt = false;
+        } else {
+            $this->showOnGlobalGantt = (bool)$showOnGlobalGantt;
+        }
 
         return $this;
     }
@@ -327,9 +356,19 @@ class Project
         return $this->isDeleted;
     }
 
+    /**
+     * Set the value of entity
+     *
+     * @param bool|int|string|null $isDeleted
+     * @return self
+     */
     public function setIsDeleted(?bool $isDeleted): self
     {
-        $this->isDeleted = $isDeleted;
+       if ($isDeleted === null || $isDeleted === '') {
+        $this->isDeleted = 0;
+        } else {
+            $this->isDeleted = (bool)$isDeleted;
+        }
 
         return $this;
     }
@@ -353,12 +392,23 @@ class Project
         return $this->isTemplate;
     }
 
+    /**
+     * Set the value of entity
+     *
+     * @param bool|int|string|null $isTemplate
+     * @return self
+     */
     public function setIsTemplate(?bool $isTemplate): self
     {
-        $this->isTemplate = $isTemplate;
+        if ($isTemplate === null || $isTemplate === '') {
+            $this->isTemplate = 0;
+        } else {
+            $this->isTemplate = (bool)$isTemplate;
+        }
 
         return $this;
     }
+
 
     public function getTemplateName(): ?string
     {
@@ -376,7 +426,7 @@ class Project
     /**
      * Get the value of entity
      */
-    public function getEntity()
+    public function getEntity(): ?Entity
     {
         return $this->entity;
     }
@@ -384,11 +434,16 @@ class Project
     /**
      * Set the value of entity
      *
-     * @return  self
+     * @param Entity|int|string|null $entity
+     * @return self
      */
-    public function setEntity($entity)
+    public function setEntity(Entity|int|string|null $entity): self
     {
+        if ($entity === null || $entity === '') {
+        $this->entity = null;
+        } elseif ($entity instanceof Entity) {
         $this->entity = $entity;
+        }
 
         return $this;
     }
@@ -403,12 +458,16 @@ class Project
 
     /**
      * Set the value of project
-     *
+     * @param Project|int|string|null $project
      * @return  self
      */
-    public function setProject($project)
+    public function setProject(Project|int|string|null $project): self
     {
-        $this->project = $project;
+        if ($project === null || $project === '') {
+            $this->project = null;
+        } elseif ($project instanceof Project) {
+            $this->project = $project;
+        }
 
         return $this;
     }
@@ -423,15 +482,21 @@ class Project
 
     /**
      * Set the value of projectstate
-     *
+     * @param ProjectState|int|string|null $projectstate
      * @return  self
      */
-    public function setProjectState($projectstate)
+    public function setProjectState(ProjectState|int|string|null $projectstate): self
     {
-        $this->projectstate = $projectstate;
+        if ($projectstate === null || $projectstate === '' || $projectstate === '0' || $projectstate === 0) {
+            $this->projectstate = null;
+        } elseif ($projectstate instanceof ProjectState) {
+            $this->projectstate = $projectstate;
+        }
 
         return $this;
     }
+
+
 
     /**
      * Get the value of projecttype
@@ -443,12 +508,17 @@ class Project
 
     /**
      * Set the value of projecttype
-     *
-     * @return  self
+     * @param ProjectType|int|string|null $projecttype
+     * @return self
      */
-    public function setProjectType($projecttype)
+    public function setProjectType(ProjectType|int|string|null $projecttype): self
     {
+       if ($projecttype === null || $projecttype === '' || $projecttype === '0' || $projecttype === 0) {
+        $this->projecttype = null;
+        } elseif ($projecttype instanceof ProjectType) {
         $this->projecttype = $projecttype;
+        }
+
 
         return $this;
     }
@@ -463,12 +533,16 @@ class Project
 
     /**
      * Set the value of user
-     *
+     * @param User|int|string|null $user
      * @return  self
      */
-    public function setUser($user)
+    public function setUser(User|int|string|null $user): self
     {
-        $this->user = $user;
+        if ($user === null || $user === '' || $user === '0' || $user === 0) {
+            $this->user = null;
+        } elseif ($user instanceof User) {
+            $this->user = $user;
+        }
 
         return $this;
     }
@@ -483,15 +557,20 @@ class Project
 
     /**
      * Set the value of group
-     *
+     * @param Group|int|string|null $group
      * @return  self
      */
-    public function setGroup($group)
+    public function setGroup(Group|int|string|null $group): self
     {
-        $this->group = $group;
+        if ($group === null || $group === '' || $group === '0' || $group === 0) {
+            $this->group = null;
+        } elseif ($group instanceof Group) {
+            $this->group = $group;
+        }
 
         return $this;
     }
+
 
     /**
      * Get the value of projecttemplates
@@ -503,12 +582,16 @@ class Project
 
     /**
      * Set the value of projecttemplates
-     *
+     * @param int|string|null $projecttemplates
      * @return  self
      */
-    public function setProjecttemplates($projecttemplates)
+    public function setProjecttemplates(int|string|null $projecttemplates)
     {
-        $this->projecttemplates = $projecttemplates;
+        if ($projecttemplates === null || $projecttemplates === '') {
+            $this->projecttemplates = 0;
+        } else {
+            $this->projecttemplates = $projecttemplates;
+        }
 
         return $this;
     }

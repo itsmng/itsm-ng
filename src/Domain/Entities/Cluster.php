@@ -26,7 +26,7 @@ class Cluster
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
@@ -46,7 +46,7 @@ class Cluster
     private ?Group $techGroup = null;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => false])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: true, options: ["comment" => "RELATION to states (id)"])]

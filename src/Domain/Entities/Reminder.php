@@ -3,6 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
@@ -41,20 +42,20 @@ class Reminder
     #[ORM\Column(name: 'text', type: 'text', length: 65535, nullable: true)]
     private $text;
 
-    #[ORM\Column(name: 'begin', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: '`begin`', type: 'datetime', nullable: true)]
     private $begin;
 
-    #[ORM\Column(name: 'end', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: '`end`', type: 'datetime', nullable: true)]
     private $end;
 
     #[ORM\Column(name: 'is_planned', type: 'boolean', options: ['default' => 0])]
-    private $isPlanned;
+    private $isPlanned = 0;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
-    private $state;
+    private $state = 0;
 
     #[ORM\Column(name: 'begin_view_date', type: 'datetime', nullable: true)]
     private $beginViewDate;
@@ -99,12 +100,20 @@ class Reminder
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface|string|null $date): self
+    
+    public function setDate(DateTimeInterface|string|null $date): self
     {
-        if (is_string($date)) {
-            $date = new \DateTime($date);
+        if ($date === null || $date === '' || $date === '0000-00-00 00:00:00') {
+            $this->date = null;
+        } elseif (is_string($date)) {
+            try {
+                $this->date = new \DateTime($date);
+            } catch (\Exception $e) {
+                $this->date = null;
+            }
+        } else {
+            $this->date = $date;
         }
-        $this->date = $date;
 
         return $this;
     }
@@ -133,39 +142,62 @@ class Reminder
         return $this;
     }
 
-    public function getBegin(): ?string
+    public function getBegin(): ?\DateTimeInterface
     {
         return $this->begin;
     }
 
-    public function setBegin(?string $begin): self
+    public function setBegin(\DateTimeInterface|string|null $begin): self
     {
-        $this->begin = $begin;
+        if ($begin === null || $begin === '' || $begin === '0000-00-00 00:00:00') {
+            $this->begin = null;
+        } elseif (is_string($begin)) {
+            try {
+                $this->begin = new \DateTime($begin);
+            } catch (\Exception $e) {
+                $this->begin = null;
+            }
+        } else {
+            $this->begin = $begin;
+        }
 
         return $this;
     }
 
-    public function getEnd(): ?string
+    public function getEnd(): ?\DateTimeInterface
     {
         return $this->end;
     }
 
-    public function setEnd(?string $end): self
+    public function setEnd(\DateTimeInterface|string|null $end): self
     {
-        $this->end = $end;
+         if ($end === null || $end === '' || $end === '0000-00-00 00:00:00') {
+            $this->end = null;
+        } elseif (is_string($end)) {
+            try {
+                $this->end = new \DateTime($end);
+            } catch (\Exception $e) {
+                $this->end = null;
+            }
+        } else {
+            $this->end = $end;
+        }
 
         return $this;
     }
 
-    public function getIsPlanned(): ?string
+    public function getIsPlanned(): ?bool
     {
         return $this->isPlanned;
     }
 
-    public function setIsPlanned(?string $isPlanned): self
+    public function setIsPlanned(bool|int|string|null $isPlanned): self
     {
-        $this->isPlanned = $isPlanned;
-
+        if ($isPlanned === null || $isPlanned === '') {
+            $this->isPlanned = 0;
+        } else {
+            $this->isPlanned = (bool)$isPlanned;
+        }
         return $this;
     }
 
@@ -183,38 +215,62 @@ class Reminder
         return $this;
     }
 
-    public function getState(): ?string
+    public function getState(): ?int
     {
         return $this->state;
     }
 
-    public function setState(?string $state): self
+    public function setState(int|string|null $state): self
     {
-        $this->state = $state;
+         if ($state === null || $state === '') {
+            $this->state = 0;
+        } else {
+            $this->state = (int)$state;
+        }
 
         return $this;
     }
 
-    public function getBeginViewDate(): ?string
+    public function getBeginViewDate(): ?\DateTimeInterface
     {
         return $this->beginViewDate;
     }
 
-    public function setBeginViewDate(?string $beginViewDate): self
+    public function setBeginViewDate(\DateTimeInterface|string|null $beginViewDate): self
     {
-        $this->beginViewDate = $beginViewDate;
+        if ($beginViewDate === null || $beginViewDate === '' || $beginViewDate === '0000-00-00 00:00:00') {
+            $this->beginViewDate = null;
+        } elseif (is_string($beginViewDate)) {
+            try {
+                $this->beginViewDate = new \DateTime($beginViewDate);
+            } catch (\Exception $e) {
+                $this->beginViewDate = null;
+            }
+        } else {
+            $this->beginViewDate = $beginViewDate;
+        }
 
         return $this;
     }
 
-    public function getEndViewDate(): ?string
+    public function getEndViewDate(): ?\DateTimeInterface
     {
         return $this->endViewDate;
     }
 
-    public function setEndViewDate(?string $endViewDate): self
+    public function setEndViewDate(\DateTimeInterface|string|null $endViewDate): self
     {
-        $this->endViewDate = $endViewDate;
+        if ($endViewDate === null || $endViewDate === '' || $endViewDate === '0000-00-00 00:00:00') {
+            $this->endViewDate = null;
+        } elseif (is_string($endViewDate)) {
+            try {
+                $this->endViewDate = new \DateTime($endViewDate);
+            } catch (\Exception $e) {
+                $this->endViewDate = null;
+            }
+        } else {
+            $this->endViewDate = $endViewDate;
+        }
 
         return $this;
     }
