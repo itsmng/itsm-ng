@@ -634,7 +634,7 @@ class Reminder extends CommonDBVisible implements
                           '1' => __('To do'),
                           '2' => __('Done'),
                        ],
-                       'value' => $this->fields['state']
+                       'value' => $this->fields['state'] ?? '',
                     ],
                     __('Description') => [
                        'name' => 'text',
@@ -671,10 +671,10 @@ class Reminder extends CommonDBVisible implements
                  'inputs' => [
                     '' => [
                       'content' => (function () use ($rand) {
-                          $planLabel = !$this->fields['is_planned'] ? __('Add to planning') : sprintf(
+                          $planLabel = ($this->fields['is_planned'] ?? false) ? __('Add to planning') : sprintf(
                               __('from %1$s to %2$s'),
-                              Html::convDateTime($this->fields['begin']),
-                              Html::convDateTime($this->fields['end'])
+                              Html::convDateTime($this->fields['begin'] ?? ''),
+                              Html::convDateTime($this->fields['end'] ?? '')
                           );
                           return <<<HTML
                            <div id="plan{$rand}" onClick="showPlanUpdate{$rand}()">
@@ -690,6 +690,7 @@ class Reminder extends CommonDBVisible implements
            ]
         ];
         $userId = Session::getLoginUserID();
+        $reminderId = $this->fields["id"] ?? 0;
         echo Html::scriptBlock(
             <<<JS
          function showPlanUpdate{$rand}() {
@@ -701,7 +702,7 @@ class Reminder extends CommonDBVisible implements
                   form: 'remind',
                   user_tech: {$userId},
                   itemtype: 'Reminder',
-                  items_id: {$this->fields["id"]}
+                  items_id: {$reminderId}
                }
              }
             ).done(function(data) {
@@ -904,7 +905,8 @@ class Reminder extends CommonDBVisible implements
         if ($nb) {
             $rand = mt_rand();
 
-            while ($data = $iterator->next()) {
+            // while ($data = $iterator->next()) {
+            foreach ($request as $data) {
                 echo "<tr class='tab_bg_2'><td>";
                 $name = $data['name'];
 
@@ -925,8 +927,8 @@ class Reminder extends CommonDBVisible implements
                 );
                 printf(__('%1$s %2$s'), $link, $tooltip);
 
-                if ($data["is_planned"]) {
-                    $tab      = explode(" ", $data["begin"] ?? '');
+                 if ($data["is_planned"] && !empty($data["begin"])) {
+                    $tab      = explode(" ", $data["begin"]);
                     $date_url = $tab[0];
                     echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/planning.php?date=" . $date_url .
                           "&amp;type=day' class='pointer floatright' title=\"" . sprintf(

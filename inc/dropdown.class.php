@@ -2268,7 +2268,7 @@ class Dropdown
      */
     public static function getDropdownValue($post, $json = true)
     {
-        global $DB, $CFG_GLPI;
+        global $DB;
 
         // check if asked itemtype is the one originaly requested by the form
         // if (!Session::validateIDOR($post)) {
@@ -2354,6 +2354,12 @@ class Dropdown
 
         if (isset($post['used'])) {
             $used = $post['used'];
+
+            if (is_array($used)) {
+                $used = array_filter($used, function($value) {
+                    return $value !== '' && $value !== null && $value !== '0' && $value !== 0;
+                });
+            }
 
             if (count($used)) {
                 $where['NOT'] = ["$table.id" => $used];
