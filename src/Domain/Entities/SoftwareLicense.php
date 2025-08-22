@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_softwarelicenses")]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "is_template", columns: ["is_template"])]
@@ -86,13 +88,13 @@ class SoftwareLicense
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'is_valid', type: 'boolean', options: ['default' => 1])]
     private $isValid;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
@@ -234,13 +236,16 @@ class SoftwareLicense
 
 
 
-    public function getExpire(): ?\DateTime
+    public function getExpire(): ?\DateTimeInterface
     {
         return $this->expire;
     }
 
-    public function setExpire(?\DateTime $expire): self
+    public function setExpire(\DateTimeInterface|string|null $expire): self
     {
+        if (is_string($expire)) {
+            $expire = new DateTime($expire);
+        }
         $this->expire = $expire;
 
         return $this;
@@ -258,14 +263,17 @@ class SoftwareLicense
         return $this;
     }
 
-    public function getDateMod(): ?\DateTime
+    
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(?\DateTime $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
@@ -282,14 +290,15 @@ class SoftwareLicense
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTime
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(?\DateTime $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
