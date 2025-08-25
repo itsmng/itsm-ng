@@ -801,6 +801,7 @@ abstract class CommonITILObject extends CommonDBTM
             && (!Session::haveRight(static::$rightname, UPDATE)
               // Closed tickets
               || in_array($this->fields['status'], $this->getClosedStatusArray()))
+            && Session::getCurrentInterface() != "helpdesk"
         ) {
             $allowed_fields                    = ['id'];
             $check_allowed_fields_for_template = true;

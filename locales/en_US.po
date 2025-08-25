@@ -22191,6 +22191,15 @@ msgstr "Password Confirmation"
 msgid "Time zone"
 msgstr "Time zone"
 
+#: inc/user.class.php:3076
+msgid "No time zones are available. Please check your database configuration."
+msgstr "No time zones are available. Please check your database configuration."
+
+#: inc/user.class.php:3030
+msgid "Change the time zone"
+msgstr "Change the time zone"
+
+
 #: inc/user.class.php:2280
 msgid "Valid since"
 msgstr "Valid since"

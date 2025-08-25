@@ -176,7 +176,7 @@ class NotificationTemplateTranslation extends CommonDBChild
                           'col_md' => 12,
                       ],
                       __('Email HTML body') => [
-                          'type' => 'textarea',
+                          'type' => 'richtextarea',
                           'name' => 'content_html',
                           'value' => $this->fields['content_html'],
                           'col_lg' => 12,

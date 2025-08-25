@@ -12,7 +12,10 @@
             {% if title|length > 0 %}
                 <label for="{{id}}" class="form-label w-100">{{title|raw}}
             {% endif %}
-            <div class="d-flex flex-nowrap w-100 justify-content-between align-items-center input-group my-1">
+            {% set flexDirection = input.after ? 'flex-column' : 'flex-nowrap' %}
+            {% set alignItems = input.after ? '' : 'align-items-center' %}
+            <div class="d-flex {{ flexDirection }} w-100 {{ alignItems }} input-group my-1">            
+            
     {% endif %}
             {% if input.before %}
                 <div class="input-group-text">
@@ -27,7 +30,7 @@
             {% endif %}
             </label>
             {% if input.after %}
-                <div class="input-group-text input-group-sm">
+                <div class="inheritedValue">
                     {{input.after|raw}}
                 </div>
             {% endif %}

@@ -182,14 +182,12 @@ class Consumable extends CommonDBChild
         switch ($ma->getAction()) {
             case 'give':
                 if (isset($input["entities_id"])) {
-                    Dropdown::showSelectItemFromItemtypes(['itemtype_name'
-                                                                   => 'give_itemtype',
-                                                                'items_id_name'
-                                                                   => 'give_items_id',
-                                                                'entity_restrict'
-                                                                   => $input["entities_id"],
-                                                                'itemtypes'
-                                                                   => $CFG_GLPI["consumables_types"]]);
+                    Dropdown::showSelectItemFromItemtypes([
+                        'itemtype_name'   => 'give_itemtype',
+                        'items_id_name'   => 'give_items_id',
+                        'entity_restrict' => $input["entities_id"],
+                        'itemtypes'       => $CFG_GLPI["consumables_types"
+                    ]]);
                     echo "<br><br>" . Html::submit(
                         _x('button', 'Give'),
                         ['name' => 'massiveaction']

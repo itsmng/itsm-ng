@@ -42,7 +42,7 @@ $(document).ready(function() {
     const noToolBar = {{ noToolBar is defined ? (noToolBar ? "true" : "false") : "false" }};
     const url = {{ url is defined ? url|json_encode|raw : "null" }};
     const itemtype = {{ itemtype is defined ? itemtype|json_encode|raw : "''" }};
-    const showExport = {{ show_export is defined ? (show_export ? "true" : "false") : "false" }};
+    const showExport = {{ show_export is defined ? (show_export ? "true" : "false") : "true" }};
     const hasMassiveAction = {{ massive_action is defined ? 'true' : 'false' }};
 
     if (!url && hasMassiveAction) {
@@ -200,7 +200,7 @@ $(document).ready(function() {
     } else if (hasMassiveAction) {
         columns.push(columnHelper.display({ id: 'select', header: () => html`<input type="checkbox" id="select-all" />`, cell: info => html`<input type="checkbox" class="row-select" data-row-id="${info.row.id}" />` }));
     }
-    const dataColumns = fieldKeys.map(field => columnHelper.accessor(String(field), { header: () => html`${decodeHtml(fields[field])}`, cell: info => renderRawHTML(info.getValue()) }));
+    const dataColumns = fieldKeys.map(field => columnHelper.accessor(String(field), { header: () => html`${renderRawHTML(fields[field])}`, cell: info => renderRawHTML(info.getValue() ?? "") }));
     columns = columns.concat(dataColumns);
 
     const data = Object.values(values).map(value => {
@@ -230,7 +230,7 @@ $(document).ready(function() {
         const totalPages = table.getPageCount();
         const currentPage = table.getState().pagination.pageIndex + 1;
         const pageSize = table.getState().pagination.pageSize;
-        const totalRows = table.getFilteredRowModel().rows.length;
+        const totalRows = url ? serverTotal : table.getFilteredRowModel().rows.length;
         const startRow = table.getState().pagination.pageIndex * pageSize + 1;
         const endRow = Math.min((table.getState().pagination.pageIndex + 1) * pageSize, totalRows);
 
@@ -358,7 +358,7 @@ $(document).ready(function() {
                                 type="button"
                                 class="btn btn-secondary"
                                 aria-label="Options"
-                                onclick="document.getElementById('search-config-${itemtype}').dialog('open')"
+                                onclick="$('#search-config-${itemtype}').dialog('open')"
                             >
                                 <i class="fas fa-wrench" title="Options"></i>
                             </button>

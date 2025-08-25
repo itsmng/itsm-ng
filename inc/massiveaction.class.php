@@ -507,12 +507,12 @@ class MassiveAction
      *
      * @param string|CommonDBTM $item        the item for which we want the massive actions
      * @param boolean           $is_deleted  massive action for deleted items ?   (default 0)
-     * @param CommonDBTM        $checkitem   link item to check right              (default NULL)
+     * @param CommonDBTM        $checkitem   link item to check right             (default NULL)
      * @param integer|boolean   $single      Get actions for a single item
      *
-     * @return array of massive actions or false if $item is not valid
+     * @return array|bool of massive actions or false if $item is not valid
     **/
-    public static function getAllMassiveActions($item, $is_deleted = 0, CommonDBTM $checkitem = null, $single = false)
+    public static function getAllMassiveActions($item, $is_deleted = 0, CommonDBTM|null $checkitem = null, $single = false)
     {
         global $PLUGIN_HOOKS;
 

@@ -4926,134 +4926,134 @@ class Ticket extends CommonITILObject
         $formUrl = $this->getFormURL();
         $reopenLabel = __('Reopen');
         $form = [
-            'action' => $formUrl,
-            'itemtype' => $display_save_btn ? self::class : null,
-            'content' => [
-                __('New') . ' ' . $this->getTypeName() => [
-                    'visible' => true,
-                    'inputs' => [
-                        !$this->isNewID($ID) ? [
-                            'type' => 'hidden',
-                            'name' => 'id',
-                            'value' => $ID,
-                        ] : [],
-                        !$this->isNewID($ID) ? [
-                            'type' => 'hidden',
-                            'name' => '_read_date_mod',
-                            'value' => $this->fields['date_mod'],
-                        ] : [],
-                        isset($options['_projecttasks_id']) ? [
-                            'type' => 'hidden',
-                            'name' => '_projecttasks_id',
-                            'value' => $options['_projecttasks_id'],
-                        ] : [],
-                        __('Opening date') => $ID ? [
-                            'type' => 'datetime-local',
-                            'id' => rand(),
-                            'name' => 'date',
-                            'value' => $this->fields["date"],
-                            $canupdate ? '' : 'disabled' => ''
-                        ] : [],
-                        __('By') => $ID ? [
-                            'type' => 'select',
-                            'noLib' => 'true',
-                            'name' => 'recipient_users_id',
-                            'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
-                            'value' => $this->fields["recipient_users_id"],
-                            $canupdate ? '' : 'disabled' => ''
-                        ] : [],
-                        __('Last update') => $ID ? [
-                            'content' => ($this->fields['lastupdater_users_id'] > 0) ?
-                                sprintf(
-                                    __('%1$s by %2$s'),
-                                    Html::convDateTime($this->fields["date_mod"]),
-                                    getUserName($this->fields["lastupdater_users_id"], $showuserlink)
-                                ) : '',
-                        ] : [],
-                        __('Time to own') => [
-                            'type' => 'datetime-local',
-                            'name' => 'time_to_own',
-                            'id' => rand(),
-                            'value' => $this->fields["time_to_own"],
-                            'col_lg' => 6,
-                        ],
-                        __('SLA') . ' (' . __('Time to own') . ')' => [
-                            'content' => (function () use ($tt, $canupdate) {
-                                ob_start();
-                                (new SLA())->showForTicket($this, SLM::TTO, $tt, $canupdate);
-                                return ob_get_clean();
-                            })(),
-                        ],
-                        __('Time to resolve') => [
-                            'type' => 'datetime-local',
-                            'name' => 'time_to_resolve',
-                            'id' => rand(),
-                            'value' => $this->fields["time_to_resolve"],
-                            'col_lg' => 6,
-                        ],
-                        __('SLA') . ' (' . __('Time to resolve') . ')' => [
-                            'content' => (function () use ($tt, $canupdate) {
-                                ob_start();
-                                (new SLA())->showForTicket($this, SLM::TTR, $tt, $canupdate);
-                                return ob_get_clean();
-                            })(),
-                        ],
-                        __('Internal time to own') => [
-                            'type' => 'datetime-local',
-                            'name' => 'time_to_resolve',
-                            'id' => rand(),
-                            'value' => $this->fields["time_to_resolve"],
-                            'col_lg' => 6,
-                        ],
-                        __('SLA') . ' (' . __('Internal time to own') . ')' => [
-                            'content' => (function () use ($tt, $canupdate) {
-                                ob_start();
-                                (new OLA())->showForTicket($this, SLM::TTO, $tt, $canupdate);
-                                return ob_get_clean();
-                            })(),
-                        ],
-                        __('Internal time to resolve') => [
-                            'type' => 'datetime-local',
-                            'name' => 'time_to_resolve',
-                            'id' => rand(),
-                            'value' => $this->fields["time_to_resolve"],
-                            'col_lg' => 6,
-                        ],
-                        __('SLA') . ' (' . __('Internal time to resolve') . ')' => [
-                            'content' => (function () use ($tt, $canupdate) {
-                                ob_start();
-                                (new OLA())->showForTicket($this, SLM::TTR, $tt, $canupdate);
-                                return ob_get_clean();
-                            })(),
-                        ],
-                    ]
-                ],
-                __('Parameters') => [
-                    'visible' => true,
-                    'inputs' => [
-                        __('Resolution date') => ($ID && (in_array($this->fields["status"], $this->getSolvedStatusArray())
-                            || in_array($this->fields["status"], $this->getClosedStatusArray()))) ? [
-                            'type' => 'datetime-local',
-                            'name' => 'solvedate',
-                            'value' => $this->fields['solvedate'],
-                            $canupdate ? '' : 'disabled' => '',
-                        ] : [],
-                        __('Close date') => ($ID && (in_array($this->fields["status"], $this->getSolvedStatusArray())
-                            && in_array($this->fields["status"], $this->getClosedStatusArray()))) ? [
-                            'type' => 'datetime-local',
-                            'name' => 'closedate',
-                            'value' => $this->fields['closedate'],
-                            $canupdate ? '' : 'disabled' => '',
-                        ] : [],
-                        _n('Type', 'Types', 1) => [
-                            'type' => 'select',
-                            'noLib' => 'true',
-                            'id' => 'dropdownForTicketType',
-                            'name' => 'type',
-                            'values' => $this->getTypes(),
-                            'value' => $this->fields['type'],
-                            'hooks' => [
-                                'change' => <<<JS
+           'action' => $formUrl,
+           'itemtype' => $display_save_btn ? self::class : null,
+           'content' => [
+              __('New') . ' ' . $this->getTypeName() => [
+                 'visible' => true,
+                 'inputs' => [
+                    !$this->isNewID($ID) ? [
+                       'type' => 'hidden',
+                       'name' => 'id',
+                       'value' => $ID,
+                    ] : [],
+                    !$this->isNewID($ID) ? [
+                       'type' => 'hidden',
+                       'name' => '_read_date_mod',
+                       'value' => $this->fields['date_mod'],
+                    ] : [],
+                    isset($options['_projecttasks_id']) ? [
+                       'type' => 'hidden',
+                       'name' => '_projecttasks_id',
+                       'value' => $options['_projecttasks_id'],
+                    ] : [],
+                    __('Opening date') => $ID ? [
+                       'type' => 'datetime-local',
+                       'id' => rand(),
+                       'name' => 'date',
+                       'value' => $this->fields["date"],
+                       $canupdate ? '' : 'disabled' => ''
+                    ] : [],
+                    __('By') => $ID ? [
+                       'type' => 'select',
+                       'noLib' => 'true',
+                       'name' => 'users_id_recipient',
+                       'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
+                       'value' => $this->fields["users_id_recipient"],
+                       $canupdate ? '' : 'disabled' => ''
+                    ] : [],
+                    __('Last update') => $ID ? [
+                       'content' => ($this->fields['users_id_lastupdater'] > 0) ?
+                          sprintf(
+                              __('%1$s by %2$s'),
+                              Html::convDateTime($this->fields["date_mod"]),
+                              getUserName($this->fields["users_id_lastupdater"], $showuserlink)
+                          ) : '',
+                    ] : [],
+                    __('Time to own') => [
+                     'type' => 'datetime-local',
+                     'name' => 'time_to_own',
+                     'id' => rand(),
+                     'value' => $this->fields["time_to_own"],
+                     'col_lg' => 8,
+                    ],
+                    __('SLA') . ' (' . __('Time to own') . ')' => [
+                        'content' => (function () use ($tt, $canupdate) {
+                            ob_start();
+                            (new SLA())->showForTicket($this, SLM::TTO, $tt, $canupdate);
+                            return ob_get_clean();
+                        })(),
+                    ],
+                    __('Time to resolve') => [
+                     'type' => 'datetime-local',
+                     'name' => 'time_to_resolve',
+                     'id' => rand(),
+                     'value' => $this->fields["time_to_resolve"],
+                     'col_lg' => 8
+                    ],
+                    __('SLA') . ' (' . __('Time to resolve') . ')' => [
+                    'content' => (function () use ($tt, $canupdate) {
+                        ob_start();
+                        (new SLA())->showForTicket($this, SLM::TTR, $tt, $canupdate);
+                        return ob_get_clean();
+                    })(),
+                    ],
+                    __('Internal time to own') => [
+                     'type' => 'datetime-local',
+                     'name' => 'time_to_resolve',
+                     'id' => rand(),
+                     'value' => $this->fields["time_to_resolve"],
+                     'col_lg' => 8
+                    ],
+                    __('SLA') . ' (' . __('Internal time to own') . ')' => [
+                    'content' => (function () use ($tt, $canupdate) {
+                        ob_start();
+                        (new OLA())->showForTicket($this, SLM::TTO, $tt, $canupdate);
+                        return ob_get_clean();
+                    })(),
+                    ],
+                    __('Internal time to resolve') => [
+                     'type' => 'datetime-local',
+                     'name' => 'time_to_resolve',
+                     'id' => rand(),
+                     'value' => $this->fields["time_to_resolve"],
+                     'col_lg' => 8
+                    ],
+                    __('SLA') . ' (' . __('Internal time to resolve') . ')' => [
+                    'content' => (function () use ($tt, $canupdate) {
+                        ob_start();
+                        (new OLA())->showForTicket($this, SLM::TTR, $tt, $canupdate);
+                        return ob_get_clean();
+                    })(),
+                    ],
+                 ]
+              ],
+              __('Parameters') => [
+               'visible' => true,
+               'inputs' => [
+                  __('Resolution date') => ($ID && (in_array($this->fields["status"], $this->getSolvedStatusArray())
+                     || in_array($this->fields["status"], $this->getClosedStatusArray()))) ? [
+                     'type' => 'datetime-local',
+                     'name' => 'solvedate',
+                     'value' => $this->fields['solvedate'],
+                     $canupdate ? '' : 'disabled' => '',
+                  ] : [],
+                  __('Close date') => ($ID && (in_array($this->fields["status"], $this->getSolvedStatusArray())
+                     && in_array($this->fields["status"], $this->getClosedStatusArray()))) ? [
+                     'type' => 'datetime-local',
+                     'name' => 'closedate',
+                     'value' => $this->fields['closedate'],
+                     $canupdate ? '' : 'disabled' => '',
+                  ] : [],
+                  _n('Type', 'Types', 1) => [
+                     'type' => 'select',
+                     'noLib' => 'true',
+                     'id' => 'dropdownForTicketType',
+                     'name' => 'type',
+                     'values' => $this->getTypes(),
+                     'value' => $this->fields['type'],
+                     'hooks' => [
+                        'change' => <<<JS
                     $('#dropdownForTicketCategory').val('');
                     $.ajax({
                       url: '{$CFG_GLPI["root_doc"]}/ajax/dropdownTicketCategories.php',
@@ -5249,6 +5249,7 @@ class Ticket extends CommonITILObject
                      'type' => 'file',
                      'name' => 'files',
                      'id' => 'fileSelectorForDocument',
+                     'data-max-size' => Document::getMaxUploadSizeInBytes(),
                      'multiple' => true,
                      'values' => getLinkedDocumentsForItem('Ticket', $ID),
                      'col_lg' => 6,
@@ -7249,6 +7250,8 @@ class Ticket extends CommonITILObject
                         $options['condition'] = $opt;
                         break;
                     }
+                    return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
+                default:
                     return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
             }
         }

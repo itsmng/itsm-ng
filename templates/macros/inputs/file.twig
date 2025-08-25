@@ -33,7 +33,35 @@
     $(`#ObjectTable_{{rand}} tr[data-id='${id}'][data-type='${type}']`).remove();
   }
 
+  function prettyPrintBytes(bytes) {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
   $('#{{attributes.id|default(rand)}}').on('change', function() {
+    const $input = $(this);
+    const maxSize = parseInt($input.attr('data-max-size'), 10);
+    const files = this.files;
+    let tooBig = false;
+
+    $input.removeClass('is-invalid');
+    $input.next('.invalid-feedback').remove();
+
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].size > maxSize) {
+        tooBig = true;
+        break;
+      }
+    }
+
+    if (tooBig) {
+      $input.addClass('is-invalid');
+      $input.after('<div class="invalid-feedback">{{"The uploaded file exceeds the upload_max_filesize directive in php.ini"|trans}} (' + prettyPrintBytes(maxSize) + ')</div>');
+      $input.val(''); // Clear the input
+    } else {
       let formData = new FormData();
       formData.append('name', 'filename');
       formData.append('showFileSize', $('#{{attributes.id|default(rand)}}').prop('files').length);
@@ -42,18 +70,19 @@
       }
       $.ajax({
       url: '{{root_doc}}' + '/ajax/fileupload.php',
-          type: 'POST',
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function(data) {
-          // add an hidden input containing the data for all files
-              if ($('#hiddenInputForFiles').length == 0) {
-                  $('#{{attributes.id|default(rand)}}').after('<input type="hidden" id="hiddenInputForFiles{{rand}}" name="{{attributes.name}}" value="">');
-              }
-              $('#hiddenInputForFiles{{rand}}').val(data);
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+        // add an hidden input containing the data for all files
+          if ($('#hiddenInputForFiles').length == 0) {
+            $('#{{attributes.id|default(rand)}}').after('<input type="hidden" id="hiddenInputForFiles{{rand}}" name="{{attributes.name}}" value="">');
           }
+          $('#hiddenInputForFiles{{rand}}').val(data);
+        }
       });
+    }
   })
   </script>
 {% endmacro %}

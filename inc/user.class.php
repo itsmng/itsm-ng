@@ -805,9 +805,8 @@ class User extends CommonDBTM
             if (isset($picture) && !empty($picture) && $picture['path'] != $this->fields['picture']) {
                 if (Document::isImage($picture['path'])) {
                     unlink(GLPI_PICTURE_DIR . '/' . $this->fields['picture']);
-                    $uploadedPath = str_replace(GLPI_DOC_DIR . '/', '', GLPI_PICTURE_DIR) .
-                         '/' . ItsmngUploadHandler::uploadFile($picture['path'], $picture['name'], ItsmngUploadHandler::PICTURE);
-                    $input['picture'] = $uploadedPath;
+                    $uploadedFileName = ItsmngUploadHandler::uploadFile($picture['path'], $picture['name'], ItsmngUploadHandler::PICTURE);
+                    $input['picture'] = ltrim($uploadedFileName, '/');
                 } else {
                     Session::addMessageAfterRedirect(
                         __('The file is not an image file.'),
@@ -2249,7 +2248,7 @@ class User extends CommonDBTM
         $formtitle = $this->getTypeName(1);
 
         if ($ID > 0) {
-            $formtitle .= "&nbsp;<a class='pointer far fa-address-card fa-lg' target='_blank' href='" .
+            $formtitle .= "&nbsp;<a class='text-light pointer far fa-address-card fa-lg' target='_blank' href='" .
                           User::getFormURLWithID($ID) . "&amp;getvcard=1' title='" . __s('Download user VCard') .
                           "'><span class='sr-only'>" . __('Vcard') . "</span></a>";
             if (Session::canImpersonate($ID)) {
@@ -2330,14 +2329,19 @@ class User extends CommonDBTM
                       'value' => 1,
                    ],
                    __('Login') => [
-                      'type' => ($this->fields["name"] == ""
-                      || !empty($this->fields["password"])
-                      || ($this->fields["authtype"] == Auth::DB_GLPI))
-                      ? 'text'
-                      : 'hidden',
-                      'name' => 'name',
-                      'value' => $this->fields['name'],
-                   ],
+                       'type' => ($this->fields["name"] == ""
+                       || !empty($this->fields["password"])
+                       || ($this->fields["authtype"] == Auth::DB_GLPI))
+                       ? 'text'
+                       : 'hidden',
+                       'name' => 'name',
+                       'value' => $this->fields['name'],
+                    ],
+                    __('Active') => (!GLPI_DEMO_MODE) ? [
+                     'type' => 'checkbox',
+                     'name' => 'is_active',
+                     'value' => $this->fields['is_active'],
+                  ] : [],
                    $this->isNewID($ID) ? [] : [
                       'type' => 'hidden',
                       'name' => 'id',
@@ -2352,36 +2356,78 @@ class User extends CommonDBTM
                          'value' => $this->fields['sync_field'],
                          (self::canUpdate() && (!$extauth || empty($ID))) ? 'disabled' : '',
                    ] : [],
+                   __('Picture') => [
+                       'type' => 'imageUpload',
+                       'name' => 'picture',
+                       'accept' => 'image/*',
+                   ],
+                   __('Picture') => [
+                       'id' => 'pictureFilePicker',
+                       'type' => 'imageUpload',
+                       'name' => 'picture',
+                       'accept' => 'image/*',
+                       'value' => $this->fields['picture'] ?? '',  // ← Ajoutez cette ligne
+                   ],
                    __('Surname') => [
                       'type' => 'text',
                       'name' => 'realname',
                       'value' => $this->fields['realname'],
                    ],
                    __('First name') => [
-                      'type' => 'text',
-                      'name' => 'firstname',
-                      'value' => $this->fields['firstname'],
-                   ],
-                   __('Password') => (self::canUpdate()
-                      && (!$extauth || empty($ID))
-                      && $caneditpassword)
-                         ? [
-                            'type' => 'password',
-                            'name' => 'password',
-                            'value' => '',
-                            'size' => '20',
-                            'col_lg' => 6,
-                   ] : [],
-                   __('Password confirmation') => (self::canUpdate()
-                      && (!$extauth || empty($ID))
-                      && $caneditpassword)
-                         ? [
-                            'type' => 'password',
-                            'name' => 'password2',
-                            'value' => '',
-                            'size' => '20',
-                            'col_lg' => 6,
-                   ] : [],
+                    'type' => 'text',
+                    'name' => 'firstname',
+                    'value' => $this->fields['firstname'],
+                 ],
+                 _n('Email', 'Emails', Session::getPluralNumber()) => [
+                    'type' => 'multiSelect',
+                    'name' => '_useremails',
+                    'inputs' => [
+                       [
+                          'name' => 'current_useremails',
+                          'type' => 'email',
+                       ]
+                    ],
+                    'values' => $emailsValues,
+                    'getInputAdd' => <<<JS
+                  function () {
+                     let re = /\S+@\S+\.\S+/;
+                     if (!$('input[name="current_useremails"]').val() || !re.test($('input[name="current_useremails"]').val())) {
+                        return;
+                     }
+                     var values = {};
+                     var title = "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='-1'>" +
+                                 "<input type='email' class='form-control' name='_useremails[-1]' value='" + $('input[name="current_useremails"]').val() + "'>";
+                     return {values, title};
+                  }
+                  JS,
+                 ],
+                __('Password') => (self::canUpdate()
+                   && (!$extauth || empty($ID))
+                   && $caneditpassword)
+                      ? [
+                         'type' => 'password',
+                         'name' => 'password',
+                         'value' => '',
+                         'size' => '20',
+                         'col_lg' => 4,
+                ] : [],
+                __('Password confirmation') => (self::canUpdate()
+                   && (!$extauth || empty($ID))
+                   && $caneditpassword)
+                      ? [
+                         'type' => 'password',
+                         'name' => 'password2',
+                         'value' => '',
+                         'size' => '20',
+                         'col_lg' => 4,
+                ] : [],
+                Location::getTypeName(1) => (!empty($ID)) ? [
+                    'type' => 'select',
+                    'name' => 'locations_id',
+                    'itemtype' => Location::class,
+                    'value' => $this->fields['locations_id'],
+                    'actions' => getItemActionButtons(['info', 'add'], 'Location'),
+                 ] : [],
                    __('Time zone') => ($tz_available || Session::haveRight("config", READ)) ? ($tz_available ? [
                       'type' => 'select',
                       'name' => 'timezone',
@@ -2390,47 +2436,19 @@ class User extends CommonDBTM
                    ] : [
                       'content' => "<img src=\"{$CFG_GLPI['root_doc']}/pics/warning_min.png\">"
                    ]) : [],
-                   __('Active') => (!GLPI_DEMO_MODE) ? [
-                      'type' => 'checkbox',
-                      'name' => 'is_active',
-                      'value' => $this->fields['is_active'],
-                   ] : [],
-                   _n('Email', 'Emails', Session::getPluralNumber()) => [
-                      'type' => 'multiSelect',
-                      'name' => '_useremails',
-                      'inputs' => [
-                         [
-                            'name' => 'current_useremails',
-                            'type' => 'email',
-                         ]
-                      ],
-                      'values' => $emailsValues,
-                      'getInputAdd' => <<<JS
-                    function () {
-                       let re = /\S+@\S+\.\S+/;
-                       if (!$('input[name="current_useremails"]').val() || !re.test($('input[name="current_useremails"]').val())) {
-                          return;
-                       }
-                       var values = {};
-                       var title = "<input type='radio' class='form-check-input mx-1' title='{$defaultEmailTitle}' name='_default_email' value='-1'>" +
-                                   "<input type='email' class='form-control' name='_useremails[-1]' value='" + $('input[name="current_useremails"]').val() + "'>";
-                       return {values, title};
-                    }
-                    JS,
-                   ],
                    __('Valid since') => (!GLPI_DEMO_MODE) ? [
                       'type' => 'datetime-local',
                       'name' => 'begin_date',
                       'id' => 'BeginDatePicker',
                       'value' => $this->fields['begin_date'],
-                      'col_lg' => 6,
+                      'col_lg' => 4,
                    ] : [],
                    __('Valid until') => (!GLPI_DEMO_MODE) ? [
                       'type' => 'datetime-local',
                       'name' => 'end_date',
                       'id' => 'EndDatePicker',
                       'value' => $this->fields['end_date'],
-                      'col_lg' => 6,
+                      'col_lg' => 4,
                    ] : [],
                    Phone::getTypeName(1) => [
                       'type' => 'text',
@@ -2478,13 +2496,6 @@ class User extends CommonDBTM
                       'value' => $this->fields['usertitles_id'],
                       'actions' => getItemActionButtons(['info', 'add'], 'UserTitle'),
                    ],
-                   Location::getTypeName(1) => (!empty($ID)) ? [
-                      'type' => 'select',
-                      'name' => 'locations_id',
-                      'itemtype' => Location::class,
-                      'value' => $this->fields['locations_id'],
-                      'actions' => getItemActionButtons(['info', 'add'], 'Location'),
-                   ] : [],
                 ]
              ],
              _n('Authorization', 'Authorizations', 1) =>  [
@@ -2761,6 +2772,11 @@ class User extends CommonDBTM
                            'type' => 'text',
                            'value' => $this->fields['realname'] ?? '',
                         ],
+                        __('Picture') => [
+                            'type' => 'imageUpload',
+                            'name' => 'picture',
+                            'accept' => 'image/*',
+                        ],
                         __('First name') => [
                            'name' => 'firstname',
                            'type' => 'text',
@@ -3015,6 +3031,9 @@ class User extends CommonDBTM
             $actions['Group_User' . MassiveAction::CLASS_ACTION_SEPARATOR . 'change_group_user']
                                                             = "<i class='ma-icon fas fa-users-cog' aria-hidden='true'></i>" .
                                                               __("Move to group");
+            $actions[__CLASS__.MassiveAction::CLASS_ACTION_SEPARATOR.'change_timezone']
+                                                            = "<i class='ma-icon fas fa-clock'></i>".
+                                                              __('Change the time zone');
         }
 
         if (Session::haveRight(self::$rightname, self::UPDATEAUTHENT)) {
@@ -3029,7 +3048,7 @@ class User extends CommonDBTM
 
     public static function showMassiveActionsSubForm(MassiveAction $ma)
     {
-        global $CFG_GLPI;
+        global $CFG_GLPI, $DB;
 
         switch ($ma->getAction()) {
             case 'change_authtype':
@@ -3045,6 +3064,24 @@ class User extends CommonDBTM
                 echo "<span id='show_massiveaction_field'><br><br>";
                 echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']) . "</span>";
                 return true;
+            case 'change_timezone':
+                $tz_warning = '';
+                $tz_available = $DB->areTimezonesAvailable($tz_warning);
+                if ($tz_available) {
+                    $timezones = $DB->getTimezones();
+                    $timezones[null] = __('Use server configuration');
+                    Dropdown::showFromArray('timezone', $timezones, [
+                        'display_emptychoice' => true,
+                        'emptylabel'          => __('Use server configuration')
+                    ]);
+                    echo "<br><br>";
+                    echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+                    return true;
+                }
+                echo "<div class='error'>";
+                echo ($tz_warning == '') ? __('No time zones are available. Please check your database configuration.') : $tz_warning;
+                echo "</div>";
+                return false;
         }
         return parent::showMassiveActionsSubForm($ma);
     }
@@ -3099,6 +3136,36 @@ class User extends CommonDBTM
                 } else {
                     $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_NORIGHT);
                     $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                }
+                return;
+
+            case 'change_timezone':
+                $input = $ma->getInput();
+                if (!isset($input["timezone"])) {
+                    $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_KO);
+                    $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
+                    return;
+                }
+
+                $timezone = $input["timezone"];
+                // Convert empty string to NULL for database storage
+                if ($timezone === '') {
+                    $timezone = 'NULL';
+                }
+
+                foreach ($ids as $id) {
+                    if ($item->can($id, UPDATE)) {
+                        // Update the user's timezone
+                        if ($item->update(['id' => $id, 'timezone' => $timezone])) {
+                            $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
+                        } else {
+                            $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                            $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
+                        }
+                    } else {
+                        $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
+                        $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                    }
                 }
                 return;
         }
@@ -5365,16 +5432,19 @@ class User extends CommonDBTM
      * @return string
      */
     public static function getURLForPicture($picture)
-    {
-        global $CFG_GLPI;
+{
+    global $CFG_GLPI;
 
-        $url = Toolbox::getPictureUrl($picture);
-        if (null !== $url) {
-            return $url;
-        }
-
+    if (empty($picture) || $picture === 'NULL') {
         return $CFG_GLPI["root_doc"] . "/pics/picture.png";
     }
+
+    // Nettoyer le chemin - enlever les _pictures/ en double
+    $clean_picture = str_replace('_pictures//', '', $picture);
+    $clean_picture = str_replace('_pictures/_pictures/', '_pictures/', $clean_picture);
+    
+    return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $clean_picture;
+}
 
 
     /**
@@ -5387,22 +5457,23 @@ class User extends CommonDBTM
      * @return string
      */
     public static function getThumbnailURLForPicture($picture)
-    {
-        global $CFG_GLPI;
+{
+    global $CFG_GLPI;
 
-        // prevent xss
-        $picture = Html::cleanInputText($picture);
-
-        if (!empty($picture)) {
-            $tmp = explode(".", $picture);
-            if (count($tmp) == 2) {
-                return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $tmp[0] .
-                       "_min." . $tmp[1];
-            }
-            return $CFG_GLPI["root_doc"] . "/pics/picture_min.png";
-        }
+    if (empty($picture) || $picture === 'NULL') {
         return $CFG_GLPI["root_doc"] . "/pics/picture_min.png";
     }
+
+    // Nettoyer le chemin
+    $clean_picture = str_replace('_pictures//', '', $picture);
+    $clean_picture = str_replace('_pictures/_pictures/', '_pictures/', $clean_picture);
+    
+    // Essayer la miniature
+    $path_info = pathinfo($clean_picture);
+    $thumb_picture = $path_info['dirname'] . '/' . $path_info['filename'] . '_min.' . $path_info['extension'];
+    
+    return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $thumb_picture;
+}
 
 
     /**

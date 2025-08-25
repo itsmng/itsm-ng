@@ -328,6 +328,13 @@ class Computer extends CommonDBTM
      **/
     public function showForm($ID, $options = [])
     {
+        $autoinventory_information = '';
+        if ($ID && $this->fields['is_dynamic']) {
+            ob_start();
+            Plugin::doHook("autoinventory_information", $this);
+            $autoinventory_information = ob_get_clean();
+        }
+
         $form = [
            'action' => $this->getFormURL(),
            'itemtype' => $this::class,
@@ -453,6 +460,8 @@ class Computer extends CommonDBTM
            ]
         ];
         $additionnalHtml = '';
+
+        $additionnalHtml .= $autoinventory_information;
 
         if (isset($this->fields['is_deleted']) && $this->fields['is_deleted'] == 1) {
             if ($this->can($ID, PURGE)) {

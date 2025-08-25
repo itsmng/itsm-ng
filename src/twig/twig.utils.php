@@ -51,14 +51,36 @@ function expandForm($form, $fields = [], $template = null)
 {
     foreach ($form['content'] as $contentKey => $content) {
         if (isset($content['inputs'])) {
+            $filteredInputs = [];
+            
             foreach ($content['inputs'] as $inputKey => $input) {
-                if (isset($template) && $template->isHiddenField($input['name'] ?? null)) {
-                    $form['content'][$contentKey]['inputs'][$inputKey]['type'] = 'hidden';
+                $shouldHide = false;
+                
+                if (isset($input['name']) && isset($template) && $template->isHiddenField($input['name'])) {
+                    $shouldHide = true;
                 }
+                
+                if (strpos(strtolower($inputKey), 'sla') !== false && 
+                    (strpos(strtolower($inputKey), 'time') !== false || 
+                     strpos(strtolower($inputKey), 'own') !== false || 
+                     strpos(strtolower($inputKey), 'resolve') !== false ||
+                     strpos(strtolower($inputKey), 'tto') !== false ||
+                     strpos(strtolower($inputKey), 'ttr') !== false)) {
+                    $shouldHide = true;
+                }
+                
+                if ($shouldHide) {
+                    continue;
+                }
+                
+                $filteredInputs[$inputKey] = $input;
+                
                 if ($input['type'] ?? '' == 'select') {
-                    expandSelect($form['content'][$contentKey]['inputs'][$inputKey], $fields);
+                    expandSelect($filteredInputs[$inputKey], $fields);
                 }
             }
+            
+            $form['content'][$contentKey]['inputs'] = $filteredInputs;
         }
     }
     if (!isset($form['buttons']) && isset($form['itemtype'])) {

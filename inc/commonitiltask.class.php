@@ -1754,6 +1754,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'type' => 'file',
                        'name' => 'files',
                        'id' => 'fileSelectorForDocument',
+                       'data-max-size' => Document::getMaxUploadSizeInBytes(),
                        'multiple' => true,
                        'values' => getLinkedDocumentsForItem('Ticket', $ID),
                        'col_lg' => 12,

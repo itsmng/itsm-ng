@@ -225,7 +225,9 @@ class Dropdown
                     )
                 );
             }
+            $output .= "<span class='input-group-text'>";
             $output .= Html::showToolTip($comment, $options_tooltip);
+            $output .= "</span>";
 
             if (
                 ($item instanceof CommonDropdown)
@@ -1509,7 +1511,7 @@ class Dropdown
            ],
            __('Component') => [
               'type' => 'select',
-              'name' => 'items_id',
+              'name' => $params['items_id_name'],
               'id' => 'selectItemForTicketMassiveAction',
               'values' => [],
               'col_lg' => 6,
