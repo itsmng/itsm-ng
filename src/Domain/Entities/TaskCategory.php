@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
 #[ORM\Index(name: "knowbaseitemcategories_id", columns: ["knowbaseitemcategories_id"])]
-class Taskcategory
+class TaskCategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,11 +27,11 @@ class Taskcategory
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
-    #[ORM\ManyToOne(targetEntity: Taskcategory::class)]
+    #[ORM\ManyToOne(targetEntity: TaskCategory::class)]
     #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Taskcategory $taskcategory = null;
+    private ?TaskCategory $taskcategory = null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -43,7 +43,7 @@ class Taskcategory
     private $comment;
 
     #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
     private $ancestorsCache;
@@ -52,10 +52,10 @@ class Taskcategory
     private $sonsCache;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
-    private $isActive;
+    private $isActive = 1;
 
     #[ORM\Column(name: 'is_helpdeskvisible', type: 'boolean', options: ['default' => 1])]
-    private $isHelpdeskvisible;
+    private $isHelpdeskvisible = 1;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;

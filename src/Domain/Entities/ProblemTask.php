@@ -36,9 +36,9 @@ class ProblemTask
     #[ORM\JoinColumn(name: 'problems_id', referencedColumnName: 'id', nullable: true)]
     private ?Problem $problem = null;
 
-    #[ORM\ManyToOne(targetEntity: Taskcategory::class)]
+    #[ORM\ManyToOne(targetEntity: TaskCategory::class)]
     #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Taskcategory $taskcategory = null;
+    private ?TaskCategory $taskcategory = null;
 
     #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
@@ -262,7 +262,7 @@ class ProblemTask
     /**
      * Get the value of taskcategory
      */
-    public function getTaskcategory(): ?Taskcategory
+    public function getTaskcategory(): ?TaskCategory
     {
         return $this->taskcategory;
     }
@@ -270,10 +270,10 @@ class ProblemTask
     /**
       * Set the value of taskcategory
       *
-      * @param Taskcategory|null $taskcategory
+      * @param TaskCategory|null $taskcategory
       * @return self
       */
-    public function setTaskcategory(?Taskcategory $taskcategory): self
+    public function setTaskcategory(?TaskCategory $taskcategory): self
     {
         $this->taskcategory = $taskcategory;
 

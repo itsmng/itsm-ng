@@ -38,9 +38,9 @@ class ChangeTask
     #[ORM\JoinColumn(name: 'changes_id', referencedColumnName: 'id', nullable: true)]
     private ?Change $change = null;
 
-    #[ORM\ManyToOne(targetEntity: Taskcategory::class)]
+    #[ORM\ManyToOne(targetEntity: TaskCategory::class)]
     #[ORM\JoinColumn(name: 'taskcategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Taskcategory $taskcategory = null;
+    private ?TaskCategory $taskcategory = null;
 
     #[ORM\Column(name: 'state', type: "integer", options: ["default" => 0])]
     private $state = 0;
@@ -273,7 +273,7 @@ class ChangeTask
     /**
      * Get the value of taskcategory
      */
-    public function getTaskcategory(): ?Taskcategory
+    public function getTaskcategory(): ?TaskCategory
     {
         return $this->taskcategory;
     }
@@ -284,7 +284,7 @@ class ChangeTask
      * @param Taskcategory|null $taskcategory
      * @return self
      */
-    public function setTaskcategory(?Taskcategory $taskcategory): self
+    public function setTaskcategory(?TaskCategory $taskcategory): self
     {
         $this->taskcategory = $taskcategory;
 
