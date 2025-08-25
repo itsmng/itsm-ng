@@ -2357,12 +2357,6 @@ class Dropdown
         if (isset($post['used'])) {
             $used = $post['used'];
 
-            if (is_array($used)) {
-                $used = array_filter($used, function($value) {
-                    return $value !== '' && $value !== null && $value !== '0' && $value !== 0;
-                });
-            }
-
             if (count($used)) {
                 $where['NOT'] = ["$table.id" => $used];
             }
@@ -2416,6 +2410,21 @@ class Dropdown
 
                     $where[] = ['OR' => $swhere];
                 }
+                // Clean the NOT clause before processing
+                if (isset($where['NOT']) && is_array($where['NOT'])) {
+                    foreach ($where['NOT'] as $key => $value) {
+                        if (($key === 'id' || str_ends_with($key, '.id')) && $value === '') {
+                            unset($where['NOT'][$key]);
+                        }
+                    }
+
+                    // If all NOT conditions have been removed
+                    if (empty($where['NOT'])) {
+                        unset($where['NOT']);
+                    }
+                }
+
+
             }
 
             $multi = false;
