@@ -42,7 +42,7 @@ class State
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -64,55 +64,55 @@ class State
     private $sonsCache;
 
     #[ORM\Column(name: 'is_visible_computer', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleComputer;
+    private $isVisibleComputer = 1;
 
     #[ORM\Column(name: 'is_visible_monitor', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleMonitor;
+    private $isVisibleMonitor = 1;
 
     #[ORM\Column(name: 'is_visible_networkequipment', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleNetworkequipment;
+    private $isVisibleNetworkequipment = 1;
 
     #[ORM\Column(name: 'is_visible_peripheral', type: 'boolean', options: ['default' => 1])]
-    private $isVisiblePeripheral;
+    private $isVisiblePeripheral = 1;
 
     #[ORM\Column(name: 'is_visible_phone', type: 'boolean', options: ['default' => 1])]
-    private $isVisiblePhone;
+    private $isVisiblePhone = 1;
 
     #[ORM\Column(name: 'is_visible_printer', type: 'boolean', options: ['default' => 1])]
-    private $isVisiblePrinter;
+    private $isVisiblePrinter = 1;
 
     #[ORM\Column(name: 'is_visible_softwareversion', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleSoftwareversion;
+    private $isVisibleSoftwareversion = 1;
 
     #[ORM\Column(name: 'is_visible_softwarelicense', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleSoftwarelicense;
+    private $isVisibleSoftwarelicense = 1;
 
     #[ORM\Column(name: 'is_visible_line', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleLine;
+    private $isVisibleLine = 1;
 
     #[ORM\Column(name: 'is_visible_certificate', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleCertificate;
+    private $isVisibleCertificate = 1;
 
     #[ORM\Column(name: 'is_visible_rack', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleRack;
+    private $isVisibleRack = 1;
 
     #[ORM\Column(name: 'is_visible_passivedcequipment', type: 'boolean', options: ['default' => 1])]
-    private $isVisiblePassiveDCEquipment;
+    private $isVisiblePassiveDCEquipment = 1;
 
     #[ORM\Column(name: 'is_visible_enclosure', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleEnclosure;
+    private $isVisibleEnclosure = 1;
 
     #[ORM\Column(name: 'is_visible_pdu', type: 'boolean', options: ['default' => 1])]
-    private $isVisiblePdu;
+    private $isVisiblePdu = 1;
 
     #[ORM\Column(name: 'is_visible_cluster', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleCluster;
+    private $isVisibleCluster = 1;
 
     #[ORM\Column(name: 'is_visible_contract', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleContract;
+    private $isVisibleContract = 1;
 
     #[ORM\Column(name: 'is_visible_appliance', type: 'boolean', options: ['default' => 1])]
-    private $isVisibleAppliance;
+    private $isVisibleAppliance = 1;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
