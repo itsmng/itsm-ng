@@ -27,25 +27,25 @@ class RequestType
     private $name;
 
     #[ORM\Column(name: 'is_helpdesk_default', type: 'boolean', options: ['default' => 0])]
-    private $isHelpdeskDefault;
+    private $isHelpdeskDefault = false;
 
     #[ORM\Column(name: 'is_followup_default', type: 'boolean', options: ['default' => 0])]
-    private $isFollowupDefault;
+    private $isFollowupDefault = false;
 
     #[ORM\Column(name: 'is_mail_default', type: 'boolean', options: ['default' => 0])]
-    private $isMailDefault;
+    private $isMailDefault = false;
 
     #[ORM\Column(name: 'is_mailfollowup_default', type: 'boolean', options: ['default' => 0])]
-    private $isMailfollowupDefault;
+    private $isMailfollowupDefault = false;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
-    private $isActive;
+    private $isActive = true;
 
     #[ORM\Column(name: 'is_ticketheader', type: 'boolean', options: ['default' => 1])]
-    private $isTicketheader;
+    private $isTicketheader = true;
 
     #[ORM\Column(name: 'is_itilfollowup', type: 'boolean', options: ['default' => 1])]
-    private $isITILfollowup;
+    private $isITILfollowup = true;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
