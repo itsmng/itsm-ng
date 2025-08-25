@@ -1425,23 +1425,40 @@ class SoftwareLicense extends CommonTreeDropdown
         $header .= "</tr>\n";
         echo $header;
 
-        $fk   = $item->getForeignKeyField();
-        $crit = [$fk     => $ID,
-                      'ORDER' => 'name'];
+        $fk    = $item->getForeignKeyField();
+        $table = $item->getTable();
+
+        $em   = self::getAdapter()->getEntityManager();
+        $conn = $em->getConnection();
+        $qb   = $conn->createQueryBuilder();
+
+        $qb->select('t.id', 't.name', 't.entities_id', 't.comment')
+           ->from($table, 't')
+           ->where($qb->expr()->eq('t.' . $fk, ':parent_id'))
+           ->setParameter('parent_id', $ID)
+           ->orderBy('t.name', 'ASC');
 
         if ($entity_assign) {
-            if ($fk == 'entities_id') {
-                $crit['id']  = $_SESSION['glpiactiveentities'];
-                $crit['id'] += $_SESSION['glpiparententities'];
+            // Restrict to current entity scope
+            $active = $_SESSION['glpiactiveentities'] ?? [];
+            if ($fk === 'entities_id') {
+                $parents = $_SESSION['glpiparententities'] ?? [];
+                $ids = array_values(array_unique(array_map('intval', array_merge($active, $parents))));
+                if (!empty($ids)) {
+                    $qb->andWhere($qb->expr()->in('t.id', ':ids'))
+                       ->setParameter('ids', $ids, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
+                }
             } else {
-                foreach ($_SESSION['glpiactiveentities'] as $key => $value) {
-                    $crit['entities_id'][$key] = (string)$value;
+                $eids = array_values(array_map('intval', $active));
+                if (!empty($eids)) {
+                    $qb->andWhere($qb->expr()->in('t.entities_id', ':eids'))
+                       ->setParameter('eids', $eids, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
                 }
             }
         }
-        $nb = 0;
 
-        foreach (self::getAdapter()->request([$item->getTable(), $crit])->fetchAllAssociative() as $data) {
+        $nb = 0;
+        foreach ($qb->executeQuery()->fetchAllAssociative() as $data) {
             $nb++;
             echo "<tr class='tab_bg_1'>";
             echo "<td><a href='" . $item->getFormURL();
