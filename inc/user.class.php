@@ -3188,7 +3188,7 @@ class User extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'name',
            'name'               => __('Login'),
-           'datatype'           => 'itemlink',
+           'datatype'           => 'string',
            'forcegroupby'       => true,
            'massiveaction'      => false
         ];
