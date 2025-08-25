@@ -3500,7 +3500,7 @@ class CommonDBTM extends CommonGLPI
     public function maybeLocated()
     {
 
-        if (!array_key_exists('id', $this->fields)) {
+        if (!is_array($this->fields) ||!array_key_exists('id', $this->fields)) {
             $this->getEmpty();
         }
         return array_key_exists('locations_id', $this->fields);
