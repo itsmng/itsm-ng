@@ -540,9 +540,9 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function query(string $query): Result
     {        
-        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {             
-            
-            // Correction directe pour IFNULL dans les requêtes SQL
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+
+            // Direct correction for IFNULL in SQL queries
             $query = preg_replace('/IFNULL\s*\(([^,]+),\s*([^)]+)\)/i', 'COALESCE($1::text, $2)', $query);
             // Handle incorrect boolean values ​​in comparisons
 
@@ -606,6 +606,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         
         $stmt = $this->em->getConnection()->prepare($query);
         $results = $stmt->executeQuery();
+        
         return $results;
     }
     
@@ -771,6 +772,55 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         return ['order_by' => $order_by, 'select' => $select];
     }
 
+    private function fixPostgreSQLDistinctOrderBy(string $sql): string
+    {
+         // Check first if it's really necessary
+    if (stripos($sql, 'SELECT DISTINCT') === false || stripos($sql, 'ORDER BY') === false) {
+        return $sql;
+    }
+
+    // Ignore if it's in a subquery IN
+    if (preg_match('/\bIN\s*\(\s*SELECT\s+DISTINCT/i', $sql)) {
+        return $sql; // Do not modify subqueries in IN
+    }
+
+    // More precise pattern - only for the main query
+    if (preg_match('/^SELECT\s+DISTINCT\s+(.*?)\s+FROM\s+(.*?)\s+ORDER\s+BY\s+([^\s,]+)/is', $sql, $matches)) {
+        $selectPart = trim($matches[1]);
+        $orderColumn = trim($matches[3]);
+
+        // Clean the ORDER BY column (remove ASC/DESC)
+        $cleanOrderColumn = preg_replace('/\s+(ASC|DESC)$/i', '', $orderColumn);
+
+        // Check if the column is REALLY absent from the SELECT
+        $patterns = [
+            '/\b' . preg_quote($cleanOrderColumn, '/') . '\b/',
+            '/\b\w+\.' . preg_quote($cleanOrderColumn, '/') . '\b/',
+            '/\b' . preg_quote($cleanOrderColumn, '/') . '\s+AS\s+\w+/i'
+        ];
+        
+        $columnExists = false;
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $selectPart)) {
+                $columnExists = true;
+                break;
+            }
+        }
+        
+        if (!$columnExists) {
+            $newSelect = $selectPart . ', ' . $cleanOrderColumn;
+            return preg_replace(
+                '/^SELECT\s+DISTINCT\s+(.*?)\s+FROM/i',
+                "SELECT DISTINCT $newSelect FROM",
+                $sql,
+                1
+            );
+        }
+    }
+    
+    return $sql;
+    }
+
     public function getBooleanValue($value): string
     {
         // For PostgreSQL, return 'true' or 'false'
@@ -810,6 +860,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         // Special case: WHERE (1) AND -> replace with just WHERE
         $query = preg_replace('/WHERE\s*\(\s*1\s*\)\s*AND/i', 'WHERE', $query);
 
+        $query = $this->fixPostgreSQLDistinctOrderBy($query);
 
         return $query;
     }
@@ -818,33 +869,33 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     private function fixBooleanFields(string $query): string
     {
 
-        // 1. TRAITER timeline_position EN PREMIER (une seule fois)
+        // 1. Treat timeline_position FIRST (only once)
        $timeline_patterns = [
-            // Patterns avec AND
+            // Patterns with AND
             "/AND\s+timeline_position\s*>\s*-1\b/" => "AND timeline_position = TRUE",
             "/AND\s*\(\s*timeline_position\s*>\s*-1\s*\)/" => "AND (timeline_position = TRUE)",
-            
-            // Patterns avec WHERE
+
+            // Patterns with WHERE
             "/WHERE\s+timeline_position\s*>\s*-1\b/" => "WHERE timeline_position = TRUE",
             "/WHERE\s*\(\s*timeline_position\s*>\s*-1\s*\)/" => "WHERE (timeline_position = TRUE)",
-            
-            // Patterns avec nom de table
+
+            // Patterns with table name
             "/\b(\w+\.)timeline_position\s*>\s*-1\b/" => "$1timeline_position = TRUE",
             "/\b(\w+\.)timeline_position\s*=\s*0\b/" => "$1timeline_position = FALSE",
-            
-            // Patterns sans nom de table
+
+            // Patterns without table name
             "/\btimeline_position\s*>\s*-1\b/" => "timeline_position = TRUE",
             "/\btimeline_position\s*=\s*0\b/" => "timeline_position = FALSE",
-            
-            // Pattern générique pour capturer TOUS les cas
+
+            // Generic pattern to capture ALL cases
             "/timeline_position\s*>\s*-1/" => "timeline_position = TRUE",
         ];
         
          foreach ($timeline_patterns as $pattern => $replacement) {
             $query = preg_replace($pattern, $replacement, $query);
         }
-        
-        // AJOUTEZ aussi des str_replace() pour les cas non capturés par les regex
+
+        // Also add str_replace() for cases not captured by regex
         $query = str_replace('timeline_position > -1', 'timeline_position = TRUE', $query);
         $query = str_replace('(timeline_position > -1)', '(timeline_position = TRUE)', $query);
     
@@ -857,7 +908,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         ];
 
         foreach ($boolFields as $field) {
-            // Patterns pour capturer TOUS les cas possibles
+            // Patterns to capture ALL possible cases
             $regex_patterns = [
             "/\b$field\s*=\s*true\b/i" => "$field = TRUE",
             "/\b$field\s*=\s*false\b/i" => "$field = FALSE",
@@ -874,7 +925,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             "/\b$field\s*=\s*'1'/" => "$field = " . $this->getBooleanValue(true),
             "/\b$field\s*=\s*'0'/" => "$field = " . $this->getBooleanValue(false),
         ];
-         // B. PATTERNS STRING REPLACE (chaînes simples)
+         // B. PATTERNS STRING REPLACE (simple strings)
         $string_patterns = [
             ".$field = 0" => ".$field = " . $this->getBooleanValue(false),
             ".$field = 1" => ".$field = " . $this->getBooleanValue(true),
@@ -885,8 +936,8 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             ".\"$field\"=0"   => ".\"$field\"=" . $this->getBooleanValue(false),
             ".\"$field\"=1"   => ".\"$field\"=" . $this->getBooleanValue(true)
         ];
-        
-        // Appliquer les remplacements de chaînes
+
+        // Apply string replacements
         foreach ($string_patterns as $search => $replace) {
             $query = str_replace($search, $replace, $query);
         }
@@ -964,7 +1015,7 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
      */
     public function prepareQuoteName($name)
     {
-        // Cas spécial pour les tableaux de SoftwareLicense
+        // Special case for SoftwareLicense arrays
         if (is_array($name) && (isset($name['table']) || isset($name['tables']))) {
             $table_key = isset($name['table']) ? 'table' : 'tables';
             return $name[$table_key];
@@ -1075,33 +1126,46 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function getGroupConcat(string $field, string $separator = ', ', ?string $order_by = null, bool $distinct = true): string
     {
         // Check if DISTINCT is already in the field
-        $has_distinct = stripos($field, 'DISTINCT') !== false;
+    $has_distinct = stripos($field, 'DISTINCT') !== false;
 
-        // For PostgreSQL, always convert to text
-        $field_clean = $has_distinct ? preg_replace('/DISTINCT\s+/i', '', $field) : $field;
-        $final_field = $has_distinct
-            ? "DISTINCT " . $field_clean . "::text"
-            : ($distinct ? "DISTINCT $field_clean::text" : "$field_clean::text");
+    // For PostgreSQL, always convert to text
+    $field_clean = $has_distinct ? preg_replace('/DISTINCT\s+/i', '', $field) : $field;
+    $final_field = $has_distinct
+        ? "DISTINCT " . $field_clean . "::text"
+        : ($distinct ? "DISTINCT $field_clean::text" : "$field_clean::text");
 
-        // Escape the separator for SQL
-        $escaped_separator = "'" . str_replace("'", "''", $separator) . "'";
+    // Escape the separator for SQL
+    $escaped_separator = "'" . str_replace("'", "''", $separator) . "'";
 
-        // Generate the STRING_AGG function
-        $sql = "STRING_AGG($final_field, $escaped_separator";
+    // Generate the STRING_AGG function
+    $sql = "STRING_AGG($final_field, $escaped_separator";
 
-        // Handling ORDER BY for PostgreSQL
-        if (!empty($order_by)) {
-            // If it's a constant and we're using DISTINCT, ignore the ORDER BY
-            if (($has_distinct || $distinct) && preg_match('/^[\'"](.*?)[\'"]\s*$/', $order_by)) {
-                // Do not add ORDER BY
+    // Handling ORDER BY for PostgreSQL
+    if (!empty($order_by)) {
+        // If it's a constant and we're using DISTINCT, ignore the ORDER BY
+        if (($has_distinct || $distinct) && preg_match('/^[\'"](.*?)[\'"]\s*$/', $order_by)) {
+            // Do not add ORDER BY
+        } else {
+            // Check DISTINCT + ORDER BY compatibility
+            $order_by_clean = trim($order_by);
+
+            // If using DISTINCT, check if ORDER BY is compatible
+            if (($has_distinct || $distinct)) {
+                // Extract main column name from DISTINCT field
+                $distinct_column = preg_replace('/.*\.(\w+).*/', '$1', $field_clean);
+                $order_column = preg_replace('/.*\.(\w+).*/', '$1', $order_by_clean);
+
+                if ($distinct_column === $order_column) {
+                    $sql .= " ORDER BY $order_by_clean::text";
+                }
             } else {
-                // Always convert ORDER BY to text too
-                $sql .= " ORDER BY $order_by::text";
+                // ORDER BY compatible with DISTINCT
+                $sql .= " ORDER BY $order_by_clean::text";
             }
         }
+    }
 
-        $sql .= ")";
-
+    $sql .= ")";
         return $sql;
     }
 
