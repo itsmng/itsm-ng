@@ -1593,33 +1593,6 @@ class Search
                     );
                 }
 
-                if ($data['itemtype'] == 'User') {
-                    foreach ($data['data']['rows'] as &$newrow) {
-                        $user_id = $newrow['id'] ?? null;
-
-                        if ($user_id) {
-                            // For each column that could contain a username
-                            foreach ($data['data']['cols'] as $col) {
-                                $col_key = "{$col['itemtype']}_{$col['id']}";
-
-                                // If this column exists and could be a username
-                                if (isset($newrow[$col_key]['displayname']) &&
-                                    is_string($newrow[$col_key]['displayname']) &&
-                                    !strpos($newrow[$col_key]['displayname'], '<a href')) {
-
-                                    // Create an explicit HTML link
-                                    $display_name = strip_tags($newrow[$col_key]['displayname']);
-                                    $newrow[$col_key]['displayname'] = sprintf(
-                                        '<a href="user.form.php?id=%d">%s</a>',
-                                        $user_id,
-                                        $display_name
-                                    );
-                                }
-                            }
-                        }
-                    }
-                }
-
                 $data['data']['rows'][$i] = $newrow;
                 $i++;
             }
@@ -3643,8 +3616,8 @@ JAVASCRIPT;
         switch ($table . "." . $field) {
             case "glpi_users.name":
                 if ($itemtype != 'User') {
-                    // Added raw column for ORDER BY in addition to column with alias
-                    return " $table$addtable.$field, 
+                    // Include name only for DISTINCT/ORDER BY requirement, but hide it with a safe alias
+                    return " $table$addtable.$field AS __orderby_" . $NAME . ", 
                         $table$addtable.$field AS \"" . $NAME . "\",
                         $table$addtable.$field AS \"" . $NAME . "_name\",
                         $table$addtable.realname AS \"" . $NAME . "_realname\",
@@ -3676,19 +3649,35 @@ JAVASCRIPT;
                             "$ticket_user_table.users_id"
                         ) . " AS \"" . $NAME . "_2\", ";
                     }
-                    // $id_field = "$table$addtable.id";
-                    // Added raw column for ORDER BY without alias
-                    return "
-                        $table$addtable.$field,
-                        " . $adapter->getGroupConcat(
-                        "DISTINCT $table$addtable.$field",
-                        self::LONGSEP,
+                    $concat_expr = $adapter->concat([
+                        $adapter->ifnull("$table$addtable.$field", "'" . self::NULLVALUE . "'"),
+                        "'" . self::SHORTSEP . "'",
                         "$table$addtable.id"
+                    ]);
+
+                    return "
+                        $table$addtable.$field AS __orderby_" . $NAME . ",
+                        " . $adapter->getGroupConcat(
+                        "DISTINCT $concat_expr",
+                        self::LONGSEP,
+                        $concat_expr
                     ) . " AS \"" . $NAME . "\",
                         $addaltemail
                         $ADDITONALFIELDS";
                 } else {
-                    return " $table$addtable.$field AS \"" . $NAME . "\",
+                    $concat_expr = $adapter->concat([
+                        $adapter->ifnull("$table$addtable.$field", "'" . self::NULLVALUE . "'"),
+                        "'" . self::SHORTSEP . "'",
+                        "$table$addtable.id"
+                    ]);
+
+                    return " $table$addtable.$field AS __orderby_" . $NAME . ",
+                        " . $adapter->getGroupConcat(
+                            "DISTINCT $concat_expr",
+                            self::LONGSEP,
+                            $concat_expr,
+                            true
+                        ) . " AS \"" . $NAME . "\",
                         $table$addtable.$field AS \"" . $NAME . "_name\",
                         $table$addtable.realname AS \"" . $NAME . "_realname\",
                         $table$addtable.id  AS \"" . $NAME . "_id\",
