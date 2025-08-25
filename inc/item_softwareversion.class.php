@@ -1306,64 +1306,43 @@ class Item_SoftwareVersion extends CommonDBRelation
             ];
             renderTwigForm($form);
         }
-        $lic_where = [];
-        if (count($installed)) {
-            $lic_where['NOT'] = ['glpi_softwarelicenses.id' => $installed];
+        $em = self::getAdapter()->getEntityManager();
+        $conn = $em->getConnection();
+        $qb = $conn->createQueryBuilder();
+
+        $qb->select(
+            'l.*',
+            'isl.id AS linkid',
+            's.name AS softname',
+            'sv.name AS version',
+            'st.name AS state'
+        );
+        $qb->from('glpi_softwarelicenses', 'l');
+        $qb->innerJoin('l', 'glpi_softwares', 's', 'l.softwares_id = s.id');
+        $qb->leftJoin('l', 'glpi_items_softwarelicenses', 'isl', 'isl.softwarelicenses_id = l.id');
+        $qb->leftJoin(
+            'l',
+            'glpi_softwareversions',
+            'sv',
+            'sv.id = l.softwareversions_id_use OR (l.softwareversions_id_use = 0 AND l.softwareversions_id_buy = sv.id)'
+        );
+        $qb->leftJoin('sv', 'glpi_states', 'st', 'st.id = sv.states_id');
+        $qb->where('isl.items_id = :items_id');
+        $qb->andWhere('isl.itemtype = :itemtype');
+        $qb->setParameter('items_id', $items_id);
+        $qb->setParameter('itemtype', $itemtype);
+        $qb->orderBy('s.name', 'ASC');
+        $qb->addOrderBy('sv.name', 'ASC');
+
+        if ($item->maybeDeleted()) {
+            $qb->andWhere('isl.is_deleted = FALSE');
+        }
+        if (!empty($installed)) {
+            $qb->andWhere($qb->expr()->notIn('l.id', ':installed'))
+               ->setParameter('installed', $installed, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
         }
 
-        $lic_request = [
-           'SELECT'       => [
-              'glpi_softwarelicenses.*',
-              'glpi_items_softwarelicenses.id AS linkid',
-              'glpi_softwares.name AS softname',
-              'glpi_softwareversions.name AS version',
-              'glpi_states.name AS state'
-           ],
-           'FROM'         => SoftwareLicense::getTable(),
-           'INNER JOIN'   => [
-              'glpi_softwares'  => [
-                 'FKEY'   => [
-                    'glpi_softwarelicenses' => 'softwares_id',
-                    'glpi_softwares'        => 'id'
-                 ]
-              ]
-           ],
-           'LEFT JOIN'    => [
-              'glpi_items_softwarelicenses'   => [
-                 'FKEY'   => [
-                    'glpi_items_softwarelicenses' => 'softwarelicenses_id',
-                    'glpi_softwarelicenses'       => 'id'
-                 ]
-              ],
-              'glpi_softwareversions'   => [
-                 'FKEY'   => [
-                    'glpi_softwareversions' => 'id',
-                    'glpi_softwarelicenses' => 'softwareversions_id_use',
-                    [
-                       'AND' => [
-                          'glpi_softwarelicenses.softwareversions_id_use' => 0,
-                          'glpi_softwarelicenses.softwareversions_id_buy' => new \QueryExpression(DBmysql::quoteName('glpi_softwareversions.id')),
-                       ]
-                    ]
-                 ]
-              ],
-              'glpi_states'  => [
-                 'FKEY'   => [
-                    'glpi_softwareversions' => 'states_id',
-                    'glpi_states'           => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'     => [
-              'glpi_items_softwarelicenses.items_id'  => $items_id,
-              'glpi_items_softwarelicenses.itemtype'  => $itemtype,
-           ] + $lic_where,
-           'ORDER'     => ['softname', 'version']
-        ];
-        if ($item->maybeDeleted()) {
-            $lic_request['WHERE']['glpi_items_softwarelicenses.is_deleted'] = 0;
-        }
-        $lic_request = self::getAdapter()->request($lic_request);
+        $lic_request = $qb->executeQuery();
 
         $massActionContainerSoftwareLicense = 'massSoftwareLicense' . $rand;
         if ($canedit) {
@@ -1392,7 +1371,7 @@ class Item_SoftwareVersion extends CommonDBRelation
         ];
         $values = [];
         $massive_action = [];
-        $data = $lic_request->fetchAllAssociative();
+        $datas = $lic_request->fetchAllAssociative();
         foreach ($datas as $data) {
             $newValue = [
                $data['softname'],
