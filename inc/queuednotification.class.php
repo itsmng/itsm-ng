@@ -718,7 +718,7 @@ class QueuedNotification extends CommonDBTM
         echo "<td>";
         echo Dropdown::getDropdownName(
             'glpi_notificationtemplates',
-            $this->fields['notificationtemplates_id']
+            $this->fields['notificationtemplates_id']?? null
         );
         echo "</td>";
         echo "<td>&nbsp;</td>";
