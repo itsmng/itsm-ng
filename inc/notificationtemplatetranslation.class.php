@@ -198,7 +198,7 @@ class NotificationTemplateTranslation extends CommonDBChild
     **/
     public function showSummary(NotificationTemplate $template, $options = [])
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $nID     = $template->getField('id');
         $canedit = Config::canUpdate();
@@ -225,13 +225,14 @@ class NotificationTemplateTranslation extends CommonDBChild
         $fields = [ 'language' => __('Language') ];
         $values = [];
         $massiveActionValues = [];
+        $request = $this::getAdapter()->request([
+            'FROM'  => 'glpi_notificationtemplatetranslations',
+            'WHERE' => ['notificationtemplates_id' => $nID]
+         ]);
 
-        foreach (
-            $DB->request(
-                'glpi_notificationtemplatetranslations',
-                ['notificationtemplates_id' => $nID]
-            ) as $data
-        ) {
+        $results = $request->fetchAllAssociative();
+
+        foreach ($results as $data) {
             $link = '';
             if ($this->getFromDB($data['id'])) {
                 Session::addToNavigateListItems('NotificationTemplateTranslation', $data['id']);

@@ -741,7 +741,7 @@ function update0681to07()
     $enum01["glpi_doc_device"][]      = "is_template";
 
     foreach ($enum01 as $table => $fields) {
-        foreach ($fields as $key => $field) {
+        foreach ($fields as $field) {
             if ($DB->fieldExists($table, $field, false)) {
                 $query = "ALTER TABLE `$table`
                       ADD `tmp_convert_enum` SMALLINT NOT NULL DEFAULT '0' AFTER `$field` ";
@@ -798,7 +798,7 @@ function update0681to07()
 
     foreach ($enumYN as $default => $tmptbl) {
         foreach ($tmptbl as $table => $fields) {
-            foreach ($fields as $key => $field) {
+            foreach ($fields as $field) {
                 if ($DB->fieldExists($table, $field, false)) {
                     $newdef = 0;
                     if ($default == "Y") {
@@ -850,7 +850,7 @@ function update0681to07()
     $enumYesNo["glpi_users"][]    = "tracking_order";
 
     foreach ($enumYesNo as $table => $fields) {
-        foreach ($fields as $key => $field) {
+        foreach ($fields as $field) {
             if ($DB->fieldExists($table, $field, false)) {
                 $query = "ALTER TABLE `$table`
                       ADD `tmp_convert_enum` SMALLINT NOT NULL DEFAULT '0' AFTER `$field` ";

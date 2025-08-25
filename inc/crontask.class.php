@@ -178,12 +178,12 @@ class CronTask extends CommonDBTM
         global $DB;
 
         $types = [];
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT'          => 'itemtype',
            'DISTINCT'        => true,
            'FROM'            => 'glpi_crontasks'
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $types[] = $data['itemtype'];
         }
         return $types;
@@ -228,19 +228,19 @@ class CronTask extends CommonDBTM
             pcntl_signal(SIGTERM, [$this, 'signal']);
         }
 
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'state'  => self::STATE_RUNNING,
-              'lastrun'   => new \QueryExpression('DATE_FORMAT(NOW(),\'%Y-%m-%d %H:%i:00\')')
+        $result = $this::getAdapter()->request([
+            'UPDATE' => $this->getTable(),
+            'SET'    => [
+               'state'   => self::STATE_RUNNING,
+               'lastrun' => date('Y-m-d H:i:00'),
             ],
-            [
-              'id'  => $this->fields['id'],
-              'NOT' => ['state' => self::STATE_RUNNING]
+            'WHERE'  => [
+               'id'  => $this->fields['id'],
+               'NOT' => ['state' => self::STATE_RUNNING],
             ]
-        );
+         ]);
 
-        if ($DB->affectedRows($result) > 0) {
+        if ($result->rowCount() > 0) {
             $this->timer  = microtime(true);
             $this->volume = 0;
             $log = new CronTaskLog();
@@ -302,52 +302,51 @@ class CronTask extends CommonDBTM
     **/
     public function end($retcode, int $log_state = CronTaskLog::STATE_STOP)
     {
-        global $DB;
 
         if (!isset($this->fields['id'])) {
             return false;
         }
 
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'state'  => $this->fields['state']
-            ],
-            [
-              'id'     => $this->fields['id'],
-              'state'  => self::STATE_RUNNING
-            ]
-        );
+        $crontask = new self();
+        if ($crontask->getFromDBByCrit([
+            'id'    => $this->fields['id'],
+            'state' => self::STATE_RUNNING
+        ])) {
+            $updated = $this->update([
+                'id'    => $this->fields['id'],
+                'state' => $this->fields['state']
+            ]);
 
-        if ($DB->affectedRows($result) > 0) {
-            // No gettext for log but add gettext line to be parsed for pot generation
-            // order is important for insertion in english in the database
-            if ($log_state === CronTaskLog::STATE_ERROR) {
-                $content = __('Execution error');
-                $content = 'Execution error';
-            } elseif (is_null($retcode)) {
-                $content = __('Action aborted');
-                $content = 'Action aborted';
-            } elseif ($retcode < 0) {
-                $content = __('Action completed, partially processed');
-                $content = 'Action completed, partially processed';
-            } elseif ($retcode > 0) {
-                $content = __('Action completed, fully processed');
-                $content = 'Action completed, fully processed';
-            } else {
-                $content = __('Action completed, no processing required');
-                $content = 'Action completed, no processing required';
+            if ($updated) {
+                // No gettext for log but add gettext line to be parsed for pot generation
+                // order is important for insertion in english in the database
+                if ($log_state === CronTaskLog::STATE_ERROR) {
+                    $content = __('Execution error');
+                    $content = 'Execution error';
+                } elseif (is_null($retcode)) {
+                    $content = __('Action aborted');
+                    $content = 'Action aborted';
+                } elseif ($retcode < 0) {
+                    $content = __('Action completed, partially processed');
+                    $content = 'Action completed, partially processed';
+                } elseif ($retcode > 0) {
+                    $content = __('Action completed, fully processed');
+                    $content = 'Action completed, fully processed';
+                } else {
+                    $content = __('Action completed, no processing required');
+                    $content = 'Action completed, no processing required';
+                }
+
+                $log = new CronTaskLog();
+                $log->add(['crontasks_id'    => $this->fields['id'],
+                                'date'            => $_SESSION['glpi_currenttime'],
+                                'content'         => $content,
+                                'crontasklogs_id' => $this->startlog,
+                                'state'           => $log_state,
+                                'volume'          => $this->volume,
+                                'elapsed'         => (microtime(true) - $this->timer)]);
+                return true;
             }
-
-            $log = new CronTaskLog();
-            $log->add(['crontasks_id'    => $this->fields['id'],
-                            'date'            => $_SESSION['glpi_currenttime'],
-                            'content'         => $content,
-                            'crontasklogs_id' => $this->startlog,
-                            'state'           => $log_state,
-                            'volume'          => $this->volume,
-                            'elapsed'         => (microtime(true) - $this->timer)]);
-            return true;
         }
         return false;
     }
@@ -389,7 +388,7 @@ class CronTask extends CommonDBTM
     {
         global $DB;
 
-        $hour_criteria = new QueryExpression('hour(curtime())');
+        $hour_criteria = new QueryExpression($this::getAdapter()->getCurrentHourExpression());
 
         $itemtype_orwhere = [
            // Core crontasks
@@ -458,27 +457,27 @@ class CronTask extends CommonDBTM
                ]]
             ]];
             $WHERE[] = ['OR' => [
-               'lastrun'   => null,
-               new \QueryExpression('unix_timestamp(' . $DB->quoteName('lastrun') . ') + ' . $DB->quoteName('frequency') . ' <= unix_timestamp(now())')
+            'lastrun'   => null,
+            new \QueryExpression($this::getAdapter()->getUnixTimestamp('lastrun') . ' + ' . $DB->quoteName('frequency') . ' <= ' . $this::getAdapter()->getUnixTimestamp('now()'))
             ]];
         }
 
-        $iterator = $DB->request([
-           'SELECT' => [
-              '*',
-              new \QueryExpression("LOCATE('Plugin', " . $DB->quoteName('itemtype') . ") AS ISPLUGIN")
-           ],
-           'FROM'   => $this->getTable(),
-           'WHERE'  => $WHERE,
-           // Core task before plugins
-           'ORDER'  => [
-              'ISPLUGIN',
-              new \QueryExpression('unix_timestamp(' . $DB->quoteName('lastrun') . ')+' . $DB->quoteName('frequency') . '')
-           ]
+        $request = $this::getAdapter()->request([
+            'SELECT' => [
+                '*',
+                new \QueryExpression($this::getAdapter()->getPositionExpression('Plugin', 'itemtype', 'ISPLUGIN'))
+            ],
+            'FROM'   => $this->getTable(),
+            'WHERE'  => $WHERE,
+            // Core task before plugins
+            'ORDER'  => [
+                'ISPLUGIN',
+                new \QueryExpression($this::getAdapter()->getDateAdd('lastrun', 'frequency', 'SECOND'))
+            ]
         ]);
 
-        if (count($iterator)) {
-            $this->fields = $iterator->next();
+        if ($row = $request->fetchAssociative()) {
+            $this->fields = $row;
             return true;
         }
         return false;
@@ -489,9 +488,7 @@ class CronTask extends CommonDBTM
      */
     private function sendNotificationOnError(): void
     {
-        global $DB;
-
-        $alert_iterator = $DB->request(
+        $request = $this::getAdapter()->request(
             [
               'FROM'      => 'glpi_alerts',
               'WHERE'     => [
@@ -501,7 +498,8 @@ class CronTask extends CommonDBTM
               ],
             ]
         );
-        if ($alert_iterator->count() > 0) {
+        $alert_result = $request->fetchAllAssociative();
+        if (count($alert_result) > 0) {
             // An alert has been sent within last day, so do not send a new one to not bother administrator
             return;
         }
@@ -514,7 +512,7 @@ class CronTask extends CommonDBTM
         // will trigger a notification.
         $threshold = 5;
 
-        $iterator = $DB->request(
+        $results = $this::getAdapter()->request(
             [
               'FROM'   => 'glpi_crontasklogs',
               'WHERE'  => [
@@ -527,7 +525,7 @@ class CronTask extends CommonDBTM
         );
 
         $error_count = 0;
-        foreach ($iterator as $row) {
+        foreach ($results as $row) {
             if ($row['state'] === CronTaskLog::STATE_ERROR) {
                 $error_count++;
             }
@@ -1127,15 +1125,13 @@ class CronTask extends CommonDBTM
     **/
     public static function unregister($plugin)
     {
-        global $DB;
-
         if (empty($plugin)) {
             return false;
         }
         $temp = new CronTask();
         $ret  = true;
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'OR' => [
@@ -1145,7 +1141,7 @@ class CronTask extends CommonDBTM
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             if (!$temp->delete($data)) {
                 $ret = false;
             }
@@ -1162,8 +1158,6 @@ class CronTask extends CommonDBTM
     **/
     public function showStatistics()
     {
-        global $DB;
-
         echo "<br><div class='center'>";
         echo "<table class='tab_cadre' aria-label='Statistics'>";
         echo "<tr><th colspan='2'>&nbsp;" . __('Statistics') . "</th></tr>\n";
@@ -1201,7 +1195,7 @@ class CronTask extends CommonDBTM
         echo "</td></tr>";
 
         if ($nbstop) {
-            $data = $DB->request([
+            $data = $this::getAdapter()->request([
                'SELECT' => [
                   'MIN' => [
                      'date AS datemin',
@@ -1226,7 +1220,7 @@ class CronTask extends CommonDBTM
                   'crontasks_id' => $this->fields['id'],
                   'state'        => CronTaskLog::STATE_STOP
                ]
-            ])->next();
+            ])->fetchAssociative();
 
             echo "<tr class='tab_bg_1'><td>" . __('Start date') . "</td>";
             echo "<td class='right'>" . Html::convDateTime($data['datemin']) . "</td></tr>";
@@ -1304,8 +1298,6 @@ class CronTask extends CommonDBTM
     **/
     public function showHistory()
     {
-        global $DB;
-
         if (isset($_GET["crontasklogs_id"]) && $_GET["crontasklogs_id"]) {
             return $this->showHistoryDetail($_GET["crontasklogs_id"]);
         }
@@ -1337,7 +1329,7 @@ class CronTask extends CommonDBTM
         // Display the pager
         Html::printAjaxPager(__('Last run list'), $start, $number);
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => 'glpi_crontasklogs',
            'WHERE'  => [
               'crontasks_id' => $this->fields['id'],
@@ -1347,8 +1339,8 @@ class CronTask extends CommonDBTM
            'START'  => (int)$start,
            'LIMIT'  => (int)$_SESSION['glpilist_limit']
         ]);
-
-        if (count($iterator)) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
             echo "<table class='tab_cadrehov' aria-label='Activity Log'>";
             $header = "<tr>";
             $header .= "<th>" . _n('Date', 'Dates', 1) . "</th>";
@@ -1358,7 +1350,7 @@ class CronTask extends CommonDBTM
             $header .= "</tr>\n";
             echo $header;
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td><a href='javascript:reloadTab(\"crontasklogs_id=" .
                             $data['crontasklogs_id'] . "\");'>" . Html::convDateTime($data['date']) .
@@ -1397,13 +1389,11 @@ class CronTask extends CommonDBTM
     **/
     public function showHistoryDetail($logid)
     {
-        global $DB;
-
         echo "<br><div class='center'>";
         echo "<p><a href='javascript:reloadTab(\"crontasklogs_id=0\");'>" . __('Last run list') . "</a>" .
              "</p>";
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => 'glpi_crontasklogs',
            'WHERE'  => [
               'OR' => [
@@ -1413,8 +1403,8 @@ class CronTask extends CommonDBTM
            ],
            'ORDER'  => 'id ASC'
         ]);
-
-        if (count($iterator)) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
             echo "<table class='tab_cadrehov' aria-label='Activity Log Table'><tr>";
             echo "<th>" . _n('Date', 'Dates', 1) . "</th>";
             echo "<th>" . __('Status') . "</th>";
@@ -1424,7 +1414,7 @@ class CronTask extends CommonDBTM
             echo "</tr>\n";
 
             $first = true;
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_2'>";
                 echo "<td class='center'>" . ($first ? Html::convDateTime($data['date'])
                                                     : "&nbsp;") . "</a></td>";
@@ -1955,7 +1945,6 @@ class CronTask extends CommonDBTM
     **/
     public static function cronLogs($task)
     {
-        global $DB;
 
         $vol = 0;
 
@@ -1964,7 +1953,7 @@ class CronTask extends CommonDBTM
             $vol += Event::cleanOld($task->fields['param']);
         }
 
-        foreach ($DB->request('glpi_crontasks') as $data) {
+        foreach (self::getAdapter()->request(['FROM' => self::getTable()]) as $data) {
             if ($data['logs_lifetime'] > 0) {
                 $vol += CronTaskLog::cleanOld($data['id'], $data['logs_lifetime']);
             }
@@ -1985,7 +1974,7 @@ class CronTask extends CommonDBTM
         global $DB;
 
         // CronTasks running for more than 1 hour or 2 frequency
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'state'  => self::STATE_RUNNING,
@@ -1996,7 +1985,7 @@ class CronTask extends CommonDBTM
            ]
         ]);
         $crontasks = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $crontasks[$data['id']] = $data;
         }
 

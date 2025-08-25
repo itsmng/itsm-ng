@@ -197,10 +197,10 @@ class Phone extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "PhoneType"),
                     ],
                     __("Technician in charge of the hardware") => [
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'type' => 'select',
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields['users_id_tech'],
+                       'value' => $this->fields['tech_users_id'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     Manufacturer::getTypeName(1) => [
@@ -211,11 +211,11 @@ class Phone extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
                     __('Group in charge of the hardware') => [
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'type' => 'select',
                        'itemtype' => Group::class,
                        'conditions' => ['is_assign' => 1],
-                       'value' => $this->fields['groups_id_tech'],
+                       'value' => $this->fields['tech_groups_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
                     _n('Model', 'Models', 1) => [
@@ -327,9 +327,7 @@ class Phone extends CommonDBTM
     **/
     public function getLinkedItems()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'computers_id',
            'FROM'   => 'glpi_computers_items',
            'WHERE'  => [
@@ -338,7 +336,7 @@ class Phone extends CommonDBTM
            ]
         ]);
         $tab = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $tab['Computer'][$data['computers_id']] = $data['computers_id'];
         }
         return $tab;
@@ -536,7 +534,7 @@ class Phone extends CommonDBTM
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the hardware'),
            'datatype'           => 'dropdown',
            'right'              => 'own_ticket'
@@ -546,7 +544,7 @@ class Phone extends CommonDBTM
            'id'                 => '49',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge of the hardware'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'

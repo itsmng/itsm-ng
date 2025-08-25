@@ -40,6 +40,11 @@ global $CFG_GLPI, $GLPI, $GLPI_CACHE, $DB;
 
 include_once(GLPI_ROOT . "/inc/based_config.php");
 include_once(GLPI_ROOT . "/inc/dbconnection.class.php");
+// Load environment variables early so DB_DRIVER is available before DB connection
+// This allows selecting the correct SQL adapter (MySQL vs PostgreSQL)
+if (file_exists(GLPI_ROOT . '/src/Infrastructure/Env.php')) {
+    include_once GLPI_ROOT . '/src/Infrastructure/Env.php';
+}
 
 Session::setPath();
 Session::start();
@@ -259,8 +264,8 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
     //set Status session var
     SpecialStatus::oldStatusOrder();
 
-    $request = $DB->request('glpi_oidc_users');
-    while ($data = $request->next()) {
+    $request = config::getAdapter()->request(['FROM' => 'glpi_oidc_users']);
+    while ($data = $request->fetchAssociative()) {
         if (isset($_SESSION['glpiID'])) {
             if ($data['user_id'] == $_SESSION['glpiID']) {
                 if ($data['update'] == 0) {

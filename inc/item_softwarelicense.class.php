@@ -341,9 +341,7 @@ class Item_SoftwareLicense extends CommonDBRelation
     **/
     public static function countForLicense($softwarelicenses_id, $entity = '', $itemtype = null)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => ['itemtype'],
            'DISTINCT'  => true,
            'FROM'      => self::getTable(__CLASS__),
@@ -356,7 +354,7 @@ class Item_SoftwareLicense extends CommonDBRelation
         if ($itemtype !== null) {
             $target_types = [$itemtype];
         } else {
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 $target_types[] = $data['itemtype'];
             }
         }
@@ -394,7 +392,7 @@ class Item_SoftwareLicense extends CommonDBRelation
             if ($item->maybeTemplate()) {
                 $request['WHERE']["$itemtable.is_template"] = 0;
             }
-            $count += $DB->request($request)->next()['cpt'];
+            $count += self::getAdapter()->request($request)->fetchAssociative()['cpt'];
         }
         return $count;
     }
@@ -409,12 +407,10 @@ class Item_SoftwareLicense extends CommonDBRelation
     **/
     public static function countForSoftware($softwares_id)
     {
-        global $DB;
-
         $license_table = SoftwareLicense::getTable();
         $item_license_table = self::getTable(__CLASS__);
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => ['itemtype'],
            'DISTINCT'  => true,
            'FROM'      => $item_license_table,
@@ -432,7 +428,7 @@ class Item_SoftwareLicense extends CommonDBRelation
         ]);
 
         $target_types = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $target_types[] = $data['itemtype'];
         }
 
@@ -472,7 +468,7 @@ class Item_SoftwareLicense extends CommonDBRelation
             if ($item->maybeTemplate()) {
                 $request['WHERE']["$itemtable.is_template"] = 0;
             }
-            $count += $DB->request($request)->next()['cpt'];
+            $count += self::getAdapter()->request($request)->fetchAssociative()['cpt'];
         }
         return $count;
     }
@@ -487,8 +483,6 @@ class Item_SoftwareLicense extends CommonDBRelation
     **/
     public static function showForLicenseByEntity(SoftwareLicense $license)
     {
-        global $DB;
-
         $softwarelicense_id = $license->getField('id');
         $license_table = SoftwareLicense::getTable();
         $item_license_table = self::getTable(__CLASS__);
@@ -505,7 +499,7 @@ class Item_SoftwareLicense extends CommonDBRelation
 
         $tot = 0;
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => ['id', 'completename'],
            'FROM'   => 'glpi_entities',
            'WHERE'  => getEntitiesRestrictCriteria('glpi_entities'),
@@ -513,8 +507,8 @@ class Item_SoftwareLicense extends CommonDBRelation
         ]);
 
         $tab = "&nbsp;&nbsp;&nbsp;&nbsp;";
-        while ($data = $iterator->next()) {
-            $itemtype_iterator = $DB->request([
+        while ($data = $request->fetchAssociative()) {
+            $itemtype_request = self::getAdapter()->request([
                'SELECT'    => ['itemtype'],
                'DISTINCT'  => true,
                'FROM'      => $item_license_table,
@@ -532,7 +526,7 @@ class Item_SoftwareLicense extends CommonDBRelation
             ]);
 
             $target_types = [];
-            while ($type = $itemtype_iterator->next()) {
+            while ($type = $itemtype_request->fetchAssociative()) {
                 $target_types[] = $type['itemtype'];
             }
 
@@ -595,7 +589,7 @@ class Item_SoftwareLicense extends CommonDBRelation
             $tmp  = explode(",", $_GET["sort"]);
             $sort = "`" . implode("` $order,`", $tmp) . "`";
         } else {
-            $sort = "`entity` $order, `itemname`";
+            $sort = "entity $order, itemname";
         }
 
         //SoftwareLicense ID
@@ -853,57 +847,60 @@ class Item_SoftwareLicense extends CommonDBRelation
            'LIMIT'        => $_SESSION['glpilist_limit'],
            'START'        => $start
         ];
-        $iterator = $DB->request($criteria);
+        $request = self::getAdapter()->request($criteria);
+        $dataList = $request->fetchAllAssociative();
 
-        if ($data = $iterator->next()) {
-            if ($canedit) {
-                $massiveactionparams = [
-                   'num_displayed'    => min($_SESSION['glpilist_limit'], count($iterator)),
-                   'container'        => 'tableForSoftwareLicenceItem',
-                   'specific_actions' => [
-                      'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
-                   ],
-                   'is_deleted' => false,
-                   'display_arrow' => false
-                ];
+        if (!empty($dataList)) {
+            foreach ($dataList as $data) {
+                if ($canedit) {
+                    $massiveactionparams = [
+                    'num_displayed'    => min($_SESSION['glpilist_limit'], count($dataList)),
+                    'container'        => 'tableForSoftwareLicenceItem',
+                    'specific_actions' => [
+                        'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+                    ],
+                    'is_deleted' => false,
+                    'display_arrow' => false
+                    ];
 
-                // show transfer only if multi licenses for this software
-                if (self::countLicenses($data['softid']) > 1) {
-                    $massiveactionparams['specific_actions'][__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'move_license'] = _x('button', 'Move');
+
+                    // show transfer only if multi licenses for this software
+                    if (self::countLicenses($data['softid']) > 1) {
+                        $massiveactionparams['specific_actions'][__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'move_license'] = _x('button', 'Move');
+                    }
+
+                    // Options to update license
+                    $massiveactionparams['extraparams']['options']['move']['used'] = [$searchID];
+                    $massiveactionparams['extraparams']['options']['move']['softwares_id']
+                                                                        = $license->fields['softwares_id'];
+
+                    Html::showMassiveActions($massiveactionparams);
                 }
 
-                // Options to update license
-                $massiveactionparams['extraparams']['options']['move']['used'] = [$searchID];
-                $massiveactionparams['extraparams']['options']['move']['softwares_id']
-                                                                      = $license->fields['softwares_id'];
+                $soft       = new Software();
+                $soft->getFromDB($license->fields['softwares_id']);
+                $showEntity = ($license->isRecursive());
+                $linkUser   = User::canView();
 
-                Html::showMassiveActions($massiveactionparams);
-            }
+                $text = sprintf(__('%1$s = %2$s'), Software::getTypeName(1), $soft->fields["name"]);
+                $text = sprintf(__('%1$s - %2$s'), $text, $data["license"]);
 
-            $soft       = new Software();
-            $soft->getFromDB($license->fields['softwares_id']);
-            $showEntity = ($license->isRecursive());
-            $linkUser   = User::canView();
+                $fields = [
+                __('Item type'),
+                __('Name'),
+                ];
+                if ($showEntity) {
+                    $fields[] = Entity::getTypeName(1);
+                }
+                $fields[] = __('Serial number');
+                $fields[] = __('Inventory number');
+                $fields[] = Location::getTypeName(1);
+                $fields[] = __('Status');
+                $fields[] = Group::getTypeName(1);
+                $fields[] = User::getTypeName();
+                $values = [];
+                $massiveactionValues = [];
 
-            $text = sprintf(__('%1$s = %2$s'), Software::getTypeName(1), $soft->fields["name"]);
-            $text = sprintf(__('%1$s - %2$s'), $text, $data["license"]);
-
-            $fields = [
-               __('Item type'),
-               __('Name'),
-            ];
-            if ($showEntity) {
-                $fields[] = Entity::getTypeName(1);
-            }
-            $fields[] = __('Serial number');
-            $fields[] = __('Inventory number');
-            $fields[] = Location::getTypeName(1);
-            $fields[] = __('Status');
-            $fields[] = Group::getTypeName(1);
-            $fields[] = User::getTypeName();
-            $values = [];
-            $massiveactionValues = [];
-            do {
                 $newValue = [];
                 $newValue[] = $data['itemtype'];
                 if ($canshowitems[$data['item_type']]) {
@@ -917,23 +914,23 @@ class Item_SoftwareLicense extends CommonDBRelation
                     $newValue[] = $data['entity'];
                 }
                 $newValue = array_merge($newValue, [
-                   $data['serial'],
-                   $data['otherserial'],
-                   $data['location'],
-                   $data['state'],
-                   $data['groupe'],
-                   formatUserName(
-                       $data['userid'],
-                       $data['username'],
-                       $data['userrealname'],
-                       $data['userfirstname'],
-                       $linkUser
-                   )
+                $data['serial'],
+                $data['otherserial'],
+                $data['location'],
+                $data['state'],
+                $data['groupe'],
+                formatUserName(
+                    $data['userid'],
+                    $data['username'],
+                    $data['userrealname'],
+                    $data['userfirstname'],
+                    $linkUser
+                )
                 ]);
 
                 $values[] = $newValue;
                 $massiveactionValues[] = sprintf('item[%s][%s]', $data['itemtype'], $data['items_id']);
-            } while ($data = $iterator->next());
+            }
             renderTwigTemplate('table.twig', [
                'id' => 'tableForSoftwareLicenceItem',
                'fields' => $fields,
@@ -980,12 +977,10 @@ class Item_SoftwareLicense extends CommonDBRelation
     **/
     public static function getLicenseForInstallation($itemtype, $items_id, $softwareversions_id)
     {
-        global $DB;
-
         $lic = [];
         $item_license_table = self::getTable(__CLASS__);
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'       => [
               'glpi_softwarelicenses.*',
               'glpi_softwarelicensetypes.name AS type'
@@ -1017,7 +1012,7 @@ class Item_SoftwareLicense extends CommonDBRelation
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $lic[$data['id']] = $data;
         }
         return $lic;
@@ -1054,10 +1049,8 @@ class Item_SoftwareLicense extends CommonDBRelation
      **/
     public static function cloneItem($itemtype, $oldid, $newid)
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM' => 'glpi_items_softwarelicenses',
            'WHERE' => [
               'items_id' => $oldid,
@@ -1065,7 +1058,7 @@ class Item_SoftwareLicense extends CommonDBRelation
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $csl = new self();
             unset($data['id']);
             $data['items_id'] = $newid;
@@ -1128,15 +1121,13 @@ class Item_SoftwareLicense extends CommonDBRelation
      **/
     public static function countLicenses($softwares_id)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => 'glpi_softwarelicenses',
            'COUNT'  => 'cpt',
            'WHERE'  => [
               'softwares_id' => $softwares_id
            ] + getEntitiesRestrictCriteria('glpi_softwarelicenses')
-        ])->next();
+        ])->fetchAssociative();
         return $result['cpt'];
     }
 }

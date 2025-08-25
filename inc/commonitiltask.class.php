@@ -253,8 +253,8 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                              'is_private'          => $this->isPrivate(),
                              // Pass users values
                              'task_users_id'       => $this->fields['users_id'],
-                             'task_users_id_tech'  => $this->fields['users_id_tech'],
-                             'task_groups_id_tech' => $this->fields['groups_id_tech']];
+                             'task_tech_users_id'  => $this->fields['tech_users_id'],
+                             'task_tech_groups_id' => $this->fields['tech_groups_id']];
             NotificationEvent::raiseEvent('delete_task', $item, $options);
         }
     }
@@ -283,7 +283,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             isset($input['update'])
             && ($uid = Session::getLoginUserID())
         ) { // Change from task form
-            $input["users_id_editor"] = $uid;
+            $input["editor_users_id"] = $uid;
         }
 
         $itemtype      = $this->getItilObjectItemType();
@@ -315,7 +315,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                 return false;
             }
             Planning::checkAlreadyPlanned(
-                $input["users_id_tech"],
+                $input["tech_users_id"],
                 $input["begin"],
                 $input["end"],
                 [$this->getType() => [$input["id"]]]
@@ -547,7 +547,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
 
         if (isset($this->fields["begin"]) && !empty($this->fields["begin"])) {
             Planning::checkAlreadyPlanned(
-                $this->fields["users_id_tech"],
+                $this->fields["tech_users_id"],
                 $this->fields["begin"],
                 $this->fields["end"],
                 [$this->getType() => [$this->fields["id"]]]
@@ -871,7 +871,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
            'id'                 => '95',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge'),
            'datatype'           => 'itemlink',
            'right'              => 'own_ticket',
@@ -892,7 +892,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
            'id'                 => '112',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge'),
            'datatype'           => 'itemlink',
            'condition'          => ['is_task' => 1],
@@ -1110,17 +1110,17 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
         }
 
         if ($who > 0) {
-            $ADDWHERE[$item->getTable() . '.users_id_tech'] = $who;
+            $ADDWHERE[$item->getTable() . '.tech_users_id'] = $who;
         }
 
         //This means we can pass 2 groups here, not sure this is expected. Not documented :/
         if ($whogroup > 0) {
-            $ADDWHERE[$item->getTable() . '.groups_id_tech'] = $whogroup;
+            $ADDWHERE[$item->getTable() . '.tech_groups_id'] = $whogroup;
         }
 
         if (!count($ADDWHERE)) {
             $ADDWHERE = [
-               $item->getTable() . '.users_id_tech' => new \QuerySubQuery([
+               $item->getTable() . '.tech_users_id' => new \QuerySubQuery([
                   'SELECT'          => 'glpi_profiles_users.users_id',
                   'DISTINCT'        => true,
                   'FROM'            => 'glpi_profiles',
@@ -1168,7 +1168,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             ]];
         }
 
-        $iterator = $DB->request([
+        $request = $item::getAdapter()->request([
            'SELECT'       => $SELECT,
            'FROM'         => $item->getTable(),
            'INNER JOIN'   => [
@@ -1185,8 +1185,9 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
 
         $interv = [];
 
-        if (count($iterator)) {
-            while ($data = $iterator->next()) {
+        $result = $request->fetchAllAssociative();
+        if (count($result)) {
+            foreach ($result as $data) {
                 if (
                     $item->getFromDB($data["id"])
                     && $item->canViewItem()
@@ -1232,8 +1233,8 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                         $interv[$key][$parentitem->getForeignKeyField()]
                                                         = $item->fields[$parentitem->getForeignKeyField()];
                         $interv[$key]["users_id"]       = $data["users_id"];
-                        $interv[$key]["users_id_tech"]  = $data["users_id_tech"];
-                        $interv[$key]["groups_id_tech"]  = $data["groups_id_tech"];
+                        $interv[$key]["tech_users_id"]  = $data["tech_users_id"];
+                        $interv[$key]["tech_groups_id"]  = $data["tech_groups_id"];
 
                         if (strcmp($begin, $data["begin"]) > 0) {
                             $interv[$key]["begin"] = $begin;
@@ -1343,7 +1344,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
         if ($who <= 0) { // show tech for "show all and show group"
             $html .= "<br>";
             //TRANS: %s is user name
-            $html .= sprintf(__('By %s'), getUserName($val["users_id_tech"]));
+            $html .= sprintf(__('By %s'), getUserName($val["tech_users_id"]));
         }
 
         $html .= "</a>";
@@ -1495,21 +1496,21 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                 if (isset($this->fields["state"])) {
                     echo Planning::getState($this->fields["state"]) . "<br>";
                 }
-                if ($this->fields["users_id_tech"] || $this->fields["groups_id_tech"]) {
-                    if (isset($this->fields["users_id_tech"])) {
-                        printf('%1$s %2$s', __('By user'), getUserName($this->fields["users_id_tech"]));
+                if ($this->fields["tech_users_id"] || $this->fields["tech_groups_id"]) {
+                    if (isset($this->fields["tech_users_id"])) {
+                        printf('%1$s %2$s', __('By user'), getUserName($this->fields["tech_users_id"]));
                     }
-                    if (isset($this->fields["groups_id_tech"])) {
+                    if (isset($this->fields["tech_groups_id"])) {
                         $groupname = sprintf(
                             '%1$s %2$s',
                             "<br />" . __('By group'),
                             Dropdown::getDropdownName(
                                 'glpi_groups',
-                                $this->fields["groups_id_tech"]
+                                $this->fields["tech_groups_id"]
                             )
                         );
                         if ($_SESSION['glpiis_ids_visible']) {
-                            $groupname = printf(__('%1$s (%2$s)'), $groupname, $this->fields["groups_id_tech"]);
+                            $groupname = printf(__('%1$s (%2$s)'), $groupname, $this->fields["tech_groups_id"]);
                         }
                         echo $groupname;
                     }
@@ -1527,23 +1528,23 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                 echo "<tr><td>" . __('End') . "</td><td>";
                 echo Html::convDateTime($this->fields["end"]) . "</td></tr>";
                 echo "<tr><td>";
-                if ($this->fields["users_id_tech"]) {
-                    printf('%1$s %2$s', __('By user'), getUserName($this->fields["users_id_tech"]));
+                if ($this->fields["tech_users_id"]) {
+                    printf('%1$s %2$s', __('By user'), getUserName($this->fields["tech_users_id"]));
                 }
-                if ($this->fields["groups_id_tech"]) {
+                if ($this->fields["tech_groups_id"]) {
                     $groupname = sprintf(
                         '%1$s %2$s',
                         "<br />" . __('By group'),
                         Dropdown::getDropdownName(
                             'glpi_groups',
-                            $this->fields["groups_id_tech"]
+                            $this->fields["tech_groups_id"]
                         )
                     );
                     if ($_SESSION['glpiis_ids_visible']) {
                         $groupname = printf(
                             __('%1$s (%2$s)'),
                             $groupname,
-                            $this->fields["groups_id_tech"]
+                            $this->fields["tech_groups_id"]
                         );
                     }
                     echo $groupname;
@@ -1658,12 +1659,12 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                               var actiontime = isNaN(parseInt(data.actiontime))
                                  ? 0
                                  : parseInt(data.actiontime);
-                              var user_tech = isNaN(parseInt(data.users_id_tech))
+                              var user_tech = isNaN(parseInt(data.tech_users_id))
                                  ? 0
-                                 : parseInt(data.users_id_tech);
-                              var group_tech = isNaN(parseInt(data.groups_id_tech))
+                                 : parseInt(data.tech_users_id);
+                              var group_tech = isNaN(parseInt(data.tech_groups_id))
                                  ? 0
-                                 : parseInt(data.groups_id_tech);
+                                 : parseInt(data.tech_groups_id);
 
                               // set textarea content
                               TextAreaForTaskContent.setData(data.content);
@@ -1729,10 +1730,10 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                     ],
                     User::getTypeName(1) => [
                        'type' => 'select',
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'id' => 'DropdownForUserTechTask',
                        'values' => getOptionsForUsers('own_ticket', ["entities_id" => $item->fields["entities_id"]]),
-                       'value' => (($ID > -1) ? $this->fields["users_id_tech"] : Session::getLoginUserID()),
+                       'value' => (($ID > -1) ? $this->fields["tech_users_id"] : Session::getLoginUserID()),
                        'actions' => getItemActionButtons(['info'], User::class),
                        'after' => <<<HTML
                         <a
@@ -1743,10 +1744,10 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                     ],
                     Group::getTypeName(1) => [
                        'type' => 'select',
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'id' => 'DropdownForGroupTechTask',
                        'values' => getOptionForItems(Group::class),
-                       'value' => ($ID > -1) ? $this->fields["groups_id_tech"] : Dropdown::EMPTY_VALUE,
+                       'value' => ($ID > -1) ? $this->fields["tech_groups_id"] : Dropdown::EMPTY_VALUE,
                        'actions' => getItemActionButtons(['info', 'add'], Group::class),
                     ],
                     sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
@@ -1900,13 +1901,13 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
 
         if ($showgrouptickets) {
             if (isset($_SESSION['glpigroups']) && count($_SESSION['glpigroups'])) {
-                $prep_req['WHERE'][self::getTable() . '.groups_id_tech'] = $_SESSION['glpigroups'];
+                $prep_req['WHERE'][self::getTable() . '.tech_groups_id'] = $_SESSION['glpigroups'];
             } else {
                 // Return empty iterator result
                 $prep_req['WHERE'][] = 0;
             }
         } else {
-            $prep_req['WHERE'][self::getTable() . '.users_id_tech'] = $_SESSION['glpiID'];
+            $prep_req['WHERE'][self::getTable() . '.tech_users_id'] = $_SESSION['glpiID'];
         }
 
         $prep_req['WHERE'] += getEntitiesRestrictCriteria($fk_table);
@@ -1920,8 +1921,8 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             $prep_req['LIMIT'] = $limit;
         }
 
-        $req = $DB->request($prep_req);
-        return $req;
+        $req = self::getAdapter()->request($prep_req);
+        return $req->fetchAllAssociative();
     }
 
 
@@ -2119,13 +2120,13 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
     public static function getGroupItemsAsVCalendars($groups_id)
     {
 
-        return self::getItemsAsVCalendars([static::getTableField('groups_id_tech') => $groups_id]);
+        return self::getItemsAsVCalendars([static::getTableField('tech_groups_id') => $groups_id]);
     }
 
     public static function getUserItemsAsVCalendars($users_id)
     {
 
-        return self::getItemsAsVCalendars([static::getTableField('users_id_tech') => $users_id]);
+        return self::getItemsAsVCalendars([static::getTableField('tech_users_id') => $users_id]);
     }
 
     /**
@@ -2137,8 +2138,6 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
      */
     private static function getItemsAsVCalendars(array $criteria)
     {
-
-        global $DB;
 
         $item = new static();
         $parent_item = getItemForItemtype($item->getItilObjectItemType());
@@ -2162,10 +2161,10 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             $query['WHERE'][$parent_item->getTableField('is_deleted')] = 0;
         }
 
-        $tasks_iterator = $DB->request($query);
+        $tasks_result = self::getAdapter()->request($query);
 
         $vcalendars = [];
-        foreach ($tasks_iterator as $task) {
+        foreach ($tasks_result as $task) {
             $item->getFromResultSet($task);
             $vcalendar = $item->getAsVCalendar();
             if (null !== $vcalendar) {
@@ -2239,7 +2238,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             // but fixing self::prepareInputForUpdate() seems complex right now.
             $itil_fkey = getForeignKeyFieldForItemType($this->getItilObjectItemType());
             $input[$itil_fkey] = $this->fields[$itil_fkey];
-            $input['users_id_tech'] = $this->fields['users_id_tech'];
+            $input['tech_users_id'] = $this->fields['tech_users_id'];
         }
 
         return $input;

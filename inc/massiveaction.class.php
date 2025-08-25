@@ -207,7 +207,7 @@ class MassiveAction
                             }
                         }
                         // Count number of items !
-                        foreach ($POST['items'] as $itemtype => $ids) {
+                        foreach ($POST['items'] as $ids) {
                             $this->nb_items += count($ids);
                         }
                         break;
@@ -230,7 +230,7 @@ class MassiveAction
                                                    'ko'      => 0,
                                                    'noright' => 0,
                                                    'messages' => []];
-                        foreach ($POST['items'] as $itemtype => $ids) {
+                        foreach ($POST['items'] as $ids) {
                             $this->nb_items += count($ids);
                         }
                         if (isset($_SERVER['HTTP_REFERER'])) {
@@ -1506,7 +1506,7 @@ class MassiveAction
                        'items_id'             => $id,
                        'content'              => $content,
                        'users_id'             => Session::getLoginUserID(),
-                       'users_id_lastupdater' => Session::getLoginUserID(),
+                       'lastupdater_users_id' => Session::getLoginUserID(),
                     ]);
 
                     if (!$success) {

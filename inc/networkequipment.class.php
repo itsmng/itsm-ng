@@ -248,9 +248,9 @@ class NetworkEquipment extends CommonDBTM
                'GROUPBY'      => 'itemtype'
             ];
 
-            $res = $DB->request($criteria);
+            $res = $this::getAdapter()->request($criteria);
             if ($res) {
-                while ($data = $res->next()) {
+                while ($data = $res->fetchAssociative()) {
                     $itemtable = getTableForItemType($data["itemtype"]);
                     if ($item = getItemForItemtype($data["itemtype"])) {
                         // For each itemtype which are entity dependant
@@ -325,9 +325,9 @@ class NetworkEquipment extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "NetworkEquipmentType"),
                     ],
                     __("Technician in charge of the software") => [
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'type' => 'select',
-                       'value' => $this->fields['users_id_tech'],
+                       'value' => $this->fields['tech_users_id'],
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
@@ -339,9 +339,9 @@ class NetworkEquipment extends CommonDBTM
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
                     __("Group in charge of the software") => [
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'type' => 'select',
-                       'value' => $this->fields['groups_id_tech'],
+                       'value' => $this->fields['tech_groups_id'],
                        'itemtype' => Group::class,
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],
@@ -606,7 +606,7 @@ class NetworkEquipment extends CommonDBTM
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the hardware'),
            'datatype'           => 'dropdown',
            'right'              => 'own_ticket'
@@ -616,7 +616,7 @@ class NetworkEquipment extends CommonDBTM
            'id'                 => '49',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge of the hardware'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'

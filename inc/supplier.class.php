@@ -46,8 +46,6 @@ class Supplier extends CommonDBTM
     public static $rightname           = 'contact_enterprise';
     protected $usenotepad       = true;
 
-
-
     /**
      * Name of the type
      *
@@ -457,7 +455,6 @@ class Supplier extends CommonDBTM
         global $CFG_GLPI;
 
         $ret = '&nbsp;&nbsp;&nbsp;&nbsp;';
-
         if ($withname) {
             $ret .= $this->fields["name"];
             $ret .= "&nbsp;&nbsp;";
@@ -468,8 +465,7 @@ class Supplier extends CommonDBTM
                   <img src='" . $CFG_GLPI["root_doc"] . "/pics/web.png' class='middle' alt=\"" .
                __s('Web') . "\" title=\"" . __s('Web') . "\"></a>&nbsp;&nbsp;";
         }
-
-        if ($this->can($this->fields['id'], READ)) {
+        if ($this->can($this->fields['id'] ?? null, READ)) {
             $ret .= "<a href='" . Supplier::getFormURLWithID($this->fields['id']) . "'>
                   <img src='" . $CFG_GLPI["root_doc"] . "/pics/edit.png' class='middle' alt=\"" .
                __s('Update') . "\" title=\"" . __s('Update') . "\"></a>";
@@ -486,8 +482,6 @@ class Supplier extends CommonDBTM
      **/
     public function showInfocoms()
     {
-        global $DB;
-
         $instID = $this->fields['id'];
         if (!$this->can($instID, READ)) {
             return false;
@@ -514,7 +508,7 @@ class Supplier extends CommonDBTM
         echo "</tr>";
 
         $num = 0;
-        while ($row = $types_iterator->next()) {
+        foreach ($types_iterator as $row) {
             $itemtype = $row['itemtype'];
 
             if (!($item = getItemForItemtype($itemtype))) {
@@ -594,8 +588,9 @@ class Supplier extends CommonDBTM
                    "$linktable." . $linktype::getNameField()
                 ];
 
-                $iterator = $DB->request($criteria);
-                $nb = count($iterator);
+                $request = $this::getAdapter()->request($criteria);
+                $results = $request->fetchAllAssociative();
+                $nb = count($results);
 
                 if ($nb > $_SESSION['glpilist_limit']) {
                     echo "<tr class='tab_bg_1'>";
@@ -626,7 +621,7 @@ class Supplier extends CommonDBTM
                     echo "<td class='center'>-</td><td class='center'>-</td></tr>";
                 } elseif ($nb) {
                     $prem = true;
-                    while ($data = $iterator->next()) {
+                    foreach ($results as $data) {
                         $name = $data[$linktype::getNameField()];
                         if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
                             $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
@@ -680,9 +675,7 @@ class Supplier extends CommonDBTM
      **/
     public static function getSuppliersByEmail($email)
     {
-        global $DB;
-
-        $suppliers = $DB->request([
+        $suppliers = self::getAdapter()->request([
            'SELECT' => ["id"],
            'FROM' => 'glpi_suppliers',
            'WHERE' => ['email' => $email]

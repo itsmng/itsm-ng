@@ -58,7 +58,7 @@ class NotificationTargetInfocom extends NotificationTarget
         );
         $this->data['##infocom.action##']      = $events[$event];
 
-        foreach ($options['items'] as $id => $item) {
+        foreach ($options['items'] as $item) {
             $tmp = [];
 
             if ($obj = getItemForItemtype($item['itemtype'])) {

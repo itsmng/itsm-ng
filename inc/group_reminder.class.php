@@ -58,17 +58,15 @@ class Group_Reminder extends CommonDBRelation
     **/
     public static function getGroups($reminders_id)
     {
-        global $DB;
-
         $groups = [];
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'reminders_id' => $reminders_id
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $groups[$data['groups_id']][] = $data;
         }
         return $groups;

@@ -783,8 +783,8 @@ class Group extends CommonTreeDropdown
                     ];
                 }
 
-                $iterator = $DB->request($request);
-                while ($data = $iterator->next()) {
+                $result = $this::getAdapter()->request($request);
+                while ($data = $result->fetchAssociative()) {
                     $res[] = ['itemtype' => $itemtype,
                                    'items_id' => $data['id']];
                     $max--;
@@ -803,7 +803,7 @@ class Group extends CommonTreeDropdown
     /**
      * Show items for the group
      *
-     * @param $tech   boolean  false search groups_id, true, search groups_id_tech
+     * @param $tech   boolean  false search groups_id, true, search tech_groups_id
     **/
     public function showItems($tech)
     {
@@ -814,7 +814,7 @@ class Group extends CommonTreeDropdown
         $ID = $this->fields['id'];
         if ($tech) {
             $types = $CFG_GLPI['linkgroup_tech_types'];
-            $field = 'groups_id_tech';
+            $field = 'tech_groups_id';
             $title = __('Managed items');
         } else {
             $types = $CFG_GLPI['linkgroup_types'];
@@ -1002,14 +1002,17 @@ class Group extends CommonTreeDropdown
                 $fields_updates['date_out'] = 'NULL';
             }
 
-            $DB->update(
-                'glpi_consumables',
-                $fields_updates,
-                [
-                  'items_id' => $this->fields['id'],
-                  'itemtype' => self::class,
-                ]
-            );
+            $adapter = $this::getAdapter();
+
+            $consumables = $adapter->findBy([
+                'items_id' => $this->fields['id'],
+                'itemtype' => self::class
+            ]);
+
+            foreach ($consumables as $consumable) {
+                $updateFields = ['id' => $consumable->getId()] + $fields_updates;
+                $adapter->save($updateFields);
+            }
         }
     }
 

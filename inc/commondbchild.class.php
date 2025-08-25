@@ -76,7 +76,6 @@ abstract class CommonDBChild extends CommonDBConnexity
               static::$items_id  => $items_id
            ]
         ];
-
         // Check item 1 type
         $request = false;
         if (preg_match('/^itemtype/', static::$itemtype)) {
@@ -799,7 +798,7 @@ abstract class CommonDBChild extends CommonDBConnexity
         } else {
             $value = $this->getName();
         }
-        $field_name = $field_name . "[$id]";
+        $field_name .= "[$id]";
         if ($canedit) {
             echo "<input type='text' size='40' name='$field_name' value='$value'>";
         } else {
@@ -893,7 +892,6 @@ abstract class CommonDBChild extends CommonDBConnexity
     **/
     public static function showChildsForItemForm(CommonDBTM $item, $field_name, $canedit = null)
     {
-        global $DB;
 
         $items_id = $item->getID();
 
@@ -937,9 +935,9 @@ abstract class CommonDBChild extends CommonDBConnexity
             $query['WHERE']['is_deleted'] = 0;
         }
 
-        $iterator = $DB->request($query);
+        $results = self::getAdapter()->request($query);
         $count = 0;
-        while ($data = $iterator->next()) {
+        while ($data = $results->fetchAssociative()) {
             $current_item->fields = $data;
 
             if ($count) {

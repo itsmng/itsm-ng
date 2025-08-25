@@ -120,8 +120,6 @@ class Change_Problem extends CommonDBRelation
     **/
     public static function showForProblem(Problem $problem)
     {
-        global $DB;
-
         $ID = $problem->getField('id');
         if (!$problem->can($ID, READ)) {
             return false;
@@ -130,7 +128,7 @@ class Change_Problem extends CommonDBRelation
         $canedit = $problem->canEdit($ID);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => [
               'glpi_changes_problems.id AS linkid',
               'glpi_changes.*'
@@ -153,8 +151,10 @@ class Change_Problem extends CommonDBRelation
 
         $changes = [];
         $used    = [];
-        $numrows = count($iterator);
-        while ($data = $iterator->next()) {
+        // $numrows = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
+        foreach ($results as $data) {
             $changes[$data['id']] = $data;
             $used[$data['id']]    = $data['id'];
         }
@@ -250,7 +250,7 @@ class Change_Problem extends CommonDBRelation
         $canedit = $change->canEdit($ID);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => [
               'glpi_changes_problems.id AS linkid',
               'glpi_problems.*'
@@ -273,8 +273,9 @@ class Change_Problem extends CommonDBRelation
 
         $problems = [];
         $used     = [];
-        $numrows = count($iterator);
-        while ($data = $iterator->next()) {
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
+        foreach ($results as $data) {
             $problems[$data['id']] = $data;
             $used[$data['id']]     = $data['id'];
         }
@@ -430,7 +431,7 @@ class Change_Problem extends CommonDBRelation
             $tasktype      = $item->getType() . "Task";
             $plan          = new $tasktype();
             $items         = [];
-            $result = $DB->request(
+            $result = self::getAdapter()->request(
                 [
                   'FROM'  => $plan->getTable(),
                   'WHERE' => [
@@ -443,8 +444,8 @@ class Change_Problem extends CommonDBRelation
                     $items[$plan['id']] = $plan['id'];
                     $planned_infos .= sprintf(__('From %s') . '<br>', Html::convDateTime($plan['begin']));
                     $planned_infos .= sprintf(__('To %s') . '<br>', Html::convDateTime($plan['end']));
-                    if ($plan['users_id_tech']) {
-                        $planned_infos .= sprintf(__('By %s') . '<br>', getUserName($plan['users_id_tech']));
+                    if ($plan['tech_users_id']) {
+                        $planned_infos .= sprintf(__('By %s') . '<br>', getUserName($plan['tech_users_id']));
                     }
                     $planned_infos .= "<br>";
                 }

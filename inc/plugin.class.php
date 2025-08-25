@@ -643,8 +643,6 @@ class Plugin extends CommonDBTM
      */
     public function getList(array $fields = [], array $order = ['name', 'directory'])
     {
-        global $DB;
-
         $query = [
            'FROM'   => $this->getTable()
         ];
@@ -657,8 +655,8 @@ class Plugin extends CommonDBTM
             $query['ORDER'] = $order;
         }
 
-        $iterator = $DB->request($query);
-        return iterator_to_array($iterator, false);
+        $request = self::getAdapter()->request($query);
+        return $request->fetchAllAssociative();
     }
 
 
@@ -936,17 +934,24 @@ class Plugin extends CommonDBTM
     **/
     public function unactivateAll()
     {
-        global $DB;
-
-        $DB->update(
-            $this->getTable(),
-            [
-              'state' => self::NOTACTIVATED
-            ],
-            [
-              'state' => self::ACTIVATED
+        $adapter = $this::getAdapter();
+        $plugins = $adapter->request([
+            'SELECT' => ['id'],
+            'FROM'   => $this->getTable(),
+            'WHERE'  => [
+                'state' => self::ACTIVATED
             ]
-        );
+        ]);
+
+        foreach ($plugins->fetchAllAssociative() as $data) {
+            $plugin = new self();
+            if ($plugin->getFromDB($data['id'])) {
+                $plugin->update([
+                    'id'    => $data['id'],
+                    'state' => self::NOTACTIVATED
+                ]);
+            }
+        }
 
         $dirs = array_keys(self::$activated_plugins);
         foreach ($dirs as $dir) {
@@ -1165,7 +1170,7 @@ class Plugin extends CommonDBTM
             $entities    = getAllDataFromTable('glpi_entities');
             $entities[0] = "Root";
 
-            foreach ($types as $num => $name) {
+            foreach ($types as $name) {
                 $itemtable = getTableForItemType($name);
                 if (!$DB->tableExists($itemtable)) {
                     // Just for security, shouldn't append
@@ -1559,7 +1564,7 @@ class Plugin extends CommonDBTM
                 // variables used in this function.
                 // For example, if the included files contains a $plugin variable, it will
                 // replace the $plugin variable used here.
-                $include_fct = function () use ($directory, $setup_file) {
+                $include_fct = function () use ($directory, $setup_file): void {
                     self::loadLang($directory);
                     include_once($setup_file);
                 };

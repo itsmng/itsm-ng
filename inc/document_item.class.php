@@ -341,14 +341,12 @@ class Document_Item extends CommonDBRelation
     **/
     public static function cloneItem($itemtype, $oldid, $newid, $newitemtype = '')
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
         if (empty($newitemtype)) {
             $newitemtype = $itemtype;
         }
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FIELDS' => ['documents_id'],
            'FROM'   => self::getTable(),
            'WHERE'  => [
@@ -356,7 +354,7 @@ class Document_Item extends CommonDBRelation
               'itemtype'  => $itemtype
            ]
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $docitem = new self();
             $docitem->add(
                 [
@@ -482,7 +480,7 @@ class Document_Item extends CommonDBRelation
         ];
         $values = [];
         $massiveactionValues = [];
-        while ($type_row = $types_iterator->next()) {
+        foreach ($types_iterator as $type_row) {
             $itemtype = $type_row['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -649,7 +647,7 @@ class Document_Item extends CommonDBRelation
     **/
     public static function showAddFormForItem(CommonDBTM $item, $withtemplate = 0, $options = [])
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         //default options
         $params['rand'] = mt_rand();
@@ -698,13 +696,13 @@ class Document_Item extends CommonDBRelation
             }
             $limit = getEntitiesRestrictRequest(" AND ", "glpi_documents", '', $entities, true);
 
-            $count = $DB->request([
+            $count = self::getAdapter()->request([
                'COUNT'     => 'cpt',
                'FROM'      => 'glpi_documents',
                'WHERE'     => [
                   'is_deleted' => 0
                ] + getEntitiesRestrictCriteria('glpi_documents', '', $entities, true)
-            ])->next();
+            ])->fetchAssociative();
             $nb = $count['cpt'];
 
             if ($item->getType() == 'Document') {
@@ -788,10 +786,10 @@ class Document_Item extends CommonDBRelation
                    ],
                    'ORDER'  => 'name'
                 ];
-                $iterator = $DB->request($criteria);
+                $result = self::getAdapter()->request($criteria);
 
                 $headings = [];
-                while ($data = $iterator->next()) {
+                while ($data = $result->fetchAssociative()) {
                     $headings[$data['id']] = $data['name'];
                 }
 
@@ -973,7 +971,7 @@ class Document_Item extends CommonDBRelation
         ];
 
         if (Session::getLoginUserID()) {
-            $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria('glpi_documents', '', '', true);
+            $criteria['WHERE'] += getEntitiesRestrictCriteria('glpi_documents', '', '', true);
         } else {
             // Anonymous access from FAQ
             $criteria['WHERE']['glpi_documents.entities_id'] = 0;
@@ -993,13 +991,14 @@ class Document_Item extends CommonDBRelation
             ];
         }
 
-        $iterator = $DB->request($criteria);
-        $number = count($iterator);
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
         $i      = 0;
 
         $documents = [];
         $used      = [];
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $documents[$data['assocID']] = $data;
             $used[$data['id']]           = $data['id'];
         }

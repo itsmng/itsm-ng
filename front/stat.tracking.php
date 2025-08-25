@@ -77,7 +77,7 @@ $stat = new Stat();
 Stat::title();
 
 $requester = ['user'               => ['title' => _n('Requester', 'Requesters', 1)],
-                   'users_id_recipient' => ['title' => __('Writer')],
+                   'recipient_users_id' => ['title' => __('Writer')],
                    'group'              => ['title' => Group::getTypeName(1)],
                    'group_tree'         => ['title' => __('Group tree')],
                    'usertitles_id'      => ['title' => _x('person', 'Title')],

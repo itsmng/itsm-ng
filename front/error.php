@@ -52,7 +52,7 @@ echo '
 <body translate="no">
 <h1>';
 //check all messages
-foreach ($msg as $k => $v) {
+foreach ($msg as $v) {
     echo '<span class="word">' . $v . '</span>';
 }
 echo '</h1><div class="gears">';

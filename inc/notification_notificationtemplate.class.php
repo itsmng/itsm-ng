@@ -120,8 +120,6 @@ class Notification_NotificationTemplate extends CommonDBRelation
      **/
     public static function showForNotification(Notification $notif, $withtemplate = 0)
     {
-        global $DB;
-
         $ID = $notif->getID();
 
         if (
@@ -156,12 +154,12 @@ class Notification_NotificationTemplate extends CommonDBRelation
         ];
         $values = [];
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::gettable(),
            'WHERE'  => ['notifications_id' => $ID]
         ]);
         $notiftpl = new self();
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $notiftpl->getFromDB($data['id']);
             $tpl = new NotificationTemplate();
             $tpl->getFromDB($data['notificationtemplates_id']);
@@ -200,8 +198,6 @@ class Notification_NotificationTemplate extends CommonDBRelation
      */
     public static function showForNotificationTemplate(NotificationTemplate $template, $withtemplate = 0)
     {
-        global $DB;
-
         $ID = $template->getID();
 
         if (
@@ -213,15 +209,15 @@ class Notification_NotificationTemplate extends CommonDBRelation
 
         echo "<div class='center'>";
 
-        $iterator = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => ['notificationtemplates_id' => $ID]
-        ]);
+        $results = self::getAdapter()->request([
+            'FROM'  => self::getTable(),
+            'WHERE' => ['notificationtemplates_id' => $ID]
+        ])->fetchAllAssociative();
 
         echo "<table class='tab_cadre_fixehov' aria-label='Notification'>";
         $colspan = 2;
 
-        if ($iterator->numrows()) {
+        if (count($results)) {
             $header = "<tr>";
             $header .= "<th>" . __('ID') . "</th>";
             $header .= "<th>" . _n('Notification', 'Notifications', 1) . "</th>";
@@ -240,7 +236,7 @@ class Notification_NotificationTemplate extends CommonDBRelation
                 )
             );
 
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 $notification = new Notification();
                 $notification->getFromDB($data['notifications_id']);
 

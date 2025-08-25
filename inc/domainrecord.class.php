@@ -121,7 +121,7 @@ class DomainRecord extends CommonDBChild
            'id'                 => '6',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge'),
            'datatype'           => 'dropdown'
         ];
@@ -146,7 +146,7 @@ class DomainRecord extends CommonDBChild
            'id'                 => '9',
            'table'              => 'glpi_groups',
            'field'              => 'name',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge'),
            'datatype'           => 'dropdown'
         ];
@@ -363,16 +363,16 @@ class DomainRecord extends CommonDBChild
                     ],
                     __('Technician in charge') => [
                        'type' => 'select',
-                       'name' => "users_id_tech",
+                       'name' => "tech_users_id",
                        'values' => getOptionsForUsers('interface', ['entities_id' => Session::getActiveEntity()]),
-                       'value' => $this->fields["users_id_tech"] ?? '',
+                       'value' => $this->fields["tech_users_id"] ?? '',
                        'actions' => getItemActionButtons(['info'], User::class),
                     ],
                     __('Group in charge') => [
                        'type' => 'select',
-                       'name' => "groups_id_tech",
+                       'name' => "tech_groups_id",
                        'values' => getOptionForItems(Group::class, ['entities_id' => Session::getActiveEntity()]),
-                       'value' => $this->fields["groups_id_tech"] ?? '',
+                       'value' => $this->fields["tech_groups_id"] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], Group::class),
                     ],
                     __('TTL') => [
@@ -403,8 +403,6 @@ class DomainRecord extends CommonDBChild
      **/
     public static function showForDomain(Domain $domain)
     {
-        global $DB;
-
         $instID = $domain->fields['id'];
         if (!$domain->can($instID, READ)) {
             return false;
@@ -413,7 +411,7 @@ class DomainRecord extends CommonDBChild
                    || count($_SESSION['glpiactiveprofile']['managed_domainrecordtypes']);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => 'record.*',
            'FROM'      => self::getTable() . ' AS record',
            'WHERE'     => ['domains_id' => $instID],
@@ -427,8 +425,8 @@ class DomainRecord extends CommonDBChild
            ],
            'ORDER'     => ['rtype.name ASC', 'record.name ASC']
         ]);
-
-        $number = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
 
         if ($canedit) {
             $form = [
@@ -481,7 +479,7 @@ class DomainRecord extends CommonDBChild
         ];
         $values = [];
         $massive_action = [];
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $ID = "";
 
             if ($_SESSION["glpiis_ids_visible"] || empty(self::getDisplayName($domain, $data['name']))) {

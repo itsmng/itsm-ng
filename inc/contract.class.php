@@ -130,10 +130,9 @@ class Contract extends CommonDBTM
      **/
     public static function cloneItem($itemtype, $oldid, $newid)
     {
-        global $DB;
 
         Toolbox::deprecated('Use clone');
-        $result = $DB->request(
+        $result = self::getAdapter()->request(
             [
               'FROM'   => Contract_Item::getTable(),
               'WHERE'  => [
@@ -1074,7 +1073,7 @@ class Contract extends CommonDBTM
         // No recursive contract, not in local management
         // contrats echus depuis moins de 30j
         $table = self::getTable();
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => $table,
            'WHERE'  => [
@@ -1082,11 +1081,11 @@ class Contract extends CommonDBTM
               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())>-30'),
               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())<0')
            ] + getEntitiesRestrictCriteria($table)
-        ])->next();
+        ])->fetchAssociative();
         $contract0 = $result['cpt'];
 
         // contrats  echeance j-7
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => $table,
            'WHERE'  => [
@@ -1094,11 +1093,11 @@ class Contract extends CommonDBTM
               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())>0'),
               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())<=7')
            ] + getEntitiesRestrictCriteria($table)
-        ])->next();
+        ])->fetchAssociative();
         $contract7 = $result['cpt'];
 
         // contrats echeance j -30
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => $table,
            'WHERE'  => [
@@ -1106,11 +1105,11 @@ class Contract extends CommonDBTM
               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())>7'),
               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL ' . $DB->quoteName("duration") . ' MONTH),CURDATE())<30')
            ] + getEntitiesRestrictCriteria($table)
-        ])->next();
+        ])->fetchAssociative();
         $contract30 = $result['cpt'];
 
         // contrats avec pr??avis echeance j-7
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => $table,
            'WHERE'  => [
@@ -1119,11 +1118,11 @@ class Contract extends CommonDBTM
               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL (' . $DB->quoteName("duration") . '-' . $DB->quoteName('notice') . ') MONTH),CURDATE())>0'),
               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL (' . $DB->quoteName("duration") . '-' . $DB->quoteName('notice') . ') MONTH),CURDATE())<=7')
            ] + getEntitiesRestrictCriteria($table)
-        ])->next();
+        ])->fetchAssociative();
         $contractpre7 = $result['cpt'];
 
         // contrats avec pr??avis echeance j -30
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => $table,
            'WHERE'  => [
@@ -1132,7 +1131,7 @@ class Contract extends CommonDBTM
               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL (' . $DB->quoteName("duration") . '-' . $DB->quoteName('notice') . ') MONTH),CURDATE())>7'),
               new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName("begin_date") . ', INTERVAL (' . $DB->quoteName("duration") . '-' . $DB->quoteName('notice') . ') MONTH),CURDATE())<30')
            ] + getEntitiesRestrictCriteria($table)
-        ])->next();
+        ])->fetchAssociative();
         $contractpre30 = $result['cpt'];
 
         echo "<table class='tab_cadrehov' aria-label='Contracts Table'>";
@@ -1212,7 +1211,7 @@ class Contract extends CommonDBTM
     {
         global $DB;
 
-        $iterator = $DB->request([
+        $results = $this::getAdapter()->request([
            'SELECT'       => 'glpi_suppliers.id',
            'FROM'         => 'glpi_suppliers',
            'INNER JOIN'   => [
@@ -1226,7 +1225,7 @@ class Contract extends CommonDBTM
            'WHERE'        => ['contracts_id' => $this->fields['id']]
         ]);
         $out    = "";
-        while ($data = $iterator->next()) {
+        while ($data = $results->fetchAssociative()) {
             $out .= Dropdown::getDropdownName("glpi_suppliers", $data['id']) . "<br>";
         }
         return $out;
@@ -1377,7 +1376,7 @@ class Contract extends CommonDBTM
                             'end'    => $query_end];
 
             foreach ($querys as $type => $query) {
-                $result = $DB->request($query);
+                $result = self::getAdapter()->request($query);
                 foreach ($result as $data) {
                     $entity  = $data['entities_id'];
 
@@ -1419,7 +1418,7 @@ class Contract extends CommonDBTM
             ];
 
             // Foreach ones :
-            foreach ($DB->request($query_periodicity) as $data) {
+            foreach (self::getAdapter()->request($query_periodicity) as $data) {
                 $entity = $data['entities_id'];
 
                 // For contracts with begin date and periodicity
@@ -1619,7 +1618,7 @@ class Contract extends CommonDBTM
             ]];
         }
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT'    => 'glpi_contracts.*',
            'FROM'      => 'glpi_contracts',
            'LEFT JOIN' => [
@@ -1644,7 +1643,7 @@ class Contract extends CommonDBTM
         $group  = '';
         $prev   = -1;
         $values = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             if (
                 $p['nochecklimit']
                 || ($data["max_links_allowed"] == 0)

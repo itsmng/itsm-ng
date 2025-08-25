@@ -210,8 +210,6 @@ class NetworkPort extends CommonDBChild
 
     public function post_updateItem($history = 1)
     {
-        global $DB;
-
         if (count($this->updates)) {
             // Update Ticket Tco
             if (
@@ -220,20 +218,26 @@ class NetworkPort extends CommonDBChild
             ) {
                 $ip = new IPAddress();
                 // Update IPAddress
-                foreach (
-                    $DB->request(
-                        'glpi_networknames',
-                        ['itemtype' => 'NetworkPort',
-                                             'items_id' => $this->getID()]
-                    ) as $dataname
-                ) {
-                    foreach (
-                        $DB->request(
-                            'glpi_ipaddresses',
-                            ['itemtype' => 'NetworkName',
-                                                'items_id' => $dataname['id']]
-                        ) as $data
-                    ) {
+                $adapter = $this::getAdapter();
+
+                $networknames = $adapter->request([
+                    'FROM'  => 'glpi_networknames',
+                    'WHERE' => [
+                        'itemtype' => 'NetworkPort',
+                        'items_id' => $this->getID()
+                    ]
+                ])->fetchAllAssociative();
+
+                foreach ($networknames as $dataname) {
+                    $ipaddresses = $adapter->request([
+                        'FROM'  => 'glpi_ipaddresses',
+                        'WHERE' => [
+                            'itemtype' => 'NetworkName',
+                            'items_id' => $dataname['id']
+                        ]
+                    ])->fetchAllAssociative();
+
+                    foreach ($ipaddresses as $data) {
                         $ip->update(['id'           => $data['id'],
                                           'mainitemtype' => $this->fields['itemtype'],
                                           'mainitems_id' => $this->fields['items_id']]);
@@ -539,8 +543,6 @@ class NetworkPort extends CommonDBChild
     **/
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        global $DB;
-
         $rand     = mt_rand();
 
         $itemtype = $item->getType();
@@ -580,7 +582,6 @@ class NetworkPort extends CommonDBChild
                     $instantiations[$inst_type] = call_user_func([$inst_type, 'getTypeName']);
                 }
             }
-
             $form = [
                'action' => $netport->getFormURL(),
                'method' => 'get',
@@ -758,8 +759,9 @@ class NetworkPort extends CommonDBChild
                 ];
             }
 
-            $iterator = $DB->request($criteria);
-            $number_port = count($iterator);
+            $request = self::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
+            $number_port = count($results);
 
             if ($number_port != 0) {
                 $is_active_network_port = true;
@@ -780,7 +782,7 @@ class NetworkPort extends CommonDBChild
 
                 $values = [];
                 $massive_actions = [];
-                while ($devid = $iterator->next()) {
+                foreach ($results as $devid) {
                     $t_row = $t_group->createRow();
 
                     $netport->getFromDB(current($devid));
@@ -850,7 +852,7 @@ class NetworkPort extends CommonDBChild
                     }
                     $newValue = [];
                     foreach ($t_row->cells as $name => $cell) {
-                        foreach ($cell as $key => $value) {
+                        foreach ($cell as $value) {
                             $content = $value->content;
                             if (gettype($content) == 'array') {
                                 $classtype = $content[0]['function'][0];
@@ -1193,12 +1195,10 @@ class NetworkPort extends CommonDBChild
     **/
     public static function cloneItem($itemtype, $old_items_id, $new_items_id)
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
         $np = new self();
         // ADD Ports
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'items_id'  => $old_items_id,
@@ -1206,7 +1206,7 @@ class NetworkPort extends CommonDBChild
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $np->getFromDB($data["id"]);
             $instantiation = $np->getInstantiation();
             unset($np->fields["id"]);
@@ -1228,17 +1228,25 @@ class NetworkPort extends CommonDBChild
             }
 
             $npv = new NetworkPort_Vlan();
-            foreach (
-                $DB->request(
-                    $npv->getTable(),
-                    [$npv::$items_id_1 => $data["id"]]
-                ) as $vlan
-            ) {
-                $input = [$npv::$items_id_1 => $portid,
-                               $npv::$items_id_2 => $vlan['vlans_id']];
+            $adapter = $npv->getAdapter();
+
+            $vlans = $adapter->request([
+                'FROM'  => $npv->getTable(),
+                'WHERE' => [
+                    $npv::$items_id_1 => $data["id"]
+                ]
+            ])->fetchAllAssociative();
+
+            foreach ($vlans as $vlan) {
+                $input = [
+                    $npv::$items_id_1 => $portid,
+                    $npv::$items_id_2 => $vlan['vlans_id']
+                ];
+
                 if (isset($vlan['tagged'])) {
                     $input['tagged'] = $vlan['tagged'];
                 }
+
                 $npv->add($input);
             }
         }
@@ -1341,16 +1349,18 @@ class NetworkPort extends CommonDBChild
 
     public function computeFriendlyName()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => ['name'],
            'FROM'   => $this->fields['itemtype']::getTable(),
            'WHERE'  => ['id' => $this->fields['items_id']]
         ]);
-
-        if ($iterator->count()) {
-            return sprintf(__('%1$s on %2$s'), parent::computeFriendlyName(), $iterator->next()['name']);
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            return sprintf(
+                __('%1$s on %2$s'),
+                parent::computeFriendlyName(),
+                $results[0]['name']
+            );
         }
 
         return parent::computeFriendlyName();

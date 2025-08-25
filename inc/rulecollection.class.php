@@ -65,6 +65,7 @@ class RuleCollection extends CommonDBTM
     /// Tab orientation : horizontal or vertical
     public $taborientation = 'horizontal';
 
+
     public static function getTable($classname = null)
     {
         return parent::getTable('Rule');
@@ -106,17 +107,15 @@ class RuleCollection extends CommonDBTM
         $condition = 0,
         $children = 0
     ) {
-        global $DB;
-
         $restrict = $this->getRuleListCriteria([
-            'condition' => $condition,
+            'conditions' => $condition,
             'active'    => false,
             'inherited' => $recursive,
             'childrens' => $children,
         ]);
 
-        $iterator = $DB->request($restrict);
-        return count($iterator);
+        $request = $this::getAdapter()->request($restrict)->fetchAllAssociative();
+        return count($request);
     }
 
 
@@ -134,7 +133,7 @@ class RuleCollection extends CommonDBTM
         $p['limit']     = 0;
         $p['inherited'] = 1;
         $p['childrens'] = 0;
-        $p['condition'] = 0;
+        $p['conditions'] = 0;
 
         foreach ($options as $key => $value) {
             $p[$key] = $value;
@@ -153,8 +152,8 @@ class RuleCollection extends CommonDBTM
             $where['is_active'] = 1;
         }
 
-        if ($p['condition'] > 0) {
-            $where['condition'] = ['&', (int)$p['condition']];
+        if ($p['conditions'] > 0) {
+            $where['conditions'] = ['&', (int)$p['conditions']];
         }
 
         //Select all the rules of a different type
@@ -207,13 +206,11 @@ class RuleCollection extends CommonDBTM
      **/
     public function getCollectionPart($options = [])
     {
-        global $DB;
-
         $p['start']     = 0;
         $p['limit']     = 0;
         $p['recursive'] = true;
         $p['childrens'] = 0;
-        $p['condition'] = 0;
+        $p['conditions'] = 0;
 
         foreach ($options as $key => $value) {
             $p[$key] = $value;
@@ -225,9 +222,9 @@ class RuleCollection extends CommonDBTM
 
         //Select all the rules of a different type
         $criteria   = $this->getRuleListCriteria($p);
-        $iterator   = $DB->request($criteria);
+        $request   = $this::getAdapter()->request($criteria);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             //For each rule, get a Rule object with all the criterias and actions
             $tempRule               = $this->getRuleClass();
             $tempRule->fields       = $data;
@@ -245,8 +242,6 @@ class RuleCollection extends CommonDBTM
      **/
     public function getCollectionDatas($retrieve_criteria = 0, $retrieve_action = 0, $condition = 0)
     {
-        global $DB;
-
         if ($this->RuleList === null) {
             $this->RuleList = SingletonRuleList::getInstance(
                 $this->getRuleClassName(),
@@ -258,13 +253,12 @@ class RuleCollection extends CommonDBTM
         // check if load required
         if (($need & $this->RuleList->load) != $need) {
             //Select all the rules of a different type
-            $criteria = $this->getRuleListCriteria(['condition' => $condition]);
-            $iterator = $DB->request($criteria);
-
-            if (count($iterator)) {
+            $criteria = $this->getRuleListCriteria(['conditions' => $condition]);
+            $request = $this::getAdapter()->request($criteria)->fetchAllAssociative();
+            if (count($request)) {
                 $this->RuleList->list = [];
 
-                while ($rule = $iterator->next()) {
+                foreach ($request as $rule) {
                     //For each rule, get a Rule object with all the criterias and actions
                     $tempRule = $this->getRuleClass();
 
@@ -444,10 +438,10 @@ class RuleCollection extends CommonDBTM
         $p['inherited'] = 1;
         $p['childrens'] = 0;
         $p['active']    = false;
-        $p['condition'] = 0;
+        $p['conditions'] = 0;
         $rand           = mt_rand();
 
-        foreach (['inherited','childrens', 'condition'] as $param) {
+        foreach (['inherited','childrens', 'conditions'] as $param) {
             if (
                 isset($options[$param])
                 && $this->isRuleRecursive()
@@ -467,22 +461,22 @@ class RuleCollection extends CommonDBTM
         $use_conditions = false;
         if ($rule->useConditions()) {
             // First get saved option
-            $p['condition'] = Session::getSavedOption($this->getType(), 'condition', 0);
-            if ($p['condition'] == 0) {
-                $p['condition'] = $this->getDefaultRuleConditionForList();
+            $p['conditions'] = Session::getSavedOption($this->getType(), 'conditions', 0);
+            if ($p['conditions'] == 0) {
+                $p['conditions'] = $this->getDefaultRuleConditionForList();
             }
             $use_conditions = true;
             // Mini Search engine
             echo "<table class='tab_cadre_fixe' aria-label='Search Engine'>";
             echo "<tr class='tab_bg_1'><td class='center' width='50%'>";
             echo __('Rules used for') . "</td><td>";
-            $rule->dropdownConditions(['value' => $p['condition'],
+            $rule->dropdownConditions(['value' => $p['conditions'],
                 'on_change'  => 'reloadTab("start=0&inherited=' . $p['inherited']
-                . '&childrens=' . $p['childrens'] . '&condition="+this.value)']);
+                . '&childrens=' . $p['childrens'] . '&conditions="+this.value)']);
             echo "</td></tr></table>";
         }
 
-        $nb         = $this->getCollectionSize($p['inherited'], $p['condition'], $p['childrens']);
+        $nb         = $this->getCollectionSize($p['inherited'], $p['conditions'], $p['childrens']);
         $p['start'] = (isset($options["start"]) ? $options["start"] : 0);
 
         if ($p['start'] >= $nb) {
@@ -497,7 +491,7 @@ class RuleCollection extends CommonDBTM
                 'container'     => 'ruleCollectionTable',
                 'extraparams'   => [
                     'entity' => $this->entity,
-                    'condition' => $p['condition'],
+                    'conditions' => $p['conditions'],
                     'rule_class_name' => $this->getRuleClassName()
                 ],
                 'display_arrow' => false,
@@ -527,7 +521,7 @@ class RuleCollection extends CommonDBTM
             $newValue[] = $rule->getLink(['withtype' => true]);
             $newValue[] = $rule->fields['description'];
             if ($use_conditions) {
-                $newValue[] = $rule->getConditionName($rule->fields['condition']);
+                $newValue[] = $rule->getConditionName($rule->fields['conditions']);
             }
             $newValue[] = $rule->fields['is_active'];
             if ($display_entities) {
@@ -536,13 +530,13 @@ class RuleCollection extends CommonDBTM
                     $rule->fields['entities_id']
                 );
             } elseif ($rule->can_sort && $canedit) {
-                $active_condition = $rule->fields['condition'];
+                $active_condition = $rule->fields['conditions'];
                 ob_start();
                 if ($idx > 0) {
                     Html::showSimpleForm(
                         $target,
                         ['action' => 'up',
-                        'condition' => $active_condition],
+                        'conditions' => $active_condition],
                         '',
                         ['type' => $rule->fields["sub_type"],
                         'id'   => $rule->fields["id"],],
@@ -553,7 +547,7 @@ class RuleCollection extends CommonDBTM
                     Html::showSimpleForm(
                         $target,
                         ['action' => 'down',
-                        'condition' => $active_condition],
+                        'conditions' => $active_condition],
                         '',
                         ['type' => $rule->fields["sub_type"],
                         'id'   => $rule->fields["id"]],
@@ -591,7 +585,7 @@ class RuleCollection extends CommonDBTM
             'allruletest' . $rand,
             $url . "/front/rulesengine.test.php?" .
             "sub_type=" . $this->getRuleClassName() .
-            "&condition=" . $p['condition'],
+            "&conditions=" . $p['conditions'],
             ['title' => __('Test rules engine')]
         );
         echo "</div>";
@@ -640,12 +634,12 @@ class RuleCollection extends CommonDBTM
 
         $add_condition = [];
         if ($condition > 0) {
-            $add_condition = ['condition' => ['&', (int)$condition]];
+            $add_condition = ['conditions' => ['&', (int)$condition]];
         }
 
-        $iterator = $DB->request($criteria);
-        if (count($iterator) == 1) {
-            $result = $iterator->next();
+        $request = $this::getAdapter()->request($criteria)->fetchAllAssociative();
+        if (count($request) == 1) {
+            $result = $request[0];
             $current_rank = $result['ranking'];
             // Search rules to switch
             $criteria = [
@@ -672,9 +666,9 @@ class RuleCollection extends CommonDBTM
                     return false;
             }
 
-            $iterator2 = $DB->request($criteria);
-            if (count($iterator2) == 1) {
-                $result2 = $iterator2->next();
+            $request2 = $this::getAdapter()->request($criteria)->fetchAllAssociative();
+            if (count($request2) == 1) {
+                $result2 = $request2[0];
                 $other_ID = $result2['id'];
                 $new_rank = $result2['ranking'];
                 echo $current_rank . ' ' . $ID . '<br>';
@@ -717,8 +711,8 @@ class RuleCollection extends CommonDBTM
 
                 if ($diff != 0) {
                     // Move several rules
-                    $iterator3 = $DB->request($criteria);
-                    while ($data = $iterator3->next()) {
+                    $request3 = $this::getAdapter()->request($criteria);
+                    while ($data = $request3->fetchAssociative()) {
                         $data['ranking'] += $diff;
                         $result = $rule->update($data);
                     }
@@ -753,19 +747,35 @@ class RuleCollection extends CommonDBTM
      **/
     public function deleteRuleOrder($ranking)
     {
-        global $DB;
+        $adapter = self::getAdapter();
 
-        $result = $DB->update(
-            'glpi_rules',
-            [
-                'ranking' => new \QueryExpression($DB->quoteName('ranking') . ' - 1')
-            ],
-            [
+        $rules = $adapter->request([
+            'SELECT' => ['id', 'ranking'],
+            'FROM'   => 'glpi_rules',
+            'WHERE'  => [
                 'sub_type'  => $this->getRuleClassName(),
                 'ranking'   => ['>', $ranking]
             ]
-        );
-        return $result;
+        ]);
+
+        $rule_obj = $this->getRuleClass();
+        $success = true;
+
+        foreach ($rules->fetchAllAssociative() as $data) {
+            $rule = new $rule_obj();
+            if ($rule->getFromDB($data['id'])) {
+                $update = [
+                    'id'      => $data['id'],
+                    'ranking' => $data['ranking'] - 1
+                ];
+
+                if (!$rule->update($update)) {
+                    $success = false;
+                }
+            }
+        }
+
+        return $success;
     }
 
 
@@ -794,11 +804,11 @@ class RuleCollection extends CommonDBTM
             $rank = $ruleDescription->fields["ranking"];
         } elseif ($type == "after") {
             // Move after all
-            $result = $DB->request([
+            $result = $this::getAdapter()->request([
                 'SELECT' => ['MAX' => 'ranking AS maxi'],
                 'FROM'   => 'glpi_rules',
                 'WHERE'  => ['sub_type' => $this->getRuleClassName()]
-            ])->next();
+            ])->fetchAssociative();
             $rank   = $result['maxi'];
         } else {
             // Move before all
@@ -816,7 +826,7 @@ class RuleCollection extends CommonDBTM
             }
 
             // Move back all rules between old and new rank
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                 'SELECT' => ['id', 'ranking'],
                 'FROM'   => 'glpi_rules',
                 'WHERE'  => [
@@ -825,7 +835,7 @@ class RuleCollection extends CommonDBTM
                     ['ranking'  => ['<=', $rank]]
                 ]
             ]);
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 $data['ranking']--;
                 $result = $rule->update($data);
             }
@@ -835,7 +845,7 @@ class RuleCollection extends CommonDBTM
             }
 
             // Move forward all rule  between old and new rank
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                 'SELECT' => ['id', 'ranking'],
                 'FROM'   => 'glpi_rules',
                 'WHERE'  => [
@@ -844,7 +854,7 @@ class RuleCollection extends CommonDBTM
                     ['ranking'  => ['<', $old_rank]]
                 ]
             ]);
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 $data['ranking']++;
                 $result = $rule->update($data);
             }
@@ -945,7 +955,7 @@ class RuleCollection extends CommonDBTM
 
                 $available_criteria = $rule->getCriterias();
                 $crit               = $criteria['criteria'];
-                if (self::isCriteraADropdown($available_criteria, $criteria['condition'], $crit)) {
+                if (self::isCriteraADropdown($available_criteria, $criteria['conditions'], $crit)) {
                     $criteria['pattern']
                         = Html::clean(Dropdown::getDropdownName(
                             $available_criteria[$crit]['table'],
@@ -1126,7 +1136,7 @@ class RuleCollection extends CommonDBTM
                     if (
                         self::isCriteraADropdown(
                             $available_criteria,
-                            $criteria['condition'],
+                            $criteria['conditions'],
                             $crit
                         )
                     ) {
@@ -1279,7 +1289,7 @@ class RuleCollection extends CommonDBTM
                     echo "<tr class='tab_bg_1'>";
                     echo "<td>" . $item->getCriteriaName($criteria["criteria"]) . "</td>";
                     echo "<td>" . RuleCriteria::getConditionByID(
-                        $criteria["condition"],
+                        $criteria["conditions"],
                         get_class($item),
                         $criteria["criteria"]
                     ) . "</td>";
@@ -1493,7 +1503,7 @@ class RuleCollection extends CommonDBTM
     public function processAllRules($input = [], $output = [], $params = [], $options = [])
     {
 
-        $p['condition']     = 0;
+        $p['conditions']     = 0;
         $p['only_criteria'] = null;
 
         if (is_array($options) && count($options)) {
@@ -1503,7 +1513,7 @@ class RuleCollection extends CommonDBTM
         }
 
         // Get Collection datas
-        $this->getCollectionDatas(1, 1, $p['condition']);
+        $this->getCollectionDatas(1, 1, $p['conditions']);
         $input                      = $this->prepareInputDataForProcessWithPlugins($input, $params);
         $output["_no_rule_matches"] = true;
         //Store rule type being processed (for plugins)
@@ -1513,7 +1523,7 @@ class RuleCollection extends CommonDBTM
             foreach ($this->RuleList->list as $rule) {
                 //If the rule is active, process it
 
-                if ($rule->fields["is_active"]) {
+                if ($rule->fields["is_active"] ?? '') {
                     $output["_rule_process"] = false;
                     $rule->process($input, $output, $params, $p);
 
@@ -1589,7 +1599,7 @@ class RuleCollection extends CommonDBTM
             echo "<input type='submit' name='test_all_rules' value='" . _sx('button', 'Test') . "'
                 class='submit'>";
             echo "<input type='hidden' name='sub_type' value='" . $this->getRuleClassName() . "'>";
-            echo "<input type='hidden' name='condition' value='$condition'>";
+            echo "<input type='hidden' name='conditions' value='$condition'>";
             echo "</td></tr>\n";
             echo "</table></div>";
             Html::closeForm();
@@ -1722,11 +1732,11 @@ class RuleCollection extends CommonDBTM
 
         $limit = [];
         if ($condition > 0) {
-            $limit = ['glpi_rules.condition' => ['&', (int)$condition]];
+            $limit = ['glpi_rules.conditions' => ['&', (int)$condition]];
         }
         $input = [];
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
             'SELECT'          => 'glpi_rulecriterias.criteria',
             'DISTINCT'        => true,
             'FROM'            => 'glpi_rulecriterias',
@@ -1744,7 +1754,7 @@ class RuleCollection extends CommonDBTM
             ] + $limit
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $input[] = $data["criteria"];
         }
         return $input;
@@ -1961,11 +1971,9 @@ class RuleCollection extends CommonDBTM
      **/
     public function getFieldsToLookFor()
     {
-        global $DB;
-
         $params = [];
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
             'SELECT'          => 'glpi_rulecriterias.criteria',
             'DISTINCT'        => true,
             'FROM'            => 'glpi_rulecriterias',
@@ -1983,7 +1991,7 @@ class RuleCollection extends CommonDBTM
             ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $params[] = Toolbox::strtolower($data["criteria"]);
         }
         return $params;

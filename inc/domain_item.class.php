@@ -167,7 +167,7 @@ class Domain_Item extends CommonDBRelation
      **/
     public static function showForDomain(Domain $domain)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $instID = $domain->fields['id'];
         if (!$domain->can($instID, READ)) {
@@ -176,7 +176,7 @@ class Domain_Item extends CommonDBRelation
         $canedit = $domain->can($instID, UPDATE);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => 'itemtype',
            'DISTINCT'  => true,
            'FROM'      => self::getTable(),
@@ -185,7 +185,8 @@ class Domain_Item extends CommonDBRelation
            'LIMIT'     => count(Domain::getTypes(true))
         ]);
 
-        $number = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
 
         if (Session::isMultiEntitiesMode()) {
             $colsup = 1;
@@ -291,7 +292,7 @@ class Domain_Item extends CommonDBRelation
         }
         $values = [];
         $massive_action = [];
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $itemtype = $data['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -333,12 +334,13 @@ class Domain_Item extends CommonDBRelation
                     $linked_criteria['WHERE']["$itemTable.is_template"] = 0;
                 }
 
-                $linked_iterator = $DB->request($linked_criteria);
-
-                if (count($linked_iterator)) {
+                $results = self::getAdapter()->request($linked_criteria);
+                $linked_result = $results->fetchAllAssociative();
+                if (count($linked_result)) {
                     Session::initNavigateListItems($itemtype, Domain::getTypeName(2) . " = " . $domain->fields['name']);
 
-                    while ($data = $linked_iterator->next()) {
+                    // while ($data = $linked_iterator->next()) {
+                    foreach ($linked_result as $data) {
                         $item->getFromDB($data["id"]);
 
                         $ID = "";
@@ -378,7 +380,7 @@ class Domain_Item extends CommonDBRelation
         echo "<table class='tab_cadre_fixe' aria-label='Show Domain'>";
         echo "<tr>";
 
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $itemtype = $data['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -420,12 +422,12 @@ class Domain_Item extends CommonDBRelation
                     $linked_criteria['WHERE']["$itemTable.is_template"] = 0;
                 }
 
-                $linked_iterator = $DB->request($linked_criteria);
-
-                if (count($linked_iterator)) {
+                $results = self::getAdapter()->request($linked_criteria);
+                $linked_result = $results->fetchAllAssociative();
+                if (count($linked_result)) {
                     Session::initNavigateListItems($itemtype, Domain::getTypeName(2) . " = " . $domain->fields['name']);
 
-                    while ($data = $linked_iterator->next()) {
+                    foreach ($linked_result as $data) {
                         Session::addToNavigateListItems($itemtype, $data["id"]);
                         $item->getFromDB($data["id"]);
 
@@ -541,16 +543,16 @@ class Domain_Item extends CommonDBRelation
         }
         $criteria['WHERE'] += getEntitiesRestrictCriteria(Domain::getTable(), '', '', true);
 
-        $iterator = $DB->request($criteria);
-
-        $number = count($iterator);
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
         $i      = 0;
 
         $domains = [];
         $domain  = new Domain();
         $used    = [];
-        while ($data = $iterator->next()) {
-            $domains[$data['assocID']] = $data;
+        foreach ($results as $data) {
+            $domains[$data['assocID'] ?? null] = $data;
             $used[$data['id']]         = $data['id'];
         }
 
@@ -572,12 +574,13 @@ class Domain_Item extends CommonDBRelation
                 }
             }
 
-            $domain_iterator = $DB->request([
+            $domain_result = self::getAdapter()->request([
                'COUNT'  => 'cpt',
                'FROM'   => Domain::getTable(),
                'WHERE'  => ['is_deleted' => 0] + getEntitiesRestrictCriteria(Domain::getTable(), '', $entities, true)
             ]);
-            $result = $domain_iterator->next();
+            // $result = $domain_iterator->next();
+            $result = $domain_result->fetchAssociative();
             $nb     = $result['cpt'];
 
             if (
@@ -643,8 +646,8 @@ class Domain_Item extends CommonDBRelation
         $massivactionId = 'mass' . __CLASS__ . $rand;
         $fields = [
           'name' => __('Name'),
-          'groups_id_tech' => __('Group in charge'),
-          'users_id_tech' => __('Technician in charge'),
+          'tech_groups_id' => __('Group in charge'),
+          'tech_users_id' => __('Technician in charge'),
           'domaintypes_id' => _n('Type', 'Types', 1),
           'date_creation' => __('Creation date'),
           'expiration' => __('Expiration date'),
@@ -687,8 +690,8 @@ class Domain_Item extends CommonDBRelation
                 }
                 $newValue = [
                     'name' => $link,
-                    'groups_id_tech' => Dropdown::getDropdownName("glpi_groups", $data["groups_id_tech"]),
-                    'users_id_tech' => getUserName($data["users_id_tech"]),
+                    'tech_groups_id' => Dropdown::getDropdownName("glpi_groups", $data["tech_groups_id"]),
+                    'tech_users_id' => getUserName($data["tech_users_id"]),
                     'domaintypes_id' => Dropdown::getDropdownName("glpi_domaintypes", $data["domaintypes_id"]),
                     'date_creation' => Html::convDate($data["date_creation"]),
                     'expiration' => $data["date_expiration"] <= date('Y-m-d') && !empty($data["date_expiration"]) ?

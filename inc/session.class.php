@@ -92,16 +92,18 @@ class Session
                 }
             }
             self::destroy();
+
             session_regenerate_id();
             self::start();
             $_SESSION = $save;
             $_SESSION['valid_id'] = session_id();
             // Define default time :
-            $_SESSION["glpi_currenttime"] = date("Y-m-d H:i:s");
+            $_SESSION["glpi_currenttime"] = new Datetime();
 
             // Normal mode for this request
             $_SESSION["glpi_use_mode"] = self::NORMAL_MODE;
             // Check ID exists and load complete user from DB (plugins...)
+
             if (
                 isset($auth->user->fields['id'])
                 && $auth->user->getFromDB($auth->user->fields['id'])
@@ -114,6 +116,7 @@ class Session
                         && (($auth->user->fields['end_date'] > $_SESSION["glpi_currenttime"])
                             || is_null($auth->user->fields['end_date'])))
                 ) {
+
                     $_SESSION["glpiID"]              = $auth->user->fields['id'];
                     $_SESSION["glpifriendlyname"]    = $auth->user->getFriendlyName();
                     $_SESSION["glpiname"]            = $auth->user->fields['name'];
@@ -166,6 +169,7 @@ class Session
                     self::initEntityProfiles(self::getLoginUserID());
 
                     // Use default profile if exist
+
                     if (isset($_SESSION['glpiprofiles'][$auth->user->fields['profiles_id']])) {
                         self::changeProfile($auth->user->fields['profiles_id']);
                     } else { // Else use first
@@ -185,6 +189,7 @@ class Session
                 $auth->addToError(__("You don't have right to connect"));
             }
         }
+
     }
 
 
@@ -223,7 +228,7 @@ class Session
             @session_start();
         }
         // Define current time for sync of action timing
-        $_SESSION["glpi_currenttime"] = date("Y-m-d H:i:s");
+        $_SESSION["glpi_currenttime"] = new Datetime();
     }
 
 
@@ -509,7 +514,7 @@ class Session
             return;
         }
 
-        $iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'SELECT'          => [
               'glpi_profiles.id',
               'glpi_profiles.name'
@@ -529,18 +534,20 @@ class Session
            ],
            'ORDERBY'         => 'glpi_profiles.name'
         ]);
-
-        if (count($iterator)) {
-            while ($data = $iterator->next()) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            foreach ($results as $data) {
                 $key = $data['id'];
                 $_SESSION['glpiprofiles'][$key]['name'] = $data['name'];
-                $entities_iterator = $DB->request([
+                $entities_request = config::getAdapter()->request([
                    'SELECT'    => [
-                      'glpi_profiles_users.entities_id AS eID',
-                      'glpi_profiles_users.id AS kID',
-                      'glpi_profiles_users.is_recursive',
-                      'glpi_entities.*'
-                   ],
+                      'glpi_profiles_users.entities_id',
+                        'glpi_profiles_users.id',
+                        'glpi_profiles_users.is_recursive',
+                        'glpi_entities.id AS entity_id',
+                        'glpi_entities.name',
+                        'glpi_entities.completename'
+                    ],
                    'FROM'      => 'glpi_profiles_users',
                    'LEFT JOIN' => [
                       'glpi_entities'   => [
@@ -557,19 +564,39 @@ class Session
                    'ORDERBY'   => 'glpi_entities.completename'
                 ]);
 
-                while ($data = $entities_iterator->next()) {
+                while ($data = $entities_request->fetchAssociative()) {
+                    $entity_id = $data['entities_id'];
                     // Do not override existing entity if define as recursive
                     if (
                         !isset($_SESSION['glpiprofiles'][$key]['entities'][$data['eID']])
                         || $data['is_recursive']
                     ) {
-                        $_SESSION['glpiprofiles'][$key]['entities'][$data['eID']] = [
-                           'id'           => $data['eID'],
-                           'name'         => $data['name'],
-                           'is_recursive' => $data['is_recursive']
-                        ];
+                        $_SESSION['glpiprofiles'][$key]['entities'][$entity_id] = [
+                            'id'           => $entity_id,
+                            'name'         => $data['name'] ?? '',
+                            'is_recursive' => $data['is_recursive']
+                            ];
                     }
                 }
+            }
+        }
+        if (isset($_SESSION['glpiprofiles']) && count($_SESSION['glpiprofiles']) > 0) {
+            $has_entities = false;
+            foreach ($_SESSION['glpiprofiles'] as $profile) {
+                if (isset($profile['entities']) && count($profile['entities']) > 0) {
+                    $has_entities = true;
+                    break;
+                }
+            }
+
+            if (!$has_entities) {
+                // Add root entity to first profile
+                $first_profile_id = array_key_first($_SESSION['glpiprofiles']);
+                $_SESSION['glpiprofiles'][$first_profile_id]['entities'][0] = [
+                    'id'           => 0,
+                    'name'         => 'Root entity',
+                    'is_recursive' => 1
+                ];
             }
         }
     }
@@ -582,11 +609,9 @@ class Session
     **/
     public static function loadGroups()
     {
-        global $DB;
-
         $_SESSION["glpigroups"] = [];
 
-        $iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'SELECT'    => Group_User::getTable() . '.groups_id',
            'FROM'      => Group_User::getTable(),
            'LEFT JOIN' => [
@@ -607,7 +632,7 @@ class Session
            )
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $_SESSION["glpigroups"][] = $data["groups_id"];
         }
     }
@@ -1705,7 +1730,6 @@ class Session
         ?bool $is_recursive
     ) {
         $user = new User();
-
         // Try to load from token
         if (!$user->getFromDBByToken($token, $token_type)) {
             return false;

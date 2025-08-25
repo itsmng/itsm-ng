@@ -118,7 +118,6 @@ abstract class CommonDBConnexity extends CommonDBTM
     **/
     public function cleanDBonItemDelete($itemtype, $items_id)
     {
-        global $DB;
 
         $criteria = static::getSQLCriteriaToSearchForItem($itemtype, $items_id);
         if ($criteria !== null) {
@@ -127,8 +126,8 @@ abstract class CommonDBConnexity extends CommonDBTM
                '_disablenotif'       => true
             ];
 
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $results = $this::getAdapter()->request($criteria);
+            while ($data = $results->fetchAssociative()) {
                 $input[$this->getIndexName()] = $data[$this->getIndexName()];
                 $this->delete($input, 1);
             }
@@ -181,9 +180,9 @@ abstract class CommonDBConnexity extends CommonDBTM
     public static function getItemsAssociatedTo($itemtype, $items_id)
     {
         $res = [];
-        $iterator = static::getItemsAssociationRequest($itemtype, $items_id);
+        $results = static::getItemsAssociationRequest($itemtype, $items_id);
 
-        while ($row = $iterator->next()) {
+        foreach ($results as $row) {
             $input = Toolbox::addslashes_deep($row);
             $item = new static();
             $item->getFromDB($input['id']);
@@ -204,8 +203,10 @@ abstract class CommonDBConnexity extends CommonDBTM
      */
     public static function getItemsAssociationRequest($itemtype, $items_id)
     {
-        global $DB;
-        return $DB->request(static::getSQLCriteriaToSearchForItem($itemtype, $items_id));
+
+        $request = self::getAdapter()->request(static::getSQLCriteriaToSearchForItem($itemtype, $items_id));
+        $results = $request->fetchAllAssociative();
+        return $results;
     }
 
     /**

@@ -213,7 +213,7 @@ trait CalDAVUriUtilTrait
             );
         }
 
-        $items_iterator = $DB->request(
+        $items_request = $this::getAdapter()->request(
             [
               'SELECT'   => [
                  'id',
@@ -223,9 +223,9 @@ trait CalDAVUriUtilTrait
               'FROM'     => $union,
             ]
         );
-
-        if ($items_iterator->count() !== 1) {
-            if ($items_iterator->count() > 1) {
+        $results = $items_request->fetchAllAssociative();
+        if ($results->count() !== 1) {
+            if ($results->count() > 1) {
                 // Ambiguous response, unable to return matching element.
                 // Should never happens as UID has very very low probability to not be unique.
                 \Toolbox::logError(

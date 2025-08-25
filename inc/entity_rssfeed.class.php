@@ -58,15 +58,13 @@ class Entity_RSSFeed extends CommonDBRelation
     **/
     public static function getEntities($rssfeeds_id)
     {
-        global $DB;
-
         $ent   = [];
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['rssfeeds_id' => $rssfeeds_id]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $ent[$data['entities_id']][] = $data;
         }
         return $ent;

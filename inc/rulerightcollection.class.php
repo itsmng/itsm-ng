@@ -183,10 +183,8 @@ class RuleRightCollection extends RuleCollection
     **/
     public function getFieldsToLookFor()
     {
-        global $DB;
-
         $params = [];
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'          => 'value',
            'DISTINCT'        => true,
            'FROM'            => 'glpi_rulerightparameters',
@@ -207,7 +205,7 @@ class RuleRightCollection extends RuleCollection
            'WHERE'           => ['glpi_rules.sub_type' => 'RuleRight']
         ]);
 
-        while ($param = $iterator->next()) {
+        while ($param = $request->fetchAssociative()) {
             //Dn is alwsays retreived from ldap : don't need to ask for it !
             if ($param["value"] != "dn") {
                 $params[] = Toolbox::strtolower($param["value"]);

@@ -185,7 +185,7 @@ class Item_Problem extends CommonItilObject_Item
         ];
         $values = [];
         $massive_action = [];
-        while ($row = $types_iterator->next()) {
+        foreach ($types_iterator as $row) {
             $itemtype = $row['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -246,13 +246,13 @@ class Item_Problem extends CommonItilObject_Item
                 case 'Supplier':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $from = $item->getType() == 'Group' ? 'glpi_groups_problems' : 'glpi_problems_' . strtolower($item->getType() . 's');
-                        $result = $DB->request([
+                        $result = $this::getAdapter()->request([
                            'COUNT'  => 'cpt',
                            'FROM'   => $from,
                            'WHERE'  => [
                               $item->getForeignKeyField()   => $item->fields['id']
                            ]
-                        ])->next();
+                        ])->fetchAssociative();
                         $nb = $result['cpt'];
                     }
                     return self::createTabEntry(Problem::getTypeName(Session::getPluralNumber()), $nb);

@@ -91,7 +91,7 @@ class GLPIMailer extends PHPMailer
 
         if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) {
             $this->SMTPDebug = SMTP::DEBUG_CONNECTION;
-            $this->Debugoutput = function ($message, $level) {
+            $this->Debugoutput = function ($message, $level): void {
                 Toolbox::logInFile(
                     'mail-debug',
                     "$level - $message"

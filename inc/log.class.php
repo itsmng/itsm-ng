@@ -162,7 +162,7 @@ class Log extends CommonDBTM
                             $oldval = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, $oldval));
                             $values[$key] = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, $values[$key]));
                         }
-                        $changes = [$id_search_option, addslashes($oldval), $values[$key]];
+                        $changes = [$id_search_option, addslashes((string)$oldval), $values[$key]];
                     } else {
                         // other cases; link field -> get data from dropdown
                         if ($val2["table"] != 'glpi_auth_tables') {
@@ -243,7 +243,8 @@ class Log extends CommonDBTM
                 sprintf(__('%1$s (%2$s)'), getUserName($impersonator_id), $impersonator_id)
             );
         }
-
+        $old_value = ($old_value instanceof \DateTimeInterface) ? $old_value->format('Y-m-d H:i:s') : (is_object($old_value) ? (string)$old_value : $old_value);
+        $new_value = ($new_value instanceof \DateTimeInterface) ? $new_value->format('Y-m-d H:i:s') : (is_object($new_value) ? (string)$new_value : $new_value);
         $old_value = Toolbox::substr(stripslashes($old_value), 0, 180);
         $new_value = Toolbox::substr(stripslashes($new_value), 0, 180);
 
@@ -269,7 +270,7 @@ class Log extends CommonDBTM
            'old_value'         => $old_value,
            'new_value'         => $new_value
         ];
-        $result = $DB->insert(self::getTable(), $params);
+        $result = self::getAdapter()->add($params);
 
         if ($result && $DB->affectedRows($result) > 0) {
             return $_SESSION['glpi_maxhistory'] = $DB->insertId();
@@ -783,12 +784,11 @@ class Log extends CommonDBTM
      **/
     public static function getDistinctUserNamesValuesInItemLog(CommonDBTM $item)
     {
-        global $DB;
 
         $itemtype = $item->getType();
         $items_id = $item->getField('id');
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT'          => 'user_name',
            'DISTINCT'        => true,
            'FROM'            => self::getTable(),
@@ -800,7 +800,7 @@ class Log extends CommonDBTM
         ]);
 
         $values = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             if (empty($data['user_name'])) {
                 continue;
             }
@@ -824,14 +824,13 @@ class Log extends CommonDBTM
      **/
     public static function getDistinctAffectedFieldValuesInItemLog(CommonDBTM $item)
     {
-        global $DB;
 
         $itemtype = $item->getType();
         $items_id = $item->getField('id');
 
         $affected_fields = ['linked_action', 'itemtype_link', 'id_search_option'];
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT'  => $affected_fields,
            'FROM'    => self::getTable(),
            'WHERE'   => [
@@ -843,7 +842,7 @@ class Log extends CommonDBTM
         ]);
 
         $values = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $key = null;
             $value = null;
 
@@ -997,12 +996,10 @@ class Log extends CommonDBTM
      **/
     public static function getDistinctLinkedActionValuesInItemLog(CommonDBTM $item)
     {
-        global $DB;
-
         $itemtype = $item->getType();
         $items_id = $item->getField('id');
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT'          => 'linked_action',
            'DISTINCT'        => true,
            'FROM'            => self::getTable(),
@@ -1014,7 +1011,7 @@ class Log extends CommonDBTM
         ]);
 
         $values = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $key = $data["linked_action"];
             $value = null;
 

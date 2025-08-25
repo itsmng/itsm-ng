@@ -276,12 +276,12 @@ class Entity extends CommonTreeDropdown
 
         $input = parent::prepareInputForAdd($input);
 
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT' => new \QueryExpression(
                'MAX(' . $DB->quoteName('id') . ')+1 AS newID'
            ),
            'FROM'   => $this->getTable()
-        ])->next();
+        ])->fetchAssociative();
         $input['id'] = $result['newID'];
 
         $input['max_closedate'] = $_SESSION["glpi_currenttime"];
@@ -1379,8 +1379,6 @@ class Entity extends CommonTreeDropdown
     **/
     public static function getEntitiesToNotify($field)
     {
-        global $DB;
-
         $entities = [];
 
         // root entity first
@@ -1393,7 +1391,7 @@ class Entity extends CommonTreeDropdown
         }
 
         // Others entities in level order (parent first)
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => [
               'id AS entity',
               'entities_id AS parent',
@@ -1403,7 +1401,7 @@ class Entity extends CommonTreeDropdown
            'ORDER'  => 'level ASC'
         ]);
 
-        while ($entitydata = $iterator->next()) {
+        while ($entitydata = $request->fetchAssociative()) {
             if (
                 (is_null($entitydata[$field])
                  || ($entitydata[$field] == self::CONFIG_PARENT))
@@ -2171,7 +2169,7 @@ class Entity extends CommonTreeDropdown
         echo "<div id='custom_css_container' class='custom_css_container'>";
         $value = $entity->fields['enable_custom_css'];
         // wrap call in function to prevent modifying variables from current scope
-        call_user_func(function () use ($value, $ID) {
+        call_user_func(function () use ($value, $ID): void {
             $_POST  = [
                'enable_custom_css' => $value,
                'entities_id'       => $ID
@@ -2206,6 +2204,7 @@ class Entity extends CommonTreeDropdown
         echo "</div>";
     }
 
+
     /**
      * Returns tag containing custom CSS code applied to entity.
      *
@@ -2213,19 +2212,30 @@ class Entity extends CommonTreeDropdown
      */
     public function getCustomCssTag()
     {
+        if (!isset($this->fields) || !is_array($this->fields)) {
+            return '';
+        }
+
+        if (!isset($this->fields['id'])) {
+            return '';
+        }
+
+        $entity_id = $this->fields['id'];
 
         $enable_custom_css = self::getUsedConfig(
             'enable_custom_css',
-            $this->fields['id']
+            $entity_id
         );
+
 
         if (!$enable_custom_css) {
             return '';
         }
 
+
         $custom_css_code = self::getUsedConfig(
             'enable_custom_css',
-            $this->fields['id'],
+            $entity_id,
             'custom_css_code'
         );
 
@@ -2244,17 +2254,14 @@ class Entity extends CommonTreeDropdown
     **/
     private static function getEntityIDByField($field, $value)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable(),
            'WHERE'  => [$field => $value]
         ]);
-
-        if (count($iterator) == 1) {
-            $result = $iterator->next();
-            return $result['id'];
+        $result = $request->fetchAllAssociative();
+        if (count($result) == 1) {
+            return $result[0]['id'];
         }
         return -1;
     }
@@ -2596,39 +2603,43 @@ class Entity extends CommonTreeDropdown
 
         $entity = new self();
         // Search in entity data of the current entity
-        if ($entity->getFromDB($entities_id)) {
-            // Value is defined : use it
-            if (isset($entity->fields[$fieldref])) {
-                // Numerical value
-                if (
-                    is_numeric($default_value)
-                    && ($entity->fields[$fieldref] != self::CONFIG_PARENT)
-                ) {
-                    return $entity->fields[$fieldval];
+        if (!empty($entities_id) && ctype_digit((string)$entities_id)) {
+            if ($entity->getFromDB((int)$entities_id)) {
+                // Value is defined : use it
+                if (isset($entity->fields[$fieldref])) {
+                    // Numerical value
+                    if (
+                        is_numeric($default_value)
+                        && ($entity->fields[$fieldref] != self::CONFIG_PARENT)
+                    ) {
+                        return $entity->fields[$fieldval];
+                    }
+                    // String value
+                    if (
+                        !is_numeric($default_value)
+                        && $entity->fields[$fieldref]
+                    ) {
+                        return $entity->fields[$fieldval];
+                    }
                 }
-                // String value
-                if (
-                    !is_numeric($default_value)
-                    && $entity->fields[$fieldref]
-                ) {
-                    return $entity->fields[$fieldval];
+            }
+            // Entity data not found or not defined : search in parent one
+            if ($entities_id > 0) {
+                if ($entity->getFromDB($entities_id)) {
+                    $parent_id = isset($entity->fields['entities_id']) ? $entity->fields['entities_id'] : null;
+
+                    if ($parent_id > 0) {
+                        $ret = self::getUsedConfig(
+                            $fieldref,
+                            $parent_id,
+                            $fieldval,
+                            $default_value
+                        );
+                        return $ret;
+                    }
                 }
             }
         }
-
-        // Entity data not found or not defined : search in parent one
-        if ($entities_id > 0) {
-            if ($entity->getFromDB($entities_id)) {
-                $ret = self::getUsedConfig(
-                    $fieldref,
-                    $entity->fields['entities_id'],
-                    $fieldval,
-                    $default_value
-                );
-                return $ret;
-            }
-        }
-
         return $default_value;
     }
 

@@ -504,7 +504,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                 if (isset($query_tab_save['criteria']) && count($query_tab_save['criteria'])) {
                     unset($query_tab['criteria']);
                     $new_key = 0;
-                    foreach ($query_tab_save['criteria'] as $key => $val) {
+                    foreach ($query_tab_save['criteria'] as $val) {
                         if (
                             isset($val['field'])
                             && $val['field'] != 'view'
@@ -525,7 +525,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     $meta_ok = Search::getMetaItemtypeAvailable($query_tab['itemtype']);
                     unset($query_tab['metacriteria']);
                     $new_key = 0;
-                    foreach ($query_tab_save['metacriteria'] as $key => $val) {
+                    foreach ($query_tab_save['metacriteria'] as $val) {
                         if (isset($val['itemtype'])) {
                             $opt = Search::getCleanedOptions($val['itemtype']);
                         }
@@ -612,7 +612,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
         ) {
             $dd = new SavedSearch_User();
             // Is default view for this itemtype already exists ?
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => 'glpi_savedsearches_users',
                'WHERE'  => [
@@ -621,7 +621,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                ]
             ]);
 
-            if ($result = $iterator->next()) {
+            if ($result = $request->fetchAssociative()) {
                 // already exists update it
                 $updateID = $result['id'];
                 $dd->update([
@@ -648,15 +648,13 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     **/
     public function unmarkDefault($ID)
     {
-        global $DB;
-
         if (
             $this->getFromDB($ID)
             && ($this->fields['type'] != self::URI)
         ) {
             $dd = new SavedSearch_User();
             // Is default view for this itemtype already exists ?
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => 'glpi_savedsearches_users',
                'WHERE'  => [
@@ -666,7 +664,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                ]
             ]);
 
-            if ($result = $iterator->next()) {
+            if ($result = $request->fetchAssociative()) {
                 // already exists delete it
                 $deleteID = $result['id'];
                 $dd->delete(['id' => $deleteID]);
@@ -684,15 +682,27 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     **/
     public function unmarkDefaults(array $ids)
     {
-        global $DB;
-
         if (Session::haveRight('config', UPDATE)) {
-            return $DB->delete(
-                'glpi_savedsearches_users',
-                [
-                  'savedsearches_id'   => $ids
+            $adapter = self::getAdapter();
+            $searches = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => 'glpi_savedsearches_users',
+                'WHERE'  => [
+                    'savedsearches_id' => $ids
                 ]
-            );
+            ]);
+
+            $success = true;
+            foreach ($searches->fetchAllAssociative() as $data) {
+                $savedSearch_User = new SavedSearch_User();
+                if ($savedSearch_User->getFromDB($data['id'])) {
+                    if (!$savedSearch_User->delete(['id' => $data['id']])) {
+                        $success = false;
+                    }
+                }
+            }
+
+            return $success;
         }
     }
 
@@ -740,24 +750,24 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                "$table.is_private"  => 0,
             ] + getEntitiesRestrictCriteria($table, '', '', true);
         }
-        $public_iterator = $DB->request($public_criteria);
+        $public_iterator = $this::getAdapter()->request($public_criteria)->fetchAllAssociative();
 
         $private_criteria = $criteria;
         $private_criteria['WHERE'] = [
            "$table.is_private"  => 1,
            "$table.users_id"    => Session::getLoginUserID()
         ] + getEntitiesRestrictCriteria($table, '', '', true);
-        $private_iterator = $DB->request($private_criteria);
+        $private_iterator = $this::getAdapter()->request($private_criteria)->fetchAllAssociative();
 
         // get saved searches
         $searches = ['private'   => [],
                      'public'    => []];
 
-        while ($data = $private_iterator->next()) {
+        foreach ($private_iterator as $data) {
             $searches['private'][$data['id']] = $data;
         }
 
-        while ($data = $public_iterator->next()) {
+        foreach ($public_iterator as $data) {
             $searches['public'][$data['id']] = $data;
         }
 
@@ -937,7 +947,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             $current_type_name = NOT_AVAILABLE;
             $is_private        = null;
 
-            foreach ($searches as $key => $this->fields) {
+            foreach ($searches as $this->fields) {
                 $number++;
                 if ($current_type != $this->fields['itemtype']) {
                     $current_type      = $this->fields['itemtype'];
@@ -1121,15 +1131,13 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     **/
     public static function getUsedItemtypes()
     {
-        global $DB;
-
         $types = [];
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => 'itemtype',
            'DISTINCT'        => true,
            'FROM'            => static::getTable()
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $types[] = $data['itemtype'];
         }
         return $types;
@@ -1146,20 +1154,19 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     **/
     public static function updateExecutionTime($id, $time)
     {
-        global $DB;
-
         if ($_SESSION['glpishow_count_on_tabs']) {
-            $DB->update(
-                static::getTable(),
-                [
-                  'last_execution_time'   => $time,
-                  'last_execution_date'   => date('Y-m-d H:i:s'),
-                  'counter'               => new \QueryExpression($DB->quoteName('counter') . ' + 1')
-                ],
-                [
-                  'id' => $id
-                ]
-            );
+            $savedSearch = new self();
+            if ($savedSearch->getFromDB($id)) {
+                // On doit gérer le compteur de manière spéciale car on ne peut pas faire +1 directement
+                $counter = $savedSearch->fields['counter'] + 1;
+
+                $savedSearch->update([
+                    'id'                   => $id,
+                    'last_execution_time'  => $time,
+                    'last_execution_date'  => date('Y-m-d H:i:s'),
+                    'counter'              => $counter
+                ]);
+            }
         }
     }
 
@@ -1247,18 +1254,31 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
      */
     public function setDoCount(array $ids, $do_count)
     {
-        global $DB;
-
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'do_count' => $do_count
-            ],
-            [
-              'id' => $ids
+        $adapter = self::getAdapter();
+        $searches = $adapter->request([
+            'SELECT' => ['id'],
+            'FROM'   => $this->getTable(),
+            'WHERE'  => [
+                'id' => $ids
             ]
-        );
-        return $result;
+        ]);
+
+        $success = true;
+        foreach ($searches->fetchAllAssociative() as $data) {
+            $savedSearch = new self();
+            if ($savedSearch->getFromDB($data['id'])) {
+                $update = [
+                    'id'       => $data['id'],
+                    'do_count' => $do_count
+                ];
+
+                if (!$savedSearch->update($update)) {
+                    $success = false;
+                }
+            }
+        }
+
+        return $success;
     }
 
 
@@ -1273,19 +1293,32 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
      */
     public function setEntityRecur(array $ids, $eid, $recur)
     {
-        global $DB;
-
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'entities_id'  => $eid,
-              'is_recursive' => $recur
-            ],
-            [
-              'id' => $ids
+        $adapter = self::getAdapter();
+        $searches = $adapter->request([
+            'SELECT' => ['id'],
+            'FROM'   => $this->getTable(),
+            'WHERE'  => [
+                'id' => $ids
             ]
-        );
-        return $result;
+        ]);
+
+        $success = true;
+        foreach ($searches->fetchAllAssociative() as $data) {
+            $savedSearch = new self();
+            if ($savedSearch->getFromDB($data['id'])) {
+                $update = [
+                    'id'           => $data['id'],
+                    'entities_id'  => $eid,
+                    'is_recursive' => $recur
+                ];
+
+                if (!$savedSearch->update($update)) {
+                    $success = false;
+                }
+            }
+        }
+
+        return $success;
     }
 
 
@@ -1317,12 +1350,12 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             $lastdate = new \DateTime($task->getField('lastrun'));
             $lastdate->sub(new \DateInterval('P7D'));
 
-            $iterator = $DB->request(['FROM'   => self::getTable(),
+            $request = self::getAdapter()->request(['FROM'   => self::getTable(),
                                       'FIELDS' => ['id', 'query', 'itemtype', 'type'],
                                       'WHERE'  => ['last_execution_date'
-                                                   => ['<' , $lastdate->format('Y-m-d H:i:s')]]]);
+                                                   => ['<' , $lastdate->format('Y-m-d H:i:s')]]])->fetchAllAssociative();
 
-            if ($iterator->numrows()) {
+            if (count($request)) {
                 //prepare variables we'll use
                 $self = new self();
                 $now = date('Y-m-d H:i:s');
@@ -1351,7 +1384,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                 if (!$in_transaction) {
                     $DB->beginTransaction();
                 }
-                while ($row = $iterator->next()) {
+                foreach ($request as $row) {
                     try {
                         $self->fields = $row;
                         if ($data = $self->execute(true)) {

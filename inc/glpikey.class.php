@@ -246,31 +246,33 @@ class GLPIKey
      */
     protected function migrateFieldsInDb($sodium_key, $old_key = false)
     {
-        global $DB;
-
         $success = true;
 
         foreach ($this->getFields() as $field) {
             list($table, $column) = explode('.', $field);
 
-            $iterator = $DB->request([
+            $request = config::getAdapter()->request([
                'SELECT' => ['id', $column],
                'FROM'   => $table,
                ['NOT' => [$column => null]],
             ]);
 
-            while ($success && $row = $iterator->next()) {
+            while ($success && $row = $request->fetchAssociative()) {
                 $value = (string)$row[$column];
                 if ($old_key === false) {
                     $pass = Toolbox::sodiumEncrypt(Toolbox::sodiumDecrypt($value, $sodium_key));
                 } else {
                     $pass = Toolbox::sodiumEncrypt($this->decryptUsingLegacyKey($value, $old_key));
                 }
-                $success = $DB->update(
-                    $table,
-                    [$field  => $pass],
-                    ['id'    => $row['id']]
-                );
+                $itemtype = getItemTypeForTable($table);
+
+                if (class_exists($itemtype)) {
+                    $item = new $itemtype();
+                    $success = $item->update([
+                        'id' => $row['id'],
+                        $column => $pass
+                    ]);
+                }
             }
         }
 
@@ -287,12 +289,10 @@ class GLPIKey
      */
     protected function migrateConfigsInDb($sodium_key, $old_key = false)
     {
-        global $DB;
-
         $success = true;
 
         foreach ($this->getConfigs() as $context => $names) {
-            $iterator = $DB->request([
+            $request = config::getAdapter()->request([
                'FROM'   => Config::getTable(),
                'WHERE'  => [
                   'context'   => $context,
@@ -301,18 +301,18 @@ class GLPIKey
                ]
             ]);
 
-            while ($success && $row = $iterator->next()) {
+            while ($success && $row = $request->fetchAssociative()) {
                 $value = (string)$row['value'];
                 if ($old_key === false) {
                     $pass = Toolbox::sodiumEncrypt(Toolbox::sodiumDecrypt($value, $sodium_key));
                 } else {
                     $pass = Toolbox::sodiumEncrypt($this->decryptUsingLegacyKey($value, $old_key));
                 }
-                $success = $DB->update(
-                    Config::getTable(),
-                    ['value' => $pass],
-                    ['id'    => $row['id']]
-                );
+                $config_obj = new Config();
+                $success = $config_obj->update([
+                    'id' => $row['id'],
+                    'value' => $pass
+                ]);
             }
         }
 

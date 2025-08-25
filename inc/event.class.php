@@ -33,6 +33,7 @@
 
 namespace Glpi;
 
+use Itsmng\Domain\Entities\Event as EventEntity;
 use Ajax;
 use CommonDBTM;
 use CronTask;
@@ -53,8 +54,6 @@ if (!defined('GLPI_ROOT')) {
 class Event extends CommonDBTM
 {
     public static $rightname = 'logs';
-
-
 
     public static function getTypeName($nb = 0)
     {
@@ -127,17 +126,28 @@ class Event extends CommonDBTM
     **/
     public static function cleanOld($day)
     {
-        global $DB;
-
         $secs = $day * DAY_TIMESTAMP;
+        $count = 0;
 
-        $DB->delete(
-            'glpi_events',
-            [
-              new \QueryExpression("UNIX_TIMESTAMP(date) < UNIX_TIMESTAMP()-$secs")
+        $adapter = self::getAdapter();
+        $query = $adapter->request([
+            'SELECT' => ['id'],
+            'FROM'   => 'glpi_events',
+            'WHERE'  => [
+                new \QueryExpression("UNIX_TIMESTAMP(date) < UNIX_TIMESTAMP()-$secs")
             ]
-        );
-        return $DB->affectedRows();
+        ]);
+
+        foreach ($query->fetchAllAssociative() as $data) {
+            $event = new self();
+            if ($event->getFromDB($data['id'])) {
+                if ($event->deleteFromDB()) {
+                    $count++;
+                }
+            }
+        }
+
+        return $count;
     }
 
 
@@ -243,7 +253,7 @@ class Event extends CommonDBTM
      **/
     public static function showForUser($user = "")
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         // Show events from $result in table form
         list($logItemtype, $logService) = self::logArray();
@@ -255,16 +265,16 @@ class Event extends CommonDBTM
         }
 
         // Query Database
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_events',
            'WHERE'  => ['message' => ['LIKE', $usersearch . '%']],
            'ORDER'  => 'date DESC',
            'LIMIT'  => (int)$_SESSION['glpilist_limit']
         ]);
-
+        $results = $request->fetchAllAssociative();
         // Number of results
-        $number = count($iterator);
-        ;
+        $number = count($results);
+
 
         // No Events in database
         if ($number < 1) {
@@ -290,7 +300,7 @@ class Event extends CommonDBTM
         echo "<th width='10%'>" . __('Service') . "</th>";
         echo "<th width='50%'>" . __('Message') . "</th></tr>";
 
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $ID       = $data['id'];
             $items_id = $data['items_id'];
             $type     = $data['type'];

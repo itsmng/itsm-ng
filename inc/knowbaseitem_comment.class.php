@@ -236,21 +236,22 @@ class KnowbaseItem_Comment extends CommonDBTM
      */
     public static function getCommentsForKbItem($kbitem_id, $lang, $parent = null)
     {
-        global $DB;
-
         $where = [
-           'knowbaseitems_id'  => $kbitem_id,
-           'language'          => $lang,
-           'parent_comment_id' => $parent
-        ];
+            'knowbaseitems_id'  => $kbitem_id,
+            'language'          => $lang,
+            'parent_comment_id' => $parent
+         ];
 
-        $db_comments = $DB->request(
-            'glpi_knowbaseitems_comments',
-            $where + ['ORDER' => 'id ASC']
-        );
+        $request = self::getAdapter()->request([
+           'FROM'   => 'glpi_knowbaseitems_comments',
+           'WHERE'  => $where,
+           'ORDERBY' => ['id ASC']
+        ]);
 
         $comments = [];
-        foreach ($db_comments as $db_comment) {
+        $results = $request->fetchAllAssociative();
+
+        foreach ($results as $db_comment) {
             $db_comment['answers'] = self::getCommentsForKbItem($kbitem_id, $lang, $db_comment['id']);
             $comments[] = $db_comment;
         }

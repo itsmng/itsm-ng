@@ -395,7 +395,7 @@ class Item_Ticket extends CommonItilObject_Item
     **/
     public static function showForTicket(Ticket $ticket)
     {
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
         $instID = $ticket->fields['id'];
 
@@ -406,8 +406,8 @@ class Item_Ticket extends CommonItilObject_Item
         $canedit = $ticket->canAddItem($instID);
         $rand    = mt_rand();
 
-        $types_iterator = self::getDistinctTypes($instID);
-        $number = count($types_iterator);
+        $types_result = self::getDistinctTypes($instID);
+        $number = count($types_result);
 
         if (
             $canedit
@@ -458,12 +458,13 @@ class Item_Ticket extends CommonItilObject_Item
                         $criteria['WHERE']['is_helpdesk_visible'] = 1;
                     }
 
-                    $iterator = $DB->request($criteria);
-                    $nb = count($iterator);
+                    $request = self::getAdapter()->request($criteria);
+                    $results = $request->fetchAllAssociative();
+                    $nb = count($results);
                     if ($nb > 0) {
                         $type_name = $item->getTypeName($nb);
 
-                        while ($data = $iterator->next()) {
+                        foreach ($results as $data) {
                             if (!isset($already_add[$itemtype]) || !in_array($data["id"], $already_add[$itemtype])) {
                                 $output = $data[$item->getNameField()];
                                 if (empty($output) || $_SESSION["glpiis_ids_visible"]) {
@@ -492,7 +493,7 @@ class Item_Ticket extends CommonItilObject_Item
             }
             // My group items
             if (Session::haveRight("show_group_hardware", "1")) {
-                $iterator = $DB->request([
+                $request = self::getAdapter()->request([
                    'SELECT'    => [
                       'glpi_groups_users.groups_id',
                       'glpi_groups.name'
@@ -513,8 +514,9 @@ class Item_Ticket extends CommonItilObject_Item
 
                 $devices = [];
                 $groups  = [];
-                if (count($iterator)) {
-                    while ($data = $iterator->next()) {
+                $results = $request->fetchAllAssociative();
+                if (count($results)) {
+                    foreach ($results as $data) {
                         $a_groups                     = getAncestorsOf("glpi_groups", $data["groups_id"]);
                         $a_groups[$data["groups_id"]] = $data["groups_id"];
                         $groups = array_merge($groups, $a_groups);
@@ -541,13 +543,14 @@ class Item_Ticket extends CommonItilObject_Item
                                 $criteria['WHERE']['is_template'] = 0;
                             }
 
-                            $iterator = $DB->request($criteria);
-                            if (count($iterator)) {
+                            $request = self::getAdapter()->request($criteria);
+                            $results = $request->fetchAllAssociative();
+                            if (count($results)) {
                                 $type_name = $item->getTypeName();
                                 if (!isset($already_add[$itemtype])) {
                                     $already_add[$itemtype] = [];
                                 }
-                                while ($data = $iterator->next()) {
+                                foreach ($results as $data) {
                                     if (!in_array($data["id"], $already_add[$itemtype])) {
                                         $output = '';
                                         if (isset($data["name"])) {
@@ -581,7 +584,7 @@ class Item_Ticket extends CommonItilObject_Item
                 $software_helpdesk_types = array_intersect($CFG_GLPI['software_types'], $_SESSION["glpiactiveprofile"]["helpdesk_item_type"]);
                 foreach ($software_helpdesk_types as $itemtype) {
                     if (isset($already_add[$itemtype]) && count($already_add[$itemtype])) {
-                        $iterator = $DB->request([
+                        $request = self::getAdapter()->request([
                            'SELECT'          => [
                               'glpi_softwareversions.name AS version',
                               'glpi_softwares.name AS name',
@@ -612,13 +615,14 @@ class Item_Ticket extends CommonItilObject_Item
                         ]);
 
                         $devices = [];
-                        if (count($iterator)) {
+                        $results = $request->fetchAllAssociative();
+                        if (count($results)) {
                             $item       = new Software();
                             $type_name  = $item->getTypeName();
                             if (!isset($already_add['Software'])) {
                                 $already_add['Software'] = [];
                             }
-                            while ($data = $iterator->next()) {
+                            foreach ($results as $data) {
                                 if (!in_array($data["id"], $already_add['Software'])) {
                                     $output = sprintf(__('%1$s - %2$s'), $type_name, $data["name"]);
                                     $output = sprintf(
@@ -686,10 +690,11 @@ class Item_Ticket extends CommonItilObject_Item
                             $criteria['WHERE']["$itemtable.is_template"] = 0;
                         }
 
-                        $iterator = $DB->request($criteria);
-                        if (count($iterator)) {
+                        $request = self::getAdapter()->request($criteria);
+                        $results = $request->fetchAllAssociative();
+                        if (count($results)) {
                             $type_name = $item->getTypeName();
-                            while ($data = $iterator->next()) {
+                            foreach ($results as $data) {
                                 if (!in_array($data["id"], $already_add[$itemtype])) {
                                     $output = $data["name"];
                                     if (empty($output) || $_SESSION["glpiis_ids_visible"]) {
@@ -803,7 +808,7 @@ class Item_Ticket extends CommonItilObject_Item
         ];
         $values = [];
         $massive_action = [];
-        while ($row = $types_iterator->next()) {
+        foreach ($types_result as $row) {
             $itemtype = $row['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -849,7 +854,7 @@ class Item_Ticket extends CommonItilObject_Item
         ]);
         echo "<table class='tab_cadre_fixehov' aria-label='Item Detail'>";
         $totalnb = 0;
-        while ($row = $types_iterator->next()) {
+        foreach ($types_result as $row) {
             $itemtype = $row['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -1017,12 +1022,13 @@ class Item_Ticket extends CommonItilObject_Item
                         $criteria['WHERE']['is_helpdesk_visible'] = 1;
                     }
 
-                    $iterator = $DB->request($criteria);
-                    $nb = count($iterator);
+                    $request = self::getAdapter()->request($criteria);
+                    $results = $request->fetchAllAssociative();
+                    $nb = count($results);
                     if ($nb > 0) {
                         $type_name = $item->getTypeName($nb);
 
-                        while ($data = $iterator->next()) {
+                        foreach ($results as $data) {
                             if (!isset($already_add[$itemtype]) || !in_array($data["id"], $already_add[$itemtype])) {
                                 $output = $data[$item->getNameField()];
                                 if (empty($output) || $_SESSION["glpiis_ids_visible"]) {
@@ -1051,7 +1057,7 @@ class Item_Ticket extends CommonItilObject_Item
             }
             // My group items
             if (Session::haveRight("show_group_hardware", "1")) {
-                $iterator = $DB->request([
+                $request = self::getAdapter()->request([
                    'SELECT'    => [
                       'glpi_groups_users.groups_id',
                       'glpi_groups.name'
@@ -1072,8 +1078,9 @@ class Item_Ticket extends CommonItilObject_Item
 
                 $devices = [];
                 $groups  = [];
-                if (count($iterator)) {
-                    while ($data = $iterator->next()) {
+                $results = $request->fetchAllAssociative();
+                if (count($results)) {
+                    foreach ($results as $data) {
                         $a_groups                     = getAncestorsOf("glpi_groups", $data["groups_id"]);
                         $a_groups[$data["groups_id"]] = $data["groups_id"];
                         $groups = array_merge($groups, $a_groups);
@@ -1100,13 +1107,14 @@ class Item_Ticket extends CommonItilObject_Item
                                 $criteria['WHERE']['is_template'] = 0;
                             }
 
-                            $iterator = $DB->request($criteria);
-                            if (count($iterator)) {
+                            $request = self::getAdapter()->request($criteria);
+                            $results = $request->fetchAllAssociative();
+                            if (count($results)) {
                                 $type_name = $item->getTypeName();
                                 if (!isset($already_add[$itemtype])) {
                                     $already_add[$itemtype] = [];
                                 }
-                                while ($data = $iterator->next()) {
+                                foreach ($results as $data) {
                                     if (!in_array($data["id"], $already_add[$itemtype])) {
                                         $output = '';
                                         if (isset($data["name"])) {
@@ -1140,7 +1148,7 @@ class Item_Ticket extends CommonItilObject_Item
                 $software_helpdesk_types = array_intersect($CFG_GLPI['software_types'], $_SESSION["glpiactiveprofile"]["helpdesk_item_type"]);
                 foreach ($software_helpdesk_types as $itemtype) {
                     if (isset($already_add[$itemtype]) && count($already_add[$itemtype])) {
-                        $iterator = $DB->request([
+                        $request = self::getAdapter()->request([
                            'SELECT'          => [
                               'glpi_softwareversions.name AS version',
                               'glpi_softwares.name AS name',
@@ -1171,13 +1179,14 @@ class Item_Ticket extends CommonItilObject_Item
                         ]);
 
                         $devices = [];
-                        if (count($iterator)) {
+                        $results = $request->fetchAllAssociative();
+                        if (count($results)) {
                             $item       = new Software();
                             $type_name  = $item->getTypeName();
                             if (!isset($already_add['Software'])) {
                                 $already_add['Software'] = [];
                             }
-                            while ($data = $iterator->next()) {
+                            foreach ($results as $data) {
                                 if (!in_array($data["id"], $already_add['Software'])) {
                                     $output = sprintf(__('%1$s - %2$s'), $type_name, $data["name"]);
                                     $output = sprintf(
@@ -1245,10 +1254,11 @@ class Item_Ticket extends CommonItilObject_Item
                             $criteria['WHERE']["$itemtable.is_template"] = 0;
                         }
 
-                        $iterator = $DB->request($criteria);
-                        if (count($iterator)) {
+                        $request = self::getAdapter()->request($criteria);
+                        $results = $request->fetchAllAssociative();
+                        if (count($results)) {
                             $type_name = $item->getTypeName();
-                            while ($data = $iterator->next()) {
+                            foreach ($results as $data) {
                                 if (!in_array($data["id"], $already_add[$itemtype])) {
                                     $output = $data["name"];
                                     if (empty($output) || $_SESSION["glpiis_ids_visible"]) {
@@ -1353,9 +1363,9 @@ class Item_Ticket extends CommonItilObject_Item
             ]);
         }
 
-        $iterator = $DB->request(['FROM' => $union]);
+        $request = self::getAdapter()->request(['FROM' => $union]);
         $output = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $item = getItemForItemtype($data['itemtype']);
             $output[$data['itemtype'] . "_" . $data['id']] = $item->getTypeName() . " - " . $data['name'];
         }

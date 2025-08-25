@@ -373,16 +373,13 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
      */
     private static function getItemsAsVCalendars(array $criteria)
     {
-
-        global $DB;
-
         $query = [
            'FROM'  => self::getTable(),
            'WHERE' => $criteria,
         ];
 
-        $event_iterator = $DB->request($query);
-
+        $request = self::getAdapter()->request($query);
+        $event_iterator = $request->fetchAllAssociative();
         $vcalendars = [];
         foreach ($event_iterator as $event) {
             $item = new self();

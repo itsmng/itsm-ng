@@ -169,7 +169,7 @@ class Rule extends CommonDBTM
     public static function dropdownConditions($options = [])
     {
 
-        $p['name']      = 'condition';
+        $p['name']      = 'conditions';
         $p['value']     = 0;
         $p['display']   = true;
         $p['on_change'] = '';
@@ -620,8 +620,8 @@ class Rule extends CommonDBTM
                     $entity = "";
                 }
 
-                if (isset($input['condition'])) {
-                    $condition = $input['condition'];
+                if (isset($input['conditions'])) {
+                    $condition = $input['conditions'];
                 } else {
                     $condition = 0;
                 }
@@ -629,7 +629,7 @@ class Rule extends CommonDBTM
 
                 Rule::dropdown(['sub_type'        => $input['rule_class_name'],
                                      'name'            => "ranking",
-                                     'condition'       => $condition,
+                                     'conditions'       => $condition,
                                      'entity'          => $entity,
                                      'width'           => '50%']);
                 echo "<br><br><input type='submit' name='massiveaction' class='submit' value='" .
@@ -909,21 +909,21 @@ class Rule extends CommonDBTM
                   'inputs' => [
                       __('Name') => [
                           'name' => 'name',
-                          'value' => $this->fields["name"],
+                          'value' => $this->fields["name"] ?? null,
                           'type' => 'text',
                           'size' => 50,
                           'col_lg' => 6,
                       ],
                       __('Description') => [
                           'name' => 'description',
-                          'value' => $this->fields["description"],
+                          'value' => $this->fields["description"] ?? null,
                           'type' => 'text',
                           'size' => 50,
                           'col_lg' => 6,
                       ],
                       __('Logical operator') => [
                           'name' => 'match',
-                          'value' => $this->fields["match"],
+                          'value' => $this->fields["matching"] ?? null,
                           'type' => 'select',
                           'values' => [
                               self::AND_MATCHING => __('and'),
@@ -933,34 +933,36 @@ class Rule extends CommonDBTM
                       ],
                       __('Active') => [
                           'name' => 'is_active',
-                          'value' => $this->fields["is_active"],
+                          'value' => $this->fields["is_active"] ?? null,
                           'type' => 'checkbox',
                           'col_lg' => 6,
                       ],
                       __('Use rule for') => !$this->useConditions() ? [] : [
-                          'name' => 'condition',
-                          'value' => $this->fields["condition"],
+                          'name' => 'conditions',
+                          'value' => $this->fields["conditions"] ?? null,
                           'type' => 'select',
                           'values' => $this->getConditionsArray(),
                           'col_lg' => 6,
                       ],
                       __('Comments') => [
                           'name' => 'comment',
-                          'value' => $this->fields["comment"],
+                          'value' => $this->fields["comment"] ?? null,
                           'type' => 'textarea',
                           'rows' => 3,
                           'col_lg' => 12,
                           'col_md' => 12,
                       ],
-                      __('Last update') => !$this->fields["date_mod"] ? [] : [
-                          'content' => Html::convDateTime($this->fields["date_mod"]),
-                          'col_lg' => 12,
-                          'col_md' => 12,
-                      ],
+                      ($this->fields["date_mod"] ?? null) ? [
+                        __('Last update') => [
+                            'content' => Html::convDateTime($this->fields["date_mod"]),
+                            'col_lg'  => 12,
+                            'col_md'  => 12,
+                        ]
+                    ] : [],
                       $canedit && $this->isNewID($ID) ? [] : [
                           'type' => 'hidden',
                           'name' => 'ranking',
-                          'value' => $this->fields["ranking"],
+                          'value' => $this->fields["ranking"] ?? null,
                       ],
                       $canedit && $this->isNewID($ID) ? [] : [
                           'type' => 'hidden',
@@ -1056,7 +1058,7 @@ class Rule extends CommonDBTM
     public function getTitleAction()
     {
 
-        foreach ($this->getActions() as $key => $val) {
+        foreach ($this->getActions() as $val) {
             if (
                 isset($val['force_actions'])
                 && (in_array('regex_result', $val['force_actions'])
@@ -1121,7 +1123,7 @@ class Rule extends CommonDBTM
         if (
             $canedit
             && (($this->maxActionsCount() == 0)
-                || (sizeof($this->actions) < $this->maxActionsCount()))
+                || (count($this->actions) < $this->maxActionsCount()))
         ) {
             echo "<script type='text/javascript' >\n";
             echo "function viewAddAction" . $rules_id . "$rand() {\n";
@@ -1254,7 +1256,7 @@ class Rule extends CommonDBTM
 
         echo "<div class='spaced'>";
 
-        $nb = sizeof($this->criterias);
+        $nb = count($this->criterias);
 
         $massactionId = 'mass' . $this->rulecriteriaclass . $rand;
         if ($canedit && $nb) {
@@ -1271,7 +1273,7 @@ class Rule extends CommonDBTM
 
         $fields = [
           'criterion' => _n('Criterion', 'Criteria', 1),
-          'condition' => __('Condition'),
+          'conditions' => __('Condition'),
           'reason'    => __('Reason'),
 
         ];
@@ -1298,8 +1300,8 @@ class Rule extends CommonDBTM
                'criterion' => "<button class='btn btn-sm' onclick=" .
                    "viewEditCriteria" . $criterion->fields[$this->rules_id_field] . $criterion->fields["id"] . "$rand()>" .
                    $this->getCriteriaName($criterion->fields["criteria"]) . "</button>",
-               'condition' => RuleCriteria::getConditionByID($criterion->fields["condition"], get_class($this), $criterion->fields["criteria"]),
-               'reason' => $this->getCriteriaDisplayPattern($criterion->fields["criteria"], $criterion->fields["condition"], $criterion->fields["pattern"]),
+               'conditions' => RuleCriteria::getConditionByID($criterion->fields["conditions"] ?? null, get_class($this), $criterion->fields["criteria"]),
+               'reason' => $this->getCriteriaDisplayPattern($criterion->fields["criteria"], $criterion->fields["conditions"] ?? null, $criterion->fields["pattern"]),
             ];
             $massiveActionValues[$criterion->fields['id']] = sprintf('item[%s][%s]', $criterion::class, $criterion->fields['id']);
         }
@@ -1707,7 +1709,7 @@ class Rule extends CommonDBTM
         if (!is_array($input[$criteria->fields["criteria"]])) {
             $value = $this->getCriteriaValue(
                 $criteria->fields["criteria"],
-                $criteria->fields["condition"],
+                $criteria->fields["conditions"],
                 $input[$criteria->fields["criteria"]]
             );
 
@@ -1721,7 +1723,7 @@ class Rule extends CommonDBTM
             //If the value is, in fact, an array of values
             // Negative condition : Need to match all condition (never be)
             if (
-                in_array($criteria->fields["condition"], [self::PATTERN_IS_NOT,
+                in_array($criteria->fields["conditions"], [self::PATTERN_IS_NOT,
                                                                self::PATTERN_NOT_CONTAIN,
                                                                self::REGEX_NOT_MATCH,
                                                                self::PATTERN_DOES_NOT_EXISTS])
@@ -1730,7 +1732,7 @@ class Rule extends CommonDBTM
                 foreach ($input[$criteria->fields["criteria"]] as $tmp) {
                     $value = $this->getCriteriaValue(
                         $criteria->fields["criteria"],
-                        $criteria->fields["condition"],
+                        $criteria->fields["conditions"],
                         $tmp
                     );
 
@@ -1750,7 +1752,7 @@ class Rule extends CommonDBTM
                 foreach ($input[$criteria->fields["criteria"]] as $crit) {
                     $value = $this->getCriteriaValue(
                         $criteria->fields["criteria"],
-                        $criteria->fields["condition"],
+                        $criteria->fields["conditions"],
                         $crit
                     );
 
@@ -2011,7 +2013,7 @@ class Rule extends CommonDBTM
         echo "<td>" . $link . "</td>";
         echo "<td>" . $this->fields["description"] . "</td>";
         if ($this->useConditions()) {
-            echo "<td>" . $this->getConditionName($this->fields["condition"]) . "</td>";
+            echo "<td>" . $this->getConditionName($this->fields["conditions"]) . "</td>";
         }
         echo "<td>" . Dropdown::getYesNo($this->fields["is_active"]) . "</td>";
 
@@ -2037,7 +2039,7 @@ class Rule extends CommonDBTM
                 Html::showSimpleForm(
                     $target,
                     ['action' => 'up',
-                                                    'condition' => $active_condition],
+                                                    'conditions' => $active_condition],
                     '',
                     ['type' => $this->fields["sub_type"],
                                            'id'   => $this->fields["id"],],
@@ -2059,7 +2061,7 @@ class Rule extends CommonDBTM
                 Html::showSimpleForm(
                     $target,
                     ['action' => 'down',
-                                                    'condition' => $active_condition],
+                                                    'conditions' => $active_condition],
                     '',
                     ['type' => $this->fields["sub_type"],
                                            'id'   => $this->fields["id"]],
@@ -2113,16 +2115,14 @@ class Rule extends CommonDBTM
     **/
     public function getNextRanking()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => ['MAX' => 'ranking AS rank'],
            'FROM'   => self::getTable(),
            'WHERE'  => ['sub_type' => $this->getType()]
         ]);
-
-        if (count($iterator)) {
-            $data = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            $data = $results[0];
             return $data["rank"] + 1;
         }
         return 0;
@@ -2200,11 +2200,11 @@ class Rule extends CommonDBTM
         echo "<td class='center b'>" . _n('Validation', 'Validations', 1) . "</td>";
         echo "</tr>\n";
 
-        foreach ($check_results as $ID => $criteria_result) {
+        foreach ($check_results as $criteria_result) {
             echo "<tr class='tab_bg_1'>";
             $criteria->getFromDB($criteria_result["id"]);
             echo $this->getMinimalCriteriaText($criteria->fields);
-            if ($criteria->fields['condition'] != self::PATTERN_FIND) {
+            if ($criteria->fields['conditions'] != self::PATTERN_FIND) {
                 echo "<td class='b'>" . Dropdown::getYesNo($criteria_result["result"]) . "</td></tr>\n";
             } else {
                 echo "<td class='b'>" . Dropdown::EMPTY_VALUE . "</td></tr>\n";
@@ -2306,13 +2306,13 @@ class Rule extends CommonDBTM
 
         $text  = "<td $addtotd>" . $this->getCriteriaName($fields["criteria"]) . "</td>";
         $text .= "<td $addtotd>" . RuleCriteria::getConditionByID(
-            $fields["condition"],
+            $fields["conditions"],
             get_class($this),
             $fields["criteria"]
         ) . "</td>";
         $text .= "<td $addtotd>" . $this->getCriteriaDisplayPattern(
             $fields["criteria"],
-            $fields["condition"],
+            $fields["conditions"],
             $fields["pattern"]
         ) . "</td>";
         return $text;
@@ -2492,7 +2492,7 @@ class Rule extends CommonDBTM
                     renderTwigTemplate('macros/input.twig', [
                      'type' => 'select',
                      'name' => $name,
-                     'values' => getOptionForItems(getItemTypeForTable($crit['table']), $crit['condition'] ?? []),
+                     'values' => getOptionForItems(getItemTypeForTable($crit['table']), $crit['conditions'] ?? []),
                      'value' => $value,
                     ]);
 
@@ -2817,7 +2817,7 @@ class Rule extends CommonDBTM
                     $this->displayCriteriaSelectPattern(
                         $criterion->fields['criteria'],
                         $criterion->fields['criteria'],
-                        $criterion->fields['condition'],
+                        $criterion->fields['conditions'],
                         $value,
                         true
                     );
@@ -2883,7 +2883,7 @@ class Rule extends CommonDBTM
         $p['sub_type']        = '';
         $p['name']            = 'rules_id';
         $p['entity'] = '';
-        $p['condition'] = 0;
+        $p['conditions'] = 0;
 
         if (is_array($options) && count($options)) {
             foreach ($options as $key => $val) {
@@ -2898,11 +2898,11 @@ class Rule extends CommonDBTM
         $conditions = [
            'sub_type' => $p['sub_type']
         ];
-        if ($p['condition'] > 0) {
-            $conditions['condition'] = ['&', (int)$p['condition']];
+        if ($p['conditions'] > 0) {
+            $conditions['conditions'] = ['&', (int)$p['conditions']];
         }
 
-        $p['condition'] = $conditions;
+        $p['conditions'] = $conditions;
         return Dropdown::show($p['sub_type'], $p);
     }
 
@@ -3030,9 +3030,9 @@ class Rule extends CommonDBTM
             $query['WHERE'][getTableForItemType($this->ruleactionclass) . '.' . $field] = $value;
         }
 
-        $iterator = $DB->request($query);
+        $request = $this::getAdapter()->request($query);
 
-        while ($rule = $iterator->next()) {
+        while ($rule = $request->fetchAssociative()) {
             $affect_rule = new Rule();
             $affect_rule->getRuleWithCriteriasAndActions($rule["id"], 0, 1);
             $rules[]     = $affect_rule;
@@ -3243,7 +3243,7 @@ class Rule extends CommonDBTM
         $valfield,
         $fieldfield
     ) {
-        global $DB;
+        $adapter = self::getAdapter();
 
         $fieldid = getForeignKeyFieldForTable($ruleitem->getTable());
 
@@ -3252,18 +3252,23 @@ class Rule extends CommonDBTM
         }
 
         if (isset($item->input['_replace_by']) && ($item->input['_replace_by'] > 0)) {
-            $DB->update(
-                $table,
-                [
-                  $valfield => $item->input['_replace_by']
-                ],
-                [
-                  $valfield   => $item->getField('id'),
-                  $fieldfield => ['LIKE', $field]
-                ]
-            );
+            $items = $adapter->request([
+               'SELECT' => [$fieldid],
+               'FROM'   => $table,
+               'WHERE'  => [
+                   $valfield   => $item->getField('id'),
+                   $fieldfield => ['LIKE', $field]
+               ]
+            ]);
+            foreach ($items->fetchAllAssociative() as $data) {
+                $input = [
+                    'id'      => $data[$fieldid],
+                    $valfield => $item->input['_replace_by']
+                ];
+                $ruleitem->update($input);
+            }
         } else {
-            $iterator = $DB->request([
+            $request = $adapter->request([
                'SELECT' => [$fieldid],
                'FROM'   => $table,
                'WHERE'  => [
@@ -3271,11 +3276,11 @@ class Rule extends CommonDBTM
                   $fieldfield => ['LIKE', $field]
                ]
             ]);
-
-            if (count($iterator) > 0) {
+            $results = $request->fetchAllAssociative();
+            if (count($results) > 0) {
                 $input['is_active'] = 0;
 
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     $input['id'] = $data[$fieldid];
                     $ruleitem->update($input);
                 }
@@ -3500,7 +3505,7 @@ class Rule extends CommonDBTM
     {
 
         echo "<div class='spaced'>";
-        printf(__('%1$s: %2$s'), "<b>UUID</b>", $this->fields['uuid']);
+        printf(__('%1$s: %2$s'), "<b>UUID</b>", $this->fields['uuid'] ?? null);
         echo "</div>";
     }
 

@@ -104,10 +104,9 @@ class ComputerAntivirus extends CommonDBChild
     **/
     public static function cloneComputer($oldid, $newid)
     {
-        global $DB;
 
         Toolbox::deprecated('Use clone');
-        $result = $DB->request(
+        $result = self::getAdapter()->request(
             [
               'FROM'  => ComputerAntivirus::getTable(),
               'WHERE' => ['computers_id' => $oldid],
@@ -407,7 +406,7 @@ class ComputerAntivirus extends CommonDBChild
 
         echo "<div class='spaced center'>";
 
-        $result = $DB->request(
+        $result = self::getAdapter()->request(
             [
               'FROM'  => ComputerAntivirus::getTable(),
               'WHERE' => [
@@ -422,10 +421,10 @@ class ComputerAntivirus extends CommonDBChild
         if (Plugin::haveImport()) {
             $colspan++;
         }
-        echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName($result->numrows()) .
+        echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName($result->rowCount()) .
              "</th></tr>";
 
-        if ($result->numrows() != 0) {
+        if ($result->rowCount() != 0) {
             $header = "<tr><th>" . __('Name') . "</th>";
             if (Plugin::haveImport()) {
                 $header .= "<th>" . __('Automatic inventory') . "</th>";

@@ -413,8 +413,8 @@ class Planning extends CommonGLPI
                     $task = new ProblemTask();
                 }
                 if ($task->getFromDBByCrit(['tickets_id' => $item->fields['id']])) {
-                    $users['users_id'] = getUserName($task->fields['users_id_tech']);
-                    $group_id = $task->fields['groups_id_tech'];
+                    $users['users_id'] = getUserName($task->fields['tech_users_id']);
+                    $group_id = $task->fields['tech_groups_id'];
                     if ($group_id) {
                         foreach (Group_User::getGroupUsers($group_id) as $data2) {
                             $users[$data2['id']] = formatUserName(
@@ -772,7 +772,7 @@ class Planning extends CommonGLPI
     {
         if ($palette = self::getPalette($palette_name)) {
             if ($color_index > count($palette)) {
-                $color_index = $color_index % count($palette);
+                $color_index %= count($palette);
             }
 
             return $palette[$color_index];
@@ -1650,17 +1650,17 @@ class Planning extends CommonGLPI
         ) {
             switch ($event['actor']['itemtype']) {
                 case "group":
-                    $key = "groups_id_tech";
+                    $key = "tech_groups_id";
                     break;
                 case "user":
-                    $key = isset($item->fields['users_id_tech']) ? "users_id_tech" : "users_id";
+                    $key = isset($item->fields['tech_users_id']) ? "tech_users_id" : "users_id";
                     break;
             }
 
             unset(
-                $input['users_id_tech'],
+                $input['tech_users_id'],
                 $input['users_id'],
-                $input['groups_id_tech'],
+                $input['tech_groups_id'],
                 $input['groups_id']
             );
 
@@ -1911,8 +1911,8 @@ class Planning extends CommonGLPI
                 continue;
             }
 
-            $users_id = (isset($event['users_id_tech']) && !empty($event['users_id_tech']) ?
-                           $event['users_id_tech'] :
+            $users_id = (isset($event['tech_users_id']) && !empty($event['tech_users_id']) ?
+                           $event['tech_users_id'] :
                            $event['users_id']);
             $content = Planning::displayPlanningItem($event, $users_id, 'in', false) ?: ($event['content'] ?? "");
             $tooltip = Planning::displayPlanningItem($event, $users_id, 'in', true) ?: ($event['tooltip'] ?? "");
@@ -2286,8 +2286,8 @@ class Planning extends CommonGLPI
                        ]
                     ];
 
-                    if (isset($item->fields['users_id_tech'])) {
-                        $update['users_id_tech'] = $item->fields['users_id_tech'];
+                    if (isset($item->fields['tech_users_id'])) {
+                        $update['tech_users_id'] = $item->fields['tech_users_id'];
                     }
 
                     // manage moving event between resource (actors)
@@ -2306,17 +2306,17 @@ class Planning extends CommonGLPI
                         ) {
                             switch ($new_actor_itemtype) {
                                 case "group":
-                                    $update['groups_id_tech'] = $params['new_actor_items_id'];
+                                    $update['tech_groups_id'] = $params['new_actor_items_id'];
                                     if (strtolower($params['old_actor_itemtype']) === "user") {
-                                        $update['users_id_tech']  = 0;
+                                        $update['tech_users_id']  = 0;
                                     }
                                     break;
 
                                 case "user":
-                                    if (isset($item->fields['users_id_tech'])) {
-                                        $update['users_id_tech']  = $params['new_actor_items_id'];
+                                    if (isset($item->fields['tech_users_id'])) {
+                                        $update['tech_users_id']  = $params['new_actor_items_id'];
                                         if (strtolower($params['old_actor_itemtype']) === "group") {
-                                            $update['groups_id_tech']  = 0;
+                                            $update['tech_groups_id']  = 0;
                                         }
                                     } else {
                                         $update['users_id'] = $params['new_actor_items_id'];

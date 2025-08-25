@@ -215,7 +215,7 @@ if (!$_GET['showgraph']) {
         $count = 0;
         $labels = [];
         $series = [];
-        foreach ($data['solved'] as $key => $val) {
+        foreach ($data['solved'] as $val) {
             if ($val > 0) {
                 $labels[] = $newkey;
                 $series[] = ['name' => $newkey, 'data' => $val];
@@ -240,7 +240,7 @@ if (!$_GET['showgraph']) {
         $count = 0;
         $labels = [];
         $series = [];
-        foreach ($data['late'] as $key => $val) {
+        foreach ($data['late'] as $val) {
             if ($val > 0) {
                 $labels[] = $newkey;
                 $series[] = ['name' => $newkey, 'data' => $val];
@@ -265,7 +265,7 @@ if (!$_GET['showgraph']) {
         $count = 0;
         $labels = [];
         $series = [];
-        foreach ($data['closed'] as $key => $val) {
+        foreach ($data['closed'] as $val) {
             if ($val > 0) {
                 $labels[] = $newkey;
                 $series[] = ['name' => $newkey, 'data' => $val];
@@ -290,7 +290,7 @@ if (!$_GET['showgraph']) {
         $count = 0;
         $labels = [];
         $series = [];
-        foreach ($data['opensatisfaction'] as $key => $val) {
+        foreach ($data['opensatisfaction'] as $val) {
             if ($val > 0) {
                 $labels[] = $newkey;
                 $series[] = ['name' => $newkey, 'data' => $val];

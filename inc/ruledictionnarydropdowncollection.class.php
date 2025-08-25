@@ -51,8 +51,6 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
     **/
     public function replayRulesOnExistingDB($offset = 0, $maxtime = 0, $items = [], $params = [])
     {
-        global $DB;
-
         // Model check : need to check using manufacturer extra data so specific function
         if (strpos($this->item_table, 'models')) {
             return $this->replayRulesOnExistingDBForModel($offset, $maxtime);
@@ -68,8 +66,8 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
             $criteria['START'] = $offset;
             $criteria['LIMIT'] = 999999999;
         }
-        $iterator   = $DB->request($criteria);
-        $nb         = count($iterator) + $offset;
+        $request   = $this::getAdapter()->request($criteria)->fetchAllAssociative();
+        $nb         = count($request) + $offset;
         $i          = $offset;
         if ($nb > $offset) {
             // Step to refresh progressbar
@@ -77,7 +75,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
             $send              = [];
             $send["tablename"] = $this->item_table;
 
-            while ($data = $iterator->next()) {
+            foreach ($request as $data) {
                 if (!($i % $step)) {
                     if (isCommandLine()) {
                         //TRANS: %1$s is a row, %2$s is total rows
@@ -135,6 +133,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
     public function replayRulesOnExistingDBForModel($offset = 0, $maxtime = 0)
     {
         global $DB;
+        $adapter = self::getAdapter();
 
         if (isCommandLine()) {
             printf(__('Replay rules on existing database started on %s') . "\n", date("r"));
@@ -182,8 +181,8 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
             $criteria['START'] = (int)$offset;
         }
 
-        $iterator = $DB->request($criteria);
-        $nb      = count($iterator) + $offset;
+        $request = $this::getAdapter()->request($criteria)->fetchAllAssociative();
+        $nb      = count($request) + $offset;
         $i       = $offset;
 
         if ($nb > $offset) {
@@ -191,7 +190,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
             $step    = (($nb > 20) ? floor($nb / 20) : 1);
             $tocheck = [];
 
-            while ($data = $iterator->next()) {
+            foreach ($request as $data) {
                 if (!($i % $step)) {
                     if (isCommandLine()) {
                         printf(__('Replay rules on existing database: %1$s/%2$s') . "\r", $i, $nb);
@@ -228,11 +227,24 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                     } else {
                         $where['manufacturers_id'] = $data['idmanu'];
                     }
-                    $DB->update(
-                        $model_table,
-                        [$model_field => $ID],
-                        $where
-                    );
+                    $items = $adapter->request([
+                        'SELECT' => ['id'],
+                        'FROM'   => $model_table,
+                        'WHERE'  => $where
+                    ]);
+                    foreach ($items->fetchAllAssociative() as $item_data) {
+                        $itemtype = getItemTypeForTable($model_table);
+                        $item = new $itemtype();
+
+                        if ($item->getFromDB($item_data['id'])) {
+                            $item->update([
+                                'id' => $item_data['id'],
+                                $model_field => $ID
+                            ]);
+                        }
+                    }
+                } else {
+                    $tocheck[$data["id"]] = [$ID];
                 }
 
                 $i++;
@@ -245,11 +257,11 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
             }
 
             foreach ($tocheck as $ID => $tab) {
-                $result = $DB->request([
+                $result = $adapter->request([
                    'COUNT'  => 'cpt',
                    'FROM'   => $model_table,
                    'WHERE'  => [$model_field => $ID]
-                ])->next();
+                ])->fetchAssociative();
 
                 $deletecartmodel  = false;
 
@@ -258,36 +270,34 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                     $result
                     && ($result['cpt'] == 0)
                 ) {
-                    $DB->delete(
-                        $this->item_table,
-                        [
-                          'id'  => $ID
-                        ]
-                    );
+                    $itemtype = getItemTypeForTable($this->item_table);
+                    $item = new $itemtype();
+
+                    if ($item->getFromDB($ID)) {
+                        $item->delete(['id' => $ID]);
+                    }
                     $deletecartmodel  = true;
                 }
 
                 // Manage cartridge assoc Update items
                 if ($this->getRuleClassName() == 'RuleDictionnaryPrinterModel') {
-                    $iterator2 = $DB->request([
+                    $request2 = $adapter->request([
                        'FROM'   => 'glpi_cartridgeitems_printermodels',
                        'WHERE'  => ['printermodels_id' => $ID]
-                    ]);
+                    ])->fetchAllAssociative();
 
-                    if (count($iterator2)) {
+                    if (count($request2)) {
                         // Get compatible cartridge type
                         $carttype = [];
-                        while ($data = $iterator2->next()) {
+                        foreach ($request2 as $data) {
                             $carttype[] = $data['cartridgeitems_id'];
                         }
                         // Delete cartrodges_assoc
                         if ($deletecartmodel) {
-                            $DB->delete(
-                                'glpi_cartridgeitems_printermodels',
-                                [
-                                  'printermodels_id'   => $ID
-                                ]
-                            );
+                            $cartridgeItemPrinterModel = new CartridgeItem_PrinterModel();
+                            $cartridgeItemPrinterModel->deleteByCriteria([
+                                'printermodels_id' => $ID
+                            ]);
                         }
                         // Add new assoc
                         $ct = new CartridgeItem();

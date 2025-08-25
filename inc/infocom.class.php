@@ -56,7 +56,6 @@ class Infocom extends CommonDBChild
     public const COPY_DELIVERY_DATE = 4;
     public const ON_ASSET_IMPORT    = 5;
 
-
     /**
      * Check if given object can have Infocom
      *
@@ -253,8 +252,8 @@ class Infocom extends CommonDBChild
 
         if (
             $this->getFromDBByCrit([
-            $this->getTable() . '.items_id'  => $ID,
-            $this->getTable() . '.itemtype'  => $itemtype
+            'items_id'  => $ID,
+            'itemtype'  => $itemtype
             ])
         ) {
             return true;
@@ -491,7 +490,7 @@ class Infocom extends CommonDBChild
         foreach (Entity::getEntitiesToNotify('use_infocoms_alert') as $entity => $value) {
             $before    = Entity::getUsedConfig('send_infocoms_alert_before_delay', $entity);
             $table = self::getTable();
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT'    => "$table.*",
                'FROM'      => $table,
                'LEFT JOIN'  => [
@@ -523,7 +522,7 @@ class Infocom extends CommonDBChild
                ]
             ]);
 
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 if ($item_infocom = getItemForItemtype($data["itemtype"])) {
                     if ($item_infocom->getFromDB($data["items_id"])) {
                         $entity   = $data['entities_id'];
@@ -763,14 +762,14 @@ class Infocom extends CommonDBChild
             return false;
         }
 
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_infocoms',
            'WHERE'  => [
               'itemtype'  => $itemtype,
               'items_id'  => $device_id
            ]
-        ])->next();
+        ])->fetchAssociative();
 
         $add    = "add";
         $text   = __('Add');
@@ -967,29 +966,32 @@ class Infocom extends CommonDBChild
         $ecartfinmoiscourant = 0;
         $ecartmoisexercice   = 0;
         $date_Y  =  $date_m  =  $date_d  =  $date_H  =  $date_i  =  $date_s  =  0;
-        sscanf(
-            $date_achat,
-            "%4s-%2s-%2s %2s:%2s:%2s",
-            $date_Y,
-            $date_m,
-            $date_d,
-            $date_H,
-            $date_i,
-            $date_s
-        ); // un traitement sur la date mysql pour recuperer l'annee
-
+        if ($date_achat) {
+            sscanf(
+                $date_achat,
+                "%4s-%2s-%2s %2s:%2s:%2s",
+                $date_Y,
+                $date_m,
+                $date_d,
+                $date_H,
+                $date_i,
+                $date_s
+            ); // un traitement sur la date mysql pour recuperer l'annee
+        }
         // un traitement sur la date mysql pour les infos necessaires
         $date_Y2 = $date_m2 = $date_d2 = $date_H2 = $date_i2 = $date_s2 = 0;
-        sscanf(
-            $date_tax,
-            "%4s-%2s-%2s %2s:%2s:%2s",
-            $date_Y2,
-            $date_m2,
-            $date_d2,
-            $date_H2,
-            $date_i2,
-            $date_s2
-        );
+        if ($date_tax) {
+            sscanf(
+                $date_tax,
+                "%4s-%2s-%2s %2s:%2s:%2s",
+                $date_Y2,
+                $date_m2,
+                $date_d2,
+                $date_H2,
+                $date_i2,
+                $date_s2
+            );
+        }
         $date_Y2 = date("Y");
 
         switch ($type_amort) {
@@ -1004,7 +1006,7 @@ class Infocom extends CommonDBChild
                     //## calcul du prorata temporis en mois ##
                     // si l'annee fiscale debute au dela de l'annee courante
                     if ($date_m > $date_m2) {
-                        $date_m2 = $date_m2 + 12;
+                        $date_m2 += 12;
                     }
                     $ecartmois      = ($date_m2 - $date_m) + 1; // calcul ecart entre mois d'acquisition
                     // et debut annee fiscale
@@ -2161,7 +2163,7 @@ class Infocom extends CommonDBChild
     {
         global $DB;
 
-        $types_iterator = $DB->request([
+        $results = self::getAdapter()->request([
            'SELECT'          => 'itemtype',
            'DISTINCT'        => true,
            'FROM'            => 'glpi_infocoms',
@@ -2170,7 +2172,8 @@ class Infocom extends CommonDBChild
            ] + $where,
            'ORDER'           => 'itemtype'
         ]);
-        return $types_iterator;
+        $types_results = $results->fetchAllAssociative();
+        return $types_results;
     }
 
 

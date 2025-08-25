@@ -93,8 +93,6 @@ class LineOperator extends CommonDropdown
 
     public function prepareInputForAdd($input)
     {
-        global $DB;
-
         $input = parent::prepareInputForAdd($input);
 
         if (!isset($input['mcc'])) {
@@ -105,16 +103,16 @@ class LineOperator extends CommonDropdown
         }
 
         //check for mcc/mnc unicity
-        $result = $DB->request([
-           'COUNT'  => 'cpt',
+        $request = $this::getAdapter()->request([
+           'SELECT' => ['COUNT(*) AS cpt'],
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'mcc' => $input['mcc'],
               'mnc' => $input['mnc']
            ]
-        ])->next();
+        ])->fetchAssociative();
 
-        if ($result['cpt'] > 0) {
+        if ($request['cpt'] > 0) {
             Session::addMessageAfterRedirect(
                 __('Mobile country code and network code combination must be unique!'),
                 ERROR,

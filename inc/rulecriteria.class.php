@@ -172,7 +172,7 @@ class RuleCriteria extends CommonDBChild
         $tab[] = [
            'id'                 => '2',
            'table'              => $this->getTable(),
-           'field'              => 'condition',
+           'field'              => 'conditions',
            'name'               => __('Condition'),
            'massiveaction'      => false,
            'datatype'           => 'specific',
@@ -186,7 +186,7 @@ class RuleCriteria extends CommonDBChild
            'name'               => __('Reason'),
            'massiveaction'      => false,
            'datatype'           => 'specific',
-           'additionalfields'   => ['rules_id', 'criteria', 'condition'],
+           'additionalfields'   => ['rules_id', 'criteria', 'conditions'],
            'autocomplete'       => true,
         ];
 
@@ -221,7 +221,7 @@ class RuleCriteria extends CommonDBChild
                 }
                 break;
 
-            case 'condition':
+            case 'conditions':
                 $generic_rule = new Rule();
                 if (
                     isset($values['rules_id'])
@@ -236,7 +236,7 @@ class RuleCriteria extends CommonDBChild
                 break;
 
             case 'pattern':
-                if (!isset($values["criteria"]) || !isset($values["condition"])) {
+                if (!isset($values["criteria"]) || !isset($values["conditions"])) {
                     return NOT_AVAILABLE;
                 }
                 $generic_rule = new Rule();
@@ -248,7 +248,7 @@ class RuleCriteria extends CommonDBChild
                     if ($rule = getItemForItemtype($generic_rule->fields["sub_type"])) {
                         return $rule->getCriteriaDisplayPattern(
                             $values["criteria"],
-                            $values["condition"],
+                            $values["conditions"],
                             $values[$field]
                         );
                     }
@@ -289,7 +289,7 @@ class RuleCriteria extends CommonDBChild
                 }
                 break;
 
-            case 'condition':
+            case 'conditions':
                 $generic_rule = new Rule();
                 if (
                     isset($values['rules_id'])
@@ -306,7 +306,7 @@ class RuleCriteria extends CommonDBChild
                 break;
 
             case 'pattern':
-                if (!isset($values["criteria"]) || !isset($values["condition"])) {
+                if (!isset($values["criteria"]) || !isset($values["conditions"])) {
                     return NOT_AVAILABLE;
                 }
                 $generic_rule = new Rule();
@@ -320,7 +320,7 @@ class RuleCriteria extends CommonDBChild
                         $rule->displayCriteriaSelectPattern(
                             $name,
                             $values["criteria"],
-                            $values["condition"],
+                            $values["conditions"],
                             $values[$field]
                         );
                     }
@@ -340,14 +340,12 @@ class RuleCriteria extends CommonDBChild
     **/
     public function getRuleCriterias($rules_id)
     {
-        global $DB;
-
         $rules_list = [];
         $params = ['FROM'  => $this->getTable(),
                    'WHERE' => [static::$items_id => $rules_id],
                    'ORDER' => 'id'
                   ];
-        foreach ($DB->request($params) as $rule) {
+        foreach ($this::getAdapter()->request($params)->fetchAllAssociative() as $rule) {
             $tmp          = new self();
             $tmp->fields  = $rule;
             $rules_list[] = $tmp;
@@ -369,7 +367,7 @@ class RuleCriteria extends CommonDBChild
     public static function match(RuleCriteria &$criterion, $field, &$criterias_results, &$regex_result)
     {
 
-        $condition = $criterion->fields['condition'];
+        $condition = $criterion->fields['conditions'];
         $pattern   = $criterion->fields['pattern'];
         $criteria  = $criterion->fields['criteria'];
 
@@ -591,7 +589,7 @@ class RuleCriteria extends CommonDBChild
     public static function dropdownConditions($itemtype, $params = [])
     {
 
-        $p['name']             = 'condition';
+        $p['name']             = 'conditions';
         $p['criterion']        = '';
         $p['allow_conditions'] = [];
         $p['value']            = '';

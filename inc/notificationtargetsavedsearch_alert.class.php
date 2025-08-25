@@ -39,19 +39,17 @@ class NotificationTargetSavedSearch_Alert extends NotificationTarget
 {
     public function getEvents()
     {
-        global $DB;
-
         $events = [];
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'          => 'event',
            'DISTINCT'        => true,
            'FROM'            => Notification::getTable(),
            'WHERE'           => ['itemtype' => SavedSearch_Alert::getType()]
         ]);
-
-        if ($iterator->numRows()) {
-            while ($row = $iterator->next()) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            foreach ($results as $row) {
                 if (strpos($row['event'], 'alert_') !== false) {
                     $search = new SavedSearch();
                     $search->getFromDB(str_replace('alert_', '', $row['event']));

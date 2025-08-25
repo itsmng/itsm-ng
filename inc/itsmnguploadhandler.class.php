@@ -105,14 +105,13 @@ class ItsmngUploadHandler
 
     private static function getValidExtPatterns()
     {
-        global $DB;
-        $valid_type_iterator = $DB->request([
+        $request = config::getAdapter()->request([
             'FROM'   => 'glpi_documenttypes',
             'WHERE'  => [
                 'is_uploadable'   => 1
             ]
         ]);
-
+        $valid_type_iterator = $request->fetchAllAssociative();
         $valid_ext_patterns = [];
         foreach ($valid_type_iterator as $valid_type) {
             $valid_ext = $valid_type['ext'];

@@ -136,7 +136,7 @@ function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
         'used' => $used,
     ], false);
     $options = [];
-    foreach ($values['results'] as $key => $value) {
+    foreach ($values['results'] as $value) {
         if (!$value || !count($value)) {
             continue;
         }
@@ -172,7 +172,7 @@ function getOptionForItems($item, $conditions = [], $display_emptychoice = true,
     ], false);
 
     $options = [];
-    foreach ($values['results'] as $key => $value) {
+    foreach ($values['results'] as $value) {
         if (!$value || !count($value)) {
             continue;
         }

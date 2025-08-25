@@ -66,10 +66,10 @@ class NetworkPortInstantiation extends CommonDBChild
     public $canHaveVirtualPort    = true;
     public $haveMAC               = true;
 
-    public static function getIndexName()
-    {
-        return 'networkports_id';
-    }
+    // public static function getIndexName()
+    // {
+    //     return 'networkports_id';
+    // }
 
 
     /**
@@ -310,14 +310,12 @@ class NetworkPortInstantiation extends CommonDBChild
         HTMLTableCell $father = null,
         array $options = []
     ) {
-        global $DB;
-
         $display_options = $options['display_options'];
 
         if (($this->canHaveVirtualPort) && ($display_options['virtual_ports'])) {
             $virtual_header = $row->getHeaderByName('Instantiation', 'VirtualPorts');
 
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'FROM' => new \QueryUnion(
                    [
                      [
@@ -334,14 +332,14 @@ class NetworkPortInstantiation extends CommonDBChild
                    'networkports'
                )
             ]);
-
-            if (count($iterator)) {
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
                 $new_father = $row->addCell($virtual_header, __('this port'), $father);
             } else {
                 $new_father = $row->addCell($virtual_header, '', $father);
             }
 
-            foreach ($iterator as $networkports_ids) {
+            foreach ($results as $networkports_ids) {
                 $virtualPort = new NetworkPort();
 
                 if ($virtualPort->getFromDB($networkports_ids['networkports_id'])) {
@@ -405,8 +403,6 @@ class NetworkPortInstantiation extends CommonDBChild
     **/
     public static function getItemsByMac($mac, $wildcard_search = false)
     {
-        global $DB;
-
         $mac = strtolower($mac);
         if ($wildcard_search) {
             $count = 0;
@@ -424,13 +420,13 @@ class NetworkPortInstantiation extends CommonDBChild
         foreach (['NetworkPort'] as $netporttype) {
             $netport = new $netporttype();
 
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => $netport->getTable(),
                'WHERE'  => ['mac' => $relation]
             ]);
 
-            while ($element = $iterator->next()) {
+            while ($element = $request->fetchAssociative()) {
                 if ($netport->getFromDB($element['id'])) {
                     if ($netport instanceof CommonDBChild) {
                         $macItemWithItems[] = array_merge(
@@ -515,8 +511,6 @@ class NetworkPortInstantiation extends CommonDBChild
     **/
     public function showNetworkCardField(NetworkPort $netport, $options = [], $recursiveItems = [])
     {
-        global $DB;
-
         echo "<td>" . DeviceNetworkCard::getTypeName(1) . "</td>\n";
         echo "<td>";
 
@@ -556,14 +550,14 @@ class NetworkPortInstantiation extends CommonDBChild
                     $criteria['SELECT'][] = "$SQL_field AS $form_field";
                 }
 
-                $iterator = $DB->request($criteria);
+                $request = $this::getAdapter()->request($criteria);
 
                 // Add the javascript to update each field
                 echo "\n<script type=\"text/javascript\">
    var deviceAttributs = [];\n";
 
                 $deviceNames = [0 => ""]; // First option : no network card
-                while ($availableDevice = $iterator->next()) {
+                while ($availableDevice = $request->fetchAssociative()) {
                     $linkid               = $availableDevice['link_id'];
                     $deviceNames[$linkid] = $availableDevice['name'];
                     if (isset($availableDevice['mac'])) {
@@ -713,8 +707,6 @@ class NetworkPortInstantiation extends CommonDBChild
     **/
     public function showNetworkPortSelector($recursiveItems, $origin)
     {
-        global $DB;
-
         if (count($recursiveItems) == 0) {
             return;
         }
@@ -755,7 +747,7 @@ class NetworkPortInstantiation extends CommonDBChild
         $macAddresses = [];
         foreach ($netport_types as $netport_type) {
             $instantiationTable = getTableForItemType($netport_type);
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => [
                   'port.id',
                   'port.name',
@@ -769,15 +761,15 @@ class NetworkPortInstantiation extends CommonDBChild
                ],
                'ORDER'  => ['logical_number', 'name']
             ]);
-
-            if (count($iterator)) {
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
                 $array_element_name = call_user_func(
                     [$netport_type, 'getTypeName'],
-                    count($iterator)
+                    count($results)
                 );
                 $possible_ports[$array_element_name] = [];
 
-                while ($portEntry = $iterator->next()) {
+                foreach ($results as $portEntry) {
                     $macAddresses[$portEntry['id']] = $portEntry['mac'];
                     if (!empty($portEntry['mac'])) {
                         $portEntry['name'] = sprintf(

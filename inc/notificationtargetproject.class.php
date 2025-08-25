@@ -148,9 +148,7 @@ class NotificationTargetProject extends NotificationTarget
      **/
     public function addTeamUsers()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'items_id',
            'FROM'   => 'glpi_projectteams',
            'WHERE'  => [
@@ -159,7 +157,7 @@ class NotificationTargetProject extends NotificationTarget
            ]
         ]);
         $user = new User();
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if ($user->getFromDB($data['items_id'])) {
                 $this->addToRecipientsList(['language' => $user->getField('language'),
                                                 'users_id' => $user->getField('id')]);
@@ -177,9 +175,7 @@ class NotificationTargetProject extends NotificationTarget
      **/
     public function addTeamGroups($manager)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'items_id',
            'FROM'   => 'glpi_projectteams',
            'WHERE'  => [
@@ -188,7 +184,7 @@ class NotificationTargetProject extends NotificationTarget
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $this->addForGroup($manager, $data['items_id']);
         }
     }
@@ -201,9 +197,9 @@ class NotificationTargetProject extends NotificationTarget
      **/
     public function addTeamContacts()
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'items_id',
            'FROM'   => 'glpi_projectteams',
            'WHERE'  => [
@@ -213,7 +209,7 @@ class NotificationTargetProject extends NotificationTarget
         ]);
 
         $contact = new Contact();
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if ($contact->getFromDB($data['items_id'])) {
                 $this->addToRecipientsList(["email"    => $contact->fields["email"],
                                                 "name"     => $contact->getName(),
@@ -231,9 +227,9 @@ class NotificationTargetProject extends NotificationTarget
      **/
     public function addTeamSuppliers()
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => 'items_id',
            'FROM'   => 'glpi_projectteams',
            'WHERE'  => [
@@ -243,7 +239,7 @@ class NotificationTargetProject extends NotificationTarget
         ]);
 
         $supplier = new Supplier();
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if ($supplier->getFromDB($data['items_id'])) {
                 $this->addToRecipientsList(["email"    => $supplier->fields["email"],
                                                 "name"     => $supplier->getName(),
@@ -256,7 +252,7 @@ class NotificationTargetProject extends NotificationTarget
 
     public function addDataForTemplate($event, $options = [])
     {
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
         //----------- Reservation infos -------------- //
         $events = $this->getAllEvents();
@@ -499,7 +495,7 @@ class NotificationTargetProject extends NotificationTarget
         }
 
         // Document
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT'    => 'glpi_documents.*',
            'FROM'      => 'glpi_documents',
            'LEFT JOIN' => [
@@ -517,7 +513,7 @@ class NotificationTargetProject extends NotificationTarget
         ]);
 
         $this->data["documents"] = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $tmp                       = [];
             $tmp['##document.id##']    = $data['id'];
             $tmp['##document.name##']  = $data['name'];

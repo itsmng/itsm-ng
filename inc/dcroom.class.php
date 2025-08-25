@@ -345,8 +345,6 @@ class DCRoom extends CommonDBTM
     **/
     public static function showForDatacenter(Datacenter $datacenter)
     {
-        global $DB;
-
         $ID = $datacenter->getID();
         $rand = mt_rand();
 
@@ -358,13 +356,13 @@ class DCRoom extends CommonDBTM
         }
         $canedit = $datacenter->canEdit($ID);
 
-        $rooms = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'datacenters_id' => $datacenter->getID()
            ]
         ]);
-
+        $rooms = $request->fetchAllAssociative();
         echo "<div class='firstbloc'>";
         Html::showSimpleForm(
             self::getFormURL(),
@@ -411,7 +409,7 @@ class DCRoom extends CommonDBTM
 
             $dcroom = new self();
             echo $header;
-            while ($room = $rooms->next()) {
+            foreach ($rooms as $room) {
                 $dcroom->getFromResultSet($room);
                 echo "<tr lass='tab_bg_1'>";
                 if ($canedit) {
@@ -444,9 +442,7 @@ class DCRoom extends CommonDBTM
      */
     public function getFilled($current = null)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $result = $this::getAdapter()->request([
            'FROM'   => Rack::getTable(),
            'WHERE'  => [
               'dcrooms_id'   => $this->getID(),
@@ -455,7 +451,7 @@ class DCRoom extends CommonDBTM
         ]);
 
         $filled = [];
-        while ($rack = $iterator->next()) {
+        while ($rack = $result->fetchAssociative()) {
             if (preg_match('/(\d+),\s?(\d+)/', $rack['position'])) {
                 $position = $rack['position'];
                 if (empty($current) || $current != $position) {

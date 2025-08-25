@@ -1,5 +1,7 @@
 <?php
 
+use Itsmng\Domain\Entities\ItemOperatingSystem;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
@@ -75,12 +77,10 @@ class Item_OperatingSystem extends CommonDBRelation
      * @param string     $sort  Field to sort on
      * @param string     $order Sort order
      *
-     * @return DBmysqlIterator
+     * @return Doctrine\DBAL\Result
      */
-    public static function getFromItem(CommonDBTM $item, $sort = null, $order = null): DBmysqlIterator
+    public static function getFromItem(CommonDBTM $item, $sort = null, $order = null): Doctrine\DBAL\Result
     {
-        global $DB;
-
         if ($sort === null) {
             $sort = "glpi_items_operatingsystems.id";
         }
@@ -88,7 +88,7 @@ class Item_OperatingSystem extends CommonDBRelation
             $order = 'ASC';
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'glpi_items_operatingsystems.id AS assocID',
               'glpi_operatingsystems.name',
@@ -129,7 +129,7 @@ class Item_OperatingSystem extends CommonDBRelation
            ],
            'ORDERBY'   => "$sort $order"
         ]);
-        return $iterator;
+        return $request;
     }
 
     /**
@@ -175,12 +175,14 @@ class Item_OperatingSystem extends CommonDBRelation
         }
 
         $iterator = self::getFromItem($item, $sort, $order);
-        $number = count($iterator);
+        $results = $iterator->fetchAllAssociative();
+        $number = count($results);
         $i      = 0;
 
         $os = [];
-        while ($data = $iterator->next()) {
-            $os[$data['assocID']] = $data;
+        //   while ($data = $iterator->next()) {
+        foreach ($results as $data) {
+            $os[$data['assocID'] ?? null] = $data;
         }
 
         $canedit = $item->canEdit($item->getID());
@@ -427,7 +429,7 @@ class Item_OperatingSystem extends CommonDBRelation
         global $DB;
 
         Toolbox::deprecated('Use clone');
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'itemtype'  => $itemtype,
@@ -435,7 +437,7 @@ class Item_OperatingSystem extends CommonDBRelation
            ]
         ]);
 
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $input             = Toolbox::addslashes_deep($row);
             $input['items_id'] = $newid;
             if (!empty($newitemtype)) {

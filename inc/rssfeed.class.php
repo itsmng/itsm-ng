@@ -57,8 +57,6 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
 
     public static $rightname    = 'rssfeed_public';
 
-
-
     public static function getTypeName($nb = 0)
     {
 
@@ -324,10 +322,9 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
                 'glpi_profiles_rssfeeds.entities_id' => ['<', '0'],
                 $restrict
             ];
-
             $orwhere[] = [
                 'glpi_profiles_rssfeeds.profiles_id' => $_SESSION["glpiactiveprofile"]['id'],
-                'OR' => $ors
+                'OR' => $ors != 0
             ];
         }
 
@@ -357,7 +354,6 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
         if (count($where)) {
             $criteria['WHERE'] = $where;
         }
-
         return $criteria;
     }
 
@@ -962,7 +958,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
                 return false;
             }
 
-            $criteria = $criteria + self::getVisibilityCriteria();
+            $criteria += self::getVisibilityCriteria();
 
             // Only personal on central so do not keep it
             if (Session::getCurrentInterface() == 'central') {
@@ -977,11 +973,12 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
             }
         }
 
-        $iterator = $DB->request($criteria);
-        $nb = count($iterator);
+        $request = self::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        $nb = count($results);
         $items   = [];
         $rssfeed = new self();
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             if ($rssfeed->getFromDB($data['id'])) {
                 // Force fetching feeds
                 if ($feed = self::getRSSFeed($data['url'], $data['refresh_rate'])) {

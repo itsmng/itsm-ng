@@ -223,26 +223,37 @@ class PlanningRecall extends CommonDBChild
     **/
     public static function managePlanningUpdates($itemtype, $items_id, $begin)
     {
-        global $DB;
-
         if (isset($_SESSION['glpiplanningreminder_isavailable'])) {
             unset($_SESSION['glpiplanningreminder_isavailable']);
         }
 
         //nedds DB::update() to support SQL functions to get migrated
-        $result = $DB->update(
-            'glpi_planningrecalls',
-            [
-              'when'   => new \QueryExpression(
-                  "DATE_SUB('$begin', INTERVAL " . $DB->quoteName('before_time') . " SECOND)"
-              ),
-            ],
-            [
-              'itemtype'  => $itemtype,
-              'items_id'  => $items_id
+        $adapter = self::getAdapter();
+        $recalls = $adapter->request([
+            'SELECT' => ['id', 'before_time'],
+            'FROM'   => 'glpi_planningrecalls',
+            'WHERE'  => [
+                'itemtype'  => $itemtype,
+                'items_id'  => $items_id
             ]
-        );
-        return $result;
+        ]);
+
+        $success = true;
+        foreach ($recalls->fetchAllAssociative() as $data) {
+            $when = date("Y-m-d H:i:s", strtotime($begin) - $data['before_time']);
+
+            $recall = new self();
+            if ($recall->getFromDB($data['id'])) {
+                if (!$recall->update([
+                    'id'    => $data['id'],
+                    'when'  => $when
+                ])) {
+                    $success = false;
+                }
+            }
+        }
+
+        return $success;
     }
 
 
@@ -390,14 +401,14 @@ class PlanningRecall extends CommonDBChild
     **/
     public static function cronPlanningRecall($task = null)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         if (!$CFG_GLPI["use_notifications"]) {
             return 0;
         }
 
         $cron_status = 0;
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => 'glpi_planningrecalls.*',
            'FROM'      => 'glpi_planningrecalls',
            'LEFT JOIN' => [
@@ -421,7 +432,7 @@ class PlanningRecall extends CommonDBChild
         ]);
 
         $pr = new self();
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if ($pr->getFromDB($data['id']) && $pr->getItem()) {
                 $options = [];
 

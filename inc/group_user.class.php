@@ -83,7 +83,7 @@ class Group_User extends CommonDBRelation
         global $DB;
 
         $groups = [];
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => [
               'glpi_groups.*',
               'glpi_groups_users.id AS IDD',
@@ -106,7 +106,7 @@ class Group_User extends CommonDBRelation
            ] + $condition,
            'ORDER'        => 'glpi_groups.name'
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $result->fetchAssociative()) {
             $groups[] = $row;
         }
 
@@ -130,7 +130,7 @@ class Group_User extends CommonDBRelation
 
         $users = [];
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => [
               'glpi_users.*',
               'glpi_groups_users.id AS IDD',
@@ -153,7 +153,7 @@ class Group_User extends CommonDBRelation
            ] + $condition,
            'ORDER'        => 'glpi_users.name'
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $result->fetchAssociative()) {
             $users[] = $row;
         }
 
@@ -185,7 +185,7 @@ class Group_User extends CommonDBRelation
         $groups = [];
         //$groups  = self::getUserGroups($ID);
         $used    = [];
-        while ($data = $iterator->next()) {
+        foreach ($iterator as $data) {
             $used[$data["id"]] = $data["id"];
             $groups[] = $data;
         }
@@ -396,7 +396,7 @@ class Group_User extends CommonDBRelation
 
         // All group members
         $pu_table = Profile_User::getTable();
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => [
               'glpi_users.id',
               'glpi_groups_users.id AS linkid',
@@ -434,7 +434,7 @@ class Group_User extends CommonDBRelation
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             // Add to display list, according to criterion
             if (empty($crit) || $data[$crit]) {
                 $members[] = $data;

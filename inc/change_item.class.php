@@ -190,7 +190,7 @@ class Change_Item extends CommonItilObject_Item
         ];
         $values = [];
         $massive_action = [];
-        while ($row = $types_iterator->next()) {
+        foreach ($types_iterator as $row) {
             $itemtype = $row['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -235,8 +235,6 @@ class Change_Item extends CommonItilObject_Item
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        global $DB;
-
         if (!$withtemplate) {
             $nb = 0;
             switch ($item->getType()) {
@@ -251,13 +249,13 @@ class Change_Item extends CommonItilObject_Item
                 case 'Supplier':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $from = 'glpi_changes_' . strtolower($item->getType() . 's');
-                        $result = $DB->request([
+                        $result = $this::getAdapter()->request([
                            'COUNT'  => 'cpt',
                            'FROM'   => $from,
                            'WHERE'  => [
                               $item->getForeignKeyField()   => $item->fields['id']
                            ]
-                        ])->next();
+                        ])->fetchAssociative();
                         $nb = $result['cpt'];
                     }
                     return self::createTabEntry(Change::getTypeName(Session::getPluralNumber()), $nb);

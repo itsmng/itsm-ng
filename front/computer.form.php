@@ -32,6 +32,15 @@
  */
 
 use Glpi\Event;
+use Ajax;
+use CommonDBTM;
+use CronTask;
+use Document;
+use Html;
+use Session;
+use Toolbox;
+use Infocom;
+use DBConnection;
 
 include('../inc/includes.php');
 

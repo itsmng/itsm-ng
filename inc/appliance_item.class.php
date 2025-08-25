@@ -105,7 +105,7 @@ class Appliance_Item extends CommonDBRelation
     **/
     public static function showItems(Appliance $appliance)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $ID = $appliance->fields['id'];
         $rand = mt_rand();
@@ -118,7 +118,7 @@ class Appliance_Item extends CommonDBRelation
         }
         $canedit = $appliance->canEdit($ID);
 
-        $items = $DB->request([
+        $items = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               self::$items_id_1 => $ID
@@ -210,7 +210,7 @@ class Appliance_Item extends CommonDBRelation
             renderTwigForm($form);
         }
 
-        $items = iterator_to_array($items);
+        $items = $items->fetchAllAssociative();
 
         $fields = [
            __('Itemtype'),
@@ -284,7 +284,7 @@ class Appliance_Item extends CommonDBRelation
 
         $appliances = [];
         $used      = [];
-        while ($data = $iterator->next()) {
+        foreach ($iterator as $data) {
             $appliances[$data['id']] = $data;
             $used[$data['id']]      = $data['id'];
         }

@@ -214,7 +214,7 @@ class Report extends CommonGLPI
                 ];
             }
 
-            $result = $DB->request($criteria)->next();
+            $result = config::getAdapter()->request($criteria)->fetchAssociative();
             $number = (int)$result['cpt'];
 
             echo "<tr class='tab_bg_2'><td>" . $itemtype::getTypeName(Session::getPluralNumber()) . "</td>";
@@ -224,7 +224,7 @@ class Report extends CommonGLPI
         echo "<tr class='tab_bg_1'><td colspan='2' class='b'>" . OperatingSystem::getTypeName(1) . "</td></tr>";
 
         // 2. Get some more number data (operating systems per computer)
-        $iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'SELECT'    => [
               'COUNT' => '* AS count',
               'glpi_operatingsystems.name AS name'
@@ -242,7 +242,7 @@ class Report extends CommonGLPI
            'GROUPBY'   => 'glpi_operatingsystems.name'
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if (empty($data['name'])) {
                 $data['name'] = Dropdown::EMPTY_VALUE;
             }
@@ -298,8 +298,8 @@ class Report extends CommonGLPI
                 ];
             }
 
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = config::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 if (empty($data['name'])) {
                     $data['name'] = Dropdown::EMPTY_VALUE;
                 }
@@ -447,9 +447,9 @@ class Report extends CommonGLPI
             $criteria['ORDER'] = $order;
         }
 
-        $iterator = $DB->request($criteria);
-
-        if (count($iterator)) {
+        $request = config::getAdapter()->request($criteria);
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
             echo "<table class='tab_cadre_fixehov'aria-label='Devices'>";
             echo "<tr>";
             if (!empty($extra)) {
@@ -476,7 +476,7 @@ class Report extends CommonGLPI
             echo "<th>" . __('Device name') . "</th>";
             echo "</tr>\n";
 
-            while ($line = $iterator->next()) {
+            foreach ($results as $line) {
                 echo "<tr class='tab_bg_1'>";
 
                 // To ensure that the NetworkEquipment remain the first item, we test its type

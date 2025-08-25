@@ -540,7 +540,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                                   //TRANS: %s is the user name
                                   = sprintf(
                                       __('An answer to an approval request was produced by %s'),
-                                      Html::clean(getUserName($validation['users_id_validate']))
+                                      Html::clean(getUserName($validation['validate_users_id']))
                                   );
 
                 $tmp['##validation.author##']
@@ -557,7 +557,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                 $tmp['##validation.validationdate##']
                                   = Html::convDateTime($validation['validation_date']);
                 $tmp['##validation.validator##']
-                                  =  Html::clean(getUserName($validation['users_id_validate']));
+                                  =  Html::clean(getUserName($validation['validate_users_id']));
                 $tmp['##validation.commentvalidation##']
                                   = $validation['comment_validation'];
 
@@ -572,7 +572,18 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
             $data['##satisfaction.satisfaction##'] = '';
             $data['##satisfaction.description##']  = '';
 
-            if ($inquest->getFromDB($item->getField('id'))) {
+            $result = $inquest::getAdapter()->request([
+                'FROM'   => 'glpi_ticketsatisfactions',
+                'WHERE'  => ['tickets_id' => $item->getField('id')]
+            ]);
+            $satisfaction_data = $result->fetchAssociative();
+
+            if ($satisfaction_data) {
+                $inquest->fields = $satisfaction_data;
+                if (isset($satisfaction_data['id'])) {
+                    $inquest->fields['id'] = $satisfaction_data['id'];
+                }
+
                 // internal inquest
                 if ($inquest->fields['type'] == 1) {
                     $data['##ticket.urlsatisfaction##']
@@ -602,10 +613,10 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
 
     public static function isAuthorMailingActivatedForHelpdesk()
     {
-        global $DB,$CFG_GLPI;
+        global $CFG_GLPI;
 
         if ($CFG_GLPI['notifications_mailing']) {
-            $result = $DB->request([
+            $result = self::getAdapter()->request([
                'COUNT'        => 'cpt',
                'FROM'         => 'glpi_notifications',
                'INNER JOIN'   => [
@@ -628,7 +639,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
                   'glpi_notificationtargets.type'                 => Notification::USER_TYPE,
                   'glpi_notificationtargets.items_id'             => Notification::AUTHOR
                ]
-            ])->next();
+            ])->fetchAssociative();
             return $result['cpt'] > 0;
         }
         return false;

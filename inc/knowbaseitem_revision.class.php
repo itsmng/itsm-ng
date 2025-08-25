@@ -87,7 +87,7 @@ class KnowbaseItem_Revision extends CommonDBTM
     **/
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $item_id = $item->getID();
         $item_type = $item::getType();
@@ -154,10 +154,13 @@ class KnowbaseItem_Revision extends CommonDBTM
                 "<td></td>" .
                 "</tr>";
 
-        $revisions = $DB->request(
-            'glpi_knowbaseitems_revisions',
-            $where + ['ORDER' => 'id DESC']
-        );
+        $request = self::getAdapter()->request([
+            'FROM'    => 'glpi_knowbaseitems_revisions',
+            'WHERE'   => $where,
+            'ORDERBY' => ['id DESC']
+            ]);
+
+        $revisions = $request->fetchAllAssociative();
 
         $is_checked = true;
         foreach ($revisions as $revision) {
@@ -345,14 +348,14 @@ class KnowbaseItem_Revision extends CommonDBTM
     {
         global $DB;
 
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT' => ['MAX' => 'revision AS revision'],
            'FROM'   => 'glpi_knowbaseitems_revisions',
            'WHERE'  => [
               'knowbaseitems_id'   => $this->fields['knowbaseitems_id'],
               'language'           => $this->fields['language']
            ]
-        ])->next();
+        ])->fetchAssociative();
 
         $rev = $result['revision'];
         if ($rev === null) {

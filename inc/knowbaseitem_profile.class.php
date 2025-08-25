@@ -58,18 +58,16 @@ class KnowbaseItem_Profile extends CommonDBRelation
     **/
     public static function getProfiles($knowbaseitems_id)
     {
-        global $DB;
-
         $prof  = [];
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'knowbaseitems_id' => $knowbaseitems_id
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $prof[$data['profiles_id']][] = $data;
         }
         return $prof;

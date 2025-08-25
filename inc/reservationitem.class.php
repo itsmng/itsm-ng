@@ -121,8 +121,8 @@ class ReservationItem extends CommonDBChild
     {
 
         return $this->getFromDBByCrit([
-           $this->getTable() . '.itemtype'  => $itemtype,
-           $this->getTable() . '.items_id'  => $ID
+        'itemtype'  => $itemtype,
+        'items_id'  => $ID
         ]);
     }
 
@@ -265,7 +265,7 @@ class ReservationItem extends CommonDBChild
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the hardware'),
            'datatype'           => 'dropdown',
            'right'              => 'interface',
@@ -445,7 +445,7 @@ class ReservationItem extends CommonDBChild
             $_POST['reservation_types'] = '';
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => 'itemtype',
            'DISTINCT'        => true,
            'FROM'            => 'glpi_reservationitems',
@@ -454,11 +454,11 @@ class ReservationItem extends CommonDBChild
            ] + getEntitiesRestrictCriteria('glpi_reservationitems', 'entities_id', $_SESSION['glpiactiveentities'])
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $values[$data['itemtype']] = $data['itemtype']::getTypeName();
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'glpi_peripheraltypes.name',
               'glpi_peripheraltypes.id'
@@ -486,7 +486,7 @@ class ReservationItem extends CommonDBChild
            'ORDERBY'   => 'glpi_peripheraltypes.name'
         ]);
 
-        while ($ptype = $iterator->next()) {
+        while ($ptype = $request->fetchAssociative()) {
             $id = $ptype['id'];
             $values["Peripheral#$id"] = $ptype['name'];
         }
@@ -648,8 +648,8 @@ class ReservationItem extends CommonDBChild
                 }
             }
 
-            $iterator = $DB->request($criteria);
-            while ($row = $iterator->next()) {
+            $request = self::getAdapter()->request($criteria);
+            while ($row = $request->fetchAssociative()) {
                 echo "<tr class='tab_bg_2'><td>";
                 echo "<input type='checkbox' name='item[" . $row["id"] . "]' value='" . $row["id"] . "'>" .
                       "</td>";
@@ -761,9 +761,9 @@ class ReservationItem extends CommonDBChild
                   'glpi_alerts.date'         => null
                ]
             ];
-            $iterator = $DB->request($criteria);
+            $request = self::getAdapter()->request($criteria);
 
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 if ($item_resa = getItemForItemtype($data['itemtype'])) {
                     if ($item_resa->getFromDB($data["items_id"])) {
                         $data['item_name']                     = $item_resa->getName();

@@ -123,11 +123,11 @@ class Telemetry extends CommonGLPI
 
         $dbinfos = $DB->getInfo();
 
-        $size_res = $DB->request([
+        $size_res = config::getAdapter()->request([
            'SELECT' => new \QueryExpression("ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS dbsize"),
            'FROM'   => 'information_schema.tables',
            'WHERE'  => ['table_schema' => $DB->dbdefault]
-        ])->next();
+        ])->fetchAssociative();
 
         $db = [
            'engine'    => $dbinfos['Server Software'],
@@ -395,9 +395,8 @@ class Telemetry extends CommonGLPI
      */
     public static function enable()
     {
-        global $DB;
-        $DB->update(
-            'glpi_crontasks',
+        $crontask = new CronTask();
+        $crontask->update(
             ['state' => 1],
             ['name' => 'telemetry']
         );
@@ -411,7 +410,7 @@ class Telemetry extends CommonGLPI
     public static function isEnabled()
     {
         global $DB;
-        $iterator = $DB->request([
+        $request = config::getAdapter()->request([
            'SELECT' => ['state'],
            'FROM'   => 'glpi_crontasks',
            'WHERE'  => [
@@ -420,7 +419,8 @@ class Telemetry extends CommonGLPI
            ]
 
         ]);
-        return count($iterator) > 0;
+        $results = $request->fetchAllAssociative();
+        return count($results) > 0;
     }
 
 

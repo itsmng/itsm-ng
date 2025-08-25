@@ -76,14 +76,21 @@ class Item_Kanban extends CommonDBRelation
            'itemtype' => $itemtype,
            'items_id' => $items_id
         ];
-        if (countElementsInTable('glpi_items_kanbans', $criteria)) {
-            $DB->update('glpi_items_kanbans', [
-               'date_mod'  => $_SESSION['glpi_currenttime']
-            ] + $common_input, $criteria);
+        $kanban_item = new self();
+        if ($kanban_item->getFromDBByCrit($criteria)) {
+            $update_data = [
+                'id'        => $kanban_item->getID(),
+                'date_mod'  => $_SESSION['glpi_currenttime']
+            ] + $common_input;
+
+            $kanban_item->update($update_data);
         } else {
-            $DB->insert('glpi_items_kanbans', [
-               'date_creation'   => $_SESSION['glpi_currenttime']
-            ] + $common_input);
+            $kanban_item = new self();
+            $kanban_item->fields = [
+                'date_creation'   => $_SESSION['glpi_currenttime']
+            ] + $common_input;
+
+            $kanban_item->addToDB();
         }
         return true;
     }
@@ -100,14 +107,12 @@ class Item_Kanban extends CommonDBRelation
      */
     public static function loadStateForItem($itemtype, $items_id, $timestamp = null)
     {
-        global $DB;
-
         /** @var Kanban|CommonDBTM $item */
         $item = new $itemtype();
         $item->getFromDB($items_id);
         $force_global = $item->forceGlobalState();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => ['date_mod', 'state'],
            'FROM'   => 'glpi_items_kanbans',
            'WHERE'  => [
@@ -116,9 +121,9 @@ class Item_Kanban extends CommonDBRelation
               'items_id' => $items_id
            ]
         ]);
-
-        if (count($iterator)) {
-            $data = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            $data = $results[0];
             if ($timestamp !== null) {
                 if (strtotime($timestamp) < strtotime($data['date_mod'])) {
                     return json_decode($data['state'], true);
@@ -173,7 +178,7 @@ class Item_Kanban extends CommonDBRelation
     {
         $state = self::loadStateForItem($itemtype, $items_id);
         $found = false;
-        foreach ($state as $column_index => &$col) {
+        foreach ($state as &$col) {
             if ($col['column'] === $column) {
                 $col['visible'] = true;
                 $found = true;
@@ -195,7 +200,7 @@ class Item_Kanban extends CommonDBRelation
     public static function hideColumn($itemtype, $items_id, $column)
     {
         $state = self::loadStateForItem($itemtype, $items_id);
-        foreach ($state as $column_index => &$col) {
+        foreach ($state as &$col) {
             if ($col['column'] === $column) {
                 $col['visible'] = false;
                 break;
@@ -207,7 +212,7 @@ class Item_Kanban extends CommonDBRelation
     public static function collapseColumn($itemtype, $items_id, $column)
     {
         $state = self::loadStateForItem($itemtype, $items_id);
-        foreach ($state as $column_index => &$col) {
+        foreach ($state as &$col) {
             if ($col['column'] === $column) {
                 $col['folded'] = true;
                 break;
@@ -219,7 +224,7 @@ class Item_Kanban extends CommonDBRelation
     public static function expandColumn($itemtype, $items_id, $column)
     {
         $state = self::loadStateForItem($itemtype, $items_id);
-        foreach ($state as $column_index => &$col) {
+        foreach ($state as &$col) {
             if ($col['column'] === $column) {
                 $col['folded'] = false;
                 break;

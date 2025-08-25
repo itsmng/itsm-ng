@@ -177,8 +177,8 @@ class QueuedNotification extends CommonDBTM
 
                ]
             ];
-            $iterator = $DB->request($criteria);
-            while ($data = $iterator->next()) {
+            $request = $this::getAdapter()->request($criteria);
+            while ($data = $request->fetchAssociative()) {
                 $this->delete(['id' => $data['id']], 1);
             }
         }
@@ -539,10 +539,12 @@ class QueuedNotification extends CommonDBTM
             $query = $base_query;
             $query['WHERE']['mode'] = $mode;
 
-            $iterator = $DB->request($query);
-            if ($iterator->numRows() > 0) {
+            $request = self::getAdapter()->request($query);
+            $results = $request->fetchAllAssociative();
+
+            if (count($results) > 0) {
                 $pendings[$mode] = [];
-                while ($row = $iterator->next()) {
+                foreach ($results as $row) {
                     $pendings[$mode][] = $row;
                 }
             }
@@ -611,14 +613,26 @@ class QueuedNotification extends CommonDBTM
         if ($task->fields['param'] > 0) {
             $secs      = $task->fields['param'] * DAY_TIMESTAMP;
             $send_time = date("U") - $secs;
-            $DB->delete(
-                self::getTable(),
-                [
-                  'is_deleted'   => 1,
-                  new \QueryExpression('(UNIX_TIMESTAMP(' . $DB->quoteName('send_time') . ') < ' . $DB->quoteValue($send_time) . ')')
+            $adapter = self::getAdapter();
+            $notifications = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => self::getTable(),
+                'WHERE'  => [
+                    'is_deleted'   => 1,
+                    'RAW' => [
+                        '(UNIX_TIMESTAMP(' . $DB->quoteName('send_time') . ') < ' . $DB->quoteValue($send_time) . ')'
+                    ]
                 ]
-            );
-            $vol = $DB->affectedRows();
+            ]);
+
+            foreach ($notifications->fetchAllAssociative() as $data) {
+                $notif = new self();
+                if ($notif->getFromDB($data['id'])) {
+                    if ($notif->deleteFromDB()) {
+                        $vol++;
+                    }
+                }
+            }
         }
 
         $task->setVolume($vol);

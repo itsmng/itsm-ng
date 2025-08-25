@@ -31,6 +31,8 @@
  * ---------------------------------------------------------------------
 * */
 
+use Laminas\Validator\IsArray;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -116,7 +118,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
 
         if (!isset($this->address)) {
             $this->address = new IPAddress();
-            if (!$this->address->setAddressFromArray($this->fields, "version", "address", "address")) {
+            if (is_array($this->fields) && !$this->address->setAddressFromArray($this->fields, "version", "address", "address")) {
                 return false;
             }
         }
@@ -129,7 +131,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
 
         if (!isset($this->netmask)) {
             $this->netmask = new IPNetmask();
-            if (!$this->netmask->setAddressFromArray($this->fields, "version", "netmask", "netmask")) {
+            if (is_array($this->fields) && !$this->netmask->setAddressFromArray($this->fields, "version", "netmask", "netmask")) {
                 return false;
             }
         }
@@ -668,7 +670,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
             $WHERE .= " AND " . $condition["where"];
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => $fields,
            'FROM'   => self::getTable(),
            'WHERE'  => $WHERE,
@@ -676,7 +678,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
         ]);
 
         $returnValues = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if (count($fields) > 1) {
                 $returnValue = [];
                 foreach ($fields as $field) {
@@ -952,28 +954,31 @@ class IPNetwork extends CommonImplicitTreeDropdown
     **/
     public static function recreateTree()
     {
-        global $DB;
+        $adapter = self::getAdapter();
+        $request = $adapter->request([
+        'SELECT' => ['id', 'name'],
+        'FROM'   => self::getTable()
+        ]);
 
-        // Reset the tree
-        $DB->update(
-            'glpi_ipnetworks',
-            [
-              'ipnetworks_id'   => 0,
-              'level'           => 1,
-              'completename'    => new \QueryExpression($DB->quoteName('name'))
-            ],
-            [true]
-        );
+        foreach ($request->fetchAllAssociative() as $data) {
+            $network = new self();
+            if ($network->getFromDB($data['id'])) {
+                $network->update([
+                    'id'             => $data['id'],
+                    'ipnetworks_id'  => 0,
+                    'level'          => 1,
+                    'completename'   => $data['name']
+                ]);
+            }
+        }
 
-        // Foreach IPNetwork ...
-        $iterator = $DB->request([
-           'SELECT' => 'id',
-           'FROM'   => self::getTable()
+        $request = self::getAdapter()->request([
+        'SELECT' => 'id',
+        'FROM'   => self::getTable()
         ]);
 
         $network = new self();
-
-        while ($network_entry = $iterator->next()) {
+        while ($network_entry = $request->fetchAssociative()) {
             if ($network->getFromDB($network_entry['id'])) {
                 $input = $network->fields;
                 // ... update it by its own entries
@@ -1054,7 +1059,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
         $options['createRow'] = false;
         $network              = new self();
 
-        foreach (self::searchNetworksContainingIP($item) as $networks_id) {
+        foreach ((array) self::searchNetworksContainingIP($item) as $networks_id) {
             if ($network->getFromDB($networks_id)) {
                 $address = $network->getAddress();
                 $netmask = $network->getNetmask();
@@ -1075,7 +1080,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
                     $netmask->getTextual()
                 );
 
-                if ($network->fields['addressable'] == 1) {
+                if ($network->fields['addressable'] ?? null == 1) {
                     $content = "<span class='b'>" . $content . "</span>";
                 }
                 $content = sprintf(__('%1$s - %2$s'), $content, $network->getLink());

@@ -415,7 +415,7 @@ class Html
             return "-";
         }
 
-        $number  = doubleval($number);
+        $number  = floatval($number);
         $decimal = $CFG_GLPI["decimal_number"];
         if ($forcedecimal >= 0) {
             $decimal = $forcedecimal;
@@ -1716,7 +1716,7 @@ JAVASCRIPT;
                     if (count($items)) {
                         foreach ($items as $key => $val) {
                             if (is_array($val)) {
-                                foreach ($val as $k => $object) {
+                                foreach ($val as $object) {
                                     $menu[$key]['types'][] = $object;
                                 }
                             } else {
@@ -1861,22 +1861,22 @@ JAVASCRIPT;
             $twig_vars["can_update"] = true;
         }
 
-        $twig_vars['menu_position'] = $DB->request(
+        $twig_vars['menu_position'] = Config::getAdapter()->request(
             [
                    'SELECT' => 'menu_position',
                    'FROM'   => 'glpi_users',
                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
                ]
-        )->next()['menu_position'] ?? 'menu-left';
+        )->fetchAssociative()['menu_position'] ?? 'menu-left';
 
         if (isset($_SESSION['glpiID'])) {
-            $twig_vars['menu_favorite_on'] = $DB->request(
+            $twig_vars['menu_favorite_on'] = Config::getAdapter()->request(
                 [
                         'SELECT' => 'menu_favorite_on',
                         'FROM'   => 'glpi_users',
                         'WHERE'  => ['id' => $_SESSION["glpiID"]]
                      ]
-            )->next()['menu_favorite_on'] ?? '1';
+            )->fetchAssociative()['menu_favorite_on'] ?? 1;
             $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
         }
 
@@ -2277,7 +2277,7 @@ JAVASCRIPT;
         $items_per_columns = 15;
         $i                 = -1;
 
-        foreach ($menu as $part => $data) {
+        foreach ($menu as $data) {
             if (isset($data['content']) && count($data['content'])) {
                 echo "<dl>";
                 $link = "#";
@@ -3620,6 +3620,9 @@ JS;
      **/
     public static function computeGenericDateTimeSearch($val, $force_day = false, $specifictime = '')
     {
+        if ($_SESSION["glpi_currenttime"] instanceof DateTime) {
+            $_SESSION["glpi_currenttime"] = $_SESSION["glpi_currenttime"]->format("Y-m-d H:i:s");
+        }
 
         if (empty($specifictime)) {
             $specifictime = strtotime($_SESSION["glpi_currenttime"]);
@@ -3772,7 +3775,7 @@ JS;
 
         // construct timeline
         $out .= "<ul>";
-        foreach ($options['dates'] as $key => $data) {
+        foreach ($options['dates'] as $data) {
             if ($data['timestamp'] != 0) {
                 $out .= "<li class='" . $data['class'] . "'>&nbsp;";
                 $out .= "<time>" . Html::convDateTime(date("Y-m-d H:i:s", $data['timestamp'])) . "</time>";
@@ -3833,15 +3836,17 @@ JS;
                   'extraparams' => ['target' => $target]
                 ]
             );
-            $active_entity = addslashes($_SESSION["glpiactive_entity_name"]);
-            $entity_shortname = $_SESSION["glpiactive_entity_shortname"];
-            echo <<<HTML
-            <div class='profile-selector'>
-               <a onclick='entity_window.dialog("open")' href='#modal_entity_content' title="$active_entity" class='entity-select' id="global_entity_select">
-                  $entity_shortname
-               </a>
-            </div>
-         HTML;
+            if (!empty($_SESSION['glpiactive_entity_name'])) {
+                $active_entity = addslashes($_SESSION["glpiactive_entity_name"]);
+                $entity_shortname = $_SESSION["glpiactive_entity_shortname"];
+                echo <<<HTML
+                <div class='profile-selector'>
+                <a onclick='entity_window.dialog("open")' href='#modal_entity_content' title="$active_entity" class='entity-select' id="global_entity_select">
+                    $entity_shortname
+                </a>
+                </div>
+            HTML;
+            }
         }
     }
 
@@ -4215,6 +4220,7 @@ JAVASCRIPT
         $content = Toolbox::convertImageToTag($content);
 
         // If is html content
+        $content = $content ?? '';
         if ($content != strip_tags($content)) {
             $content = Toolbox::getHtmlToDisplay($content);
         }
@@ -7142,22 +7148,22 @@ JAVASCRIPT;
         $already_used_shortcut = ['1'];
 
         if (isset($_SESSION['glpiID'])) {
-            $menu_favorites = $DB->request(
+            $menu_favorites = config::getAdapter()->request(
                 [
                    'SELECT' => 'menu_favorite',
                    'FROM'   => 'glpi_users',
                    'WHERE'  => ['id' => $_SESSION["glpiID"]]
                 ]
             );
-            $menu_favorites = json_decode($menu_favorites->next()['menu_favorite'] ?? '{}', true);
-            $menu_collapse = $DB->request(
+            $menu_favorites = json_decode($menu_favorites->fetchAssociative()['menu_favorite'] ?? '{}', true);
+            $menu_collapse = config::getAdapter()->request(
                 [
                  'SELECT' => 'menu_open',
                  'FROM'   => 'glpi_users',
                  'WHERE'  => ['id' => $_SESSION["glpiID"]]
                 ]
             );
-            $menu_collapse = json_decode($menu_collapse->next()['menu_open'] ?? '[]', true);
+            $menu_collapse = json_decode($menu_collapse->fetchAssociative()['menu_open'] ?? '[]', true);
         } else {
             $menu_favorites = [];
             $menu_collapse = [];
@@ -7299,13 +7305,13 @@ JAVASCRIPT;
         "option" => $option, "sector" => $sector];
         $twig_vars['links'] = $links;
 
-        $twig_vars['menu_small'] = $DB->request(
+        $twig_vars['menu_small'] = config::getAdapter()->request(
             [
                     'SELECT' => 'menu_small',
                     'FROM'   => 'glpi_users',
                     'WHERE'  => ['id' => $_SESSION["glpiID"]]
                  ]
-        )->next()['menu_small'] ?? 'false';
+        )->fetchAssociative()['menu_small'] ?? 'false';
         $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
 
         // TODO: add profile selector
@@ -7502,7 +7508,7 @@ JAVASCRIPT;
             $has_extension = preg_match('/\.s?css$/', $import_url);
             $imported_filepath = $basedir . '/' . $import_url;
             if (!$has_extension && is_file($imported_filepath . '.scss')) {
-                $imported_filepath = $imported_filepath . '.scss';
+                $imported_filepath .= '.scss';
             }
 
             $hash .= self::getScssFileHash($imported_filepath);

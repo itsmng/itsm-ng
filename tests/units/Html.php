@@ -64,7 +64,7 @@ class Html extends \GLPITestCase
         $this->string(\Html::convDate($mydate, 2))->isIdenticalTo($expected);
 
         $this->exception(
-            function () {
+            function (): void {
                 $this->string(\Html::convDate('not a date', 2))->isIdenticalTo('not a date');
             }
         )->message->contains('Invalid date');
@@ -789,7 +789,7 @@ class Html extends \GLPITestCase
         ];
 
         $this->output(
-            function () {
+            function (): void {
                 \Html::displayMessageAfterRedirect();
             }
         )
@@ -809,14 +809,14 @@ class Html extends \GLPITestCase
     public function testDisplayBackLink()
     {
         $this->output(
-            function () {
+            function (): void {
                 \Html::displayBackLink();
             }
         )->isIdenticalTo("<a href='javascript:history.back();'>Back</a>");
 
         $_SERVER['HTTP_REFERER'] = 'originalpage.html';
         $this->output(
-            function () {
+            function (): void {
                 \Html::displayBackLink();
             }
         )->isIdenticalTo("<a href='originalpage.html'>Back</a>");

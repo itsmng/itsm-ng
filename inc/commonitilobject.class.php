@@ -206,7 +206,7 @@ abstract class CommonITILObject extends CommonDBTM
     public function canApprove()
     {
 
-        return (($this->fields["users_id_recipient"] === Session::getLoginUserID())
+        return (($this->fields["recipient_users_id"] === Session::getLoginUserID())
                 || $this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
                 || (isset($_SESSION["glpigroups"])
                     && $this->haveAGroup(CommonITILActor::REQUESTER, $_SESSION["glpigroups"])));
@@ -227,8 +227,8 @@ abstract class CommonITILObject extends CommonDBTM
             && (
                 $this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
                || (
-                   isset($this->fields["users_id_recipient"])
-                  && ($this->fields["users_id_recipient"] == Session::getLoginUserID())
+                   isset($this->fields["recipient_users_id"])
+                  && ($this->fields["recipient_users_id"] == Session::getLoginUserID())
                )
             )
             )
@@ -268,7 +268,7 @@ abstract class CommonITILObject extends CommonDBTM
         $valitation_obj = new $validation_class();
         $validation_requests = $valitation_obj->find([
            getForeignKeyFieldForItemType(static::class) => $this->getID(),
-           'users_id_validate' => $users_id,
+           'validate_users_id' => $users_id,
         ]);
 
         return count($validation_requests) > 0;
@@ -1207,7 +1207,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         // set last updater if interactive user
         if (!Session::isCron()) {
-            $input['users_id_lastupdater'] = Session::getLoginUserID();
+            $input['lastupdater_users_id'] = Session::getLoginUserID();
         }
 
         $solvedclosed = array_merge(
@@ -1299,7 +1299,16 @@ abstract class CommonITILObject extends CommonDBTM
 
         if (
             (($key = array_search('closedate', $this->updates)) !== false)
-            && (substr($this->fields["closedate"], 0, 16) == substr($this->oldvalues['closedate'], 0, 16))
+            && (
+                 // Convert DateTime objects to string if needed
+                (is_string($this->fields["closedate"] ?? '') && is_string($this->oldvalues['closedate'] ?? '') &&
+                !empty($this->fields["closedate"]) && !empty($this->oldvalues['closedate']) &&
+                substr($this->fields["closedate"], 0, 16) == substr($this->oldvalues['closedate'], 0, 16))
+                ||
+                // Handle DateTime objects by formatting them
+                (($this->fields["closedate"] ?? null) instanceof DateTime && ($this->oldvalues['closedate'] ?? null) instanceof DateTime &&
+                $this->fields["closedate"]->format('Y-m-d H:i') == $this->oldvalues['closedate']->format('Y-m-d H:i'))
+            )
         ) {
             unset($this->updates[$key]);
             unset($this->oldvalues['closedate']);
@@ -1670,7 +1679,23 @@ abstract class CommonITILObject extends CommonDBTM
             }
 
             //Mark existing solutions as refused
-            $DB->update(
+            $adapter = $this::getAdapter();
+
+            $target = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => ITILSolution::getTable(),
+                'WHERE'  => [
+                    'itemtype' => static::getType(),
+                    'items_id' => $this->getID()
+                ],
+                'ORDER'  => [
+                    'date_creation DESC',
+                    'id DESC'
+                ],
+                'LIMIT'  => 1
+            ])->fetchAssociative();
+
+            $this->update([
                 ITILSolution::getTable(),
                 [
                   'status'             => CommonITILValidation::REFUSED,
@@ -1688,7 +1713,7 @@ abstract class CommonITILObject extends CommonDBTM
                   ],
                   'LIMIT'  => 1
                 ]
-            );
+            ]);
 
             //Delete existing survey
             $inquest = new TicketSatisfaction();
@@ -1696,26 +1721,22 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         if (isset($this->input['_accepted'])) {
-            //Mark last solution as approved
-            $DB->update(
-                ITILSolution::getTable(),
-                [
-                  'status'             => CommonITILValidation::ACCEPTED,
-                  'users_id_approval'  => Session::getLoginUserID(),
-                  'date_approval'      => date('Y-m-d H:i:s')
-                ],
-                [
-                  'WHERE'  => [
-                     'itemtype'  => static::getType(),
-                     'items_id'  => $this->getID()
-                  ],
-                  'ORDER'  => [
-                     'date_creation DESC',
-                     'id DESC'
-                  ],
-                  'LIMIT'  => 1
-                ]
-            );
+            // Mark last solution as approved
+            $solution = new ITILSolution();
+            if ($solution->getFromDBByCrit([
+                'itemtype'  => static::getType(),
+                'items_id'  => $this->getID()
+            ], [
+                'ORDER' => ['date_creation DESC', 'id DESC'],
+                'LIMIT' => 1
+            ])) {
+                $solution->update([
+                    'id'                => $solution->getID(),
+                    'status'            => CommonITILValidation::ACCEPTED,
+                    'users_id_approval' => Session::getLoginUserID(),
+                    'date_approval'     => date('Y-m-d H:i:s')
+                ]);
+            }
         }
 
         // Do not take into account date_mod if no update is done
@@ -1830,7 +1851,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         // set last updater if interactive user
         if (!Session::isCron() && ($last_updater = Session::getLoginUserID(true))) {
-            $input['users_id_lastupdater'] = $last_updater;
+            $input['lastupdater_users_id'] = $last_updater;
         }
 
         // No Auto set Import for external source
@@ -1847,13 +1868,13 @@ abstract class CommonITILObject extends CommonDBTM
             ($uid = Session::getLoginUserID())
             && !isset($input['_auto_import'])
         ) {
-            $input["users_id_recipient"] = $uid;
+            $input["recipient_users_id"] = $uid;
         } elseif (
             isset($input["_users_id_requester"]) && $input["_users_id_requester"]
-                   && !isset($input["users_id_recipient"])
+                   && !isset($input["recipient_users_id"])
         ) {
             if (!is_array($input['_users_id_requester'])) {
-                $input["users_id_recipient"] = $input["_users_id_requester"];
+                $input["recipient_users_id"] = $input["_users_id_requester"];
             }
         }
 
@@ -1939,9 +1960,9 @@ abstract class CommonITILObject extends CommonDBTM
 
                             if (
                                 ($key == '_add_validation')
-                                  && !empty($input['users_id_validate'])
-                                  && isset($input['users_id_validate'][0])
-                                  && ($input['users_id_validate'][0] > 0)
+                                  && !empty($input['validate_users_id'])
+                                  && isset($input['validate_users_id'][0])
+                                  && ($input['validate_users_id'][0] > 0)
                             ) {
                                 unset($mandatory_missing['_add_validation']);
                             }
@@ -2091,8 +2112,8 @@ abstract class CommonITILObject extends CommonDBTM
                    $this->getForeignKeyField()   => $this->fields['id'],
                    'date'                        => $this->fields['date'],
                    'is_private'                  => $tasktemplate->fields['is_private'],
-                   'users_id_tech'               => $tasktemplate->fields['users_id_tech'],
-                   'groups_id_tech'              => $tasktemplate->fields['groups_id_tech'],
+                   'tech_users_id'               => $tasktemplate->fields['tech_users_id'],
+                   'tech_groups_id'              => $tasktemplate->fields['tech_groups_id'],
                    '_disablenotif'               => true
                 ]);
             }
@@ -2410,19 +2431,16 @@ abstract class CommonITILObject extends CommonDBTM
     */
     public function post_clone($source, $history)
     {
-        global $DB;
         $update = [];
-        if (isset($source->fields['users_id_lastupdater'])) {
-            $update['users_id_lastupdater'] = $source->fields['users_id_lastupdater'];
+        if (isset($source->fields['lastupdater_users_id'])) {
+            $update['lastupdater_users_id'] = $source->fields['lastupdater_users_id'];
         }
         if (isset($source->fields['status'])) {
             $update['status'] = $source->fields['status'];
         }
-        $DB->update(
-            $this->getTable(),
-            $update,
-            ['id' => $this->getID()]
-        );
+        $update['id'] = $this->getID();
+
+        $this->update($update);
     }
 
 
@@ -3930,7 +3948,7 @@ abstract class CommonITILObject extends CommonDBTM
            'id'                 => '64',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_lastupdater',
+           'linkfield'          => 'lastupdater_users_id',
            'name'               => __('Last edit by'),
            'massiveaction'      => false,
            'datatype'           => 'dropdown',
@@ -4181,7 +4199,7 @@ abstract class CommonITILObject extends CommonDBTM
            'field'              => 'name',
            'datatype'           => 'dropdown',
            'right'              => 'all',
-           'linkfield'          => 'users_id_recipient',
+           'linkfield'          => 'recipient_users_id',
            'name'               => __('Writer')
         ];
 
@@ -4396,6 +4414,9 @@ abstract class CommonITILObject extends CommonDBTM
         $class = null;
         $solid = true;
         $tab = Ticket::getAllStatusArray(false, true);
+        if (!isset($tab["name"][$status])) {
+            return '';
+        }
         switch ($tab["name"][$status]) {
             case "New":
                 $class = 'circle';
@@ -5599,9 +5620,9 @@ abstract class CommonITILObject extends CommonDBTM
      *
      * @param $ID                    integer  ID of the ITIL object
      * @param $no_stat_computation   boolean  do not cumpute take into account stat (false by default)
-     * @param $users_id_lastupdater  integer  to force last_update id (default 0 = not used)
+     * @param $lastupdater_users_id  integer  to force last_update id (default 0 = not used)
     **/
-    public function updateDateMod($ID, $no_stat_computation = false, $users_id_lastupdater = 0)
+    public function updateDateMod($ID, $no_stat_computation = false, $lastupdater_users_id = 0)
     {
         global $DB;
 
@@ -5611,16 +5632,16 @@ abstract class CommonITILObject extends CommonDBTM
 
             // set last updater if interactive user
             if (!Session::isCron()) {
-                $update['users_id_lastupdater'] = Session::getLoginUserID();
-            } elseif ($users_id_lastupdater > 0) {
-                $update['users_id_lastupdater'] = $users_id_lastupdater;
+                $update['lastupdater_users_id'] = Session::getLoginUserID();
+            } elseif ($lastupdater_users_id > 0) {
+                $update['lastupdater_users_id'] = $lastupdater_users_id;
             }
 
-            $DB->update(
+            $this->update([
                 $this->getTable(),
                 $update,
-                ['id' => $ID]
-            );
+                ['id' => $this->getID()]
+            ]);
         }
     }
 
@@ -5639,25 +5660,20 @@ abstract class CommonITILObject extends CommonDBTM
         $tot       = 0;
         $tasktable = getTableForItemType($this->getType() . 'Task');
 
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT' => ['SUM' => 'actiontime as sumtime'],
            'FROM'   => $tasktable,
            'WHERE'  => [$this->getForeignKeyField() => $ID]
-        ])->next();
+        ])->fetchAssociative();
         $sum = $result['sumtime'];
         if (!is_null($sum)) {
             $tot += $sum;
         }
 
-        $result = $DB->update(
-            $this->getTable(),
-            [
-              'actiontime' => $tot
-            ],
-            [
-              'id' => $ID
-            ]
-        );
+        $result = $this->update([
+            'id'         => $ID,
+            'actiontime' => $tot
+        ]);
         return $result;
     }
 
@@ -5754,8 +5770,18 @@ abstract class CommonITILObject extends CommonDBTM
                 )
                                                                 - $this->fields["waiting_duration"]);
             }
+
             // Not calendar defined
-            return max(0, strtotime($this->fields['solvedate']) - strtotime($this->fields['date'])
+            $solvedate = $this->fields['solvedate'];
+            $date = $this->fields['date'];
+
+            // Convert DateTime objects to timestamp if needed
+            $solvedate_timestamp = ($solvedate instanceof DateTime) ?
+                $solvedate->getTimestamp() : strtotime($solvedate);
+            $date_timestamp = ($date instanceof DateTime) ?
+                $date->getTimestamp() : strtotime($date);
+
+            return max(0, $solvedate_timestamp - $date_timestamp
                           - $this->fields["waiting_duration"]);
         }
         return 0;
@@ -5768,28 +5794,29 @@ abstract class CommonITILObject extends CommonDBTM
     public function computeCloseDelayStat()
     {
 
-        if (
-            isset($this->fields['id'])
-            && !empty($this->fields['date'])
-            && !empty($this->fields['closedate'])
-        ) {
+        if (isset($this->fields['id']) && !empty($this->fields['date']) && !empty($this->fields['closedate'])) {
             $calendars_id = $this->getCalendar();
-            $calendar     = new Calendar();
+            $calendar = new Calendar();
 
             // Using calendar
-            if (
-                ($calendars_id > 0)
-                && $calendar->getFromDB($calendars_id)
-            ) {
+            if (($calendars_id > 0) && $calendar->getFromDB($calendars_id)) {
                 return max(0, $calendar->getActiveTimeBetween(
                     $this->fields['date'],
                     $this->fields['closedate']
-                )
-                                                                 - $this->fields["waiting_duration"]);
+                ) - $this->fields["waiting_duration"]);
             }
+
             // Not calendar defined
-            return max(0, strtotime($this->fields['closedate']) - strtotime($this->fields['date'])
-                          - $this->fields["waiting_duration"]);
+            $closedate = $this->fields['closedate'];
+            $date = $this->fields['date'];
+
+            // Convert DateTime objects to timestamp if needed
+            $closedate_timestamp = ($closedate instanceof DateTime) ?
+                $closedate->getTimestamp() : strtotime($closedate);
+            $date_timestamp = ($date instanceof DateTime) ?
+                $date->getTimestamp() : strtotime($date);
+
+            return max(0, $closedate_timestamp - $date_timestamp - $this->fields["waiting_duration"]);
         }
         return 0;
     }
@@ -5902,8 +5929,7 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedAuthorBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
+        $adapter = $this::getAdapter();
         $linkclass = new $this->userlinkclass();
         $linktable = $linkclass->getTable();
 
@@ -5950,15 +5976,15 @@ abstract class CommonITILObject extends CommonDBTM
         if (!empty($date1) || !empty($date2)) {
             $criteria['WHERE'][] = [
                'OR' => [
-                  getDateCriteria("$ctable.date", $date1, $date2),
-                  getDateCriteria("$ctable.closedate", $date1, $date2),
+                  $adapter->getDateCriteria("$ctable.date", $date1, $date2),
+                  $adapter->getDateCriteria("$ctable.closedate", $date1, $date2),
                ]
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['users_id'],
                'link' => formatUserName(
@@ -5983,8 +6009,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedRecipientBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
         $ctable = $this->getTable();
         $criteria = [
            'SELECT'          => [
@@ -5998,7 +6022,7 @@ abstract class CommonITILObject extends CommonDBTM
            'LEFT JOIN'       => [
               'glpi_users'   => [
                  'ON' => [
-                    $ctable        => 'users_id_recipient',
+                    $ctable        => 'recipient_users_id',
                     'glpi_users'   => 'id'
                  ]
               ]
@@ -6022,10 +6046,10 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
 
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['user_id'],
                'link' => formatUserName(
@@ -6050,8 +6074,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedGroupBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
         $linkclass = new $this->grouplinkclass();
         $linktable = $linkclass->getTable();
 
@@ -6100,10 +6122,10 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
 
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['id'],
                'link' => $line['completename'],
@@ -6123,8 +6145,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedUserTitleOrTypeBetween($date1 = '', $date2 = '', $title = true)
     {
-        global $DB;
-
         $linkclass = new $this->userlinkclass();
         $linktable = $linkclass->getTable();
 
@@ -6180,9 +6200,9 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line[$field],
                'link' => Dropdown::getDropdownName($table, $line[$field]),
@@ -6202,8 +6222,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedPriorityBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
         $ctable = $this->getTable();
         $criteria = [
            'SELECT'          => 'priority',
@@ -6224,9 +6242,9 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['priority'],
                'link' => static::getPriorityName($line['priority']),
@@ -6268,10 +6286,10 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
 
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['urgency'],
                'link' => static::getUrgencyName($line['urgency']),
@@ -6291,8 +6309,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedImpactBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
         $ctable = $this->getTable();
         $criteria = [
            'SELECT'          => 'impact',
@@ -6313,10 +6329,10 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
 
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['impact'],
                'link' => static::getImpactName($line['impact']),
@@ -6336,8 +6352,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedRequestTypeBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
         $ctable = $this->getTable();
         $criteria = [
            'SELECT'          => 'requesttypes_id',
@@ -6358,9 +6372,9 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['requesttypes_id'],
                'link' => Dropdown::getDropdownName('glpi_requesttypes', $line['requesttypes_id']),
@@ -6380,8 +6394,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedSolutionTypeBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
         $ctable = $this->getTable();
         $criteria = [
            'SELECT'          => 'solutiontypes_id',
@@ -6411,9 +6423,9 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['solutiontypes_id'],
                'link' => Dropdown::getDropdownName('glpi_solutiontypes', $line['solutiontypes_id']),
@@ -6432,8 +6444,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedTechBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
         $linkclass = new $this->userlinkclass();
         $linktable = $linkclass->getTable();
         $showlink = User::canView();
@@ -6485,10 +6495,10 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
 
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['users_id'],
                'link' => formatUserName($line['users_id'], $line['name'], $line['realname'], $line['firstname'], $showlink),
@@ -6507,8 +6517,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedTechTaskBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
         $linktable = getTableForItemType($this->getType() . 'Task');
         $showlink = User::canView();
 
@@ -6577,10 +6585,10 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
 
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['users_id'],
                'link' => formatUserName($line['users_id'], $line['name'], $line['realname'], $line['firstname'], $showlink),
@@ -6599,8 +6607,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedSupplierBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
         $linkclass = new $this->supplierlinkclass();
         $linktable = $linkclass->getTable();
 
@@ -6647,9 +6653,9 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['suppliers_id_assign'],
                'link' => '<a href="' . Supplier::getFormURLWithID($line['suppliers_id_assign']) . '">' . $line['name'] . '</a>',
@@ -6668,8 +6674,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function getUsedAssignGroupBetween($date1 = '', $date2 = '')
     {
-        global $DB;
-
         $linkclass = new $this->grouplinkclass();
         $linktable = $linkclass->getTable();
 
@@ -6716,9 +6720,9 @@ abstract class CommonITILObject extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($criteria);
+        $result = $this::getAdapter()->request($criteria);
         $tab    = [];
-        while ($line = $iterator->next()) {
+        while ($line = $result->fetchAssociative()) {
             $tab[] = [
                'id'   => $line['id'],
                'link' => $line['completename'],
@@ -6745,8 +6749,6 @@ abstract class CommonITILObject extends CommonDBTM
      */
     public static function showShort($id, $options = [])
     {
-        global $DB;
-
         $p = [
            'output_type'            => Search::HTML_OUTPUT,
            'row_num'                => 0,
@@ -7050,7 +7052,7 @@ abstract class CommonITILObject extends CommonDBTM
             $plan          = new $tasktype();
             $items         = [];
 
-            $result = $DB->request(
+            $result = self::getAdapter()->request(
                 [
                   'FROM'  => $plan->getTable(),
                   'WHERE' => [
@@ -7071,11 +7073,11 @@ abstract class CommonITILObject extends CommonDBTM
                                                  ($p['output_type'] == Search::HTML_OUTPUT ? '<br>' : ''),
                         Html::convDateTime($plan['end'])
                     );
-                    if ($plan['users_id_tech']) {
+                    if ($plan['tech_users_id']) {
                         $planned_infos .= sprintf(
                             __('By %s') .
                                                      ($p['output_type'] == Search::HTML_OUTPUT ? '<br>' : ''),
-                            getUserName($plan['users_id_tech'])
+                            getUserName($plan['tech_users_id'])
                         );
                     }
                     $planned_infos .= "<br>";
@@ -7284,7 +7286,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $user->fields["access_font"];
+            $font = $user->fields["access_font"] ?? null;
         }
 
         echo "<div class='filter_timeline'>";
@@ -7327,7 +7329,7 @@ abstract class CommonITILObject extends CommonDBTM
         $user->getFromDB(Session::getLoginUserID());
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $user->fields["access_font"];
+            $font = $user->fields["access_font"] ?? null;
         }
         echo "<h2 style='font-family: $font;'>" . __("Actions historical") . " : </h2>";
         $this->filterTimeline();
@@ -7347,7 +7349,7 @@ abstract class CommonITILObject extends CommonDBTM
     public function showTimelineForm($rand)
     {
 
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
         $objType = static::getType();
         $foreignKey = static::getForeignKeyField();
@@ -7474,10 +7476,10 @@ abstract class CommonITILObject extends CommonDBTM
         $user = new User();
         $user->getFromDB(Session::getLoginUserID());
 
-        $canuse_shortcuts = $user->fields['access_shortcuts'];
+        $canuse_shortcuts = $user->fields['access_shortcuts'] ?? null;
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $user->fields["access_font"];
+            $font = $user->fields["access_font"] ?? null;
         }
 
         if ($canadd_fup || $canadd_task || $canadd_document || $canadd_solution) {
@@ -7590,8 +7592,8 @@ abstract class CommonITILObject extends CommonDBTM
                'WHERE'    => [$foreignKey => $this->fields['id']]
             ];
 
-            $req = $DB->request($criteria);
-            if ($row = $req->next()) {
+            $req = $this::getAdapter()->request($criteria);
+            if ($row = $req->fetchAssociative()) {
                 $total_actiontime = $row['actiontime'];
             }
             if ($total_actiontime > 0) {
@@ -7762,7 +7764,7 @@ abstract class CommonITILObject extends CommonDBTM
                   'solutiontypes_id'   => $solution_item['solutiontypes_id'],
                   'can_edit'           => $objType::canUpdate() && $this->canSolve(),
                   'timeline_position'  => self::TIMELINE_RIGHT,
-                  'users_id_editor'    => $solution_item['users_id_editor'],
+                  'editor_users_id'    => $solution_item['editor_users_id'],
                   'date_mod'           => $solution_item['date_mod'],
                   'users_id_approval'  => $solution_item['users_id_approval'],
                   'date_approval'      => $solution_item['date_approval'],
@@ -7775,9 +7777,9 @@ abstract class CommonITILObject extends CommonDBTM
             $validations = $valitation_obj->find([$foreignKey => $this->getID()]);
             foreach ($validations as $validations_id => $validation) {
                 $canedit = $valitation_obj->can($validations_id, UPDATE);
-                $cananswer = ($validation['users_id_validate'] === Session::getLoginUserID() &&
+                $cananswer = ($validation['validate_users_id'] === Session::getLoginUserID() &&
                    $validation['status'] == CommonITILValidation::WAITING);
-                $user->getFromDB($validation['users_id_validate']);
+                $user->getFromDB($validation['validate_users_id']);
                 $timeline[$validation['submission_date'] . "_validation_" . $validations_id] = [
                    'type' => $validation_class,
                    'item' => [
@@ -7788,7 +7790,7 @@ abstract class CommonITILObject extends CommonDBTM
                       'users_id'  => $validation['users_id'],
                       'can_edit'  => $canedit,
                       'can_answer'   => $cananswer,
-                      'users_id_validate'  => $validation['users_id_validate'],
+                      'validate_users_id'  => $validation['validate_users_id'],
                       'timeline_position' => $validation['timeline_position']
                    ],
                    'itiltype' => 'Validation'
@@ -7805,7 +7807,7 @@ abstract class CommonITILObject extends CommonDBTM
                               ucfirst($validation_class::getStatus($validation['status']))
                           )
                                                         . "<br>" . $validation['comment_validation'],
-                          'users_id'  => $validation['users_id_validate'],
+                          'users_id'  => $validation['validate_users_id'],
                           'status'    => "status_" . $validation['status'],
                           'can_edit'  => $canedit,
                           'timeline_position' => $validation['timeline_position']
@@ -7834,7 +7836,7 @@ abstract class CommonITILObject extends CommonDBTM
      */
     public function showTimeline($rand)
     {
-        global $DB, $CFG_GLPI, $autolink_options;
+        global $CFG_GLPI, $autolink_options;
 
         $user              = new User();
         $group             = new Group();
@@ -7869,7 +7871,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         $font = "\"Bitstream Vera Sans\", arial, Tahoma, \"Sans serif\"";
         if (Session::haveRight("accessibility", READ)) {
-            $font = $thisUser->fields["access_font"];
+            $font = $thisUser->fields["access_font"] ?? null;
         }
 
         $timeline_index = 0;
@@ -8119,9 +8121,9 @@ abstract class CommonITILObject extends CommonDBTM
                 echo Html::convDateTime($item_i["end"]);
                 echo "</span>";
             }
-            if (isset($item_i['users_id_tech']) && ($item_i['users_id_tech'] > 0)) {
-                echo "<div class='users_id_tech' id='users_id_tech_" . $item_i['users_id_tech'] . "'>";
-                $user->getFromDB($item_i['users_id_tech']);
+            if (isset($item_i['tech_users_id']) && ($item_i['tech_users_id'] > 0)) {
+                echo "<div class='tech_users_id' id='tech_users_id_" . $item_i['tech_users_id'] . "'>";
+                $user->getFromDB($item_i['tech_users_id']);
 
                 if (
                     Entity::getUsedConfig('anonymize_support_agents', $entity)
@@ -8130,7 +8132,7 @@ abstract class CommonITILObject extends CommonDBTM
                     echo __("Helpdesk");
                 } else {
                     echo "<i class='fas fa-user' aria-hidden='true'></i> ";
-                    $userdata = getUserName($item_i['users_id_tech'], 2);
+                    $userdata = getUserName($item_i['tech_users_id'], 2);
                     echo $user->getLink() . "&nbsp;";
                     echo Html::showToolTip(
                         $userdata["comment"],
@@ -8139,15 +8141,15 @@ abstract class CommonITILObject extends CommonDBTM
                 }
                 echo "</div>";
             }
-            if (isset($item_i['groups_id_tech']) && ($item_i['groups_id_tech'] > 0)) {
-                echo "<div class='groups_id_tech'>";
-                $group->getFromDB($item_i['groups_id_tech']);
+            if (isset($item_i['tech_groups_id']) && ($item_i['tech_groups_id'] > 0)) {
+                echo "<div class='tech_groups_id'>";
+                $group->getFromDB($item_i['tech_groups_id']);
                 echo "<i class='fas fa-users' aria-hidden='true'></i>&nbsp;";
                 echo $group->getLink(['comments' => true]);
                 echo "</div>";
             }
-            if (isset($item_i['users_id_editor']) && $item_i['users_id_editor'] > 0) {
-                echo "<div class='users_id_editor' id='users_id_editor_" . $item_i['users_id_editor'] . "'>";
+            if (isset($item_i['editor_users_id']) && $item_i['editor_users_id'] > 0) {
+                echo "<div class='editor_users_id' id='editor_users_id_" . $item_i['editor_users_id'] . "'>";
 
                 if (
                     Entity::getUsedConfig('anonymize_support_agents', $entity)
@@ -8159,8 +8161,8 @@ abstract class CommonITILObject extends CommonDBTM
                         __("Helpdesk")
                     );
                 } else {
-                    $user->getFromDB($item_i['users_id_editor']);
-                    $userdata = getUserName($item_i['users_id_editor'], 2);
+                    $user->getFromDB($item_i['editor_users_id']);
+                    $userdata = getUserName($item_i['editor_users_id'], 2);
                     echo sprintf(
                         __('Last edited on %1$s by %2$s'),
                         Html::convDateTime($item_i['date_mod']),
@@ -8197,7 +8199,7 @@ abstract class CommonITILObject extends CommonDBTM
                 $form_url = $item['type']::getFormURL();
                 echo "<form aria-label='Validation Answer' id='validationanswers_id_{$item_i['id']}' class='center' action='$form_url' method='post'>";
                 echo Html::hidden('id', ['value' => $item_i['id']]);
-                echo Html::hidden('users_id_validate', ['value' => $item_i['users_id_validate']]);
+                echo Html::hidden('validate_users_id', ['value' => $item_i['validate_users_id']]);
                 Html::textarea([
                    'name'   => 'comment_validation',
                    'rows'   => 5
@@ -8212,7 +8214,7 @@ abstract class CommonITILObject extends CommonDBTM
             if ($item['type'] == 'Solution' && $item_i['status'] != CommonITILValidation::WAITING && $item_i['status'] != CommonITILValidation::NONE) {
                 echo "<div class='users_id_approval' id='users_id_approval_" . $item_i['users_id_approval'] . "'>";
                 $user->getFromDB($item_i['users_id_approval']);
-                $userdata = getUserName($item_i['users_id_editor'], 2);
+                $userdata = getUserName($item_i['editor_users_id'], 2);
                 $message = __('%1$s on %2$s by %3$s');
                 $action = $item_i['status'] == CommonITILValidation::ACCEPTED ? __('Accepted') : __('Refused');
                 echo sprintf(
@@ -8356,14 +8358,14 @@ abstract class CommonITILObject extends CommonDBTM
         echo "<div class='b_right'>";
 
         if ($objType == 'Ticket') {
-            $result = $DB->request([
+            $result = $this::getAdapter()->request([
                'SELECT' => ['id', 'itemtype', 'items_id'],
                'FROM'   => ITILFollowup::getTable(),
                'WHERE'  => [
                   'sourceof_items_id'  => $this->fields['id'],
                   'itemtype'           => static::getType()
                ]
-            ])->next();
+            ])->fetchAssociative();
             if ($result) {
                 echo Html::link(
                     '',
@@ -8505,8 +8507,6 @@ abstract class CommonITILObject extends CommonDBTM
      */
     public function getITILActors()
     {
-        global $DB;
-
         $users_table = $this->getTable() . '_users';
         switch ($this->getType()) {
             case 'Ticket':
@@ -8566,7 +8566,7 @@ abstract class CommonITILObject extends CommonDBTM
         ]);
 
         $union = new \QueryUnion([$subquery1, $subquery2], false, 'allactors');
-        $iterator = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT'          => [
               'users_id',
               'type'
@@ -8576,7 +8576,7 @@ abstract class CommonITILObject extends CommonDBTM
         ]);
 
         $users_keys = [];
-        while ($current_tu = $iterator->next()) {
+        while ($current_tu = $result->fetchAssociative()) {
             $users_keys[$current_tu['users_id']][] = $current_tu['type'];
         }
 
@@ -8593,22 +8593,20 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function numberOfFollowups($with_private = true)
     {
-        global $DB;
-
         $RESTRICT = [];
         if ($with_private !== true) {
             $RESTRICT['is_private'] = 0;
         }
 
         // Set number of followups
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_itilfollowups',
            'WHERE'  => [
               'itemtype'  => $this->getType(),
               'items_id'  => $this->fields['id']
            ] + $RESTRICT
-        ])->next();
+        ])->fetchAssociative();
 
         return $result['cpt'];
     }
@@ -8622,8 +8620,6 @@ abstract class CommonITILObject extends CommonDBTM
     **/
     public function numberOfTasks($with_private = true)
     {
-        global $DB;
-
         $table = 'glpi_' . strtolower($this->getType()) . 'tasks';
 
         $RESTRICT = [];
@@ -8633,13 +8629,13 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         // Set number of tasks
-        $row = $DB->request([
+        $row = $this::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => $table,
            'WHERE'  => [
               $this->getForeignKeyField()   => $this->fields['id']
            ] + $RESTRICT
-        ])->next();
+        ])->fetchAssociative();
         return (int)$row['cpt'];
     }
 
@@ -9154,15 +9150,13 @@ abstract class CommonITILObject extends CommonDBTM
 
     public function getLinkedItems(): array
     {
-        global $DB;
-
-        $assets = $DB->request([
+        $assets = $this::getAdapter()->request([
            'SELECT' => ["itemtype", "items_id"],
            'FROM'   => static::getItemsTable(),
            'WHERE'  => [$this->getForeignKeyField() => $this->getID()]
         ]);
 
-        $assets = iterator_to_array($assets);
+        $assets = $assets->fetchAllAssociative();
 
         $tab = [];
         foreach ($assets as $asset) {

@@ -283,10 +283,8 @@ class Computer_Item extends CommonDBRelation
     */
     public function disconnectForItem(CommonDBTM $item)
     {
-        global $DB;
-
         if ($item->getField('id')) {
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => ['id'],
                'FROM'   => $this->getTable(),
                'WHERE'  => [
@@ -294,10 +292,10 @@ class Computer_Item extends CommonDBRelation
                   'items_id'  => $item->getID()
                ]
             ]);
-
-            if (count($iterator) > 0) {
+            $results = $request->fetchAllAssociative();
+            if (count($results) > 0) {
                 $ok = true;
-                while ($data = $iterator->next()) {
+                foreach ($results as $data) {
                     if ($this->can($data["id"], UPDATE)) {
                         $ok &= $this->delete($data);
                     }
@@ -332,7 +330,7 @@ class Computer_Item extends CommonDBRelation
             if ($item->canView()) {
                 $iterator = self::getTypeItems($ID, $itemtype);
 
-                while ($data = $iterator->next()) {
+                foreach ($iterator as $data) {
                     $data['assoc_itemtype'] = $itemtype;
                     $datas[]           = $data;
                     $used[$itemtype][] = $data['id'];
@@ -516,7 +514,6 @@ class Computer_Item extends CommonDBRelation
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
         // Prints a direct connection to a computer
-        global $DB;
 
         $comp   = new Computer();
         $ID     = $item->getField('id');
@@ -533,7 +530,7 @@ class Computer_Item extends CommonDBRelation
         $used    = [];
         $compids = [];
         $dynamic = [];
-        $result = $DB->request(
+        $result = $item::getAdapter()->request(
             [
               'SELECT' => ['id', 'computers_id', 'is_dynamic'],
               'FROM'   => self::getTable(),
@@ -654,7 +651,6 @@ class Computer_Item extends CommonDBRelation
     **/
     public static function unglobalizeItem(CommonDBTM $item)
     {
-        global $DB;
 
         // Update item to unit management :
         if ($item->getField('is_global')) {
@@ -663,7 +659,7 @@ class Computer_Item extends CommonDBRelation
             $item->update($input);
 
             // Get connect_wire for this connection
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT' => ['id'],
                'FROM'   => self::getTable(),
                'WHERE'  => [
@@ -671,9 +667,10 @@ class Computer_Item extends CommonDBRelation
                   'itemtype'  => $item->getType()
                ]
             ]);
-
+            $results = $request->fetchAllAssociative();
             $first = true;
-            while ($data = $iterator->next()) {
+            // while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 if ($first) {
                     $first = false;
                     unset($input['id']);
@@ -865,15 +862,14 @@ class Computer_Item extends CommonDBRelation
     **/
     public static function cloneComputer($oldid, $newid)
     {
-        global $DB;
 
         Toolbox::deprecated('Use clone');
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['computers_id' => $oldid]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $conn = new Computer_Item();
             $conn->add(['computers_id' => $newid,
                         'itemtype'     => $data["itemtype"],
@@ -894,10 +890,8 @@ class Computer_Item extends CommonDBRelation
     **/
     public static function cloneItem($itemtype, $oldid, $newid)
     {
-        global $DB;
-
         Toolbox::deprecated('Use clone');
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'itemtype'  => $itemtype,
@@ -905,7 +899,7 @@ class Computer_Item extends CommonDBRelation
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $conn = new self();
             $conn->add(['computers_id' => $data["computers_id"],
                         'itemtype'     => $data["itemtype"],
@@ -928,7 +922,7 @@ class Computer_Item extends CommonDBRelation
 
         if ($item instanceof Computer) {
             // RELATION : items -> computers
-            $iterator = $DB->request([
+            $result = $item::getAdapter()->request([
                'SELECT' => [
                   'itemtype',
                   new \QueryExpression('GROUP_CONCAT(DISTINCT ' . $DB->quoteName('items_id') . ') AS ids'),
@@ -940,7 +934,7 @@ class Computer_Item extends CommonDBRelation
                'GROUP' => 'itemtype'
             ]);
 
-            while ($data = $iterator->next()) {
+            while ($data = $result->fetchAssociative()) {
                 if (!class_exists($data['itemtype'])) {
                     continue;
                 }
@@ -958,7 +952,7 @@ class Computer_Item extends CommonDBRelation
             }
         } else {
             // RELATION : computers -> items
-            $iterator = $DB->request([
+            $result = $item::getAdapter()->request([
                'SELECT' => [
                   'itemtype',
                   new \QueryExpression('GROUP_CONCAT(DISTINCT ' . $DB->quoteName('items_id') . ') AS ids'),
@@ -972,7 +966,7 @@ class Computer_Item extends CommonDBRelation
                'GROUP' => 'itemtype'
             ]);
 
-            while ($data = $iterator->next()) {
+            while ($data = $result->fetchAssociative()) {
                 if (
                     countElementsInTable(
                         "glpi_computers",

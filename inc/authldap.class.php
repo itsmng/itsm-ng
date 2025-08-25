@@ -580,7 +580,6 @@ class AuthLDAP extends CommonDBTM
      */
     public function showFormReplicatesConfig()
     {
-        global $DB;
 
         $ID     = $this->getField('id');
         $target = $this->getFormURL();
@@ -588,7 +587,7 @@ class AuthLDAP extends CommonDBTM
 
         AuthLdapReplicate::addNewReplicateForm($target, $ID);
 
-        $iterator = $DB->request([
+        $results = $this::getAdapter()->request([
            'FROM'   => 'glpi_authldapreplicates',
            'WHERE'  => [
               'authldaps_id' => $ID
@@ -596,7 +595,9 @@ class AuthLDAP extends CommonDBTM
            'ORDER'  => ['name']
         ]);
 
-        if (($nb = count($iterator)) > 0) {
+        $itemsArray = $results->fetchAllAssociative();
+        $nb = count($itemsArray);
+        if ($nb > 0) {
             echo "<br>";
 
             echo "<div class='center'>";
@@ -626,7 +627,7 @@ class AuthLDAP extends CommonDBTM
                  "<th class='center'></th></tr>";
             echo $header_begin . $header_top . $header_end;
 
-            while ($ldap_replicate = $iterator->next()) {
+            foreach ($itemsArray as $ldap_replicate) {
                 echo "<tr class='tab_bg_1'><td class='center' width='10'>";
                 Html::showMassiveActionCheckBox('AuthLdapReplicate', $ldap_replicate["id"]);
                 echo "</td>";
@@ -1918,8 +1919,6 @@ class AuthLDAP extends CommonDBTM
      */
     public static function getAllUsers(array $options, &$results, &$limitexceeded)
     {
-        global $DB;
-
         $config_ldap = new self();
         $res         = $config_ldap->getFromDB($options['authldaps_id']);
 
@@ -2009,9 +2008,9 @@ class AuthLDAP extends CommonDBTM
             ];
         }
 
-        $iterator = $DB->request($select);
+        $iterator = self::getAdapter()->request($select);
 
-        while ($user = $iterator->next()) {
+        while ($user = $iterator->fetchAssociative()) {
             $tmpuser = new User();
 
             //Ldap add : fill the array with the login of the user
@@ -2290,7 +2289,6 @@ class AuthLDAP extends CommonDBTM
         &$limitexceeded,
         $order = 'DESC'
     ) {
-        global $DB;
 
         $config_ldap = new self();
         $config_ldap->getFromDB($auths_id);
@@ -2345,14 +2343,14 @@ class AuthLDAP extends CommonDBTM
                 $glpi_groups = [];
 
                 //Get all groups from GLPI DB for the current entity and the subentities
-                $iterator = $DB->request([
+                $result = self::getAdapter()->request([
                    'SELECT' => ['ldap_group_dn','ldap_value'],
                    'FROM'   => 'glpi_groups',
                    'WHERE'  => getEntitiesRestrictCriteria('glpi_groups')
                 ]);
 
                 //If the group exists in DB -> unset it from the LDAP groups
-                while ($group = $iterator->next()) {
+                while ($group = $result->fetchAssociative()) {
                     //use DN for next step
                     //depending on the type of search when groups are imported
                     //the DN may be in two separate fields
@@ -2439,7 +2437,6 @@ class AuthLDAP extends CommonDBTM
         $search_in_groups = true,
         $groups = []
     ) {
-        global $DB;
 
         //First look for groups in group objects
         $extra_attribute = ($search_in_groups ? "cn" : $config_ldap->fields["group_field"]);
@@ -2536,7 +2533,7 @@ class AuthLDAP extends CommonDBTM
                                     ($config_ldap->fields["group_field"] == 'dn')
                                     && (count($ou) > 0)
                                 ) {
-                                    $iterator = $DB->request([
+                                    $result = self::getAdapter()->request([
                                        'SELECT' => ['ldap_value'],
                                        'FROM'   => 'glpi_groups',
                                        'WHERE'  => [
@@ -2544,7 +2541,7 @@ class AuthLDAP extends CommonDBTM
                                        ]
                                     ]);
 
-                                    while ($group = $iterator->next()) {
+                                    while ($group = $result->fetchAssociative()) {
                                         $groups[$group['ldap_value']] = ["cn"          => $group['ldap_value'],
                                                                          "search_type" => "users"];
                                     }
@@ -2586,9 +2583,7 @@ class AuthLDAP extends CommonDBTM
      */
     public static function ldapChooseDirectory($target)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'is_active' => 1
@@ -2596,9 +2591,10 @@ class AuthLDAP extends CommonDBTM
            'ORDER'  => 'name ASC'
         ]);
 
-        if (count($iterator) == 1) {
+        $results = $request->fetchAllAssociative();
+        if (count($results) == 1) {
             //If only one server, do not show the choose ldap server window
-            $ldap                    = $iterator->next();
+            $ldap = $results[0];
             $_SESSION["ldap_server"] = $ldap["id"];
             Html::redirect($_SERVER['PHP_SELF']);
         }
@@ -2610,7 +2606,7 @@ class AuthLDAP extends CommonDBTM
         echo "<tr class='tab_bg_2'><th colspan='2'>" . __('LDAP directory choice') . "</th></tr>";
 
         //If more than one ldap server
-        if (count($iterator) > 1) {
+        if (count($results) > 1) {
             echo "<tr class='tab_bg_2'><td class='center'>" . __('Name') . "</td>";
             echo "<td class='center'>";
             AuthLDAP::Dropdown(['name'                => 'ldap_server',
@@ -3132,7 +3128,6 @@ class AuthLDAP extends CommonDBTM
      */
     public static function tryLdapAuth($auth, $login, $password, $auths_id = 0, $user_dn = false, $break = true)
     {
-        global $DB;
 
         //If no specific source is given, test all ldap directories
         if ($auths_id <= 0) {
@@ -3145,14 +3140,15 @@ class AuthLDAP extends CommonDBTM
             //  - there are multiple users having same login on different LDAP servers,
             //  - a user has been migrated from a LDAP server to another one, but GLPI is not yet aware of this.
             // Caveat: if user uses a wrong password, a login attempt will still be done on all active LDAP servers.
-            $known_servers = $DB->request(
+            $known_servers = self::getAdapter()->request(
                 [
                   'SELECT' => 'auths_id',
                   'FROM'   => User::getTable(),
                   'WHERE'  => ['name' => addslashes($login)],
                 ]
             );
-            $known_servers_id = array_column(iterator_to_array($known_servers), 'auths_id');
+            $known_servers_array = $known_servers->fetchAllAssociative();
+            $known_servers_id = array_column($known_servers_array, 'auths_id');
             usort(
                 $ldap_methods,
                 function (array $a, array $b) use ($known_servers_id) {
@@ -3841,9 +3837,8 @@ class AuthLDAP extends CommonDBTM
      */
     public static function getDefault()
     {
-        global $DB;
-
-        foreach ($DB->request('glpi_authldaps', ['is_default' => 1, 'is_active' => 1]) as $data) {
+        $crit['table'] = 'glpi_authldaps';
+        foreach (self::getAdapter()->request($crit, ['is_default' => 1, 'is_active' => 1]) as $data) {
             return $data['id'];
         }
         return 0;
@@ -3851,11 +3846,9 @@ class AuthLDAP extends CommonDBTM
 
     public function post_updateItem($history = 1)
     {
-        global $DB;
-
         if (in_array('is_default', $this->updates) && $this->input["is_default"] == 1) {
-            $DB->update(
-                $this->getTable(),
+            $authldap = new authldap();
+            $authldap->update(
                 ['is_default' => 0],
                 ['id' => ['<>', $this->input['id']]]
             );
@@ -3867,8 +3860,8 @@ class AuthLDAP extends CommonDBTM
         global $DB;
 
         if (isset($this->fields['is_default']) && $this->fields["is_default"] == 1) {
-            $DB->update(
-                $this->getTable(),
+            $authldap = new authldap();
+            $authldap->update(
                 ['is_default' => 0],
                 ['id' => ['<>', $this->fields['id']]]
             );
@@ -3931,12 +3924,11 @@ class AuthLDAP extends CommonDBTM
      */
     public static function getServersWithImportByEmailActive()
     {
-        global $DB;
 
         $ldaps = [];
         // Always get default first
 
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => ['id'],
            'FROM'  => 'glpi_authldaps',
            'WHERE' => [
@@ -3950,7 +3942,7 @@ class AuthLDAP extends CommonDBTM
            ],
            'ORDER'  => ['is_default DESC']
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $ldaps[] = $data['id'];
         }
         return $ldaps;
@@ -4088,14 +4080,13 @@ class AuthLDAP extends CommonDBTM
      */
     public static function getAllReplicateForAMaster($master_id)
     {
-        global $DB;
 
         $replicates = [];
         $criteria = ['FIELDS' => ['id', 'host', 'port'],
                   'FROM'   => 'glpi_authldapreplicates',
                   'WHERE'  => ['authldaps_id' => $master_id]
                  ];
-        foreach ($DB->request($criteria) as $replicate) {
+        foreach (self::getAdapter()->request($criteria) as $replicate) {
             $replicates[] = ["id"   => $replicate["id"],
                              "host" => $replicate["host"],
                              "port" => $replicate["port"]

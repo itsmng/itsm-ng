@@ -40,7 +40,6 @@ class OperatingSystem extends CommonDropdown
 {
     public $can_be_translated = false;
 
-
     public static function getTypeName($nb = 0)
     {
         return _n('Operating system', 'Operating systems', $nb);

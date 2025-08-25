@@ -320,8 +320,6 @@ class NetworkName extends FQDNLabel
 
     public function post_updateItem($history = 1)
     {
-        global $DB;
-
         $this->post_workOnItem();
         if (count($this->updates)) {
             // Update Ticket Tco
@@ -331,16 +329,22 @@ class NetworkName extends FQDNLabel
             ) {
                 $ip = new IPAddress();
                 // Update IPAddress
-                foreach (
-                    $DB->request(
-                        'glpi_ipaddresses',
-                        ['itemtype' => 'NetworkName',
-                                            'items_id' => $this->getID()]
-                    ) as $data
-                ) {
-                    $ip->update(['id'       => $data['id'],
-                                      'itemtype' => 'NetworkName',
-                                      'items_id' => $this->getID()]);
+                $request = $this::getAdapter()->request([
+                    'FROM'  => 'glpi_ipaddresses',
+                    'WHERE' => [
+                        'itemtype' => 'NetworkName',
+                        'items_id' => $this->getID()
+                    ]
+                ]);
+
+                $results = $request->fetchAllAssociative();
+
+                foreach ($results as $data) {
+                    $ip->update([
+                        'id'       => $data['id'],
+                        'itemtype' => 'NetworkName',
+                        'items_id' => $this->getID()
+                    ]);
                 }
             }
         }
@@ -370,9 +374,7 @@ class NetworkName extends FQDNLabel
     **/
     public static function unaffectAddressesOfItem($items_id, $itemtype)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => self::getTable(),
            'WHERE'  => [
@@ -381,7 +383,7 @@ class NetworkName extends FQDNLabel
            ]
         ]);
 
-        while ($networkNameID = $iterator->next()) {
+        while ($networkNameID = $request->fetchAssociative()) {
             self::unaffectAddressByID($networkNameID['id']);
         }
     }
@@ -441,12 +443,10 @@ class NetworkName extends FQDNLabel
     **/
     public static function showFormForNetworkPort($networkPortID)
     {
-        global $DB;
-
         $name         = new self();
 
         if ($networkPortID > 0) {
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => $name->getTable(),
                'WHERE'  => [
@@ -455,7 +455,8 @@ class NetworkName extends FQDNLabel
                   'is_deleted'   => 0
                ]
             ]);
-            $numrows = count($iterator);
+            $results = $request->fetchAllAssociative();
+            $numrows = count($results);
 
             if ($numrows > 1) {
                 // echo "<tr class='tab_bg_1'><th colspan='4'>" .
@@ -466,7 +467,8 @@ class NetworkName extends FQDNLabel
 
             switch ($numrows) {
                 case 1:
-                    $result = $iterator->next();
+                    // $result = $iterator->next();
+                    $result = $results[0];
                     $name->getFromDB($result['id']);
                     break;
 
@@ -716,8 +718,8 @@ class NetworkName extends FQDNLabel
         $options['createRow'] = false;
         $address              = new self();
 
-        $iterator = $DB->request($criteria);
-        while ($line = $iterator->next()) {
+        $request = self::getAdapter()->request($criteria);
+        while ($line = $request->fetchAssociative()) {
             if ($address->getFromDB($line["id"])) {
                 if ($createRow) {
                     $row = $row->createAnotherRow();
@@ -960,7 +962,7 @@ class NetworkName extends FQDNLabel
                 );
 
             case 'NetworkEquipment':
-                $result = $DB->request([
+                $result = self::getAdapter()->request([
                    'SELECT'          => ['COUNT DISTINCT' => 'glpi_networknames.id AS cpt'],
                    'FROM'            => 'glpi_networknames',
                    'INNER JOIN'       => [
@@ -981,7 +983,7 @@ class NetworkName extends FQDNLabel
                       'glpi_networkports.is_deleted'   => 0,
                       'glpi_networknames.is_deleted'   => 0
                    ]
-                ])->next();
+                ])->fetchAssociative();
 
                 return (int)$result['cpt'];
         }

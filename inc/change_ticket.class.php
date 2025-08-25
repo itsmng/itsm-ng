@@ -225,8 +225,6 @@ class Change_Ticket extends CommonDBRelation
     **/
     public static function showForChange(Change $change)
     {
-        global $DB;
-
         $ID = $change->getField('id');
         if (!$change->can($ID, READ)) {
             return false;
@@ -235,7 +233,7 @@ class Change_Ticket extends CommonDBRelation
         $canedit = $change->canEdit($ID);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => [
               'glpi_changes_tickets.id AS linkid',
               'glpi_tickets.*'
@@ -260,9 +258,10 @@ class Change_Ticket extends CommonDBRelation
 
         $tickets = [];
         $used    = [];
-        $numrows = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
 
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             $tickets[$data['id']] = $data;
             $used[$data['id']]    = $data['id'];
         }
@@ -369,7 +368,7 @@ class Change_Ticket extends CommonDBRelation
         $canedit = $ticket->canEdit($ID);
         $rand    = mt_rand();
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => [
               'glpi_changes_tickets.id AS linkid',
               'glpi_changes.*'
@@ -394,9 +393,9 @@ class Change_Ticket extends CommonDBRelation
 
         $changes = [];
         $used    = [];
-        $numrows = count($iterator);
-
-        while ($data = $iterator->next()) {
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
+        foreach ($results as $data) {
             $changes[$data['id']] = $data;
             $used[$data['id']]    = $data['id'];
         }
@@ -562,7 +561,7 @@ class Change_Ticket extends CommonDBRelation
             $plan          = new $tasktype();
             $items         = [];
 
-            $result = $DB->request(
+            $result = self::getAdapter()->request(
                 [
                   'FROM'  => $plan->getTable(),
                   'WHERE' => [
@@ -575,10 +574,10 @@ class Change_Ticket extends CommonDBRelation
                     $items[$plan['id']] = $plan['id'];
                     $planned_infos .= sprintf(__('From %s') . ('<br>'), Html::convDateTime($plan['begin']));
                     $planned_infos .= sprintf(__('To %s') . ('<br>'), Html::convDateTime($plan['end']));
-                    if ($plan['users_id_tech']) {
+                    if ($plan['tech_users_id']) {
                         $planned_infos .= sprintf(
                             __('By %s') . ('<br>'),
-                            getUserName($plan['users_id_tech'])
+                            getUserName($plan['tech_users_id'])
                         );
                     }
                     $planned_infos .= "<br>";

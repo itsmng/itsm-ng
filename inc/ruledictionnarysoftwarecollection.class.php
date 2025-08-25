@@ -114,8 +114,6 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
     **/
     public function replayRulesOnExistingDB($offset = 0, $maxtime = 0, $items = [], $params = [])
     {
-        global $DB;
-
         if (isCommandLine()) {
             echo "replayRulesOnExistingDB started : " . date("r") . "\n";
         }
@@ -157,11 +155,11 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                 $criteria['START'] = (int)$offset;
             }
 
-            $iterator = $DB->request($criteria);
-            $nb   = count($iterator) + $offset;
-            $step = (($nb > 1000) ? 50 : (($nb > 20) ? floor(count($iterator) / 20) : 1));
+            $request = $this::getAdapter()->request($criteria)->fetchAllAssociative();
+            $nb   = count($request) + $offset;
+            $step = (($nb > 1000) ? 50 : (($nb > 20) ? floor(count($request) / 20) : 1));
 
-            while ($input = $iterator->next()) {
+            foreach ($request as $input) {
                 if (!($i % $step)) {
                     if (isCommandLine()) {
                         printf(
@@ -198,18 +196,18 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                 ) {
                     $IDs = [];
                     //Find all the softwares in the database with the same name and manufacturer
-                    $same_iterator = $DB->request([
+                    $same_iterator = $this::getAdapter()->request([
                        'SELECT' => 'id',
                        'FROM'   => 'glpi_softwares',
                        'WHERE'  => [
                           'name'               => addslashes($input['name']),
                           'manufacturers_id'   => $input['manufacturers_id']
                        ]
-                    ]);
+                    ])->fetchAllAssociative();
 
                     if (count($same_iterator)) {
                         //Store all the software's IDs in an array
-                        while ($result = $same_iterator->next()) {
+                        foreach ($same_iterator as $result) {
                             $IDs[] = $result["id"];
                         }
                         //Replay dictionnary on all the softwares
@@ -253,13 +251,11 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
     **/
     public function replayDictionnaryOnSoftwaresByID(array $IDs, $res_rule = [])
     {
-        global $DB;
-
         $new_softs  = [];
         $delete_ids = [];
 
         foreach ($IDs as $ID) {
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT'    => [
                   'gs.id',
                   'gs.name AS name',
@@ -279,10 +275,10 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                   'gs.is_template'  => 0,
                   'gs.id'           => $ID
                ]
-            ]);
+            ])->fetchAllAssociative();
 
-            if (count($iterator)) {
-                $soft = $iterator->next();
+            if (count($request)) {
+                $soft = $request[0];
                 //For each software
                 $this->replayDictionnaryOnOneSoftware(
                     $new_softs,
@@ -324,8 +320,6 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
         $manufacturer,
         array &$soft_ids
     ) {
-        global $DB;
-
         $input["name"]         = $name;
         $input["manufacturer"] = $manufacturer;
         $input["entities_id"]  = $entity;
@@ -397,12 +391,12 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
         }
 
         //Get all the different versions for a software
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => 'glpi_softwareversions',
            'WHERE'  => ['softwares_id' => $ID]
         ]);
 
-        while ($version = $iterator->next()) {
+        while ($version = $request->fetchAssociative()) {
             $input["version"] = addslashes($version["name"]);
             $old_version_name = $input["version"];
 
@@ -437,12 +431,10 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
     **/
     public function putOldSoftsInTrash(array $soft_ids)
     {
-        global $DB;
-
         if (count($soft_ids) > 0) {
             //Try to delete all the software that are not used anymore
             // (which means that don't have version associated anymore)
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT'    => [
                   'glpi_softwares.id',
                   'COUNT' => 'glpi_softwareversions.softwares_id AS cpt'
@@ -465,7 +457,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
             ]);
 
             $software = new Software();
-            while ($soft = $iterator->next()) {
+            while ($soft = $request->fetchAssociative()) {
                 $software->putInTrash($soft["id"], __('Software deleted by ITSM-NG dictionary rules'));
             }
         }
@@ -485,8 +477,6 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
     */
     public function moveVersions($ID, $new_software_id, $version_id, $old_version, $new_version, $entity)
     {
-        global $DB;
-
         $new_versionID = $this->versionExists($new_software_id, $new_version);
 
         // Do something if it is not the same version
@@ -494,20 +484,18 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
             //A version does not exist : update existing one
             if ($new_versionID == -1) {
                 //Transfer versions from old software to new software for a specific version
-                $DB->update(
-                    'glpi_softwareversions',
-                    [
-                      'name'         => $new_version,
-                      'softwares_id' => $new_software_id
-                    ],
-                    [
-                      'id' => $version_id
-                    ]
-                );
+                $softwareVersion = new SoftwareVersion();
+                if ($softwareVersion->getFromDB($version_id)) {
+                    $softwareVersion->update([
+                        'id'           => $version_id,
+                        'name'         => $new_version,
+                        'softwares_id' => $new_software_id
+                    ]);
+                }
             } else {
                 // Delete software can be in double after update
                 $item_softwareversion_table = Item_SoftwareVersion::getTable();
-                $iterator = $DB->request([
+                $request = $this::getAdapter()->request([
                    'SELECT'    => ['gcs_2.*'],
                    'FROM'      => $item_softwareversion_table,
                    'LEFT JOIN' => [
@@ -527,46 +515,70 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                       'gcs_2.softwareversions_id'                           => $version_id
                    ]
                 ]);
-                while ($data = $iterator->next()) {
-                    $DB->delete(
-                        'glpi_items_softwareversions',
-                        [
-                          'id' => $data['id']
-                        ]
-                    );
+                while ($data = $request->fetchAssociative()) {
+                    $item_version = new Item_SoftwareVersion();
+                    if ($item_version->getFromDB($data['id'])) {
+                        $item_version->delete(['id' => $data['id']]);
+                    }
                 }
 
                 //Change ID of the version in glpi_items_softwareversions
-                $DB->update(
-                    $item_softwareversion_table,
-                    [
-                      'softwareversions_id' => $new_versionID
-                    ],
-                    [
-                      'softwareversions_id' => $version_id
+                $adapter = self::getAdapter();
+                $items = $adapter->request([
+                    'SELECT' => ['id'],
+                    'FROM'   => $item_softwareversion_table,
+                    'WHERE'  => [
+                        'softwareversions_id' => $version_id
                     ]
-                );
+                ]);
+
+                foreach ($items->fetchAllAssociative() as $data) {
+                    $item_version = new Item_SoftwareVersion();
+                    if ($item_version->getFromDB($data['id'])) {
+                        $item_version->update([
+                            'id'                 => $data['id'],
+                            'softwareversions_id' => $new_versionID
+                        ]);
+                    }
+                }
 
                 // Update licenses version link
-                $DB->update(
-                    'glpi_softwarelicenses',
-                    [
-                      'softwareversions_id_buy' => $new_versionID
-                    ],
-                    [
-                      'softwareversions_id_buy' => $version_id
+                $adapter = self::getAdapter();
+                $licenses_buy = $adapter->request([
+                    'SELECT' => ['id'],
+                    'FROM'   => 'glpi_softwarelicenses',
+                    'WHERE'  => [
+                        'softwareversions_id_buy' => $version_id
                     ]
-                );
+                ]);
 
-                $DB->update(
-                    'glpi_softwarelicenses',
-                    [
-                      'softwareversions_id_use' => $new_versionID
-                    ],
-                    [
-                      'softwareversions_id_use' => $version_id
+                foreach ($licenses_buy->fetchAllAssociative() as $data) {
+                    $license = new SoftwareLicense();
+                    if ($license->getFromDB($data['id'])) {
+                        $license->update([
+                            'id'                    => $data['id'],
+                            'softwareversions_id_buy' => $new_versionID
+                        ]);
+                    }
+                }
+
+                $licenses_use = $adapter->request([
+                    'SELECT' => ['id'],
+                    'FROM'   => 'glpi_softwarelicenses',
+                    'WHERE'  => [
+                        'softwareversions_id_use' => $version_id
                     ]
-                );
+                ]);
+
+                foreach ($licenses_use->fetchAllAssociative() as $data) {
+                    $license = new SoftwareLicense();
+                    if ($license->getFromDB($data['id'])) {
+                        $license->update([
+                            'id'                    => $data['id'],
+                            'softwareversions_id_use' => $new_versionID
+                        ]);
+                    }
+                }
 
                 //Delete old version
                 $old_version = new SoftwareVersion();
@@ -597,15 +609,24 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
 
         //Transfer licenses to new software if needed
         if ($old_software_id != $new_software_id) {
-            $DB->update(
-                'glpi_softwarelicenses',
-                [
-                  'softwares_id' => $new_software_id
-                ],
-                [
-                  'softwares_id' => $old_software_id
+            $adapter = self::getAdapter();
+            $licenses = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => 'glpi_softwarelicenses',
+                'WHERE'  => [
+                    'softwares_id' => $old_software_id
                 ]
-            );
+            ]);
+
+            foreach ($licenses->fetchAllAssociative() as $data) {
+                $license = new SoftwareLicense();
+                if ($license->getFromDB($data['id'])) {
+                    $license->update([
+                        'id'           => $data['id'],
+                        'softwares_id' => $new_software_id
+                    ]);
+                }
+            }
         }
         return true;
     }
@@ -619,18 +640,16 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
     **/
     public function versionExists($software_id, $version)
     {
-        global $DB;
-
         //Check if the version exists
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => 'glpi_softwareversions',
            'WHERE'  => [
               'softwares_id' => $software_id,
               'name'         => $version
            ]
-        ]);
-        if (count($iterator)) {
-            $current = $iterator->next();
+        ])->fetchAllAssociative();
+        if (count($request)) {
+            $current = $request[0];
             return $current['id'];
         }
         return -1;

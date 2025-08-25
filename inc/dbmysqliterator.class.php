@@ -108,7 +108,7 @@ class DBmysqlIterator implements Iterator, Countable
      * @param string|array $crit        Fields/values, ex array("id"=>1), if empty => all rows (default '')
      * @param boolean      $log         To log the request (default false)
      *
-     * @return void
+     * @return string
      */
     public function buildQuery($table, $crit = "", $log = false)
     {
@@ -329,6 +329,7 @@ class DBmysqlIterator implements Iterator, Countable
         if ($log == true || defined('GLPI_SQL_DEBUG') && GLPI_SQL_DEBUG == true) {
             Toolbox::logSqlDebug("Generated query:", $this->getSql());
         }
+        return $this->sql;
     }
 
     /**
@@ -537,6 +538,9 @@ class DBmysqlIterator implements Iterator, Countable
                 // Foreign Key condition
                 $ret .= $this->analyseFkey($value);
             } elseif ($name === 'RAW') {
+                if (!is_array($value)) {
+                    $value = (array) $value;
+                }
                 $key = key($value);
                 $value = current($value);
                 $ret .= '((' . $key . ') ' . $this->analyseCriterion($value) . ')';
@@ -685,6 +689,15 @@ class DBmysqlIterator implements Iterator, Countable
     {
         if (is_array($values)) {
             $keys = array_keys($values);
+
+            // Special case : "table.field" => "table.field" format
+            if (count($values) == 1 && strpos($keys[0], '.') !== false && strpos($values[$keys[0]], '.') !== false) {
+                list($t1, $f1) = explode('.', $keys[0], 2);
+                list($t2, $f2) = explode('.', $values[$keys[0]], 2);
+
+                return DBmysql::quoteName($t1) . '.' . DBmysql::quoteName($f1) . ' = ' .
+                    DBmysql::quoteName($t2) . '.' . DBmysql::quoteName($f2);
+            }
             if (count($values) == 2) {
                 $t1 = $keys[0];
                 $f1 = $values[$t1];
@@ -701,9 +714,11 @@ class DBmysqlIterator implements Iterator, Countable
                 $condition = array_pop($values);
                 $fkey = $this->analyseFkey($values);
                 return $fkey . ' ' . key($condition) . ' ' . $this->analyseCrit(current($condition));
+            } else {
+                dump($values);
+                throw new \InvalidArgumentException("BAD FOREIGN KEY, should be [ table1 => key1, table2 => key2 ] or [ table1 => key1, table2 => key2, [criteria]]");
             }
         }
-        trigger_error("BAD FOREIGN KEY, should be [ table1 => key1, table2 => key2 ] or [ table1 => key1, table2 => key2, [criteria]]", E_USER_ERROR);
     }
 
     /**

@@ -81,7 +81,7 @@ class RequestType extends CommonDropdown
            __('Request source visible for followups') => [
               'name'  => 'is_itilfollowup',
               'type'  => 'checkbox',
-              'value' => $this->fields['is_itilfollowup']
+              'value' => $this->fields['is_itilfollowup'] ?? null
            ],
         ];
     }
@@ -178,13 +178,23 @@ class RequestType extends CommonDropdown
         }
 
         if (count($update)) {
-            $DB->update(
-                $this->getTable(),
-                $update,
-                [
-                  'id' => ['<>', $this->fields['id']]
+            $adapter = self::getAdapter();
+            $types = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'id' => ['<>', $this->fields['id']]
                 ]
-            );
+            ]);
+
+            foreach ($types->fetchAllAssociative() as $data) {
+                $requestType = new self();
+                if ($requestType->getFromDB($data['id'])) {
+                    $updateData = $update;
+                    $updateData['id'] = $data['id'];
+                    $requestType->update($updateData);
+                }
+            }
         }
     }
 
@@ -230,13 +240,24 @@ class RequestType extends CommonDropdown
         }
 
         if (count($update)) {
-            $DB->update(
-                $this->getTable(),
-                $update,
-                [
-                  'id' => ['<>', $this->fields['id']]
+            $adapter = self::getAdapter();
+            $types = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'id' => ['<>', $this->fields['id']]
                 ]
-            );
+            ]);
+
+            // Mettre à jour chaque type de demande individuellement
+            foreach ($types->fetchAllAssociative() as $data) {
+                $requestType = new self();
+                if ($requestType->getFromDB($data['id'])) {
+                    $updateData = $update;
+                    $updateData['id'] = $data['id'];
+                    $requestType->update($updateData);
+                }
+            }
         }
     }
 
@@ -250,14 +271,23 @@ class RequestType extends CommonDropdown
     **/
     public static function getDefault($source)
     {
-        global $DB;
-
         if (!in_array($source, ['mail', 'mailfollowup', 'helpdesk', 'followup'])) {
             return 0;
         }
 
-        foreach ($DB->request('glpi_requesttypes', ['is_' . $source . '_default' => 1, 'is_active' => 1]) as $data) {
-            return $data['id'];
+        $request = self::getAdapter()->request([
+            'SELECT' => ['id'],
+            'FROM'   => 'glpi_requesttypes',
+            'WHERE'  => [
+                'is_' . $source . '_default' => 1,
+                'is_active'                  => 1
+            ]
+        ]);
+
+        $results = $request->fetchAllAssociative();
+
+        if (count($results)) {
+            return $results[0]['id'];
         }
         return 0;
     }

@@ -73,8 +73,6 @@ class NetworkPortAggregate extends NetworkPortInstantiation
 
     public function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems)
     {
-        global $DB;
-
         if (
             isset($this->fields['networkports_id_list'])
             && is_string($this->fields['networkports_id_list'])
@@ -86,7 +84,7 @@ class NetworkPortAggregate extends NetworkPortInstantiation
         $lastItem = $recursiveItems[count($recursiveItems) - 1];
         $netport_types = ['NetworkPortEthernet', 'NetworkPortWifi'];
         foreach ($netport_types as $netport_type) {
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => [
                   'port.id',
                   'port.name',
@@ -100,15 +98,15 @@ class NetworkPortAggregate extends NetworkPortInstantiation
                ],
                'ORDER'  => ['logical_number', 'name']
             ]);
-
-            if (count($iterator)) {
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
                 $array_element_name = call_user_func(
                     [$netport_type, 'getTypeName'],
-                    count($iterator)
+                    count($results)
                 );
                 $possible_ports[$array_element_name] = [];
 
-                while ($portEntry = $iterator->next()) {
+                foreach ($results as $portEntry) {
                     $macAddresses[$portEntry['id']] = $portEntry['mac'];
                     if (!empty($portEntry['mac'])) {
                         $portEntry['name'] = sprintf(
@@ -122,7 +120,7 @@ class NetworkPortAggregate extends NetworkPortInstantiation
             }
         }
         $checklistOptions = [];
-        foreach ($possible_ports as $key => $value) {
+        foreach ($possible_ports as $value) {
             $checklistOptions = array_merge($checklistOptions, $value);
         }
 
@@ -139,7 +137,7 @@ class NetworkPortAggregate extends NetworkPortInstantiation
                     'type' => 'checklist',
                     'name' => 'networkports_id_list',
                     'options' => $checklistOptions,
-                    'values' => $this->fields['networkports_id_list'],
+                    'values' => $this->fields['networkports_id_list'] ?? [],
                  ]
               ]
            ]

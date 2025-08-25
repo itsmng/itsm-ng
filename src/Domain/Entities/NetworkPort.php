@@ -1,0 +1,319 @@
+<?php
+
+namespace Itsmng\Domain\Entities;
+
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: 'glpi_networkports')]
+#[ORM\Index(name: 'on_device', columns: ['items_id', 'itemtype'])]
+#[ORM\Index(name: 'item', columns: ['itemtype', 'items_id'])]
+#[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
+#[ORM\Index(name: 'is_recursive', columns: ['is_recursive'])]
+#[ORM\Index(name: 'mac', columns: ['mac'])]
+#[ORM\Index(name: 'is_deleted', columns: ['is_deleted'])]
+#[ORM\Index(name: 'is_dynamic', columns: ['is_dynamic'])]
+#[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
+#[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
+class NetworkPort
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'id', type: 'integer')]
+    private $id;
+
+    #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
+    private $itemsId = 0;
+
+    #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
+    private $itemtype;
+
+    #[ORM\ManyToOne(targetEntity: Entity::class)]
+    #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
+    private ?Entity $entity = null;
+
+    #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
+    private $isRecursive = 0;
+
+    #[ORM\Column(name: 'logical_number', type: 'integer', options: ['default' => 0])]
+    private $logicalNumber = 0;
+
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
+    private $name;
+
+    #[ORM\Column(name: 'instantiation_type', type: 'string', length: 255, nullable: true)]
+    private $instantiationType;
+
+    #[ORM\Column(name: 'mac', type: 'string', length: 255, nullable: true)]
+    private $mac;
+
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
+    private $comment;
+
+    #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
+    private $isDeleted = 0;
+
+    #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
+    private $isDynamic = 0;
+
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
+    private $dateMod;
+
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
+    private $dateCreation;
+
+    #[ORM\OneToMany(mappedBy: 'networkport1', targetEntity: NetworkPortNetworkPort::class)]
+    private Collection $networkportNetworkPorts1;
+
+    #[ORM\OneToMany(mappedBy: 'networkport2', targetEntity: NetworkPortNetworkPort::class)]
+    private Collection $networkportNetworkPorts2;
+
+    #[ORM\OneToMany(mappedBy: 'networkport', targetEntity: NetworkPortVlan::class)]
+    private Collection $networkportVlans;
+
+    public function __construct()
+    {
+        $this->networkportNetworkPorts1 = new ArrayCollection();
+        $this->networkportNetworkPorts2 = new ArrayCollection();
+        $this->networkportVlans = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getItemsId(): ?int
+    {
+        return $this->itemsId;
+    }
+
+    public function setItemsId(int $itemsId): self
+    {
+        $this->itemsId = $itemsId;
+
+        return $this;
+    }
+
+    public function getItemtype(): ?string
+    {
+        return $this->itemtype;
+    }
+
+    public function setItemtype(string $itemtype): self
+    {
+        $this->itemtype = $itemtype;
+
+        return $this;
+    }
+
+    public function getIsRecursive(): ?bool
+    {
+        return $this->isRecursive;
+    }
+
+    public function setIsRecursive(bool $isRecursive): self
+    {
+        $this->isRecursive = $isRecursive;
+
+        return $this;
+    }
+
+    public function getLogicalNumber(): ?int
+    {
+        return $this->logicalNumber;
+    }
+
+    public function setLogicalNumber(int $logicalNumber): self
+    {
+        $this->logicalNumber = $logicalNumber;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getInstantiationType(): ?string
+    {
+        return $this->instantiationType;
+    }
+
+    public function setInstantiationType(string $instantiationType): self
+    {
+        $this->instantiationType = $instantiationType;
+
+        return $this;
+    }
+
+    public function getMac(): ?string
+    {
+        return $this->mac;
+    }
+
+    public function setMac(?string $mac): self
+    {
+        $this->mac = $mac;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(string | null $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getIsDeleted(): ?int
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(int $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
+
+        return $this;
+    }
+
+    public function getIsDynamic(): ?int
+    {
+        return $this->isDynamic;
+    }
+
+    public function setIsDynamic(int $isDynamic): self
+    {
+        $this->isDynamic = $isDynamic;
+
+        return $this;
+    }
+
+    public function getDateMod(): DateTime
+    {
+        return $this->dateMod ?? new DateTime();
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
+    {
+        $this->dateMod = new DateTime();
+
+        return $this;
+    }
+
+
+    public function getDateCreation(): DateTime
+    {
+        return $this->dateCreation ?? new DateTime();
+    }
+
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
+    {
+        $this->dateCreation = new DateTime();
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Set the value of entity
+     *
+     * @return  self
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of networkportNetworkPorts1
+     */
+    public function getNetworkPortNetworkPorts1()
+    {
+        return $this->networkportNetworkPorts1;
+    }
+
+    /**
+     * Set the value of networkportNetworkPorts1
+     *
+     * @return  self
+     */
+    public function setNetworkPortNetworkPorts1($networkportNetworkPorts1)
+    {
+        $this->networkportNetworkPorts1 = $networkportNetworkPorts1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportNetworkPorts2
+     */
+    public function getNetworkPortNetworkPorts2()
+    {
+        return $this->networkportNetworkPorts2;
+    }
+
+    /**
+     * Set the value of networkportNetworkPorts2
+     *
+     * @return  self
+     */
+    public function setNetworkPortNetworkPorts2($networkportNetworkPorts2)
+    {
+        $this->networkportNetworkPorts2 = $networkportNetworkPorts2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkportVlans
+     */
+    public function getNetworkPortVlans()
+    {
+        return $this->networkportVlans;
+    }
+
+    /**
+     * Set the value of networkportVlans
+     *
+     * @return  self
+     */
+    public function setNetworkPortVlans($networkportVlans)
+    {
+        $this->networkportVlans = $networkportVlans;
+
+        return $this;
+    }
+}

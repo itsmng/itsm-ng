@@ -118,8 +118,8 @@ class XML
         global $DB;
 
         $fp = fopen($this->FilePath, 'wb');
-        fputs($fp, "<?xml version=\"1.0\"?>\n");
-        fputs($fp, "<dataxml>\n");
+        fwrite($fp, "<?xml version=\"1.0\"?>\n");
+        fwrite($fp, "<dataxml>\n");
 
         foreach ($this->SqlString as $strqry) {
             if ($strqry == "") {
@@ -135,21 +135,21 @@ class XML
                 return -1;
             }
             // OK... let's create XML;)
-            fputs($fp, "   <fields>\n");
+            fwrite($fp, "   <fields>\n");
             $i = 0;
             $FieldsVector = [];
             while ($i < $DB->numFields($result)) {
                 $name = $DB->fieldName($result, $i);
-                fputs($fp, "      <field>" . $name . "</field>\n");
+                fwrite($fp, "      <field>" . $name . "</field>\n");
                 $FieldsVector[] = $name;
                 $i++;
             }
 
-            fputs($fp, "   </fields>\n");
+            fwrite($fp, "   </fields>\n");
             // And NOW the Data ...
-            fputs($fp, "   <rows>\n");
+            fwrite($fp, "   <rows>\n");
             while ($row = $DB->fetchRow($result)) {
-                fputs($fp, "      <row>\n");
+                fwrite($fp, "      <row>\n");
                 for ($j = 0; $j < $i; $j++) {
                     $FieldName  = "";   // Name of TAG
                     $Attributes = "";
@@ -170,16 +170,16 @@ class XML
                             $FieldName = "data";
                             $Attributes = " fieldname=\"" . $FieldsVector[$j] . "\"";
                     }
-                    fputs($fp, "         <" . $FieldName . $Attributes . ">" .
+                    fwrite($fp, "         <" . $FieldName . $Attributes . ">" .
                           Toolbox::encodeInUtf8(htmlspecialchars($row[$j])) . "</" . $FieldName . ">\n");
                 }
-                fputs($fp, "      </row>\n");
+                fwrite($fp, "      </row>\n");
             }
-            fputs($fp, "   </rows>\n");
+            fwrite($fp, "   </rows>\n");
 
             $DB->freeResult($result);
         }
-        fputs($fp, "</dataxml>");
+        fwrite($fp, "</dataxml>");
         //OK free ...;)
         fclose($fp);
     } // End  Function : DoXML

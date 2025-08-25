@@ -3046,11 +3046,11 @@ class Config extends CommonDBTM
             $where   = ['id' => 1];
         }
 
-        $row = $DB->request([
+        $row = self::getAdapter()->request([
            'SELECT' => [$select],
            'FROM'   => $table,
            'WHERE'  => $where
-        ])->next();
+        ])->fetchAssociative();
 
         return trim($row['version']);
     }
@@ -3068,8 +3068,6 @@ class Config extends CommonDBTM
     **/
     public static function getConfigurationValues($context, array $names = [])
     {
-        global $DB;
-
         $query = [
            'FROM'   => self::getTable(),
            'WHERE'  => [
@@ -3081,9 +3079,9 @@ class Config extends CommonDBTM
             $query['WHERE']['name'] = $names;
         }
 
-        $iterator = $DB->request($query);
+        $results = self::getAdapter()->request($query);
         $result = [];
-        while ($line = $iterator->next()) {
+        while ($line = $results->fetchAssociative()) {
             $result[$line['name']] = $line['value'];
         }
         return $result;
@@ -3128,19 +3126,20 @@ class Config extends CommonDBTM
 
             Config::forceTable('glpi_configs');
 
-            $iterator = $DB->request(['FROM' => 'glpi_configs']);
-            if ($iterator->count() === 0) {
+            $request = self::getAdapter()->request(['FROM' => 'glpi_configs']);
+            $results = $request->fetchAllAssociative();
+            if (count($results) === 0) {
                 return false;
             }
 
-            if ($iterator->count() === 1) {
+            if (count($results) === 1) {
                 // 1 row = 0.78 to 0.84 config table schema
-                return $iterator->next();
+                return $results[0];
             }
 
             // multiple rows = 0.85+ config
             $config = [];
-            while ($row = $iterator->next()) {
+            foreach ($results as $row) {
                 if ('core' !== $row['context']) {
                     continue;
                 }
@@ -3359,7 +3358,7 @@ class Config extends CommonDBTM
         $opt = [];
         if (isset($conf[$optname])) {
             $opt = json_decode($conf[$optname], true);
-            Toolbox::logDebug("CACHE CONFIG  $optname", $opt);
+            // Toolbox::logDebug("CACHE CONFIG  $optname", $opt);
         }
 
         if (!isset($opt['options']['namespace'])) {
@@ -3831,18 +3830,25 @@ class Config extends CommonDBTM
             && (int)$this->oldvalues['value'] === -1
         ) {
             // As passwords will now expire, consider that "now" is the reference date of expiration delay
-            $DB->update(
-                User::getTable(),
-                ['password_last_update' => $_SESSION['glpi_currenttime']],
-                ['authtype' => Auth::DB_GLPI]
-            );
+            $user = new User();
+            $users = $user::getAdapter()->findBy(['authtype' => Auth::DB_GLPI]);
+
+            foreach ($users as $entity) {
+                $user = new User();
+                if ($user->getFromDB($entity->getId())) {
+                    $user->update(['id' => $entity->getId(), 'password_last_update' => $_SESSION['glpi_currenttime']]);
+                }
+            }
 
             // Activate passwordexpiration automated task
-            $DB->update(
-                CronTask::getTable(),
-                ['state' => 1,],
-                ['name' => 'passwordexpiration']
-            );
+            $cron = new CronTask();
+            $entity = $cron::getAdapter()->findOneBy(['name' => 'passwordexpiration']);
+
+            if ($entity) {
+                if ($cron->getFromDB($entity->getId())) {
+                    $cron->update(['id' => $entity->getId(), 'state' => 1]);
+                }
+            }
         }
 
         if (array_key_exists('value', $this->oldvalues)) {

@@ -359,13 +359,11 @@ abstract class CommonITILCost extends CommonDBChild
     **/
     public function getTotalActionTimeForItem($items_id)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'SELECT' => ['SUM' => 'actiontime AS sumtime'],
            'FROM'   => $this->getTable(),
            'WHERE'  => [static::$items_id => $items_id]
-        ])->next();
+        ])->fetchAssociative();
         return $result['sumtime'];
     }
 
@@ -377,9 +375,7 @@ abstract class CommonITILCost extends CommonDBChild
     **/
     public function getLastCostForItem($items_id)
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [
               static::$items_id => $items_id
@@ -388,7 +384,7 @@ abstract class CommonITILCost extends CommonDBChild
               'end_date DESC',
               'id DESC'
            ]
-        ])->next();
+        ])->fetchAssociative();
         return $result;
     }
 
@@ -524,7 +520,7 @@ abstract class CommonITILCost extends CommonDBChild
     **/
     public static function showForObject($item, $withtemplate = 0)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $forproject = false;
         if (is_a($item, 'Project', true)) {
@@ -550,7 +546,7 @@ abstract class CommonITILCost extends CommonDBChild
             $alltickets = ProjectTask::getAllTicketsForProject($ID);
             $items_ids = (count($alltickets) ? $alltickets : 0);
         }
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => static::getTable(),
            'WHERE'  => [
               static::$items_id   => $items_ids
@@ -625,7 +621,7 @@ abstract class CommonITILCost extends CommonDBChild
         ];
         $values = [];
         $massive_action = [];
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $newValue = [];
             $name = (empty($data['name']) ? sprintf(
                 __('%1$s (%2$s)'),
@@ -698,7 +694,7 @@ abstract class CommonITILCost extends CommonDBChild
            __('Total cost')
         ];
         $values = [[
-           CommonITILObject::getActionTime($item->fields['actiontime']),
+           CommonITILObject::getActionTime($item->fields['actiontime'] ?? null),
            CommonITILObject::getActionTime($total_time),
            Html::formatNumber($total_costtime),
            Html::formatNumber($total_fixed),
@@ -727,7 +723,7 @@ abstract class CommonITILCost extends CommonDBChild
     {
         global $DB;
 
-        $result = $DB->request(
+        $result = self::getAdapter()->request(
             [
               'FROM'      => getTableForItemType($type),
               'WHERE'     => [

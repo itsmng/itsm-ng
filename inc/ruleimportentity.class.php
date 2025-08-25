@@ -188,12 +188,12 @@ class RuleImportEntity extends Rule
         $actions['is_recursive']['name']     = __('Child entities');
         $actions['is_recursive']['type']     = 'yesno';
 
-        $actions['groups_id_tech']['name']     = __('Group in charge of the hardware');
-        $actions['groups_id_tech']['type']     = 'dropdown';
-        $actions['groups_id_tech']['table']    = 'glpi_groups';
+        $actions['tech_groups_id']['name']     = __('Group in charge of the hardware');
+        $actions['tech_groups_id']['type']     = 'dropdown';
+        $actions['tech_groups_id']['table']    = 'glpi_groups';
 
-        $actions['users_id_tech']['name']     = __('Technician in charge of the hardware');
-        $actions['users_id_tech']['type']     = 'dropdown_users';
+        $actions['tech_users_id']['name']     = __('Technician in charge of the hardware');
+        $actions['tech_users_id']['type']     = 'dropdown_users';
 
         return $actions;
     }

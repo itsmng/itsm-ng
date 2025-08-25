@@ -88,31 +88,34 @@ class SpecialStatus extends CommonTreeDropdown
     public function statusForm()
     {
         global $DB, $CFG_GLPI;
-        $criteria = "SELECT * FROM glpi_specialstatuses";
-        $iterators = $DB->request($criteria);
+        $adapter = $this->getAdapter();
+        $criteria = ["SELECT * FROM glpi_specialstatuses"];
+        $requests = $adapter->request($criteria);
         $checksum = 0;
         echo Html::script("js/specialstatus.js");
 
         if (isset($_POST["update"])) {
             $before = Ticket::getAllStatusArray(false, true);
-            while ($update = $iterators->next()) {
-                $checksum = $checksum + $_POST["is_active_" . $update["id"]];
-                $DB->update(
-                    "glpi_specialstatuses",
-                    ['weight' => $_POST["weight_" . $update["id"]]],
-                    ['id' => $update["id"]]
-                );
-                $DB->update(
-                    "glpi_specialstatuses",
-                    ['is_active' => $_POST["is_active_" . $update["id"]]],
-                    ['id' => $update["id"]]
-                );
-                if (isset($_POST["color_" . $update["id"]])) {
-                    $DB->update(
-                        "glpi_specialstatuses",
-                        ['color' => $_POST["color_" . $update["id"]]],
-                        ['id' => $update["id"]]
-                    );
+            $statuses = $adapter->request($criteria);
+
+            while ($update = $statuses->fetchAssociative()) {
+                $checksum += $_POST["is_active_" . $update["id"]];
+                $specialStatus = new self();
+                if ($specialStatus->getFromDB($update["id"])) {
+                    // Mettre à jour le poids
+                    $specialStatus->update([
+                        'id'       => $update["id"],
+                        'weight'   => $_POST["weight_" . $update["id"]],
+                        'is_active' => $_POST["is_active_" . $update["id"]]
+                    ]);
+
+                    // Mettre à jour la couleur si définie
+                    if (isset($_POST["color_" . $update["id"]])) {
+                        $specialStatus->update([
+                            'id'    => $update["id"],
+                            'color' => $_POST["color_" . $update["id"]]
+                        ]);
+                    }
                 }
                 Session::addMessageAfterRedirect(
                     sprintf(__("Status has been updated!")),
@@ -121,11 +124,13 @@ class SpecialStatus extends CommonTreeDropdown
                 );
             }
             if ($checksum == 0) {
-                $DB->update(
-                    "glpi_specialstatuses",
-                    ['is_active' => 1],
-                    ['id' => 1]
-                );
+                $defaultStatus = new self();
+                if ($defaultStatus->getFromDB(1)) {
+                    $defaultStatus->update([
+                        'id'        => 1,
+                        'is_active' => 1
+                    ]);
+                }
             }
             $after = Ticket::getAllStatusArray(false, true);
             self::keepStatusSet($before, $after);
@@ -137,10 +142,10 @@ class SpecialStatus extends CommonTreeDropdown
             self::keepStatusSet($before, $after);
         }
         if (isset($_POST["force"])) {
-            $DB->delete(
-                "glpi_specialstatuses",
-                ['id' => $_SESSION['id']]
-            );
+            $statusToDelete = new self();
+            if ($statusToDelete->getFromDB($_SESSION['id'])) {
+                $statusToDelete->delete(['id' => $_SESSION['id']]);
+            }
             unset($_SESSION['id']);
             Session::addMessageAfterRedirect(
                 sprintf(__("Status has been removed!")),
@@ -160,8 +165,8 @@ class SpecialStatus extends CommonTreeDropdown
         echo "<td><b>" . __("Delete") . "</b></td>";
         echo "</tr>";
 
-        $iterators = $DB->request($criteria);
-        while ($data = $iterators->next()) {
+        $requests = $this::getAdapter()->request($criteria);
+        while ($data = $requests->fetchAssociative()) {
             echo "<tr class='tab_bg_1'>";
             echo "<td>" . $data["name"] . "</td>";
             echo "<td><input type='number' id='weight_" . $data["id"] . "' name='weight_" . $data["id"] . "' value='" . $data["weight"] . "' min='1'></td>";
@@ -190,13 +195,13 @@ class SpecialStatus extends CommonTreeDropdown
     public static function deleteStatus($id)
     {
         $tab = Ticket::getAllStatusArray(false, true);
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
-        $criteria = "SELECT * FROM glpi_tickets";
-        $iterators = $DB->request($criteria);
+        $criteria = ["SELECT * FROM glpi_tickets"];
+        $requests = self::getAdapter()->request($criteria);
 
-        $iterators = $DB->request($criteria);
-        while ($data = $iterators->next()) {
+        $requests = self::getAdapter()->request($criteria);
+        while ($data = $requests->fetchAssociative()) {
             if (isset($tab["id"][$data["status"]]) && $id == $tab["id"][$data["status"]]) {
                 $result[] = $tab["id"][$data["status"]];
             }
@@ -224,17 +229,16 @@ class SpecialStatus extends CommonTreeDropdown
 
     public function addStatus()
     {
-        global $DB;
-
         if (isset($_POST["update"])) {
             $before = Ticket::getAllStatusArray(false, true);
             $status_db = [
+               'id'       => 0,
                'name'   => $_POST["name"],
                'weight'   => $_POST["weight"],
                'is_active'  => $_POST["is_active"],
                'color'  => $_POST["color"]
             ];
-            $DB->updateOrInsert("glpi_specialstatuses", $status_db, ['id'   => 0]);
+            $this::getAdapter()->save(["glpi_specialstatuses"], $status_db);
             Session::addMessageAfterRedirect(
                 sprintf(__("Status has been added!")),
                 true,
@@ -270,11 +274,10 @@ class SpecialStatus extends CommonTreeDropdown
     {
         global $DB;
 
-        $criteria = "SELECT * FROM glpi_tickets";
-        $iterators = $DB->request($criteria);
+        $criteria = ["SELECT * FROM glpi_tickets"];
+        $requests = $this::getAdapter()->request($criteria);
 
-        $iterators = $DB->request($criteria);
-        while ($data = $iterators->next()) {
+        while ($data = $requests->fetchAssociative()) {
             for ($i = 0; $i < count($after["name"]) + max($after["weight"]); $i++) {
                 if (!isset($before["name"][$data["status"]])) {
                     continue;
@@ -283,11 +286,13 @@ class SpecialStatus extends CommonTreeDropdown
                     continue;
                 }
                 if ($before["name"][$data["status"]] == $after["name"][$i]) {
-                    $DB->update(
-                        "glpi_tickets",
-                        ['status' => $i],
-                        ['id' => $data["id"]]
-                    );
+                    $ticket = new Ticket();
+                    if ($ticket->getFromDB($data["id"])) {
+                        $ticket->update([
+                            'id'     => $data["id"],
+                            'status' => $i
+                        ]);
+                    }
                     break;
                 }
             }

@@ -330,13 +330,13 @@ class IPAddress extends CommonDBChild
 
         switch ($item->getType()) {
             case 'IPNetwork':
-                $result = $DB->request([
+                $result = self::getAdapter()->request([
                    'COUNT'  => 'cpt',
                    'FROM'   => 'glpi_ipaddresses_ipnetworks',
                    'WHERE'  => [
                       'ipnetworks_id'   => $item->getID()
                    ]
-                ])->next();
+                ])->fetchAssociative();
                 return $result['cpt'];
         }
     }
@@ -613,7 +613,7 @@ class IPAddress extends CommonDBChild
             !empty($itemtype)
             && ($items_id > 0)
         ) {
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => $this->getTable(),
                'WHERE'  => [
@@ -622,9 +622,9 @@ class IPAddress extends CommonDBChild
                   'name'      => $address
                ]
             ]);
-
-            if (count($iterator) == 1) {
-                $line = $iterator->next();
+            $results = $request->fetchAllAssociative();
+            if (count($results) == 1) {
+                $line = $results[0];
                 if ($this->getFromDB($line["id"])) {
                     return true;
                 }
@@ -798,14 +798,14 @@ class IPAddress extends CommonDBChild
                 $where["binary_$i"] = $address[$i];
             }
 
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => $this->getTable(),
                'WHERE'  => $where
             ]);
-
-            if (count($iterator) == 1) {
-                $line = $iterator->next();
+            $results = $request->fetchAllAssociative();
+            if (count($results) == 1) {
+                $line = $results[0];
                 if ($this->getFromDB($line["id"])) {
                     return true;
                 }
@@ -984,9 +984,9 @@ class IPAddress extends CommonDBChild
         for ($i = $startIndex; $i < 4; ++$i) {
             $criteria['WHERE']["gip.binary_$i"] = $binaryIP[$i];
         }
-        $iterator = $DB->request($criteria);
+        $request = self::getAdapter()->request($criteria);
         $addressesWithItems = [];
-        while ($result = $iterator->next()) {
+        while ($result = $request->fetchAssociative()) {
             if ($address->getFromDB($result['id'])) {
                 $addressesWithItems[] = array_merge(
                     array_reverse($address->recursivelyGetItems()),
@@ -1194,7 +1194,7 @@ class IPAddress extends CommonDBChild
                    'ITEM.id AS item_id',
                    new \QueryExpression("'$itemtype' AS " . $DB->quoteName('item_type'))
                 ]);
-                $criteria['INNER JOIN'] = $criteria['INNER JOIN'] + [
+                $criteria['INNER JOIN'] += [
                    'glpi_networknames AS NAME'   => [
                       'ON' => [
                          'NAME'   => 'id',
@@ -1232,7 +1232,7 @@ class IPAddress extends CommonDBChild
                new \QueryExpression('NULL AS ' . $DB->quoteName('item_id')),
                new \QueryExpression("NULL AS " . $DB->quoteName('item_type')),
             ]);
-            $criteria['INNER JOIN'] = $criteria['INNER JOIN'] + [
+            $criteria['INNER JOIN'] += [
                'glpi_networknames AS NAME'   => [
                   'ON' => [
                      'NAME'   => 'id',
@@ -1265,7 +1265,7 @@ class IPAddress extends CommonDBChild
                new \QueryExpression('NULL AS ' . $DB->quoteName('item_id')),
                new \QueryExpression("NULL AS " . $DB->quoteName('item_type'))
             ]);
-            $criteria['INNER JOIN'] = $criteria['INNER JOIN'] + [
+            $criteria['INNER JOIN'] += [
                'glpi_networknames AS NAME'   => [
                   'ON' => [
                      'NAME'   => 'id',
@@ -1309,7 +1309,7 @@ class IPAddress extends CommonDBChild
             if (isset($options['SQL_options'])) {
                 $criteria = array_merge($criteria, $options['SQL_options']);
             }
-            $iterator = $DB->request($criteria);
+            $request = self::getAdapter()->request($criteria);
 
             $canedit              = (isset($options['canedit']) && $options['canedit']);
             $options['createRow'] = false;
@@ -1320,7 +1320,7 @@ class IPAddress extends CommonDBChild
             $networkport = new NetworkPort();
 
             $item = null;
-            while ($line = $iterator->next()) {
+            while ($line = $request->fetchAssociative()) {
                 unset($row);
 
                 if (
@@ -1392,7 +1392,7 @@ class IPAddress extends CommonDBChild
                 $item = $father->getItem();
             }
 
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => self::getTable(),
                'WHERE'  => [
@@ -1407,7 +1407,7 @@ class IPAddress extends CommonDBChild
             $options['createRow'] = false;
             $address              = new self();
 
-            while ($ipaddress = $iterator->next()) {
+            while ($ipaddress = $request->fetchAssociative()) {
                 if ($address->getFromDB($ipaddress['id'])) {
                     if ($createRow) {
                         $row = $row->createRow();

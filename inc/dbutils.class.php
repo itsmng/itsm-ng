@@ -1,5 +1,8 @@
 <?php
 
+
+use Doctrine\Persistence\Proxy as PersistenceProxy;
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -306,10 +309,9 @@ final class DbUtils
            . '(' . preg_quote(NS_GLPI, '/') . '|' . preg_quote(NS_PLUG, '/') . ')' // start with GLPI core or plugin namespace
            . preg_quote('\\', '/') // followed by an additionnal \
            . '/';
-        if (preg_match($sanitized_namespaced_pattern, $itemtype)) {
+        if (is_string($itemtype) && $itemtype !== null && preg_match($sanitized_namespaced_pattern, $itemtype)) {
             $itemtype = stripslashes($itemtype);
         }
-
         if (!is_subclass_of($itemtype, CommonGLPI::class, true)) {
             // Only CommonGLPI sublasses are valid itemtypes
             return false;
@@ -651,6 +653,7 @@ final class DbUtils
         $complete_request = false
     ) {
 
+
         // !='0' needed because consider as empty
         if (
             !$complete_request
@@ -673,14 +676,21 @@ final class DbUtils
             $field = "$table.$field";
         }
 
-        if (!is_array($value) && strlen($value) == 0) {
-            if (isset($_SESSION['glpiactiveentities'])) {
-                $value = $_SESSION['glpiactiveentities'];
-            } elseif (isCommandLine() || Session::isCron()) {
-                $value = '0'; // If value is not set, fallback to root entity in cron / command line
+
+        if (!is_array($value) && (is_string($value) || is_numeric($value))) {
+            if (strlen((string)$value) == 0) {
+                if (isset($_SESSION['glpiactiveentities'])) {
+                    $value = $_SESSION['glpiactiveentities'];
+                } elseif (isCommandLine() || Session::isCron()) {
+                    $value = '0';
+                }
             }
         }
-
+        // If $value is an empty array => return impossible criteria
+        if (is_array($value) && count($value) === 0) {
+            // Valeur impossible pour éviter "IN ()" vide
+            return [$field => -1];
+        }
         $crit = [$field => $value];
 
         if ($is_recursive === 'auto' && !empty($table) && $table != 'glpi_entities') {
@@ -718,6 +728,15 @@ final class DbUtils
                 }
             }
         }
+        // last verification before return
+        if (
+            isset($crit[$field])
+            && is_array($crit[$field])
+            && empty($crit[$field])
+        ) {
+            return [$field => -1];
+        }
+
         return $crit;
     }
 
@@ -846,6 +865,7 @@ final class DbUtils
     {
         global $DB, $GLPI_CACHE;
 
+
         $ckey = 'ancestors_cache_';
         if (is_array($items_id)) {
             $ckey .= $table . '_' . md5(implode('|', $items_id));
@@ -874,13 +894,12 @@ final class DbUtils
         }
 
         if ($use_cache) {
-            $iterator = $DB->request([
+            $iterator = Config::getAdapter()->request([
                'SELECT' => ['id', 'ancestors_cache', $parentIDfield],
                'FROM'   => $table,
                'WHERE'  => ['id' => $items_id]
             ]);
-
-            while ($row = $iterator->next()) {
+            while ($row = $iterator->fetchAssociative()) {
                 if ($row['id'] > 0) {
                     $rancestors = $row['ancestors_cache'];
                     $parent     = $row[$parentIDfield];
@@ -925,7 +944,7 @@ final class DbUtils
                 $IDf = $id;
                 while ($IDf > 0) {
                     // Get next elements
-                    $iterator = $DB->request([
+                    $iterator = $this->getAdapter()->request([
                        'SELECT' => [$parentIDfield],
                        'FROM'   => $table,
                        'WHERE'  => ['id' => $IDf]

@@ -322,16 +322,14 @@ class RuleAction extends CommonDBChild
     **/
     public function getRuleActions($ID)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [static::$items_id => $ID],
            'ORDER'  => 'id'
         ]);
 
         $rules_actions = [];
-        while ($rule = $iterator->next()) {
+        while ($rule = $request->fetchAssociative()) {
             $tmp             = new self();
             $tmp->fields     = $rule;
             $rules_actions[] = $tmp;
@@ -487,17 +485,17 @@ class RuleAction extends CommonDBChild
             $actions_options = $rule->getAllActions();
 
             $actions = [];
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => 'field',
                'FROM'   => $this->getTable(),
                'WHERE'  => [static::$items_id => $rules_id],
             ]);
 
-            while ($action = $iterator->next()) {
+            while ($action = $request->fetchAssociative()) {
                 if (
                     isset($actions_options[$action["field"]])
-                     && ($action["field"] != 'groups_id_validate')
-                     && ($action["field"] != 'users_id_validate')
+                     && ($action["field"] != 'validate_groups_id')
+                     && ($action["field"] != 'validate_users_id')
                      && ($action["field"] != 'affectobject')
                 ) {
                     $actions[$action["field"]] = $action["field"];
@@ -676,7 +674,7 @@ class RuleAction extends CommonDBChild
                                     self::getTable(),
                                     [
                                       'action_type'           => 'add_validation',
-                                      'field'                 => 'users_id_validate',
+                                      'field'                 => 'validate_users_id',
                                       $item->getRuleIdField() => $options[$item->getRuleIdField()]
                                     ]
                                 );
@@ -686,7 +684,7 @@ class RuleAction extends CommonDBChild
                                 }
                             }
                             $options = getOptionsForUsers(['validate_incident','validate_request']);
-                            foreach ($used as $key => $value) {
+                            foreach ($used as $value) {
                                 unset($options[$value]);
                             }
                             renderTwigTemplate('macros/input.twig', [

@@ -64,17 +64,17 @@ class IPAddress_IPNetwork extends CommonDBRelation
         $ipnetworks_id = $network->getID();
 
         // First, remove all links of the current Network
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => $linkTable,
            'WHERE'  => ['ipnetworks_id' => $ipnetworks_id]
         ]);
-        while ($link = $iterator->next()) {
+        while ($link = $request->fetchAssociative()) {
             $linkObject->delete(['id' => $link['id']]);
         }
 
         // Then, look each IP address contained inside current Network
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => [
               new \QueryExpression($DB->quoteValue($ipnetworks_id) . ' AS ' . $DB->quoteName('ipnetworks_id')),
               'id AS ipaddresses_id'
@@ -83,7 +83,7 @@ class IPAddress_IPNetwork extends CommonDBRelation
            'WHERE'  => $network->getCriteriaForMatchingElement('glpi_ipaddresses', 'binary', 'version'),
            'GROUP'  => 'id'
         ]);
-        while ($link = $iterator->next()) {
+        while ($link = $request->fetchAssociative()) {
             $linkObject->add($link);
         }
     }

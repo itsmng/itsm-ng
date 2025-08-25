@@ -369,9 +369,9 @@ class SoftwareLicense extends CommonTreeDropdown
                     ],
                     __('Technician in charge of the license') => [
                        'type' => 'select',
-                       'name' => 'users_id_tech',
+                       'name' => 'tech_users_id',
                        'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields["users_id_tech"],
+                       'value' => $this->fields["tech_users_id"],
                        'actions' => getItemActionButtons(['info'], 'User')
                     ],
                     __('Publisher') => [
@@ -383,10 +383,10 @@ class SoftwareLicense extends CommonTreeDropdown
                     ],
                     __('Group in charge of the license') => [
                        'type' => 'select',
-                       'name' => 'groups_id_tech',
+                       'name' => 'tech_groups_id',
                        'itemtype' => Group::class,
                        'copnditions' => ['is_assign' => 1],
-                       'value' => $this->fields["groups_id_tech"],
+                       'value' => $this->fields["tech_groups_id"],
                        'actions' => getItemActionButtons(['info', 'add'], 'Group')
                     ],
                     __('Serial number') => [
@@ -424,14 +424,14 @@ class SoftwareLicense extends CommonTreeDropdown
                        'name' => 'softwareversions_id_use',
                        'itemtype' => SoftwareVersion::class,
                        'conditions' => ['softwares_id' => $this->fields['softwares_id']],
-                       'value' => $this->fields["softwareversions_id_use"],
+                       'value' => $this->fields["softwareversions_id_use"] ?? null,
                     ],
                     __('Purchase version') => [
                        'type' => 'select',
                        'name' => 'softwareversions_id_buy',
                        'itemtype' => SoftwareVersion::class,
                        'conditions' => ['softwares_id' => $this->fields['softwares_id']],
-                       'value' => $this->fields["softwareversions_id_buy"],
+                       'value' => $this->fields["softwareversions_id_buy"] ?? null,
                     ],
                     _x('quantity', 'Number') . ' (0 = ' . __('Unlimited') . ')' => [
                        'type' => 'number',
@@ -637,7 +637,7 @@ class SoftwareLicense extends CommonTreeDropdown
            'id'                 => '24',
            'table'              => 'glpi_users',
            'field'              => 'name',
-           'linkfield'          => 'users_id_tech',
+           'linkfield'          => 'tech_users_id',
            'name'               => __('Technician in charge of the license'),
            'datatype'           => 'dropdown',
            'right'              => 'own_ticket'
@@ -656,7 +656,7 @@ class SoftwareLicense extends CommonTreeDropdown
            'id'                 => '49',
            'table'              => 'glpi_groups',
            'field'              => 'completename',
-           'linkfield'          => 'groups_id_tech',
+           'linkfield'          => 'tech_groups_id',
            'name'               => __('Group in charge of the license'),
            'condition'          => ['is_assign' => 1],
            'datatype'           => 'dropdown'
@@ -924,12 +924,12 @@ class SoftwareLicense extends CommonTreeDropdown
                   'glpi_softwares.entities_id'  => $entity
                ]
             ];
-            $iterator = $DB->request($criteria);
+            $request = self::getAdapter()->request($criteria);
 
             $message = "";
             $items   = [];
 
-            while ($license = $iterator->next()) {
+            while ($license = $request->fetchAssociative()) {
                 $name     = $license['softname'] . ' - ' . $license['name'] . ' - ' . $license['serial'];
                 //TRANS: %1$s the license name, %2$s is the expiration date
                 $message .= sprintf(
@@ -995,15 +995,13 @@ class SoftwareLicense extends CommonTreeDropdown
     */
     public static function countForVersion($softwareversions_id, $entity = '')
     {
-        global $DB;
-
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_softwarelicenses',
            'WHERE'  => [
               'softwareversions_id_buy'  => $softwareversions_id
            ] + getEntitiesRestrictCriteria('glpi_softwarelicenses', '', $entity)
-        ])->next();
+        ])->fetchAssociative();
 
         return $result['cpt'];
     }
@@ -1018,9 +1016,7 @@ class SoftwareLicense extends CommonTreeDropdown
     **/
     public static function countForSoftware($softwares_id)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'COUNT'  => 'cpt',
            'FROM'   => 'glpi_softwarelicenses',
            'WHERE'  => [
@@ -1030,14 +1026,14 @@ class SoftwareLicense extends CommonTreeDropdown
            ] + getEntitiesRestrictCriteria('glpi_softwarelicenses', '', '', true)
         ]);
 
-        if ($line = $iterator->next()) {
+        if ($line = $request->fetchAssociative()) {
             if ($line['cpt'] > 0) {
                 // At least 1 unlimited license, means unlimited
                 return -1;
             }
         }
 
-        $result = $DB->request([
+        $result = self::getAdapter()->request([
            'SELECT' => ['SUM' => 'number AS numsum'],
            'FROM'   => 'glpi_softwarelicenses',
            'WHERE'  => [
@@ -1045,7 +1041,7 @@ class SoftwareLicense extends CommonTreeDropdown
               'is_template'  => 0,
               'number'       => ['>', 0]
            ] + getEntitiesRestrictCriteria('glpi_softwarelicenses', '', '', true)
-        ])->next();
+        ])->fetchAssociative();
         return ($result['numsum'] ? $result['numsum'] : 0);
     }
 
@@ -1145,7 +1141,7 @@ class SoftwareLicense extends CommonTreeDropdown
         }
 
         $rand  = mt_rand();
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => [
               'glpi_softwarelicenses.*',
               'buyvers.name AS buyname',
@@ -1195,7 +1191,8 @@ class SoftwareLicense extends CommonTreeDropdown
            'START'     => (int)$start,
            'LIMIT'     => (int)$_SESSION['glpilist_limit']
         ]);
-        $num_displayed = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $num_displayed = count($results);
 
         if ($num_displayed) {
             // Display the pager
@@ -1241,7 +1238,8 @@ class SoftwareLicense extends CommonTreeDropdown
 
             $tot_assoc = 0;
             $tot       = 0;
-            while ($data = $iterator->next()) {
+            // while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 Session::addToNavigateListItems('SoftwareLicense', $data['id']);
                 $expired = true;
                 if (
@@ -1406,7 +1404,6 @@ class SoftwareLicense extends CommonTreeDropdown
 
     public static function getSonsOf($item)
     {
-        global $DB;
         $entity_assign = $item->isEntityAssign();
         $nb            = 0;
         $ID            = $item->getID();
@@ -1428,23 +1425,40 @@ class SoftwareLicense extends CommonTreeDropdown
         $header .= "</tr>\n";
         echo $header;
 
-        $fk   = $item->getForeignKeyField();
-        $crit = [$fk     => $ID,
-                      'ORDER' => 'name'];
+        $fk    = $item->getForeignKeyField();
+        $table = $item->getTable();
+
+        $em   = self::getAdapter()->getEntityManager();
+        $conn = $em->getConnection();
+        $qb   = $conn->createQueryBuilder();
+
+        $qb->select('t.id', 't.name', 't.entities_id', 't.comment')
+           ->from($table, 't')
+           ->where($qb->expr()->eq('t.' . $fk, ':parent_id'))
+           ->setParameter('parent_id', $ID)
+           ->orderBy('t.name', 'ASC');
 
         if ($entity_assign) {
-            if ($fk == 'entities_id') {
-                $crit['id']  = $_SESSION['glpiactiveentities'];
-                $crit['id'] += $_SESSION['glpiparententities'];
+            // Restrict to current entity scope
+            $active = $_SESSION['glpiactiveentities'] ?? [];
+            if ($fk === 'entities_id') {
+                $parents = $_SESSION['glpiparententities'] ?? [];
+                $ids = array_values(array_unique(array_map('intval', array_merge($active, $parents))));
+                if (!empty($ids)) {
+                    $qb->andWhere($qb->expr()->in('t.id', ':ids'))
+                       ->setParameter('ids', $ids, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
+                }
             } else {
-                foreach ($_SESSION['glpiactiveentities'] as $key => $value) {
-                    $crit['entities_id'][$key] = (string)$value;
+                $eids = array_values(array_map('intval', $active));
+                if (!empty($eids)) {
+                    $qb->andWhere($qb->expr()->in('t.entities_id', ':eids'))
+                       ->setParameter('eids', $eids, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
                 }
             }
         }
-        $nb = 0;
 
-        foreach ($DB->request($item->getTable(), $crit) as $data) {
+        $nb = 0;
+        foreach ($qb->executeQuery()->fetchAllAssociative() as $data) {
             $nb++;
             echo "<tr class='tab_bg_1'>";
             echo "<td><a href='" . $item->getFormURL();

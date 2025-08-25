@@ -119,17 +119,15 @@ trait CalDAVPrincipalsTrait
      *
      * @return array
      */
-    protected function getVisibleGroupsIterator(): Iterator
+    protected function getVisibleGroupsIterator(): array
     {
-
-        global $DB;
 
         if (
             !Session::haveRight(Planning::$rightname, Planning::READALL)
             && empty($_SESSION['glpigroups'])
         ) {
             // User cannot read planning of everyone and has no groups.
-            return new EmptyIterator();
+            return [];
         }
 
         $groups_criteria = getEntitiesRestrictCriteria(
@@ -147,14 +145,15 @@ trait CalDAVPrincipalsTrait
             $groups_criteria['id'] = $_SESSION['glpigroups'];
         }
 
-        $groups_iterator = $DB->request(
+        $group = new Group();
+        $groups_request = $group->getAdapter()->request(
             [
               'FROM'  => Group::getTable(),
               'WHERE' => $groups_criteria,
             ]
-        );
+        )->fetchAssociative();
 
-        return $groups_iterator;
+        return $groups_request;
     }
 
     /**

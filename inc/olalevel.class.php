@@ -82,8 +82,6 @@ class OlaLevel extends LevelAgreementLevel
     **/
     public function showForOLA(OLA $ola)
     {
-        global $DB;
-
         $ID = $ola->getField('id');
         if (!$ola->can($ID, READ)) {
             return false;
@@ -127,12 +125,13 @@ class OlaLevel extends LevelAgreementLevel
             echo "</div>";
         }
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => 'glpi_olalevels',
            'WHERE'  => ['olas_id' => $ID],
            'ORDER'  => 'execution_time'
         ]);
-        $numrows = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $numrows = count($results);
 
         echo "<div class='spaced'>";
         if ($canedit && $numrows) {
@@ -161,7 +160,7 @@ class OlaLevel extends LevelAgreementLevel
             )
         );
 
-        while ($data = $iterator->next()) {
+        foreach ($results as $data) {
             Session::addToNavigateListItems('OlaLevel', $data["id"]);
 
             echo "<tr class='tab_bg_2'>";
@@ -287,9 +286,7 @@ class OlaLevel extends LevelAgreementLevel
     **/
     public static function getFirstOlaLevel($olas_id)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'id',
            'FROM'   => 'glpi_olalevels',
            'WHERE'  => [
@@ -299,9 +296,9 @@ class OlaLevel extends LevelAgreementLevel
            'ORDER'  => 'execution_time ASC',
            'LIMIT'  => 1
         ]);
-
-        if (count($iterator)) {
-            $result = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            $result = $results[0];
             return $result['id'];
         }
         return 0;
@@ -318,19 +315,17 @@ class OlaLevel extends LevelAgreementLevel
     **/
     public static function getNextOlaLevel($olas_id, $olalevels_id)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT' => 'execution_time',
            'FROM'   => 'glpi_olalevels',
            'WHERE'  => ['id' => $olalevels_id]
         ]);
-
-        if (count($iterator)) {
-            $result = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
+            $result = $results[0];
             $execution_time = $result['execution_time'];
 
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT' => 'id',
                'FROM'   => 'glpi_olalevels',
                'WHERE'  => [
@@ -342,9 +337,9 @@ class OlaLevel extends LevelAgreementLevel
                'ORDER'  => 'execution_time ASC',
                'LIMIT'  => 1
             ]);
-
-            if (count($iterator)) {
-                $result = $iterator->next();
+            $results = $request->fetchAllAssociative();
+            if (count($results)) {
+                $result = $results[0];
                 return $result['id'];
             }
         }

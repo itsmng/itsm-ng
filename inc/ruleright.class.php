@@ -330,32 +330,31 @@ class RuleRight extends Rule
 
     public function displayAdditionalRuleCondition($condition, $criteria, $name, $value, $test = false)
     {
-        global $DB;
         if ($criteria['field'] == 'type') {
             $methods = [
                \Auth::DB_GLPI => __('Authentication on ITSM-NG database'),
             ];
 
-            $result = $DB->request([
+            $result = $this::getAdapter()->request([
                'FROM'   => 'glpi_authldaps',
                'COUNT'  => 'cpt',
                'WHERE'  => [
                   'is_active' => 1
                ]
-            ])->next();
+            ])->fetchAssociative();
 
             if ($result['cpt'] > 0) {
                 $methods[\Auth::LDAP]     = __('Authentication on a LDAP directory');
                 $methods[\Auth::EXTERNAL] = __('External authentications');
             }
 
-            $result = $DB->request([
+            $result = $this::getAdapter()->request([
                'FROM'   => 'glpi_authmails',
                'COUNT'  => 'cpt',
                'WHERE'  => [
                   'is_active' => 1
                ]
-            ])->next();
+            ])->fetchAssociative();
 
             if ($result['cpt'] > 0) {
                 $methods[\Auth::MAIL] = __('Authentication on mail server');

@@ -116,9 +116,7 @@ class ProjectTask_Ticket extends CommonDBRelation
      **/
     public static function getTicketsTotalActionTime($projecttasks_id)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'       => new QueryExpression('SUM(glpi_tickets.actiontime) AS duration'),
            'FROM'         => self::getTable(),
            'INNER JOIN'   => [
@@ -132,7 +130,7 @@ class ProjectTask_Ticket extends CommonDBRelation
            'WHERE'        => ['projecttasks_id' => $projecttasks_id]
         ]);
 
-        if ($row = $iterator->next()) {
+        if ($row = $request->fetchAssociative()) {
             return $row['duration'];
         }
         return 0;
@@ -260,7 +258,7 @@ class ProjectTask_Ticket extends CommonDBRelation
      **/
     public static function showForTicket(Ticket $ticket)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $ID = $ticket->getField('id');
         if (!$ticket->can($ID, READ)) {
@@ -275,7 +273,7 @@ class ProjectTask_Ticket extends CommonDBRelation
 
         $pjtasks = [];
         $used    = [];
-        while ($data = $iterator->next()) {
+        foreach ($iterator as $data) {
             $pjtasks[$data['id']] = $data;
             $used[$data['id']]    = $data['id'];
         }
@@ -287,7 +285,7 @@ class ProjectTask_Ticket extends CommonDBRelation
                 $ticket->getSolvedStatusArray()
             ))
         ) {
-            $finished_states_it = $DB->request(
+            $request = self::getAdapter()->request(
                 [
                   'SELECT' => ['id'],
                   'FROM'   => ProjectState::getTable(),
@@ -297,6 +295,7 @@ class ProjectTask_Ticket extends CommonDBRelation
                 ]
             );
             $finished_states_ids = [];
+            $finished_states_it = $request->fetchAllAssociative();
             foreach ($finished_states_it as $finished_state) {
                 $finished_states_ids[] = $finished_state['id'];
             }
@@ -408,7 +407,7 @@ class ProjectTask_Ticket extends CommonDBRelation
         ];
         $values = [];
         if ($numrows) {
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT'    => [
                   'glpi_projecttasks.*',
                   'glpi_projecttasktypes.name AS tname',
@@ -456,7 +455,7 @@ class ProjectTask_Ticket extends CommonDBRelation
                   'glpi_projecttasks_tickets.tickets_id' => $ID
                ],
             ]);
-            while ($data = $iterator->next()) {
+            while ($data = $request->fetchAssociative()) {
                 $newValue = [];
                 $rand = mt_rand();
                 $link = "<a id='Project" . $data["projects_id"] . $rand . "' href='" .

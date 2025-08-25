@@ -180,8 +180,6 @@ abstract class CommonDevice extends CommonDropdown
     **/
     public function canUnrecurs()
     {
-        global $DB;
-
         $ID = $this->fields['id'];
         if (
             ($ID < 0)
@@ -199,7 +197,7 @@ abstract class CommonDevice extends CommonDropdown
         $linktype  = static::getItem_DeviceType();
         $linktable = getTableForItemType($linktype);
 
-        $result = $DB->request(
+        $result = $this::getAdapter()->request(
             [
               'SELECT'    => [
                  'itemtype',
@@ -485,14 +483,14 @@ abstract class CommonDevice extends CommonDropdown
             }
         }
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'SELECT' => ['id'],
            'FROM'   => $this->getTable(),
            'WHERE'  => $where
         ]);
-
-        if (count($iterator) > 0) {
-            $line = $iterator->next();
+        $results = $request->fetchAllAssociative();
+        if (count($results) > 0) {
+            $line = $results[0];
             return $line['id'];
         }
 

@@ -124,7 +124,7 @@ switch ($_GET["type"]) {
         $title   = sprintf(__('%1$s: %2$s'), User::getTypeName(1), getUserName($_GET["id"], $showuserlink));
         break;
 
-    case "users_id_recipient":
+    case "recipient_users_id":
         $val1    = $_GET["id"];
         $val2    = "";
         $values  = Stat::getItems($_GET["itemtype"], $_POST["date1"], $_POST["date2"], $_GET["type"]);
@@ -466,7 +466,7 @@ $values['avgsolved'] = Stat::constructEntryValues(
     $val2
 );
 // Pass to hour values
-foreach ($values['avgsolved'] as $key => &$val) {
+foreach ($values['avgsolved'] as &$val) {
     $val = round($val / HOUR_TIMESTAMP, 2);
 }
 //Temps moyen de cloture d'intervention
@@ -480,7 +480,7 @@ $values['avgclosed'] = Stat::constructEntryValues(
     $val2
 );
 // Pass to hour values
-foreach ($values['avgclosed'] as $key => &$val) {
+foreach ($values['avgclosed'] as &$val) {
     $val = round($val / HOUR_TIMESTAMP, 2);
 }
 //Temps moyen d'intervention reel
@@ -494,7 +494,7 @@ $values['avgactiontime'] = Stat::constructEntryValues(
     $val2
 );
 // Pass to hour values
-foreach ($values['avgactiontime'] as $key => &$val) {
+foreach ($values['avgactiontime'] as &$val) {
     $val = round($val / HOUR_TIMESTAMP, 2);
 }
 
@@ -523,7 +523,7 @@ if ($_GET['itemtype'] == 'Ticket') {
         $val2
     );
     // Pass to hour values
-    foreach ($values['avgtaketime'] as $key => &$val) {
+    foreach ($values['avgtaketime'] as &$val) {
         $val = round($val / HOUR_TIMESTAMP, 2);
     }
 

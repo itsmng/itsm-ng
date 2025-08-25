@@ -278,7 +278,7 @@ class Contract_Item extends CommonDBRelation
             $newitemtype = $itemtype;
         }
 
-        $result = $DB->request(
+        $result = self::getAdapter()->request(
             [
               'SELECT' => 'contracts_id',
               'FROM'   => self::getTable(),
@@ -324,10 +324,13 @@ class Contract_Item extends CommonDBRelation
         $canedit = $item->can($ID, UPDATE);
         $iterator = self::getListForItem($item);
         $number = count($iterator);
+        $adapter = Config::getAdapter();
+        $date_expr = $adapter->getDateAdd('begin_date', 'duration', 'month');
+
 
         $contracts = [];
         $used      = [];
-        while ($data = $iterator->next()) {
+        foreach ($iterator as $data) {
             $contracts[$data['id']] = $data;
             $used[$data['id']]      = $data['id'];
         }
@@ -367,7 +370,7 @@ class Contract_Item extends CommonDBRelation
                            'values' => getOptionForItems('Contract', array_merge([
                               'OR' => [
                                  'renewal' => 1,
-                                 new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName('begin_date') . ', INTERVAL ' . $DB->quoteName('duration') . ' MONTH), CURDATE()) > 0'),
+                                new \QueryExpression("($date_expr) > CURRENT_DATE"),
                                  'begin_date'   => null,
                               ],
                               'is_deleted' => 0,
@@ -464,7 +467,7 @@ class Contract_Item extends CommonDBRelation
     **/
     public static function showForContract(Contract $contract, $withtemplate = 0)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $instID = $contract->fields['id'];
 
@@ -480,7 +483,7 @@ class Contract_Item extends CommonDBRelation
         $data    = [];
         $totalnb = 0;
         $used    = [];
-        while ($type_row = $types_iterator->next()) {
+        foreach ($types_iterator as $type_row) {
             $itemtype = $type_row['itemtype'];
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -546,8 +549,9 @@ class Contract_Item extends CommonDBRelation
                 $params['WHERE'] += getEntitiesRestrictCriteria($itemtable, '', '', $item->maybeRecursive());
                 $params['ORDER'] = "glpi_entities.completename, $namefield";
 
-                $iterator = $DB->request($params);
-                $nb = count($iterator);
+                $request = self::getAdapter()->request($params);
+                $results = $request->fetchAllAssociative();
+                $nb = count($results);
 
                 if ($nb > $_SESSION['glpilist_limit']) {
                     $opt = ['order'      => 'ASC',
@@ -573,7 +577,7 @@ class Contract_Item extends CommonDBRelation
                                              'link'     => $link];
                 } elseif ($nb > 0) {
                     $data[$itemtype] = [];
-                    while ($objdata = $iterator->next()) {
+                    foreach ($results as $objdata) {
                         $data[$itemtype][$objdata['id']] = $objdata;
                         $used[$itemtype][$objdata['id']] = $objdata['id'];
                     }

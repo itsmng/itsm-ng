@@ -1211,8 +1211,8 @@ class RacksPluginToCoreCommand extends AbstractCommand
                       'manufacturers_id' => $old_rack['manufacturers_id'],
                       'racktypes_id'     => null !== $racktype ? $racktype->fields['id'] : 0,
                       'states_id'        => null !== $rackstate ? $rackstate->fields['id'] : 0,
-                      'users_id_tech'    => $old_rack['users_id_tech'],
-                      'groups_id_tech'   => $old_rack['groups_id_tech'],
+                      'tech_users_id'    => $old_rack['tech_users_id'],
+                      'tech_groups_id'   => $old_rack['tech_groups_id'],
                       'width'            => (int) $old_rack['width'],
                       'height'           => (int) $old_rack['height'],
                       'depth'            => (int) $old_rack['depth'],
@@ -1355,7 +1355,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                     $old_item['plugin_racks_racks_id']
                 );
 
-                $item_input = $item_input + [
+                $item_input += [
                    'racks_id'    => null !== $rack ? $rack->fields['id'] : 0,
                    'position'    => $position,
                    'hpos'        => 0,

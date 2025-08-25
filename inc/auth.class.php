@@ -139,23 +139,25 @@ class Auth extends CommonGLPI
     {
         global $DB;
 
-        $result = $DB->request(
-            'glpi_users',
+        $user = new User();
+        $result = $user->getAdapter()->request(
             [
-              'WHERE'    => $options,
-              'LEFT JOIN' => ['glpi_useremails' => ['FKEY' => [
-                 'glpi_users'      => 'id',
-                 'glpi_useremails' => 'users_id'
+            'SELECT' => 'glpi_users.*',
+            'FROM'   => 'users',
+            'WHERE'    => $options,
+            'LEFT JOIN' => ['glpi_useremails' => ['FKEY' => [
+                'glpi_users'      => 'id',
+                'glpi_useremails' => 'users_id'
               ]]]
             ]
         );
         // Check if there is a row
-        if ($result->numrows() == 0) {
+        if ($result->rowCount() == 0) {
             $this->addToError(__('Incorrect username or password'));
             return self::USER_DOESNT_EXIST;
         } else {
             // Get the first result...
-            $row = $result->next();
+            $row = $result->fetchAssociative();
 
             // Check if we have a password...
             if (empty($row['password'])) {
@@ -376,39 +378,39 @@ class Auth extends CommonGLPI
         $pass_expiration_delay = (int)$CFG_GLPI['password_expiration_delay'];
         $lock_delay            = (int)$CFG_GLPI['password_expiration_lock_delay'];
 
-        // SQL query
-        $result = $DB->request(
-            [
-              'SELECT' => [
-                 'id',
-                 'password',
-                 new QueryExpression(
-                     sprintf(
-                         'ADDDATE(%s, INTERVAL %d DAY) AS ' . $DB->quoteName('password_expiration_date'),
-                         $DB->quoteName('password_last_update'),
-                         $pass_expiration_delay
-                     )
-                 ),
-                 new QueryExpression(
-                     sprintf(
-                         'ADDDATE(%s, INTERVAL %d DAY) AS ' . $DB->quoteName('lock_date'),
-                         $DB->quoteName('password_last_update'),
-                         $pass_expiration_delay + $lock_delay
-                     )
-                 )
-              ],
-              'FROM'   => User::getTable(),
-              'WHERE'  =>  [
-                 'name'     => $name,
-                 'authtype' => self::DB_GLPI,
-                 'auths_id' => 0,
-              ]
-            ]
+        $user = new User();
+        $adapter = $user->getAdapter();
+
+        $passwordExpirationExpr = $adapter->getDateAdd(
+            'password_last_update',
+            $pass_expiration_delay,
+            'DAY',
+            'password_expiration_date'
         );
 
-        // Have we a result ?
-        if ($result->numrows() == 1) {
-            $row = $result->next();
+        $lockDateExpr = $adapter->getDateAdd(
+            'password_last_update',
+            $pass_expiration_delay + $lock_delay,
+            'DAY',
+            'lock_date'
+        );
+        $result = $adapter->request([
+            'SELECT' => [
+                'id',
+                'password',
+                new \QueryExpression($passwordExpirationExpr),
+                new \QueryExpression($lockDateExpr)
+            ],
+            'FROM'   => User::getTable(),
+            'WHERE'  => [
+                'name'     => $name,
+                'authtype' => self::DB_GLPI,
+                'auths_id' => 0,
+            ]
+            ]);
+
+        if ($result->rowcount() === 1) {
+            $row = $result->fetchAssociative();
             $password_db = $row['password'];
 
             if (self::checkPassword($password, $password_db)) {
@@ -1107,26 +1109,28 @@ class Auth extends CommonGLPI
            self::DB_GLPI => __('Authentication on ITSM-NG database'),
         ];
 
-        $result = $DB->request([
-           'FROM'   => 'glpi_authldaps',
-           'COUNT'  => 'cpt',
-           'WHERE'  => [
+        $authldap = new AuthLDAP();
+        $result = $authldap->getAdapter()->request([
+            'COUNT'  => 'cpt',
+            'FROM'   => 'glpi_authldaps',
+            'WHERE'  => [
               'is_active' => 1
            ]
-        ])->next();
+        ])->fetchAssociative();
 
         if ($result['cpt'] > 0) {
             $methods[self::LDAP]     = __('Authentication on a LDAP directory');
             $methods[self::EXTERNAL] = __('External authentications');
         }
 
-        $result = $DB->request([
-           'FROM'   => 'glpi_authmails',
+        $authmail = new AuthMail();
+        $result = $authmail->getAdapter()->request([
            'COUNT'  => 'cpt',
+           'FROM'   => 'glpi_authmails',
            'WHERE'  => [
               'is_active' => 1
            ]
-        ])->next();
+        ])->fetchAssociative();
 
         if ($result['cpt'] > 0) {
             $methods[self::MAIL] = __('Authentication on mail server');
@@ -1423,6 +1427,7 @@ class Auth extends CommonGLPI
             Html::redirect($CFG_GLPI['root_doc'] . '/front/updatepassword.php');
         }
 
+
         if (!$redirect) {
             if (isset($_POST['redirect']) && (strlen($_POST['redirect']) > 0)) {
                 $redirect = $_POST['redirect'];
@@ -1437,13 +1442,15 @@ class Auth extends CommonGLPI
         }
 
         // Redirect to Command Central if not post-only
+
         if (Session::getCurrentInterface() == "helpdesk") {
             if ($_SESSION['glpiactiveprofile']['create_ticket_on_login']) {
                 Html::redirect($CFG_GLPI['root_doc'] . "/front/helpdesk.public.php?create_ticket=1");
             }
             Html::redirect($CFG_GLPI['root_doc'] . "/front/helpdesk.public.php");
         } else {
-            if ($_SESSION['glpiactiveprofile']['create_ticket_on_login']) {
+            if (isset($_SESSION['glpiactiveprofile']['create_ticket_on_login'])
+            && $_SESSION['glpiactiveprofile']['create_ticket_on_login']) {
                 Html::redirect(Ticket::getFormURL());
             }
             Html::redirect($CFG_GLPI['root_doc'] . "/front/central.php");
@@ -1459,7 +1466,7 @@ class Auth extends CommonGLPI
      */
     public static function showSynchronizationForm(User $user)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         if (Session::haveRight("user", User::UPDATEAUTHENT)) {
             echo "<form aria-label='Synchronization form' method='post' action='" . Toolbox::getItemTypeFormURL('User') . "'>";
@@ -1473,13 +1480,14 @@ class Auth extends CommonGLPI
                     //Look it the auth server still exists !
                     // <- Bad idea : id not exists unable to change anything
                     // SQL query
-                    $result = $DB->request([
+                    $authldap = new AuthLDAP();
+                    $result = $authldap->getAdapter()->request([
                        'SELECT' => 'name',
                        'FROM' => 'glpi_authldaps',
                        'WHERE' => ['id' => $user->getField('auths_id'), 'is_active' => 1],
                     ]);
 
-                    if ($result->numrows() > 0) {
+                    if ($result->rowcount() > 0) {
                         echo "<table class='tab_cadre' aria-label='Synchronisation'><tr class='tab_bg_2'><td>";
                         echo "<input type='hidden' name='id' value='" . $user->getID() . "'>";
                         echo "<input class=submit type='submit' name='force_ldap_resynch' value='" .
@@ -1807,22 +1815,34 @@ class Auth extends CommonGLPI
                'logout'  => $_POST["logout"],
                'sso_link_users' => $_POST['sso_link_users'],
             ];
-            $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
+            $exists = config::getAdapter()->request([
+                'COUNT'  => 'cpt',
+                'FROM'   => 'glpi_oidc_config',
+            ])->fetchAssociative();
+
+            if ($exists['cpt'] > 0) {
+                $oidc_result['id'] = 0;
+            }
+
+            config::getAdapter()->save(['glpi_oidc_config'], $oidc_result);
         }
-        $criteria = "SELECT * FROM glpi_oidc_config";
-        $iterators = $DB->request($criteria);
+        $criteria = [
+            'SELECT' => '*',
+            'FROM'   => 'glpi_oidc_config'
+        ];
+        $results = config::getAdapter()->request($criteria);
         $oidc_db = [];
-        foreach ($iterators as $iterator) {
-            $oidc_db['Provider'] = $iterator['Provider'];
-            $oidc_db['ClientID'] = $iterator['ClientID'];
-            $oidc_db['ClientSecret'] = Toolbox::sodiumDecrypt($iterator['ClientSecret']);
-            $oidc_db['is_activate'] = $iterator['is_activate'];
-            $oidc_db['is_forced'] = $iterator['is_forced'];
-            $oidc_db['scope'] = $iterator['scope'];
-            $oidc_db['proxy'] = $iterator['proxy'];
-            $oidc_db['cert'] = $iterator['cert'];
-            $oidc_db['logout'] = $iterator['logout'];
-            $oidc_db['sso_link_users'] = $iterator['sso_link_users'];
+        foreach ($results as $result) {
+            $oidc_db['Provider'] = $result['Provider'];
+            $oidc_db['ClientID'] = $result['ClientID'];
+            $oidc_db['ClientSecret'] = Toolbox::sodiumDecrypt($result['ClientSecret']);
+            $oidc_db['is_activate'] = $result['is_activate'];
+            $oidc_db['is_forced'] = $result['is_forced'];
+            $oidc_db['scope'] = $result['scope'];
+            $oidc_db['proxy'] = $result['proxy'];
+            $oidc_db['cert'] = $result['cert'];
+            $oidc_db['logout'] = $result['logout'];
+            $oidc_db['sso_link_users'] = $result['sso_link_users'];
         }
 
         $form = [
@@ -1910,8 +1930,6 @@ class Auth extends CommonGLPI
      */
     public static function getLoginAuthMethods()
     {
-        global $DB;
-
         $elements = [
            '_default'  => 'local',
            'local'     => __("ITSM-NG internal database")
@@ -1919,14 +1937,15 @@ class Auth extends CommonGLPI
 
         // Get LDAP
         if (Toolbox::canUseLdap()) {
-            $iterator = $DB->request([
+            $authldap = new AuthLDAP();
+            $result = $authldap->getAdapter()->request([
                'FROM'   => 'glpi_authldaps',
                'WHERE'  => [
                   'is_active' => 1
                ],
                'ORDER'  => ['name']
             ]);
-            while ($data = $iterator->next()) {
+            while ($data = $result->fetchAssociative()) {
                 $elements['ldap-' . $data['id']] = $data['name'];
                 if ($data['is_default'] == 1) {
                     $elements['_default'] = 'ldap-' . $data['id'];
@@ -1935,14 +1954,15 @@ class Auth extends CommonGLPI
         }
 
         // GET Mail servers
-        $iterator = $DB->request([
+        $authmail = new AuthMail();
+        $result = $authmail->getAdapter()->request([
            'FROM'   => 'glpi_authmails',
            'WHERE'  => [
               'is_active' => 1
            ],
            'ORDER'  => ['name']
         ]);
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $elements['mail-' . $data['id']] = $data['name'];
         }
 
@@ -1952,7 +1972,7 @@ class Auth extends CommonGLPI
     /**
      * Get the authentication methods for login
      */
-    public static function dropdownLogin(): array
+    public static function dropdownLogin(): ?array
     {
         $elements = self::getLoginAuthMethods();
         if (count($elements) > 1) {
@@ -1961,6 +1981,7 @@ class Auth extends CommonGLPI
         } elseif (count($elements) == 1) {
             return null;
         }
+        return null;
     }
 
     /**

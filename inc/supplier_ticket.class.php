@@ -57,9 +57,7 @@ class Supplier_Ticket extends CommonITILActor
     **/
     public function isSupplierEmail($items_id, $email)
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'      => $this->getTable(),
            'LEFT JOIN' => [
               'glpi_suppliers'  => [
@@ -75,7 +73,7 @@ class Supplier_Ticket extends CommonITILActor
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             return true;
         }
         return false;

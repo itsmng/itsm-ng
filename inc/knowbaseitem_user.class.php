@@ -62,14 +62,14 @@ class KnowbaseItem_User extends CommonDBRelation
 
         $users = [];
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'knowbaseitems_id' => $knowbaseitems_id
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $users[$data['users_id']][] = $data;
         }
         return $users;

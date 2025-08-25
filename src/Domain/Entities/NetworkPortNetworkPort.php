@@ -1,0 +1,71 @@
+<?php
+
+namespace Itsmng\Domain\Entities;
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'glpi_networkports_networkports')]
+#[ORM\UniqueConstraint(name: 'unicity', columns: ['networkports_id_1', 'networkports_id_2'])]
+#[ORM\Index(name: 'networkports_id_2', columns: ['networkports_id_2'])]
+class NetworkPortNetworkPort
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'id', type: 'integer')]
+    private $id;
+
+    #[ORM\ManyToOne(targetEntity: NetworkPort::class, inversedBy: 'networkportNetworkPorts1')]
+    #[ORM\JoinColumn(name: 'networkports_id_1', referencedColumnName: 'id', nullable: true)]
+    private ?NetworkPort $networkport1 = null;
+
+    #[ORM\ManyToOne(targetEntity: NetworkPort::class, inversedBy: 'networkportNetworkPorts2')]
+    #[ORM\JoinColumn(name: 'networkports_id_2', referencedColumnName: 'id', nullable: true)]
+    private ?NetworkPort $networkport2 = null;
+
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of networkport1
+     */
+    public function getNetworkPort1()
+    {
+        return $this->networkport1;
+    }
+
+    /**
+     * Set the value of networkport1
+     *
+     * @return  self
+     */
+    public function setNetworkPort1($networkport1)
+    {
+        $this->networkport1 = $networkport1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of networkport2
+     */
+    public function getNetworkPort2()
+    {
+        return $this->networkport2;
+    }
+
+    /**
+     * Set the value of networkport2
+     *
+     * @return  self
+     */
+    public function setNetworkPort2($networkport2)
+    {
+        $this->networkport2 = $networkport2;
+
+        return $this;
+    }
+}

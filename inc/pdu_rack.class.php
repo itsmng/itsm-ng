@@ -216,28 +216,26 @@ class PDU_Rack extends CommonDBRelation
 
     public function showForm($ID, $options = [])
     {
-        global $DB;
-
         // search used racked (or sided mounted) pdus
         $used = [];
-        foreach (
-            $DB->request([
+        $notRackedResult = $this::getAdapter()->request([
             'FROM' => $this->getTable()
-            ]) as $not_racked
-        ) {
+        ])->fetchAllAssociative();
+
+        foreach ($notRackedResult as $not_racked) {
             $used[] = $not_racked['pdus_id'];
         }
-        foreach (
-            $DB->request([
+        $rackedResult = $this::getAdapter()->request([
             'SELECT' => 'items_id',
             'FROM'   => Item_Rack::getTable(),
             'WHERE'  => [
-              'itemtype' => 'PDU'
+                'itemtype' => 'PDU'
             ]
-            ]) as $racked
-        ) {
+        ])->fetchAllAssociative();
+
+        foreach ($rackedResult as $racked) {
             $used[] = $racked['items_id'];
-        };
+        }
 
         echo "<div class='center'>";
 
@@ -313,20 +311,18 @@ class PDU_Rack extends CommonDBRelation
 
     public static function showListForRack(Rack $rack)
     {
-        global $DB;
-
         echo "<h2>" . __("Side pdus") . "</h2>";
 
         $pdu     = new PDU();
         $canedit = $rack->canEdit($rack->getID());
         $rand    = mt_rand();
-        $items   = $DB->request([
+        $items   = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'racks_id' => $rack->getID()
            ]
         ]);
-
+        $items = $items->fetchAllAssociative();
         if (!count($items)) {
             echo "<table class='tab_cadre_fixe' aria-label='No item Found'><tr><th>" . __('No item found') . "</th></tr>";
             echo "</table>";
@@ -382,7 +378,7 @@ class PDU_Rack extends CommonDBRelation
 
     public static function showStatsForRack(Rack $rack)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $pdu   = new PDU();
         $pdu_m = new PDUModel();
@@ -391,14 +387,15 @@ class PDU_Rack extends CommonDBRelation
 
         $found_pdus = [];
         // find pdus from this relation
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM' => self::getTable(),
            'WHERE' => [
               'racks_id' => $rack->getID()
            ],
            'ORDER' => 'side'
         ]);
-        foreach ($iterator as $current) {
+        $results = $request->fetchAllAssociative();
+        foreach ($results as $current) {
             $found_pdus[] = [
                'pdus_id'  => $current['pdus_id'],
                'racked'   => false,
@@ -408,14 +405,15 @@ class PDU_Rack extends CommonDBRelation
             ];
         }
         // find pdus from item_rack relation
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM' => Item_Rack::getTable(),
            'WHERE' => [
               'racks_id' => $rack->getID(),
               'itemtype' => 'PDU'
            ]
         ]);
-        foreach ($iterator as $current) {
+        $results = $request->fetchAllAssociative();
+        foreach ($results as $current) {
             $found_pdus[] = [
                'pdus_id'  => $current['items_id'],
                'racked'   => true,
@@ -757,9 +755,7 @@ JAVASCRIPT;
      */
     public static function getForRackSide(Rack $rack, $side)
     {
-        global $DB;
-
-        return $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'  => self::getTable(),
            'WHERE' => [
               'racks_id' => $rack->getID(),
@@ -767,6 +763,7 @@ JAVASCRIPT;
            ],
            'ORDER' => 'position ASC'
         ]);
+        return $request->fetchAllAssociative();
     }
 
     /**
@@ -776,11 +773,9 @@ JAVASCRIPT;
      */
     public static function getUsed()
     {
-        global $DB;
-
-        return $DB->request([
+        return self::getAdapter()->request([
            'FROM'  => self::getTable()
-        ]);
+        ])->fetchAssociative();
     }
 
     /**

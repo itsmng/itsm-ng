@@ -55,7 +55,7 @@ class ProfileRight extends CommonDBChild
      */
     public static function getAllPossibleRights()
     {
-        global $DB, $GLPI_CACHE;
+        global $GLPI_CACHE;
 
         $rights = [];
 
@@ -63,12 +63,12 @@ class ProfileRight extends CommonDBChild
             !$GLPI_CACHE->has('all_possible_rights')
             || count($GLPI_CACHE->get('all_possible_rights')) == 0
         ) {
-            $iterator = $DB->request([
+            $request = self::getAdapter()->request([
                'SELECT'          => 'name',
                'DISTINCT'        => true,
                'FROM'            => self::getTable()
             ]);
-            while ($right = $iterator->next()) {
+            while ($right = $request->fetchAssociative()) {
                 // By default, all rights are NULL ...
                 $rights[$right['name']] = '';
             }
@@ -92,8 +92,6 @@ class ProfileRight extends CommonDBChild
     **/
     public static function getProfileRights($profiles_id, array $rights = [])
     {
-        global $DB;
-
         if (!version_compare(Config::getCurrentDBVersion(), '0.84', '>=')) {
             //table does not exists.
             return [];
@@ -106,9 +104,9 @@ class ProfileRight extends CommonDBChild
         if (count($rights) > 0) {
             $query['WHERE']['name'] = $rights;
         }
-        $iterator = $DB->request($query);
+        $request = self::getAdapter()->request($query);
         $rights = [];
-        while ($right = $iterator->next()) {
+        while ($right = $request->fetchAssociative()) {
             $rights[$right['name']] = $right['rights'];
         }
         return $rights;
@@ -127,22 +125,22 @@ class ProfileRight extends CommonDBChild
         $ok = true;
         $GLPI_CACHE->set('all_possible_rights', []);
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
             'SELECT'   => ['id'],
             'FROM'     => Profile::getTable()
         ]);
 
-        while ($profile = $iterator->next()) {
+        while ($profile = $request->fetchAssociative()) {
             $profiles_id = $profile['id'];
             foreach ($rights as $name) {
-                $res = $DB->insert(
-                    self::getTable(),
-                    [
-                      'profiles_id'  => $profiles_id,
-                      'name'         => $name
-                    ]
-                );
-                if (!$res) {
+                $profileRight = new self();
+
+                $profileRight->fields = [
+                    'profiles_id'  => $profiles_id,
+                    'name'         => $name
+                ];
+
+                if (!$profileRight->addToDB()) {
                     $ok = false;
                 }
             }
@@ -158,19 +156,27 @@ class ProfileRight extends CommonDBChild
     **/
     public static function deleteProfileRights(array $rights)
     {
-        global $DB, $GLPI_CACHE;
+        global $GLPI_CACHE;
 
         $GLPI_CACHE->set('all_possible_rights', []);
         $ok = true;
         foreach ($rights as $name) {
-            $result = $DB->delete(
-                self::getTable(),
-                [
-                  'name' => $name
+            $adapter = self::getAdapter();
+            $items = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => self::getTable(),
+                'WHERE'  => [
+                    'name' => $name
                 ]
-            );
-            if (!$result) {
-                $ok = false;
+            ]);
+
+            foreach ($items->fetchAllAssociative() as $data) {
+                $profileRight = new self();
+                if ($profileRight->getFromDB($data['id'])) {
+                    if (!$profileRight->deleteFromDB()) {
+                        $ok = false;
+                    }
+                }
             }
         }
         return $ok;
@@ -186,26 +192,33 @@ class ProfileRight extends CommonDBChild
     **/
     public static function updateProfileRightAsOtherRight($right, $value, $condition)
     {
-        global $DB;
-
         $profiles = [];
         $ok       = true;
-        foreach ($DB->request('glpi_profilerights', $condition) as $data) {
-            $profiles[] = $data['profiles_id'];
-        }
+        $request = Profile::getAdapter()->request([
+            'SELECT' => ['profiles_id'],
+            'FROM'   => 'glpi_profilerights',
+            'WHERE'  => $condition
+        ]);
+
+        $results = $request->fetchAllAssociative();
+        $profiles = array_column($results, 'profiles_id');
+
         if (count($profiles)) {
-            $result = $DB->update(
-                'glpi_profilerights',
-                [
-                  'rights' => new \QueryExpression($DB->quoteName('rights') . ' | ' . (int)$value)
-                ],
-                [
-                  'name'         => $right,
-                  'profiles_id'  => $profiles
-                ]
-            );
-            if (!$result) {
-                $ok = false;
+            foreach ($profiles as $profiles_id) {
+                $profileRight = new self();
+                if ($profileRight->getFromDBByCrit([
+                    'profiles_id' => $profiles_id,
+                    'name'        => $right
+                ])) {
+                    $new_rights = $profileRight->fields['rights'] | (int)$value;
+
+                    if (!$profileRight->update([
+                        'id'     => $profileRight->getID(),
+                        'rights' => $new_rights
+                    ])) {
+                        $ok = false;
+                    }
+                }
             }
         }
         return $ok;
@@ -223,8 +236,6 @@ class ProfileRight extends CommonDBChild
     **/
     public static function updateProfileRightsAsOtherRights($newright, $initialright, array $condition = [])
     {
-        global $DB;
-
         $profiles = [];
         $ok       = true;
 
@@ -232,28 +243,28 @@ class ProfileRight extends CommonDBChild
            'FROM'   => self::getTable(),
            'WHERE'  => ['name' => $initialright] + $condition
         ];
-        $iterator = $DB->request($criteria);
+        $request = self::getAdapter()->request($criteria);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $profiles[$data['profiles_id']] = $data['rights'];
         }
         if (count($profiles)) {
-            foreach ($profiles as $key => $val) {
-                $res = $DB->update(
-                    self::getTable(),
-                    [
-                      'rights' => $val
-                    ],
-                    [
-                      'profiles_id'  => $key,
-                      'name'         => $newright
-                    ]
-                );
-                if (!$res) {
-                    $ok = false;
+            foreach ($profiles as $profiles_id => $rights_value) {
+                $profileRight = new self();
+                if ($profileRight->getFromDBByCrit([
+                    'profiles_id'  => $profiles_id,
+                    'name'         => $newright
+                ])) {
+                    if (!$profileRight->update([
+                        'id'     => $profileRight->getID(),
+                        'rights' => $rights_value
+                    ])) {
+                        $ok = false;
+                    }
                 }
             }
         }
+
         return $ok;
     }
 
@@ -273,7 +284,7 @@ class ProfileRight extends CommonDBChild
         ]);
 
         $expr = 'NOT EXISTS ' . $subq->getQuery();
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => 'POSSIBLE.name AS NAME',
            'DISTINCT'        => true,
            'FROM'            => 'glpi_profilerights AS POSSIBLE',
@@ -281,8 +292,8 @@ class ProfileRight extends CommonDBChild
               new \QueryExpression($expr)
            ]
         ]);
-
-        if ($iterator->count() === 0) {
+        $results = $request->fetchAllAssociative();
+        if (count($results) === 0) {
             return;
         }
 
@@ -294,7 +305,7 @@ class ProfileRight extends CommonDBChild
             ]
         );
         $stmt = $DB->prepare($query);
-        while ($right = $iterator->next()) {
+        foreach ($results as $right) {
             $stmt->bind_param('ss', $profiles_id, $right['NAME']);
             $stmt->execute();
         }
@@ -309,19 +320,18 @@ class ProfileRight extends CommonDBChild
      */
     public static function updateProfileRights($profiles_id, array $rights = [])
     {
-
         $me = new self();
         foreach ($rights as $name => $right) {
             if (isset($right)) {
                 if (
-                    $me->getFromDBByCrit(['profiles_id'   => $profiles_id,
+                    $me->getFromDBByCrit(['id'   => $profiles_id,
                                           'name'          => $name])
                 ) {
                     $input = ['id'          => $me->getID(),
                               'rights'      => $right];
                     $me->update($input);
                 } else {
-                    $input = ['profiles_id' => $profiles_id,
+                    $input = ['id' => $profiles_id,
                               'name'        => $name,
                               'rights'      => $right];
                     $me->add($input);

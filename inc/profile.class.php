@@ -69,7 +69,6 @@ class Profile extends CommonDBTM
        'useshortcuts',
     ];
 
-
     /// Common fields used for all profiles type
     public static $common_fields  = ['id', 'interface', 'is_default', 'name'];
 
@@ -210,15 +209,24 @@ class Profile extends CommonDBTM
         }
 
         if (in_array('is_default', $this->updates) && ($this->input["is_default"] == 1)) {
-            $DB->update(
-                $this->getTable(),
-                [
-                  'is_default' => 0
-                ],
-                [
-                  'id' => ['<>', $this->input['id']]
+            $adapter = self::getAdapter();
+            $profiles = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'id' => ['<>', $this->input['id']]
                 ]
-            );
+            ]);
+
+            foreach ($profiles->fetchAllAssociative() as $data) {
+                $profile = new self();
+                if ($profile->getFromDB($data['id'])) {
+                    $profile->update([
+                        'id'         => $data['id'],
+                        'is_default' => 0
+                    ]);
+                }
+            }
         }
 
         // To avoid log out and login when rights change (very useful in debug mode)
@@ -241,22 +249,29 @@ class Profile extends CommonDBTM
 
     public function post_addItem()
     {
-        global $DB;
-
         $rights = ProfileRight::getAllPossibleRights();
         ProfileRight::updateProfileRights($this->fields['id'], $rights);
         unset($this->profileRight);
 
         if (isset($this->fields['is_default']) && ($this->fields["is_default"] == 1)) {
-            $DB->update(
-                $this->getTable(),
-                [
-                  'is_default' => 0
-                ],
-                [
-                  'id' => ['<>', $this->fields['id']]
+            $adapter = self::getAdapter();
+            $profiles = $adapter->request([
+                'SELECT' => ['id'],
+                'FROM'   => $this->getTable(),
+                'WHERE'  => [
+                    'id' => ['<>', $this->fields['id']]
                 ]
-            );
+            ]);
+
+            foreach ($profiles->fetchAllAssociative() as $data) {
+                $profile = new self();
+                if ($profile->getFromDB($data['id'])) {
+                    $profile->update([
+                        'id'         => $data['id'],
+                        'is_default' => 0
+                    ]);
+                }
+            }
         }
     }
 
@@ -556,6 +571,7 @@ class Profile extends CommonDBTM
      **/
     public static function getUnderActiveProfileRestrictCriteria()
     {
+        $adapter = self::getAdapter();
 
         // Not logged -> no profile to see
         if (!isset($_SESSION['glpiactiveprofile'])) {
@@ -564,7 +580,7 @@ class Profile extends CommonDBTM
 
         // Profile right : may modify profile so can attach all profile
         if (Profile::canCreate()) {
-            return [1];
+            return ['(TRUE)'];
         }
 
         $criteria = ['glpi_profiles.interface' => Session::getCurrentInterface()];
@@ -620,8 +636,6 @@ class Profile extends CommonDBTM
      **/
     public static function currentUserHaveMoreRightThan($IDs = [])
     {
-        global $DB;
-
         if (Session::isCron()) {
             return true;
         }
@@ -635,12 +649,12 @@ class Profile extends CommonDBTM
         }
         $under_profiles = [];
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => self::getUnderActiveProfileRestrictCriteria()
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $under_profiles[$data['id']] = $data['id'];
         }
 
@@ -720,12 +734,12 @@ class Profile extends CommonDBTM
                           '0' => __('No'),
                           '1' => __('Yes'),
                               ],
-                              'value' => $this->fields['is_default']
+                              'value' => $this->fields['is_default'] ?? null,
                           ],
                           __('Profile\'s interface') => [
                               'name' => 'interface',
                               'type' => 'select',
-                              'value' => $this->fields['interface'],
+                              'value' => $this->fields['interface'] ?? null,
                           'values' => [
                           'central' => __('Standard interface'),
                           'helpdesk' => __('Simplified interface'),
@@ -739,7 +753,7 @@ class Profile extends CommonDBTM
                           '0' => __('No'),
                           '1' => __('Yes'),
                               ],
-                              'value' => $this->fields['password_update']
+                              'value' => $this->fields['password_update'] ?? null,
                           ],
                           __('Ticket creation form on login') => [
                               'name' => 'create_ticket_on_login',
@@ -749,7 +763,7 @@ class Profile extends CommonDBTM
                           '0' => __('No'),
                           '1' => __('Yes'),
                               ],
-                              'value' => $this->fields['create_ticket_on_login']
+                              'value' => $this->fields['create_ticket_on_login'] ?? null,
                           ],
                           __('Comment') => [
                           'name' => 'comment',
@@ -3367,8 +3381,6 @@ class Profile extends CommonDBTM
      **/
     public static function dropdownUnder($options = [])
     {
-        global $DB;
-
         $p['name']  = 'profiles_id';
         $p['value'] = '';
         $p['rand']  = mt_rand();
@@ -3379,14 +3391,14 @@ class Profile extends CommonDBTM
             }
         }
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => self::getUnderActiveProfileRestrictCriteria(),
            'ORDER'  => 'name'
         ]);
 
         //New rule -> get the next free ranking
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $profiles[$data['id']] = $data['name'];
         }
         Dropdown::showFromArray(
@@ -3408,10 +3420,17 @@ class Profile extends CommonDBTM
      **/
     public static function getDefault()
     {
-        global $DB;
+        $request = Profile::getAdapter()->request([
+            'SELECT' => ['id'],
+            'FROM'   => 'glpi_profiles',
+            'WHERE'  => ['is_default' => 1],
+            'LIMIT'  => 1
+        ]);
 
-        foreach ($DB->request('glpi_profiles', ['is_default' => 1]) as $data) {
-            return $data['id'];
+        $result = $request->fetchAssociative();
+
+        if ($result) {
+            return $result['id'];
         }
         return 0;
     }
@@ -3511,14 +3530,12 @@ class Profile extends CommonDBTM
      */
     public function getDomainRecordTypes()
     {
-        global $DB;
-
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => DomainRecordType::getTable(),
         ]);
 
         $types = [];
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $types[$row['id']] = $row['name'];
         }
         return $types;
@@ -3572,9 +3589,7 @@ class Profile extends CommonDBTM
      */
     public static function haveUserRight($user_id, $rightname, $rightvalue, $entity_id)
     {
-        global $DB;
-
-        $result = $DB->request(
+        $result = self::getAdapter()->request(
             [
               'COUNT'      => 'cpt',
               'FROM'       => 'glpi_profilerights',
@@ -3602,7 +3617,7 @@ class Profile extends CommonDBTM
             ]
         );
 
-        if (!$data = $result->next()) {
+        if (!$data = $result->fetchAssociative()) {
             return false;
         }
 

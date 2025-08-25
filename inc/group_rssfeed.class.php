@@ -58,15 +58,13 @@ class Group_RSSFeed extends CommonDBRelation
     **/
     public static function getGroups($rssfeeds_id)
     {
-        global $DB;
-
         $groups = [];
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['rssfeeds_id' => $rssfeeds_id]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $groups[$data['groups_id']][] = $data;
         }
         return $groups;

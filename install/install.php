@@ -247,8 +247,9 @@ switch ($step) {
         $DB = new DB();
 
         $url_base = str_replace("/install/install.php", "", $_SERVER['HTTP_REFERER']);
-        $DB->update(
-            'glpi_configs',
+
+        $config = new Config();
+        $config->update(
             ['value' => $DB->escape($url_base)],
             [
                 'context'   => 'core',
@@ -257,8 +258,7 @@ switch ($step) {
         );
 
         $url_base_api = "$url_base/apirest.php/";
-        $DB->update(
-            'glpi_configs',
+        $config->update(
             ['value' => $DB->escape($url_base_api)],
             [
                 'context'   => 'core',

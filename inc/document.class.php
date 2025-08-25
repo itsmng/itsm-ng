@@ -51,7 +51,6 @@ class Document extends CommonDBTM
     public static $tag_prefix                  = '#';
     protected $usenotepad               = true;
 
-
     public static function getTypeName($nb = 0)
     {
         return _n('Document', 'Documents', $nb);
@@ -582,7 +581,7 @@ class Document extends CommonDBTM
     **/
     public function getDownloadLink($params = '', $len = 20)
     {
-        global $DB,$CFG_GLPI;
+        global $CFG_GLPI;
 
         $splitter = explode("/", $this->fields['filename']);
 
@@ -615,7 +614,7 @@ class Document extends CommonDBTM
         $splitter = explode("/", $this->fields['filepath']);
 
         if (count($splitter)) {
-            $iterator = $DB->request([
+            $request = $this::getAdapter()->request([
                'SELECT' => 'icon',
                'FROM'   => 'glpi_documenttypes',
                'WHERE'  => [
@@ -623,10 +622,9 @@ class Document extends CommonDBTM
                   'icon'   => ['<>', '']
                ]
             ]);
-
-            if (count($iterator) > 0) {
-                $result = $iterator->next();
-                $icon = $result['icon'];
+            $results = $request->fetchAllAssociative();
+            if (count($results) > 0) {
+                $icon = $results[0]['icon'];
                 if (!file_exists(GLPI_ROOT . "/pics/icones/$icon")) {
                     $icon = "defaut-dist.png";
                 }
@@ -663,7 +661,7 @@ class Document extends CommonDBTM
             return false;
         }
 
-        $doc_iterator = $DB->request(
+        $doc_request = $this::getAdapter()->request(
             [
               'SELECT' => 'id',
               'FROM'   => $this->getTable(),
@@ -674,12 +672,10 @@ class Document extends CommonDBTM
               'LIMIT'  => 1,
             ]
         );
-
-        if ($doc_iterator->count() === 0) {
+        $doc_data = $doc_request->fetchAssociative();
+        if (!$doc_data) {
             return false;
         }
-
-        $doc_data = $doc_iterator->next();
         return $this->getFromDB($doc_data['id']);
     }
 
@@ -775,8 +771,6 @@ class Document extends CommonDBTM
     private function canViewFileFromReminder()
     {
 
-        global $DB;
-
         if (!Session::getLoginUserID()) {
             return false;
         }
@@ -804,7 +798,7 @@ class Document extends CommonDBTM
             Reminder::getVisibilityCriteria()
         );
 
-        $result = $DB->request($criteria)->next();
+        $result = $this::getAdapter()->request($criteria)->fetchAssociative();
         return $result['cpt'] > 0;
     }
 
@@ -818,7 +812,7 @@ class Document extends CommonDBTM
     private function canViewFileFromKnowbaseItem()
     {
 
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
         // Knowbase items can be viewed by non connected user in case of public FAQ
         if (!Session::getLoginUserID() && !$CFG_GLPI['use_public_faq']) {
@@ -859,7 +853,7 @@ class Document extends CommonDBTM
             $request['WHERE'] += $visibilityCriteria['WHERE'];
         }
 
-        $result = $DB->request($request)->next();
+        $result = $this::getAdapter()->request($request)->fetchAssociative();
 
         return $result['cpt'] > 0;
     }
@@ -875,8 +869,6 @@ class Document extends CommonDBTM
     private function canViewFileFromItilObject($itemtype, $items_id)
     {
 
-        global $DB;
-
         if (!Session::getLoginUserID()) {
             return false;
         }
@@ -890,14 +882,14 @@ class Document extends CommonDBTM
 
         $itil->getFromDB($items_id);
 
-        $result = $DB->request([
+        $result = $this::getAdapter()->request([
            'FROM'  => Document_Item::getTable(),
            'COUNT' => 'cpt',
            'WHERE' => [
               $itil->getAssociatedDocumentsCriteria(),
               'documents_id' => $this->fields['id']
            ]
-        ])->next();
+        ])->fetchAssociative();
 
         return $result['cpt'] > 0;
     }
@@ -1491,25 +1483,23 @@ class Document extends CommonDBTM
     **/
     public static function isValidDoc($filename)
     {
-        global $DB;
-
         $splitter = explode(".", $filename);
         $ext      = end($splitter);
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_documenttypes',
            'WHERE'  => [
               'ext'             => ['LIKE', $ext],
               'is_uploadable'   => 1
            ]
         ]);
-
-        if (count($iterator)) {
+        $results = $request->fetchAllAssociative();
+        if (count($results)) {
             return Toolbox::strtoupper($ext);
         }
 
         // Not found try with regex one
-        $iterator = $DB->request([
+        $result = self::getAdapter()->request([
            'FROM'   => 'glpi_documenttypes',
            'WHERE'  => [
               'ext'             => ['LIKE', '/%/'],
@@ -1517,7 +1507,7 @@ class Document extends CommonDBTM
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             if (
                 preg_match(
                     Toolbox::unclean_cross_side_scripting_deep($data['ext']) . "i",
@@ -1549,7 +1539,7 @@ class Document extends CommonDBTM
     **/
     public static function dropdown($options = [])
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $p['name']    = 'documents_id';
         $p['entity']  = '';
@@ -1582,10 +1572,10 @@ class Document extends CommonDBTM
            ],
            'ORDER'  => 'name'
         ];
-        $iterator = $DB->request($criteria);
+        $result = self::getAdapter()->request($criteria);
 
         $values = [];
-        while ($data = $iterator->next()) {
+        while ($data = $result->fetchAssociative()) {
             $values[$data['id']] = $data['name'];
         }
         $entity = Session::getActiveEntity();
@@ -1802,12 +1792,11 @@ class Document extends CommonDBTM
     **/
     public static function cronCleanOrphans(CronTask $task)
     {
-        global $DB;
 
         $dtable = static::getTable();
         $ditable = Document_Item::getTable();
         //documents tht are nt present in Document_Item are oprhan
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'    => ["$dtable.id"],
            'FROM'      => $dtable,
            'LEFT JOIN' => [
@@ -1822,10 +1811,10 @@ class Document extends CommonDBTM
                  "$ditable.documents_id" => null
            ]
         ]);
-
+        $results = $request->fetchAllAssociative();
         $nb = 0;
-        if (count($iterator)) {
-            while ($row = $iterator->next()) {
+        if (count($results)) {
+            foreach ($results as $row) {
                 $doc = new Document();
                 $doc->delete(['id' => $row['id']], true);
                 ++$nb;

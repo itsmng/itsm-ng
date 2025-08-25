@@ -340,14 +340,13 @@ class Budget extends CommonDropdown
     public function showItems()
     {
         global $DB;
-
         $budgets_id = $this->fields['id'];
 
         if (!$this->can($budgets_id, READ)) {
             return false;
         }
 
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
             'SELECT'          => 'itemtype',
             'DISTINCT'        => true,
             'FROM'            => 'glpi_infocoms',
@@ -358,7 +357,8 @@ class Budget extends CommonDropdown
             'ORDER'           => 'itemtype'
         ]);
 
-        $number = count($iterator);
+        $results = $request->fetchAllAssociative();
+        $number = count($results);
 
         echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Associated Items Table'>";
         echo "<tr><th colspan='2'>";
@@ -381,7 +381,7 @@ class Budget extends CommonDropdown
 
         $num       = 0;
         $itemtypes = [];
-        while ($row = $iterator->next()) {
+        foreach ($results as $row) {
             $itemtypes[] = $row['itemtype'];
         }
         $itemtypes[] = 'Contract';
@@ -598,8 +598,9 @@ class Budget extends CommonDropdown
                         break;
                 }
 
-                $iterator = $DB->request($criteria);
-                $nb = count($iterator);
+                $request = $this::getAdapter()->request($criteria);
+                $results = $request->fetchAllAssociative();
+                $nb = count($results);
                 if ($nb > $_SESSION['glpilist_limit']) {
                     echo "<tr class='tab_bg_1'>";
                     $name = $item->getTypeName($nb);
@@ -621,8 +622,10 @@ class Budget extends CommonDropdown
                     echo "<td class='center'>-</td><td class='center'>-</td><td class='center'>-" .
                         "</td></tr>";
                 } elseif ($nb) {
-                    for ($prem = true; $data = $iterator->next(); $prem = false) {
+                    $prem = true;
+                    foreach ($results as $data) {
                         $name = NOT_AVAILABLE;
+
                         if ($item->getFromDB($data["id"])) {
                             if ($item instanceof Item_Devices) {
                                 $tmpitem = new $item::$itemtype_2();
@@ -633,6 +636,9 @@ class Budget extends CommonDropdown
                                 $name = $item->getLink(['additional' => true]);
                             }
                         }
+
+                        $prem = false;
+
                         echo "<tr class='tab_bg_1'>";
                         if ($prem) {
                             $typename = $item->getTypeName($nb);
@@ -700,7 +706,7 @@ class Budget extends CommonDropdown
         $entitiestype_values = [];
         $found_types         = [];
 
-        while ($types = $types_iterator->next()) {
+        foreach ($types_iterator as $types) {
             $itemtypes[] = $types['itemtype'];
         }
 
@@ -827,13 +833,15 @@ class Budget extends CommonDropdown
                     break;
             }
 
-            $iterator = $DB->request($criteria);
-            $nb = count($iterator);
+            $request = $this::getAdapter()->request($criteria);
+            $results = $request->fetchAllAssociative();
+            $nb = count($results);
             if ($nb) {
                 $found_types[$itemtype]  = $item->getTypeName(1);
                 $totalbytypes[$itemtype] = 0;
                 //Store, for each entity, the budget spent
-                while ($values = $iterator->next()) {
+                // while ($values = $iterator->next()) {
+                foreach ($results as $values) {
                     if (!isset($entities_values[$values['entities_id']])) {
                         $entities_values[$values['entities_id']] = 0;
                     }

@@ -489,8 +489,8 @@ class DomainsPluginToCoreCommand extends AbstractCommand
                    'domaintypes_id'        => $types_id,
                    'date_creation'         => $dom['date_creation'],
                    'date_expiration'       => $dom['date_expiration'],
-                   'users_id_tech'         => $dom['users_id_tech'],
-                   'groups_id_tech'        => $dom['groups_id_tech'],
+                   'tech_users_id'         => $dom['tech_users_id'],
+                   'tech_groups_id'        => $dom['tech_groups_id'],
                    //suppliers_id not present in core
                    'comment'               => $dom['comment'],
                    'others'                => $dom['others'],

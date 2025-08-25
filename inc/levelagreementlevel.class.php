@@ -226,11 +226,11 @@ abstract class LevelAgreementLevel extends RuleTicket
         unset($actions['olas_id']);
         unset($actions['slas_id']);
         // Could not be used as criteria
-        unset($actions['users_id_validate_requester_supervisor']);
-        unset($actions['users_id_validate_assign_supervisor']);
+        unset($actions['validate_users_id_requester_supervisor']);
+        unset($actions['validate_users_id_assign_supervisor']);
         unset($actions['affectobject']);
         unset($actions['groups_id_validate']);
-        unset($actions['users_id_validate']);
+        unset($actions['validate_users_id']);
         unset($actions['validation_percent']);
         $actions['status']['name']    = __('Status');
         $actions['status']['type']    = 'dropdown_status';
@@ -351,11 +351,9 @@ abstract class LevelAgreementLevel extends RuleTicket
     **/
     public static function getAlreadyUsedExecutionTime($las_id)
     {
-        global $DB;
-
         $result = [];
 
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'SELECT'          => 'execution_time',
            'DISTINCT'        => true,
            'FROM'            => static::getTable(),
@@ -364,7 +362,7 @@ abstract class LevelAgreementLevel extends RuleTicket
            ]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             $result[$data['execution_time']] = $data['execution_time'];
         }
         return $result;

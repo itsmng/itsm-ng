@@ -92,7 +92,7 @@ class Item_Rack extends CommonDBRelation
      */
     public static function showItems(Rack $rack)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         $ID = $rack->getID();
         $rand = mt_rand();
@@ -105,13 +105,14 @@ class Item_Rack extends CommonDBRelation
         }
         $canedit = $rack->canEdit($ID);
 
-        $items = $DB->request([
+        $itemsRequest = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'racks_id' => $rack->getID()
            ],
            'ORDER' => 'position DESC'
         ]);
+        $items = $itemsRequest->fetchAllAssociative();
         $link = new self();
 
         if ($canedit) {
@@ -132,7 +133,6 @@ class Item_Rack extends CommonDBRelation
         echo "<i id='sviewgraph' class='pointer fa fa-th-large selected' title='" . __('View graphical representation') . "'></i>";
         echo "</div>";
 
-        $items = iterator_to_array($items);
         echo "<div id='viewlist'>";
 
         echo "<h2>" . __("Racked items") . "</h2>";
@@ -284,7 +284,6 @@ class Item_Rack extends CommonDBRelation
             }
             echo "</tbody></table>";
         }
-
         $nb_top_pdu = count(PDU_Rack::getForRackSide($rack, PDU_Rack::SIDE_TOP));
         $nb_bot_pdu = count(PDU_Rack::getForRackSide($rack, PDU_Rack::SIDE_BOTTOM));
 
@@ -447,9 +446,7 @@ JAVASCRIPT;
      */
     public static function showStats(Rack $rack)
     {
-        global $DB;
-
-        $items = $DB->request([
+        $items = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'racks_id' => $rack->getID()
@@ -464,7 +461,7 @@ JAVASCRIPT;
         ];
 
         $rel = new self();
-        while ($row = $items->next()) {
+        while ($row = $items->fetchAssociative()) {
             $rel->getFromDB($row['id']);
 
             $item = new $row['itemtype']();
@@ -547,10 +544,10 @@ JAVASCRIPT;
         }
 
         $used = $used_reserved = [];
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM' => $this->getTable()
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $used[$row['itemtype']][] = $row['items_id'];
         }
         // find used pdu (not racked)
@@ -558,21 +555,21 @@ JAVASCRIPT;
             $used['PDU'][] = $used_pdu['pdus_id'];
         }
         // get all reserved items
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'  => $this->getTable(),
            'WHERE' => [
               'is_reserved' => true
            ]
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $used_reserved[$row['itemtype']][] = $row['items_id'];
         }
 
         //items part of an enclosure should not be listed
-        $iterator = $DB->request([
+        $request = $this::getAdapter()->request([
            'FROM'   => Item_Enclosure::getTable()
         ]);
-        while ($row = $iterator->next()) {
+        while ($row = $request->fetchAssociative()) {
             $used[$row['itemtype']][] = $row['items_id'];
         }
 

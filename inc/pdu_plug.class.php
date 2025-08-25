@@ -82,8 +82,6 @@ class Pdu_Plug extends CommonDBRelation
      */
     public static function showItems(PDU $pdu)
     {
-        global $DB;
-
         $ID = $pdu->getID();
         $rand = mt_rand();
 
@@ -95,12 +93,13 @@ class Pdu_Plug extends CommonDBRelation
         }
         $canedit = $pdu->canEdit($ID);
 
-        $items = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'pdus_id' => $pdu->getID()
            ]
         ]);
+        $items = $request->fetchAllAssociative();
         $link = new self();
 
         Session::initNavigateListItems(
@@ -114,7 +113,6 @@ class Pdu_Plug extends CommonDBRelation
             )
         );
 
-        $items = iterator_to_array($items);
 
         if ($canedit) {
             $form = [

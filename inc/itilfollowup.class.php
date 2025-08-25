@@ -486,7 +486,7 @@ class ITILFollowup extends CommonDBChild
             ($uid = Session::getLoginUserID())
             && isset($input['content']) && ($input['content'] != $this->fields['content'])
         ) {
-            $input["users_id_editor"] = $uid;
+            $input["editor_users_id"] = $uid;
         }
 
         return $input;
@@ -518,8 +518,8 @@ class ITILFollowup extends CommonDBChild
         //Get user_id when not logged (from mailgate)
         $uid = Session::getLoginUserID();
         if ($uid === false) {
-            if (isset($this->fields['users_id_editor'])) {
-                $uid = $this->fields['users_id_editor'];
+            if (isset($this->fields['editor_users_id'])) {
+                $uid = $this->fields['editor_users_id'];
             } else {
                 $uid = $this->fields['users_id'];
             }
@@ -1119,7 +1119,7 @@ class ITILFollowup extends CommonDBChild
     {
         Toolbox::deprecated();
 
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         // Print Followups for a job
         $showprivate = Session::haveRight(self::$rightname, self::SEEPRIVATE);
@@ -1136,14 +1136,14 @@ class ITILFollowup extends CommonDBChild
         }
 
         // Get Followups
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => 'glpi_itilfollowups',
            'WHERE'  => $where,
            'ORDER'  => 'date DESC'
         ]);
-
+        $results = $request->fetchAllAssociative();
         $out = "";
-        if (count($iterator)) {
+        if (count($results)) {
             $out .= "<div class='center' aria-label='ITIL Objects Information'><table class='tab_cadre' width='100%'>\n
                   <tr><th>" . _n('Date', 'Dates', 1) . "</th><th>" . _n('Requester', 'Requesters', 1) . "</th>
                   <th>" . __('Description') . "</th></tr>\n";
@@ -1152,7 +1152,7 @@ class ITILFollowup extends CommonDBChild
             if (Session::haveRight('user', READ)) {
                 $showuserlink = 1;
             }
-            while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 $out .= "<tr class='tab_bg_3'>
                      <td class='center'>" . Html::convDateTime($data["date"]) . "</td>
                      <td class='center'>" . getUserName($data["users_id"], $showuserlink) . "</td>
@@ -1348,7 +1348,7 @@ class ITILFollowup extends CommonDBChild
                 // Subquery for recipient
                 $recipient_query = "SELECT `id`
                FROM `$table`
-               WHERE `users_id_recipient` = '$user'";
+               WHERE `recipient_users_id` = '$user'";
 
                 return "(
                `$itilfup_table`.`itemtype` = '$itemtype' AND (
@@ -1393,7 +1393,7 @@ class ITILFollowup extends CommonDBChild
             // The author is an observer or a requester -> can be support agent OR
             // requester depending on how GLPI is used so we must check the user's
             // profiles
-            $central_profiles = $DB->request([
+            $request = $this::getAdapter()->request([
                'COUNT' => 'total',
                'FROM' => Profile::getTable(),
                'WHERE' => [
@@ -1407,13 +1407,13 @@ class ITILFollowup extends CommonDBChild
                   ])
                ]
             ]);
-
+            $central_profiles = $request->fetchAllAssociative();
             // No profiles, let's assume it is a support agent to be safe
             if (!count($central_profiles)) {
                 return false;
             }
 
-            return $central_profiles->next()['total'] > 0;
+            return $central_profiles[0]['total'] > 0;
         } elseif (in_array(CommonITILActor::REQUESTER, $roles)) {
             // The author is a requester -> not from support agent
             return false;

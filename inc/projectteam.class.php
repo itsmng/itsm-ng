@@ -145,15 +145,13 @@ class ProjectTeam extends CommonDBRelation
     **/
     public static function getTeamFor($projects_id)
     {
-        global $DB;
-
         $team = [];
-        $iterator = $DB->request([
+        $request = self::getAdapter()->request([
            'FROM'   => self::getTable(),
            'WHERE'  => ['projects_id' => $projects_id]
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($data = $request->fetchAssociative()) {
             if (!isset($team[$data['itemtype']])) {
                 $team[$data['itemtype']] = [];
             }
