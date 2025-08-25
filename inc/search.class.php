@@ -3681,7 +3681,7 @@ JAVASCRIPT;
                     return "
                         $table$addtable.$field,
                         " . $adapter->getGroupConcat(
-                        "DISTINCT $table$addtable.id",
+                        "DISTINCT $table$addtable.$field",
                         self::LONGSEP,
                         "$table$addtable.id"
                     ) . " AS \"" . $NAME . "\",
@@ -6183,6 +6183,21 @@ JAVASCRIPT;
                             1
                         );
                         return sprintf(__('%1$s %2$s'), $usernameformat, $toadd);
+                    }
+                    // USER itemtype case
+                    if ($itemtype == 'User') {
+                        $user_id = $data[$ID][0]['id'] ?? $data['id'];
+                        $username = $data[$ID][0]['name'] ?? '';
+
+                        // create link with is_deleted if necessary
+                        $link = User::getFormURLWithID($user_id);
+
+                        // Check if user is deleted
+                        if (isset($data['raw']) && isset($data['raw']['is_deleted']) && $data['raw']['is_deleted']) {
+                            $link .= '&is_deleted=1';
+                        }
+                        
+                        return "<a href='$link'>$username</a>";
                     }
                     break;
 
