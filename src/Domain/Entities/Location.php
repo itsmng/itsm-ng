@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_locations')]
 #[ORM\UniqueConstraint(name: "unicity", columns: ['entities_id', 'locations_id', 'name'])]
 #[ORM\Index(name: "locations_id", columns: ['locations_id'])]
@@ -43,7 +45,7 @@ class Location
     private $level;
 
     #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
-    private $ancestorsCache;
+    private $ancestorsCache = null;
 
     #[ORM\Column(name: 'sons_cache', type: 'text', nullable: true)]
     private $sonsCache;
@@ -161,9 +163,13 @@ class Location
         return $this->ancestorsCache;
     }
 
-    public function setAncestorsCache(string $ancestorsCache): self
+    public function setAncestorsCache(string | null $ancestorsCache): self
     {
-        $this->ancestorsCache = $ancestorsCache;
+        if ($ancestorsCache === null || $ancestorsCache === '') {
+            $this->ancestorsCache = null;
+        } else {
+            $this->ancestorsCache = $ancestorsCache;
+        }
 
         return $this;
     }
@@ -173,9 +179,13 @@ class Location
         return $this->sonsCache;
     }
 
-    public function setSonsCache(string $sonsCache): self
+    public function setSonsCache(string | null $sonsCache): self
     {
-        $this->sonsCache = $sonsCache;
+       if ($sonsCache === null || $sonsCache === '') {
+            $this->sonsCache = null;
+        } else {
+            $this->sonsCache = $sonsCache;
+        }
 
         return $this;
     }
@@ -300,26 +310,29 @@ class Location
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+     public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -22,10 +23,10 @@ class Reservation
     #[ORM\JoinColumn(name: 'reservationitems_id', referencedColumnName: 'id', nullable: true)]
     private ?ReservationItem $reservationitem = null;
 
-    #[ORM\Column(name: 'begin', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: '`begin`', type: 'datetime', nullable: true)]
     private $begin;
 
-    #[ORM\Column(name: 'end', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: '`end`', type: 'datetime', nullable: true)]
     private $end;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -43,25 +44,31 @@ class Reservation
         return $this->id;
     }
 
-    public function getBegin(): ?string
+    public function getBegin(): ?\DateTimeInterface
     {
         return $this->begin;
     }
 
-    public function setBegin(?string $begin): self
+    public function setBegin(\DateTimeInterface|string|null $begin): self
     {
+        if (is_string($begin)) {
+            $begin = new DateTime($begin);
+        }
         $this->begin = $begin;
 
         return $this;
     }
 
-    public function getEnd(): ?string
+    public function getEnd(): ?\DateTimeInterface
     {
         return $this->end;
     }
 
-    public function setEnd(?string $end): self
+    public function setEnd(\DateTimeInterface|string|null $end): self
     {
+        if (is_string($end)) {
+            $end = new DateTime($end);
+        }
         $this->end = $end;
 
         return $this;
