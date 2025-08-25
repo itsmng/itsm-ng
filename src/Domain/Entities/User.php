@@ -37,7 +37,7 @@ class User
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: '`name`', type: 'string', length: 255, nullable: true)]
     private $name = null;
 
     #[ORM\Column(name: 'password', type: 'string', length: 255, nullable: true)]

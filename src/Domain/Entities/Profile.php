@@ -23,7 +23,7 @@ class Profile
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: '`name`', type: 'string', length: 255, nullable: true)]
     private $name;
 
     #[ORM\Column(name: 'interface', type: 'string', length: 255, nullable: true, options: ['default' => 'helpdesk'])]
