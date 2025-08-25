@@ -3592,15 +3592,16 @@ JAVASCRIPT;
                     $meta
                     || (isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])
                 ) {
+                    $gc_expr = $adapter->concat([
+                        $adapter->ifnull("$table$addtable.$key", "'" . self::NULLVALUE . "'"),
+                        "'" . self::SHORTSEP . "'",
+                        $tocomputeid
+                    ]);
                     $ADDITONALFIELDS .= " " . $adapter->getGroupConcat(
-                        "DISTINCT " . $adapter->concat([
-                            $adapter->ifnull("$table$addtable.$key", "'" . self::NULLVALUE . "'"),
-                            "'" . self::SHORTSEP . "'",
-                            $tocomputeid
-                        ]),
-                        $tocomputeid,
-                        "'" . self::LONGSEP . "'",
-                        "'" . self::NULLVALUE . self::SHORTSEP . "'"
+                        "DISTINCT $gc_expr",
+                        self::LONGSEP,
+                        $gc_expr,
+                        true
                     ) . " AS \"" . $NAME . "_$key\", ";
                 } else {
                     $ADDITONALFIELDS .= "$table$addtable.$key AS \"" . $NAME . "_$key\", ";
@@ -3615,56 +3616,33 @@ JAVASCRIPT;
 
         switch ($table . "." . $field) {
             case "glpi_users.name":
-                if ($itemtype != 'User') {
-                    // Include name only for DISTINCT/ORDER BY requirement, but hide it with a safe alias
-                    return " $table$addtable.$field AS __orderby_" . $NAME . ", 
-                        $table$addtable.$field AS \"" . $NAME . "\",
-                        $table$addtable.$field AS \"" . $NAME . "_name\",
-                        $table$addtable.realname AS \"" . $NAME . "_realname\",
-                        $table$addtable.id AS \"" . $NAME . "_id\",
-                        $table$addtable.firstname AS \"" . $NAME . "_firstname\",
-                        $ADDITONALFIELDS";
-                } elseif ((isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])) {
+                // Determine if we must aggregate (meta or forcegroupby)
+                $is_grouped = $meta || (isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"]);
+
+                if ($is_grouped) {
                     $addaltemail = "";
                     if (
                         (($itemtype == 'Ticket') || ($itemtype == 'Problem'))
                         && isset($searchopt[$ID]['joinparams']['beforejoin']['table'])
-                        && (($searchopt[$ID]['joinparams']['beforejoin']['table'] == 'glpi_tickets_users')
-                            || ($searchopt[$ID]['joinparams']['beforejoin']['table'] == 'glpi_problems_users')
-                            || ($searchopt[$ID]['joinparams']['beforejoin']['table'] == 'glpi_changes_users'))
-                    ) { // For tickets_users
+                        && in_array($searchopt[$ID]['joinparams']['beforejoin']['table'], ['glpi_tickets_users', 'glpi_problems_users', 'glpi_changes_users'])
+                    ) {
                         $ticket_user_table = $searchopt[$ID]['joinparams']['beforejoin']['table'] .
-                                            "_" . self::computeComplexJoinID($searchopt[$ID]['joinparams']['beforejoin']
-                                                                        ['joinparams']) . $addmeta;
+                                             "_" . self::computeComplexJoinID($searchopt[$ID]['joinparams']['beforejoin']['joinparams']) . $addmeta;
 
-                        $concat_expr = $adapter->concat([
-                           "$ticket_user_table.users_id",
-                           "' '",
-                           "$ticket_user_table.alternative_email"
+                        $concat_alt = $adapter->concat([
+                            "$ticket_user_table.users_id",
+                            "' '",
+                            "$ticket_user_table.alternative_email"
                         ]);
 
                         $addaltemail = $adapter->getGroupConcat(
-                            "DISTINCT " . $concat_expr,
+                            "DISTINCT " . $concat_alt,
                             self::LONGSEP,
-                            "$ticket_user_table.users_id"
+                            $concat_alt,
+                            true
                         ) . " AS \"" . $NAME . "_2\", ";
                     }
-                    $concat_expr = $adapter->concat([
-                        $adapter->ifnull("$table$addtable.$field", "'" . self::NULLVALUE . "'"),
-                        "'" . self::SHORTSEP . "'",
-                        "$table$addtable.id"
-                    ]);
 
-                    return "
-                        $table$addtable.$field AS __orderby_" . $NAME . ",
-                        " . $adapter->getGroupConcat(
-                        "DISTINCT $concat_expr",
-                        self::LONGSEP,
-                        $concat_expr
-                    ) . " AS \"" . $NAME . "\",
-                        $addaltemail
-                        $ADDITONALFIELDS";
-                } else {
                     $concat_expr = $adapter->concat([
                         $adapter->ifnull("$table$addtable.$field", "'" . self::NULLVALUE . "'"),
                         "'" . self::SHORTSEP . "'",
@@ -3678,13 +3656,16 @@ JAVASCRIPT;
                             $concat_expr,
                             true
                         ) . " AS \"" . $NAME . "\",
-                        $table$addtable.$field AS \"" . $NAME . "_name\",
-                        $table$addtable.realname AS \"" . $NAME . "_realname\",
-                        $table$addtable.id  AS \"" . $NAME . "_id\",
-                        $table$addtable.firstname AS \"" . $NAME . "_firstname\",
+                        $addaltemail
                         $ADDITONALFIELDS";
                 }
-                break;
+                return " $table$addtable.$field AS __orderby_" . $NAME . ", 
+                        $table$addtable.$field AS \"" . $NAME . "\",
+                        $table$addtable.$field AS \"" . $NAME . "_name\",
+                        $table$addtable.realname AS \"" . $NAME . "_realname\",
+                        $table$addtable.id AS \"" . $NAME . "_id\",
+                        $table$addtable.firstname AS \"" . $NAME . "_firstname\",
+                        $ADDITONALFIELDS";
 
             case "glpi_softwarelicenses.number":
                 if ($meta) {
@@ -3713,27 +3694,27 @@ JAVASCRIPT;
                     }
                     return " " . $adapter->getGroupConcat(
                         "$table$addtable.$field",
-                        "",
-                        "'" . self::LONGSEP . "'",
-                        "NULL"
+                        self::LONGSEP,
+                        "$table$addtable.$field",
+                        false
                     ) . " AS \"" . $NAME . "\",
                         " . $adapter->getGroupConcat(
                         "glpi_profiles_users$addtable2.entities_id",
-                        "",
-                        "'" . self::LONGSEP . "'",
-                        "NULL"
+                        self::LONGSEP,
+                        "glpi_profiles_users$addtable2.entities_id",
+                        false
                     ) . " AS \"" . $NAME . "_entities_id\",
                         " . $adapter->getGroupConcat(
                         "glpi_profiles_users$addtable2.is_recursive",
-                        "",
-                        "'" . self::LONGSEP . "'",
-                        "NULL"
+                        self::LONGSEP,
+                        "glpi_profiles_users$addtable2.is_recursive",
+                        false
                     ) . " AS \"" . $NAME . "_is_recursive\",
                         " . $adapter->getGroupConcat(
                         "glpi_profiles_users$addtable2.is_dynamic",
-                        "",
-                        "'" . self::LONGSEP . "'",
-                        "NULL"
+                        self::LONGSEP,
+                        "glpi_profiles_users$addtable2.is_dynamic",
+                        false
                     ) . " AS \"" . $NAME . "_is_dynamic\",
                         $ADDITONALFIELDS";
                 }
@@ -3751,25 +3732,25 @@ JAVASCRIPT;
                     return " " . $adapter->getGroupConcat(
                         "$table$addtable.completename",
                         self::LONGSEP,
-                        "$table$addtable.id",
+                        "$table$addtable.completename",
                         false
                     ) . " AS \"" . $NAME . "\",
                         " . $adapter->getGroupConcat(
                         "glpi_profiles_users$addtable2.profiles_id",
                         self::LONGSEP,
-                        "glpi_profiles_users$addtable2.id",
+                        "glpi_profiles_users$addtable2.profiles_id",
                         false
                     ) . " AS \"" . $NAME . "_profiles_id\",
                         " . $adapter->getGroupConcat(
                         "glpi_profiles_users$addtable2.is_recursive",
                         self::LONGSEP,
-                        "glpi_profiles_users$addtable2.id",
+                        "glpi_profiles_users$addtable2.is_recursive",
                         false
                     ) . " AS \"" . $NAME . "_is_recursive\",
                         " . $adapter->getGroupConcat(
                         "glpi_profiles_users$addtable2.is_dynamic",
                         self::LONGSEP,
-                        "glpi_profiles_users$addtable2.id",
+                        "glpi_profiles_users$addtable2.is_dynamic",
                         false
                     ) . " AS \"" . $NAME . "_is_dynamic\",
                         $ADDITONALFIELDS";
@@ -3790,17 +3771,18 @@ JAVASCRIPT;
 
             case "glpi_softwareversions.name":
                 if ($meta && ($meta_type == 'Software')) {
-                    return " " . $adapter->getGroupConcat(
-                        "DISTINCT " . $adapter->concat([
+                    $gc_expr = $adapter->concat([
                             "glpi_softwares.name",
                             "' - '",
                             "$table$addtable2.$field",
                             "'" . self::SHORTSEP . "'",
                             "$table$addtable2.id"
-                        ]),
-                        "",
-                        "'" . self::LONGSEP . "'",
-                        "NULL"
+                        ]);
+                    return " " . $adapter->getGroupConcat(
+                        "DISTINCT $gc_expr",
+                        self::LONGSEP,
+                        $gc_expr,
+                        true
                     ) . " AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                 }
@@ -3808,38 +3790,39 @@ JAVASCRIPT;
 
             case "glpi_softwareversions.comment":
                 if ($meta && ($meta_type == 'Software')) {
-                    return " " . $adapter->getGroupConcat(
-                        "DISTINCT " . $adapter->concat([
+                    $gc_expr = $adapter->concat([
                             "glpi_softwares.name",
                             "' - '",
                             "$table$addtable2.$field",
                             "'" . self::SHORTSEP . "'",
                             "$table$addtable2.id"
-                        ]),
-                        "",
-                        "'" . self::LONGSEP . "'",
-                        "NULL"
+                        ]);
+                    return " " . $adapter->getGroupConcat(
+                        "DISTINCT $gc_expr",
+                        self::LONGSEP,
+                        $gc_expr,
+                        true
                     ) . " AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                 }
-                return " " . $adapter->getGroupConcat(
-                    "DISTINCT " . $adapter->concat([
+                $gc_expr = $adapter->concat([
                          "$table$addtable.name",
                          "' - '",
                          "$table$addtable.$field",
                          "'" . self::SHORTSEP . "'",
                          "$table$addtable.id"
-                     ]),
-                    "",
-                    "'" . self::LONGSEP . "'",
-                    "NULL"
+                     ]);
+                return " " . $adapter->getGroupConcat(
+                    "DISTINCT $gc_expr",
+                    self::LONGSEP,
+                    $gc_expr,
+                    true
                 ) . " AS \"" . $NAME . "\",
                     $ADDITONALFIELDS";
 
             case "glpi_states.name":
                 if ($meta && ($meta_type == 'Software')) {
-                    return " " . $adapter->getGroupConcat(
-                        "DISTINCT " . $adapter->concat([
+                    $gc_expr = $adapter->concat([
                         "glpi_softwares.name",
                         "' - '",
                         "glpi_softwareversions$addtable.name",
@@ -3847,24 +3830,27 @@ JAVASCRIPT;
                         "$table$addtable2.$field",
                         "'" . self::SHORTSEP . "'",
                         "$table$addtable2.id"
-                    ]),
-                        "",
-                        "'" . self::LONGSEP . "'",
-                        "NULL"
+                    ]);
+                    return " " . $adapter->getGroupConcat(
+                        "DISTINCT $gc_expr",
+                        self::LONGSEP,
+                        $gc_expr,
+                        true
                     ) . " AS \"" . $NAME . "\",
                     $ADDITONALFIELDS";
                 } elseif ($itemtype == 'Software') {
-                    return " " . $adapter->getGroupConcat(
-                        "DISTINCT " . $adapter->concat([
+                    $gc_expr = $adapter->concat([
                            "glpi_softwareversions.name",
                            "' - '",
                            "$table$addtable.$field",
                            "'" . self::SHORTSEP . "'",
                            "$table$addtable.id"
-                        ]),
-                        "",
-                        "'" . self::LONGSEP . "'",
-                        "NULL"
+                        ]);
+                    return " " . $adapter->getGroupConcat(
+                        "DISTINCT $gc_expr",
+                        self::LONGSEP,
+                        $gc_expr,
+                        true
                     ) . " AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                 }
@@ -3875,15 +3861,17 @@ JAVASCRIPT;
             case "glpi_changetasks.content":
                 if (is_subclass_of($itemtype, "CommonITILObject")) {
                     // force ordering by date desc
-                    return " " . $adapter->getGroupConcat(
-                        "DISTINCT " . $adapter->concat([
+                    $gc_expr = $adapter->concat([
                             $adapter->ifnull($tocompute, "'" . self::NULLVALUE . "'"),
                             "'" . self::SHORTSEP . "'",
                             $tocomputeid
-                        ]),
-                        "$table$addtable.date DESC",
-                        "'" . self::LONGSEP . "'",
-                        "NULL"
+                        ]);
+                    // Note: PostgreSQL requires ORDER BY expr to appear in DISTINCT arg list; use same expr
+                    return " " . $adapter->getGroupConcat(
+                        "DISTINCT $gc_expr",
+                        self::LONGSEP,
+                        $gc_expr,
+                        true
                     ) . " AS \"" . $NAME . "\", $ADDITONALFIELDS";
                 }
                 break;
@@ -3936,15 +3924,16 @@ JAVASCRIPT;
                         $meta
                         || (isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])
                     ) {
-                        return " " . $adapter->getGroupConcat(
-                            "DISTINCT " . $adapter->getDateAdd(
+                        $gc_expr = $adapter->getDateAdd(
                                 "$table$addtable." . $searchopt[$ID]["datafields"][1],
                                 "$interval",
                                 "($table$addtable." . $searchopt[$ID]["datafields"][2] . " $add_minus)"
-                            ),
-                            "",
-                            "'" . self::LONGSEP . "'",
-                            "NULL"
+                            );
+                        return " " . $adapter->getGroupConcat(
+                            "DISTINCT $gc_expr",
+                            self::LONGSEP,
+                            $gc_expr,
+                            true
                         ) . " AS \"" . $NAME . "\",
                         $ADDITONALFIELDS";
                     }
@@ -3962,27 +3951,29 @@ JAVASCRIPT;
                     ) {
                         $TRANS = '';
                         if (Session::haveTranslations(getItemTypeForTable($table), $field)) {
-                            $TRANS = $adapter->getGroupConcat(
-                                "DISTINCT " . $adapter->concat([
+                            $trans_expr = $adapter->concat([
                                     $adapter->ifnull($tocomputetrans, "'" . self::NULLVALUE . "'"),
                                     "'" . self::SHORTSEP . "'",
                                     $tocomputeid
-                                ]),
-                                "$tocomputeid",
-                                "'" . self::LONGSEP . "'",
-                                "NULL"
+                                ]);
+                            $TRANS = $adapter->getGroupConcat(
+                                "DISTINCT $trans_expr",
+                                self::LONGSEP,
+                                $trans_expr,
+                                true
                             ) . " AS \"" . $NAME . "_trans_" . $field . "\", ";
                         }
 
-                        return " " . $adapter->getGroupConcat(
-                            "DISTINCT " . $adapter->concat([
+                        $link_expr = $adapter->concat([
                                 "$tocompute",
                                 "'" . self::SHORTSEP . "'",
                                 "$table$addtable.id"
-                            ]),
-                            "$table$addtable.id",
-                            "'" . self::LONGSEP . "'",
-                            "NULL"
+                            ]);
+                        return " " . $adapter->getGroupConcat(
+                            "DISTINCT $link_expr",
+                            self::LONGSEP,
+                            $link_expr,
+                            true
                         ) . " AS \"" . $NAME . "\",
                         $TRANS
                         $ADDITONALFIELDS";
@@ -4003,26 +3994,28 @@ JAVASCRIPT;
         ) { // Not specific computation
             $TRANS = '';
             if (Session::haveTranslations(getItemTypeForTable($table), $field)) {
-                $TRANS = $adapter->getGroupConcat(
-                    "DISTINCT " . $adapter->concat([
+                $trans_expr = $adapter->concat([
                         $adapter->ifnull($tocomputetrans, "'" . self::NULLVALUE . "'"),
                         "'" . self::SHORTSEP . "'",
                         $tocomputeid
-                    ]),
-                    "$tocomputeid",
-                    "'" . self::LONGSEP . "'",
-                    "NULL"
+                    ]);
+                $TRANS = $adapter->getGroupConcat(
+                    "DISTINCT $trans_expr",
+                    self::LONGSEP,
+                    $trans_expr,
+                    true
                 ) . " AS \"" . $NAME . "_trans_" . $field . "\", ";
             }
-            return " " . $adapter->getGroupConcat(
-                "DISTINCT " . $adapter->concat([
+            $gc_expr = $adapter->concat([
                     $adapter->ifnull($tocompute, "'" . self::NULLVALUE . "'"),
                     "'" . self::SHORTSEP . "'",
                     $tocomputeid
-                ]),
-                "$tocomputeid",
-                "'" . self::LONGSEP . "'",
-                "NULL"
+                ]);
+            return " " . $adapter->getGroupConcat(
+                "DISTINCT $gc_expr",
+                self::LONGSEP,
+                $gc_expr,
+                true
             ) . " AS \"" . $NAME . "\",
                 $TRANS
                 $ADDITONALFIELDS";
@@ -6284,6 +6277,24 @@ JAVASCRIPT;
                             }
                         }
                         return $out;
+                    }
+                    // Generic entity display fallback: if join did not provide a name, resolve the entity name 
+                    // from entities_id present in row to avoid rendering an empty column for sub-entities.
+                    $entity_name = $data[$ID][0]['name'] ?? '';
+                    if (!is_string($entity_name) || strlen(trim($entity_name)) === 0) {
+                        // Try multiple sources for the entity id: preferred 'entities_id', then raw aliases
+                        $ent_id = null;
+                        if (isset($data['entities_id']) && $data['entities_id']) {
+                            $ent_id = $data['entities_id'];
+                        } elseif (isset($data['raw']['entities_id']) && $data['raw']['entities_id']) {
+                            $ent_id = $data['raw']['entities_id'];
+                        } elseif (isset($data['raw']['entity']) && $data['raw']['entity']) {
+                            // In union queries, alias may be 'ENTITY' -> lowered to 'entity'
+                            $ent_id = $data['raw']['entity'];
+                        }
+                        if (!empty($ent_id)) {
+                            return Dropdown::getDropdownName('glpi_entities', $ent_id);
+                        }
                     }
                     break;
 
