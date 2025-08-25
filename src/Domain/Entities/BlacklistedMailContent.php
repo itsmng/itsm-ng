@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_blacklistedmailcontents')]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
 #[ORM\Index(name: 'date_creation', columns: ['date_creation'])]
@@ -24,10 +26,10 @@ class BlacklistedMailContent
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     public function getId(): ?int
@@ -71,26 +73,29 @@ class BlacklistedMailContent
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
