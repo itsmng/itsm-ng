@@ -36,6 +36,10 @@ if (!defined('GLPI_ROOT')) {
 }
 
 use Glpi\Application\ErrorHandler;
+use Itsmng\Infrastructure\Database\DBInterface as __DBInterface;
+use Itsmng\Infrastructure\Database\DBEngineMySQL as __DBEngineMySQL;
+use Itsmng\Infrastructure\Database\DBEnginePostgres as __DBEnginePostgres;
+use Symfony\Component\Dotenv\Dotenv as __Dotenv;
 
 /**
  *  Database class for Mysql
@@ -76,7 +80,7 @@ class DBmysql
     public $dbpassword         = "";
     //! Default Database
     public $dbdefault          = "";
-    //! Database Handler
+    //! Database Handler (kept for BC; not used directly)
     private $dbh;
     //! Database Error
     public $error              = 0;
@@ -164,6 +168,12 @@ class DBmysql
     private $field_cache = [];
 
     /**
+     * Selected engine implementation.
+     * @var __DBInterface
+     */
+    private $__engine;
+
+    /**
      * Constructor / Connect to the MySQL Database
      *
      * @param integer $choice host number (default NULL)
@@ -172,6 +182,8 @@ class DBmysql
      */
     public function __construct($choice = null)
     {
+        $this->bootstrapEnv();
+        $this->selectEngineFromEnv();
         $this->connect($choice);
     }
 
@@ -185,72 +197,62 @@ class DBmysql
      */
     public function connect($choice = null)
     {
-        $this->connected = false;
-        $this->dbh = @new mysqli();
-        if ($this->dbssl) {
-            mysqli_ssl_set(
-                $this->dbh,
-                $this->dbsslkey,
-                $this->dbsslcert,
-                $this->dbsslca,
-                $this->dbsslcapath,
-                $this->dbsslcacipher
-            );
+        // Sync engine properties from facade
+        foreach (['dbhost','dbuser','dbpassword','dbdefault','dbssl','dbsslkey','dbsslcert','dbsslca','dbsslcapath','dbsslcacipher','slave','execution_time'] as $prop) {
+            if (property_exists($this, $prop) && property_exists($this->__engine, $prop)) {
+                $this->__engine->$prop = $this->$prop;
+            }
+        }
+        $this->__engine->connect($choice);
+        $this->connected = $this->__engine->connected ?? false;
+    }
+
+    private function bootstrapEnv(): void
+    {
+        $envBootstrap = GLPI_ROOT . '/src/Infrastructure/Env.php';
+        if (is_readable($envBootstrap)) {
+            require_once $envBootstrap;
+            return;
+        }
+    }
+
+    private function selectEngineFromEnv(): void
+    {
+        $driverCandidate = $_ENV['DB_DRIVER'] ?? ($_ENV['DATABASE_URL'] ?? 'pdo_mysql');
+        $driver = is_string($driverCandidate) ? strtolower($driverCandidate) : 'pdo_mysql';
+        $is_pg = str_contains($driver, 'pgsql') || str_contains($driver, 'postgres');
+        if ($is_pg) {
+            $this->__engine = new __DBEnginePostgres();
+        } else {
+            $this->__engine = new __DBEngineMySQL();
+        }
+        // back-reference for iterator and utilities needing facade
+        if (property_exists($this->__engine, 'parentFacade')) {
+            $this->__engine->parentFacade = $this;
         }
 
-        if (is_array($this->dbhost)) {
-            // Round robin choice
-            $i    = (isset($choice) ? $choice : mt_rand(0, count($this->dbhost) - 1));
-            $host = $this->dbhost[$i];
-        } else {
-            $host = $this->dbhost;
-        }
-
-        $hostport = explode(":", $host);
-        if (count($hostport) < 2) {
-            // Host
-            $this->dbh->real_connect($host, $this->dbuser, rawurldecode($this->dbpassword), $this->dbdefault);
-        } elseif (intval($hostport[1]) > 0) {
-            // Host:port
-            $this->dbh->real_connect($hostport[0], $this->dbuser, rawurldecode($this->dbpassword), $this->dbdefault, $hostport[1]);
-        } else {
-            // :Socket
-            $this->dbh->real_connect($hostport[0], $this->dbuser, rawurldecode($this->dbpassword), $this->dbdefault, ini_get('mysqli.default_port'), $hostport[1]);
-        }
-
-        if ($this->dbh->connect_error) {
-            $this->connected = false;
-            $this->error     = 1;
-        } elseif (!defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {
-            $this->connected = false;
-            $this->error     = 2;
-        } else {
-            if (isset($this->dbenc)) {
-                Toolbox::deprecated('Usage of alternative DB connection encoding (DB::$dbenc property) is deprecated.');
+        // If URL provided, parse it to props, else use split vars; only read from $_ENV
+        $urlEnv = $_ENV['DB_URL'] ?? ($_ENV['DATABASE_URL'] ?? '');
+        $url = is_string($urlEnv) ? trim($urlEnv) : '';
+        if ($url !== '') {
+            $parts = parse_url($url);
+            if ($parts !== false) {
+                $host = $parts['host'] ?? 'localhost';
+                $port = isset($parts['port']) ? ':' . $parts['port'] : '';
+                $this->dbhost = $host . $port;
+                $this->dbuser = $parts['user'] ?? '';
+                $this->dbpassword = $parts['pass'] ?? '';
+                $this->dbdefault = isset($parts['path']) ? ltrim($parts['path'], '/') : '';
             }
-            $dbenc = isset($this->dbenc) ? $this->dbenc : "utf8";
-            $this->dbh->set_charset($dbenc);
-            if ($dbenc === "utf8") {
-                // The mysqli::set_charset function will make COLLATE to be defined to the default one for used charset.
-                //
-                // For 'utf8' charset, default one is 'utf8_general_ci',
-                // so we have to redefine it to 'utf8_unicode_ci'.
-                //
-                // If encoding used by connection is not the default one (i.e utf8), then we assume
-                // that we cannot be sure of used COLLATE and that using the default one is the best option.
-                $this->dbh->query("SET NAMES 'utf8' COLLATE 'utf8_unicode_ci';");
-            }
-
-            // force mysqlnd to return int and float types correctly (not as strings)
-            $this->dbh->options(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, true);
-
-            if (GLPI_FORCE_EMPTY_SQL_MODE) {
-                $this->dbh->query("SET SESSION sql_mode = ''");
-            }
-
-            $this->connected = true;
-
-            $this->setTimezone($this->guessTimezone());
+        } else {
+            $dbhost = $_ENV['DB_HOST'] ?? null;
+            $dbuser = $_ENV['DB_USER'] ?? null;
+            $dbpass = $_ENV['DB_PASSWORD'] ?? null;
+            $dbname = $_ENV['DB_NAME'] ?? null;
+            if (isset($dbhost) && $dbhost !== '') { $this->dbhost = $dbhost; }
+            if (isset($dbuser) && $dbuser !== '') { $this->dbuser = $dbuser; }
+            if (isset($dbpass) && $dbpass !== '') { $this->dbpassword = $dbpass; }
+            if (isset($dbname) && $dbname !== '') { $this->dbdefault = $dbname; }
         }
     }
 
@@ -266,27 +268,7 @@ class DBmysql
      */
     public function guessTimezone()
     {
-        if (isset($_SESSION['glpi_tz'])) {
-            $zone = $_SESSION['glpi_tz'];
-        } else {
-            $conf_tz = ['value' => null];
-            if (
-                $this->tableExists(Config::getTable())
-                && $this->fieldExists(Config::getTable(), 'value')
-            ) {
-                $conf_tz = $this->request([
-                   'SELECT' => 'value',
-                   'FROM'   => Config::getTable(),
-                   'WHERE'  => [
-                      'context'   => 'core',
-                      'name'      => 'timezone'
-                    ]
-                ])->next();
-            }
-            $zone = !empty($conf_tz['value']) ? $conf_tz['value'] : date_default_timezone_get();
-        }
-
-        return $zone;
+        return $this->__engine->guessTimezone();
     }
 
     /**
@@ -301,7 +283,7 @@ class DBmysql
      */
     public function escape($string)
     {
-        return $this->dbh->real_escape_string($string ?? '');
+        return $this->__engine->escape($string);
     }
 
     /**
@@ -319,47 +301,7 @@ class DBmysql
      */
     public function query($query)
     {
-        global $CFG_GLPI, $DEBUG_SQL, $GLPI, $SQL_TOTAL_REQUEST;
-
-        $is_debug = isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
-        if ($is_debug && $CFG_GLPI["debug_sql"]) {
-            $SQL_TOTAL_REQUEST++;
-            $DEBUG_SQL["queries"][$SQL_TOTAL_REQUEST] = $query;
-        }
-        if ($is_debug && $CFG_GLPI["debug_sql"] || $this->execution_time === true) {
-            $TIMER                                    = new Timer();
-            $TIMER->start();
-        }
-
-        try {
-            $res = $this->dbh->query($query);
-
-            if ($is_debug && $CFG_GLPI["debug_sql"]) {
-                $TIME                                   = $TIMER->getTime();
-                $DEBUG_SQL["times"][$SQL_TOTAL_REQUEST] = $TIME;
-                $DEBUG_SQL['rows'][$SQL_TOTAL_REQUEST] = $this->affectedRows();
-            }
-            if ($this->execution_time === true) {
-                $this->execution_time = $TIMER->getTime(0, true);
-            }
-            return $res;
-        } catch (\mysqli_sql_exception $e) {
-            // no translation for error logs
-            $error = "  *** MySQL query error:\n  SQL: " . $query . "\n  Error: " .
-                      $this->dbh->error . "\n";
-            $error .= Toolbox::backtrace(false, 'DBmysql->query()', ['Toolbox::backtrace()']);
-
-            Toolbox::logSqlError($error);
-
-            $error_handler = $GLPI->getErrorHandler();
-            if ($error_handler instanceof ErrorHandler) {
-                $error_handler->handleSqlError($this->dbh->errno, $this->dbh->error, $query);
-            }
-
-            if (($is_debug || isAPI()) && $CFG_GLPI["debug_sql"]) {
-                $DEBUG_SQL["errors"][$SQL_TOTAL_REQUEST] = $this->error();
-            }
-        }
+        return $this->__engine->query($query);
     }
 
     /**
@@ -375,23 +317,7 @@ class DBmysql
      */
     public function queryOrDie($query, $message = '')
     {
-        $res = $this->query($query);
-        if (!$res) {
-            //TRANS: %1$s is the description, %2$s is the query, %3$s is the error message
-            $message = sprintf(
-                __('%1$s - Error during the database query: %2$s - Error is %3$s'),
-                $message,
-                $query,
-                $this->error()
-            );
-            if (isCommandLine()) {
-                throw new \RuntimeException($message);
-            } else {
-                echo $message . "\n";
-                die(1);
-            }
-        }
-        return $res;
+        return $this->__engine->queryOrDie($query, $message);
     }
 
     /**
@@ -405,30 +331,7 @@ class DBmysql
      */
     public function prepare($query)
     {
-        global $CFG_GLPI, $DEBUG_SQL, $SQL_TOTAL_REQUEST;
-
-        $res = $this->dbh->prepare($query);
-        if (!$res) {
-            // no translation for error logs
-            $error = "  *** MySQL prepare error:\n  SQL: " . $query . "\n  Error: " .
-                      $this->dbh->error . "\n";
-            $error .= Toolbox::backtrace(false, 'DBmysql->prepare()', ['Toolbox::backtrace()']);
-
-            Toolbox::logInFile("sql-errors", $error);
-            if (class_exists('GlpitestSQLError')) { // For unit test
-                throw new GlpitestSQLError($error);
-            }
-
-            if (
-                isset($_SESSION['glpi_use_mode'])
-                && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE
-                && $CFG_GLPI["debug_sql"]
-            ) {
-                $SQL_TOTAL_REQUEST++;
-                $DEBUG_SQL["errors"][$SQL_TOTAL_REQUEST] = $this->error();
-            }
-        }
-        return $res;
+        return $this->__engine->prepare($query);
     }
 
     /**
@@ -442,14 +345,7 @@ class DBmysql
      */
     public function result($result, $i, $field)
     {
-        if (
-            $result && ($result->data_seek($i))
-            && ($data = $result->fetch_array())
-            && isset($data[$field])
-        ) {
-            return $data[$field];
-        }
-        return null;
+        return $this->__engine->result($result, $i, $field);
     }
 
     /**
@@ -461,7 +357,7 @@ class DBmysql
      */
     public function numrows($result)
     {
-        return $result->num_rows;
+        return $this->__engine->numrows($result);
     }
 
     /**
@@ -490,7 +386,7 @@ class DBmysql
      */
     public function fetchArray($result)
     {
-        return $result->fetch_array();
+        return $this->__engine->fetchArray($result);
     }
 
     /**
@@ -517,7 +413,7 @@ class DBmysql
      */
     public function fetchRow($result)
     {
-        return $result->fetch_row();
+        return $this->__engine->fetchRow($result);
     }
 
     /**
@@ -544,7 +440,7 @@ class DBmysql
      */
     public function fetchAssoc($result)
     {
-        return $result->fetch_assoc();
+        return $this->__engine->fetchAssoc($result);
     }
 
     /**
@@ -556,8 +452,8 @@ class DBmysql
      */
     public function fetch_object($result)
     {
-        Toolbox::deprecated('Use DBmysql::fetchObject()');
-        return $this->fetchObject();
+    Toolbox::deprecated('Use DBmysql::fetchObject()');
+    return $this->fetchObject($result);
     }
 
     /**
@@ -569,7 +465,7 @@ class DBmysql
      */
     public function fetchObject($result)
     {
-        return $result->fetch_object();
+        return $this->__engine->fetchObject($result);
     }
 
     /**
@@ -598,7 +494,7 @@ class DBmysql
      */
     public function dataSeek($result, $num)
     {
-        return $result->data_seek($num);
+        return $this->__engine->dataSeek($result, $num);
     }
 
 
@@ -622,7 +518,7 @@ class DBmysql
      */
     public function insertId()
     {
-        return $this->dbh->insert_id;
+        return $this->__engine->insertId();
     }
 
     /**
@@ -649,7 +545,7 @@ class DBmysql
      */
     public function numFields($result)
     {
-        return $result->field_count;
+        return $this->__engine->numFields($result);
     }
 
 
@@ -681,8 +577,7 @@ class DBmysql
      */
     public function fieldName($result, $nb)
     {
-        $finfo = $result->fetch_fields();
-        return $finfo[$nb]->name;
+        return $this->__engine->fieldName($result, $nb);
     }
 
 
@@ -696,16 +591,7 @@ class DBmysql
      */
     public function listTables($table = 'glpi\_%', array $where = [])
     {
-        $iterator = $this->request([
-           'SELECT' => 'table_name as TABLE_NAME',
-           'FROM'   => 'information_schema.tables',
-           'WHERE'  => [
-              'table_schema' => $this->dbdefault,
-              'table_type'   => 'BASE TABLE',
-              'table_name'   => ['LIKE', $table]
-           ] + $where
-        ]);
-        return $iterator;
+        return $this->__engine->listTables($table, $where);
     }
 
     /**
@@ -715,8 +601,7 @@ class DBmysql
      */
     public function getMyIsamTables(): DBmysqlIterator
     {
-        $iterator = $this->listTables('glpi\_%', ['engine' => 'MyIsam']);
-        return $iterator;
+        return $this->__engine->getMyIsamTables();
     }
 
     /**
@@ -745,22 +630,7 @@ class DBmysql
      */
     public function listFields($table, $usecache = true)
     {
-
-        if (!$this->cache_disabled && $usecache && isset($this->field_cache[$table])) {
-            return $this->field_cache[$table];
-        }
-        $result = $this->query("SHOW COLUMNS FROM $table");
-        if ($result) {
-            if ($this->numrows($result) > 0) {
-                $this->field_cache[$table] = [];
-                while ($data = $this->fetchAssoc($result)) {
-                    $this->field_cache[$table][$data["Field"]] = $data;
-                }
-                return $this->field_cache[$table];
-            }
-            return [];
-        }
-        return false;
+        return $this->__engine->listFields($table, $usecache);
     }
 
     /**
@@ -774,9 +644,7 @@ class DBmysql
      */
     public function getField(string $table, string $field, $usecache = true): ?array
     {
-
-        $fields = $this->listFields($table, $usecache);
-        return $fields[$field] ?? null;
+        return $this->__engine->getField($table, $field, $usecache);
     }
 
     /**
@@ -799,7 +667,7 @@ class DBmysql
      */
     public function affectedRows()
     {
-        return $this->dbh->affected_rows;
+        return $this->__engine->affectedRows();
     }
 
 
@@ -827,7 +695,7 @@ class DBmysql
      */
     public function freeResult($result)
     {
-        return $result->free();
+        return $this->__engine->freeResult($result);
     }
 
     /**
@@ -837,7 +705,7 @@ class DBmysql
      */
     public function errno()
     {
-        return $this->dbh->errno;
+        return $this->__engine->errno();
     }
 
     /**
@@ -847,7 +715,7 @@ class DBmysql
      */
     public function error()
     {
-        return $this->dbh->error;
+        return $this->__engine->error();
     }
 
     /**
@@ -857,10 +725,7 @@ class DBmysql
      */
     public function close()
     {
-        if ($this->connected && $this->dbh) {
-            return $this->dbh->close();
-        }
-        return false;
+        return $this->__engine->close();
     }
 
     /**
@@ -870,7 +735,7 @@ class DBmysql
      */
     public function isSlave()
     {
-        return $this->slave;
+        return $this->__engine->isSlave();
     }
 
     /**
@@ -882,36 +747,7 @@ class DBmysql
      */
     public function runFile($path)
     {
-        $script = fopen($path, 'r');
-        if (!$script) {
-            return false;
-        }
-        $sql_query = @fread(
-            $script,
-            @filesize($path)
-        ) . "\n";
-        $sql_query = html_entity_decode($sql_query, ENT_COMPAT, 'UTF-8');
-
-        $sql_query = $this->removeSqlRemarks($sql_query);
-        $queries = preg_split('/;\s*$/m', $sql_query);
-
-        foreach ($queries as $query) {
-            $query = trim($query);
-            if ($query != '') {
-                if (!$this->query($query)) {
-                    return false;
-                }
-                if (!isCommandLine()) {
-                    // Flush will prevent proxy to timeout as it will receive data.
-                    // Flush requires a content to be sent, so we sent spaces as multiple spaces
-                    // will be shown as a single one on browser.
-                    echo ' ';
-                    Html::glpi_flush();
-                }
-            }
-        }
-
-        return true;
+        return $this->__engine->runFile($path);
     }
 
     /**
@@ -958,29 +794,7 @@ class DBmysql
      */
     public function getInfo()
     {
-        // No translation, used in sysinfo
-        $ret = [];
-        $req = $this->request("SELECT @@sql_mode as mode, @@version AS vers, @@version_comment AS stype");
-
-        if (($data = $req->next())) {
-            if ($data['stype']) {
-                $ret['Server Software'] = $data['stype'];
-            }
-            if ($data['vers']) {
-                $ret['Server Version'] = $data['vers'];
-            } else {
-                $ret['Server Version'] = $this->dbh->server_info;
-            }
-            if ($data['mode']) {
-                $ret['Server SQL Mode'] = $data['mode'];
-            } else {
-                $ret['Server SQL Mode'] = '';
-            }
-        }
-        $ret['Parameters'] = $this->dbuser . "@" . $this->dbhost . "/" . $this->dbdefault;
-        $ret['Host info']  = $this->dbh->host_info;
-
-        return $ret;
+        return $this->__engine->getInfo();
     }
 
     /**
@@ -997,17 +811,7 @@ class DBmysql
      */
     public static function isMySQLStrictMode(&$msg)
     {
-        Toolbox::deprecated();
-        global $DB;
-
-        $msg = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER';
-        $req = $DB->request("SELECT @@sql_mode as mode");
-        if (($data = $req->next())) {
-            return (preg_match("/STRICT_TRANS/", $data['mode'])
-                    && preg_match("/NO_ZERO_/", $data['mode'])
-                    && preg_match("/ONLY_FULL_GROUP_BY/", $data['mode']));
-        }
-        return false;
+        return __DBEngineMySQL::isMySQLStrictMode($msg);
     }
 
     /**
@@ -1021,12 +825,7 @@ class DBmysql
      */
     public function getLock($name)
     {
-        $name          = addslashes($this->dbdefault . '.' . $name);
-        $query         = "SELECT GET_LOCK('$name', 0)";
-        $result        = $this->query($query);
-        list($lock_ok) = $this->fetchRow($result);
-
-        return (bool)$lock_ok;
+        return $this->__engine->getLock($name);
     }
 
     /**
@@ -1040,12 +839,7 @@ class DBmysql
      */
     public function releaseLock($name)
     {
-        $name          = addslashes($this->dbdefault . '.' . $name);
-        $query         = "SELECT RELEASE_LOCK('$name')";
-        $result        = $this->query($query);
-        list($lock_ok) = $this->fetchRow($result);
-
-        return $lock_ok;
+        return $this->__engine->releaseLock($name);
     }
 
 
@@ -1062,30 +856,7 @@ class DBmysql
      **/
     public function tableExists($tablename, $usecache = true)
     {
-
-        if (!$this->cache_disabled && $usecache && in_array($tablename, $this->table_cache)) {
-            return true;
-        }
-
-        // Retrieve all tables if cache is empty but enabled, in order to fill cache
-        // with all known tables
-        $retrieve_all = !$this->cache_disabled && empty($this->table_cache);
-
-        $result = $this->listTables($retrieve_all ? 'glpi\_%' : $tablename);
-        $found_tables = [];
-        while ($data = $result->next()) {
-            $found_tables[] = $data['TABLE_NAME'];
-        }
-
-        if (!$this->cache_disabled) {
-            $this->table_cache = array_unique(array_merge($this->table_cache, $found_tables));
-        }
-
-        if (in_array($tablename, $found_tables)) {
-            return true;
-        }
-
-        return false;
+        return $this->__engine->tableExists($tablename, $usecache);
     }
 
     /**
@@ -1093,44 +864,20 @@ class DBmysql
      *
      * @since 9.2
      *
-     * @param string  $table    Table name for the field we're looking for
-     * @param string  $field    Field name
-     * @param Boolean $usecache Use cache; @see DBmysql::listFields(), defaults to true
+    * @param string  $table    Table name for the field we're looking for
+    * @param string  $field    Field name
+    * @param boolean $usecache Use cache; @see DBmysql::listFields(), defaults to true
      *
      * @return boolean
      **/
     public function fieldExists($table, $field, $usecache = true)
     {
-        if (!$this->tableExists($table, $usecache)) {
-            trigger_error("Table $table does not exists", E_USER_WARNING);
-            return false;
-        }
-
-        if ($fields = $this->listFields($table, $usecache)) {
-            if (isset($fields[$field])) {
-                return true;
-            }
-            return false;
-        }
-        return false;
+        return $this->__engine->fieldExists($table, $field, $usecache);
     }
 
     public function constraintExists($table, $constraint)
     {
-        if (!$this->tableExists($table)) {
-            trigger_error("Table $table does not exists", E_USER_WARNING);
-            return false;
-        }
-        $result = $this->query("SHOW CREATE TABLE $table");
-        if ($result) {
-            if ($this->numrows($result) > 0) {
-                $data = $this->fetchArray($result);
-                if (preg_match("/CONSTRAINT $constraint FOREIGN KEY/", $data[1])) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return $this->__engine->constraintExists($table, $constraint);
     }
 
     /**
@@ -1140,7 +887,7 @@ class DBmysql
      */
     public function disableTableCaching()
     {
-        $this->cache_disabled = true;
+        $this->__engine->disableTableCaching();
     }
 
     /**
@@ -1154,32 +901,8 @@ class DBmysql
      */
     public static function quoteName($name)
     {
-        //handle verbatim names
-        if ($name instanceof QueryExpression) {
-            return $name->getValue();
-        }
-        //handle aliases
-        $names = is_string($name) ? preg_split('/\s+AS\s+/i', $name) : [$name];
-        if (count($names) > 2) {
-            throw new \RuntimeException(
-                'Invalid field name ' . $name
-            );
-        }
-        if (count($names) == 2) {
-            $name = self::quoteName($names[0]);
-            $name .= ' AS ' . self::quoteName($names[1]);
-            return $name;
-        } else {
-            if (is_string($name) && strpos($name, '.')) {
-                $n = explode('.', $name, 2);
-                $table = self::quoteName($n[0]);
-                $field = ($n[1] === '*') ? $n[1] : self::quoteName($n[1]);
-                return "$table.$field";
-            }
-
-            return (is_string($name) && isset($name[0]) && $name[0] == '`') ? $name :
-            ((is_string($name) && $name === '*') ? $name : (is_array($name) ? implode('.', $name) : (string)$name));
-        }
+        // Keep legacy MySQL quoting to preserve DBmysqlIterator behavior
+        return __DBEngineMySQL::quoteName($name);
     }
 
     /**
@@ -1191,22 +914,7 @@ class DBmysql
      */
     public static function quoteValue($value)
     {
-        if ($value instanceof QueryParam || $value instanceof QueryExpression) {
-            //no quote for query parameters nor expressions
-            $value = $value->getValue();
-        } elseif ($value === null || $value === 'NULL' || $value === 'null') {
-            $value = 'NULL';
-        } elseif ($value instanceof \DateTime) {
-            // Convertir les objets DateTime en chaîne formatée
-            $value = "'" . $value->format('Y-m-d H:i:s') . "'";
-        } elseif (is_bool($value)) {
-            // transform boolean as int (prevent false to be transformed to empty string)
-            $value = "'" . (int)$value . "'";
-        } else {
-            //phone numbers may start with '+' and will be considered as numeric
-            $value = "'$value'";
-        }
-        return $value;
+        return __DBEngineMySQL::quoteValue($value);
     }
 
     /**
@@ -1221,20 +929,7 @@ class DBmysql
      */
     public function buildInsert($table, $params)
     {
-        $query = "INSERT INTO " . self::quoteName($table) . " (";
-
-        $fields = [];
-        foreach ($params as $key => &$value) {
-            $fields[] = $this->quoteName($key);
-            $value = $this->quoteValue($value);
-        }
-
-        $query .= implode(', ', $fields);
-        $query .= ") VALUES (";
-        $query .= implode(", ", $params);
-        $query .= ")";
-
-        return $query;
+        return $this->__engine->buildInsert($table, $params);
     }
 
     /**
@@ -1249,10 +944,7 @@ class DBmysql
      */
     public function insert($table, $params)
     {
-        $result = $this->query(
-            $this->buildInsert($table, $params)
-        );
-        return $result;
+        return $this->__engine->insert($table, $params);
     }
 
     /**
@@ -1269,24 +961,7 @@ class DBmysql
      */
     public function insertOrDie($table, $params, $message = '')
     {
-        $insert = $this->buildInsert($table, $params);
-        $res = $this->query($insert);
-        if (!$res) {
-            //TRANS: %1$s is the description, %2$s is the query, %3$s is the error message
-            $message = sprintf(
-                __('%1$s - Error during the database query: %2$s - Error is %3$s'),
-                $message,
-                $insert,
-                $this->error()
-            );
-            if (isCommandLine()) {
-                throw new \RuntimeException($message);
-            } else {
-                echo $message . "\n";
-                die(1);
-            }
-        }
-        return $res;
+        return $this->__engine->insertOrDie($table, $params, $message);
     }
 
     /**
@@ -1304,53 +979,7 @@ class DBmysql
      */
     public function buildUpdate($table, $params, $clauses, array $joins = [])
     {
-        //when no explicit "WHERE", we only have a WHEre clause.
-        if (!isset($clauses['WHERE'])) {
-            $clauses  = ['WHERE' => $clauses];
-        } else {
-            $known_clauses = ['WHERE', 'ORDER', 'LIMIT', 'START'];
-            foreach (array_keys($clauses) as $key) {
-                if (!in_array($key, $known_clauses)) {
-                    throw new \RuntimeException(
-                        str_replace(
-                            '%clause',
-                            $key,
-                            'Trying to use an unknonw clause (%clause) building update query!'
-                        )
-                    );
-                }
-            }
-        }
-
-        if (!count($clauses['WHERE'])) {
-            throw new \RuntimeException('Cannot run an UPDATE query without WHERE clause!');
-        }
-
-        $query  = "UPDATE " . self::quoteName($table);
-
-        //JOINS
-        $it = new DBmysqlIterator($this);
-        $query .= $it->analyseJoins($joins);
-
-        $query .= " SET ";
-        foreach ($params as $field => $value) {
-            $query .= self::quoteName($field) . " = " . $this->quoteValue($value) . ", ";
-        }
-        $query = rtrim($query, ', ');
-
-        $query .= " WHERE " . $it->analyseCrit($clauses['WHERE']);
-
-        // ORDER BY
-        if (isset($clauses['ORDER']) && !empty($clauses['ORDER'])) {
-            $query .= $it->handleOrderClause($clauses['ORDER']);
-        }
-
-        if (isset($clauses['LIMIT']) && !empty($clauses['LIMIT'])) {
-            $offset = (isset($clauses['START']) && !empty($clauses['START'])) ? $clauses['START'] : null;
-            $query .= $it->handleLimits($clauses['LIMIT'], $offset);
-        }
-
-        return $query;
+        return $this->__engine->buildUpdate($table, $params, $clauses, $joins);
     }
 
     /**
@@ -1368,9 +997,7 @@ class DBmysql
      */
     public function update($table, $params, $where, array $joins = [])
     {
-        $query = $this->buildUpdate($table, $params, $where, $joins);
-        $result = $this->query($query);
-        return $result;
+        return $this->__engine->update($table, $params, $where, $joins);
     }
 
     /**
@@ -1390,24 +1017,7 @@ class DBmysql
      */
     public function updateOrDie($table, $params, $where, $message = '', array $joins = [])
     {
-        $update = $this->buildUpdate($table, $params, $where, $joins);
-        $res = $this->query($update);
-        if (!$res) {
-            //TRANS: %1$s is the description, %2$s is the query, %3$s is the error message
-            $message = sprintf(
-                __('%1$s - Error during the database query: %2$s - Error is %3$s'),
-                $message,
-                $update,
-                $this->error()
-            );
-            if (isCommandLine()) {
-                throw new \RuntimeException($message);
-            } else {
-                echo $message . "\n";
-                die(1);
-            }
-        }
-        return $res;
+        return $this->__engine->updateOrDie($table, $params, $where, $message, $joins);
     }
 
     /**
@@ -1424,16 +1034,7 @@ class DBmysql
      */
     public function updateOrInsert($table, $params, $where, $onlyone = true)
     {
-        $req = $this->request($table, $where);
-        $data = array_merge($where, $params);
-        if ($req->count() == 0) {
-            return $this->insertOrDie($table, $data, 'Unable to create new element or update existing one');
-        } elseif ($req->count() == 1 || !$onlyone) {
-            return $this->updateOrDie($table, $data, $where, 'Unable to create new element or update existing one');
-        } else {
-            Toolbox::logWarning('Update would change too many rows!');
-            return false;
-        }
+        return $this->__engine->updateOrInsert($table, $params, $where, $onlyone);
     }
 
     /**
@@ -1451,18 +1052,7 @@ class DBmysql
      */
     public function buildDelete($table, $where, array $joins = [])
     {
-
-        if (!count($where)) {
-            throw new \RuntimeException('Cannot run an DELETE query without WHERE clause!');
-        }
-
-        $query  = "DELETE " . self::quoteName($table) . " FROM " . self::quoteName($table);
-
-        $it = new DBmysqlIterator($this);
-        $query .= $it->analyseJoins($joins);
-        $query .= " WHERE " . $it->analyseCrit($where);
-
-        return $query;
+        return $this->__engine->buildDelete($table, $where, $joins);
     }
 
     /**
@@ -1479,9 +1069,7 @@ class DBmysql
      */
     public function delete($table, $where, array $joins = [])
     {
-        $query = $this->buildDelete($table, $where, $joins);
-        $result = $this->query($query);
-        return $result;
+        return $this->__engine->delete($table, $where, $joins);
     }
 
     /**
@@ -1500,24 +1088,7 @@ class DBmysql
      */
     public function deleteOrDie($table, $where, $message = '', array $joins = [])
     {
-        $update = $this->buildDelete($table, $where, $joins);
-        $res = $this->query($update);
-        if (!$res) {
-            //TRANS: %1$s is the description, %2$s is the query, %3$s is the error message
-            $message = sprintf(
-                __('%1$s - Error during the database query: %2$s - Error is %3$s'),
-                $message,
-                $update,
-                $this->error()
-            );
-            if (isCommandLine()) {
-                throw new \RuntimeException($message);
-            } else {
-                echo $message . "\n";
-                die(1);
-            }
-        }
-        return $res;
+        return $this->__engine->deleteOrDie($table, $where, $message, $joins);
     }
 
 
@@ -1531,88 +1102,7 @@ class DBmysql
      */
     public function getTableSchema($table, $structure = null)
     {
-        if ($structure === null) {
-            $structure = $this->query("SHOW CREATE TABLE $table")->fetch_row();
-            $structure = $structure[1];
-        }
-
-        //get table index
-        $index = preg_grep(
-            "/^\s\s+?KEY/",
-            array_map(
-                function ($idx) {
-                    return rtrim($idx, ',');
-                },
-                explode("\n", $structure)
-            )
-        );
-        //get table schema, without index, without AUTO_INCREMENT
-        $structure = preg_replace(
-            [
-              "/\s\s+KEY .*/",
-              "/AUTO_INCREMENT=\d+ /"
-            ],
-            "",
-            $structure
-        );
-        $structure = preg_replace('/,(\s)?$/m', '', $structure);
-        $structure = preg_replace('/ COMMENT \'(.+)\'/', '', $structure);
-
-        $structure = str_replace(
-            [
-              " COLLATE utf8_unicode_ci",
-              " CHARACTER SET utf8",
-              ', ',
-            ],
-            [
-              '',
-              '',
-              ',',
-            ],
-            trim($structure)
-        );
-
-        //do not check engine nor collation
-        $structure = preg_replace(
-            '/\) ENGINE.*$/',
-            '',
-            $structure
-        );
-
-        //Mariadb 10.2 will return current_timestamp()
-        //while older retuns CURRENT_TIMESTAMP...
-        $structure = preg_replace(
-            '/ CURRENT_TIMESTAMP\(\)/i',
-            ' CURRENT_TIMESTAMP',
-            $structure
-        );
-
-        //Mariadb 10.2 allow default values on longblob, text and longtext
-        $defaults = [];
-        preg_match_all(
-            '/^.+ (longblob|text|longtext) .+$/m',
-            $structure,
-            $defaults
-        );
-        if (count($defaults[0])) {
-            foreach ($defaults[0] as $line) {
-                $structure = str_replace(
-                    $line,
-                    str_replace(' DEFAULT NULL', '', $line),
-                    $structure
-                );
-            }
-        }
-
-        $structure = preg_replace("/(DEFAULT) ([-|+]?\d+)(\.\d+)?/", "$1 '$2$3'", $structure);
-        //$structure = preg_replace("/(DEFAULT) (')?([-|+]?\d+)(\.\d+)(')?/", "$1 '$3'", $structure);
-        $structure = preg_replace('/(BIGINT)\(\d+\)/i', '$1', $structure);
-        $structure = preg_replace('/(TINYINT) /i', '$1(4) ', $structure);
-
-        return [
-           'schema' => strtolower($structure),
-           'index'  => $index
-        ];
+        return $this->__engine->getTableSchema($table, $structure);
     }
 
     /**
@@ -1622,9 +1112,7 @@ class DBmysql
      */
     public function getVersion()
     {
-        $req = $this->request('SELECT version()')->next();
-        $raw = $req['version()'];
-        return $raw;
+        return $this->__engine->getVersion();
     }
 
     /**
@@ -1634,8 +1122,7 @@ class DBmysql
      */
     public function beginTransaction()
     {
-        $this->in_transaction = true;
-        return $this->dbh->begin_transaction();
+        return $this->__engine->beginTransaction();
     }
 
     /**
@@ -1645,8 +1132,7 @@ class DBmysql
      */
     public function commit()
     {
-        $this->in_transaction = false;
-        return $this->dbh->commit();
+        return $this->__engine->commit();
     }
 
     /**
@@ -1656,8 +1142,7 @@ class DBmysql
      */
     public function rollBack()
     {
-        $this->in_transaction = false;
-        return $this->dbh->rollback();
+        return $this->__engine->rollBack();
     }
 
     /**
@@ -1667,7 +1152,7 @@ class DBmysql
      */
     public function inTransaction()
     {
-        return $this->in_transaction;
+        return $this->__engine->inTransaction();
     }
 
     /**
@@ -1681,43 +1166,7 @@ class DBmysql
      */
     public function areTimezonesAvailable(string &$msg = '')
     {
-        $cache = Config::getCache('cache_db');
-
-        if ($cache->has('are_timezones_available')) {
-            return $cache->get('are_timezones_available');
-        }
-        $cache->set('are_timezones_available', false, DAY_TIMESTAMP);
-
-        $mysql_db_res = $this->request('SHOW DATABASES LIKE ' . $this->quoteValue('mysql'));
-        if ($mysql_db_res->count() === 0) {
-            $msg = __('Access to timezone database (mysql) is not allowed.');
-            return false;
-        }
-
-        $tz_table_res = $this->request(
-            'SHOW TABLES FROM '
-            . $this->quoteName('mysql')
-            . ' LIKE '
-            . $this->quoteValue('time_zone_name')
-        );
-        if ($tz_table_res->count() === 0) {
-            $msg = __('Access to timezone table (mysql.time_zone_name) is not allowed.');
-            return false;
-        }
-
-        $criteria = [
-           'COUNT'  => 'cpt',
-           'FROM'   => 'mysql.time_zone_name',
-        ];
-        $iterator = $this->request($criteria);
-        $result = $iterator->next();
-        if ($result['cpt'] == 0) {
-            $msg = __('Timezones seems not loaded, see https://glpi-install.readthedocs.io/en/latest/timezones.html.');
-            return false;
-        }
-
-        $cache->set('are_timezones_available', true);
-        return true;
+        return $this->__engine->areTimezonesAvailable($msg);
     }
 
     /**
@@ -1729,13 +1178,7 @@ class DBmysql
      */
     public function setTimezone($timezone)
     {
-        //setup timezone
-        if ($this->areTimezonesAvailable()) {
-            date_default_timezone_set($timezone);
-            $this->dbh->query("SET SESSION time_zone = '$timezone'");
-            $_SESSION['glpi_currenttime'] = date("Y-m-d H:i:s");
-        }
-        return $this;
+        return $this->__engine->setTimezone($timezone);
     }
 
     /**
@@ -1747,27 +1190,7 @@ class DBmysql
      */
     public function getTimezones()
     {
-        $list = []; //default $tz is empty
-
-        $from_php = \DateTimeZone::listIdentifiers();
-        $now = new \DateTime();
-
-        try {
-            $iterator = $this->request([
-               'SELECT' => 'Name',
-               'FROM'   => 'mysql.time_zone_name',
-               'WHERE'  => ['Name' => $from_php]
-            ]);
-            while ($from_mysql = $iterator->next()) {
-                $now->setTimezone(new \DateTimeZone($from_mysql['Name']));
-                $list[$from_mysql['Name']] = $from_mysql['Name'] . $now->format(" (T P)");
-            }
-        } catch (\Exception $e) {
-            //do nothing
-        }
-
-
-        return $list;
+        return $this->__engine->getTimezones();
     }
 
     /**
@@ -1779,18 +1202,7 @@ class DBmysql
      */
     public function notTzMigrated()
     {
-        global $DB;
-
-        $result = $DB->request([
-            'COUNT'       => 'cpt',
-            'FROM'        => 'information_schema.columns',
-            'WHERE'       => [
-               'information_schema.columns.table_schema' => $DB->dbdefault,
-               'information_schema.columns.table_name'   => ['LIKE', 'glpi\_%'],
-               'information_schema.columns.data_type'    => ['datetime']
-            ]
-        ])->next();
-        return (int)$result['cpt'];
+        return $this->__engine->notTzMigrated();
     }
 
     /**
@@ -1802,66 +1214,7 @@ class DBmysql
      */
     public function getSignedKeysColumns()
     {
-
-        $query = [
-           'SELECT'     => [
-              'information_schema.columns.table_name as TABLE_NAME',
-              'information_schema.columns.column_name as COLUMN_NAME',
-              'information_schema.columns.data_type as DATA_TYPE',
-              'information_schema.columns.column_default as COLUMN_DEFAULT',
-              'information_schema.columns.is_nullable as IS_NULLABLE',
-              'information_schema.columns.extra as EXTRA',
-           ],
-           'FROM'       => 'information_schema.columns',
-           'INNER JOIN' => [
-              'information_schema.tables' => [
-                 'FKEY' => [
-                    'information_schema.tables'  => 'table_name',
-                    'information_schema.columns' => 'table_name',
-                    [
-                       'AND' => [
-                          'information_schema.tables.table_schema' => new QueryExpression(
-                              $this->quoteName('information_schema.columns.table_schema')
-                          ),
-                       ]
-                    ],
-                 ]
-              ]
-           ],
-           'WHERE'      => [
-            'information_schema.tables.table_schema'  => $this->dbdefault,
-            'information_schema.tables.table_name'    => ['LIKE', 'glpi\_%'],
-            'information_schema.tables.table_type'    => 'BASE TABLE',
-            [
-               'OR' => [
-                  ['information_schema.columns.column_name' => 'id'],
-                  ['information_schema.columns.column_name' => ['LIKE', '%\_id']],
-                  ['information_schema.columns.column_name' => ['LIKE', '%\_id\_%']],
-               ],
-            ],
-            'information_schema.columns.data_type' => ['tinyint', 'smallint', 'mediumint', 'int', 'bigint'],
-            ['NOT' => ['information_schema.columns.column_type' => ['LIKE', '%unsigned%']]],
-           ],
-           'ORDER'      => ['TABLE_NAME']
-        ];
-        foreach (self::ALLOWED_SIGNED_KEYS as $allowed_signed_key) {
-            list($excluded_table, $excluded_field) = explode('.', $allowed_signed_key);
-            $excluded_fkey = getForeignKeyFieldForTable($excluded_table);
-            $query['WHERE'][] = [
-               [
-                  'NOT' => [
-                     'information_schema.tables.table_name'   => $excluded_table,
-                     'information_schema.columns.column_name' => $excluded_field
-                  ]
-               ],
-               ['NOT' => ['information_schema.columns.column_name' => $excluded_fkey]],
-               ['NOT' => ['information_schema.columns.column_name' => ['LIKE', str_replace('_', '\_', $excluded_fkey . '_%')]]],
-            ];
-        }
-
-        $iterator = $this->request($query);
-
-        return $iterator;
+        return $this->__engine->getSignedKeysColumns();
     }
 
     /**
@@ -1873,28 +1226,7 @@ class DBmysql
      */
     public function getForeignKeysContraints()
     {
-
-        $query = [
-           'SELECT' => [
-              'table_schema as TABLE_SCHEMA',
-              'table_name as TABLE_NAME',
-              'column_name as COLUMN_NAME',
-              'constraint_name as CONSTRAINT_NAME',
-              'referenced_table_name as REFERENCED_TABLE_NAME',
-              'referenced_column_name as REFERENCED_COLUMN_NAME',
-              'ordinal_position as ORDINAL_POSITION',
-           ],
-           'FROM'   => 'information_schema.key_column_usage',
-           'WHERE'  => [
-              'referenced_table_schema' => $this->dbdefault,
-              'referenced_table_name'   => ['LIKE', 'glpi\_%'],
-           ],
-           'ORDER'  => ['TABLE_NAME']
-        ];
-
-        $iterator = $this->request($query);
-
-        return $iterator;
+        return $this->__engine->getForeignKeysContraints();
     }
 
     /**
@@ -1904,8 +1236,7 @@ class DBmysql
      */
     public function clearSchemaCache()
     {
-        $this->table_cache = [];
-        $this->field_cache = [];
+        return $this->__engine->clearSchemaCache();
     }
 
     /**
@@ -1922,8 +1253,7 @@ class DBmysql
      */
     public function quote($value, int $type = 2/*\PDO::PARAM_STR*/)
     {
-        return "'" . $this->escape($value) . "'";
-        //return $this->dbh->quote($value, $type);
+        return $this->__engine->quote($value, $type);
     }
 
     /**
@@ -1935,7 +1265,7 @@ class DBmysql
      */
     public static function getQuoteNameChar(): string
     {
-        return '';
+        return __DBEngineMySQL::getQuoteNameChar();
     }
 
     /**
@@ -1949,8 +1279,7 @@ class DBmysql
      */
     public static function isNameQuoted($value): bool
     {
-        $quote = static::getQuoteNameChar();
-        return is_string($value) && trim($value, $quote) != $value;
+        return __DBEngineMySQL::isNameQuoted($value);
     }
 
     /**
@@ -1963,29 +1292,7 @@ class DBmysql
      */
     public function removeSqlComments($output)
     {
-        $lines = explode("\n", $output);
-        $output = "";
-
-        // try to keep mem. use down
-        $linecount = count($lines);
-
-        $in_comment = false;
-        for ($i = 0; $i < $linecount; $i++) {
-            if (preg_match("/^\/\*/", $lines[$i])) {
-                $in_comment = true;
-            }
-
-            if (!$in_comment) {
-                $output .= $lines[$i] . "\n";
-            }
-
-            if (preg_match("/\*\/$/", preg_quote($lines[$i]))) {
-                $in_comment = false;
-            }
-        }
-
-        unset($lines);
-        return trim($output);
+        return $this->__engine->removeSqlComments($output);
     }
 
     /**
@@ -1999,27 +1306,6 @@ class DBmysql
      */
     public function removeSqlRemarks($sql)
     {
-        $lines = explode("\n", $sql);
-
-        // try to keep mem. use down
-        $sql = "";
-
-        $linecount = count($lines);
-        $output = "";
-
-        for ($i = 0; $i < $linecount; $i++) {
-            if (($i != ($linecount - 1)) || (strlen($lines[$i]) > 0)) {
-                if (isset($lines[$i][0])) {
-                    if ($lines[$i][0] != "#" && substr($lines[$i], 0, 2) != "--") {
-                        $output .= $lines[$i] . "\n";
-                    } else {
-                        $output .= "\n";
-                    }
-                }
-                // Trading a bit of speed for lower mem. use here.
-                $lines[$i] = "";
-            }
-        }
-        return trim($this->removeSqlComments($output));
+        return $this->__engine->removeSqlRemarks($sql);
     }
 }
