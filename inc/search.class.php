@@ -990,13 +990,15 @@ class Search
                       $LIMIT;
         } else {
             // Fix PostgreSQL ORDER BY for DISTINCT
-            if (method_exists($adapter, 'fixPostgreSQLCompleteOrderBy')) {
-                $result = $adapter->fixPostgreSQLCompleteOrderBy($SELECT, $ORDER, $SELECT . $FROM . $WHERE);
-                $SELECT = $result['select'];
-            }
+            if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+                if (method_exists($adapter, 'fixPostgreSQLCompleteOrderBy')) {
+                    $result = $adapter->fixPostgreSQLCompleteOrderBy($SELECT, $ORDER, $SELECT . $FROM . $WHERE);
+                    $SELECT = $result['select'];
+                }
 
-            if (method_exists($adapter, 'fixPostgreSQLGroupBy')) {
-                $GROUPBY = $adapter->fixPostgreSQLGroupBy($SELECT, $GROUPBY);
+                if (method_exists($adapter, 'fixPostgreSQLGroupBy')) {
+                    $GROUPBY = $adapter->fixPostgreSQLGroupBy($SELECT, $GROUPBY);
+                }
             }
             $QUERY = $SELECT .
                      $FROM .
@@ -1006,7 +1008,7 @@ class Search
                      $ORDER .
                      $LIMIT;
         }
-
+        
         if (isset($data['sql']['count']) && is_array($data['sql']['count'])) {
             // Adapt all counting queries for PostgreSQL
             foreach ($data['sql']['count'] as $i => $count_query) {
@@ -1022,7 +1024,7 @@ class Search
                 $QUERY = $adapter->adaptQueryForPostgreSQL($QUERY);
             }
         }
-    
+        // dump($QUERY);
         $data['sql']['search'] = $QUERY;
     }
 

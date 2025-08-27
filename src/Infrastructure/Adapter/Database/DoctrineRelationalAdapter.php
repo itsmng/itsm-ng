@@ -827,38 +827,40 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function adaptQueryForPostgreSQL(string $query): string
     {
-        // First replace backticks with double quotes
-        if (strpos($query, '`') !== false) {
-            $query = str_replace('`', '"', $query);
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            // First replace backticks with double quotes
+            if (strpos($query, '`') !== false) {
+                $query = str_replace('`', '"', $query);
+            }
+
+            $query = $this->fixBooleanFields($query);
+            
+            // Handle problematic WHERE and AND conditions for PostgreSQL
+            // These regular expressions capture all possible cases
+
+            // Replace WHERE (1) and variants
+            $query = preg_replace('/WHERE\s*\(\s*1\s*\)/i', 'WHERE (TRUE)', $query);
+
+            // Replace AND (1) and variants
+            $query = preg_replace('/AND\s*\(\s*1\s*\)/i', 'AND (TRUE)', $query);
+
+            // Replace OR (1) and variants
+            $query = preg_replace('/OR\s*\(\s*1\s*\)/i', 'OR (TRUE)', $query);
+
+            // Replace WHERE 1 (without parentheses)
+            $query = preg_replace('/WHERE\s+1(\s|$)/i', 'WHERE TRUE$1', $query);
+
+            // Replace AND 1 (without parentheses)
+            $query = preg_replace('/AND\s+1(\s|$)/i', 'AND TRUE$1', $query);
+
+            // Replace OR 1 (without parentheses)
+            $query = preg_replace('/OR\s+1(\s|$)/i', 'OR TRUE$1', $query);
+
+            // Special case: WHERE (1) AND -> replace with just WHERE
+            $query = preg_replace('/WHERE\s*\(\s*1\s*\)\s*AND/i', 'WHERE', $query);
+
+            $query = $this->fixPostgreSQLDistinctOrderBy($query);
         }
-
-        $query = $this->fixBooleanFields($query);
-        
-        // Handle problematic WHERE and AND conditions for PostgreSQL
-        // These regular expressions capture all possible cases
-
-        // Replace WHERE (1) and variants
-        $query = preg_replace('/WHERE\s*\(\s*1\s*\)/i', 'WHERE (TRUE)', $query);
-
-        // Replace AND (1) and variants
-        $query = preg_replace('/AND\s*\(\s*1\s*\)/i', 'AND (TRUE)', $query);
-
-        // Replace OR (1) and variants
-        $query = preg_replace('/OR\s*\(\s*1\s*\)/i', 'OR (TRUE)', $query);
-
-        // Replace WHERE 1 (without parentheses)
-        $query = preg_replace('/WHERE\s+1(\s|$)/i', 'WHERE TRUE$1', $query);
-
-        // Replace AND 1 (without parentheses)
-        $query = preg_replace('/AND\s+1(\s|$)/i', 'AND TRUE$1', $query);
-
-        // Replace OR 1 (without parentheses)
-        $query = preg_replace('/OR\s+1(\s|$)/i', 'OR TRUE$1', $query);
-
-        // Special case: WHERE (1) AND -> replace with just WHERE
-        $query = preg_replace('/WHERE\s*\(\s*1\s*\)\s*AND/i', 'WHERE', $query);
-
-        $query = $this->fixPostgreSQLDistinctOrderBy($query);
 
         return $query;
     }
@@ -1123,48 +1125,64 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function getGroupConcat(string $field, string $separator = ', ', ?string $order_by = null, bool $distinct = true): string
     {
-        // Check if DISTINCT is already in the field
-    $has_distinct = stripos($field, 'DISTINCT') !== false;
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            // Check if DISTINCT is already in the field
+        $has_distinct = stripos($field, 'DISTINCT') !== false;
 
-    // For PostgreSQL, always convert to text
-    $field_clean = $has_distinct ? preg_replace('/DISTINCT\s+/i', '', $field) : $field;
-    $final_field = $has_distinct
-        ? "DISTINCT " . $field_clean . "::text"
-        : ($distinct ? "DISTINCT $field_clean::text" : "$field_clean::text");
+        // For PostgreSQL, always convert to text
+        $field_clean = $has_distinct ? preg_replace('/DISTINCT\s+/i', '', $field) : $field;
+        $final_field = $has_distinct
+            ? "DISTINCT " . $field_clean . "::text"
+            : ($distinct ? "DISTINCT $field_clean::text" : "$field_clean::text");
 
-    // Escape the separator for SQL
-    $escaped_separator = "'" . str_replace("'", "''", $separator) . "'";
+        // Escape the separator for SQL
+        $escaped_separator = "'" . str_replace("'", "''", $separator) . "'";
 
-    // Generate the STRING_AGG function
-    $sql = "STRING_AGG($final_field, $escaped_separator";
+        // Generate the STRING_AGG function
+        $sql = "STRING_AGG($final_field, $escaped_separator";
 
-    // Handling ORDER BY for PostgreSQL
-    if (!empty($order_by)) {
-        // If it's a constant and we're using DISTINCT, ignore the ORDER BY
-        if (($has_distinct || $distinct) && preg_match('/^[\'"](.*?)[\'"]\s*$/', $order_by)) {
-            // Do not add ORDER BY
-        } else {
-            // Check DISTINCT + ORDER BY compatibility
-            $order_by_clean = trim($order_by);
+        // Handling ORDER BY for PostgreSQL
+        if (!empty($order_by)) {
+            // If it's a constant and we're using DISTINCT, ignore the ORDER BY
+            if (($has_distinct || $distinct) && preg_match('/^[\'"](.*?)[\'"]\s*$/', $order_by)) {
+                // Do not add ORDER BY
+            } else {
+                // Check DISTINCT + ORDER BY compatibility
+                $order_by_clean = trim($order_by);
 
-            // If using DISTINCT, check if ORDER BY is compatible
-            if (($has_distinct || $distinct)) {
-                // Extract main column name from DISTINCT field
-                $distinct_column = preg_replace('/.*\.(\w+).*/', '$1', $field_clean);
-                $order_column = preg_replace('/.*\.(\w+).*/', '$1', $order_by_clean);
+                // If using DISTINCT, check if ORDER BY is compatible
+                if (($has_distinct || $distinct)) {
+                    // Extract main column name from DISTINCT field
+                    $distinct_column = preg_replace('/.*\.(\w+).*/', '$1', $field_clean);
+                    $order_column = preg_replace('/.*\.(\w+).*/', '$1', $order_by_clean);
 
-                if ($distinct_column === $order_column) {
+                    if ($distinct_column === $order_column) {
+                        $sql .= " ORDER BY $order_by_clean::text";
+                    }
+                } else {
+                    // ORDER BY compatible with DISTINCT
                     $sql .= " ORDER BY $order_by_clean::text";
                 }
-            } else {
-                // ORDER BY compatible with DISTINCT
-                $sql .= " ORDER BY $order_by_clean::text";
             }
         }
-    }
 
-    $sql .= ")";
-        return $sql;
+        $sql .= ")";
+            return $sql;
+    } else {
+         // MySQL/MariaDB: Use GROUP_CONCAT
+        $has_distinct_mysql = stripos($field, 'DISTINCT') !== false;
+        
+        // CORRECTION: Éviter la double DISTINCT pour MySQL aussi
+        if ($has_distinct_mysql) {
+            $distinct_clause = '';  // Ne pas ajouter DISTINCT si déjà présent
+        } else {
+            $distinct_clause = $distinct ? 'DISTINCT ' : '';
+        }
+        
+        $order_clause = !empty($order_by) ? " ORDER BY $order_by" : '';
+        
+        return "GROUP_CONCAT({$distinct_clause}{$field}{$order_clause} SEPARATOR '$separator')";
+    }
     }
 
 
