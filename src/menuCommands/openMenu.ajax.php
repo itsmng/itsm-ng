@@ -8,7 +8,9 @@ Html::header_nocache();
 
 if (filter_var($_POST['clear'], FILTER_VALIDATE_BOOLEAN)) {
     $menu_open = json_encode([]);
-    $DB->updateOrInsert('glpi_users', ['menu_open' => $menu_open], ['id' => $_SESSION['glpiID']]);
+    // Use Doctrine DBAL to update user menu_open
+    $conn = Config::getAdapter()->getConnection();
+    $conn->update('glpi_users', ['menu_open' => $menu_open], ['id' => $_SESSION['glpiID']]);
     die();
 }
 
@@ -25,5 +27,6 @@ if (filter_var($_POST['open'], FILTER_VALIDATE_BOOLEAN)) {
     $menu_open = json_encode([]);
 }
 
-// Update
-$DB->updateOrInsert('glpi_users', ['menu_open' => $menu_open], ['id' => $_SESSION['glpiID']]);
+// Update using Doctrine DBAL
+$conn = Config::getAdapter()->getConnection();
+$conn->update('glpi_users', ['menu_open' => $menu_open], ['id' => $_SESSION['glpiID']]);

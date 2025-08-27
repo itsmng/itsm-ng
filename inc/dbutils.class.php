@@ -106,27 +106,27 @@ final class DbUtils
     public function getPlural($string)
     {
         $rules = [
-           //'singular'         => 'plural'
-           // special case for acronym pdu (to avoid us rule)
-           'pdus$'              => 'pdus',
-           'pdu$'               => 'pdus',
-           //FIXME: singular is criterion, plural is criteria
-           'criterias$'         => 'criterias',// Special case (criterias) when getPlural is called on already plural form
-           'ch$'                => 'ches',
-           'ches$'              => 'ches',
-           'sh$'                => 'shes',
-           'shes$'              => 'shes',
-           'sses$'              => 'sses', // Case like addresses
-           'ss$'                => 'sses', // Special case (addresses) when getSingular is called on already singular form
-           'uses$'              => 'uses', // Case like statuses
-           'us$'                => 'uses', // Case like status
-           '([^aeiou])y$'       => '\1ies', // special case : category (but not key)
-           '([^aeiou])ies$'     => '\1ies', // special case : category (but not key)
-           '([aeiou]{2})ses$'   => '\1ses', // Case like aliases
-           '([aeiou]{2})s$'     => '\1ses', // Case like aliases
-           'x$'                 => 'xes',
-           // 's$'              =>'ses',
-           '([^s])$'            => '\1s',   // Add at the end if not exists
+            //'singular'         => 'plural'
+            // special case for acronym pdu (to avoid us rule)
+            'pdus$' => 'pdus',
+            'pdu$' => 'pdus',
+            //FIXME: singular is criterion, plural is criteria
+            'criterias$' => 'criterias',// Special case (criterias) when getPlural is called on already plural form
+            'ch$' => 'ches',
+            'ches$' => 'ches',
+            'sh$' => 'shes',
+            'shes$' => 'shes',
+            'sses$' => 'sses', // Case like addresses
+            'ss$' => 'sses', // Special case (addresses) when getSingular is called on already singular form
+            'uses$' => 'uses', // Case like statuses
+            'us$' => 'uses', // Case like status
+            '([^aeiou])y$' => '\1ies', // special case : category (but not key)
+            '([^aeiou])ies$' => '\1ies', // special case : category (but not key)
+            '([aeiou]{2})ses$' => '\1ses', // Case like aliases
+            '([aeiou]{2})s$' => '\1ses', // Case like aliases
+            'x$' => 'xes',
+            // 's$'              =>'ses',
+            '([^s])$' => '\1s',   // Add at the end if not exists
         ];
 
         foreach ($rules as $singular => $plural) {
@@ -150,22 +150,22 @@ final class DbUtils
     {
 
         $rules = [
-           //'plural'           => 'singular'
-           'pdus$'              => 'pdu', // special case for acronym pdu (to avoid us rule)
-           'ches$'              => 'ch',
-           'ch$'                => 'ch',
-           'shes$'              => 'sh',
-           'sh$'                => 'sh',
-           'sses$'              => 'ss', // Case like addresses
-           'ss$'                => 'ss', // Special case (addresses) when getSingular is called on already singular form
-           'uses$'              => 'us', // Case like statuses
-           'us$'                => 'us', // Case like status
-           '([aeiou]{2})ses$'   => '\1s', // Case like aliases
-           'lias$'              => 'lias', // Special case (aliases) when getSingular is called on already singular form
-           '([^aeiou])ies$'     => '\1y', // special case : category
-           '([^aeiou])y$'       => '\1y', // special case : category
-           'xes$'               => 'x',
-           's$'                 => ''
+            //'plural'           => 'singular'
+            'pdus$' => 'pdu', // special case for acronym pdu (to avoid us rule)
+            'ches$' => 'ch',
+            'ch$' => 'ch',
+            'shes$' => 'sh',
+            'sh$' => 'sh',
+            'sses$' => 'ss', // Case like addresses
+            'ss$' => 'ss', // Special case (addresses) when getSingular is called on already singular form
+            'uses$' => 'us', // Case like statuses
+            'us$' => 'us', // Case like status
+            '([aeiou]{2})ses$' => '\1s', // Case like aliases
+            'lias$' => 'lias', // Special case (aliases) when getSingular is called on already singular form
+            '([^aeiou])ies$' => '\1y', // special case : category
+            '([^aeiou])y$' => '\1y', // special case : category
+            'xes$' => 'x',
+            's$' => ''
         ]; // Add at the end if not exists
 
         foreach ($rules as $plural => $singular) {
@@ -202,7 +202,7 @@ final class DbUtils
                 /* PluginFooBar   => glpi_plugin_foos_bars */
                 /* GlpiPlugin\Foo\Bar => glpi_plugin_foos_bars */
                 $prefix .= "plugin_" . strtolower($plug['plugin']) . "_";
-                $table   = strtolower($plug['class']);
+                $table = strtolower($plug['class']);
             } else {
                 $table = strtolower($itemtype);
                 if (substr($itemtype, 0, \strlen(NS_GLPI)) === NS_GLPI) {
@@ -221,7 +221,7 @@ final class DbUtils
                 $table = $this->getPlural($table);
             }
 
-            $CFG_GLPI['glpitablesitemtype'][$itemtype]      = $prefix . $table;
+            $CFG_GLPI['glpitablesitemtype'][$itemtype] = $prefix . $table;
             $CFG_GLPI['glpiitemtypetables'][$prefix . $table] = $itemtype;
             return $prefix . $table;
         }
@@ -243,15 +243,15 @@ final class DbUtils
             return $CFG_GLPI['glpiitemtypetables'][$table];
         } else {
             $inittable = $table;
-            $table     = str_replace("glpi_", "", $table);
-            $prefix    = "";
-            $pref2     = NS_GLPI;
+            $table = str_replace("glpi_", "", $table);
+            $prefix = "";
+            $pref2 = NS_GLPI;
 
             $matches = [];
             if (preg_match('/^plugin_([a-z0-9]+)_/', $table, $matches)) {
-                $table  = preg_replace('/^plugin_[a-z0-9]+_/', '', $table);
+                $table = preg_replace('/^plugin_[a-z0-9]+_/', '', $table);
                 $prefix = "Plugin" . Toolbox::ucfirst($matches[1]);
-                $pref2  = NS_PLUG . ucfirst($matches[1]) . '\\';
+                $pref2 = NS_PLUG . ucfirst($matches[1]) . '\\';
             }
 
             if (strstr($table, '_')) {
@@ -268,18 +268,18 @@ final class DbUtils
             $itemtype = $prefix . $table;
             // Get real existence of itemtype
             if ($item = $this->getItemForItemtype($itemtype)) {
-                $itemtype                                   = get_class($item);
+                $itemtype = get_class($item);
                 $CFG_GLPI['glpiitemtypetables'][$inittable] = $itemtype;
-                $CFG_GLPI['glpitablesitemtype'][$itemtype]  = $inittable;
+                $CFG_GLPI['glpitablesitemtype'][$itemtype] = $inittable;
                 return $itemtype;
             }
 
             // Namespaced item
             $itemtype = $pref2 . str_replace('_', '\\', $table);
             if ($item = $this->getItemForItemtype($itemtype)) {
-                $itemtype                                   = get_class($item);
+                $itemtype = get_class($item);
                 $CFG_GLPI['glpiitemtypetables'][$inittable] = $itemtype;
-                $CFG_GLPI['glpitablesitemtype'][$itemtype]  = $inittable;
+                $CFG_GLPI['glpitablesitemtype'][$itemtype] = $inittable;
                 return $itemtype;
             }
 
@@ -306,9 +306,9 @@ final class DbUtils
         // then it is a namespaced itemtype that has been "sanitized".
         // Strip slashes to get its actual value.
         $sanitized_namespaced_pattern = '/^'
-           . '(' . preg_quote(NS_GLPI, '/') . '|' . preg_quote(NS_PLUG, '/') . ')' // start with GLPI core or plugin namespace
-           . preg_quote('\\', '/') // followed by an additionnal \
-           . '/';
+            . '(' . preg_quote(NS_GLPI, '/') . '|' . preg_quote(NS_PLUG, '/') . ')' // start with GLPI core or plugin namespace
+            . preg_quote('\\', '/') // followed by an additionnal \
+            . '/';
         if (is_string($itemtype) && $itemtype !== null && preg_match($sanitized_namespaced_pattern, $itemtype)) {
             $itemtype = stripslashes($itemtype);
         }
@@ -351,8 +351,6 @@ final class DbUtils
      */
     public function countElementsInTable($table, $condition = [])
     {
-        global $DB;
-
         if (!is_array($table)) {
             $table = [$table];
         }
@@ -370,8 +368,10 @@ final class DbUtils
         }
         $condition['COUNT'] = 'cpt';
 
-        $row = $DB->request($table, $condition)->next();
-        return ($row ? (int)$row['cpt'] : 0);
+        // Use Doctrine adapter for reads (structured criteria)
+        $res = Config::getAdapter()->request(array_merge(['FROM' => $table], $condition));
+        $row = $res ? $res->fetchAssociative() : false;
+        return ($row ? (int) $row['cpt'] : 0);
     }
 
     /**
@@ -411,7 +411,7 @@ final class DbUtils
 
         /// TODO clean it / maybe include when review of SQL requests
         $itemtype = $this->getItemTypeForTable($table);
-        $item     = new $itemtype();
+        $item = new $itemtype();
 
         $criteria = $this->getEntitiesRestrictCriteria($table, '', '', $item->maybeRecursive());
         $criteria = array_merge($condition, $criteria);
@@ -434,7 +434,7 @@ final class DbUtils
 
         /// TODO clean it / maybe include when review of SQL requests
         $itemtype = $this->getItemTypeForTable($table);
-        $item     = new $itemtype();
+        $item = new $itemtype();
 
         if ($recursive) {
             $recursive = $item->maybeRecursive();
@@ -458,8 +458,6 @@ final class DbUtils
      */
     public function getAllDataFromTable($table, $criteria = [], $usecache = false, $order = '')
     {
-        global $DB;
-
         static $cache = [];
 
         if (empty($criteria) && empty($order) && $usecache && isset($cache[$table])) {
@@ -480,9 +478,8 @@ final class DbUtils
             $criteria['ORDER'] = $order; // Deprecated use case
         }
 
-        $iterator = $DB->request($table, $criteria);
-
-        while ($row = $iterator->next()) {
+        $res = Config::getAdapter()->request(array_merge(['FROM' => $table], $criteria));
+        while ($res && ($row = $res->fetchAssociative())) {
             $data[$row['id']] = $row;
         }
 
@@ -509,14 +506,18 @@ final class DbUtils
             return false;
         }
 
-        $result = $DB->query("SHOW INDEX FROM `$table`");
-
-        if ($result && $DB->numrows($result)) {
-            while ($data = $DB->fetchAssoc($result)) {
-                if ($data["Key_name"] == $field) {
+        // Use Doctrine SchemaManager for portability (MySQL/PostgreSQL)
+        try {
+            $conn = Config::getAdapter()->getConnection();
+            $schemaManager = $conn->createSchemaManager();
+            $indexes = $schemaManager->listIndexes($table);
+            foreach ($indexes as $index) {
+                if (strcasecmp($index->getName(), $field) === 0) {
                     return true;
                 }
             }
+        } catch (\Throwable $e) {
+            // ignore and consider not found
         }
         return false;
     }
@@ -678,7 +679,7 @@ final class DbUtils
 
 
         if (!is_array($value) && (is_string($value) || is_numeric($value))) {
-            if (strlen((string)$value) == 0) {
+            if (strlen((string) $value) == 0) {
                 if (isset($_SESSION['glpiactiveentities'])) {
                     $value = $_SESSION['glpiactiveentities'];
                 } elseif (isCommandLine() || Session::isCron()) {
@@ -720,10 +721,10 @@ final class DbUtils
                 } else {
                     $recur = (empty($table) ? 'is_recursive' : "$table.is_recursive");
                     $crit = [
-                       'OR' => [
-                          $field => $value,
-                          [$recur => 1, $field => $ancestors]
-                       ]
+                        'OR' => [
+                            $field => $value,
+                            [$recur => 1, $field => $ancestors]
+                        ]
                     ];
                 }
             }
@@ -765,22 +766,22 @@ final class DbUtils
         }
 
         $parentIDfield = $this->getForeignKeyFieldForTable($table);
-        $use_cache     = $DB->fieldExists($table, "sons_cache");
+        $use_cache = $DB->fieldExists($table, "sons_cache");
 
         if (
             $use_cache
             && ($IDf > 0)
         ) {
-            $iterator = $DB->request([
-               'SELECT' => 'sons_cache',
-               'FROM'   => $table,
-               'WHERE'  => ['id' => $IDf]
+            $rowRes = Config::getAdapter()->request([
+                'SELECT' => 'sons_cache',
+                'FROM' => $table,
+                'WHERE' => ['id' => $IDf]
             ]);
 
-            if (count($iterator) > 0) {
-                $db_sons = trim($iterator->next()['sons_cache'] ?? '');
+            if ($rowRes && ($first = $rowRes->fetchAssociative())) {
+                $db_sons = trim($first['sons_cache'] ?? '');
                 if (!empty($db_sons)) {
-                    $sons = $this->importArrayFromDB($db_sons, true);
+                    $sons = $this->importArrayFromDB($db_sons);
                 }
             }
         }
@@ -792,38 +793,38 @@ final class DbUtils
             // current ID found to be added
             $found = [];
             // First request init the  varriables
-            $iterator = $DB->request([
-               'SELECT' => 'id',
-               'FROM'   => $table,
-               'WHERE'  => [$parentIDfield => $IDf],
-               'ORDER'  => 'name'
+            $res = Config::getAdapter()->request([
+                'SELECT' => 'id',
+                'FROM' => $table,
+                'WHERE' => [$parentIDfield => $IDf],
+                'ORDER' => 'name'
             ]);
 
-            if (count($iterator) > 0) {
-                while ($row = $iterator->next()) {
-                    $sons[$row['id']]    = $row['id'];
-                    $found[$row['id']]   = $row['id'];
+            if ($res) {
+                while ($row = $res->fetchAssociative()) {
+                    $sons[$row['id']] = $row['id'];
+                    $found[$row['id']] = $row['id'];
                 }
             }
 
             // Get the leafs of previous found item
             while (count($found) > 0) {
                 // Get next elements
-                $iterator = $DB->request([
-                   'SELECT' => 'id',
-                   'FROM'   => $table,
-                   'WHERE'  => [$parentIDfield => $found]
+                $res = Config::getAdapter()->request([
+                    'SELECT' => 'id',
+                    'FROM' => $table,
+                    'WHERE' => [$parentIDfield => $found]
                 ]);
 
                 // CLear the found array
                 unset($found);
                 $found = [];
 
-                if (count($iterator) > 0) {
-                    while ($row = $iterator->next()) {
+                if ($res) {
+                    while ($row = $res->fetchAssociative()) {
                         if (!isset($sons[$row['id']])) {
-                            $sons[$row['id']]    = $row['id'];
-                            $found[$row['id']]   = $row['id'];
+                            $sons[$row['id']] = $row['id'];
+                            $found[$row['id']] = $row['id'];
                         }
                     }
                 }
@@ -837,10 +838,10 @@ final class DbUtils
                 $DB->update(
                     $table,
                     [
-                      'sons_cache' => $this->exportArrayToDB($sons)
+                        'sons_cache' => $this->exportArrayToDB($sons)
                     ],
                     [
-                      'id' => $IDf
+                        'id' => $IDf
                     ]
                 );
             }
@@ -887,26 +888,26 @@ final class DbUtils
 
         // IDs to be present in the final array
         $parentIDfield = $this->getForeignKeyFieldForTable($table);
-        $use_cache     = $DB->fieldExists($table, "ancestors_cache");
+        $use_cache = $DB->fieldExists($table, "ancestors_cache");
 
         if (!is_array($items_id)) {
-            $items_id = (array)$items_id;
+            $items_id = (array) $items_id;
         }
 
         if ($use_cache) {
             $iterator = Config::getAdapter()->request([
-               'SELECT' => ['id', 'ancestors_cache', $parentIDfield],
-               'FROM'   => $table,
-               'WHERE'  => ['id' => $items_id]
+                'SELECT' => ['id', 'ancestors_cache', $parentIDfield],
+                'FROM' => $table,
+                'WHERE' => ['id' => $items_id]
             ]);
             while ($row = $iterator->fetchAssociative()) {
                 if ($row['id'] > 0) {
                     $rancestors = $row['ancestors_cache'];
-                    $parent     = $row[$parentIDfield];
+                    $parent = $row[$parentIDfield];
 
                     // Return datas from cache in DB
                     if (isset($rancestors) && !empty($rancestors)) {
-                        $ancestors = array_replace($ancestors, $this->importArrayFromDB($rancestors, true));
+                        $ancestors = array_replace($ancestors, $this->importArrayFromDB($rancestors));
                     } else {
                         $loc_id_found = [];
                         // Recursive solution for table with-cache
@@ -926,10 +927,10 @@ final class DbUtils
                         $DB->update(
                             $table,
                             [
-                              'ancestors_cache' => $this->exportArrayToDB($loc_id_found)
+                                'ancestors_cache' => $this->exportArrayToDB($loc_id_found)
                             ],
                             [
-                              'id' => $row['id']
+                                'id' => $row['id']
                             ]
                         );
 
@@ -944,14 +945,13 @@ final class DbUtils
                 $IDf = $id;
                 while ($IDf > 0) {
                     // Get next elements
-                    $iterator = $this->getAdapter()->request([
-                       'SELECT' => [$parentIDfield],
-                       'FROM'   => $table,
-                       'WHERE'  => ['id' => $IDf]
+                    $res = Config::getAdapter()->request([
+                        'SELECT' => [$parentIDfield],
+                        'FROM' => $table,
+                        'WHERE' => ['id' => $IDf]
                     ]);
 
-                    if (count($iterator) > 0) {
-                        $result = $iterator->next();
+                    if ($res && ($result = $res->fetchAssociative())) {
                         $IDf = $result[$parentIDfield];
                     } else {
                         $IDf = 0;
@@ -959,7 +959,7 @@ final class DbUtils
 
                     if (
                         !isset($ancestors[$IDf])
-                          && (($IDf > 0) || ($table == 'glpi_entities'))
+                        && (($IDf > 0) || ($table == 'glpi_entities'))
                     ) {
                         $ancestors[$IDf] = $IDf;
                     } else {
@@ -999,7 +999,7 @@ final class DbUtils
      * @param boolean $withcomment 1 if you want to give the array with the comments (false by default)
      * @param boolean $translate   (true by default)
      *
-     * @return string name of the element
+     * @return string|array name or ['name'=>..., 'comment'=>...]
      *
      * @see DbUtils::getTreeValueCompleteName
      */
@@ -1007,42 +1007,44 @@ final class DbUtils
     {
         global $DB;
 
-        $name    = "";
+        $name = "";
         $comment = "";
 
-        $SELECTNAME    = new \QueryExpression("'' AS " . $DB->quoteName('transname'));
+        $SELECTNAME = new \QueryExpression("'' AS " . $DB->quoteName('transname'));
         $SELECTCOMMENT = new \QueryExpression("'' AS " . $DB->quoteName('transcomment'));
-        $JOIN          = [];
-        $JOINS         = [];
+        $JOIN = [];
+        $JOINS = [];
         if ($translate) {
             if (Session::haveTranslations($this->getItemTypeForTable($table), 'name')) {
                 $SELECTNAME = 'namet.value AS transname';
                 $JOINS['glpi_dropdowntranslations AS namet'] = [
-                   'ON' => [
-                      'namet'  => 'items_id',
-                      $table   => 'id', [
-                         'AND' => [
-                            'namet.itemtype'  => $this->getItemTypeForTable($table),
-                            'namet.language'  => $_SESSION['glpilanguage'],
-                            'namet.field'     => 'name'
-                         ]
-                      ]
-                   ]
+                    'ON' => [
+                        'namet' => 'items_id',
+                        $table => 'id',
+                        [
+                            'AND' => [
+                                'namet.itemtype' => $this->getItemTypeForTable($table),
+                                'namet.language' => $_SESSION['glpilanguage'],
+                                'namet.field' => 'name'
+                            ]
+                        ]
+                    ]
                 ];
             }
             if (Session::haveTranslations($this->getItemTypeForTable($table), 'comment')) {
                 $SELECTCOMMENT = 'namec.value AS transcomment';
                 $JOINS['glpi_dropdowntranslations AS namec'] = [
-                   'ON' => [
-                      'namec'  => 'items_id',
-                      $table   => 'id', [
-                         'AND' => [
-                            'namec.itemtype'  => $this->getItemTypeForTable($table),
-                            'namec.language'  => $_SESSION['glpilanguage'],
-                            'namec.field'     => 'comment'
-                         ]
-                      ]
-                   ]
+                    'ON' => [
+                        'namec' => 'items_id',
+                        $table => 'id',
+                        [
+                            'AND' => [
+                                'namec.itemtype' => $this->getItemTypeForTable($table),
+                                'namec.language' => $_SESSION['glpilanguage'],
+                                'namec.field' => 'comment'
+                            ]
+                        ]
+                    ]
                 ];
             }
 
@@ -1052,19 +1054,19 @@ final class DbUtils
         }
 
         $criteria = [
-           'SELECT' => [
-              "$table.name",
-              "$table.comment",
-              $SELECTNAME,
-              $SELECTCOMMENT
-           ],
-           'FROM'   => $table,
-           'WHERE'  => ["$table.id" => $ID]
+            'SELECT' => [
+                "$table.name",
+                "$table.comment",
+                $SELECTNAME,
+                $SELECTCOMMENT
+            ],
+            'FROM' => $table,
+            'WHERE' => ["$table.id" => $ID]
         ] + $JOIN;
-        $iterator = $DB->request($criteria);
-        $result = $iterator->next();
+        $res = Config::getAdapter()->request($criteria);
+        $result = $res ? $res->fetchAssociative() : false;
 
-        if (count($iterator) == 1) {
+        if ($result) {
             $transname = $result['transname'];
             if ($translate && !empty($transname)) {
                 $name = $transname;
@@ -1072,7 +1074,7 @@ final class DbUtils
                 $name = $result['name'];
             }
 
-            $comment      = $name . " :<br/>";
+            $comment = $name . " :<br/>";
             $transcomment = $result['transcomment'];
 
             if ($translate && !empty($transcomment)) {
@@ -1084,8 +1086,8 @@ final class DbUtils
 
         if ($withcomment) {
             return [
-               'name'      => $name,
-               'comment'   => $comment
+                'name' => $name,
+                'comment' => $comment
             ];
         }
         return $name;
@@ -1100,7 +1102,7 @@ final class DbUtils
      * @param boolean $translate   (true by default)
      * @param boolean $tooltip     (true by default) returns a tooltip, else returns only 'comment'
      *
-     * @return string completename of the element
+     * @return string|array completename or ['name'=>..., 'comment'=>...]
      *
      * @see DbUtils::getTreeLeafValueName
      */
@@ -1108,42 +1110,44 @@ final class DbUtils
     {
         global $DB;
 
-        $name    = "";
+        $name = "";
         $comment = "";
 
-        $SELECTNAME    = new \QueryExpression("'' AS " . $DB->quoteName('transname'));
+        $SELECTNAME = new \QueryExpression("'' AS " . $DB->quoteName('transname'));
         $SELECTCOMMENT = new \QueryExpression("'' AS " . $DB->quoteName('transcomment'));
-        $JOIN          = [];
-        $JOINS         = [];
+        $JOIN = [];
+        $JOINS = [];
         if ($translate) {
             if (Session::haveTranslations($this->getItemTypeForTable($table), 'completename')) {
                 $SELECTNAME = 'namet.value AS transname';
                 $JOINS['glpi_dropdowntranslations AS namet'] = [
-                   'ON' => [
-                      'namet'  => 'items_id',
-                      $table   => 'id', [
-                         'AND' => [
-                            'namet.itemtype'  => $this->getItemTypeForTable($table),
-                            'namet.language'  => $_SESSION['glpilanguage'],
-                            'namet.field'     => 'completename'
-                         ]
-                      ]
-                   ]
+                    'ON' => [
+                        'namet' => 'items_id',
+                        $table => 'id',
+                        [
+                            'AND' => [
+                                'namet.itemtype' => $this->getItemTypeForTable($table),
+                                'namet.language' => $_SESSION['glpilanguage'],
+                                'namet.field' => 'completename'
+                            ]
+                        ]
+                    ]
                 ];
             }
             if (Session::haveTranslations($this->getItemTypeForTable($table), 'comment')) {
                 $SELECTCOMMENT = 'namec.value AS transcomment';
                 $JOINS['glpi_dropdowntranslations AS namec'] = [
-                   'ON' => [
-                      'namec'  => 'items_id',
-                      $table   => 'id', [
-                         'AND' => [
-                            'namec.itemtype'  => $this->getItemTypeForTable($table),
-                            'namec.language'  => $_SESSION['glpilanguage'],
-                            'namec.field'     => 'comment'
-                         ]
-                      ]
-                   ]
+                    'ON' => [
+                        'namec' => 'items_id',
+                        $table => 'id',
+                        [
+                            'AND' => [
+                                'namec.itemtype' => $this->getItemTypeForTable($table),
+                                'namec.language' => $_SESSION['glpilanguage'],
+                                'namec.field' => 'comment'
+                            ]
+                        ]
+                    ]
                 ];
             }
 
@@ -1153,31 +1157,31 @@ final class DbUtils
         }
 
         $criteria = [
-           'SELECT' => [
-              "$table.completename",
-              "$table.comment",
-              $SELECTNAME,
-              $SELECTCOMMENT
-           ],
-           'FROM'   => $table,
-           'WHERE'  => ["$table.id" => $ID]
+            'SELECT' => [
+                "$table.completename",
+                "$table.comment",
+                $SELECTNAME,
+                $SELECTCOMMENT
+            ],
+            'FROM' => $table,
+            'WHERE' => ["$table.id" => $ID]
         ] + $JOIN;
 
         if ($table == Location::getTable()) {
             $criteria['SELECT'] = array_merge(
                 $criteria['SELECT'],
                 [
-                  "$table.address",
-                  "$table.town",
-                  "$table.country"
+                    "$table.address",
+                    "$table.town",
+                    "$table.country"
                 ]
             );
         }
 
-        $iterator = $DB->request($criteria);
-        $result = $iterator->next();
+        $res = Config::getAdapter()->request($criteria);
+        $result = $res ? $res->fetchAssociative() : false;
 
-        if (count($iterator) == 1) {
+        if ($result) {
             $transname = $result['transname'];
             if ($translate && !empty($transname)) {
                 $name = $transname;
@@ -1191,7 +1195,7 @@ final class DbUtils
             $name = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, $name));
 
             if ($tooltip) {
-                $comment  = sprintf(
+                $comment = sprintf(
                     __('%1$s: %2$s') . "<br>",
                     "<span class='b'>" . __('Complete name') . "</span>",
                     $name
@@ -1199,7 +1203,7 @@ final class DbUtils
                 if ($table == Location::getTable()) {
                     $acomment = '';
                     $address = $result['address'];
-                    $town    = $result['town'];
+                    $town = $result['town'];
                     $country = $result['country'];
                     if (!empty($address)) {
                         $acomment .= $address;
@@ -1239,8 +1243,8 @@ final class DbUtils
 
         if ($withcomment) {
             return [
-               'name'      => $name,
-               'comment'   => $comment
+                'name' => $name,
+                'comment' => $comment
             ];
         }
         return $name;
@@ -1256,23 +1260,18 @@ final class DbUtils
      * @param string  $wholename current name to complete (use for recursivity) (default '')
      * @param integer $level     current level of recursion (default 0)
      *
-     * @return string name
+     * @return array [name, level]
      */
     public function getTreeValueName($table, $ID, $wholename = "", $level = 0)
     {
-        global $DB;
-
         $parentIDfield = $this->getForeignKeyFieldForTable($table);
-
-        $iterator = $DB->request([
-           'SELECT' => ['name', $parentIDfield],
-           'FROM'   => $table,
-           'WHERE'  => ['id' => $ID]
+        $res = Config::getAdapter()->request([
+            'SELECT' => ['name', $parentIDfield],
+            'FROM' => $table,
+            'WHERE' => ['id' => $ID]
         ]);
         $name = "";
-
-        if (count($iterator) > 0) {
-            $row      = $iterator->next();
+        if ($res && ($row = $res->fetchAssociative())) {
             $parentID = $row[$parentIDfield];
 
             if ($wholename == "") {
@@ -1282,8 +1281,8 @@ final class DbUtils
             }
 
             $level++;
-            list($tmpname, $level)  = $this->getTreeValueName($table, $parentID, $name, $level);
-            $name                   = $tmpname . $name;
+            list($tmpname, $level) = $this->getTreeValueName($table, $parentID, $name, $level);
+            $name = $tmpname . $name;
         }
         return [$name, $level];
     }
@@ -1308,46 +1307,44 @@ final class DbUtils
         $found = [];
 
         // First request init the  variables
-        $iterator = $DB->request([
-           $table, [
-              'WHERE'  => [$parentIDfield => $IDf],
-              'ORDER'  => 'name'
-           ]
+        $res = Config::getAdapter()->request([
+            'FROM' => $table,
+            'WHERE' => [$parentIDfield => $IDf],
+            'ORDER' => 'name'
         ]);
 
-        while ($row = $iterator->next()) {
+        while ($res && ($row = $res->fetchAssociative())) {
             $id_found[$row['id']]['parent'] = $IDf;
-            $id_found[$row['id']]['name']   = $row['name'];
-            $found[$row['id']]              = $row['id'];
+            $id_found[$row['id']]['name'] = $row['name'];
+            $found[$row['id']] = $row['id'];
         }
 
         // Get the leafs of previous founded item
         while (count($found) > 0) {
             // Get next elements
-            $iterator = $DB->request([
-               $table, [
-                  'WHERE'  => [$parentIDfield => $found],
-                  'ORDER'  => 'name'
-               ]
+            $res = Config::getAdapter()->request([
+                'FROM' => $table,
+                'WHERE' => [$parentIDfield => $found],
+                'ORDER' => 'name'
             ]);
 
             // CLear the found array
             unset($found);
             $found = [];
 
-            while ($row = $iterator->next()) {
+            while ($res && ($row = $res->fetchAssociative())) {
                 if (!isset($id_found[$row['id']])) {
                     $id_found[$row['id']]['parent'] = $row[$parentIDfield];
-                    $id_found[$row['id']]['name']   = $row['name'];
-                    $found[$row['id']]              = $row['id'];
+                    $id_found[$row['id']]['name'] = $row['name'];
+                    $found[$row['id']] = $row['id'];
                 }
             }
         }
         $tree = [
-           $IDf => [
-              'name' => Dropdown::getDropdownName($table, $IDf),
-              'tree' => $this->constructTreeFromList($id_found, $IDf),
-           ],
+            $IDf => [
+                'name' => Dropdown::getDropdownName($table, $IDf),
+                'tree' => $this->constructTreeFromList($id_found, $IDf),
+            ],
         ];
         return $tree;
     }
@@ -1443,21 +1440,22 @@ final class DbUtils
     {
         global $DB;
 
-        $iterator = $DB->request([
-           'SELECT' => 'id',
-           'FROM'   => $table
+        // Use Doctrine adapter for reads
+        $res = Config::getAdapter()->request([
+            'SELECT' => 'id',
+            'FROM' => $table
         ]);
 
-        while ($data = $iterator->next()) {
+        while ($res && ($data = $res->fetchAssociative())) {
             list($name, $level) = $this->getTreeValueName($table, $data['id']);
             $DB->update(
                 $table,
                 [
-                  'completename' => addslashes($name),
-                  'level'        => $level
+                    'completename' => addslashes($name),
+                    'level' => $level
                 ],
                 [
-                  'id' => $data['id']
+                    'id' => $data['id']
                 ]
             );
         }
@@ -1482,7 +1480,7 @@ final class DbUtils
         global $CFG_GLPI;
 
         $before = "";
-        $after  = "";
+        $after = "";
 
         $order = isset($CFG_GLPI["names_format"]) ? $CFG_GLPI["names_format"] : User::REALNAME_BEFORE;
         if (isset($_SESSION["glpinames_format"]) && !$force_config) {
@@ -1528,7 +1526,7 @@ final class DbUtils
         ) {
             $before = "<a title=\"" . htmlspecialchars($formatted) . "\"
                        href='" . User::getFormURLWithID($ID) . "'>";
-            $after  = "</a>";
+            $after = "</a>";
         }
 
         $username = $before . $formatted . $after;
@@ -1551,27 +1549,29 @@ final class DbUtils
 
         $user = "";
         if ($link == 2) {
-            $user = ["name"    => "",
-                     "link"    => "",
-                     "comment" => ""];
+            $user = [
+                "name" => "",
+                "link" => "",
+                "comment" => ""
+            ];
         }
 
         if ($ID) {
-            $iterator = $DB->request(
-                'glpi_users',
-                [
-                  'WHERE' => ['id' => $ID]
-                ]
-            );
+            // Use Doctrine adapter for reads (structured criteria)
+            $res = Config::getAdapter()->request([
+                'FROM' => 'glpi_users',
+                'WHERE' => ['id' => $ID]
+            ]);
 
             if ($link == 2) {
-                $user = ["name"    => "",
-                         "comment" => "",
-                         "link"    => ""];
+                $user = [
+                    "name" => "",
+                    "comment" => "",
+                    "link" => ""
+                ];
             }
-
-            if (count($iterator) == 1) {
-                $data     = $iterator->next();
+            // fetch single row
+            if ($res && ($data = $res->fetchAssociative())) {
                 $username = $this->formatUserName(
                     $data["id"],
                     $data["name"],
@@ -1581,57 +1581,73 @@ final class DbUtils
                 );
 
                 if ($link == 2) {
-                    $user["name"]    = $username;
-                    $user["link"]    = User::getFormURLWithID($ID);
+                    $user["name"] = $username;
+                    $user["link"] = User::getFormURLWithID($ID);
                     $user['comment'] = '';
 
-                    $comments        = [];
-                    $comments[]      = ['name'  => __('Name'),
-                                        'value' => $username];
+                    $comments = [];
+                    $comments[] = [
+                        'name' => __('Name'),
+                        'value' => $username
+                    ];
                     // Ident only if you have right to read user
                     if (Session::haveRight('user', READ)) {
-                        $comments[]      = ['name'  => __('Login'),
-                                            'value' => $data["name"]];
+                        $comments[] = [
+                            'name' => __('Login'),
+                            'value' => $data["name"]
+                        ];
                     }
 
-                    $email           = UserEmail::getDefaultForUser($ID);
+                    $email = UserEmail::getDefaultForUser($ID);
                     if (!empty($email)) {
-                        $comments[] = ['name'  => _n('Email', 'Emails', 1),
-                                       'value' => $email];
+                        $comments[] = [
+                            'name' => _n('Email', 'Emails', 1),
+                            'value' => $email
+                        ];
                     }
 
                     if (!empty($data["phone"])) {
-                        $comments[] = ['name'  => Phone::getTypeName(1),
-                                       'value' => $data["phone"]];
+                        $comments[] = [
+                            'name' => Phone::getTypeName(1),
+                            'value' => $data["phone"]
+                        ];
                     }
 
                     if (!empty($data["mobile"])) {
-                        $comments[] = ['name'  => __('Mobile phone'),
-                                       'value' => $data["mobile"]];
+                        $comments[] = [
+                            'name' => __('Mobile phone'),
+                            'value' => $data["mobile"]
+                        ];
                     }
 
                     if ($data["locations_id"] > 0) {
-                        $comments[] = ['name'  => Location::getTypeName(1),
-                                       'value' => Dropdown::getDropdownName(
-                                           "glpi_locations",
-                                           $data["locations_id"]
-                                       )];
+                        $comments[] = [
+                            'name' => Location::getTypeName(1),
+                            'value' => Dropdown::getDropdownName(
+                                "glpi_locations",
+                                $data["locations_id"]
+                            )
+                        ];
                     }
 
                     if ($data["usertitles_id"] > 0) {
-                        $comments[] = ['name'  => _x('person', 'Title'),
-                                       'value' => Dropdown::getDropdownName(
-                                           "glpi_usertitles",
-                                           $data["usertitles_id"]
-                                       )];
+                        $comments[] = [
+                            'name' => _x('person', 'Title'),
+                            'value' => Dropdown::getDropdownName(
+                                "glpi_usertitles",
+                                $data["usertitles_id"]
+                            )
+                        ];
                     }
 
                     if ($data["usercategories_id"] > 0) {
-                        $comments[] = ['name'  => __('Category'),
-                                       'value' => Dropdown::getDropdownName(
-                                           "glpi_usercategories",
-                                           $data["usercategories_id"]
-                                       )];
+                        $comments[] = [
+                            'name' => __('Category'),
+                            'value' => Dropdown::getDropdownName(
+                                "glpi_usercategories",
+                                $data["usercategories_id"]
+                            )
+                        ];
                     }
                     if (count($comments)) {
                         foreach ($comments as $datas) {
@@ -1646,9 +1662,9 @@ final class DbUtils
 
                     if (!empty($data['picture'])) {
                         $user['comment'] = "<div class='tooltip_picture_border'>" .
-                                          "<img  class='tooltip_picture' src='" .
-                                             User::getThumbnailURLForPicture($data['picture']) . "' /></div>" .
-                                          "<div class='tooltip_text'>" . $user['comment'] . "</div>";
+                            "<img  class='tooltip_picture' src='" .
+                            User::getThumbnailURLForPicture($data['picture']) . "' /></div>" .
+                            "<div class='tooltip_text'>" . $user['comment'] . "</div>";
                     }
                 } else {
                     $user = $username;
@@ -1682,33 +1698,33 @@ final class DbUtils
             && (Toolbox::substr($objectName, $len - 4, 4) === '&gt;')
         ) {
             $autoNum = Toolbox::substr($objectName, 4, $len - 8);
-            $mask    = '';
+            $mask = '';
 
             if (preg_match("/\\#{1,10}/", $autoNum, $mask)) {
-                $global  = ((strpos($autoNum, '\\g') !== false) && ($itemtype != 'Infocom')) ? 1 : 0;
+                $global = ((strpos($autoNum, '\\g') !== false) && ($itemtype != 'Infocom')) ? 1 : 0;
 
                 //do not add extra escapements for now
                 //substring position would be wrong if name contains "_"
                 $autoNum = str_replace(
                     [
-                      '\\y',
-                      '\\Y',
-                      '\\m',
-                      '\\d',
-                      '\\g'
+                        '\\y',
+                        '\\Y',
+                        '\\m',
+                        '\\d',
+                        '\\g'
                     ],
                     [
-                      date('y'),
-                      date('Y'),
-                      date('m'),
-                      date('d'),
-                      ''
+                        date('y'),
+                        date('Y'),
+                        date('m'),
+                        date('d'),
+                        ''
                     ],
                     $autoNum
                 );
 
                 $mask = $mask[0];
-                $pos  = strpos($autoNum, $mask) + 1;
+                $pos = strpos($autoNum, $mask) + 1;
 
                 //got substring position, add extra escapements
                 $autoNum = str_replace(
@@ -1716,30 +1732,30 @@ final class DbUtils
                     ['\\_', '\\%'],
                     $autoNum
                 );
-                $len  = Toolbox::strlen($mask);
+                $len = Toolbox::strlen($mask);
                 $like = str_replace('#', '_', $autoNum);
 
                 if ($global == 1) {
                     $types = [
-                       'Computer',
-                       'Monitor',
-                       'NetworkEquipment',
-                       'Peripheral',
-                       'Phone',
-                       'Printer'
+                        'Computer',
+                        'Monitor',
+                        'NetworkEquipment',
+                        'Peripheral',
+                        'Phone',
+                        'Printer'
                     ];
 
                     $subqueries = [];
                     foreach ($types as $t) {
                         $table = $this->getTableForItemType($t);
                         $criteria = [
-                           'SELECT' => ["$field AS code"],
-                           'FROM'   => $table,
-                           'WHERE'  => [
-                              $field         => ['LIKE', $like],
-                              'is_deleted'   => 0,
-                              'is_template'  => 0
-                           ]
+                            'SELECT' => ["$field AS code"],
+                            'FROM' => $table,
+                            'WHERE' => [
+                                $field => ['LIKE', $like],
+                                'is_deleted' => 0,
+                                'is_template' => 0
+                            ]
                         ];
 
                         if (
@@ -1753,27 +1769,27 @@ final class DbUtils
                     }
 
                     $criteria = [
-                       'SELECT' => [
-                          new \QueryExpression(
-                              "CAST(SUBSTRING(" . $DB->quoteName('code') . ", $pos, $len) AS " .
-                              "unsigned) AS " . $DB->quoteName('no')
-                          )
-                       ],
-                       'FROM'   => new \QueryUnion($subqueries, false, 'codes')
+                        'SELECT' => [
+                            new \QueryExpression(
+                                "CAST(SUBSTRING(" . $DB->quoteName('code') . ", $pos, $len) AS " .
+                                "unsigned) AS " . $DB->quoteName('no')
+                            )
+                        ],
+                        'FROM' => new \QueryUnion($subqueries, false, 'codes')
                     ];
                 } else {
                     $table = $this->getTableForItemType($itemtype);
                     $criteria = [
-                       'SELECT' => [
-                          new \QueryExpression(
-                              "CAST(SUBSTRING(" . $DB->quoteName($field) . ", $pos, $len) AS " .
-                              "unsigned) AS " . $DB->quoteName('no')
-                          )
-                       ],
-                       'FROM'   => $table,
-                       'WHERE'  => [
-                          $field   => ['LIKE', $like]
-                       ]
+                        'SELECT' => [
+                            new \QueryExpression(
+                                "CAST(SUBSTRING(" . $DB->quoteName($field) . ", $pos, $len) AS " .
+                                "unsigned) AS " . $DB->quoteName('no')
+                            )
+                        ],
+                        'FROM' => $table,
+                        'WHERE' => [
+                            $field => ['LIKE', $like]
+                        ]
                     ];
 
                     if ($itemtype != 'Infocom') {
@@ -1790,28 +1806,29 @@ final class DbUtils
                 }
 
                 $subquery = new \QuerySubQuery($criteria, 'Num');
-                $iterator = $DB->request([
-                   'SELECT' => ['MAX' => 'Num.no AS lastNo'],
-                   'FROM'   => $subquery
+                // Use Doctrine adapter for reads
+                $res = Config::getAdapter()->request([
+                    'SELECT' => ['MAX' => 'Num.no AS lastNo'],
+                    'FROM' => $subquery
                 ]);
 
-                if (count($iterator)) {
-                    $result = $iterator->next();
-                    $newNo = $result['lastNo'] + 1;
+                $row = $res ? $res->fetchAssociative() : null;
+                if ($row && $row['lastNo'] !== null) {
+                    $newNo = ((int) $row['lastNo']) + 1;
                 } else {
                     $newNo = 0;
                 }
 
                 $objectName = str_replace(
                     [
-                      $mask,
-                      '\\_',
-                      '\\%'
+                        $mask,
+                        '\\_',
+                        '\\%'
                     ],
                     [
-                      Toolbox::str_pad($newNo, $len, '0', STR_PAD_LEFT),
-                      '_',
-                      '%'
+                        Toolbox::str_pad($newNo, $len, '0', STR_PAD_LEFT),
+                        '_',
+                        '%'
                     ],
                     $autoNum
                 );
@@ -1922,7 +1939,7 @@ final class DbUtils
      *
      * @param string $time datetime time
      *
-     * @return  array
+     * @return  string
      */
     public function getHourFromSql($time)
     {

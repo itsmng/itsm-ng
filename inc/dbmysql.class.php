@@ -39,7 +39,7 @@ use Glpi\Application\ErrorHandler;
 use Itsmng\Infrastructure\Database\DBInterface as __DBInterface;
 use Itsmng\Infrastructure\Database\DBEngineMySQL as __DBEngineMySQL;
 use Itsmng\Infrastructure\Database\DBEnginePostgres as __DBEnginePostgres;
-use Symfony\Component\Dotenv\Dotenv as __Dotenv;
+use Itsmng\Infrastructure\Database\PgArrayIterator;
 
 /**
  *  Database class for Mysql
@@ -597,9 +597,9 @@ class DBmysql
     /**
      * Returns tables using "MyIsam" engine.
      *
-     * @return DBmysqlIterator
+     * @return DBmysqlIterator|PgArrayIterator
      */
-    public function getMyIsamTables(): DBmysqlIterator
+    public function getMyIsamTables(): DBmysqlIterator|PgArrayIterator
     {
         return $this->__engine->getMyIsamTables();
     }
