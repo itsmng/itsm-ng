@@ -6106,7 +6106,7 @@ JAVASCRIPT;
                                         isset($data[$ID][$k]['name'])
                                           && $data[$ID][$k]['name'] > 0
                                     ) {
-                                        $userdata = getUserName($data[$ID][$k]['name'], 2);
+                                        $userdata = getUserName($data[$ID][$k]['id'] ?? 0, 2);
                                         $tooltip  = "";
                                         if (Session::haveRight('user', READ)) {
                                             $tooltip = Html::showToolTip(
@@ -6119,7 +6119,7 @@ JAVASCRIPT;
                                         $count_display++;
                                     }
                                 } else {
-                                    $out .= getUserName($data[$ID][$k]['name'], $showuserlink);
+                                    $out .= getUserName($data[$ID][$k]['id'] ?? 0, $showuserlink);
                                     $count_display++;
                                 }
 
@@ -6150,7 +6150,7 @@ JAVASCRIPT;
                             ($itemtype == 'Ticket')
                             && ($data[$ID][0]['id'] > 0)
                         ) {
-                            $userdata = getUserName($data[$ID][0]['id'], 2);
+                            $userdata = getUserName($data[$ID][0]['id'] ?? 0, 2);
                             $toadd    = Html::showToolTip(
                                 $userdata["comment"],
                                 ['link'    => $userdata["link"],

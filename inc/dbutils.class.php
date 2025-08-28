@@ -1558,7 +1558,7 @@ final class DbUtils
 
         if ($ID) {
             // Use Doctrine adapter for reads (structured criteria)
-            $res = Config::getAdapter()->request([
+            $res = User::getAdapter()->request([
                 'FROM' => 'glpi_users',
                 'WHERE' => ['id' => $ID]
             ]);

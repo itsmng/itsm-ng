@@ -125,23 +125,40 @@ class Dashboard extends \CommonDBTM
 
     public function getForUser()
     {
-        global $DB;
+        $userId = (int) Session::getLoginUserID();
 
-        $userId = Session::getLoginUserID();
+        try {
+            $em = \Itsmng\Infrastructure\Persistence\EntityManagerProvider::getEntityManager();
 
-        $dashboardId = iterator_to_array(
-            $DB->query("SELECT id FROM `" . self::getTable() . "` WHERE userId = $userId")
-        );
-        if (!$dashboardId) {
-            $dashboardId = iterator_to_array(
-                $DB->query("SELECT id FROM `" . self::getTable() . "` WHERE userId = 0")
-            );
-        }
-        if (!$dashboardId) {
+            $repo = $em->getRepository(\Itsmng\Domain\Entities\Dashboard::class);
+
+            $qb = $repo->createQueryBuilder('d')
+                ->select('d.id')
+                ->leftJoin('d.user', 'u')
+                ->where('u.id = :uid')
+                ->setParameter('uid', $userId)
+                ->setMaxResults(1);
+
+            $result = $qb->getQuery()->getScalarResult();
+
+            // Fallback to the global dashboard (userId = 0) if none found
+            if (empty($result)) {
+                $qb = $repo->createQueryBuilder('d')
+                    ->select('d.id')
+                    ->where('IDENTITY(d.user) = 0')
+                    ->setMaxResults(1);
+                $result = $qb->getQuery()->getScalarResult();
+            }
+
+            if (empty($result)) {
+                return false;
+            }
+
+            $this->getFromDB($result[0]['id']);
+            return true;
+        } catch (\Throwable $e) {
             return false;
         }
-        $this->getFromDB($dashboardId[0]['id']);
-        return true;
     }
 
     public function show($ID = null, $edit = false)
