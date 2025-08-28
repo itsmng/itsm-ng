@@ -128,7 +128,7 @@ class Dashboard extends \CommonDBTM
         $userId = (int) Session::getLoginUserID();
 
         try {
-            $em = \Itsmng\Infrastructure\Persistence\EntityManagerProvider::getEntityManager();
+            $em = self::getAdapter()->getEntityManager();
 
             $repo = $em->getRepository(\Itsmng\Domain\Entities\Dashboard::class);
 
