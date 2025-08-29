@@ -497,7 +497,7 @@ class ReservationItem extends CommonDBChild
               'submit' => [
                  'name'  => 'submit',
                  'value' => __('Search'),
-                 'class' => 'btn btn-secondary',
+                 'class' => 'btn btn-primary',
               ]
            ],
            'content' => [
@@ -555,13 +555,33 @@ class ReservationItem extends CommonDBChild
         ];
         renderTwigForm($form);
         echo "</div>";
-
-        // GET method passed to form creation
-        echo "<div id='nosearch' class='center'>";
-        echo "<form aria-label='Resvervation' name='form' method='GET' action='" . Reservation::getFormURL() . "'>";
-        echo "<table class='tab_cadre_fixehov' aria-label='Reservation table'>";
-        echo "<tr><th colspan='" . ($showentity ? "5" : "4") . "'>" . self::getTypeName(1) . "</th></tr>\n";
-
+    
+        echo "<div id='nosearch' style='width: 100%;'>";
+        echo "<form aria-label='Reservation' name='form' method='GET' action='" . Reservation::getFormURL() . "'>";
+        
+        echo "<div class='table-responsive'>";
+        echo "<table class='table table-striped table-hover' aria-label='Reservation table' style='width: 90%; table-layout: fixed; border-collapse: collapse; margin: 0 auto;'>";        
+        echo "<thead class='table-dark'>";
+        echo "<tr>";
+        echo "<th scope='col' style='width: " . ($showentity ? "50%" : "60%") . "; min-width: " . ($showentity ? "50%" : "60%") . ";'>";
+        echo "<i class='fas fa-desktop me-1'></i>" . __('Item');
+        echo "</th>";
+        echo "<th scope='col' style='width: " . ($showentity ? "25%" : "30%") . "; min-width: " . ($showentity ? "25%" : "30%") . ";'>";
+        echo "<i class='fas fa-map-marker-alt me-1'></i>" . __('Location');
+        echo "</th>";
+        echo "<th scope='col' style='width: " . ($showentity ? "15%" : "10%") . "; min-width: " . ($showentity ? "15%" : "10%") . ";'>";
+        echo "<i class='fas fa-comment me-1'></i>" . __('Comments');
+        echo "</th>";
+        if ($showentity) {
+            echo "<th scope='col' style='width: 10%; min-width: 10%;'>";
+            echo "<i class='fas fa-building me-1'></i>" . Entity::getTypeName(1);
+            echo "</th>";
+        }
+        echo "</tr>";
+        echo "</thead>";
+        
+        echo "<tbody>";
+    
         foreach ($CFG_GLPI["reservation_types"] as $itemtype) {
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -581,6 +601,7 @@ class ReservationItem extends CommonDBChild
                   "$itemtable.entities_id AS entities_id",
                   $otherserial,
                   'glpi_locations.id AS location',
+                  'glpi_locations.completename AS location_name',
                   'glpi_reservationitems.items_id AS items_id'
                ],
                'FROM'   => self::getTable(),
@@ -650,9 +671,8 @@ class ReservationItem extends CommonDBChild
 
             $iterator = $DB->request($criteria);
             while ($row = $iterator->next()) {
-                echo "<tr class='tab_bg_2'><td>";
-                echo "<input type='checkbox' name='item[" . $row["id"] . "]' value='" . $row["id"] . "'>" .
-                      "</td>";
+                echo "<tr style='width: 100%;'>";
+                
                 $typename = $item->getTypeName();
                 if ($itemtype == 'Peripheral') {
                     $item->getFromDB($row['items_id']);
@@ -666,32 +686,118 @@ class ReservationItem extends CommonDBChild
                         );
                     }
                 }
-                echo "<td><a href='reservation.php?reservationitems_id=" . $row['id'] . "'>" .
-                            sprintf(__('%1$s - %2$s'), $typename, $row["name"]) . "</a></td>";
-                echo "<td>" . Dropdown::getDropdownName("glpi_locations", $row["location"]) . "</td>";
-                echo "<td>" . nl2br($row["comment"] ?? '') . "</td>";
-                if ($showentity) {
-                    echo "<td>" . Dropdown::getDropdownName("glpi_entities", $row["entities_id"]) .
-                          "</td>";
+                
+                echo "<td class='align-middle' style='width: " . ($showentity ? "50%" : "60%") . ";'>";
+                echo "<a href='reservation.php?reservationitems_id=" . $row['id'] . "' class='text-decoration-none'>";
+                echo "<div class='d-flex align-items-center'>";
+                echo "<input type='checkbox' name='item[" . $row["id"] . "]' value='" . $row["id"] . "' class='form-check-input me-2' style='margin-top: 0;'>";
+                echo "<i class='fas fa-desktop text-primary me-2'></i>";
+                echo "<div>";
+                echo "<strong>" . htmlspecialchars($row["name"]) . "</strong><br>";
+                echo "<small class='text-muted'>" . htmlspecialchars($typename) . "</small>";
+                if (!empty($row['otherserial'])) {
+                    echo "<br><small class='text-info'>S/N: " . htmlspecialchars($row['otherserial']) . "</small>";
                 }
+                echo "</div>";
+                echo "</div>";
+                echo "</a>";
+                echo "</td>";
+                
+                echo "<td class='align-middle' style='width: " . ($showentity ? "25%" : "30%") . ";'>";
+                if (!empty($row["location_name"])) {
+                    echo "<div class='d-flex align-items-center'>";
+                    echo "<i class='fas fa-map-marker-alt text-success me-2'></i>";
+                    echo "<span>" . htmlspecialchars($row["location_name"]) . "</span>";
+                    echo "</div>";
+                } else {
+                    echo "<span class='text-muted'><i class='fas fa-minus'></i> " . __('Not defined') . "</span>";
+                }
+                echo "</td>";
+                
+                echo "<td class='align-middle' style='width: " . ($showentity ? "15%" : "10%") . ";'>";
+                if (!empty($row["comment"])) {
+                    $comment = htmlspecialchars($row["comment"]);
+                    if (strlen($comment) > 100) {
+                        echo "<span data-bs-toggle='tooltip' data-bs-placement='top' title='" . $comment . "'>";
+                        echo substr($comment, 0, 97) . "...";
+                        echo "</span>";
+                    } else {
+                        echo $comment;
+                    }
+                } else {
+                    echo "<span class='text-muted'>-</span>";
+                }
+                echo "</td>";
+                
+                if ($showentity) {
+                    echo "<td class='align-middle' style='width: 10%;'>";
+                    echo "<div class='d-flex align-items-center'>";
+                    echo "<i class='fas fa-building text-warning me-2'></i>";
+                    echo "<small>" . htmlspecialchars(Dropdown::getDropdownName("glpi_entities", $row["entities_id"])) . "</small>";
+                    echo "</div>";
+                    echo "</td>";
+                }
+                
                 echo "</tr>\n";
                 $ok = true;
             }
         }
+        
+        echo "</tbody>";
+        echo "</table>";
+        echo "</div>";
+        
         if ($ok) {
-            echo "<tr class='tab_bg_1 center'><td colspan='" . ($showentity ? "5" : "4") . "'>";
+            echo "<div class='mt-3 text-center'>";
             if (isset($_POST['reserve'])) {
                 echo Html::hidden('begin', ['value' => $_POST['reserve']["begin"]]);
                 echo Html::hidden('end', ['value'   => $_POST['reserve']["end"]]);
             }
-            echo "<input type='submit' value=\"" . _sx('button', 'Add') . "\" class='btn btn-secondary'></td></tr>\n";
+            echo "<button type='submit' class='btn btn-primary btn-lg'>";
+            echo "<i class='fas fa-plus me-1'></i>" . _sx('button', 'Add');
+            echo "</button>";
+            echo "</div>";
+        } else {
+            echo "<div class='alert alert-info text-center mt-3'>";
+            echo "<i class='fas fa-info-circle me-2'></i>";
+            if (isset($_POST['submit'])) {
+                echo __('No free item found for the specified period');
+            } else {
+                echo __('No reservable item available');
+            }
+            echo "</div>";
         }
-        echo "</table>\n";
+        
         echo "<input type='hidden' name='id' value=''>";
         echo "</form>";// No CSRF token needed
         echo "</div>\n";
+        
+        echo "<script>
+        $(document).ready(function() {
+            // Activer les tooltips Bootstrap
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle=\"tooltip\"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Sélection multiple avec Ctrl+click
+            $('input[type=\"checkbox\"]').on('click', function(e) {
+                if (!e.ctrlKey && !e.metaKey) {
+                    $('input[type=\"checkbox\"]').not(this).prop('checked', false);
+                }
+            });
+            
+            // Highlight de la ligne sélectionnée
+            $('input[type=\"checkbox\"]').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $(this).closest('tr').addClass('table-primary');
+                } else {
+                    $(this).closest('tr').removeClass('table-primary');
+                }
+            });
+        });
+        </script>";
     }
-
 
     /**
      * @param $name

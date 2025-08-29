@@ -5459,7 +5459,7 @@ class User extends CommonDBTM
     
     // Essayer la miniature
     $path_info = pathinfo($clean_picture);
-    $thumb_picture = $path_info['dirname'] . '/' . $path_info['filename'] . '_min.' . $path_info['extension'];
+    $thumb_picture = $path_info['dirname'] . '/' . $path_info['filename'] . '_min.' . ($path_info['extension'] ?? '');
     
     return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $thumb_picture;
 }
