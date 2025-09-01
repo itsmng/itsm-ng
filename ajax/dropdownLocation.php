@@ -61,22 +61,31 @@ if (isset($_REQUEST['is_recursive'])) {
     $is_recursive = (bool) $_REQUEST['is_recursive'];
 }
 
-global $DB;
-$request = [
-   'SELECT' => ['id', 'name'],
-   'FROM'   => Location::getTable(),
-   'WHERE'  => [
-      'entities_id'  => $entities_id,
-   ],
-];
+$entityManager = config::getAdapter()->getEntityManager(); 
+$queryBuilder = $entityManager->createQueryBuilder();
+
+$queryBuilder
+    ->select('l.id', 'l.name')
+    ->from('Location', 'l')  
+    ->where('l.entities_id = :entities_id')
+    ->setParameter('entities_id', $entities_id);
+
 if ($locations_id != 0) {
-    $request['WHERE']['id'] = $locations_id;
-};
-$iterator = $DB->request($request);
+    $queryBuilder
+        ->andWhere('l.id = :locations_id')
+        ->setParameter('locations_id', $locations_id);
+}
+
+$query = $queryBuilder->getQuery();
+$results = $query->getResult();
 
 $result = [];
-while ($row = $iterator->next()) {
-    $result += [$row['id'] => $row['name']];
-}
+
+$result = array_map(function($row) {
+    return [$row['id'] => $row['name']];
+}, $results);
+
+// Fusionner tous les tableaux en un seul
+$result = array_merge(...$result);
 $result += ['selected' => $locations_id];
 echo json_encode($result);
