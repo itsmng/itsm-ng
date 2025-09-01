@@ -104,9 +104,9 @@ class NetworkEquipmentModel
         return $this->weight;
     }
 
-    public function setWeight(?int $weight): self
+    public function setWeight(int|string $weight): self
     {
-        $this->weight = $weight;
+        $this->weight = (int) $weight;
 
         return $this;
     }
@@ -116,9 +116,9 @@ class NetworkEquipmentModel
         return $this->requiredUnits;
     }
 
-    public function setRequiredUnits(?int $requiredUnits): self
+    public function setRequiredUnits(int|string $requiredUnits): self
     {
-        $this->requiredUnits = $requiredUnits;
+        $this->requiredUnits = (int) $requiredUnits;
 
         return $this;
     }
@@ -140,9 +140,9 @@ class NetworkEquipmentModel
         return $this->powerConnections;
     }
 
-    public function setPowerConnections(?int $powerConnections): self
+    public function setPowerConnections(int|string $powerConnections): self
     {
-        $this->powerConnections = $powerConnections;
+        $this->powerConnections = (int) $powerConnections;
 
         return $this;
     }
@@ -152,9 +152,9 @@ class NetworkEquipmentModel
         return $this->powerConsumption;
     }
 
-    public function setPowerConsumption(?int $powerConsumption): self
+    public function setPowerConsumption(int|string $powerConsumption): self
     {
-        $this->powerConsumption = $powerConsumption;
+        $this->powerConsumption = (int) $powerConsumption;
 
         return $this;
     }

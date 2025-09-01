@@ -32,7 +32,7 @@ class NetworkName
     private $itemsId = 0;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 100)]
-    private $itemtype;
+    private $itemtype = '';
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
@@ -78,9 +78,13 @@ class NetworkName
         return $this->itemtype;
     }
 
-    public function setItemtype(string $itemtype): self
+    public function setItemtype(string|null $itemtype): self
     {
-        $this->itemtype = $itemtype;
+        if ($itemtype === null || $itemtype === '') {
+            $this->itemtype = '';
+        } else {
+            $this->itemtype = (string)$itemtype;
+        }
 
         return $this;
     }

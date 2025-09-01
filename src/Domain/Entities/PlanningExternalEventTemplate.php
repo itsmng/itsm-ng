@@ -32,23 +32,23 @@ class PlanningExternalEventTemplate
     private $comment;
 
     #[ORM\Column(name: 'duration', type: 'integer', options: ['default' => 0])]
-    private $duration;
+    private $duration = 0;
 
     #[ORM\Column(name: 'before_time', type: 'integer', options: ['default' => 0])]
-    private $beforeTime;
+    private $beforeTime = 0;
 
     #[ORM\Column(name: 'rrule', type: 'text', length: 65535, nullable: true)]
     private $rrule;
 
     #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
-    private $state;
+    private $state = 0;
 
     #[ORM\ManyToOne(targetEntity: PlanningEventCategory::class)]
     #[ORM\JoinColumn(name: 'planningeventcategories_id', referencedColumnName: 'id', nullable: true)]
     private ?PlanningEventCategory $planningeventcategory = null;
 
     #[ORM\Column(name: 'background', type: 'boolean', options: ['default' => 0])]
-    private $background;
+    private $background = 0;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -138,9 +138,9 @@ class PlanningExternalEventTemplate
         return $this->state;
     }
 
-    public function setState(?int $state): self
+    public function setState(int|string $state): self
     {
-        $this->state = $state;
+        $this->state = (int)$state;
 
         return $this;
     }

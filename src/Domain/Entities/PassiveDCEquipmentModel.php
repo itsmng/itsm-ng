@@ -27,22 +27,22 @@ class PassiveDCEquipmentModel
     private $productNumber;
 
     #[ORM\Column(name: 'weight', type: 'integer', options: ['default' => 0])]
-    private $weight;
+    private $weight = 0;
 
     #[ORM\Column(name: 'required_units', type: 'integer', options: ['default' => 1])]
-    private $requiredUnits;
+    private $requiredUnits = 1;
 
     #[ORM\Column(name: 'depth', type: 'float', options: ['default' => 1])]
-    private $depth;
+    private $depth = 1;
 
     #[ORM\Column(name: 'power_connections', type: 'integer', options: ['default' => 0])]
-    private $powerConnections;
+    private $powerConnections = 0;
 
     #[ORM\Column(name: 'power_consumption', type: 'integer', options: ['default' => 0])]
-    private $powerConsumption;
+    private $powerConsumption = 0;
 
     #[ORM\Column(name: 'is_half_rack', type: 'boolean', options: ['default' => 0])]
-    private $isHalfRack;
+    private $isHalfRack = 0;
 
     #[ORM\Column(name: 'picture_front', type: 'text', length: 65535, nullable: true)]
     private $pictureFront;
@@ -102,9 +102,9 @@ class PassiveDCEquipmentModel
         return $this->weight;
     }
 
-    public function setWeight(?int $weight): self
+    public function setWeight(int|string $weight): self
     {
-        $this->weight = $weight;
+        $this->weight = (int) $weight;
 
         return $this;
     }
@@ -114,9 +114,9 @@ class PassiveDCEquipmentModel
         return $this->requiredUnits;
     }
 
-    public function setRequiredUnits(?int $requiredUnits): self
+    public function setRequiredUnits(int|string $requiredUnits): self
     {
-        $this->requiredUnits = $requiredUnits;
+        $this->requiredUnits = (int) $requiredUnits;
 
         return $this;
     }
@@ -138,9 +138,9 @@ class PassiveDCEquipmentModel
         return $this->powerConnections;
     }
 
-    public function setPowerConnections(?int $powerConnections): self
+    public function setPowerConnections(int|string $powerConnections): self
     {
-        $this->powerConnections = $powerConnections;
+        $this->powerConnections = (int) $powerConnections;
 
         return $this;
     }
@@ -150,9 +150,9 @@ class PassiveDCEquipmentModel
         return $this->powerConsumption;
     }
 
-    public function setPowerConsumption(?int $powerConsumption): self
+    public function setPowerConsumption(int|string $powerConsumption): self
     {
-        $this->powerConsumption = $powerConsumption;
+        $this->powerConsumption = (int) $powerConsumption;
 
         return $this;
     }
@@ -162,9 +162,9 @@ class PassiveDCEquipmentModel
         return $this->isHalfRack;
     }
 
-    public function setIsHalfRack(?int $isHalfRack): self
+    public function setIsHalfRack(int|string $isHalfRack): self
     {
-        $this->isHalfRack = $isHalfRack;
+        $this->isHalfRack = (int) $isHalfRack;
 
         return $this;
     }

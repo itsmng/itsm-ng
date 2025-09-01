@@ -66,10 +66,10 @@ class ProjectTaskTemplate
     private $realEndDate;
 
     #[ORM\Column(name: 'planned_duration', type: 'integer', options: ['default' => 0])]
-    private $plannedDuration;
+    private $plannedDuration = 0;
 
     #[ORM\Column(name: 'effective_duration', type: 'integer', options: ['default' => 0])]
-    private $effectiveDuration;
+    private $effectiveDuration = 0;
 
     #[ORM\ManyToOne(targetEntity: ProjectState::class)]
     #[ORM\JoinColumn(name: 'projectstates_id', referencedColumnName: 'id', nullable: true)]
@@ -84,10 +84,10 @@ class ProjectTaskTemplate
     private ?User $user = null;
 
     #[ORM\Column(name: 'percent_done', type: 'integer', options: ['default' => 0])]
-    private $percentDone;
+    private $percentDone = 0;
 
     #[ORM\Column(name: 'is_milestone', type: 'boolean', options: ['default' => 0])]
-    private $isMilestone;
+    private $isMilestone = 0;
 
     #[ORM\Column(name: 'comments', type: 'text', length: 65535, nullable: true)]
     private $comments;
@@ -228,9 +228,13 @@ class ProjectTaskTemplate
         return $this->percentDone;
     }
 
-    public function setPercentDone(?int $percentDone): self
+    public function setPercentDone(int|string $percentDone): self
     {
-        $this->percentDone = $percentDone;
+        if ($percentDone === null || $percentDone === '') {
+            $this->percentDone = 0;
+        } else {
+            $this->percentDone = (int)$percentDone;
+        }
 
         return $this;
     }

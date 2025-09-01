@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_enclosuremodels')]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
@@ -102,9 +104,9 @@ class EnclosureModel
         return $this->weight;
     }
 
-    public function setWeight(?int $weight): self
+    public function setWeight(int|string $weight): self
     {
-        $this->weight = $weight;
+        $this->weight = (int) $weight;
 
         return $this;
     }
@@ -114,9 +116,9 @@ class EnclosureModel
         return $this->requiredUnits;
     }
 
-    public function setRequiredUnits(?int $requiredUnits): self
+    public function setRequiredUnits(int|string $requiredUnits): self
     {
-        $this->requiredUnits = $requiredUnits;
+        $this->requiredUnits = (int) $requiredUnits;
 
         return $this;
     }
@@ -138,9 +140,9 @@ class EnclosureModel
         return $this->powerConnections;
     }
 
-    public function setPowerConnections(?int $powerConnections): self
+    public function setPowerConnections(int|string $powerConnections): self
     {
-        $this->powerConnections = $powerConnections;
+        $this->powerConnections = (int) $powerConnections;
 
         return $this;
     }
@@ -150,9 +152,9 @@ class EnclosureModel
         return $this->powerConsumption;
     }
 
-    public function setPowerConsumption(?int $powerConsumption): self
+    public function setPowerConsumption(int|string $powerConsumption): self
     {
-        $this->powerConsumption = $powerConsumption;
+        $this->powerConsumption = (int) $powerConsumption;
 
         return $this;
     }
@@ -193,26 +195,30 @@ class EnclosureModel
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(?\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

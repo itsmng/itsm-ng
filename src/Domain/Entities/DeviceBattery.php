@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_devicebatteries')]
 #[ORM\Index(name: 'designation', columns: ['designation'])]
 #[ORM\Index(name: 'manufacturers_id', columns: ['manufacturers_id'])]
@@ -36,7 +38,7 @@ class DeviceBattery
     private $voltage;
 
     #[ORM\Column(name: 'capacity', type: 'integer', nullable: true)]
-    private $capacity;
+    private $capacity = null;
 
     #[ORM\ManyToOne(targetEntity: DeviceBatteryType::class)]
     #[ORM\JoinColumn(name: 'devicebatterytypes_id', referencedColumnName: 'id', nullable: true)]
@@ -96,9 +98,9 @@ class DeviceBattery
         return $this->voltage;
     }
 
-    public function setVoltage(int $voltage): self
+    public function setVoltage(int|string $voltage): self
     {
-        $this->voltage = $voltage;
+        $this->voltage = (int) $voltage;
 
         return $this;
     }
@@ -108,9 +110,9 @@ class DeviceBattery
         return $this->capacity;
     }
 
-    public function setCapacity(int $capacity): self
+    public function setCapacity(int|string $capacity): self
     {
-        $this->capacity = $capacity;
+        $this->capacity = (int) $capacity;
 
         return $this;
     }
@@ -130,26 +132,29 @@ class DeviceBattery
     }
 
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

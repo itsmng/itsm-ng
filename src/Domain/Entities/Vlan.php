@@ -24,7 +24,7 @@ class Vlan
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -33,7 +33,7 @@ class Vlan
     private $comment;
 
     #[ORM\Column(name: 'tag', type: 'integer', options: ['default' => 0])]
-    private $tag;
+    private $tag = 0;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -93,9 +93,9 @@ class Vlan
         return $this->tag;
     }
 
-    public function setTag(int $tag): self
+    public function setTag(int|string $tag): self
     {
-        $this->tag = $tag;
+        $this->tag = (int) $tag;
 
         return $this;
     }
