@@ -268,8 +268,6 @@ class Cartridge extends CommonDBChild
     **/
     public function install($pID, $tID)
     {
-        global $DB;
-
         // Get first unused cartridge
         $request = $this::getAdapter()->request([
            'SELECT' => ['id'],
@@ -294,7 +292,6 @@ class Cartridge extends CommonDBChild
                     'date_use'  => null
                 ]
             ])->fetchAllAssociative();
-
             $cartridgeUpdated = false;
             if (count($rows)) {
                 $id = $rows[0]['id'];
@@ -712,7 +709,6 @@ class Cartridge extends CommonDBChild
            'WHERE'     => $where,
            'ORDER'     => $order
         ]);
-
         $number = $iterator->rowCount();
 
         $massiveActionId = 'tableForCartridgeCartridges' . rand();
@@ -814,7 +810,6 @@ class Cartridge extends CommonDBChild
             $values[] = $newValue;
             $massive_action[] = sprintf('item[%s][%s]', self::class, $data['id']);
         }
-
         renderTwigTemplate('table.twig', [
            'id' => $massiveActionId,
            'fields' => $fields,
