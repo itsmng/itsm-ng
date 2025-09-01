@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_clustertypes')]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'entities_id', columns: ['entities_id'])]
@@ -80,26 +82,30 @@ class ClusterType
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+     public function getDateMod(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateMod ?? new DateTime();
     }
-
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+
+    public function getDateCreation(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

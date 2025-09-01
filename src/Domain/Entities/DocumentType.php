@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_documenttypes')]
 #[ORM\UniqueConstraint(name: 'unicity', columns: ['ext'])]
 #[ORM\Index(name: 'name', columns: ['name'])]
@@ -31,7 +33,7 @@ class DocumentType
     private $mime;
 
     #[ORM\Column(name: 'is_uploadable', type: 'boolean', options: ['default' => true])]
-    private $isUploadable;
+    private $isUploadable = true;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
     private $dateMod;
@@ -107,14 +109,28 @@ class DocumentType
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
+    }
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
+    {
+        $this->dateMod = new DateTime();
+
+        return $this;
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    public function getDateCreation(): DateTime
     {
-        $this->dateMod = $dateMod;
+        return $this->dateCreation ?? new DateTime();
+    }
+
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
+    {
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
@@ -131,15 +147,4 @@ class DocumentType
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
-
-        return $this;
-    }
 }

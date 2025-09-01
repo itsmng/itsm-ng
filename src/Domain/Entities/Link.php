@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_links')]
 #[ORM\Index(name: "entities_id", columns: ['entities_id'])]
 #[ORM\Index(name: "date_mod", columns: ['date_mod'])]
@@ -21,7 +23,7 @@ class Link
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => true])]
-    private $isRecursive;
+    private $isRecursive = true;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -33,7 +35,7 @@ class Link
     private $data;
 
     #[ORM\Column(name: 'open_window', type: 'boolean', options: ['default' => true])]
-    private $openWindow;
+    private $openWindow = true;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
     private $dateMod;
@@ -106,26 +108,29 @@ class Link
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+    public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }

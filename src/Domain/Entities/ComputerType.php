@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'glpi_computertypes')]
 #[ORM\Index(name: 'name', columns: ['name'])]
 #[ORM\Index(name: 'date_mod', columns: ['date_mod'])]
@@ -43,20 +45,6 @@ class ComputerType
         return $this->comment;
     }
 
-    public function getDateMod()
-    {
-        return $this->dateMod;
-    }
-
-    public function getDateCreation()
-    {
-        return $this->dateCreation;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     public function setName($name)
     {
@@ -68,13 +56,30 @@ class ComputerType
         $this->comment = $comment;
     }
 
-    public function setDateMod($date_mod)
+    public function getDateMod(): DateTime
     {
-        $this->dateMod = $dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateCreation($date_creation)
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateMod = new DateTime();
+
+        return $this;
+    }
+
+    public function getDateCreation(): DateTime
+    {
+        return $this->dateCreation ?? new DateTime();
+    }
+
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
+    {
+        $this->dateCreation = new DateTime();
+
+        return $this;
     }
 }
