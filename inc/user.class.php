@@ -3924,11 +3924,15 @@ class User extends CommonDBTM
         }
 
         if (!$inactive_deleted) {
+
+            $is_deleted_value = self::getAdapter()->getBooleanValue(false);
+            $is_active_value = self::getAdapter()->getBooleanValue(true);
+
             $WHERE = array_merge(
                 $WHERE,
                 [
-                  'glpi_users.is_deleted' => 'false',
-                  'glpi_users.is_active'  => 'true',
+                  'glpi_users.is_deleted' => $is_deleted_value,
+                  'glpi_users.is_active'  => $is_active_value,
                   [
                      'OR' => [
                         ['glpi_users.begin_date' => null],
