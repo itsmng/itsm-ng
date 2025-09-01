@@ -156,6 +156,10 @@ abstract class CommonDBConnexity extends CommonDBTM
         $getFromDBOrEmpty = false
     ) {
 
+        if (!is_array($this->fields)) {
+        $this->fields = [];
+    }
+
         return static::getItemFromArray(
             $itemtype,
             $items_id,
