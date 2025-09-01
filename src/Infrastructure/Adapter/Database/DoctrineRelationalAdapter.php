@@ -302,7 +302,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 $value = $content->$getter();
             } catch (\Exception $e) {
                 throw new \Exception('Cannot get value for property ' . $propertyName . ' of class ' . get_class($content));
-                continue;
             }
 
             $isRelation = self::isRelation($content, $propertyName);
@@ -390,7 +389,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             return true;
         } catch (\Exception $e) {
             throw new \Exception('error: ' . $e->getMessage());
-            return false;
         }
     }
 

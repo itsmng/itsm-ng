@@ -1575,8 +1575,8 @@ final class DbUtils
                 $username = $this->formatUserName(
                     $data["id"],
                     $data["name"],
-                    $data["realname"],
-                    $data["firstname"],
+                    $data["realname"] ?? "",
+                    $data["firstname"] ?? "",
                     $link
                 );
 
