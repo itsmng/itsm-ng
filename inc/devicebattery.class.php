@@ -54,7 +54,7 @@ class DeviceBattery extends CommonDevice
                  'name'  => 'devicebatterytypes_id',
                  'type'  => 'select',
                  'values' => getOptionForItems('DeviceBatteryType'),
-                 'value' => $this->fields['devicebatterytypes_id']
+                 'value' => $this->fields['devicebatterytypes_id']?? null
               ],
               __('Capacity') => [
                  'name'   => 'capacity',

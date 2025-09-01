@@ -56,14 +56,14 @@ class DeviceCase extends CommonDevice
                  'name'  => 'devicecasetypes_id',
                  'type'  => 'select',
                  'values' => getOptionForItems('DeviceCaseType'),
-                 'value' => $this->fields['devicecasetypes_id'],
+                 'value' => $this->fields['devicecasetypes_id']?? null,
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceCaseType')
               ],
               _n('Model', 'Models', 1) => [
                  'name'  => 'devicecasemodels_id',
                  'type'  => 'select',
                  'values' => getOptionForItems('DeviceCaseModel'),
-                 'value' => $this->fields['devicecasemodels_id'],
+                 'value' => $this->fields['devicecasemodels_id']?? null,
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceCaseModel')
               ]
             ]
