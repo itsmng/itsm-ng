@@ -5251,7 +5251,7 @@ class Ticket extends CommonITILObject
                      'id' => 'fileSelectorForDocument',
                      'data-max-size' => Document::getMaxUploadSizeInBytes(),
                      'multiple' => true,
-                     'values' => getLinkedDocumentsForItem('Ticket', $ID),
+                     'values' => getLinkedDocumentsForItem(self::getAdapter(), 'Ticket', $ID),
                      'col_lg' => 6,
                   ],
 

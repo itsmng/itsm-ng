@@ -989,7 +989,7 @@ class ITILFollowup extends CommonDBChild
                            'id' => 'fileSelectorForDocument',
                            'multiple' => true,
                            'data-max-size' => Document::getMaxUploadSizeInBytes(),
-                           'values' => getLinkedDocumentsForItem('Ticket', $ID),
+                           'values' => getLinkedDocumentsForItem(self::getAdapter(), 'Ticket', $ID),
                            'col_lg' => 12,
                            'col_md' => 12,
                         ],
