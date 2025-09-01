@@ -49,9 +49,9 @@ class DeviceProcessor
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
     private $isRecursive;
 
-    #[ORM\ManyToOne(targetEntity: Deviceprocessormodel::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceProcessorModel::class)]
     #[ORM\JoinColumn(name: 'deviceprocessormodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?Deviceprocessormodel $deviceprocessormodel = null;
+    private ?DeviceProcessorModel $deviceprocessormodel = null;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;

@@ -61,9 +61,9 @@ class Contact
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
     private $isDeleted = 0;
 
-    #[ORM\ManyToOne(targetEntity: Usertitle::class)]
+    #[ORM\ManyToOne(targetEntity: UserTitle::class)]
     #[ORM\JoinColumn(name: 'usertitles_id', referencedColumnName: 'id', nullable: true)]
-    private ?Usertitle $usertitle = null;
+    private ?UserTitle $usertitle = null;
 
 
     #[ORM\Column(name: 'address', type: 'text', length: 65535, nullable: true)]

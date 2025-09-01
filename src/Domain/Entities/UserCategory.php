@@ -3,15 +3,13 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use DateTime;
 
 #[ORM\Entity]
-#[ORM\HasLifecycleCallbacks]
-#[ORM\Table(name: "glpi_usertitles")]
+#[ORM\Table(name: "glpi_usercategories")]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-class Usertitle
+class UserCategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,10 +22,10 @@ class Usertitle
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime')]
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime')]
+    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
     public function getId(): ?int
@@ -64,11 +62,9 @@ class Usertitle
         return $this->dateMod;
     }
 
-    #[ORM\PreUpdate]
-    #[ORM\PrePersist]
-    public function setDateMod(): self
+    public function setDateMod(?\DateTime $dateMod): self
     {
-        $this->dateMod = new \DateTime();
+        $this->dateMod = $dateMod;
 
         return $this;
     }
@@ -78,11 +74,11 @@ class Usertitle
         return $this->dateCreation;
     }
 
-    #[ORM\PrePersist]
-    public function setDateCreation(): self
+    public function setDateCreation(?\DateTime $dateCreation): self
     {
-        $this->dateCreation = new \DateTime();
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
+
 }

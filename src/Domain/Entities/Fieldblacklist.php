@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "name", columns: ['name'])]
 #[ORM\Index(name: "date_mod", columns: ['date_mod'])]
 #[ORM\Index(name: "date_creation", columns: ['date_creation'])]
-class FieldBlacklist
+class Fieldblacklist
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,23 +17,23 @@ class FieldBlacklist
     private $id;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
-    private $name;
+    private $name = '';
 
     #[ORM\Column(name: 'field', type: 'string', length: 255, options: ['default' => ''])]
-    private $field;
+    private $field = '';
 
     #[ORM\Column(name: 'value', type: 'string', length: 255, options: ['default' => ''])]
-    private $value;
+    private $value = '';
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 255, options: ['default' => ''])]
-    private $itemtype;
+    private $itemtype = '';
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;

@@ -5,10 +5,10 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "glpi_virtualmachinestates")]
+#[ORM\Table(name: "glpi_virtualmachinetypes")]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-class Virtualmachinestate
+class VirtualMachineType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

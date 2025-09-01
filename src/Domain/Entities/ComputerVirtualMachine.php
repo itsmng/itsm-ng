@@ -36,17 +36,17 @@ class ComputerVirtualMachine
     #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
-    #[ORM\ManyToOne(targetEntity: Virtualmachinestate::class)]
+    #[ORM\ManyToOne(targetEntity: VirtualMachineState::class)]
     #[ORM\JoinColumn(name: 'virtualmachinestates_id', referencedColumnName: 'id', nullable: true)]
-    private ?Virtualmachinestate $virtualmachinestate = null;
+    private ?VirtualMachineState $virtualmachinestate = null;
 
-    #[ORM\ManyToOne(targetEntity: Virtualmachinesystem::class)]
+    #[ORM\ManyToOne(targetEntity: VirtualMachineSystem::class)]
     #[ORM\JoinColumn(name: 'virtualmachinesystems_id', referencedColumnName: 'id', nullable: true)]
-    private ?Virtualmachinesystem $virtualmachinesystem = null;
+    private ?VirtualMachineSystem $virtualmachinesystem = null;
 
-    #[ORM\ManyToOne(targetEntity: Virtualmachinetype::class)]
+    #[ORM\ManyToOne(targetEntity: VirtualMachineType::class)]
     #[ORM\JoinColumn(name: 'virtualmachinetypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Virtualmachinetype $virtualmachinetype = null;
+    private ?VirtualMachineType $virtualmachinetype = null;
 
     #[ORM\Column(name: 'uuid', type: 'string', length: 255, options: ['default' => ''])]
     private $uuid;

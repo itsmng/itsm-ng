@@ -5,21 +5,20 @@ namespace Itsmng\Domain\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "glpi_usercategories")]
-#[ORM\Index(name: "name", columns: ["name"])]
+#[ORM\Table(name: "glpi_virtualmachinestates")]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-class Usercategory
+class VirtualMachineState
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
     private $name;
 
-    #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(name: 'comment', type: 'text', length: 65535)]
     private $comment;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
@@ -57,28 +56,27 @@ class Usercategory
         return $this;
     }
 
-    public function getDateMod(): ?\DateTime
+    public function getDateMod(): ?\DateTimeInterface
     {
         return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $dateMod): self
+    public function setDateMod(\DateTimeInterface $dateMod): self
     {
         $this->dateMod = $dateMod;
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTime
+    public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $dateCreation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
 
         return $this;
     }
-
 }

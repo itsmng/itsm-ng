@@ -106,13 +106,13 @@ class User
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
-    #[ORM\ManyToOne(targetEntity: Usertitle::class)]
+    #[ORM\ManyToOne(targetEntity: UserTitle::class)]
     #[ORM\JoinColumn(name: 'usertitles_id', referencedColumnName: 'id', nullable: true)]
-    private ?Usertitle $usertitle = null;
+    private ?UserTitle $usertitle = null;
 
-    #[ORM\ManyToOne(targetEntity: Usercategory::class)]
+    #[ORM\ManyToOne(targetEntity: UserCategory::class)]
     #[ORM\JoinColumn(name: 'usercategories_id', referencedColumnName: 'id', nullable: true)]
-    private ?Usercategory $usercategory = null;
+    private ?UserCategory $usercategory = null;
 
     #[ORM\Column(name: 'date_format', type: 'integer', nullable: true)]
     private $dateFormat;
@@ -1740,7 +1740,7 @@ class User
     /**
      * Get the value of usertitle
      */
-    public function getUsertitle(): ?Usertitle
+    public function getUsertitle(): ?UserTitle
     {
         return $this->usertitle;
     }
@@ -1748,10 +1748,10 @@ class User
     /**
      * Set the value of usertitle
      *
-     * @param ?Usertitle $usertitle
+     * @param ?UserTitle $usertitle
      * @return self
      */
-    public function setUsertitle(?Usertitle $usertitle): self
+    public function setUsertitle(?UserTitle $usertitle): self
     {
         $this->usertitle = $usertitle;
 

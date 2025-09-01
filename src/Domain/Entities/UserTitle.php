@@ -3,13 +3,15 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 #[ORM\Entity]
-#[ORM\Table(name: "glpi_suppliertypes")]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "glpi_usertitles")]
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "date_creation", columns: ["date_creation"])]
-class Suppliertype
+class UserTitle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,10 +24,10 @@ class Suppliertype
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     public function getId(): ?int
@@ -62,9 +64,11 @@ class Suppliertype
         return $this->dateMod;
     }
 
-    public function setDateMod(?\DateTime $dateMod): self
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new \DateTime();
 
         return $this;
     }
@@ -74,11 +78,11 @@ class Suppliertype
         return $this->dateCreation;
     }
 
-    public function setDateCreation(?\DateTime $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new \DateTime();
 
         return $this;
     }
-
 }

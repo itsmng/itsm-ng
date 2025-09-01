@@ -40,9 +40,9 @@ class DeviceMotherboard
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
     private $isRecursive;
 
-    #[ORM\ManyToOne(targetEntity: DeviceMotherboardModel::class)]
+    #[ORM\ManyToOne(targetEntity: DeviceMotherBoardModel::class)]
     #[ORM\JoinColumn(name: 'devicemotherboardmodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?DeviceMotherboardModel $devicemotherboardmodel = null;
+    private ?DeviceMotherBoardModel $devicemotherboardmodel = null;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;
@@ -177,7 +177,7 @@ class DeviceMotherboard
     /**
      * Get the value of devicemotherboardmodel
      */
-    public function getDeviceMotherboardModel()
+    public function getDeviceMotherboardModel(): DeviceMotherBoardModel|null
     {
         return $this->devicemotherboardmodel;
     }

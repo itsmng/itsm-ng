@@ -33,9 +33,9 @@ class Supplier
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\ManyToOne(targetEntity: Suppliertype::class)]
+    #[ORM\ManyToOne(targetEntity: SupplierType::class)]
     #[ORM\JoinColumn(name: 'suppliertypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?Suppliertype $suppliertype = null;
+    private ?SupplierType $suppliertype = null;
 
     #[ORM\Column(name: 'address', type: 'text', length: 65535, nullable: true)]
     private $address;

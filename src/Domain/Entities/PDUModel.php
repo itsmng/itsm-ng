@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: "name", columns: ["name"])]
 #[ORM\Index(name: "is_rackable", columns: ["is_rackable"])]
 #[ORM\Index(name: "product_number", columns: ["product_number"])]
-class PduModel
+class PDUModel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,22 +26,22 @@ class PduModel
     private $productNumber;
 
     #[ORM\Column(name: 'weight', type: 'integer', options: ['default' => 0])]
-    private $weight;
+    private $weight = 0;
 
     #[ORM\Column(name: 'required_units', type: 'integer', options: ['default' => 1])]
-    private $requiredUnits;
+    private $requiredUnits = 1;
 
     #[ORM\Column(name: 'depth', type: 'float', options: ['default' => 1])]
-    private $depth;
+    private $depth = 1;
 
     #[ORM\Column(name: 'power_connections', type: 'integer', options: ['default' => 0])]
-    private $powerConnections;
+    private $powerConnections = 0;
 
     #[ORM\Column(name: 'max_power', type: 'integer', options: ['default' => 0])]
-    private $maxPower;
+    private $maxPower = 0;
 
     #[ORM\Column(name: 'is_half_rack', type: 'boolean', options: ['default' => 0])]
-    private $isHalfRack;
+    private $isHalfRack = 0;
 
     #[ORM\Column(name: 'picture_front', type: 'text', length: 65535, nullable: true)]
     private $pictureFront;
@@ -50,7 +50,7 @@ class PduModel
     private $pictureRear;
 
     #[ORM\Column(name: 'is_rackable', type: 'boolean', options: ['default' => 0])]
-    private $isRackable;
+    private $isRackable = 0;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -106,9 +106,9 @@ class PduModel
         return $this->weight;
     }
 
-    public function setWeight(?int $weight): self
+    public function setWeight(int|string $weight): self
     {
-        $this->weight = $weight;
+        $this->weight = (int) $weight;
 
         return $this;
     }
@@ -118,9 +118,9 @@ class PduModel
         return $this->requiredUnits;
     }
 
-    public function setRequiredUnits(?int $requiredUnits): self
+    public function setRequiredUnits(int|string $requiredUnits): self
     {
-        $this->requiredUnits = $requiredUnits;
+        $this->requiredUnits = (int) $requiredUnits;
 
         return $this;
     }
@@ -142,9 +142,9 @@ class PduModel
         return $this->powerConnections;
     }
 
-    public function setPowerConnections(?int $powerConnections): self
+    public function setPowerConnections(int|string $powerConnections): self
     {
-        $this->powerConnections = $powerConnections;
+        $this->powerConnections = (int) $powerConnections;
 
         return $this;
     }
@@ -154,9 +154,9 @@ class PduModel
         return $this->maxPower;
     }
 
-    public function setMaxPower(?int $maxPower): self
+    public function setMaxPower(int|string $maxPower): self
     {
-        $this->maxPower = $maxPower;
+        $this->maxPower = (int) $maxPower;
 
         return $this;
     }

@@ -49,9 +49,9 @@ class PDU
     #[ORM\Column(name: 'otherserial', type: 'string', length: 255, nullable: true)]
     private $otherserial;
 
-    #[ORM\ManyToOne(targetEntity: PduModel::class)]
+    #[ORM\ManyToOne(targetEntity: PDUModel::class)]
     #[ORM\JoinColumn(name: 'pdumodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?PduModel $pdumodel = null;
+    private ?PDUModel $pdumodel = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]
@@ -81,9 +81,9 @@ class PDU
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
     private ?Manufacturer $manufacturer = null;
 
-    #[ORM\ManyToOne(targetEntity: PduType::class)]
+    #[ORM\ManyToOne(targetEntity: PDUType::class)]
     #[ORM\JoinColumn(name: 'pdutypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?PduType $pdutype = null;
+    private ?PDUType $pdutype = null;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
