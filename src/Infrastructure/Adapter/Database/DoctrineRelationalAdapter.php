@@ -478,6 +478,15 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function request(array $request): mixed
     {
         global $DB;
+    if (isset($request['WHERE'])) {
+            $request['WHERE'] = $this->fixEntitiesIdLogic($request['WHERE']);
+        }
+        // Detect if it's a direct SQL query
+    if (isset($request[0]) && is_string($request[0]) && stripos($request[0], 'SELECT') === 0) {
+        // It's a direct SQL query, not a criteria array
+        $query = $request[0];
+        return $this->query($query);
+    }
 
         // Handle PostgreSQL reserved keywords in column names
         if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
@@ -512,7 +521,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                 $request['FROM'] = $this->fallbackTableName;
             }
         }
-
         // PostgreSQL correction for GROUP BY and ORDER BY
         if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
             // Add sanitization for empty IN clauses
@@ -531,7 +539,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
             }
 
         }
-
         $query = $SqlIterator->buildQuery($request);
         return $this->query($query);
     }
@@ -601,13 +608,77 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
 
         }
-        
         $stmt = $this->em->getConnection()->prepare($query);
         $results = $stmt->executeQuery();
         
         return $results;
     }
     
+    private function fixEntitiesIdLogic($where)
+    {
+    if (!is_array($where)) {
+        return $where;
+    }
+    
+    $entities_conditions = [];
+    $other_conditions = [];
+
+    // Collect all entities_id conditions
+    foreach ($where as $key => $value) {
+        if (is_string($key) && str_contains($key, 'entities_id')) {
+            $entities_conditions[$key] = $value;
+        } elseif (is_numeric($key) && is_array($value)) {
+            foreach ($value as $subkey => $subvalue) {
+                if (is_string($subkey) && str_contains($subkey, 'entities_id')) {
+                    $entities_conditions[$subkey] = $subvalue;
+                } else {
+                    if (!isset($other_conditions[$key])) {
+                        $other_conditions[$key] = [];
+                    }
+                    $other_conditions[$key][$subkey] = $subvalue;
+                }
+            }
+        } else {
+            $other_conditions[$key] = $value;
+        }
+    }
+
+    // Detect specifically the contradictory pattern
+    // Pattern : entities_id = null AND glpi_table.entities_id = value
+    if (count($entities_conditions) === 2) {
+        $has_null_condition = false;
+        $has_value_condition = false;
+        $null_key = null;
+        $value_key = null;
+        $value = null;
+        
+        foreach ($entities_conditions as $key => $val) {
+            if ($val === null) {
+                $has_null_condition = true;
+                $null_key = $key;
+            } elseif (($val === false || is_numeric($val)) && str_contains($key, '.')) {
+                // Condition with table.entities_id = value
+                $has_value_condition = true;
+                $value_key = $key;
+                $value = ($val === false) ? 0 : $val;
+            }
+        }
+
+        // Only if we have the specific contradictory pattern
+        if ($has_null_condition && $has_value_condition) {
+            // Create an OR condition for this specific case
+            $other_conditions[] = [
+                'OR' => [
+                    [$null_key => null],
+                    [$value_key => $value]
+                ]
+            ];
+            
+            return $other_conditions;
+        }
+    }
+    return $where;
+    }
 
     /**
      * Fix GROUP BY clause for PostgreSQL by adding all non-aggregated columns from SELECT
@@ -822,7 +893,12 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function getBooleanValue($value): string
     {
         // For PostgreSQL, return 'true' or 'false'
-        return (bool)$value ? 'true' : 'false';
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            return (bool)$value ? 'true' : 'false';
+            //For Mysql
+        } else {
+            return $value ? 1 : 0; 
+        }
     }
 
     public function adaptQueryForPostgreSQL(string $query): string
@@ -1057,39 +1133,70 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     public function getDateAdd(string $date, $interval, string $unit, ?string $alias = null): string
     {
         global $DB;
-        // PostgreSQL uses the syntax: date_field + INTERVAL 'value unit'
-        $date_field = $DB->quoteName($date);
-        $unit = strtolower($unit);
 
-        // Ensure unit is singular for PostgreSQL syntax
-        if (substr($unit, -1) === 's' && $unit != 'hours' && $unit != 'minutes' && $unit != 'seconds') {
-            $unit = substr($unit, 0, -1);
-        }
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {           
+            // PostgreSQL uses the syntax: date_field + INTERVAL 'value unit'
+            $date_field = $DB->quoteName($date);
+            $unit = strtolower($unit);
 
-        if (is_string($interval) && !is_numeric($interval) && !preg_match('/^\d/', $interval)) {
-            // PostgreSQL: date + (column || ' unit')::interval
-            $expression = "$date_field + (" . $DB->quoteName($interval) . " || ' $unit')::interval";
+            // Ensure unit is singular for PostgreSQL syntax
+            if (substr($unit, -1) === 's' && $unit != 'hours' && $unit != 'minutes' && $unit != 'seconds') {
+                $unit = substr($unit, 0, -1);
+            }
+
+            if (is_string($interval) && !is_numeric($interval) && !preg_match('/^\d/', $interval)) {
+                // PostgreSQL: date + (column || ' unit')::interval
+                $expression = "$date_field + (" . $DB->quoteName($interval) . " || ' $unit')::interval";
+            } else {
+                // PostgreSQL: date + INTERVAL 'value unit'
+                $expression = "$date_field + INTERVAL '$interval $unit'";
+            }
+
+            if ($alias !== null) {
+                $expression .= ' AS ' . $DB->quoteName($alias);
+            }
+
+            return $expression;
+        
         } else {
-            // PostgreSQL: date + INTERVAL 'value unit'
-            $expression = "$date_field + INTERVAL '$interval $unit'";
-        }
+        // MySQL/MariaDB: Use DATE_ADD
+            $date_field = $DB->quoteName($date);
+            
+            if (is_string($interval) && !is_numeric($interval) && !preg_match('/^\d/', $interval)) {
+                // MySQL: DATE_ADD(date, INTERVAL column unit)
+                $interval_field = $DB->quoteName($interval);
+                $expression = "DATE_ADD($date_field, INTERVAL $interval_field $unit)";
+            } else {
+                // MySQL: DATE_ADD(date, INTERVAL value unit)
+                $expression = "DATE_ADD($date_field, INTERVAL $interval $unit)";
+            }
 
-        if ($alias !== null) {
-            $expression .= ' AS ' . $DB->quoteName($alias);
-        }
+            if ($alias !== null) {
+                $expression .= ' AS ' . $DB->quoteName($alias);
+            }
 
-        return $expression;
+            return $expression;
+        }
     }
 
     public function getPositionExpression(string $substring, string $string, ?string $alias = null): string
     {
         // PostgreSQL syntax: POSITION(substring IN string)
         global $DB;
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            $expr = sprintf(
+                "POSITION(%s IN %s)",
+                $DB->quote($substring),
+                $DB->quoteName($string)
+            );
+        } else {
+        // MySQL/MariaDB syntax: LOCATE(substring, string)
         $expr = sprintf(
-            "POSITION(%s IN %s)",
+            "LOCATE(%s, %s)",
             $DB->quote($substring),
             $DB->quoteName($string)
         );
+    }
 
         if ($alias !== null) {
             $expr .= ' AS ' . $DB->quoteName($alias);
@@ -1100,16 +1207,30 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function getCurrentHourExpression(): string
     {
-        return 'EXTRACT(HOUR FROM CURRENT_TIME)';
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+            return 'EXTRACT(HOUR FROM CURRENT_TIME)';
+        } else {
+        // MySQL/MariaDB: HOUR(CURTIME())
+        return 'HOUR(CURTIME())';
+        }
     }
 
     public function getUnixTimestamp(string $field, ?string $alias = null): string
     {
         global $DB;
-        $expr = sprintf(
-            "EXTRACT(EPOCH FROM %s)",
-            $DB->quoteName($field)
-        );
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+
+            $expr = sprintf(
+                "EXTRACT(EPOCH FROM %s)",
+                $DB->quoteName($field)
+            );
+        } else {
+            // MySQL/MariaDB: Use UNIX_TIMESTAMP(field)
+            $expr = sprintf(
+                "UNIX_TIMESTAMP(%s)",
+                $DB->quoteName($field)
+            );
+        }
 
         if ($alias !== null) {
             $expr .= ' AS ' . $DB->quoteName($alias);
@@ -1188,8 +1309,13 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
 
     public function concat(array $exprs): string
     {
-        return implode(" || ", $exprs);
+       if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+        return implode(' || ', $exprs);
+    } else {
+        // MySQL
+        return "CONCAT(" . implode(', ', $exprs) . ")";
     }
+}
 
 
     public function ifnull(string $expr, string $default): string
@@ -1204,9 +1330,12 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
                     return "COALESCE($expr::text, $default)";
                 }
             }
-        }
-        // Default case (MySQL or non-ID for PostgreSQL)
-        return "COALESCE($expr, $default)";
+        return "COALESCE($expr::text, $default)";
+        // 
+        } else {
+        // MySQL
+        return "IFNULL($expr, $default)";
+    }
     }
 
     
@@ -1219,44 +1348,67 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
      */
     public function makeResultKeysInsensitive(array $row): array
     {
-        // Determine the real type of the item
-        $real_type = null;
-        if (isset($row['type'])) {
-            $real_type = $row['type'];
+        
+        if (!is_array($row)) {
+            return $row;
         }
+        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
 
-        // Create a case-insensitive version with the correct type
-        $enhanced_row = [];
-        foreach ($row as $key => $val) {
-            // Keep the original
-            $enhanced_row[$key] = $val;
-
-            // Lowercase version
-            $key_lower = strtolower($key);
-            if ($key_lower !== $key) {
-                $enhanced_row[$key_lower] = $val;
+            // Determine the real type of the item
+            $real_type = null;
+            if (isset($row['type'])) {
+                $real_type = $row['type'];
             }
 
-            // For ITEM_AllAssets_X, create variants with the real type
-            if (preg_match('/^ITEM_AllAssets_(\d+)(_(.+))?$/i', $key, $matches)) {
-                $field_id = $matches[1];
-                $suffix = isset($matches[3]) ? '_' . $matches[3] : '';
+            // Create a case-insensitive version with the correct type
+            $enhanced_row = [];
+            foreach ($row as $key => $val) {
+                // Keep the original
+                $enhanced_row[$key] = $val;
 
-                // Add direct access by ID
-                $enhanced_row[$field_id] = $val;
+                // Lowercase version
+                $key_lower = strtolower($key);
+                if ($key_lower !== $key) {
+                    $enhanced_row[$key_lower] = $val;
+                }
 
-                // If we have the real type, create a key with this type
-                if ($real_type) {
-                    $type_key = "ITEM_{$real_type}_{$field_id}{$suffix}";
-                    $enhanced_row[$type_key] = $val;
+                // For ITEM_AllAssets_X, create variants with the real type
+                if (preg_match('/^ITEM_AllAssets_(\d+)(_(.+))?$/i', $key, $matches)) {
+                    $field_id = $matches[1];
+                    $suffix = isset($matches[3]) ? '_' . $matches[3] : '';
 
-                    // Lowercase version
-                    $type_key_lower = strtolower($type_key);
-                    $enhanced_row[$type_key_lower] = $val;
+                    // Add direct access by ID
+                    $enhanced_row[$field_id] = $val;
+
+                    // If we have the real type, create a key with this type
+                    if ($real_type) {
+                        $type_key = "ITEM_{$real_type}_{$field_id}{$suffix}";
+                        $enhanced_row[$type_key] = $val;
+
+                        // Lowercase version
+                        $type_key_lower = strtolower($type_key);
+                        $enhanced_row[$type_key_lower] = $val;
+                    }
                 }
             }
+            return $enhanced_row;
+        } else {
+            // MySQL - Gestion simple, MySQL est nativement case-insensitive
+            $simple_row = [];
+            
+            foreach ($row as $key => $value) {
+                // Garder la clé originale
+                $simple_row[$key] = $value;
+                
+                // Ajouter aussi la version lowercase pour compatibilité
+                $key_lower = strtolower($key);
+                if ($key_lower !== $key) {
+                    $simple_row[$key_lower] = $value;
+                }
+            }
+            
+            return $simple_row;
         }
-        return $enhanced_row;
     }
 
     /**
