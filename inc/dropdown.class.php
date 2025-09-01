@@ -3097,7 +3097,6 @@ class Dropdown
         $ret['results'] = Toolbox::unclean_cross_side_scripting_deep($datas);
         $ret['count']   = $count;
         $ret['pagination']['more']    = ($count >= $post['page_limit']);
-        dump('ret',    $ret);
         return ($json === true) ? json_encode($ret) : $ret;
     }
 
