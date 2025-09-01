@@ -1682,28 +1682,7 @@ class Search
                 $item->title();
             }
         }
-        // DEBUG FINAL pour comprendre le mappage
-        // if ($data['itemtype'] === 'Peripheral') {
-        //     dump("🔍 STRUCTURE DEBUG:");
-        //     dump("Fields keys: " , (array_keys($fields)));
-        //     dump("Values keys: " , (array_keys($values)));
-        //     dump("First value structure: " , (($values[1] ?? [])));
-        //     dump("MassiveAction keys: " , (array_keys($massiveActionValues)));
-        // }
-        // 🔍 DEBUG FINAL avant template
-        // if ($data['itemtype'] === 'Computer' && $data['search']['is_deleted'] == 1) {
-        //     dump("=== DEBUG FINAL AVANT TEMPLATE ===");
-        //     dump("Nombre de fields: " , count($fields));
-        //     dump("Nombre de values: " , count($values));
-        //     dump("Premier field: " , (array_slice($fields, 0, 3, true)));
-        //     dump("Première value: " , ($values[1] ?? []));
-        //     dump("URL: " , ($url ?? 'NULL'));
-        //     dump("can_trash: " , ($can_trash ? 'OUI' : 'NON'));
-        //     dump("is_trash: " , ($data['search']['is_deleted'] == 1 ? 'OUI' : 'NON'));
-        //     dump("=== FIN DEBUG ===");
-        // }
-
-        
+               
         Html::showMassiveActions($massiveactionparams);
         renderTwigTemplate('table.twig', [
            'id' => 'SearchTableFor' . $data['itemtype'],
