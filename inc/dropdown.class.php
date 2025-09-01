@@ -2271,12 +2271,10 @@ class Dropdown
     public static function getDropdownValue($post, $json = true)
     {
         global $DB;
-
         // check if asked itemtype is the one originaly requested by the form
         // if (!Session::validateIDOR($post)) {
         //    return;
         // }
-
         if (
             isset($post["entity_restrict"])
             && !is_array($post["entity_restrict"])
@@ -2409,22 +2407,7 @@ class Dropdown
                     }
 
                     $where[] = ['OR' => $swhere];
-                }
-                // Clean the NOT clause before processing
-                if (isset($where['NOT']) && is_array($where['NOT'])) {
-                    foreach ($where['NOT'] as $key => $value) {
-                        if (($key === 'id' || str_ends_with($key, '.id')) && $value === '') {
-                            unset($where['NOT'][$key]);
-                        }
-                    }
-
-                    // If all NOT conditions have been removed
-                    if (empty($where['NOT'])) {
-                        unset($where['NOT']);
-                    }
-                }
-
-
+                }                
             }
 
             $multi = false;
@@ -2448,7 +2431,6 @@ class Dropdown
                         $post["entity_restrict"],
                         $recur
                     );
-
                     if (is_array($post["entity_restrict"]) && (count($post["entity_restrict"]) > 1)) {
                         $multi = true;
                     }
@@ -2536,6 +2518,19 @@ class Dropdown
                 ++$limit;
             }
 
+            // Clean the NOT clause before processing
+                if (isset($where['NOT']) && is_array($where['NOT'])) {
+                    foreach ($where['NOT'] as $key => $value) {
+                        if (($key === 'id' || str_ends_with($key, '.id')) && $value === '') {
+                            unset($where['NOT'][$key]);
+                        }
+                    }
+
+                    // If all NOT conditions have been removed
+                    if (empty($where['NOT'])) {
+                        unset($where['NOT']);
+                    }
+                }
             $criteria = [
                'SELECT' => array_merge(["$table.*"], $addselect),
                'FROM'   => $table,
@@ -2939,6 +2934,33 @@ class Dropdown
                         $criteria['LEFT JOIN'] = $ljoin;
                     }
             }
+            // Clean the AND clause before processing
+            if (isset($where['AND']) && is_array($where['AND'])) {
+                foreach ($where['AND'] as $key => $value) {
+                    if (is_array($value)) {
+                        // Si c'est un sous-tableau, vérifier ses éléments
+                        foreach ($value as $subkey => $subvalue) {
+                            if (($subkey === 'id' || str_ends_with($subkey, '.id')) && $subvalue === '') {
+                                unset($where['AND'][$key][$subkey]);
+                            }
+                        }
+                        // Si le sous-tableau est vide après nettoyage, le supprimer
+                        if (empty($where['AND'][$key])) {
+                            unset($where['AND'][$key]);
+                        }
+                    } else {
+                        // Si c'est une condition directe
+                        if (($key === 'id' || str_ends_with($key, '.id')) && $value === '') {
+                            unset($where['AND'][$key]);
+                        }
+                    }
+                }
+
+                // If all AND conditions have been removed
+                if (empty($where['AND'])) {
+                    unset($where['AND']);
+                }
+            }
 
             $criteria = array_merge(
                 $criteria,
@@ -3075,6 +3097,7 @@ class Dropdown
         $ret['results'] = Toolbox::unclean_cross_side_scripting_deep($datas);
         $ret['count']   = $count;
         $ret['pagination']['more']    = ($count >= $post['page_limit']);
+        dump('ret',    $ret);
         return ($json === true) ? json_encode($ret) : $ret;
     }
 
