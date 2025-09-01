@@ -167,6 +167,7 @@ class PlanningExternalEventTemplate extends CommonDropdown
     {
         if (
             isset($orig_input['plan'])
+            && is_array($orig_input['plan'])
             && array_key_exists('_duration', $orig_input['plan'])
         ) {
             $input['duration'] = $orig_input['plan']['_duration'];
