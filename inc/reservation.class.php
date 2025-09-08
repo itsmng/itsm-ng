@@ -58,6 +58,28 @@ class Reservation extends CommonDBChild
         return _n('Reservation', 'Reservations', $nb);
     }
 
+    /**
+ * Get the appropriate reservation form URL based on current interface
+ * 
+ * @return string The URL to use for reservation form
+ */
+    private static function getReservationFormURL($id = null) {
+        global $CFG_GLPI;
+    
+        if (strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
+            (isset($_SESSION['glpiactiveprofile']['interface']) && 
+            $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk')) {
+            $link = $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.form.php';
+        } else {
+            $link = self::getFormURL();
+        }
+    
+        if ($id !== null) {
+            $link .= (strpos($link, '?') ? '&' : '?') . 'id=' . $id;
+        }
+    
+        return $link;
+    }
 
     /**
      * @see CommonGLPI::getTabNameForItem()
@@ -600,7 +622,7 @@ class Reservation extends CommonDBChild
                 echo "<tr><td class='center'>";
                 $formatted_date = $annee_courante . "-" . $mois_courant . "-" . $ii;
                 $alt_text = sprintf(__s('Reserve: %s'), $formatted_date);
-                echo "<a href='" . Reservation::getFormURL() . "?id=&amp;item[$ID]=$ID&amp;" .
+                echo "<a href='" . self::getReservationFormURL() . "?id=&amp;item[$ID]=$ID&amp;" .
                       "begin=" . $formatted_date . " 12:00:00'>";
                 echo "<img  src='" . $CFG_GLPI["root_doc"] . "/pics/addresa.png' alt=\"" . $alt_text .
                       "\" title=\"" . $alt_text . "\"></a></td></tr>\n";
@@ -715,7 +737,7 @@ class Reservation extends CommonDBChild
                          * $CFG_GLPI['time_step'] * MINUTE_TIMESTAMP;
 
         $form = [
-           'action'      => Reservation::getFormURL(),
+           'action'      => self::getReservationFormURL(),
            'buttons'     => [
               empty($ID) ? [
                  'name'  => 'add',
@@ -1083,7 +1105,7 @@ class Reservation extends CommonDBChild
                 $modif = $modif_end = "";
                 if ($resa->canEdit($row['id'])) {
                     $modif      = "<a id='content_" . $ID . $rand . "'
-                                 href='" . Reservation::getFormURLWithID($row['id']) . "'>";
+                                 href='" . self::getReservationFormURL($row['id']) . "'>";
                     $modif_end  = "</a>";
                     $modif_end .= Html::showToolTip(
                         $row["comment"],

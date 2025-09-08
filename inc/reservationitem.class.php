@@ -55,6 +55,26 @@ class ReservationItem extends CommonDBChild
     public $get_item_to_display_tab = false;
     public $showdebug               = false;
 
+    /**
+ * Get the appropriate reservation form URL based on current interface
+ * 
+ * @return string The URL to use for reservation form
+ */
+    private static function getReservationFormURL() {
+        global $CFG_GLPI;
+    
+        if (strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false) {
+            return $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.form.php';
+        }
+    
+        if (isset($_SESSION['glpiactiveprofile']['interface']) && 
+            $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk') {
+            return $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.form.php';
+        }
+    
+        return Reservation::getFormURL();
+    }
+
 
     /**
      * @since 0.85
@@ -557,7 +577,7 @@ class ReservationItem extends CommonDBChild
         echo "</div>";
     
         echo "<div id='nosearch' style='width: 100%;'>";
-        echo "<form aria-label='Reservation' name='form' method='GET' action='" . Reservation::getFormURL() . "'>";
+        echo "<form aria-label='Reservation' name='form' method='GET' action='" . self::getReservationFormURL() . "'>";
         
         echo "<div class='table-responsive'>";
         echo "<table class='table table-striped table-hover' aria-label='Reservation table' style='width: 90%; table-layout: fixed; border-collapse: collapse; margin: 0 auto;'>";        
