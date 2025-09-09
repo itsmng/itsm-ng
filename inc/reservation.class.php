@@ -65,19 +65,25 @@ class Reservation extends CommonDBChild
  */
     private static function getReservationFormURL($id = null) {
         global $CFG_GLPI;
-    
-        if (strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
-            (isset($_SESSION['glpiactiveprofile']['interface']) && 
-            $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk')) {
-            $link = $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.form.php';
+
+        $is_helpdesk_interface = strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
+                                (isset($_SESSION['glpiactiveprofile']['interface']) && 
+                                $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk');
+
+        if ($is_helpdesk_interface) {
+            if ($id !== null) {
+                $link = $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.form.php';
+            } else {
+                $link = $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.form.php';
+            }
         } else {
             $link = self::getFormURL();
         }
-    
+
         if ($id !== null) {
             $link .= (strpos($link, '?') ? '&' : '?') . 'id=' . $id;
         }
-    
+
         return $link;
     }
 
@@ -233,6 +239,19 @@ class Reservation extends CommonDBChild
         }
 
         parent::post_addItem();
+    
+        if (isset($this->fields['reservationitems_id'])) {
+            if (strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
+                (isset($_SESSION['glpiactiveprofile']['interface']) && 
+                $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk')) {
+            
+                $redirect_url = $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.php?reservationitems_id=' . $this->fields['reservationitems_id'] . '&reservation_added=1';
+            } else {
+                $redirect_url = $CFG_GLPI['root_doc'] . '/front/reservation.php?reservationitems_id=' . $this->fields['reservationitems_id'] . '&reservation_added=1';
+            }
+        
+            Html::redirect($redirect_url);
+        }
     }
 
 
@@ -737,7 +756,7 @@ class Reservation extends CommonDBChild
                          * $CFG_GLPI['time_step'] * MINUTE_TIMESTAMP;
 
         $form = [
-           'action'      => self::getReservationFormURL(),
+           'action'      => self::getFormURL(),
            'buttons'     => [
               empty($ID) ? [
                  'name'  => 'add',
