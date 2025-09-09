@@ -72,15 +72,23 @@ class Oidc extends CommonDBTM
       if (isset($oidc_db['cert']) && $oidc_db['proxy'] != '' && file_exists($oidc_db['cert'])) {
          $oidc->setCertPath($oidc_db['cert']);
       }
-      if (isset($_REQUEST['redirect'])) {
-         if (isset($_SERVER['HTTPS'])) {
-            $redirect = 'https://';
-         } else {
-            $redirect = 'http://';
+      $isCallback = isset($_GET['code']) || isset($_GET['id_token']) || isset($_GET['state']);
+      if (!$isCallback && isset($_REQUEST['redirect'])) {
+         $requestedRedirect = self::sanitizeRedirect($_REQUEST['redirect']);
+         if ($requestedRedirect) {
+            $cookieOptions = [
+               'expires' => time() + 300,
+               'path' => $CFG_GLPI['root_doc'] ?: '/',
+               'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+               'httponly' => true,
+               'samesite' => 'Lax'
+            ];
+            if (PHP_VERSION_ID >= 70300) {
+               setcookie('itsm_oidc_redirect', $requestedRedirect, $cookieOptions);
+            } else { // Fallback for older PHP versions
+               setcookie('itsm_oidc_redirect', $requestedRedirect, $cookieOptions['expires'], $cookieOptions['path'], '', $cookieOptions['secure'], true);
+            }
          }
-         $redirect .= $_SERVER['SERVER_NAME'] 
-            . $CFG_GLPI['root_doc'] . '/front/oidc.php';
-         $oidc->setRedirectURL($redirect);
       }
       $oidc->setHttpUpgradeInsecureRequests(false);
       try {
@@ -97,9 +105,7 @@ class Oidc extends CommonDBTM
       }
 
       $result = $oidc->requestUserInfo();
-      //Tranform result to an array
-      $user_array = json_encode($result);
-      $user_array = json_decode($user_array, true);
+      $user_array = (array) $result;
       //Create and/or authenticated a user
       $criteria_users = "SELECT * FROM glpi_users";
       $iterators_users = $DB->request($criteria_users);
@@ -215,7 +221,22 @@ class Oidc extends CommonDBTM
       Session::init($auth);
       $_SESSION['itsm_is_oidc'] = 1;
       $_SESSION['itsm_oidc_idtoken'] = $oidc->getIdToken();
-      Auth::redirectIfAuthenticated($redirect);
+      $redirectTarget = null;
+      if (isset($_REQUEST['redirect'])) {
+         $redirectTarget = self::sanitizeRedirect($_REQUEST['redirect']);
+      }
+      if (!$redirectTarget && isset($_COOKIE['itsm_oidc_redirect'])) {
+         $redirectTarget = self::sanitizeRedirect($_COOKIE['itsm_oidc_redirect']);
+      }
+      // Clear the cookie
+      if (isset($_COOKIE['itsm_oidc_redirect'])) {
+         $cookiePath = $CFG_GLPI['root_doc'] ?: '/';
+         setcookie('itsm_oidc_redirect', '', time() - 3600, $cookiePath, '', isset($_SERVER['HTTPS']), true);
+      }
+      if (!$redirectTarget) {
+         $redirectTarget = '/'; // fallback root
+     }
+     Auth::redirectIfAuthenticated($redirectTarget);
    }
 
    /**
@@ -397,5 +418,33 @@ class Oidc extends CommonDBTM
       Html::closeForm();
 
       echo "</div>";
+   }
+
+   /**
+    * Sanitize a post-auth redirect path to avoid open redirects.
+    * Accept only internal absolute paths (starting with '/') and disallow protocol-relative or external URLs.
+    *
+    * @param mixed $value
+    * @return string|null
+    */
+   private static function sanitizeRedirect($value)
+   {
+       if (!is_string($value)) {
+           return null;
+       }
+       $value = trim($value);
+       if ($value === '') {
+           return null;
+       }
+       if (preg_match('#^(?:[a-z][a-z0-9+.-]*:)?//#i', $value)) {
+           return null;
+       }
+       if ($value[0] !== '/') {
+           return null;
+       }
+       if (strpos($value, "\n") !== false || strpos($value, "\r") !== false) {
+           return null;
+       }
+       return $value;
    }
 }
