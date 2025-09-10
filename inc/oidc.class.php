@@ -212,12 +212,6 @@ class Oidc extends CommonDBTM
       $auth = new Auth();
       $auth->auth_succeded = true;
       $auth->user = $user;
-      //Setup a new session and redirect to the main menu
-      $redirect = $_COOKIE['OIDC_REDIRECT'] ?? null;
-      if (isset($_COOKIE['OIDC_REDIRECT'])) {
-         unset($_COOKIE['OIDC_REDIRECT']);
-         setcookie('OIDC_REDIRECT', null, -1, '/');
-      }
       Session::init($auth);
       $_SESSION['itsm_is_oidc'] = 1;
       $_SESSION['itsm_oidc_idtoken'] = $oidc->getIdToken();
@@ -233,10 +227,11 @@ class Oidc extends CommonDBTM
          $cookiePath = $CFG_GLPI['root_doc'] ?: '/';
          setcookie('itsm_oidc_redirect', '', time() - 3600, $cookiePath, '', isset($_SERVER['HTTPS']), true);
       }
-      if (!$redirectTarget) {
-         $redirectTarget = '/'; // fallback root
-     }
-     Auth::redirectIfAuthenticated($redirectTarget);
+      if ($redirectTarget) {
+         Html::redirect($CFG_GLPI['root_doc'] . $redirectTarget);
+      } else {
+         Auth::redirectIfAuthenticated(); // fallback to standard central/helpdesk
+      }
    }
 
    /**
