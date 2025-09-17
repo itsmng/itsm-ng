@@ -35,6 +35,14 @@ use Glpi\Event;
 
 include('../inc/includes.php');
 
+if (strpos($_SERVER['HTTP_REFERER'] ?? '', '/plugins/formcreator/') !== false && 
+    Session::getCurrentInterface() == "helpdesk") {
+    
+    $new_url = str_replace('/front/knowbaseitem.form.php', '/plugins/formcreator/front/knowbaseitem.form.php', $_SERVER['REQUEST_URI']);
+    header("Location: " . $new_url);
+    exit;
+}
+
 if (!isset($_GET["id"])) {
     $_GET["id"] = "";
 }
