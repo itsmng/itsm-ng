@@ -25088,3 +25088,6 @@ msgstr "Choisir un fichier"
 
 msgid "No file chosen"
 msgstr "Aucun fichier choisi"
+
+msgid "Add another observer"
+msgstr "Ajouter un autre observateur"
