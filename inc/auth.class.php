@@ -1535,7 +1535,7 @@ class Auth extends CommonGLPI
         if (!$withtemplate) {
             switch ($item->getType()) {
                 case 'User':
-                    if (Session::haveRight("user", User::UPDATEAUTHENT)) {
+                    if (Session::haveRight("user", User::UPDATEAUTHENT) && $item->canUpdateItem()) {
                         return __('Synchronization');
                     }
                     break;
