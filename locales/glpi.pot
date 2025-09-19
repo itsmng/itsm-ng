@@ -22972,3 +22972,7 @@ msgstr ""
 #: inc/ticket.class.php:6677
 msgid "See linked document"
 msgstr ""
+
+#: inc/auth.class.php:1791
+msgid "Link accounts with other auth sources"
+msgstr ""
