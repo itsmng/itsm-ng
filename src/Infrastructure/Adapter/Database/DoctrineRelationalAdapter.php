@@ -1341,77 +1341,6 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
     
 
     /**
-     * Makes the keys of a query result insensitive to case for PostgreSQL
-     *
-     * @param array $row A row of query results
-     * @return array The row adapted to be case-insensitive
-     */
-    public function makeResultKeysInsensitive(array $row): array
-    {
-        
-        if (!is_array($row)) {
-            return $row;
-        }
-        if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
-
-            // Determine the real type of the item
-            $real_type = null;
-            if (isset($row['type'])) {
-                $real_type = $row['type'];
-            }
-
-            // Create a case-insensitive version with the correct type
-            $enhanced_row = [];
-            foreach ($row as $key => $val) {
-                // Keep the original
-                $enhanced_row[$key] = $val;
-
-                // Lowercase version
-                $key_lower = strtolower($key);
-                if ($key_lower !== $key) {
-                    $enhanced_row[$key_lower] = $val;
-                }
-
-                // For ITEM_AllAssets_X, create variants with the real type
-                if (preg_match('/^ITEM_AllAssets_(\d+)(_(.+))?$/i', $key, $matches)) {
-                    $field_id = $matches[1];
-                    $suffix = isset($matches[3]) ? '_' . $matches[3] : '';
-
-                    // Add direct access by ID
-                    $enhanced_row[$field_id] = $val;
-
-                    // If we have the real type, create a key with this type
-                    if ($real_type) {
-                        $type_key = "ITEM_{$real_type}_{$field_id}{$suffix}";
-                        $enhanced_row[$type_key] = $val;
-
-                        // Lowercase version
-                        $type_key_lower = strtolower($type_key);
-                        $enhanced_row[$type_key_lower] = $val;
-                    }
-                }
-            }
-            return $enhanced_row;
-        } else {
-            // MySQL - Gestion simple, MySQL est nativement case-insensitive
-            $simple_row = [];
-            
-            foreach ($row as $key => $value) {
-                // Garder la clé originale
-                $simple_row[$key] = $value;
-                
-                // Ajouter aussi la version lowercase pour compatibilité
-                $key_lower = strtolower($key);
-                if ($key_lower !== $key) {
-                    $simple_row[$key_lower] = $value;
-                }
-            }
-            
-            return $simple_row;
-        }
-    }
-
-    /**
      * Generates filter criteria for a date range
      *
      * @param string $field The name of the date field
@@ -1437,10 +1366,17 @@ class DoctrineRelationalAdapter implements DatabaseAdapterInterface
         // Validation and processing of end date
         if (is_string($end) && preg_match($date_pattern, $end) === 1) {
             // Determine which syntax to use based on the platform
-            // PostgreSQL: date + INTERVAL '1 day'
-            $end_expr = new \QueryExpression(
-                $this->quoteValue($end) . "::date + INTERVAL '1 day'"
-            );
+            if ($_ENV['DB_DRIVER'] == 'pdo_pgsql') {
+                // PostgreSQL: date + INTERVAL '1 day'
+                $end_expr = new QueryExpression(
+                    $this->quoteValue($end) . "::date + INTERVAL '1 day'"
+                );
+            } else {
+                // MySQL/MariaDB: DATE_ADD(date, INTERVAL 1 DAY)
+                $end_expr = new QueryExpression(
+                    "DATE_ADD(" . $this->quoteValue($end) . ", INTERVAL 1 DAY)"
+                );
+            }
 
             $criteria[] = [$field => ['<', $end_expr]];
         } elseif ($end !== null && $end !== '') {
