@@ -48,7 +48,7 @@ class Oidc extends CommonDBTM
     public static function auth()
     {
 
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         //Get config from DB and use it to setup oidc
         $criteria = ["SELECT * FROM glpi_oidc_config"];
@@ -189,8 +189,6 @@ class Oidc extends CommonDBTM
      */
     public static function addUserData($user_array, $id)
     {
-        global $DB;
-
         $criteria = ["SELECT * FROM glpi_oidc_mapping"];
         $request = self::getAdapter()->request($criteria);
         $results = $request->fetchAllAssociative();

@@ -2320,7 +2320,6 @@ class Dropdown
         if (!isset($post['permit_select_parent'])) {
             $post['permit_select_parent'] = false;
         }
-
         if (isset($post['condition']) && !empty($post['condition']) && !is_array($post['condition'])) {
             // Retreive conditions from SESSION using its key
             $key = $post['condition'];
@@ -2330,7 +2329,6 @@ class Dropdown
                 $post['condition'] = [];
             }
         }
-
         if (!isset($post['emptylabel']) || ($post['emptylabel'] == '')) {
             $post['emptylabel'] = Dropdown::EMPTY_VALUE;
         }
@@ -2365,7 +2363,6 @@ class Dropdown
         } else {
             $toadd = [];
         }
-
         if (isset($post['condition']) && ($post['condition'] != '')) {
             $where = array_merge($where, $post['condition']);
         }
@@ -3086,6 +3083,7 @@ class Dropdown
                            'children' => $datastoadd
                         ];
                     }
+
                 } else {
                     if (count($datastoadd)) {
                         $datas = array_merge($datas, $datastoadd);
@@ -3093,6 +3091,18 @@ class Dropdown
                 }
             }
         }
+        
+        // array_walk_recursive($datas, function (&$value) {
+        //     // Si c'est un objet binaire de MySQL
+        //     if (is_object($value) && method_exists($value, '__toString')) {
+        //         $value = (string)$value;
+        //     }
+
+        //     // Convertit en UTF-8, mais ne touche pas aux caractères valides comme espaces ou &nbsp;
+        //     if (is_string($value)) {
+        //         $value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+        //     }
+        // });
 
         $ret['results'] = Toolbox::unclean_cross_side_scripting_deep($datas);
         $ret['count']   = $count;
@@ -3110,7 +3120,7 @@ class Dropdown
      */
     public static function getDropdownConnect($post, $json = true)
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         // check if asked itemtype is the one originaly requested by the form
         if (!Session::validateIDOR($post)) {
@@ -3776,7 +3786,7 @@ class Dropdown
         // Count real items returned
         $count = 0;
         if (count($result)) {
-            while ($data = $result->next()) {
+            foreach ($result as $data) {
                 $users[$data["id"]] = formatUserName(
                     $data["id"],
                     $data["name"],
