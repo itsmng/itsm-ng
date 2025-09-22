@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
-"PO-Revision-Date: 2025-06-29 16:02+0000\n"
-"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
+"PO-Revision-Date: 2025-09-22 02:02+0000\n"
+"Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/itsm-ng/itsm-ng/ta/"
 ">\n"
 "Language: ta\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 #. TRANS: %1$s is address, %2$s is netmask
 #: ajax/dropdownShowIPNetwork.php:54
@@ -1171,7 +1171,7 @@ msgstr "உங்கள் கருத்து சேர்க்கப்ப�
 #: front/knowbaseitem_comment.form.php:81
 #, php-format
 msgid "%s edit a comment on knowledge base"
-msgstr "அறிவுத் தளத்தில் ஒரு கருத்தைத் திருத்துங்கள்"
+msgstr "அறிவுத் தளத்தில் ஒரு கருத்தைத் %s திருத்துங்கள்"
 
 #: front/knowbaseitem_comment.form.php:83
 msgid "Your comment has been edited"
@@ -1838,14 +1838,14 @@ msgctxt "ticket"
 msgid "Opened"
 msgid_plural "Opened"
 msgstr[0] "திறக்கப்பட்டது"
-msgstr[1] "திறக்கப்பட்டது"
+msgstr[1] "திறக்கப்பட்டன"
 
 #: front/stat.graph.php:341 front/stat.global.php:90 inc/stat.class.php:447
 msgctxt "ticket"
 msgid "Solved"
 msgid_plural "Solved"
 msgstr[0] "தீர்க்கப்பட்டது"
-msgstr[1] "தீர்க்கப்பட்டது"
+msgstr[1] "தீர்க்கப்பட்டன"
 
 #: front/stat.graph.php:344 front/stat.global.php:93 inc/stat.class.php:449
 msgid "Late"
@@ -1887,7 +1887,7 @@ msgstr "சராசரி நேரம்"
 msgid "Hour"
 msgid_plural "Hours"
 msgstr[0] "மணி"
-msgstr[1] "மணி"
+msgstr[1] "மணிநேரம்"
 
 #: front/stat.graph.php:428 front/stat.global.php:156 inc/ticket.class.php:2986
 #: inc/notificationtargetticket.class.php:154 inc/ticket.class.php:3241
@@ -1904,14 +1904,14 @@ msgctxt "survey"
 msgid "Opened"
 msgid_plural "Opened"
 msgstr[0] "திறக்கப்பட்டது"
-msgstr[1] "திறக்கப்பட்டது"
+msgstr[1] "திறக்கப்பட்டன"
 
 #: front/stat.graph.php:434 front/stat.global.php:162 inc/stat.class.php:466
 msgctxt "survey"
 msgid "Answered"
 msgid_plural "Answered"
 msgstr[0] "பதில்"
-msgstr[1] "பதில்"
+msgstr[1] "பதில்கள்"
 
 #: front/stat.graph.php:447 front/stat.graph.php:450 front/stat.global.php:174
 #: front/stat.global.php:177 inc/stat.class.php:423
@@ -2237,7 +2237,7 @@ msgstr "மறந்துவிட்ட கடவுச்சொல்?"
 #: front/reservationitem.form.php:49
 #, php-format
 msgid "%1$s adds the item %2$s (%3$d)"
-msgstr "%1$s உருப்படியை %2$s ( %3 $ D) சேர்க்கிறது"
+msgstr "%1$s உருப்படியை %2$s (%3$d) சேர்க்கிறது"
 
 #: front/item_device.common.form.php:64
 #, php-format
@@ -2597,7 +2597,7 @@ msgstr "%s ஒரு செலவை புதுப்பிக்கிறத�
 msgid "Contract"
 msgid_plural "Contract"
 msgstr[0] "ஒப்பந்தம்"
-msgstr[1] "ஒப்பந்தம்"
+msgstr[1] "ஒப்பந்தங்கள்"
 
 #. TRANS: %s is the user login
 #: front/contract_supplier.form.php:57 front/contact_supplier.form.php:51
@@ -2751,7 +2751,7 @@ msgstr "விதி வகை"
 msgid "Blacklist"
 msgid_plural "Blacklists"
 msgstr[0] "தடுப்புப்பட்டியல்"
-msgstr[1] "தடுப்புப்பட்டியல்"
+msgstr[1] "தடுப்புப்பட்டியல்கள்"
 
 #. TRANS: %s is the user login
 #: front/networkname.form.php:45 front/networkport.form.php:64
@@ -3057,7 +3057,7 @@ msgstr "சரக்கு எண்"
 msgid "Software"
 msgid_plural "Software"
 msgstr[0] "மென்பொருள்"
-msgstr[1] "மென்பொருள்"
+msgstr[1] "மென்பொருள்கள்"
 
 #: front/dashboard_assets.php:49
 msgid "Assets Dashboard"
@@ -3406,13 +3406,13 @@ msgstr "%s ஒரு தீர்வை ஒப்புக்கொள்கி�
 #: front/itilfollowup.form.php:73 front/itilfollowup.form.php:88
 #, php-format
 msgid "%s updates a followup"
-msgstr "ஒரு பின்தொடர்வைப் புதுப்பிக்கவும்"
+msgstr "%s ஒரு பின்தொடர்வைப் புதுப்பித்தார்"
 
 #. TRANS: %s is the user login
 #: front/itilfollowup.form.php:82 front/itilfollowup.form.php:97
 #, php-format
 msgid "%s purges a followup"
-msgstr "%ஒரு பின்தொடர்தலைத் தூண்டுகிறது"
+msgstr "%s ஒரு பின்தொடர்தலைத் தூண்டினார்"
 
 #: front/report.year.php:46
 msgid "Equipment's report by year"
@@ -3552,7 +3552,7 @@ msgstr "மொத்த மதிப்பு"
 #: front/networkport_vlan.form.php:47 front/ipnetwork_vlan.form.php:50
 #, php-format
 msgid "%s associates a VLAN to a network port"
-msgstr "ஒரு பிணையம் போர்ட்டுடன் ஒரு VLAN ஐ எச்"
+msgstr "%s ஒரு பிணையம் போர்ட்டுடன் ஒரு VLAN ஐ இணைத்தார்"
 
 #: front/display.options.php:41 inc/commonglpi.class.php:1434
 #: inc/commonglpi.class.php:1492 inc/commonglpi.class.php:1494
@@ -5279,7 +5279,7 @@ msgstr "தேதி வடிவம்"
 
 #: inc/config.class.php:1094 inc/config.class.php:1258
 msgid "Display order of surnames firstnames"
-msgstr "முதல் பெயர்களின் பெயர்களின் காட்சி வரிசை"
+msgstr "முதல் பின் பெயர்களின் காட்சி வரிசை"
 
 #: inc/config.class.php:1098 inc/config.class.php:1262
 msgid "Surname, First name"
@@ -5370,7 +5370,7 @@ msgstr "பணிகள் இயல்பாகவே கூறுகின்�
 msgid "Information"
 msgid_plural "Information"
 msgstr[0] "தகவல்"
-msgstr[1] "தகவல்"
+msgstr[1] "தகவல்கள்"
 
 #: inc/config.class.php:1250 inc/reminder.class.php:608
 #: inc/commonitiltask.class.php:1318 inc/planning.class.php:228
@@ -5874,7 +5874,7 @@ msgstr "உருப்படிகளில் மென்பொருளை �
 
 #: inc/config.class.php:3376
 msgid "Installation/uninstallation versions on softwares"
-msgstr "மென்பொருள்களில் நிறுவல்/நிறுவல் நீக்குதல் பதிப்புகள்"
+msgstr "மென்பொருள்களில் பதிப்புகள் நிறுவல்/நீக்குதல்"
 
 #: inc/config.class.php:3383
 msgid "Add/Remove items from software versions"
@@ -6566,7 +6566,8 @@ msgstr "தற்போதுள்ள தரவுத்தளத்தில�
 #: inc/ruledictionnarysoftwarecollection.class.php:161
 #, php-format
 msgid "%1$s - replay rules on existing database: %2$s/%3$s (%4$s Mio)"
-msgstr "%1$s - தற்போதுள்ள தரவுத்தளத்தில் மறுதொடக்கம் விதிகள்:%2$s/%3$s (%4 $ S MIO)"
+msgstr ""
+"%1$s - தற்போதுள்ள தரவுத்தளத்தில் மறுதொடக்கம் விதிகள்:%2$s/%3$s (%4$s மியோ)"
 
 #. TRANS: %1$s is a row, %2$s is total rows
 #: inc/ruledictionnaryprintercollection.class.php:170
@@ -6595,7 +6596,7 @@ msgstr "Default_Value எண் இருக்க வேண்டும்"
 #: inc/migration.class.php:628
 #, php-format
 msgid "Unable to rename table %1$s (%2$s) to %3$s (%4$s)!"
-msgstr "அட்டவணை %1$s ( %2$s) ஐ %3$s ( %4 $ s) என மறுபெயரிட முடியவில்லை!"
+msgstr "அட்டவணை %1$s (%2$s) ஐ %3$s (%4$s) என மறுபெயரிட முடியவில்லை!"
 
 #: inc/migration.class.php:630 inc/migration.class.php:632
 msgid "ok"
@@ -6648,7 +6649,7 @@ msgstr "தரவுத்தள தளவமைப்பின் மாற்�
 #: inc/migration.class.php:720
 #, php-format
 msgid "Adding fulltext indices - %s"
-msgstr "முழு உரை குறியீடுகளைச் சேர்ப்பது"
+msgstr "முழு உரை குறியீடுகளைச் சேர்ப்பது - %s"
 
 #: inc/migration.class.php:729
 #, php-format
@@ -8207,13 +8208,13 @@ msgstr[1] "ஃபார்ம்வேர் வகைகள்"
 msgid "RSS feed"
 msgid_plural "RSS feed"
 msgstr[0] "RSS ஊட்டம்"
-msgstr[1] "RSS ஊட்டம்"
+msgstr[1] "RSS ஊட்டங்கள்"
 
 #: inc/rssfeed.class.php:66 inc/rssfeed.class.php:917
 msgid "Personal RSS feed"
 msgid_plural "Personal RSS feed"
 msgstr[0] "தனிப்பட்ட ஆர்எச்எச் ஊட்டம்"
-msgstr[1] "தனிப்பட்ட ஆர்எச்எச் ஊட்டம்"
+msgstr[1] "தனிப்பட்ட ஆர்எச்எச் ஊட்டங்கள்"
 
 #: inc/rssfeed.class.php:404 inc/projecttask.class.php:1022
 msgid "Creator"
@@ -8861,7 +8862,7 @@ msgstr "தவறான அதிர்வெண். இது பூர்வ�
 #: inc/ticketrecurrent.class.php:489 inc/ticketrecurrent.class.php:545
 #, php-format
 msgid "Failed to create recurrent ticket %s"
-msgstr "தொடர்ச்சியான டிக்கெட்டுகளை உருவாக்கத் தவறிவிட்டது"
+msgstr "தொடர்ச்சியான டிக்கெட்டுகளை உருவாக்கத் தவறிவிட்டது %s"
 
 #: inc/ticketrecurrent.class.php:549 inc/ticketrecurrent.class.php:616
 #, php-format
@@ -9359,8 +9360,8 @@ msgstr "குறைந்தபட்ச நேரம்"
 #, php-format
 msgid "%s second"
 msgid_plural "%s seconds"
-msgstr[0] "%இரண்டாவது"
-msgstr[1] "%வினாடிகள்"
+msgstr[0] "%s நொடி"
+msgstr[1] "%s நொடிகள்"
 
 #: inc/crontask.class.php:1177
 msgid "Maximal time"
@@ -9826,7 +9827,7 @@ msgstr "விதி முடிவுகள்"
 msgid "Validation"
 msgid_plural "Validations"
 msgstr[0] "சரிபார்ப்பு"
-msgstr[1] "சரிபார்ப்பு"
+msgstr[1] "சரிபார்ப்புகள்"
 
 #. TRANS: %s is the entity name
 #: inc/rulecollection.class.php:1927 inc/rulecollection.class.php:1890
@@ -9995,8 +9996,8 @@ msgstr[1] "கருத்துகள்"
 #: inc/phone.class.php:533
 msgid "Firmware"
 msgid_plural "Firmware"
-msgstr[0] "ஃபார்ம்வேர்"
-msgstr[1] "ஃபார்ம்வேர்"
+msgstr[0] "நிலைபொருள்"
+msgstr[1] "நிலைபொருட்கள்"
 
 #: inc/computerantivirus.class.php:51 inc/computerantivirus.class.php:160
 msgid "Antivirus"
@@ -10067,7 +10068,7 @@ msgstr[1] "பணி வார்ப்புருக்கள்"
 msgid "Reservation"
 msgid_plural "Reservations"
 msgstr[0] "முன்பதிவு"
-msgstr[1] "முன்பதிவு"
+msgstr[1] "முன்பதிவுகள்"
 
 #: inc/reservation.class.php:285 inc/commonitiltask.class.php:279
 #: inc/commonitiltask.class.php:427 inc/features/planningevent.class.php:151
@@ -11005,7 +11006,7 @@ msgstr "அறிகுறிகள்"
 msgid "Ticket"
 msgid_plural "Tickets"
 msgstr[0] "டிக்கெட்"
-msgstr[1] "டிக்கெட்"
+msgstr[1] "டிக்கெட்கள்"
 
 #: inc/commondcmodeldropdown.class.php:75
 #: inc/commondcmodeldropdown.class.php:187
@@ -11827,7 +11828,7 @@ msgstr "அதிகபட்ச நேரம்"
 #: inc/levelagreement.class.php:200 inc/levelagreement.class.php:230
 msgid "Minute"
 msgid_plural "Minutes"
-msgstr[0] "நிமிடங்கள்"
+msgstr[0] "நிமிடம்"
 msgstr[1] "நிமிடங்கள்"
 
 #: inc/levelagreement.class.php:222 inc/levelagreement.class.php:713
@@ -12357,7 +12358,7 @@ msgstr "எனது சாதனங்கள் மற்றும் அனை
 
 #: inc/profile.class.php:3847 inc/profile.class.php:3850
 msgid "Select/unselect all"
-msgstr "அனைத்தையும் தேர்ந்தெடுக்கவும்/தேர்ந்தெடுக்கவும்"
+msgstr "அனைத்தையும் தேர்ந்தெடு/தேர்வுநீக்கு"
 
 #: inc/profile_user.class.php:134 inc/profile_user.class.php:278
 #: inc/profile_user.class.php:141 inc/profile_user.class.php:342
@@ -12982,12 +12983,12 @@ msgstr "திட்டக் குழுவின் பயனர்"
 
 #: inc/notificationtargetproject.class.php:66
 msgid "Group of project team"
-msgstr "திட்டக் குழு குழு"
+msgstr "திட்டக் குழுவின் குழு"
 
 #: inc/notificationtargetproject.class.php:67
 #: inc/notificationtargetprojecttask.class.php:64
 msgid "Manager of group of project team"
-msgstr "திட்டக் குழுவின் குழுவின் மேலாளர்"
+msgstr "திட்டக் குழுவின் குழு மேலாளர்"
 
 #: inc/notificationtargetproject.class.php:69
 #: inc/notificationtargetprojecttask.class.php:66
@@ -14135,7 +14136,7 @@ msgstr "%d gbit/s"
 #: inc/networkportethernet.class.php:258
 #, php-format
 msgid "%.1f Gbit/s"
-msgstr "%.1F GBIT/S."
+msgstr "%.1f சீஇருமம்/நொ"
 
 #. TRANS: %d is the speed
 #: inc/networkportfiberchannel.class.php:235
@@ -14234,8 +14235,6 @@ msgstr "செயலாக்கம் (திட்டமிடப்பட்�
 
 #: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
 #: inc/change.class.php:541 inc/change.class.php:543 inc/problem.class.php:698
-#, fuzzy
-#| msgid "Pending"
 msgctxt "status"
 msgid "Pending"
 msgstr "நிலுவையில் உள்ளது"
@@ -15913,7 +15912,7 @@ msgstr[1] "நெருங்கிய நேரங்கள்"
 #: inc/holiday.class.php:65 inc/holiday.class.php:97
 #: inc/calendar_holiday.class.php:146 inc/calendar_holiday.class.php:162
 msgid "Recurrent"
-msgstr "மீண்டும் மீண்டும்"
+msgstr "மறுநிகழ்வு"
 
 #: inc/notificationtargetdbconnection.class.php:55
 msgid "Desynchronization SQL replica"
@@ -16102,14 +16101,14 @@ msgctxt "consumable"
 msgid "New"
 msgid_plural "New"
 msgstr[0] "புதிய"
-msgstr[1] "புதிய"
+msgstr[1] "புதியவை"
 
 #: inc/consumable.class.php:405 inc/consumable.class.php:401
 msgctxt "consumable"
 msgid "Used"
 msgid_plural "Used"
 msgstr[0] "பயன்படுத்தப்பட்டது"
-msgstr[1] "பயன்படுத்தப்பட்டது"
+msgstr[1] "பயன்படுத்தப்பட்டன"
 
 #: inc/consumable.class.php:434 inc/consumable.class.php:427
 msgctxt "button"
@@ -16462,17 +16461,17 @@ msgstr "செல்லுபடியாகாத"
 #: inc/html.class.php:423 inc/html.class.php:476
 #, php-format
 msgid "%1$s%2$d days %3$d hours %4$d minutes %5$d seconds"
-msgstr "%1$s %2$d நாட்கள் %3$d மணிநேரம் %4 $ டி நிமிடங்கள் %5 $ டி வினாடிகள்"
+msgstr "%1$s %2$d நாட்கள் %3$d மணிநேரம் %4$d நிமிடங்கள் %5$d வினாடிகள்"
 
 #: inc/html.class.php:434 inc/html.class.php:487
 #, php-format
 msgid "%1$s%2$d days %3$d hours %4$d minutes"
-msgstr "%1$s %2$d நாட்கள் %3 மணிநேரம் %4d நிமிடங்கள்"
+msgstr "%1$s %2$d நாட்கள் %3$d மணிநேரம்%4$d நிமிடங்கள்"
 
 #: inc/html.class.php:452 inc/html.class.php:505
 #, php-format
 msgid "%1$s%2$d hours %3$d minutes %4$d seconds"
-msgstr "%1$s %2$d மணிநேரம் %3$d நிமிடங்கள் %4 $ டி வினாடிகள்"
+msgstr "%1$s %2$d மணிநேரம் %3$d நிமிடங்கள் %4$d வினாடிகள்"
 
 #. TRANS: %1$s is the sign (-or empty), %2$d number of hours, %3$d number of minutes
 #: inc/html.class.php:460 inc/html.class.php:513
@@ -16841,8 +16840,7 @@ msgid ""
 "refused=%4$d, errors=%5$d, blacklisted=%6$d"
 msgstr ""
 "செய்திகளின் எண்ணிக்கை: கிடைக்கிறது =%1$d, ஏற்கனவே இறக்குமதி செய்யப்பட்ட =%2$d, "
-"மீட்டெடுக்கப்பட்டது =%3$d, மறுக்கப்பட்டது =%4 $ d, பிழைகள் =%5 $ d, தடுப்புப்பட்டியல் =%6 "
-"$ டி"
+"மீட்டெடுக்கப்பட்டது =%3$d, மறுக்கப்பட்டது =%4$d, பிழைகள் =%5$d, தடுப்புப்பட்டியல் =%6$d"
 
 #: inc/mailcollector.class.php:937 inc/mailcollector.class.php:811
 msgid "Could not connect to mailgate server"
@@ -17235,8 +17233,8 @@ msgstr "இணக்கமான அச்சுப்பொறி மாதி�
 #: inc/change_problem.class.php:64
 msgid "Link Problem/Change"
 msgid_plural "Links Problem/Change"
-msgstr[0] "இணைப்பு சிக்கல்/மாற்றம்"
-msgstr[1] "இணைப்பு சிக்கல்/மாற்றம்"
+msgstr[0] "இணைப்புச் சிக்கல்/மாற்றம்"
+msgstr[1] "இணைப்புச் சிக்கல்கள்/மாற்றங்கள்"
 
 #: inc/change_problem.class.php:173
 msgid "Create a change from this problem"
@@ -17941,7 +17939,7 @@ msgctxt "cartridge"
 msgid "New"
 msgid_plural "New"
 msgstr[0] "புதிய"
-msgstr[1] "புதிய"
+msgstr[1] "புதியவை"
 
 #: inc/cartridge.class.php:351 inc/cartridge.class.php:402
 #: inc/cartridge.class.php:597 inc/cartridge.class.php:358
@@ -17950,7 +17948,7 @@ msgctxt "cartridge"
 msgid "Used"
 msgid_plural "Used"
 msgstr[0] "பயன்படுத்தப்பட்டது"
-msgstr[1] "பயன்படுத்தப்பட்டது"
+msgstr[1] "பயன்படுத்தப்பட்டன"
 
 #: inc/cartridge.class.php:353 inc/cartridge.class.php:404
 #: inc/cartridge.class.php:599 inc/cartridge.class.php:359
@@ -17959,14 +17957,15 @@ msgctxt "cartridge"
 msgid "Worn"
 msgid_plural "Worn"
 msgstr[0] "அணிந்த"
-msgstr[1] "அணிந்த"
+msgstr[1] "அணிந்தவை"
 
 #. TRANS : for display cartridges count : %1$d is the total number,
 #. %2$d the new one, %3$d the used one, %4$d worn one
 #: inc/cartridge.class.php:359 inc/cartridge.class.php:366
 #, php-format
 msgid "Total: %1$d (%2$d new, %3$d used, %4$d worn)"
-msgstr "மொத்தம்: %1$d ( %2$d புதிய, %3$d பயன்படுத்தப்பட்டது, %4 $ டி அணிந்திருந்தது)"
+msgstr ""
+"மொத்தம்: %1$d (%2$d புதிய, %3$d பயன்படுத்தப்பட்டது, %4$d அணிந்திருந்தது)"
 
 #: inc/cartridge.class.php:365 inc/cartridge.class.php:367
 #: inc/cartridge.class.php:415 inc/cartridge.class.php:417
@@ -18145,7 +18144,7 @@ msgstr "இந்த சொருகி பிஎச்பி நீட்டி
 #: inc/plugin.class.php:1688
 #, php-format
 msgid "This plugin requires %1$s plugin"
-msgstr "இந்த சொருகி %1$s சொருகி தேவைப்படுகிறது"
+msgstr "இந்தச் சொருகிக்கு %1$s சொருகி தேவைப்படுகிறது"
 
 #: inc/plugin.class.php:1694
 #, php-format
@@ -18522,7 +18521,7 @@ msgstr "இந்த உருப்படியைத் திறக்க க
 #: inc/objectlock.class.php:185
 #, php-format
 msgid "Force unlock %1s #%2s"
-msgstr "படை திறத்தல் %1S # %2S"
+msgstr "கட்டாய திறத்தல் %1s #%2s"
 
 #: inc/objectlock.class.php:199
 msgid "Locked by you!"
@@ -18926,7 +18925,8 @@ msgstr "%1$s. செய்தி: %2$s, பிழை: %3$s"
 #: inc/notificationeventmailing.class.php:292
 #, php-format
 msgid "Warning: an email was undeliverable to %s with %d retries remaining"
-msgstr "எச்சரிக்கை: %d க்கு %d க்கு ஒரு மின்னஞ்சல் வழங்க முடியாதது"
+msgstr ""
+"எச்சரிக்கை: %s க்கு ஒரு மின்னஞ்சல் அனுப்ப முடியவில்லை, %d மறு முயற்சிகள் மீதமுள்ள நிலையில்"
 
 #: inc/notificationeventmailing.class.php:300
 #, php-format
@@ -19252,8 +19252,8 @@ msgstr "வடிகட்டி பட்டியல்"
 #, php-format
 msgid "Private %1$s"
 msgid_plural "Private %1$s"
-msgstr[0] "தனியார் %1$s"
-msgstr[1] "தனியார் %1$s"
+msgstr[0] "தனிபயன் %1$s"
+msgstr[1] "தனிபயன்கள் %1$s"
 
 #: inc/savedsearch.class.php:814 inc/savedsearch.class.php:824
 #: inc/savedsearch.class.php:801 inc/savedsearch.class.php:811
@@ -20178,7 +20178,7 @@ msgstr "இறக்குமதி உறவு \"%s\" ..."
 #, php-format
 msgid "Unable to found relation type %s from Appliance Item Relation %d."
 msgstr ""
-"பயன்பாட்டு உருப்படி உறவு %d இலிருந்து உறவு வகை %s ஐக் கண்டுபிடிக்க முடியவில்லை."
+"உறவு வகை %s ஐக் கண்டுபிடிக்க முடியவில்லை பயன்பாட்டு உருப்படி உறவு %d இலிருந்து."
 
 #: inc/console/migration/appliancesplugintocorecommand.class.php:703
 #, php-format
@@ -20709,7 +20709,7 @@ msgstr "சொருகி நிறுவும் கொக்கி செய
 
 #: inc/console/plugin/installcommand.class.php:65
 msgid "\"-p foo\" will set \"foo\" param value to true"
-msgstr "\"-P ஃபூ\" \"ஃபூ\" பரம் மதிப்பை உண்மைக்கு அமைக்கும்"
+msgstr "\"-p ஃபூ\" என்பது \"ஃபூ\" வாத மதிப்பை உண்மைக்கு அமைக்கும்"
 
 #: inc/console/plugin/installcommand.class.php:67
 msgid "\"-p foo=bar\" will set \"foo\" param value to \"bar\""
@@ -20756,7 +20756,7 @@ msgid ""
 "Plugin \"%s\" is already installed. Use --force option to force "
 "reinstallation."
 msgstr ""
-"சொருகி \"ஏற்கனவே நிறுவப்பட்டுள்ளது. நிறுவலை கட்டாயப்படுத்த -ஃபோர்ச் விருப்பத்தைப் "
+"சொருகி \"%s\" ஏற்கனவே நிறுவப்பட்டுள்ளது. நிறுவலைக் கட்டாயப்படுத்த --force விருப்பத்தைப் "
 "பயன்படுத்தவும்."
 
 #: inc/console/plugin/installcommand.class.php:303
@@ -20895,7 +20895,7 @@ msgstr "திட்ட குழு பயனர்"
 
 #: inc/notificationtargetprojecttask.class.php:63
 msgid "Project team group"
-msgstr "திட்ட குழு குழு"
+msgstr "திட்டக் குழுவின் குழு"
 
 #: inc/notificationtargetprojecttask.class.php:496
 #: inc/projecttask.class.php:798
@@ -21194,7 +21194,7 @@ msgstr "ஒருபோதும் காலாவதியாகாது"
 
 #: inc/certificate.class.php:551
 msgid "Root CA"
-msgstr "ரூட் சி.ஏ."
+msgstr "வேர் சிஏ"
 
 #: inc/certificate.class.php:634
 msgid "Certificat"
@@ -21543,7 +21543,7 @@ msgstr "தானாக உருவாக்கப்பட்ட பணி"
 #: inc/ticket.class.php:1934 inc/ticket.class.php:2131
 #, php-format
 msgid "%s promotes a followup from ticket %s"
-msgstr "%s டிக்கெட்டுகளிலிருந்து பின்தொடர்வதை ஊக்குவிக்கிறது"
+msgstr "%s டிக்கெட்டுகளிலிருந்து பின்தொடர்வதை ஊக்குவிக்கிறது %s"
 
 #: inc/ticket.class.php:1955 inc/ticket.class.php:2154
 msgid "Your ticket has been registered."
@@ -21571,7 +21571,7 @@ msgstr "இணைப்பு டிக்கெட்டுகள்"
 #: inc/ticket.class.php:2546 inc/ticket.class.php:2782
 msgctxt "button"
 msgid "Link project task"
-msgstr "இணைப்பு பணி பணி"
+msgstr "இணைப்பு திட்டப் பணி"
 
 #: inc/ticket.class.php:2571 inc/ticket.class.php:2807
 msgid "Merge followups"
@@ -21930,7 +21930,7 @@ msgid "Without a reply, the ticket will be automatically closed after %s day"
 msgid_plural ""
 "Without a reply, the ticket will be automatically closed after %s days"
 msgstr[0] "பதில் இல்லாமல், %s நாளுக்குப் பிறகு டிக்கெட் தானாக மூடப்படும்"
-msgstr[1] "பதில் இல்லாமல், %நாட்களுக்குப் பிறகு டிக்கெட் தானாக மூடப்படும்"
+msgstr[1] "பதில் இல்லாமல், %s நாட்களுக்குப் பிறகு டிக்கெட் தானாக மூடப்படும்"
 
 #: inc/notificationtargetticket.class.php:609
 msgid "Location name"
@@ -22516,7 +22516,7 @@ msgstr "சிஎம்டி"
 msgid "%s hour"
 msgid_plural "%s hours"
 msgstr[0] "%s மணி"
-msgstr[1] "%s மணி"
+msgstr[1] "%s மணிநேரங்கள்"
 
 #: inc/dropdown.class.php:826
 msgid "Common"
@@ -22543,8 +22543,8 @@ msgstr[1] "%s ஆண்டுகள்"
 #, php-format
 msgid "%s month"
 msgid_plural "%s months"
-msgstr[0] "%s மாதம்"
-msgstr[1] "%மாதங்கள்"
+msgstr[0] "%s திங்கள்"
+msgstr[1] "%s திங்கள்கள்"
 
 #. TRANS: %s is a number of days
 #: inc/dropdown.class.php:1543
@@ -22588,7 +22588,7 @@ msgstr[1] "%1$d நாட்கள் %2$dh %3$s"
 #: inc/dropdown.class.php:1691 src/Timezone.php:153
 #, php-format
 msgid "%1$dh%2$s"
-msgstr "% 1 $ d% 2 $ s"
+msgstr "%1$dம%2$s"
 
 #: inc/dropdown.class.php:1939
 msgid "Other..."
@@ -22738,8 +22738,8 @@ msgstr "ஒரு திட்ட பணி கட்டாயமாகும்
 #: inc/pdumodel.class.php:41
 msgid "PDU model"
 msgid_plural "PDU models"
-msgstr[0] "பி.டி.யு மாதிரி"
-msgstr[1] "பி.டி.யு மாதிரி"
+msgstr[0] "பிடியு மாதிரி"
+msgstr[1] "பிடியு மாதிரிகள்"
 
 #: inc/projecttask.class.php:71 inc/projecttask.class.php:72
 msgid "Project task"
@@ -23764,16 +23764,16 @@ msgstr "இந்த உருப்படிக்கு புதிய டி
 
 msgid "Last %d ticket"
 msgid_plural "Last %d tickets"
-msgstr[0] "கடைசி %d டிக்கெட்"
-msgstr[1] "கடைசி %d டிக்கெட்"
+msgstr[0] "கடைசி %d சீட்டு"
+msgstr[1] "கடைசி %d சீட்டுகள்"
 
 msgid "You don't have right to see all tickets"
 msgstr "எல்லா டிக்கெட்டுகளையும் பார்க்க உங்களுக்கு உரிமை இல்லை"
 
 msgid "Ticket on linked items"
 msgid_plural "Tickets on linked items"
-msgstr[0] "இணைக்கப்பட்ட உருப்படிகளில் டிக்கெட்"
-msgstr[1] "இணைக்கப்பட்ட உருப்படிகளில் டிக்கெட்"
+msgstr[0] "இணைக்கப்பட்ட உருப்படிகளில் சீட்டு"
+msgstr[1] "இணைக்கப்பட்ட உருப்படிகளில் சீட்டுகள்"
 
 msgid "No ticket in progress."
 msgstr "டிக்கெட் முன்னேற்றத்தில் இல்லை."
