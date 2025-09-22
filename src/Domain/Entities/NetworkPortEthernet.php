@@ -28,7 +28,7 @@ class NetworkPortEthernet
 
     #[ORM\ManyToOne(targetEntity: ItemDeviceNetworkCard::class)]
     #[ORM\JoinColumn(name: 'items_devicenetworkcards_id', referencedColumnName: 'id', nullable: true)]
-    private $itemsDevicenetworkcard = null;
+    private ?ItemDeviceNetworkCard $itemDevicenetworkcard = null;
 
     #[ORM\ManyToOne(targetEntity: Netpoint::class)]
     #[ORM\JoinColumn(name: 'netpoints_id', referencedColumnName: 'id', nullable: true)]
@@ -148,19 +148,39 @@ class NetworkPortEthernet
     /**
      * Get the value of itemsDevicenetworkcard
      */
-    public function getItemsDevicenetworkcard()
+    // public function getItemsDevicenetworkcard()
+    // {
+    //     return $this->itemsDevicenetworkcard;
+    // }
+
+    // /**
+    //  * Set the value of itemsDevicenetworkcard
+    //  *
+    //  * @return  self
+    //  */
+    // public function setItemsDevicenetworkcard($itemsDevicenetworkcard)
+    // {
+    //     $this->itemsDevicenetworkcard = $itemsDevicenetworkcard;
+
+    //     return $this;
+    // }
+
+    /**
+     * Get the value of itemDevicenetworkcard
+     */ 
+    public function getItemDevicenetworkcard()
     {
-        return $this->itemsDevicenetworkcard;
+        return $this->itemDevicenetworkcard;
     }
 
     /**
-     * Set the value of itemsDevicenetworkcard
+     * Set the value of itemDevicenetworkcard
      *
      * @return  self
-     */
-    public function setItemsDevicenetworkcard($itemsDevicenetworkcard)
+     */ 
+    public function setItemDevicenetworkcard($itemDevicenetworkcard)
     {
-        $this->itemsDevicenetworkcard = $itemsDevicenetworkcard;
+        $this->itemDevicenetworkcard = $itemDevicenetworkcard;
 
         return $this;
     }
