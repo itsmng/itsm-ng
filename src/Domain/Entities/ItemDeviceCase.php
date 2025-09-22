@@ -25,7 +25,7 @@ class ItemDeviceCase
     private int $id;
 
     #[ORM\Column(name: "items_id", type: "integer", options: ["default" => 0])]
-    private int $itemsId;
+    private int $items_id = 0;
 
     #[ORM\Column(name: "itemtype", type: "string", length: 255, nullable: true)]
     private string $itemtype;
@@ -35,17 +35,17 @@ class ItemDeviceCase
     private ?DeviceCase $devicecase = null;
 
     #[ORM\Column(name: "is_deleted", type: "boolean", options: ["default" => 0])]
-    private bool $isDeleted;
+    private bool $isDeleted = false;
 
     #[ORM\Column(name: "is_dynamic", type: "boolean", options: ["default" => 0])]
-    private bool $isDynamic;
+    private bool $isDynamic = false;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: "is_recursive", type: "boolean", options: ["default" => 0])]
-    private bool $isRecursive;
+    private bool $isRecursive = false;
 
     #[ORM\Column(name: "serial", type: "string", length: 255, nullable: true)]
     private string $serial;
@@ -69,12 +69,12 @@ class ItemDeviceCase
 
     public function getItemsId(): int
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId(int $itemsId): self
+    public function setItemsId(int $items_id): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
 
         return $this;
     }

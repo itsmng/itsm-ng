@@ -23,7 +23,7 @@ class ItemEnclosure
     private $itemtype;
 
     #[ORM\Column(name: 'items_id', type: "integer")]
-    private $itemsId;
+    private $items_id;
 
     #[ORM\Column(name: 'position', type: "integer")]
     private $position;
@@ -47,12 +47,12 @@ class ItemEnclosure
 
     public function getItemsId(): ?int
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId(int $itemsId): self
+    public function setItemsId(int $items_id): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
 
         return $this;
     }

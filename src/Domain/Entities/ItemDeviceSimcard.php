@@ -27,7 +27,7 @@ class ItemDeviceSimcard
     private $id;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0, 'comment' => 'RELATION to various table, according to itemtype (id)'])]
-    private $itemsId;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
@@ -37,17 +37,17 @@ class ItemDeviceSimcard
     private ?DeviceSimcard $devicesimcard = null;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
-    private $isDynamic;
+    private $isDynamic = false;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
@@ -76,19 +76,19 @@ class ItemDeviceSimcard
     private ?Group $group = null;
 
     #[ORM\Column(name: 'pin', type: 'string', length: 255, options: ['default' => ''])]
-    private $pin;
+    private $pin = '';
 
     #[ORM\Column(name: 'pin2', type: 'string', length: 255, options: ['default' => ''])]
-    private $pin2;
+    private $pin2 = '';
 
     #[ORM\Column(name: 'puk', type: 'string', length: 255, options: ['default' => ''])]
-    private $puk;
+    private $puk = '';
 
     #[ORM\Column(name: 'puk2', type: 'string', length: 255, options: ['default' => ''])]
-    private $puk2;
+    private $puk2 = '';
 
     #[ORM\Column(name: 'msin', type: 'string', length: 255, options: ['default' => ''])]
-    private $msin;
+    private $msin = '';
 
     public function getId(): ?int
     {
@@ -97,12 +97,12 @@ class ItemDeviceSimcard
 
     public function getItemsId(): ?int
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId(int $itemsId): self
+    public function setItemsId(int $items_id): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
 
         return $this;
     }

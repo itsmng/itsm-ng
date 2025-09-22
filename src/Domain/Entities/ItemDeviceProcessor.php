@@ -29,7 +29,7 @@ class ItemDeviceProcessor
     private $id;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $itemsId;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 255, nullable: true)]
     private $itemtype;
@@ -39,16 +39,16 @@ class ItemDeviceProcessor
     private ?DeviceProcessor $deviceprocessor = null;
 
     #[ORM\Column(name: 'frequency', type: 'integer', options: ['default' => 0])]
-    private $frequency;
+    private $frequency = 0;
 
     #[ORM\Column(name: 'serial', type: 'string', length: 255, nullable: true)]
     private $serial;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
-    private $isDynamic;
+    private $isDynamic = false;
 
     #[ORM\Column(name: 'nbcores', type: 'integer', nullable: true)]
     private $nbcores;
@@ -61,7 +61,7 @@ class ItemDeviceProcessor
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'busID', type: 'string', length: 255, nullable: true)]
     private $busID;
@@ -84,12 +84,12 @@ class ItemDeviceProcessor
 
     public function getItemsId(): ?int
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId(int $itemsId): self
+    public function setItemsId(int $items_id): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
 
         return $this;
     }

@@ -24,7 +24,7 @@ class ItemCluster
     private $itemtype;
 
     #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
-    private $itemsId;
+    private $items_id = 0;
 
     public function getId(): ?int
     {
@@ -45,12 +45,12 @@ class ItemCluster
 
     public function getItemsId(): ?int
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId(int $itemsId): self
+    public function setItemsId(int $items_id): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
 
         return $this;
     }

@@ -35,7 +35,7 @@ class ItemDisk
     private $itemtype;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $itemsId;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -51,19 +51,19 @@ class ItemDisk
     private ?Filesystem $filesystem = null;
 
     #[ORM\Column(name: 'totalsize', type: 'integer', options: ['default' => 0])]
-    private $totalsize;
+    private $totalsize = 0;
 
     #[ORM\Column(name: 'freesize', type: 'integer', options: ['default' => 0])]
-    private $freesize;
+    private $freesize = 0;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
-    private $isDynamic;
+    private $isDynamic = false;
 
     #[ORM\Column(name: 'encryption_status', type: 'integer', options: ['default' => 0])]
-    private $encryptionStatus;
+    private $encryptionStatus = 0;
 
     #[ORM\Column(name: 'encryption_tool', type: 'string', length: 255, nullable: true)]
     private $encryptionTool;
@@ -99,15 +99,16 @@ class ItemDisk
 
     public function getItemsId(): ?int
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId(int $itemsId): self
+    public function setItemsId(int $items_id): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
 
         return $this;
     }
+
 
     public function getName(): ?string
     {

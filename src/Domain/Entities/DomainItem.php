@@ -23,7 +23,7 @@ class DomainItem
     private ?Domain $domain = null;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $itemsId;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
@@ -39,12 +39,12 @@ class DomainItem
 
     public function getItemsId(): ?int
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId(?int $itemsId): self
+    public function setItemsId(?int $items_id): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
 
         return $this;
     }

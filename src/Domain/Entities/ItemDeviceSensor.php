@@ -23,7 +23,7 @@ class ItemDeviceSensor
     private $id;
 
     #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
-    private $itemsId;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 255, nullable: true)]
     private $itemtype;
@@ -33,17 +33,17 @@ class ItemDeviceSensor
     private ?DeviceSensor $devicesensor = null;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => 0])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => 0])]
-    private $isDynamic;
+    private $isDynamic = false;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'serial', type: "string", length: 255, nullable: true)]
     private $serial;
@@ -66,12 +66,12 @@ class ItemDeviceSensor
 
     public function getItemsId()
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId($itemsId)
+    public function setItemsId($items_id)
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
         return $this;
     }
 

@@ -20,7 +20,7 @@ class Registeredid
     private $name;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $itemsId;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
@@ -47,12 +47,12 @@ class Registeredid
 
     public function getItemsId(): ?string
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId(?string $itemsId): self
+    public function setItemsId(?string $items_id): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
 
         return $this;
     }

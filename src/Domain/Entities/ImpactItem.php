@@ -21,7 +21,7 @@ class ImpactItem
     private $itemtype = "";
 
     #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
-    private $itemsId = 0;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'parent_id', type: "integer", options: ["default" => 0])]
     private $parentId = 0;
@@ -51,12 +51,12 @@ class ImpactItem
 
     public function getItemsId(): ?int
     {
-        return $this->itemsId;
+        return $this->items_id;
     }
 
-    public function setItemsId(int $itemsId): self
+    public function setItemsId(int $items_id): self
     {
-        $this->itemsId = $itemsId;
+        $this->items_id = $items_id;
 
         return $this;
     }
