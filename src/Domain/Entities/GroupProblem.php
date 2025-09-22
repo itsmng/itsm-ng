@@ -3,7 +3,7 @@
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use Group;
+use Itsmng\Domain\Entities\Group;
 
 #[ORM\Entity]
 #[ORM\Table(name: "glpi_groups_problems")]
