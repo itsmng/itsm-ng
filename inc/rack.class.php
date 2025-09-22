@@ -254,9 +254,9 @@ class Rack extends CommonDBTM
                        'itemtype' => DCRoom::class,
                        'value' => $this->fields['dcrooms_id'],
                        'hooks' => [
-                          'change' => $loadDcPositionHook . $loadLocationHook,
+                          'change' => $loadDcPositionHook
                        ],
-                       'init' => $loadDcPositionHook . $loadLocationHook,
+                       'init' => $loadDcPositionHook
                     ],
                     __("Position in room") => [
                        'name' => 'position',
