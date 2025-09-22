@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 #[ORM\Index(name: "request_type", columns: ["requesttypes_id"])]
 #[ORM\Index(name: "date_mod", columns: ["date_mod"])]
 #[ORM\Index(name: "entities_id", columns: ["entities_id"])]
-#[ORM\Index(name: "users_id_recipient", columns: ["users_id_recipient"])]
+#[ORM\Index(name: "recipient_users_id", columns: ["recipient_users_id"])]
 #[ORM\Index(name: "solvedate", columns: ["solvedate"])]
 #[ORM\Index(name: "urgency", columns: ["urgency"])]
 #[ORM\Index(name: "impact", columns: ["impact"])]
@@ -32,7 +32,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 #[ORM\Index(name: "slalevels_id_ttr", columns: ["slalevels_id_ttr"])]
 #[ORM\Index(name: "internal_time_to_resolve", columns: ["internal_time_to_resolve"])]
 #[ORM\Index(name: "internal_time_to_own", columns: ["internal_time_to_own"])]
-#[ORM\Index(name: "users_id_lastupdater", columns: ["users_id_lastupdater"])]
+#[ORM\Index(name: "lastupdater_users_id", columns: ["lastupdater_users_id"])]
 #[ORM\Index(name: "type", columns: ["type"])]
 #[ORM\Index(name: "itilcategories_id", columns: ["itilcategories_id"])]
 #[ORM\Index(name: "is_deleted", columns: ["is_deleted"])]
@@ -68,14 +68,16 @@ class Ticket
     #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
-    #[ORM\Column(name: 'users_id_lastupdater', type: 'integer', options: ['default' => 0])]
-    private $lastupdaterUsersId = 0;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'lastupdater_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $lastupdaterUser = null;
 
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
     private $status = 1;
 
-    #[ORM\Column(name: 'users_id_recipient', type: 'integer', options: ['default' => 0])]
-    private $recipientUsersId = 0;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'recipient_users_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $recipientUser = null;
 
     #[ORM\ManyToOne(targetEntity: RequestType::class)]
     #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]
@@ -231,7 +233,7 @@ class Ticket
     public function setDate(\DateTimeInterface|string|null $date): self
     {
         if (is_string($date)) {
-            $date = new \DateTime($date);
+            $date = new DateTime($date);
         }
         $this->date = $date;
 
@@ -246,7 +248,7 @@ class Ticket
     public function setClosedate(\DateTimeInterface|string|null $closedate): self
     {
         if (is_string($closedate)) {
-            $closedate = new \DateTime($closedate);
+            $closedate = new DateTime($closedate);
         }
         $this->closedate = $closedate;
 
@@ -261,7 +263,7 @@ class Ticket
     public function setSolvedate(\DateTimeInterface|string|null $solvedate): self
     {
         if (is_string($solvedate)) {
-            $solvedate = new \DateTime($solvedate);
+            $solvedate = new DateTime($solvedate);
         }
         $this->solvedate = $solvedate;
 
@@ -412,7 +414,7 @@ class Ticket
     public function setTimeToResolve(\DateTimeInterface|string|null $timeToResolve): self
     {
         if (is_string($timeToResolve)) {
-            $timeToResolve = new \DateTime($timeToResolve);
+            $timeToResolve = new DateTime($timeToResolve);
         }
         $this->timeToResolve = $timeToResolve;
 
@@ -427,7 +429,7 @@ class Ticket
     public function setTimeToOwn(\DateTimeInterface|string|null $timeToOwn): self
     {
         if (is_string($timeToOwn)) {
-            $timeToOwn = new \DateTime($timeToOwn);
+            $timeToOwn = new DateTime($timeToOwn);
         }
         $this->timeToOwn = $timeToOwn;
 
@@ -442,7 +444,7 @@ class Ticket
     public function setBeginWaitingDate(\DateTimeInterface|string|null $beginWaitingDate): self
     {
         if (is_string($beginWaitingDate)) {
-            $beginWaitingDate = new \DateTime($beginWaitingDate);
+            $beginWaitingDate = new DateTime($beginWaitingDate);
         }
         $this->beginWaitingDate = $beginWaitingDate;
 
@@ -517,7 +519,7 @@ class Ticket
     public function setOlaTtrBeginDate(\DateTimeInterface|string|null $olaTtrBeginDate): self
     {
         if (is_string($olaTtrBeginDate)) {
-            $olaTtrBeginDate = new \DateTime($olaTtrBeginDate);
+            $olaTtrBeginDate = new DateTime($olaTtrBeginDate);
         }
         $this->olaTtrBeginDate = $olaTtrBeginDate;
 
@@ -532,7 +534,7 @@ class Ticket
     public function setInternalTimeToResolve(\DateTimeInterface|string|null $internalTimeToResolve): self
     {
         if (is_string($internalTimeToResolve)) {
-            $internalTimeToResolve = new \DateTime($internalTimeToResolve);
+            $internalTimeToResolve = new DateTime($internalTimeToResolve);
         }
         $this->internalTimeToResolve = $internalTimeToResolve;
 
@@ -547,7 +549,7 @@ class Ticket
     public function setInternalTimeToOwn(\DateTimeInterface|string|null $internalTimeToOwn): self
     {
         if (is_string($internalTimeToOwn)) {
-            $internalTimeToOwn = new \DateTime($internalTimeToOwn);
+            $internalTimeToOwn = new DateTime($internalTimeToOwn);
         }
         $this->internalTimeToOwn = $internalTimeToOwn;
 
@@ -876,41 +878,41 @@ class Ticket
 
 
     /**
-     * Get the value of lastupdaterUsersId
+     * Get the value of lastupdaterUser
      */
-    public function getLastupdaterUsersId()
+    public function getLastupdaterUser()
     {
-        return $this->lastupdaterUsersId;
+        return $this->lastupdaterUser;
     }
 
     /**
-     * Set the value of lastupdaterUsersId
+     * Set the value of lastupdaterUser
      *
      * @return  self
      */
-    public function setLastupdaterUsersId($lastupdaterUsersId)
+    public function setLastupdaterUser($lastupdaterUser)
     {
-        $this->lastupdaterUsersId = $lastupdaterUsersId;
+        $this->lastupdaterUser = $lastupdaterUser;
 
         return $this;
     }
 
     /**
-     * Get the value of recipientUsersId
+     * Get the value of recipientUser
      */
-    public function getRecipientUsersId()
+    public function getRecipientUser()
     {
-        return $this->recipientUsersId;
+        return $this->recipientUser;
     }
 
     /**
-     * Set the value of recipientUsersId
+     * Set the value of recipientUser
      *
      * @return  self
      */
-    public function setRecipientUsersId($recipientUsersId)
+    public function setRecipientUser($recipientUser)
     {
-        $this->recipientUsersId = $recipientUsersId;
+        $this->recipientUser = $recipientUser;
 
         return $this;
     }
