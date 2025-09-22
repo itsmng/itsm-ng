@@ -42,7 +42,7 @@ class Contract
 
     #[ORM\ManyToOne(targetEntity: ContractType::class)]
     #[ORM\JoinColumn(name: 'contracttypes_id', referencedColumnName: 'id', nullable: true)]
-    private ?ContractType $contracttype = null;
+    private ?ContractType $contractType = null;
 
     #[ORM\Column(name: 'begin_date', type: 'date', nullable: true)]
     private $beginDate;
@@ -488,7 +488,7 @@ class Contract
      */
     public function getContractType()
     {
-        return $this->contracttype;
+        return $this->contractType;
     }
 
     /**
@@ -496,9 +496,9 @@ class Contract
      *
      * @return  self
      */
-    public function setContractType($contracttype)
+    public function setContractType($contractType)
     {
-        $this->contracttype = $contracttype;
+        $this->contractType = $contractType;
 
         return $this;
     }
