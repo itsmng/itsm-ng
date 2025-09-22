@@ -10,34 +10,34 @@ class OidcConfig
 {
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'integer', options: ['default' => 0])]
-    private $id;
+    private $id = 0;
 
     #[ORM\Column(name: 'Provider', type: 'string', length: 255, nullable: true)]
-    private $Provider;
+    private $Provider = '';
 
-    #[ORM\Column(name: 'client_id', type: 'string', length: 255, nullable: true)]
-    private $ClientId;
+    #[ORM\Column(name: 'clientid', type: 'string', length: 255, nullable: true)]
+    private $ClientId = '';
 
-    #[ORM\Column(name: 'client_secret', type: 'string', length: 255, nullable: true)]
-    private $ClientSecret;
+    #[ORM\Column(name: 'clientsecret', type: 'string', length: 255, nullable: true)]
+    private $ClientSecret = '';
 
     #[ORM\Column(name: 'is_activate', type: 'boolean', options: ['default' => 0])]
-    private $isActivate;
+    private $isActivate = 0;
 
     #[ORM\Column(name: 'is_forced', type: 'boolean', options: ['default' => 0])]
-    private $isForced;
+    private $isForced = 0;
 
     #[ORM\Column(name: 'scope', type: 'string', length: 255, nullable: true)]
-    private $scope;
+    private $scope = '';
 
     #[ORM\Column(name: 'cert', type: 'string', length: 255, nullable: true)]
-    private $cert;
+    private $cert = '';
 
     #[ORM\Column(name: 'proxy', type: 'string', length: 255, nullable: true)]
-    private $proxy;
+    private $proxy = '';
 
     #[ORM\Column(name: 'logout', type: 'string', length: 255, nullable: true)]
-    private $logout;
+    private $logout = '';
 
     public function getId(): ?int
     {
