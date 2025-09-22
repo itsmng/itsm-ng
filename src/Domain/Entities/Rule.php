@@ -38,8 +38,8 @@ class Rule
     #[ORM\Column(name: 'description', type: 'text', length: 65535, nullable: true)]
     private $description;
 
-    #[ORM\Column(name: 'match', type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php *_MATCHING constant'])]
-    private $match;
+    #[ORM\Column(name: 'matching', type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php *_MATCHING constant'])]
+    private $matching;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
     private $isActive = 1;
@@ -115,14 +115,14 @@ class Rule
         return $this;
     }
 
-    public function getMatch(): ?string
+    public function getMatching(): ?string
     {
-        return $this->match;
+        return $this->matching;
     }
 
-    public function setMatch(string $match): self
+    public function setMatching(string $matching): self
     {
-        $this->match = $match;
+        $this->matching = $matching;
 
         return $this;
     }
