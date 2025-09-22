@@ -2,9 +2,11 @@
 
 namespace Itsmng\Domain\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "glpi_infocoms")]
 #[ORM\UniqueConstraint(name: "unicity", columns: ["itemtype", "items_id"])]
 #[ORM\Index(name: "buy_date", columns: ["buy_date"])]
@@ -24,7 +26,7 @@ class Infocom
     private $id;
 
     #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
-    private $items_id;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 100)]
     private $itemtype;
@@ -359,26 +361,29 @@ class Infocom
         return $this;
     }
 
-    public function getDateMod(): ?\DateTimeInterface
+     public function getDateMod(): DateTime
     {
-        return $this->dateMod;
+        return $this->dateMod ?? new DateTime();
     }
 
-    public function setDateMod(\DateTimeInterface $dateMod): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setDateMod(): self
     {
-        $this->dateMod = $dateMod;
+        $this->dateMod = new DateTime();
 
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): DateTime
     {
-        return $this->dateCreation;
+        return $this->dateCreation ?? new DateTime();
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    #[ORM\PrePersist]
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new DateTime();
 
         return $this;
     }
