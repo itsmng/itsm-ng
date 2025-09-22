@@ -397,7 +397,7 @@ class Impact extends CommonGLPI
             echo '</table>';
             echo Html::input('id', [
                'type'  => "hidden",
-               'value' => $impact_context->fields['id'],
+               'value' => $impact_context->fields['id']?? null,
             ]);
             echo Html::input('update', [
                'type'  => "hidden",

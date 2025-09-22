@@ -778,7 +778,7 @@ abstract class CommonITILObject extends CommonDBTM
         if (isset($input['entities_id'])) {
             $entid = $input['entities_id'];
         } else {
-            $entid = $this->fields['entities_id'];
+            $entid = $this->fields['entities_id']?? null;
         }
 
         $type = null;

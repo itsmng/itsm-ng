@@ -1404,7 +1404,7 @@ class CommonGLPI
             if ($uid = Session::getLoginUserID()) {
                 $user = new User();
                 if ($user->getFromDB($uid)) {
-                    $_SESSION['glpi_display_options'] = importArrayFromDB($user->fields['display_options']);
+                    $_SESSION['glpi_display_options'] = importArrayFromDB($user->fields['display_options']?? null);
                 }
             }
         }
