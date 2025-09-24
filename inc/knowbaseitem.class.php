@@ -756,15 +756,21 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
             if ($item = getItemForItemtype($options['item_itemtype'])) {
                 if ($item->getFromDB($options['item_items_id'])) {
                     $this->fields['name']   = $item->getField('name');
-                    $solution = new ITILSolution();
-                    $solution->getFromDBByCrit([
-                       'itemtype'     => $item->getType(),
-                       'items_id'     => $item->getID(),
-                       [
-                          'NOT' => ['status'       => CommonITILValidation::REFUSED]
-                       ]
-                    ]);
-                    $this->fields['answer'] = $solution->getField('content');
+                    $em = config::getAdapter()->getEntityManager();
+                    $qb = $em->createQueryBuilder();
+                    $qb->select('s')
+                    ->from(Itsmng\Domain\Entities\ITILSolution::class, 's')
+                    ->where('s.itemtype = :itemtype')
+                    ->andWhere('s.items_id = :items_id')
+                    ->andWhere('s.status != :refused')
+                    ->setParameter('itemtype', $item->getType())
+                    ->setParameter('items_id', $item->getID())
+                    ->setParameter('refused', CommonITILValidation::REFUSED)
+                    ->setMaxResults(1);
+
+                    $solution = $qb->getQuery()->getOneOrNullResult();
+
+                    $this->fields['answer'] = $solution ? $solution->getContent() : '';
                     if ($item->isField('itilcategories_id')) {
                         $ic = new ITILCategory();
                         if ($ic->getFromDB($item->getField('itilcategories_id'))) {
