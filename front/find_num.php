@@ -96,29 +96,36 @@ if (isset($_POST["send"])) {
     echo " <td class='center b' width='10%'>" . __('Inventory number') . "</td>";
     echo " </tr>";
 
+    $search = filter_input(INPUT_POST, 'NomContact', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
     $types = ['Computer'         => Computer::getTypeName(1),
                    'NetworkEquipment' => NetworkEquipment::getTypeName(1),
                    'Printer'          => Printer::getTypeName(1),
                    'Monitor'          => Monitor::getTypeName(1),
                    'Peripheral'       => Peripheral::getTypeName(1)];
-    foreach ($types as $type => $label) {
-        $iterator = $DB->request([
-           'SELECT' => ['name', 'id', 'contact', 'serial', 'otherserial'],
-           'FROM'   => getTableForItemType($type),
-           'WHERE'  => [
-              'is_template'  => 0,
-              'is_deleted'   => 0,
-              'OR'           => [
-                 'contact'      => ['LIKE', '%' . $_POST['NomContact'] . '%'],
-                 'name'         => ['LIKE', '%' . $_POST['NomContact'] . '%'],
-                 'serial'       => ['LIKE', '%' . $_POST['NomContact'] . '%'],
-                 'otherserial'  => ['LIKE', '%' . $_POST['NomContact'] . '%'],
-              ]
-           ],
-           'ORDER'           => ['name']
-        ]);
 
-        while ($ligne = $iterator->next()) {
+    $em = config::getAdapter()->getEntityManager();
+    foreach ($types as $type => $label) {
+        $entityClass = 'Itsmng\Domain\Entities\\' . $type; 
+
+    $qb = $em->createQueryBuilder();
+    $qb->select('e.name, e.id, e.contact, e.serial, e.otherserial')
+       ->from($entityClass, 'e')
+       ->where('e.is_template = 0')
+       ->andWhere('e.is_deleted = 0')
+       ->andWhere(
+           $qb->expr()->orX(
+               $qb->expr()->like('e.contact', ':search'),
+               $qb->expr()->like('e.name', ':search'),
+               $qb->expr()->like('e.serial', ':search'),
+               $qb->expr()->like('e.otherserial', ':search')
+           )
+       )
+       ->setParameter('search', '%' . $search . '%')
+       ->orderBy('e.name', 'ASC');
+
+    $results = $qb->getQuery()->getArrayResult();
+
+    foreach ($results as $ligne) {
             $Comp_num = $ligne['id'];
             $Contact  = $ligne['contact'];
             $Computer = $ligne['name'];
@@ -136,18 +143,18 @@ if (isset($_POST["send"])) {
         }
     }
 
-    $iterator = $DB->request([
-       'SELECT' => ['name', 'id'],
-       'FROM'   => 'glpi_softwares',
-       'WHERE'  => [
-          'is_template'  => 0,
-          'is_deleted'   => 0,
-          'name'         => ['LIKE', "%{$_POST['NomContact']}%"]
-       ],
-       'ORDER'  => ['name']
-    ]);
+    $qb = $em->createQueryBuilder();
+    $qb->select('s.name, s.id')
+    ->from('Itsmng\Domain\Entities\Software', 's')
+    ->where('s.is_template = 0')
+    ->andWhere('s.is_deleted = 0')
+    ->andWhere($qb->expr()->like('s.name', ':search'))
+    ->setParameter('search', '%' . $search . '%')
+    ->orderBy('s.name', 'ASC');
 
-    while ($ligne = $iterator->next()) {
+    $results = $qb->getQuery()->getArrayResult();
+
+    foreach ($results as $ligne) {
         $Comp_num = $ligne['id'];
         $Computer = $ligne['name'];
         echo " <tr class='tab_find' onClick=\"fillidfield('Software'," . $Comp_num . ")\">";

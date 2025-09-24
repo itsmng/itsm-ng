@@ -46,28 +46,38 @@ if ($_POST['softwares_id'] > 0) {
     }
 
     // Make a select box
-    $iterator = $DB->request([
-       'DISTINCT'  => true,
-       'FROM'      => 'glpi_softwarelicenses',
-       'WHERE'     => [
-          'glpi_softwarelicenses.softwares_id'   => (int)$_POST['softwares_id']
-       ] + getEntitiesRestrictCriteria('glpi_softwarelicenses', 'entities_id', $_POST['entity_restrict'], true),
-       'ORDERBY'   => 'name'
-    ]);
-    $number = count($iterator);
+    $entityManager = config::getAdapter()->getEntityManager();
+    $queryBuilder = $entityManager->createQueryBuilder();
+
+    $queryBuilder
+        ->select('DISTINCT sl')
+        ->from(\Itsmng\Domain\Entities\SoftwareLicense::class, 'sl')
+        ->where('sl.software = :softwares_id')
+        ->orderBy('sl.name', 'ASC')
+        ->setParameter('softwares_id', (int)$_POST['softwares_id']);
+
+    // apply entity restriction criteria
+    $criteria = getEntitiesRestrictCriteria('glpi_softwarelicenses', 'entities_id', $_POST['entity_restrict'], true);
+    foreach ($criteria as $field => $value) {
+        $queryBuilder->andWhere('sl.' . $field . ' = :' . $field)
+                    ->setParameter($field, $value);
+    }
+
+    $results = $queryBuilder->getQuery()->getArrayResult();
+    $number  = count($results);
 
     $values = [];
     if ($number) {
-        while ($data = $iterator->next()) {
-            $ID     = $data['id'];
-            $output = $data['name'];
+        $last    = end($results);
+        $ID      = $last['id'] ?? null;
+        $output  = $last['name'] ?? null;
 
             if (empty($output) || $_SESSION['glpiis_ids_visible']) {
                 $output = sprintf(__('%1$s (%2$s)'), $output, $ID);
             }
 
             $values[$ID] = $output;
-        }
     }
+    
     echo json_encode($values);
 }

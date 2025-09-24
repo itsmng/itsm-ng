@@ -66,13 +66,19 @@ $twig_vars["text_login"] = nl2br(Toolbox::unclean_html_cross_side_scripting_deep
 
 
 // Display oidc login
-global $DB;
-$criteria = "SELECT * FROM glpi_oidc_config";
-$iterators = $DB->request($criteria);
-foreach ($iterators as $iterator) {
-    $is_activate = $iterator['is_activate'];
-    $is_forced = $iterator['is_forced'];
-}
+$entityManager = config::getAdapter()->getEntityManager();
+$queryBuilder = $entityManager->createQueryBuilder();
+
+$queryBuilder
+    ->select('o')
+    ->from(\Itsmng\Domain\Entities\OidcConfig::class, 'o');
+
+$results = $queryBuilder->getQuery()->getArrayResult();
+
+$statuses = array_map(fn($result) => [
+    'is_activate' => $result['isActivate'],
+    'is_forced'   => $result['isForced']
+], $results);
 
 if (isset($is_activate) && $is_activate) {
     if ($is_forced && !isset($_GET["noAUTO"])) {

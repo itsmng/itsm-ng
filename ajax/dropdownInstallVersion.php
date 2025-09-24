@@ -40,37 +40,33 @@ if (strpos($_SERVER['PHP_SELF'], "dropdownInstallVersion.php")) {
 
 Session::checkRight("software", UPDATE);
 
-if ($_POST['softwares_id'] > 0) {
-    if (!isset($_POST['value'])) {
-        $_POST['value'] = 0;
+$softwares_id = filter_input(INPUT_POST, 'softwares_id', FILTER_VALIDATE_INT);
+if (!$softwares_id) {
+    exit;
+}
+$used = [];
+if (isset($_POST['used']) && is_array($_POST['used'])) {
+    $used = array_filter($_POST['used'], 'is_numeric');
+}
+    $em = config::getAdapter()->getEntityManager();
+
+    $qb = $em->createQueryBuilder();
+    $qb->select('DISTINCT v, s.name AS sname')
+    ->from('App\Entity\SoftwareVersion', 'v')
+    ->leftJoin('v.state', 's')
+    ->where('v.software = :softid')
+    ->setParameter('softid', $softwares_id);
+
+    if (count($used)) {
+        $qb->andWhere($qb->expr()->notIn('v.id', ':used'))
+        ->setParameter('used', $used);
     }
 
-    $where = [];
-    if (isset($_POST['used'])) {
-        $used = $_POST['used'];
-        if (count($used)) {
-            $where = ['NOT' => ['glpi_softwareversions.id' => $used]];
-        }
-    }
-    // Make a select box
-    $iterator = $DB->request([
-       'SELECT'    => ['glpi_softwareversions.*', 'glpi_states.name AS sname'],
-       'DISTINCT'  => true,
-       'FROM'      => 'glpi_softwareversions',
-       'LEFT JOIN' => [
-          'glpi_states'  => [
-             'ON'  => [
-                'glpi_softwareversions' => 'states_id',
-                'glpi_states'           => 'id'
-             ]
-          ]
-       ],
-       'WHERE'     => ['glpi_softwareversions.softwares_id' => $_POST['softwares_id']] + $where
-    ]);
-    $number = count($iterator);
+    $results = $qb->getQuery()->getResult();
+    $number = count($results);
 
     $values = [];
-    while ($data = $iterator->next()) {
+    foreach ($results as $data) {
         $ID = $data['id'];
         $output = $data['name'];
 
@@ -85,4 +81,4 @@ if ($_POST['softwares_id'] > 0) {
 
     echo json_encode($values);
     // Dropdown::showFromArray($_POST['myname'], $values, ['display_emptychoice' => true]);
-}
+

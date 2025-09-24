@@ -42,54 +42,56 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 // Security
-if (!isset($_GET['itemtype']) || !($item = getItemForItemtype($_GET['itemtype']))) {
+$field = $_GET['field'] ?? null;
+$itemtype = $_GET['itemtype'] ?? null;
+$term = $_GET['term'] ?? '';
+
+$item = getItemForItemtype($itemtype);
+
+// Sécurity check
+if (!$item || !isset($item->fields[$field]) || !$item->canView()) {
     exit();
 }
 
-$item->getEmpty();
-$table = $item->getTable();
-// Security
-if (!isset($item->fields[$_GET['field']]) || !$item->canView()) {
-    exit();
-}
-
-// Security : check whitelist
-$field_so = $item->getSearchOptionByField('field', $_GET['field'], $item->getTable());
+$field_so = $item->getSearchOptionByField('field', $field, $item->getTable());
 $can_autocomplete = array_key_exists('autocomplete', $field_so) && $field_so['autocomplete'];
 if (!$can_autocomplete) {
     exit();
 }
 
-$entity = [];
-if (isset($_GET['entity_restrict']) && $_GET['entity_restrict'] >= 0) {
-    if ($item->isEntityAssign()) {
-        $entity['entities_id'] = $_GET['entity_restrict'];
-    }
+$where = [];
+$params = [];
+if (isset($_GET['entity_restrict']) && $_GET['entity_restrict'] >= 0 && $item->isEntityAssign()) {
+    $where[] = 'c.entity = :entity';
+    $params['entity'] = $_GET['entity_restrict'];
 }
-
 if (isset($_GET['user_restrict']) && $_GET['user_restrict'] > 0) {
-    $entity['users_id'] = $_GET['user_restrict'];
+    $where[] = 'c.user = :user';
+    $params['user'] = $_GET['user_restrict'];
 }
 
-$iterator = $DB->request([
-   'SELECT'          => $_GET['field'],
-   'DISTINCT'        => true,
-   'FROM'            => $table,
-   'WHERE'           => [
-      [$_GET['field'] => ['LIKE', $_GET['term'] . '%']],
-      [$_GET['field'] => ['<>', $_GET['term']]]
-   ] + $entity,
-   'ORDER'           => $_GET['field']
-]);
-
-$values = [];
-
-if (count($iterator)) {
-    while ($data = $iterator->next()) {
-        $values[] = Html::entity_decode_deep($data[$_GET['field']]);
-    }
+if (!empty($term)) {
+    $where[] = "c.$field LIKE :term";
+    $params['term'] = $term . '%';
 }
 
-if (count($values)) {
-    echo json_encode($values);
+$em = config::getAdapter()->getEntityManager();
+$qb = $em->createQueryBuilder();
+
+$qb->select("DISTINCT c.$field")
+   ->from(get_class($item), 'c');
+
+if (!empty($where)) {
+    $qb->where(implode(' AND ', $where));
 }
+
+foreach ($params as $k => $v) {
+    $qb->setParameter($k, $v);
+}
+
+$results = $qb->getQuery()->getArrayResult();
+
+$values = array_map(fn($row) => Html::entity_decode_deep($row[$field]), $results);
+
+echo json_encode($values);
+

@@ -50,16 +50,20 @@ if (
     && is_array($_POST['used'])
       && (count($_POST['used']) > 0)
 ) {
-    foreach (
-        $DB->request(
-            'glpi_certificates',
-            ['id'                  => $_POST['used'],
-                           'certificatetypes_id' => $_POST['certificatetype']
-                          ]
-        ) as $data
-    ) {
-        $used[$data['id']] = $data['id'];
-    }
+    $entityManager = config::getAdapter()->getEntityManager();
+    $queryBuilder = $entityManager->createQueryBuilder();
+
+    $queryBuilder
+        ->select('c.id')
+        ->from(\Itsmng\Domain\Entities\Certificate::class, 'c')
+        ->where('c.id = :used')
+        ->andWhere('c.certificateType = :certificatetype')
+        ->setParameter('used', $_POST['used'])
+        ->setParameter('certificatetype', (int)$_POST['certificatetype']);
+
+    $results = $queryBuilder->getQuery()->getArrayResult();
+    $ids  = array_column($results, 'id');
+    $used = array_combine($ids, $ids);
 }
 
 Dropdown::show(

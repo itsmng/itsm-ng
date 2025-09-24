@@ -108,77 +108,84 @@ function display_infocoms_report($itemtype, $begin, $end)
 {
     global $DB, $valeurtot, $valeurnettetot, $valeurnettegraphtot, $valeurgraphtot, $CFG_GLPI, $stat, $chart_opts;
 
-    $itemtable = getTableForItemType($itemtype);
-    // report need name and ticket_tco, many asset type don't have it therefore are not compatible
-    if (!$DB->fieldExists($itemtable, "ticket_tco", false)) {
+    $em = config::getAdapter()->getEntityManager();
+
+    $entityClass = 'Itsmng\\Domain\\Entities\\' . $itemtype;
+
+    // Vérifier si l’entité existe et possède le champ ticketTco
+    if (!class_exists($entityClass)) {
         return false;
     }
-    $criteria = [
-       'SELECT'       => [
-          'glpi_infocoms.*',
-          "$itemtable.name AS name",
-          "$itemtable.ticket_tco",
-          'glpi_entities.completename AS entname',
-          'glpi_entities.id AS entID'
+    $reflection = new \ReflectionClass($entityClass);
+    if (!$reflection->hasProperty('ticketTco')) {
+        return false;
+    }
 
-       ],
-       'FROM'         => 'glpi_infocoms',
-       'INNER JOIN'   => [
-          $itemtable  => [
-             'ON'  => [
-                'glpi_infocoms'   => 'items_id',
-                $itemtable        => 'id', [
-                   'AND' => [
-                      'glpi_infocoms.itemtype'   => $itemtype
-                   ]
-                ]
-             ]
-          ]
-       ],
-       'LEFT JOIN'    => [
-          'glpi_entities'   => [
-             'ON'  => [
-                'glpi_entities'   => 'id',
-                $itemtable        => 'entities_id'
-             ]
-          ]
-       ],
-       'WHERE'        => ["$itemtable.is_template" => 0] + getEntitiesRestrictCriteria($itemtable),
-       'ORDERBY'      => ['entname ASC', 'buy_date', 'use_date']
-    ];
+    $qb = $em->createQueryBuilder();
 
+    $qb->select(
+            'i',
+            'i.value AS value',
+            'i.sinkType AS sinkType',
+            'i.sinkTime AS sinkTime',
+            'i.sinkCoeff AS sinkCoeff',
+            'i.buyDate AS buyDate',
+            'i.useDate AS useDate',
+            'i.warrantyDuration AS warrantyDuration',
+            'c.ticketTco AS ticket_tco',
+            'c.id AS items_id',
+            'c.name AS name',
+            'c.ticketTco',
+            'e.completename AS entname',
+            'e.id AS entID'
+        )
+        ->from(Itsmng\Domain\Entities\Infocom::class, 'i')
+        ->innerJoin(
+            $entityClass,
+            'c',
+            'WITH',
+            'i.items_id = c.id AND i.itemtype = :itemtype'
+        )
+        ->leftJoin('c.entity', 'e')
+        ->where('c.isTemplate = 0')
+        ->setParameter('itemtype', $itemtype)
+        ->orderBy('e.completename', 'ASC')
+        ->addOrderBy('i.buyDate', 'ASC')
+        ->addOrderBy('i.useDate', 'ASC');
+
+    // Filtre sur la date de début
     if (!empty($begin)) {
-        $criteria['WHERE'][] = [
-           'OR'  => [
-              'glpi_infocoms.buy_date'   => ['>=', $begin],
-              'glpi_infocoms.use_date'   => ['>=', $begin]
-           ]
-        ];
+        $qb->andWhere(
+            $qb->expr()->orX(
+                'i.buyDate >= :begin',
+                'i.useDate >= :begin'
+            )
+        );
+        $qb->setParameter('begin', new \DateTime($begin));
     }
 
+    // Filtre sur la date de fin
     if (!empty($end)) {
-        $criteria['WHERE'][] = [
-           'OR'  => [
-              'glpi_infocoms.buy_date'   => ['<=', $end],
-              'glpi_infocoms.use_date'   => ['<=', $end]
-           ]
-        ];
+        $qb->andWhere(
+            $qb->expr()->orX(
+                'i.buyDate <= :end',
+                'i.useDate <= :end'
+            )
+        );
+        $qb->setParameter('end', new \DateTime($end));
     }
+
+    $results = $qb->getQuery()->getArrayResult();
 
     $display_entity = Session::isMultiEntitiesMode();
-    $iterator = $DB->request($criteria);
 
-    if (
-        count($iterator)
-        && ($item = getItemForItemtype($itemtype))
-    ) {
-        echo "<h2>" . $item->getTypeName(1) . "</h2>";
+    if (!empty($results)) {
+        echo "<h2>" . htmlspecialchars($itemtype) . "</h2>";
 
         echo "<table class='tab_cadre' aria-label='Report Form'><tr><th>" . __('Name') . "</th>";
         if ($display_entity) {
             echo "<th>" . Entity::getTypeName(1) . "</th>";
         }
-
         echo "<th>" . _x('price', 'Value') . "</th><th>" . __('ANV') . "</th>";
         echo "<th>" . __('TCO') . "</th><th>" . __('Date of purchase') . "</th>";
         echo "<th>" . __('Startup date') . "</th><th>" . __('Warranty expiration date') . "</th></tr>";
@@ -188,35 +195,36 @@ function display_infocoms_report($itemtype, $begin, $end)
         $valeurnettegraph   = [];
         $valeurgraph        = [];
 
-        while ($line = $iterator->next()) {
+        foreach ($results as $line) {
+            $entity = $em->find($entityClass, $line['items_id']);
             if (
                 isset($line["is_global"]) && $line["is_global"]
-                && $item->getFromDB($line["items_id"])
+               && $entity !== null
             ) {
-                $line["value"] *= Computer_Item::countForItem($item);
+                $line["value"] *= Computer_Item::countForItem($entity);
             }
 
             if ($line["value"] > 0) {
                 $valeursoustot += $line["value"];
             }
             $valeurnette = Infocom::Amort(
-                $line["sink_type"],
+                $line["sinkType"],
                 $line["value"],
-                $line["sink_time"],
-                $line["sink_coeff"],
-                $line["buy_date"],
-                $line["use_date"],
+                $line["sinkTime"],
+                $line["sinkCoeff"],
+                $line["buyDate"],
+                $line["useDate"],
                 $CFG_GLPI["date_tax"],
                 "n"
             );
 
             $tmp         = Infocom::Amort(
-                $line["sink_type"],
+                $line["sinkType"],
                 $line["value"],
-                $line["sink_time"],
-                $line["sink_coeff"],
-                $line["buy_date"],
-                $line["use_date"],
+                $line["sinkTime"],
+                $line["sinkCoeff"],
+                $line["buyDate"],
+                $line["useDate"],
                 $CFG_GLPI["date_tax"],
                 "all"
             );
@@ -232,8 +240,8 @@ function display_infocoms_report($itemtype, $begin, $end)
                 }
             }
 
-            if (!empty($line["buy_date"])) {
-                $year = substr($line["buy_date"], 0, 4);
+            if (!empty($line["buyDate"])) {
+                $year = substr($line["buyDate"], 0, 4);
                 if ($line["value"] > 0) {
                     if (!isset($valeurgraph[$year])) {
                         $valeurgraph[$year] = 0;
@@ -254,10 +262,10 @@ function display_infocoms_report($itemtype, $begin, $end)
 
             echo "<td class='right'>" . Html::formatNumber($line["value"]) . "</td>" .
                  "<td class='right'>" . Html::formatNumber($valeurnette) . "</td>" .
-                 "<td class='right'>" . Infocom::showTco($line["ticket_tco"], $line["value"]) . "</td>" .
-                 "<td>" . Html::convDate($line["buy_date"]) . "</td>" .
-                 "<td>" . Html::convDate($line["use_date"]) . "</td>" .
-                 "<td>" . Infocom::getWarrantyExpir($line["buy_date"], $line["warranty_duration"]) .
+                 "<td class='right'>" . Infocom::showTco($line["ticketTco"], $line["value"]) . "</td>" .
+                 "<td>" . Html::convDate($line["buyDate"]) . "</td>" .
+                 "<td>" . Html::convDate($line["useDate"]) . "</td>" .
+                 "<td>" . Infocom::getWarrantyExpir($line["buyDate"], $line["warrantyDuration"]) .
                  "</td></tr>";
         }
 
@@ -282,7 +290,7 @@ function display_infocoms_report($itemtype, $begin, $end)
                 }
                 $valeurnettegraphtot[$key] += $valeurnettegraph[$key];
             }
-
+            $item = getItemForItemtype($itemtype);
             $stat->displayLineGraph(
                 sprintf(
                     __('%1$s account net value'),

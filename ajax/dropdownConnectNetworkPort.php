@@ -45,80 +45,46 @@ Html::header_nocache();
 Session::checkRight("networking", UPDATE);
 
 // Make a select box
-if (
-    class_exists($_POST["itemtype"])
-    && isset($_POST["item"])
-) {
-    $table = getTableForItemType($_POST["itemtype"]);
+$itemtype           = filter_input(INPUT_POST, 'itemtype', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$item               = filter_input(INPUT_POST, 'item', FILTER_VALIDATE_INT);
+$instantiation_type = filter_input(INPUT_POST, 'instantiation_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$networkports_id    = filter_input(INPUT_POST, 'networkports_id', FILTER_VALIDATE_INT);
 
-    $joins = [];
-    $name_field = new QueryExpression("'' AS " . $DB->quoteName('npname'));
 
-    if ($_POST['instantiation_type'] == 'NetworkPortEthernet') {
-        $name_field = 'glpi_netpoints.name AS npname';
-        $joins = [
-           'glpi_networkportethernets'   => [
-              'ON'  => [
-                 'glpi_networkportethernets'   => 'id',
-                 'glpi_networkports'           => 'id'
-              ]
-           ],
-           'glpi_netpoints'              => [
-              'ON'  => [
-                 'glpi_networkportethernets'   => 'netpoints_id',
-                 'glpi_netpoints'              => 'id'
-              ]
-           ]
-        ];
+    $entityClass = 'Itsmng\\Domain\\Entities\\' . $itemtype;
+    $em = config::getAdapter()->getEntityManager();
+    $qb = $em->createQueryBuilder();
+
+    // Sélection des champs
+    $qb->select('DISTINCT np2.id AS wid, np.id AS did, d.name AS cname, np.name AS nname');
+
+    if ($instantiation_type === 'NetworkPortEthernet') {
+        $qb->addSelect('npnt.name AS npname');
     }
 
-    $criteria = [
-       'SELECT'    => [
-          'glpi_networkports_networkports.id AS wid',
-          'glpi_networkports.id AS did',
-          "$table.name AS cname",
-          'glpi_networkports.name AS nname',
-          $name_field
-       ],
-       'DISTINCT'  => true,
-       'FROM'      => $table,
-       'LEFT JOIN' => [
-          'glpi_networkports'  => [
-             'ON'  => [
-                'glpi_networkports'  => 'items_id',
-                $table               => 'id', [
-                   'AND' => [
-                      'glpi_networkports.items_id'           => $_POST['item'],
-                      'glpi_networkports.itemtype'           => $_POST["itemtype"],
-                      'glpi_networkports.instantiation_type' => $_POST['instantiation_type']
-                   ]
-                ]
-             ]
-          ],
-          'glpi_networkports_networkports' => [
-             'ON'  => [
-                'glpi_networkports_networkports' => 'networkports_id_1',
-                'glpi_networkports'              => 'id', [
-                   'OR'  => [
-                      'glpi_networkports_networkports.networkports_id_2' => new QueryExpression($DB->quoteName('glpi_networkports.id'))
-                   ]
-                ]
-             ]
-          ]
-       ] + $joins,
-       'WHERE'     => [
-          'glpi_networkports_networkports.id' => null,
-          'NOT'                               => ['glpi_networkports.id' => null],
-          'glpi_networkports.id'              => ['<>', $_POST['networkports_id']],
-          "$table.is_deleted"                 => 0,
-          "$table.is_template"                => 0
-       ],
-       'ORDERBY'   => 'glpi_networkports.id'
-    ];
-    $iterator = $DB->request($criteria);
+    $qb->from($entityClass, 'd')
+       ->leftJoin('d.networkports', 'np', 'WITH', 'np.items_id = d.id AND np.itemtype = :itemtype AND np.instantiation_type = :insttype')
+       ->leftJoin('Itsmng\\Domain\\Entities\\NetworkPortsNetworkPort', 'np2np', 'WITH', 'np2np.networkports_id_1 = np.id OR np2np.networkports_id_2 = np.id')
+       ->leftJoin('Itsmng\\Domain\\Entities\\NetworkPort', 'np2', 'WITH', 'np2.id = np2np.networkports_id_1 OR np2.id = np2np.networkports_id_2');
+
+    if ($instantiation_type === 'NetworkPortEthernet') {
+        $qb->leftJoin('Itsmng\\Domain\\Entities\\NetworkPortEthernet', 'npe', 'WITH', 'npe.id = np.id')
+           ->leftJoin('npe.netpoint', 'npnt');
+    }
+
+    $qb->where('np2np.id IS NULL')
+       ->andWhere('np.id IS NOT NULL')
+       ->andWhere('np.id <> :networkports_id')
+       ->andWhere('d.is_deleted = 0')
+       ->andWhere('d.is_template = 0')
+       ->setParameter('itemtype', $itemtype)
+       ->setParameter('insttype', $instantiation_type)
+       ->setParameter('networkports_id', $networkports_id);
+
+    $results = $qb->getQuery()->getArrayResult();
 
     $values = [];
-    while ($data = $iterator->next()) {
+    foreach ($results as $data) {
         // Device name + port name
         $output = $output_long = $data['cname'];
 
@@ -143,4 +109,4 @@ if (
         $values[$ID] = $output_long;
     }
     echo json_encode($values);
-}
+

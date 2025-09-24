@@ -46,18 +46,21 @@ if (isset($_POST["rubdoc"])) {
 
     // Clean used array
     if (isset($_POST['used']) && is_array($_POST['used']) && (count($_POST['used']) > 0)) {
-        $iterator = $DB->request([
-           'SELECT' => ['id'],
-           'FROM'   => 'glpi_documents',
-           'WHERE'  => [
-              'id'                    => $_POST['used'],
-              'documentcategories_id' => (int)$_POST['rubdoc']
-           ]
-        ]);
+        $entityManager = config::getAdapter()->getEntityManager();
+        $queryBuilder = $entityManager->createQueryBuilder();
 
-        while ($data = $iterator->next()) {
-            $used[$data['id']] = $data['id'];
-        }
+        $queryBuilder
+            ->select('d.id')
+            ->from(\Itsmng\Domain\Entities\Document::class, 'd')
+            ->where('d.id = :used')
+            ->andWhere('d.documentCategory = :rubdoc')
+            ->setParameter('used', $_POST['used'])
+            ->setParameter('rubdoc', (int)$_POST['rubdoc']);
+
+        $result = $queryBuilder->getQuery()->getResult();
+
+        $ids  = array_column($results, 'id');
+        $used = array_combine($ids, $ids);
     }
 
     if (!isset($_POST['entity']) || $_POST['entity'] === '') {

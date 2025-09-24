@@ -48,15 +48,19 @@ $res = [];
 $root_entities_for_profiles = array_column($_SESSION['glpiactiveprofile']['entities'], 'id');
 
 if (isset($_POST['str'])) {
-    $iterator = $DB->request([
-       'FROM'   => 'glpi_entities',
-       'WHERE'  => [
-          'name' => ['LIKE', '%' . $_POST['str'] . '%']
-       ],
-       'ORDER'  => ['completename']
-    ]);
+    $entityManager = config::getAdapter()->getEntityManager();
+    $queryBuilder = $entityManager->createQueryBuilder();
 
-    while ($data = $iterator->next()) {
+    $queryBuilder
+        ->select('e.id')
+        ->from(\Itsmng\Domain\Entities\Entity::class, 'e')
+        ->where($queryBuilder->expr()->like('e.name', ':search'))
+        ->orderBy('e.completeName', 'ASC')
+        ->setParameter('search', '%' . $_POST['str'] . '%');
+
+    $results = $queryBuilder->getQuery()->getArrayResult(); 
+
+    foreach ($results as $data) {
         $ancestors = getAncestorsOf('glpi_entities', $data['id']);
         foreach ($ancestors as $val) {
             if (!in_array($val, $res)) {

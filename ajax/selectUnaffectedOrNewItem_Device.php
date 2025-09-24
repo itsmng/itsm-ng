@@ -43,37 +43,45 @@ Html::header_nocache();
 Session::checkCentralAccess();
 
 // Make a select box
-if (
-    $_POST['items_id']
-    && $_POST['itemtype'] && class_exists($_POST['itemtype'])
-) {
-    $devicetype = $_POST['itemtype'];
-    $linktype   = $devicetype::getItem_DeviceType();
+$items_id = filter_input(INPUT_POST, 'items_id', FILTER_VALIDATE_INT);
+$itemtype = filter_input(INPUT_POST, 'itemtype', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    if (count($linktype::getSpecificities())) {
-        $keys = array_keys($linktype::getSpecificities());
-        array_walk($keys, function (&$val) use ($DB) {
-            return $DB->quoteName($val);
-        });
-        $name_field = new QueryExpression(
-            "CONCAT_WS(' - ', " . implode(', ', $keys) . ")"
-            . "AS " . $DB->quoteName("name")
-        );
-    } else {
-        $name_field = 'id AS name';
+if (!$items_id || !$itemtype || !class_exists($itemtype)) {
+    exit;
+}
+
+$devicetype = $itemtype;
+$linktype   = $devicetype::getItem_DeviceType();
+$specificities = $linktype::getSpecificities();
+
+$em = config::getAdapter()->getEntityManager();
+$qb = $em->createQueryBuilder();
+$qb->select('d.id');
+
+if (count($specificities)) {
+    $concatFields = [];
+    foreach (array_keys($specificities) as $field) {
+        $concatFields[] = "d.$field";
     }
-    $result = $DB->request(
-        [
-          'SELECT' => ['id', $name_field],
-          'FROM'   => $linktype::getTable(),
-          'WHERE'  => [
-             $devicetype::getForeignKeyField() => $_POST['items_id'],
-             'itemtype'                        => '',
-          ]
-        ]
+    
+    $qb->addSelect(
+        $qb->expr()->concat(
+            ...array_map(fn($f) => "COALESCE(d.$f, '')", array_keys($specificities))
+        ) . " AS name"
     );
+} else {
+    $qb->addSelect('d.id AS name');
+}
+
+$qb->from($linktype::getEntityClass(), 'd')
+   ->where('d.' . $devicetype::getForeignKeyField() . ' = :itemid')
+   ->setParameter('itemid', $items_id)
+   ->andWhere('d.itemtype = :itype')
+   ->setParameter('itype', '');
+
+$results = $qb->getQuery()->getArrayResult();
     $devices = [];
-    foreach ($result as $row) {
+    foreach ($results as $row) {
         $name = $row['name'];
         if (empty($name)) {
             $name = $row['id'];
@@ -81,4 +89,4 @@ if (
         $devices[$row['id']] = $name;
     }
     echo json_encode(['name' => $devicetype::getForeignKeyField(), 'options' => $devices]);
-}
+

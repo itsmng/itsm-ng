@@ -106,75 +106,56 @@ $valeurgraphtot      = [];
 **/
 function display_infocoms_report($itemtype, $begin, $end)
 {
-    global $DB, $valeurtot, $valeurnettetot, $valeurnettegraphtot, $valeurgraphtot, $CFG_GLPI, $stat, $chart_opts;
+    global $valeurtot, $valeurnettetot, $valeurnettegraphtot, $valeurgraphtot, $CFG_GLPI, $stat, $chart_opts;
+
+   $em = config::getAdapter()->getEntityManager();
+    $infocomClass = 'Itsmng\\Domain\\Entities\\Infocom';
 
     $itemtable = getTableForItemType($itemtype);
-    if ($DB->fieldExists($itemtable, "ticket_tco", false)) { // those are in the std infocom report
-        return false;
-    }
-
-    $criteria = [
-       'SELECT'       => 'glpi_infocoms.*',
-       'FROM'         => 'glpi_infocoms',
-       'INNER JOIN'   => [
-          $itemtable  => [
-             'ON'  => [
-                $itemtable        => 'id',
-                'glpi_infocoms'   => 'items_id', [
-                   'AND' => [
-                      'glpi_infocoms.itemtype' => $itemtype
-                   ]
-                ]
-             ]
-          ]
-       ],
-       'WHERE'        => []
-    ];
-
-    switch ($itemtype) {
-        case 'SoftwareLicense':
-            $criteria['INNER JOIN']['glpi_softwares'] = [
-               'ON'  => [
-                  'glpi_softwarelicenses' => 'softwares_id',
-                  'glpi_softwares'        => 'id'
-               ]
-            ];
-            $criteria['WHERE'] =  getEntitiesRestrictCriteria("glpi_softwarelicenses");
-            break;
-        default:
-            if (is_a($itemtype, CommonDBChild::class, true)) {
-                $childitemtype = $itemtype::$itemtype; // acces to child via $itemtype static
-                $criteria['INNER JOIN'][$childitemtype::getTable()] = [
-                   'ON'  => [
-                      $itemtype::getTable() => $itemtype::$items_id,
-                      $childitemtype::getTable() => 'id'
-                   ]
-                ];
-                $criteria['WHERE'] =  getEntitiesRestrictCriteria($itemtable);
+    if (method_exists($em->getConnection(), 'getSchemaManager')) {
+        $schemaManager = $em->getConnection()->getSchemaManager();
+        if ($schemaManager->tablesExist([$itemtable])) {
+            $columns = $schemaManager->listTableColumns($itemtable);
+            if (isset($columns['ticket_tco'])) {
+                return false;
             }
-            break;
+        }
     }
 
+    $qb = $em->createQueryBuilder();
+    $qb->select('i')
+       ->from($infocomClass, 'i')
+       ->where('i.itemtype = :itemtype')
+       ->setParameter('itemtype', $itemtype);
+
+    // Entity restriction if the field exists
+    if (property_exists($infocomClass, 'entities_id') && isset($_SESSION['glpiactive_entity'])) {
+        $qb->andWhere('i.entities_id = :entity')
+           ->setParameter('entity', $_SESSION['glpiactive_entity']);
+    }
+
+    // Filters on dates 
     if (!empty($begin)) {
-        $criteria['WHERE'][] = [
-           'OR'  => [
-              'glpi_infocoms.buy_date'   => ['>=', $begin],
-              'glpi_infocoms.use_date'   => ['>=', $begin]
-           ]
-        ];
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->gte('i.buyDate', ':begin'),
+                $qb->expr()->gte('i.useDate', ':begin')
+            )
+        )->setParameter('begin', $begin);
     }
     if (!empty($end)) {
-        $criteria['WHERE'][] = [
-           'OR'  => [
-              'glpi_infocoms.buy_date'   => ['<=', $end],
-              'glpi_infocoms.use_date'   => ['<=', $end]
-           ]
-        ];
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->lte('i.buyDate', ':end'),
+                $qb->expr()->lte('i.useDate', ':end')
+            )
+        )->setParameter('end', $end);
     }
-    $iterator = $DB->request($criteria);
+
+    $results = $qb->getQuery()->getArrayResult();
 
     if (
-        count($iterator)
+        count($results)
           && ($item = getItemForItemtype($itemtype))
     ) {
         echo "<h2>" . $item->getTypeName(1) . "</h2>";
@@ -185,7 +166,7 @@ function display_infocoms_report($itemtype, $begin, $end)
         $valeurnettegraph   = [];
         $valeurgraph        = [];
 
-        while ($line = $iterator->next()) {
+       foreach ($results as $line) {
             if ($itemtype == 'SoftwareLicense') {
                 $item->getFromDB($line["items_id"]);
 
@@ -195,28 +176,35 @@ function display_infocoms_report($itemtype, $begin, $end)
                     }
                 }
             }
+            elseif (class_exists($itemtype) && is_a($itemtype, CommonDBChild::class, true)) {
+                $childitemtype = $itemtype::$itemtype;
+                $child = getItemForItemtype($childitemtype);
+                if ($child && $child->getFromDB($line['items_id'])) {
+                    // Traitement éventuel
+                }
+            }
             if ($line["value"] > 0) {
                 $valeursoustot += $line["value"];
             }
 
             $valeurnette = Infocom::Amort(
-                $line["sink_type"],
+                $line["sinkType"],
                 $line["value"],
-                $line["sink_time"],
-                $line["sink_coeff"],
-                $line["buy_date"],
-                $line["use_date"],
+                $line["sinkTime"],
+                $line["sinkCoeff"],
+                $line["buyDate"],
+                $line["useDate"],
                 $CFG_GLPI["date_tax"],
                 "n"
             );
 
             $tmp         = Infocom::Amort(
-                $line["sink_type"],
+                $line["sinkType"],
                 $line["value"],
-                $line["sink_time"],
-                $line["sink_coeff"],
-                $line["buy_date"],
-                $line["use_date"],
+                $line["sinkTime"],
+                $line["sinkCoeff"],
+                $line["buyDate"],
+                $line["useDate"],
                 $CFG_GLPI["date_tax"],
                 "all"
             );
@@ -232,9 +220,13 @@ function display_infocoms_report($itemtype, $begin, $end)
                 }
             }
 
-            if (!empty($line["buy_date"])) {
-                $year = substr($line["buy_date"], 0, 4);
-
+            if (!empty($line["buyDate"])) {
+                $buyDate = $line["buyDate"];
+                if ($buyDate instanceof \DateTimeInterface) {
+                    $year = $buyDate->format('Y');
+                } else {
+                    $year = substr($buyDate, 0, 4);
+                }
                 if ($line["value"] > 0) {
                     if (!isset($valeurgraph[$year])) {
                         $valeurgraph[$year] = 0;

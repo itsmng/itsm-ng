@@ -98,20 +98,26 @@ if (isset($_SESSION["noAUTO"]) || isset($_GET['noAUTO'])) {
 
 if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
     //Get config from DB and use it to setup oidc
-    $criteria = "SELECT * FROM glpi_oidc_config";
-    $iterators = $DB->request($criteria);
-    foreach ($iterators as $iterator) {
-        $oidc_db['Provider'] = $iterator['Provider'];
-        $oidc_db['ClientID'] = $iterator['ClientID'];
-        $oidc_db['ClientSecret'] = Toolbox::sodiumDecrypt($iterator['ClientSecret']);
-        $oidc_db['scope'] = explode(',', addslashes($iterator['scope']));
-        $oidc_db['logout'] = empty($iterator['logout']) ? null : $iterator['logout'];
-        $oidc_db['proxy'] = $iterator['proxy'];
-        $oidc_db['cert'] = $iterator['cert'];
+    $entityManager = config::getAdapter()->getEntityManager();
+    $queryBuilder  = $entityManager->createQueryBuilder();
+
+    $queryBuilder
+        ->select('o')
+        ->from(\Itsmng\Domain\Entities\OidcConfig::class, 'o');
+
+    $results = $queryBuilder->getQuery()->getArrayResult();
+    foreach ($results as $result) {
+        $oidc_db['provider'] = $result['provider'];
+        $oidc_db['clientid'] = $result['clientid'];
+        $oidc_db['clientsecret'] = Toolbox::sodiumDecrypt($result['clientsecret']);
+        $oidc_db['scope'] = explode(',', addslashes($result['scope']));
+        $oidc_db['logout'] = empty($result['logout']) ? null : $result['logout'];
+        $oidc_db['proxy'] = $result['proxy'];
+        $oidc_db['cert'] = $result['cert'];
     }
 
     if (isset($oidc_db)) {
-        $oidc = new Jumbojett\OpenIDConnectClient($oidc_db['Provider'], $oidc_db['ClientID'], $oidc_db['ClientSecret']);
+        $oidc = new Jumbojett\OpenIDConnectClient($oidc_db['provider'], $oidc_db['clientid'], $oidc_db['clientsecret']);
         if (is_array($oidc_db['scope'])) {
             $oidc->addScope($oidc_db['scope']);
         }

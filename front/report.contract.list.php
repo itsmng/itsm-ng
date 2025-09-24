@@ -46,164 +46,113 @@ echo "<div class='center'>";
 echo "<span class='big b'>" . __('List of the hardware under contract') . "</span><br><br>";
 echo "</div>";
 // Request All
-if (
-    (isset($_POST["item_type"][0]) && ($_POST["item_type"][0] == '0'))
-    || !isset($_POST["item_type"])
-) {
-    $_POST["item_type"] = $items;
+$itemTypes = filter_input(INPUT_POST, 'item_type', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+$years     = filter_input(INPUT_POST, 'year', FILTER_VALIDATE_INT, FILTER_REQUIRE_ARRAY);
+
+// Gestion "tous les types"
+if (empty($itemTypes) || (isset($itemTypes[0]) && $itemTypes[0] == '0')) {
+    $itemTypes = $items;
 }
 
-if (isset($_POST["item_type"]) && is_array($_POST["item_type"])) {
-    $query = [];
-    $all_criteria = [];
-    foreach ($_POST["item_type"] as $val) {
-        if (!in_array($val, $items)) {
-            continue;
-        }
+// Nettoyage années
+if (is_array($years)) {
+    $years = array_filter($years, fn($y) => $y !== false);
+}
 
-        $itemtable = getTableForItemType($val);
-        $criteria = [
-           'SELECT' => [
-              'glpi_contracttypes.name AS type',
-              'glpi_contracts.duration',
-              'glpi_entities.completename AS entname',
-              'glpi_entities.id AS entID',
-              'glpi_contracts.begin_date'
-           ],
-           'FROM'   => 'glpi_contracts_items',
-           'INNER JOIN'   => [
-              'glpi_contracts'  => [
-                 'ON'  => [
-                    'glpi_contracts_items'  => 'contracts_id',
-                    'glpi_contracts'        => 'id'
-                 ]
-              ],
-              $itemtable  => [
-                 'ON'  => [
-                    $itemtable  => 'id',
-                    'glpi_contracts_items'  => 'items_id', [
-                       'AND' => [
-                          'glpi_contracts_items.itemtype' => $val
-                       ]
-                    ]
-                 ]
-              ]
-           ],
-           'LEFT JOIN'    => [
-              'glpi_contracttypes' => [
-                 'ON'  => [
-                    'glpi_contracts'     => 'contracttypes_id',
-                    'glpi_contracttypes' => 'id'
-                 ]
-              ],
-              'glpi_entities'   => [
-                 'ON'  => [
-                    $itemtable        => 'entities_id',
-                    'glpi_entities'   => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'        => getEntitiesRestrictCriteria($itemtable),
-           'ORDERBY'      => ["entname ASC", 'itemdeleted DESC', "itemname ASC"]
-        ];
+$em = config::getAdapter()->getEntityManager();
 
-        if ($DB->fieldExists($itemtable, 'name')) {
-            $criteria['SELECT'][] = "$itemtable.name AS itemname";
-        } else {
-            $criteria['SELECT'][] = new QueryExpression("'' AS " . $DB->quoteName('itemname'));
-        }
+foreach ($itemTypes as $itemtype) {
 
-        if (
-            ($val == 'Project')
-              || ($val == 'SoftwareLicense')
-        ) {
-            if ($val == 'SoftwareLicense') {
-                $criteria['ORDERBY'] = ["entname ASC", "itemname ASC"];
-                $criteria['SELECT'] = array_merge(
-                    $criteria['SELECT'],
-                    ['glpi_infocoms.buy_date', 'glpi_infocoms.warranty_duration']
-                );
-                $criteria['LEFT JOIN']['glpi_infocoms'] = [
-                   'ON'  => [
-                      'glpi_infocoms' => 'items_id',
-                      $itemtable     => 'id', [
-                         'AND' => [
-                            'glpi_infocoms.itemtype'   => $val
-                         ]
-                      ]
-                   ]
-                ];
-            }
-            if ($val == 'Project') {
-                $criteria['SELECT'][] = "$itemtable.is_deleted AS itemdeleted";
-            }
+    $entityClass = 'Itsmng\\Domain\\Entities\\' . $itemtype;
 
-            if (isset($_POST["year"][0]) && ($_POST["year"][0] != 0)) {
-                $ors = [];
-                foreach ($_POST["year"] as $val2) {
-                    $ors[] = new QueryExpression('YEAR(' . $DB->quoteName('glpi_contracts.begin_date') . ') = ' . $DB->quote($val2));
-                    if ($val == 'SoftwareLicense') {
-                        $ors[] = new QueryExpression('YEAR(' . $DB->quoteName('glpi_infocoms.buy_date') . ') = ' . $DB->quote($val2));
-                    }
-                }
-                if (count($ors)) {
-                    $criteria['WHERE'][] = ['OR' => $ors];
-                }
-            }
-        } else {
-            $criteria['SELECT'] = array_merge($criteria['SELECT'], [
-               "$itemtable.is_deleted AS itemdeleted",
-               'glpi_infocoms.buy_date',
-               'glpi_infocoms.warranty_duration'
-            ]);
-            $criteria['LEFT JOIN']['glpi_infocoms'] = [
-               'ON'  => [
-                  $itemtable        => 'id',
-                  'glpi_infocoms'   => 'items_id', [
-                     'AND' => [
-                        'glpi_infocoms.itemtype' => $val
-                     ]
-                  ]
-               ]
-            ];
-            if ($DB->fieldExists($itemtable, 'locations_id')) {
-                $criteria['SELECT'][] = 'glpi_locations.completename AS location';
-                $criteria['LEFT JOIN']['glpi_locations'] = [
-                   'ON'  => [
-                      $itemtable        => 'locations_id',
-                      'glpi_locations'   => 'id'
-                   ]
-                ];
-            } else {
-                $criteria['SELECT'][] = new QueryExpression("'' AS location");
-            }
-
-            if ($DB->fieldExists($itemtable, 'is_template')) {
-                $criteria['WHERE'][] = ["$itemtable.is_template" => 0];
-            }
-
-            if (isset($_POST["year"][0]) && ($_POST["year"][0] != 0)) {
-                foreach ($_POST["year"] as $val2) {
-                    $ors[] = new QueryExpression('YEAR(' . $DB->quoteName('glpi_infocoms.buy_date') . ') = ' . $DB->quoteValue($val2));
-                    $ors[] = new QueryExpression('YEAR(' . $DB->quoteName('glpi_contracts.begin_date') . ') = ' . $DB->quoteValue($val2));
-                }
-                if (count($ors)) {
-                    $criteria['WHERE'][] = ['OR' => $ors];
-                }
-            }
-        }
-        $all_criteria[$val] = $criteria;
+    if (!class_exists($entityClass)) {
+        continue;
     }
-}
 
-$display_entity = Session::isMultiEntitiesMode();
+    $qb = $em->createQueryBuilder();
 
-if (count($all_criteria)) {
-    foreach ($all_criteria as $key => $criteria) {
-        $iterator = $DB->request($criteria);
-        if (count($iterator)) {
-            $item = new $key();
-            echo "<div class='center'><span class='b'>" . $item->getTypeName(1) . "</span></div>";
+    // Common fields
+    $qb->select([
+            'c.name AS itemname',
+            'ct.name AS type',
+            'co.duration',
+            'co.beginDate',
+            'e.completename AS entname',
+            'e.id AS entID',
+        ])
+        ->from($entityClass, 'c')
+        // Join ContractsItem
+        ->leftJoin(
+            'Itsmng\\Domain\\Entities\\ContractItem',
+            'ci',
+            'WITH',
+            'ci.items_id = c.id AND ci.itemtype = :itemtype'
+        )
+        ->leftJoin('ci.contract', 'co')
+        ->leftJoin('co.contractType', 'ct')
+        ->leftJoin('c.entity', 'e')
+        ->setParameter('itemtype', $itemtype)
+        ->orderBy('e.completename', 'ASC')
+        ->addOrderBy('c.isDeleted', 'DESC')
+        ->addOrderBy('c.name', 'ASC');
+
+    // Dynamic location management
+    $reflection = new \ReflectionClass($entityClass);
+    if ($reflection->hasProperty('location')) {
+        $qb->leftJoin('c.location', 'l')
+           ->addSelect('l.completename AS location');
+    } else {
+        $qb->addSelect("'' AS location");
+    }
+
+    // Infocom management for SoftwareLicense and other items
+    if ($itemtype === 'SoftwareLicense' || $itemtype !== 'Project') {
+        $qb->leftJoin(
+            'Itsmng\\Domain\\Entities\\Infocom',
+            'i',
+            'WITH',
+            'i.items_id = c.id AND i.itemtype = :itemtype'
+        )
+        ->addSelect('i.buyDate', 'i.warrantyDuration');
+    }
+
+    // Filter on isTemplate if applicable
+    if ($reflection->hasProperty('isTemplate')) {
+        $qb->andWhere('c.isTemplate = 0');
+    }
+
+    // Filter on years
+    if (!empty($years)) {
+        $orX = $qb->expr()->orX();
+        foreach ($years as $idx => $year) {
+            $start = new \DateTime("$year-01-01");
+            $end   = new \DateTime("$year-12-31");
+
+            $conditions = [];
+
+            // buyDate if exists
+            if ($reflection->hasProperty('buyDate') || $itemtype === 'SoftwareLicense') {
+                $conditions[] = "i.buyDate BETWEEN :start$idx AND :end$idx";
+            }
+
+            // beginDate contract
+            $conditions[] = "co.beginDate BETWEEN :start$idx AND :end$idx";
+
+            $orX->add('(' . implode(' OR ', $conditions) . ')');
+
+            $qb->setParameter("start$idx", $start);
+            $qb->setParameter("end$idx", $end);
+        }
+        $qb->andWhere($orX);
+    }
+
+    // Exécution
+    $results = $qb->getQuery()->getArrayResult();
+
+    $display_entity = Session::isMultiEntitiesMode();
+
+    if (!empty($results)) {
+            echo "<div class='center'><span class='b'>" . $itemtype . "</span></div>";
             echo "<table class='tab_cadrehov' aria-label='Hardware list under contract'>";
             echo "<tr><th>" . __('Name') . "</th>";
             echo "<th>" . __('Deleted') . "</th>";
@@ -217,7 +166,8 @@ if (count($all_criteria)) {
             echo "<th>" . __('Start date') . "</th>";
             echo "<th>" . __('End date') . "</th>";
             echo "</tr>";
-            while ($data = $iterator->next()) {
+            // while ($data = $iterator->next()) {
+            foreach ($results as $data) {
                 echo "<tr class='tab_bg_1'>";
                 if ($data['itemname']) {
                     echo "<td> " . $data['itemname'] . " </td>";
@@ -227,11 +177,11 @@ if (count($all_criteria)) {
                 if (!isset($data['itemdeleted'])) {
                     $data['itemdeleted'] = 0;
                 }
-                if (!isset($data['buy_date'])) {
-                    $data['buy_date'] = '';
+                if (!isset($data['buyDate'])) {
+                    $data['buyDate'] = '';
                 }
-                if (!isset($data['warranty_duration'])) {
-                    $data['warranty_duration'] = 0;
+                if (!isset($data['warrantyDuration'])) {
+                    $data['warrantyDuration'] = 0;
                 }
 
                 echo "<td> " . Dropdown::getYesNo($data['itemdeleted']) . " </td>";
@@ -246,12 +196,12 @@ if (count($all_criteria)) {
                     echo "<td> " . NOT_AVAILABLE . " </td>";
                 }
 
-                if ($data['buy_date']) {
-                    echo "<td> " . Html::convDate($data['buy_date']) . " </td>";
-                    if ($data["warranty_duration"]) {
+                if ($data['buyDate']) {
+                    echo "<td> " . Html::convDate($data['buyDate']) . " </td>";
+                    if ($data["warrantyDuration"]) {
                         echo "<td> " . Infocom::getWarrantyExpir(
-                            $data["buy_date"],
-                            $data["warranty_duration"]
+                            $data["buyDate"],
+                            $data["warrantyDuration"]
                         ) . " </td>";
                     } else {
                         echo "<td> " . NOT_AVAILABLE . " </td>";
@@ -266,11 +216,11 @@ if (count($all_criteria)) {
                     echo "<td> " . NOT_AVAILABLE . " </td>";
                 }
 
-                if ($data['begin_date']) {
-                    echo "<td> " . Html::convDate($data['begin_date']) . " </td>";
+                if ($data['beginDate']) {
+                    echo "<td> " . Html::convDate($data['beginDate']) . " </td>";
                     if ($data["duration"]) {
                         echo "<td> " . Infocom::getWarrantyExpir(
-                            $data["begin_date"],
+                            $data["beginDate"],
                             $data["duration"]
                         ) . " </td>";
                     } else {
@@ -284,6 +234,6 @@ if (count($all_criteria)) {
             echo "</table><br><hr><br>";
         }
     }
-}
+
 
 Html::footer();

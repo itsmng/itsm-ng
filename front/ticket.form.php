@@ -80,13 +80,28 @@ if (isset($_POST["add"])) {
            'itemtype'         => $track->getType(),
            'items_id'         => $track->getID()
         ];
-        $existing = $DB->request(
-            'glpi_knowbaseitems_items',
-            $params
-        );
-        if ($existing->numrows() == 0) {
-            $kb_item_item = new KnowbaseItem_Item();
-            $kb_item_item->add($params);
+        $entityManager = config::getAdapter()->getEntityManager();
+        $queryBuilder = $entityManager->createQueryBuilder();
+
+        $queryBuilder
+            ->select('k.id')
+            ->from(\Itsmng\Domain\Entities\KnowbaseItemItem::class, 'k')
+            ->where('k.knowbaseitemsId = :kb_id')
+            ->andWhere('k.itemtype = :itemtype')
+            ->andWhere('k.items_id = :items_id')
+            ->setParameter('kb_id', $_POST['kb_linked_id'])
+            ->setParameter('itemtype', $track->getType())
+            ->setParameter('items_id', $track->getID());
+
+        $existing = $queryBuilder->getQuery()->getArrayResult();
+
+        if (count($existing) === 0) {
+            $kbItemItem = new Itsmng\Domain\Entities\KnowbaseItemItem();
+            $kbItemItem->setKnowbaseItemsId((int)$_POST['kb_linked_id']);
+            $kbItemItem->setItemtype($track->getType());
+            $kbItemItem->setItemsId($track->getID());
+            $entityManager->persist($kbItemItem);
+            $entityManager->flush();
         }
     }
 

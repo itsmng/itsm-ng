@@ -282,25 +282,31 @@ switch ($_GET["type"]) {
         break;
 
     case "device":
-        $val1 = $_GET["id"];
-        $val2 = $_GET["champ"];
-        if ($item = getItemForItemtype($_GET["champ"])) {
-            $device_table = $item->getTable();
-            $values       = Stat::getItems(
-                $_GET["itemtype"],
-                $_POST["date1"],
-                $_POST["date2"],
-                $_GET["champ"]
-            );
+        $device_id   = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $champ       = filter_input(INPUT_GET, 'champ', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $iterator = $DB->request([
-                'SELECT' => ['designation'],
-                'FROM'   => $device_table,
-                'WHERE'  => [
-                    'id' => $_GET['id']
-                ]
-            ]);
-            $current = $iterator->next();
+        if (!$device_id || !$champ) {
+            break;
+        }
+        if ($item = getItemForItemtype($champ)) {
+            $entityClass = 'Itsmng\Domain\Entities\\' . ucfirst($champ);
+            $values = Stat::getItems(
+            $_GET["itemtype"],
+            $_POST["date1"],
+            $_POST["date2"],
+            $val2
+        );
+
+        $em = config::getAdapter()->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('d.designation')
+           ->from($entityClass, 'd')
+           ->where('d.id = :id')
+           ->setParameter('id', $val1);
+
+        $current = $qb->getQuery()->getOneOrNullResult();
+        $designation = $current ? $current['designation'] : '';
+
 
             $title  = sprintf(
                 __('%1$s: %2$s'),

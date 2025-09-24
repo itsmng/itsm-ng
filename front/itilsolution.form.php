@@ -81,18 +81,38 @@ if (isset($_POST["add"])) {
 if ($handled) {
     if (isset($_POST['kb_linked_id'])) {
         //if solution should be linked to selected KB entry
-        $params = [
-           'knowbaseitems_id' => $_POST['kb_linked_id'],
-           'itemtype'         => $track->getType(),
-           'items_id'         => $track->getID()
-        ];
-        $existing = $DB->request(
-            'glpi_knowbaseitems_items',
-            $params
-        );
-        if ($existing->numrows() == 0) {
-            $kb_item_item = new KnowbaseItem_Item();
-            $kb_item_item->add($params);
+        $entityManager = config::getAdapter()->getEntityManager();
+
+        $kbId     = (int) $_POST['kb_linked_id'];
+        $itemType = $track->getType();
+        $itemsId  = $track->getID();
+
+        // Vérifier si le lien existe déjà
+        $queryBuilder = $entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select('k.id')
+            ->from(\Itsmng\Domain\Entities\KnowbaseItemItem::class, 'k')
+            ->where('k.knowbaseItemsId = :kbId')
+            ->andWhere('k.itemtype = :itemType')
+            ->andWhere('k.items_id = :items_id')
+            ->setParameters([
+                'kbId'     => $kbId,
+                'itemType' => $itemType,
+                'items_id'  => $itemsId
+            ]);
+
+        $existing = $queryBuilder->getQuery()->getArrayResult();
+
+        $existingIds = array_column($existing, 'id');
+
+        if (empty($existingIds)) {
+            $kbItemItem = new \Itsmng\Domain\Entities\KnowbaseItemItem();
+            $kbItemItem->setKnowbaseItemsId($kbId);
+            $kbItemItem->setItemtype($itemType);
+            $kbItemItem->setItemsId($itemsId);
+
+            $entityManager->persist($kbItemItem);
+            $entityManager->flush();
         }
     }
 

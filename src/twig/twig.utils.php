@@ -459,17 +459,29 @@ function getItemActionButtons(array $actions, string $itemType): array
 
 function getOptionsWithNameForItem(string $itemType, array $conditions, array $names): array
 {
-    global $DB;
+   $em = config::getAdapter()->getEntityManager();
 
-    $table = getTableForItemType($itemType);
-    $iterator = $DB->request([
-        'SELECT' => array_merge(['id'], array_values($names)),
-        'FROM' => $table,
-        'WHERE' => $conditions,
-    ]);
+    $entityClass = 'Itsmng\\Domain\\Entities\\' . (new \ReflectionClass($itemType))->getShortName();
+    if (!class_exists($entityClass)) {
+        return [];
+    } 
+    $qb = $em->createQueryBuilder();
+    $selectFields = array_merge(['e.id'], array_map(fn($n) => 'e.' . $n, array_values($names)));
+    $qb->select(implode(', ', $selectFields))
+       ->from($entityClass, 'e');
+
+    foreach ($conditions as $field => $value) {
+         if (!property_exists($entityClass, $field)) {
+            continue; // Ignore ce champ, ou loggue une erreur
+        }
+        $qb->andWhere("e.$field = :$field")
+           ->setParameter($field, $value);
+    }
+
+    $results = $qb->getQuery()->getArrayResult();
 
     $options = [];
-    while ($val = $iterator->next()) {
+    foreach ($results as $val) {
         $newItem = ['id' => $val['id']];
         foreach ($names as $key => $name) {
             $newItem[$key] = $val[$name];
@@ -478,4 +490,5 @@ function getOptionsWithNameForItem(string $itemType, array $conditions, array $n
     }
 
     return $options;
+
 }
