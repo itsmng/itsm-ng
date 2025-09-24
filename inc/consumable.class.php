@@ -424,7 +424,6 @@ class Consumable extends CommonDBChild
     **/
     public static function showAddForm(ConsumableItem $consitem)
     {
-
         $ID = $consitem->getField('id');
 
         if (!$consitem->can($ID, UPDATE)) {
@@ -479,8 +478,6 @@ class Consumable extends CommonDBChild
     **/
     public static function showForConsumableItem(ConsumableItem $consitem, $show_old = 0)
     {
-        global $DB;
-
         $tID = $consitem->getField('id');
         if (!$consitem->can($tID, READ)) {
             return;
