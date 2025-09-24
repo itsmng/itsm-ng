@@ -27,16 +27,26 @@ class FullTextHelper
                 $qb->andWhere("TS_MATCH($tsvector, $tsquery) = TRUE")
                     ->addSelect("TS_RANK($tsvector, $tsquery) AS HIDDEN score")
                     ->orderBy('score', 'DESC');
-    } else {
-            // MySQL fulltext (MATCH ... AGAINST)
-            $matchFieldsStr = implode(',', $fieldExprs);
 
-                // in MySQL boolean fulltext, MATCH...AGAINST returns a relevance score (0 = no match)
-                $qb->andWhere("MATCH($matchFieldsStr) AGAINST (:search IN BOOLEAN MODE) > 0")
-                    ->addSelect("MATCH($matchFieldsStr) AGAINST (:search IN BOOLEAN MODE) AS HIDDEN score")
-                    ->orderBy('score', 'DESC');
+                    // Parameter for PostgreSQL
+                $qb->setParameter('search', $search);
+        } else {
+            
+            // MySQL: Fallback to LIKE with artificial score
+            $searchTerm = '%' . $search . '%';
+            
+            $ors = $qb->expr()->orX();
+            foreach ($fieldExprs as $field) {
+                $ors->add($qb->expr()->like($field, ':search_like'));
+            }
+            
+            $qb->andWhere($ors);
+
+            // Add artificial score for compatibility
+            $qb->addSelect('1 AS HIDDEN score');
+
+            // Parameter for MySQL
+            $qb->setParameter('search_like', $searchTerm);
         }
-
-        $qb->setParameter('search', $search);
     }
 }
