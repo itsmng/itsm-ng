@@ -380,7 +380,7 @@ class Search
                     }
                     break;
                 case 'is_deleted':
-                    if ($val == 1) {
+                     if ($val == 1 || $val === true || $val === "1") {
                         $p[$key] = true;
                     } else {
                         $p[$key] = false;  
@@ -492,9 +492,9 @@ class Search
                         if (
                             isset($criterion['value'])
                             && (strlen($criterion['value']) > 0)
-                        ) {
-                            $data['search']['no_search'] = false;
-                        }
+                            ) {
+                            $data['search']['no_search'] = true;
+                        } 
                     }
                 }
             };
@@ -502,11 +502,11 @@ class Search
             // call the closure
             $parse_criteria($p['criteria']);
         }
-
+            
         if (count($p['metacriteria'])) {
             $data['search']['no_search'] = false;
         }
-
+    
         // Add order item
         if (!in_array($p['sort'], $data['toview'])) {
             array_push($data['toview'], $p['sort']);
@@ -591,7 +591,6 @@ class Search
         // request currentuser for SQL supervision, not displayed
         $SELECT = "SELECT DISTINCT $itemtable.id AS id, '" . Toolbox::addslashes_deep($_SESSION['glpiname']) . "' AS currentuser,
                         " . self::addDefaultSelect($data['itemtype']);
-
         // Add select for all toview item
         foreach ($data['toview'] as $val) {
             $SELECT .= self::addSelect($data['itemtype'], $val);
@@ -765,7 +764,6 @@ class Search
                 $data['search']['list_limit'] = '18446744073709551615';
             }
             $LIMIT = " LIMIT " . (int)$data['search']['list_limit'] . " OFFSET " . (int)$data['search']['start'];
-
             $count = "count(DISTINCT $itemtable.id)";
             // request currentuser for SQL supervision, not displayed
             $query_num = "SELECT $count,
@@ -1008,7 +1006,6 @@ class Search
                      $ORDER .
                      $LIMIT;
         }
-        
         if (isset($data['sql']['count']) && is_array($data['sql']['count'])) {
             // Adapt all counting queries for PostgreSQL
             foreach ($data['sql']['count'] as $i => $count_query) {
@@ -1024,7 +1021,6 @@ class Search
                 $QUERY = $adapter->adaptQueryForPostgreSQL($QUERY);
             }
         }
-        // dump($QUERY);
         $data['sql']['search'] = $QUERY;
     }
 
@@ -1369,8 +1365,9 @@ class Search
                 } else {
                     foreach ($data['sql']['count'] as $sqlcount) {
                         //$data['data']['totalcount'] += $DBread->result($result_num, 0, 0);
-                        $resultNum = $connection->prepare($sqlcount);
-                        $count = $resultNum->executeQuery()->fetchOne();
+                        // $resultNum = $connection->prepare($sqlcount);
+                        $resultNum = $adapter->request([$sqlcount]);
+                        $count = $resultNum->fetchOne();
                         $data['data']['totalcount'] += $count;
                     }
                 }
@@ -1508,12 +1505,13 @@ class Search
 
             while (($i < $data['data']['end'])) {
                 $row = $result->fetchAssociative();
-                if (method_exists($adapter, 'makeResultKeysInsensitive') && $row !== false && $adapter !== null) {
-                    $row = $adapter->makeResultKeysInsensitive($row);
+                 if (!is_array($row) || !$row) {
+                    $i++;
+                    continue;
                 }
+                
                 $newrow        = [];
                 $newrow['raw'] = $row;
-
                 // Parse datas
                 foreach ($newrow['raw'] as $key => $val) {
                     if (preg_match('/ITEM(_(\w[^\d]+))?_(\d+)(_(.+))?/', $key, $matches)) {
@@ -1598,7 +1596,6 @@ class Search
                 $data['data']['rows'][$i] = $newrow;
                 $i++;
             }
-
             $data['data']['count'] = count($data['data']['rows']);
         } else {
             echo $result->getError();
