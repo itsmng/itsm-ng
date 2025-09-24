@@ -760,48 +760,49 @@ abstract class ITILTemplate extends CommonDropdown
 
     public static function dropdown($options = [])
     {
-        global $DB;
+        $em = config::getAdapter()->getEntityManager();
 
-        $defaults = [
-            'value' => null,
-            'entity' => 0,
-            'itemtype' => get_called_class(),
-            'condition' => null,
-            'display' => true,
-        ];
+    $defaults = [
+        'value'    => null,
+        'entity'   => 0,
+        'itemtype' => get_called_class(),
+        'condition'=> null,
+        'display'  => true,
+    ];
 
-        $options = array_merge($defaults, $options);
+    $options = array_merge($defaults, $options);
 
-        $params = [
-            'FROM' => static::getTable(),
-            'ORDER' => 'name'
-        ];
+    $table = static::getTable();
+    $short = str_replace('glpi_', '', $table);
+    $short = str_replace(' ', '', ucwords(str_replace('_', ' ', $short)));
+    $entityClass = 'Itsmng\\Domain\\Entities\\' . $short;
 
-        // Add entity restriction if needed
-        if ($options['entity'] >= 0) {
-            $WHERE = getEntitiesRestrictCriteria(
-                static::getTable(), 
-                '', 
-                $options['entity'], 
-                $options['condition']['is_recursive']);
-            if (count($WHERE)) {
-                $params['WHERE'] = $WHERE;
-            }
+    $qb = $em->createQueryBuilder();
+    $qb->select('t')
+       ->from($entityClass, 't')
+       ->orderBy('t.name', 'ASC');
+
+    // Entity restriction
+    if ($options['entity'] >= 0) {
+        $entityField = property_exists($entityClass, 'entities_id') ? 't.entities_id' : null;
+        if ($entityField) {
+            $qb->andWhere($entityField . ' = :entity')
+               ->setParameter('entity', $options['entity']);
         }
+    }
 
-        // Add condition if provided
-        if (!empty($options['condition']) && is_array($options['condition'])) {
-            if (isset($params['WHERE'])) {
-                $params['WHERE'] = array_merge($params['WHERE'], $options['condition']);
-            } else {
-                $params['WHERE'] = $options['condition'];
-            }
+    // Additional condition(s)
+    if (!empty($options['condition']) && is_array($options['condition'])) {
+        foreach ($options['condition'] as $field => $value) {
+            $qb->andWhere("t.$field = :$field")
+               ->setParameter($field, $value);
         }
+    }
 
-        $iterator = $DB->request($params);
-        $templates = [0 => Dropdown::EMPTY_VALUE];
+    $results = $qb->getQuery()->getArrayResult();
 
-        foreach ($iterator as $data) {
+    $templates = [0 => Dropdown::EMPTY_VALUE];
+    foreach ($results as $data) {
             $templates[$data['id']] = $data['name'];
         }
 

@@ -1185,13 +1185,17 @@ class Planning extends CommonGLPI
 
         echo Group::getTypeName(1) . " : <br>";
 
-        $groups = $DB->request([
-            'FROM'   => 'glpi_groups',
-            'WHERE'  => [
-                'entities_id' => $_SESSION['glpiactive_entity']
-            ],
-            'ORDER'  => 'name'
-        ]);
+        $entityManager = config::getAdapter()->getEntityManager();
+        $queryBuilder  = $entityManager->createQueryBuilder();
+
+        $queryBuilder
+            ->select('g')
+            ->from(\Itsmng\Domain\Entities\Group::class, 'g')
+            ->where('g.entity = :entityId')
+            ->setParameter('entityId', $_SESSION['glpiactive_entity'])
+            ->orderBy('g.name', 'ASC');
+
+        $groups = $queryBuilder->getQuery()->getArrayResult();
 
         echo "<select name='groups_id' id='dropdown_groups_id'>";
         echo "<option value='0'>-----</option>";
@@ -1290,13 +1294,19 @@ class Planning extends CommonGLPI
 
         echo Group::getTypeName(1) . " : <br>";
 
-        $where_condition = [
-            'entities_id' => $_SESSION['glpiactive_entity']
-        ];
+        $entityManager = config::getAdapter()->getEntityManager();
+        $queryBuilder  = $entityManager->createQueryBuilder();
+
+        $entityId = $_SESSION['glpiactive_entity'] ?? 0;
+
+        // Si l'utilisateur n'a pas le droit de voir tous les plannings, on limite aux groupes de l'utilisateur
+        $restrictToGroups = false;
+        $groupIds = [];
 
         if (!Session::haveRight('planning', self::READALL)) {
             if (isset($_SESSION['glpigroups']) && is_array($_SESSION['glpigroups']) && !empty($_SESSION['glpigroups'])) {
-                $where_condition['id'] = $_SESSION['glpigroups'];
+                $restrictToGroups = true;
+                $groupIds = $_SESSION['glpigroups'];
             } else {
                 echo "<select name='groups_id' id='dropdown_groups_id'>";
                 echo "<option value='0'>-----</option>";
@@ -1308,11 +1318,20 @@ class Planning extends CommonGLPI
             }
         }
 
-        $groups = $DB->request([
-            'FROM'   => 'glpi_groups',
-            'WHERE'  => $where_condition,
-            'ORDER'  => 'name'
-        ]);
+       
+        $queryBuilder
+            ->select('g')
+            ->from(\Itsmng\Domain\Entities\Group::class, 'g')
+            ->where('g.entities_id = :entityId')
+            ->setParameter('entityId', $entityId)
+            ->orderBy('g.name', 'ASC');
+
+        if ($restrictToGroups && !empty($groupIds)) {
+            $queryBuilder->andWhere($queryBuilder->expr()->in('g.id', ':groupIds'))
+                        ->setParameter('groupIds', $groupIds);
+        }
+
+        $groups = $queryBuilder->getQuery()->getArrayResult();
 
         echo "<select name='groups_id' id='dropdown_groups_id'>";
         echo "<option value='0'>-----</option>";
