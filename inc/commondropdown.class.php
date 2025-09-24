@@ -1,5 +1,7 @@
 <?php
 
+use Doctrine\ORM\Mapping\MappedSuperclass;
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,6 +38,7 @@ if (!defined('GLPI_ROOT')) {
 }
 
 /// CommonDropdown class - generic dropdown
+#[MappedSuperclass]
 abstract class CommonDropdown extends CommonDBTM
 {
     // From CommonDBTM

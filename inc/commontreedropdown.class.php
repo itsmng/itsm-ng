@@ -1,5 +1,7 @@
 <?php
 
+use Doctrine\ORM\Mapping\MappedSuperclass;
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -40,6 +42,7 @@ if (!defined('GLPI_ROOT')) {
  *
  * Hierarchical and cross entities
 **/
+#[MappedSuperclass]
 abstract class CommonTreeDropdown extends CommonDropdown
 {
     public $can_be_translated = false;
