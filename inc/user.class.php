@@ -3686,7 +3686,7 @@ class User extends CommonDBTM
      * @param integer         $limit            limit LIMIT value (default -1 no limit)
      * @param boolean         $inactive_deleted true to retreive also inactive or deleted users
      *
-     * @return mysqli_result|boolean
+     * @return mysqli_result|array
      */
     public static function getSqlSearchResult(
         $count = true,
