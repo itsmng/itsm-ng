@@ -1345,14 +1345,18 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
                   = countElementsInTableForEntity($item->getTable(), $this->getEntity(), $restrict, false);
 
             // Document
-            $entityManager = $this::getAdapter()->getEntityManager();
-            $dql = "SELECT d FROM Itsmng\Domain\Entities\Document d 
-            LEFT JOIN Itsmng\Domain\Entities\DocumentItem di WITH di.document = d.id 
-            WHERE di.itemtype = :itemtype AND di.itemsId = :items_id AND di.timelinePosition = true";
-            $documents = $entityManager->createQuery($dql)
-                ->setParameter('itemtype', $item->getType())
-                ->setParameter('items_id', $item->getID())
-                ->getResult();
+            $em = $this::getAdapter()->getEntityManager();
+           $qb = $em->createQueryBuilder();
+           $qb->select('d')
+            ->from(\Itsmng\Domain\Entities\Document::class, 'd')
+            ->join('d.documentItems', 'di')
+            ->where('di.itemtype = :itemtype')
+            ->andWhere('di.itemsId = :itemsId')
+            ->andWhere('di.timelinePosition = true')
+            ->setParameter('itemtype', $item->getType())
+            ->setParameter('itemsId', $item->getID());
+
+            $documents = $qb->getQuery()->getResult();
 
             $data["documents"] = [];
             $addtodownloadurl   = '';
