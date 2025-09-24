@@ -45,7 +45,7 @@ class Infocom
     private $useDate;
 
     #[ORM\Column(name: 'warranty_duration', type: "integer", options: ["default" => 0])]
-    private $warrantyDuration;
+    private $warrantyDuration = 0;
 
     #[ORM\Column(name: 'warranty_info', type: "string", length: 255, nullable: true)]
     private $warrantyInfo;
@@ -64,19 +64,19 @@ class Infocom
     private $immoNumber;
 
     #[ORM\Column(name: 'value', type: "decimal", precision: 20, scale: 4, options: ["default" => "0.0000"])]
-    private $value;
+    private $value = 0.0;
 
     #[ORM\Column(name: 'warranty_value', type: "decimal", precision: 20, scale: 4, options: ["default" => "0.0000"])]
-    private $warrantyValue;
+    private $warrantyValue = 0.0;
 
     #[ORM\Column(name: 'sink_time', type: "integer", options: ["default" => 0])]
-    private $sinkTime;
+    private $sinkTime = 0;
 
     #[ORM\Column(name: 'sink_type', type: "integer", options: ["default" => 0])]
-    private $sinkType;
+    private $sinkType = 0;
 
     #[ORM\Column(name: 'sink_coeff', type: "float", options: ["default" => 0.0])]
-    private $sinkCoeff;
+    private $sinkCoeff = 0.0;
 
     #[ORM\Column(name: 'comment', type: "text", length: 65535, nullable: true)]
     private $comment;
@@ -89,7 +89,7 @@ class Infocom
     private ?Budget $budget = null;
 
     #[ORM\Column(name: 'alert', type: "integer", options: ["default" => 0])]
-    private $alert;
+    private $alert = 0;
 
     #[ORM\Column(name: 'order_date', type: "date", nullable: true)]
     private $orderDate;
