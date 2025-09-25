@@ -683,11 +683,11 @@ class Reservation extends CommonDBChild
 
         foreach ($options['item'] as $itemID) {
             $r->getFromDB($itemID);
-            $type = $r->fields["itemtype"];
+            $type = $r->fields["itemtype"]?? null;
             $name = NOT_AVAILABLE;
             $item = null;
 
-            if ($item = getItemForItemtype($r->fields["itemtype"])) {
+            if ($item = getItemForItemtype($r->fields["itemtype"]?? null)) {
                 $type = $item->getTypeName();
 
                 if ($item->getFromDB($r->fields["items_id"]?? null)) {
