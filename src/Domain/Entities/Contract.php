@@ -69,25 +69,25 @@ class Contract
     private $isDeleted = 0;
 
     #[ORM\Column(name: 'week_begin_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $weekBeginHour = '00:00:00';
+    private $weekBeginHour = null;
 
     #[ORM\Column(name: 'week_end_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $weekEndHour = '00:00:00';
+    private $weekEndHour = null;
 
     #[ORM\Column(name: 'saturday_begin_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $saturdayBeginHour = '00:00:00';
+    private $saturdayBeginHour = null;
 
     #[ORM\Column(name: 'saturday_end_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $saturdayEndHour = '00:00:00';
+    private $saturdayEndHour = null;
 
     #[ORM\Column(name: 'use_saturday', type: 'boolean', options: ['default' => 0])]
     private $useSaturday = 0;
 
     #[ORM\Column(name: 'monday_begin_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $mondayBeginHour = '00:00:00';
+    private $mondayBeginHour = null;
 
     #[ORM\Column(name: 'monday_end_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $mondayEndHour = '00:00:00';
+    private $mondayEndHour = null;
 
     #[ORM\Column(name: 'use_monday', type: 'boolean', options: ['default' => 0])]
     private $useMonday = 0;
@@ -263,7 +263,10 @@ class Contract
 
     public function getWeekBeginHour(): ?\DateTimeInterface
     {
-        return $this->weekBeginHour;
+       if ($this->weekBeginHour === null) {
+        $this->weekBeginHour = new DateTime('00:00:00');
+    }
+    return $this->weekBeginHour;
     }
 
     public function setWeekBeginHour(\DateTimeInterface|string|null $weekBeginHour): self
@@ -278,7 +281,10 @@ class Contract
 
     public function getWeekEndHour(): ?\DateTimeInterface
     {
-        return $this->weekEndHour;
+        if ($this->weekEndHour === null) {
+        $this->weekEndHour = new DateTime('00:00:00');
+    }
+    return $this->weekEndHour;
     }
 
     public function setWeekEndHour(\DateTimeInterface|string|null $weekEndHour): self
@@ -293,7 +299,10 @@ class Contract
 
     public function getSaturdayBeginHour(): ?\DateTimeInterface
     {
-        return $this->saturdayBeginHour;
+        if ($this->saturdayBeginHour === null) {
+        $this->saturdayBeginHour = new DateTime('00:00:00');
+    }
+    return $this->saturdayBeginHour;
     }
 
     public function setSaturdayBeginHour(\DateTimeInterface|string|null $saturdayBeginHour): self
@@ -308,6 +317,9 @@ class Contract
 
     public function getSaturdayEndHour(): ?\DateTimeInterface
     {
+        if ($this->saturdayEndHour === null) {
+        $this->saturdayEndHour = new DateTime('00:00:00');
+        }
         return $this->saturdayEndHour;
     }
 
@@ -335,7 +347,10 @@ class Contract
 
     public function getMondayBeginHour(): ?\DateTimeInterface
     {
-        return $this->mondayBeginHour;
+        if ($this->mondayBeginHour === null) {
+        $this->mondayBeginHour = new DateTime('00:00:00');
+    }
+    return $this->mondayBeginHour;
     }
 
     public function setMondayBeginHour(\DateTimeInterface|string|null $mondayBeginHour): self
@@ -350,7 +365,10 @@ class Contract
 
     public function getMondayEndHour(): ?\DateTimeInterface
     {
-        return $this->mondayEndHour;
+        if ($this->mondayEndHour === null) {
+        $this->mondayEndHour = new DateTime('00:00:00');
+    }
+    return $this->mondayEndHour;
     }
 
     public function setMondayEndHour(\DateTimeInterface|string|null $mondayEndHour): self
