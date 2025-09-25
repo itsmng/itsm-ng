@@ -23,7 +23,7 @@ class CertificateType
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;

@@ -17,7 +17,7 @@ class DeviceSimcardType
     private $id;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, options: ["default" => ""])]
-    private $name;
+    private $name = '';
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;

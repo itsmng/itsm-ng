@@ -68,8 +68,8 @@ class Project
     #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
-    private $dateMod;
+    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
+    private $dateMod = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
@@ -110,7 +110,7 @@ class Project
     private $isDeleted = 0;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', options: ['default' => null])]
-    private $dateCreation;
+    private $dateCreation = null;
 
     #[ORM\Column(name: 'projecttemplates_id', type: 'integer', options: ['default' => 0])]
     private $projecttemplates = 0;

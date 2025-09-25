@@ -31,22 +31,22 @@ class CronTask
     private $param;
 
     #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 1, 'comment' => '0:disabled, 1:waiting, 2:running'])]
-    private $state;
+    private $state = 1;
 
     #[ORM\Column(name: 'mode', type: 'integer', options: ['default' => 1, 'comment' => '1:internal, 2:external'])]
-    private $mode;
+    private $mode = 1;
 
     #[ORM\Column(name: 'allowmode', type: 'integer', options: ['default' => 3, 'comment' => '1:internal, 2:external, 3:both'])]
-    private $allowmode;
+    private $allowmode = 3;
 
     #[ORM\Column(name: 'hourmin', type: 'integer', options: ['default' => 0])]
-    private $hourmin;
+    private $hourmin = 0;
 
     #[ORM\Column(name: 'hourmax', type: 'integer', options: ['default' => 24])]
-    private $hourmax;
+    private $hourmax = 24;
 
     #[ORM\Column(name: 'logs_lifetime', type: 'integer', options: ['default' => 30, 'comment' => 'number of days'])]
-    private $logsLifetime;
+    private $logsLifetime = 30;
 
     #[ORM\Column(name: 'lastrun', type: 'datetime', nullable: false)]
     private $lastrun;

@@ -21,10 +21,10 @@ class DisplayPreference
     private $itemtype;
 
     #[ORM\Column(name: 'num', type: "integer", options: ['default' => 0])]
-    private $num;
+    private $num = 0;
 
     #[ORM\Column(name: 'rank', type: "integer", options: ['default' => 0])]
-    private $rank;
+    private $rank = 0;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]

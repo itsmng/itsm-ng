@@ -18,13 +18,13 @@ class FieldUnicity
     private $id;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
-    private $name;
+    private $name = '';
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 255, options: ['default' => ''])]
-    private $itemtype;
+    private $itemtype = '';
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
@@ -34,13 +34,13 @@ class FieldUnicity
     private $fields;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
-    private $isActive;
+    private $isActive = false;
 
     #[ORM\Column(name: 'action_refuse', type: 'boolean', options: ['default' => 0])]
-    private $actionRefuse;
+    private $actionRefuse = false;
 
     #[ORM\Column(name: 'action_notify', type: 'boolean', options: ['default' => 0])]
-    private $actionNotify;
+    private $actionNotify = false;
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;

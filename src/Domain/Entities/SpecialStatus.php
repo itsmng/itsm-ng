@@ -17,10 +17,10 @@ class SpecialStatus
     private $name;
 
     #[ORM\Column(name: 'weight', type: 'integer', options: ['default' => 1])]
-    private $weight;
+    private $weight = 1;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
-    private $isActive;
+    private $isActive = true;
 
     #[ORM\Column(name: 'color', type: 'string', length: 255, nullable: true)]
     private $color;

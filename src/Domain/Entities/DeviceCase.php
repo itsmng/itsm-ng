@@ -40,7 +40,7 @@ class DeviceCase
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DeviceCaseModel::class)]
     #[ORM\JoinColumn(name: 'devicecasemodels_id', referencedColumnName: 'id', nullable: true)]

@@ -24,7 +24,7 @@ class ApplianceItem
     private $items_id = 0;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 100, options: ["default" => ""])]
-    private $itemtype;
+    private $itemtype = "";
 
     public function getId(): ?int
     {

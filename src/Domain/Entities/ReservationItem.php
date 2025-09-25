@@ -26,19 +26,19 @@ class ReservationItem
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
-    private $isActive;
+    private $isActive = true;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     public function getId(): ?int
     {

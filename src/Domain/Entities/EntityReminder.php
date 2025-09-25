@@ -25,7 +25,7 @@ class EntityReminder
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     public function getId(): ?int
     {

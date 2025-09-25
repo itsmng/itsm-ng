@@ -14,10 +14,10 @@ class OidcUser
     private $id;
 
     #[ORM\Column(name: 'user_id', type: 'integer', options: ['default' => 0])]
-    private $userId;
+    private $userId = 0;
 
     #[ORM\Column(name: 'update', type: 'boolean', options: ['default' => 0])]
-    private $update;
+    private $update = false;
 
     public function getId(): ?int
     {

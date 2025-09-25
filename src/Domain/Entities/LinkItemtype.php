@@ -16,10 +16,10 @@ class LinkItemtype
     private $id;
 
     #[ORM\Column(name: 'links_id', type: 'integer', options: ['default' => 0])]
-    private $linksId;
+    private $linksId = 0;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100, options: ['default' => ''])]
-    private $itemtype;
+    private $itemtype = '';
 
     public function getId(): int
     {

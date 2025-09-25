@@ -18,7 +18,7 @@ class PlanningRecall
     private $id;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
@@ -29,7 +29,7 @@ class PlanningRecall
 
 
     #[ORM\Column(name: 'before_time', type: 'integer', options: ['default' => -10])]
-    private $beforeTime;
+    private $beforeTime = -10;
 
     #[ORM\Column(name: 'when', type: 'datetime', nullable: true)]
     private $when;

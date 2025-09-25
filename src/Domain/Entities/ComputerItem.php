@@ -29,10 +29,10 @@ class ComputerItem
     private $itemtype;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
     public function getId(): ?int
     {

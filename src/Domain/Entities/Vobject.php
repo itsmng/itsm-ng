@@ -21,7 +21,7 @@ class Vobject
     private $itemtype;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'data', type: 'text', length: 65535, nullable: true)]
     private $data;

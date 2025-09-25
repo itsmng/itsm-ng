@@ -69,7 +69,7 @@ class ProblemTask
     private $content;
 
     #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
-    private $actiontime;
+    private $actiontime = 0;
 
     #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
     private $state = 0;
@@ -85,10 +85,10 @@ class ProblemTask
     private ?TaskTemplate $tasktemplate = null;
 
     #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
-    private $timelinePosition;
+    private $timelinePosition = false;
 
     #[ORM\Column(name: 'is_private', type: 'boolean', options: ['default' => 0])]
-    private $isPrivate;
+    private $isPrivate = false;
 
     public function getId(): ?int
     {

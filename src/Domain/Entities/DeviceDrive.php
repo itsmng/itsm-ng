@@ -25,7 +25,7 @@ class DeviceDrive
     private $designation;
 
     #[ORM\Column(name: 'is_writer', type: 'boolean', options: ['default' => 1])]
-    private $isWriter;
+    private $isWriter = true;
 
     #[ORM\Column(name: 'speed', type: 'string', length: 255, nullable: true)]
     private $speed;
@@ -46,7 +46,7 @@ class DeviceDrive
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DeviceDriveModel::class)]
     #[ORM\JoinColumn(name: 'devicedrivemodels_id', referencedColumnName: 'id', nullable: true)]

@@ -33,7 +33,7 @@ class DeviceSimcard
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     #[ORM\JoinColumn(name: 'manufacturers_id', referencedColumnName: 'id', nullable: true)]
@@ -53,7 +53,7 @@ class DeviceSimcard
     private $dateCreation;
 
     #[ORM\Column(name: 'allow_voip', type: 'boolean', options: ['default' => 0])]
-    private $allowVoip;
+    private $allowVoip = false;
 
     public function getId(): ?int
     {

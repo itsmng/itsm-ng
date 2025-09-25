@@ -26,10 +26,10 @@ class MailCollector
     private $login;
 
     #[ORM\Column(name: 'filesize_max', type: 'integer', options: ['default' => 2097152])]
-    private $filesizeMax;
+    private $filesizeMax = 2097152;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => true])]
-    private $isActive;
+    private $isActive = true;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -47,22 +47,22 @@ class MailCollector
     private $refused;
 
     #[ORM\Column(name: 'errors', type: 'integer', options: ['default' => 0])]
-    private $errors;
+    private $errors = 0;
 
     #[ORM\Column(name: 'use_mail_date', type: 'boolean', options: ['default' => false])]
-    private $useMailDate;
+    private $useMailDate = false;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
 
     #[ORM\Column(name: 'requester_field', type: 'integer', options: ['default' => 0])]
-    private $requesterField;
+    private $requesterField = 0;
 
     #[ORM\Column(name: 'add_cc_to_observer', type: 'boolean', options: ['default' => false])]
-    private $addCcToObserver;
+    private $addCcToObserver = false;
 
     #[ORM\Column(name: 'collect_only_unread', type: 'boolean', options: ['default' => false])]
-    private $collectOnlyUnread;
+    private $collectOnlyUnread = false;
 
     public function getId(): ?int
     {

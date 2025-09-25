@@ -39,14 +39,14 @@ class DeviceGraphicCard
     private ?Manufacturer $manufacturer = null;
 
     #[ORM\Column(name: 'memory_default', type: 'integer', options: ['default' => 0])]
-    private $memoryDefault;
+    private $memoryDefault = 0;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DeviceGraphicCardModel::class)]
     #[ORM\JoinColumn(name: 'devicegraphiccardmodels_id', referencedColumnName: 'id', nullable: true)]

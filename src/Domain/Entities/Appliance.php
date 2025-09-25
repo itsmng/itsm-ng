@@ -41,13 +41,13 @@ class Appliance
     private $isRecursive = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
-    private $name;
+    private $name = '';
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
     private $isDeleted = 0;
 
     #[ORM\Column(name: 'appliancetypes_id', type: 'integer', options: ['default' => 0])]
-    private $appliancetypesId;
+    private $appliancetypesId = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -87,7 +87,7 @@ class Appliance
     private $dateCreation;
 
     #[ORM\Column(type: 'integer', name: 'states_id', options: ['default' => 0])]
-    private $statesId;
+    private $statesId = 0;
 
     #[ORM\ManyToOne(targetEntity: State::class)]
     #[ORM\JoinColumn(name: 'states_id', referencedColumnName: 'id', nullable: false)]

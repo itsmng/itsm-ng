@@ -16,7 +16,7 @@ class ItilProject
     private $id;
 
     #[ORM\Column(name: 'itemtype', type: "string", length: 100, options: ["default" => ""])]
-    private $itemtype;
+    private $itemtype = '';
 
     #[ORM\Column(name: 'items_id', type: "integer", options: ["default" => 0])]
     private $items_id = 0;

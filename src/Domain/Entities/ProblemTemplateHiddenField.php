@@ -20,7 +20,7 @@ class ProblemTemplateHiddenField
     private ?ProblemTemplate $problemtemplate = null;
 
     #[ORM\Column(name: 'num', type: 'integer', options: ['default' => 0])]
-    private $num;
+    private $num = 0;
 
     public function getId(): ?int
     {

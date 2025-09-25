@@ -34,7 +34,7 @@ class DomainRecord
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: Domain::class)]
     #[ORM\JoinColumn(name: 'domains_id', referencedColumnName: 'id', nullable: true)]
@@ -58,7 +58,7 @@ class DomainRecord
 
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;

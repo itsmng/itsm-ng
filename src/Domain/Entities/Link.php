@@ -37,7 +37,7 @@ class Link
     #[ORM\Column(name: 'open_window', type: 'boolean', options: ['default' => true])]
     private $openWindow = true;
 
-    #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime')]

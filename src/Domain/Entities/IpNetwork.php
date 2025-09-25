@@ -26,7 +26,7 @@ class IpNetwork
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: IpNetwork::class)]
     #[ORM\JoinColumn(name: 'ipnetworks_id', referencedColumnName: 'id', nullable: true)]
@@ -36,7 +36,7 @@ class IpNetwork
     private $completename;
 
     #[ORM\Column(name: 'level', type: "integer", options: ["default" => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\Column(name: 'ancestors_cache', type: "text", nullable: true)]
     private $ancestorsCache;
@@ -45,10 +45,10 @@ class IpNetwork
     private $sonsCache;
 
     #[ORM\Column(name: 'addressable', type: "boolean", options: ["default" => false])]
-    private $addressable;
+    private $addressable = false;
 
     #[ORM\Column(name: 'version', type: "smallint", nullable: true, options: ["unsigned" => true, "default" => 0])]
-    private $version;
+    private $version = 0;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
@@ -57,46 +57,46 @@ class IpNetwork
     private $address;
 
     #[ORM\Column(name: 'address_0', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $address0;
+    private $address0 = 0;
 
     #[ORM\Column(name: 'address_1', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $address1;
+    private $address1 = 0;
 
     #[ORM\Column(name: 'address_2', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $address2;
+    private $address2 = 0;
 
     #[ORM\Column(name: 'address_3', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $address3;
+    private $address3 = 0;
 
     #[ORM\Column(name: 'netmask', type: "string", length: 40, nullable: true)]
     private $netmask;
 
     #[ORM\Column(name: 'netmask_0', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $netmask0;
+    private $netmask0 = 0;
 
     #[ORM\Column(name: 'netmask_1', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $netmask1;
+    private $netmask1 = 0;
 
     #[ORM\Column(name: 'netmask_2', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $netmask2;
+    private $netmask2 = 0;
 
     #[ORM\Column(name: 'netmask_3', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $netmask3;
+    private $netmask3 = 0;
 
     #[ORM\Column(name: 'gateway', type: "string", length: 40, nullable: true)]
     private $gateway;
 
     #[ORM\Column(name: 'gateway_0', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $gateway0;
+    private $gateway0 = 0;
 
     #[ORM\Column(name: 'gateway_1', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $gateway1;
+    private $gateway1 = 0;
 
     #[ORM\Column(name: 'gateway_2', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $gateway2;
+    private $gateway2 = 0;
 
     #[ORM\Column(name: 'gateway_3', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $gateway3;
+    private $gateway3 = 0;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;

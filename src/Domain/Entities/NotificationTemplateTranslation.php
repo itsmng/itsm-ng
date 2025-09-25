@@ -19,7 +19,7 @@ class NotificationTemplateTranslation
     private ?NotificationTemplate $notificationTemplate = null;
 
     #[ORM\Column(name: 'language', type: 'string', length: 10, options: ['default' => ''])]
-    private $language;
+    private $language = '';
 
     #[ORM\Column(name: 'subject', type: 'string', length: 255)]
     private $subject;

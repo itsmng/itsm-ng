@@ -38,10 +38,10 @@ class Notification
     private $comment;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
-    private $isActive;
+    private $isActive = false;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -50,7 +50,7 @@ class Notification
     private $dateCreation;
 
     #[ORM\Column(name: 'allow_response', type: 'boolean', options: ['default' => 1])]
-    private $allowResponse;
+    private $allowResponse = true;
 
     #[ORM\OneToMany(mappedBy: 'notification', targetEntity: NotificationNotificationTemplate::class)]
     private Collection $notificationNotificationTemplates;

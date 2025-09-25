@@ -36,7 +36,7 @@ class DeviceMemory
     private ?Manufacturer $manufacturer = null;
 
     #[ORM\Column(name: 'size_default', type: "integer", options: ['default' => 0])]
-    private $sizeDefault;
+    private $sizeDefault = 0;
 
     #[ORM\ManyToOne(targetEntity: DeviceMemoryType::class)]
     #[ORM\JoinColumn(name: 'devicememorytypes_id', referencedColumnName: 'id', nullable: true)]
@@ -47,7 +47,7 @@ class DeviceMemory
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ['default' => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DeviceMemoryModel::class)]
     #[ORM\JoinColumn(name: 'devicememorymodels_id', referencedColumnName: 'id', nullable: true)]

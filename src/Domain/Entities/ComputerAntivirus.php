@@ -42,16 +42,16 @@ class ComputerAntivirus
     private $signatureVersion;
 
     #[ORM\Column(name: 'is_active', type: "boolean", options: ["default" => 0])]
-    private $isActive;
+    private $isActive = 0;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_uptodate', type: "boolean", options: ["default" => 0])]
-    private $isUptodate;
+    private $isUptodate = 0;
 
     #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
     #[ORM\Column(name: 'date_expiration', type: "datetime", nullable: true)]
     private $dateExpiration;

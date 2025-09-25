@@ -34,7 +34,7 @@ class SoftwareLicenseType
     private ?SoftwareLicenseType $softwarelicensetype = null;
 
     #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
     private $ancestorsCache;
@@ -47,7 +47,7 @@ class SoftwareLicenseType
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'completename', type: 'text', length: 65535, nullable: true)]
     private $completename;

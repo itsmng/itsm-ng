@@ -69,28 +69,28 @@ class Contract
     private $isDeleted = 0;
 
     #[ORM\Column(name: 'week_begin_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $weekBeginHour;
+    private $weekBeginHour = '00:00:00';
 
     #[ORM\Column(name: 'week_end_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $weekEndHour;
+    private $weekEndHour = '00:00:00';
 
     #[ORM\Column(name: 'saturday_begin_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $saturdayBeginHour;
+    private $saturdayBeginHour = '00:00:00';
 
     #[ORM\Column(name: 'saturday_end_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $saturdayEndHour;
+    private $saturdayEndHour = '00:00:00';
 
     #[ORM\Column(name: 'use_saturday', type: 'boolean', options: ['default' => 0])]
-    private $useSaturday;
+    private $useSaturday = 0;
 
     #[ORM\Column(name: 'monday_begin_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $mondayBeginHour;
+    private $mondayBeginHour = '00:00:00';
 
     #[ORM\Column(name: 'monday_end_hour', type: 'time', options: ['default' => '00:00:00'])]
-    private $mondayEndHour;
+    private $mondayEndHour = '00:00:00';
 
     #[ORM\Column(name: 'use_monday', type: 'boolean', options: ['default' => 0])]
-    private $useMonday;
+    private $useMonday = 0;
 
     #[ORM\Column(name: 'max_links_allowed', type: 'integer', options: ['default' => 0])]
     private $maxLinksAllowed = 0;

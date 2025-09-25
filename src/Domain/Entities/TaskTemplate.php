@@ -27,7 +27,7 @@ class TaskTemplate
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -40,7 +40,7 @@ class TaskTemplate
     private ?TaskCategory $taskcategory = null;
 
     #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
-    private $actiontime;
+    private $actiontime = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -52,10 +52,10 @@ class TaskTemplate
     private $dateCreation;
 
     #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
-    private $state;
+    private $state = 0;
 
     #[ORM\Column(name: 'is_private', type: 'boolean', options: ['default' => 0])]
-    private $isPrivate;
+    private $isPrivate = false;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'tech_users_id', referencedColumnName: 'id', nullable: true)]

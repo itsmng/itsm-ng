@@ -24,7 +24,7 @@ class DeviceProcessor
     private $designation;
 
     #[ORM\Column(name: 'frequence', type: "integer", options: ["default" => 0])]
-    private $frequence;
+    private $frequence = 0;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
@@ -34,7 +34,7 @@ class DeviceProcessor
     private ?Manufacturer $manufacturer = null;
 
     #[ORM\Column(name: 'frequency_default', type: "integer", options: ["default" => 0])]
-    private $frequencyDefault;
+    private $frequencyDefault = 0;
 
     #[ORM\Column(name: 'nbcores_default', type: "integer", nullable: true)]
     private $nbcoresDefault;
@@ -47,7 +47,7 @@ class DeviceProcessor
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DeviceProcessorModel::class)]
     #[ORM\JoinColumn(name: 'deviceprocessormodels_id', referencedColumnName: 'id', nullable: true)]

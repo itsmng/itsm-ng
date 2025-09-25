@@ -17,31 +17,31 @@ class ImpactContext
     private $positions;
 
     #[ORM\Column(name: 'zoom', type: "float", options: ["default" => 0])]
-    private $zoom;
+    private $zoom = 0;
 
     #[ORM\Column(name: 'pan_x', type: "float", options: ["default" => 0])]
-    private $panX;
+    private $panX = 0;
 
     #[ORM\Column(name: 'pan_y', type: "float", options: ["default" => 0])]
-    private $panY;
+    private $panY = 0;
 
     #[ORM\Column(name: 'impact_color', type: "string", length: 255, options: ["default" => ""])]
-    private $impactColor;
+    private $impactColor = '';
 
     #[ORM\Column(name: 'depends_color', type: "string", length: 255, options: ["default" => ""])]
-    private $dependsColor;
+    private $dependsColor = '';
 
     #[ORM\Column(name: 'impact_and_depends_color', type: "string", length: 255, options: ["default" => ""])]
-    private $impactAndDependsColor;
+    private $impactAndDependsColor = '';
 
     #[ORM\Column(name: 'show_depends', type: "boolean", options: ["default" => true])]
-    private $showDepends;
+    private $showDepends = true;
 
     #[ORM\Column(name: 'show_impact', type: "boolean", options: ["default" => true])]
-    private $showImpact;
+    private $showImpact = true;
 
     #[ORM\Column(name: 'max_depth', type: "integer", options: ["default" => 5])]
-    private $maxDepth;
+    private $maxDepth = 5;
 
     public function getId(): ?int
     {

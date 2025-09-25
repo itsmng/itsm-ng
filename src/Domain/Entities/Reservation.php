@@ -36,8 +36,8 @@ class Reservation
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
 
-    #[ORM\Column(name: 'group', type: 'integer', options: ['default' => 0])]
-    private $group;
+    #[ORM\Column(name: 'groups', type: 'integer', options: ['default' => 0])]
+    private $groups = 0;
 
     public function getId(): ?int
     {
@@ -86,14 +86,14 @@ class Reservation
         return $this;
     }
 
-    public function getGroup(): ?string
+    public function getGroups(): ?string
     {
-        return $this->group;
+        return $this->groups;
     }
 
-    public function setGroup(?string $group): self
+    public function setGroups(?string $groups): self
     {
-        $this->group = $group;
+        $this->groups = $groups;
 
         return $this;
     }

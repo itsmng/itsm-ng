@@ -30,10 +30,10 @@ class ItemSoftwareLicense
     private ?SoftwareLicense $softwarelicense = null;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => false])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => false])]
-    private $isDynamic;
+    private $isDynamic = false;
 
     public function getId(): ?int
     {

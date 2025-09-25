@@ -25,7 +25,7 @@ class Plugin
     private $version;
 
     #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PLUGIN_* constant'])]
-    private $state;
+    private $state = 0;
 
     #[ORM\Column(name: 'author', type: 'string', length: 255, nullable: true)]
     private $author;

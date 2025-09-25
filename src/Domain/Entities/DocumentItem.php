@@ -36,7 +36,7 @@ class DocumentItem
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: false)]
     private $dateMod;
@@ -46,7 +46,7 @@ class DocumentItem
     private ?User $user = null;
 
     #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
-    private $timelinePosition;
+    private $timelinePosition = false;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: false)]
     private $dateCreation;

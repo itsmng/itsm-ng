@@ -37,7 +37,7 @@ class ITILCategory
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: ITILCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
@@ -53,7 +53,7 @@ class ITILCategory
     private $comment;
 
     #[ORM\Column(name: 'level', type: "integer", options: ["default" => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\ManyToOne(targetEntity: KnowbaseItemCategory::class)]
     #[ORM\JoinColumn(name: 'knowbaseitemcategories_id', referencedColumnName: 'id', nullable: true)]
@@ -77,7 +77,7 @@ class ITILCategory
     private $sonsCache;
 
     #[ORM\Column(name: 'is_helpdeskvisible', type: "boolean", options: ["default" => 1])]
-    private $isHelpdeskvisible;
+    private $isHelpdeskvisible = true;
 
     #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
     #[ORM\JoinColumn(name: 'tickettemplates_id_incident', referencedColumnName: 'id', nullable: true)]
@@ -96,16 +96,16 @@ class ITILCategory
     private ?ProblemTemplate $problemtemplate = null;
 
     #[ORM\Column(name: 'is_incident', type: "integer", options: ["default" => 1])]
-    private $isIncident;
+    private $isIncident = 1;
 
     #[ORM\Column(name: 'is_request', type: "integer", options: ["default" => 1])]
-    private $isRequest;
+    private $isRequest = 1;
 
     #[ORM\Column(name: 'is_problem', type: "integer", options: ["default" => 1])]
-    private $isProblem;
+    private $isProblem = 1;
 
     #[ORM\Column(name: 'is_change', type: "boolean", options: ["default" => 1])]
-    private $isChange;
+    private $isChange = true;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;

@@ -32,7 +32,7 @@ class Document
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -57,7 +57,7 @@ class Document
     private $comment;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'link', type: 'string', length: 255, nullable: true)]
     private $link;

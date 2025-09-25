@@ -32,31 +32,31 @@ class IPAddress
     private $itemtype;
 
     #[ORM\Column(name: 'version', type: "smallint", nullable: true, options: ["unsigned" => true, "default" => 0])]
-    private $version;
+    private $version = 0;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
 
     #[ORM\Column(name: 'binary_0', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary0;
+    private $binary0 = 0;
 
     #[ORM\Column(name: 'binary_1', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary1;
+    private $binary1 = 0;
 
     #[ORM\Column(name: 'binary_2', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary2;
+    private $binary2 = 0;
 
     #[ORM\Column(name: 'binary_3', type: "integer", options: ["unsigned" => true, "default" => 0])]
-    private $binary3;
+    private $binary3 = 0;
 
     #[ORM\Column(name: 'is_deleted', type: "boolean", options: ["default" => false])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'is_dynamic', type: "boolean", options: ["default" => false])]
-    private $isDynamic;
+    private $isDynamic = false;
 
     #[ORM\Column(name: 'mainitems_id', type: "integer", options: ["default" => 0])]
-    private $mainitemsId;
+    private $mainitemsId = 0;
 
     #[ORM\Column(name: 'mainitemtype', type: "string", length: 255, nullable: true)]
     private $mainitemtype;

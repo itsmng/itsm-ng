@@ -30,14 +30,14 @@ class PlanningExternalEvent
     private $uuid;
 
     #[ORM\Column(name: 'planningexternaleventtemplates_id', type: 'integer', options: ['default' => 0])]
-    private $planningexternaleventtemplatesId;
+    private $planningexternaleventtemplatesId = 0;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 1])]
-    private $isRecursive;
+    private $isRecursive = true;
 
     #[ORM\Column(name: 'date', type: 'datetime', nullable: true)]
     private $date;
@@ -70,14 +70,14 @@ class PlanningExternalEvent
     private $rrule;
 
     #[ORM\Column(name: 'state', type: 'integer', options: ['default' => 0])]
-    private $state;
+    private $state = 0;
 
     #[ORM\ManyToOne(targetEntity: PlanningEventCategory::class)]
     #[ORM\JoinColumn(name: 'planningeventcategories_id', referencedColumnName: 'id', nullable: true)]
     private ?PlanningEventCategory $planningeventcategory = null;
 
     #[ORM\Column(name: 'background', type: 'boolean', options: ['default' => 0])]
-    private $background;
+    private $background = false;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;

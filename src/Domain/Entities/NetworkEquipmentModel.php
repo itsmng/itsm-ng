@@ -44,7 +44,7 @@ class NetworkEquipmentModel
     private $powerConsumption = 0;
 
     #[ORM\Column(name: 'is_half_rack', type: 'boolean', options: ['default' => false])]
-    private $isHalfRack;
+    private $isHalfRack = false;
 
     #[ORM\Column(name: 'picture_front', type: 'text', length: 65535, nullable: true)]
     private $pictureFront;

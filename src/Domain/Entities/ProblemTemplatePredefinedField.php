@@ -19,7 +19,7 @@ class ProblemTemplatePredefinedField
     private ?ProblemTemplate $problemtemplate = null;
 
     #[ORM\Column(name: 'num', type: 'integer', options: ['default' => 0])]
-    private $num;
+    private $num = 0;
 
     #[ORM\Column(name: 'value', type: 'text', length: 65535, nullable: true)]
     private $value;

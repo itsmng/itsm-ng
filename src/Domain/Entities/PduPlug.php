@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Domain\Entities;
-
 namespace Itsmng\Domain\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -26,7 +24,7 @@ class PduPlug
     private ?PDU $pdu = null;
 
     #[ORM\Column(name: 'number_plugs', type: 'integer', nullable: true, options: ['default' => 0])]
-    private $numberPlugs;
+    private $numberPlugs = 0;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;

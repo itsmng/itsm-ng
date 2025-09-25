@@ -49,17 +49,17 @@ class SoftwareLicense
     private $completename;
 
     #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'number', type: 'integer', options: ['default' => 0])]
-    private $number;
+    private $number = 0;
 
     #[ORM\ManyToOne(targetEntity: SoftwareLicenseType::class)]
     #[ORM\JoinColumn(name: 'softwarelicensetypes_id', referencedColumnName: 'id', nullable: true)]
@@ -92,13 +92,13 @@ class SoftwareLicense
     private $dateMod;
 
     #[ORM\Column(name: 'is_valid', type: 'boolean', options: ['default' => 1])]
-    private $isValid;
+    private $isValid = true;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime')]
     private $dateCreation;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]
@@ -117,13 +117,13 @@ class SoftwareLicense
     private ?Group $techGroup = null;
 
     #[ORM\Column(name: 'groups_id', type: 'integer', options: ['default' => 0])]
-    private $groupsId;
+    private $groupsId = 0;
 
     #[ORM\Column(name: 'is_helpdesk_visible', type: 'boolean', options: ['default' => 0])]
-    private $isHelpdeskVisible;
+    private $isHelpdeskVisible = false;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = false;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
     private $templateName;
@@ -143,7 +143,7 @@ class SoftwareLicense
     private $contactNum;
 
     #[ORM\Column(name: 'allow_overquota', type: 'boolean', options: ['default' => 0])]
-    private $allowOverquota;
+    private $allowOverquota = false;
 
     public function getId(): ?int
     {

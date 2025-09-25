@@ -35,7 +35,7 @@ class AuthMail
     private $comment;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
-    private $isActive;
+    private $isActive = 0;
 
     public function getId(): ?int
     {

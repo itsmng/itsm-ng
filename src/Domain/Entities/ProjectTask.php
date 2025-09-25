@@ -50,7 +50,7 @@ class ProjectTask
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: Project::class)]
     #[ORM\JoinColumn(name: 'projects_id', referencedColumnName: 'id', nullable: true)]
@@ -79,10 +79,10 @@ class ProjectTask
     private $realEndDate;
 
     #[ORM\Column(name: 'planned_duration', type: 'integer', options: ['default' => 0])]
-    private $plannedDuration;
+    private $plannedDuration = 0;
 
     #[ORM\Column(name: 'effective_duration', type: 'integer', options: ['default' => 0])]
-    private $effectiveDuration;
+    private $effectiveDuration = 0;
 
     #[ORM\ManyToOne(targetEntity: ProjectState::class)]
     #[ORM\JoinColumn(name: 'projectstates_id', referencedColumnName: 'id', nullable: true)]
@@ -97,20 +97,20 @@ class ProjectTask
     private ?User $user = null;
 
     #[ORM\Column(name: 'percent_done', type: 'integer', options: ['default' => 0])]
-    private $percentDone;
+    private $percentDone = 0;
 
     #[ORM\Column(name: 'auto_percent_done', type: 'boolean', options: ['default' => 0])]
-    private $autoPercentDone;
+    private $autoPercentDone = false;
 
     #[ORM\Column(name: 'is_milestone', type: 'boolean', options: ['default' => 0])]
-    private $isMilestone;
+    private $isMilestone = false;
 
     #[ORM\ManyToOne(targetEntity: ProjectTaskTemplate::class)]
     #[ORM\JoinColumn(name: 'projecttasktemplates_id', referencedColumnName: 'id', nullable: true)]
     private ?ProjectTaskTemplate $projecttasktemplate = null;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => 0])]
-    private $isTemplate;
+    private $isTemplate = false;
 
     #[ORM\Column(name: 'template_name', type: 'string', length: 255, nullable: true)]
     private $templateName;

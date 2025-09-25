@@ -19,7 +19,7 @@ class TicketSatisfaction
     private ?Ticket $ticket = null;
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
-    private $type;
+    private $type = 1;
 
     #[ORM\Column(name: 'date_begin', type: 'datetime', nullable: true)]
     private $dateBegin;

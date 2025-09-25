@@ -32,7 +32,7 @@ class KnowbaseItemRevision
     private $language;
 
     #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
-    private $usersId;
+    private $usersId = 0;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;
@@ -111,6 +111,26 @@ class KnowbaseItemRevision
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of knowbaseitem
+     */ 
+    public function getKnowbaseitem()
+    {
+        return $this->knowbaseitem;
+    }
+
+    /**
+     * Set the value of knowbaseitem
+     *
+     * @return  self
+     */ 
+    public function setKnowbaseitem($knowbaseitem)
+    {
+        $this->knowbaseitem = $knowbaseitem;
 
         return $this;
     }

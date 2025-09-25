@@ -42,13 +42,13 @@ class Problem
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0], nullable: false)]
-    private $isDeleted = 0;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
-    private $status;
+    private $status = 1;
 
     #[ORM\Column(name: 'content', type: 'text', nullable: true)]
     private $content;
@@ -77,13 +77,13 @@ class Problem
     private ?User $lastupdaterUser = null;
 
     #[ORM\Column(name: 'urgency', type: 'integer', options: ['default' => 1])]
-    private $urgency;
+    private $urgency = 1;
 
     #[ORM\Column(name: 'impact', type: 'integer', options: ['default' => 1])]
-    private $impact;
+    private $impact = 1;
 
     #[ORM\Column(name: 'priority', type: 'integer', options: ['default' => 1])]
-    private $priority;
+    private $priority = 1;
 
     #[ORM\ManyToOne(targetEntity: ITILCategory::class)]
     #[ORM\JoinColumn(name: 'itilcategories_id', referencedColumnName: 'id', nullable: true)]
@@ -99,19 +99,19 @@ class Problem
     private $symptomcontent;
 
     #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
-    private $actiontime;
+    private $actiontime = 0;
 
     #[ORM\Column(name: 'begin_waiting_date', type: 'datetime', nullable: true)]
     private $beginWaitingDate;
 
     #[ORM\Column(name: 'waiting_duration', type: 'integer', options: ['default' => 0])]
-    private $waitingDuration;
+    private $waitingDuration = 0;
 
     #[ORM\Column(name: 'close_delay_stat', type: 'integer', options: ['default' => 0])]
-    private $closeDelayStat;
+    private $closeDelayStat = 0;
 
     #[ORM\Column(name: 'solve_delay_stat', type: 'integer', options: ['default' => 0])]
-    private $solveDelayStat;
+    private $solveDelayStat = 0;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;

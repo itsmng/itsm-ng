@@ -19,7 +19,7 @@ class NotificationTarget
     private $items_id = 0;
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 0])]
-    private $type;
+    private $type = 0;
 
     #[ORM\ManyToOne(targetEntity: Notification::class)]
     #[ORM\JoinColumn(name: 'notifications_id', referencedColumnName: 'id', nullable: true)]

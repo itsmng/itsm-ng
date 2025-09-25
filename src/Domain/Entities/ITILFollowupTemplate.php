@@ -31,7 +31,7 @@ class ITILFollowupTemplate
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
@@ -44,7 +44,7 @@ class ITILFollowupTemplate
     private ?RequestType $requesttype = null;
 
     #[ORM\Column(name: 'is_private', type: "boolean", options: ["default" => 0])]
-    private $isPrivate;
+    private $isPrivate = false;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;

@@ -67,7 +67,7 @@ class ConsumableItem
     private $comment;
 
     #[ORM\Column(name: 'alarm_threshold', type: 'integer', options: ['default' => 10])]
-    private $alarmThreshold;
+    private $alarmThreshold = 10;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime')]
     private $dateMod;

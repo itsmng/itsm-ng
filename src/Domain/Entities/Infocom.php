@@ -36,7 +36,7 @@ class Infocom
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'buy_date', type: "date", nullable: true)]
     private $buyDate;

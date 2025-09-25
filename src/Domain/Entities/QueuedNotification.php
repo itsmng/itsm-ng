@@ -39,7 +39,7 @@ class QueuedNotification
     private $isDeleted = 0;
 
     #[ORM\Column(name: 'sent_try', type: 'integer', options: ['default' => 0])]
-    private $sentTry;
+    private $sentTry = 0;
 
     #[ORM\Column(name: 'create_time', type: 'datetime', nullable: true)]
     private $createTime;

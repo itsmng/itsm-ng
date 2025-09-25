@@ -46,7 +46,7 @@ class ItemDeviceBattery
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'serial', type: "string", length: 255, nullable: true)]
     private $serial;

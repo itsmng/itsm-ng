@@ -20,7 +20,7 @@ class Line
     private $id;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
-    private $name;
+    private $name = '';
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
@@ -69,7 +69,7 @@ class Line
     private $dateMod;
 
     #[ORM\Column(name: 'comment', type: 'text', options: ['default' => null], length: 65535, nullable: true)]
-    private $comment;
+    private $comment = null;
 
     public function getId(): ?int
     {

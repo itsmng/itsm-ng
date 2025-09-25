@@ -25,7 +25,7 @@ class BusinessCriticity
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
@@ -44,7 +44,7 @@ class BusinessCriticity
     private $completename;
 
     #[ORM\Column(name: 'level', type: "integer", options: ["default" => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\Column(name: 'ancestors_cache', type: "text", nullable: true)]
     private $ancestorsCache;

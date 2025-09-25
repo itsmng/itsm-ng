@@ -26,10 +26,10 @@ class OLA
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 0])]
-    private $type;
+    private $type = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -48,7 +48,7 @@ class OLA
     private $definitionTime;
 
     #[ORM\Column(name: 'end_of_working_day', type: 'boolean', options: ['default' => 0])]
-    private $endOfWorkingDay;
+    private $endOfWorkingDay = false;
 
     #[ORM\Column(name: 'date_creation', type: 'datetime', nullable: true)]
     private $dateCreation;

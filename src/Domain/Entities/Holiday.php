@@ -28,7 +28,7 @@ class Holiday
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'comment', type: "text", nullable: true, length: 65535)]
     private $comment;
@@ -40,7 +40,7 @@ class Holiday
     private $endDate;
 
     #[ORM\Column(name: 'is_perpetual', type: "boolean", options: ["default" => false])]
-    private $isPerpetual;
+    private $isPerpetual = false;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;

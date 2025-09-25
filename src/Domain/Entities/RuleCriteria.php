@@ -23,7 +23,7 @@ class RuleCriteria
     private $criteria;
 
     #[ORM\Column(name: 'conditions', type: 'integer', options: ['default' => 0, 'comment' => 'see define.php PATTERN_* and REGEX_* constant'])]
-    private $condition;
+    private $condition = 0;
 
     #[ORM\Column(name: 'pattern', type: 'text', length: 65535, nullable: true)]
     private $pattern;

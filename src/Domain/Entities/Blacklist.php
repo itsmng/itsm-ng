@@ -21,7 +21,7 @@ class Blacklist
     private $id;
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 0])]
-    private $type;
+    private $type = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;

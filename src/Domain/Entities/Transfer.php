@@ -18,88 +18,88 @@ class Transfer
     private $name;
 
     #[ORM\Column(name: 'keep_ticket', type: 'integer', options: ['default' => 0])]
-    private $keepTicket;
+    private $keepTicket = 0;
 
     #[ORM\Column(name: 'keep_networklink', type: 'integer', options: ['default' => 0])]
-    private $keepNetworklink;
+    private $keepNetworklink = 0;
 
     #[ORM\Column(name: 'keep_reservation', type: 'integer', options: ['default' => 0])]
-    private $keepReservation;
+    private $keepReservation = 0;
 
     #[ORM\Column(name: 'keep_history', type: 'integer', options: ['default' => 0])]
-    private $keepHistory;
+    private $keepHistory = 0;
 
     #[ORM\Column(name: 'keep_device', type: 'integer', options: ['default' => 0])]
-    private $keepDevice;
+    private $keepDevice = 0;
 
     #[ORM\Column(name: 'keep_infocom', type: 'integer', options: ['default' => 0])]
-    private $keepInfocom;
+    private $keepInfocom = 0;
 
     #[ORM\Column(name: 'keep_dc_monitor', type: 'integer', options: ['default' => 0])]
-    private $keepDcMonitor;
+    private $keepDcMonitor = 0;
 
     #[ORM\Column(name: 'clean_dc_monitor', type: 'integer', options: ['default' => 0])]
-    private $cleanDcMonitor;
+    private $cleanDcMonitor = 0;
 
     #[ORM\Column(name: 'keep_dc_phone', type: 'integer', options: ['default' => 0])]
-    private $keepDcPhone;
+    private $keepDcPhone = 0;
 
     #[ORM\Column(name: 'clean_dc_phone', type: 'integer', options: ['default' => 0])]
-    private $cleanDcPhone;
+    private $cleanDcPhone = 0;
 
     #[ORM\Column(name: 'keep_dc_peripheral', type: 'integer', options: ['default' => 0])]
-    private $keepDcPeripheral;
+    private $keepDcPeripheral = 0;
 
     #[ORM\Column(name: 'clean_dc_peripheral', type: 'integer', options: ['default' => 0])]
-    private $cleanDcPeripheral;
+    private $cleanDcPeripheral = 0;
 
     #[ORM\Column(name: 'keep_dc_printer', type: 'integer', options: ['default' => 0])]
-    private $keepDcPrinter;
+    private $keepDcPrinter = 0;
 
     #[ORM\Column(name: 'clean_dc_printer', type: 'integer', options: ['default' => 0])]
-    private $cleanDcPrinter;
+    private $cleanDcPrinter = 0;
 
     #[ORM\Column(name: 'keep_supplier', type: 'integer', options: ['default' => 0])]
-    private $keepSupplier;
+    private $keepSupplier = 0;
 
     #[ORM\Column(name: 'clean_supplier', type: 'integer', options: ['default' => 0])]
-    private $cleanSupplier;
+    private $cleanSupplier = 0;
 
     #[ORM\Column(name: 'keep_contact', type: 'integer', options: ['default' => 0])]
-    private $keepContact;
+    private $keepContact = 0;
 
     #[ORM\Column(name: 'clean_contact', type: 'integer', options: ['default' => 0])]
-    private $cleanContact;
+    private $cleanContact = 0;
 
     #[ORM\Column(name: 'keep_contract', type: 'integer', options: ['default' => 0])]
-    private $keepContract;
+    private $keepContract = 0;
 
     #[ORM\Column(name: 'clean_contract', type: 'integer', options: ['default' => 0])]
-    private $cleanContract;
+    private $cleanContract = 0;
 
     #[ORM\Column(name: 'keep_software', type: 'integer', options: ['default' => 0])]
-    private $keepSoftware;
+    private $keepSoftware = 0;
 
     #[ORM\Column(name: 'clean_software', type: 'integer', options: ['default' => 0])]
-    private $cleanSoftware;
+    private $cleanSoftware = 0;
 
     #[ORM\Column(name: 'keep_document', type: 'integer', options: ['default' => 0])]
-    private $keepDocument;
+    private $keepDocument = 0;
 
     #[ORM\Column(name: 'clean_document', type: 'integer', options: ['default' => 0])]
     private $cleanDocument;
 
     #[ORM\Column(name: 'keep_cartridgeitem', type: 'integer', options: ['default' => 0])]
-    private $keepCartridgeitem;
+    private $keepCartridgeitem = 0;
 
     #[ORM\Column(name: 'clean_cartridgeitem', type: 'integer', options: ['default' => 0])]
-    private $cleanCartridgeitem;
+    private $cleanCartridgeitem = 0;
 
     #[ORM\Column(name: 'keep_cartridge', type: 'integer', options: ['default' => 0])]
-    private $keepCartridge;
+    private $keepCartridge = 0;
 
     #[ORM\Column(name: 'keep_consumable', type: 'integer', options: ['default' => 0])]
-    private $keepConsumable;
+    private $keepConsumable = 0;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;
@@ -108,7 +108,7 @@ class Transfer
     private $comment;
 
     #[ORM\Column(name: 'keep_disk', type: 'integer', options: ['default' => 0])]
-    private $keepDisk;
+    private $keepDisk = 0;
 
     public function getId(): ?int
     {

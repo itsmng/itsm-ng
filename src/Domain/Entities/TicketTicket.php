@@ -15,13 +15,13 @@ class TicketTicket
     private $id;
 
     #[ORM\Column(name: 'tickets_id_1', type: 'integer', options: ['default' => 0])]
-    private $ticketsId1;
+    private $ticketsId1 = 0;
 
     #[ORM\Column(name: 'tickets_id_2', type: 'integer', options: ['default' => 0])]
-    private $ticketsId2;
+    private $ticketsId2 = 0;
 
     #[ORM\Column(name: 'link', type: 'integer', options: ['default' => 1])]
-    private $link;
+    private $link = 1;
 
     public function getId(): ?int
     {

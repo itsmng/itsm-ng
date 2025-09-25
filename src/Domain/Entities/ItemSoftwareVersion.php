@@ -35,20 +35,20 @@ class ItemSoftwareVersion
     private ?SoftwareVersion $softwareversion = null;
 
     #[ORM\Column(name: 'is_deleted_item', type: 'boolean', options: ['default' => false])]
-    private $isDeletedItem;
+    private $isDeletedItem = false;
 
     #[ORM\Column(name: 'is_template_item', type: 'boolean', options: ['default' => false])]
-    private $isTemplateItem;
+    private $isTemplateItem = false;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => false])]
-    private $isDeleted;
+    private $isDeleted = false;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => false])]
-    private $isDynamic;
+    private $isDynamic = false;
 
     #[ORM\Column(name: 'date_install', type: 'date', nullable: true)]
     private $dateInstall;

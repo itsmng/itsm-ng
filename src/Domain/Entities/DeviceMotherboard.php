@@ -38,7 +38,7 @@ class DeviceMotherboard
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DeviceMotherBoardModel::class)]
     #[ORM\JoinColumn(name: 'devicemotherboardmodels_id', referencedColumnName: 'id', nullable: true)]

@@ -14,10 +14,10 @@ class ImpactCompound
     private $id;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true, options: ["default" => ""])]
-    private $name;
+    private $name = '';
 
     #[ORM\Column(name: 'color', type: "string", length: 255, options: ["default" => ""])]
-    private $color;
+    private $color = '';
 
     public function getId(): ?int
     {

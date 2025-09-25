@@ -25,7 +25,7 @@ class TicketValidation
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'users_id', type: 'integer', options: ['default' => 0])]
-    private $usersId;
+    private $usersId = 0;
 
     #[ORM\ManyToOne(targetEntity: Ticket::class)]
     #[ORM\JoinColumn(name: 'tickets_id', referencedColumnName: 'id', nullable: true)]
@@ -42,7 +42,7 @@ class TicketValidation
     private $commentValidation;
 
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 2])]
-    private $status;
+    private $status = 2;
 
     #[ORM\Column(name: 'submission_date', type: 'datetime', nullable: true)]
     private $submissionDate;
@@ -51,7 +51,7 @@ class TicketValidation
     private $validationDate;
 
     #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
-    private $timelinePosition;
+    private $timelinePosition = 0;
 
     public function getId(): ?int
     {

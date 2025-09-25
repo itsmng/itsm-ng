@@ -40,11 +40,11 @@ class DevicePci
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DevicePciModel::class)]
     #[ORM\JoinColumn(name: 'devicepcimodels_id', referencedColumnName: 'id', nullable: true)]
-    private ?DevicepciModel $devicepcimodel = null;
+    private ?DevicePciModel $devicepcimodel = null;
 
     #[ORM\Column(name: 'date_mod', type: "datetime", nullable: true)]
     private $dateMod;

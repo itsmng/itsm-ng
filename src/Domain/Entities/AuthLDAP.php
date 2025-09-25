@@ -34,13 +34,13 @@ class AuthLDAP
     private $rootdn;
 
     #[ORM\Column(name: 'port', type: 'integer', options: ['default' => 389])]
-    private $port;
+    private $port = 389;
 
     #[ORM\Column(name: 'conditions', type: 'text', length: 65535, nullable: true)]
     private $condition;
 
     #[ORM\Column(name: 'login_field', type: 'string', length: 255, nullable: true, options: ['default' => 'uid'])]
-    private $loginField;
+    private $loginField = 'uid';
 
     #[ORM\Column(name: 'sync_field', type: 'string', length: 255, nullable: true)]
     private $syncField;
@@ -112,10 +112,10 @@ class AuthLDAP
     private $comment;
 
     #[ORM\Column(name: 'is_default', type: 'boolean', options: ['default' => false])]
-    private $isDefault;
+    private $isDefault = false;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => false])]
-    private $isActive;
+    private $isActive = false;
 
     #[ORM\Column(name: 'rootdn_passwd', type: 'string', length: 255, nullable: true)]
     private $rootdnPasswd;

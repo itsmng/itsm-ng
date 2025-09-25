@@ -36,16 +36,16 @@ class TicketCost
     private $endDate;
 
     #[ORM\Column(name: 'actiontime', type: 'integer', options: ['default' => 0])]
-    private $actiontime;
+    private $actiontime = 0;
 
     #[ORM\Column(name: 'cost_time', type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
-    private $costTime;
+    private $costTime = 0.0000;
 
     #[ORM\Column(name: 'cost_fixed', type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
-    private $costFixed;
+    private $costFixed = 0.0000;
 
     #[ORM\Column(name: 'cost_material', type: 'decimal', precision: 20, scale: 4, options: ['default' => "0.0000"])]
-    private $costMaterial;
+    private $costMaterial = 0.0000;
 
     #[ORM\ManyToOne(targetEntity: Budget::class)]
     #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]

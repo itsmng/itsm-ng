@@ -23,7 +23,7 @@ class AuthLDAPReplicate
     private $host;
 
     #[ORM\Column(name: 'port', type: "integer", options: ["default" => 389])]
-    private $port;
+    private $port = 389;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;

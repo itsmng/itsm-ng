@@ -49,7 +49,7 @@ class ITILFollowup
     private $content;
 
     #[ORM\Column(name: 'is_private', type: 'boolean', options: ['default' => 0])]
-    private $isPrivate;
+    private $isPrivate = false;
 
     #[ORM\ManyToOne(targetEntity: RequestType::class)]
     #[ORM\JoinColumn(name: 'requesttypes_id', referencedColumnName: 'id', nullable: true)]

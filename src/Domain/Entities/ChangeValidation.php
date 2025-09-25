@@ -27,7 +27,7 @@ class ChangeValidation
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = 0;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]
@@ -48,7 +48,7 @@ class ChangeValidation
     private $commentValidation;
 
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 2])]
-    private $status;
+    private $status = 2;
 
     #[ORM\Column(name: 'submission_date', type: 'datetime', nullable: false)]
     private $submissionDate;
@@ -57,7 +57,7 @@ class ChangeValidation
     private $validationDate;
 
     #[ORM\Column(name: 'timeline_position', type: 'boolean', options: ['default' => 0])]
-    private $timelinePosition;
+    private $timelinePosition = 0;
 
     public function getId(): ?int
     {

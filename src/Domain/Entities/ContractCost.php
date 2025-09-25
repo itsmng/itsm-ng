@@ -39,7 +39,7 @@ class ContractCost
     private $endDate;
 
     #[ORM\Column(name: 'cost', type: 'decimal', precision: 20, scale: 4, options: ['default' => '0.0000'])]
-    private $cost;
+    private $cost = '0.0000';
 
     #[ORM\ManyToOne(targetEntity: Budget::class)]
     #[ORM\JoinColumn(name: 'budgets_id', referencedColumnName: 'id', nullable: true)]

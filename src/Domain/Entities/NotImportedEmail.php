@@ -36,7 +36,7 @@ class NotImportedEmail
     private $messageid;
 
     #[ORM\Column(name: 'reason', type: 'integer', options: ['default' => 0])]
-    private $reason;
+    private $reason = 0;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true)]

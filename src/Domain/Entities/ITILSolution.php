@@ -69,7 +69,7 @@ class ITILSolution
     private $userNameApproval;
 
     #[ORM\Column(name: 'status', type: 'integer', options: ['default' => 1])]
-    private $status;
+    private $status = 1;
 
     #[ORM\ManyToOne(targetEntity: ITILFollowup::class)]
     #[ORM\JoinColumn(name: 'itilfollowups_id', referencedColumnName: 'id', nullable: true, options: ['comment' => 'Followup reference on reject or approve a solution'])]

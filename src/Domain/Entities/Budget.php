@@ -34,7 +34,7 @@ class Budget
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
@@ -49,7 +49,7 @@ class Budget
     private $endDate;
 
     #[ORM\Column(name: 'value', type: 'decimal', precision: 20, scale: 4, options: ['default' => '0.0000'])]
-    private $value;
+    private $value = 0.0000;
 
     #[ORM\Column(name: 'is_template', type: 'boolean', options: ['default' => false])]
     private $isTemplate = false;

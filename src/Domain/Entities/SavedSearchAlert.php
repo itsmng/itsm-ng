@@ -26,10 +26,10 @@ class SavedSearchAlert
     private $name;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
-    private $isActive;
+    private $isActive = false;
 
     #[ORM\Column(name: 'operator', type: 'boolean')]
-    private $operator;
+    private $operator = false;
 
     #[ORM\Column(name: 'value', type: 'integer')]
     private $value;

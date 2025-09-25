@@ -71,28 +71,28 @@ class Monitor
     private $size = 0.00;
 
     #[ORM\Column(name: 'have_micro', type: 'boolean', options: ['default' => false])]
-    private $haveMicro;
+    private $haveMicro = false;
 
     #[ORM\Column(name: 'have_speaker', type: 'boolean', options: ['default' => false])]
-    private $haveSpeaker;
+    private $haveSpeaker = false;
 
     #[ORM\Column(name: 'have_subd', type: 'boolean', options: ['default' => false])]
-    private $haveSubd;
+    private $haveSubd = false;
 
     #[ORM\Column(name: 'have_bnc', type: 'boolean', options: ['default' => false])]
-    private $haveBnc;
+    private $haveBnc = false;
 
     #[ORM\Column(name: 'have_dvi', type: 'boolean', options: ['default' => false])]
-    private $haveDvi;
+    private $haveDvi = false;
 
     #[ORM\Column(name: 'have_pivot', type: 'boolean', options: ['default' => false])]
-    private $havePivot;
+    private $havePivot = false;
 
     #[ORM\Column(name: 'have_hdmi', type: 'boolean', options: ['default' => false])]
-    private $haveHdmi;
+    private $haveHdmi = false;
 
     #[ORM\Column(name: 'have_displayport', type: 'boolean', options: ['default' => false])]
-    private $haveDisplayport;
+    private $haveDisplayport = false;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'locations_id', referencedColumnName: 'id', nullable: true)]

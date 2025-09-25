@@ -28,14 +28,14 @@ class SlaLevel
     private $executionTime;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 1])]
-    private $isActive;
+    private $isActive = true;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'match', type: 'string', length: 10, nullable: true, options: ['comment' => 'see define.php *_MATCHING constant'])]
     private $match;

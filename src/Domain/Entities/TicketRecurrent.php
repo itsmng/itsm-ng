@@ -30,10 +30,10 @@ class TicketRecurrent
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => 0])]
-    private $isActive;
+    private $isActive = false;
 
     #[ORM\ManyToOne(targetEntity: TicketTemplate::class)]
     #[ORM\JoinColumn(name: 'tickettemplates_id', referencedColumnName: 'id', nullable: true)]
@@ -46,7 +46,7 @@ class TicketRecurrent
     private $periodicity;
 
     #[ORM\Column(name: 'create_before', type: 'integer', options: ['default' => 0])]
-    private $createBefore;
+    private $createBefore = 0;
 
     #[ORM\Column(name: 'next_creation_date', type: 'datetime', nullable: true)]
     private $nextCreationDate;

@@ -20,16 +20,16 @@ class Log
     private $id;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100, options: ['default' => ''])]
-    private $itemtype;
+    private $itemtype = '';
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $items_id = null;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'itemtype_link', type: 'string', length: 100, options: ['default' => ''])]
-    private $itemtypeLink;
+    private $itemtypeLink = '';
 
     #[ORM\Column(name: 'linked_action', type: 'integer', options: ['default' => 0, 'comment' => 'see define.php HISTORY_* constant'])]
-    private $linkedAction;
+    private $linkedAction = 0;
 
     #[ORM\Column(name: 'user_name', type: 'string', length: 255, nullable: true)]
     private $userName;
@@ -38,7 +38,7 @@ class Log
     private $dateMod;
 
     #[ORM\Column(name: 'id_search_option', type: 'integer', options: ['default' => 0, 'comment' => 'see search.constant.php for value'])]
-    private $idSearchOption;
+    private $idSearchOption = 0;
 
     #[ORM\Column(name: 'old_value', type: 'string', length: 255, nullable: true)]
     private $oldValue;

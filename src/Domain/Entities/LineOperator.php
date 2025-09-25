@@ -20,7 +20,7 @@ class LineOperator
     private $id;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
-    private $name;
+    private $name = '';
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
@@ -36,7 +36,7 @@ class LineOperator
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;

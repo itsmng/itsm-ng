@@ -26,7 +26,7 @@ class ChangeGroup
     private ?Group $group = null;
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 1])]
-    private $type;
+    private $type = 1;
 
     public function getId(): ?int
     {

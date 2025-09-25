@@ -25,10 +25,10 @@ class CalendarSegment
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'day', type: "boolean", options: ["default" => true, "comment" => "number of the day based on date(w)"])]
-    private $day;
+    private $day = true;
 
     #[ORM\Column(name: 'begin', type: "time", nullable: true)]
     private $begin;

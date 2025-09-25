@@ -27,7 +27,7 @@ class SavedSearch
     private $name;
 
     #[ORM\Column(name: 'type', type: 'integer', options: ['default' => 0, 'comment' => 'see SavedSearch:: constants'])]
-    private $type;
+    private $type = 0;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;
@@ -37,14 +37,14 @@ class SavedSearch
     private ?User $user = null;
 
     #[ORM\Column(name: 'is_private', type: 'boolean', options: ['default' => 1])]
-    private $isPrivate;
+    private $isPrivate = true;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'path', type: 'string', length: 255, nullable: true)]
     private $path;
@@ -56,13 +56,13 @@ class SavedSearch
     private $lastExecutionTime;
 
     #[ORM\Column(name: 'do_count', type: 'boolean', options: ['default' => 2, 'comment' => 'Do or do not count results on list display see SavedSearch::COUNT_* constants'])]
-    private $doCount;
+    private $doCount = 2;
 
     #[ORM\Column(name: 'last_execution_date', type: 'datetime', nullable: true)]
     private $lastExecutionDate;
 
     #[ORM\Column(name: 'counter', type: 'integer', options: ['default' => 0])]
-    private $counter;
+    private $counter = 0;
 
     #[ORM\OneToMany(mappedBy: 'savedsearch', targetEntity: SavedSearchAlert::class)]
     private Collection $savedsearchAlerts;

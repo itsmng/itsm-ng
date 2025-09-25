@@ -10,31 +10,31 @@ class OidcMapping
 {
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'integer', options: ['default' => 0])]
-    private $id;
+    private $id = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $name;
+    private $name = '';
 
     #[ORM\Column(name: 'given_name', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $givenName;
+    private $givenName = '';
 
     #[ORM\Column(name: 'family_name', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $familyName;
+    private $familyName = '';
 
     #[ORM\Column(name: 'picture', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $picture;
+    private $picture = '';
 
     #[ORM\Column(name: 'email', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $email;
+    private $email = '';
 
     #[ORM\Column(name: 'locale', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $locale;
+    private $locale = '';
 
     #[ORM\Column(name: 'phone_number', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $phoneNumber;
+    private $phoneNumber = '';
 
     #[ORM\Column(name: 'group', type: 'string', length: 255, nullable: true, options: ['default' => ''])]
-    private $group;
+    private $group = '';
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;

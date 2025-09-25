@@ -33,7 +33,7 @@ class DocumentCategory
     private $completename;
 
     #[ORM\Column(name: 'level', type: 'integer', options: ['default' => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\Column(name: 'ancestors_cache', type: 'text', nullable: true)]
     private $ancestorsCache;

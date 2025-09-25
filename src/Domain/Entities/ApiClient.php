@@ -21,7 +21,7 @@ class ApiClient
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
@@ -30,7 +30,7 @@ class ApiClient
     private $dateMod;
 
     #[ORM\Column(name: 'is_active', type: 'boolean', options: ['default' => false])]
-    private $isActive;
+    private $isActive = false;
 
     #[ORM\Column(name: 'ipv4_range_start', type: 'bigint', nullable: true)]
     private $ipv4_range_start;
@@ -48,7 +48,7 @@ class ApiClient
     private $appTokenDate;
 
     #[ORM\Column(name: 'dolog_method', type: 'smallint', options: ['default' => 0])]
-    private $dologMethod;
+    private $dologMethod = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;

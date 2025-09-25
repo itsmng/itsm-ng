@@ -23,7 +23,7 @@ class ContractItem
     private ?Contract $contract = null;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    private $items_id = 0;
 
     #[ORM\Column(name: 'itemtype', type: 'string', length: 100)]
     private $itemtype;

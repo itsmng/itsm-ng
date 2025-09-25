@@ -46,7 +46,7 @@ class DeviceFirmware
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => false])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DeviceFirmwareModel::class)]
     #[ORM\JoinColumn(name: 'devicefirmwaremodels_id', referencedColumnName: 'id', nullable: true)]

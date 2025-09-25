@@ -42,14 +42,14 @@ class DeviceHardDrive
     private ?Manufacturer $manufacturer = null;
 
     #[ORM\Column(name: 'capacity_default', type: 'integer', options: ['default' => 0])]
-    private $capacityDefault;
+    private $capacityDefault = 0;
 
     #[ORM\ManyToOne(targetEntity: Entity::class)]
     #[ORM\JoinColumn(name: 'entities_id', referencedColumnName: 'id', nullable: true)]
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DeviceHardDriveModel::class)]
     #[ORM\JoinColumn(name: 'deviceharddrivemodels_id', referencedColumnName: 'id', nullable: true)]

@@ -27,22 +27,22 @@ class MonitorModel
     private $productNumber;
 
     #[ORM\Column(name: 'weight', type: 'integer', options: ['default' => 0])]
-    private $weight;
+    private $weight = 0;
 
     #[ORM\Column(name: 'required_units', type: 'integer', options: ['default' => 1])]
-    private $requiredUnits;
+    private $requiredUnits = 1;
 
     #[ORM\Column(name: 'depth', type: 'float', options: ['default' => 1])]
-    private $depth;
+    private $depth = 1;
 
     #[ORM\Column(name: 'power_connections', type: 'integer', options: ['default' => 0])]
-    private $powerConnections;
+    private $powerConnections = 0;
 
     #[ORM\Column(name: 'power_consumption', type: 'integer', options: ['default' => 0])]
-    private $powerConsumption;
+    private $powerConsumption = 0;
 
     #[ORM\Column(name: 'is_half_rack', type: 'boolean', options: ['default' => 0])]
-    private $isHalfRack;
+    private $isHalfRack = false;
 
     #[ORM\Column(name: 'picture_front', type: 'text', nullable: true, length: 65535)]
     private $pictureFront;

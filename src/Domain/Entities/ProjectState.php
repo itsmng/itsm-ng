@@ -27,7 +27,7 @@ class ProjectState
     private $color;
 
     #[ORM\Column(name: 'is_finished', type: 'boolean', options: ['default' => 0])]
-    private $isFinished;
+    private $isFinished = false;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;

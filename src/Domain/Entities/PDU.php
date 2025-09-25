@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Domain\Entities;
-
 namespace Itsmng\Domain\Entities;
 
 use DateTime;

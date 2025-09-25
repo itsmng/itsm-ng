@@ -25,7 +25,7 @@ class QueuedChat
     private $itemtype;
 
     #[ORM\Column(name: 'items_id', type: 'integer', options: ['default' => 0])]
-    private $items_id;
+    private $items_id = 0;
 
     #[ORM\ManyToOne(targetEntity: NotificationTemplate::class)]
     #[ORM\JoinColumn(name: 'notificationtemplates_id', referencedColumnName: 'id', nullable: true)]
@@ -48,10 +48,10 @@ class QueuedChat
     private ?ITILCategory $itilcategory = null;
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'sent_try', type: 'integer', options: ['default' => 0])]
-    private $sentTry;
+    private $sentTry = 0;
 
     #[ORM\Column(name: 'create_time', type: 'datetime', nullable: true)]
     private $createTime;

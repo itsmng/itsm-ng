@@ -34,7 +34,7 @@ class ComputerVirtualMachine
     private ?Computer $computer = null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, options: ['default' => ''])]
-    private $name;
+    private $name = '';
 
     #[ORM\ManyToOne(targetEntity: VirtualMachineState::class)]
     #[ORM\JoinColumn(name: 'virtualmachinestates_id', referencedColumnName: 'id', nullable: true)]
@@ -49,19 +49,19 @@ class ComputerVirtualMachine
     private ?VirtualMachineType $virtualmachinetype = null;
 
     #[ORM\Column(name: 'uuid', type: 'string', length: 255, options: ['default' => ''])]
-    private $uuid;
+    private $uuid = '';
 
     #[ORM\Column(name: 'vcpu', type: 'integer', options: ['default' => 0])]
-    private $vcpu;
+    private $vcpu = 0;
 
     #[ORM\Column(name: 'ram', type: 'string', length: 255, options: ['default' => ''])]
-    private $ram;
+    private $ram = '';
 
     #[ORM\Column(name: 'is_deleted', type: 'boolean', options: ['default' => 0])]
-    private $isDeleted;
+    private $isDeleted = 0;
 
     #[ORM\Column(name: 'is_dynamic', type: 'boolean', options: ['default' => 0])]
-    private $isDynamic;
+    private $isDynamic = 0;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;

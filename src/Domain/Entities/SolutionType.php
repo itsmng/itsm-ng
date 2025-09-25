@@ -29,7 +29,7 @@ class SolutionType
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 1])]
-    private $isRecursive;
+    private $isRecursive = true;
 
     #[ORM\Column(name: 'date_mod', type: 'datetime', nullable: true)]
     private $dateMod;

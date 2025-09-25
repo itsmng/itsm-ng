@@ -24,10 +24,10 @@ class KnowbaseItemCategory
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: "boolean", options: ["default" => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\Column(name: 'knowbaseitemcategories_id', type: "integer", options: ["default" => 0])]
-    private $knowbaseitemcategoriesId;
+    private $knowbaseitemcategoriesId = 0;
 
     #[ORM\Column(name: 'name', type: "string", length: 255, nullable: true)]
     private $name;
@@ -39,7 +39,7 @@ class KnowbaseItemCategory
     private $comment;
 
     #[ORM\Column(name: 'level', type: "integer", options: ["default" => 0])]
-    private $level;
+    private $level = 0;
 
     #[ORM\Column(name: 'sons_cache', type: "text", nullable: true)]
     private $sonsCache;

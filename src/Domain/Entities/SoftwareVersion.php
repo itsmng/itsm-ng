@@ -26,14 +26,14 @@ class SoftwareVersion
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: Software::class)]
     #[ORM\JoinColumn(name: 'softwares_id', referencedColumnName: 'id', nullable: true)]
     private ?Software $software = null;
 
     #[ORM\Column(name: 'states_id', type: 'integer', options: ['default' => 0])]
-    private $statesId;
+    private $statesId = 0;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;

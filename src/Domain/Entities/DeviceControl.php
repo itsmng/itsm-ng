@@ -25,7 +25,7 @@ class DeviceControl
     private $designation;
 
     #[ORM\Column(name: 'is_raid', type: 'boolean', options: ['default' => 0])]
-    private $isRaid;
+    private $isRaid = false;
 
     #[ORM\Column(name: 'comment', type: 'text', nullable: true, length: 65535)]
     private $comment;
@@ -43,7 +43,7 @@ class DeviceControl
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DeviceControlModel::class)]
     #[ORM\JoinColumn(name: 'devicecontrolmodels_id', referencedColumnName: 'id', nullable: true)]

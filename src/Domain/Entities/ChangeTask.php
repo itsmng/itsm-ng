@@ -87,10 +87,10 @@ class ChangeTask
     private ?TaskTemplate $tasktemplate = null;
 
     #[ORM\Column(name: 'timeline_position', type: "boolean", options: ["default" => false])]
-    private $timelinePosition;
+    private $timelinePosition = false;
 
     #[ORM\Column(name: 'is_private', type: "boolean", options: ["default" => false])]
-    private $isPrivate;
+    private $isPrivate = false;
 
     public function getId(): ?int
     {

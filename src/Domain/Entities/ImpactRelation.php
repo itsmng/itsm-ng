@@ -17,16 +17,16 @@ class ImpactRelation
     private $id;
 
     #[ORM\Column(name: 'itemtype_source', type: "string", length: 255, options: ["default" => ""])]
-    private $itemtypeSource;
+    private $itemtypeSource = '';
 
     #[ORM\Column(name: 'items_id_source', type: "integer", options: ["default" => 0])]
-    private $itemsIdSource;
+    private $itemsIdSource = 0;
 
     #[ORM\Column(name: 'itemtype_impacted', type: "string", length: 255, options: ["default" => ""])]
-    private $itemtypeImpacted;
+    private $itemtypeImpacted = '';
 
     #[ORM\Column(name: 'items_id_impacted', type: "integer", options: ["default" => 0])]
-    private $itemsIdImpacted;
+    private $itemsIdImpacted = 0;
 
     public function getId(): ?int
     {

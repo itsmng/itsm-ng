@@ -29,7 +29,7 @@ class DevicePowerSupply
     private $power;
 
     #[ORM\Column(name: 'is_atx', type: 'boolean', options: ['default' => 1])]
-    private $isAtx;
+    private $isAtx = true;
 
     #[ORM\Column(name: 'comment', type: 'text', length: 65535, nullable: true)]
     private $comment;
@@ -43,7 +43,7 @@ class DevicePowerSupply
     private ?Entity $entity = null;
 
     #[ORM\Column(name: 'is_recursive', type: 'boolean', options: ['default' => 0])]
-    private $isRecursive;
+    private $isRecursive = false;
 
     #[ORM\ManyToOne(targetEntity: DevicePowerSupplyModel::class)]
     #[ORM\JoinColumn(name: 'devicepowersupplymodels_id', referencedColumnName: 'id', nullable: true)]
