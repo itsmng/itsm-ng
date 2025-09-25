@@ -919,7 +919,7 @@ class Item_Devices extends CommonDBRelation
                 foreach ($datas as $data) {
                     $newValue = [];
                     foreach (array_keys($columns) as $column) {
-                        $newValue[$column] = $data[$column]?? null;
+                        $newValue[$column] = $data[$column] ?? null;
                     }
                     if ($canedit) {
                         $newValue[] = '<a href=' . $link->getFormURL() . '?id=' . $data['id'] . '>' . __('Update') . "</a>";

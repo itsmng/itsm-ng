@@ -917,7 +917,8 @@ final class Version20241212100413 extends AbstractMigration
 
                     // Compose a DO block that picks the existing column among candidates, alters it, normalizes data, and adds the FK if missing
                     $candidatesList = implode("','", array_map(static function ($c) {
-                        return str_replace("'", "''", $c); }, $candidates));
+                        return str_replace("'", "''", $c);
+                    }, $candidates));
 
                     $this->addSql(
                         "DO $$\n" .

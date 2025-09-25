@@ -124,21 +124,21 @@ function display_infocoms_report($itemtype, $begin, $end)
     $qb = $em->createQueryBuilder();
 
     $qb->select(
-            'i',
-            'i.value AS value',
-            'i.sinkType AS sinkType',
-            'i.sinkTime AS sinkTime',
-            'i.sinkCoeff AS sinkCoeff',
-            'i.buyDate AS buyDate',
-            'i.useDate AS useDate',
-            'i.warrantyDuration AS warrantyDuration',
-            'c.ticketTco AS ticket_tco',
-            'c.id AS items_id',
-            'c.name AS name',
-            'c.ticketTco',
-            'e.completename AS entname',
-            'e.id AS entID'
-        )
+        'i',
+        'i.value AS value',
+        'i.sinkType AS sinkType',
+        'i.sinkTime AS sinkTime',
+        'i.sinkCoeff AS sinkCoeff',
+        'i.buyDate AS buyDate',
+        'i.useDate AS useDate',
+        'i.warrantyDuration AS warrantyDuration',
+        'c.ticketTco AS ticket_tco',
+        'c.id AS items_id',
+        'c.name AS name',
+        'c.ticketTco',
+        'e.completename AS entname',
+        'e.id AS entID'
+    )
         ->from(Itsmng\Domain\Entities\Infocom::class, 'i')
         ->innerJoin(
             $entityClass,

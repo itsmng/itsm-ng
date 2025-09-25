@@ -51,62 +51,61 @@ $instantiation_type = filter_input(INPUT_POST, 'instantiation_type', FILTER_SANI
 $networkports_id    = filter_input(INPUT_POST, 'networkports_id', FILTER_VALIDATE_INT);
 
 
-    $entityClass = 'Itsmng\\Domain\\Entities\\' . $itemtype;
-    $em = config::getAdapter()->getEntityManager();
-    $qb = $em->createQueryBuilder();
+$entityClass = 'Itsmng\\Domain\\Entities\\' . $itemtype;
+$em = config::getAdapter()->getEntityManager();
+$qb = $em->createQueryBuilder();
 
-    // Sélection des champs
-    $qb->select('DISTINCT np2.id AS wid, np.id AS did, d.name AS cname, np.name AS nname');
+// Sélection des champs
+$qb->select('DISTINCT np2.id AS wid, np.id AS did, d.name AS cname, np.name AS nname');
 
-    if ($instantiation_type === 'NetworkPortEthernet') {
-        $qb->addSelect('npnt.name AS npname');
+if ($instantiation_type === 'NetworkPortEthernet') {
+    $qb->addSelect('npnt.name AS npname');
+}
+
+$qb->from($entityClass, 'd')
+   ->leftJoin('d.networkports', 'np', 'WITH', 'np.items_id = d.id AND np.itemtype = :itemtype AND np.instantiation_type = :insttype')
+   ->leftJoin('Itsmng\\Domain\\Entities\\NetworkPortsNetworkPort', 'np2np', 'WITH', 'np2np.networkports_id_1 = np.id OR np2np.networkports_id_2 = np.id')
+   ->leftJoin('Itsmng\\Domain\\Entities\\NetworkPort', 'np2', 'WITH', 'np2.id = np2np.networkports_id_1 OR np2.id = np2np.networkports_id_2');
+
+if ($instantiation_type === 'NetworkPortEthernet') {
+    $qb->leftJoin('Itsmng\\Domain\\Entities\\NetworkPortEthernet', 'npe', 'WITH', 'npe.id = np.id')
+       ->leftJoin('npe.netpoint', 'npnt');
+}
+
+$qb->where('np2np.id IS NULL')
+   ->andWhere('np.id IS NOT NULL')
+   ->andWhere('np.id <> :networkports_id')
+   ->andWhere('d.is_deleted = 0')
+   ->andWhere('d.is_template = 0')
+   ->setParameter('itemtype', $itemtype)
+   ->setParameter('insttype', $instantiation_type)
+   ->setParameter('networkports_id', $networkports_id);
+
+$results = $qb->getQuery()->getArrayResult();
+
+$values = [];
+foreach ($results as $data) {
+    // Device name + port name
+    $output = $output_long = $data['cname'];
+
+    if (!empty($data['nname'])) {
+        $output      = sprintf(__('%1$s - %2$s'), $output, $data['nname']);
+        //TRANS: %1$s is device name, %2$s is port name
+        $output_long = sprintf(__('%1$s - The port %2$s'), $output_long, $data['nname']);
     }
 
-    $qb->from($entityClass, 'd')
-       ->leftJoin('d.networkports', 'np', 'WITH', 'np.items_id = d.id AND np.itemtype = :itemtype AND np.instantiation_type = :insttype')
-       ->leftJoin('Itsmng\\Domain\\Entities\\NetworkPortsNetworkPort', 'np2np', 'WITH', 'np2np.networkports_id_1 = np.id OR np2np.networkports_id_2 = np.id')
-       ->leftJoin('Itsmng\\Domain\\Entities\\NetworkPort', 'np2', 'WITH', 'np2.id = np2np.networkports_id_1 OR np2.id = np2np.networkports_id_2');
-
-    if ($instantiation_type === 'NetworkPortEthernet') {
-        $qb->leftJoin('Itsmng\\Domain\\Entities\\NetworkPortEthernet', 'npe', 'WITH', 'npe.id = np.id')
-           ->leftJoin('npe.netpoint', 'npnt');
+    // display netpoint (which will be copied)
+    if (!empty($data['npname'])) {
+        $output      = sprintf(__('%1$s - %2$s'), $output, $data['npname']);
+        //TRANS: %1$s is a string (device name - port name...), %2$s is network outlet name
+        $output_long = sprintf(__('%1$s - Network outlet %2$s'), $output_long, $data['npname']);
     }
+    $ID = $data['did'];
 
-    $qb->where('np2np.id IS NULL')
-       ->andWhere('np.id IS NOT NULL')
-       ->andWhere('np.id <> :networkports_id')
-       ->andWhere('d.is_deleted = 0')
-       ->andWhere('d.is_template = 0')
-       ->setParameter('itemtype', $itemtype)
-       ->setParameter('insttype', $instantiation_type)
-       ->setParameter('networkports_id', $networkports_id);
-
-    $results = $qb->getQuery()->getArrayResult();
-
-    $values = [];
-    foreach ($results as $data) {
-        // Device name + port name
-        $output = $output_long = $data['cname'];
-
-        if (!empty($data['nname'])) {
-            $output      = sprintf(__('%1$s - %2$s'), $output, $data['nname']);
-            //TRANS: %1$s is device name, %2$s is port name
-            $output_long = sprintf(__('%1$s - The port %2$s'), $output_long, $data['nname']);
-        }
-
-        // display netpoint (which will be copied)
-        if (!empty($data['npname'])) {
-            $output      = sprintf(__('%1$s - %2$s'), $output, $data['npname']);
-            //TRANS: %1$s is a string (device name - port name...), %2$s is network outlet name
-            $output_long = sprintf(__('%1$s - Network outlet %2$s'), $output_long, $data['npname']);
-        }
-        $ID = $data['did'];
-
-        if ($_SESSION["glpiis_ids_visible"] || empty($output) || empty($output_long)) {
-            $output      = sprintf(__('%1$s (%2$s)'), $output, $ID);
-            $output_long = sprintf(__('%1$s (%2$s)'), $output_long, $ID);
-        }
-        $values[$ID] = $output_long;
+    if ($_SESSION["glpiis_ids_visible"] || empty($output) || empty($output_long)) {
+        $output      = sprintf(__('%1$s (%2$s)'), $output, $ID);
+        $output_long = sprintf(__('%1$s (%2$s)'), $output_long, $ID);
     }
-    echo json_encode($values);
-
+    $values[$ID] = $output_long;
+}
+echo json_encode($values);

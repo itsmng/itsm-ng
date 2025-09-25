@@ -39,7 +39,9 @@ class PgArrayIterator implements \Iterator, \Countable
     #[\ReturnTypeWillChange]
     public function next()
     {
-        if ($this->pos >= count($this->rows)) { return false; }
+        if ($this->pos >= count($this->rows)) {
+            return false;
+        }
         return $this->rows[$this->pos++];
     }
 

@@ -58,7 +58,7 @@ if (isset($_POST['str'])) {
         ->orderBy('e.completeName', 'ASC')
         ->setParameter('search', '%' . $_POST['str'] . '%');
 
-    $results = $queryBuilder->getQuery()->getArrayResult(); 
+    $results = $queryBuilder->getQuery()->getArrayResult();
 
     foreach ($results as $data) {
         $ancestors = getAncestorsOf('glpi_entities', $data['id']);

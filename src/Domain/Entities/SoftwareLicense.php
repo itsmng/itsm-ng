@@ -263,7 +263,7 @@ class SoftwareLicense
         return $this;
     }
 
-    
+
     public function getDateMod(): DateTime
     {
         return $this->dateMod ?? new DateTime();

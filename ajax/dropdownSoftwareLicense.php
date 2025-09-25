@@ -72,12 +72,12 @@ if ($_POST['softwares_id'] > 0) {
         $ID      = $last['id'] ?? null;
         $output  = $last['name'] ?? null;
 
-            if (empty($output) || $_SESSION['glpiis_ids_visible']) {
-                $output = sprintf(__('%1$s (%2$s)'), $output, $ID);
-            }
+        if (empty($output) || $_SESSION['glpiis_ids_visible']) {
+            $output = sprintf(__('%1$s (%2$s)'), $output, $ID);
+        }
 
-            $values[$ID] = $output;
+        $values[$ID] = $output;
     }
-    
+
     echo json_encode($values);
 }

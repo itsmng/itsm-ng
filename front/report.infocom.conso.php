@@ -108,7 +108,7 @@ function display_infocoms_report($itemtype, $begin, $end)
 {
     global $valeurtot, $valeurnettetot, $valeurnettegraphtot, $valeurgraphtot, $CFG_GLPI, $stat, $chart_opts;
 
-   $em = config::getAdapter()->getEntityManager();
+    $em = config::getAdapter()->getEntityManager();
     $infocomClass = 'Itsmng\\Domain\\Entities\\Infocom';
 
     $itemtable = getTableForItemType($itemtype);
@@ -134,7 +134,7 @@ function display_infocoms_report($itemtype, $begin, $end)
            ->setParameter('entity', $_SESSION['glpiactive_entity']);
     }
 
-    // Filters on dates 
+    // Filters on dates
     if (!empty($begin)) {
         $qb->andWhere(
             $qb->expr()->orX(
@@ -166,7 +166,7 @@ function display_infocoms_report($itemtype, $begin, $end)
         $valeurnettegraph   = [];
         $valeurgraph        = [];
 
-       foreach ($results as $line) {
+        foreach ($results as $line) {
             if ($itemtype == 'SoftwareLicense') {
                 $item->getFromDB($line["items_id"]);
 
@@ -175,8 +175,7 @@ function display_infocoms_report($itemtype, $begin, $end)
                         $line["value"] *= $item->fields["number"];
                     }
                 }
-            }
-            elseif (class_exists($itemtype) && is_a($itemtype, CommonDBChild::class, true)) {
+            } elseif (class_exists($itemtype) && is_a($itemtype, CommonDBChild::class, true)) {
                 $childitemtype = $itemtype::$itemtype;
                 $child = getItemForItemtype($childitemtype);
                 if ($child && $child->getFromDB($line['items_id'])) {

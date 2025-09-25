@@ -157,8 +157,8 @@ abstract class CommonDBConnexity extends CommonDBTM
     ) {
 
         if (!is_array($this->fields)) {
-        $this->fields = [];
-    }
+            $this->fields = [];
+        }
 
         return static::getItemFromArray(
             $itemtype,

@@ -181,7 +181,7 @@ class Location
 
     public function setSonsCache(string | null $sonsCache): self
     {
-       if ($sonsCache === null || $sonsCache === '') {
+        if ($sonsCache === null || $sonsCache === '') {
             $this->sonsCache = null;
         } else {
             $this->sonsCache = $sonsCache;
@@ -324,7 +324,7 @@ class Location
         return $this;
     }
 
-     public function getDateCreation(): DateTime
+    public function getDateCreation(): DateTime
     {
         return $this->dateCreation ?? new DateTime();
     }

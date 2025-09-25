@@ -2404,7 +2404,7 @@ class Dropdown
                     }
 
                     $where[] = ['OR' => $swhere];
-                }                
+                }
             }
 
             $multi = false;
@@ -2516,18 +2516,18 @@ class Dropdown
             }
 
             // Clean the NOT clause before processing
-                if (isset($where['NOT']) && is_array($where['NOT'])) {
-                    foreach ($where['NOT'] as $key => $value) {
-                        if (($key === 'id' || str_ends_with($key, '.id')) && $value === '') {
-                            unset($where['NOT'][$key]);
-                        }
-                    }
-
-                    // If all NOT conditions have been removed
-                    if (empty($where['NOT'])) {
-                        unset($where['NOT']);
+            if (isset($where['NOT']) && is_array($where['NOT'])) {
+                foreach ($where['NOT'] as $key => $value) {
+                    if (($key === 'id' || str_ends_with($key, '.id')) && $value === '') {
+                        unset($where['NOT'][$key]);
                     }
                 }
+
+                // If all NOT conditions have been removed
+                if (empty($where['NOT'])) {
+                    unset($where['NOT']);
+                }
+            }
             $criteria = [
                'SELECT' => array_merge(["$table.*"], $addselect),
                'FROM'   => $table,
@@ -3091,7 +3091,7 @@ class Dropdown
                 }
             }
         }
-        
+
         // array_walk_recursive($datas, function (&$value) {
         //     // Si c'est un objet binaire de MySQL
         //     if (is_object($value) && method_exists($value, '__toString')) {

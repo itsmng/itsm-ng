@@ -63,10 +63,10 @@ if (count($specificities)) {
     foreach (array_keys($specificities) as $field) {
         $concatFields[] = "d.$field";
     }
-    
+
     $qb->addSelect(
         $qb->expr()->concat(
-            ...array_map(fn($f) => "COALESCE(d.$f, '')", array_keys($specificities))
+            ...array_map(fn ($f) => "COALESCE(d.$f, '')", array_keys($specificities))
         ) . " AS name"
     );
 } else {
@@ -80,13 +80,12 @@ $qb->from($linktype::getEntityClass(), 'd')
    ->setParameter('itype', '');
 
 $results = $qb->getQuery()->getArrayResult();
-    $devices = [];
-    foreach ($results as $row) {
-        $name = $row['name'];
-        if (empty($name)) {
-            $name = $row['id'];
-        }
-        $devices[$row['id']] = $name;
+$devices = [];
+foreach ($results as $row) {
+    $name = $row['name'];
+    if (empty($name)) {
+        $name = $row['id'];
     }
-    echo json_encode(['name' => $devicetype::getForeignKeyField(), 'options' => $devices]);
-
+    $devices[$row['id']] = $name;
+}
+echo json_encode(['name' => $devicetype::getForeignKeyField(), 'options' => $devices]);

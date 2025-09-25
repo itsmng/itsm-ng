@@ -75,7 +75,7 @@ $queryBuilder
 
 $results = $queryBuilder->getQuery()->getArrayResult();
 
-$statuses = array_map(fn($result) => [
+$statuses = array_map(fn ($result) => [
     'is_activate' => $result['isActivate'],
     'is_forced'   => $result['isForced']
 ], $results);

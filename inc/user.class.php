@@ -5436,19 +5436,19 @@ class User extends CommonDBTM
      * @return string
      */
     public static function getURLForPicture($picture)
-{
-    global $CFG_GLPI;
+    {
+        global $CFG_GLPI;
 
-    if (empty($picture) || $picture === 'NULL') {
-        return $CFG_GLPI["root_doc"] . "/pics/picture.png";
+        if (empty($picture) || $picture === 'NULL') {
+            return $CFG_GLPI["root_doc"] . "/pics/picture.png";
+        }
+
+        // Nettoyer le chemin - enlever les _pictures/ en double
+        $clean_picture = str_replace('_pictures//', '', $picture);
+        $clean_picture = str_replace('_pictures/_pictures/', '_pictures/', $clean_picture);
+
+        return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $clean_picture;
     }
-
-    // Nettoyer le chemin - enlever les _pictures/ en double
-    $clean_picture = str_replace('_pictures//', '', $picture);
-    $clean_picture = str_replace('_pictures/_pictures/', '_pictures/', $clean_picture);
-    
-    return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $clean_picture;
-}
 
 
     /**
@@ -5461,23 +5461,23 @@ class User extends CommonDBTM
      * @return string
      */
     public static function getThumbnailURLForPicture($picture)
-{
-    global $CFG_GLPI;
+    {
+        global $CFG_GLPI;
 
-    if (empty($picture) || $picture === 'NULL') {
-        return $CFG_GLPI["root_doc"] . "/pics/picture_min.png";
+        if (empty($picture) || $picture === 'NULL') {
+            return $CFG_GLPI["root_doc"] . "/pics/picture_min.png";
+        }
+
+        // Nettoyer le chemin
+        $clean_picture = str_replace('_pictures//', '', $picture);
+        $clean_picture = str_replace('_pictures/_pictures/', '_pictures/', $clean_picture);
+
+        // Essayer la miniature
+        $path_info = pathinfo($clean_picture);
+        $thumb_picture = $path_info['dirname'] . '/' . $path_info['filename'] . '_min.' . $path_info['extension'];
+
+        return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $thumb_picture;
     }
-
-    // Nettoyer le chemin
-    $clean_picture = str_replace('_pictures//', '', $picture);
-    $clean_picture = str_replace('_pictures/_pictures/', '_pictures/', $clean_picture);
-    
-    // Essayer la miniature
-    $path_info = pathinfo($clean_picture);
-    $thumb_picture = $path_info['dirname'] . '/' . $path_info['filename'] . '_min.' . $path_info['extension'];
-    
-    return $CFG_GLPI["root_doc"] . "/front/document.send.php?file=" . $thumb_picture;
-}
 
 
     /**

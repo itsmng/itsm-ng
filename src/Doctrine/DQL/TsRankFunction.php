@@ -1,4 +1,5 @@
 <?php
+
 namespace Itsmng\Doctrine\DQL;
 
 use Doctrine\ORM\Query\TokenType;
@@ -19,11 +20,11 @@ class TsRankFunction extends FunctionNode
         $parser->match(TokenType::T_IDENTIFIER); // TS_RANK
         $parser->match(TokenType::T_OPEN_PARENTHESIS);
 
-    // Accept any expression (columns, function calls like TO_TSVECTOR(...), CONCAT(...), etc.)
-    $this->tsvector = $parser->ArithmeticExpression();
-    $parser->match(TokenType::T_COMMA);
+        // Accept any expression (columns, function calls like TO_TSVECTOR(...), CONCAT(...), etc.)
+        $this->tsvector = $parser->ArithmeticExpression();
+        $parser->match(TokenType::T_COMMA);
 
-    $this->tsquery = $parser->ArithmeticExpression();
+        $this->tsquery = $parser->ArithmeticExpression();
         $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 

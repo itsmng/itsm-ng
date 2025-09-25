@@ -23,23 +23,23 @@ class FullTextHelper
             $tsquery  = "PLAINTO_TSQUERY('" . $lang . "', :search)";
 
             // TS_MATCH and TS_RANK must be registered as DQL functions that emit the proper SQL
-                // compare to TRUE so DQL parser recognizes a conditional/comparison expression
-                $qb->andWhere("TS_MATCH($tsvector, $tsquery) = TRUE")
-                    ->addSelect("TS_RANK($tsvector, $tsquery) AS HIDDEN score")
-                    ->orderBy('score', 'DESC');
+            // compare to TRUE so DQL parser recognizes a conditional/comparison expression
+            $qb->andWhere("TS_MATCH($tsvector, $tsquery) = TRUE")
+                ->addSelect("TS_RANK($tsvector, $tsquery) AS HIDDEN score")
+                ->orderBy('score', 'DESC');
 
-                    // Parameter for PostgreSQL
-                $qb->setParameter('search', $search);
+            // Parameter for PostgreSQL
+            $qb->setParameter('search', $search);
         } else {
-            
+
             // MySQL: Fallback to LIKE with artificial score
             $searchTerm = '%' . $search . '%';
-            
+
             $ors = $qb->expr()->orX();
             foreach ($fieldExprs as $field) {
                 $ors->add($qb->expr()->like($field, ':search_like'));
             }
-            
+
             $qb->andWhere($ors);
 
             // Add artificial score for compatibility

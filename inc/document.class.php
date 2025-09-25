@@ -553,7 +553,8 @@ class Document extends CommonDBTM
      * Get max upload size from config in bytes
      * @return int
      */
-    public static function getMaxUploadSizeInBytes() {
+    public static function getMaxUploadSizeInBytes()
+    {
         return Toolbox::return_bytes_from_ini_vars(ini_get('upload_max_filesize'));
     }
 

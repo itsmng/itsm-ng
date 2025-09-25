@@ -291,21 +291,21 @@ switch ($_GET["type"]) {
         if ($item = getItemForItemtype($champ)) {
             $entityClass = 'Itsmng\Domain\Entities\\' . ucfirst($champ);
             $values = Stat::getItems(
-            $_GET["itemtype"],
-            $_POST["date1"],
-            $_POST["date2"],
-            $val2
-        );
+                $_GET["itemtype"],
+                $_POST["date1"],
+                $_POST["date2"],
+                $val2
+            );
 
-        $em = config::getAdapter()->getEntityManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select('d.designation')
-           ->from($entityClass, 'd')
-           ->where('d.id = :id')
-           ->setParameter('id', $val1);
+            $em = config::getAdapter()->getEntityManager();
+            $qb = $em->createQueryBuilder();
+            $qb->select('d.designation')
+               ->from($entityClass, 'd')
+               ->where('d.id = :id')
+               ->setParameter('id', $val1);
 
-        $current = $qb->getQuery()->getOneOrNullResult();
-        $designation = $current ? $current['designation'] : '';
+            $current = $qb->getQuery()->getOneOrNullResult();
+            $designation = $current ? $current['designation'] : '';
 
 
             $title  = sprintf(

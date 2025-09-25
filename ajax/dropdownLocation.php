@@ -61,12 +61,12 @@ if (isset($_REQUEST['is_recursive'])) {
     $is_recursive = (bool) $_REQUEST['is_recursive'];
 }
 
-$entityManager = config::getAdapter()->getEntityManager(); 
+$entityManager = config::getAdapter()->getEntityManager();
 $queryBuilder = $entityManager->createQueryBuilder();
 
 $queryBuilder
     ->select('l.id', 'l.name')
-    ->from('Location', 'l')  
+    ->from('Location', 'l')
     ->where('l.entities_id = :entities_id')
     ->setParameter('entities_id', $entities_id);
 
@@ -81,7 +81,7 @@ $results = $query->getResult();
 
 $result = [];
 
-$result = array_map(function($row) {
+$result = array_map(function ($row) {
     return [$row['id'] => $row['name']];
 }, $results);
 

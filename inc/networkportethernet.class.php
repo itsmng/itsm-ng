@@ -136,7 +136,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
               'name' => 'speed',
               'values' => array_merge(
                   self::getPortSpeed(),
-                  (!isset($this->fields['speed']) && !isset($standard_speeds[$this->fields['speed']?? null]) && !empty($this->fields['speed'])) ?
+                  (!isset($this->fields['speed']) && !isset($standard_speeds[$this->fields['speed'] ?? null]) && !empty($this->fields['speed'])) ?
                     ['speed_other_value' => self::transformPortSpeed($this->fields['speed'], true)] :
                        ['speed_other_value' => __('Other')]
               ),

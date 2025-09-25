@@ -249,10 +249,18 @@ class DBmysql
             $dbuser = $_ENV['DB_USER'] ?? null;
             $dbpass = $_ENV['DB_PASSWORD'] ?? null;
             $dbname = $_ENV['DB_NAME'] ?? null;
-            if (isset($dbhost) && $dbhost !== '') { $this->dbhost = $dbhost; }
-            if (isset($dbuser) && $dbuser !== '') { $this->dbuser = $dbuser; }
-            if (isset($dbpass) && $dbpass !== '') { $this->dbpassword = $dbpass; }
-            if (isset($dbname) && $dbname !== '') { $this->dbdefault = $dbname; }
+            if (isset($dbhost) && $dbhost !== '') {
+                $this->dbhost = $dbhost;
+            }
+            if (isset($dbuser) && $dbuser !== '') {
+                $this->dbuser = $dbuser;
+            }
+            if (isset($dbpass) && $dbpass !== '') {
+                $this->dbpassword = $dbpass;
+            }
+            if (isset($dbname) && $dbname !== '') {
+                $this->dbdefault = $dbname;
+            }
         }
     }
 
@@ -452,8 +460,8 @@ class DBmysql
      */
     public function fetch_object($result)
     {
-    Toolbox::deprecated('Use DBmysql::fetchObject()');
-    return $this->fetchObject($result);
+        Toolbox::deprecated('Use DBmysql::fetchObject()');
+        return $this->fetchObject($result);
     }
 
     /**

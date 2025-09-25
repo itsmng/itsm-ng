@@ -155,7 +155,7 @@ class Project
         return $this->priority;
     }
 
-    
+
     public function setPriority(?int $priority): self
     {
         $this->priority = $priority;
@@ -278,7 +278,7 @@ class Project
         return $this->percentDone;
     }
 
-    
+
     public function setPercentDone(?int $percentDone): self
     {
         if ($percentDone === null || $percentDone === '') {
@@ -364,8 +364,8 @@ class Project
      */
     public function setIsDeleted(?bool $isDeleted): self
     {
-       if ($isDeleted === null || $isDeleted === '') {
-        $this->isDeleted = 0;
+        if ($isDeleted === null || $isDeleted === '') {
+            $this->isDeleted = 0;
         } else {
             $this->isDeleted = (bool)$isDeleted;
         }
@@ -440,9 +440,9 @@ class Project
     public function setEntity(Entity|int|string|null $entity): self
     {
         if ($entity === null || $entity === '') {
-        $this->entity = null;
+            $this->entity = null;
         } elseif ($entity instanceof Entity) {
-        $this->entity = $entity;
+            $this->entity = $entity;
         }
 
         return $this;
@@ -513,10 +513,10 @@ class Project
      */
     public function setProjectType(ProjectType|int|string|null $projecttype): self
     {
-       if ($projecttype === null || $projecttype === '' || $projecttype === '0' || $projecttype === 0) {
-        $this->projecttype = null;
+        if ($projecttype === null || $projecttype === '' || $projecttype === '0' || $projecttype === 0) {
+            $this->projecttype = null;
         } elseif ($projecttype instanceof ProjectType) {
-        $this->projecttype = $projecttype;
+            $this->projecttype = $projecttype;
         }
 
 

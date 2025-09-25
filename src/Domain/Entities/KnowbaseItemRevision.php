@@ -117,7 +117,7 @@ class KnowbaseItemRevision
 
     /**
      * Get the value of knowbaseitem
-     */ 
+     */
     public function getKnowbaseitem()
     {
         return $this->knowbaseitem;
@@ -127,7 +127,7 @@ class KnowbaseItemRevision
      * Set the value of knowbaseitem
      *
      * @return  self
-     */ 
+     */
     public function setKnowbaseitem($knowbaseitem)
     {
         $this->knowbaseitem = $knowbaseitem;

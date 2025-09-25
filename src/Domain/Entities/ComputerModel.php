@@ -200,7 +200,7 @@ class ComputerModel
     {
         return $this->dateMod ?? new DateTime();
     }
-    
+
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function setDateMod(): self

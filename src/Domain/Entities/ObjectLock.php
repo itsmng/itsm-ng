@@ -59,7 +59,7 @@ class ObjectLock
         return $this;
     }
 
-     public function getDateMod(): DateTime
+    public function getDateMod(): DateTime
     {
         return $this->dateMod ?? new DateTime();
     }

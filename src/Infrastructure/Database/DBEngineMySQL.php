@@ -5,14 +5,14 @@ namespace Itsmng\Infrastructure\Database;
 use Glpi\Application\ErrorHandler;
 use mysqli;
 use mysqli_sql_exception;
-use \DBmysqlIterator;
-use \Toolbox;
-use \Timer;
-use \Session;
-use \Html;
-use \Config;
-use \QueryExpression;
-use \QueryParam;
+use DBmysqlIterator;
+use Toolbox;
+use Timer;
+use Session;
+use Html;
+use Config;
+use QueryExpression;
+use QueryParam;
 
 /**
  * MySQL engine implementation, adapted from legacy DBmysql.
@@ -75,9 +75,9 @@ class DBEngineMySQL implements DBInterface
             );
         }
 
-    $hosts = is_array($this->dbhost) ? $this->dbhost : [$this->dbhost];
-    $i    = (isset($choice) ? $choice : mt_rand(0, max(count($hosts) - 1, 0)));
-    $host = $hosts[$i] ?? $hosts[0];
+        $hosts = is_array($this->dbhost) ? $this->dbhost : [$this->dbhost];
+        $i    = (isset($choice) ? $choice : mt_rand(0, max(count($hosts) - 1, 0)));
+        $host = $hosts[$i] ?? $hosts[0];
 
         $hostport = explode(":", $host);
         if (count($hostport) < 2) {
@@ -299,22 +299,22 @@ class DBEngineMySQL implements DBInterface
         return $finfo[$nb]->name;
     }
 
-     public function listTables($table = 'glpi\\_%', array $where = [])
-     {
-          return $this->request([
-              'SELECT' => 'table_name as TABLE_NAME',
-              'FROM'   => 'information_schema.tables',
-              'WHERE'  => [
-                  'table_schema' => $this->dbdefault,
-                  'table_type'   => 'BASE TABLE',
-                  'table_name'   => ['LIKE', $table]
-              ] + $where
-          ]);
-     }
+    public function listTables($table = 'glpi\\_%', array $where = [])
+    {
+        return $this->request([
+            'SELECT' => 'table_name as TABLE_NAME',
+            'FROM'   => 'information_schema.tables',
+            'WHERE'  => [
+                'table_schema' => $this->dbdefault,
+                'table_type'   => 'BASE TABLE',
+                'table_name'   => ['LIKE', $table]
+            ] + $where
+        ]);
+    }
 
     public function getMyIsamTables(): DBmysqlIterator
     {
-    return $this->listTables('glpi\\_%', ['engine' => 'MyIsam']);
+        return $this->listTables('glpi\\_%', ['engine' => 'MyIsam']);
     }
 
     public function listFields($table, $usecache = true)
@@ -656,7 +656,7 @@ class DBEngineMySQL implements DBInterface
 
         $query  = "UPDATE " . self::quoteName($table);
 
-    $it = new DBmysqlIterator($this->parentFacade);
+        $it = new DBmysqlIterator($this->parentFacade);
         $query .= $it->analyseJoins($joins);
 
         $query .= " SET ";
@@ -729,7 +729,7 @@ class DBEngineMySQL implements DBInterface
 
         $query  = "DELETE " . self::quoteName($table) . " FROM " . self::quoteName($table);
 
-    $it = new DBmysqlIterator($this->parentFacade);
+        $it = new DBmysqlIterator($this->parentFacade);
         $query .= $it->analyseJoins($joins);
         $query .= " WHERE " . $it->analyseCrit($where);
 

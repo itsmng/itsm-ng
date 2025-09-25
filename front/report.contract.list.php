@@ -56,7 +56,7 @@ if (empty($itemTypes) || (isset($itemTypes[0]) && $itemTypes[0] == '0')) {
 
 // Nettoyage années
 if (is_array($years)) {
-    $years = array_filter($years, fn($y) => $y !== false);
+    $years = array_filter($years, fn ($y) => $y !== false);
 }
 
 $em = config::getAdapter()->getEntityManager();
@@ -152,88 +152,88 @@ foreach ($itemTypes as $itemtype) {
     $display_entity = Session::isMultiEntitiesMode();
 
     if (!empty($results)) {
-            echo "<div class='center'><span class='b'>" . $itemtype . "</span></div>";
-            echo "<table class='tab_cadrehov' aria-label='Hardware list under contract'>";
-            echo "<tr><th>" . __('Name') . "</th>";
-            echo "<th>" . __('Deleted') . "</th>";
-            if ($display_entity) {
-                echo "<th>" . Entity::getTypeName(1) . "</th>";
-            }
-            echo "<th>" . Location::getTypeName(1) . "</th>";
-            echo "<th>" . __('Date of purchase') . "</th>";
-            echo "<th>" . __('Warranty expiration date') . "</th>";
-            echo "<th>" . ContractType::getTypeName(1) . "</th>";
-            echo "<th>" . __('Start date') . "</th>";
-            echo "<th>" . __('End date') . "</th>";
-            echo "</tr>";
-            // while ($data = $iterator->next()) {
-            foreach ($results as $data) {
-                echo "<tr class='tab_bg_1'>";
-                if ($data['itemname']) {
-                    echo "<td> " . $data['itemname'] . " </td>";
-                } else {
-                    echo "<td> " . NOT_AVAILABLE . " </td>";
-                }
-                if (!isset($data['itemdeleted'])) {
-                    $data['itemdeleted'] = 0;
-                }
-                if (!isset($data['buyDate'])) {
-                    $data['buyDate'] = '';
-                }
-                if (!isset($data['warrantyDuration'])) {
-                    $data['warrantyDuration'] = 0;
-                }
-
-                echo "<td> " . Dropdown::getYesNo($data['itemdeleted']) . " </td>";
-
-                if ($display_entity) {
-                    echo "<td>" . $data['entname'] . "</td>";
-                }
-
-                if ($data['location']) {
-                    echo "<td> " . $data['location'] . " </td>";
-                } else {
-                    echo "<td> " . NOT_AVAILABLE . " </td>";
-                }
-
-                if ($data['buyDate']) {
-                    echo "<td> " . Html::convDate($data['buyDate']) . " </td>";
-                    if ($data["warrantyDuration"]) {
-                        echo "<td> " . Infocom::getWarrantyExpir(
-                            $data["buyDate"],
-                            $data["warrantyDuration"]
-                        ) . " </td>";
-                    } else {
-                        echo "<td> " . NOT_AVAILABLE . " </td>";
-                    }
-                } else {
-                    echo "<td> " . NOT_AVAILABLE . " </td><td> " . NOT_AVAILABLE . " </td>";
-                }
-
-                if ($data['type']) {
-                    echo "<td class='b'> " . $data['type'] . " </td>";
-                } else {
-                    echo "<td> " . NOT_AVAILABLE . " </td>";
-                }
-
-                if ($data['beginDate']) {
-                    echo "<td> " . Html::convDate($data['beginDate']) . " </td>";
-                    if ($data["duration"]) {
-                        echo "<td> " . Infocom::getWarrantyExpir(
-                            $data["beginDate"],
-                            $data["duration"]
-                        ) . " </td>";
-                    } else {
-                        echo "<td> " . NOT_AVAILABLE . " </td>";
-                    }
-                } else {
-                    echo "<td> " . NOT_AVAILABLE . " </td><td> " . NOT_AVAILABLE . " </td>";
-                }
-                echo "</tr>\n";
-            }
-            echo "</table><br><hr><br>";
+        echo "<div class='center'><span class='b'>" . $itemtype . "</span></div>";
+        echo "<table class='tab_cadrehov' aria-label='Hardware list under contract'>";
+        echo "<tr><th>" . __('Name') . "</th>";
+        echo "<th>" . __('Deleted') . "</th>";
+        if ($display_entity) {
+            echo "<th>" . Entity::getTypeName(1) . "</th>";
         }
+        echo "<th>" . Location::getTypeName(1) . "</th>";
+        echo "<th>" . __('Date of purchase') . "</th>";
+        echo "<th>" . __('Warranty expiration date') . "</th>";
+        echo "<th>" . ContractType::getTypeName(1) . "</th>";
+        echo "<th>" . __('Start date') . "</th>";
+        echo "<th>" . __('End date') . "</th>";
+        echo "</tr>";
+        // while ($data = $iterator->next()) {
+        foreach ($results as $data) {
+            echo "<tr class='tab_bg_1'>";
+            if ($data['itemname']) {
+                echo "<td> " . $data['itemname'] . " </td>";
+            } else {
+                echo "<td> " . NOT_AVAILABLE . " </td>";
+            }
+            if (!isset($data['itemdeleted'])) {
+                $data['itemdeleted'] = 0;
+            }
+            if (!isset($data['buyDate'])) {
+                $data['buyDate'] = '';
+            }
+            if (!isset($data['warrantyDuration'])) {
+                $data['warrantyDuration'] = 0;
+            }
+
+            echo "<td> " . Dropdown::getYesNo($data['itemdeleted']) . " </td>";
+
+            if ($display_entity) {
+                echo "<td>" . $data['entname'] . "</td>";
+            }
+
+            if ($data['location']) {
+                echo "<td> " . $data['location'] . " </td>";
+            } else {
+                echo "<td> " . NOT_AVAILABLE . " </td>";
+            }
+
+            if ($data['buyDate']) {
+                echo "<td> " . Html::convDate($data['buyDate']) . " </td>";
+                if ($data["warrantyDuration"]) {
+                    echo "<td> " . Infocom::getWarrantyExpir(
+                        $data["buyDate"],
+                        $data["warrantyDuration"]
+                    ) . " </td>";
+                } else {
+                    echo "<td> " . NOT_AVAILABLE . " </td>";
+                }
+            } else {
+                echo "<td> " . NOT_AVAILABLE . " </td><td> " . NOT_AVAILABLE . " </td>";
+            }
+
+            if ($data['type']) {
+                echo "<td class='b'> " . $data['type'] . " </td>";
+            } else {
+                echo "<td> " . NOT_AVAILABLE . " </td>";
+            }
+
+            if ($data['beginDate']) {
+                echo "<td> " . Html::convDate($data['beginDate']) . " </td>";
+                if ($data["duration"]) {
+                    echo "<td> " . Infocom::getWarrantyExpir(
+                        $data["beginDate"],
+                        $data["duration"]
+                    ) . " </td>";
+                } else {
+                    echo "<td> " . NOT_AVAILABLE . " </td>";
+                }
+            } else {
+                echo "<td> " . NOT_AVAILABLE . " </td><td> " . NOT_AVAILABLE . " </td>";
+            }
+            echo "</tr>\n";
+        }
+        echo "</table><br><hr><br>";
     }
+}
 
 
 Html::footer();

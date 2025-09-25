@@ -462,7 +462,7 @@ class Reservation extends CommonDBChild
             if ($item = getItemForItemtype($m->fields["itemtype"])) {
                 $type = $item->getTypeName();
 
-                if ($item->getFromDB($m->fields["items_id"]?? null)) {
+                if ($item->getFromDB($m->fields["items_id"] ?? null)) {
                     $name = $item->getName();
                 }
                 $name = sprintf(__('%1$s - %2$s'), $type, $name);
@@ -683,14 +683,14 @@ class Reservation extends CommonDBChild
 
         foreach ($options['item'] as $itemID) {
             $r->getFromDB($itemID);
-            $type = $r->fields["itemtype"]?? null;
+            $type = $r->fields["itemtype"] ?? null;
             $name = NOT_AVAILABLE;
             $item = null;
 
-            if ($item = getItemForItemtype($r->fields["itemtype"]?? null)) {
+            if ($item = getItemForItemtype($r->fields["itemtype"] ?? null)) {
                 $type = $item->getTypeName();
 
-                if ($item->getFromDB($r->fields["items_id"]?? null)) {
+                if ($item->getFromDB($r->fields["items_id"] ?? null)) {
                     $name = $item->getName();
                 } else {
                     $item = null;
@@ -980,8 +980,8 @@ class Reservation extends CommonDBChild
                     }
 
                     if (
-                        $item->getFromDB($m->fields["items_id"]?? null)
-                        && Session::haveAccessToEntity($item->fields["entities_id"]?? null)
+                        $item->getFromDB($m->fields["items_id"] ?? null)
+                        && Session::haveAccessToEntity($item->fields["entities_id"] ?? null)
                     ) {
                         $typename = $item->getTypeName();
 

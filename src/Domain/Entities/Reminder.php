@@ -100,7 +100,7 @@ class Reminder
         return $this->date;
     }
 
-    
+
     public function setDate(DateTimeInterface|string|null $date): self
     {
         if ($date === null || $date === '' || $date === '0000-00-00 00:00:00') {
@@ -171,7 +171,7 @@ class Reminder
 
     public function setEnd(\DateTimeInterface|string|null $end): self
     {
-         if ($end === null || $end === '' || $end === '0000-00-00 00:00:00') {
+        if ($end === null || $end === '' || $end === '0000-00-00 00:00:00') {
             $this->end = null;
         } elseif (is_string($end)) {
             try {
@@ -222,7 +222,7 @@ class Reminder
 
     public function setState(int|string|null $state): self
     {
-         if ($state === null || $state === '') {
+        if ($state === null || $state === '') {
             $this->state = 0;
         } else {
             $this->state = (int)$state;

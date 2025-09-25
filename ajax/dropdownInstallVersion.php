@@ -48,37 +48,36 @@ $used = [];
 if (isset($_POST['used']) && is_array($_POST['used'])) {
     $used = array_filter($_POST['used'], 'is_numeric');
 }
-    $em = config::getAdapter()->getEntityManager();
+$em = config::getAdapter()->getEntityManager();
 
-    $qb = $em->createQueryBuilder();
-    $qb->select('DISTINCT v, s.name AS sname')
-    ->from('App\Entity\SoftwareVersion', 'v')
-    ->leftJoin('v.state', 's')
-    ->where('v.software = :softid')
-    ->setParameter('softid', $softwares_id);
+$qb = $em->createQueryBuilder();
+$qb->select('DISTINCT v, s.name AS sname')
+->from('App\Entity\SoftwareVersion', 'v')
+->leftJoin('v.state', 's')
+->where('v.software = :softid')
+->setParameter('softid', $softwares_id);
 
-    if (count($used)) {
-        $qb->andWhere($qb->expr()->notIn('v.id', ':used'))
-        ->setParameter('used', $used);
+if (count($used)) {
+    $qb->andWhere($qb->expr()->notIn('v.id', ':used'))
+    ->setParameter('used', $used);
+}
+
+$results = $qb->getQuery()->getResult();
+$number = count($results);
+
+$values = [];
+foreach ($results as $data) {
+    $ID = $data['id'];
+    $output = $data['name'];
+
+    if (empty($output) || $_SESSION['glpiis_ids_visible']) {
+        $output = sprintf(__('%1$s (%2$s)'), $output, $ID);
     }
-
-    $results = $qb->getQuery()->getResult();
-    $number = count($results);
-
-    $values = [];
-    foreach ($results as $data) {
-        $ID = $data['id'];
-        $output = $data['name'];
-
-        if (empty($output) || $_SESSION['glpiis_ids_visible']) {
-            $output = sprintf(__('%1$s (%2$s)'), $output, $ID);
-        }
-        if (!empty($data['sname'])) {
-            $output = sprintf(__('%1$s - %2$s'), $output, $data['sname']);
-        }
-        $values[$ID] = $output;
+    if (!empty($data['sname'])) {
+        $output = sprintf(__('%1$s - %2$s'), $output, $data['sname']);
     }
+    $values[$ID] = $output;
+}
 
-    echo json_encode($values);
-    // Dropdown::showFromArray($_POST['myname'], $values, ['display_emptychoice' => true]);
-
+echo json_encode($values);
+// Dropdown::showFromArray($_POST['myname'], $values, ['display_emptychoice' => true]);

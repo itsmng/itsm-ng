@@ -778,7 +778,7 @@ abstract class CommonITILObject extends CommonDBTM
         if (isset($input['entities_id'])) {
             $entid = $input['entities_id'];
         } else {
-            $entid = $this->fields['entities_id']?? null;
+            $entid = $this->fields['entities_id'] ?? null;
         }
 
         $type = null;
@@ -1300,7 +1300,7 @@ abstract class CommonITILObject extends CommonDBTM
         if (
             (($key = array_search('closedate', $this->updates)) !== false)
             && (
-                 // Convert DateTime objects to string if needed
+                // Convert DateTime objects to string if needed
                 (is_string($this->fields["closedate"] ?? '') && is_string($this->oldvalues['closedate'] ?? '') &&
                 !empty($this->fields["closedate"]) && !empty($this->oldvalues['closedate']) &&
                 substr($this->fields["closedate"], 0, 16) == substr($this->oldvalues['closedate'], 0, 16))

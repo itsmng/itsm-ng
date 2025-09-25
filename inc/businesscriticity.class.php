@@ -50,7 +50,7 @@ class BusinessCriticity extends CommonTreeDropdown
               'name'  => $this->getForeignKeyField(),
               'type'  => 'select',
               'itemtype' => BusinessCriticity::class,
-              'value' => $this->fields[$this->getForeignKeyField()]?? null,
+              'value' => $this->fields[$this->getForeignKeyField()] ?? null,
            ]
         ];
     }

@@ -91,7 +91,6 @@ foreach ($params as $k => $v) {
 
 $results = $qb->getQuery()->getArrayResult();
 
-$values = array_map(fn($row) => Html::entity_decode_deep($row[$field]), $results);
+$values = array_map(fn ($row) => Html::entity_decode_deep($row[$field]), $results);
 
 echo json_encode($values);
-

@@ -404,7 +404,8 @@ class DBEnginePostgres implements DBInterface
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute([':t' => $table]);
             $indexes = array_map(function ($r) {
-                return $r['indexname']; }, $stmt->fetchAll(PDO::FETCH_ASSOC) ?: []);
+                return $r['indexname'];
+            }, $stmt->fetchAll(PDO::FETCH_ASSOC) ?: []);
         } catch (\Throwable $e) {
         }
         return ['schema' => $schema, 'index' => $indexes];

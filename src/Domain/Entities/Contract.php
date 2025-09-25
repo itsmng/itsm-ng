@@ -263,10 +263,10 @@ class Contract
 
     public function getWeekBeginHour(): ?\DateTimeInterface
     {
-       if ($this->weekBeginHour === null) {
-        $this->weekBeginHour = new DateTime('00:00:00');
-    }
-    return $this->weekBeginHour;
+        if ($this->weekBeginHour === null) {
+            $this->weekBeginHour = new DateTime('00:00:00');
+        }
+        return $this->weekBeginHour;
     }
 
     public function setWeekBeginHour(\DateTimeInterface|string|null $weekBeginHour): self
@@ -282,9 +282,9 @@ class Contract
     public function getWeekEndHour(): ?\DateTimeInterface
     {
         if ($this->weekEndHour === null) {
-        $this->weekEndHour = new DateTime('00:00:00');
-    }
-    return $this->weekEndHour;
+            $this->weekEndHour = new DateTime('00:00:00');
+        }
+        return $this->weekEndHour;
     }
 
     public function setWeekEndHour(\DateTimeInterface|string|null $weekEndHour): self
@@ -300,9 +300,9 @@ class Contract
     public function getSaturdayBeginHour(): ?\DateTimeInterface
     {
         if ($this->saturdayBeginHour === null) {
-        $this->saturdayBeginHour = new DateTime('00:00:00');
-    }
-    return $this->saturdayBeginHour;
+            $this->saturdayBeginHour = new DateTime('00:00:00');
+        }
+        return $this->saturdayBeginHour;
     }
 
     public function setSaturdayBeginHour(\DateTimeInterface|string|null $saturdayBeginHour): self
@@ -318,7 +318,7 @@ class Contract
     public function getSaturdayEndHour(): ?\DateTimeInterface
     {
         if ($this->saturdayEndHour === null) {
-        $this->saturdayEndHour = new DateTime('00:00:00');
+            $this->saturdayEndHour = new DateTime('00:00:00');
         }
         return $this->saturdayEndHour;
     }
@@ -348,9 +348,9 @@ class Contract
     public function getMondayBeginHour(): ?\DateTimeInterface
     {
         if ($this->mondayBeginHour === null) {
-        $this->mondayBeginHour = new DateTime('00:00:00');
-    }
-    return $this->mondayBeginHour;
+            $this->mondayBeginHour = new DateTime('00:00:00');
+        }
+        return $this->mondayBeginHour;
     }
 
     public function setMondayBeginHour(\DateTimeInterface|string|null $mondayBeginHour): self
@@ -366,9 +366,9 @@ class Contract
     public function getMondayEndHour(): ?\DateTimeInterface
     {
         if ($this->mondayEndHour === null) {
-        $this->mondayEndHour = new DateTime('00:00:00');
-    }
-    return $this->mondayEndHour;
+            $this->mondayEndHour = new DateTime('00:00:00');
+        }
+        return $this->mondayEndHour;
     }
 
     public function setMondayEndHour(\DateTimeInterface|string|null $mondayEndHour): self

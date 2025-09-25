@@ -46,7 +46,7 @@ $qb->select('l')
    ->where('l.id = :id')
    ->setParameter('id', $lID);
 
-    $linkObj = $qb->getQuery()->getOneOrNullResult();
+$linkObj = $qb->getQuery()->getOneOrNullResult();
 
 if ($linkObj) {
     $file = $linkObj->getData();
@@ -60,7 +60,7 @@ if ($linkObj) {
         if ($item->getFromDB($itemid)) {
             $content_filename = Link::generateLinkContents($link, $item, false);
             $content_data     = Link::generateLinkContents($file, $item, false);
-            
+
             $rank = filter_input(INPUT_GET, 'rank', FILTER_VALIDATE_INT);
 
             if ($rank !== null && isset($content_filename[$rank])) {
@@ -88,4 +88,3 @@ if ($linkObj) {
         }
     }
 }
-

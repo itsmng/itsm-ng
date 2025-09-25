@@ -970,19 +970,19 @@ class Infocom extends CommonDBChild
             if ($date_achat instanceof \DateTimeInterface) {
                 $date_achat = $date_achat->format('Y-m-d H:i:s');
             }
-        if ($date_achat) {
-            sscanf(
-                $date_achat,
-                "%4s-%2s-%2s %2s:%2s:%2s",
-                $date_Y,
-                $date_m,
-                $date_d,
-                $date_H,
-                $date_i,
-                $date_s
-            ); // un traitement sur la date mysql pour recuperer l'annee
+            if ($date_achat) {
+                sscanf(
+                    $date_achat,
+                    "%4s-%2s-%2s %2s:%2s:%2s",
+                    $date_Y,
+                    $date_m,
+                    $date_d,
+                    $date_H,
+                    $date_i,
+                    $date_s
+                ); // un traitement sur la date mysql pour recuperer l'annee
+            }
         }
-    }
         // un traitement sur la date mysql pour les infos necessaires
         $date_Y2 = $date_m2 = $date_d2 = $date_H2 = $date_i2 = $date_s2 = 0;
         if ($date_tax) {
@@ -2053,7 +2053,7 @@ class Infocom extends CommonDBChild
         }
 
         if ($from instanceof \DateTime) {
-            $from = $from->format('Y-m-d'); 
+            $from = $from->format('Y-m-d');
         }
         $timestamp = strtotime("$from+$addwarranty month -$deletenotice month");
 

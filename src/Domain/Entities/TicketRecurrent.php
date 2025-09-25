@@ -122,10 +122,10 @@ class TicketRecurrent
         if ($beginDate === null || $beginDate === '' || $beginDate === 'NULL') {
             $this->beginDate = null;
         } elseif (is_string($beginDate)) {
-                $beginDate = new \DateTime($beginDate);
+            $beginDate = new \DateTime($beginDate);
         } else {
-        $this->beginDate = $beginDate;
-    }
+            $this->beginDate = $beginDate;
+        }
 
         return $this;
     }
@@ -179,8 +179,8 @@ class TicketRecurrent
 
     public function setEndDate(\DateTimeInterface|string|null $endDate): self
     {
-         if ($endDate === null || $endDate === '' || $endDate === 'NULL') {
-        $this->endDate = null;
+        if ($endDate === null || $endDate === '' || $endDate === 'NULL') {
+            $this->endDate = null;
         } elseif (is_string($endDate)) {
             $endDate = new \DateTime($endDate);
         } else {

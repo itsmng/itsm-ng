@@ -1318,7 +1318,7 @@ class Planning extends CommonGLPI
             }
         }
 
-       
+
         $queryBuilder
             ->select('g')
             ->from(\Itsmng\Domain\Entities\Group::class, 'g')

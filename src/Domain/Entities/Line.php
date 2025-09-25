@@ -136,7 +136,7 @@ class Line
         return $this;
     }
 
-     public function getDateCreation(): DateTime
+    public function getDateCreation(): DateTime
     {
         return $this->dateCreation ?? new DateTime();
     }

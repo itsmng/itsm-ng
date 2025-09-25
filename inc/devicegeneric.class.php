@@ -56,7 +56,7 @@ class DeviceGeneric extends CommonDevice
                  'name'  => 'devicegenerictypes_id',
                  'type'  => 'select',
                  'values' => getOptionForItems('DeviceGenericType'),
-                 'value' => $this->fields['devicegenerictypes_id']?? null,
+                 'value' => $this->fields['devicegenerictypes_id'] ?? null,
                  'actions' => getItemActionButtons(['add', 'info'], 'DeviceGenericType')
               ]
             ]

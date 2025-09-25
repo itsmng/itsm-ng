@@ -222,10 +222,10 @@ class Html
     public static function convDate($time, $format = null)
     {
 
-         if ($time instanceof \DateTimeInterface) {
+        if ($time instanceof \DateTimeInterface) {
             $time = $time->format('Y-m-d H:i:s');
         }
-        
+
         if (is_null($time) || trim($time) == '' || in_array($time, ['NULL', '0000-00-00', '0000-00-00 00:00:00'])) {
             return null;
         }
@@ -275,7 +275,7 @@ class Html
      **/
     public static function convDateTime($time, $format = null)
     {
-         if ($time instanceof \DateTimeInterface) {
+        if ($time instanceof \DateTimeInterface) {
             $time = $time->format('Y-m-d H:i:s');
         }
 

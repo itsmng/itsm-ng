@@ -1346,15 +1346,15 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
 
             // Document
             $em = $this::getAdapter()->getEntityManager();
-           $qb = $em->createQueryBuilder();
-           $qb->select('d')
-            ->from(\Itsmng\Domain\Entities\Document::class, 'd')
-            ->join('d.documentItems', 'di')
-            ->where('di.itemtype = :itemtype')
-            ->andWhere('di.itemsId = :itemsId')
-            ->andWhere('di.timelinePosition = true')
-            ->setParameter('itemtype', $item->getType())
-            ->setParameter('itemsId', $item->getID());
+            $qb = $em->createQueryBuilder();
+            $qb->select('d')
+             ->from(\Itsmng\Domain\Entities\Document::class, 'd')
+             ->join('d.documentItems', 'di')
+             ->where('di.itemtype = :itemtype')
+             ->andWhere('di.itemsId = :itemsId')
+             ->andWhere('di.timelinePosition = true')
+             ->setParameter('itemtype', $item->getType())
+             ->setParameter('itemsId', $item->getID());
 
             $documents = $qb->getQuery()->getResult();
 

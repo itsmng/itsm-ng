@@ -380,10 +380,10 @@ class Search
                     }
                     break;
                 case 'is_deleted':
-                     if ($val == 1 || $val === true || $val === "1") {
+                    if ($val == 1 || $val === true || $val === "1") {
                         $p[$key] = true;
                     } else {
-                        $p[$key] = false;  
+                        $p[$key] = false;
                     }
                     break;
                 default:
@@ -492,9 +492,9 @@ class Search
                         if (
                             isset($criterion['value'])
                             && (strlen($criterion['value']) > 0)
-                            ) {
+                        ) {
                             $data['search']['no_search'] = true;
-                        } 
+                        }
                     }
                 }
             };
@@ -502,11 +502,11 @@ class Search
             // call the closure
             $parse_criteria($p['criteria']);
         }
-            
+
         if (count($p['metacriteria'])) {
             $data['search']['no_search'] = false;
         }
-    
+
         // Add order item
         if (!in_array($p['sort'], $data['toview'])) {
             array_push($data['toview'], $p['sort']);
@@ -691,15 +691,15 @@ class Search
             } elseif (isset($CFG_GLPI["union_search_type"][$data['itemtype']])) {
                 // Will be replace below in Union/Recursivity Hack
                 $COMMONWHERE .= $LINK . " ENTITYRESTRICT ";
-            } else {               
-                   $COMMONWHERE .= getEntitiesRestrictRequest(
+            } else {
+                $COMMONWHERE .= getEntitiesRestrictRequest(
                     $LINK,
                     $itemtable,
                     '',
                     '',
                     $data['item']->maybeRecursive() && $data['item']->isField('is_recursive')
-                );   
-            }           
+                );
+            }
         }
         $WHERE  = "";
         $HAVING = "";
@@ -1505,11 +1505,11 @@ class Search
 
             while (($i < $data['data']['end'])) {
                 $row = $result->fetchAssociative();
-                 if (!is_array($row) || !$row) {
+                if (!is_array($row) || !$row) {
                     $i++;
                     continue;
                 }
-                
+
                 $newrow        = [];
                 $newrow['raw'] = $row;
                 // Parse datas
@@ -1646,7 +1646,7 @@ class Search
 
                 if (isset($row[$colkey]['displayname']) && $row[$colkey]['displayname']) {
                     $values[$row_num][$col_num] = $row[$colkey]['displayname'];
-                } 
+                }
                 $col_num++;
             }
         }
@@ -1679,7 +1679,7 @@ class Search
                 $item->title();
             }
         }
-               
+
         Html::showMassiveActions($massiveactionparams);
         renderTwigTemplate('table.twig', [
            'id' => 'SearchTableFor' . $data['itemtype'],
@@ -1718,7 +1718,7 @@ class Search
                   "<span class='lever'></span>" .
                   "</label>" .
                "</div>";
-               
+
     }
 
 
@@ -3629,11 +3629,11 @@ JAVASCRIPT;
 
                     return " $table$addtable.$field AS __orderby_" . $NAME . ",
                         " . $adapter->getGroupConcat(
-                            "DISTINCT $concat_expr",
-                            self::LONGSEP,
-                            $concat_expr,
-                            true
-                        ) . " AS \"" . $NAME . "\",
+                        "DISTINCT $concat_expr",
+                        self::LONGSEP,
+                        $concat_expr,
+                        true
+                    ) . " AS \"" . $NAME . "\",
                         $addaltemail
                         $ADDITONALFIELDS";
                 }
@@ -3903,10 +3903,10 @@ JAVASCRIPT;
                         || (isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])
                     ) {
                         $gc_expr = $adapter->getDateAdd(
-                                "$table$addtable." . $searchopt[$ID]["datafields"][1],
-                                "$interval",
-                                "($table$addtable." . $searchopt[$ID]["datafields"][2] . " $add_minus)"
-                            );
+                            "$table$addtable." . $searchopt[$ID]["datafields"][1],
+                            "$interval",
+                            "($table$addtable." . $searchopt[$ID]["datafields"][2] . " $add_minus)"
+                        );
                         return " " . $adapter->getGroupConcat(
                             "DISTINCT $gc_expr",
                             self::LONGSEP,
@@ -6156,7 +6156,7 @@ JAVASCRIPT;
                         if (isset($data['raw']) && isset($data['raw']['is_deleted']) && $data['raw']['is_deleted']) {
                             $link .= '&is_deleted=1';
                         }
-                        
+
                         return "<a href='$link'>$username</a>";
                     }
                     break;
@@ -6256,7 +6256,7 @@ JAVASCRIPT;
                         }
                         return $out;
                     }
-                    // Generic entity display fallback: if join did not provide a name, resolve the entity name 
+                    // Generic entity display fallback: if join did not provide a name, resolve the entity name
                     // from entities_id present in row to avoid rendering an empty column for sub-entities.
                     $entity_name = $data[$ID][0]['name'] ?? '';
                     if (!is_string($entity_name) || strlen(trim($entity_name)) === 0) {

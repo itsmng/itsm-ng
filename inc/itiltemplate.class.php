@@ -238,27 +238,27 @@ abstract class ITILTemplate extends CommonDropdown
             if ($withtypeandcategory) {
                 $allowed_fields[$withtypeandcategory][$withitemtype]
                 [$itil_object->getSearchOptionIDByField(
-                        'field',
-                        'completename',
-                        'glpi_itilcategories'
-                    )] = 'itilcategories_id';
+                    'field',
+                    'completename',
+                    'glpi_itilcategories'
+                )] = 'itilcategories_id';
             }
 
             if ($withitemtype) {
                 $allowed_fields[$withtypeandcategory][$withitemtype]
                 [$itil_object->getSearchOptionIDByField(
-                        'field',
-                        'itemtype',
-                        $itemstable
-                    )] = 'itemtype';
+                    'field',
+                    'itemtype',
+                    $itemstable
+                )] = 'itemtype';
             }
 
             $allowed_fields[$withtypeandcategory][$withitemtype]
             [$itil_object->getSearchOptionIDByField(
-                    'field',
-                    'items_id',
-                    $itemstable
-                )] = 'items_id';
+                'field',
+                'items_id',
+                $itemstable
+            )] = 'items_id';
 
             // Add validation request
             $allowed_fields[$withtypeandcategory][$withitemtype][-2] = '_add_validation';
@@ -266,18 +266,18 @@ abstract class ITILTemplate extends CommonDropdown
             // Add document
             $allowed_fields[$withtypeandcategory][$withitemtype]
             [$itil_object->getSearchOptionIDByField(
-                    'field',
-                    'name',
-                    'glpi_documents'
-                )] = '_documents_id';
+                'field',
+                'name',
+                'glpi_documents'
+            )] = '_documents_id';
 
             // Add ITILTask (from task templates)
             $allowed_fields[$withtypeandcategory][$withitemtype]
             [$itil_object->getSearchOptionIDByField(
-                    'field',
-                    'name',
-                    TaskTemplate::getTable()
-                )] = '_tasktemplates_id';
+                'field',
+                'name',
+                TaskTemplate::getTable()
+            )] = '_tasktemplates_id';
 
             //add specific itil type fields
             $allowed_fields[$withtypeandcategory][$withitemtype] += static::getExtraAllowedFields($withtypeandcategory, $withitemtype);
@@ -762,47 +762,47 @@ abstract class ITILTemplate extends CommonDropdown
     {
         $em = config::getAdapter()->getEntityManager();
 
-    $defaults = [
-        'value'    => null,
-        'entity'   => 0,
-        'itemtype' => get_called_class(),
-        'condition'=> null,
-        'display'  => true,
-    ];
+        $defaults = [
+            'value'    => null,
+            'entity'   => 0,
+            'itemtype' => get_called_class(),
+            'condition' => null,
+            'display'  => true,
+        ];
 
-    $options = array_merge($defaults, $options);
+        $options = array_merge($defaults, $options);
 
-    $table = static::getTable();
-    $short = str_replace('glpi_', '', $table);
-    $short = str_replace(' ', '', ucwords(str_replace('_', ' ', $short)));
-    $entityClass = 'Itsmng\\Domain\\Entities\\' . $short;
+        $table = static::getTable();
+        $short = str_replace('glpi_', '', $table);
+        $short = str_replace(' ', '', ucwords(str_replace('_', ' ', $short)));
+        $entityClass = 'Itsmng\\Domain\\Entities\\' . $short;
 
-    $qb = $em->createQueryBuilder();
-    $qb->select('t')
-       ->from($entityClass, 't')
-       ->orderBy('t.name', 'ASC');
+        $qb = $em->createQueryBuilder();
+        $qb->select('t')
+           ->from($entityClass, 't')
+           ->orderBy('t.name', 'ASC');
 
-    // Entity restriction
-    if ($options['entity'] >= 0) {
-        $entityField = property_exists($entityClass, 'entities_id') ? 't.entities_id' : null;
-        if ($entityField) {
-            $qb->andWhere($entityField . ' = :entity')
-               ->setParameter('entity', $options['entity']);
+        // Entity restriction
+        if ($options['entity'] >= 0) {
+            $entityField = property_exists($entityClass, 'entities_id') ? 't.entities_id' : null;
+            if ($entityField) {
+                $qb->andWhere($entityField . ' = :entity')
+                   ->setParameter('entity', $options['entity']);
+            }
         }
-    }
 
-    // Additional condition(s)
-    if (!empty($options['condition']) && is_array($options['condition'])) {
-        foreach ($options['condition'] as $field => $value) {
-            $qb->andWhere("t.$field = :$field")
-               ->setParameter($field, $value);
+        // Additional condition(s)
+        if (!empty($options['condition']) && is_array($options['condition'])) {
+            foreach ($options['condition'] as $field => $value) {
+                $qb->andWhere("t.$field = :$field")
+                   ->setParameter($field, $value);
+            }
         }
-    }
 
-    $results = $qb->getQuery()->getArrayResult();
+        $results = $qb->getQuery()->getArrayResult();
 
-    $templates = [0 => Dropdown::EMPTY_VALUE];
-    foreach ($results as $data) {
+        $templates = [0 => Dropdown::EMPTY_VALUE];
+        foreach ($results as $data) {
             $templates[$data['id']] = $data['name'];
         }
 

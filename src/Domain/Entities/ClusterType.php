@@ -82,11 +82,11 @@ class ClusterType
         return $this;
     }
 
-     public function getDateMod(): DateTime
+    public function getDateMod(): DateTime
     {
         return $this->dateMod ?? new DateTime();
     }
-    
+
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function setDateMod(): self

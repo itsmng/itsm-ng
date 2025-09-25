@@ -105,27 +105,27 @@ if (isset($_POST["send"])) {
 
     $em = config::getAdapter()->getEntityManager();
     foreach ($types as $type => $label) {
-        $entityClass = 'Itsmng\Domain\Entities\\' . $type; 
+        $entityClass = 'Itsmng\Domain\Entities\\' . $type;
 
-    $qb = $em->createQueryBuilder();
-    $qb->select('e.name, e.id, e.contact, e.serial, e.otherserial')
-       ->from($entityClass, 'e')
-       ->where('e.is_template = 0')
-       ->andWhere('e.is_deleted = 0')
-       ->andWhere(
-           $qb->expr()->orX(
-               $qb->expr()->like('e.contact', ':search'),
-               $qb->expr()->like('e.name', ':search'),
-               $qb->expr()->like('e.serial', ':search'),
-               $qb->expr()->like('e.otherserial', ':search')
+        $qb = $em->createQueryBuilder();
+        $qb->select('e.name, e.id, e.contact, e.serial, e.otherserial')
+           ->from($entityClass, 'e')
+           ->where('e.is_template = 0')
+           ->andWhere('e.is_deleted = 0')
+           ->andWhere(
+               $qb->expr()->orX(
+                   $qb->expr()->like('e.contact', ':search'),
+                   $qb->expr()->like('e.name', ':search'),
+                   $qb->expr()->like('e.serial', ':search'),
+                   $qb->expr()->like('e.otherserial', ':search')
+               )
            )
-       )
-       ->setParameter('search', '%' . $search . '%')
-       ->orderBy('e.name', 'ASC');
+           ->setParameter('search', '%' . $search . '%')
+           ->orderBy('e.name', 'ASC');
 
-    $results = $qb->getQuery()->getArrayResult();
+        $results = $qb->getQuery()->getArrayResult();
 
-    foreach ($results as $ligne) {
+        foreach ($results as $ligne) {
             $Comp_num = $ligne['id'];
             $Contact  = $ligne['contact'];
             $Computer = $ligne['name'];

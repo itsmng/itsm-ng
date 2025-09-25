@@ -52,34 +52,34 @@ function expandForm($form, $fields = [], $template = null)
     foreach ($form['content'] as $contentKey => $content) {
         if (isset($content['inputs'])) {
             $filteredInputs = [];
-            
+
             foreach ($content['inputs'] as $inputKey => $input) {
                 $shouldHide = false;
-                
+
                 if (isset($input['name']) && isset($template) && $template->isHiddenField($input['name'])) {
                     $shouldHide = true;
                 }
-                
-                if (strpos(strtolower($inputKey), 'sla') !== false && 
-                    (strpos(strtolower($inputKey), 'time') !== false || 
-                     strpos(strtolower($inputKey), 'own') !== false || 
+
+                if (strpos(strtolower($inputKey), 'sla') !== false &&
+                    (strpos(strtolower($inputKey), 'time') !== false ||
+                     strpos(strtolower($inputKey), 'own') !== false ||
                      strpos(strtolower($inputKey), 'resolve') !== false ||
                      strpos(strtolower($inputKey), 'tto') !== false ||
                      strpos(strtolower($inputKey), 'ttr') !== false)) {
                     $shouldHide = true;
                 }
-                
+
                 if ($shouldHide) {
                     continue;
                 }
-                
+
                 $filteredInputs[$inputKey] = $input;
-                
+
                 if ($input['type'] ?? '' == 'select') {
                     expandSelect($filteredInputs[$inputKey], $fields);
                 }
             }
-            
+
             $form['content'][$contentKey]['inputs'] = $filteredInputs;
         }
     }
@@ -459,19 +459,19 @@ function getItemActionButtons(array $actions, string $itemType): array
 
 function getOptionsWithNameForItem(string $itemType, array $conditions, array $names): array
 {
-   $em = config::getAdapter()->getEntityManager();
+    $em = config::getAdapter()->getEntityManager();
 
     $entityClass = 'Itsmng\\Domain\\Entities\\' . (new \ReflectionClass($itemType))->getShortName();
     if (!class_exists($entityClass)) {
         return [];
-    } 
+    }
     $qb = $em->createQueryBuilder();
-    $selectFields = array_merge(['e.id'], array_map(fn($n) => 'e.' . $n, array_values($names)));
+    $selectFields = array_merge(['e.id'], array_map(fn ($n) => 'e.' . $n, array_values($names)));
     $qb->select(implode(', ', $selectFields))
        ->from($entityClass, 'e');
 
     foreach ($conditions as $field => $value) {
-         if (!property_exists($entityClass, $field)) {
+        if (!property_exists($entityClass, $field)) {
             continue; // Ignore ce champ, ou loggue une erreur
         }
         $qb->andWhere("e.$field = :$field")
