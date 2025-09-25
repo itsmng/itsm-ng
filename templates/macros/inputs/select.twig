@@ -16,7 +16,7 @@
   {% else %}
     {% set id = attributes.id %}
   {% endif %}
-  <select class='form-select form-select-sm {{attributes.class}}' id="{{id}}" {{ attributes.multiple ? 'multiple="multiple"' : '' }}
+  <select class='no-print form-select form-select-sm {{attributes.class}}' id="{{id}}" {{ attributes.multiple ? 'multiple="multiple"' : '' }}
     {% for name, value in attributes %}
       {% if name not in  ['values', 'class', 'multiple', 'conditions', 'ajax', 'itemtype']%}
         {{name}}="{{value}}"

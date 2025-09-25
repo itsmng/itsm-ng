@@ -158,7 +158,7 @@ class KnowbaseItem_Item extends CommonDBRelation
             }
             asort($options);
             $form = [
-               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'action' => self::getFormActionURL(),
                'buttons' => [
                   [
                      'type' => 'submit',
@@ -501,6 +501,8 @@ class KnowbaseItem_Item extends CommonDBRelation
         return $forbidden;
     }
 
+    
+
     public static function getMassiveActionsForItemtype(
         array &$actions,
         $itemtype,
@@ -519,5 +521,18 @@ class KnowbaseItem_Item extends CommonDBRelation
         }
 
         parent::getMassiveActionsForItemtype($actions, $itemtype, $is_deleted, $checkitem);
+    }
+
+    private static function getFormActionURL()
+    {
+    if (isset($_SESSION['glpiactiveprofile']) && 
+        isset($_SESSION['glpiactiveprofile']['interface']) && 
+        $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk') {
+        
+        global $CFG_GLPI;
+        return $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/knowbaseitem_item.form.php';
+    }
+    
+    return Toolbox::getItemTypeFormURL(__CLASS__);
     }
 }

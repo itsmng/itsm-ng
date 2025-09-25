@@ -2078,7 +2078,7 @@ JAVASCRIPT;
                . '/front/logout.php'
                . (isset($_SESSION['glpiextauth']) && $_SESSION['glpiextauth'] ? '?noAUTO=1' : '');
             echo '<li id="deconnexion">';
-            echo '<a href="' . $logout_url . '" title="' . __s('Logout') . '" class="fa fa-sign-out-alt">';
+            echo '<a href="' . $logout_url . '" title="' . __s('Logout') . '" class="no-print fa fa-sign-out-alt">';
             echo '<span class="sr-only">' . __s('Logout') . '</span>';
             echo '</a>';
             echo '</li>';
@@ -3837,7 +3837,7 @@ JS;
             $entity_shortname = $_SESSION["glpiactive_entity_shortname"];
             echo <<<HTML
             <div class='profile-selector'>
-               <a onclick='entity_window.dialog("open")' href='#modal_entity_content' title="$active_entity" class='entity-select' id="global_entity_select">
+               <a onclick='entity_window.dialog("open")' href='#modal_entity_content' title="$active_entity" class='entity-select no-print' id="global_entity_select">
                   $entity_shortname
                </a>
             </div>
