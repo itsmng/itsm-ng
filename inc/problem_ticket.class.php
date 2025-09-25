@@ -332,6 +332,7 @@ class Problem_Ticket extends CommonDBRelation
                                                                        => __('Add a new task')],
                                          'extraparams'      => ['problems_id' => $problem->getID()],
                                          'width'            => 1000,
+                                         'deprecated'       => true,
                                          'height'           => 500];
             Html::showMassiveActions($massiveactionparams);
         }
