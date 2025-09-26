@@ -219,7 +219,7 @@ class Contract extends CommonDBTM
                        'type' => 'select',
                        'name' => 'contracttypes_id',
                        'values' => getOptionForItems('ContractType'),
-                       'value' => $this->fields['contracttypes_id'],
+                       'value' => $this->fields['contracttypes_id']?? null,
                        'actions' => getItemActionButtons(['info', 'add'], "contracttype"),
                     ],
                     _x('phone', 'Number') => [
