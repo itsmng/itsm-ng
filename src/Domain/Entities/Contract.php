@@ -182,9 +182,9 @@ class Contract
         return $this->duration;
     }
 
-    public function setDuration(int $duration): self
+    public function setDuration(int|string $duration): self
     {
-        $this->duration = $duration;
+        $this->duration = (int) $duration;
 
         return $this;
     }
@@ -206,9 +206,9 @@ class Contract
         return $this->periodicity;
     }
 
-    public function setPeriodicity(int $periodicity): self
+    public function setPeriodicity(int|string $periodicity): self
     {
-        $this->periodicity = $periodicity;
+        $this->periodicity = (int) $periodicity;
 
         return $this;
     }
@@ -218,9 +218,9 @@ class Contract
         return $this->billing;
     }
 
-    public function setBilling(int $billing): self
+    public function setBilling(int|string $billing): self
     {
-        $this->billing = $billing;
+        $this->billing = (int) $billing;
 
         return $this;
     }
