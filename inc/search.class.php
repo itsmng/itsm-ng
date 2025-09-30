@@ -2557,43 +2557,74 @@ JAVASCRIPT;
                  'noLib' => true,
                  'hooks' => [
                     'change' => <<<JS
-                     $.ajax({
-                        url: '{$CFG_GLPI['root_doc']}/ajax/search.php',
-                        type: 'POST',
-                        data: {
-                           action: 'display_searchoption',
-                           field: $(this).val(),
-                           itemtype: '{$request['itemtype']}',
-                           num: $num,
-                           p: {$json_p},
-                           _idor_token: '{$idor_display_criteria}',
-                           value: '',
-                           searchtype: ''
-                        },
-                        success: function(data) {
-                           $('#$spanid').html(data);
-                        }
-                     });
+                            const \$select = $(this);
+                            const \$container = \$select.closest('[data-search-container]');
+                            const containerKey = \$container.data('search-container');
+                            const dataKey = 'searchOption_' + containerKey;
+                            const expectedField = \$select.val();
+
+                            $.ajax({
+                                url: '{$CFG_GLPI['root_doc']}/ajax/search.php',
+                                type: 'POST',
+                                data: {
+                                    action: 'display_searchoption',
+                                    field: expectedField,
+                                    itemtype: '{$request['itemtype']}',
+                                    num: $num,
+                                    p: {$json_p},
+                                    _idor_token: '{$idor_display_criteria}',
+                                    value: '',
+                                    searchtype: ''
+                                },
+                                success: function(data) {
+                                    if (\$select.val() !== expectedField) {
+                                        return;
+                                    }
+                                    const \$existing = \$container.data(dataKey);
+                                    if (\$existing && \$existing.remove) {
+                                        \$existing.remove();
+                                        \$container.removeData(dataKey);
+                                    }
+                                    const \$content = $(data);
+                                    \$container.data(dataKey, \$content);
+                                    \$container.append(\$content);
+                                }
+                            });
                   JS,
                  ],
                  'init' => <<<JS
-                  $.ajax({
-                     url: '{$CFG_GLPI['root_doc']}/ajax/search.php',
-                     type: 'POST',
-                     data: {
-                        action: 'display_searchoption',
-                        field: $('#dropdown_criteria{$prefix}_{$num}_field_{$randrow}').val(),
-                        itemtype: '{$request['itemtype']}',
-                        num: $num,
-                        p: {$json_p},
-                        _idor_token: '{$idor_display_criteria}',
-                        value: '{$subValue}',
-                        searchtype: '{$searchtype}'
-                     },
-                     success: function(data) {
-                        $('#$spanid').html(data);
-                     }
-                  });
+                        const \$field = $('#dropdown_criteria{$prefix}_{$num}_field_{$randrow}');
+                        const \$container = $('[data-search-container="{$spanid}"]');
+                        const dataKey = 'searchOption_{$spanid}';
+                        const expectedField = \$field.val();
+
+                        $.ajax({
+                            url: '{$CFG_GLPI['root_doc']}/ajax/search.php',
+                            type: 'POST',
+                            data: {
+                                action: 'display_searchoption',
+                                field: expectedField,
+                                itemtype: '{$request['itemtype']}',
+                                num: $num,
+                                p: {$json_p},
+                                _idor_token: '{$idor_display_criteria}',
+                                value: '{$subValue}',
+                                searchtype: '{$searchtype}'
+                            },
+                            success: function(data) {
+                                if (\$field.val() !== expectedField) {
+                                    return;
+                                }
+                                const \$existing = \$container.data(dataKey);
+                                if (\$existing && \$existing.remove) {
+                                    \$existing.remove();
+                                    \$container.removeData(dataKey);
+                                }
+                                const \$content = $(data);
+                                \$container.data(dataKey, \$content);
+                                \$container.append(\$content);
+                            }
+                        });
                JS,
               ]
            ]
@@ -2944,12 +2975,10 @@ JAVASCRIPT;
             $searchtype_name = "{$fieldname}{$prefix}[$num][searchtype]";
             $rands = Dropdown::showFromArray($searchtype_name, $actions, [
                'value' => $request["searchtype"],
-               'width' => '180px',
             ]);
             $fieldsearch_id = Html::cleanId("dropdown_$searchtype_name$rands");
         }
 
-        echo "<span id='$dropdownname'>";
         $params = [
            'value'       => rawurlencode(stripslashes($request['value'])),
            'searchopt'   => $searchopt,
@@ -3006,7 +3035,7 @@ JAVASCRIPT;
         $item              = getItemForItemtype($request['itemtype']);
         $options2          = [];
         $options2['value'] = $request['value'];
-        $options2['width'] = '100%';
+        //$options2['width'] = '100%';
         // For tree dropdpowns
         $options2['permit_select_parent'] = true;
 
