@@ -4,7 +4,7 @@
     <input id="is_deleted" type="hidden" name="is_deleted" value="{{is_deleted}}">
     <input id="as_map" type="hidden" name="as_map" value="{{as_map}}">
     <div class="input-container d-flex flex-row">
-        <div class="input-group" style="width: auto;">
+    <div class="input-group flex-wrap align-items-stretch w-100" data-search-container="{{spanid}}">
             {% if not from_meta %}
                 <i class="far fa-minus-square remove-search-criteria input-group-text"
                     role="button"
@@ -16,7 +16,9 @@
                     {{ input(attributes) }}
                 {% endif %}
             {% endfor %}
+                {% if meta is defined %}
+                    <span id="{{spanid}}" class="d-flex flex-wrap align-items-stretch flex-grow-1"></span>
+                {% endif %}
         </div>
-        <span id="{{spanid}}"  class='d-flex me-auto'></span>
     </div>
 </li>
