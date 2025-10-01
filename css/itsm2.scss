@@ -740,11 +740,7 @@ nav#menu {
                 padding: 5px 2px;
                 top: 2.5em;
                 position: absolute;
-                background-color: color-mix(
-                    in srgb,
-                    rgb(0, 0, 0) 30%,
-                    var(--bs-nav) 70%
-                );
+                background-color: --bs-nav-submenu;
             }
 
             .menu-close & {
