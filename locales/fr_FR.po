@@ -14318,14 +14318,6 @@ msgctxt "status"
 msgid "Processing (planned)"
 msgstr "En cours (Planifié)"
 
-#: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
-#: inc/change.class.php:541 inc/change.class.php:543 inc/problem.class.php:698
-#, fuzzy
-#| msgid "Pending"
-msgctxt "status"
-msgid "Pending"
-msgstr "En attente"
-
 #: inc/problem.class.php:686 inc/problem.class.php:699
 msgctxt "status"
 msgid "Solved"
@@ -25091,3 +25083,6 @@ msgstr "Aucun fichier choisi"
 
 msgid "Add another observer"
 msgstr "Ajouter un autre observateur"
+
+msgid "Pending"
+msgstr "En attente"
