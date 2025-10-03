@@ -51,37 +51,37 @@ $dashboard->show([
       [
          [
             'title' => Ticket::getTypeName(Session::getPluralNumber()),
-            'value' => countElementsInTable('glpi_tickets', ['entities_id' => $_SESSION['glpiactive_entity']]),
+            'value' => countElementsInTable('glpi_tickets', ['entities_id' => $_SESSION['glpiactiveentities']]),
             'icon' =>  Ticket::getIcon(),
          ],
          [
             'title' => __('New tickets'),
-            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::INCOMING, 'entities_id' => $_SESSION['glpiactive_entity']]),
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::INCOMING, 'entities_id' => $_SESSION['glpiactiveentities']]),
             'icon' => 'fas fa-exclamation-circle',
          ],
          [
             'title' => __('Pending tickets'),
-            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::WAITING, 'entities_id' => $_SESSION['glpiactive_entity']]),
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::WAITING, 'entities_id' => $_SESSION['glpiactiveentities']]),
             'icon' => 'fas fa-pause-circle',
          ],
          [
             'title' => __('Assigned tickets'),
-            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::ASSIGNED, 'entities_id' => $_SESSION['glpiactive_entity']]),
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::ASSIGNED, 'entities_id' => $_SESSION['glpiactiveentities']]),
             'icon' => 'fas fa-users',
          ],
          [
             'title' => __('Planned tickets'),
-            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::PLANNED, 'entities_id' => $_SESSION['glpiactive_entity']]),
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::PLANNED, 'entities_id' => $_SESSION['glpiactiveentities']]),
             'icon' => 'fas fa-calendar-check',
          ],
          [
             'title' => __('Solved tickets'),
-            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::SOLVED, 'entities_id' => $_SESSION['glpiactive_entity']]),
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::SOLVED, 'entities_id' => $_SESSION['glpiactiveentities']]),
             'icon' => 'fas fa-check-circle',
          ],
          [
             'title' => __('Closed tickets'),
-            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::CLOSED, 'entities_id' => $_SESSION['glpiactive_entity']]),
+            'value' => countElementsInTable('glpi_tickets', ['is_deleted' => 0, 'status' => Ticket::CLOSED, 'entities_id' => $_SESSION['glpiactiveentities']]),
             'icon' => 'fas fa-lock',
          ],
       ]
