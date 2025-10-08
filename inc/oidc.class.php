@@ -31,12 +31,11 @@
  * ---------------------------------------------------------------------
  */
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . "/../vendor/autoload.php";
 
-if (!defined('GLPI_ROOT')) {
+if (!defined("GLPI_ROOT")) {
     die("Sorry. You can't access this file directly");
 }
-
 
 /**
  * OpenID connect Class
@@ -47,47 +46,77 @@ class Oidc extends CommonDBTM
 
     public static function auth()
     {
-
         global $DB, $CFG_GLPI;
 
         //Get config from DB and use it to setup oidc
         $criteria = "SELECT * FROM glpi_oidc_config";
         $iterators = $DB->request($criteria);
         foreach ($iterators as $iterator) {
-            $oidc_db['Provider'] = $iterator['Provider'];
-            $oidc_db['ClientID'] = $iterator['ClientID'];
-            $oidc_db['ClientSecret'] = Toolbox::sodiumDecrypt($iterator['ClientSecret']);
-            $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
-            $oidc_db['proxy'] = $iterator['proxy'];
-            $oidc_db['cert'] = $iterator['cert'];
-            $oidc_db['sso_link_users'] = $iterator['sso_link_users'];
+            $oidc_db["Provider"] = $iterator["Provider"];
+            $oidc_db["ClientID"] = $iterator["ClientID"];
+            $oidc_db["ClientSecret"] = Toolbox::sodiumDecrypt(
+                $iterator["ClientSecret"],
+            );
+            $oidc_db["scope"] = explode(
+                ",",
+                addslashes(str_replace(" ", "", $iterator["scope"])),
+            );
+            $oidc_db["proxy"] = $iterator["proxy"];
+            $oidc_db["cert"] = $iterator["cert"];
+            $oidc_db["sso_link_users"] = $iterator["sso_link_users"];
         }
 
-        $oidc = new Jumbojett\OpenIDConnectClient($oidc_db['Provider'], $oidc_db['ClientID'], $oidc_db['ClientSecret']);
-        if (is_array($oidc_db['scope'])) {
-            $oidc->addScope($oidc_db['scope']);
+        $oidc = new Jumbojett\OpenIDConnectClient(
+            $oidc_db["Provider"],
+            $oidc_db["ClientID"],
+            $oidc_db["ClientSecret"],
+        );
+        if (is_array($oidc_db["scope"])) {
+            $oidc->addScope($oidc_db["scope"]);
         }
-        if (isset($oidc_db['proxy']) && $oidc_db['proxy'] != '') {
-            $oidc->setHttpProxy($oidc_db['proxy']);
+        if (isset($oidc_db["proxy"]) && $oidc_db["proxy"] != "") {
+            $oidc->setHttpProxy($oidc_db["proxy"]);
         }
-        if (isset($oidc_db['cert']) && $oidc_db['proxy'] != '' && file_exists($oidc_db['cert'])) {
-            $oidc->setCertPath($oidc_db['cert']);
+        if (
+            isset($oidc_db["cert"]) &&
+            $oidc_db["proxy"] != "" &&
+            file_exists($oidc_db["cert"])
+        ) {
+            $oidc->setCertPath($oidc_db["cert"]);
         }
-        $isCallback = isset($_GET['code']) || isset($_GET['id_token']) || isset($_GET['state']);
-        if (!$isCallback && isset($_REQUEST['redirect'])) {
-            $requestedRedirect = self::sanitizeRedirect($_REQUEST['redirect']);
+        $isCallback =
+            isset($_GET["code"]) ||
+            isset($_GET["id_token"]) ||
+            isset($_GET["state"]);
+        if (!$isCallback && isset($_REQUEST["redirect"])) {
+            $requestedRedirect = self::sanitizeRedirect($_REQUEST["redirect"]);
             if ($requestedRedirect) {
                 $cookieOptions = [
-                    'expires' => time() + 300,
-                    'path' => $CFG_GLPI['root_doc'] ?: '/',
-                    'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
-                    'httponly' => true,
-                    'samesite' => 'Lax'
+                    "expires" => time() + 300,
+                    "path" => $CFG_GLPI["root_doc"] ?: "/",
+                    "secure" =>
+                        !empty($_SERVER["HTTPS"]) &&
+                        $_SERVER["HTTPS"] !== "off",
+                    "httponly" => true,
+                    "samesite" => "Lax",
                 ];
                 if (PHP_VERSION_ID >= 70300) {
-                    setcookie('itsm_oidc_redirect', $requestedRedirect, $cookieOptions);
-                } else { // Fallback for older PHP versions
-                    setcookie('itsm_oidc_redirect', $requestedRedirect, $cookieOptions['expires'], $cookieOptions['path'], '', $cookieOptions['secure'], true);
+                    setcookie(
+                        "itsm_oidc_redirect",
+                        $requestedRedirect,
+                        $cookieOptions,
+                    );
+                } else {
+                    // Fallback for older PHP versions
+                    setcookie(
+                        "itsm_oidc_redirect",
+                        $requestedRedirect,
+                        $cookieOptions["expires"],
+                        $cookieOptions["path"],
+                        "",
+                        $cookieOptions["secure"],
+                        true,
+                    );
                 }
             }
         }
@@ -96,19 +125,32 @@ class Oidc extends CommonDBTM
             $oidc->authenticate();
         } catch (Exception $e) {
             //If something go wrong
-            Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
+            Html::nullHeader("Login", $CFG_GLPI["root_doc"] . "/index.php");
             echo '<div class="center b">';
-            echo __('Missing or wrong fields in open ID connect config');
-            echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
-            echo '<div>' . $e->getMessage() . '</div>';
-            echo '</div>';
+            echo __("Missing or wrong fields in open ID connect config");
+            echo '<p><a href="' .
+                $CFG_GLPI["root_doc"] .
+                "/index.php" .
+                '">' .
+                __("Log in again") .
+                "</a></p>";
+            echo "<div>" . $e->getMessage() . "</div>";
+            echo "</div>";
             Html::nullFooter();
-            die;
+            die();
         }
 
         $result = $oidc->requestUserInfo();
         $user_array = (array) $result;
         self::$_user_data = $user_array;
+
+        $redirectTarget = null;
+        if (isset($_COOKIE["itsm_oidc_redirect"])) {
+            $redirectTarget = self::sanitizeRedirect(
+                $_COOKIE["itsm_oidc_redirect"],
+            );
+        }
+
         //Create and/or authenticated a user
         $criteria = "SELECT * FROM glpi_users";
         $iterators = $DB->request($criteria);
@@ -116,9 +158,11 @@ class Oidc extends CommonDBTM
 
         if (isset($user_array["name"])) {
             foreach ($iterators as $iterator) {
-                $canLink = $oidc_db['sso_link_users'] || $iterator['authtype'] == Auth::EXTERNAL;
-                if ($user_array['name'] == $iterator['name'] && $canLink) {
-                    $ID = $iterator['id'];
+                $canLink =
+                    $oidc_db["sso_link_users"] ||
+                    $iterator["authtype"] == Auth::EXTERNAL;
+                if ($user_array["name"] == $iterator["name"] && $canLink) {
+                    $ID = $iterator["id"];
                     $newUser = false;
                 }
             }
@@ -126,17 +170,19 @@ class Oidc extends CommonDBTM
             $user = new User();
             if ($newUser) {
                 $input = [
-                    'name'     => $user_array['name'],
-                    '_extauth' => 1,
-                    'add'      => 1
+                    "name" => $user_array["name"],
+                    "_extauth" => 1,
+                    "add" => 1,
                 ];
                 $ID = $user->add($input);
             }
         } else {
             foreach ($iterators as $iterator) {
-                $canLink = $oidc_db['sso_link_users'] || $iterator['authtype'] == Auth::EXTERNAL;
-                if ($user_array['sub'] == $iterator['name'] && $canLink) {
-                    $ID = $iterator['id'];
+                $canLink =
+                    $oidc_db["sso_link_users"] ||
+                    $iterator["authtype"] == Auth::EXTERNAL;
+                if ($user_array["sub"] == $iterator["name"] && $canLink) {
+                    $ID = $iterator["id"];
                     $newUser = false;
                 }
             }
@@ -144,23 +190,23 @@ class Oidc extends CommonDBTM
             $user = new User();
             if ($newUser) {
                 $input = [
-                    'name'     => $user_array['sub'],
-                    '_extauth' => 1,
-                    'add'      => 1
+                    "name" => $user_array["sub"],
+                    "_extauth" => 1,
+                    "add" => 1,
                 ];
                 $ID = $user->add($input);
             }
         }
 
         if (!$user->getFromDB($ID)) {
-            die;
+            die();
         }
 
-        $request = $DB->request('glpi_oidc_mapping');
+        $request = $DB->request("glpi_oidc_mapping");
         while ($data = $request->next()) {
             $mapping_date_mod = $data["date_mod"];
         }
-        $request = $DB->request('glpi_users', ["id" => $ID]);
+        $request = $DB->request("glpi_users", ["id" => $ID]);
         while ($data = $request->next()) {
             $user_date_mod = $data["date_mod"];
         }
@@ -173,22 +219,32 @@ class Oidc extends CommonDBTM
         $auth->user = $user;
         //Setup a new session and redirect to the main menu
         Session::init($auth);
-        $_SESSION['itsm_is_oidc'] = 1;
-        $_SESSION['itsm_oidc_idtoken'] = $oidc->getIdToken();
-        $redirectTarget = null;
-        if (isset($_REQUEST['redirect'])) {
-            $redirectTarget = self::sanitizeRedirect($_REQUEST['redirect']);
+        $_SESSION["itsm_is_oidc"] = 1;
+        $_SESSION["itsm_oidc_idtoken"] = $oidc->getIdToken();
+        // Check if we already have a redirect target from the cookie (preserved earlier)
+        if (!$redirectTarget && isset($_REQUEST["redirect"])) {
+            $redirectTarget = self::sanitizeRedirect($_REQUEST["redirect"]);
         }
-        if (!$redirectTarget && isset($_COOKIE['itsm_oidc_redirect'])) {
-            $redirectTarget = self::sanitizeRedirect($_COOKIE['itsm_oidc_redirect']);
+        if (!$redirectTarget && isset($_COOKIE["itsm_oidc_redirect"])) {
+            $redirectTarget = self::sanitizeRedirect(
+                $_COOKIE["itsm_oidc_redirect"],
+            );
         }
         // Clear the cookie
-        if (isset($_COOKIE['itsm_oidc_redirect'])) {
-            $cookiePath = $CFG_GLPI['root_doc'] ?: '/';
-            setcookie('itsm_oidc_redirect', '', time() - 3600, $cookiePath, '', isset($_SERVER['HTTPS']), true);
+        if (isset($_COOKIE["itsm_oidc_redirect"])) {
+            $cookiePath = $CFG_GLPI["root_doc"] ?: "/";
+            setcookie(
+                "itsm_oidc_redirect",
+                "",
+                time() - 3600,
+                $cookiePath,
+                "",
+                isset($_SERVER["HTTPS"]),
+                true,
+            );
         }
         if (!$redirectTarget) {
-            $redirectTarget = '/'; // fallback root
+            $redirectTarget = "/"; // fallback root
         }
         Auth::redirectIfAuthenticated($redirectTarget);
     }
@@ -211,56 +267,106 @@ class Oidc extends CommonDBTM
 
         if (isset($result)) {
             if (isset($user_array[$result[0]["name"]])) {
-                $DB->updateOrInsert("glpi_users", ['name' => $DB->escape($user_array[$result[0]["name"]])], ['id' => $id]);
+                $DB->updateOrInsert(
+                    "glpi_users",
+                    ["name" => $DB->escape($user_array[$result[0]["name"]])],
+                    ["id" => $id],
+                );
             }
 
             if (isset($user_array[$result[0]["given_name"]])) {
-                $DB->updateOrInsert("glpi_users", ['firstname' => $DB->escape($user_array[$result[0]["given_name"]])], ['id' => $id]);
+                $DB->updateOrInsert(
+                    "glpi_users",
+                    [
+                        "firstname" => $DB->escape(
+                            $user_array[$result[0]["given_name"]],
+                        ),
+                    ],
+                    ["id" => $id],
+                );
             }
 
             if (isset($user_array[$result[0]["family_name"]])) {
-                $DB->updateOrInsert("glpi_users", ['realname' => $DB->escape($user_array[$result[0]["family_name"]])], ['id' => $id]);
+                $DB->updateOrInsert(
+                    "glpi_users",
+                    [
+                        "realname" => $DB->escape(
+                            $user_array[$result[0]["family_name"]],
+                        ),
+                    ],
+                    ["id" => $id],
+                );
             }
 
             if (isset($user_array[$result[0]["picture"]])) {
-                $DB->updateOrInsert("glpi_users", ['picture' => $DB->escape($user_array[$result[0]["picture"]])], ['id' => $id]);
+                $DB->updateOrInsert(
+                    "glpi_users",
+                    [
+                        "picture" => $DB->escape(
+                            $user_array[$result[0]["picture"]],
+                        ),
+                    ],
+                    ["id" => $id],
+                );
             }
 
             if (isset($user_array[$result[0]["email"]])) {
-                $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '" . $user_array[$result[0]["email"]] . "');";
+                $querry =
+                    "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '" .
+                    $user_array[$result[0]["email"]] .
+                    "');";
                 $DB->queryOrDie($querry);
             }
 
             if (isset($user_array[$result[0]["locale"]])) {
-                $DB->updateOrInsert("glpi_users", ['language' => $DB->escape($user_array[$result[0]["locale"]])], ['id' => $id]);
+                $DB->updateOrInsert(
+                    "glpi_users",
+                    [
+                        "language" => $DB->escape(
+                            $user_array[$result[0]["locale"]],
+                        ),
+                    ],
+                    ["id" => $id],
+                );
             }
 
             if (isset($user_array[$result[0]["phone_number"]])) {
-                $DB->updateOrInsert("glpi_users", ['phone' => $DB->escape($user_array[$result[0]["phone_number"]])], ['id' => $id]);
+                $DB->updateOrInsert(
+                    "glpi_users",
+                    [
+                        "phone" => $DB->escape(
+                            $user_array[$result[0]["phone_number"]],
+                        ),
+                    ],
+                    ["id" => $id],
+                );
             }
 
-            $DB->updateOrInsert("glpi_users", ['date_mod' => $_SESSION["glpi_currenttime"]], ['id' => $id]);
-
+            $DB->updateOrInsert(
+                "glpi_users",
+                ["date_mod" => $_SESSION["glpi_currenttime"]],
+                ["id" => $id],
+            );
 
             if (isset($user_array[$result[0]["group"]])) {
                 foreach ($data = $user_array[$result[0]["group"]] as $value) {
                     $id_group_create = 0;
-                    $request = $DB->request('glpi_groups');
+                    $request = $DB->request("glpi_groups");
 
                     while ($data = $request->next()) {
-                        if ($data['name'] == $value) {
-                            $id_group_create = $data['id'];
+                        if ($data["name"] == $value) {
+                            $id_group_create = $data["id"];
                             break;
                         }
                     }
 
                     $querry = "INSERT IGNORE INTO `glpi_groups` (`id`, `name`, `completename`) VALUES ($id_group_create, '$value', '$value');";
                     $DB->queryOrDie($querry);
-                    $request = $DB->request('glpi_groups');
+                    $request = $DB->request("glpi_groups");
 
                     while ($data = $request->next()) {
-                        $id_group = $data['id'];
-                        if ($data['name'] == $value) {
+                        $id_group = $data["id"];
+                        if ($data["name"] == $value) {
                             break;
                         }
                     }
@@ -271,20 +377,28 @@ class Oidc extends CommonDBTM
             }
         }
 
-        $request = $DB->request('glpi_oidc_users');
+        $request = $DB->request("glpi_oidc_users");
 
         while ($data = $request->next()) {
-            $user_id = $data['id'];
+            $user_id = $data["id"];
 
-            if ($data['user_id'] == $id) {
+            if ($data["user_id"] == $id) {
                 $find = true;
             }
         }
 
         if (!isset($find)) {
-            $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => 0]);
+            $DB->updateOrInsert(
+                "glpi_oidc_users",
+                ["user_id" => $id, "update" => 1],
+                ["id" => 0],
+            );
         } else {
-            $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => $user_id]);
+            $DB->updateOrInsert(
+                "glpi_oidc_users",
+                ["user_id" => $id, "update" => 1],
+                ["id" => $user_id],
+            );
         }
     }
 
@@ -303,119 +417,119 @@ class Oidc extends CommonDBTM
 
         if (isset($_POST["update"])) {
             $oidc_result = [
-                'name' => $_POST["name"],
-                'given_name'  => $_POST["given_name"],
-                'family_name'  => $_POST["family_name"],
-                'picture'  => $_POST["picture"],
-                'email'  => $_POST["email"],
-                'locale'  => $_POST["locale"],
-                'phone_number'  => $_POST["phone_number"],
-                'group'  => $_POST["group"],
-                'date_mod' => $_SESSION["glpi_currenttime"],
+                "name" => $_POST["name"],
+                "given_name" => $_POST["given_name"],
+                "family_name" => $_POST["family_name"],
+                "picture" => $_POST["picture"],
+                "email" => $_POST["email"],
+                "locale" => $_POST["locale"],
+                "phone_number" => $_POST["phone_number"],
+                "group" => $_POST["group"],
+                "date_mod" => $_SESSION["glpi_currenttime"],
             ];
-            $DB->updateOrInsert("glpi_oidc_mapping", $oidc_result, ['id'   => 0]);
+            $DB->updateOrInsert("glpi_oidc_mapping", $oidc_result, ["id" => 0]);
         }
 
         $criteria = "SELECT * FROM glpi_oidc_mapping";
         $iterators = $DB->request($criteria);
         $oidc_db = [
-            'name' => null,
-            'given_name'  => null,
-            'family_name'  => null,
-            'picture'  => null,
-            'email'  => null,
-            'locale'  => null,
-            'phone_number'  => null,
-            'group'  => null,
-            'date_mod' => null,
+            "name" => null,
+            "given_name" => null,
+            "family_name" => null,
+            "picture" => null,
+            "email" => null,
+            "locale" => null,
+            "phone_number" => null,
+            "group" => null,
+            "date_mod" => null,
         ];
 
         foreach ($iterators as $iterator) {
-            $oidc_db['name'] = $iterator["name"];
-            $oidc_db['given_name']  = $iterator["given_name"];
-            $oidc_db['family_name']  = $iterator["family_name"];
-            $oidc_db['picture']  = $iterator["picture"];
-            $oidc_db['email']  = $iterator["email"];
-            $oidc_db['locale']  = $iterator["locale"];
-            $oidc_db['phone_number']  = $iterator["phone_number"];
-            $oidc_db['group']  = $iterator["group"];
-            $oidc_db['date_mod']  = $iterator["date_mod"];
+            $oidc_db["name"] = $iterator["name"];
+            $oidc_db["given_name"] = $iterator["given_name"];
+            $oidc_db["family_name"] = $iterator["family_name"];
+            $oidc_db["picture"] = $iterator["picture"];
+            $oidc_db["email"] = $iterator["email"];
+            $oidc_db["locale"] = $iterator["locale"];
+            $oidc_db["phone_number"] = $iterator["phone_number"];
+            $oidc_db["group"] = $iterator["group"];
+            $oidc_db["date_mod"] = $iterator["date_mod"];
         }
 
         $form = [
-            'action' => $CFG_GLPI['root_doc'] . '/front/auth.oidc_profile.php',
-            'buttons' => [
+            "action" => $CFG_GLPI["root_doc"] . "/front/auth.oidc_profile.php",
+            "buttons" => [
                 [
-                    'type' => 'submit',
-                    'name' => 'update',
-                    'value' => __s('Save'),
-                    'class' => 'btn btn-secondary',
+                    "type" => "submit",
+                    "name" => "update",
+                    "value" => __s("Save"),
+                    "class" => "btn btn-secondary",
                 ],
                 [
-                    'type' => 'submit',
-                    'name' => 'config',
-                    'value' => __s('Configuration'),
-                    'class' => 'btn btn-secondary'
-                ]
+                    "type" => "submit",
+                    "name" => "config",
+                    "value" => __s("Configuration"),
+                    "class" => "btn btn-secondary",
+                ],
             ],
-            'content' => [
-                __('Mapping of fields according to provider') => [
-                    'visible' => true,
-                    'inputs' => [
-                        ('') => [
-                            'name' => 'id',
-                            'type' => 'hidden',
-                            'value' => '',
+            "content" => [
+                __("Mapping of fields according to provider") => [
+                    "visible" => true,
+                    "inputs" => [
+                        "" => [
+                            "name" => "id",
+                            "type" => "hidden",
+                            "value" => "",
                         ],
-                        __('Name') => [
-                            'name' => 'name',
-                            'type' => 'text',
-                            'value' => $oidc_db['name'],
+                        __("Name") => [
+                            "name" => "name",
+                            "type" => "text",
+                            "value" => $oidc_db["name"],
                         ],
-                        __('Surname') => [
-                            'name' => 'family_name',
-                            'type' => 'text',
-                            'value' => $oidc_db['family_name'],
+                        __("Surname") => [
+                            "name" => "family_name",
+                            "type" => "text",
+                            "value" => $oidc_db["family_name"],
                         ],
-                        __('First name') => [
-                            'name' => 'given_name',
-                            'type' => 'text',
-                            'value' => $oidc_db['given_name'],
+                        __("First name") => [
+                            "name" => "given_name",
+                            "type" => "text",
+                            "value" => $oidc_db["given_name"],
                         ],
-                        __('Email') => [
-                            'name' => 'email',
-                            'type' => 'text',
-                            'value' => $oidc_db['email'],
+                        __("Email") => [
+                            "name" => "email",
+                            "type" => "text",
+                            "value" => $oidc_db["email"],
                         ],
-                        __('Phone') => [
-                            'name' => 'phone_number',
-                            'type' => 'text',
-                            'value' => $oidc_db['phone_number'],
+                        __("Phone") => [
+                            "name" => "phone_number",
+                            "type" => "text",
+                            "value" => $oidc_db["phone_number"],
                         ],
-                        __('Locale') => [
-                            'name' => 'locale',
-                            'type' => 'text',
-                            'value' => $oidc_db['locale'],
+                        __("Locale") => [
+                            "name" => "locale",
+                            "type" => "text",
+                            "value" => $oidc_db["locale"],
                         ],
-                        __('Picture') => [
-                            'name' => 'picture',
-                            'type' => 'text',
-                            'value' => $oidc_db['picture'],
+                        __("Picture") => [
+                            "name" => "picture",
+                            "type" => "text",
+                            "value" => $oidc_db["picture"],
                         ],
-                        __('Group') => [
-                            'name' => 'group',
-                            'type' => 'text',
-                            'value' => $oidc_db['group'],
+                        __("Group") => [
+                            "name" => "group",
+                            "type" => "text",
+                            "value" => $oidc_db["group"],
                         ],
-                        __('Last update') => [
-                            'name' => 'date_mod',
-                            'type' => 'text',
-                            'disabled' => '',
-                            'value' => $oidc_db['date_mod'],
-                        ]
-                    ]
-                ]
-            ]
+                        __("Last update") => [
+                            "name" => "date_mod",
+                            "type" => "text",
+                            "disabled" => "",
+                            "value" => $oidc_db["date_mod"],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         renderTwigForm($form);
@@ -434,13 +548,13 @@ class Oidc extends CommonDBTM
             return null;
         }
         $value = trim($value);
-        if ($value === '') {
+        if ($value === "") {
             return null;
         }
-        if (preg_match('#^(?:[a-z][a-z0-9+.-]*:)?//#i', $value)) {
+        if (preg_match("#^(?:[a-z][a-z0-9+.-]*:)?//#i", $value)) {
             return null;
         }
-        if ($value[0] !== '/') {
+        if ($value[0] !== "/") {
             return null;
         }
         if (strpos($value, "\n") !== false || strpos($value, "\r") !== false) {
