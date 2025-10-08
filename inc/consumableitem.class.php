@@ -151,6 +151,14 @@ class ConsumableItem extends CommonDBTM
                        'value' => $this->fields['name'] ?? '',
                        'placeholder' => ''
                     ],
+                    _n('Type', 'Types', 1) => [
+                        'name' => 'consumableitemtypes_id',
+                        'type' => 'select',
+                        'itemtype' => ConsumableItemType::class,
+                        'values' => getOptionForItems('ConsumableItemType'),
+                        'value' => $this->fields['consumableitemtypes_id'] ?? '',
+                        'actions' => getItemActionButtons(['info', 'add'], "ConsumableItemType"),
+                    ],
                     Manufacturer::getTypeName(1) => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
