@@ -2934,7 +2934,11 @@ JAVASCRIPT;
         $num    = (int) $request['num'];
         $prefix = isset($p['prefix_crit']) ? $p['prefix_crit'] : '';
 
-        if (!is_subclass_of($request['itemtype'], 'CommonDBTM')) {
+        $itemtype = $request['itemtype'];
+        if (
+            !is_subclass_of($itemtype, 'CommonDBTM')
+            && !isset($CFG_GLPI['union_search_type'][$itemtype])
+        ) {
             throw new \RuntimeException('Invalid itemtype provided!');
         }
 
@@ -2992,9 +2996,7 @@ JAVASCRIPT;
            'field'       => $request["field"],
            'p'           => $p,
         ];
-        self::displaySearchoptionValue($params);
-        echo "</span>";
-
+        
         Ajax::updateItemOnSelectEvent(
             $fieldsearch_id,
             $dropdownname,
@@ -3004,6 +3006,9 @@ JAVASCRIPT;
               'searchtype' => '__VALUE__',
             ] + $params
         );
+
+        self::displaySearchoptionValue($params);
+        echo "</span>";
     }
 
     /**
