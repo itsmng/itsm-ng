@@ -1,22 +1,31 @@
 {% macro multiselect(attributes) %}
   {% set rand=random() %}
+  {% set containerClass = attributes.container_class ? ' ' ~ attributes.container_class : '' %}
   <div
     {% if attributes.id %} id="{{attributes.id}}" {% endif %}
     {% if attributes.style %} style="{{attributes.style}}" {% endif %}
-    class="w-100 d-flex flex-column align-items-center">
-    <div class="input-group m-0">
-      {% for input in attributes.inputs %}
-        {% include 'macros/input.twig' with input only %}
-      {% endfor %}
-      <button type="button"
-        class="btn btn-sm btn-outline-success"
-        aria-label="Add Option"
-        onClick="addOption{{rand}}({{attributes.getInputAdd}}())">
-          <i class="fas fa-plus"></i>
-      </button>
+    class="w-100 d-flex flex-column gap-2{{containerClass}}">
+    <div class="w-100 overflow-hidden">
+      <div class="d-flex flex-nowrap align-items-stretch gap-2 w-100">
+        {% for rawInput in attributes.inputs %}
+          {% set wrapperClass = rawInput.wrapper_class ? ' ' ~ rawInput.wrapper_class : '' %}
+          {% set wrapperStyle = rawInput.wrapper_style is defined and rawInput.wrapper_style ? rawInput.wrapper_style : '' %}
+          {% set input = rawInput|filter((v, k) => k not in ['wrapper_class', 'wrapper_style']) %}
+          <div class="multi-select-control d-flex{{wrapperClass}}"{% if wrapperStyle %} style="{{wrapperStyle}}"{% endif %}>
+            {% include 'macros/input.twig' with input only %}
+          </div>
+        {% endfor %}
+        <button type="button"
+          class="btn btn-sm btn-outline-success flex-shrink-0"
+          aria-label="Add Option"
+          onClick="addOption{{rand}}({{attributes.getInputAdd}}())">
+            <i class="fas fa-plus"></i>
+        </button>
+      </div>
     </div>
-    <table id="OptionTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
-      <tbody>
+    <div class="table-responsive w-100">
+      <table id="OptionTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center mb-0">
+        <tbody>
         {% for inputs in attributes.values %}
             <tr data-value="{{loop.index}}" style="display: flex" id="{{rand}}{{loop.index}}">
               <td class="d-flex align-items-center w-100">
@@ -40,8 +49,9 @@
               </td>
             </tr>
         {% endfor %}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
   <script>
   let current{{rand}} = -2;
