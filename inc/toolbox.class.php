@@ -1890,6 +1890,7 @@ class Toolbox
                 Html::redirect($CFG_GLPI["root_doc"] . "/front/central.php");
             }
         }
+        Html::redirect($redirect);
         $matches = [];
 
         // redirect to full url -> check if it's based on glpi url
@@ -1919,7 +1920,7 @@ class Toolbox
         global $CFG_GLPI;
 
         $parsed_url = parse_url($where);
-        if (!$parsed_url) {
+        if ($parsed_url !== false) {
             if (array_key_exists('host', $parsed_url)) {
                 if (!str_starts_with($where, $CFG_GLPI['url_base'] . '/')) {
                     return null;
