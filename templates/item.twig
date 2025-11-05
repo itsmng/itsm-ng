@@ -1,17 +1,23 @@
-<div class="row px-3 w-100">
-    <div id="main-accordion-view" class="col col-sm-12 col-md-{{(tabs|length == 1) ? 12 : 8}} p-3"></div>
-    <ul class="col col-sm-12 col-md-{{listSize|default(4)}} p-0 {% if tabs|length == 1 %}d-none{% endif %}"
-        id="options-for-{{itemName|slug}}" data-size="{{listSize|default(4)}}">
-        <li class="d-none d-md-table btn-group mb-2 text-right ms-auto">
-            <button class="btn btn-sm btn-outline-secondary" aria-label={{"Increase List Size"|trans}} onclick="changeListSize(1)" id="increase-list-size">
-                <i class="fas fa-arrow-left" aria-hidden="true"></i>
-                <span class="visually-hidden">{{"Increase list width"|trans}}</span>
-            </button>
-            <button class="btn btn-sm btn-outline-secondary" aria-label={{"Decrease List Size"|trans}} onclick="changeListSize(-1)" id="decrease-list-size">
-                <i class="fas fa-arrow-right" aria-hidden="true"></i>
-                <span class="visually-hidden">{{"Decrease list width"|trans}}</span>
-            </button>
-        </li>
+<div id="main-content-row" class="px-3 w-100 g-0">
+    <div id="main-accordion-view"></div>
+    <div id="tabs-resize-handle" class="tabs-resize-handle {{ tabs|length == 1 ? 'd-none' : 'd-none d-md-flex' }}">
+        <span class="tabs-resize-grip"></span>
+    </div>
+    <button id="tabs-toggle-button"
+        class="tabs-toggle-button{% if tabs|length == 1 %} d-none{% endif %}"
+        data-label-hide="{{"Hide tabs panel"|trans}}"
+        data-label-show="{{"Show tabs panel"|trans}}"
+        title="{{"Hide tabs panel"|trans}}"
+        aria-label="{{"Hide tabs panel"|trans}}">
+        <span class="toggle-icon icon-hide">
+            <i class="fas fa-times" aria-hidden="true"></i>
+        </span>
+        <span class="toggle-icon icon-show">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+        </span>
+    </button>
+    <ul class="p-0 {% if tabs|length == 1 %}d-none{% endif %}"
+        id="options-for-{{itemName|slug}}" data-width="{{(listSize|default(4) * 8.333)|round(2)}}">
         {% for key, tab in tabs %}
         <li>
             <div class="d-flex bg-light border w-100 m-0 rounded-2 shadow-sm">
@@ -36,7 +42,7 @@
                 data-params="{{tab['params']}}"
                 style="display:none;"
                 >
-                <div class="container"></div>
+                <div class="item-body"></div>
             </div>
         </li>
         {% endfor %}
@@ -46,6 +52,41 @@
 <script>
 let selectedTab = null;
 let mainTab = null;
+let toggleButtonUpdateFrameId = null;
+let toggleButtonUpdateSecondFramePending = false;
+let tabsToggleScrollTargets = [];
+let lastTabsHandleCenterTop = null;
+
+function getSessionValues() {
+    return JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
+}
+
+function clamp(val, min, max) {
+    return Math.min(max, Math.max(min, val));
+}
+
+function getRow() { return $('#main-content-row'); }
+function getHandle() { return $('#tabs-resize-handle'); }
+function getList() { return $('#options-for-{{itemName|slug}}'); }
+function getMain() { return $('#main-accordion-view'); }
+
+function getStickyOffset(rowEl) {
+    if (!rowEl) return 0;
+    const raw = getComputedStyle(rowEl).getPropertyValue('--tabs-sticky-offset');
+    const parsed = parseFloat(raw);
+    return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function getViewportMetrics(rowEl, buttonHalfWidth, buttonHalfHeight, safeMargin) {
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+    const stickyOffset = getStickyOffset(rowEl);
+    const minLeft = (buttonHalfWidth + safeMargin);
+    const maxLeft = viewportWidth ? (viewportWidth - buttonHalfWidth - safeMargin) : minLeft;
+    const minTop = Math.max(buttonHalfHeight + safeMargin, stickyOffset + buttonHalfHeight);
+    const maxTop = viewportHeight ? (viewportHeight - buttonHalfHeight - safeMargin) : minTop;
+    return { viewportWidth, viewportHeight, minLeft, maxLeft, minTop, maxTop };
+}
 
 function updateSession(key, value) {
     let sessionValues = JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
@@ -55,7 +96,7 @@ function updateSession(key, value) {
 
 async function loadBody(id) {
     const collapse = $('#' + id);
-    const body = collapse.find('.container');
+    const body = collapse.find('.item-body');
     if (body.html().trim() === '') {
         await $.ajax({
             url: collapse.data('url'),
@@ -65,6 +106,8 @@ async function loadBody(id) {
             }
         });
     }
+
+    scheduleToggleButtonPositionUpdate();
 }
 
 function openCollapse() {
@@ -73,7 +116,7 @@ function openCollapse() {
     }
     const collapse = $('#' + selectedTab);
     const button = collapse.prev().find('button.collapse-button');
-    const body = collapse.find('.container');
+    const body = collapse.find('.item-body');
     const icon = $('button[aria-controls="' + selectedTab + '"] i');
     icon.removeClass('fa-plus').addClass('fa-minus');
     loadBody(selectedTab).then(() => {
@@ -99,7 +142,7 @@ function closeCollapse() {
 
 function toggleCollapse(target) {
     const collapsed =
-        (selectedTab === target.attributes['aria-controls'].value)
+        (selectedTab === target.attributes['aria-controls'].value);
     const icon = $(target).find('i');
     const collapse = $('#' + target.attributes['aria-controls'].value);
 
@@ -120,11 +163,15 @@ function toggleHeader(header) {
 
 async function moveBodyToMainView(target) {
     const mainAccordion = $('#main-accordion-view');
+    if (!target || !target.length) {
+        return;
+    }
+
     const collapse = target.parent().next();
-    const body = collapse.children('.container');
+    const body = collapse.children('.item-body');
 
     if (mainTab !== null) {
-        mainAccordion.children('.container').detach().appendTo($('#' + mainTab));
+        mainAccordion.children('.item-body').detach().appendTo($('#' + mainTab));
         toggleHeader($('#' + mainTab).prev());
     }
 
@@ -139,27 +186,480 @@ async function moveBodyToMainView(target) {
         closeCollapse();
     }
     updateSession('main', mainTab);
+    updateTabsToggleScrollListeners();
 }
 
-function changeListSize(delta, init) {
+function changeTabsWidth(widthPercent, skipPersist) {
     const list = $('#options-for-{{itemName|slug}}');
     const main = $('#main-accordion-view');
-    const size = init ? delta : list.data('size') + delta;
-    const increase = $('#increase-list-size');
-    const decrease = $('#decrease-list-size');
-    const min = 3;
-    const max = 9;
 
-    decrease.prop('disabled', size === min);
-    increase.prop('disabled', size === max);
-    list.data('size', size);
-    for (let i = min; i <= max; i++) {
-        list.removeClass('col-md-' + i);
-        main.removeClass('col-md-' + i);
+    if (list.hasClass('tabs-panel-hidden')) {
+        return list.data('width') || {{(listSize|default(4) * 8.333)|round(2)}};
     }
-    main.addClass('col-md-' + (12 - size));
-    list.addClass('col-md-' + size);
-    updateSession('size', size);
+
+    const minPercent = 15;
+    const maxPercent = 50;
+    const clampedWidth = Math.min(maxPercent, Math.max(minPercent, widthPercent));
+
+    list.css('width', clampedWidth + '%');
+    list.data('width', clampedWidth);
+
+    if (!skipPersist) {
+        updateSession('width', clampedWidth);
+    }
+
+    updateToggleButtonPosition();
+
+    return clampedWidth;
+}
+
+function getToggleButton() {
+    return $('#tabs-toggle-button');
+}
+
+function setToggleButtonHiddenState(hidden) {
+    const toggleButton = getToggleButton();
+    if (!toggleButton.length) {
+        return;
+    }
+    const label = hidden ? toggleButton.data('labelShow') : toggleButton.data('labelHide');
+    toggleButton.attr('title', label).attr('aria-label', label);
+    $('#main-content-row').toggleClass('tabs-hidden', hidden);
+}
+
+function setToggleTransition(enabled) {
+    const row = $('#main-content-row');
+    if (!row.length) {
+        return;
+    }
+    if (enabled) {
+        row.addClass('tabs-toggle-transition');
+    } else {
+        row.removeClass('tabs-toggle-transition');
+    }
+}
+
+function updateToggleButtonPosition() {
+    const row = getRow();
+    const handle = getHandle();
+    const toggleButton = getToggleButton();
+    const list = getList();
+
+    if (!toggleButton.length || !row.length || !handle.length || !list.length) {
+        return;
+    }
+    const rowEl = row.get(0);
+    const handleEl = handle.get(0);
+    const toggleEl = toggleButton.get(0);
+
+    if (!rowEl || !handleEl || !toggleEl) {
+        return;
+    }
+
+    const rowRect = rowEl.getBoundingClientRect();
+    if (!rowRect.width || !rowRect.height) {
+        return;
+    }
+
+    const buttonHalfWidth = toggleEl.offsetWidth / 2 || 18;
+    const buttonHalfHeight = toggleEl.offsetHeight / 2 || 18;
+    const safeMargin = 12;
+    const { viewportWidth, minLeft, maxLeft, minTop, maxTop } = getViewportMetrics(rowEl, buttonHalfWidth, buttonHalfHeight, safeMargin);
+
+    const handleVisible = !row.hasClass('tabs-hidden')
+        && !list.hasClass('tabs-panel-hidden')
+        && !list.hasClass('d-none')
+        && handle.is(':visible');
+
+    let targetLeft;
+    let targetTop;
+
+    if (handleVisible) {
+        const handleRect = handleEl.getBoundingClientRect();
+        if (handleRect.width && handleRect.height) {
+            targetLeft = handleRect.left + (handleRect.width / 2);
+            targetTop = handleRect.top + (handleRect.height / 2);
+            lastTabsHandleCenterTop = targetTop;
+        }
+    }
+
+    if (!Number.isFinite(targetLeft) || !Number.isFinite(targetTop)) {
+        targetLeft = viewportWidth
+            ? viewportWidth - buttonHalfWidth - safeMargin
+            : rowRect.right - buttonHalfWidth - safeMargin;
+        const fallbackTop = lastTabsHandleCenterTop ?? (rowRect.top + (rowRect.height / 2));
+        targetTop = fallbackTop;
+    }
+
+    targetLeft = clamp(targetLeft, minLeft, maxLeft);
+    targetTop = clamp(targetTop, minTop, maxTop);
+
+    toggleButton.css('--tabs-toggle-left', `${targetLeft}px`);
+    toggleButton.css('--tabs-toggle-top', `${targetTop}px`);
+}
+
+function scheduleToggleButtonPositionUpdate(requestSecondFrame = true) {
+    if (toggleButtonUpdateFrameId !== null) {
+        toggleButtonUpdateSecondFramePending = toggleButtonUpdateSecondFramePending || requestSecondFrame;
+        return;
+    }
+
+    toggleButtonUpdateSecondFramePending = requestSecondFrame;
+    toggleButtonUpdateFrameId = requestAnimationFrame(() => {
+        toggleButtonUpdateFrameId = null;
+        updateToggleButtonPosition();
+
+        if (toggleButtonUpdateSecondFramePending) {
+            toggleButtonUpdateSecondFramePending = false;
+            scheduleToggleButtonPositionUpdate(false);
+        }
+    });
+}
+
+function updateTabsToggleScrollListeners() {
+    if (tabsToggleScrollTargets.length) {
+        tabsToggleScrollTargets.forEach((target) => {
+            $(target).off('scroll.tabsTogglePosition');
+        });
+        tabsToggleScrollTargets = [];
+    }
+
+    const targets = new Set();
+    targets.add(window);
+    targets.add(document);
+    if (document.body) {
+        targets.add(document.body);
+    }
+    if (document.scrollingElement) {
+        targets.add(document.scrollingElement);
+    }
+
+    $('.main-container, #main-accordion-view').each(function() {
+        targets.add(this);
+    });
+
+    $('#main-content-row').parents().each(function() {
+        if (this && this.scrollHeight > this.clientHeight) {
+            targets.add(this);
+        }
+    });
+
+    const handler = () => {
+        if (!$('#main-content-row').hasClass('tabs-hidden')) {
+            scheduleToggleButtonPositionUpdate();
+        }
+    };
+
+    targets.forEach((target) => {
+        if (!target) {
+            return;
+        }
+        $(target).off('scroll.tabsTogglePosition').on('scroll.tabsTogglePosition', handler);
+        tabsToggleScrollTargets.push(target);
+    });
+
+    scheduleToggleButtonPositionUpdate();
+}
+
+function moveToggleButtonToRight() {
+    const toggleButton = getToggleButton();
+
+    if (!toggleButton.length) {
+        return;
+    }
+
+    const toggleEl = toggleButton.get(0);
+    if (!toggleEl) {
+        return;
+    }
+
+    const row = getRow();
+    const rowEl = row.get(0);
+    const buttonHalfWidth = toggleEl.offsetWidth / 2 || 18;
+    const buttonHalfHeight = toggleEl.offsetHeight / 2 || 18;
+    const safeMargin = 12;
+    const { viewportWidth, viewportHeight, minLeft, maxLeft, minTop, maxTop } = getViewportMetrics(rowEl, buttonHalfWidth, buttonHalfHeight, safeMargin);
+
+    const targetLeft = clamp(viewportWidth ? viewportWidth - buttonHalfWidth - safeMargin : minLeft, minLeft, maxLeft);
+    const fallbackTop = lastTabsHandleCenterTop ?? (viewportHeight ? viewportHeight / 2 : minTop);
+    const targetTop = clamp(fallbackTop, minTop, maxTop);
+
+    toggleButton.css('--tabs-toggle-left', `${targetLeft}px`);
+    toggleButton.css('--tabs-toggle-top', `${targetTop}px`);
+}
+
+function hideTabs() {
+    const list = getList();
+    const handle = getHandle();
+    const main = getMain();
+
+    if (list.hasClass('d-none') || list.hasClass('tabs-panel-hidden')) {
+        return;
+    }
+
+    const currentWidth = list.data('width') || {{(listSize|default(4) * 8.333)|round(2)}};
+    updateSession('lastVisibleWidth', currentWidth);
+
+    updateToggleButtonPosition();
+    setToggleTransition(true);
+
+    list.addClass('tabs-hiding');
+
+    requestAnimationFrame(() => {
+        moveToggleButtonToRight();
+        setToggleButtonHiddenState(true);
+    });
+
+    setTimeout(() => {
+        list.addClass('tabs-panel-hidden d-none').removeClass('tabs-hiding');
+        handle.addClass('resize-handle-hidden');
+        main.addClass('main-content-full-width');
+
+        updateSession('hidden', true);
+        setToggleTransition(false);
+
+        $(window).off('resize.tabsResizePosition');
+        handle.off('.tabsResize');
+        $(document).off('mousemove.tabsResize touchmove.tabsResize pointermove.tabsResize');
+        $(document).off('mouseup.tabsResize touchend.tabsResize touchcancel.tabsResize pointerup.tabsResize pointercancel.tabsResize');
+        updateTabsToggleScrollListeners();
+    }, 300);
+}
+
+function showTabs() {
+    const list = getList();
+    const handle = getHandle();
+    const main = getMain();
+
+    if (!list.hasClass('tabs-panel-hidden')) {
+        return;
+    }
+
+    setToggleTransition(true);
+
+    const sessionValues = getSessionValues();
+    const lastWidth = sessionValues.lastVisibleWidth || {{(listSize|default(4) * 8.333)|round(2)}};
+
+    list.removeClass('tabs-panel-hidden d-none').addClass('tabs-showing');
+    handle.removeClass('resize-handle-hidden');
+    main.removeClass('main-content-full-width');
+
+    changeTabsWidth(lastWidth, true);
+
+    requestAnimationFrame(() => {
+        setToggleButtonHiddenState(false);
+        scheduleToggleButtonPositionUpdate();
+    });
+
+    setTimeout(() => {
+        list.removeClass('tabs-showing');
+        setToggleTransition(false);
+    }, 300);
+
+    updateSession('hidden', false);
+
+    initResizeHandle();
+    updateTabsToggleScrollListeners();
+}
+
+function toggleTabsVisibility() {
+    const list = $('#options-for-{{itemName|slug}}');
+    if (list.hasClass('tabs-panel-hidden')) {
+        showTabs();
+    } else {
+        hideTabs();
+    }
+}
+
+function initResizeHandle() {
+    $(window).off('resize.tabsResizePosition');
+    const handle = getHandle();
+    const row = getRow();
+    const list = getList();
+    const toggleButton = getToggleButton();
+    const main = getMain();
+
+    if (!handle.length || !list.length || list.hasClass('d-none') || list.hasClass('tabs-panel-hidden') || !handle.is(':visible')) {
+        handle.off('.tabsResize');
+        $(document).off('mousemove.tabsResize touchmove.tabsResize pointermove.tabsResize');
+        $(document).off('mouseup.tabsResize touchend.tabsResize touchcancel.tabsResize pointerup.tabsResize pointercancel.tabsResize');
+        return;
+    }
+    handle.off('.tabsResize');
+
+    let isDragging = false;
+    let dragActive = false;
+    let dragStartX = 0;
+    let activeMoveHandler = null;
+    let activeStopHandler = null;
+    const minTabsWidth = 15;
+    const maxTabsWidth = 50;
+    const hideThreshold = minTabsWidth - 5;
+    const showThreshold = minTabsWidth + 2;
+    const defaultWidth = list.data('width') || parseFloat(list.attr('data-width')) || minTabsWidth;
+    let lastVisibleWidth = defaultWidth;
+    let dragHidden = list.hasClass('tabs-panel-hidden') && !handle.hasClass('resize-handle-hidden');
+
+    updateToggleButtonPosition();
+
+    function applyDragHiddenState() {
+        if (dragHidden) {
+            return;
+        }
+        lastVisibleWidth = list.data('width') || lastVisibleWidth;
+        updateSession('lastVisibleWidth', lastVisibleWidth);
+        list.addClass('tabs-panel-hidden d-none').removeClass('tabs-showing tabs-hiding');
+        main.addClass('main-content-full-width');
+        setToggleButtonHiddenState(true);
+        moveToggleButtonToRight();
+        handle.addClass('resize-handle-hidden');
+        updateSession('hidden', true);
+        dragHidden = true;
+        updateTabsToggleScrollListeners();
+    }
+
+    function restoreDragHiddenState(widthPercent) {
+        if (!dragHidden) {
+            return;
+        }
+        list.removeClass('tabs-panel-hidden d-none');
+        main.removeClass('main-content-full-width');
+        setToggleButtonHiddenState(false);
+        handle.removeClass('resize-handle-hidden');
+        changeTabsWidth(widthPercent, true);
+        scheduleToggleButtonPositionUpdate();
+        updateSession('hidden', false);
+        dragHidden = false;
+        updateTabsToggleScrollListeners();
+    }
+
+    function updateFromPosition(clientX) {
+        if (!Number.isFinite(clientX)) {
+            return;
+        }
+        const rect = row.get(0).getBoundingClientRect();
+        const totalWidth = rect.width;
+
+        if (totalWidth <= 0) {
+            return;
+        }
+
+        // Calculate percentage-based widths
+        const handleOffset = clientX - rect.left;
+        const mainWidthPercent = (handleOffset / totalWidth) * 100;
+        const tabsWidthPercent = 100 - mainWidthPercent;
+
+        if (!dragHidden) {
+            if (tabsWidthPercent <= hideThreshold) {
+                applyDragHiddenState();
+                return;
+            }
+            const clampedTabsWidth = Math.min(maxTabsWidth, Math.max(minTabsWidth, tabsWidthPercent));
+            lastVisibleWidth = clampedTabsWidth;
+            changeTabsWidth(clampedTabsWidth, true);
+            updateToggleButtonPosition();
+        } else {
+            const clampedTabsWidth = Math.min(maxTabsWidth, Math.max(minTabsWidth, tabsWidthPercent));
+            if (tabsWidthPercent >= showThreshold) {
+                restoreDragHiddenState(clampedTabsWidth);
+                lastVisibleWidth = clampedTabsWidth;
+            } else {
+                moveToggleButtonToRight();
+            }
+        }
+    }
+
+    function stopDragging() {
+        if (!isDragging && !dragActive && !handle.hasClass('active')) {
+            return;
+        }
+        const wasDragging = dragActive;
+        isDragging = false;
+        dragActive = false;
+        handle.removeClass('active');
+        if (activeMoveHandler) {
+            $(document).off('mousemove.tabsResize touchmove.tabsResize pointermove.tabsResize', activeMoveHandler);
+            activeMoveHandler = null;
+        }
+        if (activeStopHandler) {
+            $(document).off('mouseup.tabsResize touchend.tabsResize touchcancel.tabsResize pointerup.tabsResize pointercancel.tabsResize', activeStopHandler);
+            activeStopHandler = null;
+        }
+        if (!wasDragging) {
+            if (toggleButton.length) {
+                toggleButton.removeClass('tabs-toggle-dragging');
+            }
+            row.removeClass('tabs-resizing');
+            requestAnimationFrame(() => setToggleTransition(true));
+            scheduleToggleButtonPositionUpdate();
+            return;
+        }
+        const widthToPersist = dragHidden ? lastVisibleWidth : (list.data('width') || lastVisibleWidth);
+        updateSession('width', widthToPersist);
+        if (dragHidden) {
+            moveToggleButtonToRight();
+        } else {
+            updateToggleButtonPosition();
+        }
+        if (toggleButton.length) {
+            toggleButton.removeClass('tabs-toggle-dragging');
+        }
+        row.removeClass('tabs-resizing');
+        requestAnimationFrame(() => setToggleTransition(true));
+    }
+
+    handle.on('mousedown.tabsResize touchstart.tabsResize', function(e) {
+        // Ignore clicks originating from the toggle button
+        if ($(e.target).closest('#tabs-toggle-button').length > 0) {
+            return;
+        }
+
+        if (isDragging || dragActive || handle.hasClass('active')) {
+            stopDragging();
+        }
+
+        const startTouches = e.type === 'touchstart' ? e.originalEvent.touches : null;
+        const startClientX = startTouches && startTouches.length ? startTouches[0].clientX : e.clientX;
+        dragStartX = Number.isFinite(startClientX) ? startClientX : 0;
+        isDragging = true;
+        dragActive = false;
+        e.preventDefault();
+
+        activeMoveHandler = function(moveEvent) {
+            const moveTouches = moveEvent.type === 'touchmove' ? moveEvent.originalEvent.touches : null;
+            const moveX = moveTouches && moveTouches.length ? moveTouches[0].clientX : moveEvent.clientX;
+
+            if (!Number.isFinite(moveX)) {
+                return;
+            }
+
+            if (!dragActive) {
+                if (Math.abs(moveX - dragStartX) <= 2) {
+                    return;
+                }
+                dragActive = true;
+                handle.addClass('active');
+                setToggleTransition(false);
+                if (toggleButton.length) {
+                    toggleButton.addClass('tabs-toggle-dragging');
+                }
+                row.addClass('tabs-resizing');
+            }
+
+            updateFromPosition(moveX);
+        };
+
+        $(document).on('mousemove.tabsResize touchmove.tabsResize pointermove.tabsResize', activeMoveHandler);
+
+        activeStopHandler = stopDragging;
+        $(document).on('mouseup.tabsResize touchend.tabsResize touchcancel.tabsResize pointerup.tabsResize pointercancel.tabsResize', activeStopHandler);
+    });
+
+    handle.on('click.tabsResize', function() {
+        if (!isDragging && handle.hasClass('active')) {
+            stopDragging();
+        }
+    });
 }
 
 $("button.collapse-button").on('click', function(e) {
@@ -170,11 +670,90 @@ $('button.moveToMainButton').on('click', function(e) {
     moveBodyToMainView($(e.currentTarget));
 });
 
-$(function() {
-    const sessionValues = JSON.parse(sessionStorage.getItem('{{itemName|slug}}')) ?? {};
-    if (sessionValues.size) {
-        changeListSize(sessionValues.size, true);
+$('#tabs-toggle-button').on('click', function(e) {
+    e.preventDefault();
+    toggleTabsVisibility();
+});
+
+$(document).on('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const list = $('#options-for-{{itemName|slug}}');
+        if (list.hasClass('tabs-panel-hidden')) {
+            showTabs();
+        }
     }
+});
+
+$(function() {
+    const sessionValues = getSessionValues();
+    const list = getList();
+    const handle = getHandle();
+    const main = getMain();
+    const row = getRow();
+    row.addClass('tabs-initializing');
+
+    if (sessionValues.hidden === true) {
+        list.addClass('tabs-panel-hidden d-none');
+        handle.addClass('resize-handle-hidden');
+        main.addClass('main-content-full-width');
+        setToggleButtonHiddenState(true);
+        setToggleTransition(false);
+        requestAnimationFrame(() => {
+            moveToggleButtonToRight();
+        });
+    } else if (list.length && !list.hasClass('d-none')) {
+        if (sessionValues.width) {
+            changeTabsWidth(sessionValues.width, true);
+        } else if (sessionValues.size) {
+            const widthPercent = sessionValues.size * 8.333;
+            changeTabsWidth(widthPercent, true);
+        } else if (list.data('width')) {
+            changeTabsWidth(list.data('width'), true);
+        } else {
+            const initialWidth = list.data('width') || {{(listSize|default(4) * 8.333)|round(2)}};
+            changeTabsWidth(initialWidth, true);
+        }
+
+        setToggleButtonHiddenState(false);
+        scheduleToggleButtonPositionUpdate();
+    } else {
+        setToggleButtonHiddenState(false);
+    }
+
+    function ensureTabsHandle() {
+        if (list.length && !list.hasClass('d-none') && !list.hasClass('tabs-panel-hidden') && handle.is(':visible')) {
+            initResizeHandle();
+            updateToggleButtonPosition();
+        } else {
+            handle.off('.tabsResize');
+            $(document).off('mousemove.tabsResize touchmove.tabsResize pointermove.tabsResize');
+            $(document).off('mouseup.tabsResize touchend.tabsResize touchcancel.tabsResize pointerup.tabsResize pointercancel.tabsResize');
+            if (row.hasClass('tabs-hidden')) {
+                moveToggleButtonToRight();
+                setToggleTransition(false);
+            }
+        }
+    }
+
+    ensureTabsHandle();
+    setToggleTransition(false);
+
+    updateTabsToggleScrollListeners();
+
+    scheduleToggleButtonPositionUpdate();
+
+    requestAnimationFrame(() => {
+        row.removeClass('tabs-initializing');
+    });
+
+    $(window).off('resize.tabsTogglePosition').on('resize.tabsTogglePosition', () => {
+        if ($('#main-content-row').hasClass('tabs-hidden')) {
+            moveToggleButtonToRight();
+        } else {
+            scheduleToggleButtonPositionUpdate();
+        }
+    });
+
     if (sessionValues.selected) {
         selectedTab = sessionValues.selected;
         openCollapse();

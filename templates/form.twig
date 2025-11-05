@@ -1,6 +1,6 @@
 {% from 'macros/wrappedInput.twig' import wrappedInput %}
 
-<form {% if form.attributes.name is not defined %} aria-label="Main Form" name="form" {% endif %} action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} class="container" {% for name, value in form.attributes %} {{name}}="{{value}}" {% endfor %}>
+<form {% if form.attributes.name is not defined %} aria-label="Main Form" name="form" {% endif %} action="{{form.action}}" enctype="multipart/form-data" method={{form.method|default('post')}} {% for name, value in form.attributes %} {{name}}="{{value}}" {% endfor %}>
     <div>
         {{preItemFormHtml|raw}}
     </div>
