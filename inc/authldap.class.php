@@ -1607,6 +1607,8 @@ class AuthLDAP extends CommonDBTM
             return false;
         }
 
+        $error = null;
+
         //Test connection to a replicate
         if ($replicate_id != -1) {
             $replicate = new AuthLdapReplicate();
@@ -1624,11 +1626,27 @@ class AuthLDAP extends CommonDBTM
             $config_ldap->fields['rootdn'],
             Toolbox::sodiumDecrypt($config_ldap->fields['rootdn_passwd']),
             $config_ldap->fields['use_tls'],
-            $config_ldap->fields['deref_option']
+            $config_ldap->fields['deref_option'],
+            $error
         );
         if ($ds) {
+            @ldap_unbind($ds);
             return true;
         }
+        $target_name = $config_ldap->fields['name'];
+        if (isset($replicate) && $replicate_id != -1) {
+            $target_name = sprintf('%s (replicate %s)', $config_ldap->fields['name'], $replicate->fields['name']);
+        }
+        Toolbox::logError(
+            sprintf(
+                'LDAP connection test failed for "%s" (%s:%s) with root DN "%s": %s',
+                $target_name,
+                $host,
+                $port,
+                $config_ldap->fields['rootdn'],
+                $error ?? 'No additional details from LDAP extension'
+            )
+        );
         return false;
     }
 
@@ -2963,6 +2981,7 @@ class AuthLDAP extends CommonDBTM
      * @param string  $password      password to use (default '')
      * @param boolean $use_tls       use a TLS connection? (false by default)
      * @param integer $deref_options deref options used
+     * @param string  $error         receives the error message on failure (null on success)
      *
      * @return resource link to the LDAP server : false if connection failed
      */
@@ -2972,29 +2991,48 @@ class AuthLDAP extends CommonDBTM
         $login = "",
         $password = "",
         $use_tls = false,
-        $deref_options = 0
+        $deref_options = 0,
+        &$error = null
     ) {
 
+        $error = null;
         $ds = @ldap_connect($host, intval($port));
-        if ($ds) {
-            @ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
-            @ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
-            @ldap_set_option($ds, LDAP_OPT_DEREF, $deref_options);
-            if ($use_tls) {
-                if (!@ldap_start_tls($ds)) {
-                    return false;
-                }
-            }
-            // Auth bind
-            if ($login != '') {
-                $b = @ldap_bind($ds, $login, $password);
-            } else { // Anonymous bind
-                $b = @ldap_bind($ds);
-            }
-            if ($b) {
+        if (!$ds) {
+            $error = sprintf('Unable to initialize LDAP connection to %s:%s', $host, $port);
+            return false;
+        }
+
+        @ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+        @ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
+        @ldap_set_option($ds, LDAP_OPT_DEREF, $deref_options);
+
+        if ($use_tls && !@ldap_start_tls($ds)) {
+            $errno  = ldap_errno($ds);
+            $errmsg = ldap_error($ds);
+            $error  = sprintf('TLS negotiation failed (%d: %s)', $errno, $errmsg);
+            @ldap_unbind($ds);
+            return false;
+        }
+
+        if ($login !== '') {
+            if (@ldap_bind($ds, $login, $password)) {
                 return $ds;
             }
+            $errno  = ldap_errno($ds);
+            $errmsg = ldap_error($ds);
+            $error  = sprintf('Bind failed for DN "%s" (%d: %s)', $login, $errno, $errmsg);
+            @ldap_unbind($ds);
+            return false;
         }
+
+        if (@ldap_bind($ds)) {
+            return $ds;
+        }
+
+        $errno  = ldap_errno($ds);
+        $errmsg = ldap_error($ds);
+        $error  = sprintf('Anonymous bind failed (%d: %s)', $errno, $errmsg);
+        @ldap_unbind($ds);
         return false;
     }
 
