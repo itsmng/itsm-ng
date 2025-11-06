@@ -673,6 +673,16 @@ $tables['glpi_crontasks'] = [
       'mode'          => 1,
       'lastrun'       => null,
       'logs_lifetime' => 30,
+   ], [
+      'id'            => 41,
+      'itemtype'      => 'Reminder',
+      'name'          => 'purgereminder',
+      'frequency'     => 86400,
+      'param'         => 90,
+      'state'         => 1,
+      'mode'          => 1,
+      'lastrun'       => null,
+      'logs_lifetime' => 30,
    ],
 ];
 
