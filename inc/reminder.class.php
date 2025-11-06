@@ -1071,6 +1071,117 @@ class Reminder extends CommonDBVisible implements
     }
 
 
+    /**
+     * Clean old reminders from database
+     *
+     * @param integer $max_age maximum age in days
+     *
+     * @return integer number of deleted reminders
+     */
+    public static function cleanOld($max_age)
+    {
+        global $DB;
+
+        if ($max_age <= 0) {
+            return 0;
+        }
+
+        $reminder = new self();
+        $count = 0;
+
+        // Find expired reminders
+        $iterator = $DB->request([
+            'SELECT' => 'id',
+            'FROM'   => self::getTable(),
+            'WHERE'  => [
+                'OR' => [
+                    // Reminders with expired end_view_date
+                    [
+                        'end_view_date' => ['<', new QueryExpression('DATE_SUB(NOW(), INTERVAL ' . (int)$max_age . ' DAY)')],
+                        'end_view_date' => ['!=', null]
+                    ],
+                    // Planned reminders with expired planning date and no visibility end date
+                    [
+                        'is_planned' => 1,
+                        'end' => ['<', new QueryExpression('DATE_SUB(NOW(), INTERVAL ' . (int)$max_age . ' DAY)')],
+                        'end_view_date' => null
+                    ]
+                ]
+            ]
+        ]);
+
+        foreach ($iterator as $data) {
+            if ($reminder->delete($data)) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+
+    /**
+     * Cron task to purge expired reminders
+     *
+     * @param CronTask $task for log and volume tracking
+     *
+     * @return integer 0 : nothing to do, 1 : action completed, -1 : error
+     */
+    public static function cronPurgeReminder(CronTask $task)
+    {
+        global $DB;
+
+        $max_age = (int)$task->fields['param'];
+        if ($max_age <= 0) {
+            $task->log('Reminder purging is disabled (param = 0)');
+            return 0;
+        }
+
+        $task->log("Starting purge of reminders older than $max_age days");
+
+        // Count reminders before purge for statistics
+        $total_before = countElementsInTable(self::getTable());
+
+        // Perform the purge
+        $purged_count = self::cleanOld($max_age);
+
+        // Set volume for tracking
+        $task->setVolume($purged_count);
+
+        if ($purged_count > 0) {
+            $task->log("Purged $purged_count expired reminders");
+
+            // Log statistics
+            $total_after = countElementsInTable(self::getTable());
+            $total_deleted = $total_before - $total_after;
+            $task->log("Total reminders before: $total_before, after: $total_after, deleted: $total_deleted");
+
+            return 1;
+        } else {
+            $task->log('No expired reminders found to purge');
+            return 0;
+        }
+    }
+
+
+    /**
+     * Get cron description parameter for this class
+     *
+     * @param string $name name of the task
+     *
+     * @return array of string
+     */
+    public static function cronInfo($name)
+    {
+        switch ($name) {
+            case 'purgereminder':
+                return ['description' => __('Purge expired reminders'),
+                             'parameter'   => __('Retention period for expired reminders (in days, 0 to disable)')];
+        }
+        return [];
+    }
+
+
     public static function getIcon()
     {
         return "far fa-sticky-note";
