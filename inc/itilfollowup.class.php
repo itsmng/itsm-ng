@@ -782,6 +782,7 @@ class ITILFollowup extends CommonDBChild
      */
     public function showApprobationForm($itilobject)
     {
+        $form = null;
 
         if (
             ($itilobject->fields["status"] == CommonITILObject::SOLVED)
@@ -831,6 +832,10 @@ class ITILFollowup extends CommonDBChild
                   ]
                ]
             ];
+        }
+
+        if ($form === null) {
+            return true;
         }
 
         renderTwigForm($form);
