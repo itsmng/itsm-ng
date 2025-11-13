@@ -55,9 +55,22 @@ class Html
     ];
 
     private static $scss = [
+        'css/bootstrap-itsm',
         'css/styles',
         'css/itsm2.scss',
     ];
+
+    private static $compactAwareScss = [
+        'css/bootstrap-itsm',
+        'css/styles',
+        'css/itsm2',
+    ];
+
+    public static function isCompactAwareScss(string $file): bool
+    {
+        $normalized = preg_replace('/\.scss$/', '', $file);
+        return in_array($normalized, self::$compactAwareScss, true);
+    }
 
     private static $js = [
         "node_modules/jquery-ui-dist/jquery-ui.min.js",
@@ -73,7 +86,15 @@ class Html
     private static function getFilePath($file, $isScss = false)
     {
         global $CFG_GLPI;
-        return $CFG_GLPI['root_doc'] . ($isScss ? '/front/css.php?file=' : '/') . $file;
+        if ($isScss) {
+            $params = ['file' => $file];
+            if (self::isCompactAwareScss($file) && self::useCompactMode()) {
+                $params['variant'] = 'compact';
+            }
+            return $CFG_GLPI['root_doc'] . '/front/css.php?' . http_build_query($params);
+        }
+
+        return $CFG_GLPI['root_doc'] . '/' . $file;
     }
 
     public static function getCss()
@@ -95,6 +116,41 @@ class Html
             $allJs[] = self::getFilePath($file);
         }
         return $allJs;
+    }
+
+    private static function useCompactMode(): bool
+    {
+        if (!isset($_SESSION['glpiID']) || !Session::getLoginUserID()) {
+            return false;
+        }
+
+        if (array_key_exists('itsm_compact_mode', $_SESSION)) {
+            return (bool)$_SESSION['itsm_compact_mode'];
+        }
+
+        global $DB;
+
+        static $columnAvailable = null;
+        if ($columnAvailable === null) {
+            $columnAvailable = $DB->fieldExists('glpi_users', 'compact_mode_ui');
+        }
+
+        if (!$columnAvailable) {
+            $_SESSION['itsm_compact_mode'] = false;
+            return false;
+        }
+
+        $result = $DB->request([
+            'SELECT' => 'compact_mode_ui',
+            'FROM'   => 'glpi_users',
+            'WHERE'  => ['id' => $_SESSION['glpiID']],
+        ]);
+
+        $value = $result->next()['compact_mode_ui'] ?? 0;
+        $enabled = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+        $_SESSION['itsm_compact_mode'] = $enabled;
+
+        return $enabled;
     }
 
     /**
@@ -1372,7 +1428,7 @@ class Html
 
         echo Html::css('vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css');
         echo Html::css('css/bootstrap-select.min.css');
-        echo Html::css('vendor/twbs/bootstrap/dist/css/bootstrap.min.css');
+        echo Html::scss('css/bootstrap-itsm');
         echo Html::css("node_modules/jquery-ui-dist/jquery-ui.min.css");
         echo Html::css("node_modules/select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css");
         echo Html::css("node_modules/ckeditor5/dist/ckeditor5.css");
@@ -1879,6 +1935,8 @@ JAVASCRIPT;
             )->next()['menu_favorite_on'] ?? '1';
             $twig_vars['menu_favorite_on'] = filter_var($twig_vars['menu_favorite_on'], FILTER_VALIDATE_BOOLEAN);
         }
+
+        $twig_vars['compact_mode_ui'] = self::useCompactMode();
 
         $menu = $twig_vars['main_menu']['args']['menu'];
         $twig_vars['breadcrumb_items'] = [
@@ -5645,7 +5703,21 @@ JAVASCRIPT;
      **/
     public static function scss($url, $options = [])
     {
-        $prod_file = self::getScssCompilePath($url);
+        $variant = null;
+        if (isset($options['_variant'])) {
+            $variant = $options['_variant'];
+            unset($options['_variant']);
+        }
+
+        $supportsVariant = self::isCompactAwareScss($url);
+
+        if (!$supportsVariant) {
+            $variant = null;
+        } elseif ($variant === null && self::useCompactMode()) {
+            $variant = 'compact';
+        }
+
+        $prod_file = self::getScssCompilePath($url, $supportsVariant ? $variant : null);
 
         if (file_exists($prod_file) && $_SESSION['glpi_use_mode'] != Session::DEBUG_MODE) {
             $url = self::getPrefixedUrl(str_replace(GLPI_ROOT, '', $prod_file));
@@ -5653,6 +5725,9 @@ JAVASCRIPT;
             $file = $url;
             $url = self::getPrefixedUrl('/front/css.php');
             $url .= '?file=' . $file;
+            if ($supportsVariant && $variant !== null) {
+                $url .= '&variant=' . rawurlencode($variant);
+            }
             if (isset($_SESSION['glpi_use_mode']) && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) {
                 $url .= '&debug';
             }
@@ -7307,6 +7382,7 @@ JAVASCRIPT;
                  ]
         )->next()['menu_small'] ?? 'false';
         $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
+        $twig_vars['compact_mode_ui'] = self::useCompactMode();
 
         // TODO: add profile selector
         // Profile selector
@@ -7393,6 +7469,8 @@ JAVASCRIPT;
         $ckey = 'css_';
         $ckey .= isset($args['v']) ? $args['v'] : ITSM_SCHEMA_VERSION;
 
+        $variant = $args['variant'] ?? null;
+
         $scss = new Compiler();
         $scss->setFormatter('ScssPhp\ScssPhp\Formatter\Crunched');
         if (isset($args['debug'])) {
@@ -7409,6 +7487,12 @@ JAVASCRIPT;
         $file = isset($args['file']) ? $args['file'] : 'css/styles';
 
         $ckey .= '_' . $file;
+        if ($variant !== null && $variant !== '') {
+            $ckey .= '_' . $variant;
+            $scss->setVariables([
+                'itsm-compact-mode' => $variant === 'compact',
+            ]);
+        }
 
         if (!Toolbox::endsWith($file, '.scss')) {
             // Prevent include of file if ext is not .scss
@@ -7514,15 +7598,20 @@ JAVASCRIPT;
     /**
      * Get scss compilation path for given file.
      *
-     * @return array
+     * @return string
      */
-    public static function getScssCompilePath($file)
+    public static function getScssCompilePath($file, $variant = null)
     {
+        $suffix = '';
+        if ($variant !== null && $variant !== '') {
+            $suffix = '-' . preg_replace('/[^a-z0-9_-]+/i', '', $variant);
+        }
+
         return implode(
             DIRECTORY_SEPARATOR,
             [
               self::getScssCompileDir(),
-              str_replace('/', '_', $file) . '.min.css',
+              str_replace('/', '_', $file) . $suffix . '.min.css',
             ]
         );
     }

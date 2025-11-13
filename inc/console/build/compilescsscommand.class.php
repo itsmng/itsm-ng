@@ -110,32 +110,43 @@ class CompileScssCommand extends Command
         }
 
         foreach ($files as $file) {
-            $output->writeln(
-                '<comment>' . sprintf('Processing "%s".', $file) . '</comment>',
-                OutputInterface::VERBOSITY_VERBOSE
-            );
+            $variants = [null];
+            if (Html::isCompactAwareScss($file)) {
+                $variants[] = 'compact';
+            }
 
-            $compiled_path = Html::getScssCompilePath($file);
-            $css = Html::compileScss(
-                [
-                  'file'    => $file,
-                  'nocache' => true,
-                ]
-            );
+            foreach ($variants as $variant) {
+                $label = $file . ($variant ? sprintf(' (%s)', $variant) : '');
+                $output->writeln(
+                    '<comment>' . sprintf('Processing "%s".', $label) . '</comment>',
+                    OutputInterface::VERBOSITY_VERBOSE
+                );
 
-            if (strlen($css) === @file_put_contents($compiled_path, $css)) {
-                $message = sprintf('"%s" compiled successfully in "%s".', $file, $compiled_path);
-                $output->writeln(
-                    '<info>' . $message . '</info>',
-                    OutputInterface::VERBOSITY_NORMAL
-                );
-            } else {
-                $message = sprintf('Unable to write compiled CSS in "%s".', $compiled_path);
-                $output->writeln(
-                    '<error>' . $message . '</error>',
-                    OutputInterface::VERBOSITY_QUIET
-                );
-                return self::ERROR_UNABLE_TO_WRITE_COMPILED_FILE;
+                $compiled_path = Html::getScssCompilePath($file, $variant);
+                $compile_args = [
+                    'file'    => $file,
+                    'nocache' => true,
+                ];
+                if ($variant !== null) {
+                    $compile_args['variant'] = $variant;
+                }
+
+                $css = Html::compileScss($compile_args);
+
+                if (strlen($css) === @file_put_contents($compiled_path, $css)) {
+                    $message = sprintf('"%s" compiled successfully in "%s".', $label, $compiled_path);
+                    $output->writeln(
+                        '<info>' . $message . '</info>',
+                        OutputInterface::VERBOSITY_NORMAL
+                    );
+                } else {
+                    $message = sprintf('Unable to write compiled CSS in "%s".', $compiled_path);
+                    $output->writeln(
+                        '<error>' . $message . '</error>',
+                        OutputInterface::VERBOSITY_QUIET
+                    );
+                    return self::ERROR_UNABLE_TO_WRITE_COMPILED_FILE;
+                }
             }
         }
 
