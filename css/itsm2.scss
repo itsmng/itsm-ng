@@ -1,4 +1,5 @@
 // RUNTIME VARIABLES
+@import "./spacing";
 @import "../vendor/twbs/bootstrap/scss/bootstrap.scss";
 @import "./colors.scss";
 
@@ -179,10 +180,21 @@ main {
 
 .main-container {
     -ms-overflow-style: none;
+    display: flex;
+    flex-direction: column;
     height: calc(100vh - var(--header-height));
-    overflow-y: auto;
+    overflow-y: hidden;
     width: calc(100% - var(--nav-open-width));
     transition: margin var(--nav-transition-time) ease;
+
+    >#subheader {
+        flex: 0 0 auto;
+    }
+
+    >#page {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
 
     .menu-right & {
         margin-left: 0 !important;
@@ -1461,7 +1473,7 @@ div.chip>p {
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    margin-bottom: 24px;
+    margin-bottom: $spacer * 1.5;
     overflow: hidden;
     border: 1px solid #e5e7eb;
 }
@@ -1469,7 +1481,7 @@ div.chip>p {
 .form-section-header {
     background-color: var(--bs-nav);
     color: white;
-    padding: 16px 24px;
+    padding: $spacer ($spacer * 1.5);
     margin: 0;
     font-size: 18px;
     font-weight: 600;
@@ -1478,20 +1490,20 @@ div.chip>p {
 }
 
 .form-section-content {
-    padding: 24px;
+    padding: $spacer * 1.5;
     background: #fafbfc;
     background-size: 40px 40px;
 }
 
 .form-section-content .row {
-    margin-left: -10px;
-    margin-right: -10px;
+    margin-left: -($spacer * 0.625);
+    margin-right: -($spacer * 0.625);
 }
 
 .form-section-content .row>[class*="col-"] {
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-bottom: 20px;
+    padding-left: $spacer * 0.625;
+    padding-right: $spacer * 0.625;
+    margin-bottom: $spacer * 1.25;
 }
 
 .form-section {
@@ -1512,16 +1524,16 @@ div.chip>p {
 
 @media (max-width: 768px) {
     .form-section-content {
-        padding: 16px;
+        padding: $spacer;
     }
 
     .form-section-header {
-        padding: 12px 16px;
+        padding: ($spacer * 0.75) $spacer;
         font-size: 16px;
     }
 
     .form-section-content .col {
-        padding: 12px;
+        padding: $spacer * 0.75;
     }
 }
 
