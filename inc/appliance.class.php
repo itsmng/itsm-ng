@@ -93,6 +93,7 @@ class Appliance extends CommonDBTM
     {
         $form = [
            'action' => Toolbox::getItemTypeFormURL('appliance'),
+           'itemtype' => $this::class,
            'buttons' => [
               [
                  'type' => 'submit',
@@ -559,9 +560,8 @@ class Appliance extends CommonDBTM
                       'actions' => getItemActionButtons(['info', 'add'], Appliance::class)
                    ],
                 ]);
-                echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', "class" => "btn btn-secondary mt-3"]);
-                return true;
-                break;
+            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', "class" => "btn btn-secondary mt-3"]);
+            return true;
         }
         return parent::showMassiveActionsSubForm($ma);
     }
