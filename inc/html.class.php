@@ -1782,6 +1782,7 @@ JAVASCRIPT;
                     $menu['assets']['content']['allassets']['page']             = '/front/allassets.php';
                     $menu['assets']['content']['allassets']['icon']             = 'fas fa-list';
                     $menu['assets']['content']['allassets']['links']['search']  = '/front/allassets.php';
+                    $menu['assets']['content'] = ['allassets' => $menu['assets']['content']['allassets']] + $menu['assets']['content'];
                     break;
                 }
             }
