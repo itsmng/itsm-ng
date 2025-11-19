@@ -1149,38 +1149,48 @@ class Dropdown
     public static function showItemTypeList($optgroup)
     {
 
-        echo "<div id='list_nav'>";
+        echo "<div id='list_nav' class='container-fluid' role='navigation' aria-label='Item type List'>";
         $nb = 0;
         foreach ($optgroup as $label => $dp) {
             $nb += count($dp);
         }
-        $step = ($nb > 15 ? ($nb / 3) : $nb);
-        echo "<table class='tab_glpi'><tr class='top'><td width='33%' class='center' aria-label=' Item type List'>";
-        echo "<table class='tab_cadre' aria-label=' Item type SubList'>";
-        $i = 1;
+        $step = ($nb > 15 ? ceil($nb / 3) : $nb);
+
+        echo "<div class='row'>";
+        echo "<div class='col-12 col-md-4'>";
+
+        $i = 0;
+        $col = 1;
 
         foreach ($optgroup as $label => $dp) {
-            echo "<tr><th>$label</th></tr>\n";
+            echo "<div class='card mb-3'>";
+            echo "<div class='card-header fw-bold'>$label</div>";
+            echo "<div class='list-group list-group-flush'>";
 
             foreach ($dp as $key => $val) {
-                $class = "class='tab_bg_4'";
+                $class = "list-group-item-secondary";
                 if (
                     ($itemtype = getItemForItemtype($key))
                     && $itemtype->isEntityAssign()
                 ) {
-                    $class = "class='tab_bg_2'";
+                    $class = "";
                 }
-                echo "<tr $class><td><a href='" . $key::getSearchURL() . "'>";
-                echo "$val</a></td></tr>\n";
+                echo "<a href='" . $key::getSearchURL() . "' class='list-group-item list-group-item-action px-2 py-1 small $class'>";
+                echo "$val</a>";
                 $i++;
             }
+            echo "</div>";
+            echo "</div>";
 
-            if (($i >= $step) && ($i < $nb)) {
-                echo "</table></td><td width='25'>&nbsp;</td><td><table class='tab_cadre' aria-label='Item Type Sublist Detail'>";
-                $step += $step;
+            if ($nb > 15 && $col < 3 && $i >= $step) {
+                echo "</div><div class='col-12 col-md-4'>";
+                $step += ceil($nb / 3);
+                $col++;
             }
         }
-        echo "</table></td></tr></table></div>";
+        echo "</div>"; 
+        echo "</div>"; 
+        echo "</div>"; 
     }
 
 
