@@ -1379,6 +1379,20 @@ class Search
                 return;
             }
 
+            // Clamp pagination when the requested offset is outside the result set (useful for AllAssets search)
+            $totalcount = (int) $data['data']['totalcount'];
+            $listlimit  = (int) $data['search']['list_limit'];
+            if ($totalcount <= 0) {
+                $data['search']['start'] = 0;
+            } elseif ($data['search']['start'] >= $totalcount) {
+                if ($listlimit > 0) {
+                    $lastpage = (int) floor(($totalcount - 1) / $listlimit);
+                    $data['search']['start'] = $lastpage * $listlimit;
+                } else {
+                    $data['search']['start'] = 0;
+                }
+            }
+
             // Search case
             $data['data']['begin'] = $data['search']['start'];
             $data['data']['end']   = min(
