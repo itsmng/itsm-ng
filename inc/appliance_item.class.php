@@ -33,7 +33,7 @@ if (!defined('GLPI_ROOT')) {
  * You should have received a copy of the GNU General Public License
  * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
-**/
+ **/
 class Appliance_Item extends CommonDBRelation
 {
     use Glpi\Features\Clonable;
@@ -49,7 +49,7 @@ class Appliance_Item extends CommonDBRelation
     public function getCloneRelations(): array
     {
         return [
-           Appliance_Item_Relation::class
+            Appliance_Item_Relation::class
         ];
     }
 
@@ -102,7 +102,7 @@ class Appliance_Item extends CommonDBRelation
      * @param Appliance $appliance  Appliance object wanted
      *
      * @return void|boolean (display) Returns false if there is a rights error.
-    **/
+     **/
     public static function showItems(Appliance $appliance)
     {
         global $DB, $CFG_GLPI;
@@ -117,12 +117,21 @@ class Appliance_Item extends CommonDBRelation
             return false;
         }
         $canedit = $appliance->canEdit($ID);
+        $entity_restrict = [(int) $appliance->getEntityID()];
+        if ((int) ($appliance->fields['is_recursive'] ?? 0)) {
+            $entity_restrict = getSonsOf('glpi_entities', $appliance->getEntityID());
+        }
+        $entity_restrict = array_unique(array_map('intval', (array) $entity_restrict));
+        if (empty($entity_restrict)) {
+            $entity_restrict = [(int) $appliance->getEntityID()];
+        }
+        $entity_restrict_js = json_encode(array_values($entity_restrict));
 
         $items = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => [
-              self::$items_id_1 => $ID
-           ]
+            'FROM' => self::getTable(),
+            'WHERE' => [
+                self::$items_id_1 => $ID
+            ]
         ]);
 
         Session::initNavigateListItems(
@@ -141,71 +150,78 @@ class Appliance_Item extends CommonDBRelation
             $options = [];
             foreach ($itemtypes as $itemtype) {
                 $options[$itemtype] = $itemtype::getTypeName(1);
-            };
+            }
 
             $form = [
-               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-               'buttons' => [
-                  [
-                     'type' => 'submit',
-                     'name' => 'add',
-                     'value' => _sx('button', 'Add an item'),
-                     'class' => 'btn btn-secondary'
-                  ]
-               ],
-               'content' => [
-                  __('Add an item') => [
-                     'visible' => true,
-                     'inputs' => [
-                        [
-                           'type' => 'hidden',
-                           'name' => 'appliances_id',
-                           'value' => $ID
-                        ],
-                        __('Type') => [
-                           'type' => 'select',
-                           'id' => 'dropdown_itemtype',
-                           'name' => 'itemtype',
-                           'values' => [Dropdown::EMPTY_VALUE] + array_unique($options),
-                           'col_lg' => 6,
-                           'hooks' => [
-                              'change' => <<<JS
+                'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+                'buttons' => [
+                    [
+                        'type' => 'submit',
+                        'name' => 'add',
+                        'value' => _sx('button', 'Add an item'),
+                        'class' => 'btn btn-secondary'
+                    ]
+                ],
+                'content' => [
+                    __('Add an item') => [
+                        'visible' => true,
+                        'inputs' => [
+                            [
+                                'type' => 'hidden',
+                                'name' => 'appliances_id',
+                                'value' => $ID
+                            ],
+                            __('Type') => [
+                                'type' => 'select',
+                                'id' => 'dropdown_itemtype',
+                                'name' => 'itemtype',
+                                'values' => [Dropdown::EMPTY_VALUE] + array_unique($options),
+                                'col_lg' => 6,
+                                'hooks' => [
+                                    'change' => <<<JS
+                                        const entityRestrict = $entity_restrict_js;
+                                        const target = $('#dropdown_items_id');
+                                        const selectedType = this.value;
+                                        target.empty();
+                                        if (!selectedType) {
+                                            return;
+                                        }
                               $.ajax({
                                     method: "POST",
                                     url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
                                     data: {
-                                       itemtype: this.value,
+                                                    itemtype: selectedType,
                                        display_emptychoice: 1,
+                                                    entity_restrict: entityRestrict,
                                     },
                                     success: function(response) {
                                        const data = response.results;
-                                       $('#dropdown_items_id').empty();
                                        for (let i = 0; i < data.length; i++) {
                                           if (data[i].children) {
-                                             const group = $('#dropdown_items_id')
+                                                            const group = target
                                                 .append("<optgroup label='" + data[i].text + "'></optgroup>");
                                              for (let j = 0; j < data[i].children.length; j++) {
                                                 group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
                                              }
                                           } else {
-                                             $('#dropdown_items_id').append("<option value='" + data[i].id + "'>" + data[i].text + "</option>");
+                                                            target.append("<option value='" + data[i].id + "'>" + data[i].text + "</option>");
                                           }
                                        }
                                     }
                                  });
                            JS,
-                           ]
-                        ],
-                        __('Item') => [
-                           'type' => 'select',
-                           'id' => 'dropdown_items_id',
-                           'name' => 'items_id',
-                           'values' => [],
-                           'col_lg' => 6,
-                        ],
-                     ]
-                  ]
-               ]
+                                ]
+                            ],
+                            __('Item') => [
+                                'type' => 'select',
+                                'id' => 'dropdown_items_id',
+                                'name' => 'items_id',
+                                'values' => [],
+                                'col_lg' => 6,
+                            ],
+                        ]
+                    ]
+                ]
             ];
             renderTwigForm($form);
         }
@@ -213,21 +229,21 @@ class Appliance_Item extends CommonDBRelation
         $items = iterator_to_array($items);
 
         $fields = [
-           __('Itemtype'),
-           _n('Item', 'Items', 1),
-           __("Serial"),
-           __("Inventory number"),
-           Appliance_Item_Relation::getTypeName(Session::getPluralNumber()),
+            __('Itemtype'),
+            _n('Item', 'Items', 1),
+            __("Serial"),
+            __("Inventory number"),
+            Appliance_Item_Relation::getTypeName(Session::getPluralNumber()),
         ];
 
         if ($canedit) {
             $massiveactionparams = [
-               'container'       => 'tableForApplianceItem',
-               'specific_actions' => [
-                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
-               ],
-               'is_deleted' => 0,
-               'display_arrow' => false,
+                'container' => 'tableForApplianceItem',
+                'specific_actions' => [
+                    'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+                ],
+                'is_deleted' => 0,
+                'display_arrow' => false,
             ];
             Html::showMassiveActions($massiveactionparams);
         }
@@ -238,18 +254,18 @@ class Appliance_Item extends CommonDBRelation
             $item = new $row['itemtype']();
             $item->getFromDB($row['items_id']);
             $values[] = [
-               $item->getTypeName(1),
-               $item->getLink(),
-               ($item->fields['serial'] ?? ""),
-               ($item->fields['otherserial'] ?? ""),
+                $item->getTypeName(1),
+                $item->getLink(),
+                ($item->fields['serial'] ?? ""),
+                ($item->fields['otherserial'] ?? ""),
             ];
             $massive_action[] = sprintf('item[%s][%s]', self::class, $row['id']);
         }
         renderTwigTemplate('table.twig', [
-           'id' => 'tableForApplianceItem',
-           'fields' => $fields,
-           'values' => $values,
-           'massive_action' => $massive_action,
+            'id' => 'tableForApplianceItem',
+            'fields' => $fields,
+            'values' => $values,
+            'massive_action' => $massive_action,
         ]);
     }
 
@@ -262,12 +278,12 @@ class Appliance_Item extends CommonDBRelation
      * @param boolean    $withtemplate not used (to be deleted)
      *
      * @return void
-    **/
+     **/
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
 
         $itemtype = $item->getType();
-        $ID       = $item->fields['id'];
+        $ID = $item->fields['id'];
 
         if (
             !Appliance::canView()
@@ -283,46 +299,46 @@ class Appliance_Item extends CommonDBRelation
         $number = count($iterator);
 
         $appliances = [];
-        $used      = [];
+        $used = [];
         while ($data = $iterator->next()) {
             $appliances[$data['id']] = $data;
-            $used[$data['id']]      = $data['id'];
+            $used[$data['id']] = $data['id'];
         }
         if ($canedit && ($withtemplate != 2)) {
             $form = [
-               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
-               'buttons' => [
-                  [
-                     'name' => 'add',
-                     'value' => _x('button', 'Associate'),
-                     'class' => 'btn btn-secondary',
-                  ]
-               ],
-               'content' => [
-                  '' => [
-                     'visible' => true,
-                     'inputs' => [
-                        [
-                           'type' => 'hidden',
-                           'name' => 'items_id',
-                           'value' => $ID,
-                        ],
-                        [
-                           'type' => 'hidden',
-                           'name' => 'itemtype',
-                           'value' => $itemtype,
-                        ],
-                        __('Add to an appliance') => [
-                           'type' => 'select',
-                           'name' => 'appliances_id',
-                           'itemtype' => Appliance::class,
-                           'actions' => getItemActionButtons(['info'], Appliance::class),
-                           'col_lg' => 12,
-                           'col_md' => 12,
+                'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+                'buttons' => [
+                    [
+                        'name' => 'add',
+                        'value' => _x('button', 'Associate'),
+                        'class' => 'btn btn-secondary',
+                    ]
+                ],
+                'content' => [
+                    '' => [
+                        'visible' => true,
+                        'inputs' => [
+                            [
+                                'type' => 'hidden',
+                                'name' => 'items_id',
+                                'value' => $ID,
+                            ],
+                            [
+                                'type' => 'hidden',
+                                'name' => 'itemtype',
+                                'value' => $itemtype,
+                            ],
+                            __('Add to an appliance') => [
+                                'type' => 'select',
+                                'name' => 'appliances_id',
+                                'itemtype' => Appliance::class,
+                                'actions' => getItemActionButtons(['info'], Appliance::class),
+                                'col_lg' => 12,
+                                'col_md' => 12,
+                            ]
                         ]
-                     ]
-                  ]
-               ]
+                    ]
+                ]
             ];
             renderTwigForm($form);
         }
@@ -330,27 +346,27 @@ class Appliance_Item extends CommonDBRelation
         if ($withtemplate != 2) {
             if ($canedit && $number) {
                 $massiveactionparams = [
-                   'container'     => 'tableForApplianceItem',
-                   'display_arrow' => false,
-                   'specific_actions' => [
-                      'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
-                   ],
+                    'container' => 'tableForApplianceItem',
+                    'display_arrow' => false,
+                    'specific_actions' => [
+                        'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+                    ],
                 ];
                 Html::showMassiveActions($massiveactionparams);
             }
         }
 
         $fields = [
-           __('Name'),
-           Appliance_Item_Relation::getTypeName(Session::getPluralNumber()),
+            __('Name'),
+            Appliance_Item_Relation::getTypeName(Session::getPluralNumber()),
         ];
         $values = [];
         $massive_action = [];
         foreach ($appliances as $data) {
-            $cID         = $data["id"];
+            $cID = $data["id"];
             Session::addToNavigateListItems(__CLASS__, $cID);
-            $assocID     = $data["linkid"];
-            $app         = new Appliance();
+            $assocID = $data["linkid"];
+            $app = new Appliance();
             $app->getFromResultSet($data);
             $name = $app->fields["name"];
             if (
@@ -360,17 +376,17 @@ class Appliance_Item extends CommonDBRelation
                 $name = sprintf(__('%1$s (%2$s)'), $name, $app->fields["id"]);
             }
             $values[] = [
-               $name,
-               Appliance_Item_Relation::showListForApplianceItem($assocID, $canedit),
+                $name,
+                Appliance_Item_Relation::showListForApplianceItem($assocID, $canedit),
             ];
             $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
         }
 
         renderTwigTemplate('table.twig', [
-           'id' => 'tableForApplianceItem',
-           'fields' => $fields,
-           'values' => $values,
-           'massive_action' => $massive_action,
+            'id' => 'tableForApplianceItem',
+            'fields' => $fields,
+            'values' => $values,
+            'massive_action' => $massive_action,
         ]);
     }
 
@@ -448,7 +464,7 @@ class Appliance_Item extends CommonDBRelation
 
     public function getForbiddenStandardMassiveAction()
     {
-        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden = parent::getForbiddenStandardMassiveAction();
         $forbidden[] = 'update';
         $forbidden[] = 'CommonDBConnexity:unaffect';
         $forbidden[] = 'CommonDBConnexity:affect';
@@ -459,7 +475,7 @@ class Appliance_Item extends CommonDBRelation
     {
         global $CFG_GLPI;
 
-        $specificities              = parent::getRelationMassiveActionsSpecificities();
+        $specificities = parent::getRelationMassiveActionsSpecificities();
         $specificities['itemtypes'] = Appliance::getTypes();
 
         return $specificities;
@@ -469,7 +485,7 @@ class Appliance_Item extends CommonDBRelation
     {
         $this->deleteChildrenAndRelationsFromDb(
             [
-              Appliance_Item_Relation::class,
+                Appliance_Item_Relation::class,
             ]
         );
     }
