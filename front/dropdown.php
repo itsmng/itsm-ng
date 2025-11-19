@@ -53,6 +53,7 @@ if (count($optgroup) > 0) {
     //=> "var _value = this.options[this.selectedIndex].value; if (_value != 0) {window.location.href=_value;}",
     //'value'               => $selected,
     //'display_emptychoice' => true]);
+    echo "<div class='container'>";
     renderTwigTemplate('macros/wrappedInput.twig', [
         'title' => _n('Dropdown', 'Dropdowns', Session::getPluralNumber()),
         'input' => [
@@ -72,6 +73,8 @@ if (count($optgroup) > 0) {
             'col_md' => 12,
         ]
     ]);
+    Dropdown::showItemTypeList($optgroup);
+    echo "</div>";
 } else {
     Html::displayRightError();
 }
