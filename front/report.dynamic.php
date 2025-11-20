@@ -32,12 +32,17 @@
 
 include ('../inc/includes.php');
 
-if (!isset($_GET['item_type']) || !is_string($_GET['item_type']) || !is_a($_GET['item_type'], CommonGLPI::class, true)) {
+if (!isset($_GET['item_type']) || !is_string($_GET['item_type']) || (!is_a($_GET['item_type'], CommonGLPI::class, true) && $_GET['item_type'] !== 'AllAssets')) {
    return;
 }
 
 $itemtype = $_GET['item_type'];
-Session::checkRight($itemtype::$rightname, READ);
+
+if ($itemtype === 'AllAssets') {
+   Session::checkCentralAccess();
+} else {
+   Session::checkRight($itemtype::$rightname, READ);
+}
 
 if (isset($_GET["display_type"])) {
    if ($_GET["display_type"] < 0) {
