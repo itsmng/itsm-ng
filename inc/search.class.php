@@ -3010,7 +3010,7 @@ JAVASCRIPT;
            'field'       => $request["field"],
            'p'           => $p,
         ];
-        
+
         Ajax::updateItemOnSelectEvent(
             $fieldsearch_id,
             $dropdownname,

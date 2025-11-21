@@ -3956,7 +3956,7 @@ class Ticket extends CommonITILObject
                         $predefined_fields[$predeffield] = $predefvalue;
                     }
                 } else { // Not defined options set as hidden field
-                $predefined_fields[$predeffield] = $predefvalue;
+                    $predefined_fields[$predeffield] = $predefvalue;
                 }
             }
             // All predefined override : add option to say predifined exists
@@ -3973,145 +3973,145 @@ class Ticket extends CommonITILObject
             }
         }
 
-    $delegating = User::getDelegateGroupsForUser($options['entities_id']);
+        $delegating = User::getDelegateGroupsForUser($options['entities_id']);
 
-    $formUrl = $CFG_GLPI["root_doc"] . "/front/tracking.injector.php";
-    
-    $form = [
-        'action' => $formUrl,
-        'method' => 'post',
-        'name' => 'helpdeskform',
-        'enctype' => 'multipart/form-data',
-        'itemtype' => self::class,
-        'content' => []
-    ];
+        $formUrl = $CFG_GLPI["root_doc"] . "/front/tracking.injector.php";
 
-    if (count($delegating) || $CFG_GLPI['use_check_pref']) {
-        $delegationInputs = [];
-
-        if (count($delegating)) {
-            $delegationInputs[__('This ticket concerns me')] = [
-                'type' => 'select',
-                'name' => 'nodelegate',
-                'values' => [1 => __('Yes'), 0 => __('No')],
-                'value' => $options['nodelegate']
-            ];
-
-            $delegationInputs[__('Requester')] = [
-                'type' => 'select',
-                'name' => '_users_id_requester',
-                'itemtype' => 'User',
-                'value' => $options['_users_id_requester'] ?: Session::getLoginUserID(),
-                'right' => 'delegate'
-            ];
-
-            $delegationInputs[] = [
-                'type' => 'hidden',
-                'name' => '_users_id_recipient',
-                'value' => Session::getLoginUserID()
-            ];
-
-            if ($CFG_GLPI['use_check_pref'] && $options['nodelegate']) {
-                $delegationInputs[__('Check your personnal information')] = [
-                    'content' => (function() {
-                        ob_start();
-                        User::showPersonalInformation(Session::getLoginUserID());
-                        return ob_get_clean();
-                    })()
-                ];
-            }
-        } else {
-            $options['_users_id_requester'] = Session::getLoginUserID();
-
-            if ($CFG_GLPI['use_check_pref']) {
-                $delegationInputs[__('Check your personnal information')] = [
-                    'content' => (function() {
-                        ob_start();
-                        User::showPersonalInformation(Session::getLoginUserID());
-                        return ob_get_clean();
-                    })()
-                ];
-            }
-        }
-
-        $form['content'][__('User information')] = [
-            'visible' => true,
-            'inputs' => $delegationInputs
+        $form = [
+            'action' => $formUrl,
+            'method' => 'post',
+            'name' => 'helpdeskform',
+            'enctype' => 'multipart/form-data',
+            'itemtype' => self::class,
+            'content' => []
         ];
-    }
 
-    $mainInputs = [];
+        if (count($delegating) || $CFG_GLPI['use_check_pref']) {
+            $delegationInputs = [];
 
-    $hiddenFields = [
-        ['type' => 'hidden', 'name' => '_from_helpdesk', 'value' => '1'],
-        ['type' => 'hidden', 'name' => 'requesttypes_id', 'value' => RequestType::getDefault('helpdesk')],
-        ['type' => 'hidden', 'name' => 'entities_id', 'value' => $_SESSION["glpiactive_entity"]]
-    ];
-
-    if (isset($tt->predefined) && count($tt->predefined)) {
-        foreach ($tt->predefined as $predeffield => $predefvalue) {
-            if (!isset($options[$predeffield]) || !isset($default_values[$predeffield])) {
-                $hiddenFields[] = [
-                    'type' => 'hidden',
-                    'name' => $predeffield,
-                    'value' => $predefvalue
+            if (count($delegating)) {
+                $delegationInputs[__('This ticket concerns me')] = [
+                    'type' => 'select',
+                    'name' => 'nodelegate',
+                    'values' => [1 => __('Yes'), 0 => __('No')],
+                    'value' => $options['nodelegate']
                 ];
+
+                $delegationInputs[__('Requester')] = [
+                    'type' => 'select',
+                    'name' => '_users_id_requester',
+                    'itemtype' => 'User',
+                    'value' => $options['_users_id_requester'] ?: Session::getLoginUserID(),
+                    'right' => 'delegate'
+                ];
+
+                $delegationInputs[] = [
+                    'type' => 'hidden',
+                    'name' => '_users_id_recipient',
+                    'value' => Session::getLoginUserID()
+                ];
+
+                if ($CFG_GLPI['use_check_pref'] && $options['nodelegate']) {
+                    $delegationInputs[__('Check your personnal information')] = [
+                        'content' => (function () {
+                            ob_start();
+                            User::showPersonalInformation(Session::getLoginUserID());
+                            return ob_get_clean();
+                        })()
+                    ];
+                }
+            } else {
+                $options['_users_id_requester'] = Session::getLoginUserID();
+
+                if ($CFG_GLPI['use_check_pref']) {
+                    $delegationInputs[__('Check your personnal information')] = [
+                        'content' => (function () {
+                            ob_start();
+                            User::showPersonalInformation(Session::getLoginUserID());
+                            return ob_get_clean();
+                        })()
+                    ];
+                }
+            }
+
+            $form['content'][__('User information')] = [
+                'visible' => true,
+                'inputs' => $delegationInputs
+            ];
+        }
+
+        $mainInputs = [];
+
+        $hiddenFields = [
+            ['type' => 'hidden', 'name' => '_from_helpdesk', 'value' => '1'],
+            ['type' => 'hidden', 'name' => 'requesttypes_id', 'value' => RequestType::getDefault('helpdesk')],
+            ['type' => 'hidden', 'name' => 'entities_id', 'value' => $_SESSION["glpiactive_entity"]]
+        ];
+
+        if (isset($tt->predefined) && count($tt->predefined)) {
+            foreach ($tt->predefined as $predeffield => $predefvalue) {
+                if (!isset($options[$predeffield]) || !isset($default_values[$predeffield])) {
+                    $hiddenFields[] = [
+                        'type' => 'hidden',
+                        'name' => $predeffield,
+                        'value' => $predefvalue
+                    ];
+                }
             }
         }
-    }
 
         if (isset($options['_tasktemplates_id'])) {
             foreach ($options['_tasktemplates_id'] as $tasktemplates_id) {
+                $hiddenFields[] = [
+                    'type' => 'hidden',
+                    'name' => '_tasktemplates_id[]',
+                    'value' => $tasktemplates_id
+                ];
+            }
+        }
+
+        if (($CFG_GLPI['urgency_mask'] == (1 << 3)) || $tt->isHiddenField('urgency')) {
             $hiddenFields[] = [
                 'type' => 'hidden',
-                'name' => '_tasktemplates_id[]',
-                'value' => $tasktemplates_id
+                'name' => 'urgency',
+                'value' => $options['urgency']
             ];
         }
-    }
 
-    if (($CFG_GLPI['urgency_mask'] == (1 << 3)) || $tt->isHiddenField('urgency')) {
-        $hiddenFields[] = [
-            'type' => 'hidden',
-            'name' => 'urgency',
-            'value' => $options['urgency']
+        if ($tt->isHiddenField('items_id')) {
+            $hiddenFields[] = [
+                'content' => (function () use ($options) {
+                    ob_start();
+                    $this->displayHiddenItemsIdInput($options);
+                    return ob_get_clean();
+                })()
+            ];
+        }
+
+        if ($tt->isHiddenField('locations_id')) {
+            $hiddenFields[] = [
+                'type' => 'hidden',
+                'name' => 'locations_id',
+                'value' => $options['locations_id']
+            ];
+        }
+
+        foreach ($hiddenFields as $hiddenField) {
+            $mainInputs[] = $hiddenField;
+        }
+
+        $mainInputs[_n('Type', 'Types', 1) . $tt->getMandatoryMark('type')] = [
+            'type' => 'select',
+            'name' => 'type',
+            'values' => [
+                self::INCIDENT_TYPE => __('Incident'),
+                self::DEMAND_TYPE => __('Request')
+            ],
+            'value' => $options['type'],
+            'hooks' => [
+                'change' => 'this.form.submit()'
+            ]
         ];
-    }
-
-    if ($tt->isHiddenField('items_id')) {
-        $hiddenFields[] = [
-            'content' => (function() use ($options) {
-                ob_start();
-                $this->displayHiddenItemsIdInput($options);
-                return ob_get_clean();
-            })()
-        ];
-    }
-
-    if ($tt->isHiddenField('locations_id')) {
-        $hiddenFields[] = [
-            'type' => 'hidden',
-            'name' => 'locations_id',
-            'value' => $options['locations_id']
-        ];
-    }
-
-    foreach ($hiddenFields as $hiddenField) {
-        $mainInputs[] = $hiddenField;
-    }
-
-    $mainInputs[_n('Type', 'Types', 1) . $tt->getMandatoryMark('type')] = [
-        'type' => 'select',
-        'name' => 'type',
-        'values' => [
-            self::INCIDENT_TYPE => __('Incident'),
-            self::DEMAND_TYPE => __('Request')
-        ],
-        'value' => $options['type'],
-        'hooks' => [
-            'change' => 'this.form.submit()'
-        ]
-    ];
 
         $condition = ['is_helpdeskvisible' => 1];
         switch ($options['type']) {
@@ -4122,178 +4122,178 @@ class Ticket extends CommonITILObject
                 $condition['is_incident'] = 1;
         }
 
-    $mainInputs[__('Category') . $tt->getMandatoryMark('itilcategories_id')] = [
-        'type' => 'select',
-        'name' => 'itilcategories_id',
-        'itemtype' => 'ITILCategory',
-        'value' => $options['itilcategories_id'],
-        'condition' => $condition,
-        'entity' => $_SESSION["glpiactive_entity"],
-        'hooks' => [
-            'change' => 'this.form.submit()'
-        ],
-        'display_emptychoice' => !($options['itilcategories_id'] && $tt->isMandatoryField("itilcategories_id"))
-    ];
-    if ($CFG_GLPI['urgency_mask'] != (1 << 3) && !$tt->isHiddenField('urgency')) {
-        $mainInputs[__('Urgency') . $tt->getMandatoryMark('urgency')] = [
+        $mainInputs[__('Category') . $tt->getMandatoryMark('itilcategories_id')] = [
             'type' => 'select',
-            'name' => 'urgency',
-            'values' => [
-                1 => self::getUrgencyName(1),
-                2 => self::getUrgencyName(2),
-                3 => self::getUrgencyName(3),
-                4 => self::getUrgencyName(4),
-                5 => self::getUrgencyName(5)
+            'name' => 'itilcategories_id',
+            'itemtype' => 'ITILCategory',
+            'value' => $options['itilcategories_id'],
+            'condition' => $condition,
+            'entity' => $_SESSION["glpiactive_entity"],
+            'hooks' => [
+                'change' => 'this.form.submit()'
             ],
-            'value' => $options["urgency"]
+            'display_emptychoice' => !($options['itilcategories_id'] && $tt->isMandatoryField("itilcategories_id"))
         ];
-    }
+        if ($CFG_GLPI['urgency_mask'] != (1 << 3) && !$tt->isHiddenField('urgency')) {
+            $mainInputs[__('Urgency') . $tt->getMandatoryMark('urgency')] = [
+                'type' => 'select',
+                'name' => 'urgency',
+                'values' => [
+                    1 => self::getUrgencyName(1),
+                    2 => self::getUrgencyName(2),
+                    3 => self::getUrgencyName(3),
+                    4 => self::getUrgencyName(4),
+                    5 => self::getUrgencyName(5)
+                ],
+                'value' => $options["urgency"]
+            ];
+        }
 
-    if (empty($delegating) && NotificationTargetTicket::isAuthorMailingActivatedForHelpdesk()) {
-        $mainInputs[__('Inform me about the actions taken')] = [
-            'content' => (function() use ($options) {
-                ob_start();
-                if ($options["_users_id_requester"] == 0) {
-                    $options['_users_id_requester'] = Session::getLoginUserID();
-                }
-                $_POST['value'] = $options['_users_id_requester'];
-                $_POST['field'] = '_users_id_requester_notif';
-                $_POST['use_notification'] = $options['_users_id_requester_notif']['use_notification'];
-                include(GLPI_ROOT . "/ajax/uemailUpdate.php");
-                return ob_get_clean();
-            })(),
-            'col_lg' => 6,
-            'col_md' => 6,
-        ];
+        if (empty($delegating) && NotificationTargetTicket::isAuthorMailingActivatedForHelpdesk()) {
+            $mainInputs[__('Inform me about the actions taken')] = [
+                'content' => (function () use ($options) {
+                    ob_start();
+                    if ($options["_users_id_requester"] == 0) {
+                        $options['_users_id_requester'] = Session::getLoginUserID();
+                    }
+                    $_POST['value'] = $options['_users_id_requester'];
+                    $_POST['field'] = '_users_id_requester_notif';
+                    $_POST['use_notification'] = $options['_users_id_requester_notif']['use_notification'];
+                    include(GLPI_ROOT . "/ajax/uemailUpdate.php");
+                    return ob_get_clean();
+                })(),
+                'col_lg' => 6,
+                'col_md' => 6,
+            ];
         }
 
         if (!$tt->isHiddenField('locations_id')) {
-        $mainInputs[Location::getTypeName(1) . $tt->getMandatoryMark('locations_id')] = [
-            'type' => 'select',
-            'name' => 'locations_id',
-            'itemtype' => 'Location',
-            'value' => $options["locations_id"]
-        ];
-    }
+            $mainInputs[Location::getTypeName(1) . $tt->getMandatoryMark('locations_id')] = [
+                'type' => 'select',
+                'name' => 'locations_id',
+                'itemtype' => 'Location',
+                'value' => $options["locations_id"]
+            ];
+        }
 
-    if (!$tt->isHiddenField('_users_id_observer') || $tt->isPredefinedField('_users_id_observer')) {
-        $mainInputs[_n('Watcher', 'Watchers', Session::getPluralNumber()) . $tt->getMandatoryMark('_users_id_observer')] = [
-            'content' => (function() use ($options, $tt) {
-                ob_start();
-                $options['_right'] = "all";
-                
-                if (!$tt->isHiddenField('_users_id_observer')) {
-                    if ($tt->isPredefinedField('_users_id_observer') && !is_array($options['_users_id_observer'])) {
-                        $options['_users_id_observer'] = [$options['_users_id_observer']];
-                        $options['_users_id_observer_notif']['use_notification'] = [$options['_users_id_observer_notif']['use_notification']];
-                        $options['_users_id_observer'][1] = 0;
-                        $options['_users_id_observer_notif']['use_notification'][1] = 1;
-                    }
-                    
-                    echo "<div>";
-                    if (isset($options['_users_id_observer'])) {
-                        $observers = $options['_users_id_observer'];
-                        foreach ($observers as $index_observer => $observer) {
-                            $actors_options = array_merge($options, ['_user_index' => $index_observer]);
-                            $actors_options['_tickettemplate'] = $tt;
-                            self::showFormHelpdeskObserver($actors_options);
+        if (!$tt->isHiddenField('_users_id_observer') || $tt->isPredefinedField('_users_id_observer')) {
+            $mainInputs[_n('Watcher', 'Watchers', Session::getPluralNumber()) . $tt->getMandatoryMark('_users_id_observer')] = [
+                'content' => (function () use ($options, $tt) {
+                    ob_start();
+                    $options['_right'] = "all";
+
+                    if (!$tt->isHiddenField('_users_id_observer')) {
+                        if ($tt->isPredefinedField('_users_id_observer') && !is_array($options['_users_id_observer'])) {
+                            $options['_users_id_observer'] = [$options['_users_id_observer']];
+                            $options['_users_id_observer_notif']['use_notification'] = [$options['_users_id_observer_notif']['use_notification']];
+                            $options['_users_id_observer'][1] = 0;
+                            $options['_users_id_observer_notif']['use_notification'][1] = 1;
+                        }
+
+                        echo "<div>";
+                        if (isset($options['_users_id_observer'])) {
+                            $observers = $options['_users_id_observer'];
+                            foreach ($observers as $index_observer => $observer) {
+                                $actors_options = array_merge($options, ['_user_index' => $index_observer]);
+                                $actors_options['_tickettemplate'] = $tt;
+                                self::showFormHelpdeskObserver($actors_options);
+                            }
+                        }
+                        echo "</div>";
+                    } else {
+                        if (isset($options["_users_id_observer"]) && $options["_users_id_observer"]) {
+                            echo self::getActorIcon('user', CommonITILActor::OBSERVER) . "&nbsp;";
+                            echo Dropdown::getDropdownName("glpi_users", $options["_users_id_observer"]);
+                            echo "<input type='hidden' name='_users_id_observer' value=\"" . $options["_users_id_observer"] . "\">";
                         }
                     }
-                    echo "</div>";
-                } else {
-                    if (isset($options["_users_id_observer"]) && $options["_users_id_observer"]) {
-                        echo self::getActorIcon('user', CommonITILActor::OBSERVER) . "&nbsp;";
-                        echo Dropdown::getDropdownName("glpi_users", $options["_users_id_observer"]);
-                        echo "<input type='hidden' name='_users_id_observer' value=\"" . $options["_users_id_observer"] . "\">";
-                    }
-                }
-                return ob_get_clean();
-            })(),
-            'col_lg' => 6,
-            'col_md' => 6,
-        ];
-    }
-
-    if (!$tt->isHiddenField('name') || $tt->isPredefinedField('name')) {
-        $mainInputs[__('Title') . $tt->getMandatoryMark('name')] = [
-            'type' => !$tt->isHiddenField('name') ? 'text' : 'hidden',
-            'name' => 'name',
-            'value' => $options['name'],
-            'maxlength' => 250,
-            'size' => 80,
-            'required' => $tt->isMandatoryField('name'),
-            'col_lg' => 12,
-            'col_md' => 12,
-        ];
-    }
-
-    if (!$tt->isHiddenField('content') || $tt->isPredefinedField('content')) {
-        $content = $options['content'];
-        if (!$ticket_template) {
-            $content = Html::cleanPostForTextArea($options['content']);
-        }
-        $uploads = [];
-        if (isset($options['_content'])) {
-            $uploads['_content'] = $options['_content'];
-            $uploads['_tag_content'] = $options['_tag_content'];
+                    return ob_get_clean();
+                })(),
+                'col_lg' => 6,
+                'col_md' => 6,
+            ];
         }
 
-        $mainInputs[__('Description') . $tt->getMandatoryMark('content')] = [
-            'type' => 'richtextarea',
-            'name' => 'content',
-            'value' => $content,
-            'required' => $tt->isMandatoryField('content'),
-            'col_lg' => 12,
-            'col_md' => 12,
-            'filecontainer' => 'content_info',
-            'enable_richtext' => true,
-            'uploads' => $uploads
-        ];
-    }
-
-    if (!$tt->isHiddenField('_documents_id')) {
-        $uploads = [];
-        if (isset($options['_filename'])) {
-            $uploads['_filename'] = $options['_filename'];
-            $uploads['_tag_filename'] = $options['_tag_filename'];
+        if (!$tt->isHiddenField('name') || $tt->isPredefinedField('name')) {
+            $mainInputs[__('Title') . $tt->getMandatoryMark('name')] = [
+                'type' => !$tt->isHiddenField('name') ? 'text' : 'hidden',
+                'name' => 'name',
+                'value' => $options['name'],
+                'maxlength' => 250,
+                'size' => 80,
+                'required' => $tt->isMandatoryField('name'),
+                'col_lg' => 12,
+                'col_md' => 12,
+            ];
         }
-        
-        $mainInputs[sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize())] = [
-            'type' => 'file',
-            'name' => 'filename',
-            'multiple' => true,
-            'showtitle' => false,
-            'uploads' => $uploads
+
+        if (!$tt->isHiddenField('content') || $tt->isPredefinedField('content')) {
+            $content = $options['content'];
+            if (!$ticket_template) {
+                $content = Html::cleanPostForTextArea($options['content']);
+            }
+            $uploads = [];
+            if (isset($options['_content'])) {
+                $uploads['_content'] = $options['_content'];
+                $uploads['_tag_content'] = $options['_tag_content'];
+            }
+
+            $mainInputs[__('Description') . $tt->getMandatoryMark('content')] = [
+                'type' => 'richtextarea',
+                'name' => 'content',
+                'value' => $content,
+                'required' => $tt->isMandatoryField('content'),
+                'col_lg' => 12,
+                'col_md' => 12,
+                'filecontainer' => 'content_info',
+                'enable_richtext' => true,
+                'uploads' => $uploads
+            ];
+        }
+
+        if (!$tt->isHiddenField('_documents_id')) {
+            $uploads = [];
+            if (isset($options['_filename'])) {
+                $uploads['_filename'] = $options['_filename'];
+                $uploads['_tag_filename'] = $options['_tag_filename'];
+            }
+
+            $mainInputs[sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize())] = [
+                'type' => 'file',
+                'name' => 'filename',
+                'multiple' => true,
+                'showtitle' => false,
+                'uploads' => $uploads
+            ];
+        }
+
+
+
+
+        $sectionTitle = __('Describe the incident or request');
+        if (Session::isMultiEntitiesMode()) {
+            $sectionTitle .= " (" . Dropdown::getDropdownName("glpi_entities", $_SESSION["glpiactive_entity"]) . ")";
+        }
+
+        $form['content'][$sectionTitle] = [
+            'visible' => true,
+            'inputs' => $mainInputs
         ];
+
+        Plugin::doHook("pre_item_form", ['item' => $this, 'options' => &$options]);
+
+        renderTwigForm($form, '', $options, $tt);
+
+        Plugin::doHook("post_item_form", ['item' => $this, 'options' => &$options]);
+
+        return true;
     }
 
-    
-
-
-    $sectionTitle = __('Describe the incident or request');
-    if (Session::isMultiEntitiesMode()) {
-        $sectionTitle .= " (" . Dropdown::getDropdownName("glpi_entities", $_SESSION["glpiactive_entity"]) . ")";
-    }
-
-    $form['content'][$sectionTitle] = [
-        'visible' => true,
-        'inputs' => $mainInputs
-    ];
-
-    Plugin::doHook("pre_item_form", ['item' => $this, 'options' => &$options]);
-
-    renderTwigForm($form, '', $options, $tt);
-
-    Plugin::doHook("post_item_form", ['item' => $this, 'options' => &$options]);
-
-    return true;
-}
-
-/**
-     * Display a single observer selector
-     *
-     * @param array $options  Options for default values ($options of showActorAddFormOnCreate)
-     **/
+    /**
+         * Display a single observer selector
+         *
+         * @param array $options  Options for default values ($options of showActorAddFormOnCreate)
+         **/
     public static function showFormHelpdeskObserver($options = [])
     {
         global $CFG_GLPI;
@@ -4329,11 +4329,11 @@ class Ticket extends CommonITILObject
                       AND u.is_deleted = 0 
                       ORDER BY u.realname, u.firstname
                       LIMIT 100";
-            
+
             $result = $DB->query($query);
             $users = [];
             $users[0] = "-- " . __('Select') . " --";
-            
+
             while ($row = $result->fetch_assoc()) {
                 $display_name = trim($row['realname'] . ' ' . $row['firstname']);
                 if (empty($display_name)) {
@@ -4341,24 +4341,24 @@ class Ticket extends CommonITILObject
                 }
                 $users[$row['id']] = $display_name . " (" . $row['name'] . ")";
             }
-            
+
         } catch (Exception $e) {
             $users = [0 => "-- " . __('Select') . " --"];
         }
 
         echo "<div class='observer-container' style='margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f9f9f9;'>";
-        
+
         echo "<div style='margin-bottom: 10px;'>";
         echo "<label for='_users_id_observer_$user_index'>" . __('Observer') . " " . ($user_index + 1) . ":</label><br>";
         echo "<select name='_users_id_observer[$user_index]' id='_users_id_observer_$user_index' style='width: 250px; padding: 5px;'>";
-        
+
         foreach ($users as $id => $name) {
             $selected = ($id == $current_value) ? 'selected' : '';
             echo "<option value='$id' $selected>" . htmlspecialchars($name) . "</option>";
         }
         echo "</select>";
         echo "</div>";
-        
+
         $use_notif = true;
         if (isset($params['_users_id_observer_notif']['use_notification'])) {
             if (is_array($params['_users_id_observer_notif']['use_notification'])) {
@@ -4367,7 +4367,7 @@ class Ticket extends CommonITILObject
                 $use_notif = $params['_users_id_observer_notif']['use_notification'];
             }
         }
-        
+
         echo "<div>";
         echo "<label>";
         echo "<input type='checkbox' name='_users_id_observer_notif[use_notification][$user_index]' value='1'" . ($use_notif ? ' checked' : '') . ">";
@@ -4380,12 +4380,12 @@ class Ticket extends CommonITILObject
             echo "<a href='#' onclick='$(this).closest(\".observer-container\").remove(); return false;' style='color: #dc3545; text-decoration: none;'>✕ " . __('Remove') . "</a>";
             echo "</div>";
         }
-        
+
         echo "</div>";
 
         if ($user_index == 0) {
             $rand_observer = mt_rand();
-            
+
             echo "<div id='addObserver$rand_observer' style='margin: 10px 0;'>";
             echo "<a href='#' onclick='addNewObserver($rand_observer); return false;' style='color: #007bff; text-decoration: none;'>+ " . __('Add another observer') . "</a>";
             echo "</div>";
@@ -4396,12 +4396,12 @@ class Ticket extends CommonITILObject
             echo "  var newObserver = '<div class=\"observer-container\" style=\"margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f9f9f9;\">';";
             echo "  newObserver += '<div style=\"margin-bottom: 10px;\"><label>" . __('Observer') . " ' + (newIndex + 1) + ':</label><br>';";
             echo "  newObserver += '<select name=\"_users_id_observer[' + newIndex + ']\" style=\"width: 250px; padding: 5px;\">';";
-            
+
             foreach ($users as $id => $name) {
                 $js_name = addslashes(htmlspecialchars($name));
                 echo "  newObserver += '<option value=\"$id\">$js_name</option>';";
             }
-            
+
             echo "  newObserver += '</select></div>';";
             echo "  newObserver += '<div><label><input type=\"checkbox\" name=\"_users_id_observer_notif[use_notification][' + newIndex + ']\" value=\"1\" checked> " . __('Email followup') . "</label></div>';";
             echo "  newObserver += '<div style=\"margin-top: 10px;\"><a href=\"#\" onclick=\"$(this).closest(\\\".observer-container\\\").remove(); return false;\" style=\"color: #dc3545; text-decoration: none;\">✕ " . __('Remove') . "</a></div>';";

@@ -25084,5 +25084,6 @@ msgstr "Aucun fichier choisi"
 msgid "Add another observer"
 msgstr "Ajouter un autre observateur"
 
+msgctxt "status"
 msgid "Pending"
 msgstr "En attente"

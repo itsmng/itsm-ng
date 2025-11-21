@@ -238,27 +238,27 @@ abstract class ITILTemplate extends CommonDropdown
             if ($withtypeandcategory) {
                 $allowed_fields[$withtypeandcategory][$withitemtype]
                 [$itil_object->getSearchOptionIDByField(
-                        'field',
-                        'completename',
-                        'glpi_itilcategories'
-                    )] = 'itilcategories_id';
+                    'field',
+                    'completename',
+                    'glpi_itilcategories'
+                )] = 'itilcategories_id';
             }
 
             if ($withitemtype) {
                 $allowed_fields[$withtypeandcategory][$withitemtype]
                 [$itil_object->getSearchOptionIDByField(
-                        'field',
-                        'itemtype',
-                        $itemstable
-                    )] = 'itemtype';
+                    'field',
+                    'itemtype',
+                    $itemstable
+                )] = 'itemtype';
             }
 
             $allowed_fields[$withtypeandcategory][$withitemtype]
             [$itil_object->getSearchOptionIDByField(
-                    'field',
-                    'items_id',
-                    $itemstable
-                )] = 'items_id';
+                'field',
+                'items_id',
+                $itemstable
+            )] = 'items_id';
 
             // Add validation request
             $allowed_fields[$withtypeandcategory][$withitemtype][-2] = '_add_validation';
@@ -266,18 +266,18 @@ abstract class ITILTemplate extends CommonDropdown
             // Add document
             $allowed_fields[$withtypeandcategory][$withitemtype]
             [$itil_object->getSearchOptionIDByField(
-                    'field',
-                    'name',
-                    'glpi_documents'
-                )] = '_documents_id';
+                'field',
+                'name',
+                'glpi_documents'
+            )] = '_documents_id';
 
             // Add ITILTask (from task templates)
             $allowed_fields[$withtypeandcategory][$withitemtype]
             [$itil_object->getSearchOptionIDByField(
-                    'field',
-                    'name',
-                    TaskTemplate::getTable()
-                )] = '_tasktemplates_id';
+                'field',
+                'name',
+                TaskTemplate::getTable()
+            )] = '_tasktemplates_id';
 
             //add specific itil type fields
             $allowed_fields[$withtypeandcategory][$withitemtype] += static::getExtraAllowedFields($withtypeandcategory, $withitemtype);
@@ -776,10 +776,11 @@ abstract class ITILTemplate extends CommonDropdown
         // Add entity restriction if needed
         if ($options['entity'] >= 0) {
             $WHERE = getEntitiesRestrictCriteria(
-                static::getTable(), 
-                '', 
-                $options['entity'], 
-                $options['condition']['is_recursive']);
+                static::getTable(),
+                '',
+                $options['entity'],
+                $options['condition']['is_recursive']
+            );
             if (count($WHERE)) {
                 $params['WHERE'] = $WHERE;
             }
