@@ -501,7 +501,7 @@ class KnowbaseItem_Item extends CommonDBRelation
         return $forbidden;
     }
 
-    
+
 
     public static function getMassiveActionsForItemtype(
         array &$actions,
@@ -525,14 +525,14 @@ class KnowbaseItem_Item extends CommonDBRelation
 
     private static function getFormActionURL()
     {
-    if (isset($_SESSION['glpiactiveprofile']) && 
-        isset($_SESSION['glpiactiveprofile']['interface']) && 
-        $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk') {
-        
-        global $CFG_GLPI;
-        return $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/knowbaseitem_item.form.php';
-    }
-    
-    return Toolbox::getItemTypeFormURL(__CLASS__);
+        if (isset($_SESSION['glpiactiveprofile']) &&
+            isset($_SESSION['glpiactiveprofile']['interface']) &&
+            $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk') {
+
+            global $CFG_GLPI;
+            return $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/knowbaseitem_item.form.php';
+        }
+
+        return Toolbox::getItemTypeFormURL(__CLASS__);
     }
 }

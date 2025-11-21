@@ -1188,9 +1188,9 @@ class Dropdown
                 $col++;
             }
         }
-        echo "</div>"; 
-        echo "</div>"; 
-        echo "</div>"; 
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
     }
 
 

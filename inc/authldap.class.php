@@ -3715,7 +3715,7 @@ class AuthLDAP extends CommonDBTM
                 }
                 break;
 
-            //case self::SIMPLE_INTERFACE :
+                //case self::SIMPLE_INTERFACE :
             default:
                 if (self::getNumberOfServers() > 1) {
                     $rand = mt_rand();

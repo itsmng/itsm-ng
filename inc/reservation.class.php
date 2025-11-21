@@ -60,14 +60,15 @@ class Reservation extends CommonDBChild
 
     /**
  * Get the appropriate reservation form URL based on current interface
- * 
+ *
  * @return string The URL to use for reservation form
  */
-    private static function getReservationFormURL($id = null) {
+    private static function getReservationFormURL($id = null)
+    {
         global $CFG_GLPI;
 
         $is_helpdesk_interface = strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
-                                (isset($_SESSION['glpiactiveprofile']['interface']) && 
+                                (isset($_SESSION['glpiactiveprofile']['interface']) &&
                                 $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk');
 
         if ($is_helpdesk_interface) {
@@ -239,17 +240,17 @@ class Reservation extends CommonDBChild
         }
 
         parent::post_addItem();
-    
+
         if (isset($this->fields['reservationitems_id'])) {
             if (strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
-                (isset($_SESSION['glpiactiveprofile']['interface']) && 
+                (isset($_SESSION['glpiactiveprofile']['interface']) &&
                 $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk')) {
-            
+
                 $redirect_url = $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.php?reservationitems_id=' . $this->fields['reservationitems_id'] . '&reservation_added=1';
             } else {
                 $redirect_url = $CFG_GLPI['root_doc'] . '/front/reservation.php?reservationitems_id=' . $this->fields['reservationitems_id'] . '&reservation_added=1';
             }
-        
+
             Html::redirect($redirect_url);
         }
     }

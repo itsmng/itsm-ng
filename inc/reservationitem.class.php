@@ -57,21 +57,22 @@ class ReservationItem extends CommonDBChild
 
     /**
  * Get the appropriate reservation form URL based on current interface
- * 
+ *
  * @return string The URL to use for reservation form
  */
-    private static function getReservationFormURL() {
+    private static function getReservationFormURL()
+    {
         global $CFG_GLPI;
-    
+
         if (strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false) {
             return $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.form.php';
         }
-    
-        if (isset($_SESSION['glpiactiveprofile']['interface']) && 
+
+        if (isset($_SESSION['glpiactiveprofile']['interface']) &&
             $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk') {
             return $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.form.php';
         }
-    
+
         return Reservation::getFormURL();
     }
 
@@ -575,12 +576,12 @@ class ReservationItem extends CommonDBChild
         ];
         renderTwigForm($form);
         echo "</div>";
-    
+
         echo "<div id='nosearch' style='width: 100%;'>";
         echo "<form aria-label='Reservation' name='form' method='GET' action='" . self::getReservationFormURL() . "'>";
-        
+
         echo "<div class='table-responsive'>";
-        echo "<table class='table table-striped table-hover' aria-label='Reservation table' style='width: 90%; table-layout: fixed; border-collapse: collapse; margin: 0 auto;'>";        
+        echo "<table class='table table-striped table-hover' aria-label='Reservation table' style='width: 90%; table-layout: fixed; border-collapse: collapse; margin: 0 auto;'>";
         echo "<thead class='table-dark'>";
         echo "<tr>";
         echo "<th scope='col' style='width: " . ($showentity ? "50%" : "60%") . "; min-width: " . ($showentity ? "50%" : "60%") . ";'>";
@@ -599,9 +600,9 @@ class ReservationItem extends CommonDBChild
         }
         echo "</tr>";
         echo "</thead>";
-        
+
         echo "<tbody>";
-    
+
         foreach ($CFG_GLPI["reservation_types"] as $itemtype) {
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
@@ -692,7 +693,7 @@ class ReservationItem extends CommonDBChild
             $iterator = $DB->request($criteria);
             while ($row = $iterator->next()) {
                 echo "<tr style='width: 100%;'>";
-                
+
                 $typename = $item->getTypeName();
                 if ($itemtype == 'Peripheral') {
                     $item->getFromDB($row['items_id']);
@@ -706,7 +707,7 @@ class ReservationItem extends CommonDBChild
                         );
                     }
                 }
-                
+
                 echo "<td class='align-middle' style='width: " . ($showentity ? "50%" : "60%") . ";'>";
                 echo "<a href='reservation.php?reservationitems_id=" . $row['id'] . "' class='text-decoration-none'>";
                 echo "<div class='d-flex align-items-center'>";
@@ -722,7 +723,7 @@ class ReservationItem extends CommonDBChild
                 echo "</div>";
                 echo "</a>";
                 echo "</td>";
-                
+
                 echo "<td class='align-middle' style='width: " . ($showentity ? "25%" : "30%") . ";'>";
                 if (!empty($row["location_name"])) {
                     echo "<div class='d-flex align-items-center'>";
@@ -733,7 +734,7 @@ class ReservationItem extends CommonDBChild
                     echo "<span class='text-muted'><i class='fas fa-minus'></i> " . __('Not defined') . "</span>";
                 }
                 echo "</td>";
-                
+
                 echo "<td class='align-middle' style='width: " . ($showentity ? "15%" : "10%") . ";'>";
                 if (!empty($row["comment"])) {
                     $comment = htmlspecialchars($row["comment"]);
@@ -748,7 +749,7 @@ class ReservationItem extends CommonDBChild
                     echo "<span class='text-muted'>-</span>";
                 }
                 echo "</td>";
-                
+
                 if ($showentity) {
                     echo "<td class='align-middle' style='width: 10%;'>";
                     echo "<div class='d-flex align-items-center'>";
@@ -757,16 +758,16 @@ class ReservationItem extends CommonDBChild
                     echo "</div>";
                     echo "</td>";
                 }
-                
+
                 echo "</tr>\n";
                 $ok = true;
             }
         }
-        
+
         echo "</tbody>";
         echo "</table>";
         echo "</div>";
-        
+
         if ($ok) {
             echo "<div class='mt-3 text-center'>";
             if (isset($_POST['reserve'])) {
@@ -787,11 +788,11 @@ class ReservationItem extends CommonDBChild
             }
             echo "</div>";
         }
-        
+
         echo "<input type='hidden' name='id' value=''>";
         echo "</form>";// No CSRF token needed
         echo "</div>\n";
-        
+
         echo "<script>
         $(document).ready(function() {
             // Activer les tooltips Bootstrap

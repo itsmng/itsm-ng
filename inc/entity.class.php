@@ -1571,7 +1571,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('tag'),
                        'col_lg' => 12,
                        'col_md' => 12,
-                       'after' => ($ID > 0 && (empty($entity->getField('tag')) || $entity->getField('tag') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && (empty($entity->getField('tag')) || $entity->getField('tag') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getUsedConfig('tag', $ID), false, false) : '',
                     ],
                     __('LDAP directory information attribute representing the entity') => (Toolbox::canUseLdap()) ? [
@@ -1580,7 +1580,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('ldap_dn'),
                        'col_lg' => 12,
                        'col_md' => 12,
-                       'after' => ($ID > 0 && (empty($entity->getField('ldap_dn')) || $entity->getField('ldap_dn') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && (empty($entity->getField('ldap_dn')) || $entity->getField('ldap_dn') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getUsedConfig('ldap_dn', $ID), false, false) : '',
                     ] : [],
                     __('Mail domain surrogates entity') => [
@@ -1589,7 +1589,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('mail_domain'),
                        'col_lg' => 12,
                        'col_md' => 12,
-                       'after' => ($ID > 0 && (empty($entity->getField('mail_domain')) || $entity->getField('mail_domain') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && (empty($entity->getField('mail_domain')) || $entity->getField('mail_domain') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getUsedConfig('mail_domain', $ID), false, false) : '',
                     ],
                  ]
@@ -1605,7 +1605,7 @@ class Entity extends CommonTreeDropdown
                        'col_lg' => 12,
                        'col_md' => 12,
                        'actions' => getItemActionButtons(['info'], AuthLDAP::class),
-                       'after' => ($ID > 0 && ($entity->getField('authldaps_id') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('authldaps_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('authldaps_id', ['authldaps_id' => self::getUsedConfig('authldaps_id', $ID)]), false, false) : '',
                     ],
                     __('LDAP filter associated to the entity (if necessary)') => [
@@ -1614,7 +1614,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('entity_ldapfilter'),
                        'col_lg' => 12,
                        'col_md' => 12,
-                       'after' => ($ID > 0 && (empty($entity->getField('entity_ldapfilter')) || $entity->getField('entity_ldapfilter') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && (empty($entity->getField('entity_ldapfilter')) || $entity->getField('entity_ldapfilter') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getUsedConfig('entity_ldapfilter', $ID), false, false) : '',
                     ],
                  ]
@@ -1693,7 +1693,7 @@ class Entity extends CommonTreeDropdown
                        'values' => $options,
                        'value' => $entity->getField('autofill_buy_date'),
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('autofill_buy_date') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('autofill_buy_date') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('autofill_buy_date', ['autofill_buy_date' => self::getUsedConfig('autofill_buy_date', $ID)]), false, false) : '',
                     ],
                     __('Order date') => [
@@ -1702,7 +1702,7 @@ class Entity extends CommonTreeDropdown
                        'values' => $options,
                        'value' => $entity->getField('autofill_order_date'),
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('autofill_order_date') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('autofill_order_date') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('autofill_order_date', ['autofill_order_date' => self::getUsedConfig('autofill_order_date', $ID)]), false, false) : '',
                     ],
                     __('Delivery date') => [
@@ -1711,7 +1711,7 @@ class Entity extends CommonTreeDropdown
                        'values' => $options,
                        'value' => $entity->getField('autofill_delivery_date'),
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('autofill_delivery_date') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('autofill_delivery_date') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('autofill_delivery_date', ['autofill_delivery_date' => self::getUsedConfig('autofill_delivery_date', $ID)]), false, false) : '',
                     ],
                     __('Startup date') => [
@@ -1720,7 +1720,7 @@ class Entity extends CommonTreeDropdown
                        'values' => $options,
                        'value' => $entity->getField('autofill_use_date'),
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('autofill_use_date') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('autofill_use_date') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('autofill_use_date', ['autofill_use_date' => self::getUsedConfig('autofill_use_date', $ID)]), false, false) : '',
                     ],
                     __('Start date of warranty') => [
@@ -1729,7 +1729,7 @@ class Entity extends CommonTreeDropdown
                        'values' => $options,
                        'value' => $entity->getField('autofill_warranty_date'),
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('autofill_warranty_date') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('autofill_warranty_date') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('autofill_warranty_date', ['autofill_warranty_date' => self::getUsedConfig('autofill_warranty_date', $ID)]), false, false) : '',
                     ],
                     __('Decommission date') => [
@@ -1738,7 +1738,7 @@ class Entity extends CommonTreeDropdown
                        'values' => $options,
                        'value' => $entity->getField('autofill_decommission_date'),
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('autofill_decommission_date') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('autofill_decommission_date') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('autofill_decommission_date', ['autofill_decommission_date' => self::getUsedConfig('autofill_decommission_date', $ID)]), false, false) : '',
                     ],
                  ]
@@ -1752,7 +1752,7 @@ class Entity extends CommonTreeDropdown
                           'values' => $entities,
                           'value' => $entity->getField('entities_id_software'),
                           'col_lg' => 6,
-                          'after' => ($ID > 0 && ($entity->getField('entities_id_software') == self::CONFIG_PARENT)) ? 
+                          'after' => ($ID > 0 && ($entity->getField('entities_id_software') == self::CONFIG_PARENT)) ?
                                      self::inheritedValue(self::getSpecificValueToDisplay('entities_id_software', ['entities_id_software' => self::getUsedConfig('entities_id_software', $ID)]), false, false) : '',
                        ],
                     ]
@@ -1820,35 +1820,35 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'text',
                        'name'  => 'admin_email_name',
                        'value' => $entity->getField('admin_email_name'),
-                       'after' => ($ID > 0 && (empty($entity->getField('admin_email_name')) || $entity->getField('admin_email_name') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && (empty($entity->getField('admin_email_name')) || $entity->getField('admin_email_name') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getUsedConfig('admin_email_name', $ID), true, false) : '',
                     ],
                     __('Administrator email') => [
                        'type'  => 'text',
                        'name'  => 'admin_email',
                        'value' => $entity->getField('admin_email'),
-                       'after' => ($ID > 0 && (empty($entity->getField('admin_email')) || $entity->getField('admin_email') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && (empty($entity->getField('admin_email')) || $entity->getField('admin_email') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getUsedConfig('admin_email', $ID), true, false) : '',
                     ],
                     __('Administrator reply-to email (if needed)') => [
                        'type'  => 'text',
                        'name'  => 'admin_reply',
                        'value' => $entity->getField('admin_reply'),
-                       'after' => ($ID > 0 && (empty($entity->getField('admin_reply')) || $entity->getField('admin_reply') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && (empty($entity->getField('admin_reply')) || $entity->getField('admin_reply') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getUsedConfig('admin_reply', $ID), true, false) : '',
                     ],
                     __('Response address (if needed)') => [
                        'type'  => 'text',
                        'name'  => 'admin_reply_name',
                        'value' => $entity->getField('admin_reply_name'),
-                       'after' => ($ID > 0 && (empty($entity->getField('admin_reply_name')) || $entity->getField('admin_reply_name') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && (empty($entity->getField('admin_reply_name')) || $entity->getField('admin_reply_name') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getUsedConfig('admin_reply_name', $ID), true, false) : '',
                     ],
                     __('Prefix for notifications') => [
                        'type'  => 'text',
                        'name'  => 'notification_subject_tag',
                        'value' => $entity->getField('notification_subject_tag'),
-                       'after' => ($ID > 0 && (empty($entity->getField('notification_subject_tag')) || $entity->getField('notification_subject_tag') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && (empty($entity->getField('notification_subject_tag')) || $entity->getField('notification_subject_tag') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getUsedConfig('notification_subject_tag', $ID), true, false) : '',
                     ],
                     __('Delay to send email notifications') => [
@@ -1857,14 +1857,14 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('delay_send_emails'),
                        'min'   => 0,
                        'max'   => 100,
-                       'after'  => 'minute' . (($ID > 0 && ($entity->getField('delay_send_emails') == self::CONFIG_PARENT)) ? 
+                       'after'  => 'minute' . (($ID > 0 && ($entity->getField('delay_send_emails') == self::CONFIG_PARENT)) ?
                                    ' ' . self::inheritedValue(self::getSpecificValueToDisplay('delay_send_emails', ['delay_send_emails' => self::getUsedConfig('delay_send_emails', $ID)]), true, false) : ''),
                     ],
                     __('Enable notifications by default') => [
                        'type'  => 'checkbox',
                        'name'  => 'is_notif_enable_default',
                        'value' => $entity->getField('is_notif_enable_default'),
-                       'after' => ($ID > 0 && ($entity->getField('is_notif_enable_default') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('is_notif_enable_default') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('is_notif_enable_default', ['is_notif_enable_default' => self::getUsedConfig('is_notif_enable_default', $ID)]), true, false) : '',
                     ],
                     __('Email signature') => [
@@ -1873,7 +1873,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('mailing_signature'),
                        'col_lg' => 12,
                        'col_md' => 12,
-                       'after' => ($ID > 0 && (empty($entity->getField('mailing_signature')) || $entity->getField('mailing_signature') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && (empty($entity->getField('mailing_signature')) || $entity->getField('mailing_signature') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getUsedConfig('mailing_signature', $ID), true, false) : '',
                     ],
                  ]
@@ -1888,7 +1888,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('cartridges_alert_repeat'),
                        'values' => $times,
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('cartridges_alert_repeat') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('cartridges_alert_repeat') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('cartridges_alert_repeat', ['cartridges_alert_repeat' => self::getUsedConfig('cartridges_alert_repeat', $ID)]), true, false) : '',
                     ],
                     __('Default threshold for cartridges count') => [
@@ -1899,7 +1899,7 @@ class Entity extends CommonTreeDropdown
                        'max'   => 100,
                        'step'  => 1,
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('default_cartridges_alarm_threshold') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('default_cartridges_alarm_threshold') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('default_cartridges_alarm_threshold', ['default_cartridges_alarm_threshold' => self::getUsedConfig('default_cartridges_alarm_threshold', $ID)]), true, false) : '',
                     ],
                  ],
@@ -1913,7 +1913,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('consumables_alert_repeat'),
                        'values' => $times,
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('consumables_alert_repeat') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('consumables_alert_repeat') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('consumables_alert_repeat', ['consumables_alert_repeat' => self::getUsedConfig('consumables_alert_repeat', $ID)]), true, false) : '',
                     ],
                     __('Default threshold for consumables count') => [
@@ -1924,7 +1924,7 @@ class Entity extends CommonTreeDropdown
                        'max'   => 100,
                        'step'  => 1,
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('default_consumables_alarm_threshold') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('default_consumables_alarm_threshold') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('default_consumables_alarm_threshold', ['default_consumables_alarm_threshold' => self::getUsedConfig('default_consumables_alarm_threshold', $ID)]), true, false) : '',
                     ],
                  ],
@@ -1938,7 +1938,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('use_contracts_alert'),
                        'values' => $times,
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('use_contracts_alert') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('use_contracts_alert') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('use_contracts_alert', ['use_contracts_alert' => self::getUsedConfig('use_contracts_alert', $ID)]), true, false) : '',
                     ],
                     __('Default value') => [
@@ -1947,14 +1947,14 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('default_contract_alert'),
                        'values' => $defaultContractOptions,
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('default_contract_alert') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('default_contract_alert') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('default_contract_alert', ['default_contract_alert' => self::getUsedConfig('default_contract_alert', $ID)]), true, false) : '',
                     ],
                     __('Send contract alarms before') => [
                        'type'  => 'number',
                        'name'  => 'send_contracts_alert_before_delay',
                        'value' => $entity->getField('send_contracts_alert_before_delay'),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_contracts_alert_before_delay') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_contracts_alert_before_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_contracts_alert_before_delay', ['send_contracts_alert_before_delay' => self::getUsedConfig('send_contracts_alert_before_delay', $ID)]), true, false) : ''),
                        'min'   => 0,
                     ],
@@ -1967,7 +1967,7 @@ class Entity extends CommonTreeDropdown
                        'type' => 'checkbox',
                        'name' => 'use_infocoms_alert',
                        'value' => $entity->getField('use_infocoms_alert'),
-                       'after' => ($ID > 0 && ($entity->getField('use_infocoms_alert') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('use_infocoms_alert') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('use_infocoms_alert', ['use_infocoms_alert' => self::getUsedConfig('use_infocoms_alert', $ID)]), true, false) : '',
                     ],
                     __('Default value') => [
@@ -1975,14 +1975,14 @@ class Entity extends CommonTreeDropdown
                        'name' => 'default_infocom_alert',
                        'value' => $entity->getField('default_infocom_alert'),
                        'values' => $defaultContractOptions,
-                       'after' => ($ID > 0 && ($entity->getField('default_infocom_alert') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('default_infocom_alert') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('default_infocom_alert', ['default_infocom_alert' => self::getUsedConfig('default_infocom_alert', $ID)]), true, false) : '',
                     ],
                     __('Send financial and administrative information alarms before') => [
                        'type' => 'number',
                        'name' => 'send_infocoms_alert_before_delay',
                        'value' => $entity->getField('send_infocoms_alert_before_delay'),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_infocoms_alert_before_delay') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_infocoms_alert_before_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_infocoms_alert_before_delay', ['send_infocoms_alert_before_delay' => self::getUsedConfig('send_infocoms_alert_before_delay', $ID)]), true, false) : ''),
                        'min'   => 0,
                     ],
@@ -1995,14 +1995,14 @@ class Entity extends CommonTreeDropdown
                        'type' => 'checkbox',
                        'name' => 'use_licenses_alert',
                        'value' => $entity->getField('use_licenses_alert'),
-                       'after' => ($ID > 0 && ($entity->getField('use_licenses_alert') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('use_licenses_alert') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('use_licenses_alert', ['use_licenses_alert' => self::getUsedConfig('use_licenses_alert', $ID)]), true, false) : '',
                     ],
                     __('Send license alarms before') => [
                        'type' => 'number',
                        'name' => 'send_licenses_alert_before_delay',
                        'value' => $entity->getField('send_licenses_alert_before_delay'),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_licenses_alert_before_delay') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_licenses_alert_before_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_licenses_alert_before_delay', ['send_licenses_alert_before_delay' => self::getUsedConfig('send_licenses_alert_before_delay', $ID)]), true, false) : ''),
                        'min'   => 0,
                     ],
@@ -2015,14 +2015,14 @@ class Entity extends CommonTreeDropdown
                        'type' => 'checkbox',
                        'name' => 'use_certificates_alert',
                        'value' => $entity->getField('use_certificates_alert'),
-                       'after' => ($ID > 0 && ($entity->getField('use_certificates_alert') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('use_certificates_alert') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('use_certificates_alert', ['use_certificates_alert' => self::getUsedConfig('use_certificates_alert', $ID)]), true, false) : '',
                     ],
                     __('Send certificates alarms before') => [
                        'type' => 'number',
                        'name' => 'send_certificates_alert_before_delay',
                        'value' => $entity->getField('send_certificates_alert_before_delay'),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_certificates_alert_before_delay') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_certificates_alert_before_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_certificates_alert_before_delay', ['send_certificates_alert_before_delay' => self::getUsedConfig('send_certificates_alert_before_delay', $ID)]), true, false) : ''),
                        'min'   => 0,
                     ],
@@ -2035,7 +2035,7 @@ class Entity extends CommonTreeDropdown
                        'type' => 'number',
                        'name' => 'use_reservations_alert',
                        'value' => $entity->getField('use_reservations_alert'),
-                       'after' => __('hours') . (($ID > 0 && ($entity->getField('use_reservations_alert') == self::CONFIG_PARENT)) ? 
+                       'after' => __('hours') . (($ID > 0 && ($entity->getField('use_reservations_alert') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('use_reservations_alert', ['use_reservations_alert' => self::getUsedConfig('use_reservations_alert', $ID)]), true, false) : ''),
                        'min'   => 0,
                     ]
@@ -2048,7 +2048,7 @@ class Entity extends CommonTreeDropdown
                        'type' => 'number',
                        'name' => 'notclosed_delay',
                        'value' => $entity->getField('notclosed_delay'),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('notclosed_delay') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('notclosed_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('notclosed_delay', ['notclosed_delay' => self::getUsedConfig('notclosed_delay', $ID)]), true, false) : ''),
                        'min'   => 0,
                     ]
@@ -2061,14 +2061,14 @@ class Entity extends CommonTreeDropdown
                        'type' => 'checkbox',
                        'name' => 'use_domains_alert',
                        'value' => $entity->getField('use_domains_alert'),
-                       'after' => ($ID > 0 && ($entity->getField('use_domains_alert') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('use_domains_alert') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('use_domains_alert', ['use_domains_alert' => self::getUsedConfig('use_domains_alert', $ID)]), true, false) : '',
                     ],
                     __('Domains closes expiries') => [
                        'type' => 'number',
                        'name' => 'send_domains_alert_close_expiries_delay',
                        'value' => $entity->getField('send_domains_alert_close_expiries_delay'),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_domains_alert_close_expiries_delay') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_domains_alert_close_expiries_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_domains_alert_close_expiries_delay', ['send_domains_alert_close_expiries_delay' => self::getUsedConfig('send_domains_alert_close_expiries_delay', $ID)]), true, false) : ''),
                        'min'   => 0,
                     ],
@@ -2076,7 +2076,7 @@ class Entity extends CommonTreeDropdown
                        'type' => 'number',
                        'name' => 'send_domains_alert_expired_delay',
                        'value' => $entity->getField('send_domains_alert_expired_delay'),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_domains_alert_expired_delay') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('send_domains_alert_expired_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_domains_alert_expired_delay', ['send_domains_alert_expired_delay' => self::getUsedConfig('send_domains_alert_expired_delay', $ID)]), true, false) : ''),
                        'min'   => 0,
                     ],
@@ -2388,7 +2388,7 @@ class Entity extends CommonTreeDropdown
                            getOptionForItems(TicketTemplate::class)
                        ),
                        'actions' => getItemActionButtons(['info', 'add'], TicketTemplate::class),
-                       'after' => ($ID > 0 && ($entity->getField('tickettemplates_id') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('tickettemplates_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('tickettemplates_id', ['tickettemplates_id' => self::getUsedConfig('tickettemplates_id', $ID)]), false, false) : '',
                     ],
                     _n('Change template', 'Change templates', 1) => [
@@ -2400,7 +2400,7 @@ class Entity extends CommonTreeDropdown
                            getOptionForItems(ChangeTemplate::class)
                        ),
                        'actions' => getItemActionButtons(['info', 'add'], ChangeTemplate::class),
-                       'after' => ($ID > 0 && ($entity->getField('changetemplates_id') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('changetemplates_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('changetemplates_id', ['changetemplates_id' => self::getUsedConfig('changetemplates_id', $ID)]), false, false) : '',
                     ],
                     _n('Problem template', 'Problem templates', 1) => [
@@ -2412,7 +2412,7 @@ class Entity extends CommonTreeDropdown
                            getOptionForItems(ProblemTemplate::class)
                        ),
                        'actions' => getItemActionButtons(['info', 'add'], ProblemTemplate::class),
-                       'after' => ($ID > 0 && ($entity->getField('problemtemplates_id') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('problemtemplates_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('problemtemplates_id', ['problemtemplates_id' => self::getUsedConfig('problemtemplates_id', $ID)]), false, false) : '',
                     ],
                  ]
@@ -2431,7 +2431,7 @@ class Entity extends CommonTreeDropdown
                        ),
                        'actions' => getItemActionButtons(['info', 'add'], Calendar::class),
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('calendars_id') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('calendars_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('calendars_id', ['calendars_id' => self::getUsedConfig('calendars_id', $ID)]), false, false) : '',
                   ],
                   __('Tickets default type') => [
@@ -2441,7 +2441,7 @@ class Entity extends CommonTreeDropdown
                        'values' => (($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : []) +
                           Ticket::getTypes(),
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('tickettype') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('tickettype') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('tickettype', ['tickettype' => self::getUsedConfig('tickettype', $ID)]), false, false) : '',
                   ],
                   __('Automatic assignment of tickets') => [
@@ -2450,7 +2450,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->fields["auto_assign_mode"],
                        'values' => $autoassign,
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('auto_assign_mode') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('auto_assign_mode') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('auto_assign_mode', ['auto_assign_mode' => self::getUsedConfig('auto_assign_mode', $ID)]), false, false) : '',
                   ],
                   __('Mark followup added by a supplier though an email collector as private') => [
@@ -2459,7 +2459,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->fields["suppliers_as_private"],
                        'values' => $supplierValues,
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('suppliers_as_private') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('suppliers_as_private') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('suppliers_as_private', ['suppliers_as_private' => self::getUsedConfig('suppliers_as_private', $ID)]), false, false) : '',
                   ],
                   __('Anonymize support agents') => [
@@ -2468,7 +2468,7 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->fields["anonymize_support_agents"],
                        'values' => $anonymizeValues,
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('anonymize_support_agents') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('anonymize_support_agents') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('anonymize_support_agents', ['anonymize_support_agents' => self::getUsedConfig('anonymize_support_agents', $ID)]), false, false) : '',
                   ],
                ]
@@ -2483,7 +2483,7 @@ class Entity extends CommonTreeDropdown
                        'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
                           [self::CONFIG_NEVER => __('Never')] +
                           range(1, 99),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('autoclose_delay') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('autoclose_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('autoclose_delay', ['autoclose_delay' => self::getUsedConfig('autoclose_delay', $ID)]), false, false) : ''),
                        'col_lg' => 6,
                   ],
@@ -2494,7 +2494,7 @@ class Entity extends CommonTreeDropdown
                        'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
                           [self::CONFIG_NEVER => __('Never')] +
                           range(1, 3650),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('autopurge_delay') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('autopurge_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('autopurge_delay', ['autopurge_delay' => self::getUsedConfig('autopurge_delay', $ID)]), false, false) : ''),
                        'col_lg' => 6,
                   ],
@@ -2516,7 +2516,7 @@ class Entity extends CommonTreeDropdown
                           [1 => __('Internal survey')] +
                           [2 => __('External survey')],
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('inquest_config') == self::CONFIG_PARENT)) ? 
+                       'after' => ($ID > 0 && ($entity->getField('inquest_config') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('inquest_config', ['inquest_config' => self::getUsedConfig('inquest_config', $ID)]), false, false) : '',
                   ],
                   __('Create survey after') => [
@@ -2528,7 +2528,7 @@ class Entity extends CommonTreeDropdown
                            [self::CONFIG_NEVER => __('As soon as possible')],
                            range(1, 99)
                        ),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('inquest_delay') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('inquest_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('inquest_delay', ['inquest_delay' => self::getUsedConfig('inquest_delay', $ID)]), false, false) : ''),
                        'col_lg' => 6,
                   ],
@@ -2540,7 +2540,7 @@ class Entity extends CommonTreeDropdown
                        'min'   => 0,
                        'max'   => 100,
                        'step'  => 1,
-                       'after' => '%' . (($ID > 0 && ($entity->getField('inquest_rate') == self::CONFIG_PARENT)) ? 
+                       'after' => '%' . (($ID > 0 && ($entity->getField('inquest_rate') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getUsedConfig('inquest_rate', $ID) . '%', false, false) : ''),
                   ],
                   __('Duration of survey') => [
@@ -2551,7 +2551,7 @@ class Entity extends CommonTreeDropdown
                        'min'   => 0,
                        'max'   => 180,
                        'step'  => 1,
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('inquest_duration') == self::CONFIG_PARENT)) ? 
+                       'after' => __('days') . (($ID > 0 && ($entity->getField('inquest_duration') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getUsedConfig('inquest_duration', $ID) . ' ' . __('days'), false, false) : ''),
                   ],
                   __('For tickets closed after') => [
