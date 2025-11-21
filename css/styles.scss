@@ -38,6 +38,8 @@ $break_lphones: 900px;
 $break_menu: 1055px;
 $break_tablets: 1300px;
 
+@import 'spacing';
+
 /* ################--------------- Default style  ---------------#################### */
 
 body {
@@ -47,7 +49,9 @@ body {
    padding: 0;
    background: #f8f7f3;
    height: auto;
-   min-height: 100%;
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
 
    &.iframed {
       margin-top: 1em;
@@ -395,8 +399,9 @@ hr {
 
 #page {
    padding: 8px 8px 20px 8px;
-   height: 100vh;
-   overflow-y: auto;
+   flex: 1 1 auto;
+   min-height: 0;
+   overflow-y: scroll;
 
    .form #page {
       max-width: 1400px;

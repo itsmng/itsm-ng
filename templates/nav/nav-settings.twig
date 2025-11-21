@@ -5,6 +5,9 @@
 	<span class="dropdown-item" href="#">{{'Menu collapse'|trans}}
 		:
 		{{input("", "", "checkbox", "form-check-input", "menu-collapse-toggle" ,"", "", "", menu_small ? 'true')}}</span>
+	<span class="dropdown-item" href="#">{{'Compact mode UI'|trans}}
+		:
+		{{input("", "", "checkbox", "form-check-input", "compact-mode-toggle" ,"", "", "", (compact_mode_ui|default(false)) ? 'true')}}</span>
 	<hr>
 	<h6 class="dropdown-header">{{'Menu favorite'|trans}}</h6>
 	<span class="dropdown-item" href="#">{{'Activate menu favorite'|trans}}
