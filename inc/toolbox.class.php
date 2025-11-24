@@ -1929,7 +1929,7 @@ class Toolbox
                 }
             }
             if (array_key_exists('path', $parsed_url) && $parsed_url['path'][0] == '/') {
-                return Url::isITSMNGRelativeURL($where) ? $CFG_GLPI['root_doc'] . $where : null;
+                return Glpi\Toolbox\URL::isITSMNGRelativeURL($where) ? $CFG_GLPI['root_doc'] . $where : null;
             }
         }
 
