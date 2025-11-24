@@ -178,6 +178,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
             echo "\n";
         } else {
             Html::nullHeader("UPDATE NEEDED", $CFG_GLPI["root_doc"]);
+            echo "<style>body { overflow: auto; }</style>";
             echo "<div class='center'>";
             echo "<div class='tab_check_wrapper'>";
             echo "<table class='tab_cadre tab_check' aria-label='Update required table'>";
