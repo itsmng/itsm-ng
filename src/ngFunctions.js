@@ -18,6 +18,10 @@ function initializeListeners() {
     e.stopPropagation();
     menuFavoriteEnable(this.checked);
   });
+  $("#compact-mode-toggle").on("change", function (e) {
+    e.stopPropagation();
+    toggleCompactMode(this.checked);
+  });
   $("#menu-favorite-selection-toggle").on("change", function (e) {
     e.stopPropagation();
     activateFavoriteMode(e, this.checked);
@@ -105,6 +109,18 @@ function changeMenuState(is_menu_close = null) {
     data: {
       small: !is_menu_close,
     },
+  });
+}
+
+function toggleCompactMode(enable = false) {
+  $.ajax({
+    type: "POST",
+    url: $("#main-test").data("root") + "/src/menuCommands/compactMode.ajax.php",
+    data: {
+      compact_mode: enable,
+    },
+  }).always(function () {
+    window.location.reload();
   });
 }
 

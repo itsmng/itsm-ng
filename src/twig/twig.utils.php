@@ -523,7 +523,7 @@ function renderTwigPage(
     $twig_vars = [
         "title" => $title,
         "mainContent" => $content,
-        "main_menu" => Html::getMainMenu($sector, $item, $option),
+        "main_menu" => $mainMenu,
         "css" => Html::getCss(),
         "js" => Html::getJs(),
         "breadcrumb_items" => $breadcrumb_items,
@@ -531,6 +531,8 @@ function renderTwigPage(
         "is_debug_active" => $_SESSION["glpi_use_mode"] == Session::DEBUG_MODE,
         "can_update" => Config::canUpdate(),
         "username" => getUserName(Session::getLoginUserID()),
+        "menu_small" => $mainMenu["args"]["menu_small"],
+        "compact_mode_ui" => $mainMenu["args"]["compact_mode_ui"],
     ];
     if ($impersonate_banner) {
         $twig_vars["impersonate_banner"] = $impersonate_banner;
