@@ -54,7 +54,7 @@ class Oidc extends CommonDBTM
         foreach ($iterators as $iterator) {
             $oidc_db["Provider"] = $iterator["Provider"];
             $oidc_db["ClientID"] = $iterator["ClientID"];
-            $oidc_db["ClientSecret"] = Toolbox::sodiumDecrypt(
+            $oidc_db["ClientSecret"] = @Toolbox::sodiumDecrypt(
                 $iterator["ClientSecret"],
             );
             $oidc_db["scope"] = explode(
@@ -152,53 +152,49 @@ class Oidc extends CommonDBTM
         }
 
         //Create and/or authenticated a user
-        $criteria = "SELECT * FROM glpi_users";
-        $iterators = $DB->request($criteria);
         $newUser = true;
+        $ID = false;
 
-        if (isset($user_array["name"])) {
-            foreach ($iterators as $iterator) {
-                $canLink =
-                    $oidc_db["sso_link_users"] ||
-                    $iterator["authtype"] == Auth::EXTERNAL;
-                if ($user_array["name"] == $iterator["name"] && $canLink) {
-                    $ID = $iterator["id"];
+        $auth_username = $user_array["name"] ?? $user_array["sub"] ?? null;
+
+        if ($auth_username) {
+            $iterator = $DB->request([
+                'FROM' => 'glpi_users',
+                'WHERE' => ['name' => $auth_username]
+            ]);
+
+            foreach ($iterator as $user_data) {
+                $canLink = $oidc_db["sso_link_users"] || $user_data["authtype"] == Auth::EXTERNAL;
+                if ($canLink) {
+                    $ID = $user_data["id"];
                     $newUser = false;
+                    break;
                 }
-            }
-
-            $user = new User();
-            if ($newUser) {
-                $input = [
-                    "name" => $user_array["name"],
-                    "_extauth" => 1,
-                    "add" => 1,
-                ];
-                $ID = $user->add($input);
-            }
-        } else {
-            foreach ($iterators as $iterator) {
-                $canLink =
-                    $oidc_db["sso_link_users"] ||
-                    $iterator["authtype"] == Auth::EXTERNAL;
-                if ($user_array["sub"] == $iterator["name"] && $canLink) {
-                    $ID = $iterator["id"];
-                    $newUser = false;
-                }
-            }
-
-            $user = new User();
-            if ($newUser) {
-                $input = [
-                    "name" => $user_array["sub"],
-                    "_extauth" => 1,
-                    "add" => 1,
-                ];
-                $ID = $user->add($input);
             }
         }
 
-        if (!$user->getFromDB($ID)) {
+        $user = new User();
+        if ($newUser && $auth_username) {
+            $input = [
+                "name" => $auth_username,
+                "_extauth" => 1,
+                "add" => 1,
+            ];
+            $ID = $user->add($input);
+
+            if (!$ID) {
+                Toolbox::logInFile("oidc", "Failed to create user '$auth_username'. User::add returned false.\n");
+            }
+        }
+
+        if (!$ID || !$user->getFromDB($ID)) {
+            Toolbox::logInFile("oidc", "Login failed: User ID '$ID' could not be retrieved. User Data: " . json_encode($user_array) . "\n");
+            Html::nullHeader("Login Error", $CFG_GLPI["root_doc"] . "/index.php");
+            echo '<div class="center b">';
+            echo __("Login failed. User could not be found or created.");
+            echo '<p><a href="' . $CFG_GLPI["root_doc"] . '/index.php">' . __("Log in again") . "</a></p>";
+            echo "</div>";
+            Html::nullFooter();
             die();
         }
 
