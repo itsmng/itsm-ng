@@ -155,7 +155,18 @@ class Oidc extends CommonDBTM
         $newUser = true;
         $ID = false;
 
-        $auth_username = $user_array["name"] ?? $user_array["sub"] ?? null;
+        // Check for custom mapping for the username
+        $mapping_iterator = $DB->request("SELECT * FROM glpi_oidc_mapping");
+        $mapping = $mapping_iterator->next();
+
+        $auth_username = null;
+        if ($mapping && !empty($mapping['name']) && isset($user_array[$mapping['name']])) {
+            $auth_username = $user_array[$mapping['name']];
+        }
+
+        if (empty($auth_username)) {
+            $auth_username = $user_array["name"] ?? $user_array["sub"] ?? null;
+        }
 
         if ($auth_username) {
             $iterator = $DB->request([
