@@ -1481,14 +1481,14 @@ class RuleCollection extends CommonDBTM
     /**
      * Process all the rules collection
      *
-     * @param input            array the input data used to check criterias (need to be clean slashes)
-     * @param output           array the initial ouput array used to be manipulate by actions (need to be clean slashes)
-     * @param params           array parameters for all internal functions (need to be clean slashes)
-     * @param options          array options :
+     * @param array $input            array the input data used to check criterias (need to be clean slashes)
+     * @param array $output           array the initial ouput array used to be manipulate by actions (need to be clean slashes)
+     * @param array $params           array parameters for all internal functions (need to be clean slashes)
+     * @param array $options          array options :
      *                            - condition : specific condition to limit rule list
      *                            - only_criteria : only react on specific criteria
      *
-     * @return the output array updated by actions (addslashes datas)
+     * @return array|string the output array updated by actions (addslashes datas)
      **/
     public function processAllRules($input = [], $output = [], $params = [], $options = [])
     {

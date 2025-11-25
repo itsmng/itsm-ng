@@ -644,11 +644,12 @@ class Update extends CommonGLPI
 
                 // no break
             case "2.0.7":
+            case "2.1.0":
                 include_once "{$updir}itsm_update_210_211.php";
                 update210to211();
 
-                // no break
             case "2.1.1":
+                // no break
                 include_once "{$updir}itsm_update_211_212.php";
                 update211to212();
 
