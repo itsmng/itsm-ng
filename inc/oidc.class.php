@@ -318,11 +318,12 @@ class Oidc extends CommonDBTM
             }
 
             if (isset($user_array[$result[0]["email"]])) {
-                $querry =
-                    "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '" .
-                    $user_array[$result[0]["email"]] .
-                    "');";
-                $DB->queryOrDie($querry);
+                $useremail = new UserEmail();
+                $useremail->add([
+                    'users_id'   => $id,
+                    'email'      => $user_array[$result[0]["email"]],
+                    'is_dynamic' => 0
+                ]);
             }
 
             if (isset($user_array[$result[0]["locale"]])) {
