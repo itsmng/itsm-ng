@@ -62,13 +62,25 @@ $(document).ready(function() {
         txt.innerHTML = html;
         return txt.value;
     }
+
+    const processSpecialCharacters = (value) => {
+        if (typeof value !== 'string') return value;
+        // From Search class
+        return value
+            .replace(/\$\$##\$\$/g, '<hr>')   // LONGSEP - horizontal rule 
+            .replace(/\$#\$/g, ' ')           // SHORTSEP - space separator
+            .replace(/#LBBR#/g, '<br>')       // LBBR - line break
+            .replace(/#LBHR#/g, '<hr>');      // LBHR - horizontal rule
+    };
+
     const renderRawHTML = (htmlString) => {
-        if (typeof htmlString === 'string' && /<[^>]*>/.test(htmlString)) {
+        const processed = processSpecialCharacters(htmlString);
+        if (typeof processed === 'string' && /<[^>]*>/.test(processed)) {
             const marker = `__HTML_CONTENT_${Math.random().toString(36).substring(2, 10)}__`;
-            htmlInjectionMap.set(marker, htmlString);
+            htmlInjectionMap.set(marker, processed);
             return marker;
         }
-        return decodeHtml(htmlString);
+        return decodeHtml(processed);
     };
 
     const flexRender = (comp, props) => (typeof comp === 'function' ? comp(props) : comp);
@@ -86,6 +98,18 @@ $(document).ready(function() {
         const sorting = JSON.parse(localStorage.getItem('tableState_sorting_' + keySuffix) || 'null');
         const visibility = JSON.parse(localStorage.getItem('tableState_visibility_' + keySuffix) || 'null');
         return { pagination, sorting, visibility };
+    };
+
+    const validatePaginationState = (totalRows) => {
+        const state = table.getState();
+        const { pageIndex, pageSize } = state.pagination;
+        const maxPageIndex = Math.max(0, Math.ceil(totalRows / pageSize) - 1);
+        
+        if (pageIndex > maxPageIndex) {
+            table.setPageIndex(0);
+            return true;
+        }
+        return false;
     };
 
     const renderLoading = (isLoading) => {
@@ -143,6 +167,12 @@ $(document).ready(function() {
                 data: result.rows,
                 pageCount: Math.ceil(result.total / pageSize),
             }));
+            if (validatePaginationState(serverTotal)) {
+                // State was corrected so needs to refetch with new pageIndex
+                renderLoading(false);
+                fetchDataAndRender();
+                return;
+            }
         } catch (error) {
             console.error("Failed to fetch table data:", error);
             table.setOptions(prev => ({ ...prev, data: [] }));
@@ -225,6 +255,43 @@ $(document).ready(function() {
             }
         }
     });
+
+    const renderPageSizeSelector = () => {
+        const pageSize = table.getState().pagination.pageSize;
+        const totalRows = url ? serverTotal : table.getFilteredRowModel().rows.length;
+        const pageSizeOptions = [15, 25, 50, 100];
+
+        return html`
+            <div class="fixed-table-pagination">
+                <div class="float-left pagination-detail">
+                    <span class="pagination-info">
+                        Showing ${Math.min(totalRows, pageSize)} of ${totalRows} entries
+                    </span>
+                    <div class="page-list">
+                        <div class="dropdown dropup">
+                            <button
+                                class="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                            >
+                                ${pageSize}
+                            </button>
+                            <div class="dropdown-menu">
+                                ${pageSizeOptions.map(size => html`
+                                    <a
+                                        class="dropdown-item"
+                                        onclick="table.setPageSize(${size})"
+                                    >
+                                        ${size}
+                                    </a>
+                                `)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    };
 
     const renderPagination = () => {
         const totalPages = table.getPageCount();
@@ -612,12 +679,14 @@ $(document).ready(function() {
 
     const renderTable = () => {
         htmlInjectionMap.clear();
+        const totalRows = url ? serverTotal : values.length;
         const shouldPaginate = url ? (serverTotal !== null && serverTotal > table.getState().pagination.pageSize) : (values.length > table.getState().pagination.pageSize);
+        const showPageSizeSelector = totalRows !== null && totalRows > 0;
         const tableHTML = html`
         <div>
             ${(!minimal || !noToolBar) ? renderToolbar() : ''}
             ${renderTableElement()}
-            ${shouldPaginate ? renderPagination() : ''}
+            ${shouldPaginate ? renderPagination() : (showPageSizeSelector ? renderPageSizeSelector() : '')}
         </div>`;
         let finalHTML = tableHTML;
         htmlInjectionMap.forEach((htmlContent, marker) => { finalHTML = finalHTML.replace(marker, htmlContent); });
@@ -684,6 +753,7 @@ $(document).ready(function() {
         renderTable();
         fetchDataAndRender();
     } else {
+        validatePaginationState(values.length);
         renderTable();
     }
 
