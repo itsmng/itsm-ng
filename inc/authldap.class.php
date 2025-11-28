@@ -967,6 +967,11 @@ class AuthLDAP extends CommonDBTM
                             'type' => 'text',
                             'value' => $this->fields['responsible_field'] ?? '',
                         ],
+                        __('Title') => [
+                            'name' => 'title_field',
+                            'type' => 'text',
+                            'value' => $this->fields['title_field'] ?? '',
+                        ],
                         __("Comments") => [
                             'name' => 'comment_field',
                             'type' => 'textarea',
