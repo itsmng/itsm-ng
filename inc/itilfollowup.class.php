@@ -1000,6 +1000,7 @@ class ITILFollowup extends CommonDBChild
                         ],
                         __('Status') => [
                            'type' => 'select',
+                           'noLib' => 'true',
                            'name' => '_status',
                            'values' => $item->getAllowedStatusArray($item->fields['status']),
                            'value' => $item->getField('status'),
