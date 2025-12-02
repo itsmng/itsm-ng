@@ -3,6 +3,11 @@
   <textarea id="{{attributes.id|default("ckEditorInstance" ~ rand)}}"
     {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>
     {{attributes.value|default('')|raw}}</textarea>
+  <style>
+    .ck.ck-button.ck-source-editing-button .ck-button__label {
+      display: none;
+    }
+  </style>
   <script>
   $(function() {
     const {
@@ -11,7 +16,8 @@
         Link, AutoLink, Image,
         Table, List, ListProperties,
         ImageInsert,
-        Base64UploadAdapter
+        Base64UploadAdapter,
+        SourceEditing
     } = CKEDITOR;
 
     if (typeof editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} !== 'undefined' && editor_{{attributes.id|default("ckEditorInstance" ~ rand)}}.config) {
@@ -25,11 +31,12 @@
             BlockQuote, Heading, Link,
             AutoLink, Image, Table,
             List, ListProperties, Base64UploadAdapter,
-            ImageInsert,
+            ImageInsert, SourceEditing,
         ],
         toolbar: ['heading',
           '|', 'bold', 'italic', 'blockQuote', 'link', 'insertImage',
-          '|', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable']
+          '|', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable',
+          '|', 'sourceEditing']
       })
       .then(editor => {
         var editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} = editor
