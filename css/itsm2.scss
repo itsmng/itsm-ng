@@ -1707,3 +1707,11 @@ ul[id^="options-for-"].tabs-showing {
     transform: translateX(0);
     opacity: 1;
 }
+
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
