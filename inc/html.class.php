@@ -4725,18 +4725,21 @@ JAVASCRIPT
             }
         }
 
-        $link = "<a class='m-1'";
+        // Determine the CSS classes to apply
+        $classes = ['m-1'];
+        if (!strstr($btoption, 'class=')) {
+            if (empty($btimage)) {
+                $classes[] = 'btn';
+                $classes[] = 'btn-secondary';
+            } else {
+                $classes[] = 'pointer';
+            }
+        }
+
+        $link = "<a class='" . implode(' ', $classes) . "'";
 
         if (!empty($btoption)) {
             $link .= ' ' . $btoption . ' ';
-        }
-        // Do not force class if already defined
-        if (!strstr($btoption, 'class=')) {
-            if (empty($btimage)) {
-                $link .= " class='btn btn-secondary' ";
-            } else {
-                $link .= " class='pointer' ";
-            }
         }
         $btlabel = htmlentities($btlabel, ENT_QUOTES, 'UTF-8');
         $action  = " submitGetLink('$action', {" . implode(', ', $javascriptArray) . "});";
