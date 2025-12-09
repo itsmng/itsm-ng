@@ -39,7 +39,8 @@
           '|', 'sourceEditing']
       })
       .then(editor => {
-        var editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} = editor
+        var editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} = editor;
+        window['{{attributes.id|default("ckEditorInstance" ~ rand)}}'] = editor;
       })
       .catch(error => {
         console.error(error);

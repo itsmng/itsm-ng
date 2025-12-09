@@ -967,7 +967,7 @@ class ITILFollowup extends CommonDBChild
                                        : parseInt(data.requesttypes_id);
 
                                     TextareaForContentFolloupPopup.setData(data.content)
-                                    $("#dropdownForRequestType").val(requesttypes_id);
+                                    $("#dropdownForRequestType").val(requesttypes_id).trigger('change');
                                     $("#is_privateswitch")
                                        .prop("checked", data.is_private == "0" ? false : true);
                                  });
@@ -978,6 +978,7 @@ class ITILFollowup extends CommonDBChild
                            'type' => 'select',
                            'id' => 'dropdownForRequestType',
                            'name' => 'requesttypes_id',
+                           'noLib' => true,
                            'value' => $this->fields["requesttypes_id"],
                            'values' => getOptionForItems(RequestType::class, ['is_active' => 1, 'is_itilfollowup' => 1]),
                            'actions' => getItemActionButtons(['info', 'add'], RequestType::class),
