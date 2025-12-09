@@ -1590,6 +1590,13 @@ class Document extends CommonDBTM
             $values[$data['id']] = $data['name'];
         }
         $entity = Session::getActiveEntity();
+
+        $initial_docs = getItemByEntity(
+            Document::class,
+            $p['entity'] !== '' ? $p['entity'] : $entity,
+            ['glpi_documents.documentcategories_id' => 0]
+        );
+
         $inputs = [
            __('Heading') => [
               'type' => 'select',
@@ -1621,6 +1628,7 @@ class Document extends CommonDBTM
               'type' => 'select',
               'id' => 'selectForMaDocumentId',
               'name' => 'peer_documents_id',
+              'values' => $initial_docs,
               'itemtype' => Document::class,
               'col_lg' => 12,
               'col_md' => 12,
