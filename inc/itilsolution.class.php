@@ -207,7 +207,7 @@ class ITILSolution extends CommonDBChild
                            }).done(function(data) {
                               const jsonData = JSON.parse(data);
                               TextAreaForSolutionContent.setData(jsonData.content)
-                              $('#DropdownForSolutionTypeId').val(jsonData.solutiontypes_id)
+                              $('#DropdownForSolutionTypeId').val(jsonData.solutiontypes_id).trigger('change');
                            });
                         JS,
                        ]
