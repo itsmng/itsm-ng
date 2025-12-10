@@ -67,6 +67,14 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
 
     public function prepareInputForAdd($input)
     {
+        // Normalize document dropdown submission (Document::dropdown uses peer_documents_id)
+        if (!isset($input['value']) && isset($input['peer_documents_id']) && $input['peer_documents_id'] !== '') {
+            $input['value'] = (int)$input['peer_documents_id'];
+            $input['field'] = 'documents_id';
+            unset($input['peer_documents_id']);
+            unset($input['_rubdoc']);
+        }
+
         // Use massiveaction system to manage add system.
         // Need to update data : value not set but
         if (!isset($input['value'])) {
@@ -287,10 +295,12 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
             echo "<form aria-label='Predefined Field' name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
                action='" . static::getFormURL() . "'>";
 
-            echo "<table class='tab_cadre_fixe' aria-label='Add a predefined field'>";
-            echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add a predefined field') . "</th></tr>";
-            echo "<tr class='tab_bg_2'><td class='right top' width='30%'>";
+            echo "<div class='form-section mb-3'>";
+            echo "<h2 class='form-section-header'>" . __('Add a predefined field') . "</h2>";
+            echo "<div class='form-section-content'>";
+            echo "<div class='row g-3 align-items-start'>";
             echo "<input type='hidden' name='" . static::$items_id . "' value='$ID'>";
+
             $display_fields[-1] = Dropdown::EMPTY_VALUE;
             $display_fields    += $fields;
 
@@ -302,19 +312,28 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
                 }
             }
 
-            $rand_dp  = Dropdown::showFromArray('num', $display_fields, ['used' => $used,
-                                                                              'toadd']);
-            echo "</td><td class='top'>";
-            $paramsmassaction = ['id_field'         => '__VALUE__',
-                                       'itemtype'         => static::$itiltype,
-                                       'inline'           => true,
-                                       'submitname'       => _sx('button', 'Add'),
-                                       'options'          => ['relative_dates'     => 1,
-                                                                  'with_time'          => 1,
-                                                                  'with_days'          => 0,
-                                                                  'with_specific_date' => 0,
-                                                                  'itemlink_as_string' => 1,
-                                                                  'entity'             => $tt->getEntityID()]];
+            echo "<div class='col-md-6 col-sm-12'>";
+            $rand_dp  = Dropdown::showFromArray('num', $display_fields, [
+               'used'  => $used,
+                    'toadd' => null
+            ]);
+            echo "</div>";
+
+            echo "<div class='col-md-6 col-sm-12'>";
+            $paramsmassaction = [
+               'id_field'   => '__VALUE__',
+               'itemtype'   => static::$itiltype,
+               'inline'     => true,
+               'submitname' => _sx('button', 'Add'),
+               'options'    => [
+                  'relative_dates'     => 1,
+                  'with_time'          => 1,
+                  'with_days'          => 0,
+                  'with_specific_date' => 0,
+                  'itemlink_as_string' => 1,
+                  'entity'             => $tt->getEntityID()
+               ]
+            ];
 
             Ajax::updateItemOnSelectEvent(
                 "dropdown_num" . $rand_dp,
@@ -322,74 +341,100 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
                 $CFG_GLPI["root_doc"] . "/ajax/dropdownMassiveActionField.php",
                 $paramsmassaction
             );
-            echo "</td><td>";
-            echo "<span id='show_massiveaction_field'>&nbsp;</span>\n";
-            echo "</td></tr>";
-            echo "</table>";
+            echo "<span id='show_massiveaction_field' class='d-block'>&nbsp;</span>\n";
+            echo "</div>";
+
+            echo "</div>";
+            echo "</div>";
+            echo "</div>";
             Html::closeForm();
             echo "</div>";
         }
 
         echo "<div class='spaced'>";
-        if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass' . static::getType() . $rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-                                          'deprecated'    => true,
-                                          'container'     => 'mass' . static::getType() . $rand];
-            Html::showMassiveActions($massiveactionparams);
-        }
-        echo "<table class='tab_cadre_fixehov' aria-label='ITIL Template'>";
-        echo "<tr class='noHover'><th colspan='3'>";
-        echo self::getTypeName($numrows);
-        echo "</th></tr>";
-        if ($numrows) {
-            $header_begin  = "<tr>";
-            $header_top    = '';
-            $header_bottom = '';
-            $header_end    = '';
+        $table_fields = [
+           'name'           => __('Name'),
+           'display_value'  => __('Value')
+        ];
+
+        $table_values = [];
+        $massive_action_values = [];
+
+        foreach ($predeffields as $data) {
+            if (!isset($fields[$data['num']])) {
+                // could happen when itemtype removed and items_id present
+                continue;
+            }
+
+            $display_datas = [
+               $searchOption[$data['num']]['field'] => $data['value']
+            ];
+
+            $row = [
+               'name'          => $fields[$data['num']],
+               'display_value' => $itil_object->getValueToDisplay(
+                   $searchOption[$data['num']],
+                   $display_datas,
+                   $display_options
+               )
+            ];
+
             if ($canedit) {
-                $header_top    .= "<th width='10'>";
-                $header_top    .= Html::getCheckAllAsCheckbox('mass' . static::getType() . $rand) . "</th>";
-                $header_bottom .= "<th width='10'>";
-                $header_bottom .= Html::getCheckAllAsCheckbox('mass' . static::getType() . $rand) . "</th>";
+                $selection_value = sprintf('item[%s][%d]', static::class, $data['id']);
+                $row['value'] = $selection_value; // used by table twig for massive actions
+                $massive_action_values[$data['id']] = $selection_value;
             }
-            $header_end .= "<th>" . __('Name') . "</th>";
-            $header_end .= "<th>" . __('Value') . "</th>";
-            $header_end .= "</tr>";
-            echo $header_begin . $header_top . $header_end;
 
-            foreach ($predeffields as $data) {
-                if (!isset($fields[$data['num']])) {
-                    // could happen when itemtype removed and items_id present
-                    continue;
-                }
-                echo "<tr class='tab_bg_2'>";
-                if ($canedit) {
-                    echo "<td>" . Html::getMassiveActionCheckBox(static::getType(), $data["id"]) . "</td>";
-                }
-                echo "<td>" . $fields[$data['num']] . "</td>";
-
-                echo "<td>";
-                $display_datas[$searchOption[$data['num']]['field']] = $data['value'];
-                echo $itil_object->getValueToDisplay(
-                    $searchOption[$data['num']],
-                    $display_datas,
-                    $display_options
-                );
-                echo "</td>";
-                echo "</tr>";
-            }
-            echo $header_begin . $header_bottom . $header_end;
-        } else {
-            echo "<tr><th colspan='3'>" . __('No item found') . "</th></tr>";
+            $table_values[$data['id']] = $row;
         }
 
-        echo "</table>";
+        $table_id = 'TablePredefinedFields' . $rand;
+
         if ($canedit && $numrows) {
-            $massiveactionparams['ontop'] = false;
+            $massiveactionparams = [
+               'num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
+               'container'     => $table_id,
+               'display_arrow' => false,
+            ];
             Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
         }
+
+        $table_params = [
+           'id'     => $table_id,
+           'fields' => $table_fields,
+           'values' => $table_values,
+        ];
+
+        if ($canedit && $numrows) {
+            $table_params['massive_action'] = $massive_action_values;
+        } else {
+            $table_params['noToolBar'] = true;
+        }
+
+        if (function_exists('renderTwigTemplate')) {
+            renderTwigTemplate('table.twig', $table_params);
+        } else {
+            // Fallback to legacy table if twig rendering is unavailable
+            echo "<table class='tab_cadre_fixehov' aria-label='ITIL Template'>";
+            echo "<tr class='noHover'><th colspan='3'>";
+            echo self::getTypeName($numrows);
+            echo "</th></tr>";
+
+            if (count($table_values)) {
+                echo "<tr><th>" . __('Name') . "</th><th>" . __('Value') . "</th></tr>";
+                foreach ($table_values as $row) {
+                    echo "<tr class='tab_bg_2'>";
+                    echo "<td>" . $row['name'] . "</td>";
+                    echo "<td>" . $row['value'] . "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><th colspan='3'>" . __('No item found') . "</th></tr>";
+            }
+
+            echo "</table>";
+        }
+
         echo "</div>";
     }
 }
