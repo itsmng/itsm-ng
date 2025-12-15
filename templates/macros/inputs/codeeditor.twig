@@ -1,0 +1,61 @@
+{% macro codeeditor(attributes, root_doc = '') %}
+  {% set rand = random() %}
+  {% set field_id = attributes.id|default('codeEditorInstance' ~ rand) %}
+  {% set textarea_attributes = attributes|filter((v, k) => k not in ['value', 'type', 'options', 'mode']) %}
+  <textarea id="{{ field_id }}"
+    {% for name, value in textarea_attributes %} {{ name }}="{{ value }}"{% endfor %}>{{ attributes.value|default('')|raw }}</textarea>
+  <script>
+  (function() {
+    const ensureCodeMirror = () => new Promise((resolve) => {
+      if (window.CodeMirror) {
+        resolve();
+        return;
+      }
+
+      const cssId = 'codemirror-core-css';
+      if (!document.getElementById(cssId)) {
+        const link = document.createElement('link');
+        link.id = cssId;
+        link.rel = 'stylesheet';
+        link.href = '{{ root_doc }}/public/lib/codemirror.css';
+        document.head.appendChild(link);
+      }
+
+      const script = document.createElement('script');
+      script.src = '{{ root_doc }}/public/lib/codemirror.js';
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.body.appendChild(script);
+    });
+
+    const mountEditor = () => {
+      const textarea = document.getElementById('{{ field_id }}');
+      if (!textarea || !window.CodeMirror) {
+        return;
+      }
+
+      const options = Object.assign({
+        mode: '{{ attributes.mode|default('text/css') }}',
+        lineNumbers: true,
+        foldGutter: true,
+        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']
+      }, {{ attributes.options|default({})|json_encode|raw }});
+
+      if (textarea.hasAttribute('disabled')) {
+        options.readOnly = 'nocursor';
+      }
+
+      if (options.foldGutter && !options.gutters) {
+        options.gutters = ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'];
+      }
+
+      const editor = CodeMirror.fromTextArea(textarea, options);
+      setTimeout(() => editor.refresh(), 10);
+      window['{{ field_id }}_CodeMirror'] = editor;
+    };
+
+    ensureCodeMirror().then(mountEditor);
+  })();
+  </script>
+{% endmacro %}
+{{ _self.codeeditor(attributes, root_doc) }}
