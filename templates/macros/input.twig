@@ -36,6 +36,8 @@
       {% endif %}>{{attributes.value|default("")|raw}}</textarea>
   {% elseif attributes.type == 'richtextarea' %}
     {% include 'macros/inputs/richtextarea.twig' %}
+  {% elseif attributes.type == 'codeeditor' %}
+    {% include 'macros/inputs/codeeditor.twig' %}
   {% elseif attributes.type == 'select' %}
     {% include 'macros/inputs/select.twig' %}
   {% elseif attributes.type == 'actorSelect' %}

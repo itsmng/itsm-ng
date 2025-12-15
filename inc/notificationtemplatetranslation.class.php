@@ -37,12 +37,12 @@ if (!defined('GLPI_ROOT')) {
 
 /**
  * NotificationTemplateTranslation Class
-**/
+ **/
 class NotificationTemplateTranslation extends CommonDBChild
 {
     // From CommonDBChild
-    public static $itemtype  = 'NotificationTemplate';
-    public static $items_id  = 'notificationtemplates_id';
+    public static $itemtype = 'NotificationTemplate';
+    public static $items_id = 'notificationtemplates_id';
 
     public $dohistory = true;
 
@@ -55,11 +55,11 @@ class NotificationTemplateTranslation extends CommonDBChild
 
     /**
      * @since 0.84
-    **/
+     **/
     public function getForbiddenStandardMassiveAction()
     {
 
-        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden = parent::getForbiddenStandardMassiveAction();
         $forbidden[] = 'update';
         return $forbidden;
     }
@@ -110,81 +110,81 @@ class NotificationTemplateTranslation extends CommonDBChild
         $template = new NotificationTemplate();
         $template->getFromDB($notificationtemplates_id);
 
-        Html::initEditorSystem('content_html');
+        //Html::initEditorSystem('content_html');
 
         $rand = mt_rand();
         Ajax::createIframeModalWindow(
             "tags" . $rand,
             $CFG_GLPI['root_doc'] . "/front/notification.tags.php?sub_type=" .
-                                         addslashes($template->getField('itemtype'))
+            addslashes($template->getField('itemtype'))
         );
 
         $form = [
-          'action' => $this->getFormURL(),
-          'buttons' => [
-              [
-                  'type'  => 'submit',
-                  'name' => $this->isNewID($ID) ? 'add' : 'update',
-                  'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
-                  'class' => 'btn btn-secondary'
-              ]
-          ],
-          'content' => [
-              $this->getTypeName() => [
-                  'visible' => true,
-                  'inputs' => [
-                      $this->isNewID($ID) ? [] : [
-                          'type' => 'hidden',
-                          'name' => 'id',
-                          'value' => $ID
-                      ],
-                      [
-                          'type' => 'hidden',
-                          'name' => 'notificationtemplates_id',
-                          'value' => $notificationtemplates_id
-                      ],
-                      NotificationTemplate::getTypeName() => [
-                          'content' => "<a href='" . Toolbox::getItemTypeFormURL('NotificationTemplate') .
-                                        "?id=" . $notificationtemplates_id . "'>" . $template->getField('name') . "</a>" .
-                                        "<a class='btn btn-sm btn-outline-info' href='#' onClick=\"" .
-                                        Html::jsGetElementbyID("tags" . $rand) . ".dialog('open'); return false;\">" .
-                                        __('Show list of available tags') . "</a>",
-                          'col_lg' => 12,
-                          'col_md' => 12,
-                      ],
-                      __('Language') => [
-                          'type' => 'select',
-                          'name' => 'language',
-                          'value' => $this->fields['language'],
-                          'values' => ['' => __('Default translation')] + Language::getLanguages(),
-                          'col_lg' => 12,
-                          'col_md' => 12,
-                      ],
-                      __('Subject') => [
-                          'type' => 'text',
-                          'name' => 'subject',
-                          'value' => $this->fields['subject'],
-                          'size' => 100,
-                          'col_lg' => 12,
-                          'col_md' => 12,
-                      ],
-                      __('Email text body') => [
-                          'type' => 'textarea',
-                          'name' => 'content_text',
-                          'value' => $this->fields['content_text'],
-                          'col_lg' => 12,
-                          'col_md' => 12,
-                      ],
-                      __('Email HTML body') => [
-                          'type' => 'richtextarea',
-                          'name' => 'content_html',
-                          'value' => $this->fields['content_html'],
-                          'col_lg' => 12,
-                          'col_md' => 12,
-                      ],
-                  ]
-              ]
-          ]
+            'action' => $this->getFormURL(),
+            'buttons' => [
+                [
+                    'type' => 'submit',
+                    'name' => $this->isNewID($ID) ? 'add' : 'update',
+                    'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+                    'class' => 'btn btn-secondary'
+                ]
+            ],
+            'content' => [
+                $this->getTypeName() => [
+                    'visible' => true,
+                    'inputs' => [
+                        $this->isNewID($ID) ? [] : [
+                            'type' => 'hidden',
+                            'name' => 'id',
+                            'value' => $ID
+                        ],
+                        [
+                            'type' => 'hidden',
+                            'name' => 'notificationtemplates_id',
+                            'value' => $notificationtemplates_id
+                        ],
+                        NotificationTemplate::getTypeName() => [
+                            'content' => "<a href='" . Toolbox::getItemTypeFormURL('NotificationTemplate') .
+                                "?id=" . $notificationtemplates_id . "'>" . $template->getField('name') . "</a>" .
+                                "<a class='btn btn-sm btn-outline-info' href='#' onClick=\"" .
+                                Html::jsGetElementbyID("tags" . $rand) . ".dialog('open'); return false;\">" .
+                                __('Show list of available tags') . "</a>",
+                            'col_lg' => 12,
+                            'col_md' => 12,
+                        ],
+                        __('Language') => [
+                            'type' => 'select',
+                            'name' => 'language',
+                            'value' => $this->fields['language'],
+                            'values' => ['' => __('Default translation')] + Language::getLanguages(),
+                            'col_lg' => 12,
+                            'col_md' => 12,
+                        ],
+                        __('Subject') => [
+                            'type' => 'text',
+                            'name' => 'subject',
+                            'value' => $this->fields['subject'],
+                            'size' => 100,
+                            'col_lg' => 12,
+                            'col_md' => 12,
+                        ],
+                        __('Email text body') => [
+                            'type' => 'textarea',
+                            'name' => 'content_text',
+                            'value' => $this->fields['content_text'],
+                            'col_lg' => 12,
+                            'col_md' => 12,
+                        ],
+                        __('Email HTML body') => [
+                            'type' => 'codeeditor',
+                            'name' => 'content_html',
+                            'value' => $this->fields['content_html'],
+                            'col_lg' => 12,
+                            'col_md' => 12,
+                        ],
+                    ]
+                ]
+            ]
         ];
         renderTwigForm($form);
 
@@ -195,18 +195,18 @@ class NotificationTemplateTranslation extends CommonDBChild
     /**
      * @param $template        NotificationTemplate object
      * @param $options   array
-    **/
+     **/
     public function showSummary(NotificationTemplate $template, $options = [])
     {
         global $DB, $CFG_GLPI;
 
-        $nID     = $template->getField('id');
+        $nID = $template->getField('id');
         $canedit = Config::canUpdate();
 
         $massiveActionId = 'TableFor' . self::class;
         if ($canedit) {
             $url = Toolbox::getItemTypeFormURL('NotificationTemplateTranslation') .
-                    "?notificationtemplates_id=" . $nID;
+                "?notificationtemplates_id=" . $nID;
             $title = __('Add a new translation');
             echo <<<HTML
             <div class='center'>
@@ -214,15 +214,15 @@ class NotificationTemplateTranslation extends CommonDBChild
             </div>
         HTML;
             $massiveactionparams = [
-               'container'      => $massiveActionId,
-               'display_arrow'  => false,
-               'is_deleted'     => false,
+                'container' => $massiveActionId,
+                'display_arrow' => false,
+                'is_deleted' => false,
             ];
 
             Html::showMassiveActions($massiveactionparams);
         }
 
-        $fields = [ 'language' => __('Language') ];
+        $fields = ['language' => __('Language')];
         $values = [];
         $massiveActionValues = [];
 
@@ -236,7 +236,7 @@ class NotificationTemplateTranslation extends CommonDBChild
             if ($this->getFromDB($data['id'])) {
                 Session::addToNavigateListItems('NotificationTemplateTranslation', $data['id']);
                 $link .= "<a href='" . Toolbox::getItemTypeFormURL('NotificationTemplateTranslation') .
-                      "?id=" . $data['id'] . "&amp;notificationtemplates_id=" . $nID . "'>";
+                    "?id=" . $data['id'] . "&amp;notificationtemplates_id=" . $nID . "'>";
 
                 if ($data['language'] != '') {
                     $link .= $CFG_GLPI['languages'][$data['language']][0];
@@ -252,17 +252,17 @@ class NotificationTemplateTranslation extends CommonDBChild
             }
         }
         renderTwigTemplate('table.twig', [
-          'id' => $massiveActionId,
-          'fields' => $fields,
-          'values' => $values,
-          'massive_action' => $massiveActionValues,
+            'id' => $massiveActionId,
+            'fields' => $fields,
+            'values' => $values,
+            'massive_action' => $massiveActionValues,
         ]);
     }
 
 
     /**
      * @param $input  array
-    */
+     */
     public static function cleanContentHtml(array $input)
     {
 
@@ -297,46 +297,46 @@ class NotificationTemplateTranslation extends CommonDBChild
         $tab = [];
 
         $tab[] = [
-           'id'                 => 'common',
-           'name'               => __('Characteristics')
+            'id' => 'common',
+            'name' => __('Characteristics')
         ];
 
         $tab[] = [
-           'id'                 => '1',
-           'table'              => $this->getTable(),
-           'field'              => 'language',
-           'name'               => __('Language'),
-           'datatype'           => 'language',
-           'massiveaction'      => false
+            'id' => '1',
+            'table' => $this->getTable(),
+            'field' => 'language',
+            'name' => __('Language'),
+            'datatype' => 'language',
+            'massiveaction' => false
         ];
 
         $tab[] = [
-           'id'                 => '2',
-           'table'              => $this->getTable(),
-           'field'              => 'subject',
-           'name'               => __('Subject'),
-           'massiveaction'      => false,
-           'datatype'           => 'string',
-           'autocomplete'       => true,
+            'id' => '2',
+            'table' => $this->getTable(),
+            'field' => 'subject',
+            'name' => __('Subject'),
+            'massiveaction' => false,
+            'datatype' => 'string',
+            'autocomplete' => true,
         ];
 
         $tab[] = [
-           'id'                 => '3',
-           'table'              => $this->getTable(),
-           'field'              => 'content_html',
-           'name'               => __('Email HTML body'),
-           'datatype'           => 'text',
-           'htmltext'           => 'true',
-           'massiveaction'      => false
+            'id' => '3',
+            'table' => $this->getTable(),
+            'field' => 'content_html',
+            'name' => __('Email HTML body'),
+            'datatype' => 'text',
+            'htmltext' => 'true',
+            'massiveaction' => false
         ];
 
         $tab[] = [
-           'id'                 => '4',
-           'table'              => $this->getTable(),
-           'field'              => 'content_text',
-           'name'               => __('Email text body'),
-           'datatype'           => 'text',
-           'massiveaction'      => false
+            'id' => '4',
+            'table' => $this->getTable(),
+            'field' => 'content_text',
+            'name' => __('Email text body'),
+            'datatype' => 'text',
+            'massiveaction' => false
         ];
 
         return $tab;
@@ -345,17 +345,17 @@ class NotificationTemplateTranslation extends CommonDBChild
 
     /**
      * @param $language_id
-    **/
+     **/
     public static function getAllUsedLanguages($language_id)
     {
 
         $used_languages = getAllDataFromTable(
             'glpi_notificationtemplatetranslations',
             [
-              'notificationtemplates_id' => $language_id
+                'notificationtemplates_id' => $language_id
             ]
         );
-        $used           = [];
+        $used = [];
 
         foreach ($used_languages as $used_language) {
             $used[$used_language['language']] = $used_language['language'];
@@ -367,7 +367,7 @@ class NotificationTemplateTranslation extends CommonDBChild
 
     /**
      * @param $itemtype
-    **/
+     **/
     public static function showAvailableTags($itemtype)
     {
         $target = NotificationTarget::getInstanceByType(stripslashes($itemtype));
@@ -413,16 +413,16 @@ class NotificationTemplateTranslation extends CommonDBChild
             }
 
             echo "<tr class='tab_bg_1'><td>" . $tag . "</td>" .
-                 "<td>";
+                "<td>";
             if ($values['type'] == NotificationTarget::TAG_LANGUAGE) {
                 printf(__('%1$s: %2$s'), __('Label'), $values['label']);
             } else {
                 echo $values['label'];
             }
             echo "</td><td>" . $event . "</td>" .
-                 "<td>" . $action . "</td>" .
-                 "<td>" . $allowed_values . "</td>" .
-                 "</tr>";
+                "<td>" . $action . "</td>" .
+                "<td>" . $allowed_values . "</td>" .
+                "</tr>";
         }
         echo "</table></div>";
     }
@@ -464,7 +464,7 @@ class NotificationTemplateTranslation extends CommonDBChild
      * NotificationTemplateTranslation => translation preview
      *
      * @since 0.84
-    **/
+     **/
     public function showDebug()
     {
 
@@ -482,8 +482,17 @@ class NotificationTemplateTranslation extends CommonDBChild
         echo "<table class='tab_cadre_fixe' aria-label='Debug'>";
         echo "<tr><th colspan='2'>" . __('Preview') . "</th></tr>";
 
-        $oktypes = ['CartridgeItem', 'Change', 'ConsumableItem', 'Contract', 'CronTask',
-                         'Problem', 'Project', 'Ticket', 'User'];
+        $oktypes = [
+            'CartridgeItem',
+            'Change',
+            'ConsumableItem',
+            'Contract',
+            'CronTask',
+            'Problem',
+            'Project',
+            'Ticket',
+            'User'
+        ];
 
         if (!in_array($itemtype, $oktypes)) {
             // this itemtype doesn't work, need to be fixed
@@ -493,18 +502,22 @@ class NotificationTemplateTranslation extends CommonDBChild
         }
 
         // Criteria Form
-        $key   = getForeignKeyFieldForItemType($item->getType());
-        $id    = Session::getSavedOption(__CLASS__, $key, 0);
+        $key = getForeignKeyFieldForItemType($item->getType());
+        $id = Session::getSavedOption(__CLASS__, $key, 0);
         $event = Session::getSavedOption(__CLASS__, $key . '_event', '');
 
         echo "<tr class='tab_bg_2'><td>" . $item->getTypeName(1) . "&nbsp;";
-        $item->dropdown(['value'     => $id,
-                              'on_change' => 'reloadTab("' . $key . '="+this.value)']);
+        $item->dropdown([
+            'value' => $id,
+            'on_change' => 'reloadTab("' . $key . '="+this.value)'
+        ]);
         echo "</td><td>" . NotificationEvent::getTypeName(1) . "&nbsp;";
         NotificationEvent::dropdownEvents(
             $item->getType(),
-            ['value'     => $event,
-                                                'on_change' => 'reloadTab("' . $key . '_event="+this.value)']
+            [
+                'value' => $event,
+                'on_change' => 'reloadTab("' . $key . '_event="+this.value)'
+            ]
         );
         echo "</td>";
 
@@ -516,16 +529,24 @@ class NotificationTemplateTranslation extends CommonDBChild
             $options = ['_debug' => true];
 
             // TODO Awfull Hack waiting for https://forge.indepnet.net/issues/3439
-            $multi   = ['alert', 'alertnotclosed', 'end', 'notice',
-                             'periodicity', 'periodicitynotice'];
+            $multi = [
+                'alert',
+                'alertnotclosed',
+                'end',
+                'notice',
+                'periodicity',
+                'periodicitynotice'
+            ];
             if (in_array($event, $multi)) {
                 // Won't work for Cardridge and Consumable
                 $options['entities_id'] = $item->getEntityID();
-                $options['items']       = [$item->getID() => $item->fields];
+                $options['items'] = [$item->getID() => $item->fields];
             }
             $target = NotificationTarget::getInstance($item, $event, $options);
-            $infos  = ['language' => $_SESSION['glpilanguage'],
-                            'additionnaloption' => ['usertype' => NotificationTarget::GLPI_USER]];
+            $infos = [
+                'language' => $_SESSION['glpilanguage'],
+                'additionnaloption' => ['usertype' => NotificationTarget::GLPI_USER]
+            ];
 
             $template->resetComputedTemplates();
             $template->setSignature(Notification::getMailingSignature($_SESSION['glpiactive_entity']));
