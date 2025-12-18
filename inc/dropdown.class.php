@@ -3725,6 +3725,22 @@ class Dropdown
             $entity_restrict = Toolbox::jsonDecode($post['entity_restrict']);
         }
 
+        $group_filter = [];
+        if (isset($post['groups_id']) && !empty($post['groups_id'])) {
+            $groups = is_array($post['groups_id']) ? $post['groups_id'] : [$post['groups_id']];
+            foreach ($groups as $group_id) {
+                $group_id = (int)$group_id;
+                if ($group_id <= 0) {
+                    continue;
+                }
+                foreach (Group_User::getGroupUsers($group_id) as $group_user) {
+                    if (isset($group_user['id'])) {
+                        $group_filter[$group_user['id']] = true;
+                    }
+                }
+            }
+        }
+
         $start  = intval(($post['page'] - 1) * $post['page_limit']);
         $searchText = (isset($post['searchText']) ? $post['searchText'] : null);
         $inactive_deleted = isset($post['inactive_deleted']) ? $post['inactive_deleted'] : 0;
@@ -3748,6 +3764,9 @@ class Dropdown
         $count = 0;
         if (count($result)) {
             while ($data = $result->next()) {
+                if (count($group_filter) && !isset($group_filter[$data['id']])) {
+                    continue;
+                }
                 $users[$data["id"]] = formatUserName(
                     $data["id"],
                     $data["name"],
