@@ -25069,6 +25069,15 @@ msgstr "Diminuer la taille de la liste"
 msgid "Toggle navigation"
 msgstr "Activer / Désactiver la navigation"
 
+msgid "Approver type"
+msgstr "Type d'approbateur"
+
+msgid "Approver group"
+msgstr "Groupe d'approbateurs"
+
+msgid "Group users"
+msgstr "Utilisateurs du groupe"
+
 #~ msgid "Remove actor %s"
 #~ msgstr "Supprimer l'acteur %s"
 
