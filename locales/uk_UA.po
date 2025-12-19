@@ -21,8 +21,8 @@ msgstr ""
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
 "PO-Revision-Date: 2019-04-24 11:58+0000\n"
 "Last-Translator: Andriy Smilyanets <smile.andriy@gmail.com>, 2022\n"
-"Language-Team: Ukrainian (Ukraine) (https://www.transifex.com/glpi/"
-"teams/1637/uk_UA/)\n"
+"Language-Team: Ukrainian (Ukraine) (https://www.transifex.com/glpi/teams/"
+"1637/uk_UA/)\n"
 "Language: uk_UA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21482,8 +21482,8 @@ msgstr ""
 #: inc/console/task/unlockcommand.class.php:85
 msgid "Itemtype::name of task to unlock (e.g: \"MailCollector::mailgate\")"
 msgstr ""
-"Itemtype::name завдання для розблокування (наприклад \"MailCollector::"
-"mailgate\")"
+"Itemtype::name завдання для розблокування (наприклад "
+"\"MailCollector::mailgate\")"
 
 #: inc/console/task/unlockcommand.class.php:131
 #, php-format
@@ -22752,8 +22752,8 @@ msgstr "Версія не підтримується (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25682,6 +25682,21 @@ msgstr "Зменшення"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "Перемкнути нічний режим"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Схвалив"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Схвалив"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Дерево груп"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Запустити ITSM-NG"

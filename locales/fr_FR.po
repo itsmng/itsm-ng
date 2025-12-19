@@ -10531,8 +10531,8 @@ msgid ""
 "Timezones seems not loaded, see https://glpi-install.readthedocs.io/en/"
 "latest/timezones.html."
 msgstr ""
-"Les fuseaux horaires ne semblent pas être chargés, voir https://glpi-install."
-"readthedocs.io/en/latest/timezones.html."
+"Les fuseaux horaires ne semblent pas être chargés, voir https://glpi-"
+"install.readthedocs.io/en/latest/timezones.html."
 
 #: inc/notificationajax.class.php:90
 msgid "Error inserting browser notification to queue"
@@ -11490,8 +11490,8 @@ msgstr "Responsable"
 #: inc/authldap.class.php:828 inc/authldap.class.php:837
 msgid "You can use a field name or an expression using various %{fieldname}"
 msgstr ""
-"Vous pouvez utiliser un nom de champ ou une expression contenant plusieurs "
-"%{nomDeChamp}"
+"Vous pouvez utiliser un nom de champ ou une expression contenant plusieurs %"
+"{nomDeChamp}"
 
 #: inc/authldap.class.php:829 inc/authldap.class.php:838
 msgid "Example for location: %{city} > %{roomnumber}"
@@ -14317,6 +14317,12 @@ msgstr "En cours (Attribué)"
 msgctxt "status"
 msgid "Processing (planned)"
 msgstr "En cours (Planifié)"
+
+#: inc/problem.class.php:685 inc/commonitilobject.class.php:5309
+#: inc/change.class.php:541 inc/change.class.php:543 inc/problem.class.php:698
+msgctxt "status"
+msgid "Pending"
+msgstr "En attente"
 
 #: inc/problem.class.php:686 inc/problem.class.php:699
 msgctxt "status"
@@ -22234,8 +22240,8 @@ msgstr "Version non supportée (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 "Impossible de créer le fichier des clés de sécurité ! Vous devez exécuter la "
 "commande \"php bin/console itsmng:security:change_key\" pour créer "
@@ -22383,14 +22389,6 @@ msgstr "Confirmation mot de passe"
 #: inc/user.class.php:2242 inc/user.class.php:2655
 msgid "Time zone"
 msgstr "Fuseau horaire"
-
-#: inc/user.class.php:3076
-msgid "No time zones are available. Please check your database configuration."
-msgstr "Aucun fuseau horaire n'est disponible. Veuillez vérifier votre configuration de base de données."
-
-#: inc/user.class.php:3030
-msgid "Change the time zone"
-msgstr "Changer le fuseau horaire"
 
 #: inc/user.class.php:2280
 msgid "Valid since"
@@ -24644,8 +24642,8 @@ msgid ""
 "To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
 "configuration."
 msgstr ""
-"Pour augmenter la limite, modifier la valeur de max_input_vars ou de suhosin."
-"post.max_vars dans la configuration PHP."
+"Pour augmenter la limite, modifier la valeur de max_input_vars ou de "
+"suhosin.post.max_vars dans la configuration PHP."
 
 msgid "The description field is mandatory"
 msgstr "Le champ description est obligatoire"
@@ -25078,21 +25076,26 @@ msgstr "Groupe d'approbateurs"
 msgid "Group users"
 msgstr "Utilisateurs du groupe"
 
+#~ msgid ""
+#~ "No time zones are available. Please check your database configuration."
+#~ msgstr ""
+#~ "Aucun fuseau horaire n'est disponible. Veuillez vérifier votre "
+#~ "configuration de base de données."
+
+#~ msgid "Change the time zone"
+#~ msgstr "Changer le fuseau horaire"
+
 #~ msgid "Remove actor %s"
 #~ msgstr "Supprimer l'acteur %s"
 
-msgid "Allow to impersonate other users"
-msgstr "Autoriser la prise d'identité d'autres utilisateurs"
+#~ msgid "Allow to impersonate other users"
+#~ msgstr "Autoriser la prise d'identité d'autres utilisateurs"
 
-msgid "Choose File"
-msgstr "Choisir un fichier"
+#~ msgid "Choose File"
+#~ msgstr "Choisir un fichier"
 
-msgid "No file chosen"
-msgstr "Aucun fichier choisi"
+#~ msgid "No file chosen"
+#~ msgstr "Aucun fichier choisi"
 
-msgid "Add another observer"
-msgstr "Ajouter un autre observateur"
-
-msgctxt "status"
-msgid "Pending"
-msgstr "En attente"
+#~ msgid "Add another observer"
+#~ msgstr "Ajouter un autre observateur"

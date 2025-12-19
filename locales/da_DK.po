@@ -21952,8 +21952,8 @@ msgstr "Ikke supporteret version (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -24490,8 +24490,8 @@ msgid ""
 "To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
 "configuration."
 msgstr ""
-"For at øge begrænsning skal du ændre max_input_vars eller suhosin.post."
-"max_vars i php konfigurationen."
+"For at øge begrænsning skal du ændre max_input_vars eller "
+"suhosin.post.max_vars i php konfigurationen."
 
 #, fuzzy
 #| msgid "Ticket creation failed (check mandatory fields)"
@@ -24992,6 +24992,21 @@ msgstr "Degressive"
 
 msgid "Toggle navigation"
 msgstr ""
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Validerings-bruger"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Validerings-bruger"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Gruppetræ"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Brug ITSM-NG"

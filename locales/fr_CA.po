@@ -10528,8 +10528,8 @@ msgid ""
 "Timezones seems not loaded, see https://glpi-install.readthedocs.io/en/"
 "latest/timezones.html."
 msgstr ""
-"Les fuseaux horaires ne semblent pas être chargés, voir https://glpi-install."
-"readthedocs.io/en/latest/timezones.html."
+"Les fuseaux horaires ne semblent pas être chargés, voir https://glpi-"
+"install.readthedocs.io/en/latest/timezones.html."
 
 #: inc/notificationajax.class.php:90
 msgid "Error inserting browser notification to queue"
@@ -11489,8 +11489,8 @@ msgstr "Responsable"
 #: inc/authldap.class.php:828 inc/authldap.class.php:837
 msgid "You can use a field name or an expression using various %{fieldname}"
 msgstr ""
-"Vous pouvez utiliser un nom de champ ou une expression contenant plusieurs "
-"%{nomDeChamp}"
+"Vous pouvez utiliser un nom de champ ou une expression contenant plusieurs %"
+"{nomDeChamp}"
 
 #: inc/authldap.class.php:829 inc/authldap.class.php:838
 msgid "Example for location: %{city} > %{roomnumber}"
@@ -22214,8 +22214,8 @@ msgstr "Version non supportée (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -24667,8 +24667,8 @@ msgid ""
 "To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
 "configuration."
 msgstr ""
-"Pour augmenter la limite, modifier la valeur de max_input_vars ou de suhosin."
-"post.max_vars dans la configuration PHP."
+"Pour augmenter la limite, modifier la valeur de max_input_vars ou de "
+"suhosin.post.max_vars dans la configuration PHP."
 
 msgid "The description field is mandatory"
 msgstr "Le champ description est obligatoire"
@@ -25128,6 +25128,21 @@ msgstr "Dégressif"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "Basculer le mode nuit"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Approbateur"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Approbateur"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Arborescence des groupes"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Utiliser ITSM-NG"

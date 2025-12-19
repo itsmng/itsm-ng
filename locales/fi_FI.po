@@ -21980,8 +21980,8 @@ msgstr ""
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -24521,8 +24521,8 @@ msgid ""
 "To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
 "configuration."
 msgstr ""
-"Kasvata rajaa muuttamalla php:n määrityksissä max_input_vars- tai suhosin."
-"post.max_vars-arvoa."
+"Kasvata rajaa muuttamalla php:n määrityksissä max_input_vars- tai "
+"suhosin.post.max_vars-arvoa."
 
 msgid "The description field is mandatory"
 msgstr "Kuvauskenttä on pakollinen"
@@ -25001,6 +25001,21 @@ msgstr "Aleneva"
 #| msgid "Toggle filters"
 msgid "Toggle navigation"
 msgstr "Vaihda suodattimia"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Hyväksyjä"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Hyväksyjä"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Ryhmäpuu"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Käytä ITSM-NG:tä"

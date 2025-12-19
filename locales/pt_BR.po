@@ -53,8 +53,8 @@ msgstr ""
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
 "PO-Revision-Date: 2019-04-24 11:58+0000\n"
 "Last-Translator: Diego Rodrigo <diegorodrigo90@gmail.com>, 2022\n"
-"Language-Team: Portuguese (Brazil) (https://www.transifex.com/glpi/"
-"teams/1637/pt_BR/)\n"
+"Language-Team: Portuguese (Brazil) (https://www.transifex.com/glpi/teams/"
+"1637/pt_BR/)\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16919,8 +16919,8 @@ msgid ""
 "Number of messages: available=%1$d, already imported=%2$d, retrieved=%3$d, "
 "refused=%4$d, errors=%5$d, blacklisted=%6$d"
 msgstr ""
-"Número de mensagens: disponível= %1$d ,atualmente importado= %2$d ,"
-"recuperado= %3$d,recusado= %4$d, erros=%5$d,lista negra= %6$d"
+"Número de mensagens: disponível= %1$d ,atualmente importado= "
+"%2$d ,recuperado= %3$d,recusado= %4$d, erros=%5$d,lista negra= %6$d"
 
 #: inc/mailcollector.class.php:937 inc/mailcollector.class.php:811
 msgid "Could not connect to mailgate server"
@@ -22159,8 +22159,8 @@ msgstr "Versão não suportada (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25056,6 +25056,21 @@ msgstr "Degressivo"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "Alternar para modo nortuno"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Aprovador"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Aprovador"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Árvore de grupos"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Usar ITSM-NG"

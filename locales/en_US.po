@@ -22045,8 +22045,8 @@ msgstr "Unsupported version (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -22190,15 +22190,6 @@ msgstr "Password Confirmation"
 #: inc/user.class.php:2242 inc/user.class.php:2655
 msgid "Time zone"
 msgstr "Time zone"
-
-#: inc/user.class.php:3076
-msgid "No time zones are available. Please check your database configuration."
-msgstr "No time zones are available. Please check your database configuration."
-
-#: inc/user.class.php:3030
-msgid "Change the time zone"
-msgstr "Change the time zone"
-
 
 #: inc/user.class.php:2280
 msgid "Valid since"
@@ -24935,6 +24926,29 @@ msgstr "Decreasing"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "Toggle night mode"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Approver"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Approver"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Group Tree"
+
+#~ msgid ""
+#~ "No time zones are available. Please check your database configuration."
+#~ msgstr ""
+#~ "No time zones are available. Please check your database configuration."
+
+#~ msgid "Change the time zone"
+#~ msgstr "Change the time zone"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Use ITSM-NG"

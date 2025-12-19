@@ -11415,8 +11415,8 @@ msgstr ""
 #: inc/authldap.class.php:828 inc/authldap.class.php:837
 msgid "You can use a field name or an expression using various %{fieldname}"
 msgstr ""
-"Вы можете использовать название поля или выражение, используемые различные "
-"%{fieldname}"
+"Вы можете использовать название поля или выражение, используемые различные %"
+"{fieldname}"
 
 #: inc/authldap.class.php:829 inc/authldap.class.php:838
 msgid "Example for location: %{city} > %{roomnumber}"
@@ -21966,8 +21966,8 @@ msgstr ""
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -24511,8 +24511,8 @@ msgid ""
 "To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
 "configuration."
 msgstr ""
-"Для увеличения лимита: измените параметр max_input_vars или suhosin.post."
-"max_vars в конфигурации php."
+"Для увеличения лимита: измените параметр max_input_vars или "
+"suhosin.post.max_vars в конфигурации php."
 
 #, fuzzy
 #| msgid "Ticket creation failed (check mandatory fields)"
@@ -25012,6 +25012,21 @@ msgstr "Убывающий"
 #| msgid "Toggle filters"
 msgid "Toggle navigation"
 msgstr "Смена фильтров"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Проверяющий"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Проверяющий"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Дерево групп"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Запустить ITSM-NG"

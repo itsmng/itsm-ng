@@ -4450,8 +4450,8 @@ msgid ""
 "Make sure access to %s (%s) is forbidden; otherwise review .htaccess file "
 "and web server configuration."
 msgstr ""
-"Pārliecinieties, ka piekļuve %s (%s) ir liegta; pretējā gadījumā apskatiet ."
-"htaccess failu un web servera konfigurāciju."
+"Pārliecinieties, ka piekļuve %s (%s) ir liegta; pretējā gadījumā "
+"apskatiet .htaccess failu un web servera konfigurāciju."
 
 #: inc/system/requirement/protectedwebaccess.class.php:116
 #: inc/config.class.php:2798
@@ -11588,8 +11588,8 @@ msgstr "Atbildīgs"
 #: inc/authldap.class.php:828 inc/authldap.class.php:837
 msgid "You can use a field name or an expression using various %{fieldname}"
 msgstr ""
-"Jūs varat izmantot lauka nosaukumu vai izteicienu, izmantojot dažādus "
-"%{fieldname}"
+"Jūs varat izmantot lauka nosaukumu vai izteicienu, izmantojot dažādus %"
+"{fieldname}"
 
 #: inc/authldap.class.php:829 inc/authldap.class.php:838
 msgid "Example for location: %{city} > %{roomnumber}"
@@ -22324,8 +22324,8 @@ msgstr "Neatbalstīta versija (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -23494,8 +23494,8 @@ msgid ""
 "Connection to database failed, verify the connection parameters included in "
 "config_db.php file"
 msgstr ""
-"Pieslēgšanās datubāzei neizdevās, pārbaudi konekcijas parametrus config_db."
-"php failā"
+"Pieslēgšanās datubāzei neizdevās, pārbaudi konekcijas parametrus "
+"config_db.php failā"
 
 #: install/update_051_06.php:149
 msgid "Renting"
@@ -25331,6 +25331,21 @@ msgstr "Samazinās"
 #| msgid "Toggle edit mode"
 msgid "Toggle navigation"
 msgstr "Rediģēšanas režīms"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Apstiprinātājs"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Apstiprinātājs"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Grupas koks"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Pieslēgties ITSM-NG"

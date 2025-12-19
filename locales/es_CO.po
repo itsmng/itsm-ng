@@ -10515,8 +10515,8 @@ msgid ""
 "Timezones seems not loaded, see https://glpi-install.readthedocs.io/en/"
 "latest/timezones.html."
 msgstr ""
-"Las zonas horarias parecen no estar cargadas, consulte https://glpi-install."
-"readthedocs.io/en/latest/timezones.html."
+"Las zonas horarias parecen no estar cargadas, consulte https://glpi-"
+"install.readthedocs.io/en/latest/timezones.html."
 
 #: inc/notificationajax.class.php:90
 msgid "Error inserting browser notification to queue"
@@ -19483,8 +19483,8 @@ msgid ""
 "End date to apply in \"modifyTimestamp\" filter (see %s for supported "
 "formats)"
 msgstr ""
-"Fecha de finalización para aplicar en el filtro "
-"\"modifyTimestamp\" (consulte %s los formatos compatibles)"
+"Fecha de finalización para aplicar en el filtro \"modifyTimestamp\" "
+"(consulte %s los formatos compatibles)"
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:128
 #, php-format
@@ -20924,8 +20924,8 @@ msgstr ""
 #: inc/console/task/unlockcommand.class.php:85
 msgid "Itemtype::name of task to unlock (e.g: \"MailCollector::mailgate\")"
 msgstr ""
-"Itemtype::nombre de la tarea para desbloquear (por ejemplo: \"MailCollector::"
-"mailgate\")"
+"Itemtype::nombre de la tarea para desbloquear (por ejemplo: "
+"\"MailCollector::mailgate\")"
 
 #: inc/console/task/unlockcommand.class.php:131
 #, php-format
@@ -22169,8 +22169,8 @@ msgstr "Versión no soportada (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25070,6 +25070,21 @@ msgstr "Reducido"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "Alternar modo noche"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Aprobador"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Aprobador"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Arbol de grupo"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"

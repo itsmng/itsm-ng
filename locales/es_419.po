@@ -31,8 +31,8 @@ msgstr ""
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
 "PO-Revision-Date: 2019-04-24 11:58+0000\n"
 "Last-Translator: alexandre delaunay <delaunay.alexandre@gmail.com>, 2021\n"
-"Language-Team: Spanish (Latin America) (https://www.transifex.com/glpi/"
-"teams/1637/es_419/)\n"
+"Language-Team: Spanish (Latin America) (https://www.transifex.com/glpi/teams/"
+"1637/es_419/)\n"
 "Language: es_419\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -11470,8 +11470,8 @@ msgstr "Responsable"
 #: inc/authldap.class.php:828 inc/authldap.class.php:837
 msgid "You can use a field name or an expression using various %{fieldname}"
 msgstr ""
-"Puede usar el nombre de un campo o una expresión que emplee varios "
-"%{fieldname}"
+"Puede usar el nombre de un campo o una expresión que emplee varios %"
+"{fieldname}"
 
 #: inc/authldap.class.php:829 inc/authldap.class.php:838
 msgid "Example for location: %{city} > %{roomnumber}"
@@ -22054,8 +22054,8 @@ msgstr "Versión no soportada (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25110,6 +25110,21 @@ msgstr "Reducido"
 #| msgid "Toggle filters"
 msgid "Toggle navigation"
 msgstr "Alternar filtros"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Aprobador"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Aprobador"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Árbol de Grupo"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"
