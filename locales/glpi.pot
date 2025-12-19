@@ -29955,3 +29955,11 @@ msgstr ""
 
 msgid "Toggle navigation"
 msgstr ""
+msgid "Approver type"
+msgstr ""
+
+msgid "Approver group"
+msgstr ""
+
+msgid "Group users"
+msgstr ""
