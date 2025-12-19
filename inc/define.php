@@ -49,7 +49,7 @@ if (substr(ITSM_VERSION, -4) === '-dev') {
 
 // Current version of ITSM-NG
 define('ITSM_MIN_PHP', '7.4.0'); // Must also be changed in top of index.php
-define('ITSM_YEAR', '2024');
+define('ITSM_YEAR', '2026');
 
 //Define a global recipient address for email notifications
 //define('GLPI_FORCE_MAIL', 'me@localhost');
