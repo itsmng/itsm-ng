@@ -21624,8 +21624,8 @@ msgstr "지원하지 않는 버전 (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -24569,6 +24569,21 @@ msgstr "감소"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "야간 모드 전환"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "승인자"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "승인자"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "그룹 트리"
 
 #~ msgid "Use GLPI"
 #~ msgstr "ITSM-NG 사용"

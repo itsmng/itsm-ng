@@ -18,8 +18,8 @@ msgstr ""
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
 "PO-Revision-Date: 2019-04-24 11:58+0000\n"
 "Last-Translator: alexandre delaunay <delaunay.alexandre@gmail.com>, 2021\n"
-"Language-Team: Vietnamese (Viet Nam) (https://www.transifex.com/glpi/"
-"teams/1637/vi_VN/)\n"
+"Language-Team: Vietnamese (Viet Nam) (https://www.transifex.com/glpi/teams/"
+"1637/vi_VN/)\n"
 "Language: vi_VN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21622,8 +21622,8 @@ msgstr ""
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -24072,8 +24072,8 @@ msgstr "Một phần mở rộng PHP đã dừng tải các tập tin lên"
 
 msgid "The uploaded file exceeds the post_max_size directive in php.ini"
 msgstr ""
-"Tập tin tải lên vượt quá kích cỡ cho theo (chỉ thị post_max_size trong php."
-"ini)"
+"Tập tin tải lên vượt quá kích cỡ cho theo (chỉ thị post_max_size trong "
+"php.ini)"
 
 msgid "File is too big"
 msgstr "Tập tin quá lớn"
@@ -24652,6 +24652,21 @@ msgstr "Đang giảm"
 #| msgid "Toggle filters"
 msgid "Toggle navigation"
 msgstr "Các bộ lọc chuyển đổi"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Người xác nhận"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Người xác nhận"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Cây nhóm"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Dùng ITSM-NG"

@@ -22069,11 +22069,11 @@ msgstr "Unsupported version (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 
 #: inc/devicebatterymodel.class.php:44
 msgid "Device battery model"
@@ -25335,3 +25335,18 @@ msgstr "Decreasing"
 #| msgid "Toggle filters"
 msgid "Toggle navigation"
 msgstr "Toggle filters"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Approver"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Approver"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Group tree"

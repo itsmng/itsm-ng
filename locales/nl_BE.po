@@ -4426,8 +4426,8 @@ msgid ""
 "Make sure access to %s (%s) is forbidden; otherwise review .htaccess file "
 "and web server configuration."
 msgstr ""
-"Controleer of toegang tot %s (%s) verboden is; controleer anders het ."
-"htaccess-bestand en de webserver configuratie."
+"Controleer of toegang tot %s (%s) verboden is; controleer anders "
+"het .htaccess-bestand en de webserver configuratie."
 
 #: inc/system/requirement/protectedwebaccess.class.php:116
 #: inc/config.class.php:2798
@@ -15464,8 +15464,8 @@ msgid ""
 "Other financial and administrative information (licenses, cartridges, "
 "consumables)"
 msgstr ""
-"Andere financiële en admministratieve info (licenties,inktpatronen,"
-"verbruiksartikelen)"
+"Andere financiële en admministratieve info "
+"(licenties,inktpatronen,verbruiksartikelen)"
 
 #: inc/report.class.php:93 install/update_051_06.php:144
 msgid "Loan"
@@ -22058,8 +22058,8 @@ msgstr "Niet ondersteunde versie (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25121,6 +25121,21 @@ msgstr "Degressief"
 #| msgid "Toggle filters"
 msgid "Toggle navigation"
 msgstr "Filter aan/uit"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Gevalideerd door"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Gevalideerd door"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Groepen boom"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Gebruik ITSM-NG"

@@ -4509,8 +4509,8 @@ msgid ""
 "Make sure access to %s (%s) is forbidden; otherwise review .htaccess file "
 "and web server configuration."
 msgstr ""
-"Upewnij się, że dostęd do %s (%s) jest zablokowany; sprawdź zawartość pliku ."
-"htaccess oraz konfigurację serwera www."
+"Upewnij się, że dostęd do %s (%s) jest zablokowany; sprawdź zawartość "
+"pliku .htaccess oraz konfigurację serwera www."
 
 #: inc/system/requirement/protectedwebaccess.class.php:116
 #: inc/config.class.php:2798
@@ -22815,8 +22815,8 @@ msgstr "Niewspierana wersja (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25764,6 +25764,21 @@ msgstr "Zmniejszający się"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "Włącz tryb nocny"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Zatwierdzający"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Zatwierdzający"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Drzewo grup"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Używaj ITSM-NG"

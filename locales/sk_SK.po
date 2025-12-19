@@ -10778,8 +10778,8 @@ msgid ""
 "Timezones seems not loaded, see https://glpi-install.readthedocs.io/en/"
 "latest/timezones.html."
 msgstr ""
-"Zdá sa, že časové zóny nie sú načítané, pozrite https://glpi-install."
-"readthedocs.io/en/latest/timezones.html."
+"Zdá sa, že časové zóny nie sú načítané, pozrite https://glpi-"
+"install.readthedocs.io/en/latest/timezones.html."
 
 #: inc/notificationajax.class.php:90
 msgid "Error inserting browser notification to queue"
@@ -22743,8 +22743,8 @@ msgstr "Nepodporovaná verzia (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25674,6 +25674,21 @@ msgstr "Klesajúci"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "Zapnuť/vypnúť nočný režim"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Schvaľovateľ"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Schvaľovateľ"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Strom skupín"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Spustiť ITSM-NG"

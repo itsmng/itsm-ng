@@ -22285,8 +22285,8 @@ msgstr ""
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25361,6 +25361,21 @@ msgstr "Smanjenje"
 #| msgid "Toggle filters"
 msgid "Toggle navigation"
 msgstr "Isključi filtere"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Odobravatelj"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Odobravatelj"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Stablo grupe"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Počni sa koriščenjem ITSM-NG"

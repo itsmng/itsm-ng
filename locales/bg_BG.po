@@ -23,8 +23,8 @@ msgstr ""
 "POT-Creation-Date: 2024-05-06 10:26+0200\n"
 "PO-Revision-Date: 2019-04-24 11:58+0000\n"
 "Last-Translator: Yoan Bojilov <admin@videnov.bg>, 2022\n"
-"Language-Team: Bulgarian (Bulgaria) (https://www.transifex.com/glpi/"
-"teams/1637/bg_BG/)\n"
+"Language-Team: Bulgarian (Bulgaria) (https://www.transifex.com/glpi/teams/"
+"1637/bg_BG/)\n"
 "Language: bg_BG\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4426,8 +4426,8 @@ msgid ""
 "Make sure access to %s (%s) is forbidden; otherwise review .htaccess file "
 "and web server configuration."
 msgstr ""
-"Уверете се че достъпът до %s (%s) е отказан; в противен случай прегледайте ."
-"htaccess файла и конфигурацията на уеб сървъра."
+"Уверете се че достъпът до %s (%s) е отказан; в противен случай "
+"прегледайте .htaccess файла и конфигурацията на уеб сървъра."
 
 #: inc/system/requirement/protectedwebaccess.class.php:116
 #: inc/config.class.php:2798
@@ -10468,8 +10468,8 @@ msgid ""
 "Timezones seems not loaded, see https://glpi-install.readthedocs.io/en/"
 "latest/timezones.html."
 msgstr ""
-"Времевите зони изглежда не са заредени, виж https://glpi-install.readthedocs."
-"io/bg/latest/timezones.html"
+"Времевите зони изглежда не са заредени, виж https://glpi-"
+"install.readthedocs.io/bg/latest/timezones.html"
 
 #: inc/notificationajax.class.php:90
 msgid "Error inserting browser notification to queue"
@@ -22005,8 +22005,8 @@ msgstr "Неподдържана версия (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -24953,6 +24953,21 @@ msgstr "Намаляващо"
 #| msgid_plural "Monitor models"
 msgid "Toggle navigation"
 msgstr "Модел монитор"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Одобряващ"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Одобряващ"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Група дърво"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Стартирайте ITSM-NG"

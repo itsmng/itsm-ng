@@ -22000,8 +22000,8 @@ msgstr ""
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25077,6 +25077,21 @@ msgstr "Φθήνοντα"
 
 msgid "Toggle navigation"
 msgstr ""
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Εγκρίνων"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Εγκρίνων"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Δένδρο ομάδας"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Χρήση ITSM-NG"

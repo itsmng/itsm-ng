@@ -10639,8 +10639,8 @@ msgid ""
 "Timezones seems not loaded, see https://glpi-install.readthedocs.io/en/"
 "latest/timezones.html."
 msgstr ""
-"Čini se da vremenske zone nisu učitane, pogledaj https://glpi-install."
-"readthedocs.io/en/latest/timezones.html."
+"Čini se da vremenske zone nisu učitane, pogledaj https://glpi-"
+"install.readthedocs.io/en/latest/timezones.html."
 
 #: inc/notificationajax.class.php:90
 msgid "Error inserting browser notification to queue"
@@ -11615,8 +11615,8 @@ msgstr "Odgovoran"
 #: inc/authldap.class.php:828 inc/authldap.class.php:837
 msgid "You can use a field name or an expression using various %{fieldname}"
 msgstr ""
-"Možeš koristiti ime područja ili jedan izraz, koristeći različite "
-"%{fieldname}"
+"Možeš koristiti ime područja ili jedan izraz, koristeći različite %"
+"{fieldname}"
 
 #: inc/authldap.class.php:829 inc/authldap.class.php:838
 msgid "Example for location: %{city} > %{roomnumber}"
@@ -22428,8 +22428,8 @@ msgstr "Nepodržana verzija (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25335,6 +25335,21 @@ msgstr "Smanjenje"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "Uklj/Isklj noćni modus"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Odobravatelj"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Odobravatelj"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Stablo grupa"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Koristi ITSM-NG"

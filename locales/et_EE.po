@@ -22031,8 +22031,8 @@ msgstr "Mittetoetatud versioon (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -24431,8 +24431,8 @@ msgid ""
 "To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
 "configuration."
 msgstr ""
-"Limiidi suurendamiseks: muuda \"max_input_vars\" või \"suhosin.post."
-"max_vars\" väärtusi php seadetes."
+"Limiidi suurendamiseks: muuda \"max_input_vars\" või "
+"\"suhosin.post.max_vars\" väärtusi php seadetes."
 
 msgid "The description field is mandatory"
 msgstr "Kirjelduse väli on kohustuslik"
@@ -24883,6 +24883,21 @@ msgstr "Regressiivne"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "Lülita öörežiim"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Kinnitaja"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Kinnitaja"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Grupi puu"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Alusta ITSM-NG kasutamist"

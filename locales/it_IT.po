@@ -22152,8 +22152,8 @@ msgstr "Versione non supportata (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -24589,8 +24589,8 @@ msgid ""
 "To increase the limit: change max_input_vars or suhosin.post.max_vars in php "
 "configuration."
 msgstr ""
-"Per aumentare il limite: cambia il valore di max_input_vars o suhosin.post."
-"max_vars del php.ini"
+"Per aumentare il limite: cambia il valore di max_input_vars o "
+"suhosin.post.max_vars del php.ini"
 
 msgid "The description field is mandatory"
 msgstr "Il campo descrizione è obbligatorio"
@@ -25048,6 +25048,21 @@ msgstr "Decrescente"
 #| msgid "Toggle night mode"
 msgid "Toggle navigation"
 msgstr "Abilita/disabilita modalità notte"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Utente validatore"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Utente validatore"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Organizzazione gruppi"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Usa ITSM-NG"

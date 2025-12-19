@@ -10524,8 +10524,8 @@ msgid ""
 "Timezones seems not loaded, see https://glpi-install.readthedocs.io/en/"
 "latest/timezones.html."
 msgstr ""
-"Las zonas horarias no parecen estar cargadas, consulte https://glpi-install."
-"readthedocs.io/en/latest/timezones.html."
+"Las zonas horarias no parecen estar cargadas, consulte https://glpi-"
+"install.readthedocs.io/en/latest/timezones.html."
 
 #: inc/notificationajax.class.php:90
 msgid "Error inserting browser notification to queue"
@@ -11484,8 +11484,8 @@ msgstr "Responsable"
 #: inc/authldap.class.php:828 inc/authldap.class.php:837
 msgid "You can use a field name or an expression using various %{fieldname}"
 msgstr ""
-"Se puede utilizar un nombre de campo o una expresión utilizando diversos "
-"%{fieldname}"
+"Se puede utilizar un nombre de campo o una expresión utilizando diversos %"
+"{fieldname}"
 
 #: inc/authldap.class.php:829 inc/authldap.class.php:838
 msgid "Example for location: %{city} > %{roomnumber}"
@@ -19504,8 +19504,8 @@ msgid ""
 "End date to apply in \"modifyTimestamp\" filter (see %s for supported "
 "formats)"
 msgstr ""
-"Fecha de finalización que se aplicará en el filtro "
-"\"modifyTimestamp\" (consulte %s para ver los formatos compatibles)"
+"Fecha de finalización que se aplicará en el filtro \"modifyTimestamp\" "
+"(consulte %s para ver los formatos compatibles)"
 
 #: inc/console/ldap/synchronizeuserscommand.class.php:128
 #, php-format
@@ -22161,8 +22161,8 @@ msgstr "Versión no admitida (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25121,6 +25121,21 @@ msgstr "Reducido"
 #| msgid "Toggle filters"
 msgid "Toggle navigation"
 msgstr "Alternar filtros"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Responsable de validación"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Responsable de validación"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Árbol de grupo"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Utilizar ITSM-NG"

@@ -22338,8 +22338,8 @@ msgstr "Vesiune nesuportată (%1$s)"
 
 #: inc/update.class.php:595 inc/update.class.php:596
 msgid ""
-"Unable to create security key file! You have to run \"php bin/console itsmng:"
-"security:change_key\" command to manually create this file."
+"Unable to create security key file! You have to run \"php bin/console "
+"itsmng:security:change_key\" command to manually create this file."
 msgstr ""
 
 #: inc/devicebatterymodel.class.php:44
@@ -25419,6 +25419,21 @@ msgstr "Degresivă"
 #| msgid "Toggle filters"
 msgid "Toggle navigation"
 msgstr "Filtre Comutare"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver type"
+msgstr "Validator"
+
+#, fuzzy
+#| msgid "Approver"
+msgid "Approver group"
+msgstr "Validator"
+
+#, fuzzy
+#| msgid "Group tree"
+msgid "Group users"
+msgstr "Arborescenţă grupuri"
 
 #~ msgid "Use GLPI"
 #~ msgstr "Folositi ITSM-NG"
