@@ -35,7 +35,6 @@ use Glpi\Event;
 
 include('../inc/includes.php');
 
-Session::checkRight('software', UPDATE);
 $inst = new Item_SoftwareVersion();
 
 // From asset - Software tab (add form)
@@ -44,13 +43,13 @@ if (isset($_POST['add'])) {
         isset($_POST['itemtype']) && isset($_POST['items_id']) && $_POST['items_id']
         && isset($_POST['softwareversions_id']) && $_POST['softwareversions_id']
     ) {
-        if (
-            $inst->add([
-            'itemtype'        => $_POST['itemtype'],
-            'items_id'        => $_POST['items_id'],
+        $input = [
+            'itemtype' => $_POST['itemtype'],
+            'items_id' => $_POST['items_id'],
             'softwareversions_id' => $_POST['softwareversions_id']
-            ])
-        ) {
+        ];
+        $inst->check(-1, CREATE, $input);
+        if ($inst->add($input)) {
             Event::log(
                 $_POST["items_id"],
                 $_POST['itemtype'],
