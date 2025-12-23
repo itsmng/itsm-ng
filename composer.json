@@ -9,7 +9,7 @@
         "docs": "https://wiki.itsm-ng.org/"
     },
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-fileinfo": "*",
@@ -77,7 +77,7 @@
     "config": {
         "optimize-autoloader": true,
         "platform": {
-            "php": "7.2.0"
+            "php": "7.4.33"
         },
         "sort-packages": true
     },
