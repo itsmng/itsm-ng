@@ -32,6 +32,7 @@
  */
 
 use Glpi\Event;
+use Glpi\Toolbox\URL;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -1796,15 +1797,15 @@ class Auth extends CommonGLPI
         }
         if (isset($_POST["update"])) {
             $oidc_result = [
-               'Provider'   => $_POST["provider"],
-               'ClientID'   => $_POST["clientID"],
-               'ClientSecret'  => Toolbox::sodiumEncrypt($_POST["clientSecret"]),
+               'Provider'     => URL::sanitizeURL(trim($_POST["provider"])),
+               'ClientID'     => trim($_POST["clientID"]),
+               'ClientSecret' => Toolbox::sodiumEncrypt(trim($_POST["clientSecret"])),
                'is_activate'  => $_POST["useoidc"],
-               'is_forced'  => $_POST["forceoidc"],
-               'scope'  => $_POST["scope"],
-               'proxy'  => $_POST["proxy"],
-               'cert'  => $_POST["cert"],
-               'logout'  => $_POST["logout"],
+               'is_forced'    => $_POST["forceoidc"],
+               'scope'        => $_POST["scope"],
+               'proxy'        => $_POST["proxy"],
+               'cert'         => $_POST["cert"],
+               'logout'       => URL::sanitizeURL(trim($_POST["logout"])),
                'sso_link_users' => $_POST['sso_link_users'],
             ];
             $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
