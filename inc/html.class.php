@@ -51,6 +51,7 @@ class Html
         'node_modules/select2/dist/css/select2.min.css',
         "node_modules/jquery-ui-dist/jquery-ui.min.css",
         'node_modules/@fortawesome/fontawesome-free/css/all.css',
+        "node_modules/gridstack/dist/gridstack.min.css",
         'css/jstree-glpi.css',
     ];
 
