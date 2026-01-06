@@ -3066,12 +3066,12 @@ class User extends CommonDBTM
                 $paramsmassaction = ['authtype' => '__VALUE__'];
                 Ajax::updateItemOnSelectEvent(
                     "dropdown_authtype$rand",
-                    "show_massiveaction_field",
+                    "show_massiveaction_field$rand",
                     $CFG_GLPI["root_doc"] .
                                                  "/ajax/dropdownMassiveActionAuthMethods.php",
                     $paramsmassaction
                 );
-                echo "<span id='show_massiveaction_field'><br><br>";
+                echo "<span id='show_massiveaction_field$rand'><br><br>";
                 echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']) . "</span>";
                 return true;
             case 'change_timezone':
