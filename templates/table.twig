@@ -256,10 +256,38 @@ $(document).ready(function() {
         }
     });
 
+    const renderPageSizeDropdown = () => {
+        const pageSize = table.getState().pagination.pageSize;
+        const pageSizeOptions = [15, 25, 50, 100, 1000, 10000];
+
+        return html`
+            <div class="page-list">
+                <div class="dropdown dropup">
+                    <button
+                        class="btn btn-secondary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                    >
+                        ${pageSize}
+                    </button>
+                    <div class="dropdown-menu">
+                        ${pageSizeOptions.map(size => html`
+                            <a
+                                class="dropdown-item"
+                                onclick="table.setPageSize(${size})"
+                            >
+                                ${size}
+                            </a>
+                        `)}
+                    </div>
+                </div>
+            </div>
+        `;
+    };
+
     const renderPageSizeSelector = () => {
         const pageSize = table.getState().pagination.pageSize;
         const totalRows = url ? serverTotal : table.getFilteredRowModel().rows.length;
-        const pageSizeOptions = [15, 25, 50, 100];
 
         return html`
             <div class="fixed-table-pagination">
@@ -267,27 +295,7 @@ $(document).ready(function() {
                     <span class="pagination-info">
                         Showing ${Math.min(totalRows, pageSize)} of ${totalRows} entries
                     </span>
-                    <div class="page-list">
-                        <div class="dropdown dropup">
-                            <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                            >
-                                ${pageSize}
-                            </button>
-                            <div class="dropdown-menu">
-                                ${pageSizeOptions.map(size => html`
-                                    <a
-                                        class="dropdown-item"
-                                        onclick="table.setPageSize(${size})"
-                                    >
-                                        ${size}
-                                    </a>
-                                `)}
-                            </div>
-                        </div>
-                    </div>
+                    ${renderPageSizeDropdown()}
                 </div>
             </div>
         `;
@@ -331,35 +339,13 @@ $(document).ready(function() {
             pages.push(totalPages);
         }
 
-        const pageSizeOptions = [15, 25, 50, 100];
-
         return html`
             <div class="fixed-table-pagination">
                 <div class="float-left pagination-detail">
                     <span class="pagination-info">
                         Showing ${startRow} to ${endRow} of ${totalRows} entries
                     </span>
-                    <div class="page-list">
-                        <div class="dropdown dropup">
-                            <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                            >
-                                ${pageSize}
-                            </button>
-                            <div class="dropdown-menu">
-                                ${pageSizeOptions.map(size => html`
-                                    <a
-                                        class="dropdown-item"
-                                        onclick="table.setPageSize(${size})"
-                                    >
-                                        ${size}
-                                    </a>
-                                `)}
-                            </div>
-                        </div>
-                    </div>
+                    ${renderPageSizeDropdown()}
                 </div>
                 <div class="float-right pagination">
                     <ul class="pagination">
@@ -741,7 +727,7 @@ $(document).ready(function() {
         });
         wrapperElement.querySelectorAll('.dropdown-item').forEach(item => {
             const size = parseInt(item.textContent);
-            if ([15, 25, 50, 100].includes(size)) {
+            if ([15, 25, 50, 100, 1000, 10000].includes(size)) {
                 item.onclick = () => {
                     table.setPageSize(size);
                 };
