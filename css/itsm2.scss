@@ -129,7 +129,7 @@ main {
 #c_logo {
     width: 200px;
     height: 50px;
-    background: var(--logo-file-homepage);
+    background: var(--logo-homepage);
     background-repeat: no-repeat;
     background-size: auto 50px;
     transition: width var(--nav-transition-time) ease;
@@ -147,7 +147,7 @@ main {
 }
 
 #logo_login {
-    background: var(--logo-file);
+    background: var(--logo-login);
     background-repeat: no-repeat;
     background-position: center;
     background-size: auto 10rem;
@@ -1313,7 +1313,7 @@ div.chip>p {
 }
 
 #logo_bloc {
-    background: var(--logo-file);
+    background: var(--logo-login);
     filter: invert(100%);
     margin: 1rem auto;
     background-repeat: no-repeat;
