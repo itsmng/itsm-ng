@@ -5724,7 +5724,7 @@ JAVASCRIPT;
 
         $prod_file = self::getScssCompilePath($url, $supportsVariant ? $variant : null);
 
-        if (file_exists($prod_file) && $_SESSION['glpi_use_mode'] != Session::DEBUG_MODE) {
+        if (file_exists($prod_file) && (!isset($_SESSION['glpi_use_mode']) || $_SESSION['glpi_use_mode'] != Session::DEBUG_MODE)) {
             $url = self::getPrefixedUrl(str_replace(GLPI_ROOT, '', $prod_file));
         } else {
             $file = $url;
