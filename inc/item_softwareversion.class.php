@@ -536,48 +536,6 @@ class Item_SoftwareVersion extends CommonDBRelation
         $canshowitems  = [];
         $item_version_table = self::getTable(__CLASS__);
 
-        $refcolumns = [
-           'vername'           => _n('Version', 'Versions', Session::getPluralNumber()),
-           'item_type'          => __('Item type'),
-           'itemname'          => __('Name'),
-           'entity'            => Entity::getTypeName(1),
-           'serial'            => __('Serial number'),
-           'otherserial'       => __('Inventory number'),
-           'location,itemname' => Location::getTypeName(1),
-           'state,itemname'    => __('Status'),
-           'groupe,itemname'   => Group::getTypeName(1),
-           'username,itemname' => User::getTypeName(1),
-           'lname'             => SoftwareLicense::getTypeName(Session::getPluralNumber()),
-           'date_install'      => __('Installation date')
-        ];
-        if ($crit != "softwares_id") {
-            unset($refcolumns['vername']);
-        }
-
-        if (isset($_GET["start"])) {
-            $start = $_GET["start"];
-        } else {
-            $start = 0;
-        }
-
-        if (isset($_GET["order"]) && ($_GET["order"] == "DESC")) {
-            $order = "DESC";
-        } else {
-            $order = "ASC";
-        }
-
-        if (isset($_GET["sort"]) && !empty($_GET["sort"]) && isset($refcolumns[$_GET["sort"]])) {
-            // manage several param like location,compname :  order first
-            $tmp  = explode(",", $_GET["sort"]);
-            $sort = "`" . implode("` $order,`", $tmp) . "`";
-        } else {
-            if ($crit == "softwares_id") {
-                $sort = "`entity` $order, `version`, `itemname`";
-            } else {
-                $sort = "`entity` $order, `itemname`";
-            }
-        }
-
         // Total Number of events
         if ($crit == "softwares_id") {
             // Software ID
@@ -595,9 +553,7 @@ class Item_SoftwareVersion extends CommonDBRelation
             return;
         }
 
-        // Display the pager
-        Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, $number);
-
+        // Build UNION query across all software_types
         $queries = [];
         foreach ($CFG_GLPI['software_types'] as $itemtype) {
             $canshowitems[$itemtype] = $itemtype::canView();
@@ -738,181 +694,174 @@ class Item_SoftwareVersion extends CommonDBRelation
             }
             $queries[] = $query;
         }
+
         $union = new QueryUnion($queries, true);
         $criteria = [
            'SELECT' => [],
            'FROM'   => $union,
-           'ORDER'        => "$sort $order",
-           'LIMIT'        => $_SESSION['glpilist_limit'],
-           'START'        => $start
+           'ORDER'  => ['entity ASC', 'version ASC', 'itemname ASC']
         ];
         $iterator = $DB->request($criteria);
 
         $rand = mt_rand();
+        $softwares_id = null;
+        $showEntity = false;
+        $linkUser = User::canView();
 
-        if ($data = $iterator->next()) {
-            $softwares_id  = $data['sID'];
-            $soft          = new Software();
-            $showEntity    = ($soft->getFromDB($softwares_id) && $soft->isRecursive());
-            $linkUser      = User::canView();
-            $title         = $soft->fields["name"];
+        // Process first row to get software info
+        $allData = iterator_to_array($iterator);
+        if (count($allData) > 0) {
+            $firstData = $allData[0];
+            $softwares_id = $firstData['sID'];
+            $soft = new Software();
+            $showEntity = ($soft->getFromDB($softwares_id) && $soft->isRecursive());
+            $title = $soft->fields["name"];
 
             if ($crit == "id") {
-                $title = sprintf(__('%1$s - %2$s'), $title, $data["version"]);
+                $title = sprintf(__('%1$s - %2$s'), $title, $firstData["version"]);
             }
 
             Session::initNavigateListItems(
-                $data['item_type'],
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
+                $firstData['item_type'],
                 sprintf(
                     __('%1$s = %2$s'),
                     Software::getTypeName(1),
                     $title
                 )
             );
-
-            if ($canedit) {
-                $rand = mt_rand();
-                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                $massiveactionparams
-                   = [
-                      'num_displayed'
-                      => min($_SESSION['glpilist_limit'], $number),
-                      'container'
-                      => 'mass' . __CLASS__ . $rand,
-                      'specific_actions'
-                      => [
-                         __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'move_version'
-                         => _x('button', 'Move'),
-                         'purge' => _x('button', 'Delete permanently')
-                      ]
-                   ];
-                // Options to update version
-                $massiveactionparams['extraparams']['options']['move']['softwares_id'] = $softwares_id;
-                if ($crit == 'softwares_id') {
-                    $massiveactionparams['extraparams']['options']['move']['used'] = [];
-                } else {
-                    $massiveactionparams['extraparams']['options']['move']['used'] = [$searchID];
-                }
-
-                Html::showMassiveActions($massiveactionparams);
-            }
-
-            echo "<table class='tab_cadre_fixehov' aria-label='Item detail'>";
-
-            $header_begin  = "<tr>";
-            $header_top    = '';
-            $header_bottom = '';
-            $header_end    = '';
-            if ($canedit) {
-                $header_begin  .= "<th width='10'>";
-                $header_top    .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                $header_bottom .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                $header_end    .= "</th>";
-            }
-            $columns = $refcolumns;
-            if (!$showEntity) {
-                unset($columns['entity']);
-            }
-
-            foreach ($columns as $key => $val) {
-                // Non order column
-                if ($key[0] == '_') {
-                    $header_end .= "<th>$val</th>";
-                } else {
-                    $header_end .= "<th" . ($sort == "`$key`" ? " class='order_$order'" : '') . ">" .
-                       "<a href='javascript:reloadTab(\"sort=$key&amp;order=" .
-                       (($order == "ASC") ? "DESC" : "ASC") . "&amp;start=0\");'>$val</a></th>";
-                }
-            }
-
-            $header_end .= "</tr>\n";
-            echo $header_begin . $header_top . $header_end;
-
-            do {
-                Session::addToNavigateListItems($data['item_type'], $data["iID"]);
-
-                echo "<tr class='tab_bg_2'>";
-                if ($canedit) {
-                    echo "<td>";
-                    Html::showMassiveActionCheckBox(__CLASS__, $data["id"]);
-                    echo "</td>";
-                }
-
-                if ($crit == "softwares_id") {
-                    echo "<td><a href='" . SoftwareVersion::getFormURLWithID($data['vID']) . "'>" .
-                       $data['version'] . "</a></td>";
-                }
-
-                $itemname = $data['itemname'];
-                if (empty($itemname) || $_SESSION['glpiis_ids_visible']) {
-                    $itemname = sprintf(__('%1$s (%2$s)'), $itemname, $data['iID']);
-                }
-
-                echo "<td>{$data['item_type']}</td>";
-
-                if ($canshowitems[$data['item_type']]) {
-                    echo "<td><a href='" . $data['item_type']::getFormURLWithID($data['iID']) . "'>$itemname</a></td>";
-                } else {
-                    echo "<td>" . $itemname . "</td>";
-                }
-
-                if ($showEntity) {
-                    echo "<td>" . $data['entity'] . "</td>";
-                }
-                echo "<td>" . $data['serial'] . "</td>";
-                echo "<td>" . $data['otherserial'] . "</td>";
-                echo "<td>" . $data['location'] . "</td>";
-                echo "<td>" . $data['state'] . "</td>";
-                echo "<td>" . $data['groupe'] . "</td>";
-                echo "<td>" . formatUserName(
-                    $data['userid'],
-                    $data['username'],
-                    $data['userrealname'],
-                    $data['userfirstname'],
-                    $linkUser
-                ) . "</td>";
-
-                $lics = Item_SoftwareLicense::getLicenseForInstallation(
-                    $data['item_type'],
-                    $data['iID'],
-                    $data['vID']
-                );
-                echo "<td>";
-
-                if (count($lics)) {
-                    foreach ($lics as $lic) {
-                        $serial = $lic['serial'];
-
-                        if (!empty($lic['type'])) {
-                            $serial = sprintf(__('%1$s (%2$s)'), $serial, $lic['type']);
-                        }
-
-                        echo "<a href='" . SoftwareLicense::getFormURLWithID($lic['id']) . "'>" . $lic['name'];
-                        echo "</a> - " . $serial;
-
-                        echo "<br>";
-                    }
-                }
-                echo "</td>";
-
-                echo "<td>" . Html::convDate($data['date_install']) . "</td>";
-                echo "</tr>\n";
-            } while ($data = $iterator->next());
-
-            echo $header_begin . $header_bottom . $header_end;
-
-            echo "</table>\n";
-            if ($canedit) {
-                $massiveactionparams['ontop'] = false;
-                Html::showMassiveActions($massiveactionparams);
-                Html::closeForm();
-            }
-        } else { // Not found
-            echo __('No item found');
         }
-        Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, $number);
+
+        // Build fields array
+        $fields = [];
+        if ($crit == "softwares_id") {
+            $fields[] = _n('Version', 'Versions', Session::getPluralNumber());
+        }
+        $fields[] = __('Item type');
+        $fields[] = __('Name');
+        if ($showEntity) {
+            $fields[] = Entity::getTypeName(1);
+        }
+        $fields[] = __('Serial number');
+        $fields[] = __('Inventory number');
+        $fields[] = Location::getTypeName(1);
+        $fields[] = __('Status');
+        $fields[] = Group::getTypeName(1);
+        $fields[] = User::getTypeName(1);
+        $fields[] = SoftwareLicense::getTypeName(Session::getPluralNumber());
+        $fields[] = __('Installation date');
+
+        // Build values and massive_action arrays
+        $values = [];
+        $massive_action = [];
+
+        foreach ($allData as $data) {
+            Session::addToNavigateListItems($data['item_type'], $data["iID"]);
+
+            $newValue = [];
+
+            // Version column (only for software view)
+            if ($crit == "softwares_id") {
+                $newValue[] = "<a href='" . SoftwareVersion::getFormURLWithID($data['vID']) . "'>" .
+                   htmlspecialchars($data['version']) . "</a>";
+            }
+
+            // Item type
+            $newValue[] = $data['item_type'];
+
+            // Item name with link
+            $itemname = $data['itemname'];
+            if (empty($itemname) || $_SESSION['glpiis_ids_visible']) {
+                $itemname = sprintf(__('%1$s (%2$s)'), $itemname, $data['iID']);
+            }
+            if ($canshowitems[$data['item_type']]) {
+                $newValue[] = "<a href='" . $data['item_type']::getFormURLWithID($data['iID']) . "'>" .
+                   htmlspecialchars($itemname) . "</a>";
+            } else {
+                $newValue[] = htmlspecialchars($itemname);
+            }
+
+            // Entity (conditional)
+            if ($showEntity) {
+                $newValue[] = $data['entity'];
+            }
+
+            // Serial, Inventory number, Location, State, Group
+            $newValue[] = $data['serial'];
+            $newValue[] = $data['otherserial'];
+            $newValue[] = $data['location'];
+            $newValue[] = $data['state'];
+            $newValue[] = $data['groupe'];
+
+            // User
+            $newValue[] = formatUserName(
+                $data['userid'],
+                $data['username'],
+                $data['userrealname'],
+                $data['userfirstname'],
+                $linkUser
+            );
+
+            // Licenses
+            $lics = Item_SoftwareLicense::getLicenseForInstallation(
+                $data['item_type'],
+                $data['iID'],
+                $data['vID']
+            );
+            $licenseHtml = '';
+            if (count($lics)) {
+                $licParts = [];
+                foreach ($lics as $lic) {
+                    $serial = $lic['serial'];
+                    if (!empty($lic['type'])) {
+                        $serial = sprintf(__('%1$s (%2$s)'), $serial, $lic['type']);
+                    }
+                    $licParts[] = "<a href='" . SoftwareLicense::getFormURLWithID($lic['id']) . "'>" .
+                       htmlspecialchars($lic['name']) . "</a> - " . htmlspecialchars($serial);
+                }
+                $licenseHtml = implode('<br>', $licParts);
+            }
+            $newValue[] = $licenseHtml;
+
+            // Installation date
+            $newValue[] = Html::convDate($data['date_install']);
+
+            $values[] = $newValue;
+            $massive_action[] = sprintf('item[%s][%s]', __CLASS__, $data['id']);
+        }
+
+        // Display massive actions and table
+        $massActionContainerId = 'mass' . __CLASS__ . $rand;
+
+        if ($canedit && count($values) > 0) {
+            $massiveactionparams = [
+               'num_displayed' => count($values),
+               'container' => $massActionContainerId,
+               'display_arrow' => false,
+               'specific_actions' => [
+                  __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'move_version'
+                  => _x('button', 'Move'),
+                  'purge' => _x('button', 'Delete permanently')
+               ]
+            ];
+            // Options to update version
+            if ($softwares_id) {
+                $massiveactionparams['extraparams']['options']['move']['softwares_id'] = $softwares_id;
+            }
+            if ($crit == 'softwares_id') {
+                $massiveactionparams['extraparams']['options']['move']['used'] = [];
+            } else {
+                $massiveactionparams['extraparams']['options']['move']['used'] = [$searchID];
+            }
+
+            Html::showMassiveActions($massiveactionparams);
+        }
+
+        renderTwigTemplate('table.twig', [
+           'id' => $massActionContainerId,
+           'fields' => $fields,
+           'values' => $values,
+           'massive_action' => $canedit ? $massive_action : [],
+        ]);
 
         echo "</div>\n";
     }
