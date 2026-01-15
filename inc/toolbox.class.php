@@ -1385,6 +1385,9 @@ class Toolbox
 
         //get img information (dimensions and extension)
         $img_infos  = getimagesize($source_path);
+        if ($img_infos === false) {
+            return false;
+        }
         if (empty($img_width)) {
             $img_width  = $img_infos[0];
         }
@@ -1434,8 +1437,15 @@ class Toolbox
                 $source_res = imagecreatefrompng($source_path);
                 break;
 
+            case IMAGETYPE_WEBP:
+                $source_res = imagecreatefromwebp($source_path);
+                break;
+
             default:
                 return false;
+        }
+        if (!$source_res || $source_res === false) {
+            return false;
         }
 
         //create new img resource for store thumbnail
