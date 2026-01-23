@@ -5595,32 +5595,6 @@ div#viewgraph {
    }
 }
 
-.grid-stack-item {
-   position: relative;
-
-   /** should be erased by lib, defined for case without lib **/
-   &:not(.lock-bottom) .grid-stack-item-content {
-      text-align: center;
-      overflow: hidden;
-      cursor: move;
-      inset: 0 !important;
-
-      /* fallback */
-      cursor: -webkit-grab;
-      cursor: -moz-grab;
-      cursor: grab;
-
-      &:active {
-         cursor: move;
-
-         /* fallback */
-         cursor: -webkit-grabbing;
-         cursor: -moz-grabbing;
-         cursor: grabbing;
-      }
-   }
-}
-
 .grid-stack-item-content a {
    font-size: 1rem;
    font-weight: bold;
