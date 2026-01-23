@@ -2923,6 +2923,104 @@ class Dropdown
                     }
                     //no break to reach default case.
 
+                case User::class:
+                    $right = $post['right'] ?? 'all';
+
+                    $user_search_text = (isset($post['searchText']) ? $post['searchText'] : '');
+                    $user_inactive_deleted = isset($post['inactive_deleted']) ? $post['inactive_deleted'] : 0;
+                    $user_with_no_right = isset($post['with_no_right']) ? $post['with_no_right'] : 0;
+                    $user_used = isset($post['used']) ? $post['used'] : [];
+                    $user_entity_restrict = -1;
+                    if (isset($post['entity_restrict'])) {
+                        $user_entity_restrict = Toolbox::jsonDecode($post['entity_restrict']);
+                    }
+                    if (isset($post['value'])) {
+                        $user_used[] = (int)$post['value'];
+                    }
+
+                    // Use User::getSqlSearchResult for permission-based filtering
+                    $iterator = User::getSqlSearchResult(
+                        false,  // count = false
+                        $right,
+                        $user_entity_restrict,
+                        0,  // value
+                        $user_used,
+                        $user_search_text,
+                        $start,
+                        (int)$post['page_limit'],
+                        $user_inactive_deleted,
+                        $user_with_no_right
+                    );
+
+                    // Display first if no search
+                    if ($post['page'] == 1 && empty($post['searchText'])) {
+                        if (!isset($post['display_emptychoice']) || $post['display_emptychoice']) {
+                            $datas[] = [
+                               'id' => 0,
+                               'text' => $post["emptylabel"]
+                            ];
+                        }
+                    }
+                    if ($post['page'] == 1) {
+                        if (count($toadd)) {
+                            foreach ($toadd as $key => $val) {
+                                $datas[] = [
+                                   'id' => $key,
+                                   'text' => stripslashes($val)
+                                ];
+                            }
+                        }
+                    }
+
+                    // Process iterator results
+                    if (count($iterator)) {
+                        while ($data = $iterator->next()) {
+                            $outputval = formatUserName(
+                                $data['id'],
+                                $data['name'],
+                                $data['realname'],
+                                $data['firstname']
+                            );
+
+                            $title = sprintf(__('%1$s - %2$s'), $outputval, $data['name']);
+
+                            if (
+                                $_SESSION["glpiis_ids_visible"]
+                                || (strlen($outputval) == 0)
+                            ) {
+                                $outputval = sprintf(__('%1$s (%2$s)'), $outputval, $data['id']);
+                            }
+
+                            if ($displaywith) {
+                                foreach ($post['displaywith'] as $key) {
+                                    if (isset($data[$key])) {
+                                        $withoutput = $data[$key];
+                                        if (isForeignKeyField($key)) {
+                                            $withoutput = Dropdown::getDropdownName(
+                                                getTableNameForForeignKeyField($key),
+                                                $data[$key]
+                                            );
+                                        }
+                                        if ((strlen($withoutput) > 0) && ($withoutput != '&nbsp;')) {
+                                            $outputval = sprintf(__('%1$s - %2$s'), $outputval, $withoutput);
+                                        }
+                                    }
+                                }
+                            }
+
+                            $datas[] = [
+                               'id' => $data['id'],
+                               'text' => $outputval,
+                               'title' => $title
+                            ];
+                            $count++;
+                        }
+                    }
+
+                    $ret['results'] = $datas;
+                    $ret['count']   = $count;
+                    return ($json === true) ? json_encode($ret) : $ret;
+
                 default:
                     $criteria = [
                        'SELECT' => array_merge(["$table.*"], $addselect),
