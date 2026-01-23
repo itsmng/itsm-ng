@@ -53,6 +53,7 @@ function expandSelect(&$select, $fields = [])
                 "used" => $select["used"] ?? [],
                 "emptylabel" => Dropdown::EMPTY_VALUE,
                 "permit_select_parent" => 0,
+                "right" => $select["right"] ?? null,
             ],
         ];
         $select["noLib"] = $fields["noLib"];

@@ -99,6 +99,7 @@ if (isset($_POST["type"])
                     'type'        => 'select',
                     'name'        => $options['name'],
                     'itemtype'    => User::class,
+                    'right'       => $right,
                 ];
                 renderTwigTemplate('macros/input.twig', expandSelect($selectOptions, [
                     'condition' => [
