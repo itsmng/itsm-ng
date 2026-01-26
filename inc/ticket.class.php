@@ -4096,6 +4096,19 @@ class Ticket extends CommonITILObject
             ];
         }
 
+        // Add hidden fields for template tracking (needed for predefined fields on category change)
+        // Always add these fields to detect template changes (including from no template to a template)
+        $hiddenFields[] = [
+            'type' => 'hidden',
+            'name' => $key,
+            'value' => $tt->isField('id') ? $tt->fields['id'] : 0
+        ];
+        $hiddenFields[] = [
+            'type' => 'hidden',
+            'name' => '_predefined_fields',
+            'value' => Toolbox::prepareArrayForInput($predefined_fields)
+        ];
+
         foreach ($hiddenFields as $hiddenField) {
             $mainInputs[] = $hiddenField;
         }
@@ -4807,7 +4820,7 @@ class Ticket extends CommonITILObject
         // Only manage predefined values on ticket creation
         $predefined_fields = [];
         $tpl_key = $this->getTemplateFormFieldName();
-        if (!$ID) {
+        if ($this->isNewID($ID)) {
             if (isset($tt->predefined) && count($tt->predefined)) {
                 foreach ($tt->predefined as $predeffield => $predefvalue) {
                     if (isset($default_values[$predeffield])) {
@@ -4919,6 +4932,16 @@ class Ticket extends CommonITILObject
                        'type' => 'hidden',
                        'name' => '_projecttasks_id',
                        'value' => $options['_projecttasks_id'],
+                    ] : [],
+                    $this->isNewID($ID) ? [
+                       'type' => 'hidden',
+                       'name' => $tpl_key,
+                       'value' => $tt->isField('id') ? $tt->fields['id'] : 0,
+                    ] : [],
+                    $this->isNewID($ID) ? [
+                       'type' => 'hidden',
+                       'name' => '_predefined_fields',
+                       'value' => Toolbox::prepareArrayForInput($predefined_fields),
                     ] : [],
                     __('Opening date') => $ID ? [
                        'type' => 'datetime-local',
@@ -5059,8 +5082,16 @@ class Ticket extends CommonITILObject
                      'hooks' => [
                          'change' => $this->isNewID($ID) ? 'this.form.submit();' : ''
                      ],
-                     'init' => <<<JS
+                     'init' => (function() use ($ID, $CFG_GLPI) {
+                         $isNewJS = $this->isNewID($ID) ? 'true' : 'false';
+                         return <<<JS
                     $('#dropdownForTicketCategory').val('');
+                    // Bind change event for Select2 compatibility
+                    $('#dropdownForTicketCategory').on('change', function() {
+                        if ({$isNewJS}) {
+                            $(this).closest('form').submit();
+                        }
+                    });
                     $.ajax({
                       url: '{$CFG_GLPI["root_doc"]}/ajax/dropdownTicketCategories.php',
                       method: 'POST',
@@ -5079,7 +5110,8 @@ class Ticket extends CommonITILObject
                         $('#dropdownForTicketCategory').val({$this->fields['itilcategories_id']});
                       }
                     });
-                JS,
+                JS;
+                     })(),
                   ],
                   __('Status') => [
                      'type' => 'select',
