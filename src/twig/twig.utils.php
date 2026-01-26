@@ -56,7 +56,9 @@ function expandSelect(&$select, $fields = [])
                 "right" => $select["right"] ?? null,
             ],
         ];
-        $select["noLib"] = $fields["noLib"];
+        if (isset($fields["noLib"])) {
+            $select["noLib"] = $fields["noLib"];
+        }
     }
     return $select;
 }
