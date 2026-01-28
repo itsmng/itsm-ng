@@ -2806,6 +2806,9 @@ class Ticket extends CommonITILObject
                       'type' => 'select',
                       'name' => '_mergeticket',
                       'itemtype' => Ticket::class,
+                      'condition' => [
+                         'NOT' => ['status' => [$_SESSION['SOLVED'], $_SESSION['CLOSED']]]
+                      ],
                       'used' => $ma->items['Ticket'],
                       'col_lg' => 12,
                       'col_md' => 12,
@@ -2850,6 +2853,7 @@ class Ticket extends CommonITILObject
                       'col_md' => 12,
                    ]
                 ];
+                expandSelect($inputs[Ticket::getTypeName()]);
                 echo "<div class='center row'>";
                 foreach ($inputs as $title => $input) {
                     renderTwigTemplate('macros/wrappedInput.twig', [
