@@ -4952,7 +4952,6 @@ class Ticket extends CommonITILObject
                     ] : [],
                     __('By') => $ID ? [
                        'type' => 'select',
-                       'noLib' => 'true',
                        'name' => 'users_id_recipient',
                        'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields["users_id_recipient"],
