@@ -5082,7 +5082,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
         $can_admin = $this->canAdminActors();
         // on creation can select actor
-        if (!$ID) {
+        if ($this->isNewID($ID)) {
             $can_admin = true;
         }
 
@@ -5135,7 +5135,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         // Requester
-        if (!$ID) {
+        if ($this->isNewID($ID)) {
             $reqdisplay = false;
             if (
                 $can_admin
@@ -5186,7 +5186,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         // Requester Group
-        if (!$ID) {
+        if ($this->isNewID($ID)) {
             if (
                 $can_admin
                 && !$is_hidden['_groups_id_requester']
@@ -5199,7 +5199,7 @@ abstract class CommonITILObject extends CommonDBTM
                 }
                 echo "&nbsp;";
 
-                Group::dropdown([
+                echo Group::dropdown([
                    'name'      => '_groups_id_requester',
                    'value'     => $options["_groups_id_requester"],
                    'entity'    => $this->fields["entities_id"],
@@ -5272,7 +5272,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         // Observer
-        if (!$ID) {
+        if ($this->isNewID($ID)) {
             if (
                 $can_admin
                 && !$is_hidden['_users_id_observer']
@@ -5296,7 +5296,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         // Observer Group
-        if (!$ID) {
+        if ($this->isNewID($ID)) {
             if (
                 $can_admin
                 && !$is_hidden['_groups_id_observer']
@@ -5309,7 +5309,7 @@ abstract class CommonITILObject extends CommonDBTM
                 }
                 echo "&nbsp;";
 
-                Group::dropdown([
+                echo Group::dropdown([
                    'name'      => '_groups_id_observer',
                    'value'     => $options["_groups_id_observer"],
                    'entity'    => $this->fields["entities_id"],
@@ -5395,7 +5395,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         // Assign User
-        if (!$ID) {
+        if ($this->isNewID($ID)) {
             if (
                 $can_assign
                 && !$is_hidden['_users_id_assign']
@@ -5431,7 +5431,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         // Assign Groups
-        if (!$ID) {
+        if ($this->isNewID($ID)) {
             if (
                 $can_assign
                 && !$is_hidden['_groups_id_assign']
@@ -5462,7 +5462,7 @@ abstract class CommonITILObject extends CommonDBTM
                                                                              => '__VALUE__']];
                 }
 
-                Group::dropdown($params);
+                echo Group::dropdown($params);
                 echo "<span id='countgroupassign_$rand'>";
                 echo "</span>";
 
@@ -5495,7 +5495,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         // Assign Suppliers
-        if (!$ID) {
+        if ($this->isNewID($ID)) {
             if (
                 $can_assign
                 && !$is_hidden['_suppliers_id_assign']

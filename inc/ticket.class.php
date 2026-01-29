@@ -1702,6 +1702,9 @@ class Ticket extends CommonITILObject
     {
         // Standard clean datas
         $input =  parent::prepareInputForAdd($input);
+        if ($input === false) {
+            return false;
+        }
         $input = $this->handleTemplateFields($input);
         if ($input === false) {
             return false;
