@@ -654,6 +654,11 @@ class Update extends CommonGLPI
                 update211to212();
 
                 // no break
+            case "2.1.2":
+                include_once "{$updir}itsm_update_212_213.php";
+                update212to213();
+
+                // no break
             case ITSM_VERSION:
             case ITSM_SCHEMA_VERSION:
                 break;

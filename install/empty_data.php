@@ -4910,13 +4910,13 @@ $tables['glpi_profilerights'] = [
       'name'        => 'ticket',
       'rights'      => '5',
    ], [
-      'profiles_id' => '1',
-      'name'        => 'followup',
-      'rights'      => '5',
+       'profiles_id' => '1',
+       'name'        => 'followup',
+       'rights'      => '16389',
    ], [
-      'profiles_id' => '1',
-      'name'        => 'task',
-      'rights'      => '1',
+       'profiles_id' => '1',
+       'name'        => 'task',
+       'rights'      => '16385',
    ], [
       'profiles_id' => '1',
       'name'        => 'planning',
@@ -5182,13 +5182,13 @@ $tables['glpi_profilerights'] = [
       'name'        => 'ticket',
       'rights'      => '168989',
    ], [
-      'profiles_id' => '2',
-      'name'        => 'followup',
-      'rights'      => '5',
+       'profiles_id' => '2',
+       'name'        => 'followup',
+       'rights'      => '16389',
    ], [
-      'profiles_id' => '2',
-      'name'        => 'task',
-      'rights'      => '1',
+       'profiles_id' => '2',
+       'name'        => 'task',
+       'rights'      => '16385',
    ], [
       'profiles_id' => '6',
       'name'        => 'projecttask',
@@ -5470,13 +5470,13 @@ $tables['glpi_profilerights'] = [
       'name'        => 'ticket',
       'rights'      => '261151',
    ], [
-      'profiles_id' => '3',
-      'name'        => 'followup',
-      'rights'      => '15383',
+       'profiles_id' => '3',
+       'name'        => 'followup',
+       'rights'      => '31763',
    ], [
-      'profiles_id' => '3',
-      'name'        => 'task',
-      'rights'      => '13329',
+       'profiles_id' => '3',
+       'name'        => 'task',
+       'rights'      => '29713',
    ], [
       'profiles_id' => '3',
       'name'        => 'projecttask',
@@ -5750,13 +5750,13 @@ $tables['glpi_profilerights'] = [
       'name'        => 'ticket',
       'rights'      => '261151',
    ], [
-      'profiles_id' => '4',
-      'name'        => 'followup',
-      'rights'      => '15383',
+       'profiles_id' => '4',
+       'name'        => 'followup',
+       'rights'      => '31763',
    ], [
-      'profiles_id' => '4',
-      'name'        => 'task',
-      'rights'      => '13329',
+       'profiles_id' => '4',
+       'name'        => 'task',
+       'rights'      => '29713',
    ], [
       'profiles_id' => '7',
       'name'        => 'project',
@@ -6038,13 +6038,13 @@ $tables['glpi_profilerights'] = [
       'name'        => 'ticket',
       'rights'      => '140295',
    ], [
-      'profiles_id' => '5',
-      'name'        => 'followup',
-      'rights'      => '12295',
+       'profiles_id' => '5',
+       'name'        => 'followup',
+       'rights'      => '28679',
    ], [
-      'profiles_id' => '5',
-      'name'        => 'task',
-      'rights'      => '8193',
+       'profiles_id' => '5',
+       'name'        => 'task',
+       'rights'      => '24577',
    ], [
       'profiles_id' => '4',
       'name'        => 'project',
@@ -6322,13 +6322,13 @@ $tables['glpi_profilerights'] = [
       'name'        => 'ticket',
       'rights'      => '166919',
    ], [
-      'profiles_id' => '6',
-      'name'        => 'followup',
-      'rights'      => '13319',
+       'profiles_id' => '6',
+       'name'        => 'followup',
+       'rights'      => '29703',
    ], [
-      'profiles_id' => '6',
-      'name'        => 'task',
-      'rights'      => '13329',
+       'profiles_id' => '6',
+       'name'        => 'task',
+       'rights'      => '29713',
    ], [
       'profiles_id' => '1',
       'name'        => 'project',
@@ -6610,13 +6610,13 @@ $tables['glpi_profilerights'] = [
       'name'        => 'ticket',
       'rights'      => '261151',
    ], [
-      'profiles_id' => '7',
-      'name'        => 'followup',
-      'rights'      => '15383',
+       'profiles_id' => '7',
+       'name'        => 'followup',
+       'rights'      => '31763',
    ], [
-      'profiles_id' => '7',
-      'name'        => 'task',
-      'rights'      => '13329',
+       'profiles_id' => '7',
+       'name'        => 'task',
+       'rights'      => '29713',
    ], [
       'profiles_id' => '7',
       'name'        => 'queuednotification',
@@ -6798,9 +6798,9 @@ $tables['glpi_profilerights'] = [
       'name'        => 'entity',
       'rights'      => '33',
    ], [
-      'profiles_id' => '8',
-      'name'        => 'followup',
-      'rights'      => '8193',
+       'profiles_id' => '8',
+       'name'        => 'followup',
+       'rights'      => '24577',
    ], [
       'profiles_id' => '8',
       'name'        => 'global_validation',
@@ -6978,9 +6978,9 @@ $tables['glpi_profilerights'] = [
       'name'        => 'statistic',
       'rights'      => '1',
    ], [
-      'profiles_id' => '8',
-      'name'        => 'task',
-      'rights'      => '8193',
+       'profiles_id' => '8',
+       'name'        => 'task',
+       'rights'      => '24577',
    ], [
       'profiles_id' => '8',
       'name'        => 'taskcategory',

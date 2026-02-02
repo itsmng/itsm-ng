@@ -142,12 +142,13 @@ class TicketTask extends CommonITILTask
             && !in_array($ticket->fields['status'], $ticket->getClosedStatusArray())
         ) {
             return (Session::haveRight(self::$rightname, parent::ADDALLITEM)
-                    || $ticket->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
-                    || (isset($_SESSION["glpigroups"])
-                        && $ticket->haveAGroup(
-                            CommonITILActor::ASSIGN,
-                            $_SESSION['glpigroups']
-                        )));
+                    || (Session::haveRight(self::$rightname, parent::ADDASSIGNEDITEM)
+                        && ($ticket->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
+                            || (isset($_SESSION["glpigroups"])
+                                && $ticket->haveAGroup(
+                                    CommonITILActor::ASSIGN,
+                                    $_SESSION['glpigroups']
+                                )))));
         }
         return false;
     }
@@ -267,6 +268,7 @@ class TicketTask extends CommonITILTask
         if ($interface == 'central') {
             $values[parent::UPDATEALL]      = __('Update all');
             $values[parent::ADDALLITEM  ]   = __('Add to all items');
+            $values[parent::ADDASSIGNEDITEM] = __('Add to assigned items');
             $values[parent::SEEPRIVATE]     = __('See private ones');
         }
 

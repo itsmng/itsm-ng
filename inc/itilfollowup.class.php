@@ -58,6 +58,7 @@ class ITILFollowup extends CommonDBChild
     public const ADDGROUPTICKET  = 2048;
     public const ADDALLTICKET    = 4096;
     public const SEEPRIVATE      = 8192;
+    public const ADDASSIGNEDTICKET = 16384;
 
     public static $itemtype = 'itemtype';
     public static $items_id = 'items_id';
@@ -1184,6 +1185,7 @@ class ITILFollowup extends CommonDBChild
         if ($interface == 'central') {
             $values[self::UPDATEALL]      = __('Update all');
             $values[self::ADDALLTICKET]   = __('Add to all tickets');
+            $values[self::ADDASSIGNEDTICKET] = __('Add to assigned tickets');
             $values[self::SEEPRIVATE]     = __('See private ones');
         }
 
