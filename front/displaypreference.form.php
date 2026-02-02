@@ -62,7 +62,7 @@ if (isset($_POST["activate"])) {
 
 // Datas may come from GET or POST : use REQUEST
 if (isset($_REQUEST["itemtype"])) {
-    $setupdisplay->showFormGlobal(Toolbox::cleanTarget($setupdisplay->getFormURL()), $_REQUEST['itemtype']);
+    $setupdisplay->display(['displaytype' => $_REQUEST['itemtype']]);
 }
 
 Html::popFooter();
