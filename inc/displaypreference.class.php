@@ -289,8 +289,7 @@ class DisplayPreference extends CommonDBTM
         }
 
         $IDuser = Session::getLoginUserID();
-
-        echo "<div class='center' id='tabsbody' >";
+        $personal_write = Session::haveRight(self::$rightname, self::PERSONAL);
         // Defined items
         $iterator = $DB->request([
            'FROM'   => $this->getTable(),
@@ -302,140 +301,219 @@ class DisplayPreference extends CommonDBTM
         ]);
         $numrows = count($iterator);
 
+        echo '<h2>' . __('Personal View') . '</h2>';
+
         if ($numrows == 0) {
-            Session::checkRight(self::$rightname, self::PERSONAL);
-            echo "<table class='tab_cadre_fixe' aria-label='Personal Criteria Table'><tr><th colspan='4'>";
-            echo "<form aria-label='Personal Criteria' method='post' action='$target'>";
-            echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-            echo "<input type='hidden' name='users_id' value='$IDuser'>";
-            echo __('No personal criteria. Create personal parameters?') . "<span class='small_space'>";
-            echo "<input type='submit' name='activate' value=\"" . __('Create') . "\"
-                class='submit'>";
-            echo "</span>";
-            Html::closeForm();
-            echo "</th></tr></table>\n";
-        } else {
-            $already_added = self::getForTypeUser($itemtype, $IDuser);
-
-            echo "<table class='tab_cadre_fixe' aria-label='Personal Criteria Table'><tr><th colspan='4'>";
-            echo "<form aria-label='Personal Criteria' method='post' action='$target'>";
-            echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-            echo "<input type='hidden' name='users_id' value='$IDuser'>";
-            echo __('Select default items to show') . "<span class='small_space'>";
-            echo "<input type='submit' name='disable' value=\"" . __('Delete') . "\"
-                class='submit'>";
-            echo "</span>";
-            Html::closeForm();
-
-            echo "</th></tr>";
-            echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
-            echo "<form aria-label='Personnal Criteria' method='post' action=\"$target\">";
-            echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-            echo "<input type='hidden' name='users_id' value='$IDuser'>";
-            $group  = '';
-            $values = [];
-            foreach ($searchopt as $key => $val) {
-                if (!is_array($val)) {
-                    $group = $val;
-                } elseif (count($val) === 1) {
-                    $group = $val['name'];
-                } elseif (
-                    $key != 1
-                           && !in_array($key, $already_added)
-                           && (!isset($val['nodisplay']) || !$val['nodisplay'])
-                ) {
-                    $values[$group][$key] = $val["name"];
-                }
+            if (!$personal_write) {
+                echo '<p class="alert alert-info">' . __('No personal criteria.') . '</p>';
+                return;
             }
-            if ($values) {
-                Dropdown::showFromArray('num', $values);
-                echo "<span class='small_space'>";
-                echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
-                echo "</span>";
-            }
-            Html::closeForm();
-            echo "</td></tr>\n";
 
-            // print first element
-            echo "<tr class='tab_bg_2'>";
-            echo "<td class='center' width='50%'>" . $searchopt[1]["name"] . "</td>";
-            echo "<td colspan='3'>&nbsp;</td>";
-            echo "</tr>";
+            $buttonLabel = __('Create');
+            $form = [
+                'action' => $target,
+                'buttons' => [[]],
+                'content' => [
+                    __('Personal settings') => [
+                        'visible' => true,
+                        'inputs' => [
+                            [
+                                'type' => 'hidden',
+                                'name' => 'itemtype',
+                                'value' => $itemtype,
+                            ],
+                            [
+                                'type' => 'hidden',
+                                'name' => 'users_id',
+                                'value' => $IDuser,
+                            ],
+                            __('No personal criteria. Create personal parameters?') => [
+                                'content' => '<div class="d-flex flex-wrap gap-2 align-items-center">'
+                                    . '<button type="submit" name="activate" value="1" class="btn btn-sm btn-secondary">'
+                                    . $buttonLabel
+                                    . '</button>'
+                                    . '</div>',
+                                'col_lg' => 12,
+                                'col_md' => 12,
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+            renderTwigForm($form);
+            return;
+        }
 
-            // print entity
-            if (
-                Session::isMultiEntitiesMode()
-                && (isset($CFG_GLPI["union_search_type"][$itemtype])
-                    || ($item && $item->maybeRecursive())
-                    || (count($_SESSION["glpiactiveentities"]) > 1))
-                && isset($searchopt[80])
+        $already_added = self::getForTypeUser($itemtype, $IDuser);
+        $group  = '';
+        $values = [];
+        foreach ($searchopt as $key => $val) {
+            if (!is_array($val)) {
+                $group = $val;
+            } elseif (count($val) === 1) {
+                $group = $val['name'];
+            } elseif (
+                $key != 1
+                       && !in_array($key, $already_added)
+                       && (!isset($val['nodisplay']) || !$val['nodisplay'])
             ) {
-                echo "<tr class='tab_bg_2'>";
-                echo "<td class='center' width='50%'>" . $searchopt[80]["name"] . "</td>";
-                echo "<td colspan='3'>&nbsp;</td>";
-                echo "</tr>";
+                $values[$group][$key] = $val["name"];
             }
+        }
 
-            $i = 0;
-            if ($numrows) {
-                while ($data = $iterator->next()) {
-                    if (($data["num"] != 1) && isset($searchopt[$data["num"]])) {
-                        echo "<tr class='tab_bg_2'>";
-                        echo "<td class='center' width='50%' >";
-                        echo $searchopt[$data["num"]]["name"] . "</td>";
+        if ($personal_write) {
+            $buttonLabel = _sx('button', 'Add');
+            $form = [
+                'action' => $target,
+                'buttons' => [[]],
+                'content' => [
+                    __('Personal settings') => [
+                        'visible' => true,
+                        'inputs' => [
+                            [
+                                'type' => 'hidden',
+                                'name' => 'itemtype',
+                                'value' => $itemtype
+                            ],
+                            [
+                                'type' => 'hidden',
+                                'name' => 'users_id',
+                                'value' => $IDuser
+                            ],
+                            '' => $values ? [
+                                'type' => 'select',
+                                'name' => 'num',
+                                'style' => 'width: 100%;',
+                                'values' => $values,
+                                'after' => <<<HTML
+                                <button type="submit" name="add" value="1" class="btn btn-sm btn-secondary">
+                                    $buttonLabel
+                                </button>
+                            HTML,
+                                'col_lg' => 12,
+                                'col_md' => 12,
+                            ] : [],
+                        ]
+                    ]
+                ]
+            ];
+            renderTwigForm($form);
+        }
 
-                        if ($i != 0) {
-                            echo "<td class='center middle'>";
-                            echo "<form aria-label='Informations' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
-                            echo "<input type='hidden' name='users_id' value='$IDuser'>";
-                            echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='UP 'name='up'" .
-                                " title=\"" . __s('Bring up') . "\"" .
-                                " class='unstyled pointer'><i class='fa fa-arrow-up' aria-hidden='true'></i></button>";
-                            Html::closeForm();
-                            echo "</td>\n";
-                        } else {
-                            echo "<td>&nbsp;</td>";
-                        }
+        if ($personal_write) {
+            $form = [
+                'action' => $target,
+                'buttons' => [[]],
+                'content' => [
+                    '' => [
+                        'visible' => false,
+                        'inputs' => [
+                            [
+                                'type' => 'hidden',
+                                'name' => 'itemtype',
+                                'value' => $itemtype
+                            ],
+                            [
+                                'type' => 'hidden',
+                                'name' => 'users_id',
+                                'value' => $IDuser
+                            ],
+                            '' => [
+                                'content' => '<div class="d-flex align-items-center justify-content-end gap-2">'
+                                    . '<span class="text-muted">' . __('Select default items to show') . '</span>'
+                                    . '<button type="submit" name="disable" value="1" class="btn btn-sm btn-outline-secondary">'
+                                    . __('Delete')
+                                    . '</button>'
+                                    . '</div>',
+                                'col_lg' => 12,
+                                'col_md' => 12,
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+            renderTwigForm($form);
+        }
 
-                        if ($i != ($numrows - 1)) {
-                            echo "<td class='center middle'>";
-                            echo "<form aria-label='Informations' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
-                            echo "<input type='hidden' name='users_id' value='$IDuser'>";
-                            echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='down' name='down'" .
-                                " title=\"" . __s('Bring down') . "\"" .
-                                " class='unstyled pointer'><i class='fa fa-arrow-down' aria-hidden='true'></i></button>";
-                            Html::closeForm();
-                            echo "</td>\n";
-                        } else {
-                            echo "<td>&nbsp;</td>";
-                        }
+        $fields = [
+            'name' => __('Name'),
+            'up' => '<i class="fa fa-arrow-up" aria-hidden="true"></i>',
+            'down' => '<i class="fa fa-arrow-down" aria-hidden="true"></i>',
+            'close' => '<i class="fa fa-times" aria-hidden="true"></i>'
+        ];
 
-                        if (!isset($searchopt[$data["num"]]["noremove"]) || $searchopt[$data["num"]]["noremove"] !== true) {
-                            echo "<td class='center middle'>";
-                            echo "<form aria-label='Item Information' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
-                            echo "<input type='hidden' name='users_id' value='$IDuser'>";
-                            echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='Delete' name='purge'" .
-                                  " title=\"" . _sx('button', 'Delete permanently') . "\"" .
-                                  " class='unstyled pointer'><i class='fa fa-times-circle' aria-hidden='true'></i></button>";
-                            Html::closeForm();
-                            echo "</td>\n";
-                        } else {
-                            echo "<td>&nbsp;</td>\n";
-                        }
-                        echo "</tr>";
-                        $i++;
+        $values = [
+            ['name' => $searchopt[1]["name"],]
+        ];
+        if (
+            Session::isMultiEntitiesMode()
+            && (isset($CFG_GLPI["union_search_type"][$itemtype])
+                || ($item && $item->maybeRecursive())
+                || (count($_SESSION["glpiactiveentities"]) > 1))
+            && isset($searchopt[80])
+        ) {
+            $values[] = ['name' => $searchopt[80]["name"]];
+        }
+
+        $i = 0;
+        while ($data = $iterator->next()) {
+            $newValue = [];
+            if (($data["num"] != 1) && isset($searchopt[$data["num"]])) {
+                $newValue['name'] = $searchopt[$data["num"]]["name"];
+
+                if ($personal_write) {
+                    if ($i != 0) {
+                        $newValue['up'] = <<<HTML
+                        <form aria-label="Informations" method="post" action="$target">
+                            <input type="hidden" name="id" value="{$data['id']}">
+                            <input type="hidden" name="users_id" value="$IDuser">
+                            <input type="hidden" name="itemtype" value="$itemtype">
+                            <button type="submit" name="up" title="Bring up" class="btn btn-sm fs-6" aria-label="Bring Up">
+                                <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                            </button>
+                            <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
+                        </form>
+                      HTML;
+                    }
+
+                    if ($i != ($numrows - 1)) {
+                        $newValue['down'] = <<<HTML
+                        <form aria-label="Informations" method="post" action="$target">
+                            <input type="hidden" name="id" value="{$data['id']}">
+                            <input type="hidden" name="users_id" value="$IDuser">
+                            <input type="hidden" name="itemtype" value="$itemtype">
+                            <button type="submit" name="down" title="Bring down" class="btn btn-sm fs-6" aria-label="Bring Down">
+                                <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                            </button>
+                            <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
+                        </form>
+                      HTML;
+                    }
+
+                    if (!isset($searchopt[$data["num"]]["noremove"]) || $searchopt[$data["num"]]["noremove"] !== true) {
+                        $newValue['close'] = <<<HTML
+                        <form aria-label="Item Information" method="post" action="$target">
+                            <input type="hidden" name="id" value="{$data['id']}">
+                            <input type="hidden" name="users_id" value="$IDuser">
+                            <input type="hidden" name="itemtype" value="$itemtype">
+                            <button type="submit" name="purge" title="Delete permanently" class="btn btn-sm fs-6" aria-label="Delete">
+                                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                            </button>
+                            <input type="hidden" name="_glpi_csrf_token" value="$_SESSION[_glpi_csrf_token]">
+                        </form>
+                      HTML;
                     }
                 }
             }
-            echo "</table>";
+            $values[] = $newValue;
+            $i++;
         }
-        echo "</div>";
+
+        renderTwigTemplate('table.twig', [
+            'fields' => $fields,
+            'values' => $values,
+            'minimal' => true,
+        ]);
     }
 
 
@@ -516,9 +594,12 @@ class DisplayPreference extends CommonDBTM
                         '' => $values ? [
                            'type' => 'select',
                            'name' => 'num',
+                           'style' => 'width: 100%;',
                            'values' => $values,
                            'after' => <<<HTML
-                           <input type="submit" name="add" value="$buttonLabel" class="btn btn-sm btn-secondary">
+                           <button type="submit" name="add" value="1" class="btn btn-sm btn-secondary">
+                               $buttonLabel
+                           </button>
                         HTML,
                            'col_lg' => 12,
                            'col_md' => 12,
@@ -603,75 +684,6 @@ class DisplayPreference extends CommonDBTM
            'values' => $values,
            'minimal' => true,
         ]);
-
-        echo "<table class='w-100' aria-label='Search Options Table'>";
-
-        // print first element
-        $i = 0;
-
-        if ($numrows) {
-            while ($data = $iterator->next()) {
-                if (
-                    ($data["num"] != 1)
-                    && isset($searchopt[$data["num"]])
-                ) {
-                    echo "<tr class='tab_bg_2'><td class='center' width='50%'>";
-                    echo $searchopt[$data["num"]]["name"];
-                    echo "</td>";
-
-                    if ($global_write) {
-                        if ($i != 0) {
-                            echo "<td class='center middle'>";
-                            echo "<form aria-label='Informations' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
-                            echo "<input type='hidden' name='users_id' value='$IDuser'>";
-                            echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='Bring Down' name='up'" .
-                                " title=\"" . __s('Bring up') . "\"" .
-                                " class='unstyled pointer'><i class='fa fa-arrow-up' aria-hidden='true'></i></button>";
-                            Html::closeForm();
-                            echo "</td>";
-                        } else {
-                            echo "<td>&nbsp;</td>\n";
-                        }
-
-                        if ($i != ($numrows - 1)) {
-                            echo "<td class='center middle'>";
-                            echo "<form  aria-label='Informations' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
-                            echo "<input type='hidden' name='users_id' value='$IDuser'>";
-                            echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='Bring Down' name='down'" .
-                                " title=\"" . __s('Bring down') . "\"" .
-                                " class='unstyled pointer'><i class='fa fa-arrow-down' aria-hidden='true'></i></button>";
-                            Html::closeForm();
-                            echo "</td>";
-                        } else {
-                            echo "<td>&nbsp;</td>\n";
-                        }
-
-                        if (!isset($searchopt[$data["num"]]["noremove"]) || $searchopt[$data["num"]]["noremove"] !== true) {
-                            echo "<td class='center middle'>";
-                            echo "<form aria-label='Informations' method='post' action='$target'>";
-                            echo "<input type='hidden' name='id' value='" . $data["id"] . "'>";
-                            echo "<input type='hidden' name='users_id' value='$IDuser'>";
-                            echo "<input type='hidden' name='itemtype' value='$itemtype'>";
-                            echo "<button type='submit' aria-label='Delete' name='purge'" .
-                                  " title=\"" . _sx('button', 'Delete permanently') . "\"" .
-                                  " class='unstyled pointer'><i class='fa fa-times-circle' aria-hidden='true'></i></button>";
-                            Html::closeForm();
-                            echo "</td>\n";
-                        } else {
-                            echo "<td>&nbsp;</td>\n";
-                        }
-                    }
-
-                    echo "</tr>";
-                    $i++;
-                }
-            }
-        }
-        echo "</table>";
     }
 
 
@@ -788,14 +800,18 @@ class DisplayPreference extends CommonDBTM
                 return true;
 
             case __CLASS__:
+                if (!($item instanceof self)) {
+                    return false;
+                }
+                $display = $item;
                 switch ($tabnum) {
                     case 1:
-                        $item->showFormGlobal(Toolbox::cleanTarget($_GET['_target']), $_GET["displaytype"]);
+                        $display->showFormGlobal(Toolbox::cleanTarget($_GET['_target']), $_GET["displaytype"]);
                         return true;
 
                     case 2:
                         Session::checkRight(self::$rightname, self::PERSONAL);
-                        $item->showFormPerso(Toolbox::cleanTarget($_GET['_target']), $_GET["displaytype"]);
+                        $display->showFormPerso(Toolbox::cleanTarget($_GET['_target']), $_GET["displaytype"]);
                         return true;
                 }
         }

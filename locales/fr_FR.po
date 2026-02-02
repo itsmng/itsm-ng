@@ -22266,6 +22266,14 @@ msgstr "Nom de famille"
 msgid "No personal criteria. Create personal parameters?"
 msgstr "Aucun critère personnel. Voulez-vous créer vos paramètres personnels ?"
 
+#: inc/displaypreference.class.php:308
+msgid "No personal criteria."
+msgstr "Aucun critère personnel."
+
+#: inc/displaypreference.class.php:317 inc/displaypreference.class.php:370
+msgid "Personal settings"
+msgstr "Paramètres personnels"
+
 #: inc/displaypreference.class.php:381 inc/displaypreference.class.php:541
 msgid "Bring up"
 msgstr "Monter"
