@@ -437,7 +437,7 @@
                                     type="button"
                                     class="btn btn-secondary"
                                     aria-label="Options"
-                                    onclick="$('#search-config-${itemtype}').dialog('open')"
+                                    data-display-preferences="${itemtype}"
                                 >
                                     <i class="fas fa-wrench" title="Options"></i>
                                 </button>
@@ -731,6 +731,14 @@
                         column.toggleSorting();
                     };
                 }
+            });
+            wrapperElement.querySelectorAll('[data-display-preferences]').forEach(button => {
+                const targetItemtype = button.getAttribute('data-display-preferences');
+                button.onclick = () => {
+                    if (window.DisplayPreferences && typeof window.DisplayPreferences.open === 'function') {
+                        window.DisplayPreferences.open(targetItemtype);
+                    }
+                };
             });
             wrapperElement.querySelectorAll('.page-item:not(.disabled)').forEach(item => {
                 if (item.classList.contains('page-pre')) {

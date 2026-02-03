@@ -6830,6 +6830,12 @@ JAVASCRIPT;
             case 'hotkeys':
                 $_SESSION['glpi_js_toload'][$name][] = 'js/hotkeys.js';
                 break;
+            case 'displaypreferences':
+                $_SESSION['glpi_js_toload'][$name][] = 'node_modules/htm/dist/htm.umd.js';
+                $_SESSION['glpi_js_toload'][$name][] = 'node_modules/preact/dist/preact.umd.js';
+                $_SESSION['glpi_js_toload'][$name][] = 'node_modules/preact/hooks/dist/hooks.umd.js';
+                $_SESSION['glpi_js_toload'][$name][] = 'js/displaypreferences.js';
+                break;
             default:
                 $found = false;
                 if (isset($PLUGIN_HOOKS['javascript']) && isset($PLUGIN_HOOKS['javascript'][$name])) {

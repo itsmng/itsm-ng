@@ -1664,18 +1664,6 @@ class Search
                 $col_num++;
             }
         }
-        $pref_url = $CFG_GLPI["root_doc"] . "/front/displaypreference.form.php?itemtype=" . $data['itemtype'];
-
-        echo Ajax::createIframeModalWindow(
-            'search-config-' . $data['itemtype'],
-            $pref_url,
-            [
-              'title'         => __('Select default items to show'),
-              'reloadonclose' => true,
-              'display'       => false
-            ]
-        );
-
         $massiveactionparams = $data['search']['massiveactionparams'] + [
            'container'      => 'SearchTableFor' . $data['itemtype'],
            'display_arrow'  => false,
@@ -1696,6 +1684,12 @@ class Search
         }
 
         Html::showMassiveActions($massiveactionparams);
+        $can_edit_columns = Session::haveRight(DisplayPreference::$rightname, DisplayPreference::PERSONAL)
+            || Session::haveRight(DisplayPreference::$rightname, DisplayPreference::GENERAL);
+        if ($can_edit_columns) {
+            Html::requireJs('displaypreferences');
+        }
+
         renderTwigTemplate('table.twig', [
            'id' => 'SearchTableFor' . $data['itemtype'],
            'fields' => $fields,
@@ -1704,7 +1698,7 @@ class Search
            'is_trash' => $data['search']['is_deleted'],
            'massive_action' => $massiveActionValues,
            'itemtype' => $data['itemtype'],
-           'column_edit' => true,
+           'column_edit' => $can_edit_columns,
         ]);
     }
 
