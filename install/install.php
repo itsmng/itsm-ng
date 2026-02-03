@@ -32,6 +32,11 @@ $header_data = [
         Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"),
         Html::script("vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"),
         Html::script("js/bootstrap-table-export.min.js"),
+        Html::script("node_modules/@tanstack/table-core/build/umd/index.production.js"),
+        Html::script("public/lib/nanostores.js"),
+        Html::script("node_modules/htm/dist/htm.umd.js"),
+        Html::script("node_modules/vhtml/dist/vhtml.min.js"),
+        Html::script("js/table.js"),
         ],
     "css"     =>  [
         Html::css('vendor/twbs/bootstrap/dist/css/bootstrap.min.css'),

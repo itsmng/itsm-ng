@@ -79,6 +79,7 @@ class Html
         "node_modules/tableexport.jquery.plugin/tableExport.min.js",
         "vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js",
         "vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js",
+        "node_modules/htm/dist/htm.umd.js",
         "node_modules/select2/dist/js/select2.min.js",
         "src/ngFunctions.js",
 
@@ -2054,6 +2055,8 @@ JAVASCRIPT;
         echo Html::script("node_modules/@tanstack/table-core/build/umd/index.production.js");
         echo Html::script("node_modules/htm/dist/htm.umd.js");
         echo Html::script("node_modules/vhtml/dist/vhtml.min.js");
+        echo Html::script("public/lib/nanostores.js");
+        echo Html::script("js/table.js");
         echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
         echo Html::script("node_modules/select2/dist/js/select2.min.js");
         echo Html::script("node_modules/tableexport.jquery.plugin/tableExport.min.js");
@@ -6826,6 +6829,12 @@ JAVASCRIPT;
                 break;
             case 'hotkeys':
                 $_SESSION['glpi_js_toload'][$name][] = 'js/hotkeys.js';
+                break;
+            case 'displaypreferences':
+                $_SESSION['glpi_js_toload'][$name][] = 'node_modules/htm/dist/htm.umd.js';
+                $_SESSION['glpi_js_toload'][$name][] = 'node_modules/preact/dist/preact.umd.js';
+                $_SESSION['glpi_js_toload'][$name][] = 'node_modules/preact/hooks/dist/hooks.umd.js';
+                $_SESSION['glpi_js_toload'][$name][] = 'js/displaypreferences.js';
                 break;
             default:
                 $found = false;
