@@ -2684,10 +2684,11 @@ class Dropdown
 
                     // Do not do for first item for next page load
                     if (!$firstitem) {
-                        if (
-                            $_SESSION["glpiis_ids_visible"]
-                            || (Toolbox::strlen($outputval) == 0)
-                        ) {
+                    if (
+                        $_SESSION["glpiis_ids_visible"]
+                        || $post['itemtype'] == 'Ticket'
+                        || (Toolbox::strlen($outputval) == 0)
+                    ) {
                             $outputval = sprintf(__('%1$s (%2$s)'), $outputval, $ID);
                         }
 
@@ -3119,6 +3120,7 @@ class Dropdown
                     }
                     if (
                         $_SESSION["glpiis_ids_visible"]
+                        || $post['itemtype'] == 'Ticket'
                         || (strlen($outputval) == 0)
                     ) {
                         //TRANS: %1$s is the name, %2$s the ID
