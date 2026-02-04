@@ -52,12 +52,12 @@
                             <h5 class="modal-title" id="display-preferences-title"></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body overflow-x-hidden">
                             <div id="display-preferences-modal-content"></div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">${window.__ ? window.__('Close') : 'Close'}</button>
-                            <button type="button" class="btn btn-primary" id="display-preferences-save">${window.__ ? window.__('Save') : 'Save'}</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">${window.__('Close')}</button>
+                            <button type="button" class="btn btn-primary" id="display-preferences-save">${window.__('Save')}</button>
                         </div>
                     </div>
                 </div>
@@ -282,7 +282,7 @@
 
     const handleSave = () => {
       if (view === 'personal' && data && !data.has_personal) {
-        setMessage({ type: 'danger', text: window.__ ? window.__('Create a personal view before saving.') : 'Create a personal view before saving.' });
+        setMessage({ type: 'danger', text: window.__('Create a personal view before saving.') });
         return;
       }
       setSaving(true);
@@ -295,16 +295,16 @@
       })
         .then((result) => {
           if (!result.success) {
-            setMessage({ type: 'danger', text: result.message || 'Error' });
+            setMessage({ type: 'danger', text: result.message || window.__('Error') });
             return;
           }
-          setMessage({ type: 'success', text: window.__ ? window.__('Saved') : 'Saved' });
+          setMessage({ type: 'success', text: window.__('Saved') });
           if (typeof onSaved === 'function') {
             onSaved();
           }
         })
         .catch(() => {
-          setMessage({ type: 'danger', text: 'Unable to save preferences.' });
+          setMessage({ type: 'danger', text: window.__('Unable to save preferences.') });
         })
         .finally(() => {
           setSaving(false);
@@ -316,14 +316,14 @@
       fetchJson({ action: 'activate_personal', itemtype })
         .then((result) => {
           if (!result.success) {
-            setMessage({ type: 'danger', text: result.message || 'Error' });
+            setMessage({ type: 'danger', text: result.message || window.__('Error') });
             return;
           }
-          setMessage({ type: 'success', text: window.__ ? window.__('Personal view created') : 'Personal view created' });
+          setMessage({ type: 'success', text: window.__('Personal view created') });
           load('personal');
         })
         .catch(() => {
-          setMessage({ type: 'danger', text: 'Unable to create personal view.' });
+          setMessage({ type: 'danger', text: window.__('Unable to create personal view.') });
         })
         .finally(() => {
           setSaving(false);
@@ -340,14 +340,14 @@
       fetchJson({ action: 'delete_personal', itemtype })
         .then((result) => {
           if (!result.success) {
-            setMessage({ type: 'danger', text: result.message || 'Error' });
+            setMessage({ type: 'danger', text: result.message || window.__('Error') });
             return;
           }
-          setMessage({ type: 'success', text: window.__ ? window.__('Personal view deleted') : 'Personal view deleted' });
+          setMessage({ type: 'success', text: window.__('Personal view deleted') });
           load('global');
         })
         .catch(() => {
-          setMessage({ type: 'danger', text: 'Unable to delete personal view.' });
+          setMessage({ type: 'danger', text: window.__('Unable to delete personal view.') });
         })
         .finally(() => {
           setSaving(false);
@@ -358,14 +358,14 @@
     const canAdd = addable.length > 0;
 
     if (!data) {
-      return html`<div class="alert alert-danger">${window.__ ? window.__('Unable to load preferences') : 'Unable to load preferences'}</div>`;
+      return html`<div class="alert alert-danger">${window.__('Unable to load preferences')}</div>`;
     }
 
     const showEditor = !(view === 'personal' && !data.has_personal);
 
     return html`
             <div class="display-preferences">
-                ${loading ? html`<div class="alert alert-info">${window.__ ? window.__('Loading...') : 'Loading...'}</div>` : ''}
+                ${loading ? html`<div class="alert alert-info">${window.__('Loading...')}</div>` : ''}
                 ${data.can_personal || data.can_global ? html`
                     <div class="d-flex flex-wrap gap-2 mb-3">
                         ${data.can_personal ? html`
@@ -373,14 +373,14 @@
                                 type="button"
                                 class=${'btn btn-sm ' + (view === 'personal' ? 'btn-primary' : 'btn-outline-primary')}
                                 onClick=${() => setView('personal')}
-                            >${window.__ ? window.__('Personal view') : 'Personal view'}</button>
+                            >${window.__('Personal View')}</button>
                         ` : ''}
                         ${data.can_global ? html`
                             <button
                                 type="button"
                                 class=${'btn btn-sm ' + (view === 'global' ? 'btn-primary' : 'btn-outline-primary')}
                                 onClick=${() => setView('global')}
-                            >${window.__ ? window.__('Global view') : 'Global view'}</button>
+                            >${window.__('Global View')}</button>
                         ` : ''}
                         ${view === 'personal' && data.has_personal ? html`
                             <button
@@ -388,7 +388,7 @@
                                 class="btn btn-sm btn-outline-danger"
                                 onClick=${handleDeletePersonal}
                                 disabled=${saving}
-                            >${window.__ ? window.__('Delete personal view') : 'Delete personal view'}</button>
+                            >${window.__('Delete personal view')}</button>
                         ` : ''}
                     </div>
                 ` : ''}
@@ -396,13 +396,13 @@
                 ${view === 'personal' && !data.has_personal ? html`
                     <div class="alert alert-info">
                         <div class="d-flex justify-content-between align-items-center">
-                            <div>${window.__ ? window.__('No personal criteria. Create personal parameters?') : 'No personal criteria. Create personal parameters?'}</div>
+                            <div>${window.__('No personal criteria. Create personal parameters?')}</div>
                             <button
                                 type="button"
                                 class="btn btn-sm btn-secondary"
                                 onClick=${handleActivatePersonal}
                                 disabled=${saving}
-                            >${window.__ ? window.__('Create') : 'Create'}</button>
+                            >${window.__('Create')}</button>
                         </div>
                     </div>
                 ` : ''}
@@ -412,8 +412,8 @@
                 ${showEditor ? html`
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">${window.__ ? window.__('Selected columns') : 'Selected columns'}</div>
+                            <div class="card no-shadow">
+                                <div class="card-header">${window.__('Selected columns')}</div>
                                 <div class="card-body">
                                     <div class="grid-stack" ref=${gridRef}>
                                         ${selected.map((id, index) => {
@@ -436,7 +436,7 @@
                                                             <span>${label}</span>
                                                         </div>
                                                         ${isLocked ? html`<button type="button" class="btn btn-sm btn-link text-secondary" disabled><i class="fas fa-lock"></i></button>` : (
-          isNoRemove ? html`<span class="badge bg-secondary">${window.__ ? window.__('Required') : 'Required'}</span>` : html`
+          isNoRemove ? html`<span class="badge bg-secondary">${window.__('Required')}</span>` : html`
                                                                 <button type="button" class="btn btn-sm btn-link text-danger" onClick=${() => handleRemove(id)}>
                                                                     <i class="fas fa-times"></i>
                                                                 </button>
@@ -457,7 +457,7 @@
                                                 onChange=${(e) => setSelectedColumnToAdd(e.target.value)}
                                                 disabled=${!canAdd}
                                             >
-                                                <option value="">${window.__ ? window.__('Choose a column') : 'Choose a column'}</option>
+                                                <option value="">${window.__('Choose a column')}</option>
                                                 ${groupAvailable(addable).map(([group, items]) => {
       if (!group) {
         return items.map((item) => html`<option value=${item.id}>${item.name}</option>`);
@@ -478,14 +478,14 @@
                                         </div>
                                     </div>
                                     <div class="text-muted mt-2">
-                                        ${window.__ ? window.__('Drag to reorder columns. Locked columns cannot be removed.') : 'Drag to reorder columns. Locked columns cannot be removed.'}
+                                        ${window.__('Drag to reorder columns. Locked columns cannot be removed.')}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="d-none" id="display-preferences-save-hook">
-                        <button type="button" onClick=${handleSave} disabled=${saving}>${window.__ ? window.__('Save') : 'Save'}</button>
+                        <button type="button" onClick=${handleSave} disabled=${saving}>${window.__('Save')}</button>
                     </div>
                 ` : ''}
                 ${showDeleteModal ? html`
@@ -493,15 +493,15 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">${window.__ ? window.__('Delete personal view') : 'Delete personal view'}</h5>
+                                    <h5 class="modal-title">${window.__('Delete personal view')}</h5>
                                     <button type="button" class="btn-close" onClick=${() => setShowDeleteModal(false)} aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>${window.__ ? window.__('Are you sure you want to delete your personal view and revert to the global view?') : 'Are you sure you want to delete your personal view and revert to the global view?'}</p>
+                                    <p>${window.__('Are you sure you want to delete your personal view and revert to the global view?')}</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" onClick=${() => setShowDeleteModal(false)}>${window.__ ? window.__('Cancel') : 'Cancel'}</button>
-                                    <button type="button" class="btn btn-danger" onClick=${handleConfirmDelete}>${window.__ ? window.__('Delete') : 'Delete'}</button>
+                                    <button type="button" class="btn btn-secondary" onClick=${() => setShowDeleteModal(false)}>${window.__('Cancel')}</button>
+                                    <button type="button" class="btn btn-danger" onClick=${handleConfirmDelete}>${window.__('Delete')}</button>
                                 </div>
                             </div>
                         </div>
@@ -526,7 +526,7 @@
     const modal = createModal();
     const title = modal.querySelector('#display-preferences-title');
     if (title) {
-      title.textContent = window.__ ? window.__('Select default items to show') : 'Select default items to show';
+      title.textContent = window.__('Select default items to show');
     }
     openCounter += 1;
     renderModalContent(itemtype, 'personal', `${itemtype}-${openCounter}`);
