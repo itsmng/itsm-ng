@@ -2403,7 +2403,7 @@ class Dropdown
                     }
 
                     if (
-                        $_SESSION['glpiis_ids_visible']
+                        ($_SESSION['glpiis_ids_visible'] || $post['itemtype'] == 'Ticket')
                         && is_numeric($post['searchText']) && (int)$post['searchText'] == $post['searchText']
                     ) {
                         $swhere[$table . '.' . $item->getIndexName()] = ['LIKE', "%{$post['searchText']}%"];
@@ -2781,7 +2781,7 @@ class Dropdown
                 $orwhere = ["$table.$field" => ['LIKE', $search]];
 
                 if (
-                    $_SESSION['glpiis_ids_visible']
+                    ($_SESSION['glpiis_ids_visible'] || $post['itemtype'] == 'Ticket')
                     && is_numeric($post['searchText']) && (int)$post['searchText'] == $post['searchText']
                 ) {
                     $orwhere[$table . '.' . $item->getIndexName()] = ['LIKE', "%{$post['searchText']}%"];
