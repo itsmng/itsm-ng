@@ -422,12 +422,17 @@ class Location extends CommonTreeDropdown
         global $DB, $CFG_GLPI;
 
         $locations_id = $this->fields['id'];
-        $current_itemtype     = Session::getSavedOption(__CLASS__, 'criterion', '');
+
+        $current_itemtype = Session::getSavedOption(__CLASS__, 'criterion', 0);
+        if ($current_itemtype && !in_array($current_itemtype, $CFG_GLPI['location_types'], true)) {
+            $current_itemtype = 0;
+        }
 
         if (!$this->can($locations_id, READ)) {
             return false;
         }
 
+        $rand = mt_rand();
         $queries = [];
         $itemtypes = $current_itemtype ? [$current_itemtype] : $CFG_GLPI['location_types'];
         foreach ($itemtypes as $itemtype) {
@@ -451,69 +456,116 @@ class Location extends CommonTreeDropdown
             }
             $queries[] = $itemtype_criteria;
         }
-        $criteria = count($queries) === 1 ? $queries[0] : ['FROM' => new \QueryUnion($queries)];
+        $criteria = null;
+        if (count($queries) === 1) {
+            $criteria = $queries[0];
+        } elseif (count($queries) > 1) {
+            $criteria = ['FROM' => new \QueryUnion($queries)];
+        }
 
-        $start  = (isset($_REQUEST['start']) ? intval($_REQUEST['start']) : 0);
-        $criteria['START'] = $start;
-        $criteria['LIMIT'] = $_SESSION['glpilist_limit'];
+        $filter_options = [0 => Dropdown::EMPTY_VALUE];
+        foreach ($CFG_GLPI['location_types'] as $type) {
+            $type_item = getItemForItemtype($type);
+            if ($type_item && $type_item->maybeLocated()) {
+                $filter_options[$type] = $type_item->getTypeName(1);
+            }
+        }
+        asort($filter_options);
+
+        echo "<div class='spaced'>";
+        echo "<div class='form-section'>";
+        echo "<div class='form-section-content'>";
+        echo "<div class='row row-cols-12'>";
+        echo "<div class='col-lg-6'>";
+        echo "<label class='form-label w-100'>" . _n('Type', 'Types', 1) . "</label>";
+        echo "<div class='d-flex flex-nowrap align-items-center w-100'>";
+        echo "<select class='form-select form-select-sm' name='criterion' id='location_items_criterion_$rand'>";
+        foreach ($filter_options as $value => $label) {
+            $selected = (string)$current_itemtype == (string)$value ? ' selected="selected"' : '';
+            echo "<option value=\"$value\"$selected>$label</option>";
+        }
+        echo "</select>";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo <<<JS
+<script>
+$(function() {
+    $('#location_items_criterion_$rand').on('change', function() {
+        var body = $(this).closest('.item-body');
+        var container = body.parent();
+        if (container.is('#main-accordion-view') && typeof mainTab !== 'undefined') {
+            container = $('#' + mainTab);
+        }
+        var url = container.data('url');
+        var params = container.data('params');
+        var searchParams = new URLSearchParams(params);
+        searchParams.set('criterion', $(this).val());
+        searchParams.set('start', 0);
+        var updatedParams = searchParams.toString();
+        $.ajax({
+            url: url,
+            data: updatedParams,
+            success: function(response) {
+                body.html(response);
+                container.data('params', updatedParams);
+                container.attr('data-params', updatedParams);
+            }
+        });
+    });
+});
+</script>
+JS;
+        echo "</div>";
+
+        if ($criteria === null) {
+            echo "<p class='center b'>" . __('No item found') . "</p>";
+            return;
+        }
 
         $iterator = $DB->request($criteria);
-
-        // Execute a second request to get the total number of rows
-        unset($criteria['SELECT']);
-        unset($criteria['START']);
-        unset($criteria['LIMIT']);
-
-        $criteria['COUNT'] = 'total';
-        $number = $DB->request($criteria)->next()['total'];
-
-        // Mini Search engine
-        echo "<table class='tab_cadre_fixe' aria-label='Search Item'>";
-        echo "<tr class='tab_bg_1'><th colspan='2'>" . _n('Type', 'Types', 1) . "</th></tr>";
-        echo "<tr class='tab_bg_1'><td class='center'>";
-        echo _n('Type', 'Types', 1) . "&nbsp;";
-        $all_types = array_merge(['0' => '---'], $CFG_GLPI['location_types']);
-        Dropdown::showItemType(
-            $all_types,
-            [
-              'value'      => $current_itemtype,
-              'on_change'  => 'reloadTab("start=0&criterion="+this.value)'
-            ]
-        );
-        echo "</td></tr></table>";
-
-        if ($number) {
-            echo "<div class='spaced'>";
-            Html::printAjaxPager('', $start, $number);
-
-            echo "<table class='tab_cadre_fixe' aria-label='Item Detail'>";
-            echo "<tr><th>" . _n('Type', 'Types', 1) . "</th>";
-            echo "<th>" . Entity::getTypeName(1) . "</th>";
-            echo "<th>" . __('Name') . "</th>";
-            echo "<th>" . __('Serial number') . "</th>";
-            echo "<th>" . __('Inventory number') . "</th>";
-            echo "</tr>";
-
-            while ($data = $iterator->next()) {
-                $item = getItemForItemtype($data['type']);
-                $item->getFromDB($data['id']);
-                echo "<tr class='tab_bg_1'><td class='center top'>" . $item->getTypeName() . "</td>";
-                echo "<td class='center'>" . Dropdown::getDropdownName(
-                    "glpi_entities",
-                    $item->getEntityID()
-                );
-                echo "</td><td class='center'>" . $item->getLink() . "</td>";
-                echo "<td class='center'>" .
-                      (isset($item->fields["serial"]) ? "" . $item->fields["serial"] . "" : "-");
-                echo "</td>";
-                echo "<td class='center'>" .
-                      (isset($item->fields["otherserial"]) ? "" . $item->fields["otherserial"] . "" : "-");
-                echo "</td></tr>";
+        $fields = [
+           'type' => _n('Type', 'Types', 1),
+           'entity' => Entity::getTypeName(1),
+           'name' => __('Name'),
+           'serial' => __('Serial number'),
+           'inventory' => __('Inventory number'),
+        ];
+        $values = [];
+        while ($data = $iterator->next()) {
+            $item = getItemForItemtype($data['type']);
+            if (!$item || !$item->getFromDB($data['id'])) {
+                continue;
             }
+            $values[] = [
+               'type' => $item->getTypeName(),
+               'entity' => Dropdown::getDropdownName(
+                   'glpi_entities',
+                   $item->getEntityID()
+               ),
+               'name' => $item->getLink(),
+               'serial' => (isset($item->fields['serial']) && $item->fields['serial'] !== '')
+                   ? $item->fields['serial']
+                   : '-',
+               'inventory' => (isset($item->fields['otherserial']) && $item->fields['otherserial'] !== '')
+                   ? $item->fields['otherserial']
+                   : '-',
+            ];
+        }
+
+        if (count($values)) {
+            echo "<div class='spaced'>";
+            renderTwigTemplate('table.twig', [
+               'fields' => $fields,
+               'values' => $values,
+               'pageSize' => $_SESSION['glpilist_limit'],
+            ]);
+            echo "</div>";
         } else {
             echo "<p class='center b'>" . __('No item found') . "</p>";
         }
-        echo "</table></div>";
     }
 
     public function displaySpecificTypeField($ID, $field = [])
