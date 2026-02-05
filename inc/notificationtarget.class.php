@@ -653,7 +653,7 @@ class NotificationTarget extends CommonDBChild
                 return '';
 
             case self::GLPI_USER:
-                return urldecode($CFG_GLPI["url_base"] . "/index.php?redirect=$redirect&noAUTO=1");
+                return urldecode($CFG_GLPI["url_base"] . "/index.php?redirect=$redirect");
         }
     }
 
