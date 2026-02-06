@@ -174,9 +174,9 @@ class Budget extends CommonDropdown
                         __('Location') => [
                             'name' => 'locations_id',
                             'type' => 'select',
-                            'values' => getOptionForItems("Location"),
+                            'itemtype' => Location::class,
                             'value' => $this->fields['locations_id'],
-                            'actions' => getItemActionButtons(['info', 'add'], "location"),
+                            'actions' => getItemActionButtons(['info', 'add'], "Location"),
                         ],
                         __('Comments') => [
                             'name' => 'comment',

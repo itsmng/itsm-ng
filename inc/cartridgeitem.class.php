@@ -247,7 +247,7 @@ class CartridgeItem extends CommonDBTM
                     __('Stock location') => [
                        'name' => 'locations_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id']]),
+                       'itemtype' => Location::class,
                        'value' => $this->fields["locations_id"] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "Location"),
                     ],
