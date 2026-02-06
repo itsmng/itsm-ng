@@ -365,6 +365,7 @@ class Contract_Item extends CommonDBRelation
                            'type' => 'select',
                            'name' => 'contracts_id',
                            'values' => getOptionForItems('Contract', array_merge([
+                              'entities_id' => $item->fields['entities_id'],
                               'OR' => [
                                  'renewal' => 1,
                                  new \QueryExpression('DATEDIFF(ADDDATE(' . $DB->quoteName('begin_date') . ', INTERVAL ' . $DB->quoteName('duration') . ' MONTH), CURDATE()) > 0'),
