@@ -299,41 +299,68 @@ class ProjectCost extends CommonDBChild
             $this->initBasedOnPrevious();
         }
 
-        $this->showFormHeader($options);
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Name') . "</td>";
-        echo "<td>";
-        echo "<input type='hidden' name='projects_id' value='" . $this->fields['projects_id'] . "'>";
-        Html::autocompletionTextField($this, 'name');
-        echo "</td>";
-        echo "<td>" . _n('Cost', 'Costs', 1) . "</td>";
-        echo "<td>";
-        echo "<input type='text' name='cost' value='" . Html::formatNumber($this->fields["cost"], true) . "'
-             size='14'>";
-        echo "</td></tr>";
-
-        echo "<tr class='tab_bg_1'><td>" . __('Begin date') . "</td>";
-        echo "<td>";
-        Html::showDateField("begin_date", ['value' => $this->fields['begin_date']]);
-        echo "</td>";
-        $rowspan = 3;
-        echo "<td rowspan='$rowspan'>" . __('Comments') . "</td>";
-        echo "<td rowspan='$rowspan' class='middle'>";
-        echo "<textarea cols='45' rows='" . ($rowspan + 3) . "' name='comment' >" . $this->fields["comment"] .
-             "</textarea>";
-        echo "</td></tr>\n";
-
-        echo "<tr class='tab_bg_1'><td>" . __('End date') . "</td>";
-        echo "<td>";
-        Html::showDateField("end_date", ['value' => $this->fields['end_date']]);
-        echo "</td></tr>";
-
-        echo "<tr class='tab_bg_1'><td>" . Budget::getTypeName(1) . "</td>";
-        echo "<td>";
-        Budget::dropdown(['value' => $this->fields["budgets_id"]]);
-        echo "</td></tr>";
-
-        $this->showFormButtons($options);
+        $form = [
+           'action' => $this->getFormURL(),
+           'buttons' => [
+              [
+                 'name'  => $ID > 0 ? 'update' : 'add',
+                 'type'  => 'submit',
+                 'value' => $ID > 0 ? __('Update') : __('Add'),
+                 'class' => 'btn btn-secondary',
+              ],
+           ],
+           'content' => [
+              $this->getTypeName() => [
+                 'visible' => true,
+                 'inputs' => [
+                    $ID > 0 ?
+                    [
+                       'type' => 'hidden',
+                       'name' => 'id',
+                       'value' => $ID
+                    ] : [],
+                    [
+                       'type' => 'hidden',
+                       'name' => 'projects_id',
+                       'value' => $this->fields['projects_id']
+                    ],
+                    __('Name') => [
+                       'type' => 'text',
+                       'name' => 'name',
+                       'value' => $this->fields['name'],
+                    ],
+                    _n('Cost', 'Costs', 1) => [
+                       'type' => 'number',
+                       'name' => 'cost',
+                       'step' => '0.01',
+                       'value' => Html::formatNumber($this->fields["cost"], true),
+                    ],
+                    __('Begin date') => [
+                       'type' => 'date',
+                       'name' => 'begin_date',
+                       'value' => $this->fields['begin_date'],
+                    ],
+                    __('End date') => [
+                       'type' => 'date',
+                       'name' => 'end_date',
+                       'value' => $this->fields['end_date'],
+                    ],
+                    Budget::getTypeName(1) => [
+                       'type' => 'select',
+                       'name' => 'budgets_id',
+                       'value' => $this->fields["budgets_id"],
+                       'itemtype' => Budget::class,
+                    ],
+                    __('Comments') => [
+                       'type' => 'textarea',
+                       'name' => 'comment',
+                       'value' => $this->fields["comment"],
+                    ],
+                 ]
+              ]
+           ]
+        ];
+        renderTwigForm($form);
 
         return true;
     }
