@@ -287,13 +287,14 @@ class Software extends CommonDBTM
                        'type' => 'checkbox',
                        'value' => $this->fields['is_helpdesk_visible'],
                     ],
-                    __("Group in charge of the software") => [
-                       'name' => 'groups_id_tech',
-                       'type' => 'select',
-                       'value' => $this->fields['groups_id_tech'],
-                       'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => own_ticket
-                       'actions' => getItemActionButtons(['info', 'add'], "Group"),
-                    ],
+                     __("Group in charge of the software") => [
+                        'name' => 'groups_id_tech',
+                        'type' => 'select',
+                        'itemtype' => Group::class,
+                        'conditions' => ['is_assign' => 1],
+                        'value' => $this->fields['groups_id_tech'],
+                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                     ],
                     __("User") => [
                        'name' => 'users_id',
                        'type' => 'select',
@@ -301,13 +302,14 @@ class Software extends CommonDBTM
                        'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]), // NEED right => all
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
-                    __("Group") => [
-                       'name' => 'groups_id',
-                       'type' => 'select',
-                       'value' => $this->fields['groups_id'],
-                       'values' => getOptionForItems("Group", ['entities_id' => $this->fields['entities_id']]), // NEED right => all
-                       'actions' => getItemActionButtons(['info', 'add'], "Group"),
-                    ],
+                     __("Group") => [
+                        'name' => 'groups_id',
+                        'type' => 'select',
+                        'itemtype' => Group::class,
+                        'conditions' => ['is_itemgroup' => 1],
+                        'value' => $this->fields['groups_id'],
+                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                     ],
                  ]
               ],
               __('Upgrade') => [
