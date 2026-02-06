@@ -261,13 +261,13 @@ class Software extends CommonDBTM
                        'values' => getOptionForItems("Manufacturer"),
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
-                    __('Location') => [
-                       'name' => 'locations_id',
-                       'type' => 'select',
-                       'value' => $this->fields['locations_id'],
-                       'values' => getOptionForItems("Location", ['entities_id' => $this->fields['entities_id']]),
-                       'actions' => getItemActionButtons(['info', 'add'], "Location"),
-                    ],
+                     __('Location') => [
+                        'name' => 'locations_id',
+                        'type' => 'select',
+                        'itemtype' => Location::class,
+                        'value' => $this->fields['locations_id'],
+                        'actions' => getItemActionButtons(['info', 'add'], "Location"),
+                     ],
                     __('Category') => [
                        'name' => 'softwarecategories_id',
                        'type' => 'select',
