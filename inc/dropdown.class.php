@@ -2922,7 +2922,15 @@ class Dropdown
                             $where[] = $visibility['WHERE'];
                         }
                     }
-                    //no break to reach default case.
+
+                    $criteria = [
+                       'SELECT' => array_merge(["$table.*"], $addselect),
+                       'FROM'   => $table
+                    ];
+                    if (count($ljoin)) {
+                        $criteria['LEFT JOIN'] = $ljoin;
+                    }
+                    break;
 
                 case User::class:
                     $right = $post['right'] ?? 'all';
