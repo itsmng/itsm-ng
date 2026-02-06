@@ -25003,6 +25003,48 @@ msgstr "Ajouter un filtre"
 msgid "Saved"
 msgstr "Enregistré"
 
+msgid "Unable to load preferences"
+msgstr "Impossible de charger les préférences"
+
+msgid "Create a personal view before saving."
+msgstr "Créez une vue personnelle avant de sauvegarder."
+
+msgid "Unable to save preferences."
+msgstr "Impossible de sauvegarder les préférences."
+
+msgid "Personal view created"
+msgstr "Vue personnelle créée"
+
+msgid "Unable to create personal view."
+msgstr "Impossible de créer la vue personnelle."
+
+msgid "Personal view deleted"
+msgstr "Vue personnelle supprimée"
+
+msgid "Unable to delete personal view."
+msgstr "Impossible de supprimer la vue personnelle."
+
+msgid "Unable to load preferences."
+msgstr "Impossible de charger les préférences."
+
+msgid "Delete personal view"
+msgstr "Supprimer la vue personnelle"
+
+msgid "Selected columns"
+msgstr "Colonnes sélectionnées"
+
+msgid "Required"
+msgstr "Obligatoire"
+
+msgid "Choose a column"
+msgstr "Choisir une colonne"
+
+msgid "Drag to reorder columns. Locked columns cannot be removed."
+msgstr "Glisser pour réorganiser les colonnes. Les colonnes verrouillées ne peuvent pas être supprimées."
+
+msgid "Are you sure you want to delete your personal view and revert to the global view?"
+msgstr "Êtes-vous sûr de vouloir supprimer votre vue personnelle et revenir à la vue globale ?"
+
 msgid "Are you sure you want to delete the dashboard %s ?"
 msgstr "Êtes vous sûr de vouloir supprimer le tableau de bord %s ?"
 
