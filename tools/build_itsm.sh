@@ -45,6 +45,9 @@ echo "Install dependencies"
 # PHP dev dependencies are usefull at this point as they are used by some build operations
 $WORKING_DIR/bin/console dependencies install --composer-options="--ignore-platform-reqs --prefer-dist --no-progress"
 
+echo "Build JavaScript bundles with webpack"
+npm run build --prefix=$WORKING_DIR
+
 echo "Minify stylesheets and javascripts"
 php -d memory_limit=2G $WORKING_DIR/tools/minify.php
 echo "Compile SCSS"

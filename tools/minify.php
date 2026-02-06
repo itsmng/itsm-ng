@@ -20,12 +20,10 @@ class Itsm_minify
             'css' => [
                 __DIR__ . '/../css',
                 __DIR__ . '/../lib',
-                __DIR__ . '/../public/lib',
             ],
             'js' => [
                 __DIR__ . '/../js',
                 __DIR__ . '/../lib',
-                __DIR__ . '/../public/lib',
             ]
 
         ];

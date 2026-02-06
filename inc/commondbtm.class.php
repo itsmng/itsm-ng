@@ -5276,10 +5276,16 @@ class CommonDBTM extends CommonGLPI
 
                     // no break
                 case "dropdown":
+                    $itemtype = getItemTypeForTable($searchoptions['table']);
+                    if ($itemtype === 'User' && isset($options['right'])) {
+                       $values = getOptionsForUsers($options['right'], $options['condition'] ?? []);
+                    } else {
+                       $values = getOptionForItems($itemtype, $options['condition'] ?? []);
+                    }
                     return renderTwigTemplate('macros/input.twig', [
                        'type' => 'select',
                        'name' => $name,
-                       'values' => getOptionForItems(getItemTypeForTable($searchoptions['table']), $options['condition'] ?? []),
+                       'values' => $values,
                        'value' => $value,
                     ]);
                 case "right":
