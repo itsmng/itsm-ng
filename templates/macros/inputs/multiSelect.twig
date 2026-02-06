@@ -60,6 +60,7 @@
       $(`#{{rand}}${value}`).remove();
     {% else %}
       $(`#{{rand}}${value} input[type='hidden']`).val('0');
+      $(`#{{rand}}${value} input[type='text'], #{{rand}}${value} input[type='email']`).val('');
       $(`#{{rand}}${value}`).hide();
     {% endif %}
   }
