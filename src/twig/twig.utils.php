@@ -40,21 +40,24 @@ function expandSelect(&$select, $fields = [])
                 $select["values"][$select["value"]] = $item->fields["name"];
             }
         }
+        $ajaxData = [
+            "itemtype" => $select["itemtype"],
+            "display_emptychoice" => $select["display_emptychoice"] ?? 1,
+            "condition" => $select["condition"] ?? [],
+            "permit_parent_select" => 0,
+            "entity_restrict" => $restrict,
+            "recursive" => $recursive,
+            "used" => $select["used"] ?? [],
+            "emptylabel" => Dropdown::EMPTY_VALUE,
+            "permit_select_parent" => 0,
+        ];
+        if (isset($select["right"])) {
+            $ajaxData["right"] = $select["right"];
+        }
         $select["ajax"] = [
             "url" => $CFG_GLPI["root_doc"] . "/ajax/getDropdownValue.php",
             "type" => "POST",
-            "data" => [
-                "itemtype" => $select["itemtype"],
-                "display_emptychoice" => $select["display_emptychoice"] ?? 1,
-                "condition" => $select["condition"] ?? [],
-                "permit_parent_select" => 0,
-                "entity_restrict" => $restrict,
-                "recursive" => $recursive,
-                "used" => $select["used"] ?? [],
-                "emptylabel" => Dropdown::EMPTY_VALUE,
-                "permit_select_parent" => 0,
-                "right" => $select["right"] ?? null,
-            ],
+            "data" => $ajaxData,
         ];
         if (isset($fields["noLib"])) {
             $select["noLib"] = $fields["noLib"];

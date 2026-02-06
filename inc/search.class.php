@@ -2593,7 +2593,7 @@ JAVASCRIPT;
                                         \$existing.remove();
                                         \$container.removeData(dataKey);
                                     }
-                                    const \$content = $(data);
+                                    const \$content = $($.parseHTML(data, document, true));
                                     \$container.data(dataKey, \$content);
                                     \$container.append(\$content);
                                 }
@@ -2628,7 +2628,7 @@ JAVASCRIPT;
                                     \$existing.remove();
                                     \$container.removeData(dataKey);
                                 }
-                                const \$content = $(data);
+                                const \$content = $($.parseHTML(data, document, true));
                                 \$container.data(dataKey, \$content);
                                 \$container.append(\$content);
                             }
@@ -3015,6 +3015,7 @@ JAVASCRIPT;
             ] + $params
         );
 
+        echo "<span id=\"$dropdownname\">";
         self::displaySearchoptionValue($params);
         echo "</span>";
     }
