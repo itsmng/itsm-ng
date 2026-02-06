@@ -101,7 +101,7 @@ class PassiveDCEquipment extends CommonDBTM
                     __('Location') => [
                        'name' => 'locations_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Location', ['entities_id' => $this->fields['entities_id'],]),
+                       'itemtype' => Location::class,
                        'value' => $this->fields['locations_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Location"),
                     ],
@@ -126,13 +126,14 @@ class PassiveDCEquipment extends CommonDBTM
                        'value' => $this->fields['manufacturers_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
-                    __('Group in charge of the hardware') => [
-                       'name' => 'groups_id_tech',
-                       'type' => 'select',
-                       'values' => getOptionForItems('Group', ['is_assign' => 1, 'entities_id' => $this->fields['entities_id']]),
-                       'value' => $this->fields['groups_id_tech'],
-                       'actions' => getItemActionButtons(['info', 'add'], "Group"),
-                    ],
+                     __('Group in charge of the hardware') => [
+                        'name' => 'groups_id_tech',
+                        'type' => 'select',
+                        'itemtype' => Group::class,
+                        'conditions' => ['is_assign' => 1],
+                        'value' => $this->fields['groups_id_tech'],
+                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
+                     ],
                     _n('Model', 'Models', 1) => [
                        'name' => 'passivedcequipmentmodels_id',
                        'type' => 'select',

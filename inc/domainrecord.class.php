@@ -371,7 +371,8 @@ class DomainRecord extends CommonDBChild
                     __('Group in charge') => [
                        'type' => 'select',
                        'name' => "groups_id_tech",
-                       'values' => getOptionForItems(Group::class, ['entities_id' => Session::getActiveEntity()]),
+                       'itemtype' => Group::class,
+                       'conditions' => ['is_assign' => 1],
                        'value' => $this->fields["groups_id_tech"] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], Group::class),
                     ],
