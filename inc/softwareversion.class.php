@@ -149,11 +149,10 @@ class SoftwareVersion extends CommonDBChild
                     __('Status') => [
                        'type' => 'select',
                        'name' => 'states_id',
-                       'values' => getOptionForItems(
-                           'State',
-                           ['is_visible_softwareversion' => 1, 'entities_id' => $this->fields['entities_id']]
-                       ),
-                       'value' => $this->fields["states_id"]
+                       'itemtype' => State::class,
+                       'conditions' => ['is_visible_softwareversion' => 1],
+                       'value' => $this->fields["states_id"],
+                       'actions' => getItemActionButtons(['info', 'add'], "State")
                     ],
                     'action' => [
                        'type' => 'hidden',
@@ -175,7 +174,7 @@ class SoftwareVersion extends CommonDBChild
            ]
         ];
 
-        renderTwigForm($form);
+        renderTwigForm($form, '', $this->fields);
 
         // Only count softwareversions_id_buy (don't care of softwareversions_id_use if no installation)
         if (
@@ -341,7 +340,7 @@ class SoftwareVersion extends CommonDBChild
         echo "<div class='spaced'>";
 
         if ($canedit) {
-            $action = SoftwareVersion::getFormURL() . "?softwares_id=$softwares_id'>";
+            $action = SoftwareVersion::getFormURL() . "?softwares_id=$softwares_id";
             $label  = _x('button', 'Add a version');
             echo <<<HTML
          <div class='center b mb-3'>
