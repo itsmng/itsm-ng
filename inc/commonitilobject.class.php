@@ -3829,7 +3829,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'date',
            'name'               => __('Opening date'),
-           'datatype'           => 'date',
+           'datatype'           => 'datetime',
            'massiveaction'      => false
         ];
 
@@ -3887,7 +3887,7 @@ abstract class CommonITILObject extends CommonDBTM
            'table'              => $this->getTable(),
            'field'              => 'date_mod',
            'name'               => __('Last update'),
-           'datatype'           => 'date',
+           'datatype'           => 'datetime',
            'massiveaction'      => false
         ];
 
