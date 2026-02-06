@@ -358,28 +358,6 @@ class Budget extends CommonDropdown
             'ORDER'           => 'itemtype'
         ]);
 
-        $number = count($iterator);
-
-        echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Associated Items Table'>";
-        echo "<tr><th colspan='2'>";
-        Html::printPagerForm();
-        echo "</th><th colspan='4'>";
-        if ($number == 0) {
-            echo __('No associated item');
-        } else {
-            echo _n('Associated item', 'Associated items', $number);
-        }
-        echo "</th></tr>";
-
-        echo "<tr><th>" . _n('Type', 'Types', 1) . "</th>";
-        echo "<th>" . Entity::getTypeName(1) . "</th>";
-        echo "<th>" . __('Name') . "</th>";
-        echo "<th>" . __('Serial number') . "</th>";
-        echo "<th>" . __('Inventory number') . "</th>";
-        echo "<th>" . _x('price', 'Value') . "</th>";
-        echo "</tr>";
-
-        $num       = 0;
         $itemtypes = [];
         while ($row = $iterator->next()) {
             $itemtypes[] = $row['itemtype'];
@@ -390,283 +368,256 @@ class Budget extends CommonDropdown
         $itemtypes[] = 'Change';
         $itemtypes[] = 'Project';
 
+        $fields = [
+            _n('Type', 'Types', 1),
+            Entity::getTypeName(1),
+            __('Name'),
+            __('Serial number'),
+            __('Inventory number'),
+            _x('price', 'Value'),
+        ];
+
+        $values = [];
         foreach ($itemtypes as $itemtype) {
             if (!($item = getItemForItemtype($itemtype))) {
                 continue;
             }
 
-            if ($item->canView()) {
-                switch ($itemtype) {
-                    case 'Contract':
-                        $criteria = [
-                            'SELECT'       => [
-                                $item->getTable() . '.id',
-                                $item->getTable() . '.entities_id',
-                                'SUM' => 'glpi_contractcosts.cost AS value'
-                            ],
-                            'FROM'         => 'glpi_contractcosts',
-                            'INNER JOIN'   => [
-                                $item->getTable() => [
-                                    'ON' => [
-                                        $item->getTable()    => 'id',
-                                        'glpi_contractcosts' => 'contracts_id'
-                                    ]
+            if (!$item->canView()) {
+                continue;
+            }
+
+            switch ($itemtype) {
+                case 'Contract':
+                    $criteria = [
+                        'SELECT'       => [
+                            $item->getTable() . '.id',
+                            $item->getTable() . '.entities_id',
+                            'SUM' => 'glpi_contractcosts.cost AS value'
+                        ],
+                        'FROM'         => 'glpi_contractcosts',
+                        'INNER JOIN'   => [
+                            $item->getTable() => [
+                                'ON' => [
+                                    $item->getTable()    => 'id',
+                                    'glpi_contractcosts' => 'contracts_id'
                                 ]
-                            ],
-                            'WHERE'        => [
-                                'glpi_contractcosts.budgets_id'     => $budgets_id,
-                                $item->getTable() . '.is_template'  => 0
-                            ] + getEntitiesRestrictCriteria($item->getTable()),
-                            'GROUPBY'      => [
-                                $item->getTable() . '.id',
-                                $item->getTable() . '.entities_id'
-                            ],
-                            'ORDERBY'      => [
-                                $item->getTable() . '.entities_id',
-                                $item->getTable() . '.name'
                             ]
-                        ];
-                        break;
+                        ],
+                        'WHERE'        => [
+                            'glpi_contractcosts.budgets_id'     => $budgets_id,
+                            $item->getTable() . '.is_template'  => 0
+                        ] + getEntitiesRestrictCriteria($item->getTable()),
+                        'GROUPBY'      => [
+                            $item->getTable() . '.id',
+                            $item->getTable() . '.entities_id'
+                        ],
+                        'ORDERBY'      => [
+                            $item->getTable() . '.entities_id',
+                            $item->getTable() . '.name'
+                        ]
+                    ];
+                    break;
 
-                    case 'Ticket':
-                    case 'Problem':
-                    case 'Change':
-                        $costtable = getTableForItemType($item->getType() . 'Cost');
+                case 'Ticket':
+                case 'Problem':
+                case 'Change':
+                    $costtable = getTableForItemType($item->getType() . 'Cost');
 
-                        $sum = new QueryExpression(
-                            "SUM(" . $DB->quoteName("$costtable.actiontime") . " * " . $DB->quoteName("$costtable.cost_time") . "/" . HOUR_TIMESTAMP . "
+                    $sum = new QueryExpression(
+                        "SUM(" . $DB->quoteName("$costtable.actiontime") . " * " . $DB->quoteName("$costtable.cost_time") . "/" . HOUR_TIMESTAMP . "
                         + " . $DB->quoteName("$costtable.cost_fixed") . "
                         + " . $DB->quoteName("$costtable.cost_material") . ") AS " . $DB->quoteName('value')
-                        );
-                        $criteria = [
-                            'SELECT'       => [
-                                $item->getTable() . '.id',
-                                $item->getTable() . '.entities_id',
-                                $sum
-                            ],
-                            'FROM'         => $costtable,
-                            'INNER JOIN'   => [
-                                $item->getTable() => [
-                                    'ON' => [
-                                        $item->getTable()    => 'id',
-                                        $costtable           => $item->getForeignKeyField()
-                                    ]
+                    );
+                    $criteria = [
+                        'SELECT'       => [
+                            $item->getTable() . '.id',
+                            $item->getTable() . '.entities_id',
+                            $sum
+                        ],
+                        'FROM'         => $costtable,
+                        'INNER JOIN'   => [
+                            $item->getTable() => [
+                                'ON' => [
+                                    $item->getTable()    => 'id',
+                                    $costtable           => $item->getForeignKeyField()
                                 ]
-                            ],
-                            'WHERE'        => [
-                                $costtable . '.budgets_id' => $budgets_id
-                            ] + getEntitiesRestrictCriteria($item->getTable()),
-                            'GROUPBY'      => [
-                                $item->getTable() . '.id',
-                                $item->getTable() . '.entities_id'
-                            ],
-                            'ORDERBY'      => [
-                                $item->getTable() . '.entities_id',
-                                $item->getTable() . '.name'
                             ]
-                        ];
-                        break;
+                        ],
+                        'WHERE'        => [
+                            $costtable . '.budgets_id' => $budgets_id
+                        ] + getEntitiesRestrictCriteria($item->getTable()),
+                        'GROUPBY'      => [
+                            $item->getTable() . '.id',
+                            $item->getTable() . '.entities_id'
+                        ],
+                        'ORDERBY'      => [
+                            $item->getTable() . '.entities_id',
+                            $item->getTable() . '.name'
+                        ]
+                    ];
+                    break;
 
-                    case 'Project':
-                        $criteria = [
-                            'SELECT'       => [
-                                $item->getTable() . '.id',
-                                $item->getTable() . '.entities_id',
-                                'SUM' => 'glpi_projectcosts.cost AS value'
-                            ],
-                            'FROM'         => 'glpi_projectcosts',
-                            'INNER JOIN'   => [
-                                $item->getTable() => [
-                                    'ON' => [
-                                        $item->getTable()    => 'id',
-                                        'glpi_projectcosts'  => 'projects_id'
-                                    ]
+                case 'Project':
+                    $criteria = [
+                        'SELECT'       => [
+                            $item->getTable() . '.id',
+                            $item->getTable() . '.entities_id',
+                            'SUM' => 'glpi_projectcosts.cost AS value'
+                        ],
+                        'FROM'         => 'glpi_projectcosts',
+                        'INNER JOIN'   => [
+                            $item->getTable() => [
+                                'ON' => [
+                                    $item->getTable()    => 'id',
+                                    'glpi_projectcosts'  => 'projects_id'
                                 ]
-                            ],
-                            'WHERE'        => [
-                                'glpi_projectcosts.budgets_id'  => $budgets_id
-                            ] + getEntitiesRestrictCriteria($item->getTable()),
-                            'GROUPBY'      => [
-                                $item->getTable() . '.id',
-                                $item->getTable() . '.entities_id'
-                            ],
-                            'ORDERBY'      => [
-                                $item->getTable() . '.entities_id',
-                                $item->getTable() . '.name'
                             ]
-                        ];
-                        break;
+                        ],
+                        'WHERE'        => [
+                            'glpi_projectcosts.budgets_id'  => $budgets_id
+                        ] + getEntitiesRestrictCriteria($item->getTable()),
+                        'GROUPBY'      => [
+                            $item->getTable() . '.id',
+                            $item->getTable() . '.entities_id'
+                        ],
+                        'ORDERBY'      => [
+                            $item->getTable() . '.entities_id',
+                            $item->getTable() . '.name'
+                        ]
+                    ];
+                    break;
 
-                    case 'Cartridge':
-                        $criteria = [
-                            'SELECT'       => [
-                                $item->getTable() . '.*',
-                                'glpi_cartridgeitems.name',
-                                'glpi_infocoms.value'
-                            ],
-                            'FROM'         => 'glpi_infocoms',
-                            'INNER JOIN'   => [
-                                $item->getTable() => [
-                                    'ON' => [
-                                        $item->getTable() => 'id',
-                                        'glpi_infocoms'   => 'items_id'
-                                    ]
-                                ],
-                                'glpi_cartridgeitems'   => [
-                                    'ON' => [
-                                        $item->getTable()       => 'cartridgeitems_id',
-                                        'glpi_cartridgeitems'   => 'id'
-                                    ]
+                case 'Cartridge':
+                    $criteria = [
+                        'SELECT'       => [
+                            $item->getTable() . '.*',
+                            'glpi_cartridgeitems.name',
+                            'glpi_infocoms.value'
+                        ],
+                        'FROM'         => 'glpi_infocoms',
+                        'INNER JOIN'   => [
+                            $item->getTable() => [
+                                'ON' => [
+                                    $item->getTable() => 'id',
+                                    'glpi_infocoms'   => 'items_id'
                                 ]
                             ],
-                            'WHERE'        => [
-                                'glpi_infocoms.itemtype'   => $itemtype,
-                                'glpi_infocoms.budgets_id' => $budgets_id
-                            ] + getEntitiesRestrictCriteria($item->getTable()),
-                            'ORDERBY'      => [
-                                'entities_id',
-                                'glpi_cartridgeitems.name'
+                            'glpi_cartridgeitems'   => [
+                                'ON' => [
+                                    $item->getTable()       => 'cartridgeitems_id',
+                                    'glpi_cartridgeitems'   => 'id'
+                                ]
                             ]
-                        ];
-                        break;
+                        ],
+                        'WHERE'        => [
+                            'glpi_infocoms.itemtype'   => $itemtype,
+                            'glpi_infocoms.budgets_id' => $budgets_id
+                        ] + getEntitiesRestrictCriteria($item->getTable()),
+                        'ORDERBY'      => [
+                            'entities_id',
+                            'glpi_cartridgeitems.name'
+                        ]
+                    ];
+                    break;
 
-                    case 'Consumable':
-                        $criteria = [
-                            'SELECT'       => [
-                                $item->getTable() . '.*',
-                                'glpi_consumableitems.name',
-                                'glpi_infocoms.value'
-                            ],
-                            'FROM'         => 'glpi_infocoms',
-                            'INNER JOIN'   => [
-                                $item->getTable() => [
-                                    'ON' => [
-                                        $item->getTable() => 'id',
-                                        'glpi_infocoms'   => 'items_id'
-                                    ]
-                                ],
-                                'glpi_consumableitems'   => [
-                                    'ON' => [
-                                        $item->getTable()       => 'consumableitems_id',
-                                        'glpi_consumableitems'  => 'id'
-                                    ]
+                case 'Consumable':
+                    $criteria = [
+                        'SELECT'       => [
+                            $item->getTable() . '.*',
+                            'glpi_consumableitems.name',
+                            'glpi_infocoms.value'
+                        ],
+                        'FROM'         => 'glpi_infocoms',
+                        'INNER JOIN'   => [
+                            $item->getTable() => [
+                                'ON' => [
+                                    $item->getTable() => 'id',
+                                    'glpi_infocoms'   => 'items_id'
                                 ]
                             ],
-                            'WHERE'        => [
-                                'glpi_infocoms.itemtype'   => $itemtype,
-                                'glpi_infocoms.budgets_id' => $budgets_id
-                            ] + getEntitiesRestrictCriteria($item->getTable()),
-                            'ORDERBY'      => [
-                                'entities_id',
-                                'glpi_consumableitems.name'
+                            'glpi_consumableitems'   => [
+                                'ON' => [
+                                    $item->getTable()       => 'consumableitems_id',
+                                    'glpi_consumableitems'  => 'id'
+                                ]
                             ]
-                        ];
-                        break;
+                        ],
+                        'WHERE'        => [
+                            'glpi_infocoms.itemtype'   => $itemtype,
+                            'glpi_infocoms.budgets_id' => $budgets_id
+                        ] + getEntitiesRestrictCriteria($item->getTable()),
+                        'ORDERBY'      => [
+                            'entities_id',
+                            'glpi_consumableitems.name'
+                        ]
+                    ];
+                    break;
 
-                    default:
-                        $criteria = [
-                            'SELECT'       => [
-                                $item->getTable() . '.*',
-                                'glpi_infocoms.value',
-                            ],
-                            'FROM'         => 'glpi_infocoms',
-                            'INNER JOIN'   => [
-                                $item->getTable() => [
-                                    'ON' => [
-                                        $item->getTable() => 'id',
-                                        'glpi_infocoms'   => 'items_id'
-                                    ]
+                default:
+                    $criteria = [
+                        'SELECT'       => [
+                            $item->getTable() . '.*',
+                            'glpi_infocoms.value',
+                        ],
+                        'FROM'         => 'glpi_infocoms',
+                        'INNER JOIN'   => [
+                            $item->getTable() => [
+                                'ON' => [
+                                    $item->getTable() => 'id',
+                                    'glpi_infocoms'   => 'items_id'
                                 ]
-                            ],
-                            'WHERE'        => [
-                                'glpi_infocoms.itemtype'            => $itemtype,
-                                'glpi_infocoms.budgets_id'          => $budgets_id
-                            ] + getEntitiesRestrictCriteria($item->getTable()),
-                            'ORDERBY'      => [
-                                $item->getTable() . '.entities_id'
                             ]
-                        ];
-                        if ($item->maybeTemplate()) {
-                            $criteria['WHERE'][$item->getTable() . '.is_template'] = 0;
+                        ],
+                        'WHERE'        => [
+                            'glpi_infocoms.itemtype'            => $itemtype,
+                            'glpi_infocoms.budgets_id'          => $budgets_id
+                        ] + getEntitiesRestrictCriteria($item->getTable()),
+                        'ORDERBY'      => [
+                            $item->getTable() . '.entities_id'
+                        ]
+                    ];
+                    if ($item->maybeTemplate()) {
+                        $criteria['WHERE'][$item->getTable() . '.is_template'] = 0;
+                    }
+
+                    if ($item instanceof Item_Devices) {
+                        $criteria['ORDERBY'][] = $item->getTable() . '.itemtype';
+                    } else {
+                        $criteria['ORDERBY'][] = $item->getTable() . '.name';
+                    }
+                    break;
+            }
+
+            $iter = $DB->request($criteria);
+            while ($data = $iter->next()) {
+                $name = NOT_AVAILABLE;
+                if ($item->getFromDB($data["id"])) {
+                    if ($item instanceof Item_Devices) {
+                        $tmpitem = new $item::$itemtype_2();
+                        if ($tmpitem->getFromDB($data[$item::$items_id_2])) {
+                            $name = $tmpitem->getLink(['additional' => true]);
                         }
-
-                        if ($item instanceof Item_Devices) {
-                            $criteria['ORDERBY'][] = $item->getTable() . '.itemtype';
-                        } else {
-                            $criteria['ORDERBY'][] = $item->getTable() . '.name';
-                        }
-                        break;
-                }
-
-                $iterator = $DB->request($criteria);
-                $nb = count($iterator);
-                if ($nb > $_SESSION['glpilist_limit']) {
-                    echo "<tr class='tab_bg_1'>";
-                    $name = $item->getTypeName($nb);
-                    //TRANS: %1$s is a name, %2$s is a number
-                    echo "<td class='center'>" . sprintf(__('%1$s: %2$s'), $name, $nb) . "</td>";
-                    echo "<td class='center' colspan='2'>";
-
-                    $opt = ['order'      => 'ASC',
-                        'is_deleted' => 0,
-                        'reset'      => 'reset',
-                        'start'      => 0,
-                        'sort'       => 80,
-                        'criteria'   => [0 => ['value'      => '$$$$' . $budgets_id,
-                        'searchtype' => 'contains',
-                        'field'      => 50]]];
-
-                    echo "<a href='" . $item->getSearchURL() . "?" . Toolbox::append_params($opt) . "'>" .
-                        __('Device list') . "</a></td>";
-                    echo "<td class='center'>-</td><td class='center'>-</td><td class='center'>-" .
-                        "</td></tr>";
-                } elseif ($nb) {
-                    for ($prem = true; $data = $iterator->next(); $prem = false) {
-                        $name = NOT_AVAILABLE;
-                        if ($item->getFromDB($data["id"])) {
-                            if ($item instanceof Item_Devices) {
-                                $tmpitem = new $item::$itemtype_2();
-                                if ($tmpitem->getFromDB($data[$item::$items_id_2])) {
-                                    $name = $tmpitem->getLink(['additional' => true]);
-                                }
-                            } else {
-                                $name = $item->getLink(['additional' => true]);
-                            }
-                        }
-                        echo "<tr class='tab_bg_1'>";
-                        if ($prem) {
-                            $typename = $item->getTypeName($nb);
-                            echo "<td class='center top' rowspan='$nb'>" .
-                                ($nb > 1 ? sprintf(__('%1$s: %2$s'), $typename, $nb) : $typename) . "</td>";
-                        }
-                        echo "<td class='center'>" . Dropdown::getDropdownName(
-                            "glpi_entities",
-                            $data["entities_id"]
-                        );
-                        echo "</td><td class='center";
-                        echo(isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'");
-                        echo ">" . $name . "</td>";
-                        echo "<td class='center'>" . (isset($data["serial"]) ? "" . $data["serial"] . "" : "-");
-                        echo "</td>";
-                        echo "<td class='center'>" .
-                            (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-") . "</td>";
-                        echo "<td class='center'>" .
-                            (isset($data["value"]) ? "" . Html::formatNumber($data["value"], true) . ""
-                            : "-");
-
-                        echo "</td></tr>";
+                    } else {
+                        $name = $item->getLink(['additional' => true]);
                     }
                 }
-                $num += $nb;
+                $values[] = [
+                    $item->getTypeName(1),
+                    Dropdown::getDropdownName("glpi_entities", $data["entities_id"]),
+                    $name,
+                    ($data["serial"] ?? "-"),
+                    ($data["otherserial"] ?? "-"),
+                    (isset($data["value"]) ? Html::formatNumber($data["value"], true) : "-"),
+                ];
             }
         }
 
-        if ($num > 0) {
-            echo "<tr class='tab_bg_2'>";
-            echo "<td class='center b'>" . sprintf(__('%1$s = %2$s'), __('Total'), $num) . "</td>";
-            echo "<td colspan='5'>&nbsp;</td></tr> ";
-        }
-        echo "</table></div>";
+        renderTwigTemplate('table.twig', [
+            'id'     => 'tableBudgetItems',
+            'fields' => $fields,
+            'values' => $values,
+        ]);
     }
 
 
