@@ -1,6 +1,18 @@
 (function (window, document) {
     const existingQueue = Array.isArray(window.ITSMTableQueue) ? window.ITSMTableQueue : [];
 
+    const preactGlobal = window.preact;
+    const hooksGlobal = window.preactHooks;
+    const htmGlobal = window.htm;
+
+    if (!preactGlobal || !hooksGlobal || !htmGlobal) {
+        return;
+    }
+
+    const { h, render } = preactGlobal;
+    const { useEffect } = hooksGlobal;
+    const html = htmGlobal.bind(h);
+
     function initTable(config) {
         if (!config || !config.id) {
             return;
@@ -18,10 +30,8 @@
 
         const TableCore = window.TableCore;
         const Nanostores = window.Nanostores;
-        const htm = window.htm;
-        const vhtml = window.vhtml;
 
-        if (!TableCore || !Nanostores || !htm || !vhtml) {
+        if (!TableCore || !Nanostores) {
             console.error('Table dependencies missing.');
             return;
         }
@@ -33,7 +43,6 @@
 
         const { createColumnHelper, createTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel } = TableCore;
         const { atom } = Nanostores;
-        const html = htm.bind(vhtml);
         const stateStore = atom({});
         const trimmedId = String(config.id).replace(/\d+$/, '');
         const fieldsArray = Array.isArray(config.fields) ? config.fields : Object.entries(config.fields || {});
@@ -65,13 +74,14 @@
 
         let table;
         let serverTotal = null;
+        let isLoading = false;
+        let hasLoadingOverlay = false;
 
-        const htmlInjectionMap = new Map();
-        function decodeHtml(htmlString) {
+        const decodeHtml = (htmlString) => {
             const txt = document.createElement('textarea');
             txt.innerHTML = htmlString;
             return txt.value;
-        }
+        };
 
         const processSpecialCharacters = (value) => {
             if (typeof value !== 'string') return value;
@@ -82,12 +92,13 @@
                 .replace(/#LBHR#/g, '<hr>');
         };
 
-        const renderRawHTML = (htmlString) => {
-            const processed = processSpecialCharacters(htmlString);
-            if (typeof processed === 'string' && /<[^>]*>/.test(processed)) {
-                const marker = `__HTML_CONTENT_${Math.random().toString(36).substring(2, 10)}__`;
-                htmlInjectionMap.set(marker, processed);
-                return marker;
+        const renderRawHTML = (value) => {
+            const processed = processSpecialCharacters(value);
+            if (typeof processed !== 'string') {
+                return processed;
+            }
+            if (/<[^>]*>/.test(processed)) {
+                return h('span', { dangerouslySetInnerHTML: { __html: processed } });
             }
             return decodeHtml(processed);
         };
@@ -121,38 +132,13 @@
             return false;
         };
 
-        const renderLoading = (isLoading) => {
-            const tableContainer = wrapperElement.querySelector('.fixed-table-container');
-            if (!tableContainer) {
-                return;
-            }
-            let overlay = tableContainer.querySelector('.loading-overlay');
-            if (isLoading) {
-                if (!overlay) {
-                    overlay = document.createElement('div');
-                    overlay.className = 'loading-overlay';
-                    overlay.style.position = 'absolute';
-                    overlay.style.top = '0';
-                    overlay.style.left = '0';
-                    overlay.style.width = '100%';
-                    overlay.style.height = '100%';
-                    overlay.style.background = 'rgba(255, 255, 255, 0.8)';
-                    overlay.style.display = 'flex';
-                    overlay.style.alignItems = 'center';
-                    overlay.style.justifyContent = 'center';
-                    overlay.style.zIndex = '10';
-                    overlay.innerHTML = '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>';
-                    tableContainer.style.position = 'relative';
-                    tableContainer.appendChild(overlay);
-                }
-            } else if (overlay) {
-                tableContainer.removeChild(overlay);
-            }
-        };
+        let renderTable = () => {};
 
         const fetchDataAndRender = async () => {
             if (!url) return;
-            renderLoading(true);
+            isLoading = true;
+            hasLoadingOverlay = true;
+            renderTable();
 
             const state = table.getState();
             const { pageIndex, pageSize: currentPageSize } = state.pagination;
@@ -177,7 +163,8 @@
                     pageCount: Math.ceil(result.total / currentPageSize),
                 }));
                 if (validatePaginationState(serverTotal)) {
-                    renderLoading(false);
+                    isLoading = false;
+                    renderTable();
                     fetchDataAndRender();
                     return;
                 }
@@ -186,7 +173,7 @@
                 table.setOptions(prev => ({ ...prev, data: [] }));
                 serverTotal = 0;
             } finally {
-                renderLoading(false);
+                isLoading = false;
                 renderTable();
             }
         };
@@ -254,7 +241,7 @@
             }));
         }
         const dataColumns = fieldKeys.map(field => columnHelper.accessor(String(field), {
-            header: () => html`${renderRawHTML(fields[field])}`,
+            header: () => renderRawHTML(fields[field]),
             cell: info => renderRawHTML(info.getValue() ?? ''),
         }));
         columns = columns.concat(dataColumns);
@@ -281,301 +268,6 @@
                 },
             },
         });
-
-        const renderPageSizeDropdown = () => {
-            const currentPageSize = table.getState().pagination.pageSize;
-            const pageSizeOptions = [15, 25, 50, 100, 1000, 10000];
-
-            return html`
-                <div class="page-list">
-                    <div class="dropdown dropup">
-                        <button
-                            class="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                        >
-                            ${currentPageSize}
-                        </button>
-                        <div class="dropdown-menu">
-                            ${pageSizeOptions.map(size => html`
-                                <a
-                                    class="dropdown-item"
-                                    onclick="table.setPageSize(${size})"
-                                >
-                                    ${size}
-                                </a>
-                            `)}
-                        </div>
-                    </div>
-                </div>
-            `;
-        };
-
-        const renderPageSizeSelector = () => {
-            const currentPageSize = table.getState().pagination.pageSize;
-            const totalRows = url ? serverTotal : table.getFilteredRowModel().rows.length;
-
-            return html`
-                <div class="fixed-table-pagination">
-                    <div class="float-left pagination-detail">
-                        <span class="pagination-info">
-                            Showing ${Math.min(totalRows, currentPageSize)} of ${totalRows} entries
-                        </span>
-                        ${renderPageSizeDropdown()}
-                    </div>
-                </div>
-            `;
-        };
-
-        const renderPagination = () => {
-            const totalPages = table.getPageCount();
-            const currentPage = table.getState().pagination.pageIndex + 1;
-            const currentPageSize = table.getState().pagination.pageSize;
-            const totalRows = url ? serverTotal : table.getFilteredRowModel().rows.length;
-            const startRow = table.getState().pagination.pageIndex * currentPageSize + 1;
-            const endRow = Math.min((table.getState().pagination.pageIndex + 1) * currentPageSize, totalRows);
-
-            const maxVisibleItems = 7;
-            const pages = [];
-
-            if (totalPages <= maxVisibleItems) {
-                for (let i = 1; i <= totalPages; i++) {
-                    pages.push(i);
-                }
-            } else {
-                pages.push(1);
-                let remainingSlots = maxVisibleItems - 3;
-
-                if (currentPage > 4) {
-                    pages.push('...');
-                    remainingSlots--;
-                }
-
-                const startPage = Math.max(2, currentPage - Math.floor(remainingSlots / 2));
-                const endPage = Math.min(totalPages - 1, startPage + remainingSlots - 1);
-
-                for (let i = startPage; i <= endPage; i++) {
-                    pages.push(i);
-                }
-
-                if (endPage < totalPages - 1) {
-                    pages.push('...');
-                }
-
-                pages.push(totalPages);
-            }
-
-            return html`
-                <div class="fixed-table-pagination">
-                    <div class="float-left pagination-detail">
-                        <span class="pagination-info">
-                            Showing ${startRow} to ${endRow} of ${totalRows} entries
-                        </span>
-                        ${renderPageSizeDropdown()}
-                    </div>
-                    <div class="float-right pagination">
-                        <ul class="pagination">
-                            <li
-                                class="page-item page-pre ${!table.getCanPreviousPage() ? 'disabled' : ''}"
-                                onclick="${table.getCanPreviousPage() ? 'table.previousPage()' : ''}"
-                                style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
-                            >
-                                <a class="page-link" aria-label="previous page" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">‹</a>
-                            </li>
-                            ${pages.map(page => {
-                                if (page === '...') {
-                                    return html`
-                                        <li class="page-item page-last-separator disabled" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
-                                            <a class="page-link" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">...</a>
-                                        </li>
-                                    `;
-                                }
-                                return html`
-                                    <li
-                                        class="page-item ${page === currentPage ? 'active' : ''}"
-                                        onclick="table.setPageIndex(${page - 1})"
-                                        style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
-                                    >
-                                        <a class="page-link" aria-label="to page ${page}" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">${page}</a>
-                                    </li>
-                                `;
-                            })}
-                            <li
-                                class="page-item page-next ${!table.getCanNextPage() ? 'disabled' : ''}"
-                                onclick="${table.getCanNextPage() ? 'table.nextPage()' : ''}"
-                                style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
-                            >
-                                <a class="page-link" aria-label="next page" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">›</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            `;
-        };
-
-        const renderToolbar = () => {
-            const visibleColumns = table.getAllColumns().filter(column =>
-                column.id !== 'select' && !(isTrash && column.id === 'trash')
-            );
-
-            return html`
-                <div class="fixed-table-toolbar">
-                    <div class="float-left bs-bars">
-                        <div id="${toolbarId}" class="btn-group">
-                            ${hasMassiveAction && !radio ? html`
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    aria-label="Actions"
-                                    onclick="massiveaction_window${config.id}.dialog('open')"
-                                >
-                                    <i class="fas fa-hammer" title="Actions"></i>
-                                </button>
-                            ` : ''}
-                            ${columnEdit ? html`
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    aria-label="Options"
-                                    data-display-preferences="${itemtype}"
-                                >
-                                    <i class="fas fa-wrench" title="Options"></i>
-                                </button>
-                            ` : ''}
-                        </div>
-                    </div>
-                    <div class="float-right btn-group columns columns-right">
-                        ${canTrash ? html`
-                            <button
-                                type="button"
-                                class="btn btn-secondary${isTrash ? ' active btn-danger' : ''}"
-                                onclick="toogle('is_deleted', '', '', ''); if (document.forms['searchform${itemtype}']) { document.forms['searchform${itemtype}'].submit(); }"
-                                title="${isTrash ? 'Show normal items' : 'Show trash content'}"
-                            >
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        ` : ''}
-                        <div class="btn-group keep-open">
-                            <button
-                                type="button"
-                                class="btn btn-secondary dropdown-toggle"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                            >
-                                <i class="bi fas fa-columns"></i> <span class="caret"></span>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <label class="dropdown-item dropdown-item-marker">
-                                    <input
-                                        type="checkbox"
-                                        checked
-                                        data-column="all"
-                                        data-action="toggle-all-columns"
-                                    />
-                                    Toggle All
-                                </label>
-                                <div class="dropdown-divider"></div>
-                                ${visibleColumns.map(column => html`
-                                    <label class="dropdown-item dropdown-item-marker">
-                                        <input
-                                            type="checkbox"
-                                            checked="${column.getIsVisible()}"
-                                            onchange="column.toggleVisibility(event.target.checked)"
-                                            data-column-id="${column.id}"
-                                        />
-                                        <span>${fields[column.id]}</span>
-                                    </label>
-                                `)}
-                            </div>
-                        </div>
-                        ${showExport ? html`
-                            <button type="button" class="btn btn-secondary" id="export-table" title="Export">
-                                <i class="fas fa-file-export"></i>
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-            `;
-        };
-
-        const renderTableElement = () => {
-            return html`
-                <div class="fixed-table-container" style="overflow-x: scroll;">
-                    <table class="table table-striped table-bordered table-hover">
-                        <thead>
-                            ${table.getHeaderGroups().map(headerGroup => html`
-                                <tr>
-                                    ${headerGroup.headers.map(header => {
-                                        const isSelectColumn = header.id === 'select';
-                                        const canSort = header.column.getCanSort();
-                                        const sortingState = header.column.getIsSorted();
-
-                                        let thClasses = '';
-                                        let thInnerClasses = 'th-inner';
-
-                                        if (isSelectColumn) {
-                                            thClasses = 'bs-checkbox';
-                                        } else if (canSort) {
-                                            thInnerClasses += ' sortable both';
-                                            if (sortingState === 'asc') {
-                                                thInnerClasses += ' asc';
-                                            } else if (sortingState === 'desc') {
-                                                thInnerClasses += ' desc';
-                                            }
-                                        }
-
-                                        return html`
-                                            <th
-                                                class="${thClasses}"
-                                                data-field="${header.column.id}"
-                                                style="${isSelectColumn ? 'width: 36px' : ''}"
-                                            >
-                                                <div class="${thInnerClasses}">
-                                                    ${flexRender(header.column.columnDef.header, header.getContext())}
-                                                </div>
-                                                <div class="fht-cell"></div>
-                                            </th>
-                                        `;
-                                    })}
-                                </tr>
-                            `)}
-                        </thead>
-                        ${table.getRowModel().rows.length === 0 ? html`
-                            <tbody class="table-light">
-                                <tr class="no-records-found">
-                                    <td colspan="${table.getAllColumns().length}">
-                                        No matching records found
-                                    </td>
-                                </tr>
-                            </tbody>
-                        ` : html`
-                        <tbody class="table-light">
-                            ${table.getRowModel().rows.map(row => html`
-                                <tr>
-                                    ${row.getVisibleCells().map(cell => {
-                                        const isSelectColumn = cell.column.id === 'select';
-                                        const isDisabled = isSelectColumn && !radio && hasMassiveAction && !row.original.value;
-
-                                        return html`
-                                            <td
-                                                class="${isSelectColumn ? 'bs-checkbox' : ''}"
-                                                style="${isSelectColumn ? 'width: 36px' : ''}"
-                                            >
-                                                ${isSelectColumn && isDisabled ?
-                                                    html`<input type="checkbox" class="row-select" data-row-id="${row.id}" disabled />` :
-                                                    flexRender(cell.column.columnDef.cell, cell.getContext())
-                                                }
-                                            </td>
-                                        `;
-                                    })}
-                                </tr>
-                            `)}
-                        </tbody>
-                        `}
-                    </table>
-                </div>
-            `;
-        };
 
         const exportToCsv = () => {
             const dataToExport = table.getFilteredRowModel().rows.map(row => row.original);
@@ -681,109 +373,351 @@
             }
         };
 
-        const initializeRowSelectionEvents = () => {
-            wrapperElement.querySelectorAll('.row-select').forEach(checkbox => {
-                checkbox.addEventListener('change', handleRowSelection);
-            });
+        const openMassiveAction = () => {
+            const dialog = window['massiveaction_window' + config.id];
+            if (dialog && typeof dialog.dialog === 'function') {
+                dialog.dialog('open');
+            }
         };
 
-        const renderTable = () => {
-            htmlInjectionMap.clear();
-            const totalRows = url ? serverTotal : data.length;
-            const shouldPaginate = url
-                ? (serverTotal !== null && serverTotal > table.getState().pagination.pageSize)
-                : (data.length > table.getState().pagination.pageSize);
-            const showPageSizeSelector = totalRows !== null && totalRows > 0;
-            const tableHTML = html`
-            <div>
-                ${(!minimal || !noToolBar) ? renderToolbar() : ''}
-                ${renderTableElement()}
-                ${shouldPaginate ? renderPagination() : (showPageSizeSelector ? renderPageSizeSelector() : '')}
-            </div>`;
-            let finalHTML = tableHTML;
-            htmlInjectionMap.forEach((htmlContent, marker) => { finalHTML = finalHTML.replace(marker, htmlContent); });
-            wrapperElement.innerHTML = finalHTML;
-
-            const selectAllCheckbox = wrapperElement.querySelector('#select-all');
-            if (selectAllCheckbox) selectAllCheckbox.addEventListener('change', handleSelectAll);
-
-            const exportButton = wrapperElement.querySelector('#export-table');
-            if (exportButton) exportButton.addEventListener('click', exportToCsv);
-
-            const toggleAllCheckbox = wrapperElement.querySelector('[data-action="toggle-all-columns"]');
-            if (toggleAllCheckbox) toggleAllCheckbox.addEventListener('change', toggleAllColumns);
-
-            initializeRowSelectionEvents();
-            wrapperElement.querySelectorAll('[data-column-id]').forEach(checkbox => {
-                const columnId = checkbox.getAttribute('data-column-id');
-                const column = table.getAllColumns().find(col => col.id === columnId);
-                if (column) {
-                    checkbox.onchange = (event) => {
-                        column.toggleVisibility(event.target.checked);
-                    };
-                }
-            });
-            wrapperElement.querySelectorAll('th[data-field] .sortable').forEach(element => {
-                const fieldName = element.closest('th').getAttribute('data-field');
-                const column = table.getAllColumns().find(col => col.id === fieldName);
-                if (column && column.getCanSort()) {
-                    element.onclick = () => {
-                        column.toggleSorting();
-                    };
-                }
-            });
-            wrapperElement.querySelectorAll('[data-display-preferences]').forEach(button => {
-                const targetItemtype = button.getAttribute('data-display-preferences');
-                button.onclick = () => {
-                    if (window.DisplayPreferences && typeof window.DisplayPreferences.open === 'function') {
-                        window.DisplayPreferences.open(targetItemtype);
-                    }
-                };
-            });
-            wrapperElement.querySelectorAll('.page-item:not(.disabled)').forEach(item => {
-                if (item.classList.contains('page-pre')) {
-                    item.onclick = () => {
-                        if (table.getCanPreviousPage()) {
-                            table.previousPage();
-                        }
-                    };
-                } else if (item.classList.contains('page-next')) {
-                    item.onclick = () => {
-                        if (table.getCanNextPage()) {
-                            table.nextPage();
-                        }
-                    };
-                } else if (!item.classList.contains('page-last-separator')) {
-                    const pageText = item.querySelector('.page-link').textContent;
-                    if (!isNaN(pageText)) {
-                        item.onclick = () => {
-                            table.setPageIndex(parseInt(pageText, 10) - 1);
-                        };
-                    }
-                }
-            });
-            wrapperElement.querySelectorAll('.dropdown-item').forEach(item => {
-                const size = parseInt(item.textContent, 10);
-                if ([15, 25, 50, 100, 1000, 10000].includes(size)) {
-                    item.onclick = () => {
-                        table.setPageSize(size);
-                    };
-                }
-            });
-        };
-
-        if (url) {
-            renderTable();
-            fetchDataAndRender();
-        } else {
-            validatePaginationState(data.length);
-            renderTable();
-        }
-
-        if (radio) {
-            const form = wrapperElement.closest('form');
+        const toggleTrash = () => {
+            if (typeof window.toogle === 'function') {
+                window.toogle('is_deleted', '', '', '');
+            }
+            const form = document.forms['searchform' + itemtype];
             if (form) {
-                form.addEventListener('submit', () => {
+                form.submit();
+            }
+        };
+
+        const openDisplayPreferences = (targetItemtype) => {
+            if (window.DisplayPreferences && typeof window.DisplayPreferences.open === 'function') {
+                window.DisplayPreferences.open(targetItemtype);
+            }
+        };
+
+        const renderPageSizeDropdown = () => {
+            const currentPageSize = table.getState().pagination.pageSize;
+            const pageSizeOptions = [15, 25, 50, 100, 1000, 10000];
+
+            return html`
+                <div class="page-list">
+                    <div class="dropdown dropup">
+                        <button
+                            class="btn btn-secondary dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                        >
+                            ${currentPageSize}
+                        </button>
+                        <div class="dropdown-menu">
+                            ${pageSizeOptions.map(size => html`
+                                <a
+                                    class="dropdown-item"
+                                    onClick=${() => table.setPageSize(size)}
+                                >
+                                    ${size}
+                                </a>
+                            `)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        const renderPageSizeSelector = () => {
+            const currentPageSize = table.getState().pagination.pageSize;
+            const totalRows = url ? serverTotal : table.getFilteredRowModel().rows.length;
+
+            return html`
+                <div class="fixed-table-pagination">
+                    <div class="float-left pagination-detail">
+                        <span class="pagination-info">
+                            Showing ${Math.min(totalRows, currentPageSize)} of ${totalRows} entries
+                        </span>
+                        ${renderPageSizeDropdown()}
+                    </div>
+                </div>
+            `;
+        };
+
+        const renderPagination = () => {
+            const totalPages = table.getPageCount();
+            const currentPage = table.getState().pagination.pageIndex + 1;
+            const currentPageSize = table.getState().pagination.pageSize;
+            const totalRows = url ? serverTotal : table.getFilteredRowModel().rows.length;
+            const startRow = table.getState().pagination.pageIndex * currentPageSize + 1;
+            const endRow = Math.min((table.getState().pagination.pageIndex + 1) * currentPageSize, totalRows);
+
+            const maxVisibleItems = 7;
+            const pages = [];
+
+            if (totalPages <= maxVisibleItems) {
+                for (let i = 1; i <= totalPages; i++) {
+                    pages.push(i);
+                }
+            } else {
+                pages.push(1);
+                let remainingSlots = maxVisibleItems - 3;
+
+                if (currentPage > 4) {
+                    pages.push('...');
+                    remainingSlots--;
+                }
+
+                const startPage = Math.max(2, currentPage - Math.floor(remainingSlots / 2));
+                const endPage = Math.min(totalPages - 1, startPage + remainingSlots - 1);
+
+                for (let i = startPage; i <= endPage; i++) {
+                    pages.push(i);
+                }
+
+                if (endPage < totalPages - 1) {
+                    pages.push('...');
+                }
+
+                pages.push(totalPages);
+            }
+
+            return html`
+                <div class="fixed-table-pagination">
+                    <div class="float-left pagination-detail">
+                        <span class="pagination-info">
+                            Showing ${startRow} to ${endRow} of ${totalRows} entries
+                        </span>
+                        ${renderPageSizeDropdown()}
+                    </div>
+                    <div class="float-right pagination">
+                        <ul class="pagination">
+                            <li
+                                class=${'page-item page-pre ' + (!table.getCanPreviousPage() ? 'disabled' : '')}
+                                onClick=${table.getCanPreviousPage() ? () => table.previousPage() : null}
+                                style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
+                            >
+                                <a class="page-link" aria-label="previous page" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">‹</a>
+                            </li>
+                            ${pages.map(page => {
+                                if (page === '...') {
+                                    return html`
+                                        <li class="page-item page-last-separator disabled" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
+                                            <a class="page-link" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">...</a>
+                                        </li>
+                                    `;
+                                }
+                                return html`
+                                    <li
+                                        class=${'page-item ' + (page === currentPage ? 'active' : '')}
+                                        onClick=${() => table.setPageIndex(page - 1)}
+                                        style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
+                                    >
+                                        <a class="page-link" aria-label=${'to page ' + page} style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">${page}</a>
+                                    </li>
+                                `;
+                            })}
+                            <li
+                                class=${'page-item page-next ' + (!table.getCanNextPage() ? 'disabled' : '')}
+                                onClick=${table.getCanNextPage() ? () => table.nextPage() : null}
+                                style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
+                            >
+                                <a class="page-link" aria-label="next page" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">›</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        };
+
+        const renderToolbar = () => {
+            const visibleColumns = table.getAllColumns().filter(column =>
+                column.id !== 'select' && !(isTrash && column.id === 'trash')
+            );
+
+            return html`
+                <div class="fixed-table-toolbar">
+                    <div class="float-left bs-bars">
+                        <div id=${toolbarId} class="btn-group">
+                            ${hasMassiveAction && !radio ? html`
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    aria-label="Actions"
+                                    onClick=${openMassiveAction}
+                                >
+                                    <i class="fas fa-hammer" title="Actions"></i>
+                                </button>
+                            ` : ''}
+                            ${columnEdit ? html`
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    aria-label="Options"
+                                    data-display-preferences=${itemtype}
+                                    onClick=${() => openDisplayPreferences(itemtype)}
+                                >
+                                    <i class="fas fa-wrench" title="Options"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                    <div class="float-right btn-group columns columns-right">
+                        ${canTrash ? html`
+                            <button
+                                type="button"
+                                class=${'btn btn-secondary' + (isTrash ? ' active btn-danger' : '')}
+                                onClick=${toggleTrash}
+                                title=${isTrash ? 'Show normal items' : 'Show trash content'}
+                            >
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        ` : ''}
+                        <div class="btn-group keep-open">
+                            <button
+                                type="button"
+                                class="btn btn-secondary dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true"
+                            >
+                                <i class="bi fas fa-columns"></i> <span class="caret"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <label class="dropdown-item dropdown-item-marker">
+                                    <input
+                                        type="checkbox"
+                                        defaultChecked
+                                        data-column="all"
+                                        data-action="toggle-all-columns"
+                                        onChange=${toggleAllColumns}
+                                    />
+                                    Toggle All
+                                </label>
+                                <div class="dropdown-divider"></div>
+                                ${visibleColumns.map(column => html`
+                                    <label class="dropdown-item dropdown-item-marker">
+                                        <input
+                                            type="checkbox"
+                                            checked=${column.getIsVisible()}
+                                            onChange=${(event) => column.toggleVisibility(event.target.checked)}
+                                            data-column-id=${column.id}
+                                        />
+                                        <span>${fields[column.id]}</span>
+                                    </label>
+                                `)}
+                            </div>
+                        </div>
+                        ${showExport ? html`
+                            <button type="button" class="btn btn-secondary" id="export-table" title="Export" onClick=${exportToCsv}>
+                                <i class="fas fa-file-export"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        };
+
+        const renderTableElement = () => {
+            const tableContainerStyle = 'overflow-x: scroll;' + (hasLoadingOverlay ? ' position: relative;' : '');
+
+            return html`
+                <div class="fixed-table-container" style=${tableContainerStyle}>
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            ${table.getHeaderGroups().map(headerGroup => html`
+                                <tr>
+                                    ${headerGroup.headers.map(header => {
+                                        const isSelectColumn = header.id === 'select';
+                                        const canSort = header.column.getCanSort();
+                                        const sortingState = header.column.getIsSorted();
+
+                                        let thClasses = '';
+                                        let thInnerClasses = 'th-inner';
+
+                                        if (isSelectColumn) {
+                                            thClasses = 'bs-checkbox';
+                                        } else if (canSort) {
+                                            thInnerClasses += ' sortable both';
+                                            if (sortingState === 'asc') {
+                                                thInnerClasses += ' asc';
+                                            } else if (sortingState === 'desc') {
+                                                thInnerClasses += ' desc';
+                                            }
+                                        }
+
+                                        return html`
+                                            <th
+                                                class=${thClasses}
+                                                data-field=${header.column.id}
+                                                style=${isSelectColumn ? 'width: 36px' : ''}
+                                            >
+                                                <div
+                                                    class=${thInnerClasses}
+                                                    onClick=${canSort ? () => header.column.toggleSorting() : null}
+                                                >
+                                                    ${flexRender(header.column.columnDef.header, header.getContext())}
+                                                </div>
+                                                <div class="fht-cell"></div>
+                                            </th>
+                                        `;
+                                    })}
+                                </tr>
+                            `)}
+                        </thead>
+                        ${table.getRowModel().rows.length === 0 ? html`
+                            <tbody class="table-light">
+                                <tr class="no-records-found">
+                                    <td colspan=${table.getAllColumns().length}>
+                                        No matching records found
+                                    </td>
+                                </tr>
+                            </tbody>
+                        ` : html`
+                        <tbody class="table-light">
+                            ${table.getRowModel().rows.map(row => html`
+                                <tr>
+                                    ${row.getVisibleCells().map(cell => {
+                                        const isSelectColumn = cell.column.id === 'select';
+                                        const isDisabled = isSelectColumn && !radio && hasMassiveAction && !row.original.value;
+
+                                        return html`
+                                            <td
+                                                class=${isSelectColumn ? 'bs-checkbox' : ''}
+                                                style=${isSelectColumn ? 'width: 36px' : ''}
+                                            >
+                                                ${isSelectColumn && isDisabled ?
+                                                    html`<input type="checkbox" class="row-select" data-row-id=${row.id} disabled />` :
+                                                    flexRender(cell.column.columnDef.cell, cell.getContext())
+                                                }
+                                            </td>
+                                        `;
+                                    })}
+                                </tr>
+                            `)}
+                        </tbody>
+                        `}
+                    </table>
+                    ${isLoading ? html`
+                        <div
+                            class="loading-overlay"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); display: flex; align-items: center; justify-content: center; z-index: 10;"
+                        >
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        };
+
+        const TableApp = () => {
+            useEffect(() => {
+                if (!radio) {
+                    return undefined;
+                }
+                const form = wrapperElement.closest('form');
+                if (!form) {
+                    return undefined;
+                }
+                const handler = () => {
                     const input = document.getElementById('table_input' + config.id);
                     if (input) {
                         const selectedRadio = wrapperElement.querySelector('.row-select:checked');
@@ -795,8 +729,46 @@
                             input.value = '[]';
                         }
                     }
-                });
-            }
+                };
+                form.addEventListener('submit', handler);
+                return () => {
+                    form.removeEventListener('submit', handler);
+                };
+            }, []);
+
+            const totalRows = url ? serverTotal : data.length;
+            const shouldPaginate = url
+                ? (serverTotal !== null && serverTotal > table.getState().pagination.pageSize)
+                : (data.length > table.getState().pagination.pageSize);
+            const showPageSizeSelector = totalRows !== null && totalRows > 0;
+
+            return html`
+                <div>
+                    ${(!minimal || !noToolBar) ? renderToolbar() : ''}
+                    ${renderTableElement()}
+                    ${shouldPaginate ? renderPagination() : (showPageSizeSelector ? renderPageSizeSelector() : '')}
+                </div>
+            `;
+        };
+
+        renderTable = () => {
+            render(null, wrapperElement);
+            render(html`<${TableApp} />`, wrapperElement);
+
+            const selectAllCheckbox = wrapperElement.querySelector('#select-all');
+            if (selectAllCheckbox) selectAllCheckbox.addEventListener('change', handleSelectAll);
+
+            wrapperElement.querySelectorAll('.row-select').forEach(checkbox => {
+                checkbox.addEventListener('change', handleRowSelection);
+            });
+        };
+
+        if (url) {
+            renderTable();
+            fetchDataAndRender();
+        } else {
+            validatePaginationState(data.length);
+            renderTable();
         }
     }
 

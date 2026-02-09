@@ -2056,7 +2056,7 @@ JAVASCRIPT;
         echo Html::script("node_modules/htm/dist/htm.umd.js");
         echo Html::script("node_modules/vhtml/dist/vhtml.min.js");
         echo Html::script("public/lib/nanostores.js");
-        echo Html::script("js/table.js");
+        echo Html::script("public/build/table.js");
         echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
         echo Html::script("node_modules/select2/dist/js/select2.min.js");
         echo Html::script("node_modules/tableexport.jquery.plugin/tableExport.min.js");
@@ -6834,7 +6834,7 @@ JAVASCRIPT;
                 $_SESSION['glpi_js_toload'][$name][] = 'node_modules/htm/dist/htm.umd.js';
                 $_SESSION['glpi_js_toload'][$name][] = 'node_modules/preact/dist/preact.umd.js';
                 $_SESSION['glpi_js_toload'][$name][] = 'node_modules/preact/hooks/dist/hooks.umd.js';
-                $_SESSION['glpi_js_toload'][$name][] = 'js/displaypreferences.js';
+                $_SESSION['glpi_js_toload'][$name][] = 'public/build/displaypreferences.js';
                 break;
             default:
                 $found = false;
