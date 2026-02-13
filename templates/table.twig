@@ -29,6 +29,8 @@ window.ITSMTableQueue.push({
     itemtype: {{ itemtype is defined ? itemtype|json_encode|raw : "''" }},
     showExport: {{ show_export is defined ? (show_export ? "true" : "false") : "true" }},
     hasMassiveAction: {{ massive_action is defined ? 'true' : 'false' }},
-    pageSize: {{ pageSize is defined ? pageSize : 15 }}
+    pageSize: {{ pageSize is defined ? pageSize : 15 }},
+    exportTarget: {{ export_target is defined ? export_target|json_encode|raw : "null" }},
+    exportParams: {{ export_params is defined ? export_params|json_encode|raw : "null" }}
 });
 </script>

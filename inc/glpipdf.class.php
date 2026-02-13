@@ -66,7 +66,7 @@ class GLPIPDF extends TCPDF
 
         // Position at 15 mm from bottom
         $this->SetY(-15);
-        $text = "GLPI PDF export - " . Html::convDate(date("Y-m-d"));
+        $text = "ITSM-NG PDF export - " . Html::convDate(date("Y-m-d"));
         if ($this->total_count != null) {
             $text .= " - " . sprintf(_n('%s item', '%s items', $this->total_count), $this->total_count);
         }
@@ -80,7 +80,7 @@ class GLPIPDF extends TCPDF
     /**
      * Get the list of available fonts
      *
-     * @return Array of "filename" => "font name"
+     * @return array of "filename" => "font name"
     **/
     public static function getFontList()
     {
