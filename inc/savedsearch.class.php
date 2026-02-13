@@ -327,6 +327,19 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             )
         );
 
+        if (!isset($input['users_id'])) {
+            $input['users_id'] = Session::getLoginUserID();
+        }
+        if (!isset($input['is_private'])) {
+            $input['is_private'] = 1;
+        }
+        if (!isset($input['is_recursive'])) {
+            $input['is_recursive'] = 0;
+        }
+        if (!isset($input['entities_id'])) {
+            $input['entities_id'] = $_SESSION["glpiactive_entity"];
+        }
+
         return $input;
     }
 
