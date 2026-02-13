@@ -63,6 +63,8 @@
         const hasMassiveAction = !!config.hasMassiveAction;
         const pageSize = config.pageSize || 15;
         const toolbarId = 'toolbar' + (config.rand || Math.floor(Math.random() * 1000000));
+        const exportTarget = config.exportTarget || null;
+        const exportParams = config.exportParams || null;
 
         if (!url && hasMassiveAction) {
             Object.keys(values).forEach(key => {
@@ -269,39 +271,110 @@
             },
         });
 
-        const exportToCsv = () => {
-            const dataToExport = table.getFilteredRowModel().rows.map(row => row.original);
-            if (dataToExport.length === 0) {
+        const EXPORT_FORMATS = {
+            CSV: 3,
+            PDF_LANDSCAPE: 2,
+            PDF_PORTRAIT: 4,
+            SYLK: 1
+        };
+
+        const performExport = (format, exportAll = false) => {
+            if (!exportTarget || !exportParams) {
+                exportToCsv();
                 return;
             }
-            const headers = Object.keys(fields);
-            const csvRows = [];
-            csvRows.push(headers.map(h => fields[h]).join(','));
 
-            for (const row of dataToExport) {
-                const valuesToExport = headers.map(header => {
-                    let value = row[header];
-                    if (typeof value === 'string') {
-                        const tempEl = document.createElement('div');
-                        tempEl.innerHTML = value;
-                        value = tempEl.textContent || tempEl.innerText || '';
-                    }
-                    return JSON.stringify(value);
+            const displayType = exportAll ? -format : format;
+            const params = new URLSearchParams();
+            
+            if (exportParams.item_type) {
+                params.append('item_type', exportParams.item_type);
+            }
+            
+            if (!exportAll) {
+                const { pageIndex, pageSize } = table.getState().pagination;
+                params.append('start', pageIndex * pageSize);
+                params.append('list_limit', pageSize);
+            } else {
+                params.append('start', '0');
+            }
+            
+            if (exportParams.criteria && Array.isArray(exportParams.criteria)) {
+                exportParams.criteria.forEach((c, i) => {
+                    Object.keys(c).forEach(key => {
+                        params.append(`criteria[${i}][${key}]`, c[key]);
+                    });
                 });
-                csvRows.push(valuesToExport.join(','));
+            }
+            
+            if (exportParams.metacriteria && Array.isArray(exportParams.metacriteria)) {
+                exportParams.metacriteria.forEach((c, i) => {
+                    Object.keys(c).forEach(key => {
+                        params.append(`metacriteria[${i}][${key}]`, c[key]);
+                    });
+                });
             }
 
-            const csvContent = csvRows.join('\n');
+            params.append('sort', exportParams.sort || '1');
+            params.append('order', exportParams.order || 'ASC');
+            if (exportParams.is_deleted) {
+                params.append('is_deleted', '1');
+            }
+            params.append('display_type', displayType);
+            if (exportAll) {
+                params.append('export_all', '1');
+            }
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const exportUrl = URL.createObjectURL(blob);
-            link.setAttribute('href', exportUrl);
-            link.setAttribute('download', (itemtype || 'export') + '.csv');
-            link.style.visibility = 'hidden';
-            wrapperElement.appendChild(link);
-            link.click();
-            wrapperElement.removeChild(link);
+            window.open(exportTarget + '?' + params.toString(), '_blank');
+        };
+
+        const renderExportDropdown = () => {
+            const hasServerExport = exportTarget && exportParams;
+            
+            return html`
+                <div class="btn-group keep-open">
+                    <button
+                        type="button"
+                        class="btn btn-secondary dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        title="Export"
+                    >
+                        <i class="fas fa-file-export"></i> <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <h6 class="dropdown-header">${__("Current page")}</h6>
+                        <a class="dropdown-item" onClick=${() => performExport(EXPORT_FORMATS.CSV)}>
+                            <i class="fas fa-file-csv"></i> ${__("CSV")}
+                        </a>
+                        ${hasServerExport ? html`
+                            <a class="dropdown-item" onClick=${() => performExport(EXPORT_FORMATS.PDF_LANDSCAPE)}>
+                                <i class="fas fa-file-pdf"></i> ${__("PDF (Landscape)")}
+                            </a>
+                            <a class="dropdown-item" onClick=${() => performExport(EXPORT_FORMATS.PDF_PORTRAIT)}>
+                                <i class="fas fa-file-pdf"></i> ${__("PDF (Portrait)")}
+                            </a>
+                            <a class="dropdown-item" onClick=${() => performExport(EXPORT_FORMATS.SYLK)}>
+                                <i class="fas fa-file-excel"></i> ${__("SLK (Excel)")}
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <h6 class="dropdown-header">${__("All pages")}</h6>
+                            <a class="dropdown-item" onClick=${() => performExport(EXPORT_FORMATS.CSV, true)}>
+                                <i class="fas fa-file-csv"></i> ${__("CSV")}
+                            </a>
+                            <a class="dropdown-item" onClick=${() => performExport(EXPORT_FORMATS.PDF_LANDSCAPE, true)}>
+                                <i class="fas fa-file-pdf"></i> ${__("PDF (Landscape)")}
+                            </a>
+                            <a class="dropdown-item" onClick=${() => performExport(EXPORT_FORMATS.PDF_PORTRAIT, true)}>
+                                <i class="fas fa-file-pdf"></i> ${__("PDF (Portrait)")}
+                            </a>
+                            <a class="dropdown-item" onClick=${() => performExport(EXPORT_FORMATS.SYLK, true)}>
+                                <i class="fas fa-file-excel"></i> ${__("SLK (Excel)")}
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
         };
 
         const toggleAllColumns = (event) => {
@@ -604,11 +677,7 @@
                                 `)}
                             </div>
                         </div>
-                        ${showExport ? html`
-                            <button type="button" class="btn btn-secondary" id="export-table" title="Export" onClick=${exportToCsv}>
-                                <i class="fas fa-file-export"></i>
-                            </button>
-                        ` : ''}
+                        ${showExport ? renderExportDropdown() : ''}
                     </div>
                 </div>
             `;

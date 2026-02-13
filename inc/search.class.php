@@ -1626,6 +1626,91 @@ class Search
     {
         global $CFG_GLPI;
 
+        $display_type = (int) $data['display_type'];
+
+        if (in_array($display_type, [self::SYLK_OUTPUT, self::PDF_OUTPUT_LANDSCAPE, self::CSV_OUTPUT, self::PDF_OUTPUT_PORTRAIT], true)) {
+            if ($data['data']['count'] > 0) {
+                $begin_display = $data['data']['begin'];
+                $end_display   = $data['data']['end'];
+                $nbcols        = count($data['data']['cols']);
+
+                if (isset($CFG_GLPI["union_search_type"][$data['itemtype']])) {
+                    $nbcols++;
+                }
+
+                echo self::showHeader($display_type, $end_display - $begin_display + 1, $nbcols);
+
+                $headers_line_top = '';
+                $headers_line_top .= self::showBeginHeader($display_type);
+                $headers_line_top .= self::showNewLine($display_type);
+
+                $header_num = 1;
+                $metanames = [];
+                foreach ($data['data']['cols'] as $val) {
+                    $name = $val["name"];
+
+                    if (isset($val['groupname'])) {
+                        $groupname = $val['groupname'];
+                        if (is_array($groupname)) {
+                            $groupname = $groupname['name'];
+                        }
+                        $name  = "$groupname - $name";
+                    }
+
+                    if ($data['itemtype'] != $val['itemtype']) {
+                        if (!isset($metanames[$val['itemtype']])) {
+                            if ($metaitem = getItemForItemtype($val['itemtype'])) {
+                                $metanames[$val['itemtype']] = $metaitem->getTypeName();
+                            }
+                        }
+                        $name = sprintf(__('%1$s - %2$s'), $metanames[$val['itemtype']], $val["name"]);
+                    }
+
+                    $headers_line_top .= self::showHeaderItem($display_type, $name, $header_num);
+                }
+
+                if (isset($CFG_GLPI["union_search_type"][$data['itemtype']])) {
+                    $headers_line_top .= self::showHeaderItem($display_type, __('Item type'), $header_num);
+                }
+
+                $headers_line_top .= self::showEndLine($display_type);
+                $headers_line_top .= self::showEndHeader($display_type);
+                echo $headers_line_top;
+
+                $row_num = 1;
+                $typenames = [];
+                foreach ($data['data']['rows'] as $row) {
+                    $item_num = 1;
+                    $row_num++;
+                    echo self::showNewLine($display_type, ($row_num % 2), $data['search']['is_deleted']);
+
+                    foreach ($data['data']['cols'] as $col) {
+                        $colkey = "{$col['itemtype']}_{$col['id']}";
+                        echo self::showItem($display_type, $row[$colkey]['displayname'], $item_num, $row_num);
+                    }
+
+                    if (isset($CFG_GLPI["union_search_type"][$data['itemtype']])) {
+                        if (!isset($typenames[$row["TYPE"]])) {
+                            if ($itemtmp = getItemForItemtype($row["TYPE"])) {
+                                $typenames[$row["TYPE"]] = $itemtmp->getTypeName();
+                            }
+                        }
+                        echo self::showItem($display_type, $typenames[$row["TYPE"]], $item_num, $row_num);
+                    }
+                    echo self::showEndLine($display_type);
+                }
+
+                $title = '';
+                if (($display_type == self::PDF_OUTPUT_LANDSCAPE) || ($display_type == self::PDF_OUTPUT_PORTRAIT)) {
+                    $title = self::computeTitle($data);
+                }
+
+                echo self::showFooter($display_type, $title, $data['data']['count']);
+            } else {
+                echo self::showError($display_type);
+            }
+            return;
+        }
 
         // Init list of items displayed
         if ($data['display_type'] == self::HTML_OUTPUT) {
@@ -1690,6 +1775,17 @@ class Search
             Html::requireJs('displaypreferences');
         }
 
+        $export_params = [
+            'item_type' => $data['itemtype'],
+            'criteria' => $data['search']['criteria'],
+            'sort' => $data['search']['sort'],
+            'order' => $data['search']['order'],
+            'is_deleted' => $data['search']['is_deleted'],
+        ];
+        if (!empty($data['search']['metacriteria'])) {
+            $export_params['metacriteria'] = $data['search']['metacriteria'];
+        }
+
         renderTwigTemplate('table.twig', [
            'id' => 'SearchTableFor' . $data['itemtype'],
            'fields' => $fields,
@@ -1699,6 +1795,8 @@ class Search
            'massive_action' => $massiveActionValues,
            'itemtype' => $data['itemtype'],
            'column_edit' => $can_edit_columns,
+           'export_target' => $CFG_GLPI['root_doc'] . '/front/report.dynamic.php',
+           'export_params' => $export_params,
         ]);
     }
 
