@@ -110,7 +110,7 @@ class ProblemTask extends CommonITILTask
         if ($problem->getFromDB($this->fields['problems_id'])) {
             return (Session::haveRight(self::$rightname, parent::ADDALLITEM)
                     || Session::haveRight('problem', UPDATE)
-                    || (Session::haveRight('problem', Problem::READMY)
+                    || (Session::haveRight(self::$rightname, parent::ADDASSIGNEDITEM)
                         && ($problem->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
                             || (isset($_SESSION["glpigroups"])
                                 && $problem->haveAGroup(

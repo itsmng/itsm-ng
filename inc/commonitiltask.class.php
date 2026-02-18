@@ -55,6 +55,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
     //   const NOTUSED      = 2048;
     public const ADDALLITEM      = 4096;
     public const SEEPRIVATE      = 8192;
+    public const ADDASSIGNEDITEM = 16384;
 
 
 

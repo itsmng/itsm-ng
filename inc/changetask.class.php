@@ -105,7 +105,7 @@ class ChangeTask extends CommonITILTask
         if ($change->getFromDB($this->fields['changes_id'])) {
             return (Session::haveRight(self::$rightname, parent::ADDALLITEM)
                     || Session::haveRight('change', UPDATE)
-                    || (Session::haveRight('change', Change::READMY)
+                    || (Session::haveRight(self::$rightname, parent::ADDASSIGNEDITEM)
                         && ($change->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
                             || (isset($_SESSION["glpigroups"])
                                 && $change->haveAGroup(

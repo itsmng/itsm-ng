@@ -238,11 +238,14 @@ abstract class CommonITILObject extends CommonDBTM
             && isset($_SESSION["glpigroups"])
             && $this->haveAGroup(CommonITILActor::REQUESTER, $_SESSION['glpigroups'])
             )
-            || $this->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
-            || (
-                isset($_SESSION["glpigroups"])
-            && $this->haveAGroup(CommonITILActor::ASSIGN, $_SESSION['glpigroups'])
-            )
+              || (Session::haveRight('followup', ITILFollowup::ADDASSIGNEDTICKET)
+              && ($this->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
+                  || (
+                      isset($_SESSION["glpigroups"])
+                  && $this->haveAGroup(CommonITILActor::ASSIGN, $_SESSION['glpigroups'])
+                  )
+              )
+              )
             || $this->isValidator(Session::getLoginUserID())
         );
     }

@@ -58,6 +58,7 @@ class ITILFollowup extends CommonDBChild
     public const ADDGROUPTICKET  = 2048;
     public const ADDALLTICKET    = 4096;
     public const SEEPRIVATE      = 8192;
+    public const ADDASSIGNEDTICKET = 16384;
 
     public static $itemtype = 'itemtype';
     public static $items_id = 'items_id';
@@ -108,7 +109,7 @@ class ITILFollowup extends CommonDBChild
                || Session::haveRight('problem', UPDATE)
                || (Session::haveRightsOr(
                    self::$rightname,
-                   [self::ADDALLTICKET, self::ADDMYTICKET, self::ADDGROUPTICKET]
+                   [self::ADDALLTICKET, self::ADDMYTICKET, self::ADDGROUPTICKET, self::ADDASSIGNEDTICKET]
                )
                || Session::haveRight('ticket', Ticket::OWN));
     }
@@ -1184,6 +1185,7 @@ class ITILFollowup extends CommonDBChild
         if ($interface == 'central') {
             $values[self::UPDATEALL]      = __('Update all');
             $values[self::ADDALLTICKET]   = __('Add to all tickets');
+            $values[self::ADDASSIGNEDTICKET] = __('Add to assigned items');
             $values[self::SEEPRIVATE]     = __('See private ones');
         }
 
