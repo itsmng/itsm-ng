@@ -79,7 +79,7 @@
                 {% endif %}
             });
             {% if attributes.multiple %}
-            let values = JSON.parse('{{attributes.value|raw}}');
+            let values = JSON.parse('{{attributes.value|json_encode|raw}}');
             if (typeof values === 'object') {
                 values = Object.keys(values);
             }

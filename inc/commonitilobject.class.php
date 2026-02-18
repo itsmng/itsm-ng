@@ -4399,7 +4399,8 @@ abstract class CommonITILObject extends CommonDBTM
         $class = null;
         $solid = true;
         $tab = Ticket::getAllStatusArray(false, true);
-        switch ($tab["name"][$status]) {
+        $statusName = $tab["name"][$status] ?? '';
+        switch ($statusName) {
             case "New":
                 $class = 'circle';
                 break;
