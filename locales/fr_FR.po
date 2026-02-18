@@ -22204,6 +22204,9 @@ msgstr "Si vous voulez rouvrir le ticket, vous devez spécifier une raison"
 msgid "Add to all tickets"
 msgstr "Ajouter à tous les tickets"
 
+msgid "Add to assigned items"
+msgstr "Ajouter aux éléments assignés"
+
 #: inc/itilfollowup.class.php:1103
 msgid "Add followup (associated groups)"
 msgstr "Ajouter suivi (groupes associés)"
@@ -25126,6 +25129,12 @@ msgstr "Groupe d'approbateurs"
 msgid "Group users"
 msgstr "Utilisateurs du groupe"
 
+msgid "See linked document"
+msgstr "Voir le document lié"
+
+msgid "Allow to impersonate other users"
+msgstr "Autoriser la prise d'identité d'autres utilisateurs"
+
 #~ msgid ""
 #~ "No time zones are available. Please check your database configuration."
 #~ msgstr ""
@@ -25137,9 +25146,6 @@ msgstr "Utilisateurs du groupe"
 
 #~ msgid "Remove actor %s"
 #~ msgstr "Supprimer l'acteur %s"
-
-#~ msgid "Allow to impersonate other users"
-#~ msgstr "Autoriser la prise d'identité d'autres utilisateurs"
 
 #~ msgid "Choose File"
 #~ msgstr "Choisir un fichier"
