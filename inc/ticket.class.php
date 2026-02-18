@@ -5882,10 +5882,12 @@ class Ticket extends CommonITILObject
                                  <span style='background: $bgcolor'></span>&nbsp;$name
                               </div>";
 
+                    $requesterCell = '';
                     if (
                         isset($job->users[CommonITILActor::REQUESTER])
                         && count($job->users[CommonITILActor::REQUESTER])
                     ) {
+                        $requesterParts = [];
                         foreach ($job->users[CommonITILActor::REQUESTER] as $d) {
                             if ($d["users_id"] > 0) {
                                 $userdata = getUserName($d["users_id"], 2);
@@ -5901,35 +5903,46 @@ class Ticket extends CommonITILObject
                                         ]
                                     )
                                 );
-                                $newValue[] = $name;
+                                $requesterParts[] = $name;
                             } else {
-                                $newValue[] = $d['alternative_email'];
+                                $requesterParts[] = $d['alternative_email'];
                             }
                         }
+                        $requesterCell = implode('<br>', $requesterParts);
                     }
 
                     if (
                         isset($job->groups[CommonITILActor::REQUESTER])
                         && count($job->groups[CommonITILActor::REQUESTER])
                     ) {
+                        $groupParts = [];
                         foreach ($job->groups[CommonITILActor::REQUESTER] as $d) {
-                            $newValue[] = Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
+                            $groupParts[] = Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
                         }
+                        if ($requesterCell !== '') {
+                            $requesterCell .= '<br>';
+                        }
+                        $requesterCell .= implode('<br>', $groupParts);
                     }
+                    $newValue[] = $requesterCell;
 
+                    $associatedCell = '';
                     if (!empty($job->hardwaredatas)) {
+                        $associatedParts = [];
                         foreach ($job->hardwaredatas as $hardwaredatas) {
                             if ($hardwaredatas->canView()) {
-                                $newValue[] = $hardwaredatas->getTypeName() . " - " .
+                                $associatedParts[] = $hardwaredatas->getTypeName() . " - " .
                                    "<span class='b'>" . $hardwaredatas->getLink() . "</span>";
                             } elseif ($hardwaredatas) {
-                                $newValue[] = $hardwaredatas->getTypeName() . " - " .
+                                $associatedParts[] = $hardwaredatas->getTypeName() . " - " .
                                    "<span class='b'>" . $hardwaredatas->getNameID() . "</span>";
                             }
                         }
+                        $associatedCell = implode('<br>', $associatedParts);
                     } else {
-                        $newValue[] = __('General');
+                        $associatedCell = __('General');
                     }
+                    $newValue[] = $associatedCell;
 
                     $link = "<a id='ticket" . $job->fields["id"] . $rand . "' href='" . Ticket::getFormURLWithID($job->fields["id"]);
                     if ($forcetab != '') {
