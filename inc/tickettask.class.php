@@ -48,7 +48,7 @@ class TicketTask extends CommonITILTask
 
     public static function canCreate()
     {
-        return (Session::haveRight(self::$rightname, parent::ADDALLITEM)
+        return (Session::haveRightsOr(self::$rightname, [parent::ADDALLITEM, parent::ADDASSIGNEDITEM])
                 || Session::haveRight('ticket', Ticket::OWN));
     }
 
