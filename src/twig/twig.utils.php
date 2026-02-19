@@ -276,7 +276,7 @@ function getLinkedDocumentsForItem($itemType, $items_id)
             ">" .
             $document->fields["filename"] .
             " (" .
-            filesize(GLPI_DOC_DIR . $document->fields["filepath"]) .
+            filesize(GLPI_DOC_DIR . "/" . $document->fields["filepath"]) .
             "B)</a>";
     }
 
