@@ -38,7 +38,6 @@ $entity->getFromDB('0');
 
 $css = [
     Html::scss('css/styles'),
-    Html::scss('css/palettes/' . $theme),
     Html::css('public/lib/base.css'), // external libs CSS
     Html::scss('css/itsm2'),
     $entity->getCustomCssTag(), // Custom CSS for root entity
