@@ -40,7 +40,7 @@ jobs:
       - name: Build and start Dovecot container
         run: |
           docker build -t itsm-tests-dovecot:local -f .github/actions/images/dovecot/Dockerfile .
-          docker run -d --name dovecot -p 143:143 itsm-tests-dovecot:local
+          docker run -d --name dovecot -p 143:143 -p 110:110 itsm-tests-dovecot:local
 
       - name: Map dovecot hostname to localhost
         run: echo "127.0.0.1 dovecot" | sudo tee -a /etc/hosts
