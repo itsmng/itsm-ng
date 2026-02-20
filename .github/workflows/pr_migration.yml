@@ -10,10 +10,12 @@ jobs:
       fail-fast: false
       matrix:
         db:
-          - image: mariadb:latest
-            label: MariaDB
+          - image: mariadb:11.8
+            label: MariaDB 11.8
+            healthcheck: mariadb-admin ping
           - image: mysql:8.4
             label: MySQL 8.4
+            healthcheck: mysqladmin ping
     env:
       DB_DATABASE: itsm_migration
       DB_USER: itsm_migration
@@ -29,11 +31,7 @@ jobs:
           MYSQL_PASSWORD: ${{env.DB_PASSWORD}}
           MYSQL_DATABASE: ${{env.DB_DATABASE}}
           MYSQL_ROOT_PASSWORD: ${{env.DB_PASSWORD}}
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=5s
-          --health-timeout=3s
-          --health-retries=20
+        options: --health-cmd "${{ matrix.db.healthcheck }}" --health-interval 5s --health-timeout 3s --health-retries 20
 
     steps:
       - uses: actions/checkout@v4
