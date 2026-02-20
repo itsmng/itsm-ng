@@ -199,30 +199,80 @@ class Item_SoftwareLicense extends CommonDBRelation
                 return true;
             case 'add_item':
                 global $CFG_GLPI;
-                echo "<table class='tab_cadre_fixe' aria-label='Item detail'>";
-                echo "<tr class='tab_bg_2 center'>";
-                echo "<td>";
+                echo "<div class='d-flex flex-column gap-2' aria-label='Item detail'>";
+                echo "<div class='d-flex gap-2'>";
+                echo "<div style='width: 200px; flex-shrink: 0;'>";
                 $rand = Dropdown::showItemTypes('itemtype', $CFG_GLPI['software_types'], [
-                   'width'                 => 'unset'
+                   'width' => '100%'
                 ]);
+                echo "</div>";
+                echo "<div class='flex-grow-1' style='min-width: 0;'>";
+                echo "<select name='items_id' id='dropdown_items_id$rand' class='form-select' disabled></select>";
+                echo "</div>";
+                echo "</div>";
+                echo "<div class='text-end'>";
+                echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+                echo "</div>";
+                echo "</div>";
 
-                $p = ['idtable'            => '__VALUE__',
-                   'rand'                  => $rand,
-                   'name'                  => "items_id",
-                   'width'                 => 'unset'
-                ];
+                $js = <<<JAVASCRIPT
+               $(document).ready(function() {
+                  var itemsDropdown = $('#dropdown_items_id{$rand}');
+                  $.getScript('{$CFG_GLPI['root_doc']}/node_modules/select2/dist/js/select2.min.js', function() {
+                     itemsDropdown.select2({
+                        theme: 'bootstrap-5',
+                        width: '100%',
+                        placeholder: '-----',
+                        allowClear: true,
+                        escapeMarkup: function(markup) {
+                           return markup;
+                        },
+                        templateResult: function(data) {
+                           if (data.loading) return data.text;
+                           var text = data.text;
+                           if (text.length > 80) {
+                              text = text.substring(0, 77) + '...';
+                           }
+                           return $('<span title="' + $('<div>').text(data.text).html() + '">' + text + '</span>');
+                        }
+                     });
+                  });
 
-                Ajax::updateItemOnSelectEvent(
-                    "dropdown_itemtype$rand",
-                    "results_itemtype$rand",
-                    $CFG_GLPI["root_doc"] . "/ajax/dropdownAllItems.php",
-                    $p
-                );
-
-                echo "<span id='results_itemtype$rand'>\n";
-                echo "</td><td>";
-                echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']) . "</span>";
-                echo "</td></tr>";
+                  $('#dropdown_itemtype{$rand}').on('change', function() {
+                     const itemtype = $(this).val();
+                     itemsDropdown.empty();
+                     if (itemtype == 0) {
+                        itemsDropdown.prop('disabled', true);
+                        return;
+                     }
+                     itemsDropdown.prop('disabled', false);
+                     $.ajax({
+                        url: '{$CFG_GLPI['root_doc']}/ajax/dropdownAllItems.php',
+                        data: {
+                           idtable: itemtype,
+                           name: 'items_id'
+                        },
+                        type: 'POST',
+                        success: function(data) {
+                           const jsonData = JSON.parse(data);
+                           for (const key in jsonData) {
+                              if (typeof jsonData[key] === 'object') {
+                                 var group = $('<optgroup label="' + $('<div>').text(key).html() + '"></optgroup>');
+                                 for (const subKey in jsonData[key]) {
+                                    group.append('<option value="' + subKey + '">' + $('<div>').text(jsonData[key][subKey]).html() + '</option>');
+                                 }
+                                 itemsDropdown.append(group);
+                              } else {
+                                 itemsDropdown.append('<option value="' + key + '">' + $('<div>').text(jsonData[key]).html() + '</option>');
+                              }
+                           }
+                           itemsDropdown.val('').trigger('change');
+                        }
+                     });
+                  });
+               });
+JAVASCRIPT;
+                echo Html::scriptBlock($js);
 
                 return true;
         }
