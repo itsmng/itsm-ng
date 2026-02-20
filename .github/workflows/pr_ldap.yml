@@ -47,7 +47,7 @@ jobs:
           node-version: '20'
 
       - name: Install ldap-utils
-        run: sudo apt-get install -y ldap-utils
+        run: sudo apt-get update && sudo apt-get install -y ldap-utils
 
       - name: Map openldap hostname to localhost
         run: echo "127.0.0.1 openldap" | sudo tee -a /etc/hosts

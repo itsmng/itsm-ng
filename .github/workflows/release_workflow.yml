@@ -68,7 +68,7 @@ jobs:
 
       - name: Setup OpenLDAP
         run: |
-          sudo apt-get install -y ldap-utils
+          sudo apt-get update && sudo apt-get install -y ldap-utils
           docker run -d --name openldap \
             -p 389:389 \
             -e LDAP_ORGANISATION="GLPI" \
