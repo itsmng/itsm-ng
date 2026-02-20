@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,77 +32,72 @@
 
 namespace tests\units\Glpi\System\Requirement;
 
-class SessionsConfiguration extends \GLPITestCase
-{
-    public function testCheckWithGoodConfig()
-    {
+class SessionsConfiguration extends \GLPITestCase {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['Sessions support is available - Perfect!']);
-    }
+   public function testCheckWithGoodConfig() {
 
-    public function testCheckWithMissingExtension()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['Sessions support is available - Perfect!']);
+   }
 
-        $this->function->extension_loaded = false;
+   public function testCheckWithMissingExtension() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['Your parser PHP is not installed with sessions support!']);
-    }
+      $this->function->extension_loaded = false;
 
-    public function testCheckWithAutostart()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['Your parser PHP is not installed with sessions support!']);
+   }
 
-        $this->function->ini_get = function ($name) {
-            return $name == 'session.auto_start' ? '1' : '0';
-        };
+   public function testCheckWithAutostart() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(
-               [
-                 '"session.auto_start" must be set to off.',
-                 'See .htaccess file in the ITSM-NG root for more information.',
-               ]
-           );
-    }
+      $this->function->ini_get = function($name) {
+         return $name == 'session.auto_start' ? '1' : '0';
+      };
 
-    public function testCheckWithUseTransId()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(
+            [
+               '"session.auto_start" must be set to off.',
+               'See .htaccess file in the ITSM-NG root for more information.',
+            ]
+         );
+   }
 
-        $this->function->ini_get = function ($name) {
-            return $name == 'session.use_trans_sid' ? '1' : '0';
-        };
+   public function testCheckWithUseTransId() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(
-               [
-                 '"session.use_trans_sid" must be set to off.',
-                 'See .htaccess file in the ITSM-NG root for more information.',
-               ]
-           );
-    }
+      $this->function->ini_get = function($name) {
+         return $name == 'session.use_trans_sid' ? '1' : '0';
+      };
 
-    public function testCheckWithAutostartAndUseTransId()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(
+            [
+               '"session.use_trans_sid" must be set to off.',
+               'See .htaccess file in the ITSM-NG root for more information.',
+            ]
+         );
+   }
 
-        $this->function->ini_get = '1';
+   public function testCheckWithAutostartAndUseTransId() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(
-               [
-                 '"session.auto_start" and "session.use_trans_sid" must be set to off.',
-                 'See .htaccess file in the ITSM-NG root for more information.',
-               ]
-           );
-    }
+      $this->function->ini_get = '1';
+
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(
+            [
+               '"session.auto_start" and "session.use_trans_sid" must be set to off.',
+               'See .htaccess file in the ITSM-NG root for more information.',
+            ]
+         );
+   }
 }

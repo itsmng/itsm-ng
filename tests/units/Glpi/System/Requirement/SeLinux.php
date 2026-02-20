@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,123 +32,117 @@
 
 namespace tests\units\Glpi\System\Requirement;
 
-class SeLinux extends \GLPITestCase
-{
-    public function testCheckOutOfContext()
-    {
+class SeLinux extends \GLPITestCase {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->boolean($this->testedInstance->isOutOfContext())->isEqualTo(true);
-    }
+   public function testCheckOutOfContext() {
+      $this->function->file_exists = false;
+      $this->function->function_exists = false;
 
-    public function testCheckWithEnforcesAndActiveBooleans()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->boolean($this->testedInstance->isOutOfContext())->isEqualTo(true);
+   }
 
-        $this->function->function_exists = true;
-        $this->function->selinux_is_enabled = true;
-        $this->function->selinux_getenforce = 1;
-        $this->function->selinux_get_boolean_active = 1;
+   public function testCheckWithEnforcesAndActiveBooleans() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['SELinux configuration is OK.']);
-    }
+      $this->function->function_exists = true;
+      $this->function->selinux_is_enabled = true;
+      $this->function->selinux_getenforce = 1;
+      $this->function->selinux_get_boolean_active = 1;
 
-    public function testCheckWithEnforcesAndInactiveNetworkConnect()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['SELinux configuration is OK.']);
+   }
 
-        $this->function->function_exists = true;
-        $this->function->selinux_is_enabled = true;
-        $this->function->selinux_getenforce = 1;
-        $this->function->selinux_get_boolean_active = function ($bool) {
-            return $bool != 'httpd_can_network_connect';
-        };
+   public function testCheckWithEnforcesAndInactiveNetworkConnect() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['SELinux boolean httpd_can_network_connect is off, some features may require this to be on.']);
-    }
+      $this->function->function_exists = true;
+      $this->function->selinux_is_enabled = true;
+      $this->function->selinux_getenforce = 1;
+      $this->function->selinux_get_boolean_active = function ($bool) {
+         return $bool != 'httpd_can_network_connect';
+      };
 
-    public function testCheckWithEnforcesAndInactiveNetworkConnectDB()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['SELinux boolean httpd_can_network_connect is off, some features may require this to be on.']);
+   }
 
-        $this->function->function_exists = true;
-        $this->function->selinux_is_enabled = true;
-        $this->function->selinux_getenforce = 1;
-        $this->function->selinux_get_boolean_active = function ($bool) {
-            return $bool != 'httpd_can_network_connect_db';
-        };
+   public function testCheckWithEnforcesAndInactiveNetworkConnectDB() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['SELinux boolean httpd_can_network_connect_db is off, some features may require this to be on.']);
-    }
+      $this->function->function_exists = true;
+      $this->function->selinux_is_enabled = true;
+      $this->function->selinux_getenforce = 1;
+      $this->function->selinux_get_boolean_active = function ($bool) {
+         return $bool != 'httpd_can_network_connect_db';
+      };
 
-    public function testCheckWithEnforcesAndInactiveSendmail()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['SELinux boolean httpd_can_network_connect_db is off, some features may require this to be on.']);
+   }
 
-        $this->function->function_exists = true;
-        $this->function->selinux_is_enabled = true;
-        $this->function->selinux_getenforce = 1;
-        $this->function->selinux_get_boolean_active = function ($bool) {
-            return $bool != 'httpd_can_sendmail';
-        };
+   public function testCheckWithEnforcesAndInactiveSendmail() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['SELinux boolean httpd_can_sendmail is off, some features may require this to be on.']);
-    }
+      $this->function->function_exists = true;
+      $this->function->selinux_is_enabled = true;
+      $this->function->selinux_getenforce = 1;
+      $this->function->selinux_get_boolean_active = function ($bool) {
+         return $bool != 'httpd_can_sendmail';
+      };
 
-    public function testCheckWithEnforcesAndInactiveBooleans()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['SELinux boolean httpd_can_sendmail is off, some features may require this to be on.']);
+   }
 
-        $this->function->function_exists = true;
-        $this->function->selinux_is_enabled = true;
-        $this->function->selinux_getenforce = 1;
-        $this->function->selinux_get_boolean_active = 0;
+   public function testCheckWithEnforcesAndInactiveBooleans() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(
-               [
-                 'SELinux boolean httpd_can_network_connect is off, some features may require this to be on.',
-                 'SELinux boolean httpd_can_network_connect_db is off, some features may require this to be on.',
-                 'SELinux boolean httpd_can_sendmail is off, some features may require this to be on.',
-               ]
-           );
-    }
+      $this->function->function_exists = true;
+      $this->function->selinux_is_enabled = true;
+      $this->function->selinux_getenforce = 1;
+      $this->function->selinux_get_boolean_active = 0;
 
-    public function testCheckWithPermissiveSeLinux()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(
+            [
+               'SELinux boolean httpd_can_network_connect is off, some features may require this to be on.',
+               'SELinux boolean httpd_can_network_connect_db is off, some features may require this to be on.',
+               'SELinux boolean httpd_can_sendmail is off, some features may require this to be on.',
+            ]
+         );
+   }
 
-        $this->function->function_exists = true;
-        $this->function->selinux_is_enabled = false;
-        $this->function->selinux_getenforce = 1;
-        $this->function->selinux_get_boolean_active = 1;
+   public function testCheckWithPermissiveSeLinux() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['For security reasons, SELinux mode should be Enforcing.']);
-    }
+      $this->function->function_exists = true;
+      $this->function->selinux_is_enabled = false;
+      $this->function->selinux_getenforce = 1;
+      $this->function->selinux_get_boolean_active = 1;
 
-    public function testCheckWithDisabledSeLinux()
-    {
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['For security reasons, SELinux mode should be Enforcing.']);
+   }
 
-        $this->function->function_exists = true;
-        $this->function->selinux_is_enabled = false;
-        $this->function->selinux_getenforce = 1;
-        $this->function->selinux_get_boolean_active = 1;
+   public function testCheckWithDisabledSeLinux() {
 
-        $this->newTestedInstance();
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['For security reasons, SELinux mode should be Enforcing.']);
-    }
+      $this->function->function_exists = true;
+      $this->function->selinux_is_enabled = false;
+      $this->function->selinux_getenforce = 1;
+      $this->function->selinux_get_boolean_active = 1;
+
+      $this->newTestedInstance();
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['For security reasons, SELinux mode should be Enforcing.']);
+   }
 }

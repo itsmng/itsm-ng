@@ -4228,7 +4228,15 @@ class AuthLDAP extends CommonDBTM
      */
     public static function get_entries_clean($link, $result)
     {
-        return ldap_get_entries($link, $result);
+        if (
+            !is_resource($result)
+            && (!class_exists(\LDAP\Result::class) || !$result instanceof \LDAP\Result)
+        ) {
+            return [];
+        }
+
+        $entries = ldap_get_entries($link, $result);
+        return is_array($entries) ? $entries : [];
     }
 
 

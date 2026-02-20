@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+MAILDIR=${1:-/home/itsm/Maildir/}
+mkdir -p "${MAILDIR%/}/tmp" "${MAILDIR%/}/new" "${MAILDIR%/}/cur"
+
+TMPFILE="${MAILDIR%/}/tmp/$(date +%s).$$.$(hostname)"
+NEWFILE="${MAILDIR%/}/new/$(date +%s).$$.$(hostname)"
+
+cat > "$TMPFILE"
+mv "$TMPFILE" "$NEWFILE"

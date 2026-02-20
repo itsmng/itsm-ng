@@ -176,6 +176,24 @@ class Session
                         $auth->auth_succeded = false;
                         $auth->addToError(__("You don't have right to connect"));
                     }
+
+                    if ($auth->auth_succeded) {
+                        if (class_exists('SpecialStatus')) {
+                            SpecialStatus::oldStatusOrder();
+                        }
+                        foreach ([
+                            'INCOMING' => 1,
+                            'ASSIGNED' => 2,
+                            'PLANNED'  => 3,
+                            'WAITING'  => 4,
+                            'SOLVED'   => 5,
+                            'CLOSED'   => 6,
+                        ] as $status_key => $status_value) {
+                            if (!isset($_SESSION[$status_key])) {
+                                $_SESSION[$status_key] = $status_value;
+                            }
+                        }
+                    }
                 } else {
                     $auth->auth_succeded = false;
                     $auth->addToError(__("You don't have access to this application because your account was deactivated or removed"));

@@ -277,8 +277,9 @@ class Ticket extends CommonITILObject
      **/
     public function canApprove()
     {
+        $users_id_recipient = $this->fields["users_id_recipient"] ?? 0;
 
-        return ((($this->fields["users_id_recipient"] === Session::getLoginUserID())
+        return ((($users_id_recipient === Session::getLoginUserID())
            &&  Session::haveRight('ticket', Ticket::SURVEY))
            || $this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
            || (isset($_SESSION["glpigroups"])
@@ -1724,6 +1725,16 @@ class Ticket extends CommonITILObject
 
         if (!isset($input["requesttypes_id"])) {
             $input["requesttypes_id"] = RequestType::getDefault('helpdesk');
+        }
+
+        if (!isset($input['entities_id'])) {
+            $input['entities_id'] = Session::getActiveEntity();
+        }
+        if (!isset($input['status'])) {
+            $input['status'] = $_SESSION['INCOMING'] ?? 1;
+        }
+        if (!isset($input['users_id_recipient'])) {
+            $input['users_id_recipient'] = Session::getLoginUserID() ?: 0;
         }
 
         if (!isset($input['global_validation'])) {

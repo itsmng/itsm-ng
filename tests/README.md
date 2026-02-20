@@ -94,4 +94,12 @@ Running the test suite on containerized env
 
 If you want to execute tests in an environment similar to what is done by CI, you can use the `tests/run_tests.sh`.
 This scripts requires both "docker" and "docker-compose" utilities to be installed.
+The harness relies on scripts and compose files located in `.github/actions/`, and builds local test images (app + dovecot) automatically.
+Default services are:
+- `db` (MariaDB),
+- `dovecot` (used by `imap` suite; fixtures are loaded from `tests/emails-tests/*.eml`),
+- `openldap` (used by `ldap` suite fixtures).
+LDAP fixtures are now initialized idempotently, so rerunning `tests/run_tests.sh ldap` does not require manual volume cleanup.
+The `update` suite now validates a full ITSM 2.x baseline matrix from `2.0.0` through `2.1.2` before final schema checks.
+
 Run `tests/run_tests.sh --help` for more information about its usage.

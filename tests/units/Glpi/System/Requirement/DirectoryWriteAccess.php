@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -38,29 +37,27 @@ use org\bovigo\vfs\vfsStream;
 /**
  * Nota: Complex ACL are not tested.
  */
-class DirectoryWriteAccess extends \GLPITestCase
-{
-    public function testCheckOnExistingWritableDir()
-    {
+class DirectoryWriteAccess extends \GLPITestCase {
 
-        vfsStream::setup('root', 0777, []);
-        $path = vfsStream::url('root');
+   public function testCheckOnExistingWritableDir() {
 
-        $this->newTestedInstance($path);
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['Write access to ' . $path . ' has been validated.']);
-    }
+      vfsStream::setup('root', 0777, []);
+      $path = vfsStream::url('root');
 
-    public function testCheckOnUnexistingDir()
-    {
+      $this->newTestedInstance($path);
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['Write access to ' . $path . ' has been validated.']);
+   }
 
-        vfsStream::setup('root', 0777, []);
-        $path = vfsStream::url('root/not-existing');
+   public function testCheckOnUnexistingDir() {
 
-        $this->newTestedInstance($path);
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['The directory could not be created in ' . $path . '.']);
-    }
+      vfsStream::setup('root', 0777, []);
+      $path = vfsStream::url('root/not-existing');
+
+      $this->newTestedInstance($path);
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['The directory could not be created in ' . $path . '.']);
+   }
 }

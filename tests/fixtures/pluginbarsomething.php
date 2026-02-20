@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,9 +32,9 @@
 
 namespace GlpiPlugin\Bar;
 
-class Something extends \CommonDBTM
-{
-    public function __construct(array $param)
-    {
-    }
+class Something extends \CommonDBTM {
+
+   public function __construct(array $param) {
+
+   }
 }

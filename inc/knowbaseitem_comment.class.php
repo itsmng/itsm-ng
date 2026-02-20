@@ -284,7 +284,7 @@ class KnowbaseItem_Comment extends CommonDBTM
             $html .= "<div class='h_user'>";
             $html .= "<div class='tooltip_picture_border'>";
             $html .= "<img class='user_picture' alt='' src='" .
-                   User::getThumbnailURLForPicture($user->fields['picture']) . "'>";
+                   User::getThumbnailURLForPicture($user->fields['picture'] ?? '') . "'>";
             $html .= "</div>";
             $html .= "<span class='h_user_name'>";
             $userdata = getUserName($user->getID(), 2);

@@ -33,6 +33,9 @@
                 </div>
             {% endif %}
             {% for action in input.actions %}
+                {% if action.modal_script is defined %}
+                    {{ action.modal_script | raw }}
+                {% endif %}
                 <button type="button" class="btn btn-sm border" aria-label="{{ action.info }}" onclick="{{action.onClick}}">
                     <a class="{{action.icon}}"></a>
                 </button>

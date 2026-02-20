@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -37,33 +36,31 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use org\bovigo\vfs\vfsStream;
 
-class LogsWriteAccess extends \GLPITestCase
-{
-    public function testCheckOnExistingWritableDir()
-    {
+class LogsWriteAccess extends \GLPITestCase {
 
-        vfsStream::setup('root', 0777, []);
+   public function testCheckOnExistingWritableDir() {
 
-        $logger = new Logger('test_log');
-        $logger->pushHandler(new StreamHandler(vfsStream::url('root/test.log')));
+      vfsStream::setup('root', 0777, []);
 
-        $this->newTestedInstance($logger);
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['The log file has been created successfully.']);
-    }
+      $logger = new Logger('test_log');
+      $logger->pushHandler(new StreamHandler(vfsStream::url('root/test.log')));
 
-    public function testCheckOnExistingProtectedDir()
-    {
+      $this->newTestedInstance($logger);
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['The log file has been created successfully.']);
+   }
 
-        vfsStream::setup('root', 0555, []);
+   public function testCheckOnExistingProtectedDir() {
 
-        $logger = new Logger('test_log');
-        $logger->pushHandler(new StreamHandler(vfsStream::url('root/test.log')));
+      vfsStream::setup('root', 0555, []);
 
-        $this->newTestedInstance($logger);
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['The log file could not be created in ' . GLPI_LOG_DIR . '.']);
-    }
+      $logger = new Logger('test_log');
+      $logger->pushHandler(new StreamHandler(vfsStream::url('root/test.log')));
+
+      $this->newTestedInstance($logger);
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['The log file could not be created in ' . GLPI_LOG_DIR . '.']);
+   }
 }

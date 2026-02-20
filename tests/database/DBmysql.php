@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,123 +32,118 @@
 
 namespace tests\units;
 
-class DBmysql extends \GLPITestCase
-{
-    private $olddb;
+class DBmysql extends \GLPITestCase {
 
-    public function beforeTestMethod($method)
-    {
-        parent::beforeTestMethod($method);
-        $this->olddb = new \DB();
-        $this->olddb->dbdefault = 'glpitest0723';
-        $this->olddb->connect();
-        $this->boolean($this->olddb->connected)->isTrue();
-    }
+   private $olddb;
 
-    public function afterTestMethod($method)
-    {
-        parent::afterTestMethod($method);
-        $this->olddb->close();
-    }
+   public function beforeTestMethod($method) {
+      parent::beforeTestMethod($method);
+      $this->olddb = new \DB();
+      $this->olddb->dbdefault = 'glpitest0723';
+      $this->olddb->connect();
+      $this->boolean($this->olddb->connected)->isTrue();
+   }
 
-    /**
-     * Test updated database against fresh install
-     *
-     * @return void
-     */
-    public function testUpdatedDatabase()
-    {
-        global $DB;
+   public function afterTestMethod($method) {
+      parent::afterTestMethod($method);
+      $this->olddb->close();
+   }
 
-        $fresh_tables = $DB->listTables();
-        while ($fresh_table = $fresh_tables->next()) {
-            $table = $fresh_table['TABLE_NAME'];
-            $this->boolean($this->olddb->tableExists($table, false))->isTrue("Table $table does not exists from migration!");
+   /**
+    * Test updated database against fresh install
+    *
+    * @return void
+    */
+   public function testUpdatedDatabase() {
+      global $DB;
 
-            $create = $DB->getTableSchema($table);
-            $fresh = $create['schema'];
-            $fresh_idx = $create['index'];
+      $fresh_tables = $DB->listTables();
+      while ($fresh_table = $fresh_tables->next()) {
+         $table = $fresh_table['TABLE_NAME'];
+         $this->boolean($this->olddb->tableExists($table, false))->isTrue("Table $table does not exists from migration!");
 
-            $update = $this->olddb->getTableSchema($table);
-            $updated = $update['schema'];
-            $updated_idx = $update['index'];
+         $create = $DB->getTableSchema($table);
+         $fresh = $create['schema'];
+         $fresh_idx = $create['index'];
 
-            //compare table schema
-            //$this->string($updated)->isIdenticalTo($fresh);
-            //check index
-            $fresh_diff = array_diff($fresh_idx, $updated_idx);
-            $this->array($fresh_diff)->isEmpty("Index missing in update for $table: " . implode(', ', $fresh_diff));
-            $update_diff = array_diff($updated_idx, $fresh_idx);
-            $this->array($update_diff)->isEmpty("Index missing in empty for $table: " . implode(', ', $update_diff));
-        }
-    }
+         $update = $this->olddb->getTableSchema($table);
+         $updated = $update['schema'];
+         $updated_idx = $update['index'];
 
-    public function testBuildUpdate()
-    {
-        global $DB;
+         //compare table schema
+         //$this->string($updated)->isIdenticalTo($fresh);
+         //check index
+         $fresh_diff = array_diff($fresh_idx, $updated_idx);
+         $this->array($fresh_diff)->isEmpty("Index missing in update for $table: " . implode(', ', $fresh_diff));
+         $update_diff = array_diff($updated_idx, $fresh_idx);
+         $this->array($update_diff)->isEmpty("Index missing in empty for $table: " . implode(', ', $update_diff));
+      }
+   }
 
-        $expected = "UPDATE `glpi_tickets` SET `date_mod` = '2019-01-01 12:00:00', `users_id` = '2' WHERE `id` = '1'";
-        $built = $DB->buildUpdate('glpi_tickets', [
-           'date_mod'  => '2019-01-01 12:00:00',
-           'users_id'  => 2
-        ], ['id' => 1]);
-        $this->string($built)->isIdenticalTo($expected);
+   public function testBuildUpdate() {
+      global $DB;
 
-        $expected = "UPDATE `glpi_computers`";
-        $expected .= " LEFT JOIN `glpi_locations` ON (`glpi_computers`.`locations_id` = `glpi_locations`.`id`)";
-        $expected .= " LEFT JOIN `glpi_computertypes` ON (`glpi_computers`.`computertypes_id` = `glpi_computertypes`.`id`)";
-        $expected .= " SET `glpi_computers`.`name` = '_join_computer1' WHERE `glpi_locations`.`name` = 'test' AND `glpi_computertypes`.`name` = 'laptop'";
-        $built = $DB->buildUpdate('glpi_computers', ['glpi_computers.name' => '_join_computer1'], [
-           'glpi_locations.name' => 'test',
-           'glpi_computertypes.name' => 'laptop'
-        ], [
-           'LEFT JOIN' => [
-              'glpi_locations' => [
-                 'ON' => [
-                    'glpi_computers'    => 'locations_id',
-                    'glpi_locations'  => 'id'
-                 ]
-              ], 'glpi_computertypes' => [
-                 'ON' => [
-                    'glpi_computers'    => 'computertypes_id',
-                    'glpi_computertypes'  => 'id'
-                 ]
-              ]
-           ]
-        ]);
-        $this->string($built)->isIdenticalTo($expected);
-    }
+      $expected = "UPDATE `glpi_tickets` SET `date_mod` = '2019-01-01 12:00:00', `users_id` = '2' WHERE `id` = '1'";
+      $built = $DB->buildUpdate('glpi_tickets', [
+         'date_mod'  => '2019-01-01 12:00:00',
+         'users_id'  => 2
+      ], ['id' => 1]);
+      $this->string($built)->isIdenticalTo($expected);
 
-    public function testBuildDelete()
-    {
-        global $DB;
+      $expected = "UPDATE `glpi_computers`";
+      $expected .= " LEFT JOIN `glpi_locations` ON (`glpi_computers`.`locations_id` = `glpi_locations`.`id`)";
+      $expected .= " LEFT JOIN `glpi_computertypes` ON (`glpi_computers`.`computertypes_id` = `glpi_computertypes`.`id`)";
+      $expected .= " SET `glpi_computers`.`name` = '_join_computer1' WHERE `glpi_locations`.`name` = 'test' AND `glpi_computertypes`.`name` = 'laptop'";
+      $built = $DB->buildUpdate('glpi_computers', ['glpi_computers.name' => '_join_computer1'], [
+         'glpi_locations.name' => 'test',
+         'glpi_computertypes.name' => 'laptop'
+      ], [
+         'LEFT JOIN' => [
+            'glpi_locations' => [
+               'ON' => [
+                  'glpi_computers'    => 'locations_id',
+                  'glpi_locations'  => 'id'
+               ]
+            ], 'glpi_computertypes' => [
+               'ON' => [
+                  'glpi_computers'    => 'computertypes_id',
+                  'glpi_computertypes'  => 'id'
+               ]
+            ]
+         ]
+      ]);
+      $this->string($built)->isIdenticalTo($expected);
+   }
 
-        $expected = "DELETE `glpi_tickets` FROM `glpi_tickets` WHERE `id` = '1'";
-        $built = $DB->buildDelete('glpi_tickets', ['id' => 1]);
-        $this->string($built)->isIdenticalTo($expected);
+   public function testBuildDelete() {
+      global $DB;
 
-        $expected = "DELETE `glpi_computers` FROM `glpi_computers`";
-        $expected .= " LEFT JOIN `glpi_locations` ON (`glpi_computers`.`locations_id` = `glpi_locations`.`id`)";
-        $expected .= " LEFT JOIN `glpi_computertypes` ON (`glpi_computers`.`computertypes_id` = `glpi_computertypes`.`id`)";
-        $expected .= " WHERE `glpi_locations`.`name` = 'test' AND `glpi_computertypes`.`name` = 'laptop'";
-        $built = $DB->buildDelete('glpi_computers', [
-           'glpi_locations.name' => 'test',
-           'glpi_computertypes.name' => 'laptop'
-        ], [
-           'LEFT JOIN' => [
-              'glpi_locations' => [
-                 'ON' => [
-                    'glpi_computers'    => 'locations_id',
-                    'glpi_locations'  => 'id'
-                 ]
-              ], 'glpi_computertypes' => [
-                 'ON' => [
-                    'glpi_computers'    => 'computertypes_id',
-                    'glpi_computertypes'  => 'id'
-                 ]
-              ]
-           ]
-        ]);
-        $this->string($built)->isIdenticalTo($expected);
-    }
+      $expected = "DELETE `glpi_tickets` FROM `glpi_tickets` WHERE `id` = '1'";
+      $built = $DB->buildDelete('glpi_tickets', ['id' => 1]);
+      $this->string($built)->isIdenticalTo($expected);
+
+      $expected = "DELETE `glpi_computers` FROM `glpi_computers`";
+      $expected .= " LEFT JOIN `glpi_locations` ON (`glpi_computers`.`locations_id` = `glpi_locations`.`id`)";
+      $expected .= " LEFT JOIN `glpi_computertypes` ON (`glpi_computers`.`computertypes_id` = `glpi_computertypes`.`id`)";
+      $expected .= " WHERE `glpi_locations`.`name` = 'test' AND `glpi_computertypes`.`name` = 'laptop'";
+      $built = $DB->buildDelete('glpi_computers', [
+         'glpi_locations.name' => 'test',
+         'glpi_computertypes.name' => 'laptop'
+      ], [
+         'LEFT JOIN' => [
+            'glpi_locations' => [
+               'ON' => [
+                  'glpi_computers'    => 'locations_id',
+                  'glpi_locations'  => 'id'
+               ]
+            ], 'glpi_computertypes' => [
+               'ON' => [
+                  'glpi_computers'    => 'computertypes_id',
+                  'glpi_computertypes'  => 'id'
+               ]
+            ]
+         ]
+      ]);
+      $this->string($built)->isIdenticalTo($expected);
+   }
 }

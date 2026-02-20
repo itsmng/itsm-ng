@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,32 +32,29 @@
 
 namespace tests\units\Glpi\System\Requirement;
 
-class ExtensionFunction extends \GLPITestCase
-{
-    public function testCheckOnExistingExtension()
-    {
+class ExtensionFunction extends \GLPITestCase {
 
-        $this->newTestedInstance('xml', 'utf8_decode');
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['xml extension is installed']);
-    }
+   public function testCheckOnExistingExtension() {
 
-    public function testCheckOnMissingMandatoryExtension()
-    {
+      $this->newTestedInstance('xml', 'utf8_decode');
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['xml extension is installed']);
+   }
 
-        $this->newTestedInstance('fake_ext', 'fake_extension_function');
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['fake_ext extension is missing']);
-    }
+   public function testCheckOnMissingMandatoryExtension() {
 
-    public function testCheckOnMissingOptionalExtension()
-    {
+      $this->newTestedInstance('fake_ext', 'fake_extension_function');
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['fake_ext extension is missing']);
+   }
 
-        $this->newTestedInstance('fake_ext', 'fake_extension_function', true);
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['fake_ext extension is not present']);
-    }
+   public function testCheckOnMissingOptionalExtension() {
+
+      $this->newTestedInstance('fake_ext', 'fake_extension_function', true);
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['fake_ext extension is not present']);
+   }
 }

@@ -1,0 +1,27 @@
+services:
+  db:
+    container_name: "db"
+    image: "${DB_IMAGE:-mariadb:10.11}"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "glpi"
+    shm_size: '1gb'
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "127.0.0.1", "-uroot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  dovecot:
+    container_name: "dovecot"
+    build:
+      context: "${APPLICATION_ROOT}"
+      dockerfile: ".github/actions/images/dovecot/Dockerfile"
+    image: "${DOVECOT_IMAGE:-itsm-tests-dovecot:local}"
+  openldap:
+    container_name: "openldap"
+    image: "${OPENLDAP_IMAGE:-osixia/openldap:1.5.0}"
+    environment:
+      LDAP_ORGANISATION: "GLPI"
+      LDAP_DOMAIN: "glpi.org"
+      LDAP_ADMIN_PASSWORD: "insecure"
+      LDAP_CONFIG_PASSWORD: "insecure"

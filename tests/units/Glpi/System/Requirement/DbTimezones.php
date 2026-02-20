@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,29 +32,27 @@
 
 namespace tests\units\Glpi\System\Requirement;
 
-class DbTimezones extends \GLPITestCase
-{
-    public function testCheckWithAvailableTimezones()
-    {
+class DbTimezones extends \GLPITestCase {
 
-        $this->mockGenerator->orphanize('__construct');
-        $db = new \mock\DB();
-        $this->calling($db)->areTimezonesAvailable = true;
+   public function testCheckWithAvailableTimezones() {
 
-        $this->newTestedInstance($db);
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['Timezones seems loaded in database']);
-    }
+      $this->mockGenerator->orphanize('__construct');
+      $db = new \mock\DB();
+      $this->calling($db)->areTimezonesAvailable = true;
 
-    public function testCheckWithUnavailableTimezones()
-    {
+      $this->newTestedInstance($db);
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['Timezones seems loaded in database']);
+   }
 
-        $this->mockGenerator->orphanize('__construct');
-        $db = new \mock\DB();
-        $this->calling($db)->areTimezonesAvailable = false;
+   public function testCheckWithUnavailableTimezones() {
 
-        $this->newTestedInstance($db);
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-    }
+      $this->mockGenerator->orphanize('__construct');
+      $db = new \mock\DB();
+      $this->calling($db)->areTimezonesAvailable = false;
+
+      $this->newTestedInstance($db);
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+   }
 }

@@ -29,7 +29,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.3
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, ldap
           coverage: none
 
       - name: Install NodeJS
@@ -58,10 +58,75 @@ jobs:
           sudo mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE_UNIT;"
           sudo mysql -e "GRANT ALL PRIVILEGES ON $DB_DATABASE_UNIT.* TO '$DB_USER'@'localhost';"
           sudo mysql -e "FLUSH PRIVILEGES;"
-          php bin/console itsmng:database:install --config-dir=/home/runner/work/itsm-ng/itsm-ng/tests/config -H localhost -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE_UNIT -n
+          php bin/console itsmng:database:install --config-dir=$GITHUB_WORKSPACE/tests/config -H localhost -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE_UNIT -n
 
-      - name: Run PHP Unit tests
-        run: vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --fail-if-skipped-methods --max-children-number 10 -d tests/units
+      - name: Run unit tests
+        run: vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --fail-if-skipped-methods --no-code-coverage --max-children-number 10 -d tests/units
+
+      - name: Run functional tests
+        run: vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --fail-if-skipped-methods --no-code-coverage --max-children-number 1 -d tests/functionnal
+
+      - name: Setup OpenLDAP
+        run: |
+          sudo apt-get install -y ldap-utils
+          docker run -d --name openldap \
+            -p 389:389 \
+            -e LDAP_ORGANISATION="GLPI" \
+            -e LDAP_DOMAIN="glpi.org" \
+            -e LDAP_ADMIN_PASSWORD="insecure" \
+            -e LDAP_CONFIG_PASSWORD="insecure" \
+            osixia/openldap:1.5.0
+          echo "127.0.0.1 openldap" | sudo tee -a /etc/hosts
+          until ldapsearch -x -H ldap://localhost:389 -D "cn=admin,dc=glpi,dc=org" -w insecure -b "dc=glpi,dc=org" > /dev/null 2>&1; do
+            echo "Waiting for OpenLDAP..."
+            sleep 2
+          done
+
+      - name: Load LDAP fixtures
+        run: |
+          for f in tests/LDAP/ldif/*.ldif; do
+            awk '
+              BEGIN { RS = ""; ORS = "\n\n"; }
+              {
+                dn = "";
+                n = split($0, lines, "\n");
+                for (i = 1; i <= n; i++) {
+                  if (lines[i] ~ /^dn:[[:space:]]*/) { dn = lines[i]; break; }
+                }
+                if (dn != "dn: dc=glpi,dc=org" &&
+                    dn != "dn: cn=admin,dc=glpi,dc=org" &&
+                    dn != "dn: cn=admin, dc=glpi,dc=org") {
+                  print $0;
+                }
+              }
+            ' "$f" | ldapadd -x -H ldap://localhost:389 -D "cn=admin,dc=glpi,dc=org" -w insecure -c
+          done
+
+      - name: Run LDAP tests
+        run: vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --fail-if-skipped-methods --no-code-coverage --max-children-number 1 -d tests/LDAP
+
+      - name: Setup Dovecot
+        run: |
+          docker build -t itsm-tests-dovecot:local -f .github/actions/images/dovecot/Dockerfile .
+          docker run -d --name dovecot -p 143:143 itsm-tests-dovecot:local
+          echo "127.0.0.1 dovecot" | sudo tee -a /etc/hosts
+
+      - name: Load IMAP fixtures
+        run: |
+          docker exec dovecot doveadm expunge -u testuser mailbox 'INBOX' all || true
+          docker exec dovecot doveadm purge -u testuser || true
+          for f in tests/emails-tests/*.eml; do
+            docker exec -i --user testuser dovecot getmail_maildir /home/testuser/Maildir/ < "$f"
+          done
+
+      - name: Run IMAP tests
+        run: vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --fail-if-skipped-methods --no-code-coverage --max-children-number 1 -d tests/imap
+
+      - name: Start PHP development server
+        run: php -S localhost:8088 tests/router.php &>/dev/null &
+
+      - name: Run web API tests
+        run: vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --fail-if-skipped-methods --no-code-coverage --max-children-number 1 -d tests/web
 
       - name: Setup migration environment
         run: |
@@ -72,10 +137,7 @@ jobs:
           sudo mysql -u itsm_migration -pitsm_migration itsm_migration < tests/migrations/schema.sql
 
       - name: Run migration tests
-        run: php bin/console itsmng:database:update --config-dir=/home/runner/work/itsm-ng/itsm-ng/tests/migrations -n
-
-      - name: Run PHP Unit tests
-        run: vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --fail-if-skipped-methods --max-children-number 10 -d tests/units
+        run: php bin/console itsmng:database:update --config-dir=$GITHUB_WORKSPACE/tests/migrations -n
 
       - name: Clean environment
         run: |
@@ -104,4 +166,3 @@ jobs:
           name: ITSM-NG ${{ github.ref_name }}
           draft: true
           generate_release_notes: true
-

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -35,33 +34,31 @@ namespace tests\units;
 
 /* Test for inc/glpikey.class.php */
 
-class GLPIKey extends \GLPITestCase
-{
-    protected function getExpectedKeyPathProvider()
-    {
-        return [
-           ['0.90.5', null],
-           ['9.3.5', null],
-           ['9.4.0', null],
-           ['9.4.5', null],
-           ['9.4.6', GLPI_CONFIG_DIR . '/glpi.key'],
-           ['9.4.9', GLPI_CONFIG_DIR . '/glpi.key'],
-           ['9.5.0-dev', GLPI_CONFIG_DIR . '/glpicrypt.key'],
-           ['9.5.0', GLPI_CONFIG_DIR . '/glpicrypt.key'],
-           ['9.5.3', GLPI_CONFIG_DIR . '/glpicrypt.key'],
-           ['9.6.1', GLPI_CONFIG_DIR . '/glpicrypt.key'],
-           ['15.3.0', GLPI_CONFIG_DIR . '/glpicrypt.key'],
-        ];
-    }
+class GLPIKey extends \GLPITestCase {
 
-    /**
-     * @dataProvider getExpectedKeyPathProvider
-     */
-    public function testGetExpectedKeyPath($glpi_version, $expected_path)
-    {
-        $this
-           ->if($this->newTestedInstance)
-           ->then
-              ->variable($this->testedInstance->getExpectedKeyPath($glpi_version))->isEqualTo($expected_path);
-    }
+   protected function getExpectedKeyPathProvider() {
+      return [
+         ['0.90.5', null],
+         ['9.3.5', null],
+         ['9.4.0', null],
+         ['9.4.5', null],
+         ['9.4.6', GLPI_CONFIG_DIR . '/glpi.key'],
+         ['9.4.9', GLPI_CONFIG_DIR . '/glpi.key'],
+         ['9.5.0-dev', GLPI_CONFIG_DIR . '/glpicrypt.key'],
+         ['9.5.0', GLPI_CONFIG_DIR . '/glpicrypt.key'],
+         ['9.5.3', GLPI_CONFIG_DIR . '/glpicrypt.key'],
+         ['9.6.1', GLPI_CONFIG_DIR . '/glpicrypt.key'],
+         ['15.3.0', GLPI_CONFIG_DIR . '/glpicrypt.key'],
+      ];
+   }
+
+   /**
+    * @dataProvider getExpectedKeyPathProvider
+    */
+   public function testGetExpectedKeyPath($glpi_version, $expected_path) {
+      $this
+         ->if($this->newTestedInstance)
+         ->then
+            ->variable($this->testedInstance->getExpectedKeyPath($glpi_version))->isEqualTo($expected_path);
+   }
 }

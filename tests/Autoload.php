@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -31,7 +30,6 @@
  * ---------------------------------------------------------------------
  */
 
-class Autoload extends \DbTestCase
-{
-    //Placebo class to get autoloader tested
+class Autoload extends \DbTestCase {
+   //Placebo class to get autoloader tested
 }

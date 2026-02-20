@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,37 +32,34 @@
 
 namespace tests\units\Glpi\System\Requirement;
 
-class MysqliMysqlnd extends \GLPITestCase
-{
-    public function testCheckUsingMysqlnd()
-    {
+class MysqliMysqlnd extends \GLPITestCase {
 
-        $this->newTestedInstance();
-        $this->function->extension_loaded = true;
-        $this->function->defined = true;
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['mysqli extension is installed']);
-    }
+   public function testCheckUsingMysqlnd() {
 
-    public function testCheckUsingAlternativeDriver()
-    {
+      $this->newTestedInstance();
+      $this->function->extension_loaded = true;
+      $this->function->defined = true;
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['mysqli extension is installed']);
+   }
 
-        $this->newTestedInstance();
-        $this->function->extension_loaded = true;
-        $this->function->defined = false;
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['mysqli extension is installed but is not using mysqlnd driver']);
-    }
+   public function testCheckUsingAlternativeDriver() {
 
-    public function testCheckOnMissingExtension()
-    {
+      $this->newTestedInstance();
+      $this->function->extension_loaded = true;
+      $this->function->defined = false;
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['mysqli extension is installed but is not using mysqlnd driver']);
+   }
 
-        $this->newTestedInstance();
-        $this->function->extension_loaded = false;
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['mysqli extension is missing']);
-    }
+   public function testCheckOnMissingExtension() {
+
+      $this->newTestedInstance();
+      $this->function->extension_loaded = false;
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['mysqli extension is missing']);
+   }
 }

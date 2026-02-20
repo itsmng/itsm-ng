@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,27 +32,25 @@
 
 namespace tests\units\Glpi\System\Requirement;
 
-class PhpVersion extends \GLPITestCase
-{
-    public function testCheckWithUpToDateVersion()
-    {
+class PhpVersion extends \GLPITestCase {
 
-        $this->newTestedInstance(ITSM_MIN_PHP);
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(['PHP version is at least ' . ITSM_MIN_PHP . ' - Perfect!']);
-    }
+   public function testCheckWithUpToDateVersion() {
 
-    public function testCheckOutdatedVersion()
-    {
+      $this->newTestedInstance(ITSM_MIN_PHP);
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(['PHP version is at least ' . ITSM_MIN_PHP . ' - Perfect!']);
+   }
 
-        $this->newTestedInstance('20.7');
-        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-        $this->array($this->testedInstance->getValidationMessages())
-           ->isEqualTo(
-               [
-                 'You must install at least PHP 20.7.'
-               ]
-           );
-    }
+   public function testCheckOutdatedVersion() {
+
+      $this->newTestedInstance('20.7');
+      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+      $this->array($this->testedInstance->getValidationMessages())
+         ->isEqualTo(
+            [
+               'You must install at least PHP 20.7.'
+            ]
+         );
+   }
 }

@@ -2450,7 +2450,7 @@ class Dropdown
                     if (!$item->maybePrivate()) {
                         $where = $where + getEntitiesRestrictCriteria($table, '', '', $recur);
 
-                        if (count($_SESSION['glpiactiveentities']) > 1) {
+                        if (count((array)($_SESSION['glpiactiveentities'] ?? [])) > 1) {
                             $multi = true;
                         }
                     } else {
@@ -2760,7 +2760,7 @@ class Dropdown
                     if (!$item->maybePrivate()) {
                         $where = $where + getEntitiesRestrictCriteria($table, '', '', $multi);
 
-                        if (count($_SESSION['glpiactiveentities']) > 1) {
+                        if (count((array)($_SESSION['glpiactiveentities'] ?? [])) > 1) {
                             $multi = true;
                         }
                     } else {
@@ -3245,7 +3245,7 @@ class Dropdown
             }
         } else {
             $where = $where + getEntitiesRestrictCriteria($table, '', $_SESSION['glpiactiveentities'], $multi);
-            if (count($_SESSION['glpiactiveentities']) > 1) {
+            if (count((array)($_SESSION['glpiactiveentities'] ?? [])) > 1) {
                 $multi = true;
             }
         }
