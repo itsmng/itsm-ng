@@ -411,7 +411,9 @@ class User extends CommonDBTM
             $dp->deleteByCriteria(['users_id' => $this->fields['id']]);
         }
 
-        unlink($this->fields['picture']);
+        if (!empty($this->fields['picture']) && file_exists($this->fields['picture'])) {
+            unlink($this->fields['picture']);
+        }
 
         // Ticket rules use various _users_id_*
         Rule::cleanForItemAction($this, '_users_id%');
@@ -801,12 +803,17 @@ class User extends CommonDBTM
 
         //picture manually uploaded by user
         if (isset($input["_blank_picture"]) && $input["_blank_picture"]) {
-            unlink($this->fields['picture']);
+            if (!empty($this->fields['picture']) && file_exists($this->fields['picture'])) {
+                unlink($this->fields['picture']);
+            }
             $input['picture'] = 'NULL';
         } else {
             if (isset($picture) && !empty($picture) && $picture['path'] != $this->fields['picture']) {
                 if (Document::isImage($picture['path'])) {
-                    unlink(GLPI_PICTURE_DIR . '/' . $this->fields['picture']);
+                    $picture_path = GLPI_PICTURE_DIR . '/' . $this->fields['picture'];
+                    if (!empty($this->fields['picture']) && file_exists($picture_path)) {
+                        unlink($picture_path);
+                    }
                     $uploadedFileName = ItsmngUploadHandler::uploadFile($picture['path'], $picture['name'], ItsmngUploadHandler::PICTURE);
                     $input['picture'] = ltrim($uploadedFileName, '/');
                 } else {
@@ -1960,7 +1967,7 @@ class User extends CommonDBTM
 
         //Perform the search
         $filter = Toolbox::unclean_cross_side_scripting_deep($filter);
-        $sr     = ldap_search($ds, $ldap_base_dn, $filter, $attrs);
+        $sr     = @ldap_search($ds, $ldap_base_dn, $filter, $attrs);
 
         //Get the result of the search as an array
         $info = AuthLDAP::get_entries_clean($ds, $sr);
@@ -3716,7 +3723,10 @@ class User extends CommonDBTM
 
         // No entity define : use active ones
         if ($entity_restrict < 0) {
-            $entity_restrict = $_SESSION["glpiactiveentities"];
+            $entity_restrict = (array)($_SESSION["glpiactiveentities"] ?? [0]);
+            if (count($entity_restrict) === 0) {
+                $entity_restrict = [0];
+            }
         }
 
         $joinprofile      = false;

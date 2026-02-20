@@ -103,6 +103,50 @@ class ItsmngUploadHandler
         return self::getUploadPath($type, $filename, false) . '/' . $filename;
     }
 
+    public static function uploadFiles(array $options = [])
+    {
+        $field = $options['name'] ?? 'filename';
+        if (!isset($_FILES[$field])) {
+            return [];
+        }
+
+        $file = $_FILES[$field];
+        $names = (array)($file['name'] ?? []);
+        $tmp_names = (array)($file['tmp_name'] ?? []);
+        $errors = (array)($file['error'] ?? []);
+
+        if (!is_dir(GLPI_UPLOAD_DIR)) {
+            mkdir(GLPI_UPLOAD_DIR, 0777, true);
+        }
+
+        $results = [];
+        foreach ($names as $index => $name) {
+            if (($errors[$index] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+                continue;
+            }
+
+            $tmp_name = $tmp_names[$index] ?? null;
+            if (empty($tmp_name)) {
+                continue;
+            }
+
+            $prefix = uniqid() . '_';
+            $stored_name = $prefix . $name;
+            $target = GLPI_UPLOAD_DIR . '/' . $stored_name;
+
+            if (!@move_uploaded_file($tmp_name, $target) && !@rename($tmp_name, $target)) {
+                continue;
+            }
+
+            $item = new stdClass();
+            $item->name = $stored_name;
+            $item->prefix = $prefix;
+            $results[] = [$item];
+        }
+
+        return $results;
+    }
+
     private static function getValidExtPatterns()
     {
         global $DB;

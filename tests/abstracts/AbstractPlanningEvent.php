@@ -89,9 +89,9 @@ abstract class AbstractPlanningEvent extends \DbTestCase
         }
 
         // check rrule encoding
-        $exp_exdates = '"exceptions":["' . $this->exdate1 . '","' . $this->exdate2 . '"]';
+        $exp_exdates = '"exceptions":["'.$this->exdate1.'","'.$this->exdate2.'"]';
         $this->string($event->fields['rrule'])
-             ->isEqualTo('{"freq":"daily","interval":1,"byweekday":"MO","bymonth":1,' . $exp_exdates . '}');
+             ->isEqualTo('{"freq":"daily","interval":1,"byweekday":"MO","bymonth":1,'.$exp_exdates.'}');
 
         return $event;
     }

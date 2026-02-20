@@ -37,5 +37,6 @@ class Something extends \CommonDBTM
 {
     public function __construct(array $param)
     {
+
     }
 }

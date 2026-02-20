@@ -66,11 +66,20 @@ class DbTestCase extends \GLPITestCase
         bool $noauto = true,
         bool $expected = true
     ): \Auth {
-        \Session::destroy();
-        \Session::start();
+        $this->resetSession();
 
         $auth = new Auth();
         $this->boolean($auth->login($user_name, $user_pass, $noauto))->isEqualTo($expected);
+
+        if (class_exists('SpecialStatus')) {
+            \SpecialStatus::oldStatusOrder();
+        }
+        foreach (['INCOMING' => 1, 'ASSIGNED' => 2, 'PLANNED' => 3, 'WAITING' => 4, 'SOLVED' => 5, 'CLOSED' => 6] as $status_key => $status_value) {
+            if (!isset($_SESSION[$status_key])) {
+                $_SESSION[$status_key] = $status_value;
+            }
+        }
+        $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
 
         return $auth;
     }
@@ -130,7 +139,7 @@ class DbTestCase extends \GLPITestCase
             [
               'TicketFollowup', // Deprecated
               '/^Computer_Software.*/', // Deprecated
-            ]
+         ]
         );
 
         $classes = [];
@@ -139,7 +148,7 @@ class DbTestCase extends \GLPITestCase
                 continue;
             }
 
-            $php_file = file_get_contents("inc/" . $fileInfo->getFilename());
+            $php_file = file_get_contents("inc/".$fileInfo->getFilename());
             $tokens = token_get_all($php_file);
             $class_token = false;
             foreach ($tokens as $token) {

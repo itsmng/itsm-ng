@@ -238,8 +238,10 @@ abstract class CommonITILObject extends CommonDBTM
             && isset($_SESSION["glpigroups"])
             && $this->haveAGroup(CommonITILActor::REQUESTER, $_SESSION['glpigroups'])
             )
-              || (Session::haveRight('followup', ITILFollowup::ADDASSIGNEDTICKET)
-              && ($this->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
+              || (
+                  Session::haveRight('followup', ITILFollowup::ADDASSIGNEDTICKET)
+              && (
+                  $this->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
                   || (
                       isset($_SESSION["glpigroups"])
                   && $this->haveAGroup(CommonITILActor::ASSIGN, $_SESSION['glpigroups'])
@@ -799,17 +801,19 @@ abstract class CommonITILObject extends CommonDBTM
 
         $check_allowed_fields_for_template = false;
         $allowed_fields                    = [];
+        $current_status                    = $this->fields['status'] ?? ($input['status'] ?? null);
+        $current_id                        = $this->fields['id'] ?? ($input['id'] ?? 0);
         if (
             !Session::isCron()
             && (!Session::haveRight(static::$rightname, UPDATE)
               // Closed tickets
-              || in_array($this->fields['status'], $this->getClosedStatusArray()))
+              || ($current_status !== null && in_array($current_status, $this->getClosedStatusArray(), true)))
             && Session::getCurrentInterface() != "helpdesk"
         ) {
             $allowed_fields                    = ['id'];
             $check_allowed_fields_for_template = true;
 
-            if (in_array($this->fields['status'], $this->getClosedStatusArray())) {
+            if ($current_status !== null && in_array($current_status, $this->getClosedStatusArray(), true)) {
                 $allowed_fields[] = 'status';
 
                 // probably transfer
@@ -829,7 +833,7 @@ abstract class CommonITILObject extends CommonDBTM
                 $validation_class = static::getType() . 'Validation';
                 if (class_exists($validation_class)) {
                     if (
-                        $validation_class::canValidate($this->fields['id'])
+                        $validation_class::canValidate($current_id)
                         || $validation_class::canCreate()
                         || isset($input["_rule_process"])
                     ) {

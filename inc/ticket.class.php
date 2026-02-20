@@ -277,8 +277,9 @@ class Ticket extends CommonITILObject
      **/
     public function canApprove()
     {
+        $users_id_recipient = $this->fields["users_id_recipient"] ?? 0;
 
-        return ((($this->fields["users_id_recipient"] === Session::getLoginUserID())
+        return ((($users_id_recipient === Session::getLoginUserID())
            &&  Session::haveRight('ticket', Ticket::SURVEY))
            || $this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
            || (isset($_SESSION["glpigroups"])
@@ -1726,6 +1727,16 @@ class Ticket extends CommonITILObject
             $input["requesttypes_id"] = RequestType::getDefault('helpdesk');
         }
 
+        if (!isset($input['entities_id'])) {
+            $input['entities_id'] = Session::getActiveEntity();
+        }
+        if (!isset($input['status'])) {
+            $input['status'] = $_SESSION['INCOMING'] ?? 1;
+        }
+        if (!isset($input['users_id_recipient'])) {
+            $input['users_id_recipient'] = Session::getLoginUserID() ?: 0;
+        }
+
         if (!isset($input['global_validation'])) {
             $input['global_validation'] = CommonITILValidation::NONE;
         }
@@ -2661,7 +2672,7 @@ class Ticket extends CommonITILObject
            || (
                Profile::haveUserRight($user_id, $rightname, ITILFollowup::ADDASSIGNEDTICKET, $entity_id)
             && (
-                   $this->isUser(CommonITILActor::ASSIGN, $user_id)
+                $this->isUser(CommonITILActor::ASSIGN, $user_id)
                 || $this->haveAGroup(CommonITILActor::ASSIGN, $user_groups_ids)
             )
            );
@@ -5093,7 +5104,7 @@ class Ticket extends CommonITILObject
                      'hooks' => [
                          'change' => $this->isNewID($ID) ? 'this.form.submit();' : ''
                      ],
-                     'init' => (function() use ($ID, $CFG_GLPI) {
+                     'init' => (function () use ($ID, $CFG_GLPI) {
                          $isNewJS = $this->isNewID($ID) ? 'true' : 'false';
                          return <<<JS
                     $('#dropdownForTicketCategory').val('');

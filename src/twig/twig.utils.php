@@ -565,14 +565,16 @@ function getItemActionButtons(array $actions, string $itemType): array
                 break;
             case "add":
                 $item = new $itemType();
-                Ajax::createModalWindow(
+                $modal_script = Ajax::createModalWindow(
                     "add_" . $itemType,
                     $item->getFormUrl() . "?_in_modal=1",
+                    ['display' => false]
                 );
                 $content = [
                     "icon" => "fas fa-plus",
                     "onClick" => "add_" . $itemType . ".dialog('open');",
                     "info" => "Add",
+                    "modal_script" => $modal_script,
                 ];
                 break;
         }

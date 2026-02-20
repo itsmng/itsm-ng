@@ -37,6 +37,8 @@ class SeLinux extends \GLPITestCase
 {
     public function testCheckOutOfContext()
     {
+        $this->function->file_exists = false;
+        $this->function->function_exists = false;
 
         $this->newTestedInstance();
         $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
@@ -121,7 +123,7 @@ class SeLinux extends \GLPITestCase
                  'SELinux boolean httpd_can_network_connect is off, some features may require this to be on.',
                  'SELinux boolean httpd_can_network_connect_db is off, some features may require this to be on.',
                  'SELinux boolean httpd_can_sendmail is off, some features may require this to be on.',
-               ]
+            ]
            );
     }
 

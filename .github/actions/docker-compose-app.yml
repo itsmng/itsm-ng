@@ -1,0 +1,14 @@
+services:
+  app:
+    container_name: "app"
+    build:
+      context: "${APPLICATION_ROOT}"
+      dockerfile: ".github/actions/images/app/Dockerfile"
+    image: "${PHP_IMAGE:-itsm-tests-app:local}"
+    working_dir: "/var/itsm"
+    command: ["sleep", "infinity"]
+    environment:
+      CODE_COVERAGE: "${CODE_COVERAGE:-false}"
+    volumes:
+      - "${APPLICATION_ROOT}:/var/itsm:z"
+      - "${APP_CONTAINER_HOME}:/home/itsm:z"

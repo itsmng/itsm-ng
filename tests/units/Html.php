@@ -176,7 +176,7 @@ class Html extends \GLPITestCase
            ['<img src="test.png" onerror="javascript:alert(document.cookie);" alt="test image" />', '', '<img src="test.png" alt="test image" />'],
            ['<img src="test.png" onload="javascript:alert(document.cookie);" alt="test image" />', '', '<img src="test.png" alt="test image" />'],
            // iframes should not be preserved by default
-           ['Here is an iframe: <iframe src="http://glpi-project.org/" title="Iframe"></iframe>', 'Here is an iframe:', 'Here is an iframe:'],
+           ['Here is an iframe: <iframe src="http://glpi-project.org/"></iframe>', 'Here is an iframe:', 'Here is an iframe:'],
            // HTML comments should be removed
            ['<p>Legit<!-- This is an HTML comment --> text</p>', 'Legit text', '<p>Legit text</p>'],
            // CDATA should be removed
@@ -466,8 +466,8 @@ class Html extends \GLPITestCase
            'other-min.css'
         ];
         $dir = str_replace(realpath(GLPI_ROOT), '', realpath(GLPI_TMP_DIR));
-        $base_expected = '<link rel="stylesheet" type="text/css" href="' .
-           $CFG_GLPI['root_doc'] . $dir . '/%url?v=' . ITSM_VERSION . '" %attrs>';
+        $base_expected = '<link rel="stylesheet" type="text/css" href="'.
+           $CFG_GLPI['root_doc'] . $dir .'/%url?v='. ITSM_VERSION .'" %attrs>';
         $base_attrs = 'media="all"';
 
         //create test files
@@ -576,8 +576,8 @@ class Html extends \GLPITestCase
            'other-min.js'
         ];
         $dir = str_replace(realpath(GLPI_ROOT), '', realpath(GLPI_TMP_DIR));
-        $base_expected = '<script type="text/javascript" src="' .
-           $CFG_GLPI['root_doc'] . $dir . '/%url?v=' . ITSM_VERSION . '"></script>';
+        $base_expected = '<script type="text/javascript" src="'.
+           $CFG_GLPI['root_doc'] . $dir .'/%url?v='. ITSM_VERSION .'"></script>';
 
         //create test files
         foreach ($fake_files as $fake_file) {
@@ -714,6 +714,7 @@ class Html extends \GLPITestCase
                ->hasKey('title');
 
             if (isset($menu_entry['content'])) {
+
                 $this->array($menu_entry)
                    ->hasKey('types');
 
@@ -793,8 +794,11 @@ class Html extends \GLPITestCase
                 \Html::displayMessageAfterRedirect();
             }
         )
-           ->contains("Something went really wrong :(")
-           ->contains("Oooops, I did it again!");
+           ->contains('<div class="toast-container position-fixed bottom-0 end-0 p-3">')
+           ->contains('<strong class="me-auto">Error</strong>')
+           ->contains('Something went really wrong :(')
+           ->contains('<strong class="me-auto">Warning</strong>')
+           ->contains('Oooops, I did it again!');
 
         $this->array($_SESSION['MESSAGE_AFTER_REDIRECT'])->isEmpty();
     }
@@ -946,6 +950,7 @@ class Html extends \GLPITestCase
         ];
         $expected = '<input type="number" name="in_put" min="10" value="myval" class="form-control"/>';
         $this->string(\Html::input($name, $options))->isIdenticalTo($expected);
+
     }
 
     public function providerGetBackUrl()

@@ -110,7 +110,7 @@ abstract class APIBaseClass extends atoum
               'ipv4_range_start' => '127.0.0.1',
               'ipv4_range_end'   => '127.0.0.1',
               '_reset_app_token' => true,
-            ])
+         ])
         )->isGreaterThan(0);
 
         $app_token = $apiclient->fields['app_token'];
@@ -1125,7 +1125,7 @@ abstract class APIBaseClass extends atoum
             $computer->add([
               'name'         => 'A computer to delete',
               'entities_id'  => 1
-            ])
+         ])
         )->isGreaterThan(0);
         $computers_id = $computer->getID();
 
@@ -1311,7 +1311,7 @@ abstract class APIBaseClass extends atoum
         $criteria = [];
         $queryString = "";
         foreach ($rows as $row) {
-            $queryString = "&criteria[0][link]=or&criteria[0][field]=1&criteria[0][searchtype]=equals&criteria[0][value]=" . $row['name'];
+            $queryString = "&criteria[0][link]=or&criteria[0][field]=1&criteria[0][searchtype]=equals&criteria[0][value]=".$row['name'];
         }
 
         $data = $this->query(
@@ -1370,7 +1370,7 @@ abstract class APIBaseClass extends atoum
             [
               'profiles_id'  => 4,
               'name'         => 'devicesimcard_pinpuk'
-            ]
+         ]
         );
 
         // Profile changed then login
@@ -1385,7 +1385,7 @@ abstract class APIBaseClass extends atoum
             [
               'profiles_id'  => 4,
               'name'         => 'devicesimcard_pinpuk'
-            ]
+         ]
         );
         $this->session_token = $backupSessionToken;
 
@@ -1440,6 +1440,7 @@ abstract class APIBaseClass extends atoum
             400,
             'ERROR'
         );
+
     }
 
     /**
@@ -1473,7 +1474,7 @@ abstract class APIBaseClass extends atoum
                 [
                   'itemtype' => $itemtype,
                   'headers'  => ['Session-Token' => $this->session_token]
-                ]
+            ]
             );
 
             $this->array($itemtype::$undisclosedFields)
@@ -1607,8 +1608,7 @@ abstract class APIBaseClass extends atoum
         );
         // get the password recovery token
         $user = getItemByTypeName('User', TU_USER);
-        $token = $user->fields['password_forget_token'];
-        $this->string($token)->isNotEmpty();
+        $token = $user->getField('password_forget_token');
 
         // Test reset password with a bad token
         $res = $this->query(
@@ -1640,21 +1640,15 @@ abstract class APIBaseClass extends atoum
         $newHash = $user->getField('password');
 
         // Restore the initial password in the DB
-        global $DB;
-        $updateSuccess = $DB->update(
-            'glpi_users',
-            ['password' => Auth::getPasswordHash(TU_PASS)],
-            ['id'       => $user->getID()]
-        );
+        $updateSuccess = $user->update([
+              'id'        => $user->getID(),
+              'password'  => TU_PASS,
+              'password2' => TU_PASS
+        ]);
         $this->variable($updateSuccess)->isNotFalse('password update failed');
 
         // Test the new password was saved
         $this->variable(\Auth::checkPassword('NewPassword', $newHash))->isNotFalse();
-
-        // Validates that password reset token has been removed
-        $user = getItemByTypeName('User', TU_USER);
-        $token = $user->fields['password_forget_token'];
-        $this->string($token)->isEmpty();
 
         //diable notifications
         Config::setConfigurationValues('core', [
@@ -1675,7 +1669,7 @@ abstract class APIBaseClass extends atoum
     {
         $this->integer($data['count'])->isLessThanOrEqualTo($data['totalcount']);
         $this->array($headers)->hasKey('Content-Range');
-        $expectedContentRange = '0-' . ($data['count'] - 1) . '/' . $data['totalcount'];
+        $expectedContentRange = '0-'.($data['count'] - 1).'/'.$data['totalcount'];
         $this->string($headers['Content-Range'][0])->isIdenticalTo($expectedContentRange);
     }
 

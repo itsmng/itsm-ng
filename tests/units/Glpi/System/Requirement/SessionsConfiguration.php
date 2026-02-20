@@ -69,7 +69,7 @@ class SessionsConfiguration extends \GLPITestCase
                [
                  '"session.auto_start" must be set to off.',
                  'See .htaccess file in the ITSM-NG root for more information.',
-               ]
+            ]
            );
     }
 
@@ -87,7 +87,7 @@ class SessionsConfiguration extends \GLPITestCase
                [
                  '"session.use_trans_sid" must be set to off.',
                  'See .htaccess file in the ITSM-NG root for more information.',
-               ]
+            ]
            );
     }
 
@@ -103,7 +103,7 @@ class SessionsConfiguration extends \GLPITestCase
                [
                  '"session.auto_start" and "session.use_trans_sid" must be set to off.',
                  'See .htaccess file in the ITSM-NG root for more information.',
-               ]
+            ]
            );
     }
 }

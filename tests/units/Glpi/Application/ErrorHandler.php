@@ -64,7 +64,7 @@ class ErrorHandler extends \GLPITestCase
               'expected_msg_pattern' => $log_prefix
                  . preg_quote('PHP User Warning (' . E_USER_WARNING . '): this is a warning', '/')
                  . $log_suffix,
-           ],
+         ],
            [
               'error_call'           => function () {
                   trigger_error('some notice', E_USER_NOTICE);
@@ -73,29 +73,34 @@ class ErrorHandler extends \GLPITestCase
               'expected_msg_pattern' => $log_prefix
                  . preg_quote('PHP User Notice (' . E_USER_NOTICE . '): some notice', '/')
                  . $log_suffix,
-           ],
-           [
-              'error_call'           => function () {
-                  trigger_error('this method is deprecated', E_USER_DEPRECATED);
-              },
-              'expected_log_level'   => LogLevel::NOTICE,
-              'expected_msg_pattern' => $log_prefix
-                 . preg_quote('PHP User deprecated function (' . E_USER_DEPRECATED . '): this method is deprecated', '/')
-                 . $log_suffix,
-           ],
+         ],
         ];
 
-        if (version_compare(PHP_VERSION, '8.0.0-dev', '>=')) {
+        if ((error_reporting() & E_USER_DEPRECATED) !== 0) {
             $data[] = [
                'error_call'           => function () {
-                   $param = new \ReflectionParameter([\Config::class, 'getTypeName'], 0);
-                   $param->isCallable();
+                   trigger_error('this method is deprecated', E_USER_DEPRECATED);
                },
                'expected_log_level'   => LogLevel::NOTICE,
                'expected_msg_pattern' => $log_prefix
-                  . preg_quote('PHP Deprecated function (' . E_DEPRECATED . '): Method ReflectionParameter::isCallable() is deprecated', '/')
+                  . preg_quote('PHP User deprecated function (' . E_USER_DEPRECATED . '): this method is deprecated', '/')
                   . $log_suffix,
             ];
+        }
+
+        if (version_compare(PHP_VERSION, '8.0.0-dev', '>=')) {
+            if ((error_reporting() & E_DEPRECATED) !== 0) {
+                $data[] = [
+                   'error_call'           => function () {
+                       $param = new \ReflectionParameter([\Config::class, 'getTypeName'], 0);
+                       $param->isCallable();
+                   },
+                   'expected_log_level'   => LogLevel::NOTICE,
+                   'expected_msg_pattern' => $log_prefix
+                      . preg_quote('PHP Deprecated function (' . E_DEPRECATED . '): Method ReflectionParameter::isCallable() is deprecated', '/')
+                      . $log_suffix,
+                ];
+            }
         } else {
             $data[] = [
                'error_call'           => function () {
@@ -176,7 +181,7 @@ class ErrorHandler extends \GLPITestCase
         $log_prefix = '/';
         $log_suffix = ' \(\d+\): .*' . preg_quote(' in ' . __FILE__ . ' at line ', '/') . '\d+' . '/';
 
-        return [
+        $data = [
            [
               'error_code'           => E_ERROR,
               'expected_log_level'   => LogLevel::CRITICAL,
@@ -243,17 +248,25 @@ class ErrorHandler extends \GLPITestCase
               'expected_msg_pattern' => $log_prefix . 'PHP Catchable Fatal Error' . $log_suffix,
               'is_fatal_error'       => true,
            ],
-           [
-              'error_code'           => E_DEPRECATED,
-              'expected_log_level'   => LogLevel::NOTICE,
-              'expected_msg_pattern' => $log_prefix . 'PHP Deprecated function' . $log_suffix,
-           ],
-           [
-              'error_code'           => E_USER_DEPRECATED,
-              'expected_log_level'   => LogLevel::NOTICE,
-              'expected_msg_pattern' => $log_prefix . 'PHP User deprecated function' . $log_suffix,
-           ],
         ];
+
+        if ((error_reporting() & E_DEPRECATED) !== 0) {
+            $data[] = [
+               'error_code'           => E_DEPRECATED,
+               'expected_log_level'   => LogLevel::NOTICE,
+               'expected_msg_pattern' => $log_prefix . 'PHP Deprecated function' . $log_suffix,
+            ];
+        }
+
+        if ((error_reporting() & E_USER_DEPRECATED) !== 0) {
+            $data[] = [
+               'error_code'           => E_USER_DEPRECATED,
+               'expected_log_level'   => LogLevel::NOTICE,
+               'expected_msg_pattern' => $log_prefix . 'PHP User deprecated function' . $log_suffix,
+            ];
+        }
+
+        return $data;
     }
 
     /**

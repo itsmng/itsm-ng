@@ -37,7 +37,7 @@
 
 namespace Glpi\Api;
 
-use GLPIUploadHandler;
+use ItsmngUploadHandler;
 use stdClass;
 use Toolbox;
 
@@ -72,7 +72,7 @@ class APIRest extends API
     {
         foreach (array_keys($_FILES) as $filename) {
             $upload_result
-               = GLPIUploadHandler::uploadFiles(['name'           => $filename,
+               = ItsmngUploadHandler::uploadFiles(['name'           => $filename,
                                                  'print_response' => false]);
             foreach ($upload_result as $uresult) {
                 $this->parameters['input']->_filename[] = $uresult[0]->name;

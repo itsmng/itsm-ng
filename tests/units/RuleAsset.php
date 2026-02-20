@@ -153,6 +153,7 @@ class RuleAsset extends DbTestCase
         //User rule should apply (extract @domain from the name) but should not
         //find any user, so users_id is set to 0
         $this->integer((int)$computer->getField('users_id'))->isEqualTo(0);
+
     }
 
     public function testTriggerUpdate()
@@ -259,4 +260,5 @@ class RuleAsset extends DbTestCase
         ]);
         $this->checkInput($ruleaction, $act_id, $act_input);
     }
+
 }

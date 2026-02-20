@@ -93,13 +93,45 @@ class GLPITestCase extends atoum
 
         $_SESSION['glpi_use_mode'] = Session::NORMAL_MODE;
         $_SESSION['glpiactive_entity'] = 0;
+        $_SESSION['glpiactiveentities'] = [0];
+        $_SESSION['glpiactiveentities_string'] = "'0'";
+        $_SESSION['glpishowallentities'] = 1;
+        $_SESSION['glpiextauth'] = 0;
 
         global $CFG_GLPI;
+        if (!isset($_SESSION['glpilanguage'])) {
+            $_SESSION['glpilanguage'] = Session::getPreferredLanguage();
+        }
         foreach ($CFG_GLPI['user_pref_field'] as $field) {
             if (!isset($_SESSION["glpi$field"]) && isset($CFG_GLPI[$field])) {
                 $_SESSION["glpi$field"] = $CFG_GLPI[$field];
             }
         }
+
+        global $DB;
+        if (
+            class_exists('SpecialStatus')
+            && isset($DB)
+            && method_exists($DB, 'tableExists')
+            && $DB->tableExists('glpi_specialstatuses')
+        ) {
+            \SpecialStatus::oldStatusOrder();
+        }
+
+        $status_defaults = [
+           'INCOMING' => 1,
+           'ASSIGNED' => 2,
+           'PLANNED'  => 3,
+           'WAITING'  => 4,
+           'SOLVED'   => 5,
+           'CLOSED'   => 6,
+        ];
+        foreach ($status_defaults as $status_key => $status_value) {
+            if (!isset($_SESSION[$status_key])) {
+                $_SESSION[$status_key] = $status_value;
+            }
+        }
+        $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
     }
 
     protected function hasSessionMessages(int $level, array $messages): void

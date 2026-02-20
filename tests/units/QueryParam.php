@@ -65,4 +65,5 @@ class QueryParam extends DbTestCase
         $qpa = new \QueryParam();
         $this->string($qpa->getValue())->isIdenticalTo('?');
     }
+
 }

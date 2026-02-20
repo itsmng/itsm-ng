@@ -32,24 +32,24 @@
  */
 
 ini_set('display_errors', 'On');
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 
 define('GLPI_ROOT', __DIR__ . '/../');
 define('GLPI_CONFIG_DIR', getenv('GLPI_CONFIG_DIR') ?: __DIR__ . '/config');
 define('GLPI_VAR_DIR', getenv('GLPI_VAR_DIR') ?: __DIR__ . '/files');
 define('GLPI_URI', getenv('GLPI_URI') ?: 'http://localhost:8088');
-define('ITSM_MIN_PHP', '8.1');
 
 define(
     'PLUGINS_DIRECTORIES',
     [
       GLPI_ROOT . '/plugins',
       GLPI_ROOT . '/tests/fixtures/plugins',
-    ]
+   ]
 );
 
 define('TU_USER', '_test_user');
 define('TU_PASS', 'PhpUnit_4');
+define('ITSM_MIN_PHP', '8.1');
 
 global $CFG_GLPI, $GLPI_CACHE;
 
@@ -61,10 +61,8 @@ if (!file_exists(GLPI_CONFIG_DIR . '/config_db.php')) {
 
 // Create subdirectories of GLPI_VAR_DIR based on defined constants
 foreach (get_defined_constants() as $constant_name => $constant_value) {
-    if (
-        preg_match('/^GLPI_[\w]+_DIR$/', $constant_name)
-        && preg_match('/^' . preg_quote(GLPI_VAR_DIR, '/') . '\//', $constant_value)
-    ) {
+    if (preg_match('/^GLPI_[\w]+_DIR$/', $constant_name)
+        && preg_match('/^' . preg_quote(GLPI_VAR_DIR, '/') . '\//', $constant_value)) {
         is_dir($constant_value) or mkdir($constant_value, 0755, true);
     }
 }
@@ -392,7 +390,7 @@ function loadDataset()
              'users_id'     => TU_USER,
              'is_default'   => '1',
              'is_dynamic'   => '0',
-             'email'        => TU_USER . '@glpi.com'
+             'email'        => TU_USER.'@glpi.com'
           ]
        ], 'KnowbaseItem' => [
           [
@@ -548,8 +546,8 @@ function loadDataset()
              'name'            => '_local_ldap',
              'host'            => 'openldap',
              'basedn'          => 'dc=glpi,dc=org',
-             'rootdn'          => 'cn=Manager,dc=glpi,dc=org',
-             'port'            => '3890',
+             'rootdn'          => 'cn=admin,dc=glpi,dc=org',
+             'port'            => '389',
              'condition'       => '(objectclass=inetOrgPerson)',
              'login_field'     => 'uid',
              'rootdn_passwd'   => 'insecure',
@@ -576,7 +574,33 @@ function loadDataset()
              'begin_date'   => '2018-12-29',
              'end_date'     => '2019-01-06'
           ]
-       ], 'Plugin' => [
+ ], 'SpecialStatus' => [
+          [
+             'name' => 'New',
+             'weight' => 1,
+             'is_active' => 1,
+          ], [
+             'name' => 'Processing (assigned)',
+             'weight' => 2,
+             'is_active' => 1,
+          ], [
+             'name' => 'Processing (planned)',
+             'weight' => 3,
+             'is_active' => 1,
+          ], [
+             'name' => 'Pending',
+             'weight' => 4,
+             'is_active' => 1,
+          ], [
+             'name' => 'Solved',
+             'weight' => 5,
+             'is_active' => 1,
+          ], [
+             'name' => 'Closed',
+             'weight' => 6,
+             'is_active' => 1,
+          ]
+ ], 'Plugin' => [
           [
              'directory'    => 'tester',
              'name'         => 'tester',
@@ -585,7 +609,6 @@ function loadDataset()
           ]
        ],
     ];
-
 
     // To bypass various right checks
     $session_bak = $_SESSION;
@@ -660,6 +683,26 @@ function loadDataset()
         echo "\nDone\n\n";
         Config::setConfigurationValues('phpunit', ['dataset' => $data['_version']]);
     }
+    if (class_exists('SpecialStatus')) {
+        $special_statuses = [
+           ['name' => 'New',                   'weight' => 1, 'is_active' => 1],
+           ['name' => 'Processing (assigned)', 'weight' => 2, 'is_active' => 1],
+           ['name' => 'Processing (planned)',  'weight' => 3, 'is_active' => 1],
+           ['name' => 'Pending',               'weight' => 4, 'is_active' => 1],
+           ['name' => 'Solved',                'weight' => 5, 'is_active' => 1],
+           ['name' => 'Closed',                'weight' => 6, 'is_active' => 1],
+        ];
+        foreach ($special_statuses as $status_input) {
+            $existing_status = getItemByTypeName('SpecialStatus', $status_input['name']);
+            if ($existing_status) {
+                $status_input['id'] = $existing_status->getID();
+                $existing_status->update($status_input);
+            } else {
+                getItemForItemtype('SpecialStatus')->add($status_input);
+            }
+        }
+    }
+
     $DB->commit();
 
     $_SESSION = $session_bak; // Unset force session variables

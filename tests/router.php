@@ -38,7 +38,7 @@ define(
     'PLUGINS_DIRECTORIES',
     [
       __DIR__ . '/fixtures/plugins',
-    ]
+   ]
 );
 
 // Avoid warnings because of missing globals
