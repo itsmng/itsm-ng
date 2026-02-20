@@ -4,16 +4,24 @@ on: [pull_request]
 
 jobs:
   tests:
-    name: Run tests
+    name: Run tests (${{ matrix.db.label }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        db:
+          - image: mariadb:latest
+            label: MariaDB
+          - image: mysql:8.4
+            label: MySQL 8.4
     env:
       DB_DATABASE: test_db
       DB_USER: test
       DB_PASSWORD: test
 
     services:
-      mariadb:
-        image: mariadb:latest
+      db:
+        image: ${{ matrix.db.image }}
         ports:
           - 3306:3306
         env:
@@ -21,6 +29,11 @@ jobs:
           MYSQL_PASSWORD: ${{env.DB_PASSWORD}}
           MYSQL_DATABASE: ${{env.DB_DATABASE}}
           MYSQL_ROOT_PASSWORD: ${{env.DB_PASSWORD}}
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=5s
+          --health-timeout=3s
+          --health-retries=20
 
     steps:
       - uses: actions/checkout@v4

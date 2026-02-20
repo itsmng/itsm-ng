@@ -4,16 +4,28 @@ on: [pull_request]
 
 jobs:
   tests:
-    name: Run functional tests
+    name: Run functional tests (${{ matrix.db.label }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        db:
+          - image: mariadb:latest
+            label: MariaDB
+            tzinfo_cmd: mariadb-tzinfo-to-sql
+            client_cmd: mariadb
+          - image: mysql:8.4
+            label: MySQL 8.4
+            tzinfo_cmd: mysql_tzinfo_to_sql
+            client_cmd: mysql
     env:
       DB_DATABASE: test_db
       DB_USER: test
       DB_PASSWORD: test
 
     services:
-      mariadb:
-        image: mariadb:latest
+      db:
+        image: ${{ matrix.db.image }}
         ports:
           - 3306:3306
         env:
@@ -21,6 +33,11 @@ jobs:
           MYSQL_PASSWORD: ${{env.DB_PASSWORD}}
           MYSQL_DATABASE: ${{env.DB_DATABASE}}
           MYSQL_ROOT_PASSWORD: ${{env.DB_PASSWORD}}
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=5s
+          --health-timeout=3s
+          --health-retries=20
 
     steps:
       - uses: actions/checkout@v4
@@ -42,9 +59,9 @@ jobs:
 
       - name: Load timezone data
         run: |
-          MARIADB_CONTAINER=$(docker ps -q --filter "publish=3306")
-          docker exec "$MARIADB_CONTAINER" \
-            bash -c "mariadb-tzinfo-to-sql /usr/share/zoneinfo | mariadb -uroot -p${DB_PASSWORD} mysql"
+          DB_CONTAINER=$(docker ps -q --filter "publish=3306")
+          docker exec "$DB_CONTAINER" \
+            bash -c "${{ matrix.db.tzinfo_cmd }} /usr/share/zoneinfo | ${{ matrix.db.client_cmd }} -uroot -p${DB_PASSWORD} mysql"
           mysql -h 127.0.0.1 -u root -p$DB_PASSWORD \
             -e "GRANT SELECT ON mysql.time_zone_name TO '$DB_USER'@'%'; FLUSH PRIVILEGES;"
 
