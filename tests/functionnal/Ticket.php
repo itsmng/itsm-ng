@@ -3468,17 +3468,8 @@ class Ticket extends DbTestCase
          ])
         )->isGreaterThan(0);
 
-        // Drop all followup rights
-        $DB->update(
-            'glpi_profilerights',
-            [
-              'rights' => 0
-         ],
-            [
-              'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
-              'name'        => \ITILFollowup::$rightname,
-         ]
-        );
+        // Drop all followup rights.
+        $this->setSelfServiceFollowupRight(0);
 
         // Cannot add followup as user do not have ADDMYTICKET right
         $this->login();
@@ -3521,17 +3512,8 @@ class Ticket extends DbTestCase
          ])
         )->isGreaterThan(0);
 
-        // Drop all followup rights
-        $DB->update(
-            'glpi_profilerights',
-            [
-              'rights' => 0
-         ],
-            [
-              'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
-              'name'        => \ITILFollowup::$rightname,
-         ]
-        );
+        // Drop all followup rights.
+        $this->setSelfServiceFollowupRight(0);
 
         // Cannot add followups by default
         $this->login();
@@ -3591,17 +3573,8 @@ class Ticket extends DbTestCase
          ])
         )->isGreaterThan(0);
 
-        // Drop all followup rights
-        $DB->update(
-            'glpi_profilerights',
-            [
-              'rights' => 0
-         ],
-            [
-              'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
-              'name'        => \ITILFollowup::$rightname,
-         ]
-        );
+        // Drop all followup rights.
+        $this->setSelfServiceFollowupRight(0);
 
         // Cannot add followups by default
         $this->login();
@@ -3656,10 +3629,24 @@ class Ticket extends DbTestCase
         $this->boolean((bool)$ticket->canAddFollowups())->isTrue();
     }
 
-    public function testCanAddFollowupsAsAssigned()
+    protected function setSelfServiceFollowupRight(int $right): void
     {
         global $DB;
 
+        $DB->update(
+            'glpi_profilerights',
+            [
+              'rights' => $right
+         ],
+            [
+              'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
+              'name'        => \ITILFollowup::$rightname,
+         ]
+        );
+    }
+
+    public function testCanAddFollowupsAsAssigned()
+    {
         $post_only_id = getItemByTypeName('User', 'post-only', true);
 
         $this->login();
@@ -3672,17 +3659,8 @@ class Ticket extends DbTestCase
          ])
         )->isGreaterThan(0);
 
-        // Drop all followup rights
-        $DB->update(
-            'glpi_profilerights',
-            [
-              'rights' => 0
-         ],
-            [
-              'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
-              'name'        => \ITILFollowup::$rightname,
-         ]
-        );
+        // Drop all followup rights.
+        $this->setSelfServiceFollowupRight(0);
 
         // Cannot add followups by default
         $this->login();
@@ -3701,7 +3679,16 @@ class Ticket extends DbTestCase
         $this->integer((int) $ticket_user->add($input_ticket_user))->isGreaterThan(0);
         $this->boolean($ticket->getFromDB($ticket->getID()))->isTrue(); // Reload ticket actors
 
-        // Can add followup as user is assigned
+        // Stricter behavior: assignment alone is not enough.
+        $this->login();
+        $this->boolean((bool)$ticket->canUserAddFollowups($post_only_id))->isFalse();
+        $this->login('post-only', 'postonly');
+        $this->boolean((bool)$ticket->canAddFollowups())->isFalse();
+
+        // Grant assigned-only followup right.
+        $this->setSelfServiceFollowupRight(\ITILFollowup::ADDASSIGNEDTICKET);
+
+        // Can add followup as user is assigned and has dedicated right.
         $this->login();
         $this->boolean((bool)$ticket->canUserAddFollowups($post_only_id))->isTrue();
         $this->login('post-only', 'postonly');
@@ -3710,8 +3697,6 @@ class Ticket extends DbTestCase
 
     public function testCanAddFollowupsAsAssignedGroup()
     {
-        global $DB;
-
         $post_only_id = getItemByTypeName('User', 'post-only', true);
 
         $this->login();
@@ -3724,17 +3709,8 @@ class Ticket extends DbTestCase
          ])
         )->isGreaterThan(0);
 
-        // Drop all followup rights
-        $DB->update(
-            'glpi_profilerights',
-            [
-              'rights' => 0
-         ],
-            [
-              'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
-              'name'        => \ITILFollowup::$rightname,
-         ]
-        );
+        // Drop all followup rights.
+        $this->setSelfServiceFollowupRight(0);
 
         // Cannot add followups by default
         $this->login();
@@ -3765,11 +3741,111 @@ class Ticket extends DbTestCase
         $this->integer((int) $group_ticket->add($input_group_ticket))->isGreaterThan(0);
         $this->boolean($ticket->getFromDB($ticket->getID()))->isTrue(); // Reload ticket actors
 
-        // Can add followup as user is assigned
+        // Stricter behavior: assignment alone is not enough.
+        $this->login();
+        $this->boolean((bool)$ticket->canUserAddFollowups($post_only_id))->isFalse();
+        $this->login('post-only', 'postonly');
+        $this->boolean((bool)$ticket->canAddFollowups())->isFalse();
+
+        // Grant assigned-only followup right.
+        $this->setSelfServiceFollowupRight(\ITILFollowup::ADDASSIGNEDTICKET);
+
+        // Can add followup as user is assigned and has dedicated right.
         $this->login();
         $this->boolean((bool)$ticket->canUserAddFollowups($post_only_id))->isTrue();
         $this->login('post-only', 'postonly');
         $this->boolean((bool)$ticket->canAddFollowups())->isTrue();
+    }
+
+    public function testCanAddFollowupsWithClassicRightOnAssignedAndUnassigned()
+    {
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+
+        $this->login();
+
+        $ticket_unassigned = new \Ticket();
+        $this->integer(
+            (int)$ticket_unassigned->add([
+              'name'    => '',
+              'content' => 'A ticket not assigned to post-only',
+         ])
+        )->isGreaterThan(0);
+
+        $ticket_assigned = new \Ticket();
+        $this->integer(
+            (int)$ticket_assigned->add([
+              'name'    => '',
+              'content' => 'A ticket assigned to post-only',
+         ])
+        )->isGreaterThan(0);
+
+        $ticket_user = new \Ticket_User();
+        $this->integer(
+            (int)$ticket_user->add([
+              'tickets_id' => $ticket_assigned->getID(),
+              'users_id'   => $post_only_id,
+              'type'       => \CommonITILActor::ASSIGN
+         ])
+        )->isGreaterThan(0);
+        $this->boolean($ticket_assigned->getFromDB($ticket_assigned->getID()))->isTrue();
+
+        // Without followup rights, unassigned ticket is denied.
+        $this->setSelfServiceFollowupRight(0);
+        $this->login();
+        $this->boolean((bool)$ticket_unassigned->canUserAddFollowups($post_only_id))->isFalse();
+
+        // Classic followup right allows both assigned and unassigned tickets.
+        $this->setSelfServiceFollowupRight(\ITILFollowup::ADDALLTICKET);
+        $this->login();
+        $this->boolean((bool)$ticket_unassigned->canUserAddFollowups($post_only_id))->isTrue();
+        $this->boolean((bool)$ticket_assigned->canUserAddFollowups($post_only_id))->isTrue();
+
+        $this->login('post-only', 'postonly');
+        $this->boolean((bool)$ticket_unassigned->canAddFollowups())->isTrue();
+        $this->boolean((bool)$ticket_assigned->canAddFollowups())->isTrue();
+    }
+
+    public function testCanAddFollowupsWithAssignedOnlyRightOnAssignedAndUnassigned()
+    {
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+
+        $this->login();
+
+        $ticket_unassigned = new \Ticket();
+        $this->integer(
+            (int)$ticket_unassigned->add([
+              'name'    => '',
+              'content' => 'A ticket not assigned to post-only',
+         ])
+        )->isGreaterThan(0);
+
+        $ticket_assigned = new \Ticket();
+        $this->integer(
+            (int)$ticket_assigned->add([
+              'name'    => '',
+              'content' => 'A ticket assigned to post-only',
+         ])
+        )->isGreaterThan(0);
+
+        $ticket_user = new \Ticket_User();
+        $this->integer(
+            (int)$ticket_user->add([
+              'tickets_id' => $ticket_assigned->getID(),
+              'users_id'   => $post_only_id,
+              'type'       => \CommonITILActor::ASSIGN
+         ])
+        )->isGreaterThan(0);
+        $this->boolean($ticket_assigned->getFromDB($ticket_assigned->getID()))->isTrue();
+
+        // Assigned-only right allows only assigned tickets.
+        $this->setSelfServiceFollowupRight(\ITILFollowup::ADDASSIGNEDTICKET);
+        $this->login();
+        $this->boolean((bool)$ticket_unassigned->canUserAddFollowups($post_only_id))->isFalse();
+        $this->boolean((bool)$ticket_assigned->canUserAddFollowups($post_only_id))->isTrue();
+
+        $this->login('post-only', 'postonly');
+        $this->boolean((bool)$ticket_unassigned->canAddFollowups())->isFalse();
+        $this->boolean((bool)$ticket_assigned->canAddFollowups())->isTrue();
     }
 
     protected function convertContentForTicketProvider(): iterable
