@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,24 +37,25 @@ use DbTestCase;
 
 /* Test for inc/change.class.php */
 
-class Change extends DbTestCase {
+class Change extends DbTestCase
+{
+    public function testAddFromItem()
+    {
+        // add change from a computer
+        $computer   = getItemByTypeName('Computer', '_test_pc01');
+        $change     = new \Change();
+        $changes_id = $change->add([
+           'name'           => "test add from computer \'_test_pc01\'",
+           'content'        => "test add from computer \'_test_pc01\'",
+           '_add_from_item' => true,
+           '_from_itemtype' => 'Computer',
+           '_from_items_id' => $computer->getID(),
+        ]);
+        $this->integer($changes_id)->isGreaterThan(0);
+        $this->boolean($change->getFromDB($changes_id))->isTrue();
 
-   public function testAddFromItem() {
-      // add change from a computer
-      $computer   = getItemByTypeName('Computer', '_test_pc01');
-      $change     = new \Change;
-      $changes_id = $change->add([
-         'name'           => "test add from computer \'_test_pc01\'",
-         'content'        => "test add from computer \'_test_pc01\'",
-         '_add_from_item' => true,
-         '_from_itemtype' => 'Computer',
-         '_from_items_id' => $computer->getID(),
-      ]);
-      $this->integer($changes_id)->isGreaterThan(0);
-      $this->boolean($change->getFromDB($changes_id))->isTrue();
-
-      // check relation
-      $change_item = new \Change_Item;
-      $this->boolean($change_item->getFromDBForItems($change, $computer))->isTrue();
-   }
+        // check relation
+        $change_item = new \Change_Item();
+        $this->boolean($change_item->getFromDBForItems($change, $computer))->isTrue();
+    }
 }

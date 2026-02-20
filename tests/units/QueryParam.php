@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,34 +33,37 @@
 
 namespace tests\units;
 
-use \DbTestCase;
+use DbTestCase;
 
 /* Test for inc/dbutils.class.php */
 
-class QueryParam extends DbTestCase {
+class QueryParam extends DbTestCase
+{
+    protected function dataParams()
+    {
 
-   protected function dataParams() {
+        return [
+           [null, '?'],
+           ['', '?'],
+           ['?', '?'],
+           ['myparam', ':myparam'],
+           [':myparam', ':myparam']
+        ];
+    }
 
-      return [
-         [null, '?'],
-         ['', '?'],
-         ['?', '?'],
-         ['myparam', ':myparam'],
-         [':myparam', ':myparam']
-      ];
-   }
+    /**
+     * @dataProvider dataParams
+     */
+    public function testQueryParam($value, $expected)
+    {
+        $qpa = new \QueryParam($value);
+        $this->string($qpa->getValue())->isIdenticalTo($expected);
+    }
 
-   /**
-    * @dataProvider dataParams
-    */
-   public function testQueryParam($value, $expected) {
-      $qpa = new \QueryParam($value);
-      $this->string($qpa->getValue())->isIdenticalTo($expected);
-   }
-
-   public function testEmptyQueryParam() {
-      $qpa = new \QueryParam();
-      $this->string($qpa->getValue())->isIdenticalTo('?');
-   }
+    public function testEmptyQueryParam()
+    {
+        $qpa = new \QueryParam();
+        $this->string($qpa->getValue())->isIdenticalTo('?');
+    }
 
 }

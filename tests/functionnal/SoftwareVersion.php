@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -37,13 +38,14 @@ use SoftwareVersion as CoreSoftwareVersion;
 
 /* Test for inc/softwareversion.class.php */
 
-class SoftwareVersion extends DbTestCase {
-
-   public function testDropdownForOneSoftware() {
-      $this
-         ->string(CoreSoftwareVersion::dropdownForOneSoftware([
-            "display" => false
-         ]))
-         ->isNotEmpty();
-   }
+class SoftwareVersion extends DbTestCase
+{
+    public function testDropdownForOneSoftware()
+    {
+        $this
+           ->string(CoreSoftwareVersion::dropdownForOneSoftware([
+              "display" => false
+           ]))
+           ->isNotEmpty();
+    }
 }

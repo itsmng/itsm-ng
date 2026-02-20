@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,91 +33,96 @@
 
 namespace tests\units;
 
-use \DbTestCase;
+use DbTestCase;
 
 /* Test for inc/notificationtargetuser.class.php */
 
-class NotificationTargetUser extends DbTestCase {
+class NotificationTargetUser extends DbTestCase
+{
+    protected function addDataForPasswordExpiresTemplateProvider()
+    {
+        global $CFG_GLPI;
 
+        $time_in_past   = strtotime('-10 days');
+        $time_in_future = strtotime('+10 days');
+        $update_url     = $CFG_GLPI['url_base'] . '/front/updatepassword.php';
 
-   protected function addDataForPasswordExpiresTemplateProvider() {
-      global $CFG_GLPI;
+        return [
+           // case 1: password already expired but account will not be locked
+           [
+              'expiration_time' => $time_in_past,
+              'lock_delay'      => -1,
+              'expected'        => [
+                 '##user.password.expiration.date##' => date('Y-m-d H:i', $time_in_past),
+                 '##user.account.lock.date##'        => null,
+                 '##user.password.has_expired##'     => '1',
+                 '##user.password.update.url##'      => $update_url,
+              ],
+           ],
+           // case 2: password already expired and account will be locked
+           [
+              'expiration_time' => $time_in_past,
+              'lock_delay'      => 15,
+              'expected'        => [
+                 '##user.password.expiration.date##' => date('Y-m-d H:i', $time_in_past),
+                 '##user.account.lock.date##'        => date('Y-m-d H:i', strtotime('+15 days', $time_in_past)),
+                 '##user.password.has_expired##'     => '1',
+                 '##user.password.update.url##'      => $update_url,
+              ],
+           ],
+           // case 3: password not yet expired but account will not be locked
+           [
+              'expiration_time' => $time_in_future,
+              'lock_delay'      => -1,
+              'expected'        => [
+                 '##user.password.expiration.date##' => date('Y-m-d H:i', $time_in_future),
+                 '##user.account.lock.date##'        => null,
+                 '##user.password.has_expired##'     => '0',
+                 '##user.password.update.url##'      => $update_url,
+              ],
+           ],
+           // case 2: password not yet expired and account will be locked
+           [
+              'expiration_time' => $time_in_future,
+              'lock_delay'      => 15,
+              'expected'        => [
+                 '##user.password.expiration.date##' => date('Y-m-d H:i', $time_in_future),
+                 '##user.account.lock.date##'        => date('Y-m-d H:i', strtotime('+15 days', $time_in_future)),
+                 '##user.password.has_expired##'     => '0',
+                 '##user.password.update.url##'      => $update_url,
+              ],
+           ],
+        ];
+    }
 
-      $time_in_past   = strtotime('-10 days');
-      $time_in_future = strtotime('+10 days');
-      $update_url     = $CFG_GLPI['url_base'] . '/front/updatepassword.php';
+    /**
+     * @dataProvider addDataForPasswordExpiresTemplateProvider
+     */
+    public function testAddDataForPasswordExpiresTemplate(int $expiration_time, int $lock_delay, array $expected)
+    {
+        global $CFG_GLPI;
 
-      return [
-         // case 1: password already expired but account will not be locked
-         [
-            'expiration_time' => $time_in_past,
-            'lock_delay'      => -1,
-            'expected'        => [
-               '##user.password.expiration.date##' => date('Y-m-d H:i', $time_in_past),
-               '##user.account.lock.date##'        => null,
-               '##user.password.has_expired##'     => '1',
-               '##user.password.update.url##'      => $update_url,
-            ],
-         ],
-         // case 2: password already expired and account will be locked
-         [
-            'expiration_time' => $time_in_past,
-            'lock_delay'      => 15,
-            'expected'        => [
-               '##user.password.expiration.date##' => date('Y-m-d H:i', $time_in_past),
-               '##user.account.lock.date##'        => date('Y-m-d H:i', strtotime('+15 days', $time_in_past)),
-               '##user.password.has_expired##'     => '1',
-               '##user.password.update.url##'      => $update_url,
-            ],
-         ],
-         // case 3: password not yet expired but account will not be locked
-         [
-            'expiration_time' => $time_in_future,
-            'lock_delay'      => -1,
-            'expected'        => [
-               '##user.password.expiration.date##' => date('Y-m-d H:i', $time_in_future),
-               '##user.account.lock.date##'        => null,
-               '##user.password.has_expired##'     => '0',
-               '##user.password.update.url##'      => $update_url,
-            ],
-         ],
-         // case 2: password not yet expired and account will be locked
-         [
-            'expiration_time' => $time_in_future,
-            'lock_delay'      => 15,
-            'expected'        => [
-               '##user.password.expiration.date##' => date('Y-m-d H:i', $time_in_future),
-               '##user.account.lock.date##'        => date('Y-m-d H:i', strtotime('+15 days', $time_in_future)),
-               '##user.password.has_expired##'     => '0',
-               '##user.password.update.url##'      => $update_url,
-            ],
-         ],
-      ];
-   }
+        $user = new \mock\User();
+        $this->calling($user)->getPasswordExpirationTime = $expiration_time;
 
-   /**
-    * @dataProvider addDataForPasswordExpiresTemplateProvider
-    */
-   public function testAddDataForPasswordExpiresTemplate(int $expiration_time, int $lock_delay, array $expected) {
-      global $CFG_GLPI;
+        $cfg_backup = $CFG_GLPI;
+        $CFG_GLPI['password_expiration_lock_delay'] = $lock_delay;
+        $target = new \NotificationTargetUser(
+            getItemByTypeName('Entity', '_test_root_entity', true),
+            'passwordexpires',
+            $user
+        );
+        $target->addDataForTemplate('passwordexpires');
+        $CFG_GLPI = $cfg_backup;
 
-      $user = new \mock\User();
-      $this->calling($user)->getPasswordExpirationTime = $expiration_time;
+        $this->checkTemplateData($target->data, $expected);
+    }
 
-      $cfg_backup = $CFG_GLPI;
-      $CFG_GLPI['password_expiration_lock_delay'] = $lock_delay;$target = new \NotificationTargetUser(
-         getItemByTypeName('Entity', '_test_root_entity', true), 'passwordexpires', $user
-      );
-      $target->addDataForTemplate('passwordexpires');
-      $CFG_GLPI = $cfg_backup;
-
-      $this->checkTemplateData($target->data, $expected);
-   }
-
-   private function checkTemplateData(array $data, array $expected) {
-      $this->array($data)->hasKeys(array_keys($expected));
-      foreach ($expected as $key => $value) {
-         $this->variable($data[$key])->isIdenticalTo($value);
-      }
-   }
+    private function checkTemplateData(array $data, array $expected)
+    {
+        $this->array($data)->hasKeys(array_keys($expected));
+        foreach ($expected as $key => $value) {
+            $this->variable($data[$key])->isIdenticalTo($value);
+        }
+    }
 }

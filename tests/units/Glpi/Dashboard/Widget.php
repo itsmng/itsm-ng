@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,71 +37,73 @@ use DbTestCase;
 
 /* Test for inc/dashboard/widget.class.php */
 
-class Widget extends DbTestCase {
+class Widget extends DbTestCase
+{
+    public function testGetAllTypes()
+    {
+        $types = \Glpi\Dashboard\Widget::getAllTypes();
 
-   public function testGetAllTypes() {
-      $types = \Glpi\Dashboard\Widget::getAllTypes();
-
-      $this->array($types)->isNotEmpty();
-      foreach ($types as $specs) {
-         $this->array($specs)
-            ->hasKeys(['label', 'function', 'image']);
-      }
-   }
+        $this->array($types)->isNotEmpty();
+        foreach ($types as $specs) {
+            $this->array($specs)
+               ->hasKeys(['label', 'function', 'image']);
+        }
+    }
 
 
-   protected function palettes() {
-      return [
-         [
-            'bg_color'  => "#FFFFFF",
-            'nb_series' => 4,
-            'revert'    => true,
-            'expected'  => [
-               'names'  => ['a', 'b', 'c', 'd'],
-               'colors' => [
-                  '#a6a6a6',
-                  '#808080',
-                  '#595959',
-                  '#333333',
-               ],
-            ]
-         ], [
-            'bg_color'  => "#FFFFFF",
-            'nb_series' => 4,
-            'revert'    => false,
-            'expected'  => [
-               'names'  => ['a', 'b', 'c', 'd'],
-               'colors' => [
-                  '#595959',
-                  '#808080',
-                  '#a6a6a6',
-                  '#cccccc',
-               ],
-            ]
-         ], [
-            'bg_color'  => "#FFFFFF",
-            'nb_series' => 1,
-            'revert'    => true,
-            'expected'  => [
-               'names'  => ['a'],
-               'colors' => [
-                  '#999999',
-               ],
-            ]
-         ],
-      ];
-   }
+    protected function palettes()
+    {
+        return [
+           [
+              'bg_color'  => "#FFFFFF",
+              'nb_series' => 4,
+              'revert'    => true,
+              'expected'  => [
+                 'names'  => ['a', 'b', 'c', 'd'],
+                 'colors' => [
+                    '#a6a6a6',
+                    '#808080',
+                    '#595959',
+                    '#333333',
+                 ],
+              ]
+           ], [
+              'bg_color'  => "#FFFFFF",
+              'nb_series' => 4,
+              'revert'    => false,
+              'expected'  => [
+                 'names'  => ['a', 'b', 'c', 'd'],
+                 'colors' => [
+                    '#595959',
+                    '#808080',
+                    '#a6a6a6',
+                    '#cccccc',
+                 ],
+              ]
+           ], [
+              'bg_color'  => "#FFFFFF",
+              'nb_series' => 1,
+              'revert'    => true,
+              'expected'  => [
+                 'names'  => ['a'],
+                 'colors' => [
+                    '#999999',
+                 ],
+              ]
+           ],
+        ];
+    }
 
-   /**
-    * @dataProvider palettes
-    */
-   public function testGetGradientPalette(
-      string $bg_color,
-      int $nb_series,
-      bool $revert,
-      array $expected
-   ) {
-      $this->array(\Glpi\Dashboard\Widget::getGradientPalette($bg_color, $nb_series, $revert))
-           ->isEqualTo($expected);
-   }
+    /**
+     * @dataProvider palettes
+     */
+    public function testGetGradientPalette(
+        string $bg_color,
+        int $nb_series,
+        bool $revert,
+        array $expected
+    ) {
+        $this->array(\Glpi\Dashboard\Widget::getGradientPalette($bg_color, $nb_series, $revert))
+             ->isEqualTo($expected);
+    }
 }

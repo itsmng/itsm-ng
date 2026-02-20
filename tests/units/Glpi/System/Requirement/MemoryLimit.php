@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,27 +33,29 @@
 
 namespace tests\units\Glpi\System\Requirement;
 
-class MemoryLimit extends \GLPITestCase {
+class MemoryLimit extends \GLPITestCase
+{
+    public function testCheckWithEnoughMemory()
+    {
 
-   public function testCheckWithEnoughMemory() {
+        $this->newTestedInstance(32 * 1024 * 1024);
+        $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
+        $this->array($this->testedInstance->getValidationMessages())
+           ->isEqualTo(['Allocated memory > 32 Mio - Perfect!']);
+    }
 
-      $this->newTestedInstance(32 * 1024 * 1024);
-      $this->boolean($this->testedInstance->isValidated())->isEqualTo(true);
-      $this->array($this->testedInstance->getValidationMessages())
-         ->isEqualTo(['Allocated memory > 32 Mio - Perfect!']);
-   }
+    public function testCheckWithNotEnoughMemory()
+    {
 
-   public function testCheckWithNotEnoughMemory() {
-
-      $this->newTestedInstance(16 * 1024 * 1024 * 1024);
-      $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
-      $this->array($this->testedInstance->getValidationMessages())
-         ->isEqualTo(
-            [
-               'Allocated memory: ' . \Toolbox::getSize(\Toolbox::getMemoryLimit()),
-               'A minimum of 16 Gio is commonly required for ITSM-NG.',
-               'Try increasing the memory_limit parameter in the php.ini file.'
+        $this->newTestedInstance(16 * 1024 * 1024 * 1024);
+        $this->boolean($this->testedInstance->isValidated())->isEqualTo(false);
+        $this->array($this->testedInstance->getValidationMessages())
+           ->isEqualTo(
+               [
+                 'Allocated memory: ' . \Toolbox::getSize(\Toolbox::getMemoryLimit()),
+                 'A minimum of 16 Gio is commonly required for ITSM-NG.',
+                 'Try increasing the memory_limit parameter in the php.ini file.'
             ]
-         );
-   }
+           );
+    }
 }

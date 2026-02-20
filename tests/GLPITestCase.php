@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -34,147 +35,156 @@ use atoum\atoum;
 
 // Main GLPI test case. All tests should extends this class.
 
-class GLPITestCase extends atoum {
-   private $int;
-   private $str;
-   protected $cached_methods = [];
-   protected $has_failed = false;
+class GLPITestCase extends atoum
+{
+    private $int;
+    private $str;
+    protected $cached_methods = [];
+    protected $has_failed = false;
 
-   public function beforeTestMethod($method) {
-      // By default, no session, not connected
-      $this->resetSession();
+    public function beforeTestMethod($method)
+    {
+        // By default, no session, not connected
+        $this->resetSession();
 
-      if (in_array($method, $this->cached_methods)) {
-         //run with cache
-         define('CACHED_TESTS', true);
-      }
-   }
+        if (in_array($method, $this->cached_methods)) {
+            //run with cache
+            define('CACHED_TESTS', true);
+        }
+    }
 
-   public function afterTestMethod($method) {
-      global $GLPI_CACHE;
-      $GLPI_CACHE->clear();
+    public function afterTestMethod($method)
+    {
+        global $GLPI_CACHE;
+        $GLPI_CACHE->clear();
 
-      global $PHP_LOG_HANDLER;
-      $records  = $PHP_LOG_HANDLER->getRecords();
-      $messages = array_column($records, 'message');
-      $this->integer(count($records))
-         ->isEqualTo(
-            0,
+        global $PHP_LOG_HANDLER;
+        $records  = $PHP_LOG_HANDLER->getRecords();
+        $messages = array_column($records, 'message');
+        $this->integer(count($records))
+           ->isEqualTo(
+               0,
+               sprintf(
+                   'Unexpected logs records found in %s::%s() test: %s',
+                   static::class,
+                   $method,
+                   "\n" . implode("\n", $messages)
+               )
+           );
+
+        if (isset($_SESSION['MESSAGE_AFTER_REDIRECT']) && !$this->has_failed) {
+            unset($_SESSION['MESSAGE_AFTER_REDIRECT'][INFO]);
+            $this->array($_SESSION['MESSAGE_AFTER_REDIRECT'])->isIdenticalTo(
+                [],
+                sprintf(
+                    "Some messages has not been handled in %s::%s:\n%s",
+                    static::class,
+                    $method,
+                    print_r($_SESSION['MESSAGE_AFTER_REDIRECT'], true)
+                )
+            );
+        }
+    }
+
+    protected function resetSession()
+    {
+        Session::destroy();
+        Session::start();
+
+        $_SESSION['glpi_use_mode'] = Session::NORMAL_MODE;
+        $_SESSION['glpiactive_entity'] = 0;
+        $_SESSION['glpiactiveentities'] = [0];
+        $_SESSION['glpiactiveentities_string'] = "'0'";
+        $_SESSION['glpishowallentities'] = 1;
+        $_SESSION['glpiextauth'] = 0;
+
+        global $CFG_GLPI;
+        if (!isset($_SESSION['glpilanguage'])) {
+            $_SESSION['glpilanguage'] = Session::getPreferredLanguage();
+        }
+        foreach ($CFG_GLPI['user_pref_field'] as $field) {
+            if (!isset($_SESSION["glpi$field"]) && isset($CFG_GLPI[$field])) {
+                $_SESSION["glpi$field"] = $CFG_GLPI[$field];
+            }
+        }
+
+        global $DB;
+        if (
+            class_exists('SpecialStatus')
+            && isset($DB)
+            && method_exists($DB, 'tableExists')
+            && $DB->tableExists('glpi_specialstatuses')
+        ) {
+            \SpecialStatus::oldStatusOrder();
+        }
+
+        $status_defaults = [
+           'INCOMING' => 1,
+           'ASSIGNED' => 2,
+           'PLANNED'  => 3,
+           'WAITING'  => 4,
+           'SOLVED'   => 5,
+           'CLOSED'   => 6,
+        ];
+        foreach ($status_defaults as $status_key => $status_value) {
+            if (!isset($_SESSION[$status_key])) {
+                $_SESSION[$status_key] = $status_value;
+            }
+        }
+        $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+    }
+
+    protected function hasSessionMessages(int $level, array $messages): void
+    {
+        $this->has_failed = true;
+        $this->boolean(isset($_SESSION['MESSAGE_AFTER_REDIRECT'][$level]))->isTrue('No messages for selected level!');
+        $this->array($_SESSION['MESSAGE_AFTER_REDIRECT'][$level])->isIdenticalTo(
+            $messages,
+            'Expecting ' . print_r($messages, true) . 'got: ' . print_r($_SESSION['MESSAGE_AFTER_REDIRECT'][$level], true)
+        );
+        unset($_SESSION['MESSAGE_AFTER_REDIRECT'][$level]); //reset
+        $this->has_failed = false;
+    }
+
+    protected function hasNoSessionMessages(array $levels)
+    {
+        foreach ($levels as $level) {
+            $this->hasNoSessionMessage($level);
+        }
+    }
+
+    protected function hasNoSessionMessage(int $level)
+    {
+        $this->has_failed = true;
+        $this->boolean(isset($_SESSION['MESSAGE_AFTER_REDIRECT'][$level]))->isFalse(
             sprintf(
-               'Unexpected logs records found in %s::%s() test: %s',
-               static::class,
-               $method,
-               "\n" . implode("\n", $messages)
+                'Messages for level %s are present in session: %s',
+                $level,
+                print_r($_SESSION['MESSAGE_AFTER_REDIRECT'][$level] ?? [], true)
             )
-         );
+        );
+        $this->has_failed = false;
+    }
 
-      if (isset($_SESSION['MESSAGE_AFTER_REDIRECT']) && !$this->has_failed) {
-         unset($_SESSION['MESSAGE_AFTER_REDIRECT'][INFO]);
-         $this->array($_SESSION['MESSAGE_AFTER_REDIRECT'])->isIdenticalTo(
-            [],
-            sprintf(
-               "Some messages has not been handled in %s::%s:\n%s",
-               static::class,
-               $method,
-               print_r($_SESSION['MESSAGE_AFTER_REDIRECT'], true)
-            )
-         );
-      }
-   }
+    /**
+     * Get a unique random string
+     */
+    protected function getUniqueString()
+    {
+        if (is_null($this->str)) {
+            return $this->str = uniqid('str');
+        }
+        return $this->str .= 'x';
+    }
 
-   protected function resetSession() {
-      Session::destroy();
-      Session::start();
-
-      $_SESSION['glpi_use_mode'] = Session::NORMAL_MODE;
-      $_SESSION['glpiactive_entity'] = 0;
-      $_SESSION['glpiactiveentities'] = [0];
-      $_SESSION['glpiactiveentities_string'] = "'0'";
-      $_SESSION['glpishowallentities'] = 1;
-      $_SESSION['glpiextauth'] = 0;
-
-      global $CFG_GLPI;
-      if (!isset($_SESSION['glpilanguage'])) {
-         $_SESSION['glpilanguage'] = Session::getPreferredLanguage();
-      }
-      foreach ($CFG_GLPI['user_pref_field'] as $field) {
-         if (!isset($_SESSION["glpi$field"]) && isset($CFG_GLPI[$field])) {
-            $_SESSION["glpi$field"] = $CFG_GLPI[$field];
-         }
-      }
-
-      global $DB;
-      if (
-         class_exists('SpecialStatus')
-         && isset($DB)
-         && method_exists($DB, 'tableExists')
-         && $DB->tableExists('glpi_specialstatuses')
-      ) {
-         \SpecialStatus::oldStatusOrder();
-      }
-
-      $status_defaults = [
-         'INCOMING' => 1,
-         'ASSIGNED' => 2,
-         'PLANNED'  => 3,
-         'WAITING'  => 4,
-         'SOLVED'   => 5,
-         'CLOSED'   => 6,
-      ];
-      foreach ($status_defaults as $status_key => $status_value) {
-         if (!isset($_SESSION[$status_key])) {
-            $_SESSION[$status_key] = $status_value;
-         }
-      }
-      $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
-   }
-
-   protected function hasSessionMessages(int $level, array $messages): void {
-      $this->has_failed = true;
-      $this->boolean(isset($_SESSION['MESSAGE_AFTER_REDIRECT'][$level]))->isTrue('No messages for selected level!');
-      $this->array($_SESSION['MESSAGE_AFTER_REDIRECT'][$level])->isIdenticalTo(
-         $messages,
-         'Expecting ' . print_r($messages, true) . 'got: ' . print_r($_SESSION['MESSAGE_AFTER_REDIRECT'][$level], true)
-      );
-      unset($_SESSION['MESSAGE_AFTER_REDIRECT'][$level]); //reset
-      $this->has_failed = false;
-   }
-
-   protected function hasNoSessionMessages(array $levels) {
-      foreach ($levels as $level) {
-         $this->hasNoSessionMessage($level);
-      }
-   }
-
-   protected function hasNoSessionMessage(int $level) {
-      $this->has_failed = true;
-      $this->boolean(isset($_SESSION['MESSAGE_AFTER_REDIRECT'][$level]))->isFalse(
-         sprintf(
-            'Messages for level %s are present in session: %s',
-            $level,
-            print_r($_SESSION['MESSAGE_AFTER_REDIRECT'][$level] ?? [], true)
-         )
-      );
-      $this->has_failed = false;
-   }
-
-   /**
-    * Get a unique random string
-    */
-   protected function getUniqueString() {
-      if (is_null($this->str)) {
-         return $this->str = uniqid('str');
-      }
-      return $this->str .= 'x';
-   }
-
-   /**
-    * Get a unique random integer
-    */
-   protected function getUniqueInteger() {
-      if (is_null($this->int)) {
-         return $this->int = mt_rand(1000, 10000);
-      }
-      return $this->int++;
-   }
+    /**
+     * Get a unique random integer
+     */
+    protected function getUniqueInteger()
+    {
+        if (is_null($this->int)) {
+            return $this->int = mt_rand(1000, 10000);
+        }
+        return $this->int++;
+    }
 }

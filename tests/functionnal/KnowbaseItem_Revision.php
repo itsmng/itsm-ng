@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,174 +33,180 @@
 
 namespace tests\units;
 
-use \DbTestCase;
+use DbTestCase;
 
 /* Test for inc/knowbaseitem_revision.class.php */
 
-class KnowbaseItem_Revision extends DbTestCase {
+class KnowbaseItem_Revision extends DbTestCase
+{
+    public function afterTestMethod($method)
+    {
+        global $DB;
+        $DB->delete('glpi_knowbaseitems_revisions', [true]);
+        parent::afterTestMethod($method);
+    }
 
-   public function afterTestMethod($method) {
-      global $DB;
-      $DB->delete('glpi_knowbaseitems_revisions', [true]);
-      parent::afterTestMethod($method);
-   }
+    public function testGetTypeName()
+    {
+        $expected = 'Revision';
+        $this->string(\KnowbaseItem_Revision::getTypeName(1))->isIdenticalTo($expected);
 
-   public function testGetTypeName() {
-      $expected = 'Revision';
-      $this->string(\KnowbaseItem_Revision::getTypeName(1))->isIdenticalTo($expected);
+        $expected = 'Revisions';
+        $this->string(\KnowbaseItem_Revision::getTypeName(0))->isIdenticalTo($expected);
+        $this->string(\KnowbaseItem_Revision::getTypeName(2))->isIdenticalTo($expected);
+        $this->string(\KnowbaseItem_Revision::getTypeName(10))->isIdenticalTo($expected);
+    }
 
-      $expected = 'Revisions';
-      $this->string(\KnowbaseItem_Revision::getTypeName(0))->isIdenticalTo($expected);
-      $this->string(\KnowbaseItem_Revision::getTypeName(2))->isIdenticalTo($expected);
-      $this->string(\KnowbaseItem_Revision::getTypeName(10))->isIdenticalTo($expected);
-   }
+    public function testNewRevision()
+    {
+        global $DB;
+        $this->login();
 
-   public function testNewRevision() {
-      global $DB;
-      $this->login();
+        $kb1 = $this->getNewKbItem();
 
-      $kb1 = $this->getNewKbItem();
+        $where = [
+           'knowbaseitems_id' => $kb1->getID(),
+           'language'         => ''
+        ];
 
-      $where = [
-         'knowbaseitems_id' => $kb1->getID(),
-         'language'         => ''
-      ];
+        $nb = countElementsInTable(
+            'glpi_knowbaseitems_revisions',
+            $where
+        );
+        $this->integer((int)$nb)->isIdenticalTo(0);
 
-      $nb = countElementsInTable(
-         'glpi_knowbaseitems_revisions',
-         $where
-      );
-      $this->integer((int)$nb)->isIdenticalTo(0);
-
-      $this->boolean(
-         $kb1->update(
-            [
-               'id'   => $kb1->getID(),
-               'name' => '_knowbaseitem01-01'
+        $this->boolean(
+            $kb1->update(
+                [
+                 'id'   => $kb1->getID(),
+                 'name' => '_knowbaseitem01-01'
             ]
-         )
-      )->isTrue();
+            )
+        )->isTrue();
 
-      $nb = countElementsInTable(
-         'glpi_knowbaseitems_revisions',
-         $where
-      );
-      $this->integer((int)$nb)->isIdenticalTo(1);
+        $nb = countElementsInTable(
+            'glpi_knowbaseitems_revisions',
+            $where
+        );
+        $this->integer((int)$nb)->isIdenticalTo(1);
 
-      $rev_id = null;
-      $data = $DB->request([
-         'SELECT' => ['MIN' => 'id as id'],
-         'FROM'   => 'glpi_knowbaseitems_revisions'
-      ])->next();
-      $rev_id = $data['id'];
+        $rev_id = null;
+        $data = $DB->request([
+           'SELECT' => ['MIN' => 'id as id'],
+           'FROM'   => 'glpi_knowbaseitems_revisions'
+        ])->next();
+        $rev_id = $data['id'];
 
-      $kb1->getFromDB($kb1->getID());
-      $this->boolean($kb1->revertTo($rev_id))->isTrue();
+        $kb1->getFromDB($kb1->getID());
+        $this->boolean($kb1->revertTo($rev_id))->isTrue();
 
-      $nb = countElementsInTable(
-         'glpi_knowbaseitems_revisions',
-         $where
-      );
-      $this->integer((int)$nb)->isIdenticalTo(2);
+        $nb = countElementsInTable(
+            'glpi_knowbaseitems_revisions',
+            $where
+        );
+        $this->integer((int)$nb)->isIdenticalTo(2);
 
-      //try a change on contents
-      $this->boolean(
-         $kb1->update(
-            [
-               'id'     => $kb1->getID(),
-               'answer' => \Toolbox::addslashes_deep('Don\'t use paths with spaces, like C:\\Program Files\\MyApp')
+        //try a change on contents
+        $this->boolean(
+            $kb1->update(
+                [
+                 'id'     => $kb1->getID(),
+                 'answer' => \Toolbox::addslashes_deep('Don\'t use paths with spaces, like C:\\Program Files\\MyApp')
             ]
-         )
-      )->isTrue();
+            )
+        )->isTrue();
 
-      $this->boolean(
-         $kb1->update(
-            [
-               'id'     => $kb1->getID(),
-               'answer' => 'Answer changed'
+        $this->boolean(
+            $kb1->update(
+                [
+                 'id'     => $kb1->getID(),
+                 'answer' => 'Answer changed'
             ]
-         )
-      )->isTrue();
+            )
+        )->isTrue();
 
-      $nb = countElementsInTable(
-         'glpi_knowbaseitems_revisions',
-         $where
-      );
-      $this->integer((int)$nb)->isIdenticalTo(4);
+        $nb = countElementsInTable(
+            'glpi_knowbaseitems_revisions',
+            $where
+        );
+        $this->integer((int)$nb)->isIdenticalTo(4);
 
-      $nrev_id = null;
-      $data = $DB->request([
-         'SELECT' => new \QueryExpression('MAX(id) AS id'),
-         'FROM'   => 'glpi_knowbaseitems_revisions'
-      ])->next();
-      $nrev_id = $data['id'];
+        $nrev_id = null;
+        $data = $DB->request([
+           'SELECT' => new \QueryExpression('MAX(id) AS id'),
+           'FROM'   => 'glpi_knowbaseitems_revisions'
+        ])->next();
+        $nrev_id = $data['id'];
 
-      $this->boolean($kb1->getFromDB($kb1->getID()))->isTrue();
-      $this->boolean($kb1->revertTo($nrev_id))->isTrue();
+        $this->boolean($kb1->getFromDB($kb1->getID()))->isTrue();
+        $this->boolean($kb1->revertTo($nrev_id))->isTrue();
 
-      $this->boolean($kb1->getFromDB($kb1->getID()))->isTrue();
-      $this->string($kb1->fields['answer'])->isIdenticalTo('Don\'t use paths with spaces, like C:\\Program Files\\MyApp');
+        $this->boolean($kb1->getFromDB($kb1->getID()))->isTrue();
+        $this->string($kb1->fields['answer'])->isIdenticalTo('Don\'t use paths with spaces, like C:\\Program Files\\MyApp');
 
-      //reset
-      $this->boolean($kb1->getFromDB($kb1->getID()))->isTrue();
-      $this->boolean($kb1->revertTo($rev_id))->isTrue();
+        //reset
+        $this->boolean($kb1->getFromDB($kb1->getID()))->isTrue();
+        $this->boolean($kb1->revertTo($rev_id))->isTrue();
 
-   }
+    }
 
-   public function testGetTabNameForItemNotLogged() {
-      //we are not logged, we should not see revision tab
-      $kb_rev = new \KnowbaseItem_Revision();
-      $kb1 = $this->getNewKbItem();
+    public function testGetTabNameForItemNotLogged()
+    {
+        //we are not logged, we should not see revision tab
+        $kb_rev = new \KnowbaseItem_Revision();
+        $kb1 = $this->getNewKbItem();
 
-      $_SESSION['glpishow_count_on_tabs'] = 1;
-      $name = $kb_rev->getTabNameForItem($kb1);
-      $this->string($name)->isIdenticalTo('');
-   }
+        $_SESSION['glpishow_count_on_tabs'] = 1;
+        $name = $kb_rev->getTabNameForItem($kb1);
+        $this->string($name)->isIdenticalTo('');
+    }
 
-   public function testGetTabNameForItemLogged() {
-      $this->login();
+    public function testGetTabNameForItemLogged()
+    {
+        $this->login();
 
-      $kb_rev = new \KnowbaseItem_Revision();
-      $kb1 = $this->getNewKbItem();
+        $kb_rev = new \KnowbaseItem_Revision();
+        $kb1 = $this->getNewKbItem();
 
-      $this->boolean(
-         $kb1->update(
-            [
-               'id'   => $kb1->getID(),
-               'name' => '_knowbaseitem01-01'
+        $this->boolean(
+            $kb1->update(
+                [
+                 'id'   => $kb1->getID(),
+                 'name' => '_knowbaseitem01-01'
             ]
-         )
-      )->isTrue();
+            )
+        )->isTrue();
 
-      $_SESSION['glpishow_count_on_tabs'] = 1;
-      $name = $kb_rev->getTabNameForItem($kb1);
-      $this->string($name)->isIdenticalTo('Revision <sup class=\'tab_nb\'>1</sup>');
+        $_SESSION['glpishow_count_on_tabs'] = 1;
+        $name = $kb_rev->getTabNameForItem($kb1);
+        $this->string($name)->isIdenticalTo('Revision <sup class=\'tab_nb\'>1</sup>');
 
-      $this->boolean(
-         $kb1->update(
-            [
-               'id'   => $kb1->getID(),
-               'name' => '_knowbaseitem01-02'
+        $this->boolean(
+            $kb1->update(
+                [
+                 'id'   => $kb1->getID(),
+                 'name' => '_knowbaseitem01-02'
             ]
-         )
-      )->isTrue();
+            )
+        )->isTrue();
 
-      $name = $kb_rev->getTabNameForItem($kb1);
-      $this->string($name)->isIdenticalTo('Revisions <sup class=\'tab_nb\'>2</sup>');
+        $name = $kb_rev->getTabNameForItem($kb1);
+        $this->string($name)->isIdenticalTo('Revisions <sup class=\'tab_nb\'>2</sup>');
 
-      $_SESSION['glpishow_count_on_tabs'] = 0;
-      $name = $kb_rev->getTabNameForItem($kb1);
-      $this->string($name)->isIdenticalTo('Revisions');
-   }
+        $_SESSION['glpishow_count_on_tabs'] = 0;
+        $name = $kb_rev->getTabNameForItem($kb1);
+        $this->string($name)->isIdenticalTo('Revisions');
+    }
 
-   private function getNewKbItem() {
-      $kb1 = getItemByTypeName(\KnowbaseItem::getType(), '_knowbaseitem01');
-      $toadd = $kb1->fields;
-      unset($toadd['id']);
-      unset($toadd['date_creation']);
-      unset($toadd['date_mod']);
-      $toadd['name'] = $this->getUniqueString();
-      $this->integer((int)$kb1->add($toadd))->isGreaterThan(0);
-      return $kb1;
-   }
+    private function getNewKbItem()
+    {
+        $kb1 = getItemByTypeName(\KnowbaseItem::getType(), '_knowbaseitem01');
+        $toadd = $kb1->fields;
+        unset($toadd['id']);
+        unset($toadd['date_creation']);
+        unset($toadd['date_mod']);
+        $toadd['name'] = $this->getUniqueString();
+        $this->integer((int)$kb1->add($toadd))->isGreaterThan(0);
+        return $kb1;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,115 +33,116 @@
 
 namespace tests\units;
 
-use \DbTestCase;
+use DbTestCase;
 
 /* Test for inc/notificationtargetticket.class.php */
 
-class NotificationTargetTicket extends DbTestCase {
+class NotificationTargetTicket extends DbTestCase
+{
+    public function testgetDataForObject()
+    {
+        global $CFG_GLPI;
 
-   public function testgetDataForObject() {
-      global $CFG_GLPI;
+        $tkt = getItemByTypeName('Ticket', '_ticket01');
+        $notiftargetticket = new \NotificationTargetTicket(getItemByTypeName('Entity', '_test_root_entity', true), 'new', $tkt);
+        $notiftargetticket->getTags();
 
-      $tkt = getItemByTypeName('Ticket', '_ticket01');
-      $notiftargetticket = new \NotificationTargetTicket(getItemByTypeName('Entity', '_test_root_entity', true), 'new', $tkt );
-      $notiftargetticket->getTags();
+        // basic test for ##task.categorycomment## tag
+        $expected = [
+           'tag'             => 'task.categorycomment',
+           'value'           => true,
+           'label'           => 'Category comment',
+           'events'          => 0,
+           'foreach'         => false,
+           'lang'            => true,
+           'allowed_values'  => [],
+           ];
 
-      // basic test for ##task.categorycomment## tag
-      $expected = [
-         'tag'             => 'task.categorycomment',
-         'value'           => true,
-         'label'           => 'Category comment',
-         'events'          => 0,
-         'foreach'         => false,
-         'lang'            => true,
-         'allowed_values'  => [],
-         ];
+        $this->array($notiftargetticket->tag_descriptions['lang']['##lang.task.categorycomment##'])
+           ->isIdenticalTo($expected);
+        $this->array($notiftargetticket->tag_descriptions['tag']['##task.categorycomment##'])
+           ->isIdenticalTo($expected);
 
-      $this->array($notiftargetticket->tag_descriptions['lang']['##lang.task.categorycomment##'])
-         ->isIdenticalTo($expected);
-      $this->array($notiftargetticket->tag_descriptions['tag']['##task.categorycomment##'])
-         ->isIdenticalTo($expected);
+        // basic test for ##task.categorid## tag
+        $expected = [
+           'tag'             => 'task.categoryid',
+           'value'           => true,
+           'label'           => 'Category id',
+           'events'          => 0,
+           'foreach'         => false,
+           'lang'            => true,
+           'allowed_values'  => [],
+           ];
+        $this->array($notiftargetticket->tag_descriptions['lang']['##lang.task.categoryid##'])
+           ->isIdenticalTo($expected);
+        $this->array($notiftargetticket->tag_descriptions['tag']['##task.categoryid##'])
+           ->isIdenticalTo($expected);
 
-      // basic test for ##task.categorid## tag
-      $expected = [
-         'tag'             => 'task.categoryid',
-         'value'           => true,
-         'label'           => 'Category id',
-         'events'          => 0,
-         'foreach'         => false,
-         'lang'            => true,
-         'allowed_values'  => [],
-         ];
-      $this->array($notiftargetticket->tag_descriptions['lang']['##lang.task.categoryid##'])
-         ->isIdenticalTo($expected);
-      $this->array($notiftargetticket->tag_descriptions['tag']['##task.categoryid##'])
-         ->isIdenticalTo($expected);
+        // advanced test for ##task.categorycomment## and ##task.categoryid## tags
+        // test of the getDataForObject for default language en_GB
+        $taskcat = getItemByTypeName('TaskCategory', '_subcat_1');
+        $encoded_sep = \Toolbox::clean_cross_side_scripting_deep('>');
+        $expected = [
+                       [
+                       '##task.id##'              => 1,
+                       '##task.isprivate##'       => 'No',
+                       '##task.author##'          => '_test_user',
+                       '##task.categoryid##'      => $taskcat->getID(),
+                       '##task.category##'        => '_cat_1 ' . $encoded_sep . ' _subcat_1',
+                       '##task.categorycomment##' => 'Comment for sub-category _subcat_1',
+                       '##task.date##'            => '2016-10-19 11:50',
+                       '##task.description##'     => 'Task to be done',
+                       '##task.time##'            => '0 seconds',
+                       '##task.status##'          => 'To do',
+                       '##task.user##'            => '_test_user',
+                       '##task.group##'           => '',
+                       '##task.begin##'           => '',
+                       '##task.end##'             => ''
+                       ]
+                    ];
 
-      // advanced test for ##task.categorycomment## and ##task.categoryid## tags
-      // test of the getDataForObject for default language en_GB
-      $taskcat = getItemByTypeName('TaskCategory', '_subcat_1');
-      $encoded_sep = \Toolbox::clean_cross_side_scripting_deep('>');
-      $expected = [
-                     [
-                     '##task.id##'              => 1,
-                     '##task.isprivate##'       => 'No',
-                     '##task.author##'          => '_test_user',
-                     '##task.categoryid##'      => $taskcat->getID(),
-                     '##task.category##'        => '_cat_1 ' . $encoded_sep . ' _subcat_1',
-                     '##task.categorycomment##' => 'Comment for sub-category _subcat_1',
-                     '##task.date##'            => '2016-10-19 11:50',
-                     '##task.description##'     => 'Task to be done',
-                     '##task.time##'            => '0 seconds',
-                     '##task.status##'          => 'To do',
-                     '##task.user##'            => '_test_user',
-                     '##task.group##'           => '',
-                     '##task.begin##'           => '',
-                     '##task.end##'             => ''
-                     ]
-                  ];
+        $basic_options = [
+           'additionnaloption' => [
+              'usertype' => ''
+           ]
+        ];
+        $ret = $notiftargetticket->getDataForObject($tkt, $basic_options);
 
-      $basic_options = [
-         'additionnaloption' => [
-            'usertype' => ''
-         ]
-      ];
-      $ret = $notiftargetticket->getDataForObject($tkt, $basic_options);
+        $this->array($ret['tasks'])->hasSize(1);
+        $this->array($ret['tasks'][0])->hasKeys(array_keys($expected[0]));
+        $this->string((string)$ret['tasks'][0]['##task.categorycomment##'])->contains('_subcat_1');
 
-      $this->array($ret['tasks'])->hasSize(1);
-      $this->array($ret['tasks'][0])->hasKeys(array_keys($expected[0]));
-      $this->string((string)$ret['tasks'][0]['##task.categorycomment##'])->contains('_subcat_1');
+        // test of the getDataForObject for default language fr_FR
+        $CFG_GLPI['translate_dropdowns'] = 1;
+        $_SESSION["glpilanguage"] = \Session::loadLanguage('fr_FR');
+        $_SESSION['glpi_dropdowntranslations'] = \DropdownTranslation::getAvailableTranslations($_SESSION["glpilanguage"]);
 
-      // test of the getDataForObject for default language fr_FR
-      $CFG_GLPI['translate_dropdowns'] = 1;
-      $_SESSION["glpilanguage"] = \Session::loadLanguage( 'fr_FR' );
-      $_SESSION['glpi_dropdowntranslations'] = \DropdownTranslation::getAvailableTranslations($_SESSION["glpilanguage"]);
+        $ret = $notiftargetticket->getDataForObject($tkt, $basic_options);
 
-      $ret = $notiftargetticket->getDataForObject($tkt, $basic_options);
+        $expected = [
+                       [
+                       '##task.id##'              => 1,
+                       '##task.isprivate##'       => 'Non',
+                       '##task.author##'          => '_test_user',
+                       '##task.categoryid##'      => $taskcat->getID(),
+                       '##task.category##'        => 'FR - _cat_1 ' . $encoded_sep . ' FR - _subcat_1',
+                       '##task.categorycomment##' => 'FR - Commentaire pour sous-catégorie _subcat_1',
+                       '##task.date##'            => '2016-10-19 11:50',
+                       '##task.description##'     => 'Task to be done',
+                       '##task.time##'            => '0 seconde',
+                       '##task.status##'          => 'A faire',
+                       '##task.user##'            => '_test_user',
+                       '##task.group##'           => '',
+                       '##task.begin##'           => '',
+                       '##task.end##'             => ''
+                       ]
+                    ];
 
-      $expected = [
-                     [
-                     '##task.id##'              => 1,
-                     '##task.isprivate##'       => 'Non',
-                     '##task.author##'          => '_test_user',
-                     '##task.categoryid##'      => $taskcat->getID(),
-                     '##task.category##'        => 'FR - _cat_1 ' . $encoded_sep . ' FR - _subcat_1',
-                     '##task.categorycomment##' => 'FR - Commentaire pour sous-catégorie _subcat_1',
-                     '##task.date##'            => '2016-10-19 11:50',
-                     '##task.description##'     => 'Task to be done',
-                     '##task.time##'            => '0 seconde',
-                     '##task.status##'          => 'A faire',
-                     '##task.user##'            => '_test_user',
-                     '##task.group##'           => '',
-                     '##task.begin##'           => '',
-                     '##task.end##'             => ''
-                     ]
-                  ];
+        $this->array($ret['tasks'])->hasSize(1);
+        $this->array($ret['tasks'][0])->hasKeys(array_keys($expected[0]));
+        $this->string((string)$ret['tasks'][0]['##task.categorycomment##'])->contains('_subcat_1');
 
-      $this->array($ret['tasks'])->hasSize(1);
-      $this->array($ret['tasks'][0])->hasKeys(array_keys($expected[0]));
-      $this->string((string)$ret['tasks'][0]['##task.categorycomment##'])->contains('_subcat_1');
-
-      // switch back to default language
-      $_SESSION["glpilanguage"] = \Session::loadLanguage('en_GB');
-   }
+        // switch back to default language
+        $_SESSION["glpilanguage"] = \Session::loadLanguage('en_GB');
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,107 +33,109 @@
 
 namespace tests\units;
 
-use \DbTestCase;
+use DbTestCase;
 
 /* Test for inc/notificationsettingconfig.class.php */
 
-class NotificationSettingConfig extends DbTestCase {
+class NotificationSettingConfig extends DbTestCase
+{
+    public function testUpdate()
+    {
+        $current_config = \Config::getConfigurationValues('core');
 
-   public function testUpdate() {
-      $current_config = \Config::getConfigurationValues('core');
+        $this->variable($current_config['use_notifications'])->isEqualTo(0);
+        $this->variable($current_config['notifications_mailing'])->isEqualTo(0);
+        $this->variable($current_config['notifications_ajax'])->isEqualTo(0);
 
-      $this->variable($current_config['use_notifications'])->isEqualTo(0);
-      $this->variable($current_config['notifications_mailing'])->isEqualTo(0);
-      $this->variable($current_config['notifications_ajax'])->isEqualTo(0);
+        $settingconfig = new \NotificationSettingConfig();
+        $settingconfig->update([
+           'use_notifications' => 1
+        ]);
 
-      $settingconfig = new \NotificationSettingConfig();
-      $settingconfig->update([
-         'use_notifications' => 1
-      ]);
+        $current_config = \Config::getConfigurationValues('core');
 
-      $current_config = \Config::getConfigurationValues('core');
+        $this->variable($current_config['use_notifications'])->isEqualTo(1);
+        $this->variable($current_config['notifications_mailing'])->isEqualTo(0);
+        $this->variable($current_config['notifications_ajax'])->isEqualTo(0);
 
-      $this->variable($current_config['use_notifications'])->isEqualTo(1);
-      $this->variable($current_config['notifications_mailing'])->isEqualTo(0);
-      $this->variable($current_config['notifications_ajax'])->isEqualTo(0);
+        $settingconfig->update([
+           'notifications_mailing' => 1
+        ]);
 
-      $settingconfig->update([
-         'notifications_mailing' => 1
-      ]);
+        $current_config = \Config::getConfigurationValues('core');
 
-      $current_config = \Config::getConfigurationValues('core');
+        $this->variable($current_config['use_notifications'])->isEqualTo(1);
+        $this->variable($current_config['notifications_mailing'])->isEqualTo(1);
+        $this->variable($current_config['notifications_ajax'])->isEqualTo(0);
 
-      $this->variable($current_config['use_notifications'])->isEqualTo(1);
-      $this->variable($current_config['notifications_mailing'])->isEqualTo(1);
-      $this->variable($current_config['notifications_ajax'])->isEqualTo(0);
+        $settingconfig->update([
+           'use_notifications' => 0
+        ]);
 
-      $settingconfig->update([
-         'use_notifications' => 0
-      ]);
+        $current_config = \Config::getConfigurationValues('core');
 
-      $current_config = \Config::getConfigurationValues('core');
+        $this->variable($current_config['use_notifications'])->isEqualTo(0);
+        $this->variable($current_config['notifications_mailing'])->isEqualTo(0);
+        $this->variable($current_config['notifications_ajax'])->isEqualTo(0);
+    }
 
-      $this->variable($current_config['use_notifications'])->isEqualTo(0);
-      $this->variable($current_config['notifications_mailing'])->isEqualTo(0);
-      $this->variable($current_config['notifications_ajax'])->isEqualTo(0);
-   }
+    public function testShowForm()
+    {
+        global $CFG_GLPI;
 
-   public function testShowForm() {
-      global $CFG_GLPI;
+        $settingconfig = new \NotificationSettingConfig();
+        $options = ['display' => false];
 
-      $settingconfig = new \NotificationSettingConfig();
-      $options = ['display' => false];
+        $output = $settingconfig->showForm($options);
+        $this->string($output)->isEmpty();
 
-      $output = $settingconfig->showForm($options);
-      $this->string($output)->isEmpty();
+        $this->login();
 
-      $this->login();
+        $this->output(
+            function () use ($settingconfig) {
+                $settingconfig->showForm();
+            }
+        )
+           ->contains('Notifications configuration')
+           ->notContains('Notification templates');
 
-      $this->output(
-         function () use ($settingconfig) {
-            $settingconfig->showForm();
-         }
-      )
-         ->contains('Notifications configuration')
-         ->notContains('Notification templates');
+        $CFG_GLPI['use_notifications'] = 1;
 
-      $CFG_GLPI['use_notifications'] = 1;
+        $this->output(
+            function () use ($settingconfig) {
+                $settingconfig->showForm();
+            }
+        )
+           ->contains('Notifications configuration')
+           ->notContains('Notification templates');
 
-      $this->output(
-         function () use ($settingconfig) {
-            $settingconfig->showForm();
-         }
-      )
-         ->contains('Notifications configuration')
-         ->notContains('Notification templates');
+        $CFG_GLPI['notifications_ajax'] = 1;
 
-      $CFG_GLPI['notifications_ajax'] = 1;
+        $this->output(
+            function () use ($settingconfig) {
+                $settingconfig->showForm();
+            }
+        )
+           ->contains('Notifications configuration')
+           ->contains('Notification templates')
+           ->contains('Browser followups configuration')
+           ->notContains('Email followups configuration');
 
-      $this->output(
-         function () use ($settingconfig) {
-            $settingconfig->showForm();
-         }
-      )
-         ->contains('Notifications configuration')
-         ->contains('Notification templates')
-         ->contains('Browser followups configuration')
-         ->notContains('Email followups configuration');
+        $CFG_GLPI['notifications_mailing'] = 1;
 
-      $CFG_GLPI['notifications_mailing'] = 1;
+        $this->output(
+            function () use ($settingconfig) {
+                $settingconfig->showForm();
+            }
+        )
+           ->contains('Notifications configuration')
+           ->contains('Notification templates')
+           ->contains('Browser followups configuration')
+           ->contains('Email followups configuration');
 
-      $this->output(
-         function () use ($settingconfig) {
-            $settingconfig->showForm();
-         }
-      )
-         ->contains('Notifications configuration')
-         ->contains('Notification templates')
-         ->contains('Browser followups configuration')
-         ->contains('Email followups configuration');
-
-      //reset
-      $CFG_GLPI['use_notifications'] = 0;
-      $CFG_GLPI['notifications_mailing'] = 0;
-      $CFG_GLPI['notifications_ajax'] = 0;
-   }
+        //reset
+        $CFG_GLPI['use_notifications'] = 0;
+        $CFG_GLPI['notifications_mailing'] = 0;
+        $CFG_GLPI['notifications_ajax'] = 0;
+    }
 }

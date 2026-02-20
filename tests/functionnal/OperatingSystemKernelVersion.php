@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,65 +37,70 @@ require_once 'CommonDropdown.php';
 
 /* Test for inc/operatingsystemkernelversion.class.php */
 
-class OperatingSystemKernelVersion extends CommonDropdown {
+class OperatingSystemKernelVersion extends CommonDropdown
+{
+    public function getObjectClass()
+    {
+        return '\OperatingSystemKernelVersion';
+    }
 
-   public function getObjectClass() {
-      return '\OperatingSystemKernelVersion';
-   }
+    public function typenameProvider()
+    {
+        return [
+           [\OperatingSystemKernelVersion::getTypeName(), 'Kernel versions'],
+           [\OperatingSystemKernelVersion::getTypeName(0), 'Kernel versions'],
+           [\OperatingSystemKernelVersion::getTypeName(10), 'Kernel versions'],
+           [\OperatingSystemKernelVersion::getTypeName(1), 'Kernel version']
+        ];
+    }
 
-   public function typenameProvider() {
-      return [
-         [\OperatingSystemKernelVersion::getTypeName(), 'Kernel versions'],
-         [\OperatingSystemKernelVersion::getTypeName(0), 'Kernel versions'],
-         [\OperatingSystemKernelVersion::getTypeName(10), 'Kernel versions'],
-         [\OperatingSystemKernelVersion::getTypeName(1), 'Kernel version']
-      ];
-   }
+    public function testGetAdditionalFields()
+    {
+        $kernel_id = getItemByTypeName(\OperatingSystemKernel::getType(), 'Kernel', true);
+        if (!$kernel_id) {
+            $kernel = new \OperatingSystemKernel();
+            $this->integer((int)$kernel->add(['name' => 'Kernel']))->isGreaterThan(0);
+        }
 
-   public function testGetAdditionalFields() {
-      $kernel_id = getItemByTypeName(\OperatingSystemKernel::getType(), 'Kernel', true);
-      if (!$kernel_id) {
-         $kernel = new \OperatingSystemKernel();
-         $this->integer((int)$kernel->add(['name' => 'Kernel']))->isGreaterThan(0);
-      }
+        $this
+           ->given($this->newTestedInstance)
+              ->then
+                 ->array($this->testedInstance->getAdditionalFields())->isNotEmpty();
 
-      $this
-         ->given($this->newTestedInstance)
-            ->then
-               ->array($this->testedInstance->getAdditionalFields())->isNotEmpty();
+        $fields = $this->testedInstance->getAdditionalFields();
+        $first = (array)array_values($fields)[0];
+        $this->array($first)->hasKey('name');
+        $this->string((string)$first['name'])->isNotEmpty();
+    }
 
-      $fields = $this->testedInstance->getAdditionalFields();
-      $first = (array)array_values($fields)[0];
-      $this->array($first)->hasKey('name');
-      $this->string((string)$first['name'])->isNotEmpty();
-   }
+    protected function getTabs()
+    {
+        return [
+           'OperatingSystemKernelVersion$main' => 'Kernel version',
+           'Log$1'                             => 'Historical'
+        ];
+    }
 
-   protected function getTabs() {
-      return [
-         'OperatingSystemKernelVersion$main' =>'Kernel version',
-         'Log$1'                             => 'Historical'
-      ];
-   }
-
-   /**
-    * Create new kernel version in database
-    *
-    * @return void
-    */
-   protected function newInstance() {
-      $kernel = new \OperatingSystemKernel();
-      $this->integer(
-         (int)$kernel->add([
-            'name'   => 'linux'
+    /**
+     * Create new kernel version in database
+     *
+     * @return void
+     */
+    protected function newInstance()
+    {
+        $kernel = new \OperatingSystemKernel();
+        $this->integer(
+            (int)$kernel->add([
+              'name'   => 'linux'
          ])
-      );
-      $this->newTestedInstance();
-      $this->integer(
-         (int)$this->testedInstance->add([
-            'name'                        => 'Version name ' . $this->getUniqueString(),
-            'operatingsystemkernels_id'   => $kernel->getID()
+        );
+        $this->newTestedInstance();
+        $this->integer(
+            (int)$this->testedInstance->add([
+              'name'                        => 'Version name ' . $this->getUniqueString(),
+              'operatingsystemkernels_id'   => $kernel->getID()
          ])
-      )->isGreaterThan(0);
-      $this->boolean($this->testedInstance->getFromDB($this->testedInstance->getID()))->isTrue();
-   }
+        )->isGreaterThan(0);
+        $this->boolean($this->testedInstance->getFromDB($this->testedInstance->getID()))->isTrue();
+    }
 }

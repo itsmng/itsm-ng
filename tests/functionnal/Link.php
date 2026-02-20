@@ -37,91 +37,93 @@ namespace tests\units;
 
 use DbTestCase;
 
-class Link extends DbTestCase {
-   protected function linkContentProvider(): iterable {
-      $this->login();
+class Link extends DbTestCase
+{
+    protected function linkContentProvider(): iterable
+    {
+        $this->login();
 
-      // Create network
-      $network = $this->createItem(
-         \Network::class,
-         [
-            'name' => 'LAN',
+        // Create network
+        $network = $this->createItem(
+            \Network::class,
+            [
+              'name' => 'LAN',
          ]
-      );
+        );
 
-      // Create computer
-      $item = $this->createItem(
-         \Computer::class,
-         [
-            'name'         => 'Test computer',
-            'serial'       => 'ABC0004E6',
-            'otherserial'  => 'X0000015',
-            'uuid'         => 'c938f085-4192-4473-a566-46734bbaf6ad',
-            'entities_id'  => $_SESSION['glpiactive_entity'],
-            'locations_id' => getItemByTypeName(\Location::class, '_location01', true),
-            'networks_id'  => $network->getID(),
-            'users_id'     => getItemByTypeName(\User::class, 'itsm', true),
+        // Create computer
+        $item = $this->createItem(
+            \Computer::class,
+            [
+              'name'         => 'Test computer',
+              'serial'       => 'ABC0004E6',
+              'otherserial'  => 'X0000015',
+              'uuid'         => 'c938f085-4192-4473-a566-46734bbaf6ad',
+              'entities_id'  => $_SESSION['glpiactive_entity'],
+              'locations_id' => getItemByTypeName(\Location::class, '_location01', true),
+              'networks_id'  => $network->getID(),
+              'users_id'     => getItemByTypeName(\User::class, 'itsm', true),
          ]
-      );
+        );
 
-      // Attach domains
-      $domain1 = $this->createItem(
-         \Domain::class,
-         [
-            'name'        => 'domain1.tld',
-            'entities_id' => $_SESSION['glpiactive_entity'],
+        // Attach domains
+        $domain1 = $this->createItem(
+            \Domain::class,
+            [
+              'name'        => 'domain1.tld',
+              'entities_id' => $_SESSION['glpiactive_entity'],
          ]
-      );
-      $this->createItem(
-         \Domain_Item::class,
-         [
-            'domains_id' => $domain1->getID(),
-            'itemtype'   => \Computer::class,
-            'items_id'   => $item->getID(),
+        );
+        $this->createItem(
+            \Domain_Item::class,
+            [
+              'domains_id' => $domain1->getID(),
+              'itemtype'   => \Computer::class,
+              'items_id'   => $item->getID(),
          ]
-      );
-      $domain2 = $this->createItem(
-         \Domain::class,
-         [
-            'name'        => 'domain2.tld',
-            'entities_id' => $_SESSION['glpiactive_entity'],
+        );
+        $domain2 = $this->createItem(
+            \Domain::class,
+            [
+              'name'        => 'domain2.tld',
+              'entities_id' => $_SESSION['glpiactive_entity'],
          ]
-      );
-      $this->createItem(
-         \Domain_Item::class,
-         [
-            'domains_id' => $domain2->getID(),
-            'itemtype'   => \Computer::class,
-            'items_id'   => $item->getID(),
+        );
+        $this->createItem(
+            \Domain_Item::class,
+            [
+              'domains_id' => $domain2->getID(),
+              'itemtype'   => \Computer::class,
+              'items_id'   => $item->getID(),
          ]
-      );
+        );
 
-      // Empty link
-      yield [
-         'link'     => '',
-         'item'     => $item,
-         'safe_url' => false,
-         'expected' => [''],
-      ];
-      yield [
-         'link'     => '',
-         'item'     => $item,
-         'safe_url' => true,
-         'expected' => ['#'],
-      ];
+        // Empty link
+        yield [
+           'link'     => '',
+           'item'     => $item,
+           'safe_url' => false,
+           'expected' => [''],
+        ];
+        yield [
+           'link'     => '',
+           'item'     => $item,
+           'safe_url' => true,
+           'expected' => ['#'],
+        ];
 
-      foreach ([true, false] as $safe_url) {
-         // Link that is actually a title (it is a normal usage!)
-         yield [
-            'link'     => '[LOCATION] > [SERIAL] ([USER])',
-            'item'     => $item,
-            'safe_url' => $safe_url,
-            'expected' => ['_location01 > ABC0004E6 (itsm)'],
-         ];
+        foreach ([true, false] as $safe_url) {
+            // Link that is actually a title (it is a normal usage!)
+            yield [
+               'link'     => '[LOCATION] > [SERIAL] ([USER])',
+               'item'     => $item,
+               'safe_url' => $safe_url,
+               'expected' => ['_location01 > ABC0004E6 (itsm)'],
+            ];
 
-         // Link that is actually a long text (it is a normal usage!)
-         yield [
-            'link'     => <<<TEXT
+            // Link that is actually a long text (it is a normal usage!)
+            yield [
+               'link'     => <<<TEXT
 id:       [ID]
 name:     [NAME]
 serial:   [SERIAL]/[OTHERSERIAL]
@@ -129,11 +131,11 @@ location: [LOCATION] ([LOCATIONID])
 domain:   [DOMAIN] ([NETWORK])
 owner:    [USER]
 TEXT
-            ,
-            'item'     => $item,
-            'safe_url' => $safe_url,
-            'expected' => [
-               <<<TEXT
+               ,
+               'item'     => $item,
+               'safe_url' => $safe_url,
+               'expected' => [
+                  <<<TEXT
 id:       {$item->getID()}
 name:     Test computer
 serial:   ABC0004E6/X0000015
@@ -141,50 +143,50 @@ location: _location01 ({$item->fields['locations_id']})
 domain:   domain1.tld (LAN)
 owner:    itsm
 TEXT
-               ,
-            ],
-         ];
+                  ,
+               ],
+            ];
 
-         // Valid http link
-         yield [
-            'link'     => 'https://[LOGIN]@[DOMAIN]/[FIELD:uuid]/',
-            'item'     => $item,
-            'safe_url' => $safe_url,
-            'expected' => ['https://_test_user@domain1.tld/c938f085-4192-4473-a566-46734bbaf6ad/'],
-         ];
-      }
+            // Valid http link
+            yield [
+               'link'     => 'https://[LOGIN]@[DOMAIN]/[FIELD:uuid]/',
+               'item'     => $item,
+               'safe_url' => $safe_url,
+               'expected' => ['https://_test_user@domain1.tld/c938f085-4192-4473-a566-46734bbaf6ad/'],
+            ];
+        }
 
-      // Javascript link
-      yield [
-         'link'     => 'javascript:alert(1);" title="[NAME]"',
-         'item'     => $item,
-         'safe_url' => false,
-         'expected' => ['javascript:alert(1);" title="Test computer"'],
-      ];
-      yield [
-         'link'     => 'javascript:alert(1);" title="[NAME]"',
-         'item'     => $item,
-         'safe_url' => true,
-         'expected' => ['#'],
-      ];
-   }
+        // Javascript link
+        yield [
+           'link'     => 'javascript:alert(1);" title="[NAME]"',
+           'item'     => $item,
+           'safe_url' => false,
+           'expected' => ['javascript:alert(1);" title="Test computer"'],
+        ];
+        yield [
+           'link'     => 'javascript:alert(1);" title="[NAME]"',
+           'item'     => $item,
+           'safe_url' => true,
+           'expected' => ['#'],
+        ];
+    }
 
-   /**
-    * @dataProvider linkContentProvider
-    */
-   public function testGenerateLinkContents(
-      string $link,
-      \CommonDBTM $item,
-      bool $safe_url,
-      array $expected
-   ): void {
-      $this->newTestedInstance();
-      $generated = $this->testedInstance->generateLinkContents($link, $item, $safe_url);
-      if ($safe_url) {
-         $this->array($generated)->hasSize(1);
-         $this->boolean(in_array($generated[0], [$expected[0], '#'], true))->isTrue();
-      } else {
-         $this->array($generated)->isEqualTo($expected);
-      }
-   }
+    /**
+     * @dataProvider linkContentProvider
+     */
+    public function testGenerateLinkContents(
+        string $link,
+        \CommonDBTM $item,
+        bool $safe_url,
+        array $expected
+    ): void {
+        $this->newTestedInstance();
+        $generated = $this->testedInstance->generateLinkContents($link, $item, $safe_url);
+        if ($safe_url) {
+            $this->array($generated)->hasSize(1);
+            $this->boolean(in_array($generated[0], [$expected[0], '#'], true))->isTrue();
+        } else {
+            $this->array($generated)->isEqualTo($expected);
+        }
+    }
 }

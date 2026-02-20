@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,6 +33,6 @@
 
 namespace GlpiPlugin\Bar;
 
-class Foo extends \CommonDBTM {
-
+class Foo extends \CommonDBTM
+{
 }

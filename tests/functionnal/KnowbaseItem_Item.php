@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,183 +33,187 @@
 
 namespace test\units;
 
-use \DbTestCase;
+use DbTestCase;
 
 /* Test for inc/knowbaseitem_item.class.php */
 
-class KnowbaseItem_Item extends DbTestCase {
+class KnowbaseItem_Item extends DbTestCase
+{
+    public function testGetTypeName()
+    {
+        $expected = 'Knowledge base item';
+        $this->string(\KnowbaseItem_Item::getTypeName(1))->isIdenticalTo($expected);
 
-   public function testGetTypeName() {
-      $expected = 'Knowledge base item';
-      $this->string(\KnowbaseItem_Item::getTypeName(1))->isIdenticalTo($expected);
+        $expected = 'Knowledge base items';
+        $this->string(\KnowbaseItem_Item::getTypeName(0))->isIdenticalTo($expected);
+        $this->string(\KnowbaseItem_Item::getTypeName(2))->isIdenticalTo($expected);
+        $this->string(\KnowbaseItem_Item::getTypeName(10))->isIdenticalTo($expected);
+    }
 
-      $expected = 'Knowledge base items';
-      $this->string(\KnowbaseItem_Item::getTypeName(0))->isIdenticalTo($expected);
-      $this->string(\KnowbaseItem_Item::getTypeName(2))->isIdenticalTo($expected);
-      $this->string(\KnowbaseItem_Item::getTypeName(10))->isIdenticalTo($expected);
-   }
+    public function testGetItemsFromKB()
+    {
+        $this->login();
+        $kb1 = getItemByTypeName('KnowbaseItem', '_knowbaseitem01');
+        $items = \KnowbaseItem_Item::getItems($kb1);
+        $this->array($items)->hasSize(3);
 
-   public function testGetItemsFromKB() {
-      $this->login();
-      $kb1 = getItemByTypeName('KnowbaseItem', '_knowbaseitem01');
-      $items = \KnowbaseItem_Item::getItems($kb1);
-      $this->array($items)->hasSize(3);
+        $expecteds = [
+           0 => [
+              'id'       => '_ticket01',
+              'itemtype' => \Ticket::getType(),
+           ],
+           1 => [
+              'id'       => '_ticket02',
+              'itemtype' => \Ticket::getType(),
+           ],
+           2 => [
+              'id'       => '_ticket03',
+              'itemtype' => \Ticket::getType(),
+           ]
+        ];
 
-      $expecteds = [
-         0 => [
-            'id'       => '_ticket01',
-            'itemtype' => \Ticket::getType(),
-         ],
-         1 => [
-            'id'       => '_ticket02',
-            'itemtype' => \Ticket::getType(),
-         ],
-         2 => [
-            'id'       => '_ticket03',
-            'itemtype' => \Ticket::getType(),
-         ]
-      ];
+        foreach ($expecteds as $key => $expected) {
+            $item = getItemByTypeName($expected['itemtype'], $expected['id']);
+            $this->object($item)->isInstanceOf($expected['itemtype']);
+        }
 
-      foreach ($expecteds as $key => $expected) {
-         $item = getItemByTypeName($expected['itemtype'], $expected['id']);
-         $this->object($item)->isInstanceOf($expected['itemtype']);
-      }
+        //add start & limit
+        $kb1 = getItemByTypeName('KnowbaseItem', '_knowbaseitem01');
+        $items = \KnowbaseItem_Item::getItems($kb1, 1, 1);
+        $this->array($items)->hasSize(1);
 
-      //add start & limit
-      $kb1 = getItemByTypeName('KnowbaseItem', '_knowbaseitem01');
-      $items = \KnowbaseItem_Item::getItems($kb1, 1, 1);
-      $this->array($items)->hasSize(1);
+        $expecteds = [
+           1 => [
+              'id'       => '_ticket02',
+              'itemtype' => \Ticket::getType(),
+           ]
+        ];
 
-      $expecteds = [
-         1 => [
-            'id'       => '_ticket02',
-            'itemtype' => \Ticket::getType(),
-         ]
-      ];
+        foreach ($expecteds as $key => $expected) {
+            $item = getItemByTypeName($expected['itemtype'], $expected['id']);
+            $this->object($item)->isInstanceOf($expected['itemtype']);
+        }
 
-      foreach ($expecteds as $key => $expected) {
-         $item = getItemByTypeName($expected['itemtype'], $expected['id']);
-         $this->object($item)->isInstanceOf($expected['itemtype']);
-      }
+        $kb2 = getItemByTypeName('KnowbaseItem', '_knowbaseitem02');
+        $items = \KnowbaseItem_Item::getItems($kb2);
+        $this->array($items)->hasSize(2);
 
-      $kb2 = getItemByTypeName('KnowbaseItem', '_knowbaseitem02');
-      $items = \KnowbaseItem_Item::getItems($kb2);
-      $this->array($items)->hasSize(2);
+        $expecteds = [
+           0 => [
+              'id'       => '_ticket03',
+              'itemtype' => \Ticket::getType(),
+           ],
+           1 => [
+              'id'       => '_test_pc21',
+              'itemtype' => \Computer::getType(),
+           ]
+        ];
 
-      $expecteds = [
-         0 => [
-            'id'       => '_ticket03',
-            'itemtype' => \Ticket::getType(),
-         ],
-         1 => [
-            'id'       => '_test_pc21',
-            'itemtype' => \Computer::getType(),
-         ]
-      ];
+        foreach ($expecteds as $key => $expected) {
+            $item = getItemByTypeName($expected['itemtype'], $expected['id']);
+            $this->object($item)->isInstanceOf($expected['itemtype']);
+        }
+    }
 
-      foreach ($expecteds as $key => $expected) {
-         $item = getItemByTypeName($expected['itemtype'], $expected['id']);
-         $this->object($item)->isInstanceOf($expected['itemtype']);
-      }
-   }
+    public function testGetKbsFromItem()
+    {
+        $this->login();
+        $ticket3 = getItemByTypeName(\Ticket::getType(), '_ticket03');
+        $kbs = \KnowbaseItem_Item::getItems($ticket3);
+        $this->array($kbs)
+           ->hasSize(2);
 
-   public function testGetKbsFromItem() {
-      $this->login();
-      $ticket3 = getItemByTypeName(\Ticket::getType(), '_ticket03');
-      $kbs = \KnowbaseItem_Item::getItems($ticket3);
-      $this->array($kbs)
-         ->hasSize(2);
+        $kb_ids = [];
+        foreach ($kbs as $kb) {
+            $this->array($kb)
+               ->string['itemtype']->isIdenticalTo($ticket3->getType())
+               ->integer['items_id']->isIdenticalTo($ticket3->getID());
 
-      $kb_ids = [];
-      foreach ($kbs as $kb) {
-         $this->array($kb)
-            ->string['itemtype']->isIdenticalTo($ticket3->getType())
-            ->integer['items_id']->isIdenticalTo($ticket3->getID());
+            $kb_ids[] = $kb['knowbaseitems_id'];
+        }
 
-         $kb_ids[] = $kb['knowbaseitems_id'];
-      }
+        //test get "used"
+        $kbs = \KnowbaseItem_Item::getItems($ticket3, 0, 0, '', true);
+        $this->array($kbs)->hasSize(2);
 
-      //test get "used"
-      $kbs = \KnowbaseItem_Item::getItems($ticket3, 0, 0, '', true);
-      $this->array($kbs)->hasSize(2);
+        foreach ($kbs as $key => $kb) {
+            $this->variable($kb)->isEqualTo($key);
+            $this->array($kb_ids)->contains($key);
+        }
 
-      foreach ($kbs as $key => $kb) {
-         $this->variable($kb)->isEqualTo($key);
-         $this->array($kb_ids)->contains($key);
-      }
+        $ticket1 = getItemByTypeName(\Ticket::getType(), '_ticket01');
+        $kbs = \KnowbaseItem_Item::getItems($ticket1);
+        $this->array($kbs)->hasSize(1);
 
-      $ticket1 = getItemByTypeName(\Ticket::getType(), '_ticket01');
-      $kbs = \KnowbaseItem_Item::getItems($ticket1);
-      $this->array($kbs)->hasSize(1);
+        foreach ($kbs as $kb) {
+            $this->array($kb)
+               ->string['itemtype']->isIdenticalTo($ticket1->getType())
+               ->integer['items_id']->isIdenticalTo($ticket1->getID());
+        }
 
-      foreach ($kbs as $kb) {
-         $this->array($kb)
-            ->string['itemtype']->isIdenticalTo($ticket1->getType())
-            ->integer['items_id']->isIdenticalTo($ticket1->getID());
-      }
+        $computer21 = getItemByTypeName(\Computer::getType(), '_test_pc21');
+        $kbs = \KnowbaseItem_Item::getItems($computer21);
+        $this->array($kbs)->hasSize(1);
 
-      $computer21 = getItemByTypeName(\Computer::getType(), '_test_pc21');
-      $kbs = \KnowbaseItem_Item::getItems($computer21);
-      $this->array($kbs)->hasSize(1);
+        foreach ($kbs as $kb) {
+            $this->array($kb)
+               ->string['itemtype']->isIdenticalTo($computer21->getType())
+               ->integer['items_id']->isIdenticalTo($computer21->getID());
+        }
 
-      foreach ($kbs as $kb) {
-         $this->array($kb)
-            ->string['itemtype']->isIdenticalTo($computer21->getType())
-            ->integer['items_id']->isIdenticalTo($computer21->getID());
-      }
+        //test with entitiesrestriction
+        $_SESSION['glpishowallentities'] = 0;
 
-      //test with entitiesrestriction
-      $_SESSION['glpishowallentities'] = 0;
+        $entity = getItemByTypeName(\Entity::getType(), '_test_root_entity');
+        $_SESSION['glpiactiveentities'] = [$entity->getID()];
 
-      $entity = getItemByTypeName(\Entity::getType(), '_test_root_entity');
-      $_SESSION['glpiactiveentities'] = [$entity->getID()];
+        $ticket3 = getItemByTypeName(\Ticket::getType(), '_ticket03');
+        $kbs = \KnowbaseItem_Item::getItems($ticket3);
+        $this->array($kbs)->hasSize(0);
 
-      $ticket3 = getItemByTypeName(\Ticket::getType(), '_ticket03');
-      $kbs = \KnowbaseItem_Item::getItems($ticket3);
-      $this->array($kbs)->hasSize(0);
+        $entity = getItemByTypeName(\Entity::getType(), '_test_child_1');
+        $_SESSION['glpiactiveentities'] = [$entity->getID()];
 
-      $entity = getItemByTypeName(\Entity::getType(), '_test_child_1');
-      $_SESSION['glpiactiveentities'] = [$entity->getID()];
+        $ticket3 = getItemByTypeName(\Ticket::getType(), '_ticket03');
+        $kbs = \KnowbaseItem_Item::getItems($ticket3);
+        $this->array($kbs)->hasSize(2);
 
-      $ticket3 = getItemByTypeName(\Ticket::getType(), '_ticket03');
-      $kbs = \KnowbaseItem_Item::getItems($ticket3);
-      $this->array($kbs)->hasSize(2);
+        $entity = getItemByTypeName(\Entity::getType(), '_test_child_2');
+        $_SESSION['glpiactiveentities'] = [$entity->getID()];
 
-      $entity = getItemByTypeName(\Entity::getType(), '_test_child_2');
-      $_SESSION['glpiactiveentities'] = [$entity->getID()];
+        $ticket3 = getItemByTypeName(\Ticket::getType(), '_ticket03');
+        $kbs = \KnowbaseItem_Item::getItems($ticket3);
+        $this->array($kbs)->hasSize(0);
 
-      $ticket3 = getItemByTypeName(\Ticket::getType(), '_ticket03');
-      $kbs = \KnowbaseItem_Item::getItems($ticket3);
-      $this->array($kbs)->hasSize(0);
+        $_SESSION['glpishowallentities'] = 1;
+        unset($_SESSION['glpiactiveentities']);
+    }
 
-      $_SESSION['glpishowallentities'] = 1;
-      unset($_SESSION['glpiactiveentities']);
-   }
+    public function testGetTabNameForItem()
+    {
+        $this->login();
+        $kb_item = new \KnowbaseItem_Item();
+        $kb1 = getItemByTypeName(\KnowbaseItem::getType(), '_knowbaseitem01');
 
-   public function testGetTabNameForItem() {
-       $this->login();
-       $kb_item = new \KnowbaseItem_Item();
-       $kb1 = getItemByTypeName(\KnowbaseItem::getType(), '_knowbaseitem01');
+        $_SESSION['glpishow_count_on_tabs'] = 1;
+        $name = $kb_item->getTabNameForItem($kb1);
+        $this->string($name)->isIdenticalTo('Associated elements <sup class=\'tab_nb\'>3</sup>');
 
-       $_SESSION['glpishow_count_on_tabs'] = 1;
-       $name = $kb_item->getTabNameForItem($kb1);
-       $this->string($name)->isIdenticalTo('Associated elements <sup class=\'tab_nb\'>3</sup>');
+        $_SESSION['glpishow_count_on_tabs'] = 0;
+        $name = $kb_item->getTabNameForItem($kb1);
+        $this->string($name)->isIdenticalTo('Associated elements');
 
-       $_SESSION['glpishow_count_on_tabs'] = 0;
-       $name = $kb_item->getTabNameForItem($kb1);
-       $this->string($name)->isIdenticalTo('Associated elements');
+        $ticket3 = getItemByTypeName(\Ticket::getType(), '_ticket03');
 
-       $ticket3 = getItemByTypeName(\Ticket::getType(), '_ticket03');
+        $_SESSION['glpishow_count_on_tabs'] = 1;
+        $name = $kb_item->getTabNameForItem($ticket3, true);
+        $this->string($name)->isIdenticalTo('Knowledge base <sup class=\'tab_nb\'>2</sup>');
 
-       $_SESSION['glpishow_count_on_tabs'] = 1;
-       $name = $kb_item->getTabNameForItem($ticket3, true);
-       $this->string($name)->isIdenticalTo('Knowledge base <sup class=\'tab_nb\'>2</sup>');
+        $name = $kb_item->getTabNameForItem($ticket3);
+        $this->string($name)->isIdenticalTo('Knowledge base <sup class=\'tab_nb\'>2</sup>');
 
-       $name = $kb_item->getTabNameForItem($ticket3);
-       $this->string($name)->isIdenticalTo('Knowledge base <sup class=\'tab_nb\'>2</sup>');
-
-       $_SESSION['glpishow_count_on_tabs'] = 0;
-       $name = $kb_item->getTabNameForItem($ticket3);
-       $this->string($name)->isIdenticalTo('Knowledge base');
-   }
+        $_SESSION['glpishow_count_on_tabs'] = 0;
+        $name = $kb_item->getTabNameForItem($ticket3);
+        $this->string($name)->isIdenticalTo('Knowledge base');
+    }
 }

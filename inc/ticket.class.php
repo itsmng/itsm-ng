@@ -5104,7 +5104,7 @@ class Ticket extends CommonITILObject
                      'hooks' => [
                          'change' => $this->isNewID($ID) ? 'this.form.submit();' : ''
                      ],
-                     'init' => (function() use ($ID, $CFG_GLPI) {
+                     'init' => (function () use ($ID, $CFG_GLPI) {
                          $isNewJS = $this->isNewID($ID) ? 'true' : 'false';
                          return <<<JS
                     $('#dropdownForTicketCategory').val('');

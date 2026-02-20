@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -36,24 +37,25 @@ use DbTestCase;
 
 /* Test for inc/problem.class.php */
 
-class Problem extends DbTestCase {
+class Problem extends DbTestCase
+{
+    public function testAddFromItem()
+    {
+        // add problem from a computer
+        $computer   = getItemByTypeName('Computer', '_test_pc01');
+        $problem     = new \Problem();
+        $problems_id = $problem->add([
+           'name'           => "test add from computer \'_test_pc01\'",
+           'content'        => "test add from computer \'_test_pc01\'",
+           '_add_from_item' => true,
+           '_from_itemtype' => 'Computer',
+           '_from_items_id' => $computer->getID(),
+        ]);
+        $this->integer($problems_id)->isGreaterThan(0);
+        $this->boolean($problem->getFromDB($problems_id))->isTrue();
 
-   public function testAddFromItem() {
-      // add problem from a computer
-      $computer   = getItemByTypeName('Computer', '_test_pc01');
-      $problem     = new \Problem;
-      $problems_id = $problem->add([
-         'name'           => "test add from computer \'_test_pc01\'",
-         'content'        => "test add from computer \'_test_pc01\'",
-         '_add_from_item' => true,
-         '_from_itemtype' => 'Computer',
-         '_from_items_id' => $computer->getID(),
-      ]);
-      $this->integer($problems_id)->isGreaterThan(0);
-      $this->boolean($problem->getFromDB($problems_id))->isTrue();
-
-      // check relation
-      $problem_item = new \Item_Problem;
-      $this->boolean($problem_item->getFromDBForItems($problem, $computer))->isTrue();
-   }
+        // check relation
+        $problem_item = new \Item_Problem();
+        $this->boolean($problem_item->getFromDBForItems($problem, $computer))->isTrue();
+    }
 }

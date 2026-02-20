@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,40 +33,42 @@
 
 namespace tests\units\Glpi\System\Requirement;
 
-class DbEngine extends \GLPITestCase {
+class DbEngine extends \GLPITestCase
+{
+    protected function versionProvider()
+    {
+        return [
+           [
+              'version'   => '5.6.46-log',
+              'validated' => true,
+              'messages'  => ['Database version seems correct (5.6.46) - Perfect!']
+           ],
+           [
+              'version'   => '10.4.8-MariaDB-1:10.4.8+maria~bionic',
+              'validated' => true,
+              'messages'  => ['Database version seems correct (10.4.8) - Perfect!']
+           ],
+           [
+              'version'   => '5.5.38-0ubuntu0.14.04.1',
+              'validated' => false,
+              'messages'  => ['Your database engine version seems too old: 5.5.38.']
+           ],
+        ];
+    }
 
-   protected function versionProvider() {
-      return [
-         [
-            'version'   => '5.6.46-log',
-            'validated' => true,
-            'messages'  => ['Database version seems correct (5.6.46) - Perfect!']
-         ],
-         [
-            'version'   => '10.4.8-MariaDB-1:10.4.8+maria~bionic',
-            'validated' => true,
-            'messages'  => ['Database version seems correct (10.4.8) - Perfect!']
-         ],
-         [
-            'version'   => '5.5.38-0ubuntu0.14.04.1',
-            'validated' => false,
-            'messages'  => ['Your database engine version seems too old: 5.5.38.']
-         ],
-      ];
-   }
+    /**
+     * @dataProvider versionProvider
+     */
+    public function testCheck(string $version, bool $validated, array $messages)
+    {
 
-   /**
-    * @dataProvider versionProvider
-    */
-   public function testCheck(string $version, bool $validated, array $messages) {
+        $this->mockGenerator->orphanize('__construct');
+        $db = new \mock\DB();
+        $this->calling($db)->getVersion = $version;
 
-      $this->mockGenerator->orphanize('__construct');
-      $db = new \mock\DB();
-      $this->calling($db)->getVersion = $version;
-
-      $this->newTestedInstance($db);
-      $this->boolean($this->testedInstance->isValidated())->isEqualTo($validated);
-      $this->array($this->testedInstance->getValidationMessages())
-         ->isEqualTo($messages);
-   }
+        $this->newTestedInstance($db);
+        $this->boolean($this->testedInstance->isValidated())->isEqualTo($validated);
+        $this->array($this->testedInstance->getValidationMessages())
+           ->isEqualTo($messages);
+    }
 }

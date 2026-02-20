@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -34,8 +35,8 @@ define('GLPI_CONFIG_DIR', __DIR__ . '/config');
 define('GLPI_PICTURE_DIR', __DIR__ . '/files/_pictures');
 
 define(
-   'PLUGINS_DIRECTORIES',
-   [
+    'PLUGINS_DIRECTORIES',
+    [
       __DIR__ . '/fixtures/plugins',
    ]
 );

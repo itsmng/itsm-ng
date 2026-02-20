@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -34,76 +35,80 @@ namespace tests\units;
 
 /* Test for inc/update.class.php */
 
-class Update extends \GLPITestCase {
+class Update extends \GLPITestCase
+{
+    public function testConstructor()
+    {
+        global $DB;
 
-   public function testConstructor() {
-      global $DB;
+        $oldtypes = [
+           'GENERAL_TYPE',
+           'COMPUTER_TYPE',
+           'BUDGET_TYPE',
+           'MOBOARD_DEVICE',
+           'POWER_DEVICE'
+        ];
 
-      $oldtypes = [
-         'GENERAL_TYPE',
-         'COMPUTER_TYPE',
-         'BUDGET_TYPE',
-         'MOBOARD_DEVICE',
-         'POWER_DEVICE'
-      ];
+        foreach ($oldtypes as $oldtype) {
+            $this->boolean(defined($oldtype))->isFalse();
+        }
 
-      foreach ($oldtypes as $oldtype) {
-         $this->boolean(defined($oldtype))->isFalse();
-      }
+        $update = new \Update($DB);
 
-      $update = new \Update($DB);
+        //old types are now defined
+        foreach ($oldtypes as $oldtype) {
+            $this->boolean(defined($oldtype))->isTrue();
+        }
+    }
 
-      //old types are now defined
-      foreach ($oldtypes as $oldtype) {
-         $this->boolean(defined($oldtype))->isTrue();
-      }
-   }
+    public function testCurrents()
+    {
+        global $DB;
+        $update = new \Update($DB);
 
-   public function testCurrents() {
-      global $DB;
-      $update = new \Update($DB);
+        $expected = [
+           'dbversion' => \ITSM_SCHEMA_VERSION,
+           'language'  => 'en_GB',
+           'version'   => \ITSM_VERSION,
+           'itsmversion' => \ITSM_VERSION,
+           'itsmdbversion' => \ITSM_SCHEMA_VERSION
+        ];
+        $this->array($update->getCurrents())->isEqualTo($expected);
+    }
 
-      $expected = [
-         'dbversion' => \ITSM_SCHEMA_VERSION,
-         'language'  => 'en_GB',
-		 'version'   => \ITSM_VERSION,
-		 'itsmversion' => \ITSM_VERSION,
-		 'itsmdbversion' => \ITSM_SCHEMA_VERSION
-      ];
-      $this->array($update->getCurrents())->isEqualTo($expected);
-   }
+    public function testInitSession()
+    {
+        global $DB;
 
-   public function testInitSession() {
-      global $DB;
+        $update = new \Update($DB);
+        session_destroy();
+        $this->variable(session_status())->isIdenticalTo(PHP_SESSION_NONE);
 
-      $update = new \Update($DB);
-      session_destroy();
-      $this->variable(session_status())->isIdenticalTo(PHP_SESSION_NONE);
+        $update->initSession();
+        $this->variable(session_status())->isIdenticalTo(PHP_SESSION_ACTIVE);
 
-      $update->initSession();
-      $this->variable(session_status())->isIdenticalTo(PHP_SESSION_ACTIVE);
+        $this->array($_SESSION)->hasKeys([
+           'glpilanguage',
+           'glpi_currenttime'
+        ])->notHasKeys([
+           'glpi_use_mode',
+           'debug_sql',
+           'debug_vars',
+           'use_log_in_files'
+        ]);
+    }
 
-      $this->array($_SESSION)->hasKeys([
-         'glpilanguage',
-         'glpi_currenttime'
-      ])->notHasKeys([
-         'glpi_use_mode',
-         'debug_sql',
-         'debug_vars',
-         'use_log_in_files'
-      ]);
-   }
+    public function testSetMigration()
+    {
+        global $DB;
+        $update = new \Update($DB);
+        $migration = null;
+        $this->output(
+            function () use (&$migration) {
+                $migration = new \Migration(\ITSM_VERSION);
+            }
+        )->isEmpty();
 
-   public function testSetMigration() {
-      global $DB;
-      $update = new \Update($DB);
-      $migration = null;
-      $this->output(
-         function () use (&$migration) {
-            $migration = new \Migration(\ITSM_VERSION);
-         }
-      )->isEmpty();
-
-      $this->object($update->setMigration($migration))->isInstanceOf('Update');
-   }
+        $this->object($update->setMigration($migration))->isInstanceOf('Update');
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  * GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,45 +33,48 @@
 
 namespace tests\units;
 
-use \DbTestCase;
+use DbTestCase;
 
 /* Test for inc/savedsearch.class.php */
 
-class SavedSearch extends DbTestCase {
+class SavedSearch extends DbTestCase
+{
+    public function testAddVisibilityRestrict()
+    {
+        //first, as a super-admin
+        $this->login();
+        $this->string(\SavedSearch::addVisibilityRestrict())
+           ->isIdenticalTo('');
 
-   public function testAddVisibilityRestrict() {
-      //first, as a super-admin
-      $this->login();
-      $this->string(\SavedSearch::addVisibilityRestrict())
-         ->isIdenticalTo('');
+        $this->login('normal', 'normal');
+        $this->string(\SavedSearch::addVisibilityRestrict())
+           ->isIdenticalTo("`glpi_savedsearches`.`is_private` = '1' AND `glpi_savedsearches`.`users_id` = '5'");
 
-      $this->login('normal', 'normal');
-      $this->string(\SavedSearch::addVisibilityRestrict())
-         ->isIdenticalTo("`glpi_savedsearches`.`is_private` = '1' AND `glpi_savedsearches`.`users_id` = '5'");
-
-      //add public saved searches read right for normal profile
-      global $DB;
-      $DB->update(
-         'glpi_profilerights',
-         ['rights' => 1], [
-            'profiles_id'  => 2,
-            'name'         => 'bookmark_public'
+        //add public saved searches read right for normal profile
+        global $DB;
+        $DB->update(
+            'glpi_profilerights',
+            ['rights' => 1],
+            [
+              'profiles_id'  => 2,
+              'name'         => 'bookmark_public'
          ]
-      );
+        );
 
-      //ACLs have changed: login again.
-      $this->login('normal', 'normal');
+        //ACLs have changed: login again.
+        $this->login('normal', 'normal');
 
-      //reset rights. Done here so ACLs are reset even if tests fails.
-      $DB->update(
-         'glpi_profilerights',
-         ['rights' => 0], [
-            'profiles_id'  => 2,
-            'name'         => 'bookmark_public'
+        //reset rights. Done here so ACLs are reset even if tests fails.
+        $DB->update(
+            'glpi_profilerights',
+            ['rights' => 0],
+            [
+              'profiles_id'  => 2,
+              'name'         => 'bookmark_public'
          ]
-      );
+        );
 
-      $this->string(\SavedSearch::addVisibilityRestrict())
-         ->isIdenticalTo("((`glpi_savedsearches`.`is_private` = '1' AND `glpi_savedsearches`.`users_id` = '5') OR `glpi_savedsearches`.`is_private` = '0')");
-   }
+        $this->string(\SavedSearch::addVisibilityRestrict())
+           ->isIdenticalTo("((`glpi_savedsearches`.`is_private` = '1' AND `glpi_savedsearches`.`users_id` = '5') OR `glpi_savedsearches`.`is_private` = '0')");
+    }
 }
