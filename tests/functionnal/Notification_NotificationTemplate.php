@@ -122,7 +122,40 @@ class Notification_NotificationTemplate extends DbTestCase
 
     public function testShowForForm()
     {
-        $this->skip('showForm() exits in CLI context with access denied page');
+        \ProfileRight::updateProfileRights(
+            4,
+            [
+                'notification'         => READ | UPDATE | CREATE,
+                'notificationtemplate' => READ | UPDATE,
+            ]
+        );
+
+        $this->login();
+
+        $n_nt = new \Notification_NotificationTemplate();
+        $notification = new \Notification();
+        $this->integer(\Session::haveRight('notification', UPDATE))->isGreaterThan(0);
+        $this->integer(\Session::haveRight('notificationtemplate', UPDATE))->isGreaterThan(0);
+
+        $notifications_id = (int)$notification->add([
+            'name'       => __FUNCTION__,
+            'itemtype'   => 'Ticket',
+            'event'      => 'new',
+            'entities_id' => $_SESSION['glpiactive_entity'],
+        ]);
+        $this->integer($notifications_id)->isGreaterThan(0);
+        $this->boolean($notification->can($notifications_id, UPDATE))->isTrue();
+
+        $input = ['notifications_id' => $notifications_id];
+        $this->boolean($n_nt->can(-1, CREATE, $input))->isTrue();
+
+        $this->output(
+            function () use ($n_nt, $notifications_id) {
+                $n_nt->showForm(0, ['notifications_id' => $notifications_id]);
+            }
+        )->contains('<form')
+           ->contains('name="mode"')
+           ->contains('show_templates');
     }
 
     public function testGetMode()
