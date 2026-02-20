@@ -42,8 +42,11 @@ jobs:
 
       - name: Load timezone data
         run: |
-          mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -h 127.0.0.1 -u root -p$DB_PASSWORD mysql
-          mysql -h 127.0.0.1 -u root -p$DB_PASSWORD -e "GRANT SELECT ON mysql.time_zone_name TO '$DB_USER'@'%'; FLUSH PRIVILEGES;"
+          MARIADB_CONTAINER=$(docker ps -q --filter "publish=3306")
+          docker exec "$MARIADB_CONTAINER" \
+            sh -c "mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -uroot -p${DB_PASSWORD} mysql"
+          mysql -h 127.0.0.1 -u root -p$DB_PASSWORD \
+            -e "GRANT SELECT ON mysql.time_zone_name TO '$DB_USER'@'%'; FLUSH PRIVILEGES;"
 
       - name: Install ITSM-ng
         run: php bin/console itsmng:database:install --config-dir=${{ github.workspace }}/tests/config -H 127.0.0.1 -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE -n
