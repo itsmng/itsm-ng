@@ -40,6 +40,11 @@ jobs:
       - name: Run composer install
         run: export NODE_OPTIONS=--openssl-legacy-provider && php bin/console dependencies install
 
+      - name: Load timezone data
+        run: |
+          mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -h 127.0.0.1 -u root -p$DB_PASSWORD mysql
+          mysql -h 127.0.0.1 -u root -p$DB_PASSWORD -e "GRANT SELECT ON mysql.time_zone_name TO '$DB_USER'@'%'; FLUSH PRIVILEGES;"
+
       - name: Install ITSM-ng
         run: php bin/console itsmng:database:install --config-dir=${{ github.workspace }}/tests/config -H 127.0.0.1 -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE -n
 
