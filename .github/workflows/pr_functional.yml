@@ -44,7 +44,7 @@ jobs:
         run: |
           MARIADB_CONTAINER=$(docker ps -q --filter "publish=3306")
           docker exec "$MARIADB_CONTAINER" \
-            sh -c "mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -uroot -p${DB_PASSWORD} mysql"
+            bash -c "mariadb-tzinfo-to-sql /usr/share/zoneinfo | mariadb -uroot -p${DB_PASSWORD} mysql"
           mysql -h 127.0.0.1 -u root -p$DB_PASSWORD \
             -e "GRANT SELECT ON mysql.time_zone_name TO '$DB_USER'@'%'; FLUSH PRIVILEGES;"
 
