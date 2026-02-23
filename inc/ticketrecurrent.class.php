@@ -385,7 +385,7 @@ class TicketRecurrent extends CommonDropdown
             return 'NULL';
         }
 
-        $has_end_date = false !== DateTime::createFromFormat('Y-m-d H:i:s', $end_date);
+        $has_end_date = false !== DateTime::createFromFormat('Y-m-d H:i:s', $end_date ?? '');
         if ($has_end_date && strtotime($end_date) < $now) {
             // End date is in past.
             return 'NULL';

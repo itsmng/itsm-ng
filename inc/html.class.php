@@ -263,7 +263,7 @@ class Html
     {
 
         return (is_array($value) ? array_map([__CLASS__, 'entities_deep'], $value)
-            : htmlentities($value, ENT_QUOTES, "UTF-8"));
+            : htmlentities($value ?? '', ENT_QUOTES, "UTF-8"));
     }
 
 

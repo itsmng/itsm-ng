@@ -990,7 +990,7 @@ class MailCollector extends CommonDBTM
         // See in title
         if (
             !isset($tkt['tickets_id'])
-            && preg_match('/\[.+#(\d+)\]/', $subject, $match)
+            && preg_match('/\[.+#(\d+)\]/', $subject ?? '', $match)
         ) {
             $tkt['tickets_id'] = intval($match[1]);
         }
@@ -1192,7 +1192,7 @@ class MailCollector extends CommonDBTM
     **/
     public function cleanSubject($text)
     {
-        $text = str_replace("=20", "\n", $text);
+        $text = str_replace("=20", "\n", $text ?? '');
         $text =  Toolbox::clean_cross_side_scripting_deep($text);
         return $text;
     }
@@ -1204,9 +1204,15 @@ class MailCollector extends CommonDBTM
         // Encoding not listed
         static $enc = ['gb2312', 'gb18030'];
 
+        // Encodings deprecated in PHP 8.2 that should be skipped
+        static $deprecated_encodings = ['BASE64', 'UUENCODE', 'HTML-ENTITIES', 'Quoted-Printable', 'QPrint'];
+
         if (count($enc) == 2) {
             foreach (mb_list_encodings() as $encoding) {
                 $enc[]   = Toolbox::strtolower($encoding);
+                if (in_array($encoding, $deprecated_encodings)) {
+                    continue;
+                }
                 $aliases = mb_encoding_aliases($encoding);
                 foreach ($aliases as $e) {
                     $enc[] = Toolbox::strtolower($e);

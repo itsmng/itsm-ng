@@ -154,7 +154,7 @@ class Toolbox
     **/
     public static function strlen($str)
     {
-        return mb_strlen($str, "UTF-8");
+        return mb_strlen($str ?? '', "UTF-8");
     }
 
 
@@ -212,7 +212,7 @@ class Toolbox
     **/
     public static function seems_utf8($str)
     {
-        return mb_check_encoding($str, "UTF-8");
+        return mb_check_encoding($str ?? '', "UTF-8");
     }
 
 
@@ -3239,7 +3239,7 @@ class Toolbox
     public static function endsWith($haystack, $needle)
     {
         $length = strlen($needle);
-        return $length === 0 || (substr($haystack, -$length) === $needle);
+        return $length === 0 || (substr($haystack ?? '', -$length) === $needle);
     }
 
     /**
@@ -3392,7 +3392,7 @@ class Toolbox
         while ((int) $index > 0) {
             $index--;
             $bij_str = chr($index % 26 + ord("A")) . $bij_str;
-            $index /= 26;
+            $index = (int)($index / 26);
         }
         return $bij_str;
     }
@@ -3435,7 +3435,7 @@ class Toolbox
             return false;
         }
 
-        $filename     = uniqid($uniq_prefix);
+        $filename     = uniqid($uniq_prefix ?? '');
         $ext          = pathinfo($src, PATHINFO_EXTENSION);
         $subdirectory = substr($filename, -2); // subdirectory based on last 2 hex digit
 
