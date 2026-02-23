@@ -83,7 +83,7 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
 
         return [
            'email'     => $CFG_GLPI['admin_email'],
-           'name'      => $CFG_GLPI['admin_email_name'],
+           'name'      => $CFG_GLPI['admin_email_name'] ?? '',
            'language'  => $CFG_GLPI['language']
         ];
     }
@@ -105,7 +105,7 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                 $admins[] = [
                    'language'  => $CFG_GLPI['language'],
                    'email'     => $row['admin_email'],
-                   'name'      => $row['admin_email_name']
+                   'name'      => $row['admin_email_name'] ?? ''
                 ];
             }
         }

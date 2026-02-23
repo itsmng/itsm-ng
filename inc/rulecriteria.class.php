@@ -448,7 +448,7 @@ class RuleCriteria extends CommonDBChild
                 if (empty($pattern)) {
                     return false;
                 }
-                $value = mb_stripos($field, $pattern, 0, 'UTF-8');
+                $value = mb_stripos($field ?? '', $pattern, 0, 'UTF-8');
                 if (($value !== false) && ($value == 0)) {
                     $criterias_results[$criteria] = $pattern;
                     return true;
@@ -459,7 +459,7 @@ class RuleCriteria extends CommonDBChild
                 if (empty($pattern)) {
                     return false;
                 }
-                $value = mb_stripos($field, $pattern, 0, 'UTF-8');
+                $value = mb_stripos($field ?? '', $pattern, 0, 'UTF-8');
                 if (($value !== false) && ($value >= 0)) {
                     $criterias_results[$criteria] = $pattern;
                     return true;

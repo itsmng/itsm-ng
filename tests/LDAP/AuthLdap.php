@@ -1075,7 +1075,7 @@ class AuthLDAP extends DbTestCase
                 $ldap->connect(),
                 'uid=ecuador0,ou=people,ou=ldap3,dc=glpi,dc=org',
                 'uid=testecuador',
-                null,
+                '',
                 true
             )
         )->isTrue();
@@ -1088,7 +1088,7 @@ class AuthLDAP extends DbTestCase
                 $ldap->connect(),
                 'uid=testecuador,ou=people,ou=ldap3,dc=glpi,dc=org',
                 'uid=ecuador0',
-                null,
+                '',
                 true
             )
         )->isTrue();
@@ -1183,7 +1183,7 @@ class AuthLDAP extends DbTestCase
                 $ldap->connect(),
                 'uid=brazil7,ou=people,ou=ldap3,dc=glpi,dc=org',
                 'uid=brazil7test',
-                null,
+                '',
                 true
             )
         )->isTrue();
@@ -1197,7 +1197,7 @@ class AuthLDAP extends DbTestCase
                 $ldap->connect(),
                 'uid=brazil7test,ou=people,ou=ldap3,dc=glpi,dc=org',
                 'uid=brazil7',
-                null,
+                '',
                 true
             )
         )->isTrue();

@@ -32,7 +32,7 @@
  */
 
 ini_set('display_errors', 'On');
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+error_reporting(E_ALL);
 
 define('GLPI_ROOT', __DIR__ . '/../');
 define('GLPI_CONFIG_DIR', getenv('GLPI_CONFIG_DIR') ?: __DIR__ . '/config');
