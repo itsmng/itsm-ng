@@ -14940,6 +14940,10 @@ msgctxt "button"
 msgid "Associate an existing document"
 msgstr "Associer un document existant"
 
+#: inc/document_item.class.php:813
+msgid "Associate an existing document"
+msgstr "Associer un document existant"
+
 #. TRANS: software in plural
 #. TRANS: plural for software
 #: inc/ruledictionnarysoftwarecollection.class.php:52
