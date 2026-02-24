@@ -239,7 +239,7 @@ class Computer_Item extends CommonDBRelation
         array &$actions,
         $itemtype,
         $is_deleted = 0,
-        CommonDBTM $checkitem = null
+        ?CommonDBTM $checkitem = null
     ) {
 
         $action_prefix = __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR;

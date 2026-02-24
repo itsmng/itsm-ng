@@ -121,7 +121,7 @@ class CommonGLPI
      *
      * @return boolean
     **/
-    public function can($ID, $right, array &$input = null)
+    public function can($ID, $right, ?array &$input = null)
     {
         switch ($right) {
             case READ:

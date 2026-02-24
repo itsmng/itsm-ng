@@ -532,7 +532,7 @@ abstract class CommonDBConnexity extends CommonDBTM
         array &$actions,
         $itemtype,
         $is_deleted = 0,
-        CommonDBTM $checkitem = null
+        ?CommonDBTM $checkitem = null
     ) {
 
         $unaffect = false;

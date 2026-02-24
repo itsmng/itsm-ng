@@ -4823,6 +4823,39 @@ class Ticket extends CommonITILObject
             $options['_promoted_fup_id'] = 0;
         }
 
+        $promoted_fup = new ITILFollowup();
+        if ($promoted_fup->getFromDB($options['_promoted_fup_id'])) {
+            $this->fields['content'] = $promoted_fup->fields['content'];
+            if ($promoted_fup->getField('itemtype') === Ticket::getType()) {
+                $parent_ticket_id = (int)$promoted_fup->getField('items_id');
+                if ($parent_ticket_id > 0) {
+                    $default_link_ticket_id = 0;
+                    $default_link_relation = null;
+                    if (!empty($options['_link']['tickets_id_2'])) {
+                        $default_link_ticket_id = (int)$options['_link']['tickets_id_2'];
+                        $default_link_relation = $options['_link']['link'] ?? null;
+                    } else {
+                        $options['_link'] = [
+                           'link' => Ticket_Ticket::SON_OF,
+                           'tickets_id_2' => $parent_ticket_id
+                        ];
+                        $default_link_ticket_id = $parent_ticket_id;
+                        $default_link_relation = Ticket_Ticket::SON_OF;
+                    }
+                    if ($default_link_ticket_id > 0) {
+                        $options['_default_link_relation'] = $default_link_relation;
+                        $options['_default_link_ticket_id'] = $default_link_ticket_id;
+                        $parent_ticket = new Ticket();
+                        if ($parent_ticket->getFromDB($default_link_ticket_id)) {
+                            $options['_default_link_ticket_label'] = $parent_ticket->getNameID(['forceid' => true]);
+                        } else {
+                            $options['_default_link_ticket_label'] = (string)$default_link_ticket_id;
+                        }
+                    }
+                }
+            }
+        }
+
         // Load template if available :
         $tt = $this->getITILTemplateToUse(
             $options['template_preview'],
@@ -5266,6 +5299,9 @@ class Ticket extends CommonITILObject
                         Ticket_Ticket::SON_OF => __('Son of'),
                         Ticket_Ticket::PARENT_OF => __('Parent of'),
                      ],
+                     'default_relation' => $options['_default_link_relation'] ?? null,
+                     'default_ticket_id' => $options['_default_link_ticket_id'] ?? null,
+                     'default_ticket_label' => $options['_default_link_ticket_label'] ?? null,
                      'options' => getOptionForItems('Ticket', ['is_deleted' => 0, 'NOT' => ['id' => $ID]]),
                      'values' => Ticket_Ticket::getLinkedTicketsTo($ID),
                      $canupdate ? '' : 'disabled' => '',
