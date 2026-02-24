@@ -1,10 +1,13 @@
 {% macro ticketSelect(attributes, root_doc) %}
+  {% set default_relation = attributes.default_relation|default('') %}
+  {% set default_ticket_id = attributes.default_ticket_id|default('') %}
+  {% set default_ticket_label = attributes.default_ticket_label|default('') %}
   <div {% if attributes.id %} id="{{attributes.id}}" {% endif %} class="w-100">
     <input type="hidden" name="{{attributes.name|default('')}}" value="[]">
     <div class="input-group m-0">
       <select aria-label="Ticket Relation Selector" class="form-select" id="TicketRelationSelector_{{rand}}" name="_link[link]">
         {% for value, name in attributes.relations %}
-          <option value="{{value}}">{{name|raw}}
+          <option value="{{value}}" {% if default_relation is not empty and default_relation == value %}selected="selected"{% endif %}>{{name|raw}}
         {% endfor %}
       </select>
       <input type="hidden" name="_link[tickets_id_1]" value="{{attributes.ticket_id}}">
@@ -12,6 +15,7 @@
           attributes: {
               'name': '_link[tickets_id_2]',
               'id': 'TicketSelector_' ~ rand,
+              'value': default_ticket_id,
               'ajax': {
                   'url': root_doc ~ '/ajax/getDropdownValue.php',
                   'type': 'POST',
@@ -72,6 +76,11 @@
       newSelection = [...selection, {type: '{{actor.type}}', id: '{{actor.id}}'}];
       $('input[name="{{attributes.name|default('')}}"]').val(JSON.stringify(newSelection));
     {% endfor %}
+
+    {% if default_ticket_id is not empty and default_ticket_label is not empty %}
+      const defaultOption = new Option('{{ default_ticket_label|e('js') }}', '{{ default_ticket_id|e('js') }}', true, true);
+      $('#TicketSelector_{{rand}}').append(defaultOption).trigger('change');
+    {% endif %}
   })
   </script>
 {% endmacro %}

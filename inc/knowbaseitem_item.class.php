@@ -507,7 +507,7 @@ class KnowbaseItem_Item extends CommonDBRelation
         array &$actions,
         $itemtype,
         $is_deleted = 0,
-        CommonDBTM $checkitem = null
+        ?CommonDBTM $checkitem = null
     ) {
 
         $kb_item = new KnowbaseItem();

@@ -3112,7 +3112,7 @@ class CommonDBTM extends CommonGLPI
      *
      * @return boolean
     **/
-    public function can($ID, $right, array &$input = null)
+    public function can($ID, $right, ?array &$input = null)
     {
         // Clean ID :
         $ID = Toolbox::cleanInteger($ID);
@@ -3240,7 +3240,7 @@ class CommonDBTM extends CommonGLPI
      *
      * @return void
     **/
-    public function check($ID, $right, array &$input = null)
+    public function check($ID, $right, ?array &$input = null)
     {
 
         // Check item exists
@@ -4148,7 +4148,7 @@ class CommonDBTM extends CommonGLPI
         array &$actions,
         $itemtype,
         $is_deleted = 0,
-        CommonDBTM $checkitem = null
+        ?CommonDBTM $checkitem = null
     ) {
     }
 
