@@ -6121,7 +6121,7 @@ JAVASCRIPT;
                         $added         = [];
                         for ($k = 0; $k < $data[$ID]['count']; $k++) {
                             if (
-                                strlen(trim($data[$ID][$k]['name'] ?? '')) > 0
+                                strlen(trim((string)($data[$ID][$k]['name'] ?? ''))) > 0
                                 && !in_array(
                                     $data[$ID][$k]['name'] . "-" . $data[$ID][$k]['entities_id'],
                                     $added
@@ -6168,7 +6168,7 @@ JAVASCRIPT;
                         for ($k = 0; $k < $data[$ID]['count']; $k++) {
                             if (
                                 isset($data[$ID][$k]['name'])
-                                && (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0)
+                                && (strlen(trim((string)($data[$ID][$k]['name'] ?? ''))) > 0)
                                 && !in_array(
                                     $data[$ID][$k]['name'] . "-" . $data[$ID][$k]['profiles_id'],
                                     $added
@@ -6817,7 +6817,7 @@ JAVASCRIPT;
                     $out           = '';
                     $count_display = 0;
                     for ($k = 0; $k < $data[$ID]['count']; $k++) {
-                        if (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0) {
+                        if (strlen(trim((string)($data[$ID][$k]['name'] ?? ''))) > 0) {
                             if ($count_display) {
                                 $out .= $separate;
                             }
@@ -6946,7 +6946,7 @@ JAVASCRIPT;
                     $out           = "";
                     $count_display = 0;
                     for ($k = 0; $k < $data[$ID]['count']; $k++) {
-                        if (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0) {
+                        if (strlen(trim((string)($data[$ID][$k]['name'] ?? ''))) > 0) {
                             if ($count_display) {
                                 $out .= self::LBBR;
                             }
@@ -6967,7 +6967,7 @@ JAVASCRIPT;
                     $out           = "";
                     $count_display = 0;
                     for ($k = 0; $k < $data[$ID]['count']; $k++) {
-                        if (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0) {
+                        if (strlen(trim((string)($data[$ID][$k]['name'] ?? ''))) > 0) {
                             if ($count_display) {
                                 $out .= self::LBBR;
                             }
@@ -6988,7 +6988,7 @@ JAVASCRIPT;
                     $out           = "";
                     $count_display = 0;
                     for ($k = 0; $k < $data[$ID]['count']; $k++) {
-                        if (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0) {
+                        if (strlen(trim((string)($data[$ID][$k]['name'] ?? ''))) > 0) {
                             if ($count_display) {
                                 $out .= self::LBBR;
                             }
@@ -7039,7 +7039,7 @@ JAVASCRIPT;
             $separate = self::LBHR;
         }
         for ($k = 0; $k < $data[$ID]['count']; $k++) {
-            if (strlen(trim($data[$ID][$k]['name'] ?? '')) > 0) {
+            if (strlen(trim((string)($data[$ID][$k]['name'] ?? ''))) > 0) {
                 if ($count_display) {
                     $out .= $separate;
                 }
