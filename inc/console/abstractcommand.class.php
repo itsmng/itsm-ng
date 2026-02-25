@@ -171,7 +171,7 @@ abstract class AbstractCommand extends Command implements GlpiCommandInterface
             }
 
             foreach ($_SESSION['MESSAGE_AFTER_REDIRECT'][$key] as $message) {
-                $message = strip_tags(preg_replace('/<br\s*\/?>/', ' ', $message)); // Output raw text
+                $message = strip_tags((string) preg_replace('/<br\s*\/?>/', ' ', (string) $message)); // Output raw text
                 $this->output->writeln(
                     "<{$options['tag']}>{$message}</{$options['tag']}>",
                     $options['verbosity']

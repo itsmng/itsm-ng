@@ -159,8 +159,8 @@ class Log extends CommonDBTM
                             // Separator is not encoded in DB, and it could not be changed as this is mandatory to be able to split tree
                             // correctly even if some tree elements are containing ">" char in their name (this one will be encoded).
                             $separator = ' > ';
-                            $oldval = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, $oldval));
-                            $values[$key] = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, $values[$key]));
+                            $oldval = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, (string) $oldval));
+                            $values[$key] = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, (string) $values[$key]));
                         }
                         $changes = [$id_search_option, addslashes($oldval ?? ''), $values[$key]];
                     } else {
@@ -244,8 +244,8 @@ class Log extends CommonDBTM
             );
         }
 
-        $old_value = Toolbox::substr(stripslashes($old_value), 0, 180);
-        $new_value = Toolbox::substr(stripslashes($new_value), 0, 180);
+        $old_value = Toolbox::substr(stripslashes((string) $old_value), 0, 180);
+        $new_value = Toolbox::substr(stripslashes((string) $new_value), 0, 180);
 
         // Security to be sure that values do not pass over the max length
         if (Toolbox::strlen($old_value) > 255) {
@@ -901,7 +901,7 @@ class Log extends CommonDBTM
                         $key = 'linked_action::' . self::HISTORY_UPDATE_DEVICE . ';'
                            . 'itemtype_link::' . $data['itemtype_link'] . ';';
 
-                        $linktype_field = explode('#', $data["itemtype_link"]);
+                        $linktype_field = explode('#', (string) $data["itemtype_link"]);
                         $linktype       = $linktype_field[0];
                         $field          = $linktype_field[1];
                         $devicetype     = $linktype::getDeviceType();
@@ -1192,7 +1192,7 @@ class Log extends CommonDBTM
             $affected_field_crit = [];
             foreach ($filters['affected_fields'] as $index => $affected_field) {
                 $affected_field_crit[$index] = [];
-                foreach (explode(";", $affected_field) as $var) {
+                foreach (explode(";", (string) $affected_field) as $var) {
                     if (1 === preg_match('/^(?P<key>.+):(?P<operator>.*):(?P<values>.+)$/', $var, $matches)) {
                         $key = $matches['key'];
                         $operator = $matches['operator'];
@@ -1201,7 +1201,7 @@ class Log extends CommonDBTM
 
                         // linked_action and id_search_option are stored as integers
                         if (in_array($key, ['linked_action', 'id_search_option'])) {
-                            $values = array_map('intval', $values);
+                            $values = array_map(intval(...), $values);
                         }
 
                         if (!empty($operator)) {

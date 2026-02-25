@@ -432,7 +432,7 @@ abstract class CommonITILActor extends CommonDBRelation
                         break;
                 }
                 // example for event: assign_group
-                $event = $string_type . "_" . strtolower($this::$itemtype_2);
+                $event = $string_type . "_" . strtolower((string) $this::$itemtype_2);
                 NotificationEvent::raiseEvent($event, $item);
             }
         }

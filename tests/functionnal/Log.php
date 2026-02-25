@@ -444,7 +444,7 @@ class Log extends DbTestCase
         $previous_value = null;
         foreach ($result as $key => $value) {
             if (null !== $previous_value) {
-                $this->boolean('Others' === $value || strcmp($previous_value, $value) < 0)->isTrue();
+                $this->boolean('Others' === $value || strcmp($previous_value, (string) $value) < 0)->isTrue();
             }
 
             $previous_value = $value;
@@ -529,7 +529,7 @@ class Log extends DbTestCase
         $previous_value = null;
         foreach ($result as $key => $value) {
             if (null !== $previous_value) {
-                $this->boolean('Others' === $value || strcmp($previous_value, $value) < 0)->isTrue();
+                $this->boolean('Others' === $value || strcmp($previous_value, (string) $value) < 0)->isTrue();
             }
 
             $previous_value = $value;

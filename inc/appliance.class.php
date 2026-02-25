@@ -531,7 +531,7 @@ class Appliance extends CommonDBTM
         array &$actions,
         $itemtype,
         $is_deleted = 0,
-        CommonDBTM $checkitem = null
+        ?CommonDBTM $checkitem = null
     ) {
         if (in_array($itemtype, self::getTypes())) {
             if (self::canUpdate()) {

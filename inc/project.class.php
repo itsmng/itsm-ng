@@ -2020,9 +2020,9 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                             $temp = ['name'   => $val['link'],
                                           'desc'   => '',
                                           'values' => [['from'
-                                                                   => "/Date(" . strtotime($val['from']) . "000)/",
+                                                                   => "/Date(" . strtotime((string) $val['from']) . "000)/",
                                                                   'to'
-                                                                   => "/Date(" . strtotime($val['to']) . "000)/",
+                                                                   => "/Date(" . strtotime((string) $val['to']) . "000)/",
                                                                   'desc'
                                                                    => $val['desc'],
                                                                 'label'
@@ -2039,9 +2039,9 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                             $temp = ['name'   => ' ',
                                           'desc'   => str_repeat('-', $val['parents']) . $val['link'],
                                           'values' => [['from'
-                                                                   => "/Date(" . strtotime($val['from']) . "000)/",
+                                                                   => "/Date(" . strtotime((string) $val['from']) . "000)/",
                                                                   'to'
-                                                                   => "/Date(" . strtotime($val['to']) . "000)/",
+                                                                   => "/Date(" . strtotime((string) $val['to']) . "000)/",
                                                                   'desc'
                                                                    => $val['desc'],
                                                                   'label'

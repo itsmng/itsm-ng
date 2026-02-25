@@ -225,7 +225,7 @@ class CronTask extends CommonDBTM
         }
 
         if (isCommandLine() && function_exists('pcntl_signal')) {
-            pcntl_signal(SIGTERM, [$this, 'signal']);
+            pcntl_signal(SIGTERM, $this->signal(...));
         }
 
         $result = $DB->update(
@@ -569,7 +569,7 @@ class CronTask extends CommonDBTM
 
     public function getNextRunTime()
     {
-        $next = strtotime($this->fields['lastrun']) + $this->fields['frequency'];
+        $next = strtotime((string) $this->fields['lastrun']) + $this->fields['frequency'];
         $hour = date('H', $next);
         $start = ($this->fields['hourmin'] < 10 ? "0" . $this->fields['hourmin']
             : $this->fields['hourmin']);
@@ -1470,7 +1470,7 @@ class CronTask extends CommonDBTM
                         echo "<td>" . __('Start') . "</td>";
                         // Pass content to gettext
                         // implode (Run mode: XXX)
-                        $list = explode(':', $data['content']);
+                        $list = explode(':', (string) $data['content']);
                         if (count($list) == 2) {
                             $content = sprintf('%1$s: %2$s', __($list[0]), $list[1]);
                         }
@@ -1942,7 +1942,7 @@ class CronTask extends CommonDBTM
 
         //first step unlike only file if needed
         foreach ($files as $filename) {
-            if (basename($filename) == "remove.txt" && is_dir(GLPI_ROOT . '/.git')) {
+            if (basename((string) $filename) == "remove.txt" && is_dir(GLPI_ROOT . '/.git')) {
                 continue;
             }
 

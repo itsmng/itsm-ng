@@ -179,7 +179,7 @@ class ObjectLock extends CommonDBTM
     private function getForceUnlockMessage()
     {
 
-        if (isset($_SESSION['glpilocksavedprofile']) && ($_SESSION['glpilocksavedprofile'][strtolower($this->itemtype)] & UNLOCK)) {
+        if (isset($_SESSION['glpilocksavedprofile']) && ($_SESSION['glpilocksavedprofile'][strtolower((string) $this->itemtype)] & UNLOCK)) {
             echo $this->getScriptToUnlock();
             return $this->getForceUnlockButton();
         }

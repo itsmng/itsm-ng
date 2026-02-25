@@ -121,7 +121,7 @@ class CommonGLPI
      *
      * @return boolean
     **/
-    public function can($ID, $right, array &$input = null)
+    public function can($ID, $right, ?array &$input = null)
     {
         switch ($right) {
             case READ:
@@ -929,7 +929,7 @@ class CommonGLPI
             $tabs    = [];
 
             foreach ($onglets as $key => $val) {
-                if ($item = getItemForItemtype(explode("$", $key)[0])) {
+                if ($item = getItemForItemtype(explode("$", (string) $key)[0])) {
                     $shortcut = $item->getShortcutsForItem();
                     if (!count($shortcut)) {
                         $shortcut = false;

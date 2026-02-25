@@ -642,7 +642,7 @@ JAVASCRIPT;
 
         if (isset($_GET["sort"]) && !empty($_GET["sort"])) {
             // manage several param like location,compname : order first
-            $tmp  = explode(",", $_GET["sort"]);
+            $tmp  = explode(",", (string) $_GET["sort"]);
             $sort = "`" . implode("` $order,`", $tmp) . "`";
         } else {
             $sort = "`entity` $order, `itemname`";

@@ -251,7 +251,7 @@ class GLPIKey
         $success = true;
 
         foreach ($this->getFields() as $field) {
-            list($table, $column) = explode('.', $field);
+            list($table, $column) = explode('.', (string) $field);
 
             $iterator = $DB->request([
                'SELECT' => ['id', $column],

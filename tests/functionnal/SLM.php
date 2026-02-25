@@ -274,6 +274,458 @@ class SLM extends DbTestCase
         $this->boolean($oaction->getFromDB($oaction_id))->isFalse();
     }
 
+    public function testManualSlaOlaNotOverriddenByRule()
+    {
+        $this->login();
+
+        $slm = new \SLM();
+        $slm_id = $slm->add([
+           'name'    => $this->method,
+           'comment' => $this->getUniqueString(),
+        ]);
+        $this->integer($slm_id)->isGreaterThan(0);
+
+        $sla = new \SLA();
+        $sla_rule_tto_id = $sla->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Rule SLA TTO',
+           'type'            => \SLM::TTO,
+           'number_time'     => 4,
+           'definition_time' => 'day',
+        ]);
+        $this->integer($sla_rule_tto_id)->isGreaterThan(0);
+        $sla_rule_ttr_id = $sla->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Rule SLA TTR',
+           'type'            => \SLM::TTR,
+           'number_time'     => 5,
+           'definition_time' => 'day',
+        ]);
+        $this->integer($sla_rule_ttr_id)->isGreaterThan(0);
+        $sla_manual_tto_id = $sla->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Manual SLA TTO',
+           'type'            => \SLM::TTO,
+           'number_time'     => 6,
+           'definition_time' => 'day',
+        ]);
+        $this->integer($sla_manual_tto_id)->isGreaterThan(0);
+        $sla_manual_ttr_id = $sla->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Manual SLA TTR',
+           'type'            => \SLM::TTR,
+           'number_time'     => 7,
+           'definition_time' => 'day',
+        ]);
+        $this->integer($sla_manual_ttr_id)->isGreaterThan(0);
+
+        $ola = new \OLA();
+        $ola_rule_tto_id = $ola->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Rule OLA TTO',
+           'type'            => \SLM::TTO,
+           'number_time'     => 4,
+           'definition_time' => 'day',
+        ]);
+        $this->integer($ola_rule_tto_id)->isGreaterThan(0);
+        $ola_rule_ttr_id = $ola->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Rule OLA TTR',
+           'type'            => \SLM::TTR,
+           'number_time'     => 5,
+           'definition_time' => 'day',
+        ]);
+        $this->integer($ola_rule_ttr_id)->isGreaterThan(0);
+        $ola_manual_tto_id = $ola->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Manual OLA TTO',
+           'type'            => \SLM::TTO,
+           'number_time'     => 6,
+           'definition_time' => 'day',
+        ]);
+        $this->integer($ola_manual_tto_id)->isGreaterThan(0);
+        $ola_manual_ttr_id = $ola->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Manual OLA TTR',
+           'type'            => \SLM::TTR,
+           'number_time'     => 7,
+           'definition_time' => 'day',
+        ]);
+        $this->integer($ola_manual_ttr_id)->isGreaterThan(0);
+
+        $ruleticket = new \RuleTicket();
+        $rulecrit   = new \RuleCriteria();
+        $ruleaction = new \RuleAction();
+        $ruletid = $ruleticket->add([
+           'name'         => $this->method,
+           'match'        => 'AND',
+           'is_active'    => 1,
+           'sub_type'     => 'RuleTicket',
+           'condition'    => \RuleTicket::ONADD | \RuleTicket::ONUPDATE,
+           'is_recursive' => 1,
+        ]);
+        $this->integer($ruletid)->isGreaterThan(0);
+        $crit_id = $rulecrit->add([
+           'rules_id'  => $ruletid,
+           'criteria'  => 'name',
+           'condition' => \Rule::PATTERN_IS,
+           'pattern'   => $this->method,
+        ]);
+        $this->integer($crit_id)->isGreaterThan(0);
+        $this->integer(
+            $ruleaction->add([
+               'rules_id'    => $ruletid,
+               'action_type' => 'assign',
+               'field'       => 'slas_id_tto',
+               'value'       => $sla_rule_tto_id,
+            ])
+        )->isGreaterThan(0);
+        $this->integer(
+            $ruleaction->add([
+               'rules_id'    => $ruletid,
+               'action_type' => 'assign',
+               'field'       => 'slas_id_ttr',
+               'value'       => $sla_rule_ttr_id,
+            ])
+        )->isGreaterThan(0);
+        $this->integer(
+            $ruleaction->add([
+               'rules_id'    => $ruletid,
+               'action_type' => 'assign',
+               'field'       => 'olas_id_tto',
+               'value'       => $ola_rule_tto_id,
+            ])
+        )->isGreaterThan(0);
+        $this->integer(
+            $ruleaction->add([
+               'rules_id'    => $ruletid,
+               'action_type' => 'assign',
+               'field'       => 'olas_id_ttr',
+               'value'       => $ola_rule_ttr_id,
+            ])
+        )->isGreaterThan(0);
+
+        $ticket = new \Ticket();
+        $ticket_id = $ticket->add([
+           'name'        => $this->method,
+           'content'     => $this->method,
+           'slas_id_tto' => $sla_manual_tto_id,
+           'slas_id_ttr' => $sla_manual_ttr_id,
+           'olas_id_tto' => $ola_manual_tto_id,
+           'olas_id_ttr' => $ola_manual_ttr_id,
+        ]);
+        $this->integer($ticket_id)->isGreaterThan(0);
+        $this->boolean($ticket->getFromDB($ticket_id))->isTrue();
+        $this->integer((int)$ticket->fields['slas_id_tto'])->isEqualTo($sla_manual_tto_id);
+        $this->integer((int)$ticket->fields['slas_id_ttr'])->isEqualTo($sla_manual_ttr_id);
+        $this->integer((int)$ticket->fields['olas_id_tto'])->isEqualTo($ola_manual_tto_id);
+        $this->integer((int)$ticket->fields['olas_id_ttr'])->isEqualTo($ola_manual_ttr_id);
+
+        $ticket_2 = new \Ticket();
+        $ticket_2_id = $ticket_2->add([
+           'name'    => 'Ticket without manual SLA/OLA',
+           'content' => $this->method,
+        ]);
+        $this->integer($ticket_2_id)->isGreaterThan(0);
+        $this->boolean(
+            $ticket_2->update([
+               'id'          => $ticket_2_id,
+               'name'        => $this->method,
+               'slas_id_tto' => $sla_manual_tto_id,
+               'slas_id_ttr' => $sla_manual_ttr_id,
+               'olas_id_tto' => $ola_manual_tto_id,
+               'olas_id_ttr' => $ola_manual_ttr_id,
+            ])
+        )->isTrue();
+        $this->boolean($ticket_2->getFromDB($ticket_2_id))->isTrue();
+        $this->integer((int)$ticket_2->fields['slas_id_tto'])->isEqualTo($sla_manual_tto_id);
+        $this->integer((int)$ticket_2->fields['slas_id_ttr'])->isEqualTo($sla_manual_ttr_id);
+        $this->integer((int)$ticket_2->fields['olas_id_tto'])->isEqualTo($ola_manual_tto_id);
+        $this->integer((int)$ticket_2->fields['olas_id_ttr'])->isEqualTo($ola_manual_ttr_id);
+    }
+
+    public function testLevelAgreementDateComputationWithoutCalendar()
+    {
+        $this->login();
+
+        $slm = new \SLM();
+        $slm_id = $slm->add([
+           'name'    => $this->method,
+           'comment' => $this->getUniqueString(),
+        ]);
+        $this->integer($slm_id)->isGreaterThan(0);
+
+        $ola = new \OLA();
+        $ola_id = $ola->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'No calendar OLA',
+           'type'            => \SLM::TTR,
+           'number_time'     => 2,
+           'definition_time' => 'hour',
+        ]);
+        $this->integer($ola_id)->isGreaterThan(0);
+        $this->boolean($ola->getFromDB($ola_id))->isTrue();
+
+        $olalevel = new \OlaLevel();
+        $olalevel_id = $olalevel->add([
+           'name'           => $this->method,
+           'execution_time' => -HOUR_TIMESTAMP,
+           'is_active'      => 1,
+           'match'          => 'AND',
+           'olas_id'        => $ola_id,
+        ]);
+        $this->integer($olalevel_id)->isGreaterThan(0);
+
+        $start_date = '2026-02-20 10:00:00';
+        $this->string($ola->computeDate($start_date))->isEqualTo('2026-02-20 12:00:00');
+        $this->string($ola->computeExecutionDate($start_date, $olalevel_id))->isEqualTo('2026-02-20 11:00:00');
+    }
+
+    public function testSlaAndOlaLevelProgressionSchedulesNextLevel()
+    {
+        $this->login();
+
+        $slm = new \SLM();
+        $slm_id = $slm->add([
+           'name'    => $this->method,
+           'comment' => $this->getUniqueString(),
+        ]);
+        $this->integer($slm_id)->isGreaterThan(0);
+
+        $sla = new \SLA();
+        $sla_id = $sla->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Escalation SLA',
+           'type'            => \SLM::TTR,
+           'number_time'     => 2,
+           'definition_time' => 'hour',
+        ]);
+        $this->integer($sla_id)->isGreaterThan(0);
+
+        $slalevel = new \SlaLevel();
+        $slalevel_1_id = $slalevel->add([
+           'name'           => 'SLA level 1',
+           'execution_time' => -HOUR_TIMESTAMP,
+           'is_active'      => 1,
+           'match'          => 'AND',
+           'slas_id'        => $sla_id,
+        ]);
+        $this->integer($slalevel_1_id)->isGreaterThan(0);
+        $slalevel_2_id = $slalevel->add([
+           'name'           => 'SLA level 2',
+           'execution_time' => 0,
+           'is_active'      => 1,
+           'match'          => 'AND',
+           'slas_id'        => $sla_id,
+        ]);
+        $this->integer($slalevel_2_id)->isGreaterThan(0);
+
+        $ola = new \OLA();
+        $ola_id = $ola->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Escalation OLA',
+           'type'            => \SLM::TTR,
+           'number_time'     => 2,
+           'definition_time' => 'hour',
+        ]);
+        $this->integer($ola_id)->isGreaterThan(0);
+
+        $olalevel = new \OlaLevel();
+        $olalevel_1_id = $olalevel->add([
+           'name'           => 'OLA level 1',
+           'execution_time' => -HOUR_TIMESTAMP,
+           'is_active'      => 1,
+           'match'          => 'AND',
+           'olas_id'        => $ola_id,
+        ]);
+        $this->integer($olalevel_1_id)->isGreaterThan(0);
+        $olalevel_2_id = $olalevel->add([
+           'name'           => 'OLA level 2',
+           'execution_time' => 0,
+           'is_active'      => 1,
+           'match'          => 'AND',
+           'olas_id'        => $ola_id,
+        ]);
+        $this->integer($olalevel_2_id)->isGreaterThan(0);
+
+        $ticket = new \Ticket();
+        $ticket_id = $ticket->add([
+           'name'        => $this->method,
+           'content'     => $this->method,
+           'slas_id_ttr' => $sla_id,
+           'olas_id_ttr' => $ola_id,
+        ]);
+        $this->integer($ticket_id)->isGreaterThan(0);
+        $this->boolean($ticket->getFromDB($ticket_id))->isTrue();
+
+        $ticket->manageSlaLevel($sla_id);
+        $ticket->manageOlaLevel($ola_id);
+
+        $sla_rows = array_values(getAllDataFromTable('glpi_slalevels_tickets', ['tickets_id' => $ticket_id]));
+        $ola_rows = array_values(getAllDataFromTable('glpi_olalevels_tickets', ['tickets_id' => $ticket_id]));
+        $this->integer(count($sla_rows))->isEqualTo(1);
+        $this->integer(count($ola_rows))->isEqualTo(1);
+        $this->integer((int)$sla_rows[0]['slalevels_id'])->isEqualTo($slalevel_1_id);
+        $this->integer((int)$ola_rows[0]['olalevels_id'])->isEqualTo($olalevel_1_id);
+
+        \SlaLevel_Ticket::doLevelForTicket($sla_rows[0], \SLM::TTR);
+        \OlaLevel_Ticket::doLevelForTicket($ola_rows[0], \SLM::TTR);
+
+        $sla_rows = array_values(getAllDataFromTable('glpi_slalevels_tickets', ['tickets_id' => $ticket_id]));
+        $ola_rows = array_values(getAllDataFromTable('glpi_olalevels_tickets', ['tickets_id' => $ticket_id]));
+        $this->integer(count($sla_rows))->isEqualTo(1);
+        $this->integer(count($ola_rows))->isEqualTo(1);
+        $this->integer((int)$sla_rows[0]['slalevels_id'])->isEqualTo($slalevel_2_id);
+        $this->integer((int)$ola_rows[0]['olalevels_id'])->isEqualTo($olalevel_2_id);
+    }
+
+    public function testCronSlaAndOlaTicketProcessOverdueLevels()
+    {
+        global $DB;
+
+        $this->login();
+
+        $slm = new \SLM();
+        $slm_id = $slm->add([
+           'name'    => $this->method,
+           'comment' => $this->getUniqueString(),
+        ]);
+        $this->integer($slm_id)->isGreaterThan(0);
+
+        $sla = new \SLA();
+        $sla_id = $sla->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Cron SLA',
+           'type'            => \SLM::TTR,
+           'number_time'     => 2,
+           'definition_time' => 'hour',
+        ]);
+        $this->integer($sla_id)->isGreaterThan(0);
+
+        $slalevel = new \SlaLevel();
+        $slalevel_id = $slalevel->add([
+           'name'           => 'Cron SLA level',
+           'execution_time' => 0,
+           'is_active'      => 1,
+           'match'          => 'AND',
+           'slas_id'        => $sla_id,
+        ]);
+        $this->integer($slalevel_id)->isGreaterThan(0);
+
+        $ola = new \OLA();
+        $ola_id = $ola->add([
+           'slms_id'         => $slm_id,
+           'name'            => 'Cron OLA',
+           'type'            => \SLM::TTR,
+           'number_time'     => 2,
+           'definition_time' => 'hour',
+        ]);
+        $this->integer($ola_id)->isGreaterThan(0);
+
+        $olalevel = new \OlaLevel();
+        $olalevel_id = $olalevel->add([
+           'name'           => 'Cron OLA level',
+           'execution_time' => 0,
+           'is_active'      => 1,
+           'match'          => 'AND',
+           'olas_id'        => $ola_id,
+        ]);
+        $this->integer($olalevel_id)->isGreaterThan(0);
+
+        $ticket = new \Ticket();
+        $ticket_id = $ticket->add([
+           'name'        => $this->method,
+           'content'     => $this->method,
+           'slas_id_ttr' => $sla_id,
+           'olas_id_ttr' => $ola_id,
+        ]);
+        $this->integer($ticket_id)->isGreaterThan(0);
+        $this->boolean($ticket->getFromDB($ticket_id))->isTrue();
+
+        $ticket->manageSlaLevel($sla_id);
+        $ticket->manageOlaLevel($ola_id);
+
+        $sla_rows = array_values(getAllDataFromTable('glpi_slalevels_tickets', ['tickets_id' => $ticket_id]));
+        $ola_rows = array_values(getAllDataFromTable('glpi_olalevels_tickets', ['tickets_id' => $ticket_id]));
+        $this->integer(count($sla_rows))->isEqualTo(1);
+        $this->integer(count($ola_rows))->isEqualTo(1);
+
+        $past_date = date('Y-m-d H:i:s', time() - HOUR_TIMESTAMP);
+        $DB->update('glpi_slalevels_tickets', ['date' => $past_date], ['id' => $sla_rows[0]['id']]);
+        $DB->update('glpi_olalevels_tickets', ['date' => $past_date], ['id' => $ola_rows[0]['id']]);
+
+        $this->integer(\SlaLevel_Ticket::cronSlaTicket(new \CronTask()))->isEqualTo(1);
+        $this->integer(\OlaLevel_Ticket::cronOlaTicket(new \CronTask()))->isEqualTo(1);
+
+        $this->integer((int)countElementsInTable('glpi_slalevels_tickets', ['tickets_id' => $ticket_id]))->isEqualTo(0);
+        $this->integer((int)countElementsInTable('glpi_olalevels_tickets', ['tickets_id' => $ticket_id]))->isEqualTo(0);
+    }
+
+    public function testWaitingTimeImpactsSlaTtrDueDate()
+    {
+        $this->login();
+
+        $currenttime_bak = $_SESSION['glpi_currenttime'];
+        $tomorrow_1pm = date('Y-m-d H:i:s', strtotime('tomorrow 1pm'));
+        $tomorrow_2pm = date('Y-m-d H:i:s', strtotime('tomorrow 2pm'));
+
+        $calendar = new \Calendar();
+        $segment = new \CalendarSegment();
+        $calendars_id = $calendar->add(['name' => 'waiting-sla-' . $this->getUniqueString()]);
+        $this->integer($calendars_id)->isGreaterThan(0);
+
+        $segments_id = $segment->add([
+            'calendars_id' => $calendars_id,
+            'day'          => (int)date('w') === 6 ? 0 : (int)date('w') + 1,
+            'begin'        => '09:00:00',
+            'end'          => '19:00:00',
+        ]);
+        $this->integer($segments_id)->isGreaterThan(0);
+
+        $slm = new \SLM();
+        $slms_id = $slm->add([
+            'name'         => 'waiting-sla-' . $this->getUniqueString(),
+            'calendars_id' => $calendars_id,
+        ]);
+        $this->integer($slms_id)->isGreaterThan(0);
+
+        $sla = new \SLA();
+        $slas_id = $sla->add([
+            'slms_id'         => $slms_id,
+            'name'            => 'waiting-ttr-sla-' . $this->getUniqueString(),
+            'type'            => \SLM::TTR,
+            'number_time'     => 4,
+            'definition_time' => 'hour',
+        ]);
+        $this->integer($slas_id)->isGreaterThan(0);
+
+        $ticket = new \Ticket();
+        $tickets_id = $ticket->add([
+            'name'        => 'waiting-sla-ticket-' . $this->getUniqueString(),
+            'content'     => 'waiting impact on sla due date',
+            'slas_id_ttr' => $slas_id,
+        ]);
+        $this->integer($tickets_id)->isGreaterThan(0);
+        $this->boolean($ticket->getFromDB($tickets_id))->isTrue();
+        $this->variable($ticket->fields['time_to_resolve'])->isEqualTo($tomorrow_1pm);
+
+        $this->boolean($ticket->update([
+            'id'     => $tickets_id,
+            'status' => \CommonITILObject::WAITING,
+        ]))->isTrue();
+
+        $_SESSION['glpi_currenttime'] = date('Y-m-d H:i:s', strtotime('tomorrow 10am'));
+        $updated = $ticket->update([
+            'id'     => $tickets_id,
+            'status' => \CommonITILObject::ASSIGNED,
+        ]);
+        $_SESSION['glpi_currenttime'] = $currenttime_bak;
+
+        $this->boolean($updated)->isTrue();
+        $this->boolean($ticket->getFromDB($tickets_id))->isTrue();
+        $this->variable($ticket->fields['time_to_resolve'])->isEqualTo($tomorrow_2pm);
+    }
+
     /**
      * Check 'internal_time_to_resolve' computed dates.
      */
@@ -347,7 +799,7 @@ class SLM extends DbTestCase
         $update_time_2 = time();
         $this->boolean($ticket->getFromDB($ticket_id))->isTrue();
         $this->integer((int)$ticket->fields['olas_id_ttr'])->isEqualTo($ola_id);
-        $this->integer(strtotime($ticket->fields['ola_ttr_begin_date']))
+        $this->integer(strtotime((string) $ticket->fields['ola_ttr_begin_date']))
            ->isGreaterThanOrEqualTo($update_time_1)
            ->isLessThanOrEqualTo($update_time_2);
         $this->variable($ticket->fields['internal_time_to_resolve'])->isEqualTo($tomorrow_1pm);
@@ -398,7 +850,7 @@ class SLM extends DbTestCase
             ]
             )
         )->isTrue();
-        $_SESSION['glpi_currenttime'] = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime($currenttime_bak)));
+        $_SESSION['glpi_currenttime'] = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime((string) $currenttime_bak)));
         $updated = $ticket->update(['id' => $ticket_id, 'status' => \CommonITILObject::ASSIGNED]);
         $_SESSION['glpi_currenttime'] = $currenttime_bak;
         $this->boolean($updated)->isTrue();

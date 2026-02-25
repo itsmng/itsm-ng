@@ -31,11 +31,12 @@
  * ---------------------------------------------------------------------
  */
 
-use atoum\atoum;
+use atoum\atoum\test;
+use itsmng\Csrf;
 
 // Main GLPI test case. All tests should extends this class.
 
-class GLPITestCase extends atoum
+class GLPITestCase extends test
 {
     private $int;
     private $str;
@@ -131,7 +132,7 @@ class GLPITestCase extends atoum
                 $_SESSION[$status_key] = $status_value;
             }
         }
-        $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+        $_SESSION['_glpi_csrf_token'] = Csrf::generate();
     }
 
     protected function hasSessionMessages(int $level, array $messages): void

@@ -489,7 +489,7 @@ class Search
 
                         if (
                             isset($criterion['value'])
-                            && (strlen($criterion['value']) > 0)
+                            && (strlen((string) $criterion['value']) > 0)
                         ) {
                             $data['search']['no_search'] = false;
                         }
@@ -1525,7 +1525,7 @@ class Search
 
                 // Parse datas
                 foreach ($newrow['raw'] as $key => $val) {
-                    if (preg_match('/ITEM(_(\w[^\d]+))?_(\d+)(_(.+))?/', $key, $matches)) {
+                    if (preg_match('/ITEM(_(\w[^\d]+))?_(\d+)(_(.+))?/', (string) $key, $matches)) {
                         $j = $matches[3];
                         if (isset($matches[2]) && !empty($matches[2])) {
                             $j = $matches[2] . '_' . $matches[3];
@@ -1870,7 +1870,7 @@ class Search
                         Search::computeTitle($newdata)
                     );
                 } else {
-                    if (strlen($criteria['value']) > 0) {
+                    if (strlen((string) $criteria['value']) > 0) {
                         if (isset($criteria['link'])) {
                             $titlecontain = " " . $criteria['link'] . " ";
                         }
@@ -2006,7 +2006,7 @@ class Search
                 }
 
                 $titlecontain2 = '';
-                if (strlen($metacriteria['value']) > 0) {
+                if (strlen((string) $metacriteria['value']) > 0) {
                     if (isset($metacriteria['link'])) {
                         $titlecontain2 = sprintf(
                             __('%1$s %2$s'),
@@ -2405,7 +2405,7 @@ class Search
 
         if ($p['mainform']) {
             // Display submit button
-            echo '<input type="submit" name="' . htmlspecialchars($p['actionname']) . '" value="' . htmlspecialchars($p['actionvalue']) . '" class="submit">';
+            echo '<input type="submit" name="' . htmlspecialchars((string) $p['actionname']) . '" value="' . htmlspecialchars((string) $p['actionvalue']) . '" class="submit">';
             if ($p['showbookmark'] || $p['showreset']) {
                 if ($p['showbookmark']) {
                     //TODO: change that!
@@ -3090,7 +3090,7 @@ JAVASCRIPT;
         }
 
         $params = [
-           'value'       => rawurlencode(stripslashes($request['value'])),
+           'value'       => rawurlencode(stripslashes((string) $request['value'])),
            'searchopt'   => $searchopt,
            'searchtype'  => $request["searchtype"],
            'num'         => $num,
@@ -3138,7 +3138,7 @@ JAVASCRIPT;
         $p                 = $request['p'];
         $prefix            = isset($p['prefix_crit']) ? $p['prefix_crit'] : '';
         $searchopt         = isset($request['searchopt']) ? $request['searchopt'] : [];
-        $request['value']  = rawurldecode($request['value']);
+        $request['value']  = rawurldecode((string) $request['value']);
         $fieldname         = isset($request['meta']) && $request['meta']
                                 ? 'metacriteria'
                                 : 'criteria';
@@ -3289,7 +3289,7 @@ JAVASCRIPT;
 
         //// Default cases
         // Link with plugin tables
-        if (preg_match("/^glpi_plugin_([a-z0-9]+)/", $table, $matches)) {
+        if (preg_match("/^glpi_plugin_([a-z0-9]+)/", (string) $table, $matches)) {
             if (count($matches) == 2) {
                 $plug     = $matches[1];
                 $out = Plugin::doOneHook(
@@ -3352,7 +3352,7 @@ JAVASCRIPT;
                     $search  = ["/\&lt;/","/\&gt;/"];
                     $replace = ["<",">"];
                     $val     = preg_replace($search, $replace, $val);
-                    if (preg_match("/([<>])([=]*)[[:space:]]*([0-9]+)/", $val, $regs)) {
+                    if (preg_match("/([<>])([=]*)[[:space:]]*([0-9]+)/", (string) $val, $regs)) {
                         if ($NOT) {
                             if ($regs[1] == '<') {
                                 $regs[1] = '>';
@@ -3487,7 +3487,7 @@ JAVASCRIPT;
         //// Default cases
 
         // Link with plugin tables
-        if (preg_match("/^glpi_plugin_([a-z0-9]+)/", $table, $matches)) {
+        if (preg_match("/^glpi_plugin_([a-z0-9]+)/", (string) $table, $matches)) {
             if (count($matches) == 2) {
                 $plug     = $matches[1];
                 $out = Plugin::doOneHook(
@@ -3715,7 +3715,7 @@ JAVASCRIPT;
         }
 
         // Virtual display no select : only get additional fields
-        if (strpos($field, '_virtual') === 0) {
+        if (strpos((string) $field, '_virtual') === 0) {
             return $ADDITONALFIELDS;
         }
 
@@ -3889,7 +3889,7 @@ JAVASCRIPT;
 
         //// Default cases
         // Link with plugin tables
-        if (preg_match("/^glpi_plugin_([a-z0-9]+)/", $table, $matches)) {
+        if (preg_match("/^glpi_plugin_([a-z0-9]+)/", (string) $table, $matches)) {
             if (count($matches) == 2) {
                 $plug     = $matches[1];
                 $out = Plugin::doOneHook(
@@ -4583,7 +4583,7 @@ JAVASCRIPT;
                 $search  = ["/\&lt;/","/\&gt;/"];
                 $replace = ["<",">"];
                 $val     = preg_replace($search, $replace, $val);
-                if (preg_match("/^\s*([<>])([=]*)[[:space:]]*([0-9\.]+)/", $val, $regs)) {
+                if (preg_match("/^\s*([<>])([=]*)[[:space:]]*([0-9\.]+)/", (string) $val, $regs)) {
                     if ($nott) {
                         if ($regs[1] == '<') {
                             $regs[1] = '>';
@@ -4734,7 +4734,7 @@ JAVASCRIPT;
         //// Default cases
 
         // Link with plugin tables
-        if (preg_match("/^glpi_plugin_([a-z0-9]+)/", $inittable, $matches)) {
+        if (preg_match("/^glpi_plugin_([a-z0-9]+)/", (string) $inittable, $matches)) {
             if (count($matches) == 2) {
                 $plug     = $matches[1];
                 $out = Plugin::doOneHook(
@@ -4784,7 +4784,7 @@ JAVASCRIPT;
 
                         // Specific search for datetime
                         if (in_array($searchtype, ['equals', 'notequals'])) {
-                            $val = preg_replace("/:00$/", '', $val);
+                            $val = preg_replace("/:00$/", '', (string) $val);
                             $val = '^' . $val;
                             if ($searchtype == 'notequals') {
                                 $nott = !$nott;
@@ -4827,8 +4827,8 @@ JAVASCRIPT;
                     }
                     $search  = ["/\&lt;/","/\&gt;/"];
                     $replace = ["<",">"];
-                    $val     = preg_replace($search, $replace, $val);
-                    if (preg_match("/^\s*([<>=]+)(.*)/", $val, $regs)) {
+                    $val     = preg_replace($search, $replace, (string) $val);
+                    if (preg_match("/^\s*([<>=]+)(.*)/", (string) $val, $regs)) {
                         if (is_numeric($regs[2])) {
                             return $link . " $date_computation " . $regs[1] . "
                             ADDDATE(NOW(), INTERVAL " . $regs[2] . " $search_unit) ";
@@ -4839,7 +4839,7 @@ JAVASCRIPT;
                             '\5-\3-\1',
                             $regs[2]
                         );
-                        if (preg_match('/[0-9]{2,4}-[0-9]{1,2}-[0-9]{1,2}/', $regs[2])) {
+                        if (preg_match('/[0-9]{2,4}-[0-9]{1,2}-[0-9]{1,2}/', (string) $regs[2])) {
                             $ret = $link;
                             if ($nott) {
                                 $ret .= " NOT(";
@@ -4854,7 +4854,7 @@ JAVASCRIPT;
                     }
                     // ELSE standard search
                     // Date format modification if needed
-                    $val = preg_replace('@(\d{1,2})(-|/)(\d{1,2})(-|/)(\d{4})@', '\5-\3-\1', $val);
+                    $val = preg_replace('@(\d{1,2})(-|/)(\d{1,2})(-|/)(\d{4})@', '\5-\3-\1', (string) $val);
                     if ($date_computation) {
                         return self::makeTextCriteria($date_computation, $val, $nott, $link);
                     }
@@ -4868,9 +4868,9 @@ JAVASCRIPT;
 
                 case "bool":
                     if (!is_numeric($val)) {
-                        if (strcasecmp($val, __('No')) == 0) {
+                        if (strcasecmp((string) $val, __('No')) == 0) {
                             $val = 0;
-                        } elseif (strcasecmp($val, __('Yes')) == 0) {
+                        } elseif (strcasecmp((string) $val, __('Yes')) == 0) {
                             $val = 1;
                         }
                     }
@@ -4883,9 +4883,9 @@ JAVASCRIPT;
                 case "progressbar":
                     $search  = ["/\&lt;/", "/\&gt;/"];
                     $replace = ["<", ">"];
-                    $val     = preg_replace($search, $replace, $val);
+                    $val     = preg_replace($search, $replace, (string) $val);
 
-                    if (preg_match("/([<>])([=]*)[[:space:]]*([0-9]+)/", $val, $regs)) {
+                    if (preg_match("/([<>])([=]*)[[:space:]]*([0-9]+)/", (string) $val, $regs)) {
                         if (in_array($searchtype, ["notequals", "notcontains"])) {
                             $nott = !$nott;
                         }
@@ -5259,7 +5259,7 @@ JAVASCRIPT;
                 // Plugin can override core definition for its type
                 if ($plug = isPluginItemType($itemtype)) {
                     $plugin_name   = $plug['plugin'];
-                    $hook_function = 'plugin_' . strtolower($plugin_name) . '_addDefaultJoin';
+                    $hook_function = 'plugin_' . strtolower((string) $plugin_name) . '_addDefaultJoin';
                     $hook_closure  = function () use ($hook_function, $itemtype, $ref_table, &$already_link_tables) {
                         if (is_callable($hook_function)) {
                             return $hook_function($itemtype, $ref_table, $already_link_tables);
@@ -5373,7 +5373,7 @@ JAVASCRIPT;
         // Plugin can override core definition for its type
         if ($plug = isPluginItemType($itemtype)) {
             $plugin_name   = $plug['plugin'];
-            $hook_function = 'plugin_' . strtolower($plugin_name) . '_addLeftJoin';
+            $hook_function = 'plugin_' . strtolower((string) $plugin_name) . '_addLeftJoin';
             $hook_closure  = function () use ($hook_function, $itemtype, $ref_table, $new_table, $linkfield, &$already_link_tables) {
                 if (is_callable($hook_function)) {
                     return $hook_function($itemtype, $ref_table, $new_table, $linkfield, $already_link_tables);
@@ -6431,9 +6431,9 @@ JAVASCRIPT;
                                 );
                             } else { // No calendar
                                 $currenttime = strtotime(date('Y-m-d H:i:s'))
-                                                         - strtotime($item->fields['date']);
-                                $totaltime   = strtotime($data[$ID][0]['name'])
-                                                         - strtotime($item->fields['date']);
+                                                         - strtotime((string) $item->fields['date']);
+                                $totaltime   = strtotime((string) $data[$ID][0]['name'])
+                                                         - strtotime((string) $item->fields['date']);
                             }
                         }
                         if ($totaltime != 0) {
@@ -6824,9 +6824,9 @@ JAVASCRIPT;
                             $count_display++;
                             $text = "";
                             if (isset($so['htmltext']) && $so['htmltext']) {
-                                $text = Html::clean(Toolbox::unclean_cross_side_scripting_deep(nl2br($data[$ID][$k]['name'])));
+                                $text = Html::clean(Toolbox::unclean_cross_side_scripting_deep(nl2br((string) $data[$ID][$k]['name'])));
                             } else {
-                                $text = nl2br($data[$ID][$k]['name']);
+                                $text = nl2br((string) $data[$ID][$k]['name']);
                             }
 
                             if (
@@ -6933,7 +6933,7 @@ JAVASCRIPT;
                     if (!empty($orig_link) && Toolbox::isValidWebUrl($orig_link)) {
                         // strip begin of link
                         $link = preg_replace('/https?:\/\/(www[^\.]*\.)?/', '', $orig_link);
-                        $link = preg_replace('/\/$/', '', $link);
+                        $link = preg_replace('/\/$/', '', (string) $link);
                         if (Toolbox::strlen($link) > $CFG_GLPI["url_maxlength"]) {
                             $link = Toolbox::substr($link, 0, $CFG_GLPI["url_maxlength"]) . "...";
                         }
@@ -7637,7 +7637,7 @@ JAVASCRIPT;
                 // Set default linkfield
                 if (!isset($val['linkfield']) || empty($val['linkfield'])) {
                     if (
-                        (strcmp($itemtable, $val['table']) == 0)
+                        (strcmp((string) $itemtable, (string) $val['table']) == 0)
                         && (!isset($val['joinparams']) || (count($val['joinparams']) == 0))
                     ) {
                         self::$search[$itemtype][$key]['linkfield'] = $val['field'];
@@ -7923,7 +7923,7 @@ JAVASCRIPT;
             case self::PDF_OUTPUT_PORTRAIT:
                 global $PDF_TABLE;
                 $value = preg_replace('/' . self::LBBR . '/', '<br>', $value);
-                $value = preg_replace('/' . self::LBHR . '/', '<hr>', $value);
+                $value = preg_replace('/' . self::LBHR . '/', '<hr>', (string) $value);
                 $PDF_TABLE .= "<td $extraparam valign='top'>";
                 $PDF_TABLE .= Html::weblink_extract(Html::clean($value));
                 $PDF_TABLE .= "</td>\n";
@@ -7934,7 +7934,7 @@ JAVASCRIPT;
                 global $SYLK_ARRAY,$SYLK_SIZE;
                 $value                  = Html::weblink_extract(Html::clean($value));
                 $value = preg_replace('/' . self::LBBR . '/', '<br>', $value);
-                $value = preg_replace('/' . self::LBHR . '/', '<hr>', $value);
+                $value = preg_replace('/' . self::LBHR . '/', '<hr>', (string) $value);
                 $SYLK_ARRAY[$row][$num] = self::sylk_clean($value);
                 $SYLK_SIZE[$num]        = max(
                     $SYLK_SIZE[$num],
@@ -7944,7 +7944,7 @@ JAVASCRIPT;
 
             case self::CSV_OUTPUT: //csv
                 $value = preg_replace('/' . self::LBBR . '/', '<br>', $value);
-                $value = preg_replace('/' . self::LBHR . '/', '<hr>', $value);
+                $value = preg_replace('/' . self::LBHR . '/', '<hr>', (string) $value);
                 $value = Html::weblink_extract(Html::clean($value));
                 $out   = "\"" . self::csv_clean($value) . "\"" . $_SESSION["glpicsv_delimiter"];
                 break;
@@ -7970,7 +7970,7 @@ JAVASCRIPT;
                         $value .= $v . $line_delimiter;
                     }
                     $value = preg_replace('/' . self::LBBR . '/', '<br>', $value);
-                    $value = preg_replace('/' . self::LBHR . '/', '<hr>', $value);
+                    $value = preg_replace('/' . self::LBHR . '/', '<hr>', (string) $value);
                     $value = '<div class="fup-popup">' . $value . '</div>';
                     $valTip = "&nbsp;" . Html::showToolTip(
                         $value,
@@ -7984,7 +7984,7 @@ JAVASCRIPT;
                     $out .= $values[0] . $valTip;
                 } else {
                     $value = preg_replace('/' . self::LBBR . '/', '<br>', $value);
-                    $value = preg_replace('/' . self::LBHR . '/', '<hr>', $value);
+                    $value = preg_replace('/' . self::LBHR . '/', '<hr>', (string) $value);
                     $out .= $value;
                 }
                 $out .= "</td>\n";
@@ -8399,7 +8399,7 @@ JAVASCRIPT;
     {
 
         $value = preg_replace('/\x0A/', ' ', $value);
-        $value = preg_replace('/\x0D/', null, $value);
+        $value = preg_replace('/\x0D/', '', (string) $value);
         $value = str_replace("\"", "''", $value);
         $value = Html::clean($value);
         $value = str_replace("\n", " | ", $value);
@@ -8473,7 +8473,7 @@ JAVASCRIPT;
 
         if (preg_match('/^\^/', $val)) {
             // Remove leading `^`
-            $val = ltrim(preg_replace('/^\^/', '', $val));
+            $val = ltrim((string) preg_replace('/^\^/', '', $val));
         } else {
             // Add % wildcard before searched string if not begining by a `^`
             $val = '%' . $val;
@@ -8481,7 +8481,7 @@ JAVASCRIPT;
 
         if (preg_match('/\$$/', $val)) {
             // Remove trailing `$`
-            $val = rtrim(preg_replace('/\$$/', '', $val));
+            $val = rtrim((string) preg_replace('/\$$/', '', $val));
         } else {
             // Add % wildcard after searched string if not ending by a `$`
             $val = $val . '%';

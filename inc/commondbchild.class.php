@@ -79,7 +79,7 @@ abstract class CommonDBChild extends CommonDBConnexity
 
         // Check item 1 type
         $request = false;
-        if (preg_match('/^itemtype/', static::$itemtype)) {
+        if (preg_match('/^itemtype/', (string) static::$itemtype)) {
             $criteria['SELECT'][] = static::$itemtype . ' AS itemtype';
             $criteria['WHERE'][static::$itemtype] = $itemtype;
             $request = true;
@@ -927,7 +927,7 @@ abstract class CommonDBChild extends CommonDBConnexity
            ]
         ];
 
-        if (preg_match('/^itemtype/', static::$itemtype)) {
+        if (preg_match('/^itemtype/', (string) static::$itemtype)) {
             $query['WHERE']['itemtype'] = $item->getType();
         }
 
@@ -977,7 +977,7 @@ abstract class CommonDBChild extends CommonDBConnexity
         $input = [static::getIndexName() => $id,
                        static::$items_id      => $items_id];
 
-        if (preg_match('/^itemtype/', static::$itemtype)) {
+        if (preg_match('/^itemtype/', (string) static::$itemtype)) {
             $input[static::$itemtype] = $itemtype;
         }
 

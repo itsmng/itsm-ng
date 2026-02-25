@@ -102,7 +102,7 @@ class NetworkPortInstantiation extends CommonDBChild
 
         // Try to get mac address from the instantiation ...
         if (!empty($input['mac'])) {
-            $input['mac'] = strtolower($input['mac']);
+            $input['mac'] = strtolower((string) $input['mac']);
         }
         return $input;
     }
@@ -165,8 +165,8 @@ class NetworkPortInstantiation extends CommonDBChild
     public function getInstantiationHTMLTableHeaders(
         HTMLTableGroup $group,
         HTMLTableSuperHeader $super,
-        HTMLTableSuperHeader $internet_super = null,
-        HTMLTableHeader $father = null,
+        ?HTMLTableSuperHeader $internet_super = null,
+        ?HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -213,7 +213,7 @@ class NetworkPortInstantiation extends CommonDBChild
     protected function getPeerInstantiationHTMLTable(
         NetworkPort $netport,
         HTMLTableRow $row,
-        HTMLTableCell $father = null,
+        ?HTMLTableCell $father = null,
         array $options = []
     ) {
 
@@ -240,7 +240,7 @@ class NetworkPortInstantiation extends CommonDBChild
     public function getInstantiationHTMLTableWithPeer(
         NetworkPort $netport,
         HTMLTableRow $row,
-        HTMLTableCell $father = null,
+        ?HTMLTableCell $father = null,
         array $options = []
     ) {
 
@@ -307,7 +307,7 @@ class NetworkPortInstantiation extends CommonDBChild
     public function getInstantiationHTMLTable(
         NetworkPort $netport,
         HTMLTableRow $row,
-        HTMLTableCell $father = null,
+        ?HTMLTableCell $father = null,
         array $options = []
     ) {
         global $DB;
@@ -914,7 +914,7 @@ class NetworkPortInstantiation extends CommonDBChild
                     );
                 }
             } else {
-                if (rtrim($oppositePort->fields["name"]) != "") {
+                if (rtrim((string) $oppositePort->fields["name"]) != "") {
                     $netname = $oppositePort->fields["name"];
                 } else {
                     $netname = __('Without name');

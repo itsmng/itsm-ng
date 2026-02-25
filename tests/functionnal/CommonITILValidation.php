@@ -271,6 +271,32 @@ class CommonITILValidation extends DbTestCase
         $this->integer((int)$ticket->getField('global_validation'))->isEqualTo(\CommonITILValidation::WAITING);*/
     }
 
+    public function testCanValidateForValidatorAndNonValidator()
+    {
+        $this->login();
+
+        $ticket = new \Ticket();
+        $tickets_id = $ticket->add([
+           'name'    => 'validation access test',
+           'content' => 'validator vs non-validator',
+        ]);
+        $this->integer((int)$tickets_id)->isGreaterThan(0);
+
+        $validation = new \TicketValidation();
+        $validation_id = $validation->add([
+           'tickets_id'         => $tickets_id,
+           'users_id_validate'  => getItemByTypeName('User', 'tech', true),
+           'comment_submission' => 'please validate',
+        ]);
+        $this->integer((int)$validation_id)->isGreaterThan(0);
+
+        $this->login('tech', 'tech');
+        $this->boolean(\TicketValidation::canValidate($tickets_id))->isTrue();
+
+        $this->login('normal', 'normal');
+        $this->boolean(\TicketValidation::canValidate($tickets_id))->isFalse();
+    }
+
     protected function testComputeValidationProvider(): array
     {
         return [

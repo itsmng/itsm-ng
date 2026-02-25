@@ -63,7 +63,7 @@ Html::popHeader(__('Setup'), $_SERVER['PHP_SELF']);
 
 // Need for RuleEngines
 foreach ($_POST as $key => $val) {
-    $_POST[$key] = stripslashes($val);
+    $_POST[$key] = stripslashes((string) $val);
 }
 $rulecollection->showRulesEnginePreviewCriteriasForm($_SERVER['PHP_SELF'], $_POST, $condition);
 

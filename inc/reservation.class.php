@@ -67,7 +67,7 @@ class Reservation extends CommonDBChild
     {
         global $CFG_GLPI;
 
-        $is_helpdesk_interface = strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
+        $is_helpdesk_interface = strpos((string) $_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
                                 (isset($_SESSION['glpiactiveprofile']['interface']) &&
                                 $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk');
 
@@ -133,7 +133,7 @@ class Reservation extends CommonDBChild
             // Processing Email
             if (!isset($this->input['_disablenotif']) && $CFG_GLPI["use_notifications"]) {
                 // Only notify for non-completed reservations
-                if (strtotime($this->fields['end']) > time()) {
+                if (strtotime((string) $this->fields['end']) > time()) {
                     NotificationEvent::raiseEvent("delete", $this);
                 }
             }
@@ -242,7 +242,7 @@ class Reservation extends CommonDBChild
         parent::post_addItem();
 
         if (isset($this->fields['reservationitems_id'])) {
-            if (strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
+            if (strpos((string) $_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
                 (isset($_SESSION['glpiactiveprofile']['interface']) &&
                 $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk')) {
 
@@ -328,7 +328,7 @@ class Reservation extends CommonDBChild
 
         return (!empty($this->fields["begin"])
                 && !empty($this->fields["end"])
-                && (strtotime($this->fields["begin"]) < strtotime($this->fields["end"])));
+                && (strtotime((string) $this->fields["begin"]) < strtotime((string) $this->fields["end"])));
     }
 
 
@@ -714,7 +714,7 @@ class Reservation extends CommonDBChild
             if (!isset($options['end'])) {
                 $resa->fields["end"] = date(
                     "Y-m-d H:00:00",
-                    strtotime($resa->fields["begin"]) + HOUR_TIMESTAMP
+                    strtotime((string) $resa->fields["begin"]) + HOUR_TIMESTAMP
                 );
             } else {
                 $resa->fields["end"] = $options['end'];
@@ -752,7 +752,7 @@ class Reservation extends CommonDBChild
 
         $uid = (empty($ID) ? Session::getLoginUserID() : $resa->fields['users_id']);
 
-        $default_delay = floor((strtotime($resa->fields["end"]) - strtotime($resa->fields["begin"]))
+        $default_delay = floor((strtotime((string) $resa->fields["end"]) - strtotime((string) $resa->fields["begin"]))
                                / $CFG_GLPI['time_step'] / MINUTE_TIMESTAMP)
                          * $CFG_GLPI['time_step'] * MINUTE_TIMESTAMP;
 
@@ -883,8 +883,8 @@ class Reservation extends CommonDBChild
         $toadd = [];
 
         if (isset($options['type']) && isset($options['end'])) {
-            $begin_time = strtotime($begin);
-            $end_time   = strtotime($end);
+            $begin_time = strtotime((string) $begin);
+            $end_time   = strtotime((string) $end);
             $repeat_end = strtotime($options['end'] . ' 23:59:59');
 
             switch ($options['type']) {
@@ -1047,7 +1047,7 @@ class Reservation extends CommonDBChild
                             }
                         }
 
-                        list($annee, $mois, $jour) = explode("-", $date);
+                        list($annee, $mois, $jour) = explode("-", (string) $date);
                         echo "<tr class='tab_bg_1'><td>";
                         echo "<a href='reservation.php?reservationitems_id=" . $data['id'] .
                               "&amp;mois_courant=$mois&amp;annee_courante=$annee'>" .
@@ -1075,7 +1075,7 @@ class Reservation extends CommonDBChild
         $users_id = Session::getLoginUserID();
         $resa     = new self();
         $user     = new User();
-        list($year, $month, $day) = explode("-", $date);
+        list($year, $month, $day) = explode("-", (string) $date);
         $debut    = $date . " 00:00:00";
         $fin      = $date . " 23:59:59";
 
@@ -1215,10 +1215,10 @@ class Reservation extends CommonDBChild
                         echo getUserName($data["users_id"]);
                     }
                     echo "</td>";
-                    echo "<td class='center'>" . nl2br($data["comment"]) . "</td>";
+                    echo "<td class='center'>" . nl2br((string) $data["comment"]) . "</td>";
                     echo "<td class='center'>";
                     if (Session::haveRight('reservation', ReservationItem::RESERVEANITEM)) {
-                        list($annee, $mois, $jour) = explode("-", $data["begin"]);
+                        list($annee, $mois, $jour) = explode("-", (string) $data["begin"]);
                         echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
                               $ri->fields['id'] . "&amp;mois_courant=$mois&amp;annee_courante=$annee' title=\"" .
                               __s('See planning') . "\">";
@@ -1275,10 +1275,10 @@ class Reservation extends CommonDBChild
                         echo getUserName($data["users_id"]);
                     }
                     echo "</td>";
-                    echo "<td class='center'>" . nl2br($data["comment"]) . "</td>";
+                    echo "<td class='center'>" . nl2br((string) $data["comment"]) . "</td>";
                     echo "<td class='center'>";
                     if (Session::haveRight('reservation', ReservationItem::RESERVEANITEM)) {
-                        list($annee, $mois, $jour) = explode("-", $data["begin"]);
+                        list($annee, $mois, $jour) = explode("-", (string) $data["begin"]);
                         echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
                               $ri->fields['id'] . "&amp;mois_courant=$mois&amp;annee_courante=$annee' title=\"" .
                               __s('See planning') . "\">";
@@ -1384,9 +1384,9 @@ class Reservation extends CommonDBChild
                 }
 
                 echo "<td class='center'>" . getUserName($data["users_id"]) . "</td>";
-                echo "<td class='center'>" . nl2br($data["comment"]) . "</td>";
+                echo "<td class='center'>" . nl2br((string) $data["comment"]) . "</td>";
                 echo "<td class='center'>";
-                list($annee, $mois, $jour) = explode("-", $data["begin"]);
+                list($annee, $mois, $jour) = explode("-", (string) $data["begin"]);
                 echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
                       $data["reservationitems_id"] . "&amp;mois_courant=$mois&amp;" .
                       "annee_courante=$annee' title=\"" . __s('See planning') . "\">";
@@ -1466,9 +1466,9 @@ class Reservation extends CommonDBChild
                 }
 
                 echo "<td class='center'>" . getUserName($data["users_id"]) . "</td>";
-                echo "<td class='center'>" . nl2br($data["comment"]) . "</td>";
+                echo "<td class='center'>" . nl2br((string) $data["comment"]) . "</td>";
                 echo "<td class='center'>";
-                list($annee, $mois, $jour) = explode("-", $data["begin"]);
+                list($annee, $mois, $jour) = explode("-", (string) $data["begin"]);
                 echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
                       $data["reservationitems_id"] . "&amp;mois_courant=$mois&amp;annee_courante=$annee' " .
                       "title=\"" . __s('See planning') . "\">";

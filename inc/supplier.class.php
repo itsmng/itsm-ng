@@ -618,7 +618,7 @@ class Supplier extends CommonDBTM
                        ]]
                     ];
                     $link = $linktype::getSearchURL();
-                    $link .= (strpos($link, '?') ? '&amp;' : '?');
+                    $link .= (strpos((string) $link, '?') ? '&amp;' : '?');
 
                     echo "<a href='$link" .
                        Toolbox::append_params($opt) . "'>" . __('Device list') . "</a></td>";

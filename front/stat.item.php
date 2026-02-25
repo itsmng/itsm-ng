@@ -53,7 +53,7 @@ if (empty($_POST["date1"]) && empty($_POST["date2"])) {
 if (
     !empty($_POST["date1"])
     && !empty($_POST["date2"])
-    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)
+    && (strcmp((string) $_POST["date2"], (string) $_POST["date1"]) < 0)
 ) {
     $tmp            = $_POST["date1"];
     $_POST["date1"] = $_POST["date2"];

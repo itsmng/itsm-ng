@@ -156,7 +156,7 @@ class FieldUnicity extends CommonDropdown
               'id'    => 'span_fields',
               'type'  => 'checklist',
               'options' => $values,
-              'values' => explode(',', $this->fields['fields'])
+              'values' => explode(',', (string) $this->fields['fields'])
            ],
            __('Record into the database denied') => [
               'name'  => 'action_refuse',
@@ -339,7 +339,7 @@ class FieldUnicity extends CommonDropdown
             $unicity->fields['entities_id'] = $_SESSION['glpiactive_entity'];
         }
 
-        $unicity_fields = explode(',', $unicity->fields['fields']);
+        $unicity_fields = explode(',', (string) $unicity->fields['fields']);
 
         self::dropdownFields(
             $unicity->fields['itemtype'],
@@ -520,7 +520,7 @@ class FieldUnicity extends CommonDropdown
                 ) {
                     if ($target = getItemForItemtype($values['itemtype'])) {
                         $searchOption = $target->getSearchOptionByField('field', $values[$field]);
-                        $fields       = explode(',', $values[$field]);
+                        $fields       = explode(',', (string) $values[$field]);
                         $message      = [];
                         foreach ($fields as $field) {
                             $searchOption = $target->getSearchOptionByField('field', $field);
@@ -558,7 +558,7 @@ class FieldUnicity extends CommonDropdown
                     isset($values['itemtype'])
                     && !empty($values['itemtype'])
                 ) {
-                    $options['values'] = explode(',', $values[$field]);
+                    $options['values'] = explode(',', (string) $values[$field]);
                     $options['name']   = $name;
                     return self::dropdownFields($values['itemtype'], $options);
                 }
@@ -646,7 +646,7 @@ class FieldUnicity extends CommonDropdown
         if (!$item = getItemForItemtype($unicity->fields['itemtype'])) {
             return;
         }
-        foreach (explode(',', $unicity->fields['fields']) as $field) {
+        foreach (explode(',', (string) $unicity->fields['fields']) as $field) {
             $fields[]       = $field;
             $where_fields[] = $field;
         }

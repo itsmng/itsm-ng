@@ -60,7 +60,7 @@ $dir = GLPI_PLUGIN_DOC_DIR . "/" . $_GET["plugin"] . "/";
 $filepath = $dir . $_GET["name"];
 
 if (
-    (basename($_GET["name"]) != $_GET["name"])
+    (basename((string) $_GET["name"]) != $_GET["name"])
     || (basename($_GET["plugin"]) != $_GET["plugin"])
     || !Toolbox::startsWith(realpath($filepath), realpath(GLPI_PLUGIN_DOC_DIR))
     || !Document::isImage($filepath)

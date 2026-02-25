@@ -762,7 +762,7 @@ class Item_SoftwareVersion extends CommonDBRelation
             // Version column (only for software view)
             if ($crit == "softwares_id") {
                 $newValue[] = "<a href='" . SoftwareVersion::getFormURLWithID($data['vID']) . "'>" .
-                   htmlspecialchars($data['version']) . "</a>";
+                   htmlspecialchars((string) $data['version']) . "</a>";
             }
 
             // Item type
@@ -775,9 +775,9 @@ class Item_SoftwareVersion extends CommonDBRelation
             }
             if ($canshowitems[$data['item_type']]) {
                 $newValue[] = "<a href='" . $data['item_type']::getFormURLWithID($data['iID']) . "'>" .
-                   htmlspecialchars($itemname) . "</a>";
+                   htmlspecialchars((string) $itemname) . "</a>";
             } else {
-                $newValue[] = htmlspecialchars($itemname);
+                $newValue[] = htmlspecialchars((string) $itemname);
             }
 
             // Entity (conditional)
@@ -816,7 +816,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                         $serial = sprintf(__('%1$s (%2$s)'), $serial, $lic['type']);
                     }
                     $licParts[] = "<a href='" . SoftwareLicense::getFormURLWithID($lic['id']) . "'>" .
-                       htmlspecialchars($lic['name']) . "</a> - " . htmlspecialchars($serial);
+                       htmlspecialchars((string) $lic['name']) . "</a> - " . htmlspecialchars((string) $serial);
                 }
                 $licenseHtml = implode('<br>', $licParts);
             }

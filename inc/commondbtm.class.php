@@ -1671,16 +1671,16 @@ class CommonDBTM extends CommonGLPI
                                 case 'string':
                                 case 'text':
                                     $ischanged = (@strcmp(
-                                        $DB->escape($this->fields[$key]),
-                                        $this->input[$key]
+                                        (string) $DB->escape($this->fields[$key]),
+                                        (string) $this->input[$key]
                                     ) != 0);
                                     break;
 
                                 case 'itemlink':
                                     if ($key == 'name') {
                                         $ischanged = (strcmp(
-                                            $DB->escape($this->fields[$key]),
-                                            $this->input[$key]
+                                            (string) $DB->escape($this->fields[$key]),
+                                            (string) $this->input[$key]
                                         ) != 0);
                                         break;
                                     } // else default
@@ -1856,7 +1856,7 @@ class CommonDBTM extends CommonGLPI
             }
             // Do not display quotes
             if (isset($this->fields['name'])) {
-                $this->fields['name'] = stripslashes($this->fields['name']);
+                $this->fields['name'] = stripslashes((string) $this->fields['name']);
             } else {
                 //TRANS: %1$s is the itemtype, %2$d is the id of the item
                 $this->fields['name'] = sprintf(
@@ -3112,7 +3112,7 @@ class CommonDBTM extends CommonGLPI
      *
      * @return boolean
     **/
-    public function can($ID, $right, array &$input = null)
+    public function can($ID, $right, ?array &$input = null)
     {
         // Clean ID :
         $ID = Toolbox::cleanInteger($ID);
@@ -3240,7 +3240,7 @@ class CommonDBTM extends CommonGLPI
      *
      * @return void
     **/
-    public function check($ID, $right, array &$input = null)
+    public function check($ID, $right, ?array &$input = null)
     {
 
         // Check item exists
@@ -3675,12 +3675,12 @@ class CommonDBTM extends CommonGLPI
         $toadd   = [];
         if ($this->isField('completename')) {
             $toadd[] = ['name'  => __('Complete name'),
-                             'value' => nl2br($this->getField('completename'))];
+                             'value' => nl2br((string) $this->getField('completename'))];
         }
 
         if ($this->isField('serial')) {
             $toadd[] = ['name'  => __('Serial number'),
-                             'value' => nl2br($this->getField('serial'))];
+                             'value' => nl2br((string) $this->getField('serial'))];
         }
 
         if ($this->isField('otherserial')) {
@@ -4148,7 +4148,7 @@ class CommonDBTM extends CommonGLPI
         array &$actions,
         $itemtype,
         $is_deleted = 0,
-        CommonDBTM $checkitem = null
+        ?CommonDBTM $checkitem = null
     ) {
     }
 
@@ -4454,12 +4454,12 @@ class CommonDBTM extends CommonGLPI
                             break;
 
                         case 'mac':
-                            preg_match("/([0-9a-fA-F]{1,2}([:-]|$)){6}$/", $value, $regs);
+                            preg_match("/([0-9a-fA-F]{1,2}([:-]|$)){6}$/", (string) $value, $regs);
                             if (empty($regs)) {
                                 $unset = true;
                             }
                             // Define the MAC address to lower to reduce complexity of SQL queries
-                            $this->input[$key] = strtolower($value);
+                            $this->input[$key] = strtolower((string) $value);
                             break;
 
                         case 'date':
@@ -4467,7 +4467,7 @@ class CommonDBTM extends CommonGLPI
                             // Date is already "reformat" according to getDateFormat()
                             $pattern  = "/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})";
                             $pattern .= "([_][01][0-9]|2[0-3]:[0-5][0-9]:[0-5]?[0-9])?/";
-                            preg_match($pattern, $value, $regs);
+                            preg_match($pattern, (string) $value, $regs);
                             if (empty($regs)) {
                                 $unset = true;
                             }
@@ -4482,9 +4482,9 @@ class CommonDBTM extends CommonGLPI
                             // no break
                         case 'email':
                         case 'string':
-                            if (strlen($value) > 255) {
-                                Toolbox::logWarning("$value exceed 255 characters long (" . strlen($value) . "), it will be truncated.");
-                                $this->input[$key] = substr($value, 0, 254);
+                            if (strlen((string) $value) > 255) {
+                                Toolbox::logWarning("$value exceed 255 characters long (" . strlen((string) $value) . "), it will be truncated.");
+                                $this->input[$key] = substr((string) $value, 0, 254);
                             }
                             break;
 
@@ -4689,7 +4689,7 @@ class CommonDBTM extends CommonGLPI
                 if (!empty($fields) && !empty($fields['fields'])) {
                     $where    = [];
                     $continue = true;
-                    foreach (explode(',', $fields['fields']) as $field) {
+                    foreach (explode(',', (string) $fields['fields']) as $field) {
                         if (
                             isset($this->input[$field]) //Field is set
                             //Standard field not null
@@ -4737,7 +4737,7 @@ class CommonDBTM extends CommonGLPI
                                 || $p['add_event_on_duplicate']
                             ) {
                                 $message = [];
-                                foreach (explode(',', $fields['fields']) as $field) {
+                                foreach (explode(',', (string) $fields['fields']) as $field) {
                                     $message[$field] = $this->input[$field];
                                 }
 
@@ -4964,7 +4964,7 @@ class CommonDBTM extends CommonGLPI
 
                     case "text":
                         if ($options['html']) {
-                            $text = nl2br($value);
+                            $text = nl2br((string) $value);
                         } else {
                             $text = $value;
                         }
@@ -5013,11 +5013,11 @@ class CommonDBTM extends CommonGLPI
                         return $value;
 
                     case "weblink":
-                        $orig_link = trim($value);
+                        $orig_link = trim((string) $value);
                         if (!empty($orig_link)) {
                             // strip begin of link
                             $link = preg_replace('/https?:\/\/(www[^\.]*\.)?/', '', $orig_link);
-                            $link = preg_replace('/\/$/', '', $link);
+                            $link = preg_replace('/\/$/', '', (string) $link);
                             if (Toolbox::strlen($link) > $CFG_GLPI["url_maxlength"]) {
                                 $link = Toolbox::substr($link, 0, $CFG_GLPI["url_maxlength"]) . "...";
                             }
@@ -5704,8 +5704,8 @@ class CommonDBTM extends CommonGLPI
                 // complete doc information
                 $docadded[$docID]['data'] = sprintf(
                     __('%1$s - %2$s'),
-                    stripslashes($doc->fields["name"]),
-                    stripslashes($doc->fields["filename"])
+                    stripslashes((string) $doc->fields["name"]),
+                    stripslashes((string) $doc->fields["filename"])
                 );
                 $docadded[$docID]['filepath'] = $doc->fields["filepath"];
 
@@ -5725,8 +5725,8 @@ class CommonDBTM extends CommonGLPI
                 }
                 if (
                     isset($input[$options['content_field']])
-                    && strpos($input[$options['content_field']], $doc->fields["tag"]) !== false
-                    && strpos($doc->fields['mime'], 'image/') !== false
+                    && strpos($input[$options['content_field']], (string) $doc->fields["tag"]) !== false
+                    && strpos((string) $doc->fields['mime'], 'image/') !== false
                 ) {
                     //do not display inline docs in timeline
                     $toadd['timeline_position'] = CommonITILObject::NO_TIMELINE;

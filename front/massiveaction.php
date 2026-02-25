@@ -33,7 +33,7 @@
 
 include('../inc/includes.php');
 
-if (strpos($_SERVER['HTTP_REFERER'], 'bookmark.php') === false) {
+if (strpos((string) $_SERVER['HTTP_REFERER'], 'bookmark.php') === false) {
     Session::checkCentralAccess();
 }
 

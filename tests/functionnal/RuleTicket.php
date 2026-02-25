@@ -948,4 +948,269 @@ class RuleTicket extends DbTestCase
         $this->boolean($ticket->getFromDB($tickets_id))->isTrue();
         $this->integer($ticket->fields['priority'])->isNotEqualTo(5);
     }
+
+    public function testAppendActionsAreClearedByAssign()
+    {
+        $this->login();
+
+        $users_id_first = getItemByTypeName('User', 'tech', true);
+        $users_id_second = getItemByTypeName('User', 'normal', true);
+
+        $ruleticket = new \RuleTicket();
+        $rulecrit = new \RuleCriteria();
+        $ruleaction = new \RuleAction();
+
+        $append_pattern = 'append-only-' . $this->getUniqueString();
+        $rule_append_id = $ruleticket->add($rule_append_input = [
+           'name'         => 'append rule ' . $append_pattern,
+           'match'        => 'AND',
+           'is_active'    => 1,
+           'sub_type'     => 'RuleTicket',
+           'condition'    => \RuleTicket::ONADD,
+           'is_recursive' => 1,
+        ]);
+        $this->checkInput($ruleticket, $rule_append_id, $rule_append_input);
+
+        $crit_id = $rulecrit->add($crit_input = [
+           'rules_id'  => $rule_append_id,
+           'criteria'  => 'name',
+           'condition' => \Rule::PATTERN_CONTAIN,
+           'pattern'   => $append_pattern,
+        ]);
+        $this->checkInput($rulecrit, $crit_id, $crit_input);
+
+        $act_id = $ruleaction->add($act_input = [
+           'rules_id'    => $rule_append_id,
+           'action_type' => 'append',
+           'field'       => '_users_id_assign',
+           'value'       => $users_id_first,
+        ]);
+        $this->checkInput($ruleaction, $act_id, $act_input);
+
+        $act_id = $ruleaction->add($act_input = [
+           'rules_id'    => $rule_append_id,
+           'action_type' => 'append',
+           'field'       => '_users_id_assign',
+           'value'       => $users_id_second,
+        ]);
+        $this->checkInput($ruleaction, $act_id, $act_input);
+
+        $rule_append = new \RuleTicket();
+        $this->boolean($rule_append->getRuleWithCriteriasAndActions($rule_append_id, 1, 1))->isTrue();
+        $input = [
+           'name'    => $append_pattern,
+           'content' => 'test'
+        ];
+        $output = [];
+        $params = [];
+        $rule_append->process($input, $output, $params);
+
+        $this->array($output)->hasKey('_additional_assigns');
+        $this->array($output['_additional_assigns'])->hasSize(2);
+        $assign_ids = array_column($output['_additional_assigns'], 'users_id');
+        $this->array($assign_ids)->contains($users_id_first)->contains($users_id_second);
+
+        $assign_pattern = 'append-assign-' . $this->getUniqueString();
+        $rule_assign_id = $ruleticket->add($rule_assign_input = [
+           'name'         => 'assign rule ' . $assign_pattern,
+           'match'        => 'AND',
+           'is_active'    => 1,
+           'sub_type'     => 'RuleTicket',
+           'condition'    => \RuleTicket::ONADD,
+           'is_recursive' => 1,
+        ]);
+        $this->checkInput($ruleticket, $rule_assign_id, $rule_assign_input);
+
+        $crit_id = $rulecrit->add($crit_input = [
+           'rules_id'  => $rule_assign_id,
+           'criteria'  => 'name',
+           'condition' => \Rule::PATTERN_CONTAIN,
+           'pattern'   => $assign_pattern,
+        ]);
+        $this->checkInput($rulecrit, $crit_id, $crit_input);
+
+        $act_id = $ruleaction->add($act_input = [
+           'rules_id'    => $rule_assign_id,
+           'action_type' => 'append',
+           'field'       => '_users_id_assign',
+           'value'       => $users_id_first,
+        ]);
+        $this->checkInput($ruleaction, $act_id, $act_input);
+
+        $act_id = $ruleaction->add($act_input = [
+           'rules_id'    => $rule_assign_id,
+           'action_type' => 'append',
+           'field'       => '_users_id_assign',
+           'value'       => $users_id_second,
+        ]);
+        $this->checkInput($ruleaction, $act_id, $act_input);
+
+        $act_id = $ruleaction->add($act_input = [
+           'rules_id'    => $rule_assign_id,
+           'action_type' => 'assign',
+           'field'       => '_users_id_assign',
+           'value'       => $users_id_first,
+        ]);
+        $this->checkInput($ruleaction, $act_id, $act_input);
+
+        $rule_assign = new \RuleTicket();
+        $this->boolean($rule_assign->getRuleWithCriteriasAndActions($rule_assign_id, 1, 1))->isTrue();
+        $input = [
+           'name'    => $assign_pattern,
+           'content' => 'test'
+        ];
+        $output = [];
+        $params = [];
+        $rule_assign->process($input, $output, $params);
+
+        $this->array($output)->notHasKey('_additional_assigns');
+        $this->integer((int)$output['_users_id_assign'])->isEqualTo($users_id_first);
+    }
+
+    public function testStatusAssignmentSetsDoNotComputeStatus()
+    {
+        $this->login();
+
+        $ruleticket = new \RuleTicket();
+        $rulecrit = new \RuleCriteria();
+        $ruleaction = new \RuleAction();
+
+        $pattern = 'status-flag-' . $this->getUniqueString();
+        $rules_id = $ruleticket->add($rule_input = [
+           'name'         => 'status flag ' . $pattern,
+           'match'        => 'AND',
+           'is_active'    => 1,
+           'sub_type'     => 'RuleTicket',
+           'condition'    => \RuleTicket::ONADD,
+           'is_recursive' => 1,
+        ]);
+        $this->checkInput($ruleticket, $rules_id, $rule_input);
+
+        $crit_id = $rulecrit->add($crit_input = [
+           'rules_id'  => $rules_id,
+           'criteria'  => 'name',
+           'condition' => \Rule::PATTERN_CONTAIN,
+           'pattern'   => $pattern,
+        ]);
+        $this->checkInput($rulecrit, $crit_id, $crit_input);
+
+        $act_id = $ruleaction->add($act_input = [
+           'rules_id'    => $rules_id,
+           'action_type' => 'assign',
+           'field'       => 'status',
+           'value'       => \Ticket::INCOMING,
+        ]);
+        $this->checkInput($ruleaction, $act_id, $act_input);
+
+        $rule_instance = new \RuleTicket();
+        $this->boolean($rule_instance->getRuleWithCriteriasAndActions($rules_id, 1, 1))->isTrue();
+        $input = [
+           'name'    => $pattern,
+           'content' => 'test'
+        ];
+        $output = [];
+        $params = [];
+        $rule_instance->process($input, $output, $params);
+
+        $this->boolean($output['_rule_process'])->isTrue();
+        $this->integer((int)$output['status'])->isEqualTo(\Ticket::INCOMING);
+        $this->boolean($output['_do_not_compute_status'])->isTrue();
+    }
+
+    public function testUrgencyImpactRecomputePriority()
+    {
+        $this->login();
+
+        $ruleticket = new \RuleTicket();
+        $rulecrit = new \RuleCriteria();
+        $ruleaction = new \RuleAction();
+
+        $pattern = 'priority-recompute-' . $this->getUniqueString();
+        $rules_id = $ruleticket->add($rule_input = [
+           'name'         => 'priority recompute ' . $pattern,
+           'match'        => 'AND',
+           'is_active'    => 1,
+           'sub_type'     => 'RuleTicket',
+           'condition'    => \RuleTicket::ONADD,
+           'is_recursive' => 1,
+        ]);
+        $this->checkInput($ruleticket, $rules_id, $rule_input);
+
+        $crit_id = $rulecrit->add($crit_input = [
+           'rules_id'  => $rules_id,
+           'criteria'  => 'name',
+           'condition' => \Rule::PATTERN_CONTAIN,
+           'pattern'   => $pattern,
+        ]);
+        $this->checkInput($rulecrit, $crit_id, $crit_input);
+
+        $act_id = $ruleaction->add($act_input = [
+           'rules_id'    => $rules_id,
+           'action_type' => 'assign',
+           'field'       => 'urgency',
+           'value'       => 5,
+        ]);
+        $this->checkInput($ruleaction, $act_id, $act_input);
+
+        $act_id = $ruleaction->add($act_input = [
+           'rules_id'    => $rules_id,
+           'action_type' => 'assign',
+           'field'       => 'impact',
+           'value'       => 1,
+        ]);
+        $this->checkInput($ruleaction, $act_id, $act_input);
+
+        $act_id = $ruleaction->add($act_input = [
+           'rules_id'    => $rules_id,
+           'action_type' => 'compute',
+           'field'       => 'priority',
+           'value'       => 1,
+        ]);
+        $this->checkInput($ruleaction, $act_id, $act_input);
+
+        $rule_instance = new \RuleTicket();
+        $this->boolean($rule_instance->getRuleWithCriteriasAndActions($rules_id, 1, 1))->isTrue();
+        $input = [
+           'name'     => $pattern,
+           'content'  => 'test'
+        ];
+        $output = [
+           'priority' => 1,
+        ];
+        $params = [];
+        $rule_instance->process($input, $output, $params);
+
+        $expected_priority = \Ticket::computePriority(5, 1);
+        $this->boolean($output['_rule_process'])->isTrue();
+        $this->integer((int)$output['urgency'])->isEqualTo(5);
+        $this->integer((int)$output['impact'])->isEqualTo(1);
+        $this->integer((int)$output['priority'])->isEqualTo($expected_priority);
+    }
+
+    public function testSlaOlaAssignmentAddsShadowFields()
+    {
+        $rule = new \RuleTicket();
+
+        $sla_action = new \RuleAction();
+        $sla_action->fields = [
+           'action_type' => 'assign',
+           'field'       => 'slas_id_ttr',
+           'value'       => 123,
+        ];
+
+        $ola_action = new \RuleAction();
+        $ola_action->fields = [
+           'action_type' => 'assign',
+           'field'       => 'olas_id_tto',
+           'value'       => 456,
+        ];
+
+        $rule->actions = [$sla_action, $ola_action];
+        $output = $rule->executeActions([], []);
+
+        $this->integer((int)$output['slas_id_ttr'])->isEqualTo(123);
+        $this->integer((int)$output['_slas_id_ttr'])->isEqualTo(123);
+        $this->integer((int)$output['olas_id_tto'])->isEqualTo(456);
+        $this->integer((int)$output['_olas_id_tto'])->isEqualTo(456);
+    }
 }

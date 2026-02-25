@@ -648,7 +648,7 @@ class MassiveAction
                     if (Toolbox::startsWith($actiontodel, '*:')) {
                         foreach (array_keys($actions) as $action) {
                             if (
-                                preg_match('/[^:]+:' . str_replace('*:', '', $actiontodel . '/'), $action)
+                                preg_match('/[^:]+:' . str_replace('*:', '', $actiontodel . '/'), (string) $action)
                                 && !in_array($action, $whitedlisted_actions)
                             ) {
                                 unset($actions[$action]);
@@ -658,7 +658,7 @@ class MassiveAction
                     if (Toolbox::endsWith($actiontodel, ':*')) {
                         foreach (array_keys($actions) as $action) {
                             if (
-                                preg_match('/' . str_replace(':*', '', $actiontodel . ':.+/'), $action)
+                                preg_match('/' . str_replace(':*', '', $actiontodel . ':.+/'), (string) $action)
                                 && !in_array($action, $whitedlisted_actions)
                             ) {
                                 unset($actions[$action]);
@@ -677,9 +677,7 @@ class MassiveAction
 
         // Remove icons as they are not displayed in list view
         if (!$single) {
-            $actions = array_map(function ($action) {
-                return strip_tags($action);
-            }, $actions);
+            $actions = array_map(strip_tags(...), $actions);
         }
 
         return $actions;
@@ -914,7 +912,7 @@ class MassiveAction
 
                 $items         = [];
                 foreach ($search_options as $search_option) {
-                    $search_option = explode(':', $search_option);
+                    $search_option = explode(':', (string) $search_option);
                     $itemtype      = $search_option[0];
                     $index         = $search_option[1];
 
@@ -985,7 +983,7 @@ class MassiveAction
 
                 $items_index = [];
                 foreach ($search_options as $search_option) {
-                    $search_option = explode(':', $search_option);
+                    $search_option = explode(':', (string) $search_option);
                     $items_index[$search_option[0]] = $search_option[1];
                 }
                 echo Html::hidden('search_options', ['value' => $items_index]);
@@ -994,7 +992,7 @@ class MassiveAction
 
                 $submitname = _sx('button', 'Post');
                 if (isset($ma->POST['submitname']) && $ma->POST['submitname']) {
-                    $submitname = stripslashes($ma->POST['submitname']);
+                    $submitname = stripslashes((string) $ma->POST['submitname']);
                 }
                 echo Html::submit($submitname, ['name' => 'massiveaction', "class" => "btn btn-secondary"]);
 
@@ -1016,7 +1014,7 @@ class MassiveAction
 
                 $submitname = _sx('button', 'Post');
                 if (isset($ma->POST['submitname']) && $ma->POST['submitname']) {
-                    $submitname = stripslashes($ma->POST['submitname']);
+                    $submitname = stripslashes((string) $ma->POST['submitname']);
                 }
                 echo Html::submit($submitname, ['name' => 'massiveaction', 'class' => 'btn btn-secondary']);
 

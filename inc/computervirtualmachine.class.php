@@ -469,13 +469,13 @@ class ComputerVirtualMachine extends CommonDBChild
 
         //Case two : why this code ? Because some dmidecode < 2.10 is buggy.
         //On unix is flips first block of uuid and on windows flips 3 first blocks...
-        $in      = [strtolower($uuid)];
+        $in      = [strtolower((string) $uuid)];
         $regexes = [
            "/([\w]{2})([\w]{2})([\w]{2})([\w]{2})(.*)/"                                        => "$4$3$2$1$5",
            "/([\w]{2})([\w]{2})([\w]{2})([\w]{2})-([\w]{2})([\w]{2})-([\w]{2})([\w]{2})(.*)/"  => "$4$3$2$1-$6$5-$8$7$9"
         ];
         foreach ($regexes as $pattern => $replace) {
-            $reverse_uuid = preg_replace($pattern, $replace, $uuid);
+            $reverse_uuid = preg_replace($pattern, $replace, (string) $uuid);
             if ($reverse_uuid) {
                 $in[] = strtolower($reverse_uuid);
             }

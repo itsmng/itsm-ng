@@ -53,8 +53,8 @@ foreach ($date_fields as $date_field) {
     if (
         isset($_POST["_$date_field"])
         && isset($_POST[$date_field])
-        && trim($_POST[$date_field]) == ''
-        && trim($_POST["_$date_field"]) != ''
+        && trim((string) $_POST[$date_field]) == ''
+        && trim((string) $_POST["_$date_field"]) != ''
     ) {
         $_POST[$date_field] = $_POST["_$date_field"];
     }

@@ -171,7 +171,7 @@ class PlanningRecall extends CommonDBChild
                     ) {
                         $when = date(
                             "Y-m-d H:i:s",
-                            strtotime($item->fields[$data['field']]) - $data['before_time']
+                            strtotime((string) $item->fields[$data['field']]) - $data['before_time']
                         );
                         if ($data['before_time'] >= 0) {
                             if ($pr->can($pr->fields['id'], UPDATE)) {
@@ -199,7 +199,7 @@ class PlanningRecall extends CommonDBChild
                     ) {
                         $data['when'] = date(
                             "Y-m-d H:i:s",
-                            strtotime($item->fields[$data['field']])
+                            strtotime((string) $item->fields[$data['field']])
                                                          - $data['before_time']
                         );
                         if ($data['before_time'] >= 0) {

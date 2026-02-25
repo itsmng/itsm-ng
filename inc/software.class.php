@@ -1035,7 +1035,7 @@ class Software extends CommonDBTM
            ],
            'WHERE'     => [
               'glpi_softwares.id'           => ['!=', $ID],
-              'glpi_softwares.name'         => addslashes($this->fields['name']),
+              'glpi_softwares.name'         => addslashes((string) $this->fields['name']),
               'glpi_softwares.is_deleted'   => 0,
               'glpi_softwares.is_template'  => 0
            ] + getEntitiesRestrictCriteria(

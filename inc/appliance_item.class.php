@@ -121,7 +121,7 @@ class Appliance_Item extends CommonDBRelation
         if ((int) ($appliance->fields['is_recursive'] ?? 0)) {
             $entity_restrict = getSonsOf('glpi_entities', $appliance->getEntityID());
         }
-        $entity_restrict = array_unique(array_map('intval', (array) $entity_restrict));
+        $entity_restrict = array_unique(array_map(intval(...), (array) $entity_restrict));
         if (empty($entity_restrict)) {
             $entity_restrict = [(int) $appliance->getEntityID()];
         }

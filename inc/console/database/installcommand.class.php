@@ -179,7 +179,7 @@ class InstallCommand extends AbstractConfigureCommand
             // $DB->dbhost can be array when using round robin feature
             $db_hostport = is_array($DB->dbhost) ? $DB->dbhost[0] : $DB->dbhost;
 
-            $hostport = explode(':', $db_hostport);
+            $hostport = explode(':', (string) $db_hostport);
             $db_host = $hostport[0];
             if (count($hostport) < 2) {
                 // Host only case
@@ -191,7 +191,7 @@ class InstallCommand extends AbstractConfigureCommand
 
             $db_name = $DB->dbdefault;
             $db_user = $DB->dbuser;
-            $db_pass = rawurldecode($DB->dbpassword); //rawurldecode as in DBmysql::connect()
+            $db_pass = rawurldecode((string) $DB->dbpassword); //rawurldecode as in DBmysql::connect()
 
             $run = $this->askForDbConfigConfirmation(
                 $input,

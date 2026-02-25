@@ -302,11 +302,11 @@ class NetworkPort extends CommonDBChild
             if (array_key_exists($field, $clone->fields) || $field[0] == '_') {
                 continue;
             }
-            if (preg_match('/^NetworkName_/', $field)) {
-                $networkName_field = preg_replace('/^NetworkName_/', '', $field);
+            if (preg_match('/^NetworkName_/', (string) $field)) {
+                $networkName_field = preg_replace('/^NetworkName_/', '', (string) $field);
                 $this->input_for_NetworkName[$networkName_field] = $value;
-            } elseif (preg_match('/^NetworkPortConnect_/', $field)) {
-                $networkName_field = preg_replace('/^NetworkPortConnect_/', '', $field);
+            } elseif (preg_match('/^NetworkPortConnect_/', (string) $field)) {
+                $networkName_field = preg_replace('/^NetworkPortConnect_/', '', (string) $field);
                 $this->input_for_NetworkPortConnect[$networkName_field] = $value;
             } else {
                 $this->input_for_instantiation[$field] = $value;
@@ -859,7 +859,7 @@ class NetworkPort extends CommonDBChild
                                 $classtype::$funcname($netport);
                                 $content = ob_get_clean();
                             }
-                            $headerName = explode(':', $name)[1];
+                            $headerName = explode(':', (string) $name)[1];
                             $newValue[$headerName] = $content;
                         }
                     }

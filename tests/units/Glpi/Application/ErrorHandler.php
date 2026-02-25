@@ -92,7 +92,7 @@ class ErrorHandler extends \GLPITestCase
             if ((error_reporting() & E_DEPRECATED) !== 0) {
                 $data[] = [
                    'error_call'           => function () {
-                       $param = new \ReflectionParameter([\Config::class, 'getTypeName'], 0);
+                       $param = new \ReflectionParameter(\Config::getTypeName(...), 0);
                        $param->isCallable();
                    },
                    'expected_log_level'   => LogLevel::NOTICE,

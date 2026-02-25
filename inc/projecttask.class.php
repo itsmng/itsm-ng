@@ -1923,13 +1923,13 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                     $interv[$key]["id"]                        = $data["id"];
                     $interv[$key]["users_id"]                  = $data["users_id"];
 
-                    if (strcmp($begin, $data["plan_start_date"]) > 0) {
+                    if (strcmp((string) $begin, (string) $data["plan_start_date"]) > 0) {
                         $interv[$key]["begin"] = $begin;
                     } else {
                         $interv[$key]["begin"] = $data["plan_start_date"];
                     }
 
-                    if (strcmp($end, $data["plan_end_date"]) < 0) {
+                    if (strcmp((string) $end, (string) $data["plan_end_date"]) < 0) {
                         $interv[$key]["end"]   = $end;
                     } else {
                         $interv[$key]["end"]   = $data["plan_end_date"];
@@ -2011,8 +2011,8 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                 //TRANS: %1$s is the start time of a planned item, %2$s is the end
                 $beginend = sprintf(
                     __('From %1$s to %2$s'),
-                    date("H:i", strtotime($val["begin"])),
-                    date("H:i", strtotime($val["end"]))
+                    date("H:i", strtotime((string) $val["begin"])),
+                    date("H:i", strtotime((string) $val["end"]))
                 );
                 $html .= sprintf(__('%1$s: %2$s'), $beginend, Html::resume_text($val["name"], 80));
                 break;
@@ -2022,12 +2022,12 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                 break;
 
             case "begin":
-                $start = sprintf(__('Start at %s'), date("H:i", strtotime($val["begin"])));
+                $start = sprintf(__('Start at %s'), date("H:i", strtotime((string) $val["begin"])));
                 $html .= sprintf(__('%1$s: %2$s'), $start, Html::resume_text($val["name"], 80));
                 break;
 
             case "end":
-                $end = sprintf(__('End at %s'), date("H:i", strtotime($val["end"])));
+                $end = sprintf(__('End at %s'), date("H:i", strtotime((string) $val["end"])));
                 $html .= sprintf(__('%1$s: %2$s'), $end, Html::resume_text($val["name"], 80));
                 break;
         }
@@ -2038,7 +2038,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
         $html .= "<div class='b'>";
         $html .= sprintf(__('%1$s: %2$s'), __('Percent done'), $val["status"] . "%");
         $html .= "</div>";
-        $html .= "<div class='event-description rich_text_container'>" . html_entity_decode($val["content"]) . "</div>";
+        $html .= "<div class='event-description rich_text_container'>" . html_entity_decode((string) $val["content"]) . "</div>";
         return $html;
     }
 

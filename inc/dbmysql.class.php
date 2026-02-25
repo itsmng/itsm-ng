@@ -206,16 +206,16 @@ class DBmysql
             $host = $this->dbhost;
         }
 
-        $hostport = explode(":", $host);
+        $hostport = explode(":", (string) $host);
         if (count($hostport) < 2) {
             // Host
-            $this->dbh->real_connect($host, $this->dbuser, rawurldecode($this->dbpassword), $this->dbdefault);
+            $this->dbh->real_connect($host, $this->dbuser, rawurldecode((string) $this->dbpassword), $this->dbdefault);
         } elseif (intval($hostport[1]) > 0) {
             // Host:port
-            $this->dbh->real_connect($hostport[0], $this->dbuser, rawurldecode($this->dbpassword), $this->dbdefault, $hostport[1]);
+            $this->dbh->real_connect($hostport[0], $this->dbuser, rawurldecode((string) $this->dbpassword), $this->dbdefault, $hostport[1]);
         } else {
             // :Socket
-            $this->dbh->real_connect($hostport[0], $this->dbuser, rawurldecode($this->dbpassword), $this->dbdefault, ini_get('mysqli.default_port'), $hostport[1]);
+            $this->dbh->real_connect($hostport[0], $this->dbuser, rawurldecode((string) $this->dbpassword), $this->dbdefault, ini_get('mysqli.default_port'), $hostport[1]);
         }
 
         if ($this->dbh->connect_error) {
@@ -1003,9 +1003,9 @@ class DBmysql
         $msg = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER';
         $req = $DB->request("SELECT @@sql_mode as mode");
         if (($data = $req->next())) {
-            return (preg_match("/STRICT_TRANS/", $data['mode'])
-                    && preg_match("/NO_ZERO_/", $data['mode'])
-                    && preg_match("/ONLY_FULL_GROUP_BY/", $data['mode']));
+            return (preg_match("/STRICT_TRANS/", (string) $data['mode'])
+                    && preg_match("/NO_ZERO_/", (string) $data['mode'])
+                    && preg_match("/ONLY_FULL_GROUP_BY/", (string) $data['mode']));
         }
         return false;
     }
@@ -1170,7 +1170,7 @@ class DBmysql
         // handle names with multiple chunks (e.g. db.table.field or table.field)
         if (strpos($name, '.')) {
             $names = explode('.', $name);
-            return implode('.', array_map([self::class, 'quoteName'], $names));
+            return implode('.', array_map(self::quoteName(...), $names));
         }
 
         // do not quote wildcard (*)
@@ -1548,7 +1548,7 @@ class DBmysql
                 function ($idx) {
                     return rtrim($idx, ',');
                 },
-                explode("\n", $structure)
+                explode("\n", (string) $structure)
             )
         );
         //get table schema, without index, without AUTO_INCREMENT
@@ -1558,7 +1558,7 @@ class DBmysql
               "/AUTO_INCREMENT=\d+ /"
             ],
             "",
-            $structure
+            (string) $structure
         );
         $structure = preg_replace('/,(\s)?$/m', '', $structure);
         $structure = preg_replace('/ COMMENT \'(.+)\'/', '', $structure);
@@ -1589,14 +1589,14 @@ class DBmysql
         $structure = preg_replace(
             '/ CURRENT_TIMESTAMP\(\)/i',
             ' CURRENT_TIMESTAMP',
-            $structure
+            (string) $structure
         );
 
         //Mariadb 10.2 allow default values on longblob, text and longtext
         $defaults = [];
         preg_match_all(
             '/^.+ (longblob|text|longtext) .+$/m',
-            $structure,
+            (string) $structure,
             $defaults
         );
         if (count($defaults[0])) {
@@ -1609,13 +1609,13 @@ class DBmysql
             }
         }
 
-        $structure = preg_replace("/(DEFAULT) ([-|+]?\d+)(\.\d+)?/", "$1 '$2$3'", $structure);
+        $structure = preg_replace("/(DEFAULT) ([-|+]?\d+)(\.\d+)?/", "$1 '$2$3'", (string) $structure);
         //$structure = preg_replace("/(DEFAULT) (')?([-|+]?\d+)(\.\d+)(')?/", "$1 '$3'", $structure);
-        $structure = preg_replace('/(BIGINT)\(\d+\)/i', '$1', $structure);
-        $structure = preg_replace('/(TINYINT) /i', '$1(4) ', $structure);
+        $structure = preg_replace('/(BIGINT)\(\d+\)/i', '$1', (string) $structure);
+        $structure = preg_replace('/(TINYINT) /i', '$1(4) ', (string) $structure);
 
         return [
-           'schema' => strtolower($structure),
+           'schema' => strtolower((string) $structure),
            'index'  => $index
         ];
     }
@@ -2004,7 +2004,7 @@ class DBmysql
      */
     public function removeSqlRemarks($sql)
     {
-        $lines = explode("\n", $sql);
+        $lines = explode("\n", (string) $sql);
 
         // try to keep mem. use down
         $sql = "";

@@ -876,7 +876,7 @@ class Rule extends CommonDBTM
         $rand = mt_rand();
         if ($canedit && $ID > 0) {
             if ($plugin = isPluginItemType($this->getType())) {
-                $url = $CFG_GLPI["root_doc"] . "/plugins/" . strtolower($plugin['plugin']);
+                $url = $CFG_GLPI["root_doc"] . "/plugins/" . strtolower((string) $plugin['plugin']);
             } else {
                 $url = $CFG_GLPI["root_doc"];
             }

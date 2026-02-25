@@ -347,7 +347,7 @@ class Html
      **/
     public static function cleanInputText($string)
     {
-        return preg_replace('/\'/', '&apos;', preg_replace('/\"/', '&quot;', $string ?? ''));
+        return preg_replace('/\'/', '&apos;', (string) preg_replace('/\"/', '&quot;', $string ?? ''));
     }
 
 
@@ -362,7 +362,7 @@ class Html
     {
 
         $url = preg_replace("/(\/[0-9a-zA-Z\.\-\_]+\.php).*/", "$1", $url);
-        return preg_replace("/\?.*/", "", $url);
+        return preg_replace("/\?.*/", "", (string) $url);
     }
 
 
@@ -628,11 +628,11 @@ class Html
             $units['hour'] += 24 * $units['day'];
         }
 
-        return str_pad($units['hour'], 2, '0', STR_PAD_LEFT)
+        return str_pad((string) $units['hour'], 2, '0', STR_PAD_LEFT)
             . ':'
-            . str_pad($units['minute'], 2, '0', STR_PAD_LEFT)
+            . str_pad((string) $units['minute'], 2, '0', STR_PAD_LEFT)
             . ':'
-            . str_pad($units['second'], 2, '0', STR_PAD_LEFT);
+            . str_pad((string) $units['second'], 2, '0', STR_PAD_LEFT);
     }
 
 
@@ -674,7 +674,7 @@ class Html
     {
 
         $toadd = '';
-        $dest = addslashes($dest);
+        $dest = addslashes((string) $dest);
 
         if (!headers_sent() && !Toolbox::isAjax()) {
             header("Location: $dest", true, $http_response_code);
@@ -714,9 +714,9 @@ class Html
 
         if (!isset($AJAX_INCLUDE)) {
             $url_dest = preg_replace(
-                '/^' . preg_quote($CFG_GLPI["root_doc"], '/') . '/',
+                '/^' . preg_quote((string) $CFG_GLPI["root_doc"], '/') . '/',
                 '',
-                $_SERVER['REQUEST_URI']
+                (string) $_SERVER['REQUEST_URI']
             );
             $dest .= "?redirect=" . rawurlencode($url_dest);
         }
@@ -1070,8 +1070,8 @@ class Html
         ) {
             $url_in = $_SERVER['HTTP_REFERER'];
         }
-        if (strlen($url_in) > 0) {
-            $url = parse_url($url_in);
+        if (strlen((string) $url_in) > 0) {
+            $url = parse_url((string) $url_in);
 
             if (isset($url['query'])) {
                 parse_str($url['query'], $parameters);
@@ -1802,7 +1802,7 @@ JAVASCRIPT;
                                 }
                                 $menu[$category]['content'] += $data;
                             } else {
-                                $menu[$category]['content'][strtolower($type)] = $data;
+                                $menu[$category]['content'][strtolower((string) $type)] = $data;
                             }
                             if (!isset($menu[$category]['title']) && isset($data['title'])) {
                                 $menu[$category]['title'] = $data['title'];
@@ -1885,7 +1885,7 @@ JAVASCRIPT;
 
         $body_class = "layout_" . $_SESSION['glpilayout'];
         if (
-            (strpos($_SERVER['REQUEST_URI'], ".form.php") !== false)
+            (strpos((string) $_SERVER['REQUEST_URI'], ".form.php") !== false)
             && isset($_GET['id']) && ($_GET['id'] > 0)
         ) {
             if (!CommonGLPI::isLayoutExcludedPage()) {
@@ -2089,7 +2089,7 @@ JAVASCRIPT;
                 AJAX DEBUG</a>";
             if (
                 !isset($_GET['full_page_tab'])
-                && strstr($_SERVER['REQUEST_URI'], '/ajax/common.tabs.php')
+                && strstr((string) $_SERVER['REQUEST_URI'], '/ajax/common.tabs.php')
             ) {
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;";
                 echo "<a href='" . $_SERVER['REQUEST_URI'] . "&full_page_tab=1' class='btn btn-secondary btn-sm my-2'>Display only tab for debug</a>";
@@ -2136,7 +2136,7 @@ JAVASCRIPT;
         echo "<ul>";
         echo "<li id='language_link'><a href='" . $CFG_GLPI["root_doc"] .
            "/front/preference.php?forcetab=User\$1' title=\"" .
-           addslashes(Dropdown::getLanguageName($_SESSION['glpilanguage'])) . "\">" .
+           addslashes((string) Dropdown::getLanguageName($_SESSION['glpilanguage'])) . "\">" .
            Dropdown::getLanguageName($_SESSION['glpilanguage']) . "</a></li>";
 
         if (Session::getLoginUserID()) {
@@ -2511,7 +2511,7 @@ JAVASCRIPT;
                     if (is_array($confirm) && isset($confirm[$name])) {
                         echo self::addConfirmationOnAction($confirm[$name]);
                     }
-                    echo "value=\"" . addslashes($label) . "\" class='submit'>&nbsp;";
+                    echo "value=\"" . addslashes((string) $label) . "\" class='submit'>&nbsp;";
                 }
             }
         }
@@ -2994,7 +2994,7 @@ JAVASCRIPT;
                 } else {
                     $out .= "onclick='massiveaction_window$identifier.dialog(\"open\");'";
                 }
-                $out .= " href='#modal_massaction_content$identifier' title=\"" . htmlentities($p['title'], ENT_QUOTES, 'UTF-8') . "\">";
+                $out .= " href='#modal_massaction_content$identifier' title=\"" . htmlentities((string) $p['title'], ENT_QUOTES, 'UTF-8') . "\">";
                 $out .= $p['title'] . "</a>";
                 $out .= "</td>";
 
@@ -3250,7 +3250,7 @@ JS;
         $date_value = '';
         $hour_value = '';
         if (!empty($p['value'])) {
-            list($date_value, $hour_value) = explode(' ', $p['value']);
+            list($date_value, $hour_value) = explode(' ', (string) $p['value']);
         }
 
         if (!empty($p['mintime'])) {
@@ -3688,7 +3688,7 @@ JS;
     {
 
         if (empty($specifictime)) {
-            $specifictime = strtotime($_SESSION["glpi_currenttime"]);
+            $specifictime = strtotime((string) $_SESSION["glpi_currenttime"]);
         }
 
         $format_use = "Y-m-d H:i:s";
@@ -3832,7 +3832,7 @@ JS;
         $out .= "<div class='dates_timelines'>";
 
         // add title
-        if (strlen($options['title'])) {
+        if (strlen((string) $options['title'])) {
             $out .= "<h2 class='header'>" . $options['title'] . "</h2>";
         }
 
@@ -3899,7 +3899,7 @@ JS;
                   'extraparams' => ['target' => $target]
                 ]
             );
-            $active_entity = addslashes($_SESSION["glpiactive_entity_name"]);
+            $active_entity = addslashes((string) $_SESSION["glpiactive_entity_name"]);
             $entity_shortname = $_SESSION["glpiactive_entity_shortname"];
             echo <<<HTML
             <div class='profile-selector'>
@@ -4728,13 +4728,13 @@ JAVASCRIPT
             /// TODO : trouble :  urlencode not available for array / do not pass array fields...
             if (!is_array($value)) {
                 // Javascript no gettext
-                $javascriptArray[] = "'$name': '" . urlencode($value) . "'";
+                $javascriptArray[] = "'$name': '" . urlencode((string) $value) . "'";
             }
         }
 
         // Determine the CSS classes to apply
         $classes = ['m-1'];
-        if (!strstr($btoption, 'class=')) {
+        if (!strstr((string) $btoption, 'class=')) {
             if (empty($btimage)) {
                 $classes[] = 'btn';
                 $classes[] = 'btn-secondary';
@@ -4748,10 +4748,10 @@ JAVASCRIPT
         if (!empty($btoption)) {
             $link .= ' ' . $btoption . ' ';
         }
-        $btlabel = htmlentities($btlabel, ENT_QUOTES, 'UTF-8');
+        $btlabel = htmlentities((string) $btlabel, ENT_QUOTES, 'UTF-8');
         $action  = " submitGetLink('$action', {" . implode(', ', $javascriptArray) . "});";
 
-        if (is_array($confirm) || strlen($confirm)) {
+        if (is_array($confirm) || strlen((string) $confirm)) {
             $link .= self::addConfirmationOnAction($confirm, $action);
         } else {
             $link .= " onclick=\"$action\" ";
@@ -4761,7 +4761,7 @@ JAVASCRIPT
         if (empty($btimage)) {
             $link .= $btlabel;
         } else {
-            if (substr($btimage, 0, strlen('fa-')) === 'fa-') {
+            if (substr((string) $btimage, 0, strlen('fa-')) === 'fa-') {
                 $link .= "<span class='fa $btimage pointer' title='$btlabel'><span class='sr-only'>$btlabel</span>";
             } else {
                 $link .= "<img src='$btimage' title='$btlabel' alt='$btlabel' class='pointer'>";
@@ -5098,7 +5098,7 @@ JAVASCRIPT
         $js .= "";
         if (!empty($on_change)) {
             $js .= " $('#$field_id').on('change', function(e) {" .
-               stripslashes($on_change) . "});";
+               stripslashes((string) $on_change) . "});";
         }
 
         $js .= "}; $('label[for=$field_id]').on('click', function(){ $('#$field_id').select2('open'); });";
@@ -5250,7 +5250,7 @@ JAVASCRIPT
 
         // Decode images urls
         $imgs = array_map(function ($img) {
-            $img['src'] = html_entity_decode($img['src']);
+            $img['src'] = html_entity_decode((string) $img['src']);
             return $img;
         }, $imgs);
 
@@ -6100,8 +6100,8 @@ JAVASCRIPT;
         $display = "<div id='" . $p['filecontainer'] . "' class='fileupload_info'>";
         if (isset($p['uploads']['_' . $p['name']])) {
             foreach ($p['uploads']['_' . $p['name']] as $uploadId => $upload) {
-                $prefix  = substr($upload, 0, 23);
-                $displayName = substr($upload, 23);
+                $prefix  = substr((string) $upload, 0, 23);
+                $displayName = substr((string) $upload, 23);
 
                 // get the extension icon
                 $extension = pathinfo(GLPI_TMP_DIR . '/' . $upload, PATHINFO_EXTENSION);
@@ -6680,7 +6680,7 @@ JAVASCRIPT;
 
         $base_path = $CFG_GLPI['root_doc'];
         if (isCommandLine()) {
-            $base_path = parse_url($CFG_GLPI['url_base'], PHP_URL_PATH);
+            $base_path = parse_url((string) $CFG_GLPI['url_base'], PHP_URL_PATH);
         }
 
         // Add only image files : try to detect mime type
@@ -6765,7 +6765,7 @@ JAVASCRIPT;
                 $_SESSION['glpi_js_toload'][$name][] = 'public/lib/flatpickr.js';
                 if (isset($_SESSION['glpilanguage'])) {
                     $filename = "public/lib/flatpickr/l10n/" .
-                       strtolower($CFG_GLPI["languages"][$_SESSION['glpilanguage']][3]) . ".js";
+                       strtolower((string) $CFG_GLPI["languages"][$_SESSION['glpilanguage']][3]) . ".js";
                     if (file_exists(GLPI_ROOT . '/' . $filename)) {
                         $_SESSION['glpi_js_toload'][$name][] = $filename;
                         break;
@@ -6777,7 +6777,7 @@ JAVASCRIPT;
                 if (isset($_SESSION['glpilanguage'])) {
                     foreach ([2, 3] as $loc) {
                         $filename = "public/lib/fullcalendar/locales/" .
-                           strtolower($CFG_GLPI["languages"][$_SESSION['glpilanguage']][$loc]) . ".js";
+                           strtolower((string) $CFG_GLPI["languages"][$_SESSION['glpilanguage']][$loc]) . ".js";
                         if (file_exists(GLPI_ROOT . '/' . $filename)) {
                             $_SESSION['glpi_js_toload'][$name][] = $filename;
                             break;
@@ -7088,7 +7088,7 @@ JAVASCRIPT;
                 foreach ($_SESSION['glpimenu'] as $firstlvl) {
                     if (isset($firstlvl['content'])) {
                         foreach ($firstlvl['content'] as $menu) {
-                            if (isset($menu['title']) && strlen($menu['title']) > 0) {
+                            if (isset($menu['title']) && strlen((string) $menu['title']) > 0) {
                                 $fuzzy_entries[] = [
                                    'url'   => $menu['page'],
                                    'title' => $firstlvl['title'] . " > " . $menu['title']
@@ -7096,7 +7096,7 @@ JAVASCRIPT;
 
                                 if (isset($menu['options'])) {
                                     foreach ($menu['options'] as $submenu) {
-                                        if (isset($submenu['title']) && strlen($submenu['title']) > 0) {
+                                        if (isset($submenu['title']) && strlen((string) $submenu['title']) > 0) {
                                             $fuzzy_entries[] = [
                                                'url'   => $submenu['page'],
                                                'title' => $firstlvl['title'] . " > " .
@@ -7111,7 +7111,7 @@ JAVASCRIPT;
                     }
 
                     if (isset($firstlvl['default'])) {
-                        if (strlen($menu['title']) > 0) {
+                        if (strlen((string) $menu['title']) > 0) {
                             $fuzzy_entries[] = [
                                'url'   => $firstlvl['default'],
                                'title' => $firstlvl['title']
@@ -7138,7 +7138,7 @@ JAVASCRIPT;
 
         $user = new User();
         $user->getFromDB(session::getLoginUserID());
-        $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true);
+        $currentShortcut = json_decode((string) $user->fields["access_custom_shortcuts"], true);
         unset($currentShortcut["DCRoom"]);
         unset($currentShortcut["update"]);
         foreach ($currentShortcut as $name => $shortcut) {
@@ -7301,7 +7301,7 @@ JAVASCRIPT;
                         $menu[$part]['content'][$key]['is_favorite'] = isset($menu_favorites[$part]) && in_array($key, $menu_favorites[$part]);
                         $menu[$part]['content'][$key]['part'] = $part;
                         $menu[$part]['content'][$key]['sub_menu_class'] = "";
-                        $tmp_active_item  = explode("/", $item);
+                        $tmp_active_item  = explode("/", (string) $item);
                         $active_item      = array_pop($tmp_active_item);
 
                         if (
@@ -7438,13 +7438,13 @@ JAVASCRIPT;
                + $hexcolor[1] + $hexcolor[1]
                + $hexcolor[2] + $hexcolor[2];
         }
-        if (strlen($hexcolor) != 6) {
+        if (strlen((string) $hexcolor) != 6) {
             throw new Exception('Invalid HEX color.');
         }
 
-        $r = hexdec(substr($hexcolor, 0, 2));
-        $g = hexdec(substr($hexcolor, 2, 2));
-        $b = hexdec(substr($hexcolor, 4, 2));
+        $r = hexdec(substr((string) $hexcolor, 0, 2));
+        $g = hexdec(substr((string) $hexcolor, 2, 2));
+        $b = hexdec(substr((string) $hexcolor, 4, 2));
 
         if ($bw) {
             return ($r * 0.299 + $g * 0.587 + $b * 0.114) > 100
@@ -7520,7 +7520,7 @@ JAVASCRIPT;
         $path = GLPI_ROOT . '/' . $file;
 
         // Alternate file path (prefixed by a "_", i.e. "_highcontrast.scss").
-        $pathargs = explode('/', $file);
+        $pathargs = explode('/', (string) $file);
         $pathargs[] = '_' . array_pop($pathargs);
         $pathalt = GLPI_ROOT . '/' . implode('/', $pathargs);
 
@@ -7621,7 +7621,7 @@ JAVASCRIPT;
     {
         $suffix = '';
         if ($variant !== null && $variant !== '') {
-            $suffix = '-' . preg_replace('/[^a-z0-9_-]+/i', '', $variant);
+            $suffix = '-' . preg_replace('/[^a-z0-9_-]+/i', '', (string) $variant);
         }
 
         return implode(

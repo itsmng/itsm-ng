@@ -241,7 +241,7 @@ class NotificationTemplate extends CommonDBTM
            'name'       => $name,
            'value'     => $value,
            'comment'   => 1,
-           'condition' => ['itemtype' => addslashes($itemtype)]
+           'condition' => ['itemtype' => addslashes((string) $itemtype)]
         ]);
     }
 
@@ -305,7 +305,7 @@ class NotificationTemplate extends CommonDBTM
 
             //If event is raised by a plugin, load it in order to get the language file available
             if ($plug = isPluginItemType(get_class($target->obj))) {
-                Plugin::loadLang(strtolower($plug['plugin']), $language);
+                Plugin::loadLang(strtolower((string) $plug['plugin']), $language);
             }
 
             //Get template's language data for in this language
@@ -379,7 +379,7 @@ class NotificationTemplate extends CommonDBTM
                 unset($_SESSION['glpi_dropdowntranslations']);
             }
             if ($plug = isPluginItemType(get_class($target->obj))) {
-                Plugin::loadLang(strtolower($plug['plugin']));
+                Plugin::loadLang(strtolower((string) $plug['plugin']));
             }
         }
         if (isset($this->templates_by_languages[$tid])) {
@@ -478,7 +478,7 @@ class NotificationTemplate extends CommonDBTM
     public static function processIf($string, $data)
     {
 
-        if (preg_match_all("/##IF([a-z-0-9\._]*)[=]?(.*?)##/i", $string, $out)) {
+        if (preg_match_all("/##IF([a-z-0-9\._]*)[=]?(.*?)##/i", (string) $string, $out)) {
             foreach ($out[1] as $key => $tag_infos) {
                 $if_field = $tag_infos;
                 //Get the field tag value (if one)
@@ -520,10 +520,10 @@ class NotificationTemplate extends CommonDBTM
 
                 // Force only one replacement to permit multiple use of the same condition
                 if ($condition_ok) { // Do IF
-                    $string = preg_replace($regex_if, "\\1", $string, 1);
+                    $string = preg_replace($regex_if, "\\1", (string) $string, 1);
                     $string = preg_replace($regex_else, "", $string, 1);
                 } else { // Do ELSE
-                    $string = preg_replace($regex_if, "", $string, 1);
+                    $string = preg_replace($regex_if, "", (string) $string, 1);
                     $string = preg_replace($regex_else, "\\1", $string, 1);
                 }
             }

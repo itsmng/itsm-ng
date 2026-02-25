@@ -843,7 +843,7 @@ class Ticket extends CommonITILObject
                             && $satisfaction->getFromDB($_GET["id"])
                         ) {
                             $duration = Entity::getUsedConfig('inquest_duration', $item->fields['entities_id']);
-                            $date2    = strtotime($satisfaction->fields['date_begin']);
+                            $date2    = strtotime((string) $satisfaction->fields['date_begin']);
                             if (
                                 ($duration == 0)
                                 || (time() - $date2) <= $duration * DAY_TIMESTAMP
@@ -1292,10 +1292,7 @@ class Ticket extends CommonITILObject
         list($dateField, $slaField) = SLA::getFieldNames($type);
 
         // Restore slas
-        if (
-            isset($manual_slas_id[$type])
-            && !isset($input['_' . $slaField])
-        ) {
+        if (isset($manual_slas_id[$type])) {
             $input[$slaField] = $manual_slas_id[$type];
         }
 
@@ -1384,10 +1381,7 @@ class Ticket extends CommonITILObject
         list($dateField, $olaField) = OLA::getFieldNames($type);
 
         // Restore olas
-        if (
-            isset($manual_olas_id[$type])
-            && !isset($input['_' . $olaField])
-        ) {
+        if (isset($manual_olas_id[$type])) {
             $input[$olaField] = $manual_olas_id[$type];
         }
 
@@ -1541,7 +1535,7 @@ class Ticket extends CommonITILObject
                 ));
             }
             // Not calendar defined
-            return max(1, strtotime($_SESSION["glpi_currenttime"]) - strtotime($this->fields['date']));
+            return max(1, strtotime((string) $_SESSION["glpi_currenttime"]) - strtotime((string) $this->fields['date']));
         }
         return 0;
     }
@@ -2032,7 +2026,7 @@ class Ticket extends CommonITILObject
         if (
             isset($this->input["_followup"])
             && is_array($this->input["_followup"])
-            && (strlen($this->input["_followup"]['content']) > 0)
+            && (strlen((string) $this->input["_followup"]['content']) > 0)
         ) {
             $fup  = new ITILFollowup();
             $type = "new";
@@ -2047,7 +2041,7 @@ class Ticket extends CommonITILObject
 
             if (
                 isset($this->input["_followup"]['content'])
-                && (strlen($this->input["_followup"]['content']) > 0)
+                && (strlen((string) $this->input["_followup"]['content']) > 0)
             ) {
                 $toadd["content"] = $this->input["_followup"]['content'];
             }
@@ -5976,7 +5970,7 @@ class Ticket extends CommonITILObject
                         )
                     );
                     $content = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode(
-                        $job->fields['content'],
+                        (string) $job->fields['content'],
                         ENT_QUOTES,
                         "UTF-8"
                     ));
@@ -6603,7 +6597,7 @@ class Ticket extends CommonITILObject
                 )
             );
             $content = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode(
-                $job->fields['content'],
+                (string) $job->fields['content'],
                 ENT_QUOTES,
                 "UTF-8"
             ));
@@ -7159,7 +7153,7 @@ class Ticket extends CommonITILObject
                 // Set tag if image matches
                 foreach ($files as $data => $filename) {
                     if (preg_match("/" . $data . "/i", $src)) {
-                        $html = preg_replace("/<img[^>]*src=['|\"]" . preg_quote($src, '/') . "['|\"][^>]*\>/s", "<p>" . Document::getImageTag($tags[$filename]) . "</p>", $html);
+                        $html = preg_replace("/<img[^>]*src=['|\"]" . preg_quote($src, '/') . "['|\"][^>]*\>/s", "<p>" . Document::getImageTag($tags[$filename]) . "</p>", (string) $html);
                     }
                 }
             }
@@ -7292,7 +7286,7 @@ class Ticket extends CommonITILObject
     public function showStatsDates()
     {
         $now                      = time();
-        $date_creation            = strtotime($this->fields['date']);
+        $date_creation            = strtotime((string) $this->fields['date']);
         $date_takeintoaccount     = $date_creation + $this->fields['takeintoaccount_delay_stat'];
         if ($date_takeintoaccount == $date_creation) {
             $date_takeintoaccount  = 0;
@@ -7409,7 +7403,7 @@ class Ticket extends CommonITILObject
 
         // If creation date is not set, then we're called during ticket creation
         $creation_date = !empty($this->fields['date_creation'])
-           ? strtotime($this->fields['date_creation'])
+           ? strtotime((string) $this->fields['date_creation'])
            : time();
 
         // add calendars matching date creation (for business rules)

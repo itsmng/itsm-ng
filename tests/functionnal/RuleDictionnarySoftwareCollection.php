@@ -501,4 +501,51 @@ class RuleDictionnarySoftwareCollection extends DbTestCase
         $this->array($result)->isIdenticalTo($expected);
 
     }
+
+    public function testAppendRegexResultAppendsToExistingValue()
+    {
+        $rule = new \RuleDictionnarySoftware();
+        $criteria = new \RuleCriteria();
+        $action = new \RuleAction();
+
+        $rules_id = $rule->add([
+           'name'        => 'Test append to existing value',
+           'is_active'   => 1,
+           'entities_id' => 0,
+           'sub_type'    => 'RuleDictionnarySoftware',
+           'match'       => \Rule::AND_MATCHING,
+           'condition'   => 0,
+           'description' => ''
+        ]);
+        $this->integer((int)$rules_id)->isGreaterThan(0);
+
+        $criteria_id = $criteria->add([
+           'rules_id'  => $rules_id,
+           'criteria'  => 'name',
+           'condition' => \Rule::REGEX_MATCH,
+           'pattern'   => '/^Soft (.*)/'
+        ]);
+        $this->integer((int)$criteria_id)->isGreaterThan(0);
+
+        $action_id = $action->add([
+           'rules_id'    => $rules_id,
+           'action_type' => 'append_regex_result',
+           'field'       => 'version',
+           'value'       => '#0'
+        ]);
+        $this->integer((int)$action_id)->isGreaterThan(0);
+
+        $rule_instance = new \RuleDictionnarySoftware();
+        $this->boolean($rule_instance->getRuleWithCriteriasAndActions($rules_id, 1, 1))->isTrue();
+
+        $input = ['name' => 'Soft base'];
+        $output = [];
+        $params = ['version' => 'pre-'];
+        $rule_instance->process($input, $output, $params);
+
+        $this->array($output)->isIdenticalTo([
+           'version' => 'pre-base',
+           '_rule_process' => true,
+        ]);
+    }
 }

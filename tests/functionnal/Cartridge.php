@@ -39,6 +39,33 @@ use DbTestCase;
 
 class Cartridge extends DbTestCase
 {
+    private function processMassiveAction($action, \CommonDBTM $item, array $ids, array $input = [])
+    {
+        $ok = 0;
+        $ko = 0;
+
+        $controller = new \atoum\atoum\mock\controller();
+        $controller->__construct = function ($args) {
+        };
+
+        $ma = new \mock\MassiveAction([], [], '', false, $controller);
+        $ma->getMockController()->getAction = $action;
+        $ma->getMockController()->addMessage = function () {
+        };
+        $ma->getMockController()->getInput = $input;
+        $ma->getMockController()->itemDone = function ($itemtype, $id, $res) use (&$ok, &$ko) {
+            if ($res == \MassiveAction::ACTION_OK) {
+                $ok++;
+            } else {
+                $ko++;
+            }
+        };
+
+        \Cartridge::processMassiveActionsForOneItemtype($ma, $item, $ids);
+
+        return [$ok, $ko];
+    }
+
     public function testInstall()
     {
         $printer = new \Printer();
@@ -130,5 +157,74 @@ class Cartridge extends DbTestCase
         $this->integer($infocom2_id)->isGreaterThan(0);
         $this->string($infocom2->fields['buy_date'])->isEqualTo($infocom->fields['buy_date']);
         $this->string($infocom2->fields['value'])->isEqualTo($infocom->fields['value']);
+    }
+
+    public function testMassiveActionsUpdatePagesAndBackToStock()
+    {
+        $this->login();
+        $this->setEntity(0, true);
+        $old_right = $_SESSION['glpiactiveprofile']['cartridge'] ?? null;
+        $_SESSION['glpiactiveprofile']['cartridge'] = 31;
+
+        try {
+            $printer = new \Printer();
+            $printers_id = (int)$printer->add([
+                'name'        => 'massive-printer-' . $this->getUniqueString(),
+                'entities_id' => getItemByTypeName('Entity', '_test_root_entity', true),
+            ]);
+            $this->integer($printers_id)->isGreaterThan(0);
+
+            $ctype = new \CartridgeItemType();
+            $cartridgeitemtypes_id = (int)$ctype->add([
+                'name' => 'massive-cart-type-' . $this->getUniqueString(),
+            ]);
+            $this->integer($cartridgeitemtypes_id)->isGreaterThan(0);
+
+            $citem = new \CartridgeItem();
+            $cartridgeitems_id = (int)$citem->add([
+                'name'                  => 'massive-cart-item-' . $this->getUniqueString(),
+                'cartridgeitemtypes_id' => $cartridgeitemtypes_id,
+            ]);
+            $this->integer($cartridgeitems_id)->isGreaterThan(0);
+
+            $cartridge = new \Cartridge();
+            $cartridges_id = (int)$cartridge->add([
+                'name'              => 'massive-cart-' . $this->getUniqueString(),
+                'cartridgeitems_id' => $cartridgeitems_id,
+            ]);
+            $this->integer($cartridges_id)->isGreaterThan(0);
+
+            $this->boolean($cartridge->install($printers_id, $cartridgeitems_id))->isTrue();
+
+            [$ok, $ko] = $this->processMassiveAction(
+                'updatepages',
+                $cartridge,
+                [$cartridges_id],
+                ['pages' => 321]
+            );
+            $this->integer($ok)->isEqualTo(1);
+            $this->integer($ko)->isEqualTo(0);
+
+            $this->boolean($cartridge->getFromDB($cartridges_id))->isTrue();
+            $this->integer((int)$cartridge->fields['pages'])->isEqualTo(321);
+
+            $this->boolean($printer->getFromDB($printers_id))->isTrue();
+            $this->integer((int)$printer->fields['last_pages_counter'])->isEqualTo(321);
+
+            [$ok, $ko] = $this->processMassiveAction('backtostock', $cartridge, [$cartridges_id]);
+            $this->integer($ok)->isEqualTo(1);
+            $this->integer($ko)->isEqualTo(0);
+
+            $this->boolean($cartridge->getFromDB($cartridges_id))->isTrue();
+            $this->integer((int)$cartridge->fields['printers_id'])->isEqualTo(0);
+            $this->variable($cartridge->fields['date_use'])->isNull();
+            $this->variable($cartridge->fields['date_out'])->isNull();
+        } finally {
+            if ($old_right === null) {
+                unset($_SESSION['glpiactiveprofile']['cartridge']);
+            } else {
+                $_SESSION['glpiactiveprofile']['cartridge'] = $old_right;
+            }
+        }
     }
 }

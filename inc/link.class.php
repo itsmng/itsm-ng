@@ -655,7 +655,7 @@ class Link extends CommonDBTM
         }
 
         $names = $item->generateLinkContents($params['name'], $item, false);
-        $file  = trim($params['data']);
+        $file  = trim((string) $params['data']);
 
         if (empty($file)) {
             // Generate links
@@ -664,7 +664,7 @@ class Link extends CommonDBTM
             foreach ($links as $key => $val) {
                 $name    = (isset($names[$key]) ? $names[$key] : reset($names));
                 $url     = $val;
-                $newlink = '<a href="' . htmlspecialchars($url) . '"';
+                $newlink = '<a href="' . htmlspecialchars((string) $url) . '"';
                 if ($params['open_window']) {
                     $newlink .= " target='_blank'";
                 }

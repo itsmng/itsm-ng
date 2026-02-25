@@ -64,7 +64,7 @@ if (isset($_POST["add"])) {
     if ($cost->add($_POST)) {
         Event::log(
             $_POST[$fk],
-            strtolower($itemtype),
+            strtolower((string) $itemtype),
             4,
             "tracking",
             //TRANS: %s is the user login
@@ -77,7 +77,7 @@ if (isset($_POST["add"])) {
     if ($cost->delete($_POST, 1)) {
         Event::log(
             $cost->fields[$fk],
-            strtolower($itemtype),
+            strtolower((string) $itemtype),
             4,
             "tracking",
             //TRANS: %s is the user login
@@ -91,7 +91,7 @@ if (isset($_POST["add"])) {
     if ($cost->update($_POST)) {
         Event::log(
             $cost->fields[$fk],
-            strtolower($itemtype),
+            strtolower((string) $itemtype),
             4,
             "tracking",
             //TRANS: %s is the user login

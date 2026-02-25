@@ -185,13 +185,13 @@ class UnlockCommand extends AbstractCommand
             );
         }
 
-        if (null !== $cycle && !preg_match('/^\d+$/', $cycle)) {
+        if (null !== $cycle && !preg_match('/^\d+$/', (string) $cycle)) {
             throw new InvalidArgumentException(
                 __('Option --cycle has to be an integer.')
             );
         }
 
-        if (null !== $delay && !preg_match('/^\d+$/', $delay)) {
+        if (null !== $delay && !preg_match('/^\d+$/', (string) $delay)) {
             throw new InvalidArgumentException(
                 __('Option --delay has to be an integer.')
             );

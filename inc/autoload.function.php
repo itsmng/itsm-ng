@@ -64,15 +64,15 @@ function isAPI()
        ($_SERVER['REQUEST_URI'] ?? "");
 
     $base_api_url = $CFG_GLPI['url_base_api'] ?? ""; // $CFG_GLPI may be not defined if DB is not available
-    if (!empty($base_api_url) && strpos($called_url, $base_api_url) !== false) {
+    if (!empty($base_api_url) && strpos($called_url, (string) $base_api_url) !== false) {
         return true;
     }
 
     $script = isset($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : '';
-    if (strpos($script, 'apirest.php') !== false) {
+    if (strpos((string) $script, 'apirest.php') !== false) {
         return true;
     }
-    if (strpos($script, 'apixmlrpc.php') !== false) {
+    if (strpos((string) $script, 'apixmlrpc.php') !== false) {
         return true;
     }
 
@@ -315,7 +315,7 @@ function glpi_autoload($classname)
     }
 
     if ($plug = isPluginItemType($classname)) {
-        $plugname = strtolower($plug['plugin']);
+        $plugname = strtolower((string) $plug['plugin']);
 
         // check plugin exists and is enabled
         if (!Plugin::isPluginLoaded($plugname)) {
@@ -323,7 +323,7 @@ function glpi_autoload($classname)
             return false;
         }
 
-        $item = str_replace('\\', '/', strtolower($plug['class']));
+        $item = str_replace('\\', '/', strtolower((string) $plug['class']));
 
         // load from first found directory
         foreach (PLUGINS_DIRECTORIES as $base_dir) {
@@ -397,4 +397,4 @@ if ($needrun) {
 require_once $autoload;
 
 // Use spl autoload to allow stackable autoload.
-spl_autoload_register('glpi_autoload', true, true);
+spl_autoload_register(glpi_autoload(...), true, true);

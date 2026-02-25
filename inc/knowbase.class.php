@@ -114,7 +114,7 @@ class Knowbase extends CommonGLPI
         ) {
             if (in_array($_GET["item_itemtype"], $CFG_GLPI['kb_types']) && $item = getItemForItemtype($_GET["itemtype"])) {
                 if ($item->can($_GET["item_items_id"], READ)) {
-                    $_GET["contains"] = addslashes($item->getField('name'));
+                    $_GET["contains"] = addslashes((string) $item->getField('name'));
                 }
             }
         }

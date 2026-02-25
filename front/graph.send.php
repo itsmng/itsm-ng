@@ -44,7 +44,7 @@ if (
     ($uid = Session::getLoginUserID(false))
     && isset($_GET["file"])
 ) {
-    list($userID, $filename) = explode("_", $_GET["file"]);
+    list($userID, $filename) = explode("_", (string) $_GET["file"]);
     if (
         ($userID == $uid)
         && file_exists(GLPI_GRAPH_DIR . "/" . $_GET["file"])

@@ -244,7 +244,7 @@ class Config extends DbTestCase
         $deps = \Config::getLibraries(true);
         foreach ($deps as $dep) {
             // composer names only (skip htmlLawed)
-            if (strpos($dep['name'], '/')) {
+            if (strpos((string) $dep['name'], '/')) {
                 $actual[] = $dep['name'];
             }
         }
@@ -253,7 +253,7 @@ class Config extends DbTestCase
         $composer = json_decode(file_get_contents(__DIR__ . '/../../composer.json'), true);
         foreach (array_keys($composer['require']) as $dep) {
             // composer names only (skip php, ext-*, ...)
-            if (strpos($dep, '/')) {
+            if (strpos((string) $dep, '/')) {
                 $expected[] = $dep;
             }
         }

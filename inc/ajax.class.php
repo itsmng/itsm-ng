@@ -279,7 +279,7 @@ class Ajax
          autoOpen: false,\n
          height:" . $param['height'] . ",\n
          modal: " . ($param['modal'] ? 'true' : 'false') . ",\n
-         title: \"" . addslashes($param['title']) . "\"\n
+         title: \"" . addslashes((string) $param['title']) . "\"\n
          });\n});";
         $out .= "</script>";
 
@@ -351,7 +351,7 @@ class Ajax
             $out .= "close: function(ev, ui) { window.location.reload() },";
         }
 
-        $out .= "title: \"" . addslashes($param['title']) . "\"});
+        $out .= "title: \"" . addslashes((string) $param['title']) . "\"});
          });
             </script>";
 
@@ -430,7 +430,7 @@ class Ajax
                 echo $title . "</a>";
                 // Below is code dedicated to rendering the keyboard shortcuts, you shouldn't have to touch this.
                 if ($displayShortcuts && $orientation == 'vertical' && count($tabs) > 1) {
-                    $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true)[$key] ?? null;
+                    $currentShortcut = json_decode((string) $user->fields["access_custom_shortcuts"], true)[$key] ?? null;
                 }
                 if (is_array($currentShortcut)) {
                     // I wish doing this wasn't necessary, but it is
@@ -787,14 +787,14 @@ class Ajax
         // Old scheme
         if (
             isset($options["update_item"])
-            && (is_array($options["update_item"]) || (strlen($options["update_item"]) > 0))
+            && (is_array($options["update_item"]) || (strlen((string) $options["update_item"]) > 0))
         ) {
             $field     = "update_item";
         }
         // New scheme
         if (
             isset($options["toupdate"])
-            && (is_array($options["toupdate"]) || (strlen($options["toupdate"]) > 0))
+            && (is_array($options["toupdate"]) || (strlen((string) $options["toupdate"]) > 0))
         ) {
             $field     = "toupdate";
         }
@@ -867,7 +867,7 @@ class Ajax
             $first = true;
             foreach ($parameters as $key => $val) {
                 // prevent xss attacks
-                if (!preg_match('/^[a-zA-Z_$][0-9a-zA-Z_$]*$/', $key)) {
+                if (!preg_match('/^[a-zA-Z_$][0-9a-zA-Z_$]*$/', (string) $key)) {
                     continue;
                 }
 
@@ -879,7 +879,7 @@ class Ajax
 
                 $out .= $key . ":";
                 $regs = [];
-                if (!is_array($val) && preg_match('/^__VALUE(\d+)__$/', $val, $regs)) {
+                if (!is_array($val) && preg_match('/^__VALUE(\d+)__$/', (string) $val, $regs)) {
                     $out .=  Html::jsGetElementbyID(Html::cleanId($toobserve[$regs[1]])) . ".val()";
                 } elseif (!is_array($val) && $val === "__VALUE__") {
                     $out .=  Html::jsGetElementbyID(Html::cleanId($toobserve)) . ".val()";

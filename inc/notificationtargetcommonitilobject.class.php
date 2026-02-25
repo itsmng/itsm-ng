@@ -100,7 +100,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
     public function getSubjectPrefix($event = '')
     {
 
-        $perso_tag = trim(Entity::getUsedConfig(
+        $perso_tag = trim((string) Entity::getUsedConfig(
             'notification_subject_tag',
             $this->getEntity(),
             '',
@@ -950,7 +950,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
     public function addDataForTemplate($event, $options = [])
     {
         $events    = $this->getAllEvents();
-        $objettype = strtolower($this->obj->getType());
+        $objettype = strtolower((string) $this->obj->getType());
 
         // Get data from ITIL objects
         if ($event != 'alertnotclosed') {
@@ -1537,7 +1537,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
     {
 
         $itemtype  = $this->obj->getType();
-        $objettype = strtolower($itemtype);
+        $objettype = strtolower((string) $itemtype);
 
         //Locales
         $tags = [$objettype . '.id'                    => __('ID'),

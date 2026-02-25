@@ -66,7 +66,7 @@ if ($_REQUEST['action'] == 'preview' && isset($_REQUEST['dataFilters'])) {
 
     $coords = $widget['coords'];
     $title = $widget['title'];
-    $filters = json_decode($widget['filter'], true);
+    $filters = json_decode((string) $widget['filter'], true);
     $icon = $widget['icon'];
     $format = $widget['format'];
     if ($dashboard->addWidget($coords, $title, $filters, $icon, $format)) {

@@ -132,7 +132,7 @@ class QueuedNotification extends CommonDBTM
             if ($toadd > 0) {
                 $input['send_time'] = date(
                     "Y-m-d H:i:s",
-                    strtotime($_SESSION["glpi_currenttime"])
+                    strtotime((string) $_SESSION["glpi_currenttime"])
                                                           + $toadd * MINUTE_TIMESTAMP
                 );
             } else {
@@ -453,10 +453,10 @@ class QueuedNotification extends CommonDBTM
     {
         if ($this->getFromDB($ID)) {
             $mode = $this->getField('mode');
-            $eventclass = 'NotificationEvent' . ucfirst($mode);
+            $eventclass = 'NotificationEvent' . ucfirst((string) $mode);
             $conf = Notification_NotificationTemplate::getMode($mode);
             if ($conf['from'] != 'core') {
-                $eventclass = 'Plugin' . ucfirst($conf['from']) . $eventclass;
+                $eventclass = 'Plugin' . ucfirst((string) $conf['from']) . $eventclass;
             }
 
             return $eventclass::send([$this->fields]);
@@ -522,9 +522,9 @@ class QueuedNotification extends CommonDBTM
         $pendings = [];
         $modes = Notification_NotificationTemplate::getModes();
         foreach ($modes as $mode => $conf) {
-            $eventclass = 'NotificationEvent' . ucfirst($mode);
+            $eventclass = 'NotificationEvent' . ucfirst((string) $mode);
             if ($conf['from'] != 'core') {
-                $eventclass = 'Plugin' . ucfirst($conf['from']) . $eventclass;
+                $eventclass = 'Plugin' . ucfirst((string) $conf['from']) . $eventclass;
             }
 
             if (
@@ -575,10 +575,10 @@ class QueuedNotification extends CommonDBTM
         );
 
         foreach ($pendings as $mode => $data) {
-            $eventclass = 'NotificationEvent' . ucfirst($mode);
+            $eventclass = 'NotificationEvent' . ucfirst((string) $mode);
             $conf = Notification_NotificationTemplate::getMode($mode);
             if ($conf['from'] != 'core') {
-                $eventclass = 'Plugin' . ucfirst($conf['from']) . $eventclass;
+                $eventclass = 'Plugin' . ucfirst((string) $conf['from']) . $eventclass;
             }
 
             $result = $eventclass::send($data);
@@ -766,7 +766,7 @@ class QueuedNotification extends CommonDBTM
 
         echo "<tr class='tab_bg_1 top' >";
         echo "<td colspan='2' class='queuemail_preview'>" . self::cleanHtml($this->fields['body_html']) . "</td>";
-        echo "<td colspan='2'>" . nl2br($this->fields['body_text'], false) . "</td>";
+        echo "<td colspan='2'>" . nl2br((string) $this->fields['body_text'], false) . "</td>";
         echo "</tr>";
 
         $this->showFormButtons($options);
@@ -787,7 +787,7 @@ class QueuedNotification extends CommonDBTM
         $end_strip       = -1;
         $begin_match     = "/<body>/";
         $end_match       = "/<\/body>/";
-        $content         = explode("\n", $string);
+        $content         = explode("\n", (string) $string);
         $newstring       = '';
         foreach ($content as $ID => $val) {
             // Get last tag for end

@@ -291,7 +291,7 @@ class Calendar extends AbstractBackend
      *
      * @return boolean
      */
-    private function storeCalendarObject($calendarId, $calendarData, CalDAVCompatibleItemInterface $item = null)
+    private function storeCalendarObject($calendarId, $calendarData, ?CalDAVCompatibleItemInterface $item = null)
     {
 
         global $CFG_GLPI;

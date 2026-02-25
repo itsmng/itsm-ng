@@ -778,8 +778,8 @@ class Cartridge extends CommonDBChild
                 } else {
                     $newValue[] = NOT_AVAILABLE;
                 }
-                $tmp_dbeg       = explode("-", $data["date_in"]);
-                $tmp_dend       = explode("-", $data["date_use"]);
+                $tmp_dbeg       = explode("-", (string) $data["date_in"]);
+                $tmp_dend       = explode("-", (string) $data["date_use"]);
                 $stock_time_tmp = mktime(0, 0, 0, $tmp_dend[1], $tmp_dend[2], $tmp_dend[0])
                                   - mktime(0, 0, 0, $tmp_dbeg[1], $tmp_dbeg[2], $tmp_dbeg[0]);
                 $stock_time    += $stock_time_tmp;
@@ -788,8 +788,8 @@ class Cartridge extends CommonDBChild
             }
             if ($show_old) {
                 $newValue[] = $date_out;
-                $tmp_dbeg      = explode("-", $data["date_use"]);
-                $tmp_dend      = explode("-", $data["date_out"]);
+                $tmp_dbeg      = explode("-", (string) $data["date_use"]);
+                $tmp_dend      = explode("-", (string) $data["date_out"]);
                 $use_time_tmp  = mktime(0, 0, 0, $tmp_dend[1], $tmp_dend[2], $tmp_dend[0])
                                   - mktime(0, 0, 0, $tmp_dbeg[1], $tmp_dbeg[2], $tmp_dbeg[0]);
                 $use_time     += $use_time_tmp;
@@ -1045,8 +1045,8 @@ class Cartridge extends CommonDBChild
                $date_in,
                $date_use,
             ];
-            $tmp_dbeg       = explode("-", $data["date_in"]);
-            $tmp_dend       = explode("-", $data["date_use"]);
+            $tmp_dbeg       = explode("-", (string) $data["date_in"]);
+            $tmp_dend       = explode("-", (string) $data["date_use"]);
 
             $stock_time_tmp = mktime(0, 0, 0, $tmp_dend[1], $tmp_dend[2], $tmp_dend[0])
                               - mktime(0, 0, 0, $tmp_dbeg[1], $tmp_dbeg[2], $tmp_dbeg[0]);
@@ -1054,8 +1054,8 @@ class Cartridge extends CommonDBChild
             if ($old != 0) {
                 $newValue[] = $date_out;
 
-                $tmp_dbeg      = explode("-", $data["date_use"]);
-                $tmp_dend      = explode("-", $data["date_out"]);
+                $tmp_dbeg      = explode("-", (string) $data["date_use"]);
+                $tmp_dend      = explode("-", (string) $data["date_out"]);
 
                 $use_time_tmp  = mktime(0, 0, 0, $tmp_dend[1], $tmp_dend[2], $tmp_dend[0])
                 - mktime(0, 0, 0, $tmp_dbeg[1], $tmp_dbeg[2], $tmp_dbeg[0]);

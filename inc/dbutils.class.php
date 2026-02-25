@@ -128,7 +128,7 @@ final class DbUtils
 
         foreach ($rules as $singular => $plural) {
             $count = 0;
-            $string = preg_replace("/$singular/", "$plural", $string, -1, $count);
+            $string = preg_replace("/$singular/", "$plural", (string) $string, -1, $count);
             if ($count > 0) {
                 break;
             }
@@ -167,7 +167,7 @@ final class DbUtils
 
         foreach ($rules as $plural => $singular) {
             $count = 0;
-            $string = preg_replace("/$plural/", "$singular", $string, -1, $count);
+            $string = preg_replace("/$plural/", "$singular", (string) $string, -1, $count);
             if ($count > 0) {
                 break;
             }
@@ -198,8 +198,8 @@ final class DbUtils
             if ($plug = isPluginItemType($itemtype)) {
                 /* PluginFooBar   => glpi_plugin_foos_bars */
                 /* GlpiPlugin\Foo\Bar => glpi_plugin_foos_bars */
-                $prefix .= "plugin_" . strtolower($plug['plugin']) . "_";
-                $table   = strtolower($plug['class']);
+                $prefix .= "plugin_" . strtolower((string) $plug['plugin']) . "_";
+                $table   = strtolower((string) $plug['class']);
             } else {
                 $table = strtolower($itemtype);
                 if (substr($itemtype, 0, \strlen(NS_GLPI)) === NS_GLPI) {
@@ -251,8 +251,8 @@ final class DbUtils
                 $pref2  = NS_PLUG . ucfirst($matches[1]) . '\\';
             }
 
-            if (strstr($table, '_')) {
-                $split = explode('_', $table);
+            if (strstr((string) $table, '_')) {
+                $split = explode('_', (string) $table);
 
                 foreach ($split as $key => $part) {
                     $split[$key] = Toolbox::ucfirst($this->getSingular($part));
@@ -581,11 +581,11 @@ final class DbUtils
         if (is_array($value)) {
             $query .= " IN ('" . implode("','", $value) . "') ";
         } else {
-            if (strlen($value) == 0 && !isset($_SESSION['glpiactiveentities_string'])) {
+            if (strlen((string) $value) == 0 && !isset($_SESSION['glpiactiveentities_string'])) {
                 //set root entity if not set
                 $value = 0;
             }
-            if (strlen($value) == 0) {
+            if (strlen((string) $value) == 0) {
                 $query .= " IN (" . $_SESSION['glpiactiveentities_string'] . ") ";
             } else {
                 $query .= " = '$value' ";
@@ -604,7 +604,7 @@ final class DbUtils
                 if (is_array($value)) {
                     $ancestors = $this->getAncestorsOf("glpi_entities", $value);
                     $ancestors = array_diff($ancestors, $value);
-                } elseif (strlen($value) == 0 && isset($_SESSION['glpiparententities'])) {
+                } elseif (strlen((string) $value) == 0 && isset($_SESSION['glpiparententities'])) {
                     $ancestors = $_SESSION['glpiparententities'];
                 } else {
                     $ancestors = $this->getAncestorsOf("glpi_entities", $value);
@@ -673,7 +673,7 @@ final class DbUtils
             $field = "$table.$field";
         }
 
-        if (!is_array($value) && strlen($value) == 0) {
+        if (!is_array($value) && strlen((string) $value) == 0) {
             if (isset($_SESSION['glpiactiveentities'])) {
                 $value = $_SESSION['glpiactiveentities'];
             } elseif (isCommandLine() || Session::isCron()) {
@@ -695,7 +695,7 @@ final class DbUtils
             if (is_array($value)) {
                 $ancestors = $this->getAncestorsOf("glpi_entities", $value);
                 $ancestors = array_diff($ancestors, $value);
-            } elseif (strlen($value) == 0) {
+            } elseif (strlen((string) $value) == 0) {
                 $ancestors = $_SESSION['glpiparententities'];
             } else {
                 $ancestors = $this->getAncestorsOf('glpi_entities', $value);
@@ -1057,9 +1057,9 @@ final class DbUtils
             $transcomment = $result['transcomment'];
 
             if ($translate && !empty($transcomment)) {
-                $comment .= nl2br($transcomment);
+                $comment .= nl2br((string) $transcomment);
             } else {
-                $comment .= @nl2br($result['comment']);
+                $comment .= @nl2br((string) $result['comment']);
             }
         }
 
@@ -1169,7 +1169,7 @@ final class DbUtils
             // Separator is not encoded in DB, and it could not be changed as this is mandatory to be able to split tree
             // correctly even if some tree elements are containing ">" char in their name (this one will be encoded).
             $separator = ' > ';
-            $name = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, $name));
+            $name = implode(Toolbox::clean_cross_side_scripting_deep($separator), explode($separator, (string) $name));
 
             if ($tooltip) {
                 $comment  = sprintf(
@@ -1208,7 +1208,7 @@ final class DbUtils
             }
             $transcomment = $result['transcomment'];
             if ($translate && !empty($transcomment)) {
-                $comment .= nl2br($transcomment);
+                $comment .= nl2br((string) $transcomment);
             } else {
                 $comment .= nl2br($result['comment'] ?? '');
             }

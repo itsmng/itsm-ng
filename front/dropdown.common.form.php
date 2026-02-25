@@ -58,14 +58,14 @@ if (isset($_POST["add"])) {
 
     $POST = $_POST;
     if (isset($_POST['picture_front'])) {
-        $files = json_decode(stripslashes($_POST['files']), true);
+        $files = json_decode(stripslashes((string) $_POST['files']), true);
         foreach ($files as $file) {
             $doc = ItsmngUploadHandler::addFileToDb($file);
             $POST['picture_front'] = $doc->fields['filepath'];
         }
     }
     if (isset($_POST['picture_rear'])) {
-        $files = json_decode(stripslashes($_POST['files']), true);
+        $files = json_decode(stripslashes((string) $_POST['files']), true);
         foreach ($files as $file) {
             $doc = ItsmngUploadHandler::addFileToDb($file);
             $POST['picture_rear'] = $doc->fields['filepath'];

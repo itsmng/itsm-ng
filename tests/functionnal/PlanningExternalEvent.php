@@ -50,7 +50,7 @@ class PlanningExternalEvent extends \AbstractPlanningEvent
 
         $this->boolean($event->addInstanceException($id, $exception))->isTrue();
 
-        $rrule = json_decode($event->fields['rrule'], true);
+        $rrule = json_decode((string) $event->fields['rrule'], true);
         $this->array($rrule['exceptions'])
            ->hasSize(3) // original event has 2 exceptions, we add one
            ->contains($exception);
@@ -73,7 +73,7 @@ class PlanningExternalEvent extends \AbstractPlanningEvent
         $this->variable($new_event->fields['rrule'])->isNull();
 
         // original event should have the instance exception
-        $rrule = json_decode($event->fields['rrule'], true);
+        $rrule = json_decode((string) $event->fields['rrule'], true);
         $this->array($rrule['exceptions'])
            ->hasSize(3) // original event has 2 exceptions, we add one
            ->contains($start_day);

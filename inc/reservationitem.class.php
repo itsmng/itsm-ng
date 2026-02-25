@@ -64,7 +64,7 @@ class ReservationItem extends CommonDBChild
     {
         global $CFG_GLPI;
 
-        if (strpos($_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false) {
+        if (strpos((string) $_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false) {
             return $CFG_GLPI['root_doc'] . '/plugins/formcreator/front/reservation.form.php';
         }
 
@@ -674,7 +674,7 @@ class ReservationItem extends CommonDBChild
                 $criteria['WHERE'][] = ['glpi_reservations.id' => null];
             }
             if (isset($_POST["reservation_types"]) && !empty($_POST["reservation_types"])) {
-                $tmp = explode('#', $_POST["reservation_types"]);
+                $tmp = explode('#', (string) $_POST["reservation_types"]);
                 $criteria['WHERE'][] = ['glpi_reservationitems.itemtype' => $tmp[0]];
                 if (
                     isset($tmp[1]) && ($tmp[0] == 'Peripheral')
@@ -714,10 +714,10 @@ class ReservationItem extends CommonDBChild
                 echo "<input type='checkbox' name='item[" . $row["id"] . "]' value='" . $row["id"] . "' class='form-check-input me-2' style='margin-top: 0;'>";
                 echo "<i class='fas fa-desktop text-primary me-2'></i>";
                 echo "<div>";
-                echo "<strong>" . htmlspecialchars($row["name"]) . "</strong><br>";
+                echo "<strong>" . htmlspecialchars((string) $row["name"]) . "</strong><br>";
                 echo "<small class='text-muted'>" . htmlspecialchars($typename) . "</small>";
                 if (!empty($row['otherserial'])) {
-                    echo "<br><small class='text-info'>S/N: " . htmlspecialchars($row['otherserial']) . "</small>";
+                    echo "<br><small class='text-info'>S/N: " . htmlspecialchars((string) $row['otherserial']) . "</small>";
                 }
                 echo "</div>";
                 echo "</div>";
@@ -728,7 +728,7 @@ class ReservationItem extends CommonDBChild
                 if (!empty($row["location_name"])) {
                     echo "<div class='d-flex align-items-center'>";
                     echo "<i class='fas fa-map-marker-alt text-success me-2'></i>";
-                    echo "<span>" . htmlspecialchars($row["location_name"]) . "</span>";
+                    echo "<span>" . htmlspecialchars((string) $row["location_name"]) . "</span>";
                     echo "</div>";
                 } else {
                     echo "<span class='text-muted'><i class='fas fa-minus'></i> " . __('Not defined') . "</span>";
@@ -737,7 +737,7 @@ class ReservationItem extends CommonDBChild
 
                 echo "<td class='align-middle' style='width: " . ($showentity ? "15%" : "10%") . ";'>";
                 if (!empty($row["comment"])) {
-                    $comment = htmlspecialchars($row["comment"]);
+                    $comment = htmlspecialchars((string) $row["comment"]);
                     if (strlen($comment) > 100) {
                         echo "<span data-bs-toggle='tooltip' data-bs-placement='top' title='" . $comment . "'>";
                         echo substr($comment, 0, 97) . "...";

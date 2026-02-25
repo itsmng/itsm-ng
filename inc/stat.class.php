@@ -448,7 +448,7 @@ class Stat extends CommonGLPI
 
                 if (
                     ($output_type == Search::HTML_OUTPUT)
-                    && strstr($type, '_tree')
+                    && strstr((string) $type, '_tree')
                     && $value2
                 ) {
                     // HTML display
@@ -600,7 +600,7 @@ class Stat extends CommonGLPI
                 echo Search::showNewLine($output_type, $i % 2);
                 if (
                     ($output_type == Search::HTML_OUTPUT)
-                    && strstr($type, '_tree')
+                    && strstr((string) $type, '_tree')
                     && ($value[$i]['id'] != $value2)
                 ) {
                     // HTML display
@@ -1508,8 +1508,8 @@ class Stat extends CommonGLPI
             $entrees["$date"] = $row['total_visites'];
         }
 
-        $end_time   = strtotime(date("Y-m", strtotime($end)) . "-01");
-        $begin_time = strtotime(date("Y-m", strtotime($begin)) . "-01");
+        $end_time   = strtotime(date("Y-m", strtotime((string) $end)) . "-01");
+        $begin_time = strtotime(date("Y-m", strtotime((string) $begin)) . "-01");
 
         $current = $begin_time;
 
@@ -1727,7 +1727,7 @@ class Stat extends CommonGLPI
                 }
                 $key                  = $CFG_GLPI["root_doc"] . "/front/" . $file;
                 $values[$group][$key] = $name;
-                if (stripos($_SERVER['REQUEST_URI'], $key) !== false) {
+                if (stripos((string) $_SERVER['REQUEST_URI'], $key) !== false) {
                     $selected = $key;
                 }
             }
@@ -1758,7 +1758,7 @@ class Stat extends CommonGLPI
                 if ($opt == $val["plug"]) {
                     $file                  = $CFG_GLPI["root_doc"] . "/" . $key;
                     $values[$group][$file] = $val["name"];
-                    if (stripos($_SERVER['REQUEST_URI'], $file) !== false) {
+                    if (stripos((string) $_SERVER['REQUEST_URI'], $file) !== false) {
                         $selected = $file;
                     }
                 }
@@ -1870,7 +1870,7 @@ class Stat extends CommonGLPI
                         }),
                         axisX: {
                            labelOffset: {
-                              x: -" . mb_strlen($labels[0]) * 7  . "
+                              x: -" . mb_strlen((string) $labels[0]) * 7  . "
                            }
                         }";
 
@@ -2138,7 +2138,7 @@ class Stat extends CommonGLPI
             }
 
             // Print labels
-            fwrite($fp, $_SESSION["glpicsv_delimiter"]);
+            fwrite($fp, (string) $_SESSION["glpicsv_delimiter"]);
             foreach ($headers as $val) {
                 fwrite($fp, $val . $_SESSION["glpicsv_delimiter"]);
             }

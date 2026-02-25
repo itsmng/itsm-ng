@@ -228,8 +228,8 @@ class NetworkPortEthernet extends NetworkPortInstantiation
     public function getInstantiationHTMLTableHeaders(
         HTMLTableGroup $group,
         HTMLTableSuperHeader $super,
-        HTMLTableSuperHeader $internet_super = null,
-        HTMLTableHeader $father = null,
+        ?HTMLTableSuperHeader $internet_super = null,
+        ?HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -259,7 +259,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
     protected function getPeerInstantiationHTMLTable(
         NetworkPort $netport,
         HTMLTableRow $row,
-        HTMLTableCell $father = null,
+        ?HTMLTableCell $father = null,
         array $options = []
     ) {
 
@@ -289,7 +289,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
     public function getInstantiationHTMLTable(
         NetworkPort $netport,
         HTMLTableRow $row,
-        HTMLTableCell $father = null,
+        ?HTMLTableCell $father = null,
         array $options = []
     ) {
 
@@ -391,7 +391,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
             //TRANS: %d is the speed
             return sprintf(__('%d Mbit/s'), $val);
         } else {
-            $val = preg_replace('/\s+/', '', strtolower($val));
+            $val = preg_replace('/\s+/', '', strtolower((string) $val));
 
             $number = sscanf($val, "%f%s", $speed, $unit);
             if ($number != 2) {

@@ -1121,7 +1121,7 @@ class Dropdown
             foreach ($dp as $key => $val) {
                 $search = $key::getSearchURL();
 
-                if (basename($search) == basename($value)) {
+                if (basename((string) $search) == basename((string) $value)) {
                     $selected = $search;
                 }
                 $values[$label][$search] = $val;
@@ -1297,7 +1297,7 @@ class Dropdown
         $begin = 0;
         $end   = 24;
         // Check if the $step is Ok for the $value field
-        $split = explode(":", $p['value']);
+        $split = explode(":", (string) $p['value']);
 
         // Valid value XX:YY ou XX:YY:ZZ
         if ((count($split) == 2) || (count($split) == 3)) {
@@ -1311,8 +1311,8 @@ class Dropdown
         }
 
         if ($p['limit_planning']) {
-            $plan_begin = explode(":", $CFG_GLPI["planning_begin"]);
-            $plan_end   = explode(":", $CFG_GLPI["planning_end"]);
+            $plan_begin = explode(":", (string) $CFG_GLPI["planning_begin"]);
+            $plan_end   = explode(":", (string) $CFG_GLPI["planning_end"]);
             $begin      = (int) $plan_begin[0];
             $end        = (int) $plan_end[0];
         }
@@ -1921,7 +1921,7 @@ class Dropdown
         $param['noselect2']           = false;
 
         if (is_array($options) && count($options)) {
-            if (isset($options['value']) && strlen($options['value'])) {
+            if (isset($options['value']) && strlen((string) $options['value'])) {
                 $options['values'] = [$options['value']];
                 unset($options['value']);
             }
@@ -1999,27 +1999,27 @@ class Dropdown
                     foreach ($val as $key2 => $val2) {
                         if (!isset($param['used'][$key2])) {
                             foreach ($param['values'] as $value) {
-                                if (strcmp($key2, $value) === 0) {
+                                if (strcmp((string) $key2, (string) $value) === 0) {
                                     $input['value'] = $key2;
                                     break;
                                 }
                             }
                             $input['values'][$opt_group][$key2] = Html::entities_deep($val2);
-                            if ($max_option_size < strlen($val2)) {
-                                $max_option_size = strlen($val2);
+                            if ($max_option_size < strlen((string) $val2)) {
+                                $max_option_size = strlen((string) $val2);
                             }
                         }
                     }
                 } else {
                     if (!isset($param['used'][$key])) {
                         foreach ($param['values'] as $value) {
-                            if (strcmp($key, $value) === 0) {
+                            if (strcmp((string) $key, (string) $value) === 0) {
                                 $input['value'] = $key;
                                 break;
                             }
                         }
-                        if ($max_option_size < strlen($val)) {
-                            $max_option_size = strlen($val);
+                        if ($max_option_size < strlen((string) $val)) {
+                            $max_option_size = strlen((string) $val);
                         }
                         $input['values'][Html::entities_deep($key)] = $val;
                     }
@@ -2288,8 +2288,8 @@ class Dropdown
         if (
             isset($post["entity_restrict"])
             && !is_array($post["entity_restrict"])
-            && (substr($post["entity_restrict"], 0, 1) === '[')
-            && (substr($post["entity_restrict"], -1) === ']')
+            && (substr((string) $post["entity_restrict"], 0, 1) === '[')
+            && (substr((string) $post["entity_restrict"], -1) === ']')
         ) {
             $decoded = Toolbox::jsonDecode($post['entity_restrict']);
             $entities = [];
@@ -2557,7 +2557,7 @@ class Dropdown
                     foreach ($toadd as $key => $val) {
                         $datas[] = [
                            'id' => $key,
-                           'text' => stripslashes($val)
+                           'text' => stripslashes((string) $val)
                         ];
                     }
                 }
@@ -2975,7 +2975,7 @@ class Dropdown
                             foreach ($toadd as $key => $val) {
                                 $datas[] = [
                                    'id' => $key,
-                                   'text' => stripslashes($val)
+                                   'text' => stripslashes((string) $val)
                                 ];
                             }
                         }
@@ -3010,7 +3010,7 @@ class Dropdown
                                                 $data[$key]
                                             );
                                         }
-                                        if ((strlen($withoutput) > 0) && ($withoutput != '&nbsp;')) {
+                                        if ((strlen((string) $withoutput) > 0) && ($withoutput != '&nbsp;')) {
                                             $outputval = sprintf(__('%1$s - %2$s'), $outputval, $withoutput);
                                         }
                                     }
@@ -3071,7 +3071,7 @@ class Dropdown
                     foreach ($toadd as $key => $val) {
                         $datas[] = [
                            'id' => $key,
-                           'text' => stripslashes($val)
+                           'text' => stripslashes((string) $val)
                         ];
                     }
                 }
@@ -3129,7 +3129,7 @@ class Dropdown
                     if (
                         $_SESSION["glpiis_ids_visible"]
                         || $post['itemtype'] == 'Ticket'
-                        || (strlen($outputval) == 0)
+                        || (strlen((string) $outputval) == 0)
                     ) {
                         //TRANS: %1$s is the name, %2$s the ID
                         $outputval = sprintf(__('%1$s (%2$s)'), $outputval, $ID);
@@ -3144,7 +3144,7 @@ class Dropdown
                                         $data[$key]
                                     );
                                 }
-                                if ((strlen($withoutput) > 0) && ($withoutput != '&nbsp;')) {
+                                if ((strlen((string) $withoutput) > 0) && ($withoutput != '&nbsp;')) {
                                     $outputval = sprintf(__('%1$s - %2$s'), $outputval, $withoutput);
                                 }
                             }
@@ -3424,7 +3424,7 @@ class Dropdown
             $where['is_template'] = 0;
         }
 
-        if (isset($_POST['searchText']) && (strlen($post['searchText']) > 0)) {
+        if (isset($_POST['searchText']) && (strlen((string) $post['searchText']) > 0)) {
             $search = ['LIKE', Search::makeTextSearchValue($post['searchText'])];
             $orwhere = [
                'name'   => $search,
@@ -3719,7 +3719,7 @@ class Dropdown
             if (count($toadd)) {
                 foreach ($toadd as $key => $val) {
                     $data[] = ['id' => $key,
-                       'text' => (string)stripslashes($val)];
+                       'text' => (string)stripslashes((string) $val)];
                 }
             }
         }
@@ -3740,7 +3740,7 @@ class Dropdown
         }
 
         for ($i = $post['min']; $i <= $post['max']; $i += $post['step']) {
-            if (!empty($post['searchText']) && strstr($i, $post['searchText']) || empty($post['searchText'])) {
+            if (!empty($post['searchText']) && strstr((string) $i, (string) $post['searchText']) || empty($post['searchText'])) {
                 if (!in_array($i, $used)) {
                     $values["$i"] = $i;
                 }
@@ -3775,7 +3775,7 @@ class Dropdown
                 }
                 $data[] = [
                    'id' => $value,
-                   'text' => (string)stripslashes($txt)
+                   'text' => (string)stripslashes((string) $txt)
                 ];
                 $count++;
             }

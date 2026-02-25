@@ -1024,29 +1024,29 @@ class MailCollector extends CommonDBTM
                 $footer_tag      = NotificationTargetTicket::FOOTERTAG;
                 $footer_pattern  = $footer_tag . '.*' . $footer_tag;
 
-                $has_header_line = preg_match('/' . $header_pattern . '/s', $tkt['content']);
-                $has_footer_line = preg_match('/' . $footer_pattern . '/s', $tkt['content']);
+                $has_header_line = preg_match('/' . $header_pattern . '/s', (string) $tkt['content']);
+                $has_footer_line = preg_match('/' . $footer_pattern . '/s', (string) $tkt['content']);
 
                 if ($has_header_line && $has_footer_line) {
                     // Strip all contents between header and footer line
                     $tkt['content'] = preg_replace(
                         '/' . $header_pattern . '.*' . $footer_pattern . '/s',
                         '',
-                        $tkt['content']
+                        (string) $tkt['content']
                     );
                 } elseif ($has_header_line) {
                     // Strip all contents between header line and end of message
                     $tkt['content'] = preg_replace(
                         '/' . $header_pattern . '.*$/s',
                         '',
-                        $tkt['content']
+                        (string) $tkt['content']
                     );
                 } elseif ($has_footer_line) {
                     // Strip all contents between begin of message and footer line
                     $tkt['content'] = preg_replace(
                         '/^.*' . $footer_pattern . '/s',
                         '',
-                        $tkt['content']
+                        (string) $tkt['content']
                     );
                 }
             } else {
@@ -1162,7 +1162,7 @@ class MailCollector extends CommonDBTM
         // Wrap content for blacklisted items
         $itemstoclean = [];
         foreach ($DB->request('glpi_blacklistedmailcontents') as $data) {
-            $toclean = trim($data['content']);
+            $toclean = trim((string) $data['content']);
             if (!empty($toclean)) {
                 $itemstoclean[] = str_replace(["\r\n", "\n", "\r"], $br_marker, $toclean);
             }
@@ -1474,7 +1474,7 @@ class MailCollector extends CommonDBTM
             $filename_matches = [];
             if (
                 preg_match("/^(?<encoding>.*)''(?<value>.*)$/", $filename, $filename_matches)
-                && in_array(strtoupper($filename_matches['encoding']), array_map('strtoupper', mb_list_encodings()))
+                && in_array(strtoupper($filename_matches['encoding']), array_map(strtoupper(...), mb_list_encodings()))
             ) {
                 // Filename is in RFC5987 format: UTF-8''urlencodedfilename.ext
                 // First, urldecode it, then convert if into UTF-8 if needed.
@@ -1653,7 +1653,7 @@ class MailCollector extends CommonDBTM
     {
 
         // Disable move support, POP protocol only has the INBOX folder
-        if (strstr($this->fields['host'], "/pop")) {
+        if (strstr((string) $this->fields['host'], "/pop")) {
             $folder = '';
         }
 
@@ -2129,7 +2129,7 @@ class MailCollector extends CommonDBTM
 
         $charset = $content_type->getParameter('charset');
         if ($charset !== null && strtoupper($charset) != 'UTF-8') {
-            if (in_array(strtoupper($charset), array_map('strtoupper', mb_list_encodings()))) {
+            if (in_array(strtoupper($charset), array_map(strtoupper(...), mb_list_encodings()))) {
                 $contents = mb_convert_encoding($contents, 'UTF-8', $charset);
             } else {
                 // Convert Windows charsets names
@@ -2139,9 +2139,9 @@ class MailCollector extends CommonDBTM
 
                 // Try to convert using iconv with TRANSLIT, then with IGNORE.
                 // TRANSLIT may result in failure depending on system iconv implementation.
-                if ($converted = @iconv($charset, 'UTF-8//TRANSLIT', $contents)) {
+                if ($converted = @iconv((string) $charset, 'UTF-8//TRANSLIT', $contents)) {
                     $contents = $converted;
-                } elseif ($converted = iconv($charset, 'UTF-8//IGNORE', $contents)) {
+                } elseif ($converted = iconv((string) $charset, 'UTF-8//IGNORE', $contents)) {
                     $contents = $converted;
                 }
             }

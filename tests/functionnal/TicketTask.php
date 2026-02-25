@@ -111,7 +111,7 @@ class TicketTask extends DbTestCase
         $recall = new \PlanningRecall();
 
         //calcul 'when'
-        $when = date("Y-m-d H:i:s", strtotime($task->fields['begin']) - 14400);
+        $when = date("Y-m-d H:i:s", strtotime((string) $task->fields['begin']) - 14400);
         $this->boolean($recall->getFromDBByCrit(['before_time'   => '14400', //recall 4 hours
                                                   'itemtype'     => 'TicketTask',
                                                   'items_id'     => $task_id,
@@ -181,7 +181,7 @@ class TicketTask extends DbTestCase
         $recall = new \PlanningRecall();
 
         //calcul when
-        $when = date("Y-m-d H:i:s", strtotime($task->fields['begin']) - 900);
+        $when = date("Y-m-d H:i:s", strtotime((string) $task->fields['begin']) - 900);
         $this->boolean($recall->getFromDBByCrit(['before_time'  => '900',
                                                   'itemtype'    => 'TicketTask',
                                                   'items_id'    => $task_id,

@@ -401,7 +401,7 @@ class Migration
         $format = $this->fieldFormat($type, $params['value'], $params['nodefault']);
 
         if (!empty($params['comment'])) {
-            $params['comment'] = " COMMENT '" . addslashes($params['comment']) . "'";
+            $params['comment'] = " COMMENT '" . addslashes((string) $params['comment']) . "'";
         }
 
         if (!empty($params['after'])) {
@@ -470,7 +470,7 @@ class Migration
         $format = $this->fieldFormat($type, $params['value'], $params['nodefault']);
 
         if ($params['comment']) {
-            $params['comment'] = " COMMENT '" . addslashes($params['comment']) . "'";
+            $params['comment'] = " COMMENT '" . addslashes((string) $params['comment']) . "'";
         }
 
         if (!empty($params['after'])) {
@@ -1352,7 +1352,7 @@ class Migration
             foreach ($fkey_column_array as $fkey_column) {
                 $fkey_table   = $fkey_column['TABLE_NAME'];
                 $fkey_oldname = $fkey_column['COLUMN_NAME'];
-                $fkey_newname = preg_replace('/^' . preg_quote($old_fkey) . '/', $new_fkey, $fkey_oldname);
+                $fkey_newname = preg_replace('/^' . preg_quote($old_fkey) . '/', $new_fkey, (string) $fkey_oldname);
                 if ($DB->fieldExists($fkey_table, $fkey_newname)) {
                     throw new \RuntimeException(
                         sprintf(
@@ -1376,7 +1376,7 @@ class Migration
             foreach ($fkey_column_array as $fkey_column) {
                 $fkey_table   = $fkey_column['TABLE_NAME'];
                 $fkey_oldname = $fkey_column['COLUMN_NAME'];
-                $fkey_newname = preg_replace('/^' . preg_quote($old_fkey) . '/', $new_fkey, $fkey_oldname);
+                $fkey_newname = preg_replace('/^' . preg_quote($old_fkey) . '/', $new_fkey, (string) $fkey_oldname);
 
                 if ($fkey_table == $old_table) {
                     // Special case, foreign key is inside renamed table, use new name
@@ -1485,7 +1485,7 @@ class Migration
 
         foreach ($iterator as $data) {
             $query = [];
-            parse_str($data['query'], $query);
+            parse_str((string) $data['query'], $query);
             $is_changed = false;
 
             foreach ($this->search_opts as $itemtype => $changes) {

@@ -59,7 +59,7 @@ class NotificationTargetTicket extends NotificationTargetCommonITILObject
     {
 
         if ($event != 'alertnotclosed') {
-            $perso_tag = trim(Entity::getUsedConfig(
+            $perso_tag = trim((string) Entity::getUsedConfig(
                 'notification_subject_tag',
                 $this->getEntity(),
                 '',

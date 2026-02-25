@@ -53,7 +53,7 @@ class APIXmlrpc extends APIBaseClass
         }
 
         $this->http_client = new GuzzleHttp\Client();
-        $this->base_uri    = trim($CFG_GLPI['url_base'], "/")."/apixmlrpc.php";
+        $this->base_uri    = trim((string) $CFG_GLPI['url_base'], "/")."/apixmlrpc.php";
 
         parent::beforeTestMethod($method);
     }

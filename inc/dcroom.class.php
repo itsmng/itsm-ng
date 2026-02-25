@@ -456,7 +456,7 @@ class DCRoom extends CommonDBTM
 
         $filled = [];
         while ($rack = $iterator->next()) {
-            if (preg_match('/(\d+),\s?(\d+)/', $rack['position'])) {
+            if (preg_match('/(\d+),\s?(\d+)/', (string) $rack['position'])) {
                 $position = $rack['position'];
                 if (empty($current) || $current != $position) {
                     $filled[$position] = $position;

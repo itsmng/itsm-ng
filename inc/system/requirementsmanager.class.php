@@ -63,7 +63,7 @@ class RequirementsManager
      *
      * @return RequirementsList
      */
-    public function getCoreRequirementList(\DBmysql $db = null): RequirementsList
+    public function getCoreRequirementList(?\DBmysql $db = null): RequirementsList
     {
         $requirements = [];
 

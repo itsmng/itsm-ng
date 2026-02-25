@@ -301,8 +301,8 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             $input["begin"]         = $input['plan']["begin"];
             $input["end"]           = $input['plan']["end"];
 
-            $timestart              = strtotime($input["begin"]);
-            $timeend                = strtotime($input["end"]);
+            $timestart              = strtotime((string) $input["begin"]);
+            $timeend                = strtotime((string) $input["end"]);
             $input["actiontime"]    = $timeend - $timestart;
 
             unset($input["plan"]);
@@ -330,14 +330,14 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                 ($calendars_id > 0)
                 && $calendar->getFromDB($calendars_id)
             ) {
-                if (!$calendar->isAWorkingHour(strtotime($input["begin"]))) {
+                if (!$calendar->isAWorkingHour(strtotime((string) $input["begin"]))) {
                     Session::addMessageAfterRedirect(
                         __('Start of the selected timeframe is not a working hour.'),
                         false,
                         ERROR
                     );
                 }
-                if (!$calendar->isAWorkingHour(strtotime($input["end"]))) {
+                if (!$calendar->isAWorkingHour(strtotime((string) $input["end"]))) {
                     Session::addMessageAfterRedirect(
                         __('End of the selected timeframe is not a working hour.'),
                         false,
@@ -481,8 +481,8 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             $input["begin"]         = $input['plan']["begin"];
             $input["end"]           = $input['plan']["end"];
 
-            $timestart              = strtotime($input["begin"]);
-            $timeend                = strtotime($input["end"]);
+            $timestart              = strtotime((string) $input["begin"]);
+            $timeend                = strtotime((string) $input["end"]);
             $input["actiontime"]    = $timeend - $timestart;
 
             unset($input["plan"]);
@@ -562,14 +562,14 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                 ($calendars_id > 0)
                 && $calendar->getFromDB($calendars_id)
             ) {
-                if (!$calendar->isAWorkingHour(strtotime($this->fields["begin"]))) {
+                if (!$calendar->isAWorkingHour(strtotime((string) $this->fields["begin"]))) {
                     Session::addMessageAfterRedirect(
                         __('Start of the selected timeframe is not a working hour.'),
                         false,
                         ERROR
                     );
                 }
-                if (!$calendar->isAWorkingHour(strtotime($this->fields["end"]))) {
+                if (!$calendar->isAWorkingHour(strtotime((string) $this->fields["end"]))) {
                     Session::addMessageAfterRedirect(
                         __('End of the selected timeframe is not a working hour.'),
                         false,
@@ -1019,7 +1019,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
 
         return (!empty($input["begin"])
                 && !empty($input["end"])
-                && (strtotime($input["begin"]) < strtotime($input["end"])));
+                && (strtotime((string) $input["begin"]) < strtotime((string) $input["end"])));
     }
 
 
@@ -1236,13 +1236,13 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                         $interv[$key]["users_id_tech"]  = $data["users_id_tech"];
                         $interv[$key]["groups_id_tech"]  = $data["groups_id_tech"];
 
-                        if (strcmp($begin, $data["begin"]) > 0) {
+                        if (strcmp((string) $begin, (string) $data["begin"]) > 0) {
                             $interv[$key]["begin"] = $begin;
                         } else {
                             $interv[$key]["begin"] = $data["begin"];
                         }
 
-                        if (strcmp($end, $data["end"]) < 0) {
+                        if (strcmp((string) $end, (string) $data["end"]) < 0) {
                             $interv[$key]["end"] = $end;
                         } else {
                             $interv[$key]["end"] = $data["end"];
@@ -1378,7 +1378,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
         $html .= "<div>";
         $html .= sprintf(__('%1$s: %2$s'), __('Priority'), $parent->getPriorityName($val["priority"]));
         $html .= "</div>";
-        $html .= "<div class='event-description rich_text_container'>" . html_entity_decode($val["content"]) . "</div>";
+        $html .= "<div class='event-description rich_text_container'>" . html_entity_decode((string) $val["content"]) . "</div>";
         $html .= $recall;
 
         return $html;
@@ -2035,7 +2035,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                     $link   .= "'>";
                     $link    = sprintf(__('%1$s'), $link);
                     $content = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode(
-                        $job->fields['content'],
+                        (string) $job->fields['content'],
                         ENT_QUOTES,
                         "UTF-8"
                     ));
@@ -2100,7 +2100,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             $link   .= "'>";
             $link    = sprintf(__('%1$s'), $link);
             $content = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode(
-                $job->fields['content'],
+                (string) $job->fields['content'],
                 ENT_QUOTES,
                 "UTF-8"
             ));

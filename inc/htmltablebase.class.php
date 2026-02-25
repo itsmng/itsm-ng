@@ -141,8 +141,8 @@ abstract class HTMLTableBase
     public function addHeader(
         $name,
         $content,
-        HTMLTableSuperHeader $super = null,
-        HTMLTableHeader $father = null
+        ?HTMLTableSuperHeader $super = null,
+        ?HTMLTableHeader $father = null
     ) {
 
         $this->tryAddHeader();

@@ -562,8 +562,8 @@ class Domain extends CommonDropdown
                     foreach (array_keys($ids) as $key) {
                         $item->getFromDB($key);
                         unset($item->fields["id"]);
-                        $item->fields["name"]    = addslashes($item->fields["name"]);
-                        $item->fields["comment"] = addslashes($item->fields["comment"]);
+                        $item->fields["name"]    = addslashes((string) $item->fields["name"]);
+                        $item->fields["comment"] = addslashes((string) $item->fields["comment"]);
                         $item->fields["entities_id"] = $input['entities_id'];
                         if ($item->add($item->fields)) {
                             $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
@@ -816,7 +816,7 @@ class Domain extends CommonDropdown
 
     public function getCanonicalName()
     {
-        return rtrim($this->fields['name'], '.') . '.';
+        return rtrim((string) $this->fields['name'], '.') . '.';
     }
 
     public static function getIcon()

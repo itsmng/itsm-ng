@@ -52,11 +52,11 @@ class ItsmngUploadHandler
     public static function getUploadPath($type, $filename, $withDir = true)
     {
         if (in_array($type, self::TYPES)) {
-            $extension = strtoupper(pathinfo($filename, PATHINFO_EXTENSION)) . '/';
+            $extension = strtoupper(pathinfo((string) $filename, PATHINFO_EXTENSION)) . '/';
         } else {
             $extension = '';
         }
-        if (!empty($type) && !str_ends_with($type, '/')) {
+        if (!empty($type) && !str_ends_with((string) $type, '/')) {
             $type .= '/';
         }
         if (!file_exists($type . $extension)) {
@@ -90,7 +90,7 @@ class ItsmngUploadHandler
     {
         $uploadPath = self::getUploadPath($type, $filename);
         $uniqid = $name ?? uniqid();
-        $filename = $uniqid . '.' . pathinfo($filename, PATHINFO_EXTENSION);
+        $filename = $uniqid . '.' . pathinfo((string) $filename, PATHINFO_EXTENSION);
         $uploadfile = $uploadPath . '/' . $filename;
         if (!rename($filepath, $uploadfile)) {
             return false;
@@ -160,14 +160,14 @@ class ItsmngUploadHandler
         $valid_ext_patterns = [];
         foreach ($valid_type_iterator as $valid_type) {
             $valid_ext = $valid_type['ext'];
-            if (preg_match('/\/.+\//', $valid_ext)) {
+            if (preg_match('/\/.+\//', (string) $valid_ext)) {
                 // Filename matches pattern
                 // Remove surrounding '/' as it will be included in a larger pattern
                 // and protect by surrounding parenthesis to prevent conflict with other patterns
-                $valid_ext_patterns[] = '(' . substr($valid_ext, 1, -1) . ')';
+                $valid_ext_patterns[] = '(' . substr((string) $valid_ext, 1, -1) . ')';
             } else {
                 // Filename ends with allowed ext
-                $valid_ext_patterns[] = '\.' . preg_quote($valid_type['ext'], '/') . '$';
+                $valid_ext_patterns[] = '\.' . preg_quote((string) $valid_type['ext'], '/') . '$';
             }
         }
         return $valid_ext_patterns;
@@ -179,7 +179,7 @@ class ItsmngUploadHandler
 
         foreach ($files as $file) {
             $valid_regex = '/(' . implode('|', self::getValidExtPatterns()) . ')$/';
-            if (!preg_match($valid_regex, $file['name'])) {
+            if (!preg_match($valid_regex, (string) $file['name'])) {
                 Session::addMessageAfterRedirect(
                     __('Invalid file extension', 'itsmng'),
                     false,
@@ -189,7 +189,7 @@ class ItsmngUploadHandler
             }
 
             $uploadPath = self::getUploadPath(self::TMP, $file['name']);
-            $filename = uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+            $filename = uniqid() . '.' . pathinfo((string) $file['name'], PATHINFO_EXTENSION);
             $uploadfile = $uploadPath . '/' . $filename;
             if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {
                 return false;

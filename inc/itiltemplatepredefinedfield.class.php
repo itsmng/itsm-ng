@@ -178,7 +178,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
             if (isset($allowed_fields[$rule['num']])) {
                 if (in_array($rule['num'], $multiple)) {
                     if ($allowed_fields[$rule['num']] == 'items_id') {
-                        $item_itemtype = explode("_", $rule['value']);
+                        $item_itemtype = explode("_", (string) $rule['value']);
                         $fields[$allowed_fields[$rule['num']]][$item_itemtype[0]][$item_itemtype[1]] = $item_itemtype[1];
                     } else {
                         $fields[$allowed_fields[$rule['num']]][] = $rule['value'];

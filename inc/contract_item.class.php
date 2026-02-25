@@ -85,6 +85,31 @@ class Contract_Item extends CommonDBRelation
     }
 
 
+    public function prepareInputForAdd($input)
+    {
+        if (!is_array($input)) {
+            return false;
+        }
+
+        if (isset($input['contracts_id'])) {
+            $contract = new Contract();
+            if ($contract->getFromDB($input['contracts_id'])) {
+                if (
+                    ($contract->fields['max_links_allowed'] > 0)
+                    && (countElementsInTable(
+                        $this->getTable(),
+                        ['contracts_id' => $input['contracts_id']]
+                    ) >= $contract->fields['max_links_allowed'])
+                ) {
+                    return false;
+                }
+            }
+        }
+
+        return parent::prepareInputForAdd($input);
+    }
+
+
     public static function getTypeName($nb = 0)
     {
         return _n('Link Contract/Item', 'Links Contract/Item', $nb);
@@ -561,7 +586,7 @@ class Contract_Item extends CommonDBRelation
                                                                   'field'      => 29]]];
 
                     $url  = $item::getSearchURL();
-                    $url .= (strpos($url, '?') ? '&' : '?');
+                    $url .= (strpos((string) $url, '?') ? '&' : '?');
                     $url .= Toolbox::append_params($opt);
                     $link = "<a href='$url'>" . __('Device list') . "</a>";
 

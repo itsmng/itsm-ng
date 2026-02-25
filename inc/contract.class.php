@@ -1246,7 +1246,7 @@ class Contract extends CommonDBTM
      *
      * @return integer
     **/
-    public static function cronContract(CronTask $task = null)
+    public static function cronContract(?CronTask $task = null)
     {
         global $DB, $CFG_GLPI;
 
@@ -1853,7 +1853,7 @@ class Contract extends CommonDBTM
         array &$actions,
         $itemtype,
         $is_deleted = 0,
-        CommonDBTM $checkitem = null
+        ?CommonDBTM $checkitem = null
     ) {
         global $CFG_GLPI;
 

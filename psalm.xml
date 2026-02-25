@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="8"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    phpVersion="8.1"
+>
+    <projectFiles>
+        <directory name="inc" />
+        <directory name="src" />
+        <directory name="ajax" />
+        <directory name="front" />
+        <directory name="tools" />
+        <directory name="bin" />
+        <directory name="tests" />
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="node_modules" />
+            <directory name="tests/files" />
+        </ignoreFiles>
+    </projectFiles>
+</psalm>

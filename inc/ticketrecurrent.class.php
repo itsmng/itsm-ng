@@ -255,10 +255,10 @@ class TicketRecurrent extends CommonDropdown
 
         switch ($field) {
             case 'periodicity':
-                if (preg_match('/([0-9]+)MONTH/', $values[$field], $matches)) {
+                if (preg_match('/([0-9]+)MONTH/', (string) $values[$field], $matches)) {
                     return sprintf(_n('%d month', '%d months', $matches[1]), $matches[1]);
                 }
-                if (preg_match('/([0-9]+)YEAR/', $values[$field], $matches)) {
+                if (preg_match('/([0-9]+)YEAR/', (string) $values[$field], $matches)) {
                     return sprintf(_n('%d year', '%d years', $matches[1]), $matches[1]);
                 }
                 return Html::timestampToString($values[$field], false);
@@ -403,7 +403,7 @@ class TicketRecurrent extends CommonDropdown
         $periodicity_as_interval = null;
         $periodicity_in_seconds = $periodicity;
         $matches = [];
-        if (preg_match($periodicity_pattern, $periodicity, $matches)) {
+        if (preg_match($periodicity_pattern, (string) $periodicity, $matches)) {
             $periodicity_as_interval = "{$matches[1]} {$matches[2]}";
             $periodicity_in_seconds  = $matches[1]
                * MONTH_TIMESTAMP
@@ -582,7 +582,7 @@ class TicketRecurrent extends CommonDropdown
                 }
             }
             // Set date to creation date
-            $createtime    = strtotime($data['next_creation_date']) + $data['create_before'];
+            $createtime    = strtotime((string) $data['next_creation_date']) + $data['create_before'];
             $input['date'] = date('Y-m-d H:i:s', $createtime);
             if (isset($predefined['date'])) {
                 $input['date'] = Html::computeGenericDateTimeSearch(

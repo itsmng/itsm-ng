@@ -64,7 +64,7 @@ class APIRest extends APIBaseClass
         $this->variable($file_updated)->isNotIdenticalTo(false);
 
         $this->http_client = new GuzzleHttp\Client();
-        $this->base_uri    = trim($CFG_GLPI['url_base_api'], "/")."/";
+        $this->base_uri    = trim((string) $CFG_GLPI['url_base_api'], "/")."/";
 
         parent::beforeTestMethod($method);
     }
@@ -107,7 +107,7 @@ class APIRest extends APIBaseClass
             // Guzzle lib will automatically push the correct Content-type
             unset($params['headers']['Content-Type']);
         }
-        $verb = strtolower($verb);
+        $verb = strtolower((string) $verb);
         if (in_array($verb, ['get', 'post', 'delete', 'put', 'options', 'patch'])) {
             try {
                 return $this->http_client->{$verb}(
@@ -135,8 +135,8 @@ class APIRest extends APIBaseClass
                           ? $params['verb']
                           : 'GET';
 
-        $resource_path  = parse_url($resource, PHP_URL_PATH);
-        $resource_query = parse_url($resource, PHP_URL_QUERY);
+        $resource_path  = parse_url((string) $resource, PHP_URL_PATH);
+        $resource_query = parse_url((string) $resource, PHP_URL_QUERY);
 
         $relative_uri = (!in_array($resource_path, ['getItem', 'getItems', 'createItems',
                                                'updateItems', 'deleteItems'])
@@ -192,7 +192,7 @@ class APIRest extends APIBaseClass
         if ($no_decode) {
             $data = $body;
         } else {
-            $data = json_decode($body, true);
+            $data = json_decode((string) $body, true);
             if (is_array($data)) {
                 $data['headers'] = $res->getHeaders();
             }
@@ -270,7 +270,7 @@ class APIRest extends APIBaseClass
         $this->array($res->getHeader('content-type'))->contains('application/json; charset=UTF-8');
 
         $body = $res->getBody();
-        $data = json_decode($body, true);
+        $data = json_decode((string) $body, true);
         $this->variable($data)->isNotFalse();
         $this->array($data)->hasKey('session_token');
         $this->session_token = $data['session_token'];
@@ -303,7 +303,7 @@ class APIRest extends APIBaseClass
         $this->variable($res->getStatusCode())->isEqualTo(200);
 
         $body = $res->getBody();
-        $data = json_decode($body, true);
+        $data = json_decode((string) $body, true);
         $this->variable($data)->isNotFalse();
         $this->array($data)->hasKey('session_token');
         $this->array($data)->hasKey('session');

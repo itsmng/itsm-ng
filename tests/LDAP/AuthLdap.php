@@ -1836,7 +1836,7 @@ class AuthLDAP extends DbTestCase
         // Compare dn in a case insensitive way as ldap_escape create filter in
         // lowercase ("," -> \2c) but some ldap software store them in uppercase
         $this
-           ->string(strtolower($manager->fields['user_dn']))
+           ->string(strtolower((string) $manager->fields['user_dn']))
            ->isIdenticalTo(strtolower($manager_full_dn));
 
         // Check created user

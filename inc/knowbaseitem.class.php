@@ -520,7 +520,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
         $sql = preg_replace('/.*WHERE /', '', $sql);
 
         //No where restrictions. Add a placeholder for compatibility with later restrictions
-        if (strlen(trim($sql)) == 0) {
+        if (strlen(trim((string) $sql)) == 0) {
             $sql = "1";
         }
         return $sql;
@@ -1182,7 +1182,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
         echo "<table class='tab_cadre_fixe' aria-label='Search Form'>";
         echo "<tr class='tab_bg_2'><td class='right' width='50%'>";
         echo "<input type='text' size='50' name='contains' value=\"" .
-               Html::cleanInputText(stripslashes($params["contains"])) . "\"></td>";
+               Html::cleanInputText(stripslashes((string) $params["contains"])) . "\"></td>";
         echo "<td class='left'>";
         echo "<input type='submit' value=\"" . _sx('button', 'Search') . "\" class='submit'></td></tr>";
         echo "</table>";
@@ -1407,7 +1407,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                 break;
 
             case 'search':
-                if (strlen($params["contains"]) > 0) {
+                if (strlen((string) $params["contains"]) > 0) {
                     $search  = Toolbox::unclean_cross_side_scripting_deep($params["contains"]);
 
                     // Replace all non word characters with spaces (see: https://stackoverflow.com/a/26537463)
@@ -1419,7 +1419,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                     // Merge spaces since we are using them to split the string later
                     $search_wilcard = preg_replace('!\s+!', ' ', $search_wilcard);
 
-                    $search_wilcard = explode(' ', $search_wilcard);
+                    $search_wilcard = explode(' ', (string) $search_wilcard);
                     $search_wilcard = (implode('* ', $search_wilcard) . '*');
 
                     $addscore = [];
@@ -1507,7 +1507,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                                          /* 7 */   "/\(/",
                                          /* 8 */   "/\)/",
                                          /* 9 */   "/\-/"];
-                        $contains = preg_replace($search1, "", $params["contains"]);
+                        $contains = preg_replace($search1, "", (string) $params["contains"]);
                         $ors = [
                            ["glpi_knowbaseitems.name"     => ['LIKE', Search::makeTextSearchValue($contains)]],
                            ["glpi_knowbaseitems.answer"   => ['LIKE', Search::makeTextSearchValue($contains)]]
@@ -2199,8 +2199,8 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
 
         $values = [
            'id'     => $this->getID(),
-           'name'   => addslashes($revision->fields['name']),
-           'answer' => addslashes($revision->fields['answer'])
+           'name'   => addslashes((string) $revision->fields['name']),
+           'answer' => addslashes((string) $revision->fields['answer'])
         ];
 
         if ($this->update($values)) {

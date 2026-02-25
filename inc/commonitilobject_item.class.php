@@ -50,8 +50,8 @@ abstract class CommonItilObject_Item extends CommonDBRelation
         }
         switch ($field) {
             case 'items_id':
-                if (strpos($values[$field], "_") !== false) {
-                    $item_itemtype      = explode("_", $values[$field]);
+                if (strpos((string) $values[$field], "_") !== false) {
+                    $item_itemtype      = explode("_", (string) $values[$field]);
                     $values['itemtype'] = $item_itemtype[0];
                     $values[$field]     = $item_itemtype[1];
                 }

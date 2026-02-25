@@ -58,4 +58,94 @@ class Problem extends DbTestCase
         $problem_item = new \Item_Problem();
         $this->boolean($problem_item->getFromDBForItems($problem, $computer))->isTrue();
     }
+
+    public function testAssignedStatusOnAddWithAssignee()
+    {
+        $this->login();
+
+        $users_id_assign = (int)getItemByTypeName('User', 'tech', true);
+        $problem = new \Problem();
+        $problems_id = $problem->add([
+           'name'              => 'problem auto assigned',
+           'content'           => 'assignment status should switch',
+           'status'            => \Problem::INCOMING,
+           '_users_id_assign'  => $users_id_assign,
+        ]);
+        $this->integer($problems_id)->isGreaterThan(0);
+        $this->boolean($problem->getFromDB($problems_id))->isTrue();
+        $this->integer((int)$problem->fields['status'])->isEqualTo(\Problem::ASSIGNED);
+    }
+
+    public function testReopenViaFollowup()
+    {
+        $this->login();
+
+        $problem = new \Problem();
+        $problems_id = $problem->add([
+           'name'    => 'problem to reopen',
+           'content' => 'initial content',
+        ]);
+        $this->integer($problems_id)->isGreaterThan(0);
+
+        $this->boolean(
+            $problem->update([
+               'id'      => $problems_id,
+               'status'  => \Problem::SOLVED,
+            ])
+        )->isTrue();
+        $this->boolean($problem->getFromDB($problems_id))->isTrue();
+        $this->integer((int)$problem->fields['status'])->isEqualTo(\Problem::SOLVED);
+
+        $interface_bak = $_SESSION['glpiactiveprofile']['interface'] ?? null;
+        $_SESSION['glpiactiveprofile']['interface'] = 'helpdesk';
+
+        $followup = new \ITILFollowup();
+        $followups_id = $followup->add([
+           'itemtype'    => 'Problem',
+           'items_id'    => $problems_id,
+           'content'     => 'Need to reopen after review',
+           'add_reopen'  => 1,
+        ]);
+        $this->integer($followups_id)->isGreaterThan(0);
+
+        if ($interface_bak === null) {
+            unset($_SESSION['glpiactiveprofile']['interface']);
+        } else {
+            $_SESSION['glpiactiveprofile']['interface'] = $interface_bak;
+        }
+
+        $this->boolean($problem->getFromDB($problems_id))->isTrue();
+        $this->integer((int)$problem->fields['status'])->isEqualTo(\Problem::INCOMING);
+    }
+
+    public function testProblemTaskActiontimeAndPrivateFlag()
+    {
+        $this->login();
+
+        $problem = new \Problem();
+        $problems_id = $problem->add([
+           'name'    => 'problem with task actiontime',
+           'content' => 'validate actiontime update from ProblemTask',
+        ]);
+        $this->integer($problems_id)->isGreaterThan(0);
+
+        $task = new \ProblemTask();
+        $task_id = $task->add([
+           'problems_id'      => $problems_id,
+           'content'          => 'private problem task',
+           'actiontime'       => 240,
+           'is_private'       => 1,
+           'users_id_tech'    => getItemByTypeName('User', 'tech', true),
+        ]);
+        $this->integer((int)$task_id)->isGreaterThan(0);
+        $this->boolean($task->getFromDB($task_id))->isTrue();
+        $this->integer((int)$task->fields['is_private'])->isEqualTo(1);
+
+        $this->boolean($problem->getFromDB($problems_id))->isTrue();
+        $this->integer((int)$problem->fields['actiontime'])->isEqualTo(240);
+
+        $this->boolean($task->delete(['id' => $task_id]))->isTrue();
+        $this->boolean($problem->getFromDB($problems_id))->isTrue();
+        $this->integer((int)$problem->fields['actiontime'])->isEqualTo(0);
+    }
 }

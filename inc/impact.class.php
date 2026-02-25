@@ -619,7 +619,7 @@ class Impact extends CommonGLPI
 
         // Split the items by type
         foreach ($sub_graph['nodes'] as $node) {
-            $details = explode(self::NODE_ID_DELIMITER, $node['id']);
+            $details = explode(self::NODE_ID_DELIMITER, (string) $node['id']);
             $itemtype = $details[0];
             $items_id = $details[1];
 

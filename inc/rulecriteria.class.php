@@ -382,7 +382,7 @@ class RuleCriteria extends CommonDBChild
             return true;
         }
 
-        $pattern = trim($pattern);
+        $pattern = trim((string) $pattern);
 
         switch ($condition) {
             case Rule::PATTERN_EXISTS:
@@ -438,7 +438,7 @@ class RuleCriteria extends CommonDBChild
 
             case Rule::PATTERN_END:
                 $value = "/" . $pattern . "$/i";
-                if (preg_match($value, $field) > 0) {
+                if (preg_match($value, (string) $field) > 0) {
                     $criterias_results[$criteria] = $pattern;
                     return true;
                 }
@@ -470,7 +470,7 @@ class RuleCriteria extends CommonDBChild
                 if (empty($pattern)) {
                     return false;
                 }
-                $value = mb_stripos($field, $pattern, 0, 'UTF-8');
+                $value = mb_stripos((string) $field, $pattern, 0, 'UTF-8');
                 if ($value === false) {
                     $criterias_results[$criteria] = $pattern;
                     return true;
@@ -481,7 +481,7 @@ class RuleCriteria extends CommonDBChild
                 $results = [];
                 // Permit use < and >
                 $pattern = Toolbox::unclean_cross_side_scripting_deep($pattern);
-                if (preg_match_all($pattern . "i", $field, $results) > 0) {
+                if (preg_match_all($pattern . "i", (string) $field, $results) > 0) {
                     // Drop $result[0] : complete match result
                     array_shift($results);
                     // And add to $regex_result array
@@ -500,7 +500,7 @@ class RuleCriteria extends CommonDBChild
             case Rule::REGEX_NOT_MATCH:
                 // Permit use < and >
                 $pattern = Toolbox::unclean_cross_side_scripting_deep($pattern);
-                if (preg_match($pattern . "i", $field) == 0) {
+                if (preg_match($pattern . "i", (string) $field) == 0) {
                     $criterias_results[$criteria] = $pattern;
                     return true;
                 }
