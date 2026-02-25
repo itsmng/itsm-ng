@@ -66,7 +66,7 @@ trait PlanningEvent
         }
 
         if (isset($this->field['rrule'])) {
-            $this->field['rrule'] = json_decode($this->field['rrule'], true);
+            $this->field['rrule'] = json_decode((string) $this->field['rrule'], true);
         }
 
         if (isset($this->fields['is_recursive'])) {
@@ -136,7 +136,7 @@ trait PlanningEvent
             $input['uuid'] = \Ramsey\Uuid\Uuid::uuid4();
         }
 
-        $input["name"] = trim($input["name"]);
+        $input["name"] = trim((string) $input["name"]);
         if (empty($input["name"])) {
             $input["name"] = __('Without title');
         }
@@ -321,7 +321,7 @@ trait PlanningEvent
     public function addInstanceException(int $id = 0, string $day = "")
     {
         $this->getFromDB($id);
-        $rrule = json_decode($this->fields['rrule'], true) ?? [];
+        $rrule = json_decode((string) $this->fields['rrule'], true) ?? [];
         $rrule = array_merge_recursive($rrule, [
            'exceptions' => [
               $day
@@ -587,14 +587,14 @@ trait PlanningEvent
                                              "&url=$url",
                        'editable'         => $event_obj->canUpdateItem(),
                        'url'              => $url,
-                       'begin'            => !$is_rrule && (strcmp($begin, $data["begin"]) > 0)
+                       'begin'            => !$is_rrule && (strcmp($begin, (string) $data["begin"]) > 0)
                                                ? $begin
                                                : $data["begin"],
-                       'end'              => !$is_rrule && (strcmp($end, $data["end"]) < 0)
+                       'end'              => !$is_rrule && (strcmp($end, (string) $data["end"]) < 0)
                                                ? $end
                                                : $data["end"],
                        'rrule'            => isset($data['rrule']) && !empty($data['rrule'])
-                                               ? json_decode($data['rrule'], true)
+                                               ? json_decode((string) $data['rrule'], true)
                                                : []
                     ];
 
@@ -603,7 +603,7 @@ trait PlanningEvent
                     // doesn't match current range
                     if ($options['check_planned'] && count($events[$key]['rrule'])) {
                         $event      = $events[$key];
-                        $duration   = strtotime($event['end']) - strtotime($event['begin']);
+                        $duration   = strtotime((string) $event['end']) - strtotime((string) $event['begin']);
 
                         $rset = self::getRsetFromRRuleField($event['rrule'], $event['begin']);
 

@@ -60,7 +60,7 @@ if (isset($_GET['docid'])) { // docid for document
         Html::displayErrorAndDie(__('Unauthorized access to this file'), true); // No right
     }
 } elseif (isset($_GET["file"])) { // for other file
-    $splitter = explode("/", $_GET["file"], 2);
+    $splitter = explode("/", (string) $_GET["file"], 2);
     if (count($splitter) == 2) {
         $expires_headers = false;
         $send = false;

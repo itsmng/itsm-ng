@@ -63,7 +63,6 @@ class ErrorHandler
        E_USER_ERROR        => LogLevel::ERROR,
        E_USER_WARNING      => LogLevel::WARNING,
        E_USER_NOTICE       => LogLevel::NOTICE,
-       E_STRICT            => LogLevel::NOTICE,
        E_RECOVERABLE_ERROR => LogLevel::ERROR,
        E_DEPRECATED        => LogLevel::NOTICE,
        E_USER_DEPRECATED   => LogLevel::NOTICE,
@@ -129,7 +128,7 @@ class ErrorHandler
     /**
      * @param LoggerInterface|null $logger
      */
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = $logger;
     }
@@ -153,8 +152,8 @@ class ErrorHandler
      */
     public function register()
     {
-        set_error_handler([$this, 'handleError']);
-        set_exception_handler([$this, 'handleException']);
+        set_error_handler($this->handleError(...));
+        set_exception_handler($this->handleException(...));
         register_shutdown_function([$this, 'handleFatalError']);
         $this->reserved_memory = str_repeat('x', 50 * 1024); // reserve 50 kB of memory space
     }
@@ -309,7 +308,7 @@ class ErrorHandler
             // thoose that are already defined, in order to exit the script with the correct code.
             $exit_code = $this->exit_code;
             register_shutdown_function(
-                'register_shutdown_function',
+                register_shutdown_function(...),
                 function () use ($exit_code) {
                     exit($exit_code);
                 }
@@ -427,7 +426,6 @@ class ErrorHandler
            E_USER_ERROR        => 'User Error',
            E_USER_WARNING      => 'User Warning',
            E_USER_NOTICE       => 'User Notice',
-           E_STRICT            => 'Runtime Notice',
            E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
            E_DEPRECATED        => 'Deprecated function',
            E_USER_DEPRECATED   => 'User deprecated function',
@@ -453,8 +451,8 @@ class ErrorHandler
 
         foreach ($trace as $item) {
             $script = ($item['file'] ?? '') . ':' . ($item['line'] ?? '');
-            if (strpos($script, GLPI_ROOT) === 0) {
-                $script = substr($script, strlen(GLPI_ROOT) + 1);
+            if (strpos($script, (string) GLPI_ROOT) === 0) {
+                $script = substr($script, strlen((string) GLPI_ROOT) + 1);
             }
             if (strlen($script) > 50) {
                 $script = '...' . substr($script, -47);

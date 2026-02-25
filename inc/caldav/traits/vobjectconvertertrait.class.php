@@ -141,7 +141,7 @@ trait VobjectConverterTrait
         }
 
         if (array_key_exists('rrule', $fields) && !empty($fields['rrule'])) {
-            $rrule_specs = json_decode($fields['rrule'], true);
+            $rrule_specs = json_decode((string) $fields['rrule'], true);
             try {
                 if (array_key_exists('byweekday', $rrule_specs)) {
                     $rrule_specs['byday'] = $rrule_specs['byweekday'];

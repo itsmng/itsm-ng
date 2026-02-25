@@ -168,7 +168,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
     }
     // Check version
     if (
-        (!isset($CFG_GLPI['dbversion']) || (trim($CFG_GLPI["dbversion"]) != ITSM_SCHEMA_VERSION))
+        (!isset($CFG_GLPI['dbversion']) || (trim((string) $CFG_GLPI["dbversion"]) != ITSM_SCHEMA_VERSION))
         && !isset($_GET["donotcheckversion"])
     ) {
         Session::loadLanguage('', false);
@@ -205,7 +205,7 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                             //not sure this is older... User will be warned.
                             if (version_compare(trim($CFG_GLPI["version"]), ITSM_PREVER, '<')) {
                                 $older = true;
-                            } elseif (version_compare(trim($CFG_GLPI['version']), ITSM_PREVER, '>=')) {
+                            } elseif (version_compare(trim((string) $CFG_GLPI['version']), ITSM_PREVER, '>=')) {
                                 $newer = true;
                             }
                         }
@@ -216,14 +216,14 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                         } else {
                             $newer = true;
                         }
-                    } elseif (!isset($CFG_GLPI['dbversion']) || version_compare(trim($CFG_GLPI["dbversion"]), ITSM_SCHEMA_VERSION, '<')) {
+                    } elseif (!isset($CFG_GLPI['dbversion']) || version_compare(trim((string) $CFG_GLPI["dbversion"]), ITSM_SCHEMA_VERSION, '<')) {
                         $older = true;
-                    } elseif (version_compare(trim($CFG_GLPI["dbversion"]), ITSM_SCHEMA_VERSION, '>')) {
+                    } elseif (version_compare(trim((string) $CFG_GLPI["dbversion"]), ITSM_SCHEMA_VERSION, '>')) {
                         // test for GLPI version
-                    } elseif (version_compare(trim($CFG_GLPI["dbversion"]), '10', '>=')) {  // GLPI 10 not managed
-                    } elseif (version_compare(trim($CFG_GLPI["dbversion"]), '9', '>=')) {  // for GLPI 9.x
+                    } elseif (version_compare(trim((string) $CFG_GLPI["dbversion"]), '10', '>=')) {  // GLPI 10 not managed
+                    } elseif (version_compare(trim((string) $CFG_GLPI["dbversion"]), '9', '>=')) {  // for GLPI 9.x
                         $older = true;
-                    } elseif (version_compare(trim($CFG_GLPI["dbversion"]), '10', '>=')) {  // GLPI 10 not managed
+                    } elseif (version_compare(trim((string) $CFG_GLPI["dbversion"]), '10', '>=')) {  // GLPI 10 not managed
                         $newer = true;
                     }
                 }

@@ -137,7 +137,7 @@ class Toolbox extends \GLPITestCase
     public function testFilename($name, $expected)
     {
         $this->string(\Toolbox::filename($name))->isIdenticalTo($expected);
-        $this->integer(strlen($expected))->isLessThanOrEqualTo(255);
+        $this->integer(strlen((string) $expected))->isLessThanOrEqualTo(255);
     }
 
     public function dataGetSize()

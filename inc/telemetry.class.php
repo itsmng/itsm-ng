@@ -154,7 +154,7 @@ class Telemetry extends CommonGLPI
            'version' => '',
         ];
 
-        if (!filter_var(gethostbyname(parse_url($CFG_GLPI['url_base'], PHP_URL_HOST)), FILTER_VALIDATE_IP)) {
+        if (!filter_var(gethostbyname(parse_url((string) $CFG_GLPI['url_base'], PHP_URL_HOST)), FILTER_VALIDATE_IP)) {
             // Do not try to get headers if hostname cannot be resolved
             return $server;
         }

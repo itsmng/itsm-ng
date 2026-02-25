@@ -67,7 +67,7 @@ class NetworkPortAggregate extends NetworkPortInstantiation
         } else {
             $input['networkports_id_list'] = exportArrayToDB([]);
         }
-        return parent::prepareInputForAdd($input);
+        return parent::prepareInputForUpdate($input);
     }
 
 
@@ -150,8 +150,8 @@ class NetworkPortAggregate extends NetworkPortInstantiation
     public function getInstantiationHTMLTableHeaders(
         HTMLTableGroup $group,
         HTMLTableSuperHeader $super,
-        HTMLTableSuperHeader $internet_super = null,
-        HTMLTableHeader $father = null,
+        ?HTMLTableSuperHeader $internet_super = null,
+        ?HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -165,7 +165,7 @@ class NetworkPortAggregate extends NetworkPortInstantiation
     public function getInstantiationHTMLTable(
         NetworkPort $netport,
         HTMLTableRow $row,
-        HTMLTableCell $father = null,
+        ?HTMLTableCell $father = null,
         array $options = []
     ) {
 

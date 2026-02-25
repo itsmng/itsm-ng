@@ -46,7 +46,7 @@ if (empty($_POST["date1"]) && empty($_POST["date2"])) {
 if (
     !empty($_POST["date1"])
     && !empty($_POST["date2"])
-    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)
+    && (strcmp((string) $_POST["date2"], (string) $_POST["date1"]) < 0)
 ) {
     $tmp            = $_POST["date1"];
     $_POST["date1"] = $_POST["date2"];
@@ -233,7 +233,7 @@ function display_infocoms_report($itemtype, $begin, $end)
             }
 
             if (!empty($line["buy_date"])) {
-                $year = substr($line["buy_date"], 0, 4);
+                $year = substr((string) $line["buy_date"], 0, 4);
 
                 if ($line["value"] > 0) {
                     if (!isset($valeurgraph[$year])) {
@@ -255,7 +255,7 @@ function display_infocoms_report($itemtype, $begin, $end)
         if (count($valeurnettegraph) > 0) {
             echo "<tr><td colspan='5' class='center'>";
             ksort($valeurnettegraph);
-            $valeurnettegraphdisplay = array_map('round', $valeurnettegraph);
+            $valeurnettegraphdisplay = array_map(round(...), $valeurnettegraph);
 
             foreach ($valeurnettegraph as $key => $val) {
                 if (!isset($valeurnettegraphtot[$key])) {
@@ -284,7 +284,7 @@ function display_infocoms_report($itemtype, $begin, $end)
         if (count($valeurgraph) > 0) {
             echo "<tr><td colspan='5' class='center'>";
             ksort($valeurgraph);
-            $valeurgraphdisplay = array_map('round', $valeurgraph);
+            $valeurgraphdisplay = array_map(round(...), $valeurgraph);
 
             foreach ($valeurgraph as $key => $val) {
                 if (!isset($valeurgraphtot[$key])) {
@@ -348,7 +348,7 @@ $tmpmsg = sprintf(
 echo "<div class='center'><h3>$tmpmsg</h3></div>\n";
 
 if (count($valeurnettegraphtot) > 0) {
-    $valeurnettegraphtotdisplay = array_map('round', $valeurnettegraphtot);
+    $valeurnettegraphtotdisplay = array_map(round(...), $valeurnettegraphtot);
 
     $stat->displayLineGraph(
         __('Total account net value'),
@@ -362,7 +362,7 @@ if (count($valeurnettegraphtot) > 0) {
     );
 }
 if (count($valeurgraphtot) > 0) {
-    $valeurgraphtotdisplay = array_map('round', $valeurgraphtot);
+    $valeurgraphtotdisplay = array_map(round(...), $valeurgraphtot);
 
     $stat->displayLineGraph(
         __('Total value'),

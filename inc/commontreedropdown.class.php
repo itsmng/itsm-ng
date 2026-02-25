@@ -117,7 +117,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
     **/
     public static function getCompleteNameFromParents($parentCompleteName, $thisName)
     {
-        return addslashes($parentCompleteName) . " > " . $thisName;
+        return addslashes((string) $parentCompleteName) . " > " . $thisName;
     }
 
 
@@ -130,10 +130,10 @@ abstract class CommonTreeDropdown extends CommonDropdown
         $parent = clone $this;
         // Update case input['name'] not set :
         if (!isset($input['name']) && isset($this->fields['name'])) {
-            $input['name'] = addslashes($this->fields['name']);
+            $input['name'] = addslashes((string) $this->fields['name']);
         }
         // leading/ending space will break findID/import
-        $input['name'] = trim($input['name']);
+        $input['name'] = trim((string) $input['name']);
 
         if (
             isset($input[$this->getForeignKeyField()])
@@ -270,10 +270,10 @@ abstract class CommonTreeDropdown extends CommonDropdown
                     if (isset($currentNodeCompleteName)) {
                         $update['completename'] = self::getCompleteNameFromParents(
                             $currentNodeCompleteName,
-                            addslashes($data["name"])
+                            addslashes((string) $data["name"])
                         );
                     } else {
-                        $update['completename'] = addslashes($data["name"]);
+                        $update['completename'] = addslashes((string) $data["name"]);
                     }
                 }
 
@@ -870,7 +870,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
     public static function cleanTreeText($value)
     {
 
-        $tmp = explode('>', $value);
+        $tmp = explode('>', (string) $value);
         foreach ($tmp as $k => $v) {
             $v = trim($v);
             if (empty($v)) {
@@ -956,7 +956,7 @@ abstract class CommonTreeDropdown extends CommonDropdown
         }
 
         // Import a full tree from completename
-        $names  = explode('>', $input['completename']);
+        $names  = explode('>', (string) $input['completename']);
         $fk     = $this->getForeignKeyField();
         $i      = count($names);
         $parent = 0;

@@ -51,7 +51,7 @@ class Server extends DAV\Server
 {
     public function __construct()
     {
-        $this->on('exception', [$this, 'logException']);
+        $this->on('exception', $this->logException(...));
 
         // Backends
         $authBackend = new Auth();

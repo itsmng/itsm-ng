@@ -100,7 +100,7 @@ class ITILTemplate extends DbTestCase
         )->isGreaterThan(0);
 
         $category = new \ITILCategory();
-        $cat_field = strtolower($itiltype) . 'templates_id';
+        $cat_field = strtolower((string) $itiltype) . 'templates_id';
         if ($itiltype === \Ticket::getType()) {
             $cat_field .= '_demand';
         }
@@ -384,7 +384,7 @@ class ITILTemplate extends DbTestCase
         $this->boolean($predef->getFromDB($puid))->isTrue();
 
         $category = new \ITILCategory();
-        $cat_field = strtolower($itiltype) . 'templates_id';
+        $cat_field = strtolower((string) $itiltype) . 'templates_id';
         if ($itiltype === \Ticket::getType()) {
             $cat_field .= '_demand';
         }
@@ -442,7 +442,7 @@ class ITILTemplate extends DbTestCase
         $category_tpl_id = $this->createTemplate($itiltype);
         $category = new \ITILCategory();
 
-        $field = strtolower($itiltype) . 'templates_id';
+        $field = strtolower((string) $itiltype) . 'templates_id';
         $cat_field = $field;
         if ($itiltype === \Ticket::getType()) {
             $cat_field .= '_demand';
@@ -511,6 +511,63 @@ class ITILTemplate extends DbTestCase
         $this->login();
         $this->boolean($entity->update(['id' => $entity->fields['id'], $field => -2]))->isTrue();
         $this->boolean($profile->update(['id' => $profile->fields['id'], $field => -2]))->isTrue();
+    }
+
+    /**
+     * @dataProvider itilProvider
+     */
+    public function testTemplatePreviewDoesNotPersist($itiltype)
+    {
+        $this->login();
+
+        $tpl_class = '\\' . $itiltype . 'Template';
+        $tpl = new $tpl_class();
+        $tpl_id = (int)$tpl->add([
+           'name' => 'Preview template for ' . $itiltype . ' ' . $this->getUniqueString(),
+        ]);
+        $this->integer($tpl_id)->isGreaterThan(0);
+
+        $object_class = '\\' . $itiltype;
+        $items_before = (int)countElementsInTable($object_class::getTable());
+        $object = new $object_class();
+        $object->getEmpty();
+
+        $this->output(
+            function () use ($object, $tpl_id) {
+                $object->showFormHeader(['template_preview' => $tpl_id]);
+            }
+        )->notContains("name='form_ticket'");
+
+        $items_after = (int)countElementsInTable($object_class::getTable());
+        $this->integer($items_after)->isIdenticalTo($items_before);
+    }
+
+    /**
+     * @dataProvider itilProvider
+     */
+    public function testHiddenFieldIsLoadedFromTemplate($itiltype)
+    {
+        $this->login();
+
+        $tpl_class = '\\' . $itiltype . 'Template';
+        $tpl = new $tpl_class();
+        $tpl_id = (int)$tpl->add([
+           'name' => 'Hidden fields template for ' . $itiltype . ' ' . $this->getUniqueString(),
+        ]);
+        $this->integer($tpl_id)->isGreaterThan(0);
+
+        $hidden_class = '\\' . $itiltype . 'TemplateHiddenField';
+        $hidden_field = new $hidden_class();
+        $hidden_id = (int)$hidden_field->add([
+           $hidden_field::$items_id => $tpl_id,
+           'num'                    => $hidden_field->getFieldNum($tpl, 'Status'),
+        ]);
+        $this->integer($hidden_id)->isGreaterThan(0);
+
+        $this->boolean($tpl->getFromDBWithData($tpl_id))->isTrue();
+        $this->boolean($tpl->isHiddenField('status'))->isTrue();
+        $this->string($tpl->getBeginHiddenFieldValue('status'))->contains('hiddenvaluestatus');
+        $this->string($tpl->getEndHiddenFieldValue('status'))->isIdenticalTo('</span>');
     }
 
     private function createTemplate($itiltype)

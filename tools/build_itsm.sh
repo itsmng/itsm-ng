@@ -68,6 +68,8 @@ find $WORKING_DIR -depth \( -iname ".*" ! -iname ".htaccess" \) -exec rm -rf {} 
 
 # Remove useless dev files and directories
 dev_nodes=(
+    ".eslintrc.json"
+    ".editorconfig"
     "composer.json"
     "composer.lock"
     "ISSUE_TEMPLATE.md"
@@ -106,6 +108,8 @@ dev_nodes=(
     "vendor/wapmorgan/unified-archive/bin"
     "vendor/wapmorgan/unified-archive/tests"
     "webpack.config.js"
+    "psalm.xml"
+    "rector.php"
 )
 for node in "${dev_nodes[@]}"
 do

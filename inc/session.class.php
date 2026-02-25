@@ -328,7 +328,7 @@ class Session
         }
         $url = '';
 
-        if (!isset($_SERVER['REQUEST_URI']) || (strpos($_SERVER['REQUEST_URI'], "tabs") > 0)) {
+        if (!isset($_SERVER['REQUEST_URI']) || (strpos((string) $_SERVER['REQUEST_URI'], "tabs") > 0)) {
             if (isset($_SERVER['HTTP_REFERER'])) {
                 $url = $_SERVER['HTTP_REFERER'];
             }
@@ -794,7 +794,7 @@ class Session
 
         return (isset($_SESSION["glpicronuserrunning"])
                 && (isCommandLine()
-                    || strpos($_SERVER['PHP_SELF'], '/cron.php')));
+                    || strpos((string) $_SERVER['PHP_SELF'], '/cron.php')));
     }
 
 
@@ -1302,7 +1302,7 @@ class Session
      *    Generates a standalone token that will not be shared with other component of current request.
      *
      * @since 0.83.3
-     * @deprecated 2.0.0
+     * @deprecated 2.0.0 Use Csrf::generate()
      *
      * @return string
     **/

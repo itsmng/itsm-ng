@@ -509,7 +509,7 @@ class Auth extends CommonGLPI
                         false
                     );
                 } else {
-                    $url_base = parse_url($CFG_GLPI["url_base"]);
+                    $url_base = parse_url((string) $CFG_GLPI["url_base"]);
                     $service_base_url = $url_base["scheme"] . "://" .
                         $url_base["host"] . (isset($url_base["port"]) ? ":" .
                         $url_base["port"] : "");
@@ -551,14 +551,14 @@ class Auth extends CommonGLPI
                 //    $login_string = $_REQUEST[$ssovariable];
                 // }
                 $login        = $login_string;
-                $pos          = stripos($login_string, "\\");
+                $pos          = stripos((string) $login_string, "\\");
                 if (!$pos === false) {
-                    $login = substr($login_string, $pos + 1);
+                    $login = substr((string) $login_string, $pos + 1);
                 }
                 if ($CFG_GLPI['existing_auth_server_field_clean_domain']) {
-                    $pos = stripos($login, "@");
+                    $pos = stripos((string) $login, "@");
                     if (!$pos === false) {
-                        $login = substr($login, 0, $pos);
+                        $login = substr((string) $login, 0, $pos);
                     }
                 }
                 if (self::isValidLogin($login)) {
@@ -576,7 +576,7 @@ class Auth extends CommonGLPI
                 // From eGroupWare  http://www.egroupware.org
                 // an X.509 subject looks like:
                 // CN=john.doe/OU=Department/O=Company/C=xx/Email=john@comapy.tld/L=City/
-                $sslattribs = explode('/', $_SERVER['SSL_CLIENT_S_DN']);
+                $sslattribs = explode('/', (string) $_SERVER['SSL_CLIENT_S_DN']);
                 $sslattributes = [];
                 while ($sslattrib = next($sslattribs)) {
                     list($key, $val)      = explode('=', $sslattrib);
@@ -588,7 +588,7 @@ class Auth extends CommonGLPI
                     && self::isValidLogin($sslattributes[$CFG_GLPI["x509_email_field"]])
                 ) {
                     $restrict = false;
-                    $CFG_GLPI["x509_ou_restrict"] = trim($CFG_GLPI["x509_ou_restrict"]);
+                    $CFG_GLPI["x509_ou_restrict"] = trim((string) $CFG_GLPI["x509_ou_restrict"]);
                     if (!empty($CFG_GLPI["x509_ou_restrict"])) {
                         $split = explode('$', $CFG_GLPI["x509_ou_restrict"]);
 
@@ -596,7 +596,7 @@ class Auth extends CommonGLPI
                             $restrict = true;
                         }
                     }
-                    $CFG_GLPI["x509_o_restrict"] = trim($CFG_GLPI["x509_o_restrict"]);
+                    $CFG_GLPI["x509_o_restrict"] = trim((string) $CFG_GLPI["x509_o_restrict"]);
                     if (!empty($CFG_GLPI["x509_o_restrict"])) {
                         $split = explode('$', $CFG_GLPI["x509_o_restrict"]);
 
@@ -604,7 +604,7 @@ class Auth extends CommonGLPI
                             $restrict = true;
                         }
                     }
-                    $CFG_GLPI["x509_cn_restrict"] = trim($CFG_GLPI["x509_cn_restrict"]);
+                    $CFG_GLPI["x509_cn_restrict"] = trim((string) $CFG_GLPI["x509_cn_restrict"]);
                     if (!empty($CFG_GLPI["x509_cn_restrict"])) {
                         $split = explode('$', $CFG_GLPI["x509_cn_restrict"]);
 
@@ -638,7 +638,7 @@ class Auth extends CommonGLPI
                 $cookie_name   = session_name() . '_rememberme';
 
                 if ($CFG_GLPI["login_remember_time"]) {
-                    $data = json_decode($_COOKIE[$cookie_name], true);
+                    $data = json_decode((string) $_COOKIE[$cookie_name], true);
                     if (count($data) === 2) {
                         list($cookie_id, $cookie_token) = $data;
 
@@ -774,7 +774,7 @@ class Auth extends CommonGLPI
                 // Used for log when login process failed
                 $login_name                        = $this->user->fields['name'];
                 $this->auth_succeded               = true;
-                $this->user_present                = $this->user->getFromDBbyName(addslashes($login_name));
+                $this->user_present                = $this->user->getFromDBbyName(addslashes((string) $login_name));
                 $this->extauth                     = 1;
                 $user_dn                           = false;
 
@@ -890,7 +890,7 @@ class Auth extends CommonGLPI
 
         if (!$this->auth_succeded) {
             if (
-                empty($login_name) || strstr($login_name, "\0")
+                empty($login_name) || strstr((string) $login_name, "\0")
                 || empty($login_password) || strstr($login_password, "\0")
             ) {
                 $this->addToError(__('Empty login or password'));
@@ -901,7 +901,7 @@ class Auth extends CommonGLPI
                     || $this->user->fields["authtype"] == $this::DB_GLPI
                 ) {
                     $this->auth_succeded = $this->connection_db(
-                        addslashes($login_name),
+                        addslashes((string) $login_name),
                         $login_password
                     );
                 }
@@ -923,7 +923,7 @@ class Auth extends CommonGLPI
                             );
                             if ($this->ldap_connection !== false && (!$this->auth_succeded && !$this->user_found)) {
                                 $search_params = [
-                                   'name'     => addslashes($login_name),
+                                   'name'     => addslashes((string) $login_name),
                                    'authtype' => $this::LDAP
                                 ];
                                 if (!empty($login_auth)) {
@@ -1067,7 +1067,7 @@ class Auth extends CommonGLPI
             }
         }
 
-        if ($this->auth_succeded && !empty($this->user->fields['timezone']) && 'null' !== strtolower($this->user->fields['timezone'])) {
+        if ($this->auth_succeded && !empty($this->user->fields['timezone']) && 'null' !== strtolower((string) $this->user->fields['timezone'])) {
             //set user timezone, if any
             $_SESSION['glpi_tz'] = $this->user->fields['timezone'];
             $DB->setTimezone($this->user->fields['timezone']);
@@ -1353,7 +1353,7 @@ class Auth extends CommonGLPI
         if (
             !empty($CFG_GLPI["x509_email_field"])
             && isset($_SERVER['SSL_CLIENT_S_DN'])
-            && strstr($_SERVER['SSL_CLIENT_S_DN'], $CFG_GLPI["x509_email_field"])
+            && strstr((string) $_SERVER['SSL_CLIENT_S_DN'], (string) $CFG_GLPI["x509_email_field"])
         ) {
             if ($redirect) {
                 Html::redirect($CFG_GLPI["root_doc"] . "/front/login.php" . $redir_string);
@@ -1425,9 +1425,9 @@ class Auth extends CommonGLPI
         }
 
         if (!$redirect) {
-            if (isset($_POST['redirect']) && (strlen($_POST['redirect']) > 0)) {
+            if (isset($_POST['redirect']) && (strlen((string) $_POST['redirect']) > 0)) {
                 $redirect = $_POST['redirect'];
-            } elseif (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
+            } elseif (isset($_GET['redirect']) && strlen((string) $_GET['redirect']) > 0) {
                 $redirect = $_GET['redirect'];
             }
         }
@@ -1797,15 +1797,15 @@ class Auth extends CommonGLPI
         }
         if (isset($_POST["update"])) {
             $oidc_result = [
-               'Provider'     => URL::sanitizeURL(trim($_POST["provider"])),
-               'ClientID'     => trim($_POST["clientID"]),
-               'ClientSecret' => Toolbox::sodiumEncrypt(trim($_POST["clientSecret"])),
+               'Provider'     => URL::sanitizeURL(trim((string) $_POST["provider"])),
+               'ClientID'     => trim((string) $_POST["clientID"]),
+               'ClientSecret' => Toolbox::sodiumEncrypt(trim((string) $_POST["clientSecret"])),
                'is_activate'  => $_POST["useoidc"],
                'is_forced'    => $_POST["forceoidc"],
                'scope'        => $_POST["scope"],
                'proxy'        => $_POST["proxy"],
                'cert'         => $_POST["cert"],
-               'logout'       => URL::sanitizeURL(trim($_POST["logout"])),
+               'logout'       => URL::sanitizeURL(trim((string) $_POST["logout"])),
                'sso_link_users' => $_POST['sso_link_users'],
             ];
             $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);

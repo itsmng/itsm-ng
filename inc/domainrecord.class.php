@@ -512,7 +512,7 @@ class DomainRecord extends CommonDBChild
     {
         $name_txt = rtrim(
             str_replace(
-                rtrim($domain->getCanonicalName(), '.'),
+                rtrim((string) $domain->getCanonicalName(), '.'),
                 '',
                 $name
             ),

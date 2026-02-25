@@ -383,8 +383,8 @@ class Profile extends CommonDBTM
                 $newvalue = 0;
                 foreach ($input['_' . $right] as $value => $valid) {
                     if ($valid) {
-                        if (($underscore_pos = strpos($value, '_')) !== false) {
-                            $value = substr($value, 0, $underscore_pos);
+                        if (($underscore_pos = strpos((string) $value, '_')) !== false) {
+                            $value = substr((string) $value, 0, $underscore_pos);
                         }
                         $newvalue += $value;
                     }
@@ -3208,7 +3208,7 @@ class Profile extends CommonDBTM
                 return self::getHelpdeskHardwareTypeName($values[$field]);
 
             case "helpdesk_item_type":
-                $types = explode(',', $values[$field]);
+                $types = explode(',', (string) $values[$field]);
                 $message = [];
                 foreach ($types as $type) {
                     if ($item = getItemForItemtype($type)) {
@@ -3246,7 +3246,7 @@ class Profile extends CommonDBTM
                 return Dropdown::showFromArray($name, self::getHelpdeskHardwareTypes(), $options);
 
             case "helpdesk_item_type":
-                $options['values'] = explode(',', $values[$field]);
+                $options['values'] = explode(',', (string) $values[$field]);
                 $options['name']   = $name;
                 return self::dropdownHelpdeskItemtypes($options);
         }

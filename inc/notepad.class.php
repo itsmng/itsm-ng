@@ -412,7 +412,7 @@ class Notepad extends CommonDBChild
                                    Html::jsShow("edit$id") . "\"";
                 }
                 echo ">";
-                $content = nl2br($note['content']);
+                $content = nl2br((string) $note['content']);
                 if (empty($content)) {
                     $content = NOT_AVAILABLE;
                 }

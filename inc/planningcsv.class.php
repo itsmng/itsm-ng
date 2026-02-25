@@ -147,16 +147,12 @@ class PlanningCsv extends CommonGLPI
 
         echo implode(
             $_SESSION["glpicsv_delimiter"],
-            array_map(function ($value) {
-                return $this->quote($value);
-            }, $this->titles)
+            array_map($this->quote(...), $this->titles)
         ) . $this->eol;
         foreach ($this->lines as $line) {
             echo implode(
                 $_SESSION["glpicsv_delimiter"],
-                array_map(function ($value) {
-                    return $this->quote($value);
-                }, $line)
+                array_map($this->quote(...), $line)
             ) . $this->eol;
         }
     }

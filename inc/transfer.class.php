@@ -1371,7 +1371,7 @@ class Transfer extends CommonDBTM
                                    'FROM'   => 'glpi_cartridgeitems',
                                    'WHERE'  => [
                                       'entities_id'  => $this->to,
-                                      'name'         => addslashes($carttype->fields['name'])
+                                      'name'         => addslashes((string) $carttype->fields['name'])
                                    ]
                                 ]);
 
@@ -1482,7 +1482,7 @@ class Transfer extends CommonDBTM
                    'FROM'   => 'glpi_softwares',
                    'WHERE'  => [
                       'entities_id'  => $this->to,
-                      'name'         => addslashes($soft->fields['name'])
+                      'name'         => addslashes((string) $soft->fields['name'])
                    ] + $manufacturer
                 ]);
 
@@ -1537,7 +1537,7 @@ class Transfer extends CommonDBTM
                    'FROM'   => 'glpi_softwareversions',
                    'WHERE'  => [
                       'softwares_id' => $newsoftID,
-                      'name'         => addslashes($vers->fields['name'])
+                      'name'         => addslashes((string) $vers->fields['name'])
                    ]
                 ]);
 
@@ -1696,8 +1696,8 @@ class Transfer extends CommonDBTM
                        'FROM'   => 'glpi_softwarelicenses',
                        'WHERE'  => [
                           'softwares_id' => $newsoftID,
-                          'name'         => addslashes($license->fields['name']),
-                          'serial'       => addslashes($license->fields['serial'])
+                          'name'         => addslashes((string) $license->fields['name']),
+                          'serial'       => addslashes((string) $license->fields['serial'])
                        ]
                     ]);
 
@@ -1905,7 +1905,7 @@ class Transfer extends CommonDBTM
                            'FROM'   => 'glpi_contracts',
                            'WHERE'  => [
                               'entities_id'  => $this->to,
-                              'name'         => addslashes($contract->fields['name'])
+                              'name'         => addslashes((string) $contract->fields['name'])
                            ]
                         ]);
 
@@ -2096,7 +2096,7 @@ class Transfer extends CommonDBTM
                            'FROM'   => 'glpi_documents',
                            'WHERE'  => [
                               'entities_id'  => $this->to,
-                              'name'         => addslashes($document->fields['name'])
+                              'name'         => addslashes((string) $document->fields['name'])
                            ]
                         ]);
 
@@ -2301,7 +2301,7 @@ class Transfer extends CommonDBTM
                                    'WHERE'  => [
                                       'is_global'    => 1,
                                       'entities_id'  => $this->to,
-                                      'name'         => addslashes($link_item->getField('name'))
+                                      'name'         => addslashes((string) $link_item->getField('name'))
                                    ]
                                 ]);
 
@@ -2585,7 +2585,7 @@ class Transfer extends CommonDBTM
                        'FROM'   => 'glpi_suppliers',
                        'WHERE'  => [
                           'entities_id'  => $this->to,
-                          'name'         => addslashes($supplier->fields['name'])
+                          'name'         => addslashes((string) $supplier->fields['name'])
                        ]
                     ]);
 
@@ -2662,7 +2662,7 @@ class Transfer extends CommonDBTM
 
                 if ($categ->getFromDB($data['taskcategories_id'])) {
                     $inputcat['entities_id']  = $this->to;
-                    $inputcat['completename'] = addslashes($categ->fields['completename']);
+                    $inputcat['completename'] = addslashes((string) $categ->fields['completename']);
                     $catid                    = $categ->findID($inputcat);
                     if ($catid < 0) {
                         $catid = $categ->import($inputcat);
@@ -2702,7 +2702,7 @@ class Transfer extends CommonDBTM
 
             if ($categ->getFromDB($data['itilcategories_id'])) {
                 $inputcat['entities_id']  = $this->to;
-                $inputcat['completename'] = addslashes($categ->fields['completename']);
+                $inputcat['completename'] = addslashes((string) $categ->fields['completename']);
                 $catid                    = $categ->findID($inputcat);
                 if ($catid < 0) {
                     $catid = $categ->import($inputcat);
@@ -2942,7 +2942,7 @@ class Transfer extends CommonDBTM
                    'FROM'   => 'glpi_suppliers',
                    'WHERE'  => [
                       'entities_id'  => $this->to,
-                      'name'         => addslashes($ent->fields['name'])
+                      'name'         => addslashes((string) $ent->fields['name'])
                    ]
                 ]);
 
@@ -3048,8 +3048,8 @@ class Transfer extends CommonDBTM
                            'FROM'   => 'glpi_contacts',
                            'WHERE'  => [
                               'entities_id'  => $this->to,
-                              'name'         => addslashes($contact->fields['name']),
-                              'firstname'    => addslashes($contact->fields['firstname'])
+                              'name'         => addslashes((string) $contact->fields['name']),
+                              'firstname'    => addslashes((string) $contact->fields['firstname'])
                            ]
                         ]);
 
@@ -3301,7 +3301,7 @@ class Transfer extends CommonDBTM
                                        'FROM'   => $devicetable,
                                        'WHERE'  => [
                                           'entities_id'  => $this->to,
-                                          $field         => addslashes($device->fields[$field])
+                                          $field         => addslashes((string) $device->fields[$field])
                                        ]
                                     ]);
 
@@ -3470,7 +3470,7 @@ class Transfer extends CommonDBTM
     public function showForm($ID, $options = [])
     {
         $edit_form = true;
-        if (strpos($_SERVER['HTTP_REFERER'], "transfer.form.php") === false) {
+        if (strpos((string) $_SERVER['HTTP_REFERER'], "transfer.form.php") === false) {
             $edit_form = false;
         }
 

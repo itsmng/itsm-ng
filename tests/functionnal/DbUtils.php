@@ -1059,8 +1059,8 @@ class DbUtils extends DbTestCase
                ->isTrue(sprintf('Invalid table "%s" in relation mapping.', $tablename));
 
             foreach ($relations as $relation_tablename => $fields) {
-                if (strpos($relation_tablename, '_') === 0) {
-                    $relation_tablename = substr($relation_tablename, 1);
+                if (strpos((string) $relation_tablename, '_') === 0) {
+                    $relation_tablename = substr((string) $relation_tablename, 1);
                 }
 
                 $this->boolean($DB->tableExists($relation_tablename))

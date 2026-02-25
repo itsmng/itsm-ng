@@ -156,7 +156,7 @@ class Config extends CommonDBTM
         // this URL will be prepended to something that starts with a slash.
         if (isset($input["url_base"]) && !empty($input["url_base"])) {
             if (Toolbox::isValidWebUrl($input["url_base"])) {
-                $input["url_base"] = rtrim($input["url_base"], '/');
+                $input["url_base"] = rtrim((string) $input["url_base"], '/');
             } else {
                 Session::addMessageAfterRedirect(__('Invalid base URL!'), false, ERROR);
                 return false;
@@ -843,7 +843,7 @@ class Config extends CommonDBTM
         echo "<td><input type='text' name='_dbreplicate_dbuser' value='" . $DBslave->dbuser . "'></td>";
         echo "<td>" . __('SQL password') . "</td>";
         echo "<td><input type='password' name='_dbreplicate_dbpassword' value='" .
-            rawurldecode($DBslave->dbpassword) . "'>";
+            rawurldecode((string) $DBslave->dbpassword) . "'>";
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_2'>";
@@ -890,7 +890,7 @@ class Config extends CommonDBTM
             return;
         }
 
-        $inline_doc_api = trim($CFG_GLPI['url_base_api'], '/') . "/";
+        $inline_doc_api = trim((string) $CFG_GLPI['url_base_api'], '/') . "/";
         $form = [
             'action' => Toolbox::getItemTypeFormURL(__CLASS__),
             'method' => 'post',
@@ -1687,7 +1687,7 @@ class Config extends CommonDBTM
             }
             if (
                 $CFG_GLPI["password_need_number"]
-                && !preg_match("/[0-9]+/", $password)
+                && !preg_match("/[0-9]+/", (string) $password)
             ) {
                 $ok = false;
                 if ($display) {
@@ -1702,7 +1702,7 @@ class Config extends CommonDBTM
             }
             if (
                 $CFG_GLPI["password_need_letter"]
-                && !preg_match("/[a-z]+/", $password)
+                && !preg_match("/[a-z]+/", (string) $password)
             ) {
                 $ok = false;
                 if ($display) {
@@ -1717,7 +1717,7 @@ class Config extends CommonDBTM
             }
             if (
                 $CFG_GLPI["password_need_caps"]
-                && !preg_match("/[A-Z]+/", $password)
+                && !preg_match("/[A-Z]+/", (string) $password)
             ) {
                 $ok = false;
                 if ($display) {
@@ -1732,7 +1732,7 @@ class Config extends CommonDBTM
             }
             if (
                 $CFG_GLPI["password_need_symbol"]
-                && !preg_match("/\W+/", $password)
+                && !preg_match("/\W+/", (string) $password)
             ) {
                 $ok = false;
                 if ($display) {
@@ -2337,10 +2337,10 @@ class Config extends CommonDBTM
         // ID  or extjs dico or tinymce dico
         foreach ($CFG_GLPI["languages"] as $ID => $language) {
             if (
-                (strcasecmp($lang, $ID) == 0)
-                || (strcasecmp($altLang, $ID) == 0)
-                || (strcasecmp($lang, $language[2]) == 0)
-                || (strcasecmp($lang, $language[3]) == 0)
+                (strcasecmp($lang, (string) $ID) == 0)
+                || (strcasecmp($altLang, (string) $ID) == 0)
+                || (strcasecmp($lang, (string) $language[2]) == 0)
+                || (strcasecmp($lang, (string) $language[3]) == 0)
             ) {
                 return $ID;
             }
@@ -2348,14 +2348,14 @@ class Config extends CommonDBTM
 
         // native lang
         foreach ($CFG_GLPI["languages"] as $ID => $language) {
-            if (strcasecmp($lang, $language[0]) == 0) {
+            if (strcasecmp($lang, (string) $language[0]) == 0) {
                 return $ID;
             }
         }
 
         // english lang name
         foreach ($CFG_GLPI["languages"] as $ID => $language) {
-            if (strcasecmp($lang, $language[4]) == 0) {
+            if (strcasecmp($lang, (string) $language[4]) == 0) {
                 return $ID;
             }
         }
@@ -2385,14 +2385,14 @@ class Config extends CommonDBTM
             $globaldir  = preg_replace("/\/[0-9a-zA-Z\.\-\_]+\.php/", "", $globaldir);
 
             // api exception
-            if (strpos($globaldir, 'api/') !== false) {
-                $globaldir = preg_replace("/(.*\/)api\/.*/", "$1", $globaldir);
+            if (strpos((string) $globaldir, 'api/') !== false) {
+                $globaldir = preg_replace("/(.*\/)api\/.*/", "$1", (string) $globaldir);
             }
 
             $CFG_GLPI["root_doc"] = str_replace($glpidir, "", $globaldir);
             $CFG_GLPI["root_doc"] = preg_replace("/\/$/", "", $CFG_GLPI["root_doc"]);
             // urldecode for space redirect to encoded URL : change entity
-            $CFG_GLPI["root_doc"] = urldecode($CFG_GLPI["root_doc"]);
+            $CFG_GLPI["root_doc"] = urldecode((string) $CFG_GLPI["root_doc"]);
         }
     }
 
@@ -2658,7 +2658,7 @@ class Config extends CommonDBTM
         }
 
         /** @var array $found */
-        preg_match('/(\d+(\.)?)+/', $raw, $found);
+        preg_match('/(\d+(\.)?)+/', (string) $raw, $found);
         $version = $found[0];
 
         $db_ver = version_compare($version, '5.6', '>=');
@@ -3052,7 +3052,7 @@ class Config extends CommonDBTM
            'WHERE'  => $where
         ])->next();
 
-        return trim($row['version']);
+        return trim((string) $row['version']);
     }
 
 
@@ -3387,7 +3387,7 @@ class Config extends CommonDBTM
         } else {
             // Adapter names can be written using case variations.
             // see Laminas\Cache\Storage\AdapterPluginManager::$aliases
-            $opt['adapter'] = strtolower($opt['adapter']);
+            $opt['adapter'] = strtolower((string) $opt['adapter']);
 
             switch ($opt['adapter']) {
                 // Cache adapters that can share their data accross processes

@@ -579,7 +579,7 @@ class RuleCollection extends CommonDBTM
         echo "<div class='spaced center'>";
 
         if ($plugin = isPluginItemType($this->getType())) {
-            $url = $CFG_GLPI["root_doc"] . "/plugins/" . strtolower($plugin['plugin']);
+            $url = $CFG_GLPI["root_doc"] . "/plugins/" . strtolower((string) $plugin['plugin']);
         } else {
             $url = $CFG_GLPI["root_doc"];
         }
@@ -969,13 +969,13 @@ class RuleCollection extends CommonDBTM
                 //process FK (just in case of "assign" action)
                 if (
                     ($action['action_type'] == "assign")
-                    && (strpos($action['field'], '_id') !== false)
+                    && (strpos((string) $action['field'], '_id') !== false)
                     && !(($action['field'] == "entities_id")
                     && ($action['value'] == 0))
                 ) {
                     $field = $action['field'];
                     if ($action['field'][0] == "_") {
-                        $field = substr($action['field'], 1);
+                        $field = substr((string) $action['field'], 1);
                     }
                     $table = getTableNameForForeignKeyField($field);
 

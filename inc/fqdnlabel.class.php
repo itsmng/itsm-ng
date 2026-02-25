@@ -116,7 +116,7 @@ abstract class FQDNLabel extends CommonDBChild
         if (isset($input['name']) && !empty($input['name'])) {
             // Empty names are allowed
 
-            $input['name'] = strtolower($input['name']);
+            $input['name'] = strtolower((string) $input['name']);
 
             // Before adding a name, we must unsure its is valid : it conforms to RFC
             if (!self::checkFQDNLabel($input['name'])) {
@@ -160,7 +160,7 @@ abstract class FQDNLabel extends CommonDBChild
     {
         global $DB;
 
-        $label = strtolower($label);
+        $label = strtolower((string) $label);
         if ($wildcard_search) {
             $count = 0;
             $label = str_replace('*', '%', $label, $count);

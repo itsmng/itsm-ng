@@ -135,4 +135,69 @@ class RuleMailCollector extends DbTestCase
          ]
         );
     }
+
+    public function testRejectEmailActions()
+    {
+        $this->login();
+
+        // Isolate this scenario from previously created mail collector rules.
+        $cleanup = new Rule();
+        $cleanup->deleteByCriteria(['sub_type' => 'RuleMailCollector']);
+
+        $rule = new \RuleMailCollector();
+        $criteria = new RuleCriteria();
+        $action = new RuleAction();
+
+        $pattern = 'reject-' . $this->getUniqueString();
+        $rules_id = $rule->add([
+           'name'         => 'reject mail ' . $pattern,
+           'match'        => 'AND',
+           'is_active'    => 1,
+           'sub_type'     => 'RuleMailCollector',
+        ]);
+        $this->integer((int)$rules_id)->isGreaterThan(0);
+
+        $criteria_id = $criteria->add([
+           'rules_id'  => $rules_id,
+           'criteria'  => 'subject',
+           'condition' => Rule::PATTERN_CONTAIN,
+           'pattern'   => $pattern,
+        ]);
+        $this->integer((int)$criteria_id)->isGreaterThan(0);
+
+        $action_id = $action->add([
+           'rules_id'    => $rules_id,
+           'action_type' => 'assign',
+           'field'       => '_refuse_email_no_response',
+           'value'       => 1,
+        ]);
+        $this->integer((int)$action_id)->isGreaterThan(0);
+
+        $action_id = $action->add([
+           'rules_id'    => $rules_id,
+           'action_type' => 'assign',
+           'field'       => '_refuse_email_with_response',
+           'value'       => 1,
+        ]);
+        $this->integer((int)$action_id)->isGreaterThan(0);
+
+        $collection = new RuleMailCollectorCollection();
+        $input = [
+           'mailcollector'       => 0,
+           '_users_id_requester' => getItemByTypeName('User', 'normal', true),
+           'headers'             => [
+              'subject' => 'email ' . $pattern,
+           ],
+        ];
+        $output = $collection->processAllRules([], [], $input);
+
+        $this->array($output)->hasKeys([
+            '_refuse_email_no_response',
+            '_refuse_email_with_response',
+            '_ruleid',
+        ]);
+        $this->string((string)$output['_refuse_email_no_response'])->isEqualTo('1');
+        $this->string((string)$output['_refuse_email_with_response'])->isEqualTo('1');
+        $this->integer((int)$output['_ruleid'])->isEqualTo((int)$rules_id);
+    }
 }

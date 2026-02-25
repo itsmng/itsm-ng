@@ -993,7 +993,7 @@ class Plugin extends CommonDBTM
     {
         // Make a lowercase comparison, as sometime this function is called based on
         // extraction of plugin name from a classname, which does not use same naming rules than directories.
-        $activated_plugins = array_map('strtolower', self::$activated_plugins);
+        $activated_plugins = array_map(strtolower(...), self::$activated_plugins);
         if (in_array(strtolower($directory), $activated_plugins)) {
             // If plugin is marked as activated, no need to query DB on this case.
             return true;
@@ -1019,7 +1019,7 @@ class Plugin extends CommonDBTM
     {
         // Make a lowercase comparison, as sometime this function is called based on
         // extraction of plugin name from a classname, which does not use same naming rules than directories.
-        $activated_plugins = array_map('strtolower', self::$activated_plugins);
+        $activated_plugins = array_map(strtolower(...), self::$activated_plugins);
         if (in_array(strtolower($directory), $activated_plugins)) {
             // If plugin is marked as activated, no need to query DB on this case.
             return false;
@@ -1281,7 +1281,7 @@ class Plugin extends CommonDBTM
             $name = Html::clean($plugin['name']);
             $version = Html::clean($plugin['version']);
 
-            $msg  = substr(str_pad($plugin['directory'], 30), 0, 20) .
+            $msg  = substr(str_pad((string) $plugin['directory'], 30), 0, 20) .
                     " Name: " . Toolbox::substr(str_pad($name, 40), 0, 30) .
                     " Version: " . str_pad($version, 10) .
                     " State: ";
@@ -2138,7 +2138,7 @@ class Plugin extends CommonDBTM
     {
         // Make a lowercase comparison, as sometime this function is called based on
         // extraction of plugin name from a classname, which does not use same naming rules than directories.
-        $loadedPlugins = array_map('strtolower', self::$loaded_plugins);
+        $loadedPlugins = array_map(strtolower(...), self::$loaded_plugins);
         return in_array(strtolower($plugin_key), $loadedPlugins);
     }
 

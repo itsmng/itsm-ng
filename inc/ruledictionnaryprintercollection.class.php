@@ -313,7 +313,7 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
                     $res_rule["manufacturer"]
                 ));
             } else {
-                $manufacturer = addslashes($p['manufacturer']);
+                $manufacturer = addslashes((string) $p['manufacturer']);
             }
 
             //New printer not already present in this entity

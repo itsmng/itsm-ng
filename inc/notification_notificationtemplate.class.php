@@ -524,7 +524,7 @@ class Notification_NotificationTemplate extends CommonDBRelation
         }
         $conf = self::getMode($mode);
         if ($conf['from'] != 'core') {
-            $classname = 'Plugin' . ucfirst($conf['from']) . $classname;
+            $classname = 'Plugin' . ucfirst((string) $conf['from']) . $classname;
         }
         return $classname;
     }

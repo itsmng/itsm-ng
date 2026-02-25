@@ -211,7 +211,7 @@ class AuthLDAP extends CommonDBTM
         // Set attributes in lower case
         if (count($input)) {
             foreach ($input as $key => $val) {
-                if (preg_match('/_field$/', $key)) {
+                if (preg_match('/_field$/', (string) $key)) {
                     $input[$key] = Toolbox::strtolower($val);
                 }
             }
@@ -2109,7 +2109,7 @@ class AuthLDAP extends CommonDBTM
                         ];
                     } elseif (
                         ($values['mode'] == self::ACTION_ALL)
-                        || (($ldap_users[$user[$field_for_db]] - strtotime($user['date_sync'])) > 0)
+                        || (($ldap_users[$user[$field_for_db]] - strtotime((string) $user['date_sync'])) > 0)
                     ) {
                         //If entry was modified or if script should synchronize all the users
                         $glpi_users[] = [
@@ -2472,16 +2472,16 @@ class AuthLDAP extends CommonDBTM
             if ($order == 'DESC') {
                 function local_cmp($b, $a)
                 {
-                    return strcasecmp($a['cn'], $b['cn']);
+                    return strcasecmp((string) $a['cn'], (string) $b['cn']);
                 }
 
             } else {
                 function local_cmp($a, $b)
                 {
-                    return strcasecmp($a['cn'], $b['cn']);
+                    return strcasecmp((string) $a['cn'], (string) $b['cn']);
                 }
             }
-            usort($groups, 'local_cmp');
+            usort($groups, local_cmp(...));
         }
         return $groups;
     }
@@ -2940,16 +2940,16 @@ class AuthLDAP extends CommonDBTM
             $group = new Group();
             if ($options['type'] == "groups") {
                 return $group->add([
-                    "name" => addslashes($group_infos["cn"][0]),
-                    "ldap_group_dn" => addslashes($group_infos["dn"]),
+                    "name" => addslashes((string) $group_infos["cn"][0]),
+                    "ldap_group_dn" => addslashes((string) $group_infos["dn"]),
                     "entities_id" => $options['entities_id'],
                     "is_recursive" => $options['is_recursive']
                 ]);
             }
             return $group->add([
-                "name" => addslashes($group_infos["cn"][0]),
+                "name" => addslashes((string) $group_infos["cn"][0]),
                 "ldap_field" => $config_ldap->fields["group_field"],
-                "ldap_value" => addslashes($group_infos["dn"]),
+                "ldap_value" => addslashes((string) $group_infos["dn"]),
                 "entities_id" => $options['entities_id'],
                 "is_recursive" => $options['is_recursive']
             ]);
@@ -3897,7 +3897,7 @@ class AuthLDAP extends CommonDBTM
                 if ($value != '') {
                     $begin = 0;
                     $end = 0;
-                    if (($length = strlen($value)) > 0) {
+                    if (($length = strlen((string) $value)) > 0) {
                         if ($value[0] == '^') {
                             $begin = 1;
                         }
@@ -3907,7 +3907,7 @@ class AuthLDAP extends CommonDBTM
                     }
                     if ($begin || $end) {
                         // no Toolbox::substr, to be consistent with strlen result
-                        $value = substr($value, $begin, $length - $end - $begin);
+                        $value = substr((string) $value, $begin, $length - $end - $begin);
                     }
                     $counter++;
                     $filter .= '(' . $authldap->fields[$criteria] . '=' . ($begin ? '' : '*') . $value . ($end ? '' : '*') . ')';
@@ -4409,14 +4409,14 @@ class AuthLDAP extends CommonDBTM
      */
     public static function guidToString($guid_bin)
     {
-        $guid_hex = unpack("H*hex", $guid_bin);
+        $guid_hex = unpack("H*hex", (string) $guid_bin);
         $hex = $guid_hex["hex"];
 
-        $hex1 = substr($hex, -26, 2) . substr($hex, -28, 2) . substr($hex, -30, 2) . substr($hex, -32, 2);
-        $hex2 = substr($hex, -22, 2) . substr($hex, -24, 2);
-        $hex3 = substr($hex, -18, 2) . substr($hex, -20, 2);
-        $hex4 = substr($hex, -16, 4);
-        $hex5 = substr($hex, -12, 12);
+        $hex1 = substr((string) $hex, -26, 2) . substr((string) $hex, -28, 2) . substr((string) $hex, -30, 2) . substr((string) $hex, -32, 2);
+        $hex2 = substr((string) $hex, -22, 2) . substr((string) $hex, -24, 2);
+        $hex3 = substr((string) $hex, -18, 2) . substr((string) $hex, -20, 2);
+        $hex4 = substr((string) $hex, -16, 4);
+        $hex5 = substr((string) $hex, -12, 12);
 
         $guid_str = $hex1 . "-" . $hex2 . "-" . $hex3 . "-" . $hex4 . "-" . $hex5;
         return $guid_str;

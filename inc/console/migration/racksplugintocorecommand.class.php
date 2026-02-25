@@ -543,7 +543,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
 
             foreach ($othermodels_iterator as $othermodel) {
                 $model_label = $othermodel['name'];
-                if (strlen($othermodel['comment'])) {
+                if (strlen((string) $othermodel['comment'])) {
                     $model_label .= ' (' . $othermodel['comment'] . ')';
                 }
 
@@ -660,7 +660,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
                         $progress_bar->advance(1);
 
                         $new_item_fields = Toolbox::sanitize([
-                           'name'        => strlen($otheritem['name'])
+                           'name'        => strlen((string) $otheritem['name'])
                                              ? $otheritem['name']
                                              : $otheritem['id'],
                            'entities_id' => $otheritem['entities_id'],
@@ -1503,7 +1503,7 @@ class RacksPluginToCoreCommand extends AbstractCommand
      *
      * @return void
      */
-    private function outputImportError($message, ProgressBar $progress_bar = null)
+    private function outputImportError($message, ?ProgressBar $progress_bar = null)
     {
 
         $skip_errors = $this->input->getOption('skip-errors');

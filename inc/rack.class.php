@@ -639,7 +639,7 @@ class Rack extends CommonDBTM
             $in = false;
 
             $x = $y = 0;
-            $coord = explode(',', $item['position']);
+            $coord = explode(',', (string) $item['position']);
             if (is_array($coord) && count($coord) == 2) {
                 list($x, $y) = $coord;
                 $item['_x'] = $x - 1;
@@ -685,7 +685,7 @@ class Rack extends CommonDBTM
 
         $blueprint = "";
         $blueprint_ctrl = "";
-        if (strlen($room->fields['blueprint'])) {
+        if (strlen((string) $room->fields['blueprint'])) {
             $blueprint_url = Toolbox::getPictureUrl($room->fields['blueprint']);
             $blueprint = "
             <div class='blueprint'

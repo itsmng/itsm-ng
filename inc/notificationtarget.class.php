@@ -223,7 +223,7 @@ class NotificationTarget extends CommonDBChild
     public function getSubjectPrefix($event = '')
     {
 
-        $perso_tag = trim(Entity::getUsedConfig(
+        $perso_tag = trim((string) Entity::getUsedConfig(
             'notification_subject_tag',
             $this->getEntity(),
             '',
@@ -314,9 +314,9 @@ class NotificationTarget extends CommonDBChild
         if ($plug = isPluginItemType($itemtype)) {
             // plugins case
             $name = 'Plugin' . $plug['plugin'] . 'NotificationTarget' . $plug['class'];
-        } elseif (strpos($itemtype, "\\") != false) {
+        } elseif (strpos((string) $itemtype, "\\") != false) {
             // namespace case
-            $ns_parts = explode("\\", $itemtype);
+            $ns_parts = explode("\\", (string) $itemtype);
             $classname = array_pop($ns_parts);
             $name = implode("\\", $ns_parts) . "\\NotificationTarget$classname";
         } else {
@@ -376,7 +376,7 @@ class NotificationTarget extends CommonDBChild
 
             $values = [];
             foreach ($this->notification_targets as $key => $val) {
-                list($type, $id) = explode('_', $key);
+                list($type, $id) = explode('_', (string) $key);
                 $values[$key]   = $this->notification_targets_labels[$type][$id];
             }
             $targets = getAllDataFromTable(
@@ -443,7 +443,7 @@ class NotificationTarget extends CommonDBChild
 
         $type   = "";
         $action = "";
-        $target = self::getInstanceByType(stripslashes($input['itemtype']));
+        $target = self::getInstanceByType(stripslashes((string) $input['itemtype']));
 
         if (!isset($input['notifications_id'])) {
             return;
@@ -468,7 +468,7 @@ class NotificationTarget extends CommonDBChild
             foreach ($input['_targets'] as $val) {
                 // Add if not set
                 if (!isset($actives[$val])) {
-                    list($type, $items_id)   = explode("_", $val);
+                    list($type, $items_id)   = explode("_", (string) $val);
                     $tmp                     = [];
                     $tmp['items_id']         = $items_id;
                     $tmp['type']             = $type;
@@ -579,7 +579,7 @@ class NotificationTarget extends CommonDBChild
             }
 
             // retrieve timezone of the user if exists
-            if (!empty($user->fields['timezone']) && 'null' !== strtolower($user->fields['timezone'])) {
+            if (!empty($user->fields['timezone']) && 'null' !== strtolower((string) $user->fields['timezone'])) {
                 $notificationoption['timezone'] = $user->fields['timezone'];
             }
         }
@@ -1163,8 +1163,8 @@ class NotificationTarget extends CommonDBChild
             $sender['email'] = $CFG_GLPI['from_email'];
             $sender['name']  = $CFG_GLPI['from_email_name'];
         } else {
-            $admin_email      = trim(Entity::getUsedConfig('admin_email', $this->getEntity(), '', ''));
-            $admin_email_name = trim(Entity::getUsedConfig('admin_email_name', $this->getEntity(), '', ''));
+            $admin_email      = trim((string) Entity::getUsedConfig('admin_email', $this->getEntity(), '', ''));
+            $admin_email_name = trim((string) Entity::getUsedConfig('admin_email_name', $this->getEntity(), '', ''));
 
             if (NotificationMailing::isUserAddressValid($admin_email)) {
                 //If the entity administrator's address is defined, return it
@@ -1210,8 +1210,8 @@ class NotificationTarget extends CommonDBChild
         global $CFG_GLPI;
 
         //If the entity administrator's address is defined, return it
-        $admin_reply      = trim(Entity::getUsedConfig('admin_reply', $this->getEntity(), '', ''));
-        $admin_reply_name = trim(Entity::getUsedConfig('admin_reply_name', $this->getEntity(), '', ''));
+        $admin_reply      = trim((string) Entity::getUsedConfig('admin_reply', $this->getEntity(), '', ''));
+        $admin_reply_name = trim((string) Entity::getUsedConfig('admin_reply_name', $this->getEntity(), '', ''));
 
         if (NotificationMailing::isUserAddressValid($admin_reply)) {
             return [

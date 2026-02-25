@@ -217,7 +217,7 @@ class Accessibility extends CommonDBTM
             }
 
 
-            $currentShortcut = json_decode($user->fields["access_custom_shortcuts"], true);
+            $currentShortcut = json_decode((string) $user->fields["access_custom_shortcuts"], true);
 
             unset($currentShortcut["DCRoom"]);
             unset($currentShortcut["update"]);

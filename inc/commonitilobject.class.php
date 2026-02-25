@@ -130,10 +130,10 @@ abstract class CommonITILObject extends CommonDBTM
 
         if ($this->getFromDB($ID)) {
             if (!$purecontent) {
-                $this->fields["content"] = nl2br(preg_replace(
+                $this->fields["content"] = nl2br((string) preg_replace(
                     "/\r\n\r\n/",
                     "\r\n",
-                    $this->fields["content"]
+                    (string) $this->fields["content"]
                 ));
             }
             $this->getAdditionalDatas();
@@ -1298,7 +1298,7 @@ abstract class CommonITILObject extends CommonDBTM
         // Check dates change interval due to the fact that second are not displayed in form
         if (
             (($key = array_search('date', $this->updates)) !== false)
-            && (substr($this->fields["date"], 0, 16) == substr($this->oldvalues['date'], 0, 16))
+            && (substr((string) $this->fields["date"], 0, 16) == substr((string) $this->oldvalues['date'], 0, 16))
         ) {
             unset($this->updates[$key]);
             unset($this->oldvalues['date']);
@@ -1306,7 +1306,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         if (
             (($key = array_search('closedate', $this->updates)) !== false)
-            && (substr($this->fields["closedate"], 0, 16) == substr($this->oldvalues['closedate'] ?? '', 0, 16))
+            && (substr((string) $this->fields["closedate"], 0, 16) == substr($this->oldvalues['closedate'] ?? '', 0, 16))
         ) {
             unset($this->updates[$key]);
             unset($this->oldvalues['closedate']);
@@ -1314,7 +1314,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         if (
             (($key = array_search('time_to_resolve', $this->updates)) !== false)
-            && (substr($this->fields["time_to_resolve"], 0, 16) == substr($this->oldvalues['time_to_resolve'] ?? '', 0, 16))
+            && (substr((string) $this->fields["time_to_resolve"], 0, 16) == substr($this->oldvalues['time_to_resolve'] ?? '', 0, 16))
         ) {
             unset($this->updates[$key]);
             unset($this->oldvalues['time_to_resolve']);
@@ -1322,7 +1322,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         if (
             (($key = array_search('solvedate', $this->updates)) !== false)
-            && (substr($this->fields["solvedate"], 0, 16) == substr($this->oldvalues['solvedate'], 0, 16))
+            && (substr((string) $this->fields["solvedate"], 0, 16) == substr((string) $this->oldvalues['solvedate'], 0, 16))
         ) {
             unset($this->updates[$key]);
             unset($this->oldvalues['solvedate']);
@@ -1520,8 +1520,8 @@ abstract class CommonITILObject extends CommonDBTM
                     $_SESSION["glpi_currenttime"]
                 );
             } else { // Not calendar defined
-                $delay_time = strtotime($_SESSION["glpi_currenttime"])
-                               - strtotime($this->fields['begin_waiting_date']);
+                $delay_time = strtotime((string) $_SESSION["glpi_currenttime"])
+                               - strtotime((string) $this->fields['begin_waiting_date']);
             }
 
             // SLA case : compute sla_ttr duration
@@ -1566,7 +1566,7 @@ abstract class CommonITILObject extends CommonDBTM
                         $this->updates[]                 = "time_to_resolve";
                         $this->fields['time_to_resolve'] = date(
                             'Y-m-d H:i:s',
-                            $delay_time + strtotime($this->fields['time_to_resolve'])
+                            $delay_time + strtotime((string) $this->fields['time_to_resolve'])
                         );
                     }
                 }
@@ -1616,7 +1616,7 @@ abstract class CommonITILObject extends CommonDBTM
                         $this->fields['internal_time_to_resolve'] = date(
                             'Y-m-d H:i:s',
                             $delay_time +
-                                                                         strtotime($this->fields['internal_time_to_resolve'])
+                                                                         strtotime((string) $this->fields['internal_time_to_resolve'])
                         );
                     }
                 }
@@ -1806,7 +1806,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         // save value before clean;
-        $title = ltrim($input['name']);
+        $title = ltrim((string) $input['name']);
 
         // Set default status to avoid notice
         if (!isset($input["status"])) {
@@ -1865,15 +1865,15 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         // No name set name
-        $input["name"]    = ltrim($input["name"]);
-        $input['content'] = ltrim($input['content']);
+        $input["name"]    = ltrim((string) $input["name"]);
+        $input['content'] = ltrim((string) $input['content']);
         if (empty($input["name"])) {
             $input['name'] = Html::clean(Html::entity_decode_deep($input['content']));
             $input["name"] = preg_replace('/\\r\\n/', ' ', $input['name']);
-            $input["name"] = preg_replace('/\\n/', ' ', $input['name']);
+            $input["name"] = preg_replace('/\\n/', ' ', (string) $input['name']);
             // For mailcollector
-            $input["name"] = preg_replace('/\\\\r\\\\n/', ' ', $input['name']);
-            $input["name"] = preg_replace('/\\\\n/', ' ', $input['name']);
+            $input["name"] = preg_replace('/\\\\r\\\\n/', ' ', (string) $input['name']);
+            $input["name"] = preg_replace('/\\\\n/', ' ', (string) $input['name']);
             $input['name'] = Toolbox::stripslashes_deep($input['name']);
             $input["name"] = Toolbox::substr($input['name'], 0, 70);
             $input['name'] = Toolbox::addslashes_deep($input['name']);
@@ -1914,7 +1914,7 @@ abstract class CommonITILObject extends CommonDBTM
                                     // Clean new lines to be fix encoding
                                     if (
                                         strcmp(
-                                            preg_replace(
+                                            (string) preg_replace(
                                                 "/\r?\n/",
                                                 "",
                                                 Html::cleanPostForTextArea($input[$key])
@@ -5763,7 +5763,7 @@ abstract class CommonITILObject extends CommonDBTM
                                                                 - $this->fields["waiting_duration"]);
             }
             // Not calendar defined
-            return max(0, strtotime($this->fields['solvedate']) - strtotime($this->fields['date'])
+            return max(0, strtotime((string) $this->fields['solvedate']) - strtotime((string) $this->fields['date'])
                           - $this->fields["waiting_duration"]);
         }
         return 0;
@@ -5796,7 +5796,7 @@ abstract class CommonITILObject extends CommonDBTM
                                                                  - $this->fields["waiting_duration"]);
             }
             // Not calendar defined
-            return max(0, strtotime($this->fields['closedate']) - strtotime($this->fields['date'])
+            return max(0, strtotime((string) $this->fields['closedate']) - strtotime((string) $this->fields['date'])
                           - $this->fields["waiting_duration"]);
         }
         return 0;
@@ -7758,7 +7758,7 @@ abstract class CommonITILObject extends CommonDBTM
             // fix trouble with html_entity_decode who skip accented characters (on windows browser)
             $solution_content = preg_replace_callback("/(&#[0-9]+;)/", function ($m) {
                 return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES");
-            }, $solution_item['content']);
+            }, (string) $solution_item['content']);
 
             $timeline[$solution_item['date_creation'] . "_solution_" . $solution_item['id'] ] = [
                'type' => 'Solution',
@@ -8071,7 +8071,7 @@ abstract class CommonITILObject extends CommonDBTM
                 $content = autolink($content, false);
 
                 $long_text = "";
-                if ((substr_count($content, "<br") > 30) || (strlen($content) > 2000)) {
+                if ((substr_count((string) $content, "<br") > 30) || (strlen((string) $content) > 2000)) {
                     $long_text = "long_text";
                 }
 
@@ -8199,7 +8199,7 @@ abstract class CommonITILObject extends CommonDBTM
                 echo "</div>";
             }
             if (
-                strpos($item['type'], 'Validation') > 0 &&
+                strpos((string) $item['type'], 'Validation') > 0 &&
                 (isset($item_i['can_answer']) && $item_i['can_answer'])
             ) {
                 $form_url = $item['type']::getFormURL();
@@ -8241,7 +8241,7 @@ abstract class CommonITILObject extends CommonDBTM
             if ($item['type'] == 'Document_Item') {
                 if ($item_i['filename']) {
                     $filename = $item_i['filename'];
-                    $ext      = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+                    $ext      = strtolower(pathinfo((string) $filename, PATHINFO_EXTENSION));
                     echo "<img src='";
                     if (empty($filename)) {
                         $filename = $item_i['name'];

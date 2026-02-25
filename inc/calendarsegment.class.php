@@ -212,7 +212,7 @@ class CalendarSegment extends CommonDBChild
         ]);
 
         while ($data = $iterator->next()) {
-            list($hour, $minute, $second) = explode(':', $data['TDIFF']);
+            list($hour, $minute, $second) = explode(':', (string) $data['TDIFF']);
             $sum += $hour * HOUR_TIMESTAMP + $minute * MINUTE_TIMESTAMP + $second;
         }
         return $sum;
@@ -253,18 +253,18 @@ class CalendarSegment extends CommonDBChild
         ]);
 
         while ($data = $iterator->next()) {
-            list($hour, $minute, $second) = explode(':', $data['TDIFF']);
+            list($hour, $minute, $second) = explode(':', (string) $data['TDIFF']);
             $tstamp = $hour * HOUR_TIMESTAMP + $minute * MINUTE_TIMESTAMP + $second;
 
             // Delay is completed
             if ($delay <= $tstamp) {
-                list($begin_hour, $begin_minute, $begin_second) = explode(':', $data['BEGIN']);
+                list($begin_hour, $begin_minute, $begin_second) = explode(':', (string) $data['BEGIN']);
                 $beginstamp = $begin_hour * HOUR_TIMESTAMP + $begin_minute * MINUTE_TIMESTAMP + $begin_second;
                 $endstamp   = $beginstamp + $delay;
                 $units      = Toolbox::getTimestampTimeUnits($endstamp);
-                return str_pad($units['hour'], 2, '0', STR_PAD_LEFT) . ':' .
-                         str_pad($units['minute'], 2, '0', STR_PAD_LEFT) . ':' .
-                         str_pad($units['second'], 2, '0', STR_PAD_LEFT);
+                return str_pad((string) $units['hour'], 2, '0', STR_PAD_LEFT) . ':' .
+                         str_pad((string) $units['minute'], 2, '0', STR_PAD_LEFT) . ':' .
+                         str_pad((string) $units['second'], 2, '0', STR_PAD_LEFT);
             } else {
                 $delay -= $tstamp;
             }

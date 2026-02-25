@@ -54,7 +54,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
         global $DB;
 
         // Model check : need to check using manufacturer extra data so specific function
-        if (strpos($this->item_table, 'models')) {
+        if (strpos((string) $this->item_table, 'models')) {
             return $this->replayRulesOnExistingDBForModel($offset, $maxtime);
         }
 
@@ -90,10 +90,10 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                 //Replay Type dictionnary
                 $ID = Dropdown::importExternal(
                     getItemTypeForTable($this->item_table),
-                    addslashes($data["name"]),
+                    addslashes((string) $data["name"]),
                     -1,
                     [],
-                    addslashes($data["comment"])
+                    addslashes((string) $data["comment"])
                 );
                 if ($data['id'] != $ID) {
                     $tomove[$data['id']] = $ID;
@@ -141,7 +141,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
         }
 
         // Model check : need to check using manufacturer extra data
-        if (strpos($this->item_table, 'models') === false) {
+        if (strpos((string) $this->item_table, 'models') === false) {
             echo __('Error replaying rules');
             return false;
         }
@@ -208,10 +208,10 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                 //Replay Type dictionnary
                 $ID = Dropdown::importExternal(
                     getItemTypeForTable($this->item_table),
-                    addslashes($data["name"]),
+                    addslashes((string) $data["name"]),
                     -1,
                     $data,
-                    addslashes($data["comment"])
+                    addslashes((string) $data["comment"])
                 );
 
                 if ($data['id'] != $ID) {

@@ -284,10 +284,10 @@ class Toolbox
 
         $nonce = random_bytes(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES); // NONCE = Number to be used ONCE, for each message
         $encrypted = sodium_crypto_aead_xchacha20poly1305_ietf_encrypt(
-            $content,
+            (string) $content,
             $nonce,
             $nonce,
-            $key
+            (string) $key
         );
         return base64_encode($nonce . $encrypted);
     }
@@ -302,7 +302,7 @@ class Toolbox
             $key = self::getGlpiSecKey();
         }
 
-        $content = base64_decode($content);
+        $content = base64_decode((string) $content);
 
         $nonce = mb_substr($content, 0, SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES, '8bit');
         if (mb_strlen($nonce, '8bit') !== SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES) {
@@ -319,7 +319,7 @@ class Toolbox
             $ciphertext,
             $nonce,
             $nonce,
-            $key
+            (string) $key
         );
         if ($plaintext === false) {
             trigger_error(
@@ -647,8 +647,8 @@ class Toolbox
             foreach ($traces as $trace) {
                 $script = (isset($trace["file"]) ? $trace["file"] : "") . ":" .
                             (isset($trace["line"]) ? $trace["line"] : "");
-                if (strpos($script, GLPI_ROOT) === 0) {
-                    $script = substr($script, strlen(GLPI_ROOT) + 1);
+                if (strpos($script, (string) GLPI_ROOT) === 0) {
+                    $script = substr($script, strlen((string) GLPI_ROOT) + 1);
                 }
                 if (strlen($script) > 50) {
                     $script = "..." . substr($script, -47);
@@ -954,11 +954,11 @@ class Toolbox
 
         // HTTP_IF_NONE_MATCH takes precedence over HTTP_IF_MODIFIED_SINCE
         // http://tools.ietf.org/html/rfc7232#section-3.3
-        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) === $etag) {
+        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim((string) $_SERVER['HTTP_IF_NONE_MATCH']) === $etag) {
             http_response_code(304); //304 - Not Modified
             exit;
         }
-        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && @strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $lastModified) {
+        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && @strtotime((string) $_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $lastModified) {
             http_response_code(304); //304 - Not Modified
             exit;
         }
@@ -1589,8 +1589,8 @@ class Toolbox
 
         if ($plug = isPluginItemType($itemtype)) {
             /* PluginFooBar => /plugins/foo/front/bar */
-            $dir .= Plugin::getPhpDir(strtolower($plug['plugin']), false);
-            $item = str_replace('\\', '/', strtolower($plug['class']));
+            $dir .= Plugin::getPhpDir(strtolower((string) $plug['plugin']), false);
+            $item = str_replace('\\', '/', strtolower((string) $plug['class']));
         } else { // Standard case
             $item = strtolower($itemtype);
             if (substr($itemtype, 0, \strlen(NS_GLPI)) === NS_GLPI) {
@@ -1617,8 +1617,8 @@ class Toolbox
         $dir = ($full ? $CFG_GLPI['root_doc'] : '');
 
         if ($plug = isPluginItemType($itemtype)) {
-            $dir .= Plugin::getPhpDir(strtolower($plug['plugin']), false);
-            $item = str_replace('\\', '/', strtolower($plug['class']));
+            $dir .= Plugin::getPhpDir(strtolower((string) $plug['plugin']), false);
+            $item = str_replace('\\', '/', strtolower((string) $plug['class']));
         } else { // Standard case
             if ($itemtype == 'Cartridge') {
                 $itemtype = 'CartridgeItem';
@@ -1758,7 +1758,7 @@ class Toolbox
         $ch = curl_init($url);
         $opts = [
            CURLOPT_URL             => $url,
-           CURLOPT_USERAGENT       => "GLPI/" . trim($CFG_GLPI["version"]),
+           CURLOPT_USERAGENT       => "GLPI/" . trim((string) $CFG_GLPI["version"]),
            CURLOPT_RETURNTRANSFER  => 1,
            CURLOPT_CONNECTTIMEOUT  => 5,
         ] + $eopts;
@@ -1929,10 +1929,10 @@ class Toolbox
     {
         global $CFG_GLPI;
 
-        $parsed_url = parse_url($where);
+        $parsed_url = parse_url((string) $where);
         if ($parsed_url !== false) {
             if (array_key_exists('host', $parsed_url)) {
-                if (!str_starts_with($where, $CFG_GLPI['url_base'] . '/')) {
+                if (!str_starts_with((string) $where, $CFG_GLPI['url_base'] . '/')) {
                     return null;
                 } else {
                     return $where;
@@ -1943,7 +1943,7 @@ class Toolbox
             }
         }
 
-        $data = explode("_", $where);
+        $data = explode("_", (string) $where);
         $forcetab = '';
         // forcetab for simple items
         if (isset($data[2])) {
@@ -2109,7 +2109,7 @@ class Toolbox
         $tab = [];
         if (strstr($value, ":")) {
             $tab['address'] = str_replace("{", "", preg_replace("/:.*/", "", $value));
-            $tab['port']    = preg_replace("/.*:/", "", preg_replace("/\/.*/", "", $value));
+            $tab['port']    = preg_replace("/.*:/", "", (string) preg_replace("/\/.*/", "", $value));
         } else {
             if (strstr($value, "/")) {
                 $tab['address'] = str_replace("{", "", preg_replace("/\/.*/", "", $value));
@@ -2569,7 +2569,7 @@ class Toolbox
 
         if (count($data)) {
             foreach ($data as $tocheck) {
-                if (strcasecmp($string, $tocheck) == 0) {
+                if (strcasecmp($string, (string) $tocheck) == 0) {
                     return true;
                 }
             }
@@ -2621,8 +2621,8 @@ class Toolbox
     {
 
         $string = preg_replace("/\r\n/", " ", $string);
-        $string = preg_replace("/\n/", " ", $string);
-        $string = preg_replace("/\r/", " ", $string);
+        $string = preg_replace("/\n/", " ", (string) $string);
+        $string = preg_replace("/\r/", " ", (string) $string);
         return $string;
     }
 
@@ -2638,7 +2638,7 @@ class Toolbox
      * @since 9.1
      * @since 9.4.7 Added $db parameter
     **/
-    public static function createSchema($lang = 'en_GB', DBmysql $database = null)
+    public static function createSchema($lang = 'en_GB', ?DBmysql $database = null)
     {
         global $DB;
 
@@ -2822,7 +2822,7 @@ class Toolbox
                 );
                 $isvalidReferer = false;
             }
-        } elseif (!is_array($url = parse_url($_SERVER['HTTP_REFERER']))) {
+        } elseif (!is_array($url = parse_url((string) $_SERVER['HTTP_REFERER']))) {
             if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) {
                 Html::displayErrorAndDie(
                     __("Error when parsing HTTP_REFERER. Reload previous page before doing action again."),
@@ -2850,7 +2850,7 @@ class Toolbox
         if (
             !isset($url['path'])
             || (!empty($CFG_GLPI['root_doc'])
-              && (strpos($url['path'], $CFG_GLPI['root_doc']) !== 0))
+              && (strpos($url['path'], (string) $CFG_GLPI['root_doc']) !== 0))
         ) {
             if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) {
                 Html::displayErrorAndDie(
@@ -2891,7 +2891,7 @@ class Toolbox
         }
         $mime = $finfo->file($file);
         if ($type) {
-            $parts = explode('/', $mime, 2);
+            $parts = explode('/', (string) $mime, 2);
             return ($parts[0] == $type);
         }
         return ($mime);
@@ -2937,8 +2937,8 @@ class Toolbox
      */
     public static function sanitize($array)
     {
-        $array = array_map('Toolbox::addslashes_deep', $array);
-        $array = array_map('Toolbox::clean_cross_side_scripting_deep', $array);
+        $array = array_map(Toolbox::addslashes_deep(...), $array);
+        $array = array_map(Toolbox::clean_cross_side_scripting_deep(...), $array);
         return $array;
     }
 
@@ -2957,8 +2957,8 @@ class Toolbox
             '\1',
             $string
         );
-        $string = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $string);
-        $string = preg_replace('#&[^;]+;#', '', $string);
+        $string = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', (string) $string);
+        $string = preg_replace('#&[^;]+;#', '', (string) $string);
         return self::strtolower($string, 'UTF-8');
     }
 
@@ -2975,7 +2975,7 @@ class Toolbox
         $string = transliterator_transliterate("Any-Latin; Latin-ASCII; [^a-zA-Z0-9\.\ -_] Remove;", $string);
         $string = str_replace(' ', '-', self::strtolower($string, 'UTF-8'));
         $string = preg_replace('~[^0-9a-z_\.]+~i', '-', $string);
-        $string = trim($string, '-');
+        $string = trim((string) $string, '-');
         if ($string == '') {
             //prevent empty slugs; see https://github.com/glpi-project/glpi/issues/2946
             //harcoded prefix string because html @id must begin with a letter
@@ -3020,7 +3020,7 @@ class Toolbox
         if (count($doc_data)) {
             $base_path = $CFG_GLPI['root_doc'];
             if (isCommandLine()) {
-                $base_path = parse_url($CFG_GLPI['url_base'], PHP_URL_PATH);
+                $base_path = parse_url((string) $CFG_GLPI['url_base'], PHP_URL_PATH);
             }
 
             foreach ($doc_data as $id => $image) {
@@ -3028,7 +3028,7 @@ class Toolbox
                     // Add only image files : try to detect mime type
                     if (
                         $document->getFromDB($id)
-                        && strpos($document->fields['mime'], 'image/') !== false
+                        && strpos((string) $document->fields['mime'], 'image/') !== false
                     ) {
                         // append itil object reference in image link
                         $itil_object = null;
@@ -3150,7 +3150,7 @@ class Toolbox
                 // Get all image src
                 foreach ($matches[1] as $src) {
                     // Set tag if image matches
-                    $content_html = preg_replace(["/<img.*alt=['|\"]" . $src . "['|\"][^>]*\>/", "/<object.*alt=['|\"]" . $src . "['|\"][^>]*\>/"], Document::getImageTag($src), $content_html);
+                    $content_html = preg_replace(["/<img.*alt=['|\"]" . $src . "['|\"][^>]*\>/", "/<object.*alt=['|\"]" . $src . "['|\"][^>]*\>/"], Document::getImageTag($src), (string) $content_html);
                 }
             }
 
@@ -3436,7 +3436,7 @@ class Toolbox
         }
 
         $filename     = uniqid($uniq_prefix ?? '');
-        $ext          = pathinfo($src, PATHINFO_EXTENSION);
+        $ext          = pathinfo((string) $src, PATHINFO_EXTENSION);
         $subdirectory = substr($filename, -2); // subdirectory based on last 2 hex digit
 
         $i = 0;
@@ -3773,12 +3773,12 @@ HTML;
     public static function filename($filename): string
     {
         //remove extension
-        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $ext = pathinfo((string) $filename, PATHINFO_EXTENSION);
         $filename = self::slugify(
             preg_replace(
                 '/\.' . $ext . '$/',
                 '',
-                $filename
+                (string) $filename
             ),
             '' //no prefix on filenames
         );
@@ -3807,7 +3807,7 @@ HTML;
     {
         global $CFG_GLPI;
 
-        $file = preg_replace('/^' . preg_quote($CFG_GLPI['root_doc'], '/') . '/', '', $target);
+        $file = preg_replace('/^' . preg_quote((string) $CFG_GLPI['root_doc'], '/') . '/', '', $target);
         if (file_exists(GLPI_ROOT . $file)) {
             return $target;
         }

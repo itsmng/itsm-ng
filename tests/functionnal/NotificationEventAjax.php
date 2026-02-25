@@ -161,7 +161,7 @@ class NotificationEventAjax extends DbTestCase
         $data['body_text'] = preg_replace(
             '/(Opening date).+/m',
             '$1 OPENING',
-            $data['body_text']
+            (string) $data['body_text']
         );
         $expected = [
            'itemtype' => 'Ticket',

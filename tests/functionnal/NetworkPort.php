@@ -310,4 +310,183 @@ class NetworkPort extends DbTestCase
             }
         }
     }
+
+    public function testAliasCopiesMacFromOriginPort()
+    {
+        $this->login();
+
+        $computer = getItemByTypeName('Computer', '_test_pc01');
+        $networkport = new \NetworkPort();
+
+        $origin_port_id = $networkport->add([
+           'items_id'           => $computer->getID(),
+           'itemtype'           => 'Computer',
+           'entities_id'        => $computer->fields['entities_id'],
+           'is_recursive'       => 0,
+           'logical_number'     => 10,
+           'mac'                => '00:24:81:eb:c7:10',
+           'instantiation_type' => 'NetworkPortEthernet',
+           'name'               => 'origin-port',
+        ]);
+        $this->integer($origin_port_id)->isGreaterThan(0);
+
+        $alias_port_id = $networkport->add([
+           'items_id'           => $computer->getID(),
+           'itemtype'           => 'Computer',
+           'entities_id'        => $computer->fields['entities_id'],
+           'is_recursive'       => 0,
+           'logical_number'     => 11,
+           'instantiation_type' => 'NetworkPortAlias',
+           'name'               => 'alias-port',
+        ]);
+        $this->integer($alias_port_id)->isGreaterThan(0);
+
+        $alias = new \NetworkPortAlias();
+        $alias_id = $alias->add([
+           'networkports_id'       => $alias_port_id,
+           'networkports_id_alias' => $origin_port_id,
+        ]);
+        $this->integer($alias_id)->isGreaterThan(0);
+
+        // Check that the alias port's MAC is updated to origin port's MAC
+        $aliasNetworkPort = new \NetworkPort();
+        $this->boolean($aliasNetworkPort->getFromDB($alias_port_id))->isTrue();
+        $this->string($aliasNetworkPort->fields['mac'])->isEqualTo('00:24:81:eb:c7:10');
+    }
+
+    public function testAggregateStoresPortList()
+    {
+        $this->login();
+
+        $networkequipment = getItemByTypeName('NetworkEquipment', '_test_networkequipment_1');
+        $networkport = new \NetworkPort();
+
+        $port1 = (int)$networkport->add([
+           'name'         => 'agg-if1',
+           'items_id'     => $networkequipment->getID(),
+           'itemtype'     => 'NetworkEquipment',
+           'entities_id'  => $networkequipment->fields['entities_id'],
+        ]);
+        $port2 = (int)$networkport->add([
+           'name'         => 'agg-if2',
+           'items_id'     => $networkequipment->getID(),
+           'itemtype'     => 'NetworkEquipment',
+           'entities_id'  => $networkequipment->fields['entities_id'],
+        ]);
+        $port3 = (int)$networkport->add([
+           'name'         => 'agg-if3',
+           'items_id'     => $networkequipment->getID(),
+           'itemtype'     => 'NetworkEquipment',
+           'entities_id'  => $networkequipment->fields['entities_id'],
+        ]);
+        $agg_parent_port = (int)$networkport->add([
+           'name'         => 'agg-parent',
+           'items_id'     => $networkequipment->getID(),
+           'itemtype'     => 'NetworkEquipment',
+           'entities_id'  => $networkequipment->fields['entities_id'],
+        ]);
+
+        $this->integer($port1)->isGreaterThan(0);
+        $this->integer($port2)->isGreaterThan(0);
+        $this->integer($port3)->isGreaterThan(0);
+        $this->integer($agg_parent_port)->isGreaterThan(0);
+
+        $aggregate = new \NetworkPortAggregate();
+        $aggregate_id = $aggregate->add([
+           'networkports_id'      => $agg_parent_port,
+           'networkports_id_list' => [$port1, $port2],
+        ]);
+        $this->integer($aggregate_id)->isGreaterThan(0);
+        $this->array(importArrayFromDB($aggregate->fields['networkports_id_list']))
+           ->isIdenticalTo([$port1, $port2]);
+
+        $this->boolean($aggregate->update([
+           'id'                   => $aggregate_id,
+           'networkports_id'      => $agg_parent_port,
+           'networkports_id_list' => [$port2, $port3],
+        ]))->isTrue();
+        $this->array(importArrayFromDB($aggregate->fields['networkports_id_list']))
+           ->isIdenticalTo([$port2, $port3]);
+    }
+
+    public function testConnectTwoPorts()
+    {
+        $this->login();
+
+        $computer = getItemByTypeName('Computer', '_test_pc01');
+        $networkport = new \NetworkPort();
+
+        $port_1_id = $networkport->add([
+           'items_id'           => $computer->getID(),
+           'itemtype'           => 'Computer',
+           'entities_id'        => $computer->fields['entities_id'],
+           'is_recursive'       => 0,
+           'logical_number'     => 20,
+           'instantiation_type' => 'NetworkPortEthernet',
+           'name'               => 'wire-port-1',
+        ]);
+        $this->integer($port_1_id)->isGreaterThan(0);
+
+        $port_2_id = $networkport->add([
+           'items_id'           => $computer->getID(),
+           'itemtype'           => 'Computer',
+           'entities_id'        => $computer->fields['entities_id'],
+           'is_recursive'       => 0,
+           'logical_number'     => 21,
+           'instantiation_type' => 'NetworkPortEthernet',
+           'name'               => 'wire-port-2',
+        ]);
+        $this->integer($port_2_id)->isGreaterThan(0);
+
+        $wire = new \NetworkPort_NetworkPort();
+        $wire_id = $wire->add([
+           'networkports_id_1' => $port_1_id,
+           'networkports_id_2' => $port_2_id,
+        ]);
+        $this->integer($wire_id)->isGreaterThan(0);
+        $this->boolean($wire->getFromDBForNetworkPort($port_1_id))->isTrue();
+        $this->integer((int)$wire->getOppositeContact($port_1_id))->isEqualTo($port_2_id);
+        $this->integer((int)$wire->getOppositeContact($port_2_id))->isEqualTo($port_1_id);
+    }
+
+    public function testVlanAssignAndUnassign()
+    {
+        $this->login();
+
+        $computer = getItemByTypeName('Computer', '_test_pc01');
+        $networkport = new \NetworkPort();
+        $port_id = $networkport->add([
+           'items_id'           => $computer->getID(),
+           'itemtype'           => 'Computer',
+           'entities_id'        => $computer->fields['entities_id'],
+           'is_recursive'       => 0,
+           'logical_number'     => 12,
+           'mac'                => '00:24:81:eb:c7:12',
+           'instantiation_type' => 'NetworkPortEthernet',
+           'name'               => 'vlan-port',
+        ]);
+        $this->integer($port_id)->isGreaterThan(0);
+
+        $vlan = new \Vlan();
+        $vlan_id = $vlan->add([
+           'name' => 'Functional VLAN',
+           'tag'  => 120,
+        ]);
+        $this->integer($vlan_id)->isGreaterThan(0);
+
+        $networkport_vlan = new \NetworkPort_Vlan();
+        $relation_id = $networkport_vlan->assignVlan($port_id, $vlan_id, 1);
+        $this->integer($relation_id)->isGreaterThan(0);
+        $this->boolean($networkport_vlan->getFromDB($relation_id))->isTrue();
+        $this->integer((int)$networkport_vlan->fields['tagged'])->isEqualTo(1);
+
+        $this->boolean($networkport_vlan->unassignVlan($port_id, $vlan_id))->isTrue();
+        $this->integer(countElementsInTable(
+            \NetworkPort_Vlan::getTable(),
+            [
+                'networkports_id' => $port_id,
+                'vlans_id'        => $vlan_id,
+            ]
+        ))->isEqualTo(0);
+    }
 }

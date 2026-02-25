@@ -185,7 +185,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                 $res_rule = $this->processAllRules($input, [], []);
 
                 if (
-                    (isset($res_rule["name"]) && (strtolower($res_rule["name"]) != strtolower($input["name"])))
+                    (isset($res_rule["name"]) && (strtolower($res_rule["name"]) != strtolower((string) $input["name"])))
                     || (isset($res_rule["version"]) && ($res_rule["version"] != ''))
                     || (isset($res_rule['new_entities_id'])
                         && ($res_rule['new_entities_id'] != $input['entities_id']))
@@ -202,7 +202,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                        'SELECT' => 'id',
                        'FROM'   => 'glpi_softwares',
                        'WHERE'  => [
-                          'name'               => addslashes($input['name']),
+                          'name'               => addslashes((string) $input['name']),
                           'manufacturers_id'   => $input['manufacturers_id']
                        ]
                     ]);
@@ -341,7 +341,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
 
         //Software's name has changed or entity
         if (
-            (isset($res_rule["name"]) && (strtolower($res_rule["name"]) != strtolower($name)))
+            (isset($res_rule["name"]) && (strtolower($res_rule["name"]) != strtolower((string) $name)))
               //Entity has changed, and new entity is a parent of the current one
             || (!isset($res_rule["name"])
                 && isset($res_rule['new_entities_id'])
@@ -353,13 +353,13 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
             if (isset($res_rule["name"])) {
                 $new_name = $res_rule["name"];
             } else {
-                $new_name = addslashes($name);
+                $new_name = addslashes((string) $name);
             }
 
             if (isset($res_rule["manufacturer"]) && $res_rule["manufacturer"]) {
                 $manufacturer = $res_rule["manufacturer"];
             } else {
-                $manufacturer = addslashes($manufacturer);
+                $manufacturer = addslashes((string) $manufacturer);
             }
 
             //New software not already present in this entity
@@ -403,7 +403,7 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
         ]);
 
         while ($version = $iterator->next()) {
-            $input["version"] = addslashes($version["name"]);
+            $input["version"] = addslashes((string) $version["name"]);
             $old_version_name = $input["version"];
 
             if (isset($res_rule['version_append']) && $res_rule['version_append'] != '') {

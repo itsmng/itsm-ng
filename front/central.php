@@ -64,18 +64,18 @@ if (isset($_POST['newprofile'])) {
         $_SESSION['_redirected_from_profile_selector'] = true;
         Html::redirect($_SERVER['HTTP_REFERER']);
     }
-    Html::redirect(preg_replace("/entities_id.*/", "", $_SERVER['HTTP_REFERER']));
+    Html::redirect(preg_replace("/entities_id.*/", "", (string) $_SERVER['HTTP_REFERER']));
 }
 
 // Manage entity change
 if (isset($_GET["active_entity"])) {
-    $_GET["active_entity"] = rtrim($_GET["active_entity"], 'r');
+    $_GET["active_entity"] = rtrim((string) $_GET["active_entity"], 'r');
     if (!isset($_GET["is_recursive"])) {
         $_GET["is_recursive"] = 0;
     }
     if (Session::changeActiveEntities($_GET["active_entity"], $_GET["is_recursive"])) {
         if (isset($_SERVER['HTTP_REFERER'])) {
-            Html::redirect(preg_replace("/(\?|&|" . urlencode('?') . "|" . urlencode('&') . ")?(entities_id|active_entity).*/", "", $_SERVER['HTTP_REFERER']));
+            Html::redirect(preg_replace("/(\?|&|" . urlencode('?') . "|" . urlencode('&') . ")?(entities_id|active_entity).*/", "", (string) $_SERVER['HTTP_REFERER']));
         }
     }
 }

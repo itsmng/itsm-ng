@@ -744,7 +744,7 @@ class DomainsPluginToCoreCommand extends AbstractCommand
      *
      * @return void
      */
-    private function outputImportError($message, ProgressBar $progress_bar = null)
+    private function outputImportError($message, ?ProgressBar $progress_bar = null)
     {
 
         $verbosity = OutputInterface::VERBOSITY_QUIET;

@@ -138,7 +138,7 @@ abstract class API extends CommonGLPI
         }
 
         // construct api url
-        self::$api_url = trim($CFG_GLPI['url_base_api'], "/");
+        self::$api_url = trim((string) $CFG_GLPI['url_base_api'], "/");
 
         // Don't display error in result
         ini_set('display_errors', 'Off');
@@ -336,7 +336,7 @@ abstract class API extends CommonGLPI
             && !empty($this->parameters['session_token'])
         ) {
             $current = session_id();
-            $session = trim($this->parameters['session_token']);
+            $session = trim((string) $this->parameters['session_token']);
 
             if (file_exists(GLPI_ROOT . '/inc/downstream.php')) {
                 include_once(GLPI_ROOT . '/inc/downstream.php');
@@ -882,7 +882,7 @@ abstract class API extends CommonGLPI
                             if (count($netn_iterator)) {
                                 $data_netn = $netn_iterator->next();
 
-                                $raw_ipadresses = explode(Search::LONGSEP, $data_netn['ipadresses']);
+                                $raw_ipadresses = explode(Search::LONGSEP, (string) $data_netn['ipadresses']);
                                 $ipadresses = [];
                                 foreach ($raw_ipadresses as $ipadress) {
                                     $ipadress = explode(Search::SHORTSEP, $ipadress);
@@ -1262,8 +1262,8 @@ abstract class API extends CommonGLPI
 
         // transform range parameter in start and limit variables
         if (isset($params['range']) > 0) {
-            if (preg_match("/^[0-9]+-[0-9]+\$/", $params['range'])) {
-                $range = explode("-", $params['range']);
+            if (preg_match("/^[0-9]+-[0-9]+\$/", (string) $params['range'])) {
+                $range = explode("-", (string) $params['range']);
                 $params['start']      = $range[0];
                 $params['list_limit'] = $range[1] - $range[0] + 1;
                 $params['range']      = $range;
@@ -1788,8 +1788,8 @@ abstract class API extends CommonGLPI
 
         // transform range parameter in start and limit variables
         if (isset($params['range']) > 0) {
-            if (preg_match("/^[0-9]+-[0-9]+\$/", $params['range'])) {
-                $range = explode("-", $params['range']);
+            if (preg_match("/^[0-9]+-[0-9]+\$/", (string) $params['range'])) {
+                $range = explode("-", (string) $params['range']);
                 $params['start']      = $range[0];
                 $params['list_limit'] = $range[1] - $range[0] + 1;
                 $params['range']      = $range;

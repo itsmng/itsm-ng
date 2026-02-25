@@ -41,7 +41,7 @@ include('../inc/includes.php');
 
 if (
     $CFG_GLPI["ssovariables_id"] > 0
-    && strlen($CFG_GLPI['ssologout_url']) > 0
+    && strlen((string) $CFG_GLPI['ssologout_url']) > 0
 ) {
     Html::redirect($CFG_GLPI["ssologout_url"]);
 }
@@ -63,7 +63,7 @@ if (
             false
         );
     } else {
-        $url_base = parse_url($CFG_GLPI["url_base"]);
+        $url_base = parse_url((string) $CFG_GLPI["url_base"]);
         $service_base_url = $url_base["scheme"] . "://" . $url_base["host"] . (isset($url_base["port"]) ? ":" . $url_base["port"] : "");
         phpCAS::client(
             $CFG_GLPI["cas_version"],
@@ -81,9 +81,9 @@ if (
 $toADD = "";
 
 // Redirect management
-if (isset($_POST['redirect']) && (strlen($_POST['redirect']) > 0)) {
+if (isset($_POST['redirect']) && (strlen((string) $_POST['redirect']) > 0)) {
     $toADD = "?redirect=" . $_POST['redirect'];
-} elseif (isset($_GET['redirect']) && (strlen($_GET['redirect']) > 0)) {
+} elseif (isset($_GET['redirect']) && (strlen((string) $_GET['redirect']) > 0)) {
     $toADD = "?redirect=" . $_GET['redirect'];
 }
 
@@ -104,7 +104,7 @@ if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
         $oidc_db['Provider'] = $iterator['Provider'];
         $oidc_db['ClientID'] = $iterator['ClientID'];
         $oidc_db['ClientSecret'] = Toolbox::sodiumDecrypt($iterator['ClientSecret']);
-        $oidc_db['scope'] = explode(',', addslashes($iterator['scope']));
+        $oidc_db['scope'] = explode(',', addslashes((string) $iterator['scope']));
         $oidc_db['logout'] = empty($iterator['logout']) ? null : $iterator['logout'];
         $oidc_db['proxy'] = $iterator['proxy'];
         $oidc_db['cert'] = $iterator['cert'];

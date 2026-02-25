@@ -75,7 +75,7 @@ if (isset($_POST["add"])) {
 
     Event::log(
         $task->getField($fk),
-        strtolower($itemtype),
+        strtolower((string) $itemtype),
         4,
         "tracking",
         //TRANS: %s is the user login
@@ -88,7 +88,7 @@ if (isset($_POST["add"])) {
 
     Event::log(
         $task->getField($fk),
-        strtolower($itemtype),
+        strtolower((string) $itemtype),
         4,
         "tracking",
         //TRANS: %s is the user login
@@ -101,7 +101,7 @@ if (isset($_POST["add"])) {
 
     Event::log(
         $task->getField($fk),
-        strtolower($itemtype),
+        strtolower((string) $itemtype),
         4,
         "tracking",
         //TRANS: %s is the user login

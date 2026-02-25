@@ -77,7 +77,7 @@ if (!($messages instanceof \Laminas\I18n\Translator\TextDomain)) {
 $po_file = GLPI_ROOT . '/locales/' . preg_replace(
     '/\.mo$/',
     '.po',
-    $CFG_GLPI['languages'][$_SESSION['glpilanguage']][1]
+    (string) $CFG_GLPI['languages'][$_SESSION['glpilanguage']][1]
 );
 $po_file_handle = fopen(
     $po_file,

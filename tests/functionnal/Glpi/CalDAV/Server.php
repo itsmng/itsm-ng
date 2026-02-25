@@ -818,7 +818,7 @@ VCALENDAR
            ->string['begin']->isEqualTo('2019-11-01 08:00:00') // 1 hour offset between Europe/Paris and UTC
            ->string['end']->isEqualTo('2019-11-01 11:00:00') // 1 hour offset between Europe/Paris and UTC
            ->string['rrule'];
-        $this->array(json_decode($event->fields['rrule'], true))
+        $this->array(json_decode((string) $event->fields['rrule'], true))
            ->string['freq']->isEqualTo('WEEKLY')
            ->string['interval']->isEqualTo('2')
            ->string['until']->isEqualTo('2019-12-31 08:00:00')

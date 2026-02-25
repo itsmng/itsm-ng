@@ -66,7 +66,7 @@ if (isset($_POST["add"])) {
 
     Event::log(
         $fup->getField('items_id'),
-        strtolower($_POST['itemtype']),
+        strtolower((string) $_POST['itemtype']),
         4,
         "tracking",
         //TRANS: %s is the user login
@@ -82,7 +82,7 @@ if (isset($_POST["add"])) {
 
         Event::log(
             $fup->getField('items_id'),
-            strtolower($_POST['itemtype']),
+            strtolower((string) $_POST['itemtype']),
             4,
             "tracking",
             //TRANS: %s is the user login
@@ -96,7 +96,7 @@ if (isset($_POST["add"])) {
 
     Event::log(
         $fup->getField('items_id'),
-        strtolower($_POST['itemtype']),
+        strtolower((string) $_POST['itemtype']),
         4,
         "tracking",
         //TRANS: %s is the user login
@@ -109,7 +109,7 @@ if (isset($_POST["add"])) {
 
     Event::log(
         $fup->getField('items_id'),
-        strtolower($_POST['itemtype']),
+        strtolower((string) $_POST['itemtype']),
         4,
         "tracking",
         //TRANS: %s is the user login

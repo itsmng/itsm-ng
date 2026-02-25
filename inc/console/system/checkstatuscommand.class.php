@@ -70,7 +70,7 @@ class CheckStatusCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $format = strtolower($input->getOption('format'));
+        $format = strtolower((string) $input->getOption('format'));
         $status = StatusChecker::getFullStatus(!$input->getOption('private'), $format === 'json');
 
         if ($format === 'json') {

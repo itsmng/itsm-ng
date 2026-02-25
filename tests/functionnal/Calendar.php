@@ -130,7 +130,7 @@ class Calendar extends DbTestCase
         $calendar = new \Calendar();
         $this->boolean($calendar->getFromDB(1))->isTrue(); //get default calendar
 
-        $this->boolean($calendar->isAWorkingDay(strtotime($date)))->isIdenticalTo($expected);
+        $this->boolean($calendar->isAWorkingDay(strtotime((string) $date)))->isIdenticalTo($expected);
     }
 
     public function testHasAWorkingDay()
@@ -167,7 +167,7 @@ class Calendar extends DbTestCase
         $calendar = new \Calendar();
         $this->boolean($calendar->getFromDB(1))->isTrue(); //get default calendar
 
-        $this->boolean($calendar->isAWorkingHour(strtotime($date)))->isIdenticalTo($expected);
+        $this->boolean($calendar->isAWorkingHour(strtotime((string) $date)))->isIdenticalTo($expected);
     }
 
     private function addXmas(\Calendar $calendar)

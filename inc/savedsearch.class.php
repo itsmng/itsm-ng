@@ -578,7 +578,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
         global $CFG_GLPI;
 
         if ($params = $this->getParameters($ID)) {
-            $url  = $CFG_GLPI['root_doc'] . "/" . rawurldecode($this->fields["path"]);
+            $url  = $CFG_GLPI['root_doc'] . "/" . rawurldecode((string) $this->fields["path"]);
             $url .= "?" . Toolbox::append_params($params);
 
             Html::redirect($url);
@@ -598,7 +598,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
 
         if ($this->getFromDB($ID)) {
             $query_tab = [];
-            parse_str($this->fields["query"], $query_tab);
+            parse_str((string) $this->fields["query"], $query_tab);
             $query_tab['savedsearches_id'] = $ID;
             if (class_exists($this->fields['itemtype']) || $this->fields['itemtype'] == 'AllAssets') {
                 return $this->prepareQueryToUse($this->fields["type"], $query_tab);
@@ -1110,7 +1110,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             'savesearch',
             $CFG_GLPI['root_doc'] .
                                    "/ajax/savedsearch.php?action=create&itemtype=$itemtype&type=$type&url=" .
-                                   rawurlencode($_SERVER["REQUEST_URI"]),
+                                   rawurlencode((string) $_SERVER["REQUEST_URI"]),
             ['title'       => __('Save current search')]
         );
     }
@@ -1417,7 +1417,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             $search = new Search();
             //Do the same as self::getParameters() but getFromDB is useless
             $query_tab = [];
-            parse_str($this->getField('query'), $query_tab);
+            parse_str((string) $this->getField('query'), $query_tab);
 
             $params = null;
             if (

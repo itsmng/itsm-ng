@@ -342,8 +342,8 @@ class Calendar extends CommonDropdown
             return 0;
         }
 
-        $timestart  = strtotime($start);
-        $timeend    = strtotime($end);
+        $timestart  = strtotime((string) $start);
+        $timeend    = strtotime((string) $end);
         $datestart  = date('Y-m-d', $timestart);
         $dateend    = date('Y-m-d', $timeend);
         // Need to finish at the closing day : set hour to midnight (23:59:59 for PHP)

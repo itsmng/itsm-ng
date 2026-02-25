@@ -497,8 +497,8 @@ class Planning extends CommonGLPI
                 // Print Headers
                 echo "<br><div class='center'><table class='tab_cadre_fixe' aria-label='Planning'>";
                 $colnumber  = 1;
-                $plan_begin = explode(":", $CFG_GLPI["planning_begin"]);
-                $plan_end   = explode(":", $CFG_GLPI["planning_end"]);
+                $plan_begin = explode(":", (string) $CFG_GLPI["planning_begin"]);
+                $plan_end   = explode(":", (string) $CFG_GLPI["planning_end"]);
                 $begin_hour = intval($plan_begin[0]);
                 $end_hour   = intval($plan_end[0]);
                 if ($plan_end[1] != 0) {
@@ -694,9 +694,9 @@ class Planning extends CommonGLPI
                 continue; // Ignore external calendars
             }
 
-            $exploded = explode('_', $planning_id);
+            $exploded = explode('_', (string) $planning_id);
             if ($planning['type'] == 'group_users') {
-                $group_exploded = explode('_', $planning_id);
+                $group_exploded = explode('_', (string) $planning_id);
                 $group_id = (int) $group_exploded[1];
                 $group = new Group();
                 $group->getFromDB($group_id);
@@ -709,7 +709,7 @@ class Planning extends CommonGLPI
                    'items_id'   => $group_id
                 ];
                 foreach (array_keys($planning['users']) as $planning_id_user) {
-                    $child_exploded = explode('_', $planning_id_user);
+                    $child_exploded = explode('_', (string) $planning_id_user);
                     $user = new User();
                     $users_id = (int) $child_exploded[1];
                     $user->getFromDB($users_id);
@@ -922,7 +922,7 @@ class Planning extends CommonGLPI
             }
         }
 
-        $actor = explode('_', $filter_key);
+        $actor = explode('_', (string) $filter_key);
         $uID = 0;
         $gID = 0;
         if ($filter_data['type'] == 'user') {
@@ -991,7 +991,7 @@ class Planning extends CommonGLPI
                 echo "<li class='delete_planning' value='$filter_key'>" . __("Delete") . "</li>";
             }
             if ($filter_data['type'] != 'group_users' && $filter_data['type'] != 'external') {
-                $url = parse_url($CFG_GLPI["url_base"]);
+                $url = parse_url((string) $CFG_GLPI["url_base"]);
                 $port = 80;
                 if (isset($url['port'])) {
                     $port = $url['port'];
@@ -1114,7 +1114,7 @@ class Planning extends CommonGLPI
     {
         $used = [];
         foreach (array_keys($_SESSION['glpi_plannings']) as $actor) {
-            $actor = explode("_", $actor);
+            $actor = explode("_", (string) $actor);
             if ($actor[0] == "user") {
                 $used[] = $actor[1];
             }
@@ -1260,7 +1260,7 @@ class Planning extends CommonGLPI
             $options = [
                'from_planning_edit_ajax' => true,
                'formoptions'             => "id='edit_event_form$rand'",
-               'start'                   => date("Y-m-d", strtotime($params['start']))
+               'start'                   => date("Y-m-d", strtotime((string) $params['start']))
             ];
             if (isset($params['parentitemtype'])) {
                 $options['parent'] = getItemForItemtype($params['parentitemtype']);
@@ -1396,7 +1396,7 @@ class Planning extends CommonGLPI
      */
     public static function sendAddExternalForm($params = [])
     {
-        $_SESSION['glpi_plannings']['plannings']['external_' . md5($params['url'])] = [
+        $_SESSION['glpi_plannings']['plannings']['external_' . md5((string) $params['url'])] = [
            'color'   => self::getPaletteColor('bg', $_SESSION['glpi_plannings_color_index']),
            'display' => true,
            'type'    => 'external',
@@ -1517,7 +1517,7 @@ class Planning extends CommonGLPI
         $mintime = $CFG_GLPI["planning_begin"];
         if (isset($params["begin"]) && !empty($params["begin"])) {
             $begin = $params["begin"];
-            $begintime = date("H:i:s", strtotime($begin));
+            $begintime = date("H:i:s", strtotime((string) $begin));
             if ($begintime < $mintime) {
                 $mintime = $begintime;
             }
@@ -1531,7 +1531,7 @@ class Planning extends CommonGLPI
         if (isset($params["end"]) && !empty($params["end"])) {
             $end = $params["end"];
         } else {
-            $end = date("Y-m-d H:i:s", strtotime($begin) + HOUR_TIMESTAMP);
+            $end = date("Y-m-d H:i:s", strtotime((string) $begin) + HOUR_TIMESTAMP);
         }
 
         echo "<table class='card' aria-label='Event Classic Form'>";
@@ -1563,7 +1563,7 @@ class Planning extends CommonGLPI
         $default_delay = $params['duration'] ?? 0;
         if ($display_dates) {
             $empty_label   = __('Specify an end date');
-            $default_delay = floor((strtotime($end) - strtotime($begin)) / $CFG_GLPI['time_step'] / MINUTE_TIMESTAMP) * $CFG_GLPI['time_step'] * MINUTE_TIMESTAMP;
+            $default_delay = floor((strtotime((string) $end) - strtotime((string) $begin)) / $CFG_GLPI['time_step'] / MINUTE_TIMESTAMP) * $CFG_GLPI['time_step'] * MINUTE_TIMESTAMP;
         }
 
         Dropdown::showTimeStamp("plan[_duration]", [
@@ -1632,8 +1632,8 @@ class Planning extends CommonGLPI
 
         $input = array_merge($item->fields, [
            'plan' => [
-              'begin' => date("Y-m-d H:i:s", strtotime($event['start'])),
-              'end'   => date("Y-m-d H:i:s", strtotime($event['end'])),
+              'begin' => date("Y-m-d H:i:s", strtotime((string) $event['start'])),
+              'end'   => date("Y-m-d H:i:s", strtotime((string) $event['end'])),
            ],
         ]);
         unset($input['id'], $input['uuid']);
@@ -1845,8 +1845,8 @@ class Planning extends CommonGLPI
         }
 
         $timezone = new DateTimeZone(date_default_timezone_get());
-        $time_begin = strtotime($param['start']) - $timezone->getOffset(new DateTime($param['start']));
-        $time_end   = strtotime($param['end']) - $timezone->getOffset(new DateTime($param['end']));
+        $time_begin = strtotime((string) $param['start']) - $timezone->getOffset(new DateTime($param['start']));
+        $time_end   = strtotime((string) $param['end']) - $timezone->getOffset(new DateTime($param['end']));
 
         // if the dates range is greater than a certain amount, and we're not on a list view
         // we certainly are on this view (as our biggest view apart list is month one).
@@ -1923,15 +1923,15 @@ class Planning extends CommonGLPI
 
             // retreive all day events
             if (
-                strpos($event['begin'], "00:00:00") != false
-                 && (strtotime($event['end']) - strtotime($event['begin'])) % DAY_TIMESTAMP == 0
+                strpos((string) $event['begin'], "00:00:00") != false
+                 && (strtotime((string) $event['end']) - strtotime((string) $event['begin'])) % DAY_TIMESTAMP == 0
             ) {
-                $begin = date('Y-m-d', strtotime($event['begin']));
-                $end = date('Y-m-d', strtotime($event['end']));
+                $begin = date('Y-m-d', strtotime((string) $event['begin']));
+                $end = date('Y-m-d', strtotime((string) $event['end']));
             }
 
             // get duration in milliseconds
-            $ms_duration = (strtotime($end) - strtotime($begin)) * 1000;
+            $ms_duration = (strtotime((string) $end) - strtotime((string) $begin)) * 1000;
 
             $index_color = array_search("user_$users_id", array_keys($_SESSION['glpi_plannings']));
             $new_event = [
@@ -2263,7 +2263,7 @@ class Planning extends CommonGLPI
                 // if event has rrule property, check if we need to create a clone instance
                 if (
                     isset($item->fields['rrule'])
-                    && strlen($item->fields['rrule'])
+                    && strlen((string) $item->fields['rrule'])
                 ) {
                     if (
                         isset($params['move_instance'])
@@ -2297,7 +2297,7 @@ class Planning extends CommonGLPI
                         && !empty($params['new_actor_itemtype'])
                         && !empty($params['new_actor_items_id'])
                     ) {
-                        $new_actor_itemtype = strtolower($params['new_actor_itemtype']);
+                        $new_actor_itemtype = strtolower((string) $params['new_actor_itemtype']);
 
                         // reminders don't have group assignement for planning
                         if (
@@ -2307,7 +2307,7 @@ class Planning extends CommonGLPI
                             switch ($new_actor_itemtype) {
                                 case "group":
                                     $update['groups_id_tech'] = $params['new_actor_items_id'];
-                                    if (strtolower($params['old_actor_itemtype']) === "user") {
+                                    if (strtolower((string) $params['old_actor_itemtype']) === "user") {
                                         $update['users_id_tech']  = 0;
                                     }
                                     break;
@@ -2315,7 +2315,7 @@ class Planning extends CommonGLPI
                                 case "user":
                                     if (isset($item->fields['users_id_tech'])) {
                                         $update['users_id_tech']  = $params['new_actor_items_id'];
-                                        if (strtolower($params['old_actor_itemtype']) === "group") {
+                                        if (strtolower((string) $params['old_actor_itemtype']) === "group") {
                                             $update['groups_id_tech']  = 0;
                                         }
                                     } else {
@@ -2391,7 +2391,7 @@ class Planning extends CommonGLPI
 
         foreach ($params as $key => &$value) {
             if (in_array($key, $dates_fields)) {
-                $value  = date("Y-m-d H:i:s", strtotime(trim($value, 'Z')));
+                $value  = date("Y-m-d H:i:s", strtotime(trim((string) $value, 'Z')));
             }
         }
 
@@ -2490,7 +2490,7 @@ class Planning extends CommonGLPI
         }
 
         if (!empty($CFG_GLPI["version"])) {
-            $unique_id = "GLPI-Planning-" . trim($CFG_GLPI["version"]);
+            $unique_id = "GLPI-Planning-" . trim((string) $CFG_GLPI["version"]);
         } else {
             $unique_id = "GLPI-Planning-UnknownVersion";
         }
@@ -2626,7 +2626,7 @@ class Planning extends CommonGLPI
         if (preg_match('/group_\d+_users/', $key)) {
             return Group_User::getType();
         }
-        $itemtype = ucfirst(preg_replace('/^([a-z]+)_\d+$/', '$1', $key));
+        $itemtype = ucfirst((string) preg_replace('/^([a-z]+)_\d+$/', '$1', $key));
         return class_exists($itemtype) ? $itemtype : null;
     }
 

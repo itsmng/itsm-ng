@@ -97,4 +97,79 @@ class Contract extends DbTestCase
             )->isIdenticalTo(1, 'Missing relation with ' . $rel_class);
         }
     }
+
+    public function testContractSupplierLinkUnlink()
+    {
+        $this->login();
+        $this->setEntity('_test_root_entity', true);
+
+        $contract = new \Contract();
+        $contract_id = $contract->add([
+           'name'        => 'contract-supplier-link',
+           'entities_id' => 0,
+        ]);
+        $this->integer((int)$contract_id)->isGreaterThan(0);
+
+        $supplier_id = getItemByTypeName('Supplier', '_suplier01_name', true);
+        $this->integer((int)$supplier_id)->isGreaterThan(0);
+
+        $relation = new \Contract_Supplier();
+        $relation_id = $relation->add([
+           'contracts_id' => $contract_id,
+           'suppliers_id' => $supplier_id,
+        ]);
+        $this->integer((int)$relation_id)->isGreaterThan(0);
+        $this->boolean($relation->getFromDB($relation_id))->isTrue();
+
+        $this->boolean($relation->delete(['id' => $relation_id]))->isTrue();
+        $this->integer((int)countElementsInTable(
+            \Contract_Supplier::getTable(),
+            [
+                'contracts_id' => $contract_id,
+                'suppliers_id' => $supplier_id,
+            ]
+        ))->isEqualTo(0);
+    }
+
+    public function testUpdateClearsOutdatedAlerts()
+    {
+        $this->login();
+        $this->setEntity('_test_root_entity', true);
+
+        $contract = new \Contract();
+        $contract_id = $contract->add([
+           'name'        => 'contract-alert-clear-' . $this->getUniqueString(),
+           'entities_id' => 0,
+           'begin_date'  => '2025-01-01',
+           'duration'    => 12,
+           'notice'      => 2,
+        ]);
+        $this->integer((int)$contract_id)->isGreaterThan(0);
+
+        $alert = new \Alert();
+        $end_alert_id = $alert->add([
+           'itemtype' => 'Contract',
+           'items_id' => $contract_id,
+           'type'     => \Alert::END,
+           'date'     => '2025-12-31 00:00:00',
+        ]);
+        $notice_alert_id = $alert->add([
+           'itemtype' => 'Contract',
+           'items_id' => $contract_id,
+           'type'     => \Alert::NOTICE,
+           'date'     => '2025-11-30 00:00:00',
+        ]);
+        $this->integer((int)$end_alert_id)->isGreaterThan(0);
+        $this->integer((int)$notice_alert_id)->isGreaterThan(0);
+
+        $this->boolean($contract->update([
+           'id'         => $contract_id,
+           'begin_date' => '2025-02-01',
+           'duration'   => 14,
+           'notice'     => 1,
+        ]))->isTrue();
+
+        $this->boolean((bool)\Alert::alertExists('Contract', $contract_id, \Alert::END))->isFalse();
+        $this->boolean((bool)\Alert::alertExists('Contract', $contract_id, \Alert::NOTICE))->isFalse();
+    }
 }

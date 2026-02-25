@@ -240,7 +240,7 @@ class Dashboard extends \CommonDBTM
 
     public static function getWidgetUrl($type, $statType, $statSelection, $options = [])
     {
-        $encodedSelection = urlencode($statSelection);
+        $encodedSelection = urlencode((string) $statSelection);
         $url = "/dashboard/$type?statType=$statType&statSelection=$encodedSelection";
         if ($type != 'count') {
             $comparison = $options['comparison'] ?? 'id';
@@ -251,7 +251,7 @@ class Dashboard extends \CommonDBTM
 
     public function addWidget(array $coords = [0, 0], string $title = '', array $filters = [], string $icon = '', string $format = 'number')
     {
-        $dashboard = json_decode($this->fields['content'], true) ?? [];
+        $dashboard = json_decode((string) $this->fields['content'], true) ?? [];
         $widget = [
            'title' => $title,
            'filters' => $filters,
@@ -273,7 +273,7 @@ class Dashboard extends \CommonDBTM
     public function deleteWidget($coords)
     {
         [$x, $y] = $coords;
-        $dashboard = json_decode($this->fields['content'], true);
+        $dashboard = json_decode((string) $this->fields['content'], true);
         array_splice($dashboard[$x], $y, 1);
         if (empty($dashboard[$x])) {
             array_splice($dashboard, $x, 1);

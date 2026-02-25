@@ -238,7 +238,7 @@ class Application extends BaseApplication
 
         if (
             $command instanceof GlpiCommandInterface && $command->requiresUpToDateDb()
-            && (!array_key_exists('dbversion', $this->config) || (trim($this->config['dbversion']) != ITSM_SCHEMA_VERSION))
+            && (!array_key_exists('dbversion', $this->config) || (trim((string) $this->config['dbversion']) != ITSM_SCHEMA_VERSION))
         ) {
             $output->writeln(
                 '<error>'

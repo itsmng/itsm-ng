@@ -259,7 +259,7 @@ class DBmysqlIterator implements Iterator, Countable
             // FROM table list
             if (is_array($table)) {
                 if (count($table)) {
-                    $table = array_map([DBmysql::class, 'quoteName'], $table);
+                    $table = array_map(DBmysql::quoteName(...), $table);
                     $this->sql .= ' FROM ' . implode(", ", $table);
                 } else {
                     trigger_error("Missing table name", E_USER_ERROR);
@@ -302,7 +302,7 @@ class DBmysqlIterator implements Iterator, Countable
             // GROUP BY field list
             if (is_array($groupby)) {
                 if (count($groupby)) {
-                    $groupby = array_map([DBmysql::class, 'quoteName'], $groupby);
+                    $groupby = array_map(DBmysql::quoteName(...), $groupby);
                     $this->sql .= ' GROUP BY ' . implode(", ", $groupby);
                 } else {
                     trigger_error("Missing group by field", E_USER_ERROR);
@@ -439,7 +439,7 @@ class DBmysqlIterator implements Iterator, Countable
                 default:
                     if (is_array($f)) {
                         $t = DBmysql::quoteName($t);
-                        $f = array_map([DBmysql::class, 'quoteName'], $f);
+                        $f = array_map(DBmysql::quoteName(...), $f);
                         return "$t." . implode(", $t.", $f);
                     } else {
                         $t = DBmysql::quoteName($t);
@@ -480,7 +480,7 @@ class DBmysqlIterator implements Iterator, Countable
      */
     public function getSql()
     {
-        return preg_replace('/ +/', ' ', $this->sql);
+        return preg_replace('/ +/', ' ', (string) $this->sql);
     }
 
     /**

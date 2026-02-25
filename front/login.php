@@ -46,7 +46,7 @@ if (!isset($_SESSION["glpicookietest"]) || ($_SESSION["glpicookietest"] != 'test
     }
 }
 
-$_POST = array_map('stripslashes', $_POST);
+$_POST = array_map(stripslashes(...), $_POST);
 
 //Do login and checks
 //$user_present = 1;
@@ -73,8 +73,8 @@ $remember = isset($_SESSION['rmbfield']) && isset($_POST[$_SESSION['rmbfield']])
 $REDIRECT = "";
 if (isset($_POST['redirect']) && (strlen($_POST['redirect']) > 0)) {
     $REDIRECT = "?redirect=" . rawurlencode($_POST['redirect']);
-} elseif (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
-    $REDIRECT = "?redirect=" . rawurlencode($_GET['redirect']);
+} elseif (isset($_GET['redirect']) && strlen((string) $_GET['redirect']) > 0) {
+    $REDIRECT = "?redirect=" . rawurlencode((string) $_GET['redirect']);
 }
 
 $auth = new Auth();

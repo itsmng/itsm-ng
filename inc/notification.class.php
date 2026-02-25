@@ -646,7 +646,7 @@ class Notification extends CommonDBTM
     {
         global $CFG_GLPI;
 
-        $signature = trim(Entity::getUsedConfig('mailing_signature', $entity, '', ''));
+        $signature = trim((string) Entity::getUsedConfig('mailing_signature', $entity, '', ''));
         if (strlen($signature) > 0) {
             return $signature;
         }

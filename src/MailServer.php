@@ -89,7 +89,7 @@ class MailServer
         $tab = [];
         if (strstr($value, ":")) {
             $tab['address'] = str_replace("{", "", preg_replace("/:.*/", "", $value));
-            $tab['port']    = preg_replace("/.*:/", "", preg_replace("/\/.*/", "", $value));
+            $tab['port']    = preg_replace("/.*:/", "", (string) preg_replace("/\/.*/", "", $value));
         } else {
             if (strstr($value, "/")) {
                 $tab['address'] = str_replace("{", "", preg_replace("/\/.*/", "", $value));
@@ -485,7 +485,7 @@ class MailServer
         $data = array();
 
         $pattern = '/{([^:]+):(\d+)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/([^}]+)/';
-        preg_match($pattern, $entry, $matches);
+        preg_match($pattern, (string) $entry, $matches);
 
         $key = ['host', 'port', 'protocol', 'security', 'cert-validation', 'tls', 'norsh'];
         foreach ($key as $k => $v) {
@@ -496,16 +496,16 @@ class MailServer
             }
         }
 
-        if (strstr($entry, '/secure')) {
+        if (strstr((string) $entry, '/secure')) {
             $data['secure'] = '/secure';
             $data['norsh'] = str_replace('/secure', '', $data['norsh']);
         }
-        if (strstr($entry, '/debug')) {
+        if (strstr((string) $entry, '/debug')) {
             $data['debug'] = '/debug';
             $data['norsh'] = str_replace('/debug', '', $data['norsh']);
         }
 
-        $mailbox = explode('}', $entry, 2);
+        $mailbox = explode('}', (string) $entry, 2);
         $data['mailbox'] = $mailbox[1];
 
         return $data;

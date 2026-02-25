@@ -71,7 +71,7 @@ if (isset($_POST["add"])) {
             $validation->add($_POST);
             Event::log(
                 $validation->getField($fk),
-                strtolower($itemtype),
+                strtolower((string) $itemtype),
                 4,
                 "tracking",
                 //TRANS: %s is the user login
@@ -85,7 +85,7 @@ if (isset($_POST["add"])) {
     $validation->update($_POST);
     Event::log(
         $validation->getField($fk),
-        strtolower($itemtype),
+        strtolower((string) $itemtype),
         4,
         "tracking",
         //TRANS: %s is the user login
@@ -98,7 +98,7 @@ if (isset($_POST["add"])) {
 
     Event::log(
         $validation->getField($fk),
-        strtolower($itemtype),
+        strtolower((string) $itemtype),
         4,
         "tracking",
         //TRANS: %s is the user login

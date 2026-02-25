@@ -253,7 +253,7 @@ class Document extends CommonDBTM
 
         $upload_ok = false;
         if (isset($input["_filename"]) && !(empty($input["_filename"]) == 1)) {
-            $upload_ok = $this->moveDocument($input, stripslashes(array_shift($input["_filename"])));
+            $upload_ok = $this->moveDocument($input, stripslashes((string) array_shift($input["_filename"])));
         } elseif (isset($input["upload_file"]) && !empty($input["upload_file"])) {
             // Move doc from upload dir
             $upload_ok = $this->moveUploadedDocument($input, $input["upload_file"]);
@@ -382,7 +382,7 @@ class Document extends CommonDBTM
 
         if (isset($input['current_filepath'])) {
             if (isset($input["_filename"]) && !empty($input["_filename"]) == 1) {
-                $this->moveDocument($input, stripslashes(array_shift($input["_filename"])));
+                $this->moveDocument($input, stripslashes((string) array_shift($input["_filename"])));
             } elseif (isset($input["upload_file"]) && !empty($input["upload_file"])) {
                 // Move doc from upload dir
                 $this->moveUploadedDocument($input, $input["upload_file"]);
@@ -585,7 +585,7 @@ class Document extends CommonDBTM
     {
         global $DB,$CFG_GLPI;
 
-        $splitter = explode("/", $this->fields['filename']);
+        $splitter = explode("/", (string) $this->fields['filename']);
 
         if (count($splitter) == 2) {
             // Old documents in EXT/filename
@@ -613,7 +613,7 @@ class Document extends CommonDBTM
                     title=\"" . $initfileout . "\"target='_blank'>";
             $close = "</a>";
         }
-        $splitter = explode("/", $this->fields['filepath']);
+        $splitter = explode("/", (string) $this->fields['filepath']);
 
         if (count($splitter)) {
             $iterator = $DB->request([
@@ -1377,7 +1377,7 @@ class Document extends CommonDBTM
         if (self::renameForce($FILEDESC['tmp_name'], GLPI_DOC_DIR . "/" . $path)) {
             Session::addMessageAfterRedirect(__('The file is valid. Upload is successful.'));
             // For display
-            $input['filename'] = addslashes($FILEDESC['name']);
+            $input['filename'] = addslashes((string) $FILEDESC['name']);
             // Storage path
             $input['filepath'] = $path;
             // Checksum

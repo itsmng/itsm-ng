@@ -550,7 +550,7 @@ class State extends CommonTreeDropdown
         global $CFG_GLPI;
         $fields = [];
         foreach ($CFG_GLPI['state_types'] as $type) {
-            $fields[$type] = 'is_visible_' . strtolower($type);
+            $fields[$type] = 'is_visible_' . strtolower((string) $type);
         }
         return $fields;
     }

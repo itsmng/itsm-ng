@@ -250,4 +250,105 @@ class RuleSoftwareCategoryCollection extends DbTestCase
            "_ruleid"        => "$rules_id"
         ]);
     }
+
+    public function testStopOnFirstMatchUsesRankingOrder()
+    {
+        $this->login();
+
+        $categoryCollection = new \RuleSoftwareCategoryCollection();
+        $rule = new \Rule();
+        $criteria = new \RuleCriteria();
+        $action = new \RuleAction();
+        $category = new \SoftwareCategory();
+
+        $category_a_id = $category->importExternal('category-a-' . $this->getUniqueString());
+        $this->integer((int)$category_a_id)->isGreaterThan(0);
+        $category_b_id = $category->importExternal('category-b-' . $this->getUniqueString());
+        $this->integer((int)$category_b_id)->isGreaterThan(0);
+        $pattern = 'MySoft-' . $this->getUniqueString();
+
+        $rule_a_id = $rule->add([
+           'name'        => 'first rule ' . $pattern,
+           'is_active'   => 1,
+           'entities_id' => 0,
+           'sub_type'    => 'RuleSoftwareCategory',
+           'match'       => \Rule::AND_MATCHING,
+           'condition'   => 0,
+           'description' => '',
+           'ranking'     => 1,
+        ]);
+        $this->integer((int)$rule_a_id)->isGreaterThan(0);
+
+        $criteria_id = $criteria->add([
+           'rules_id'  => $rule_a_id,
+           'criteria'  => 'name',
+           'condition' => \Rule::PATTERN_IS,
+           'pattern'   => $pattern,
+        ]);
+        $this->integer((int)$criteria_id)->isGreaterThan(0);
+
+        $action_id = $action->add([
+           'rules_id'    => $rule_a_id,
+           'action_type' => 'assign',
+           'field'       => 'softwarecategories_id',
+           'value'       => $category_a_id,
+        ]);
+        $this->integer((int)$action_id)->isGreaterThan(0);
+
+        $rule_b_id = $rule->add([
+           'name'        => 'second rule ' . $pattern,
+           'is_active'   => 1,
+           'entities_id' => 0,
+           'sub_type'    => 'RuleSoftwareCategory',
+           'match'       => \Rule::AND_MATCHING,
+           'condition'   => 0,
+           'description' => '',
+           'ranking'     => 2,
+        ]);
+        $this->integer((int)$rule_b_id)->isGreaterThan(0);
+
+        $criteria_id = $criteria->add([
+           'rules_id'  => $rule_b_id,
+           'criteria'  => 'name',
+           'condition' => \Rule::PATTERN_IS,
+           'pattern'   => $pattern,
+        ]);
+        $this->integer((int)$criteria_id)->isGreaterThan(0);
+
+        $action_id = $action->add([
+           'rules_id'    => $rule_b_id,
+           'action_type' => 'assign',
+           'field'       => 'softwarecategories_id',
+           'value'       => $category_b_id,
+        ]);
+        $this->integer((int)$action_id)->isGreaterThan(0);
+
+        $categoryCollection->RuleList = new \stdClass();
+        $categoryCollection->RuleList->load = true;
+
+        $input = [
+           'name'             => $pattern,
+           'manufacturer'     => 'Teclib',
+           '_system_category' => 'dev'
+        ];
+
+        $result = $categoryCollection->processAllRules(null, null, $input);
+        $this->array($result)->isIdenticalTo([
+           'softwarecategories_id' => "$category_a_id",
+           '_ruleid'               => "$rule_a_id",
+        ]);
+
+        $this->boolean($rule->update(['id' => $rule_a_id, 'ranking' => 3]))->isTrue();
+        $this->boolean($rule->update(['id' => $rule_b_id, 'ranking' => 1]))->isTrue();
+
+        $categoryCollection->RuleList = new \stdClass();
+        $categoryCollection->RuleList->load = true;
+
+        $result = $categoryCollection->processAllRules(null, null, $input);
+        $this->array($result)->isIdenticalTo([
+           'softwarecategories_id' => "$category_b_id",
+           '_ruleid'               => "$rule_b_id",
+        ]);
+    }
+
 }

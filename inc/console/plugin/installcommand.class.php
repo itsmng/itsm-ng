@@ -362,7 +362,7 @@ class InstallCommand extends AbstractPluginCommand
 
         $params = [];
         foreach ($input_params as $input_param) {
-            $parts = explode('=', $input_param);
+            $parts = explode('=', (string) $input_param);
             $params[$parts[0]] = isset($parts[1]) ? $parts[1] : true;
         }
 

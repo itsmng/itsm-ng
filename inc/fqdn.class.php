@@ -90,7 +90,7 @@ class FQDN extends CommonDropdown
             }
 
             // Transform it to lower case
-            $input["fqdn"] = strtolower($input['fqdn']);
+            $input["fqdn"] = strtolower((string) $input['fqdn']);
 
             // Then check its validity
             if (!self::checkFQDN($input["fqdn"])) {

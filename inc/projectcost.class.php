@@ -235,10 +235,10 @@ class ProjectCost extends CommonDBChild
     public function initBasedOnPrevious()
     {
 
-        $ticket = new Ticket();
+        $project = new Project();
         if (
             !isset($this->fields['projects_id'])
-            || !$ticket->getFromDB($this->fields['projects_id'])
+            || !$project->getFromDB($this->fields['projects_id'])
         ) {
             return false;
         }

@@ -110,9 +110,9 @@ class Update extends CommonGLPI
                'FROM'   => 'glpi_config'
             ])->next();
 
-            $currents['version']    = trim($result['version']);
+            $currents['version']    = trim((string) $result['version']);
             $currents['dbversion']  = $currents['version'];
-            $currents['language']   = trim($result['language']);
+            $currents['language']   = trim((string) $result['language']);
         } elseif ($DB->fieldExists('glpi_configs', 'version')) {
             // < 0.85
             // Get current version and language
@@ -121,9 +121,9 @@ class Update extends CommonGLPI
                'FROM'   => 'glpi_configs'
             ])->next();
 
-            $currents['version']    = trim($result['version']);
+            $currents['version']    = trim((string) $result['version']);
             $currents['dbversion']  = $currents['version'];
-            $currents['language']   = trim($result['language']);
+            $currents['language']   = trim((string) $result['language']);
         } else {
             $currents = Config::getConfigurationValues(
                 'core',

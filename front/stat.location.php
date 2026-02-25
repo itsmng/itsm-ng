@@ -58,7 +58,7 @@ if (empty($_GET["date1"]) && empty($_GET["date2"])) {
 if (
     !empty($_GET["date1"])
     && !empty($_GET["date2"])
-    && (strcmp($_GET["date2"], $_GET["date1"]) < 0)
+    && (strcmp((string) $_GET["date2"], (string) $_GET["date1"]) < 0)
 ) {
     $tmp           = $_GET["date1"];
     $_GET["date1"] = $_GET["date2"];

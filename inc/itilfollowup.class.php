@@ -146,7 +146,7 @@ class ITILFollowup extends CommonDBChild
     {
         if (
             !isset($this->fields['itemtype'])
-            || strlen($this->fields['itemtype']) == 0
+            || strlen((string) $this->fields['itemtype']) == 0
         ) {
             return false;
         }

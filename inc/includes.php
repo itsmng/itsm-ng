@@ -74,7 +74,7 @@ if (
 if (isset($_POST)) {
     $_UPOST = $_POST; //keep raw, as a workaround
     if (isset($_POST['_glpi_simple_form'])) {
-        $_POST = array_map('urldecode', $_POST);
+        $_POST = array_map(urldecode(...), $_POST);
     }
     $_POST = Toolbox::sanitize($_POST);
 }
@@ -156,8 +156,8 @@ if (
     GLPI_USE_CSRF_CHECK
     && !isAPI()
     && isset($_POST) && is_array($_POST) && count($_POST)
-    && preg_match(':' . $CFG_GLPI['root_doc'] . '(/(plugins)/[^/]*|)/ajax/:', $_SERVER['REQUEST_URI']) === 0
-    && preg_match(':' . $CFG_GLPI['root_doc'] . '/src/.*\.ajax\.php$:', $_SERVER['REQUEST_URI']) === 0
+    && preg_match(':' . $CFG_GLPI['root_doc'] . '(/(plugins)/[^/]*|)/ajax/:', (string) $_SERVER['REQUEST_URI']) === 0
+    && preg_match(':' . $CFG_GLPI['root_doc'] . '/src/.*\.ajax\.php$:', (string) $_SERVER['REQUEST_URI']) === 0
 ) {
     if (!Csrf::verify()) {
         Session::addMessageAfterRedirect(__('CSRF token is invalid while loading: ' . $_SERVER['HTTP_REFERER']), false, ERROR);

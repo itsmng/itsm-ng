@@ -116,7 +116,7 @@ class NotificationTemplateTranslation extends CommonDBChild
         Ajax::createIframeModalWindow(
             "tags" . $rand,
             $CFG_GLPI['root_doc'] . "/front/notification.tags.php?sub_type=" .
-            addslashes($template->getField('itemtype'))
+            addslashes((string) $template->getField('itemtype'))
         );
 
         $form = [
@@ -370,7 +370,7 @@ class NotificationTemplateTranslation extends CommonDBChild
      **/
     public static function showAvailableTags($itemtype)
     {
-        $target = NotificationTarget::getInstanceByType(stripslashes($itemtype));
+        $target = NotificationTarget::getInstanceByType(stripslashes((string) $itemtype));
         $target->getTags();
 
         echo "<div class='center'>";
@@ -558,7 +558,7 @@ class NotificationTemplateTranslation extends CommonDBChild
 
                 echo "<tr><th>" . __('Email text body') . "</th>";
                 echo "<th>" . __('Email HTML body') . "</th></tr>";
-                echo "<tr class='tab_bg_2'><td>" . nl2br($data['content_text']) . "</td>";
+                echo "<tr class='tab_bg_2'><td>" . nl2br((string) $data['content_text']) . "</td>";
                 echo "<td>" . $data['content_html'] . "</td></tr>";
             }
         }

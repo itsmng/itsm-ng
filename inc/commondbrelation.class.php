@@ -108,7 +108,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
         ];
 
         $request = false;
-        if (preg_match('/^itemtype/', static::$itemtype_1)) {
+        if (preg_match('/^itemtype/', (string) static::$itemtype_1)) {
             $fields[] = static::$itemtype_1 . ' AS itemtype_1';
             $where1[static::$itemtype_1] = $itemtype;
             $request = true;
@@ -136,7 +136,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
            static::$items_id_2 => $items_id
         ];
         $request = false;
-        if (preg_match('/^itemtype/', static::$itemtype_2)) {
+        if (preg_match('/^itemtype/', (string) static::$itemtype_2)) {
             $fields[] = static::$itemtype_2 . ' AS itemtype_2';
             $where2[static::$itemtype_2] = $itemtype;
             $request = true;
@@ -279,14 +279,14 @@ abstract class CommonDBRelation extends CommonDBConnexity
         $wheres[static::$items_id_2] = $item2->getID();
 
         // Check item 1 type
-        if (preg_match('/^itemtype/', static::$itemtype_1)) {
+        if (preg_match('/^itemtype/', (string) static::$itemtype_1)) {
             $wheres[static::$itemtype_1] = $item1->getType();
         } elseif (!is_a($item1, static::$itemtype_1)) {
             return false;
         }
 
         // Check item 1 type
-        if (preg_match('/^itemtype/', static::$itemtype_2)) {
+        if (preg_match('/^itemtype/', (string) static::$itemtype_2)) {
             $wheres[static::$itemtype_2] = $item2->getType();
         } elseif (!is_a($item2, static::$itemtype_2)) {
             return false;
@@ -319,7 +319,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
         ];
 
         $itemtype1 = static::$itemtype_1;
-        if (!preg_match('/^itemtype/', $itemtype1)) {
+        if (!preg_match('/^itemtype/', (string) $itemtype1)) {
             $tab[] = [
                'id'                 => '3',
                'table'              => getTableForItemType($itemtype1),
@@ -332,7 +332,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
         }
 
         $itemtype2 = static::$itemtype_2;
-        if (!preg_match('/^itemtype/', $itemtype2)) {
+        if (!preg_match('/^itemtype/', (string) $itemtype2)) {
             $tab[] = [
                'id'                 => '4',
                'table'              => getTableForItemType($itemtype2),
@@ -1194,8 +1194,8 @@ abstract class CommonDBRelation extends CommonDBConnexity
     public static function getHTMLTableHeader(
         $itemtype,
         HTMLTableBase $base,
-        HTMLTableSuperHeader $super = null,
-        HTMLTableHeader $father = null,
+        ?HTMLTableSuperHeader $super = null,
+        ?HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -1235,9 +1235,9 @@ abstract class CommonDBRelation extends CommonDBConnexity
      * @param array         $options
     **/
     public static function getHTMLTableCellsForItem(
-        HTMLTableRow $row = null,
-        CommonDBTM $item = null,
-        HTMLTableCell $father = null,
+        ?HTMLTableRow $row = null,
+        ?CommonDBTM $item = null,
+        ?HTMLTableCell $father = null,
         array $options = []
     ) {
         global $DB;
@@ -1293,12 +1293,12 @@ abstract class CommonDBRelation extends CommonDBConnexity
         if ($peer == 0) {
             $input[static::$items_id_1] = $items_id;
 
-            if (preg_match('/^itemtype/', static::$itemtype_1)) {
+            if (preg_match('/^itemtype/', (string) static::$itemtype_1)) {
                 $input[static::$itemtype_1] = $itemtype;
             }
         } else {
             $input[static::$items_id_2] = $items_id;
-            if (preg_match('/^itemtype/', static::$itemtype_2)) {
+            if (preg_match('/^itemtype/', (string) static::$itemtype_2)) {
                 $input[static::$itemtype_2] = $itemtype;
             }
         }
@@ -1385,10 +1385,10 @@ abstract class CommonDBRelation extends CommonDBConnexity
         }
 
         // Else, check if one of both peer is 'itemtype*'
-        if (preg_match('/^itemtype/', static::$itemtype_1)) {
+        if (preg_match('/^itemtype/', (string) static::$itemtype_1)) {
             return 2;
         }
-        if (preg_match('/^itemtype/', static::$itemtype_2)) {
+        if (preg_match('/^itemtype/', (string) static::$itemtype_2)) {
             return 1;
         }
 
@@ -1449,7 +1449,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
                     ) {
                         $options['emptylabel'] = __('Remove all at once');
                     }
-                    if (preg_match('/^itemtype/', $peertype)) {
+                    if (preg_match('/^itemtype/', (string) $peertype)) {
                         if (count($specificities['itemtypes']) > 0) {
                             $options['itemtype_name'] = 'peer_' . $peertype;
                             $options['items_id_name'] = 'peer_' . $peers_id;
@@ -1632,7 +1632,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
             $peers_id = static::$items_id_1;
         }
 
-        if (preg_match('/^itemtype/', $itemtype)) {
+        if (preg_match('/^itemtype/', (string) $itemtype)) {
             $input2[$itemtype] = $item->getType();
         }
 
@@ -1760,10 +1760,10 @@ abstract class CommonDBRelation extends CommonDBConnexity
                            static::$items_id_1  => $item_1->getID(),
                            static::$items_id_2  => $item_2->getID()
                         ];
-                        if (preg_match('/^itemtype/', static::$itemtype_1)) {
+                        if (preg_match('/^itemtype/', (string) static::$itemtype_1)) {
                             $WHERE[static::$itemtype_1] = $item_1->getType();
                         }
-                        if (preg_match('/^itemtype/', static::$itemtype_2)) {
+                        if (preg_match('/^itemtype/', (string) static::$itemtype_2)) {
                             $WHERE[static::$itemtype_2] = $item_2->getType();
                         }
 
@@ -1775,10 +1775,10 @@ abstract class CommonDBRelation extends CommonDBConnexity
                                static::$items_id_1 = $item_2->getID(),
                                static::$items_id_2 = $item_2->getID()
                             ];
-                            if (preg_match('/^itemtype/', static::$itemtype_1)) {
+                            if (preg_match('/^itemtype/', (string) static::$itemtype_1)) {
                                 $ORWHERE[static::$itemtype_1] = $item_2->getType();
                             }
-                            if (preg_match('/^itemtype/', static::$itemtype_2)) {
+                            if (preg_match('/^itemtype/', (string) static::$itemtype_2)) {
                                 $ORWHERE[static::$itemtype_2] = $item_2->getType();
                             }
                             $WHERE = [

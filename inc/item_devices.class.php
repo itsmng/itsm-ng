@@ -243,8 +243,8 @@ class Item_Devices extends CommonDBRelation
         ];
 
         foreach ($device_types as $device_type) {
-            if (isset($CFG_GLPI['item' . strtolower($device_type) . '_types'])) {
-                $itemtypes = $CFG_GLPI['item' . strtolower($device_type) . '_types'];
+            if (isset($CFG_GLPI['item' . strtolower((string) $device_type) . '_types'])) {
+                $itemtypes = $CFG_GLPI['item' . strtolower((string) $device_type) . '_types'];
                 if ($itemtypes == '*' || in_array($itemtype, $itemtypes)) {
                     if (method_exists($device_type, 'rawSearchOptionsToAdd')) {
                         $options = array_merge(
@@ -993,11 +993,11 @@ class Item_Devices extends CommonDBRelation
         CommonDBTM $item,
         HTMLTableMain $table,
         array $options,
-        HTMLTableSuperHeader $delete_all_column = null,
         HTMLTableSuperHeader $common_column,
         HTMLTableSuperHeader $specific_column,
-        HTMLTableSuperHeader $delete_column = null,
-        $dynamic_column
+        ?HTMLTableSuperHeader $delete_all_column = null,
+        ?HTMLTableSuperHeader $delete_column = null,
+        ?HTMLTableSuperHeader $dynamic_column = null
     ) {
         global $DB;
 
@@ -1400,7 +1400,7 @@ class Item_Devices extends CommonDBRelation
         // Update quantity or values
         $device_type = '';
         foreach ($input as $key => $val) {
-            $data = explode("_", $key);
+            $data = explode("_", (string) $key);
             if (!empty($data[0])) {
                 $command = $data[0];
             } else {

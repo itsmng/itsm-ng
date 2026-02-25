@@ -406,7 +406,7 @@ abstract class CommonDBConnexity extends CommonDBTM
         $item_right,
         $itemtype,
         $items_id,
-        CommonDBTM &$item = null
+        ?CommonDBTM &$item = null
     ) {
 
         // Do not get it twice
@@ -808,7 +808,7 @@ abstract class CommonDBConnexity extends CommonDBTM
                     $input
                 );
                 $input2[$peers_id] = $input['peers_id'];
-                if (preg_match('/^itemtype/', $peertype)) {
+                if (preg_match('/^itemtype/', (string) $peertype)) {
                     if (!in_array($input['peertype'], $specificities['itemtypes'])) {
                         $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_KO);
                         $ma->addMessage($item->getErrorMessage(ERROR_NOT_FOUND));

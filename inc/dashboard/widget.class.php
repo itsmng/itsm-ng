@@ -273,7 +273,7 @@ class Widget extends CommonGLPI
 
         $class = count($p['filters']) > 0 ? " filter-" . implode(' filter-', $p['filters']) : "";
 
-        $href = strlen($p['url'])
+        $href = strlen((string) $p['url'])
            ? "href='{$p['url']}'"
            : "";
 
@@ -370,7 +370,7 @@ HTML;
             }
             $entry = array_merge($default_entry, $entry);
 
-            $href = strlen($entry['url'])
+            $href = strlen((string) $entry['url'])
                ? "href='{$entry['url']}'"
                : "";
 
@@ -1607,7 +1607,7 @@ HTML;
         $fg_color  = Toolbox::getFgColor($p['color'], $is_light ? 65 : 40);
         $fg_color2 = Toolbox::getFgColor($p['color'], 5);
 
-        $href = strlen($p['url'])
+        $href = strlen((string) $p['url'])
            ? "href='{$p['url']}'"
            : "";
 
@@ -1697,16 +1697,16 @@ HTML;
 
             $entry = array_merge($default_entry, $entry);
 
-            $href = strlen($entry['url'])
+            $href = strlen((string) $entry['url'])
                ? "href='{$entry['url']}'"
                : "";
 
-            $author = strlen($entry['author'])
+            $author = strlen((string) $entry['author'])
                ? "<i class='fas fa-user' aria-hidden='true'></i>&nbsp;{$entry['author']}"
                : "";
 
-            $content_size = strlen($entry['content']);
-            $content = strlen($entry['content'])
+            $content_size = strlen((string) $entry['content']);
+            $content = strlen((string) $entry['content'])
                ? Toolbox::getHtmlToDisplay($entry['content']) .
                  (
                      $content_size > 300
@@ -1736,7 +1736,7 @@ HTML;
          <span>";
         }
 
-        $view_all = strlen($p['url'])
+        $view_all = strlen((string) $p['url'])
            ? "<a href='{$p['url']}'><i class='fas fa-eye' title='" . __("See all") . "'></i></a>"
            : "";
 

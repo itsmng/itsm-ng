@@ -2233,7 +2233,7 @@ class Entity extends CommonTreeDropdown
             return '';
         }
 
-        return '<style>' . strip_tags($custom_css_code) . '</style>';
+        return '<style>' . strip_tags((string) $custom_css_code) . '</style>';
     }
 
     /**
@@ -2646,27 +2646,27 @@ class Entity extends CommonTreeDropdown
     {
         $url = self::getUsedConfig('inquest_config', $ticket->fields['entities_id'], 'inquest_URL');
 
-        if (strstr($url, "[TICKET_ID]")) {
+        if (strstr((string) $url, "[TICKET_ID]")) {
             $url = str_replace("[TICKET_ID]", $ticket->fields['id'], $url);
         }
 
-        if (strstr($url, "[TICKET_NAME]")) {
-            $url = str_replace("[TICKET_NAME]", urlencode($ticket->fields['name']), $url);
+        if (strstr((string) $url, "[TICKET_NAME]")) {
+            $url = str_replace("[TICKET_NAME]", urlencode((string) $ticket->fields['name']), $url);
         }
 
-        if (strstr($url, "[TICKET_CREATEDATE]")) {
+        if (strstr((string) $url, "[TICKET_CREATEDATE]")) {
             $url = str_replace("[TICKET_CREATEDATE]", $ticket->fields['date'], $url);
         }
 
-        if (strstr($url, "[TICKET_SOLVEDATE]")) {
+        if (strstr((string) $url, "[TICKET_SOLVEDATE]")) {
             $url = str_replace("[TICKET_SOLVEDATE]", $ticket->fields['solvedate'], $url);
         }
 
-        if (strstr($url, "[REQUESTTYPE_ID]")) {
+        if (strstr((string) $url, "[REQUESTTYPE_ID]")) {
             $url = str_replace("[REQUESTTYPE_ID]", $ticket->fields['requesttypes_id'], $url);
         }
 
-        if (strstr($url, "[REQUESTTYPE_NAME]")) {
+        if (strstr((string) $url, "[REQUESTTYPE_NAME]")) {
             $url = str_replace(
                 "[REQUESTTYPE_NAME]",
                 urlencode(Dropdown::getDropdownName(
@@ -2677,23 +2677,23 @@ class Entity extends CommonTreeDropdown
             );
         }
 
-        if (strstr($url, "[TICKET_PRIORITY]")) {
+        if (strstr((string) $url, "[TICKET_PRIORITY]")) {
             $url = str_replace("[TICKET_PRIORITY]", $ticket->fields['priority'], $url);
         }
 
-        if (strstr($url, "[TICKET_PRIORITYNAME]")) {
+        if (strstr((string) $url, "[TICKET_PRIORITYNAME]")) {
             $url = str_replace(
                 "[TICKET_PRIORITYNAME]",
-                urlencode(CommonITILObject::getPriorityName($ticket->fields['priority'])),
+                urlencode((string) CommonITILObject::getPriorityName($ticket->fields['priority'])),
                 $url
             );
         }
 
-        if (strstr($url, "[TICKETCATEGORY_ID]")) {
+        if (strstr((string) $url, "[TICKETCATEGORY_ID]")) {
             $url = str_replace("[TICKETCATEGORY_ID]", $ticket->fields['itilcategories_id'], $url);
         }
 
-        if (strstr($url, "[TICKETCATEGORY_NAME]")) {
+        if (strstr((string) $url, "[TICKETCATEGORY_NAME]")) {
             $url = str_replace(
                 "[TICKETCATEGORY_NAME]",
                 urlencode(Dropdown::getDropdownName(
@@ -2704,11 +2704,11 @@ class Entity extends CommonTreeDropdown
             );
         }
 
-        if (strstr($url, "[TICKETTYPE_ID]")) {
+        if (strstr((string) $url, "[TICKETTYPE_ID]")) {
             $url = str_replace("[TICKETTYPE_ID]", $ticket->fields['type'], $url);
         }
 
-        if (strstr($url, "[TICKET_TYPENAME]")) {
+        if (strstr((string) $url, "[TICKET_TYPENAME]")) {
             $url = str_replace(
                 "[TICKET_TYPENAME]",
                 Ticket::getTicketTypeName($ticket->fields['type']),
@@ -2716,11 +2716,11 @@ class Entity extends CommonTreeDropdown
             );
         }
 
-        if (strstr($url, "[SOLUTIONTYPE_ID]")) {
+        if (strstr((string) $url, "[SOLUTIONTYPE_ID]")) {
             $url = str_replace("[SOLUTIONTYPE_ID]", $ticket->fields['solutiontypes_id'], $url);
         }
 
-        if (strstr($url, "[SOLUTIONTYPE_NAME]")) {
+        if (strstr((string) $url, "[SOLUTIONTYPE_NAME]")) {
             $url = str_replace(
                 "[SOLUTIONTYPE_NAME]",
                 urlencode(Dropdown::getDropdownName(
@@ -2731,11 +2731,11 @@ class Entity extends CommonTreeDropdown
             );
         }
 
-        if (strstr($url, "[SLA_TTO_ID]")) {
+        if (strstr((string) $url, "[SLA_TTO_ID]")) {
             $url = str_replace("[SLA_TTO_ID]", $ticket->fields['slas_id_tto'], $url);
         }
 
-        if (strstr($url, "[SLA_TTO_NAME]")) {
+        if (strstr((string) $url, "[SLA_TTO_NAME]")) {
             $url = str_replace(
                 "[SLA_TTO_NAME]",
                 urlencode(Dropdown::getDropdownName(
@@ -2746,11 +2746,11 @@ class Entity extends CommonTreeDropdown
             );
         }
 
-        if (strstr($url, "[SLA_TTR_ID]")) {
+        if (strstr((string) $url, "[SLA_TTR_ID]")) {
             $url = str_replace("[SLA_TTR_ID]", $ticket->fields['slas_id_ttr'], $url);
         }
 
-        if (strstr($url, "[SLA_TTR_NAME]")) {
+        if (strstr((string) $url, "[SLA_TTR_NAME]")) {
             $url = str_replace(
                 "[SLA_TTR_NAME]",
                 urlencode(Dropdown::getDropdownName(
@@ -2761,11 +2761,11 @@ class Entity extends CommonTreeDropdown
             );
         }
 
-        if (strstr($url, "[SLALEVEL_ID]")) {
+        if (strstr((string) $url, "[SLALEVEL_ID]")) {
             $url = str_replace("[SLALEVEL_ID]", $ticket->fields['slalevels_id_ttr'], $url);
         }
 
-        if (strstr($url, "[SLALEVEL_NAME]")) {
+        if (strstr((string) $url, "[SLALEVEL_NAME]")) {
             $url = str_replace(
                 "[SLALEVEL_NAME]",
                 urlencode(Dropdown::getDropdownName(
@@ -2992,8 +2992,8 @@ class Entity extends CommonTreeDropdown
                         return __('Copy the delivery date');
 
                     default:
-                        if (strstr($values[$field], '_')) {
-                            list($type, $sid) = explode('_', $values[$field], 2);
+                        if (strstr((string) $values[$field], '_')) {
+                            list($type, $sid) = explode('_', (string) $values[$field], 2);
                             if ($type == Infocom::ON_STATUS_CHANGE) {
                                 // TRANS %s is the name of the state
                                 return sprintf(
@@ -3189,7 +3189,7 @@ class Entity extends CommonTreeDropdown
 
     public static function inheritedValue($value = "", bool $inline = false, bool $display = true): string
     {
-        if (trim($value) == "") {
+        if (trim((string) $value) == "") {
             return "";
         }
 

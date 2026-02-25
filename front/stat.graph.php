@@ -62,14 +62,14 @@ if (empty($_POST["date1"]) && empty($_POST["date2"])) {
 if (
     !empty($_POST["date1"])
     && !empty($_POST["date2"])
-    && (strcmp($_POST["date2"], $_POST["date1"]) < 0)
+    && (strcmp((string) $_POST["date2"], (string) $_POST["date1"]) < 0)
 ) {
     $tmp            = $_POST["date1"];
     $_POST["date1"] = $_POST["date2"];
     $_POST["date2"] = $tmp;
 }
 
-$cleantarget = preg_replace("/[&]date[12]=[0-9-]*/", "", $_SERVER['QUERY_STRING']);
+$cleantarget = preg_replace("/[&]date[12]=[0-9-]*/", "", (string) $_SERVER['QUERY_STRING']);
 $cleantarget = preg_replace("/[&]*id=([0-9]+[&]{0,1})/", "", $cleantarget);
 $cleantarget = preg_replace("/&/", "&amp;", $cleantarget);
 
@@ -372,7 +372,7 @@ echo "</td>";
 echo "</tr>";
 echo "</table></div><br>";
 
-$target = preg_replace("/&/", "&amp;", $_SERVER["REQUEST_URI"]);
+$target = preg_replace("/&/", "&amp;", (string) $_SERVER["REQUEST_URI"]);
 
 echo "<form aria-label='Statistics' method='post' name='form' action='$target'><div class='center'>";
 echo "<table class='tab_cadre' aria-label='Statistics'>";

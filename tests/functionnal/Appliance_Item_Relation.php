@@ -35,8 +35,46 @@ namespace tests\units;
 
 use DbTestCase;
 
+class ApplianceRelationHiddenType
+{
+    public static function canView(): bool
+    {
+        return false;
+    }
+}
+
+class ApplianceRelationVisibleType
+{
+    public static function canView(): bool
+    {
+        return true;
+    }
+}
+
 class Appliance_Item_Relation extends DbTestCase
 {
+    public function testGetTypesFiltersNonViewableTypes()
+    {
+        global $CFG_GLPI;
+
+        $original_types = $CFG_GLPI['appliance_relation_types'];
+        $configured_types = [
+            ApplianceRelationHiddenType::class,
+            ApplianceRelationVisibleType::class,
+        ];
+
+        try {
+            $CFG_GLPI['appliance_relation_types'] = $configured_types;
+
+            $this->array(\Appliance_Item_Relation::getTypes(true))->isEqualTo($configured_types);
+            $this->array(array_values(\Appliance_Item_Relation::getTypes(false)))->isEqualTo([
+                ApplianceRelationVisibleType::class,
+            ]);
+        } finally {
+            $CFG_GLPI['appliance_relation_types'] = $original_types;
+        }
+    }
+
     public function testGetForbiddenStandardMassiveAction()
     {
         $this->newTestedInstance();

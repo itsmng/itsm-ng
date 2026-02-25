@@ -77,6 +77,34 @@ class NetworkPortAlias extends NetworkPortInstantiation
     }
 
 
+    public function post_addItem()
+    {
+        if (isset($this->input['mac']) && isset($this->input['networkports_id'])) {
+            $networkPort = new NetworkPort();
+            if ($networkPort->getFromDB($this->input['networkports_id'])) {
+                $networkPort->update([
+                    'id'  => $this->input['networkports_id'],
+                    'mac' => $this->input['mac'],
+                ]);
+            }
+        }
+    }
+
+
+    public function post_updateItem($history = 1)
+    {
+        if (isset($this->input['mac']) && isset($this->input['networkports_id'])) {
+            $networkPort = new NetworkPort();
+            if ($networkPort->getFromDB($this->input['networkports_id'])) {
+                $networkPort->update([
+                    'id'  => $this->input['networkports_id'],
+                    'mac' => $this->input['mac'],
+                ]);
+            }
+        }
+    }
+
+
     public function showInstantiationForm(NetworkPort $netport, $options, $recursiveItems)
     {
 
@@ -149,8 +177,8 @@ class NetworkPortAlias extends NetworkPortInstantiation
     public function getInstantiationHTMLTableHeaders(
         HTMLTableGroup $group,
         HTMLTableSuperHeader $super,
-        HTMLTableSuperHeader $internet_super = null,
-        HTMLTableHeader $father = null,
+        ?HTMLTableSuperHeader $internet_super = null,
+        ?HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -164,7 +192,7 @@ class NetworkPortAlias extends NetworkPortInstantiation
     public function getInstantiationHTMLTable(
         NetworkPort $netport,
         HTMLTableRow $row,
-        HTMLTableCell $father = null,
+        ?HTMLTableCell $father = null,
         array $options = []
     ) {
 

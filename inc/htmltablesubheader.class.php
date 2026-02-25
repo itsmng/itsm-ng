@@ -56,7 +56,7 @@ class HTMLTableSubHeader extends HTMLTableHeader
         HTMLTableSuperHeader $header,
         $name,
         $content,
-        HTMLTableHeader $father = null
+        ?HTMLTableHeader $father = null
     ) {
 
         $this->header = $header;

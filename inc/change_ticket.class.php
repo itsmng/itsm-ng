@@ -438,8 +438,8 @@ class Change_Ticket extends CommonDBRelation
                                 if ($ticket->getFromDB($ID)) {
                                     return "<a href='" . Toolbox::getItemTypeFormURL('Change') .
                                            "?tickets_id={$ID}" .
-                                           "&name=" . urlencode($ticket->fields['name']) .
-                                           "&content=" . urlencode($ticket->fields['content']) .
+                                           "&name=" . urlencode((string) $ticket->fields['name']) .
+                                           "&content=" . urlencode((string) $ticket->fields['content']) .
                                            "&entities_id=" . $ticket->fields['entities_id'] . "'>" .
                                            __('Create a change from this ticket') . '</a>';
                                 }

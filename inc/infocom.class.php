@@ -305,7 +305,7 @@ class Infocom extends CommonDBChild
 
             //Date must be filled if status corresponds to the one defined in the config
             if (
-                preg_match('/' . self::ON_STATUS_CHANGE . '_(.*)/', $result, $values)
+                preg_match('/' . self::ON_STATUS_CHANGE . '_(.*)/', (string) $result, $values)
                 && ($values[1] == $changes['states_id'])
             ) {
                 $add_or_update    = true;
@@ -1120,7 +1120,7 @@ class Infocom extends CommonDBChild
             }
 
             if (
-                !strpos($_SERVER['PHP_SELF'], "infocoms-show")
+                !strpos((string) $_SERVER['PHP_SELF'], "infocoms-show")
                 && in_array($item->getType(), self::getExcludedTypes())
             ) {
                 echo "<div class='firstbloc center'>" .

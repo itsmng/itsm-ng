@@ -200,7 +200,7 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                     // Add embeded image if tag present in ticket content
                     if (
                         preg_match_all(
-                            '/' . preg_quote($doc->fields['tag']) . '/',
+                            '/' . preg_quote((string) $doc->fields['tag']) . '/',
                             $current->fields['body_html'],
                             $matches,
                             PREG_PATTERN_ORDER

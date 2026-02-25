@@ -99,7 +99,7 @@ class APIRest extends API
         //parse http request and find parts
         $this->request_uri  = $_SERVER['REQUEST_URI'];
         $this->verb         = $_SERVER['REQUEST_METHOD'];
-        $path_info          = (isset($_SERVER['PATH_INFO'])) ? str_replace("api/", "", trim($_SERVER['PATH_INFO'], '/')) : '';
+        $path_info          = (isset($_SERVER['PATH_INFO'])) ? str_replace("api/", "", trim((string) $_SERVER['PATH_INFO'], '/')) : '';
         $this->url_elements = explode('/', $path_info);
 
         // retrieve requested resource
@@ -411,7 +411,7 @@ class APIRest extends API
 
         // first of all, pull the GET vars
         if (isset($_SERVER['QUERY_STRING'])) {
-            parse_str($_SERVER['QUERY_STRING'], $parameters);
+            parse_str((string) $_SERVER['QUERY_STRING'], $parameters);
         }
 
         // now how about PUT/POST bodies? These override what we got from GET
@@ -436,7 +436,7 @@ class APIRest extends API
             }
         }
 
-        if (strpos($content_type, "application/json") !== false) {
+        if (strpos((string) $content_type, "application/json") !== false) {
             if ($body_params = json_decode($body)) {
                 foreach ($body_params as $param_name => $param_value) {
                     $parameters[$param_name] = $param_value;
@@ -450,7 +450,7 @@ class APIRest extends API
                 );
             }
             $this->format = "json";
-        } elseif (strpos($content_type, "multipart/form-data") !== false) {
+        } elseif (strpos((string) $content_type, "multipart/form-data") !== false) {
             if (count($_FILES) <= 0) {
                 // likely uploaded files is too big so $_REQUEST will be empty also.
                 // see http://us.php.net/manual/en/ini.core.php#ini.post-max-size
@@ -463,7 +463,7 @@ class APIRest extends API
             }
 
             // with this content_type, php://input is empty... (see http://php.net/manual/en/wrappers.php.php)
-            if (!$uploadManifest = json_decode($_REQUEST['uploadManifest'])) {
+            if (!$uploadManifest = json_decode((string) $_REQUEST['uploadManifest'])) {
                 $this->returnError(
                     "JSON payload seems not valid",
                     400,
@@ -480,7 +480,7 @@ class APIRest extends API
             $parameters['upload_result'] = [];
             $parameters['input']->_filename = [];
             $parameters['input']->_prefix_filename = [];
-        } elseif (strpos($content_type, "application/x-www-form-urlencoded") !== false) {
+        } elseif (strpos((string) $content_type, "application/x-www-form-urlencoded") !== false) {
             /** @var array $postvars */
             parse_str($body, $postvars);
             foreach ($postvars as $field => $value) {
@@ -499,21 +499,21 @@ class APIRest extends API
             if (false !== $headers && count($headers) > 0) {
                 $fixedHeaders = [];
                 foreach ($headers as $key => $value) {
-                    $fixedHeaders[ucwords(strtolower($key), '-')] = $value;
+                    $fixedHeaders[ucwords(strtolower((string) $key), '-')] = $value;
                 }
                 $headers = $fixedHeaders;
             }
         } else {
             // other servers
             foreach ($_SERVER as $server_key => $server_value) {
-                if (substr($server_key, 0, 5) == 'HTTP_') {
+                if (substr((string) $server_key, 0, 5) == 'HTTP_') {
                     $headers[str_replace(
                         ' ',
                         '-',
                         ucwords(strtolower(str_replace(
                             '_',
                             ' ',
-                            substr($server_key, 5)
+                            substr((string) $server_key, 5)
                         )))
                     )] = $server_value;
                 }
@@ -532,9 +532,9 @@ class APIRest extends API
         // try to retrieve user_token in header
         if (
             isset($headers['Authorization'])
-            && (strpos($headers['Authorization'], 'user_token') !== false)
+            && (strpos((string) $headers['Authorization'], 'user_token') !== false)
         ) {
-            $auth = explode(' ', $headers['Authorization']);
+            $auth = explode(' ', (string) $headers['Authorization']);
             if (isset($auth[1])) {
                 $parameters['user_token'] = $auth[1];
             }

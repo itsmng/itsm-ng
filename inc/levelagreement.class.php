@@ -1094,6 +1094,7 @@ abstract class LevelAgreement extends CommonDBChild
      **/
     public function addLevelToDo(Ticket $ticket, $levels_id = 0)
     {
+        global $DB;
 
         $pre = static::$prefix;
 
@@ -1102,6 +1103,20 @@ abstract class LevelAgreement extends CommonDBChild
         }
 
         if ($levels_id) {
+            $levelticket = new static::$levelticketclass();
+            $existing = $DB->request([
+                'SELECT' => 'id',
+                'FROM'   => $levelticket::getTable(),
+                'WHERE'  => [
+                    'tickets_id'        => $ticket->fields["id"],
+                    $pre . 'levels_id'  => $levels_id
+                ],
+                'LIMIT'  => 1
+            ]);
+            if (count($existing) > 0) {
+                return;
+            }
+
             $toadd = [];
             $date = $this->computeExecutionDate(
                 $ticket->fields['date'],
@@ -1112,7 +1127,6 @@ abstract class LevelAgreement extends CommonDBChild
                 $toadd['date']           = $date;
                 $toadd[$pre . 'levels_id'] = $levels_id;
                 $toadd['tickets_id']     = $ticket->fields["id"];
-                $levelticket             = new static::$levelticketclass();
                 $levelticket->add($toadd);
             }
         }

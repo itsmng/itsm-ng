@@ -121,7 +121,7 @@ class Report extends CommonGLPI
             $file          = $data['file'];
             $key           = $CFG_GLPI["root_doc"] . "/front/" . $file;
             $values[$key]  = $name;
-            if (stripos($_SERVER['REQUEST_URI'], $key) !== false) {
+            if (stripos((string) $_SERVER['REQUEST_URI'], $key) !== false) {
                 $selected = $key;
             }
         }
@@ -150,7 +150,7 @@ class Report extends CommonGLPI
                 if ($opt == $val["plug"]) {
                     $file                  = $CFG_GLPI["root_doc"] . "/plugins/" . $key;
                     $values[$group][$file] = $val["name"];
-                    if (stripos($_SERVER['REQUEST_URI'], $file) !== false) {
+                    if (stripos((string) $_SERVER['REQUEST_URI'], $file) !== false) {
                         $selected = $file;
                     }
                 }

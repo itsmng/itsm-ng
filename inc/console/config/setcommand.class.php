@@ -86,7 +86,7 @@ class SetCommand extends AbstractCommand
         $key     = Toolbox::addslashes_deep($input->getArgument('key'));
         $value   = Toolbox::addslashes_deep($input->getArgument('value'));
 
-        if (!preg_match('/^core|plugin:[a-z]+$/', $context)) {
+        if (!preg_match('/^core|plugin:[a-z]+$/', (string) $context)) {
             $output->writeln(
                 sprintf(
                     '<error>' . __('Invalid context "%s".') . '</error>',

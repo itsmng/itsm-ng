@@ -263,7 +263,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
             || !isset($this->fields["network"])
             || ($input["network"] != $this->fields["network"])
         ) {
-            $network = explode("/", $input["network"]);
+            $network = explode("/", (string) $input["network"]);
             if (count($network) != 2) {
                 return ['error' => __('Invalid input format for the network'),
                              'input' => false];
@@ -995,8 +995,8 @@ class IPNetwork extends CommonImplicitTreeDropdown
     public static function getHTMLTableHeader(
         $itemtype,
         HTMLTableBase $base,
-        HTMLTableSuperHeader $super = null,
-        HTMLTableHeader $father = null,
+        ?HTMLTableSuperHeader $super = null,
+        ?HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -1024,9 +1024,9 @@ class IPNetwork extends CommonImplicitTreeDropdown
      * @param $options   array
     **/
     public static function getHTMLTableCellsForItem(
-        HTMLTableRow $row = null,
-        CommonDBTM $item = null,
-        HTMLTableCell $father = null,
+        ?HTMLTableRow $row = null,
+        ?CommonDBTM $item = null,
+        ?HTMLTableCell $father = null,
         array $options = []
     ) {
         if (empty($item)) {
