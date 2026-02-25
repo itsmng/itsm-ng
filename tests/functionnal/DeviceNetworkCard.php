@@ -64,4 +64,3 @@ class DeviceNetworkCard extends DbTestCase
         $this->integer((int)$id_3)->isNotEqualTo((int)$id_1);
     }
 }
-

@@ -1092,7 +1092,7 @@ abstract class LevelAgreement extends CommonDBChild
      *
      * @return void
      **/
-     public function addLevelToDo(Ticket $ticket, $levels_id = 0)
+    public function addLevelToDo(Ticket $ticket, $levels_id = 0)
     {
         global $DB;
 

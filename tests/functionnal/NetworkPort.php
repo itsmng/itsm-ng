@@ -347,7 +347,7 @@ class NetworkPort extends DbTestCase
            'networkports_id_alias' => $origin_port_id,
         ]);
         $this->integer($alias_id)->isGreaterThan(0);
-        
+
         // Check that the alias port's MAC is updated to origin port's MAC
         $aliasNetworkPort = new \NetworkPort();
         $this->boolean($aliasNetworkPort->getFromDB($alias_port_id))->isTrue();

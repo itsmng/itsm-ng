@@ -115,4 +115,3 @@ class Datacenter extends DbTestCase
         $this->integer((int)countElementsInTable(\Item_Rack::getTable(), ['racks_id' => $racks_id]))->isEqualTo(0);
     }
 }
-
