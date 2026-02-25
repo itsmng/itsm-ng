@@ -148,7 +148,10 @@ abstract class NotificationEventAbstract
                                        : 0;
                                     $send_data['_entities_id']              = $entity;
                                     $send_data['mode']                      = $data['mode'];
-                                    $input = isset($item->input) ? $item->input : [];
+                                    $input = [];
+                                    if (property_exists($item, 'input') && is_array($item->input)) {
+                                        $input = $item->input;
+                                    }
                                     $send_data['_locations_id']             = $input['locations_id'] ?? null;
                                     $send_data['_groups_id']                = $input['_groups_id_requester'] ?? null;
                                     $send_data['_itilcategories_id']        = $input['itilcategories_id'] ?? null;
