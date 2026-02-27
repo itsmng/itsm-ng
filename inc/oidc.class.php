@@ -318,12 +318,15 @@ class Oidc extends CommonDBTM
             }
 
             if (isset($user_array[$result[0]["email"]])) {
-                $useremail = new UserEmail();
-                $useremail->add([
-                    'users_id'   => $id,
-                    'email'      => $user_array[$result[0]["email"]],
-                    'is_dynamic' => 0
-                ]);
+                $email = trim((string) $user_array[$result[0]["email"]]);
+                if ($email !== '' && !UserEmail::isEmailForUser($id, $email)) {
+                    $useremail = new UserEmail();
+                    $useremail->add([
+                        'users_id'   => $id,
+                        'email'      => $email,
+                        'is_dynamic' => 0
+                    ]);
+                }
             }
 
             if (isset($user_array[$result[0]["locale"]])) {
