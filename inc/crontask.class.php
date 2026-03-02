@@ -53,6 +53,9 @@ class CronTask extends CommonDBTM
     private $timer = 0.0;
     private $startlog = 0;
     private $volume = 0;
+    private static $currentRunActive = false;
+    private static $shutdownRegistered = false;
+    private static $currentTaskId = 0;
     public static $rightname = 'config';
 
     // Class constant
@@ -209,6 +212,52 @@ class CronTask extends CommonDBTM
             Toolbox::logInFile('cron', __('Action aborted') . "\n");
             exit;
         }
+    }
+
+    private static function registerShutdownHandler(): void
+    {
+        if (self::$shutdownRegistered) {
+            return;
+        }
+        self::$shutdownRegistered = true;
+        register_shutdown_function([self::class, 'handleShutdown']);
+    }
+
+    public static function handleShutdown(): void
+    {
+        if (!self::$currentRunActive) {
+            return;
+        }
+
+        $last_error = error_get_last();
+        if ($last_error === null) {
+            return;
+        }
+        $fatal_types = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR];
+        if (!in_array($last_error['type'], $fatal_types, true)) {
+            return;
+        }
+
+        Toolbox::logInFile('cron', sprintf(
+            __('Fatal error during cron execution: %s in %s on line %d') . "\n",
+            $last_error['message'] ?? 'Unknown',
+            $last_error['file'] ?? 'unknown',
+            $last_error['line'] ?? 0
+        ));
+
+        if (self::$currentTaskId) {
+            $task = new self();
+            if ($task->getFromDB(self::$currentTaskId)) {
+                $task->end(null, CronTaskLog::STATE_ERROR);
+                $task->sendNotificationOnError();
+            }
+        }
+
+        if (isset($_SESSION["glpicronuserrunning"])) {
+            $_SESSION["glpicronuserrunning"] = '';
+        }
+
+        self::release_lock();
     }
 
     /**
@@ -933,7 +982,7 @@ class CronTask extends CommonDBTM
     /**
      * Get a global database lock for cron
      *
-     * @return Boolean
+     * @return bool
      **/
     private static function get_lock()
     {
@@ -978,9 +1027,14 @@ class CronTask extends CommonDBTM
     {
         global $CFG_GLPI;
 
+        self::registerShutdownHandler();
+        self::$currentRunActive = true;
+        self::$currentTaskId = 0;
+
         // No cron in maintenance mode
         if (isset($CFG_GLPI['maintenance_mode']) && $CFG_GLPI['maintenance_mode']) {
             Toolbox::logInFile('cron', __('Maintenance mode enabled, running tasks is disabled') . "\n");
+            self::$currentRunActive = false;
             return false;
         }
 
@@ -1009,77 +1063,105 @@ class CronTask extends CommonDBTM
                     abs($mode) == self::MODE_EXTERNAL ? __('External') : __('Internal'),
                     $i
                 );
-                if ($crontask->getNeedToRun($mode, $name)) {
-                    $_SESSION["glpicronuserrunning"] = "cron_" . $crontask->fields['name'];
+                try {
+                    if ($crontask->getNeedToRun($mode, $name)) {
+                        $_SESSION["glpicronuserrunning"] = "cron_" . $crontask->fields['name'];
+                        self::$currentTaskId = (int) $crontask->fields['id'];
 
-                    $function = sprintf('%s::cron%s', $crontask->fields['itemtype'], $crontask->fields['name']);
+                        $function = sprintf('%s::cron%s', $crontask->fields['itemtype'], $crontask->fields['name']);
 
-                    if (is_callable($function)) {
-                        if ($crontask->start()) { // Lock in DB + log start
-                            $taskname = $crontask->fields['name'];
+                        if (is_callable($function)) {
+                            if ($crontask->start()) { // Lock in DB + log start
+                                $taskname = $crontask->fields['name'];
 
-                            Toolbox::logInFile(
-                                'cron',
-                                sprintf(
-                                    __('%1$s: %2$s'),
-                                    $msgprefix,
-                                    sprintf(__('%1$s %2$s') . "\n", __('Launch'), $crontask->fields['name'])
-                                )
-                            );
-                            try {
-                                $retcode = call_user_func($function, $crontask);
-                            } catch (\Throwable $e) {
-                                global $GLPI;
-                                $GLPI->getErrorHandler()->handleException($e);
                                 Toolbox::logInFile(
                                     'cron',
                                     sprintf(
                                         __('%1$s: %2$s'),
                                         $msgprefix,
-                                        sprintf(
-                                            __('Error during %s execution. Check in "%s" for more details.') . "\n",
-                                            $crontask->fields['name'],
-                                            GLPI_LOG_DIR . '/php-errors.log'
-                                        )
+                                        sprintf(__('%1$s %2$s') . "\n", __('Launch'), $crontask->fields['name'])
                                     )
                                 );
-                                $retcode = null;
-                                $crontask->end(null, CronTaskLog::STATE_ERROR);
-                                $crontask->sendNotificationOnError();
-                                continue;
+                                try {
+                                    $retcode = call_user_func($function, $crontask);
+                                } catch (\Throwable $e) {
+                                    global $GLPI;
+                                    $GLPI->getErrorHandler()->handleException($e);
+                                    Toolbox::logInFile(
+                                        'cron',
+                                        sprintf(
+                                            __('%1$s: %2$s'),
+                                            $msgprefix,
+                                            sprintf(
+                                                __('Error during %s execution: %s. Check in "%s" for more details.') . "\n",
+                                                $crontask->fields['name'],
+                                                $e->getMessage(),
+                                                GLPI_LOG_DIR . '/php-errors.log'
+                                            )
+                                        )
+                                    );
+                                    $retcode = null;
+                                    $crontask->end(null, CronTaskLog::STATE_ERROR);
+                                    $crontask->sendNotificationOnError();
+                                    self::$currentTaskId = 0;
+                                    continue;
+                                }
+                                $crontask->end($retcode); // Unlock in DB + log end
+                            } else {
+                                Toolbox::logInFile(
+                                    'cron',
+                                    sprintf(
+                                        __('%1$s: %2$s'),
+                                        $msgprefix,
+                                        sprintf(__('%1$s %2$s') . "\n", __("Can't start"), $crontask->fields['name'])
+                                    )
+                                );
                             }
-                            $crontask->end($retcode); // Unlock in DB + log end
                         } else {
+                            $undefined_msg = sprintf(__('Undefined function %s (for cron)') . "\n", $function);
+                            Toolbox::logInFile('php-errors', $undefined_msg);
                             Toolbox::logInFile(
                                 'cron',
                                 sprintf(
                                     __('%1$s: %2$s'),
                                     $msgprefix,
                                     sprintf(__('%1$s %2$s') . "\n", __("Can't start"), $crontask->fields['name'])
-                                )
+                                ) . "\n" . $undefined_msg
                             );
                         }
-                    } else {
-                        $undefined_msg = sprintf(__('Undefined function %s (for cron)') . "\n", $function);
-                        Toolbox::logInFile('php-errors', $undefined_msg);
-                        Toolbox::logInFile(
-                            'cron',
-                            sprintf(
-                                __('%1$s: %2$s'),
-                                $msgprefix,
-                                sprintf(__('%1$s %2$s') . "\n", __("Can't start"), $crontask->fields['name'])
-                            ) . "\n" . $undefined_msg
-                        );
+                        self::$currentTaskId = 0;
+                    } elseif ($i == 1) {
+                        $msgcron = sprintf(__('%1$s: %2$s'), $msgprefix, __('Nothing to launch'));
+                        Toolbox::logInFile('cron', $msgcron . "\n");
                     }
-                } elseif ($i == 1) {
-                    $msgcron = sprintf(__('%1$s: %2$s'), $msgprefix, __('Nothing to launch'));
-                    Toolbox::logInFile('cron', $msgcron . "\n");
+                } catch (\Throwable $e) {
+                    global $GLPI;
+                    $GLPI->getErrorHandler()->handleException($e);
+                    Toolbox::logInFile(
+                        'cron',
+                        sprintf(
+                            __('%1$s: %2$s'),
+                            $msgprefix,
+                            sprintf(__('Unexpected error in cron loop: %s') . "\n", $e->getMessage())
+                        )
+                    );
+                    if (self::$currentTaskId) {
+                        $task = new self();
+                        if ($task->getFromDB(self::$currentTaskId)) {
+                            $task->end(null, CronTaskLog::STATE_ERROR);
+                            $task->sendNotificationOnError();
+                        }
+                        self::$currentTaskId = 0;
+                    }
+                    continue;
                 }
             } // end for
             $_SESSION["glpicronuserrunning"] = '';
             self::release_lock();
+            self::$currentRunActive = false;
         } else {
             Toolbox::logInFile('cron', __("Can't get DB lock") . "\n");
+            self::$currentRunActive = false;
         }
 
         return $taskname;
