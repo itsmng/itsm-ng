@@ -36,7 +36,20 @@
         toolbar: ['heading',
           '|', 'bold', 'italic', 'blockQuote', 'link', 'insertImage',
           '|', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable',
-          '|', 'sourceEditing']
+          '|', 'sourceEditing'],
+        link: {
+          decorators: {
+            openInNewTab: {
+              mode: 'manual',
+              label: 'Open in a new tab',
+              defaultValue: false,
+              attributes: {
+                target: '_blank',
+                rel: 'noopener noreferrer'
+              }
+            }
+          }
+        }
       })
       .then(editor => {
         var editor_{{attributes.id|default("ckEditorInstance" ~ rand)}} = editor;
