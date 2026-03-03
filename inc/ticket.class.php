@@ -7046,6 +7046,12 @@ class Ticket extends CommonITILObject {
          $excluded[] = 'Ticket:*';
          $excluded[] = 'ITILFollowup:*';
          $excluded[] = 'Document_Item:*';
+      } elseif (in_array($this->fields['status'], $this->getSolvedStatusArray())) {
+         //for solved Tickets, exclude actions that are restricted in timeline
+         $excluded[] = 'TicketValidation:submit_validation';
+         $excluded[] = 'Ticket:add_task';
+         $excluded[] = 'ITILFollowup:add_followup';
+         $excluded[] = 'Document_Item:*';
       }
       return $excluded;
    }
