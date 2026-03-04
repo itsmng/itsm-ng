@@ -84,7 +84,7 @@ class Session
         if ($auth->auth_succeded) {
             // Restart GLPI session : complete destroy to prevent lost datas
             $tosave = ['glpi_plugins', 'glpicookietest', 'phpCAS', 'glpicsrftokens',
-                            'glpiskipMaintenance'];
+                            'glpiskipMaintenance', 'glpi_remote_user'];
             $save   = [];
             foreach ($tosave as $t) {
                 if (isset($_SESSION[$t])) {
@@ -850,12 +850,24 @@ class Session
     **/
     public static function checkValidSessionId()
     {
+        global $CFG_GLPI;
 
         if (
             !isset($_SESSION['valid_id'])
             || ($_SESSION['valid_id'] !== session_id())
         ) {
             Html::redirectToLogin('error=3');
+        }
+
+        if (array_key_exists('glpi_remote_user', $_SESSION)) {
+            $ssovariable = Dropdown::getDropdownName(
+                'glpi_ssovariables',
+                $CFG_GLPI["ssovariables_id"]
+            );
+            if (!array_key_exists($ssovariable, $_SERVER)
+                || $_SERVER[$ssovariable] !== $_SESSION['glpi_remote_user']) {
+                Html::redirectToLogin('error=3');
+            }
         }
         return true;
     }
