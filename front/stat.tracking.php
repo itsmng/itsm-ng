@@ -145,162 +145,57 @@ echo "</table>";
 echo "</form>";
 echo "</div>";
 
-$val    = Stat::getItems(
-    $_GET["itemtype"],
-    $_GET["date1"],
-    $_GET["date2"],
-    $_GET["type"],
-    $_GET["value2"]
-);
-$params = ['type'   => $_GET["type"],
-                'date1'  => $_GET["date1"],
-                'date2'  => $_GET["date2"],
-                'value2' => $_GET["value2"],
-                'start'  => $_GET["start"]];
-
-Html::printPager(
-    $_GET['start'],
-    count($val),
-    $CFG_GLPI['root_doc'] . '/front/stat.tracking.php',
-    "date1=" . $_GET["date1"] . "&amp;date2=" . $_GET["date2"] . "&amp;type=" . $_GET["type"] .
-                    "&amp;showgraph=" . $_GET["showgraph"] . "&amp;itemtype=" . $_GET["itemtype"] .
-                    "&amp;value2=" . $_GET['value2'],
-    'Stat',
-    $params
-);
-
-if (!$_GET['showgraph']) {
-    Stat::showTable(
+if (isset($_GET['submit'])) {
+    $val    = Stat::getItems(
         $_GET["itemtype"],
-        $_GET["type"],
         $_GET["date1"],
         $_GET["date2"],
-        $_GET['start'],
-        $val,
-        $_GET['value2']
-    );
-} else {
-    $data = Stat::getData(
-        $_GET["itemtype"],
         $_GET["type"],
-        $_GET["date1"],
-        $_GET["date2"],
+        $_GET["value2"]
+    );
+    $params = ['type'   => $_GET["type"],
+                    'date1'  => $_GET["date1"],
+                    'date2'  => $_GET["date2"],
+                    'value2' => $_GET["value2"],
+                    'start'  => $_GET["start"]];
+
+    Html::printPager(
         $_GET['start'],
-        $val,
-        $_GET['value2']
+        count($val),
+        $CFG_GLPI['root_doc'] . '/front/stat.tracking.php',
+        "date1=" . $_GET["date1"] . "&amp;date2=" . $_GET["date2"] . "&amp;type=" . $_GET["type"] .
+                        "&amp;showgraph=" . $_GET["showgraph"] . "&amp;itemtype=" . $_GET["itemtype"] .
+                        "&amp;value2=" . $_GET['value2'],
+        'Stat',
+        $params
     );
 
-    if (isset($data['opened']) && is_array($data['opened'])) {
-        $count = 0;
-        $labels = [];
-        $series = [];
-        foreach ($data['opened'] as $key => $val) {
-            $newkey             = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
-            if ($val > 0) {
-                $labels[] = $newkey;
-                $series[] = ['name' => $newkey, 'data' => $val];
-                $count += $val;
-            }
-        }
+    if (!$_GET['showgraph']) {
+        Stat::showTable(
+            $_GET["itemtype"],
+            $_GET["type"],
+            $_GET["date1"],
+            $_GET["date2"],
+            $_GET['start'],
+            $val,
+            $_GET['value2']
+        );
+    } else {
+        $data = Stat::getData(
+            $_GET["itemtype"],
+            $_GET["type"],
+            $_GET["date1"],
+            $_GET["date2"],
+            $_GET['start'],
+            $val,
+            $_GET['value2']
+        );
 
-        if (count($series)) {
-            $stat->displayPieGraph(
-                sprintf(
-                    __('Opened %1$s (%2$s)'),
-                    $item->getTypeName(Session::getPluralNumber()),
-                    $count
-                ),
-                $labels,
-                $series
-            );
-        }
-    }
-
-    if (isset($data['solved']) && is_array($data['solved'])) {
-        $count = 0;
-        $labels = [];
-        $series = [];
-        foreach ($data['solved'] as $key => $val) {
-            $newkey             = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
-            if ($val > 0) {
-                $labels[] = $newkey;
-                $series[] = ['name' => $newkey, 'data' => $val];
-                $count += $val;
-            }
-        }
-
-        if (count($series)) {
-            $stat->displayPieGraph(
-                sprintf(
-                    __('Solved %1$s (%2$s)'),
-                    $item->getTypeName(Session::getPluralNumber()),
-                    $count
-                ),
-                $labels,
-                $series
-            );
-        }
-    }
-
-    if (isset($data['late']) && is_array($data['late'])) {
-        $count = 0;
-        $labels = [];
-        $series = [];
-        foreach ($data['late'] as $key => $val) {
-            $newkey             = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
-            if ($val > 0) {
-                $labels[] = $newkey;
-                $series[] = ['name' => $newkey, 'data' => $val];
-                $count += $val;
-            }
-        }
-
-        if (count($series)) {
-            $stat->displayPieGraph(
-                sprintf(
-                    __('Solved late %1$s (%2$s)'),
-                    $item->getTypeName(Session::getPluralNumber()),
-                    $count
-                ),
-                $labels,
-                $series
-            );
-        }
-    }
-
-
-    if (isset($data['closed']) && is_array($data['closed'])) {
-        $count = 0;
-        $labels = [];
-        $series = [];
-        foreach ($data['closed'] as $key => $val) {
-            $newkey             = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
-            if ($val > 0) {
-                $labels[] = $newkey;
-                $series[] = ['name' => $newkey, 'data' => $val];
-                $count += $val;
-            }
-        }
-
-        if (count($series)) {
-            $stat->displayPieGraph(
-                sprintf(
-                    __('Closed %1$s (%2$s)'),
-                    $item->getTypeName(Session::getPluralNumber()),
-                    $count
-                ),
-                $labels,
-                $series
-            );
-        }
-    }
-
-    if ($_GET['itemtype'] == 'Ticket') {
-        $count = 0;
-        $labels = [];
-        $series = [];
-        if (isset($data['opensatisfaction']) && is_array($data['opensatisfaction'])) {
-            foreach ($data['opensatisfaction'] as $key => $val) {
+        if (isset($data['opened']) && is_array($data['opened'])) {
+            $count = 0;
+            $labels = [];
+            $series = [];
+            foreach ($data['opened'] as $key => $val) {
                 $newkey             = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
                 if ($val > 0) {
                     $labels[] = $newkey;
@@ -312,13 +207,120 @@ if (!$_GET['showgraph']) {
             if (count($series)) {
                 $stat->displayPieGraph(
                     sprintf(
-                        __('%1$s satisfaction survey (%2$s)'),
+                        __('Opened %1$s (%2$s)'),
                         $item->getTypeName(Session::getPluralNumber()),
                         $count
                     ),
                     $labels,
                     $series
                 );
+            }
+        }
+
+        if (isset($data['solved']) && is_array($data['solved'])) {
+            $count = 0;
+            $labels = [];
+            $series = [];
+            foreach ($data['solved'] as $key => $val) {
+                $newkey             = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
+                if ($val > 0) {
+                    $labels[] = $newkey;
+                    $series[] = ['name' => $newkey, 'data' => $val];
+                    $count += $val;
+                }
+            }
+
+            if (count($series)) {
+                $stat->displayPieGraph(
+                    sprintf(
+                        __('Solved %1$s (%2$s)'),
+                        $item->getTypeName(Session::getPluralNumber()),
+                        $count
+                    ),
+                    $labels,
+                    $series
+                );
+            }
+        }
+
+        if (isset($data['late']) && is_array($data['late'])) {
+            $count = 0;
+            $labels = [];
+            $series = [];
+            foreach ($data['late'] as $key => $val) {
+                $newkey             = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
+                if ($val > 0) {
+                    $labels[] = $newkey;
+                    $series[] = ['name' => $newkey, 'data' => $val];
+                    $count += $val;
+                }
+            }
+
+            if (count($series)) {
+                $stat->displayPieGraph(
+                    sprintf(
+                        __('Solved late %1$s (%2$s)'),
+                        $item->getTypeName(Session::getPluralNumber()),
+                        $count
+                    ),
+                    $labels,
+                    $series
+                );
+            }
+        }
+
+
+        if (isset($data['closed']) && is_array($data['closed'])) {
+            $count = 0;
+            $labels = [];
+            $series = [];
+            foreach ($data['closed'] as $key => $val) {
+                $newkey             = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
+                if ($val > 0) {
+                    $labels[] = $newkey;
+                    $series[] = ['name' => $newkey, 'data' => $val];
+                    $count += $val;
+                }
+            }
+
+            if (count($series)) {
+                $stat->displayPieGraph(
+                    sprintf(
+                        __('Closed %1$s (%2$s)'),
+                        $item->getTypeName(Session::getPluralNumber()),
+                        $count
+                    ),
+                    $labels,
+                    $series
+                );
+            }
+        }
+
+        if ($_GET['itemtype'] == 'Ticket') {
+            $count = 0;
+            $labels = [];
+            $series = [];
+            if (isset($data['opensatisfaction']) && is_array($data['opensatisfaction'])) {
+                foreach ($data['opensatisfaction'] as $key => $val) {
+                    $newkey             = Toolbox::unclean_cross_side_scripting_deep(Html::clean($key));
+                    if ($val > 0) {
+                        $labels[] = $newkey;
+                        $series[] = ['name' => $newkey, 'data' => $val];
+                        $count += $val;
+                    }
+                }
+
+                if (count($series)) {
+                    $stat->displayPieGraph(
+                        sprintf(
+                            __('%1$s satisfaction survey (%2$s)'),
+                            $item->getTypeName(Session::getPluralNumber()),
+                            $count
+                        ),
+                        $labels,
+                        $series
+                    );
+                }
             }
         }
     }

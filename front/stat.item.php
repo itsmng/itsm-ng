@@ -79,6 +79,8 @@ echo "</table>";
 Html::closeForm();
 echo "</div>";
 
-Stat::showItems($_SERVER['PHP_SELF'], $_POST["date1"], $_POST["date2"], $_GET['start']);
+if (isset($_POST['submit'])) {
+    Stat::showItems($_SERVER['PHP_SELF'], $_POST["date1"], $_POST["date2"], $_GET['start']);
+}
 
 Html::footer();

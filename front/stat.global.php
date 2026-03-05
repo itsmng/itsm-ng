@@ -74,160 +74,162 @@ $stat->displaySearchForm(
     $_GET['date2']
 );
 
-///////// Stats nombre intervention
-$values = [];
-// Total des interventions
-$values['total']   = Stat::constructEntryValues(
-    $_GET['itemtype'],
-    "inter_total",
-    $_GET["date1"],
-    $_GET["date2"]
-);
-// Total des interventions résolues
-$values['solved']  = Stat::constructEntryValues(
-    $_GET['itemtype'],
-    "inter_solved",
-    $_GET["date1"],
-    $_GET["date2"]
-);
-// Total des interventions closes
-$values['closed']  = Stat::constructEntryValues(
-    $_GET['itemtype'],
-    "inter_closed",
-    $_GET["date1"],
-    $_GET["date2"]
-);
-// Total des interventions closes
-$values['late']    = Stat::constructEntryValues(
-    $_GET['itemtype'],
-    "inter_solved_late",
-    $_GET["date1"],
-    $_GET["date2"]
-);
-
-$stat->displayLineGraph(
-    _x('Quantity', 'Number') . " - " . $item->getTypeName(Session::getPluralNumber()),
-    array_keys($values['total']),
-    [
-        [
-            'name' => _nx('ticket', 'Opened', 'Opened', Session::getPluralNumber()),
-            'data' => $values['total']
-        ], [
-            'name' => _nx('ticket', 'Solved', 'Solved', Session::getPluralNumber()),
-            'data' => $values['solved']
-        ], [
-            'name' => __('Late'),
-            'data' => $values['late']
-        ], [
-            'name' => __('Closed'),
-            'data' => $values['closed']
-        ]
-    ]
-);
-
-$values = [];
-//Temps moyen de resolution d'intervention
-$values['avgsolved'] = Stat::constructEntryValues(
-    $_GET['itemtype'],
-    "inter_avgsolvedtime",
-    $_GET["date1"],
-    $_GET["date2"]
-);
-// Pass to hour values
-foreach ($values['avgsolved'] as &$val) {
-    $val = round($val / HOUR_TIMESTAMP, 2);
-}
-
-//Temps moyen de cloture d'intervention
-$values['avgclosed'] = Stat::constructEntryValues(
-    $_GET['itemtype'],
-    "inter_avgclosedtime",
-    $_GET["date1"],
-    $_GET["date2"]
-);
-// Pass to hour values
-foreach ($values['avgclosed'] as &$val) {
-    $val = round($val / HOUR_TIMESTAMP, 2);
-}
-//Temps moyen d'intervention reel
-$values['avgactiontime'] = Stat::constructEntryValues(
-    $_GET['itemtype'],
-    "inter_avgactiontime",
-    $_GET["date1"],
-    $_GET["date2"]
-);
-
-// Pass to hour values
-foreach ($values['avgactiontime'] as &$val) {
-    $val =  round($val / HOUR_TIMESTAMP, 2);
-}
-
-$stat->displayLineGraph(
-    __('Average time') . " - " .  _n('Hour', 'Hours', Session::getPluralNumber()),
-    array_keys($values['avgsolved']),
-    [
-        [
-            'name' => __('Closure'),
-            'data' => $values['avgsolved']
-        ], [
-            'name' => __('Resolution'),
-            'data' => $values['avgclosed']
-        ], [
-            'name' => __('Real duration'),
-            'data' => $values['avgactiontime']
-        ]
-    ]
-);
-
-if ($_GET['itemtype'] == 'Ticket') {
-    ///////// Satisfaction
+if (isset($_GET['submit'])) {
+    ///////// Stats nombre intervention
     $values = [];
-    $values['opensatisfaction']   = Stat::constructEntryValues(
+    // Total des interventions
+    $values['total']   = Stat::constructEntryValues(
         $_GET['itemtype'],
-        "inter_opensatisfaction",
+        "inter_total",
         $_GET["date1"],
         $_GET["date2"]
     );
-
-    $values['answersatisfaction'] = Stat::constructEntryValues(
+    // Total des interventions résolues
+    $values['solved']  = Stat::constructEntryValues(
         $_GET['itemtype'],
-        "inter_answersatisfaction",
+        "inter_solved",
+        $_GET["date1"],
+        $_GET["date2"]
+    );
+    // Total des interventions closes
+    $values['closed']  = Stat::constructEntryValues(
+        $_GET['itemtype'],
+        "inter_closed",
+        $_GET["date1"],
+        $_GET["date2"]
+    );
+    // Total des interventions closes
+    $values['late']    = Stat::constructEntryValues(
+        $_GET['itemtype'],
+        "inter_solved_late",
         $_GET["date1"],
         $_GET["date2"]
     );
 
     $stat->displayLineGraph(
-        __('Satisfaction survey') . " - " .  __('Tickets'),
-        array_keys($values['opensatisfaction']),
+        _x('Quantity', 'Number') . " - " . $item->getTypeName(Session::getPluralNumber()),
+        array_keys($values['total']),
         [
             [
-                'name' => _nx('survey', 'Opened', 'Opened', Session::getPluralNumber()),
-                'data' => $values['opensatisfaction']
+                'name' => _nx('ticket', 'Opened', 'Opened', Session::getPluralNumber()),
+                'data' => $values['total']
             ], [
-                'name' => _nx('survey', 'Answered', 'Answered', Session::getPluralNumber()),
-                'data' => $values['answersatisfaction']
+                'name' => _nx('ticket', 'Solved', 'Solved', Session::getPluralNumber()),
+                'data' => $values['solved']
+            ], [
+                'name' => __('Late'),
+                'data' => $values['late']
+            ], [
+                'name' => __('Closed'),
+                'data' => $values['closed']
             ]
         ]
     );
 
     $values = [];
-    $values['avgsatisfaction'] = Stat::constructEntryValues(
+    //Temps moyen de resolution d'intervention
+    $values['avgsolved'] = Stat::constructEntryValues(
         $_GET['itemtype'],
-        "inter_avgsatisfaction",
+        "inter_avgsolvedtime",
+        $_GET["date1"],
+        $_GET["date2"]
+    );
+    // Pass to hour values
+    foreach ($values['avgsolved'] as &$val) {
+        $val = round($val / HOUR_TIMESTAMP, 2);
+    }
+
+    //Temps moyen de cloture d'intervention
+    $values['avgclosed'] = Stat::constructEntryValues(
+        $_GET['itemtype'],
+        "inter_avgclosedtime",
+        $_GET["date1"],
+        $_GET["date2"]
+    );
+    // Pass to hour values
+    foreach ($values['avgclosed'] as &$val) {
+        $val = round($val / HOUR_TIMESTAMP, 2);
+    }
+    //Temps moyen d'intervention reel
+    $values['avgactiontime'] = Stat::constructEntryValues(
+        $_GET['itemtype'],
+        "inter_avgactiontime",
         $_GET["date1"],
         $_GET["date2"]
     );
 
+    // Pass to hour values
+    foreach ($values['avgactiontime'] as &$val) {
+        $val =  round($val / HOUR_TIMESTAMP, 2);
+    }
+
     $stat->displayLineGraph(
-        __('Satisfaction'),
-        array_keys($values['avgsatisfaction']),
+        __('Average time') . " - " .  _n('Hour', 'Hours', Session::getPluralNumber()),
+        array_keys($values['avgsolved']),
         [
             [
-                'name' => __('Satisfaction'),
-                'data' => $values['avgsatisfaction']
+                'name' => __('Closure'),
+                'data' => $values['avgsolved']
+            ], [
+                'name' => __('Resolution'),
+                'data' => $values['avgclosed']
+            ], [
+                'name' => __('Real duration'),
+                'data' => $values['avgactiontime']
             ]
         ]
     );
+
+    if ($_GET['itemtype'] == 'Ticket') {
+        ///////// Satisfaction
+        $values = [];
+        $values['opensatisfaction']   = Stat::constructEntryValues(
+            $_GET['itemtype'],
+            "inter_opensatisfaction",
+            $_GET["date1"],
+            $_GET["date2"]
+        );
+
+        $values['answersatisfaction'] = Stat::constructEntryValues(
+            $_GET['itemtype'],
+            "inter_answersatisfaction",
+            $_GET["date1"],
+            $_GET["date2"]
+        );
+
+        $stat->displayLineGraph(
+            __('Satisfaction survey') . " - " .  __('Tickets'),
+            array_keys($values['opensatisfaction']),
+            [
+                [
+                    'name' => _nx('survey', 'Opened', 'Opened', Session::getPluralNumber()),
+                    'data' => $values['opensatisfaction']
+                ], [
+                    'name' => _nx('survey', 'Answered', 'Answered', Session::getPluralNumber()),
+                    'data' => $values['answersatisfaction']
+                ]
+            ]
+        );
+
+        $values = [];
+        $values['avgsatisfaction'] = Stat::constructEntryValues(
+            $_GET['itemtype'],
+            "inter_avgsatisfaction",
+            $_GET["date1"],
+            $_GET["date2"]
+        );
+
+        $stat->displayLineGraph(
+            __('Satisfaction'),
+            array_keys($values['avgsatisfaction']),
+            [
+                [
+                    'name' => __('Satisfaction'),
+                    'data' => $values['avgsatisfaction']
+                ]
+            ]
+        );
+    }
 }
 
 
