@@ -981,6 +981,29 @@ class Ticket extends CommonITILObject
         // Get ticket : need for comparison
         $this->getFromDB($input['id']);
 
+        $entid = $input['entities_id'] ?? $this->fields['entities_id'];
+        if (Entity::getUsedConfig('lock_ticket_date', $entid, '', 0)) {
+            if (array_key_exists('date', $input)) {
+                $current_date = (string) $this->fields['date'];
+                $input_date = (string) $input['date'];
+                if (
+                    $input_date === ''
+                    || $input_date === 'NULL'
+                    || substr($current_date, 0, 16) !== substr($input_date, 0, 16)
+                ) {
+                    Session::addMessageAfterRedirect(
+                        __('Ticket creation date modification is not allowed for this entity.'),
+                        false,
+                        ERROR
+                    );
+                    $input['date'] = $this->fields['date'];
+                    if (isset($_SESSION['saveInput'][$this->getType()]['date'])) {
+                        $_SESSION['saveInput'][$this->getType()]['date'] = $this->fields['date'];
+                    }
+                }
+            }
+        }
+
         // Clean new lines before passing to rules
         if (isset($input["content"])) {
             $input["content"] = preg_replace('/\\\\r\\\\n/', "\n", $input['content']);

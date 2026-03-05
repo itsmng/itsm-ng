@@ -12867,6 +12867,14 @@ msgstr "Mark followup added by a supplier though an email collector as private"
 msgid "Anonymize support agents"
 msgstr "Unnamed support agents"
 
+#: inc/entity.class.php:2478
+msgid "Lock ticket creation date"
+msgstr "Lock ticket creation date"
+
+#: inc/commonitilobject.class.php:1312
+msgid "Ticket creation date modification is not allowed for this entity."
+msgstr "Ticket creation date modification is not allowed for this entity."
+
 #: inc/entity.class.php:2609 inc/entity.class.php:2304
 msgid "Automatic closing configuration"
 msgstr "Automatic Closing Configuration"
