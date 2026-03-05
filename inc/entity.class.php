@@ -114,8 +114,9 @@ class Entity extends CommonTreeDropdown
           'inquest_duration','inquest_URL',
           'max_closedate', 'tickettemplates_id',
           'changetemplates_id', 'problemtemplates_id',
-          'suppliers_as_private', 'autopurge_delay', 'anonymize_support_agents'
-       ],
+           'suppliers_as_private', 'autopurge_delay', 'anonymize_support_agents',
+           'lock_ticket_date'
+        ],
        // Configuration
        'config' => ['enable_custom_css', 'custom_css_code']
     ];
@@ -2462,17 +2463,23 @@ class Entity extends CommonTreeDropdown
                        'after' => ($ID > 0 && ($entity->getField('suppliers_as_private') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('suppliers_as_private', ['suppliers_as_private' => self::getUsedConfig('suppliers_as_private', $ID)]), false, false) : '',
                   ],
-                  __('Anonymize support agents') => [
-                       'type'  => 'select',
-                       'name'  => 'anonymize_support_agents',
-                       'value' => $entity->fields["anonymize_support_agents"],
-                       'values' => $anonymizeValues,
-                       'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('anonymize_support_agents') == self::CONFIG_PARENT)) ?
-                                  self::inheritedValue(self::getSpecificValueToDisplay('anonymize_support_agents', ['anonymize_support_agents' => self::getUsedConfig('anonymize_support_agents', $ID)]), false, false) : '',
-                  ],
-               ]
-              ],
+                   __('Anonymize support agents') => [
+                        'type'  => 'select',
+                        'name'  => 'anonymize_support_agents',
+                        'value' => $entity->fields["anonymize_support_agents"],
+                        'values' => $anonymizeValues,
+                        'col_lg' => 6,
+                        'after' => ($ID > 0 && ($entity->getField('anonymize_support_agents') == self::CONFIG_PARENT)) ?
+                                   self::inheritedValue(self::getSpecificValueToDisplay('anonymize_support_agents', ['anonymize_support_agents' => self::getUsedConfig('anonymize_support_agents', $ID)]), false, false) : '',
+                   ],
+                   __('Lock ticket creation date') => [
+                        'type'  => 'checkbox',
+                        'name'  => 'lock_ticket_date',
+                        'value' => $entity->fields["lock_ticket_date"],
+                        'col_lg' => 6,
+                   ],
+                ]
+               ],
               __('Automatic closing configuration') => [
                'visible' => true,
                'inputs' => [
