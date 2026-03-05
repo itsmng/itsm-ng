@@ -74,7 +74,8 @@
         "natxet/cssmin": "^3.0",
         "rector/rector": "^2.3",
         "sserbin/twig-linter": "^3.1",
-        "symfony/var-dumper": "^6.3"
+        "symfony/var-dumper": "^6.3",
+        "vimeo/psalm": "^5.26"
     },
     "replace": {
         "paragonie/random_compat": "*",
@@ -87,7 +88,7 @@
         "ext-sodium": "Used to provide strong encryption for sensitive data in database"
     },
     "config": {
-	     "optimize-autoloader": true,
+        "optimize-autoloader": true,
         "platform": {
             "php": "8.1"
         },
@@ -116,10 +117,23 @@
         "test:imap": "php vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --no-code-coverage --max-children-number 1 -d tests/imap",
         "server": "php -S localhost:8000"
     },
-    "repositories": {
-        "htmlawed": {
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "apereo/phpcas",
+                "version": "1.6.2",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/EsupPortail/phpCAS",
+                    "reference": "master"
+                }
+            }
+        },
+        {
             "type": "composer",
-            "url": "https://www.bioinformatics.org/phplabware/downloads/"
+            "url": "https://www.bioinformatics.org/phplabware/downloads/",
+            "name": "htmlawed"
         }
-    }
+    ]
 }
