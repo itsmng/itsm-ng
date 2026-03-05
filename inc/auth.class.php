@@ -535,11 +535,12 @@ class Auth extends CommonGLPI {
             if (self::isValidLogin($login)) {
                $this->user->fields['name'] = $login;
                // Get data from SSO if defined
-               $ret = $this->user->getFromSSO();
-               if (!$ret) {
-                  return false;
-               }
-               return true;
+                $ret = $this->user->getFromSSO();
+                if (!$ret) {
+                   return false;
+                }
+                $_SESSION['glpi_remote_user'] = $login_string;
+                return true;
             }
             break;
 
