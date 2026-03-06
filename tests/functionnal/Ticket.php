@@ -2308,6 +2308,53 @@ class Ticket extends DbTestCase
         $this->boolean($ticket->isAlreadyTakenIntoAccount())->isTrue();
     }
 
+    public function testLockTicketDatePreventsUpdate()
+    {
+        $this->login();
+        $this->setEntity('Root entity', true);
+
+        $entity = new \Entity();
+        $this->boolean($entity->update([
+           'id' => 0,
+           'lock_ticket_date' => 1,
+        ]))->isTrue();
+
+        $ticket = new \Ticket();
+        $original_date = date('Y-m-d H:i:s', time() - DAY_TIMESTAMP);
+        $tickets_id = $ticket->add([
+           'name'        => 'test locked ticket date',
+           'content'     => 'test locked ticket date',
+           'entities_id' => 0,
+           'date'        => $original_date,
+        ]);
+        $this->integer((int)$tickets_id)->isGreaterThan(0);
+        $this->boolean($ticket->getFromDB($tickets_id))->isTrue();
+        $this->string($ticket->fields['date'])->isEqualTo($original_date);
+
+        $new_date = date('Y-m-d H:i:s', time());
+        $this->boolean(
+            $ticket->update([
+               'id'   => $tickets_id,
+               'name' => 'test locked ticket date updated',
+               'date' => $new_date,
+            ])
+        );
+        $this->boolean($ticket->getFromDB($tickets_id))->isTrue();
+        $this->string($ticket->fields['name'])->isEqualTo('test locked ticket date updated');
+        $this->string($ticket->fields['date'])->isEqualTo($original_date);
+
+        $this->array($_SESSION)->hasKey('MESSAGE_AFTER_REDIRECT');
+        $this->array($_SESSION['MESSAGE_AFTER_REDIRECT'])->hasKey(ERROR);
+        $this->array($_SESSION['MESSAGE_AFTER_REDIRECT'][ERROR])
+           ->contains('Ticket creation date modification is not allowed for this entity.');
+        \Html::displayMessageAfterRedirect();
+
+        $this->boolean($entity->update([
+           'id' => 0,
+           'lock_ticket_date' => 0,
+        ]))->isTrue();
+    }
+
     public function testCronCloseTicket()
     {
         global $DB;
