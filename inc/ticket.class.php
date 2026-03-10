@@ -5194,7 +5194,6 @@ class Ticket extends CommonITILObject
                   ],
                   Location::getTypeName(1) => [
                      'type' => 'select',
-                     'noLib' => 'true',
                      'name' => 'locations_id',
                      'itemtype' => Location::class,
                      'value' => $this->fields['locations_id'],
