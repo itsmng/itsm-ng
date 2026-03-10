@@ -5123,7 +5123,6 @@ class Ticket extends CommonITILObject
                   ],
                   __('Category') => [
                      'type' => 'select',
-                     'noLib' => 'true',
                      'id' => 'dropdownForTicketCategory',
                      'name' => 'itilcategories_id',
                      'actions' => getItemActionButtons(['info', 'add'], 'ITILCategory'),
