@@ -328,10 +328,30 @@
       const $selectorContainer = $panel.find('[data-role="selector-container"]');
       const $list = $panel.find('[data-role="actor-list"]');
       const $emptyState = $panel.find('[data-role="empty-state"]');
+      const form = panel.closest('form');
 
       const updateEmptyState = () => {
         const hasEntries = $list.find('[data-actor-entry]').length > 0;
         $emptyState.toggleClass('d-none', hasEntries);
+      };
+
+      const getCurrentValueField = (spec) => {
+        if (!spec) {
+          return $();
+        }
+
+        return $selectorContainer.find(`[name="${spec.tempValueField}"]`).first();
+      };
+
+      const resetSelector = (selectedType) => {
+        const spec = fieldMap[selectedType];
+        const $valueField = getCurrentValueField(spec);
+        if (!$valueField.length) {
+          return;
+        }
+
+        const emptyValue = $valueField.find('option[value=""]').length ? '' : '0';
+        $valueField.val(emptyValue).trigger('change');
       };
 
       const entryExists = (type, id, email) => {
@@ -438,9 +458,9 @@
         const actorLabel = $valueField.length ? $.trim($valueField.find('option:selected').text()) : '';
         const $notifCheckbox = $selectorContainer.find(`input[type="checkbox"][name^="${spec.tempNotifFieldPrefix}"]`).first();
         const $notifSelect = $selectorContainer.find(`select[name^="${spec.tempNotifFieldPrefix}"]`).first();
-        const $notifField = $notifCheckbox.length ? $notifCheckbox : $notifSelect;
         const $emailField = $selectorContainer.find(`[name^="${spec.tempEmailFieldPrefix}"]`).first();
         const alternativeEmail = $emailField.length ? $.trim($emailField.val()) : '';
+        const defaultEmail = $emailField.length ? $.trim(String($emailField.attr('data-default-email') || '')) : '';
         let useNotification = '1';
         if ($notifCheckbox.length) {
           useNotification = $notifCheckbox.is(':checked') ? '1' : '0';
@@ -460,16 +480,39 @@
         if (spec.notifField) {
           subtitleParts.push(`{{ 'Email followup'|trans|e('js') }}: ${useNotification === '1' ? '{{ 'Yes'|trans|e('js') }}' : '{{ 'No'|trans|e('js') }}'}`);
         }
-        if (alternativeEmail !== '') {
+        if (
+          alternativeEmail !== ''
+          && (!defaultEmail || alternativeEmail.toLowerCase() !== defaultEmail.toLowerCase())
+        ) {
           subtitleParts.push(alternativeEmail);
         }
 
-        const hiddenFields = [{ name: `${spec.valueField}[]`, value: actorId }];
-        if (spec.notifField) {
+        const hiddenFields = [];
+        if (ticketId > 0) {
+          $list.find('[data-actor-entry]').filter((_, element) => {
+            const $element = $(element);
+            return $element.data('persisted') !== 1 && $element.data('persisted') !== '1';
+          }).remove();
+
           hiddenFields.push(
-            { name: `${spec.notifField}[use_notification][]`, value: useNotification },
-            { name: `${spec.notifField}[alternative_email][]`, value: alternativeEmail }
+            { name: `${spec.tempFieldRoot}[_type]`, value: selectedType },
+            { name: spec.tempValueField, value: actorId }
           );
+
+          if (spec.notifField) {
+            hiddenFields.push(
+              { name: `${spec.tempFieldRoot}[use_notification][]`, value: useNotification },
+              { name: `${spec.tempFieldRoot}[alternative_email][]`, value: alternativeEmail }
+            );
+          }
+        } else {
+          hiddenFields.push({ name: `${spec.valueField}[]`, value: actorId });
+          if (spec.notifField) {
+            hiddenFields.push(
+              { name: `${spec.notifField}[use_notification][]`, value: useNotification },
+              { name: `${spec.notifField}[alternative_email][]`, value: alternativeEmail }
+            );
+          }
         }
 
         const $row = buildRow({
@@ -487,6 +530,8 @@
 
         $emptyState.addClass('d-none');
         $list.prepend($row);
+        resetSelector(selectedType);
+        updateEmptyState();
       });
 
       $panel.on('click', '[data-role="remove-actor"]', function () {
@@ -517,6 +562,13 @@
 
       if ($typeSelector.length) {
         loadSelector($typeSelector.val());
+      }
+
+      if (form && !form.dataset.ticketActorPanelPickerBound) {
+        form.dataset.ticketActorPanelPickerBound = '1';
+        $(form).on('submit', () => {
+          $(form).find('[data-role="selector-container"]').find('input, select, textarea').prop('disabled', true);
+        });
       }
 
       updateEmptyState();

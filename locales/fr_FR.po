@@ -25139,6 +25139,18 @@ msgstr "Voir le document lié"
 msgid "Allow to impersonate other users"
 msgstr "Autoriser la prise d'identité d'autres utilisateurs"
 
+msgid "No actor selected yet."
+msgstr "Aucun acteur sélectionné."
+
+msgid "Unable to load actors."
+msgstr "Impossible de charger les acteurs."
+
+msgid "Manage email followup"
+msgstr "Gérer le suivi par courriel"
+
+msgid "New actors are added when you save the ticket."
+msgstr "Les nouveaux acteurs sont ajoutés lorsque vous enregistrez le ticket."
+
 #~ msgid ""
 #~ "No time zones are available. Please check your database configuration."
 #~ msgstr ""

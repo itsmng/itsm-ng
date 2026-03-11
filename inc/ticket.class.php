@@ -4619,11 +4619,24 @@ class Ticket extends CommonITILObject
 
         $userActors = $this->getUsers($action);
         foreach ($userActors as $userActor) {
+            $subtitle = [];
+            if (array_key_exists('use_notification', $userActor)) {
+                $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($userActor['use_notification']);
+            }
+            if ($this->shouldShowTicketActorAlternativeEmail(
+                User::class,
+                $userActor['users_id'],
+                $userActor['alternative_email'] ?? ''
+            )) {
+                $subtitle[] = $userActor['alternative_email'];
+            }
             $newUserActor = [
                'name' => getUserName($userActor['users_id']),
                'id' => $userActor['users_id'],
                'type' => 'user',
                'icon' => User::getIcon($userActor['users_id']),
+               'subtitle' => implode(' | ', $subtitle),
+               'alternativeEmail' => $userActor['alternative_email'] ?? '',
             ];
             $newUserActor += $this->generateFollowupLink($userActor, User::class);
             $actors[] = $newUserActor;
@@ -4638,6 +4651,8 @@ class Ticket extends CommonITILObject
                'id' => $groupActor['groups_id'],
                'type' => 'group',
                'icon' => Group::getIcon(),
+               'subtitle' => '',
+               'alternativeEmail' => '',
             ];
             $actors[] = $newGroupActor;
         }
@@ -4645,6 +4660,17 @@ class Ticket extends CommonITILObject
         if ($action == CommonITILActor::ASSIGN) {
             $supplierActors = $this->getSuppliers($action);
             foreach ($supplierActors as $supplierActor) {
+                $subtitle = [];
+                if (array_key_exists('use_notification', $supplierActor)) {
+                    $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($supplierActor['use_notification']);
+                }
+                if ($this->shouldShowTicketActorAlternativeEmail(
+                    Supplier::class,
+                    $supplierActor['suppliers_id'],
+                    $supplierActor['alternative_email'] ?? ''
+                )) {
+                    $subtitle[] = $supplierActor['alternative_email'];
+                }
                 $supplier = new Supplier();
                 $supplier->getFromDB($supplierActor['suppliers_id']);
                 $newSupplierActor = [
@@ -4652,6 +4678,8 @@ class Ticket extends CommonITILObject
                    'id' => $supplierActor['suppliers_id'],
                    'type' => 'supplier',
                    'icon' => Supplier::getIcon(),
+                   'subtitle' => implode(' | ', $subtitle),
+                   'alternativeEmail' => $supplierActor['alternative_email'] ?? '',
                 ];
                 $newSupplierActor += $this->generateFollowupLink($supplierActor, Supplier::class);
                 $actors[] = $newSupplierActor;
@@ -4792,78 +4820,200 @@ class Ticket extends CommonITILObject
         return $fallback;
     }
 
-    private function getTicketPendingActorEntries(array $definitions, array $options, array $hiddenFields, array $existingKeys)
+    private function getTicketActorDefaultEmail($itemtype, $id)
+    {
+        if ((int)$id <= 0) {
+            return '';
+        }
+
+        switch ($itemtype) {
+            case User::class:
+                $user = new User();
+                return $user->getFromDB($id) ? (string)$user->getDefaultEmail() : '';
+
+            case Supplier::class:
+                $supplier = new Supplier();
+                return $supplier->getFromDB($id) ? (string)$supplier->fields['email'] : '';
+        }
+
+        return '';
+    }
+
+    private function shouldShowTicketActorAlternativeEmail($itemtype, $id, $alternativeEmail)
+    {
+        $alternativeEmail = trim((string)$alternativeEmail);
+        if ($alternativeEmail === '') {
+            return false;
+        }
+
+        $defaultEmail = trim($this->getTicketActorDefaultEmail($itemtype, $id));
+        if ($defaultEmail === '') {
+            return true;
+        }
+
+        return mb_strtolower($alternativeEmail) !== mb_strtolower($defaultEmail);
+    }
+
+    private function getTicketPendingActorEntries(
+        array $definitions,
+        array $options,
+        array $hiddenFields,
+        array $existingKeys,
+        bool $isNew
+    )
     {
         $entries = [];
 
         foreach ($definitions as $type => $definition) {
             $notifField = $definition['notif'] ?? null;
-            $values = $this->normalizeTicketActorInputValues($options[$definition['field']] ?? []);
-            $useNotifications = $this->normalizeTicketActorInputValues(
-                $notifField ? ($options[$notifField]['use_notification'] ?? []) : []
-            );
-            $alternativeEmails = $this->normalizeTicketActorInputValues(
-                $notifField ? ($options[$notifField]['alternative_email'] ?? []) : []
-            );
+            if ($isNew) {
+                $values = $this->normalizeTicketActorInputValues($options[$definition['field']] ?? []);
+                $useNotifications = $this->normalizeTicketActorInputValues(
+                    $notifField ? ($options[$notifField]['use_notification'] ?? []) : []
+                );
+                $alternativeEmails = $this->normalizeTicketActorInputValues(
+                    $notifField ? ($options[$notifField]['alternative_email'] ?? []) : []
+                );
 
-            foreach ($values as $index => $rawValue) {
-                $value = (int)$rawValue;
-                $alternativeEmail = trim((string)($alternativeEmails[$index] ?? ''));
-                if ($value <= 0 && $alternativeEmail === '') {
-                    continue;
-                }
+                foreach ($values as $index => $rawValue) {
+                    $value = (int)$rawValue;
+                    $alternativeEmail = trim((string)($alternativeEmails[$index] ?? ''));
+                    if ($value <= 0 && $alternativeEmail === '') {
+                        continue;
+                    }
 
-                $entryKey = sprintf('%s:%s:%s', $type, $value, $alternativeEmail);
-                if (isset($existingKeys[$entryKey])) {
-                    continue;
-                }
+                    $entryKey = sprintf('%s:%s:%s', $type, $value, $alternativeEmail);
+                    if (isset($existingKeys[$entryKey])) {
+                        continue;
+                    }
 
-                $useNotification = isset($useNotifications[$index]) ? (int)$useNotifications[$index] : 1;
-                $subtitle = [];
-                if (isset($definition['notif'])) {
-                    $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($useNotification);
-                }
-                if ($alternativeEmail !== '') {
-                    $subtitle[] = $alternativeEmail;
-                }
-
-                $entry = [
-                    'id'               => $value,
-                    'type'             => $type,
-                    'name'             => $this->getTicketActorDisplayName(
+                    $useNotification = isset($useNotifications[$index]) ? (int)$useNotifications[$index] : 1;
+                    $subtitle = [];
+                    if ($notifField) {
+                        $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($useNotification);
+                    }
+                    if ($this->shouldShowTicketActorAlternativeEmail(
                         $definition['itemtype'],
                         $value,
                         $alternativeEmail
-                    ),
-                    'icon'             => $definition['icon'],
-                    'subtitle'         => implode(' | ', $subtitle),
-                    'persisted'        => false,
-                    'pending'          => true,
-                    'locked'           => $hiddenFields[$definition['field']] ?? false,
-                    'removable'        => !($hiddenFields[$definition['field']] ?? false),
-                    'alternativeEmail' => $alternativeEmail,
-                    'hiddenFields'     => [
-                        [
-                            'name'  => $definition['field'] . '[]',
-                            'value' => $value,
-                        ],
-                    ],
-                ];
+                    )) {
+                        $subtitle[] = $alternativeEmail;
+                    }
 
-                if ($notifField) {
-                    $entry['hiddenFields'][] = [
-                        'name'  => $notifField . '[use_notification][]',
-                        'value' => $useNotification,
+                    $entry = [
+                        'id'               => $value,
+                        'type'             => $type,
+                        'name'             => $this->getTicketActorDisplayName(
+                            $definition['itemtype'],
+                            $value,
+                            $alternativeEmail
+                        ),
+                        'icon'             => $definition['icon'],
+                        'subtitle'         => implode(' | ', $subtitle),
+                        'persisted'        => false,
+                        'pending'          => true,
+                        'locked'           => $hiddenFields[$definition['field']] ?? false,
+                        'removable'        => !($hiddenFields[$definition['field']] ?? false),
+                        'alternativeEmail' => $alternativeEmail,
+                        'hiddenFields'     => [
+                            [
+                                'name'  => $definition['field'] . '[]',
+                                'value' => $value,
+                            ],
+                        ],
                     ];
-                    $entry['hiddenFields'][] = [
-                        'name'  => $notifField . '[alternative_email][]',
-                        'value' => $alternativeEmail,
-                    ];
+
+                    if ($notifField) {
+                        $entry['hiddenFields'][] = [
+                            'name'  => $notifField . '[use_notification][]',
+                            'value' => $useNotification,
+                        ];
+                        $entry['hiddenFields'][] = [
+                            'name'  => $notifField . '[alternative_email][]',
+                            'value' => $alternativeEmail,
+                        ];
+                    }
+
+                    $entries[] = $entry;
+                    $existingKeys[$entryKey] = true;
                 }
 
-                $entries[] = $entry;
-                $existingKeys[$entryKey] = true;
+                continue;
             }
+
+            $tempField = $options[$definition['temp_field']] ?? null;
+            if (!is_array($tempField) || (($tempField['_type'] ?? '') !== $type)) {
+                continue;
+            }
+
+            $valueField = sprintf('%ss_id', $type);
+            $value = (int)($tempField[$valueField] ?? 0);
+            $useNotificationValues = $this->normalizeTicketActorInputValues($tempField['use_notification'] ?? []);
+            $alternativeEmailValues = $this->normalizeTicketActorInputValues($tempField['alternative_email'] ?? []);
+            $useNotification = $notifField ? (int)($useNotificationValues[0] ?? 1) : 1;
+            $alternativeEmail = $notifField ? trim((string)($alternativeEmailValues[0] ?? '')) : '';
+
+            if ($value <= 0 && $alternativeEmail === '') {
+                continue;
+            }
+
+            $entryKey = sprintf('%s:%s:%s', $type, $value, $alternativeEmail);
+            if (isset($existingKeys[$entryKey])) {
+                continue;
+            }
+
+            $subtitle = [];
+            if ($notifField) {
+                $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($useNotification);
+            }
+            if ($this->shouldShowTicketActorAlternativeEmail(
+                $definition['itemtype'],
+                $value,
+                $alternativeEmail
+            )) {
+                $subtitle[] = $alternativeEmail;
+            }
+
+            $entry = [
+                'id'               => $value,
+                'type'             => $type,
+                'name'             => $this->getTicketActorDisplayName(
+                    $definition['itemtype'],
+                    $value,
+                    $alternativeEmail
+                ),
+                'icon'             => $definition['icon'],
+                'subtitle'         => implode(' | ', $subtitle),
+                'persisted'        => false,
+                'pending'          => true,
+                'locked'           => $hiddenFields[$definition['field']] ?? false,
+                'removable'        => !($hiddenFields[$definition['field']] ?? false),
+                'alternativeEmail' => $alternativeEmail,
+                'hiddenFields'     => [
+                    [
+                        'name'  => $definition['temp_field'] . '[_type]',
+                        'value' => $type,
+                    ],
+                    [
+                        'name'  => sprintf('%s[%s]', $definition['temp_field'], $valueField),
+                        'value' => $value,
+                    ],
+                ],
+            ];
+
+            if ($notifField) {
+                $entry['hiddenFields'][] = [
+                    'name'  => $definition['temp_field'] . '[use_notification][]',
+                    'value' => $useNotification,
+                ];
+                $entry['hiddenFields'][] = [
+                    'name'  => $definition['temp_field'] . '[alternative_email][]',
+                    'value' => $alternativeEmail,
+                ];
+            }
+
+            $entries[] = $entry;
+            $existingKeys[$entryKey] = true;
         }
 
         return $entries;
@@ -4972,17 +5122,22 @@ class Ticket extends CommonITILObject
                     $actor['pending'] = false;
                     $actor['locked'] = false;
                     $actor['removable'] = $panelDefinition['removable'];
-                    $actor['subtitle'] = '';
-                    $actor['alternativeEmail'] = '';
+                    $actor['subtitle'] = $actor['subtitle'] ?? '';
+                    $actor['alternativeEmail'] = $actor['alternativeEmail'] ?? '';
                     $actor['hiddenFields'] = [];
                     $values[] = $actor;
-                    $existingKeys[sprintf('%s:%s:%s', $actor['type'], $actor['id'], '')] = true;
+                    $existingKeys[sprintf(
+                        '%s:%s:%s',
+                        $actor['type'],
+                        $actor['id'],
+                        $actor['alternativeEmail']
+                    )] = true;
                 }
             }
 
             $values = array_merge(
                 $values,
-                $this->getTicketPendingActorEntries($definitions, $options, $hiddenFields, $existingKeys)
+                $this->getTicketPendingActorEntries($definitions, $options, $hiddenFields, $existingKeys, $isNew)
             );
 
             if (!$actorTypes && !$values) {
@@ -5003,6 +5158,7 @@ class Ticket extends CommonITILObject
                     'icon'                  => $definition['icon'],
                     'valueField'            => $definition['field'],
                     'notifField'            => $definition['notif'] ?? '',
+                    'tempFieldRoot'         => $definition['temp_field'],
                     'tempValueField'        => sprintf('%s[%ss_id]', $definition['temp_field'], $type),
                     'tempNotifFieldPrefix'  => sprintf('%s[use_notification]', $definition['temp_field']),
                     'tempEmailFieldPrefix'  => sprintf('%s[alternative_email]', $definition['temp_field']),
