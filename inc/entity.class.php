@@ -287,6 +287,10 @@ class Entity extends CommonTreeDropdown
 
         $input['max_closedate'] = $_SESSION["glpi_currenttime"];
 
+        if (!array_key_exists('lock_ticket_date', $input)) {
+            $input['lock_ticket_date'] = self::CONFIG_PARENT;
+        }
+
         if (!Session::isCron()) { // Filter input for connected
             $input = $this->checkRightDatas($input);
         }
@@ -2365,6 +2369,10 @@ class Entity extends CommonTreeDropdown
         if ($ID == 0) { // Remove parent option for root entity
             unset($anonymizeValues[self::CONFIG_PARENT]);
         }
+        $lockTicketDateValues = self::getLockTicketDateValues();
+        if ($ID == 0) { // Remove parent option for root entity
+            unset($lockTicketDateValues[self::CONFIG_PARENT]);
+        }
 
         $form = [
            'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
@@ -2473,10 +2481,13 @@ class Entity extends CommonTreeDropdown
                                    self::inheritedValue(self::getSpecificValueToDisplay('anonymize_support_agents', ['anonymize_support_agents' => self::getUsedConfig('anonymize_support_agents', $ID)]), false, false) : '',
                    ],
                    __('Lock ticket creation date') => [
-                        'type'  => 'checkbox',
+                        'type'  => 'select',
                         'name'  => 'lock_ticket_date',
                         'value' => $entity->fields["lock_ticket_date"],
+                        'values' => $lockTicketDateValues,
                         'col_lg' => 6,
+                        'after' => ($ID > 0 && ($entity->getField('lock_ticket_date') == self::CONFIG_PARENT)) ?
+                                   self::inheritedValue(self::getSpecificValueToDisplay('lock_ticket_date', ['lock_ticket_date' => self::getUsedConfig('lock_ticket_date', $ID)]), false, false) : '',
                    ],
                 ]
                ],
@@ -2848,6 +2859,16 @@ class Entity extends CommonTreeDropdown
         ];
     }
 
+    public static function getLockTicketDateValues()
+    {
+
+        return [
+           self::CONFIG_PARENT => __('Inheritance of the parent entity'),
+           0                   => __('No'),
+           1                   => __('Yes'),
+        ];
+    }
+
     /**
      * @since 0.84
      *
@@ -2891,6 +2912,7 @@ class Entity extends CommonTreeDropdown
             case 'use_domains_alert':
             case 'use_infocoms_alert':
             case 'is_notif_enable_default':
+            case 'lock_ticket_date':
                 if ($values[$field] == self::CONFIG_PARENT) {
                     return __('Inheritance of the parent entity');
                 }
@@ -3072,6 +3094,7 @@ class Entity extends CommonTreeDropdown
             case 'use_certificates_alert':
             case 'use_contracts_alert':
             case 'use_infocoms_alert':
+            case 'lock_ticket_date':
                 $options['name']  = $name;
                 $options['value'] = $values[$field];
                 return Alert::dropdownYesNo($options);

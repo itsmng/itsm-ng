@@ -2355,6 +2355,59 @@ class Ticket extends DbTestCase
         ]))->isTrue();
     }
 
+    public function testLockTicketDateDisablesOpeningDateFieldInForm()
+    {
+        $this->login();
+        $this->setEntity('Root entity', true);
+
+        $entity = new \Entity();
+        $this->boolean($entity->update([
+           'id' => 0,
+           'lock_ticket_date' => 1,
+        ]))->isTrue();
+        try {
+            $ticket = new \Ticket();
+            $tickets_id = $ticket->add([
+               'name'        => 'test locked ticket date form',
+               'content'     => 'test locked ticket date form',
+               'entities_id' => 0,
+            ]);
+            $this->integer((int) $tickets_id)->isGreaterThan(0);
+            $this->boolean($ticket->getFromDB($tickets_id))->isTrue();
+
+            $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+
+            ob_start();
+            $ticket->showForm($ticket->getID());
+            $output = ob_get_clean();
+
+            $this->string($output)->match(
+                '/<input[^>]*type="datetime-local"[^>]*name="date"[^>]*disabled=""/'
+            );
+
+            $this->boolean($entity->update([
+               'id' => 0,
+               'lock_ticket_date' => 0,
+            ]))->isTrue();
+
+            $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+
+            ob_start();
+            $ticket->showForm($ticket->getID());
+            $output = ob_get_clean();
+
+            $this->integer((int) preg_match(
+                '/<input[^>]*type="datetime-local"[^>]*name="date"[^>]*disabled=""/',
+                $output
+            ))->isEqualTo(0);
+        } finally {
+            $entity->update([
+               'id' => 0,
+               'lock_ticket_date' => 0,
+            ]);
+        }
+    }
+
     public function testCronCloseTicket()
     {
         global $DB;

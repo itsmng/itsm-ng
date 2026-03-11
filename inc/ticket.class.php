@@ -537,6 +537,14 @@ class Ticket extends CommonITILObject
     }
 
 
+    protected function isTicketDateLocked(?int $entities_id = null): bool
+    {
+        $entities_id ??= $this->fields['entities_id'] ?? 0;
+
+        return (bool) Entity::getUsedConfig('lock_ticket_date', $entities_id, '', 0);
+    }
+
+
     /**
      * Is the current user is a requester of the current ticket and have the right to update it ?
      *
@@ -982,7 +990,7 @@ class Ticket extends CommonITILObject
         $this->getFromDB($input['id']);
 
         $entid = $input['entities_id'] ?? $this->fields['entities_id'];
-        if (Entity::getUsedConfig('lock_ticket_date', $entid, '', 0)) {
+        if ($this->isTicketDateLocked((int) $entid)) {
             if (array_key_exists('date', $input)) {
                 $current_date = (string) $this->fields['date'];
                 $input_date = (string) $input['date'];
@@ -4951,6 +4959,8 @@ class Ticket extends CommonITILObject
             $options['_noupdate'] = true;
         }
 
+        $canedit_opening_date = $canupdate && !$this->isTicketDateLocked();
+
         $showuserlink              = 0;
         if (Session::haveRight('user', READ)) {
             $showuserlink = 1;
@@ -5021,7 +5031,7 @@ class Ticket extends CommonITILObject
                        'id' => rand(),
                        'name' => 'date',
                        'value' => $this->fields["date"],
-                       $canupdate ? '' : 'disabled' => ''
+                       $canedit_opening_date ? '' : 'disabled' => ''
                     ] : [],
                     __('By') => $ID ? [
                        'type' => 'select',
