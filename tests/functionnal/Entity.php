@@ -358,6 +358,98 @@ class Entity extends DbTestCase
 
     }
 
+    public function testLockTicketDateInheritance()
+    {
+        $this->login();
+
+        $root    = getItemByTypeName('Entity', 'Root entity', true);
+        $parent  = getItemByTypeName('Entity', '_test_root_entity', true);
+        $child_1 = getItemByTypeName('Entity', '_test_child_1', true);
+        $child_2 = getItemByTypeName('Entity', '_test_child_2', true);
+
+        $entity = new \Entity();
+
+        try {
+            $this->boolean($entity->update([
+               'id'               => $root,
+               'lock_ticket_date' => 1,
+            ]))->isTrue();
+            $this->boolean($entity->update([
+               'id'               => $parent,
+               'lock_ticket_date' => \Entity::CONFIG_PARENT,
+            ]))->isTrue();
+            $this->boolean($entity->update([
+               'id'               => $child_1,
+               'lock_ticket_date' => \Entity::CONFIG_PARENT,
+            ]))->isTrue();
+            $this->boolean($entity->update([
+               'id'               => $child_2,
+               'lock_ticket_date' => \Entity::CONFIG_PARENT,
+            ]))->isTrue();
+
+            $this->integer((int) \Entity::getUsedConfig('lock_ticket_date', $parent))->isEqualTo(1);
+            $this->integer((int) \Entity::getUsedConfig('lock_ticket_date', $child_1))->isEqualTo(1);
+            $this->integer((int) \Entity::getUsedConfig('lock_ticket_date', $child_2))->isEqualTo(1);
+
+            $this->boolean($entity->update([
+               'id'               => $child_1,
+               'lock_ticket_date' => 0,
+            ]))->isTrue();
+
+            $this->integer((int) \Entity::getUsedConfig('lock_ticket_date', $parent))->isEqualTo(1);
+            $this->integer((int) \Entity::getUsedConfig('lock_ticket_date', $child_1))->isEqualTo(0);
+            $this->integer((int) \Entity::getUsedConfig('lock_ticket_date', $child_2))->isEqualTo(1);
+        } finally {
+            $entity->update([
+               'id'               => $root,
+               'lock_ticket_date' => 0,
+            ]);
+            $entity->update([
+               'id'               => $parent,
+               'lock_ticket_date' => \Entity::CONFIG_PARENT,
+            ]);
+            $entity->update([
+               'id'               => $child_1,
+               'lock_ticket_date' => \Entity::CONFIG_PARENT,
+            ]);
+            $entity->update([
+               'id'               => $child_2,
+               'lock_ticket_date' => \Entity::CONFIG_PARENT,
+            ]);
+        }
+    }
+
+    public function testNewChildEntityDefaultsLockTicketDateToParent()
+    {
+        $this->login();
+
+        $root = getItemByTypeName('Entity', 'Root entity', true);
+
+        $entity = new \Entity();
+
+        try {
+            $this->boolean($entity->update([
+               'id'               => $root,
+               'lock_ticket_date' => 1,
+            ]))->isTrue();
+
+            $entities_id = (int) $entity->add([
+               'name'        => 'test lock ticket date inheritance child',
+               'entities_id' => $root,
+            ]);
+
+            $this->integer($entities_id)->isGreaterThan(0);
+            $this->boolean($entity->getFromDB($entities_id))->isTrue();
+            $this->integer((int) $entity->fields['lock_ticket_date'])->isEqualTo(\Entity::CONFIG_PARENT);
+            $this->integer((int) \Entity::getUsedConfig('lock_ticket_date', $entities_id))->isEqualTo(1);
+        } finally {
+            $entity->update([
+               'id'               => $root,
+               'lock_ticket_date' => 0,
+            ]);
+        }
+    }
+
 
     protected function customCssProvider()
     {
