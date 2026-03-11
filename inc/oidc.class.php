@@ -548,7 +548,6 @@ class Oidc extends CommonDBTM
 
     /**
      * Sanitize a post-auth redirect path to avoid open redirects.
-     * Accept only internal absolute paths (starting with '/') and disallow protocol-relative or external URLs.
      *
      * @param mixed $value
      * @return string|null
@@ -562,15 +561,38 @@ class Oidc extends CommonDBTM
         if ($value === "") {
             return null;
         }
-        if (preg_match("#^(?:[a-z][a-z0-9+.-]*:)?//#i", $value)) {
+        $decodedValue = rawurldecode($value);
+        if ($decodedValue === "") {
             return null;
         }
-        if ($value[0] !== "/") {
+        if (preg_match("#^(?:[a-z][a-z0-9+.-]*:)?//#i", $decodedValue)) {
             return null;
         }
-        if (strpos($value, "\n") !== false || strpos($value, "\r") !== false) {
+        if (
+            strpos($decodedValue, "\n") !== false ||
+            strpos($decodedValue, "\r") !== false
+        ) {
             return null;
         }
-        return $value;
+
+        // Allow ITSM-NG internal relative URLs and legacy object redirect tokens
+        // ex: ticket_435
+        if (
+            $decodedValue[0] === "/" &&
+            \Glpi\Toolbox\URL::isITSMNGRelativeURL($decodedValue)
+        ) {
+            return $value;
+        }
+
+        if (
+            preg_match(
+                '/^[A-Za-z0-9][A-Za-z0-9_$.-]*(?:_[A-Za-z0-9$.-]+)*$/',
+                $decodedValue,
+            )
+        ) {
+            return $value;
+        }
+
+        return null;
     }
 }
