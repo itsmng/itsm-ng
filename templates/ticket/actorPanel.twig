@@ -1,0 +1,525 @@
+{% set panel_id = 'ticket-actor-panels-' ~ random() %}
+<div id="{{ panel_id }}" class="ticket-actor-panels">
+  <style>
+    #{{ panel_id }} {
+      width: 100%;
+      max-width: 1560px;
+      margin: 0 auto;
+    }
+
+    #{{ panel_id }} .ticket-actor-col {
+      display: flex;
+    }
+
+    #{{ panel_id }} .ticket-actor-card {
+      border: 1px solid var(--tbl-border-color, #d9dee7);
+      border-radius: 0.75rem;
+      background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+      box-shadow: 0 10px 24px rgba(15, 35, 80, 0.06);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      min-height: 100%;
+      width: 100%;
+    }
+
+    #{{ panel_id }} .ticket-actor-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    #{{ panel_id }} .ticket-actor-card__title {
+      font-weight: 700;
+      color: #102a56;
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    #{{ panel_id }} .ticket-actor-card__hint {
+      color: #5f6f86;
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker {
+      border: 1px dashed #c6d0e1;
+      border-radius: 0.75rem;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker__top {
+      display: flex;
+      gap: 0.75rem;
+      align-items: end;
+      flex-wrap: nowrap;
+      min-width: 0;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker__field {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker__details {
+      display: grid;
+      gap: 0.5rem;
+      min-width: 0;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker__top > div:last-child {
+      flex: 0 0 auto;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker select,
+    #{{ panel_id }} .ticket-actor-picker .form-select,
+    #{{ panel_id }} .ticket-actor-picker .form-control,
+    #{{ panel_id }} .ticket-actor-picker input:not(.form-check-input),
+    #{{ panel_id }} .ticket-actor-picker .select2,
+    #{{ panel_id }} .ticket-actor-picker .select2-container {
+      width: 100% !important;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker .select2-container .selection,
+    #{{ panel_id }} .ticket-actor-picker .select2-selection,
+    #{{ panel_id }} .ticket-actor-picker__details > *,
+    #{{ panel_id }} .ticket-actor-picker__details span,
+    #{{ panel_id }} .ticket-actor-picker__details div {
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker__details .select2-selection__rendered,
+    #{{ panel_id }} .ticket-actor-picker__details .select2-selection__placeholder {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker .select2-container .select2-selection__rendered {
+      min-width: 100%;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker .select2-container--bootstrap-5 .select2-selection,
+    #{{ panel_id }} .ticket-actor-picker .select2-container--bootstrap-5 .select2-selection__rendered,
+    #{{ panel_id }} .ticket-actor-picker .select2-dropdown .select2-results__option,
+    #{{ panel_id }} .ticket-actor-picker .select2-results__option {
+      text-align: left;
+    }
+
+    #{{ panel_id }} .ticket-actor-picker__details br + span,
+    #{{ panel_id }} .ticket-actor-picker__details br + div,
+    #{{ panel_id }} .ticket-actor-picker__details br + input {
+      display: block;
+    }
+
+    #{{ panel_id }} .ticket-actor-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    #{{ panel_id }} .ticket-actor-empty {
+      border: 1px dashed #d4dbe8;
+      border-radius: 0.75rem;
+      padding: 0.85rem;
+      color: #6c7a90;
+      background: rgba(248, 250, 253, 0.8);
+    }
+
+    #{{ panel_id }} .ticket-actor-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      align-items: flex-start;
+      border: 1px solid #d8dfeb;
+      border-radius: 0.75rem;
+      background: #fff;
+      padding: 0.85rem 0.9rem;
+    }
+
+    #{{ panel_id }} .ticket-actor-row__body {
+      display: flex;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+
+    #{{ panel_id }} .ticket-actor-row__icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #102a56;
+      background: #eaf0fb;
+      flex: 0 0 auto;
+    }
+
+    #{{ panel_id }} .ticket-actor-row__text {
+      min-width: 0;
+    }
+
+    #{{ panel_id }} .ticket-actor-row__name {
+      font-weight: 600;
+      color: #1b2d4f;
+      word-break: break-word;
+    }
+
+    #{{ panel_id }} .ticket-actor-row__meta {
+      color: #61728a;
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+      word-break: break-word;
+    }
+
+    #{{ panel_id }} .ticket-actor-row__badges {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      margin-top: 0.35rem;
+    }
+
+    #{{ panel_id }} .ticket-actor-row__actions {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      #{{ panel_id }} .ticket-actor-row {
+        flex-direction: column;
+      }
+
+      #{{ panel_id }} .ticket-actor-row__actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+
+  <div class="row g-3 justify-content-center">
+    {% for panel in panels %}
+      <div class="col-12 col-md-10 col-lg-6 col-xl-4 ticket-actor-col">
+        <section class="ticket-actor-card"
+                 data-panel-id="{{ panel.id }}"
+                 data-actor-role="{{ panel.actorType }}"
+                 data-actor-type-id="{{ panel.actorTypeId }}"
+                 data-ticket-id="{{ panel.ticketId }}"
+                 data-root-doc="{{ root_doc }}"
+                 data-field-map="{{ panel.fieldMap|json_encode|e('html_attr') }}">
+          <div class="ticket-actor-card__header">
+            <div>
+              <h3 class="ticket-actor-card__title">{{ panel.title|raw }}</h3>
+              {% if panel.helpText %}
+                <p class="ticket-actor-card__hint">{{ panel.helpText }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if panel.allowAdd and panel.actorTypes %}
+            <div class="ticket-actor-picker">
+              <div class="ticket-actor-picker__top">
+                <div class="ticket-actor-picker__field">
+                  <label class="form-label" for="{{ panel.id }}_type">{{ 'Actor type'|trans }}</label>
+                  <select id="{{ panel.id }}_type" class="form-select form-select-sm" data-role="type-selector">
+                    {% for label, value in panel.actorTypes %}
+                      <option value="{{ value }}" {% if panel.defaultType == value %}selected{% endif %}>{{ label|raw }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-primary btn-sm" data-role="add-actor">
+                    {{ 'Add'|trans }}
+                  </button>
+                </div>
+              </div>
+              <div class="ticket-actor-picker__details" data-role="selector-container"></div>
+            </div>
+          {% endif %}
+
+          <div class="ticket-actor-list" data-role="actor-list">
+            {% for actor in panel.values %}
+              <div class="ticket-actor-row"
+                   data-actor-entry
+                   data-entry-type="{{ actor.type }}"
+                   data-entry-id="{{ actor.id }}"
+                   data-entry-email="{{ actor.alternativeEmail|default('') }}"
+                   data-persisted="{{ actor.persisted ? '1' : '0' }}">
+                <div class="ticket-actor-row__body">
+                  <span class="ticket-actor-row__icon">
+                    <i class="{{ actor.icon|raw }}"></i>
+                  </span>
+                  <div class="ticket-actor-row__text">
+                    <div class="ticket-actor-row__name">{{ actor.name|raw }}</div>
+                    {% if actor.subtitle %}
+                      <div class="ticket-actor-row__meta">{{ actor.subtitle|raw }}</div>
+                    {% endif %}
+                    <div class="ticket-actor-row__badges">
+                      {% if actor.pending %}
+                        <span class="badge text-bg-warning">{{ 'Pending'|trans }}</span>
+                      {% endif %}
+                      {% if actor.locked %}
+                        <span class="badge text-bg-secondary">{{ 'Template'|trans }}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                <div class="ticket-actor-row__actions">
+                  {% if actor.followupTitle %}
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary"
+                            aria-label="{{ 'Manage email followup'|trans }}"
+                            title="{{ actor.followupTitle|raw }}"
+                            onclick="$('#{{ actor.modal }}').dialog('open')">
+                      <i class="fas fa-envelope"></i>
+                    </button>
+                  {% endif %}
+                  {% if actor.removable %}
+                    <button type="button"
+                            class="btn btn-sm btn-outline-danger"
+                            data-role="remove-actor"
+                            aria-label="{{ 'Remove'|trans }}">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  {% endif %}
+                </div>
+                {% for field in actor.hiddenFields %}
+                  <input type="hidden" name="{{ field.name }}" value="{{ field.value|e('html_attr') }}">
+                {% endfor %}
+              </div>
+            {% endfor %}
+            <div class="ticket-actor-empty{% if panel.values %} d-none{% endif %}" data-role="empty-state">
+              {{ 'No actor selected yet.'|trans }}
+            </div>
+          </div>
+        </section>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  (() => {
+    const root = document.getElementById('{{ panel_id }}');
+
+    const escapeHtml = (value) => $('<div>').text(value ?? '').html();
+    const createHiddenInput = (name, value) => $('<input>', { type: 'hidden', name, value });
+
+    root.querySelectorAll('[data-panel-id]').forEach((panel) => {
+      const $panel = $(panel);
+      const role = $panel.data('actor-role');
+      const ticketId = parseInt($panel.data('ticket-id'), 10) || 0;
+      const actorTypeId = $panel.data('actor-type-id');
+      const rootDoc = $panel.data('root-doc');
+      const fieldMap = JSON.parse($panel.attr('data-field-map') || '{}');
+      const $typeSelector = $panel.find('[data-role="type-selector"]');
+      const $selectorContainer = $panel.find('[data-role="selector-container"]');
+      const $list = $panel.find('[data-role="actor-list"]');
+      const $emptyState = $panel.find('[data-role="empty-state"]');
+
+      const updateEmptyState = () => {
+        const hasEntries = $list.find('[data-actor-entry]').length > 0;
+        $emptyState.toggleClass('d-none', hasEntries);
+      };
+
+      const entryExists = (type, id, email) => {
+        const normalizedId = String(id || 0);
+        const normalizedEmail = String(email || '');
+        return $list.find('[data-actor-entry]').filter((_, element) => {
+          const $element = $(element);
+          return $element.data('entry-type') === type
+            && String($element.data('entry-id')) === normalizedId
+            && String($element.data('entry-email') || '') === normalizedEmail;
+        }).length > 0;
+      };
+
+      const buildRow = (entry) => {
+        const $row = $('<div>', {
+          class: 'ticket-actor-row',
+          'data-actor-entry': '',
+          'data-entry-type': entry.type,
+          'data-entry-id': entry.id,
+          'data-entry-email': entry.alternativeEmail || '',
+          'data-persisted': entry.persisted ? '1' : '0',
+        });
+
+        const badges = [];
+        if (entry.pending) {
+          badges.push('<span class="badge text-bg-warning">{{ 'Pending'|trans|e('js') }}</span>');
+        }
+        if (entry.locked) {
+          badges.push('<span class="badge text-bg-secondary">{{ 'Template'|trans|e('js') }}</span>');
+        }
+
+        const $body = $(`
+          <div class="ticket-actor-row__body">
+            <span class="ticket-actor-row__icon"><i class="${escapeHtml(entry.icon)}"></i></span>
+            <div class="ticket-actor-row__text">
+              <div class="ticket-actor-row__name">${escapeHtml(entry.name)}</div>
+              ${entry.subtitle ? `<div class="ticket-actor-row__meta">${escapeHtml(entry.subtitle)}</div>` : ''}
+              <div class="ticket-actor-row__badges">${badges.join('')}</div>
+            </div>
+          </div>
+        `);
+
+        const $actions = $('<div>', { class: 'ticket-actor-row__actions' });
+        if (entry.removable) {
+          $actions.append(`
+            <button type="button" class="btn btn-sm btn-outline-danger" data-role="remove-actor" aria-label="{{ 'Remove'|trans|e('js') }}">
+              <i class="fas fa-times"></i>
+            </button>
+          `);
+        }
+
+        $row.append($body, $actions);
+
+        (entry.hiddenFields || []).forEach((field) => {
+          $row.append(createHiddenInput(field.name, field.value));
+        });
+
+        return $row;
+      };
+
+      const loadSelector = (selectedType) => {
+        const type = selectedType || '';
+        const spec = fieldMap[type];
+        if (!type || !spec) {
+          $selectorContainer.empty();
+          return;
+        }
+
+        $.ajax({
+          url: `${rootDoc}/ajax/dropdownItilActors.php`,
+          type: 'POST',
+          data: {
+            type,
+            actortype: role,
+            itemtype: 'Ticket',
+            actorTypeId,
+            ticketId,
+            entity_restrict: spec.entity,
+            use_notif: spec.defaultUseNotification,
+            allow_email: true,
+          },
+          success: (html) => {
+            $selectorContainer.html(html);
+          },
+          error: () => {
+            $selectorContainer.html(`<div class="ticket-actor-empty">{{ 'Unable to load actors.'|trans|e('js') }}</div>`);
+          },
+        });
+      };
+
+      $typeSelector.on('change', function () {
+        loadSelector(this.value);
+      });
+
+      $panel.on('click', '[data-role="add-actor"]', () => {
+        const selectedType = $typeSelector.val();
+        const spec = fieldMap[selectedType];
+        if (!spec) {
+          return;
+        }
+
+        const $valueField = $selectorContainer.find(`[name="${spec.tempValueField}"]`);
+        const actorId = $valueField.length ? String($valueField.val() || '0') : '0';
+        const actorLabel = $valueField.length ? $.trim($valueField.find('option:selected').text()) : '';
+        const $notifCheckbox = $selectorContainer.find(`input[type="checkbox"][name^="${spec.tempNotifFieldPrefix}"]`).first();
+        const $notifSelect = $selectorContainer.find(`select[name^="${spec.tempNotifFieldPrefix}"]`).first();
+        const $notifField = $notifCheckbox.length ? $notifCheckbox : $notifSelect;
+        const $emailField = $selectorContainer.find(`[name^="${spec.tempEmailFieldPrefix}"]`).first();
+        const alternativeEmail = $emailField.length ? $.trim($emailField.val()) : '';
+        let useNotification = '1';
+        if ($notifCheckbox.length) {
+          useNotification = $notifCheckbox.is(':checked') ? '1' : '0';
+        } else if ($notifSelect.length) {
+          useNotification = String($notifSelect.val() || '0');
+        }
+
+        if ((actorId === '0' || actorId === '') && alternativeEmail === '') {
+          return;
+        }
+
+        if (entryExists(selectedType, actorId, alternativeEmail)) {
+          return;
+        }
+
+        const subtitleParts = [];
+        if (spec.notifField) {
+          subtitleParts.push(`{{ 'Email followup'|trans|e('js') }}: ${useNotification === '1' ? '{{ 'Yes'|trans|e('js') }}' : '{{ 'No'|trans|e('js') }}'}`);
+        }
+        if (alternativeEmail !== '') {
+          subtitleParts.push(alternativeEmail);
+        }
+
+        const hiddenFields = [{ name: `${spec.valueField}[]`, value: actorId }];
+        if (spec.notifField) {
+          hiddenFields.push(
+            { name: `${spec.notifField}[use_notification][]`, value: useNotification },
+            { name: `${spec.notifField}[alternative_email][]`, value: alternativeEmail }
+          );
+        }
+
+        const $row = buildRow({
+          id: actorId,
+          type: selectedType,
+          icon: spec.icon,
+          name: actorId !== '0' && actorLabel !== '' ? actorLabel : alternativeEmail,
+          subtitle: subtitleParts.join(' | '),
+          alternativeEmail,
+          persisted: false,
+          pending: true,
+          removable: true,
+          hiddenFields,
+        });
+
+        $emptyState.addClass('d-none');
+        $list.prepend($row);
+      });
+
+      $panel.on('click', '[data-role="remove-actor"]', function () {
+        const $row = $(this).closest('[data-actor-entry]');
+        const persisted = $row.data('persisted') === 1 || $row.data('persisted') === '1';
+
+        if (!persisted || ticketId === 0) {
+          $row.remove();
+          updateEmptyState();
+          return;
+        }
+
+        $.ajax({
+          url: `${rootDoc}/ajax/deleteItilActor.php`,
+          type: 'POST',
+          data: {
+            linkId: $row.data('entry-type'),
+            objectTypeId: actorTypeId,
+            objectId: $row.data('entry-id'),
+            ticketId,
+          },
+          success: () => {
+            $row.remove();
+            updateEmptyState();
+          },
+        });
+      });
+
+      if ($typeSelector.length) {
+        loadSelector($typeSelector.val());
+      }
+
+      updateEmptyState();
+    });
+  })();
+</script>
