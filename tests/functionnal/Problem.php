@@ -148,4 +148,25 @@ class Problem extends DbTestCase
         $this->boolean($problem->getFromDB($problems_id))->isTrue();
         $this->integer((int)$problem->fields['actiontime'])->isEqualTo(0);
     }
+
+    public function testPrepareInputForAddTranslatesItilAssignPayload()
+    {
+        $this->login();
+
+        $problem = new \Problem();
+        $users_id_assign = (int)getItemByTypeName('User', 'tech', true);
+        $input = $problem->prepareInputForAdd([
+           'name'         => 'problem actor panel add',
+           'content'      => 'validate shared actor panel payload on add',
+           '_itil_assign' => [
+              '_type'            => 'user',
+              'users_id'         => $users_id_assign,
+              'use_notification' => ['1'],
+              'alternative_email'=> [''],
+           ],
+        ]);
+
+        $this->array($input)->hasKey('_users_id_assign');
+        $this->integer((int)$input['_users_id_assign'])->isEqualTo($users_id_assign);
+    }
 }

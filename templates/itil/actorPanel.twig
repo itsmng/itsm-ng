@@ -1,5 +1,5 @@
-{% set panel_id = 'ticket-actor-panels-' ~ random() %}
-<div id="{{ panel_id }}" class="ticket-actor-panels">
+{% set panel_id = 'itil-actor-panels-' ~ random() %}
+<div id="{{ panel_id }}" class="itil-actor-panels">
   <style>
     #{{ panel_id }} {
       width: 100%;
@@ -7,11 +7,11 @@
       margin: 0 auto;
     }
 
-    #{{ panel_id }} .ticket-actor-col {
+    #{{ panel_id }} .itil-actor-col {
       display: flex;
     }
 
-    #{{ panel_id }} .ticket-actor-card {
+    #{{ panel_id }} .itil-actor-card {
       border: 1px solid var(--tbl-border-color, #d9dee7);
       border-radius: 0.75rem;
       background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
@@ -24,27 +24,27 @@
       width: 100%;
     }
 
-    #{{ panel_id }} .ticket-actor-card__header {
+    #{{ panel_id }} .itil-actor-card__header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 0.75rem;
     }
 
-    #{{ panel_id }} .ticket-actor-card__title {
+    #{{ panel_id }} .itil-actor-card__title {
       font-weight: 700;
       color: #102a56;
       margin: 0;
       font-size: 1rem;
     }
 
-    #{{ panel_id }} .ticket-actor-card__hint {
+    #{{ panel_id }} .itil-actor-card__hint {
       color: #5f6f86;
       font-size: 0.85rem;
       margin: 0;
     }
 
-    #{{ panel_id }} .ticket-actor-picker {
+    #{{ panel_id }} .itil-actor-picker {
       border: 1px dashed #c6d0e1;
       border-radius: 0.75rem;
       background: rgba(255, 255, 255, 0.92);
@@ -54,7 +54,7 @@
       gap: 0.75rem;
     }
 
-    #{{ panel_id }} .ticket-actor-picker__top {
+    #{{ panel_id }} .itil-actor-picker__top {
       display: flex;
       gap: 0.75rem;
       align-items: end;
@@ -62,73 +62,73 @@
       min-width: 0;
     }
 
-    #{{ panel_id }} .ticket-actor-picker__field {
+    #{{ panel_id }} .itil-actor-picker__field {
       flex: 1 1 auto;
       min-width: 0;
     }
 
-    #{{ panel_id }} .ticket-actor-picker__details {
+    #{{ panel_id }} .itil-actor-picker__details {
       display: grid;
       gap: 0.5rem;
       min-width: 0;
     }
 
-    #{{ panel_id }} .ticket-actor-picker__top > div:last-child {
+    #{{ panel_id }} .itil-actor-picker__top > div:last-child {
       flex: 0 0 auto;
     }
 
-    #{{ panel_id }} .ticket-actor-picker select,
-    #{{ panel_id }} .ticket-actor-picker .form-select,
-    #{{ panel_id }} .ticket-actor-picker .form-control,
-    #{{ panel_id }} .ticket-actor-picker input:not(.form-check-input),
-    #{{ panel_id }} .ticket-actor-picker .select2,
-    #{{ panel_id }} .ticket-actor-picker .select2-container {
+    #{{ panel_id }} .itil-actor-picker select,
+    #{{ panel_id }} .itil-actor-picker .form-select,
+    #{{ panel_id }} .itil-actor-picker .form-control,
+    #{{ panel_id }} .itil-actor-picker input:not(.form-check-input),
+    #{{ panel_id }} .itil-actor-picker .select2,
+    #{{ panel_id }} .itil-actor-picker .select2-container {
       width: 100% !important;
       max-width: 100%;
       min-width: 0;
     }
 
-    #{{ panel_id }} .ticket-actor-picker .select2-container .selection,
-    #{{ panel_id }} .ticket-actor-picker .select2-selection,
-    #{{ panel_id }} .ticket-actor-picker__details > *,
-    #{{ panel_id }} .ticket-actor-picker__details span,
-    #{{ panel_id }} .ticket-actor-picker__details div {
+    #{{ panel_id }} .itil-actor-picker .select2-container .selection,
+    #{{ panel_id }} .itil-actor-picker .select2-selection,
+    #{{ panel_id }} .itil-actor-picker__details > *,
+    #{{ panel_id }} .itil-actor-picker__details span,
+    #{{ panel_id }} .itil-actor-picker__details div {
       max-width: 100%;
       min-width: 0;
     }
 
-    #{{ panel_id }} .ticket-actor-picker__details .select2-selection__rendered,
-    #{{ panel_id }} .ticket-actor-picker__details .select2-selection__placeholder {
+    #{{ panel_id }} .itil-actor-picker__details .select2-selection__rendered,
+    #{{ panel_id }} .itil-actor-picker__details .select2-selection__placeholder {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       text-align: left;
     }
 
-    #{{ panel_id }} .ticket-actor-picker .select2-container .select2-selection__rendered {
+    #{{ panel_id }} .itil-actor-picker .select2-container .select2-selection__rendered {
       min-width: 100%;
     }
 
-    #{{ panel_id }} .ticket-actor-picker .select2-container--bootstrap-5 .select2-selection,
-    #{{ panel_id }} .ticket-actor-picker .select2-container--bootstrap-5 .select2-selection__rendered,
-    #{{ panel_id }} .ticket-actor-picker .select2-dropdown .select2-results__option,
-    #{{ panel_id }} .ticket-actor-picker .select2-results__option {
+    #{{ panel_id }} .itil-actor-picker .select2-container--bootstrap-5 .select2-selection,
+    #{{ panel_id }} .itil-actor-picker .select2-container--bootstrap-5 .select2-selection__rendered,
+    #{{ panel_id }} .itil-actor-picker .select2-dropdown .select2-results__option,
+    #{{ panel_id }} .itil-actor-picker .select2-results__option {
       text-align: left;
     }
 
-    #{{ panel_id }} .ticket-actor-picker__details br + span,
-    #{{ panel_id }} .ticket-actor-picker__details br + div,
-    #{{ panel_id }} .ticket-actor-picker__details br + input {
+    #{{ panel_id }} .itil-actor-picker__details br + span,
+    #{{ panel_id }} .itil-actor-picker__details br + div,
+    #{{ panel_id }} .itil-actor-picker__details br + input {
       display: block;
     }
 
-    #{{ panel_id }} .ticket-actor-list {
+    #{{ panel_id }} .itil-actor-list {
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
     }
 
-    #{{ panel_id }} .ticket-actor-empty {
+    #{{ panel_id }} .itil-actor-empty {
       border: 1px dashed #d4dbe8;
       border-radius: 0.75rem;
       padding: 0.85rem;
@@ -136,7 +136,7 @@
       background: rgba(248, 250, 253, 0.8);
     }
 
-    #{{ panel_id }} .ticket-actor-row {
+    #{{ panel_id }} .itil-actor-row {
       display: flex;
       justify-content: space-between;
       gap: 0.75rem;
@@ -147,13 +147,13 @@
       padding: 0.85rem 0.9rem;
     }
 
-    #{{ panel_id }} .ticket-actor-row__body {
+    #{{ panel_id }} .itil-actor-row__body {
       display: flex;
       gap: 0.75rem;
       min-width: 0;
     }
 
-    #{{ panel_id }} .ticket-actor-row__icon {
+    #{{ panel_id }} .itil-actor-row__icon {
       width: 2rem;
       height: 2rem;
       border-radius: 999px;
@@ -165,31 +165,31 @@
       flex: 0 0 auto;
     }
 
-    #{{ panel_id }} .ticket-actor-row__text {
+    #{{ panel_id }} .itil-actor-row__text {
       min-width: 0;
     }
 
-    #{{ panel_id }} .ticket-actor-row__name {
+    #{{ panel_id }} .itil-actor-row__name {
       font-weight: 600;
       color: #1b2d4f;
       word-break: break-word;
     }
 
-    #{{ panel_id }} .ticket-actor-row__meta {
+    #{{ panel_id }} .itil-actor-row__meta {
       color: #61728a;
       font-size: 0.85rem;
       margin-top: 0.2rem;
       word-break: break-word;
     }
 
-    #{{ panel_id }} .ticket-actor-row__badges {
+    #{{ panel_id }} .itil-actor-row__badges {
       display: flex;
       gap: 0.35rem;
       flex-wrap: wrap;
       margin-top: 0.35rem;
     }
 
-    #{{ panel_id }} .ticket-actor-row__actions {
+    #{{ panel_id }} .itil-actor-row__actions {
       display: flex;
       gap: 0.35rem;
       flex-wrap: wrap;
@@ -198,11 +198,11 @@
     }
 
     @media (max-width: 768px) {
-      #{{ panel_id }} .ticket-actor-row {
+      #{{ panel_id }} .itil-actor-row {
         flex-direction: column;
       }
 
-      #{{ panel_id }} .ticket-actor-row__actions {
+      #{{ panel_id }} .itil-actor-row__actions {
         width: 100%;
         justify-content: flex-start;
       }
@@ -211,27 +211,28 @@
 
   <div class="row g-3 justify-content-center">
     {% for panel in panels %}
-      <div class="col-12 col-md-10 col-lg-6 col-xl-4 ticket-actor-col">
-        <section class="ticket-actor-card"
+      <div class="col-12 col-md-10 col-lg-6 col-xl-4 itil-actor-col">
+        <section class="itil-actor-card"
                  data-panel-id="{{ panel.id }}"
                  data-actor-role="{{ panel.actorType }}"
                  data-actor-type-id="{{ panel.actorTypeId }}"
-                 data-ticket-id="{{ panel.ticketId }}"
+                 data-item-type="{{ panel.itemtype }}"
+                 data-items-id="{{ panel.itemsId }}"
                  data-root-doc="{{ root_doc }}"
                  data-field-map="{{ panel.fieldMap|json_encode|e('html_attr') }}">
-          <div class="ticket-actor-card__header">
+          <div class="itil-actor-card__header">
             <div>
-              <h3 class="ticket-actor-card__title">{{ panel.title|raw }}</h3>
+              <h3 class="itil-actor-card__title">{{ panel.title|raw }}</h3>
               {% if panel.helpText %}
-                <p class="ticket-actor-card__hint">{{ panel.helpText }}</p>
+                <p class="itil-actor-card__hint">{{ panel.helpText }}</p>
               {% endif %}
             </div>
           </div>
 
           {% if panel.allowAdd and panel.actorTypes %}
-            <div class="ticket-actor-picker">
-              <div class="ticket-actor-picker__top">
-                <div class="ticket-actor-picker__field">
+            <div class="itil-actor-picker">
+              <div class="itil-actor-picker__top">
+                <div class="itil-actor-picker__field">
                   <label class="form-label" for="{{ panel.id }}_type">{{ 'Actor type'|trans }}</label>
                   <select id="{{ panel.id }}_type" class="form-select form-select-sm" data-role="type-selector">
                     {% for label, value in panel.actorTypes %}
@@ -245,28 +246,28 @@
                   </button>
                 </div>
               </div>
-              <div class="ticket-actor-picker__details" data-role="selector-container"></div>
+              <div class="itil-actor-picker__details" data-role="selector-container"></div>
             </div>
           {% endif %}
 
-          <div class="ticket-actor-list" data-role="actor-list">
+          <div class="itil-actor-list" data-role="actor-list">
             {% for actor in panel.values %}
-              <div class="ticket-actor-row"
+              <div class="itil-actor-row"
                    data-actor-entry
                    data-entry-type="{{ actor.type }}"
                    data-entry-id="{{ actor.id }}"
                    data-entry-email="{{ actor.alternativeEmail|default('') }}"
                    data-persisted="{{ actor.persisted ? '1' : '0' }}">
-                <div class="ticket-actor-row__body">
-                  <span class="ticket-actor-row__icon">
+                <div class="itil-actor-row__body">
+                  <span class="itil-actor-row__icon">
                     <i class="{{ actor.icon|raw }}"></i>
                   </span>
-                  <div class="ticket-actor-row__text">
-                    <div class="ticket-actor-row__name">{{ actor.name|raw }}</div>
+                  <div class="itil-actor-row__text">
+                    <div class="itil-actor-row__name">{{ actor.name|raw }}</div>
                     {% if actor.subtitle %}
-                      <div class="ticket-actor-row__meta">{{ actor.subtitle|raw }}</div>
+                      <div class="itil-actor-row__meta">{{ actor.subtitle|raw }}</div>
                     {% endif %}
-                    <div class="ticket-actor-row__badges">
+                    <div class="itil-actor-row__badges">
                       {% if actor.pending %}
                         <span class="badge text-bg-warning">{{ 'Pending'|trans }}</span>
                       {% endif %}
@@ -276,7 +277,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="ticket-actor-row__actions">
+                <div class="itil-actor-row__actions">
                   {% if actor.followupTitle %}
                     <button type="button"
                             class="btn btn-sm btn-outline-secondary"
@@ -300,7 +301,7 @@
                 {% endfor %}
               </div>
             {% endfor %}
-            <div class="ticket-actor-empty{% if panel.values %} d-none{% endif %}" data-role="empty-state">
+            <div class="itil-actor-empty{% if panel.values %} d-none{% endif %}" data-role="empty-state">
               {{ 'No actor selected yet.'|trans }}
             </div>
           </div>
@@ -320,7 +321,8 @@
     root.querySelectorAll('[data-panel-id]').forEach((panel) => {
       const $panel = $(panel);
       const role = $panel.data('actor-role');
-      const ticketId = parseInt($panel.data('ticket-id'), 10) || 0;
+      const itemtype = $panel.data('item-type');
+      const itemsId = parseInt($panel.data('items-id'), 10) || 0;
       const actorTypeId = $panel.data('actor-type-id');
       const rootDoc = $panel.data('root-doc');
       const fieldMap = JSON.parse($panel.attr('data-field-map') || '{}');
@@ -367,7 +369,7 @@
 
       const buildRow = (entry) => {
         const $row = $('<div>', {
-          class: 'ticket-actor-row',
+          class: 'itil-actor-row',
           'data-actor-entry': '',
           'data-entry-type': entry.type,
           'data-entry-id': entry.id,
@@ -384,17 +386,17 @@
         }
 
         const $body = $(`
-          <div class="ticket-actor-row__body">
-            <span class="ticket-actor-row__icon"><i class="${escapeHtml(entry.icon)}"></i></span>
-            <div class="ticket-actor-row__text">
-              <div class="ticket-actor-row__name">${escapeHtml(entry.name)}</div>
-              ${entry.subtitle ? `<div class="ticket-actor-row__meta">${escapeHtml(entry.subtitle)}</div>` : ''}
-              <div class="ticket-actor-row__badges">${badges.join('')}</div>
+          <div class="itil-actor-row__body">
+            <span class="itil-actor-row__icon"><i class="${escapeHtml(entry.icon)}"></i></span>
+            <div class="itil-actor-row__text">
+              <div class="itil-actor-row__name">${escapeHtml(entry.name)}</div>
+              ${entry.subtitle ? `<div class="itil-actor-row__meta">${escapeHtml(entry.subtitle)}</div>` : ''}
+              <div class="itil-actor-row__badges">${badges.join('')}</div>
             </div>
           </div>
         `);
 
-        const $actions = $('<div>', { class: 'ticket-actor-row__actions' });
+        const $actions = $('<div>', { class: 'itil-actor-row__actions' });
         if (entry.removable) {
           $actions.append(`
             <button type="button" class="btn btn-sm btn-outline-danger" data-role="remove-actor" aria-label="{{ 'Remove'|trans|e('js') }}">
@@ -426,9 +428,9 @@
           data: {
             type,
             actortype: role,
-            itemtype: 'Ticket',
+            itemtype,
             actorTypeId,
-            ticketId,
+            items_id: itemsId,
             entity_restrict: spec.entity,
             use_notif: spec.defaultUseNotification,
             allow_email: true,
@@ -437,7 +439,7 @@
             $selectorContainer.html(html);
           },
           error: () => {
-            $selectorContainer.html(`<div class="ticket-actor-empty">{{ 'Unable to load actors.'|trans|e('js') }}</div>`);
+            $selectorContainer.html(`<div class="itil-actor-empty">{{ 'Unable to load actors.'|trans|e('js') }}</div>`);
           },
         });
       };
@@ -488,7 +490,7 @@
         }
 
         const hiddenFields = [];
-        if (ticketId > 0) {
+        if (itemsId > 0) {
           $list.find('[data-actor-entry]').filter((_, element) => {
             const $element = $(element);
             return $element.data('persisted') !== 1 && $element.data('persisted') !== '1';
@@ -538,7 +540,7 @@
         const $row = $(this).closest('[data-actor-entry]');
         const persisted = $row.data('persisted') === 1 || $row.data('persisted') === '1';
 
-        if (!persisted || ticketId === 0) {
+        if (!persisted || itemsId === 0) {
           $row.remove();
           updateEmptyState();
           return;
@@ -551,7 +553,8 @@
             linkId: $row.data('entry-type'),
             objectTypeId: actorTypeId,
             objectId: $row.data('entry-id'),
-            ticketId,
+            itemtype,
+            items_id: itemsId,
           },
           success: () => {
             $row.remove();
@@ -564,8 +567,8 @@
         loadSelector($typeSelector.val());
       }
 
-      if (form && !form.dataset.ticketActorPanelPickerBound) {
-        form.dataset.ticketActorPanelPickerBound = '1';
+      if (form && !form.dataset.itilActorPanelPickerBound) {
+        form.dataset.itilActorPanelPickerBound = '1';
         $(form).on('submit', () => {
           $(form).find('[data-role="selector-container"]').find('input, select, textarea').prop('disabled', true);
         });

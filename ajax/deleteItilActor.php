@@ -33,71 +33,87 @@
 
 include('../inc/includes.php');
 
+use function __;
+
+header('Content-Type: application/json; charset=UTF-8');
+Html::header_nocache();
+
+$itemtype = $_POST['itemtype'] ?? 'Ticket';
+$items_id = isset($_POST['items_id']) ? (int)$_POST['items_id'] : (int)($_POST['ticketId'] ?? 0);
+$linkId = $_POST['linkId'] ?? '';
+$objectTypeId = isset($_POST['objectTypeId']) ? (int)$_POST['objectTypeId'] : 0;
+$objectId = isset($_POST['objectId']) ? (int)$_POST['objectId'] : 0;
+
 if (
-    isset($_POST['linkId']) &&
-    isset($_POST['objectTypeId']) &&
-    isset($_POST['objectId']) &&
-    isset($_POST['ticketId']) &&
-    Session::haveRight('ticket', UPDATE)
+    !$items_id
+    || !$linkId
+    || !$objectTypeId
+    || !in_array($linkId, ['user', 'group', 'supplier'], true)
+    || !is_a($itemtype, CommonITILObject::class, true)
 ) {
-    $ticket = new Ticket();
-    $ticket->getFromDB($_POST['ticketId']);
-
-    $linkId = $_POST['linkId'];
-    $objectTypeId = $_POST['objectTypeId'];
-    $objectId = $_POST['objectId'];
-
-    switch ($linkId) {
-        case 'user':
-            $ticketUser = new Ticket_User();
-            $ticketUser->getFromDBByCrit([
-                'tickets_id' => $ticket->getID(),
-                'users_id' => $objectId,
-                'type' => $objectTypeId
-            ]);
-            $ticketUser->delete(['id' => $ticketUser->getID()]);
-            break;
-        case 'group':
-            $ticketGroup = new Group_Ticket();
-            $ticketGroup->getFromDBByCrit([
-                'tickets_id' => $ticket->getID(),
-                'groups_id' => $objectId,
-                'type' => $objectTypeId
-            ]);
-            $ticketGroup->delete(['id' => $ticketGroup->getID()]);
-            break;
-        case 'supplier':
-            $ticketSupplier = new Supplier_Ticket();
-            $ticketSupplier->getFromDBByCrit([
-                'tickets_id' => $ticket->getID(),
-                'suppliers_id' => $objectId,
-                'type' => $objectTypeId
-            ]);
-            $ticketSupplier->delete(['id' => $ticketSupplier->getID()]);
-            break;
-        case 'ticket':
-            $otherTicket = new Ticket();
-            $otherTicket->getFromDB($objectId);
-            $ticketLink = new Ticket_Ticket();
-            $ticketLink->getFromDBForItems($ticket, $otherTicket);
-            if ($ticketLink->getId() != -1) {
-                $ticketLink->delete(['id' => $ticketLink->getID()]);
-            }
-            $ticketLink->getFromDBForItems($otherTicket, $ticket);
-            if ($ticketLink->getId() != -1) {
-                $ticketLink->delete(['id' => $ticketLink->getID()]);
-            }
-            break;
-    }
-    echo json_encode([
-        'success' => true,
-        'message' => __('Actor deleted successfully')
-    ]);
-    return;
-} else {
     echo json_encode([
         'success' => false,
         'message' => __('Error while deleting actor')
     ]);
     return;
 }
+
+$item = new $itemtype();
+if (!$item->getFromDB($items_id)) {
+    echo json_encode([
+        'success' => false,
+        'message' => __('Error while deleting actor')
+    ]);
+    return;
+}
+
+$canDelete = $objectTypeId === CommonITILActor::ASSIGN
+    ? $item->canAssign()
+    : $item->canAdminActors();
+if (!$canDelete) {
+    echo json_encode([
+        'success' => false,
+        'message' => __('Error while deleting actor')
+    ]);
+    return;
+}
+
+$criteria = [
+    $item->getForeignKeyField() => $item->getID(),
+    'type'                      => $objectTypeId,
+];
+
+switch ($linkId) {
+    case 'user':
+        $linkClass = $item->userlinkclass;
+        $criteria['users_id'] = $objectId;
+        break;
+
+    case 'group':
+        $linkClass = $item->grouplinkclass;
+        $criteria['groups_id'] = $objectId;
+        break;
+
+    case 'supplier':
+        $linkClass = $item->supplierlinkclass;
+        $criteria['suppliers_id'] = $objectId;
+        break;
+}
+
+$link = new $linkClass();
+
+if (!$link->getFromDBByCrit($criteria)) {
+    echo json_encode([
+        'success' => false,
+        'message' => __('Error while deleting actor')
+    ]);
+    return;
+}
+
+$link->delete(['id' => $link->getID()]);
+
+echo json_encode([
+    'success' => true,
+    'message' => __('Actor deleted successfully')
+]);
+return;

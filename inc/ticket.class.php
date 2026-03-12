@@ -4612,80 +4612,13 @@ class Ticket extends CommonITILObject
         return [];
     }
 
-    private function getActorsForAction($action)
+    protected function getITILActorPanelEntryExtras(array $actor, string $actorType): array
     {
-
-        $actors = [];
-
-        $userActors = $this->getUsers($action);
-        foreach ($userActors as $userActor) {
-            $subtitle = [];
-            if (array_key_exists('use_notification', $userActor)) {
-                $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($userActor['use_notification']);
-            }
-            if ($this->shouldShowTicketActorAlternativeEmail(
-                User::class,
-                $userActor['users_id'],
-                $userActor['alternative_email'] ?? ''
-            )) {
-                $subtitle[] = $userActor['alternative_email'];
-            }
-            $newUserActor = [
-               'name' => getUserName($userActor['users_id']),
-               'id' => $userActor['users_id'],
-               'type' => 'user',
-               'icon' => User::getIcon($userActor['users_id']),
-               'subtitle' => implode(' | ', $subtitle),
-               'alternativeEmail' => $userActor['alternative_email'] ?? '',
-            ];
-            $newUserActor += $this->generateFollowupLink($userActor, User::class);
-            $actors[] = $newUserActor;
+        if (!in_array($actorType, [User::class, Supplier::class], true)) {
+            return [];
         }
 
-        $groupActors = $this->getGroups($action);
-        foreach ($groupActors as $groupActor) {
-            $group = new Group();
-            $group->getFromDB($groupActor['groups_id']);
-            $newGroupActor = [
-               'name' => $group->getName(),
-               'id' => $groupActor['groups_id'],
-               'type' => 'group',
-               'icon' => Group::getIcon(),
-               'subtitle' => '',
-               'alternativeEmail' => '',
-            ];
-            $actors[] = $newGroupActor;
-        }
-
-        if ($action == CommonITILActor::ASSIGN) {
-            $supplierActors = $this->getSuppliers($action);
-            foreach ($supplierActors as $supplierActor) {
-                $subtitle = [];
-                if (array_key_exists('use_notification', $supplierActor)) {
-                    $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($supplierActor['use_notification']);
-                }
-                if ($this->shouldShowTicketActorAlternativeEmail(
-                    Supplier::class,
-                    $supplierActor['suppliers_id'],
-                    $supplierActor['alternative_email'] ?? ''
-                )) {
-                    $subtitle[] = $supplierActor['alternative_email'];
-                }
-                $supplier = new Supplier();
-                $supplier->getFromDB($supplierActor['suppliers_id']);
-                $newSupplierActor = [
-                   'name' => $supplier->getName(),
-                   'id' => $supplierActor['suppliers_id'],
-                   'type' => 'supplier',
-                   'icon' => Supplier::getIcon(),
-                   'subtitle' => implode(' | ', $subtitle),
-                   'alternativeEmail' => $supplierActor['alternative_email'] ?? '',
-                ];
-                $newSupplierActor += $this->generateFollowupLink($supplierActor, Supplier::class);
-                $actors[] = $newSupplierActor;
-            }
-        }
-        return $actors;
+        return $this->generateFollowupLink($actor, $actorType);
     }
 
     private function getTicketActorTemplateHiddenFields($tt)
@@ -5188,7 +5121,7 @@ class Ticket extends CommonITILObject
     {
         global $CFG_GLPI;
 
-        renderTwigTemplate('ticket/actorPanel.twig', [
+        renderTwigTemplate('itil/actorPanel.twig', [
             'panels'   => $this->getTicketActorPanels($ID, $options, $tt),
             'root_doc' => $CFG_GLPI['root_doc'],
         ]);
@@ -5788,7 +5721,7 @@ class Ticket extends CommonITILObject
                    '' => [
                        'content' => (function () use ($ID, $options, $tt) {
                            ob_start();
-                           $this->renderTicketActorPanels($ID, $options, $tt);
+                           $this->renderITILActorPanels($ID, $options, $tt);
                            return ob_get_clean();
                        })(),
                        'col_lg' => 12,
