@@ -4810,6 +4810,11 @@ abstract class CommonITILObject extends CommonDBTM
         return $fallback;
     }
 
+    protected function getITILActorEntryKey(string $type, int $id): string
+    {
+        return sprintf('%s:%s', $type, $id);
+    }
+
     protected function getITILActorDefaultEmail(string $itemtype, int $id): string
     {
         if ($id <= 0) {
@@ -4944,7 +4949,7 @@ abstract class CommonITILObject extends CommonDBTM
                         continue;
                     }
 
-                    $entryKey = sprintf('%s:%s:%s', $type, $value, $alternativeEmail);
+                    $entryKey = $this->getITILActorEntryKey($type, $value);
                     if (isset($existingKeys[$entryKey])) {
                         continue;
                     }
@@ -5019,7 +5024,7 @@ abstract class CommonITILObject extends CommonDBTM
                 continue;
             }
 
-            $entryKey = sprintf('%s:%s:%s', $type, $value, $alternativeEmail);
+            $entryKey = $this->getITILActorEntryKey($type, $value);
             if (isset($existingKeys[$entryKey])) {
                 continue;
             }
@@ -5189,11 +5194,9 @@ abstract class CommonITILObject extends CommonDBTM
                     $actor['alternativeEmail'] = $actor['alternativeEmail'] ?? '';
                     $actor['hiddenFields'] = [];
                     $values[] = $actor;
-                    $existingKeys[sprintf(
-                        '%s:%s:%s',
+                    $existingKeys[$this->getITILActorEntryKey(
                         $actor['type'],
-                        $actor['id'],
-                        $actor['alternativeEmail']
+                        (int)$actor['id']
                     )] = true;
                 }
             }

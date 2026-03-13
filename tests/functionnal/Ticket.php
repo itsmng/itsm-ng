@@ -173,6 +173,62 @@ class Ticket extends DbTestCase
         $this->variable($ticketUser->getField('use_notification'))->isEqualTo($notify);
     }
 
+    public function testCreateTicketDeduplicatesRequesters()
+    {
+        $this->login();
+
+        $users_id_requester = (int)getItemByTypeName('User', 'post-only', true);
+        $ticket = new \Ticket();
+        $tickets_id = (int)$ticket->add([
+           'name'                => 'ticket duplicate requester guard',
+           'content'             => 'duplicate requester guard',
+           '_users_id_requester' => [$users_id_requester, $users_id_requester],
+        ]);
+
+        $this->integer($tickets_id)->isGreaterThan(0);
+        $this->integer(countElementsInTable(
+            'glpi_tickets_users',
+            [
+                'tickets_id' => $tickets_id,
+                'users_id'   => $users_id_requester,
+                'type'       => \CommonITILActor::REQUESTER,
+            ]
+        ))->isEqualTo(1);
+    }
+
+    public function testUpdateTicketDoesNotDuplicateExistingRequester()
+    {
+        $this->login();
+
+        $users_id_requester = (int)getItemByTypeName('User', 'post-only', true);
+        $ticket = new \Ticket();
+        $tickets_id = (int)$ticket->add([
+           'name'                => 'ticket duplicate requester update guard',
+           'content'             => 'duplicate requester update guard',
+           '_users_id_requester' => $users_id_requester,
+        ]);
+
+        $this->integer($tickets_id)->isGreaterThan(0);
+        $this->boolean($ticket->update([
+           'id'              => $tickets_id,
+           '_itil_requester' => [
+              '_type'             => 'user',
+              'users_id'          => $users_id_requester,
+              'use_notification'  => ['1'],
+              'alternative_email' => [''],
+           ],
+        ]))->isTrue();
+
+        $this->integer(countElementsInTable(
+            'glpi_tickets_users',
+            [
+                'tickets_id' => $tickets_id,
+                'users_id'   => $users_id_requester,
+                'type'       => \CommonITILActor::REQUESTER,
+            ]
+        ))->isEqualTo(1);
+    }
+
     public function testTasksFromTemplate()
     {
         $this->login();

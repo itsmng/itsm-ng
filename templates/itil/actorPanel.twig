@@ -348,22 +348,42 @@
       const resetSelector = (selectedType) => {
         const spec = fieldMap[selectedType];
         const $valueField = getCurrentValueField(spec);
-        if (!$valueField.length) {
+        if (!spec || !$valueField.length) {
           return;
         }
 
         const emptyValue = $valueField.find('option[value=""]').length ? '' : '0';
         $valueField.val(emptyValue).trigger('change');
+
+        const $emailField = $selectorContainer.find(`[name^="${spec.tempEmailFieldPrefix}"]`).first();
+        if ($emailField.length) {
+          $emailField.val('').attr('data-default-email', '');
+        }
+
+        const $notifCheckbox = $selectorContainer.find(`input[type="checkbox"][name^="${spec.tempNotifFieldPrefix}"]`).first();
+        if ($notifCheckbox.length) {
+          $notifCheckbox.prop('checked', String(spec.defaultUseNotification) === '1');
+        }
+
+        const $notifSelect = $selectorContainer.find(`select[name^="${spec.tempNotifFieldPrefix}"]`).first();
+        if ($notifSelect.length) {
+          $notifSelect.val(String(spec.defaultUseNotification));
+        }
       };
 
-      const entryExists = (type, id, email) => {
-        const normalizedId = String(id || 0);
-        const normalizedEmail = String(email || '');
+      const entryKey = (type, id) => {
+        const normalizedId = parseInt(id || 0, 10) || 0;
+        return `${type}:${normalizedId}`;
+      };
+
+      const entryExists = (type, id) => {
+        const key = entryKey(type, id);
         return $list.find('[data-actor-entry]').filter((_, element) => {
           const $element = $(element);
-          return $element.data('entry-type') === type
-            && String($element.data('entry-id')) === normalizedId
-            && String($element.data('entry-email') || '') === normalizedEmail;
+          return entryKey(
+            $element.data('entry-type'),
+            $element.data('entry-id')
+          ) === key;
         }).length > 0;
       };
 
@@ -474,7 +494,7 @@
           return;
         }
 
-        if (entryExists(selectedType, actorId, alternativeEmail)) {
+        if (entryExists(selectedType, actorId)) {
           return;
         }
 

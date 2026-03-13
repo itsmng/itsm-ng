@@ -33,8 +33,6 @@
 
 include('../inc/includes.php');
 
-use function __;
-
 header('Content-Type: application/json; charset=UTF-8');
 Html::header_nocache();
 
@@ -101,8 +99,14 @@ switch ($linkId) {
 }
 
 $link = new $linkClass();
+$rows = $DB->request([
+    'SELECT' => ['id'],
+    'FROM'   => $link->getTable(),
+    'WHERE'  => $criteria,
+    'ORDER'  => ['id ASC'],
+]);
 
-if (!$link->getFromDBByCrit($criteria)) {
+if (count($rows) === 0) {
     echo json_encode([
         'success' => false,
         'message' => __('Error while deleting actor')
@@ -110,7 +114,9 @@ if (!$link->getFromDBByCrit($criteria)) {
     return;
 }
 
-$link->delete(['id' => $link->getID()]);
+foreach ($rows as $row) {
+    $link->delete(['id' => $row['id']]);
+}
 
 echo json_encode([
     'success' => true,
