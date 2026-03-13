@@ -51,6 +51,7 @@ Running the test suite on developpement env
 There are multiple directories for tests:
 - `tests/units` for unit tests;
 - `tests/functionnal` for functionnal tests;
+- `tests/e2e` for Playwright browser end-to-end tests, with specs stored in `tests/e2e/spec`;
 - `tests/imap` for Mail collector tests;
 - `tests/LDAP` for LDAP connection tests;
 - `tests/web` for API tests.
@@ -99,6 +100,7 @@ Default services are:
 - `db` (MariaDB),
 - `dovecot` (used by `imap` suite; fixtures are loaded from `tests/emails-tests/*.eml`),
 - `openldap` (used by `ldap` suite fixtures).
+The `e2e` suite uses the same test install data as the `web` suite, but in local containerized mode it runs against a dedicated `app-web` PHP server container and a separate Playwright runner container on the same compose network. Test data setup for E2E scenarios is done through the public REST API, after an app-side prep step enables the API and provisions a dedicated test API client/token for the browser runner.
 LDAP fixtures are now initialized idempotently, so rerunning `tests/run_tests.sh ldap` does not require manual volume cleanup.
 The `update` suite now validates a full ITSM 2.x baseline matrix from `2.0.0` through `2.1.2` before final schema checks.
 

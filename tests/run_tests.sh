@@ -38,6 +38,7 @@ TESTS_SUITES=(
   "update"
   "units"
   "functionnal"
+  "e2e"
   "ldap"
   "imap"
   "web"
@@ -101,6 +102,7 @@ Available tests suites:
  - update
  - units
  - functionnal
+ - e2e
  - ldap
  - imap
  - web
@@ -133,6 +135,9 @@ find "$APPLICATION_ROOT/tests/config" -mindepth 1 ! -iname ".gitignore" -exec mv
 # Export variables to env (required for docker-compose) and start containers
 export COMPOSE_FILE="$APPLICATION_ROOT/.github/actions/docker-compose-app.yml"
 [[ "${TESTS_TO_RUN[@]}" == "lint" ]] || export COMPOSE_FILE="$COMPOSE_FILE:$APPLICATION_ROOT/.github/actions/docker-compose-services.yml"
+if [[ " ${TESTS_TO_RUN[*]} " == *" e2e "* ]]; then
+  export COMPOSE_FILE="$COMPOSE_FILE:$APPLICATION_ROOT/.github/actions/docker-compose-e2e.yml"
+fi
 export APPLICATION_ROOT
 export APP_CONTAINER_HOME
 export DB_IMAGE
@@ -165,6 +170,11 @@ do
       ;;
     "functionnal")
          docker-compose exec -T app .github/actions/test_tests-functionnal.sh \
+      || LAST_EXIT_CODE=$?
+      ;;
+    "e2e")
+         docker-compose exec -T app bash .github/actions/test_tests-e2e-prepare.sh \
+      && docker-compose exec -T e2e bash .github/actions/test_tests-e2e.sh \
       || LAST_EXIT_CODE=$?
       ;;
     "ldap")
