@@ -54,33 +54,27 @@ async function parseJsonResponse<T>(response: APIResponse, context: string): Pro
 async function initApiSession(request: APIRequestContext): Promise<ApiSession> {
   const apiUrl = getApiUrl(request);
   const appToken = getAppToken();
+  const credentials = Buffer.from('itsm:itsm').toString('base64');
   const response = await request.get(`${apiUrl}initSession`, {
     headers: {
       'App-Token': appToken,
+      Authorization: `Basic ${credentials}`,
     },
     params: {
-      login: 'itsm',
-      password: 'itsm',
+      get_full_session: 'true',
     },
   });
-  const data = await parseJsonResponse<{ session_token?: string }>(response, 'API session initialization');
+  const data = await parseJsonResponse<{ session_token?: string; session?: { glpiID?: number | string } }>(
+    response,
+    'API session initialization'
+  );
   if (!data.session_token) {
-    throw new Error('API session initialization did not return a session token.');
+    throw new Error(`API session initialization did not return a session token: ${JSON.stringify(data)}`);
   }
 
-  const sessionResponse = await request.get(`${apiUrl}getFullSession`, {
-    headers: {
-      'App-Token': appToken,
-      'Session-Token': data.session_token,
-    },
-  });
-  const sessionData = await parseJsonResponse<{ session?: { glpiID?: number | string } }>(
-    sessionResponse,
-    'Fetching API session details'
-  );
-  const userId = Number(sessionData.session?.glpiID);
+  const userId = Number(data.session?.glpiID);
   if (Number.isNaN(userId) || userId <= 0) {
-    throw new Error(`API session details did not return a valid user id: ${JSON.stringify(sessionData)}`);
+    throw new Error(`API session initialization did not return a valid user id: ${JSON.stringify(data)}`);
   }
 
   return { apiUrl, sessionToken: data.session_token, userId };
