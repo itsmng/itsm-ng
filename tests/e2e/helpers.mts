@@ -186,8 +186,16 @@ export async function login(page: Page): Promise<void> {
   await page.goto('/index.php');
   await page.locator('#login_name').fill('itsm');
   await page.locator('#login_password').fill('itsm');
+  const rememberMe = page.getByRole('checkbox', { name: 'Remember me' });
+  if (await rememberMe.isChecked().catch(() => false)) {
+    await rememberMe.uncheck();
+  }
   await page.locator('form[aria-label="Login Form"] input[type="submit"]').click();
   await page.waitForLoadState('networkidle');
+
+  if (page.url().endsWith('/index.php') || await page.locator('form[aria-label="Login Form"]').isVisible().catch(() => false)) {
+    throw new Error(`E2E login did not persist the authenticated session at ${page.url()}.`);
+  }
 }
 
 export async function openTicket(page: Page, seed: SeedTicketResult): Promise<void> {
