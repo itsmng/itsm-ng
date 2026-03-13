@@ -646,48 +646,6 @@ class Change extends CommonITILObject
         return $tab;
     }
 
-    private function getActorsForAction($action)
-    {
-        $actors = [];
-
-        $userActors = $this->getUsers($action);
-        foreach ($userActors as $userActor) {
-            $actors[] = [
-              'name' => getUserName($userActor['users_id']),
-              'id' => $userActor['users_id'],
-              'type' => 'user',
-              'icon' => User::getIcon($userActor['users_id']),
-            ];
-        }
-
-        $groupActors = $this->getGroups($action);
-        foreach ($groupActors as $groupActor) {
-            $group = new Group();
-            $group->getFromDB($groupActor['groups_id']);
-            $actors[] = [
-              'name' => $group->getName(),
-              'id' => $groupActor['groups_id'],
-              'type' => 'group',
-              'icon' => Group::getIcon(),
-            ];
-        }
-
-        if ($action == CommonITILActor::ASSIGN) {
-            $supplierActors = $this->getSuppliers($action);
-            foreach ($supplierActors as $supplierActor) {
-                $supplier = new Supplier();
-                $supplier->getFromDB($supplierActor['suppliers_id']);
-                $actors[] = [
-                  'name' => $supplier->getName(),
-                  'id' => $supplierActor['suppliers_id'],
-                  'type' => 'supplier',
-                  'icon' => Supplier::getIcon(),
-                ];
-            }
-        }
-        return $actors;
-    }
-
     public function showForm($ID, $options = [])
     {
         global $CFG_GLPI;
@@ -1078,48 +1036,14 @@ class Change extends CommonITILObject
               __('Actor') => (!$options['template_preview']) ? [
                'visible' => true,
                'inputs' => [
-                 __('Requester') => [
-                   'type' => 'actorSelect',
-                   'name' => '_users_id_requester',
-                   'actorTypes' => [
-                     Dropdown::EMPTY_VALUE => 0,
-                     User::getTypeName() => 'user',
-                     Group::getTypeName() => 'group',
-                   ],
-                   'values' => $this->getActorsForAction(CommonITILActor::REQUESTER),
-                   'actorTypeId' => CommonITILActor::REQUESTER,
-                   'itemType' => 'Ticket',
-                   'actorType' => 'requester',
-                   'ticketId' => $this->isNewID($ID) ? 0 : $ID,
-                 ],
-                 __('Watcher') => [
-                   'type' => 'actorSelect',
-                   'name' => '_users_id_observer',
-                   'actorTypes' => [
-                     Dropdown::EMPTY_VALUE => 0,
-                     User::getTypeName() => 'user',
-                     Group::getTypeName() => 'group',
-                   ],
-                   'values' => $this->getActorsForAction(CommonITILActor::OBSERVER),
-                   'actorTypeId' => CommonITILActor::OBSERVER,
-                   'itemType' => 'Ticket',
-                   'actorType' => 'observer',
-                   'ticketId' => $this->isNewID($ID) ? 0 : $ID,
-                 ],
-                 __('Assigned to') => [
-                   'type' => 'actorSelect',
-                   'name' => '_users_id_assign',
-                   'actorTypes' => [
-                     Dropdown::EMPTY_VALUE => 0,
-                     User::getTypeName() => 'user',
-                     Group::getTypeName() => 'group',
-                     Supplier::getTypeName() => 'supplier',
-                   ],
-                   'values' => $this->getActorsForAction(CommonITILActor::ASSIGN),
-                   'actorTypeId' => CommonITILActor::ASSIGN,
-                   'itemType' => 'Ticket',
-                   'actorType' => 'assign',
-                   'ticketId' => $this->isNewID($ID) ? 0 : $ID,
+                 '' => [
+                   'content' => (function () use ($ID, $options, $tt) {
+                       ob_start();
+                       $this->renderITILActorPanels($ID, $options, $tt);
+                       return ob_get_clean();
+                   })(),
+                   'col_lg' => 12,
+                   'col_md' => 12,
                  ],
                ]
               ] : [],
