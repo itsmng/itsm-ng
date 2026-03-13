@@ -50,8 +50,11 @@ jobs:
       - name: Start PHP development server
         run: mkdir -p tests/files/_playwright && php -S 127.0.0.1:8088 tests/router.php > tests/files/_playwright/php-server.log &
 
+      - name: Prepare E2E API access
+        run: PLAYWRIGHT_BASE_URL=http://127.0.0.1:8088 bash .github/actions/test_tests-e2e-prepare.sh
+
       - name: Run Playwright E2E tests
-        run: PLAYWRIGHT_BASE_URL=http://127.0.0.1:8088 .github/actions/test_tests-e2e.sh
+        run: PLAYWRIGHT_BASE_URL=http://127.0.0.1:8088 bash .github/actions/test_tests-e2e.sh
 
       - name: Upload Playwright artifacts
         if: failure()
