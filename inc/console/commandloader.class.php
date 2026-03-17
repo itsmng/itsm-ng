@@ -142,6 +142,7 @@ class CommandLoader implements CommandLoaderInterface
     {
         if ($this->commands === null) {
             $this->findCoreCommands();
+            $this->findPsr4CoreCommands();
             $this->findToolsCommands();
 
             if ($this->include_plugins) {
@@ -150,6 +151,51 @@ class CommandLoader implements CommandLoaderInterface
         }
 
         return $this->commands;
+    }
+
+    /**
+     * Find PSR-4 core commands under src/.
+     *
+     * @return void
+     */
+    private function findPsr4CoreCommands()
+    {
+
+        $basedir = $this->rootdir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Console';
+        if (!is_dir($basedir)) {
+            return;
+        }
+
+        $core_files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($basedir),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        /** @var SplFileInfo $file */
+        foreach ($core_files as $file) {
+            if (
+                !$file->isReadable()
+                || !$file->isFile()
+                || !preg_match('/^(.*)Command\.php$/', $file->getFilename())
+            ) {
+                continue;
+            }
+
+            $relative = str_replace(
+                ['.php', DIRECTORY_SEPARATOR],
+                ['', '\\'],
+                $this->getRelativePath($this->rootdir . DIRECTORY_SEPARATOR . 'src', $file->getPathname())
+            );
+            $class = 'itsmng\\' . $relative;
+            if (!class_exists($class)) {
+                continue;
+            }
+
+            $reflectionClass = new ReflectionClass($class);
+            if ($reflectionClass->isInstantiable() && $reflectionClass->isSubclassOf(Command::class)) {
+                $this->registerCommand(new $class());
+            }
+        }
     }
 
     /**

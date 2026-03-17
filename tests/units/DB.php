@@ -318,7 +318,7 @@ class DB extends \GLPITestCase
             $this->array($line)
                ->hasSize(1);
             $table = $line['TABLE_NAME'];
-            if (in_array($table, ['glpi_appliancerelations', 'glpi_oidc_config', 'glpi_oidc_users', 'glpi_oidc_mapping'])) {
+            if (in_array($table, ['glpi_appliancerelations', 'glpi_oidc_config', 'glpi_oidc_users', 'glpi_oidc_mapping', 'glpi_schema_migrations'])) {
                 //FIXME temporary hack for unit tests
                 continue;
             }

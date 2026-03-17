@@ -38,6 +38,8 @@ if (!defined('GLPI_ROOT')) {
 }
 
 use Glpi\Console\AbstractCommand;
+use itsmng\Database\Schema\CoreSchema;
+use itsmng\Database\Schema\Dialect\DialectResolver;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use SebastianBergmann\Diff\Differ;
@@ -64,33 +66,17 @@ class CheckCommand extends AbstractCommand
     {
 
         $differ = new Differ();
-
-        if (
-            false === ($empty_file = realpath(GLPI_ROOT . '/install/mysql/glpi-empty.sql'))
-            || false === ($empty_sql = file_get_contents($empty_file))
-        ) {
-            $message = sprintf(__('Unable to read installation file "%s".'), $empty_file);
-            $output->writeln(
-                '<error>' . $message . '</error>',
-                OutputInterface::VERBOSITY_QUIET
-            );
-            return self::ERROR_UNABLE_TO_READ_EMPTYSQL;
-        }
-
-        $matches = [];
-        preg_match_all('/CREATE TABLE `(.+)`[^;]+/', $empty_sql, $matches);
-        $empty_tables_names   = $matches[1];
-        $empty_tables_schemas = $matches[0];
-
-        foreach ($empty_tables_schemas as $index => $table_schema) {
-            $table_name = $empty_tables_names[$index];
+        $dialect = (new DialectResolver())->resolve($this->db);
+        foreach (CoreSchema::definition()['tables'] as $table) {
+            $table_name = $table['name'];
 
             $output->writeln(
                 sprintf(__('Processing table "%s"...'), $table_name),
                 OutputInterface::VERBOSITY_VERY_VERBOSE
             );
 
-            $base_table_struct     = $this->db->getTableSchema($table_name, $table_schema);
+            $statements = $dialect->createTableStatements($table);
+            $base_table_struct = $this->db->getTableSchema($table_name, $statements[0]);
             $existing_table_struct = $this->db->getTableSchema($table_name);
 
             if ($existing_table_struct['schema'] != $base_table_struct['schema']) {

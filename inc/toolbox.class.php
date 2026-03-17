@@ -2651,9 +2651,10 @@ class Toolbox
         // Set global $DB as it is used in "Config::setConfigurationValues()" just after schema creation
         $DB = $database;
 
-        if (!$DB->runFile(GLPI_ROOT . "/install/mysql/glpi-empty.sql")) {
-            echo "Errors occurred inserting default database";
-        } else {
+        $installer = new \itsmng\Database\Schema\SchemaInstaller();
+        try {
+            $installer->install(\itsmng\Database\Schema\CoreSchema::definition(), $DB);
+
             //dataset
             Session::loadLanguage($lang, false); // Load default language locales to translate empty data
             $tables = require_once(__DIR__ . '/../install/empty_data.php');
@@ -2719,6 +2720,12 @@ class Toolbox
                 ]
             );
 
+            $history = new \itsmng\Database\Migrations\MigrationHistoryRepository($DB);
+            $history->ensureTable();
+            if (!isset($history->applied()[ITSM_SCHEMA_VERSION])) {
+                $history->record(ITSM_SCHEMA_VERSION, 'baseline', 1);
+            }
+
             if (defined('GLPI_SYSTEM_CRON')) {
                 // Downstream packages may provide a good system cron
                 $DB->updateOrDie(
@@ -2733,6 +2740,8 @@ class Toolbox
                     '4203'
                 );
             }
+        } catch (\Throwable $throwable) {
+            echo "Errors occurred inserting default database: " . $throwable->getMessage();
         }
     }
 
