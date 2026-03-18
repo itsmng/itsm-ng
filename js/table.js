@@ -65,6 +65,8 @@
         const toolbarId = 'toolbar' + (config.rand || Math.floor(Math.random() * 1000000));
         const exportTarget = config.exportTarget || null;
         const exportParams = config.exportParams || null;
+        const hasServerExport = !!(exportTarget && exportParams);
+        const canExport = showExport && hasServerExport;
 
         if (!url && hasMassiveAction) {
             Object.keys(values).forEach(key => {
@@ -279,8 +281,7 @@
         };
 
         const performExport = (format, exportAll = false) => {
-            if (!exportTarget || !exportParams) {
-                exportToCsv();
+            if (!hasServerExport) {
                 return;
             }
 
@@ -329,8 +330,6 @@
         };
 
         const renderExportDropdown = () => {
-            const hasServerExport = exportTarget && exportParams;
-            
             return html`
                 <div class="btn-group keep-open">
                     <button
@@ -677,7 +676,7 @@
                                 `)}
                             </div>
                         </div>
-                        ${showExport ? renderExportDropdown() : ''}
+                        ${canExport ? renderExportDropdown() : ''}
                     </div>
                 </div>
             `;
