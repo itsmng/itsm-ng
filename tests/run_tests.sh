@@ -112,8 +112,13 @@ EOF
 fi
 
 # Check for system dependencies
-if [[ ! -x "$(command -v docker)" || ! -x "$(command -v docker-compose)" ]]; then
-  echo "This scripts requires both \"docker\" and \"docker-compose\" utilities to be installed"
+if [[ ! -x "$(command -v docker)" ]]; then
+  echo "This script requires the \"docker\" utility to be installed"
+  exit 1
+fi
+
+if [[ ! -x "$(command -v docker-compose)" ]] && ! docker compose version >/dev/null 2>&1; then
+  echo "This script requires either \"docker-compose\" or \"docker compose\" to be available"
   exit 1
 fi
 
@@ -127,12 +132,13 @@ APPLICATION_ROOT=$(readlink -f "$WORKING_DIR/..")
 [[ ! -z "$APP_CONTAINER_HOME" ]] || APP_CONTAINER_HOME=$(mktemp -d -t glpi-tests-home-XXXXXXXXXX)
 [[ ! -z "$DB_IMAGE" ]] || DB_IMAGE=mariadb:10.11
 [[ ! -z "$PHP_IMAGE" ]] || PHP_IMAGE=itsm-tests-app:local
+COMPOSE_CMD="$APPLICATION_ROOT/.github/actions/docker-compose.sh"
 
 # Backup configuration files
 BACKUP_DIR=$(mktemp -d -t glpi-tests-backup-XXXXXXXXXX)
 find "$APPLICATION_ROOT/tests/config" -mindepth 1 ! -iname ".gitignore" -exec mv {} $BACKUP_DIR \;
 
-# Export variables to env (required for docker-compose) and start containers
+# Export variables to env (required for compose) and start containers
 export COMPOSE_FILE="$APPLICATION_ROOT/.github/actions/docker-compose-app.yml"
 [[ "${TESTS_TO_RUN[@]}" == "lint" ]] || export COMPOSE_FILE="$COMPOSE_FILE:$APPLICATION_ROOT/.github/actions/docker-compose-services.yml"
 if [[ " ${TESTS_TO_RUN[*]} " == *" e2e "* ]]; then
@@ -142,12 +148,12 @@ export APPLICATION_ROOT
 export APP_CONTAINER_HOME
 export DB_IMAGE
 export PHP_IMAGE
-cd $WORKING_DIR # Ensure docker-compose will look for .env in current directory
+cd $WORKING_DIR # Ensure compose will look for .env in current directory
 $APPLICATION_ROOT/.github/actions/init_containers-start.sh
 $APPLICATION_ROOT/.github/actions/init_show-versions.sh
 
 # Install dependencies if required
-[[ -z "$BUILD" ]] || docker-compose exec -T app .github/actions/init_install-dependencies.sh
+[[ -z "$BUILD" ]] || "$COMPOSE_CMD" exec -T app .github/actions/init_install-dependencies.sh
 
 # Run tests
 for TEST_SUITE in "${TESTS_TO_RUN[@]}";
@@ -156,39 +162,39 @@ do
   LAST_EXIT_CODE=0
   case $TEST_SUITE in
     "install")
-         docker-compose exec -T app .github/actions/test_install.sh \
+         "$COMPOSE_CMD" exec -T app .github/actions/test_install.sh \
       || LAST_EXIT_CODE=$?
       ;;
     "update")
          $APPLICATION_ROOT/.github/actions/init_initialize-old-dbs.sh \
-      && docker-compose exec -T app .github/actions/test_update-from-older-version.sh \
+      && "$COMPOSE_CMD" exec -T app .github/actions/test_update-from-older-version.sh \
       || LAST_EXIT_CODE=$?
       ;;
     "units")
-         docker-compose exec -T app .github/actions/test_tests-units.sh \
+         "$COMPOSE_CMD" exec -T app .github/actions/test_tests-units.sh \
       || LAST_EXIT_CODE=$?
       ;;
     "functionnal")
-         docker-compose exec -T app .github/actions/test_tests-functionnal.sh \
+         "$COMPOSE_CMD" exec -T app .github/actions/test_tests-functionnal.sh \
       || LAST_EXIT_CODE=$?
       ;;
     "e2e")
-         docker-compose exec -T app bash .github/actions/test_tests-e2e-prepare.sh \
-      && docker-compose exec -T e2e bash .github/actions/test_tests-e2e.sh \
+         "$COMPOSE_CMD" exec -T app bash .github/actions/test_tests-e2e-prepare.sh \
+      && "$COMPOSE_CMD" exec -T e2e bash .github/actions/test_tests-e2e.sh \
       || LAST_EXIT_CODE=$?
       ;;
     "ldap")
          $APPLICATION_ROOT/.github/actions/init_initialize-ldap-fixtures.sh \
-      && docker-compose exec -T app .github/actions/test_tests-ldap.sh \
+      && "$COMPOSE_CMD" exec -T app .github/actions/test_tests-ldap.sh \
       || LAST_EXIT_CODE=$?
       ;;
     "imap")
          $APPLICATION_ROOT/.github/actions/init_initialize-imap-fixtures.sh \
-      && docker-compose exec -T app .github/actions/test_tests-imap.sh \
+      && "$COMPOSE_CMD" exec -T app .github/actions/test_tests-imap.sh \
       || LAST_EXIT_CODE=$?
       ;;
     "web")
-         docker-compose exec -T app .github/actions/test_tests-web.sh \
+         "$COMPOSE_CMD" exec -T app .github/actions/test_tests-web.sh \
       || LAST_EXIT_CODE=$?
       ;;
   esac

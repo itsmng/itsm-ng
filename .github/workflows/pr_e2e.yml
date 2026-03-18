@@ -6,55 +6,42 @@ jobs:
   tests:
     name: Run Playwright E2E tests
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
     env:
-      DB_DATABASE: test_db
-      DB_USER: test
-      DB_PASSWORD: test
-
-    services:
-      mariadb:
-        image: mariadb:latest
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_USER: ${{ env.DB_USER }}
-          MYSQL_PASSWORD: ${{ env.DB_PASSWORD }}
-          MYSQL_DATABASE: ${{ env.DB_DATABASE }}
-          MYSQL_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
-        options: --health-cmd "mariadb-admin ping" --health-interval 5s --health-timeout 3s --health-retries 20
+      COMPOSE_FILE: .github/actions/docker-compose-app.yml:.github/actions/docker-compose-services.yml:.github/actions/docker-compose-e2e.yml
+      APPLICATION_ROOT: ${{ github.workspace }}
+      APP_CONTAINER_HOME: ${{ runner.temp }}/app_home
+      DB_IMAGE: mariadb:10.11
+      PHP_IMAGE: itsm-tests-app:local
+      UPDATE_FILES_ACL: true
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.3
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
-          coverage: none
+      - name: Initialize containers
+        run: .github/actions/init_containers-start.sh
 
-      - name: Install NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      - name: Show versions
+        if: ${{ !cancelled() }}
+        run: .github/actions/init_show-versions.sh
 
-      - name: Run composer install
-        run: export NODE_OPTIONS=--openssl-legacy-provider && php bin/console dependencies install
+      - name: Install dependencies
+        if: ${{ !cancelled() }}
+        run: .github/actions/docker-compose.sh exec -T app .github/actions/init_install-dependencies.sh
 
-      - name: Install ITSM-ng
-        run: php bin/console itsmng:database:install --config-dir=${{ github.workspace }}/tests/config -H 127.0.0.1 -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE -n
-
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
-
-      - name: Start PHP development server
-        run: mkdir -p tests/files/_playwright && php -S 127.0.0.1:8088 tests/router.php > tests/files/_playwright/php-server.log &
+      - name: Install ITSM-ng test database
+        if: ${{ !cancelled() }}
+        run: .github/actions/docker-compose.sh exec -T app .github/actions/test_install.sh
 
       - name: Prepare E2E API access
-        run: PLAYWRIGHT_BASE_URL=http://127.0.0.1:8088 bash .github/actions/test_tests-e2e-prepare.sh
+        if: ${{ !cancelled() }}
+        run: .github/actions/docker-compose.sh exec -T app bash .github/actions/test_tests-e2e-prepare.sh
 
       - name: Run Playwright E2E tests
-        run: PLAYWRIGHT_BASE_URL=http://127.0.0.1:8088 bash .github/actions/test_tests-e2e.sh
+        if: ${{ !cancelled() }}
+        run: .github/actions/docker-compose.sh exec -T e2e bash .github/actions/test_tests-e2e.sh
 
       - name: Upload Playwright artifacts
         if: failure()
@@ -62,3 +49,7 @@ jobs:
         with:
           name: playwright-artifacts
           path: tests/files/_playwright
+
+      - name: Cleanup containers
+        if: ${{ always() }}
+        run: .github/actions/teardown_containers-cleanup.sh
