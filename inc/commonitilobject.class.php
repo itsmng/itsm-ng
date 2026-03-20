@@ -7407,6 +7407,7 @@ abstract class CommonITILObject extends CommonDBTM
                 .done(function(response) {
                   $(target).removeClass('state_1 state_2')
                            .addClass('state_'+response.state)
+                           .attr('data-state', response.state)
                            .attr('title', response.label);
                 });
       }
@@ -7476,7 +7477,7 @@ abstract class CommonITILObject extends CommonDBTM
         echo "</script>\n";
 
         //show choices
-        echo "<div class='timeline_form'>";
+        echo "<div class='timeline_form' data-testid='timeline-form'>";
         echo "<ul class='timeline_choices'>";
 
         $user = new User();
@@ -7493,6 +7494,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
         if ($canadd_fup) {
             echo "<li class='followup' style='font-family: $font;' role='button' tabindex='0'
+                  data-testid='timeline-add-followup'
                   onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"ITILFollowup\");'
                   onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
                   . "<i class='far fa-comment' aria-hidden='true'></i>" . _n('Followup', 'Followups', 1) .
@@ -7508,6 +7510,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         if ($canadd_task) {
             echo "<li class='task' style='font-family: $font;' role='button' tabindex='0'
+                  data-testid='timeline-add-task'
                   onclick='javascript:viewAddSubitem" . $this->fields['id'] . "$rand(\"$taskClass\");'
                   onkeydown='if (event.key === \"Enter\" || event.key === \" \") this.click();'>"
                   . "<i class='far fa-check-square' aria-hidden='true'></i>" . _n('Task', 'Tasks', 1) .
@@ -7640,7 +7643,7 @@ abstract class CommonITILObject extends CommonDBTM
         }
         echo "</div>"; //end timeline_form
 
-        echo "<div class='ajax_box' id='viewitem" . $this->fields['id'] . "$rand'></div>\n";
+        echo "<div class='ajax_box' id='viewitem" . $this->fields['id'] . "$rand' data-testid='timeline-editor'></div>\n";
     }
 
 
@@ -7855,7 +7858,7 @@ abstract class CommonITILObject extends CommonDBTM
         $foreignKey = static::getForeignKeyField();
 
         //display timeline
-        echo "<div class='timeline_history'>";
+        echo "<div class='timeline_history' data-testid='timeline-history'>";
 
         $followup_class    = 'ITILFollowup';
         $followup_obj      = new $followup_class();
@@ -8016,7 +8019,10 @@ abstract class CommonITILObject extends CommonDBTM
                 $class .= " {$item_i['status']}";
             }
 
-            echo "<div class='$class' id='$domid' data-uid='$randdomid'>";
+            echo "<div class='$class' id='$domid' data-uid='$randdomid'
+                  data-testid='timeline-item'
+                  data-item-type='" . $item['type'] . "'
+                  data-item-id='" . $item_i['id'] . "'>";
             if ($fa !== null) {
                 echo "<i class='solimg fa fa-$fa fa-5x' aria-hidden='true'></i>";
             }
@@ -8083,6 +8089,9 @@ abstract class CommonITILObject extends CommonDBTM
                         $onClick = "style='cursor: not-allowed;'";
                     }
                     echo "<span class='state state_" . $item_i['state'] . "'
+                           data-testid='timeline-task-state-toggle'
+                           data-task-id='" . $item_i['id'] . "'
+                           data-state='" . $item_i['state'] . "'
                            $onClick
                            title='" . Planning::getState($item_i['state']) . "'>";
                     echo "</span>";
