@@ -4612,52 +4612,519 @@ class Ticket extends CommonITILObject
         return [];
     }
 
-    private function getActorsForAction($action)
+    protected function getITILActorPanelEntryExtras(array $actor, string $actorType): array
     {
-
-        $actors = [];
-
-        $userActors = $this->getUsers($action);
-        foreach ($userActors as $userActor) {
-            $newUserActor = [
-               'name' => getUserName($userActor['users_id']),
-               'id' => $userActor['users_id'],
-               'type' => 'user',
-               'icon' => User::getIcon($userActor['users_id']),
-            ];
-            $newUserActor += $this->generateFollowupLink($userActor, User::class);
-            $actors[] = $newUserActor;
+        if (!in_array($actorType, [User::class, Supplier::class], true)) {
+            return [];
         }
 
-        $groupActors = $this->getGroups($action);
-        foreach ($groupActors as $groupActor) {
-            $group = new Group();
-            $group->getFromDB($groupActor['groups_id']);
-            $newGroupActor = [
-               'name' => $group->getName(),
-               'id' => $groupActor['groups_id'],
-               'type' => 'group',
-               'icon' => Group::getIcon(),
-            ];
-            $actors[] = $newGroupActor;
+        return $this->generateFollowupLink($actor, $actorType);
+    }
+
+    private function getTicketActorTemplateHiddenFields($tt)
+    {
+        $hidden = [];
+        foreach (
+            [
+                '_users_id_requester',
+                '_groups_id_requester',
+                '_users_id_observer',
+                '_groups_id_observer',
+                '_users_id_assign',
+                '_groups_id_assign',
+                '_suppliers_id_assign',
+            ] as $field
+        ) {
+            $hidden[$field] = $tt->isHiddenField($field);
         }
 
-        if ($action == CommonITILActor::ASSIGN) {
-            $supplierActors = $this->getSuppliers($action);
-            foreach ($supplierActors as $supplierActor) {
-                $supplier = new Supplier();
-                $supplier->getFromDB($supplierActor['suppliers_id']);
-                $newSupplierActor = [
-                   'name' => $supplier->getName(),
-                   'id' => $supplierActor['suppliers_id'],
-                   'type' => 'supplier',
-                   'icon' => Supplier::getIcon(),
+        return $hidden;
+    }
+
+    private function normalizeTicketActorInputValues($value)
+    {
+        if ($value === null || $value === '') {
+            return [];
+        }
+
+        if (is_array($value)) {
+            return array_values($value);
+        }
+
+        return [$value];
+    }
+
+    private function getTicketActorFieldDefinitions($action)
+    {
+        switch ($action) {
+            case CommonITILActor::REQUESTER:
+                return [
+                    'user' => [
+                        'field'      => '_users_id_requester',
+                        'notif'      => '_users_id_requester_notif',
+                        'temp_field' => '_itil_requester',
+                        'entity'     => $this->fields['entities_id'],
+                        'icon'       => User::getIcon(0),
+                        'label'      => User::getTypeName(1),
+                        'itemtype'   => User::class,
+                    ],
+                    'group' => [
+                        'field'      => '_groups_id_requester',
+                        'temp_field' => '_itil_requester',
+                        'entity'     => $this->fields['entities_id'],
+                        'icon'       => Group::getIcon(),
+                        'label'      => Group::getTypeName(1),
+                        'itemtype'   => Group::class,
+                    ],
                 ];
-                $newSupplierActor += $this->generateFollowupLink($supplierActor, Supplier::class);
-                $actors[] = $newSupplierActor;
+
+            case CommonITILActor::OBSERVER:
+                return [
+                    'user' => [
+                        'field'      => '_users_id_observer',
+                        'notif'      => '_users_id_observer_notif',
+                        'temp_field' => '_itil_observer',
+                        'entity'     => $this->fields['entities_id'],
+                        'icon'       => User::getIcon(0),
+                        'label'      => User::getTypeName(1),
+                        'itemtype'   => User::class,
+                    ],
+                    'group' => [
+                        'field'      => '_groups_id_observer',
+                        'temp_field' => '_itil_observer',
+                        'entity'     => $this->fields['entities_id'],
+                        'icon'       => Group::getIcon(),
+                        'label'      => Group::getTypeName(1),
+                        'itemtype'   => Group::class,
+                    ],
+                ];
+
+            case CommonITILActor::ASSIGN:
+                return [
+                    'user' => [
+                        'field'      => '_users_id_assign',
+                        'notif'      => '_users_id_assign_notif',
+                        'temp_field' => '_itil_assign',
+                        'entity'     => $this->fields['entities_id'],
+                        'icon'       => User::getIcon(0),
+                        'label'      => User::getTypeName(1),
+                        'itemtype'   => User::class,
+                    ],
+                    'group' => [
+                        'field'      => '_groups_id_assign',
+                        'temp_field' => '_itil_assign',
+                        'entity'     => $this->fields['entities_id'],
+                        'icon'       => Group::getIcon(),
+                        'label'      => Group::getTypeName(1),
+                        'itemtype'   => Group::class,
+                    ],
+                    'supplier' => [
+                        'field'      => '_suppliers_id_assign',
+                        'notif'      => '_suppliers_id_assign_notif',
+                        'temp_field' => '_itil_assign',
+                        'entity'     => $this->fields['entities_id'],
+                        'icon'       => Supplier::getIcon(),
+                        'label'      => Supplier::getTypeName(1),
+                        'itemtype'   => Supplier::class,
+                    ],
+                ];
+        }
+
+        return [];
+    }
+
+    private function getTicketActorDisplayName($itemtype, $id, $fallback = '')
+    {
+        if ((int)$id <= 0) {
+            return $fallback;
+        }
+
+        switch ($itemtype) {
+            case User::class:
+                return getUserName($id);
+
+            case Group::class:
+                return Dropdown::getDropdownName('glpi_groups', $id);
+
+            case Supplier::class:
+                return Dropdown::getDropdownName('glpi_suppliers', $id);
+        }
+
+        return $fallback;
+    }
+
+    private function getTicketActorDefaultEmail($itemtype, $id)
+    {
+        if ((int)$id <= 0) {
+            return '';
+        }
+
+        switch ($itemtype) {
+            case User::class:
+                $user = new User();
+                return $user->getFromDB($id) ? (string)$user->getDefaultEmail() : '';
+
+            case Supplier::class:
+                $supplier = new Supplier();
+                return $supplier->getFromDB($id) ? (string)$supplier->fields['email'] : '';
+        }
+
+        return '';
+    }
+
+    private function shouldShowTicketActorAlternativeEmail($itemtype, $id, $alternativeEmail)
+    {
+        $alternativeEmail = trim((string)$alternativeEmail);
+        if ($alternativeEmail === '') {
+            return false;
+        }
+
+        $defaultEmail = trim($this->getTicketActorDefaultEmail($itemtype, $id));
+        if ($defaultEmail === '') {
+            return true;
+        }
+
+        return mb_strtolower($alternativeEmail) !== mb_strtolower($defaultEmail);
+    }
+
+    private function getTicketPendingActorEntries(
+        array $definitions,
+        array $options,
+        array $hiddenFields,
+        array $existingKeys,
+        bool $isNew
+    )
+    {
+        $entries = [];
+
+        foreach ($definitions as $type => $definition) {
+            $notifField = $definition['notif'] ?? null;
+            if ($isNew) {
+                $values = $this->normalizeTicketActorInputValues($options[$definition['field']] ?? []);
+                $useNotifications = $this->normalizeTicketActorInputValues(
+                    $notifField ? ($options[$notifField]['use_notification'] ?? []) : []
+                );
+                $alternativeEmails = $this->normalizeTicketActorInputValues(
+                    $notifField ? ($options[$notifField]['alternative_email'] ?? []) : []
+                );
+
+                foreach ($values as $index => $rawValue) {
+                    $value = (int)$rawValue;
+                    $alternativeEmail = trim((string)($alternativeEmails[$index] ?? ''));
+                    if ($value <= 0 && $alternativeEmail === '') {
+                        continue;
+                    }
+
+                    $entryKey = sprintf('%s:%s:%s', $type, $value, $alternativeEmail);
+                    if (isset($existingKeys[$entryKey])) {
+                        continue;
+                    }
+
+                    $useNotification = isset($useNotifications[$index]) ? (int)$useNotifications[$index] : 1;
+                    $subtitle = [];
+                    if ($notifField) {
+                        $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($useNotification);
+                    }
+                    if ($this->shouldShowTicketActorAlternativeEmail(
+                        $definition['itemtype'],
+                        $value,
+                        $alternativeEmail
+                    )) {
+                        $subtitle[] = $alternativeEmail;
+                    }
+
+                    $entry = [
+                        'id'               => $value,
+                        'type'             => $type,
+                        'name'             => $this->getTicketActorDisplayName(
+                            $definition['itemtype'],
+                            $value,
+                            $alternativeEmail
+                        ),
+                        'icon'             => $definition['icon'],
+                        'subtitle'         => implode(' | ', $subtitle),
+                        'persisted'        => false,
+                        'pending'          => true,
+                        'locked'           => $hiddenFields[$definition['field']] ?? false,
+                        'removable'        => !($hiddenFields[$definition['field']] ?? false),
+                        'alternativeEmail' => $alternativeEmail,
+                        'hiddenFields'     => [
+                            [
+                                'name'  => $definition['field'] . '[]',
+                                'value' => $value,
+                            ],
+                        ],
+                    ];
+
+                    if ($notifField) {
+                        $entry['hiddenFields'][] = [
+                            'name'  => $notifField . '[use_notification][]',
+                            'value' => $useNotification,
+                        ];
+                        $entry['hiddenFields'][] = [
+                            'name'  => $notifField . '[alternative_email][]',
+                            'value' => $alternativeEmail,
+                        ];
+                    }
+
+                    $entries[] = $entry;
+                    $existingKeys[$entryKey] = true;
+                }
+
+                continue;
+            }
+
+            $tempField = $options[$definition['temp_field']] ?? null;
+            if (!is_array($tempField) || (($tempField['_type'] ?? '') !== $type)) {
+                continue;
+            }
+
+            $valueField = sprintf('%ss_id', $type);
+            $value = (int)($tempField[$valueField] ?? 0);
+            $useNotificationValues = $this->normalizeTicketActorInputValues($tempField['use_notification'] ?? []);
+            $alternativeEmailValues = $this->normalizeTicketActorInputValues($tempField['alternative_email'] ?? []);
+            $useNotification = $notifField ? (int)($useNotificationValues[0] ?? 1) : 1;
+            $alternativeEmail = $notifField ? trim((string)($alternativeEmailValues[0] ?? '')) : '';
+
+            if ($value <= 0 && $alternativeEmail === '') {
+                continue;
+            }
+
+            $entryKey = sprintf('%s:%s:%s', $type, $value, $alternativeEmail);
+            if (isset($existingKeys[$entryKey])) {
+                continue;
+            }
+
+            $subtitle = [];
+            if ($notifField) {
+                $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($useNotification);
+            }
+            if ($this->shouldShowTicketActorAlternativeEmail(
+                $definition['itemtype'],
+                $value,
+                $alternativeEmail
+            )) {
+                $subtitle[] = $alternativeEmail;
+            }
+
+            $entry = [
+                'id'               => $value,
+                'type'             => $type,
+                'name'             => $this->getTicketActorDisplayName(
+                    $definition['itemtype'],
+                    $value,
+                    $alternativeEmail
+                ),
+                'icon'             => $definition['icon'],
+                'subtitle'         => implode(' | ', $subtitle),
+                'persisted'        => false,
+                'pending'          => true,
+                'locked'           => $hiddenFields[$definition['field']] ?? false,
+                'removable'        => !($hiddenFields[$definition['field']] ?? false),
+                'alternativeEmail' => $alternativeEmail,
+                'hiddenFields'     => [
+                    [
+                        'name'  => $definition['temp_field'] . '[_type]',
+                        'value' => $type,
+                    ],
+                    [
+                        'name'  => sprintf('%s[%s]', $definition['temp_field'], $valueField),
+                        'value' => $value,
+                    ],
+                ],
+            ];
+
+            if ($notifField) {
+                $entry['hiddenFields'][] = [
+                    'name'  => $definition['temp_field'] . '[use_notification][]',
+                    'value' => $useNotification,
+                ];
+                $entry['hiddenFields'][] = [
+                    'name'  => $definition['temp_field'] . '[alternative_email][]',
+                    'value' => $alternativeEmail,
+                ];
+            }
+
+            $entries[] = $entry;
+            $existingKeys[$entryKey] = true;
+        }
+
+        return $entries;
+    }
+
+    private function getTicketActorPanelTitle($baseTitle, $tt, array $fields)
+    {
+        foreach ($fields as $field) {
+            if ($tt->isMandatoryField($field)) {
+                return $baseTitle . $tt->getMandatoryMark($field);
             }
         }
-        return $actors;
+
+        return $baseTitle;
+    }
+
+    private function getTicketActorPanels($ID, array $options, $tt)
+    {
+        $isNew = $this->isNewID($ID);
+        $hiddenFields = $this->getTicketActorTemplateHiddenFields($tt);
+        $isClosed = !$isNew && in_array($this->fields['status'], $this->getClosedStatusArray());
+
+        $canAdmin = $isNew || $this->canAdminActors();
+        $canAssign = $this->canAssign();
+        $canAssignToMe = $this->canAssignToMe();
+
+        if (!empty($options['_noupdate'])) {
+            $canAdmin = false;
+            $canAssign = false;
+            $canAssignToMe = false;
+        }
+
+        $entityId = $options['entities_id'] ?? $this->fields['entities_id'];
+        $defaultUseNotification = Entity::getUsedConfig('is_notif_enable_default', $entityId, '', 1);
+
+        $roleDefinitions = [
+            [
+                'action'        => CommonITILActor::REQUESTER,
+                'actorType'     => 'requester',
+                'title'         => $this->getTicketActorPanelTitle(_n('Requester', 'Requesters', 1), $tt, [
+                    '_users_id_requester',
+                    '_groups_id_requester',
+                ]),
+                'fields'        => ['_users_id_requester', '_groups_id_requester'],
+                'help'          => !$isNew && !$isClosed && $canAdmin ? __('New actors are added when you save the ticket.') : '',
+                'allowAdd'      => !$isClosed && $canAdmin,
+                'removable'     => !$isClosed && $canAdmin,
+                'allowedTypes'  => ['user', 'group'],
+            ],
+            [
+                'action'        => CommonITILActor::OBSERVER,
+                'actorType'     => 'observer',
+                'title'         => $this->getTicketActorPanelTitle(_n('Watcher', 'Watchers', Session::getPluralNumber()), $tt, [
+                    '_users_id_observer',
+                    '_groups_id_observer',
+                ]),
+                'fields'        => ['_users_id_observer', '_groups_id_observer'],
+                'help'          => !$isNew && !$isClosed && $canAdmin ? __('New actors are added when you save the ticket.') : '',
+                'allowAdd'      => !$isClosed && $canAdmin,
+                'removable'     => !$isClosed && $canAdmin,
+                'allowedTypes'  => ['user', 'group'],
+            ],
+            [
+                'action'        => CommonITILActor::ASSIGN,
+                'actorType'     => 'assign',
+                'title'         => $this->getTicketActorPanelTitle(__('Assigned to'), $tt, [
+                    '_users_id_assign',
+                    '_groups_id_assign',
+                    '_suppliers_id_assign',
+                ]),
+                'fields'        => ['_users_id_assign', '_groups_id_assign', '_suppliers_id_assign'],
+                'help'          => !$isNew && $this->isAllowedStatus($this->fields['status'], CommonITILObject::ASSIGNED)
+                    && ($canAssign || $canAssignToMe) ? __('New actors are added when you save the ticket.') : '',
+                'allowAdd'      => ($isNew
+                    ? $this->isAllowedStatus(CommonITILObject::INCOMING, CommonITILObject::ASSIGNED)
+                    : $this->isAllowedStatus($this->fields['status'], CommonITILObject::ASSIGNED))
+                    && ($canAssign || $canAssignToMe),
+                'removable'     => $canAssign,
+                'allowedTypes'  => array_values(array_filter([
+                    ($canAssign || $canAssignToMe) ? 'user' : null,
+                    $canAssign ? 'group' : null,
+                    $canAssign ? 'supplier' : null,
+                ])),
+            ],
+        ];
+
+        $panels = [];
+        foreach ($roleDefinitions as $panelDefinition) {
+            $definitions = $this->getTicketActorFieldDefinitions($panelDefinition['action']);
+            $actorTypes = [];
+            foreach ($panelDefinition['allowedTypes'] as $type) {
+                if (!isset($definitions[$type])) {
+                    continue;
+                }
+                if ($hiddenFields[$definitions[$type]['field']] ?? false) {
+                    continue;
+                }
+                $actorTypes[$definitions[$type]['label']] = $type;
+            }
+
+            $values = [];
+            $existingKeys = [];
+            if (!$isNew) {
+                foreach ($this->getActorsForAction($panelDefinition['action']) as $actor) {
+                    $actor['persisted'] = true;
+                    $actor['pending'] = false;
+                    $actor['locked'] = false;
+                    $actor['removable'] = $panelDefinition['removable'];
+                    $actor['subtitle'] = $actor['subtitle'] ?? '';
+                    $actor['alternativeEmail'] = $actor['alternativeEmail'] ?? '';
+                    $actor['hiddenFields'] = [];
+                    $values[] = $actor;
+                    $existingKeys[sprintf(
+                        '%s:%s:%s',
+                        $actor['type'],
+                        $actor['id'],
+                        $actor['alternativeEmail']
+                    )] = true;
+                }
+            }
+
+            $values = array_merge(
+                $values,
+                $this->getTicketPendingActorEntries($definitions, $options, $hiddenFields, $existingKeys, $isNew)
+            );
+
+            if (!$actorTypes && !$values) {
+                continue;
+            }
+
+            $defaultType = '';
+            if ($actorTypes) {
+                $actorTypeValues = array_values($actorTypes);
+                $defaultType = reset($actorTypeValues) ?: '';
+            }
+
+            $fieldMap = [];
+            foreach ($actorTypes as $type) {
+                $definition = $definitions[$type];
+                $fieldMap[$type] = [
+                    'entity'                => $entityId,
+                    'icon'                  => $definition['icon'],
+                    'valueField'            => $definition['field'],
+                    'notifField'            => $definition['notif'] ?? '',
+                    'tempFieldRoot'         => $definition['temp_field'],
+                    'tempValueField'        => sprintf('%s[%ss_id]', $definition['temp_field'], $type),
+                    'tempNotifFieldPrefix'  => sprintf('%s[use_notification]', $definition['temp_field']),
+                    'tempEmailFieldPrefix'  => sprintf('%s[alternative_email]', $definition['temp_field']),
+                    'defaultUseNotification'=> $defaultUseNotification,
+                ];
+            }
+
+            $panels[] = [
+                'id'          => sprintf('ticket-actor-%s-%s', $panelDefinition['actorType'], mt_rand()),
+                'title'       => $panelDefinition['title'],
+                'helpText'    => $panelDefinition['help'],
+                'actorType'   => $panelDefinition['actorType'],
+                'actorTypeId' => $panelDefinition['action'],
+                'ticketId'    => $isNew ? 0 : $ID,
+                'allowAdd'    => $panelDefinition['allowAdd'] && count($actorTypes) > 0,
+                'actorTypes'  => $actorTypes,
+                'defaultType' => $defaultType,
+                'fieldMap'    => $fieldMap,
+                'values'      => $values,
+            ];
+        }
+
+        return $panels;
+    }
+
+    private function renderTicketActorPanels($ID, array $options, $tt)
+    {
+        global $CFG_GLPI;
+
+        renderTwigTemplate('itil/actorPanel.twig', [
+            'panels'   => $this->getTicketActorPanels($ID, $options, $tt),
+            'root_doc' => $CFG_GLPI['root_doc'],
+        ]);
     }
 
 
@@ -5252,9 +5719,9 @@ class Ticket extends CommonITILObject
                'visible' => true,
                'inputs' => [
                    '' => [
-                       'content' => (function () use ($ID, $options) {
+                       'content' => (function () use ($ID, $options, $tt) {
                            ob_start();
-                           $this->showActorsPartForm($ID, $options);
+                           $this->renderITILActorPanels($ID, $options, $tt);
                            return ob_get_clean();
                        })(),
                        'col_lg' => 12,

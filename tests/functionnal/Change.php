@@ -161,4 +161,25 @@ class Change extends DbTestCase
         $this->boolean($change->getFromDB($changes_id))->isTrue();
         $this->integer((int)$change->fields['actiontime'])->isEqualTo(0);
     }
+
+    public function testPrepareInputForAddTranslatesItilRequesterPayload()
+    {
+        $this->login();
+
+        $change = new \Change();
+        $users_id_requester = (int)getItemByTypeName('User', 'normal', true);
+        $input = $change->prepareInputForAdd([
+           'name'            => 'change actor panel add',
+           'content'         => 'validate shared actor panel payload on add',
+           '_itil_requester' => [
+              '_type'             => 'user',
+              'users_id'          => $users_id_requester,
+              'use_notification'  => ['1'],
+              'alternative_email' => [''],
+           ],
+        ]);
+
+        $this->array($input)->hasKey('_users_id_requester');
+        $this->integer((int)$input['_users_id_requester'])->isEqualTo($users_id_requester);
+    }
 }

@@ -93,30 +93,29 @@ if (isset($_POST["type"])
                     $options['toupdate'] = $toupdate;
                 }
 
-
-                $rand = mt_rand();
+                $widget_rand = mt_rand();
+                $select_id = 'itil_actor_user_' . $widget_rand;
+                $email_id = 'itil_actor_user_email_' . $widget_rand;
                 $selectOptions = [
                     'type'        => 'select',
+                    'id'          => $select_id,
                     'name'        => $options['name'],
                     'itemtype'    => User::class,
                     'right'       => $right,
+                ];
+                $hook_lines = [];
+                $hook_lines[] = "$.getJSON('{$CFG_GLPI["root_doc"]}/ajax/v2/itilActorEmail.php', { type: 'user', id: this.value || '0' }).done((response) => { if (response && response.success) { $('#{$email_id}').val(response.email || '').attr('data-default-email', response.email || ''); } });";
+                if (($_POST["itemtype"] == 'Ticket') && ($_POST["actortype"] == 'assign')) {
+                    $hook_lines[] = "$('#countassign_$rand').load('{$CFG_GLPI["root_doc"]}/ajax/ticketassigninformation.php', { value: this.value || '0', users_id_assign: this.value || '0' });";
+                }
+                $selectOptions['hooks'] = [
+                    'change' => implode("\n", $hook_lines),
                 ];
                 renderTwigTemplate('macros/input.twig', expandSelect($selectOptions, [
                     'condition' => [
                         'entities_id' => $options['entity'],
                     ],
                 ]));
-                $url = isset($options['toupdate']['url']) ? $options['toupdate']['url'] : $options['toupdate'][0]['url'];
-                echo <<<HTML
-                <script type="text/javascript">
-                $('#{$options['name']}').on('change', function() {
-                    $('#countassign_$rand').load('$url'}', {
-                        'value': $('#{$options['name']}').val(),
-                        'users_id_assign': $('#{$options['name']}').val(),
-                    });
-                });
-                </script>
-            HTML;
 
                 // Display active tickets for a tech
                 // Need to update information on dropdown changes
@@ -139,6 +138,8 @@ if (isset($_POST["type"])
                         echo '<br>' . _n('Email', 'Emails', 1);
                         renderTwigTemplate('macros/input.twig', [
                            'type' => 'text',
+                           'id' => $email_id,
+                           'data-default-email' => '',
                            'name' => '_itil_'.$_POST["actortype"].'[alternative_email]',
                            'aria-label' => __('Alternative email'),
                         ]);
@@ -227,11 +228,22 @@ if (isset($_POST["type"])
                     $options['toupdate'] = $toupdate;
                 }
 
-                $rand = mt_rand();
+                $widget_rand = mt_rand();
+                $select_id = 'itil_actor_supplier_' . $widget_rand;
+                $email_id = 'itil_actor_supplier_email_' . $widget_rand;
                 $selectOptions = [
                     'type'        => 'select',
+                    'id'          => $select_id,
                     'name'        => $options['name'],
                     'itemtype'    => Supplier::class,
+                ];
+                $hook_lines = [];
+                $hook_lines[] = "$.getJSON('{$CFG_GLPI["root_doc"]}/ajax/v2/itilActorEmail.php', { type: 'supplier', id: this.value || '0' }).done((response) => { if (response && response.success) { $('#{$email_id}').val(response.email || '').attr('data-default-email', response.email || ''); } });";
+                if ($_POST["itemtype"] == 'Ticket') {
+                    $hook_lines[] = "$('#countassign_$rand').load('{$CFG_GLPI["root_doc"]}/ajax/ticketassigninformation.php', { value: this.value || '0', suppliers_id_assign: this.value || '0' });";
+                }
+                $selectOptions['hooks'] = [
+                    'change' => implode("\n", $hook_lines),
                 ];
                 renderTwigTemplate('macros/input.twig', expandSelect($selectOptions, [
                     'condition' => [
@@ -255,11 +267,19 @@ if (isset($_POST["type"])
                            'aria-label' => __('Use notifications'),
                         ]);
                         echo '<br>';
+                        ob_start();
+                        renderTwigTemplate('macros/input.twig', [
+                            'type' => 'text',
+                            'id' => $email_id,
+                            'data-default-email' => '',
+                            'name' => '_itil_'.$_POST["actortype"].'[alternative_email]',
+                            'aria-label' => __('Alternative email'),
+                        ]);
+                        $email_input = ob_get_clean();
                         printf(
                             __('%1$s: %2$s'),
                             _n('Email', 'Emails', 1),
-                            "<input type='text' size='25' name='_itil_".$_POST["actortype"].
-                                 "[alternative_email]'>"
+                            $email_input
                         );
                     }
                     echo "</span>";
