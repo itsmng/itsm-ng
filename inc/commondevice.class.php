@@ -203,7 +203,7 @@ abstract class CommonDevice extends CommonDropdown
             [
               'SELECT'    => [
                  'itemtype',
-                 new QueryExpression('GROUP_CONCAT(DISTINCT ' . DBmysql::quoteName('items_id') . ') AS ids'),
+                 new QueryExpression($DB->sqlGroupConcat(DBmysql::quoteName('items_id'), ',', true) . ' AS ids'),
               ],
               'FROM'      => $linktable,
               'WHERE'     => [

@@ -769,7 +769,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
            'joinparams'         => [
               'jointype'           => 'child',
               'specific_itemtype'  => 'ProjectCost',
-              'condition'          => 'AND NEWTABLE.`projects_id` = REFTABLE.`id`',
+              'condition'          => 'AND NEWTABLE.projects_id = REFTABLE.id',
               'beforejoin'         => [
                  'table'        => $this->getTable(),
                  'joinparams'   => [
@@ -799,7 +799,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                'massiveaction'      => false,
                'joinparams'         => [
                   'jointype'           => 'child',
-                  'condition'          => "AND NEWTABLE.`itemtype` = '$itil_type'"
+                  'condition'          => "AND NEWTABLE.itemtype = '$itil_type'"
                ]
             ];
             $index++;
@@ -2689,7 +2689,10 @@ JAVASCRIPT;
         $union = new QueryUnion([$query1, $query2], false, 'all_items');
         $iterator = $DB->request([
            'SELECT' => [
-              new QueryExpression('CAST(AVG(' . $DB->quoteName('percent_done') . ') AS UNSIGNED) AS percent_done')
+              new QueryExpression(
+                  $DB->sqlCastAsUnsignedInteger('AVG(' . $DB->quoteName('percent_done') . ')')
+                  . ' AS percent_done'
+              )
            ],
            'FROM'   => $union
         ]);

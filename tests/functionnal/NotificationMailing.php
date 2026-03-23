@@ -90,7 +90,7 @@ class NotificationMailing extends DbTestCase
               'items_id'                 => 1,
               'notificationtemplates_id' => 0,
               'entities_id'              => 0,
-              'is_deleted'               => 0,
+              'is_deleted'               => false,
               'sent_try'                 => 0,
               'sent_time'                => null,
               'name'                     => 'Test notification',

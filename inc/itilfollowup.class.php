@@ -659,6 +659,7 @@ class ITILFollowup extends CommonDBChild
 
     public static function rawSearchOptionsToAdd($itemtype = null)
     {
+        global $DB;
 
         $tab = [];
 
@@ -669,8 +670,9 @@ class ITILFollowup extends CommonDBChild
 
         $followup_condition = '';
         if (!Session::haveRight('followup', self::SEEPRIVATE)) {
-            $followup_condition = "AND (`NEWTABLE`.`is_private` = 0
-                                     OR `NEWTABLE`.`users_id` = '" . Session::getLoginUserID() . "')";
+            $login_user_id = (int) Session::getLoginUserID();
+            $followup_condition = 'AND (NEWTABLE.is_private = ' . $DB->quoteValue(false) . '
+                                     OR NEWTABLE.users_id = ' . $DB->quoteValue($login_user_id) . ')';
         }
 
         $tab[] = [
@@ -1311,7 +1313,11 @@ class ITILFollowup extends CommonDBChild
         $user_table = "",
         $group_table = ""
     ) {
+        global $DB;
+
         $itilfup_table = static::getTable();
+        $quoted_itemtype = $DB->quoteName($itilfup_table . '.itemtype');
+        $quoted_items_id = $DB->quoteName($itilfup_table . '.items_id');
 
         // An ITILFollowup parent can only by a CommonItilObject
         if (!is_a($itemtype, "CommonITILObject", true)) {
@@ -1323,11 +1329,13 @@ class ITILFollowup extends CommonDBChild
         $rightname = $itemtype::$rightname;
         // Can see all items, no need to go further
         if (Session::haveRight($rightname, $itemtype::READALL)) {
-            return "(`$itilfup_table`.`itemtype` = '$itemtype') ";
+            return '(' . $quoted_itemtype . ' = ' . $DB->quoteValue($itemtype) . ') ';
         }
 
         $user   = Session::getLoginUserID();
-        $groups = "'" . implode("','", $_SESSION['glpigroups']) . "'";
+        $groups = implode(', ', array_map(static function ($group) use ($DB) {
+            return $DB->quoteValue($group);
+        }, $_SESSION['glpigroups']));
         $table = getTableNameForForeignKeyField(
             getForeignKeyFieldForItemType($itemtype)
         );
@@ -1340,35 +1348,35 @@ class ITILFollowup extends CommonDBChild
         // We need to do some specific checks for tickets
         if ($itemtype == "Ticket") {
             // Default condition
-            $condition = "(`itemtype` = '$itemtype' AND (0 = 1 ";
+            $condition = '(' . $quoted_itemtype . ' = ' . $DB->quoteValue($itemtype) . ' AND (0 = 1 ';
             return $condition . Ticket::buildCanViewCondition("items_id") . ")) ";
         } else {
             if (Session::haveRight($rightname, $itemtype::READMY)) {
                 // Subquery for affected/assigned/observer user
-                $user_query = "SELECT `$target`
-               FROM `$user_table`
-               WHERE `users_id` = '$user'";
+                $user_query = 'SELECT ' . $DB->quoteName($target) . '
+               FROM ' . $DB->quoteName($user_table) . '
+               WHERE ' . $DB->quoteName('users_id') . ' = ' . $DB->quoteValue($user);
 
                 // Subquery for affected/assigned/observer group
-                $group_query = "SELECT `$target`
-               FROM `$group_table`
-               WHERE `groups_id` IN ($groups)";
+                $group_query = 'SELECT ' . $DB->quoteName($target) . '
+               FROM ' . $DB->quoteName($group_table) . '
+               WHERE ' . $DB->quoteName('groups_id') . " IN ($groups)";
 
                 // Subquery for recipient
-                $recipient_query = "SELECT `id`
-               FROM `$table`
-               WHERE `users_id_recipient` = '$user'";
+                $recipient_query = 'SELECT ' . $DB->quoteName('id') . '
+               FROM ' . $DB->quoteName($table) . '
+               WHERE ' . $DB->quoteName('users_id_recipient') . ' = ' . $DB->quoteValue($user);
 
                 return "(
-               `$itilfup_table`.`itemtype` = '$itemtype' AND (
-                  `$itilfup_table`.`items_id` IN ($user_query) OR
-                  `$itilfup_table`.`items_id` IN ($group_query) OR
-                  `$itilfup_table`.`items_id` IN ($recipient_query)
+               $quoted_itemtype = " . $DB->quoteValue($itemtype) . " AND (
+                  $quoted_items_id IN ($user_query) OR
+                  $quoted_items_id IN ($group_query) OR
+                  $quoted_items_id IN ($recipient_query)
                )
             ) ";
             } else {
                 // Can't see any items
-                return "(`$itilfup_table`.`itemtype` = '$itemtype' AND 0 = 1) ";
+                return '(' . $quoted_itemtype . ' = ' . $DB->quoteValue($itemtype) . ' AND 0 = 1) ';
             }
         }
     }

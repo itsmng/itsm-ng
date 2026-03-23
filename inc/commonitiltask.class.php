@@ -764,6 +764,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
     **/
     public static function rawSearchOptionsToAdd($itemtype = null)
     {
+        global $DB;
 
         $task = new static();
         $tab = [];
@@ -771,8 +772,8 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
 
         $task_condition = '';
         if ($task->maybePrivate() && !Session::haveRight("task", CommonITILTask::SEEPRIVATE)) {
-            $task_condition = "AND (`NEWTABLE`.`is_private` = 0
-                                 OR `NEWTABLE`.`users_id` = '" . Session::getLoginUserID() . "')";
+            $task_condition = 'AND (NEWTABLE.is_private = ' . $DB->quoteValue(false) . '
+                                 OR NEWTABLE.users_id = ' . $DB->quoteValue(Session::getLoginUserID()) . ')';
         }
 
         $tab[] = [

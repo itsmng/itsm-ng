@@ -73,7 +73,10 @@ class MigrationRunner
     public function rollbackLatestBatch(): array
     {
         $history = $this->history ?? new MigrationHistoryRepository($this->database);
-        $applied = $history->latestBatchMigrations();
+        $applied = array_values(array_filter(
+            $history->latestBatchMigrations(),
+            static fn(array $migration_row): bool => !$history->isBaselineMigration($migration_row['migration'])
+        ));
         if ($applied === []) {
             return [];
         }

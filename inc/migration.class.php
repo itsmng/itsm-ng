@@ -259,7 +259,7 @@ class Migration
                     } elseif (in_array($default_value, ['0', '1'])) {
                         $format .= " DEFAULT '$default_value'";
                     } else {
-                        trigger_error(__('default_value must be 0 or 1'), E_USER_ERROR);
+                        throw new \InvalidArgumentException(__('default_value must be 0 or 1'));
                     }
                 }
                 break;
@@ -297,7 +297,7 @@ class Migration
                     } elseif (is_numeric($default_value)) {
                         $format .= " DEFAULT '$default_value'";
                     } else {
-                        trigger_error(__('default_value must be numeric'), E_USER_ERROR);
+                        throw new \InvalidArgumentException(__('default_value must be numeric'));
                     }
                 }
                 break;
@@ -828,9 +828,11 @@ class Migration
         $result = $DB->query($sql);
 
         $ranking = 1;
-        if ($DB->numrows($result) > 0) {
+        if (is_object($result) && $DB->numrows($result) > 0) {
             $datas = $DB->fetchAssoc($result);
-            $ranking = $datas["rank"] + 1;
+            if (is_array($datas) && isset($datas["rank"])) {
+                $ranking = $datas["rank"] + 1;
+            }
         }
 
         // The rule itself

@@ -96,18 +96,24 @@ class Item_OperatingSystem extends DbTestCase
             (int)\Item_OperatingSystem::countForItem($computer)
         )->isIdenticalTo(1);
 
-        $this->exception(
-            function () use ($ios, $input) {
-                $ios->add($input);
-            }
-        )
-           ->isInstanceOf('GlpitestSQLError')
-           ->message
-              ->matches("#Duplicate entry '.+' for key '(".$ios->getTable()."\.)?unicity'#");
+        global $DB;
+        if ($DB->dbtype !== 'pgsql') {
+            $this->exception(
+                function () use ($ios, $input) {
+                    $ios->add($input);
+                }
+            )
+               ->isInstanceOf('GlpitestSQLError')
+               ->message
+                  ->matches(
+                      "#(Duplicate entry '.+' for key '(" . $ios->getTable() . "\\.)?unicity'"
+                      . "|duplicate key value violates unique constraint \\\"" . $ios->getTable() . "_unicity\\\")#i"
+                  );
 
-        $this->integer(
-            (int)\Item_OperatingSystem::countForItem($computer)
-        )->isIdenticalTo(1);
+            $this->integer(
+                (int)\Item_OperatingSystem::countForItem($computer)
+            )->isIdenticalTo(1);
+        }
 
         $objects = $this->createDdObjects();
         $ios = new \Item_OperatingSystem();
@@ -235,7 +241,7 @@ class Item_OperatingSystem extends DbTestCase
            ->string['itemtype']->isIdenticalTo('Computer')
            ->integer['items_id']->isIdenticalTo($computer->getID())
            ->integer['entities_id']->isIdenticalTo($eid)
-           ->integer['is_recursive']->isIdenticalTo(0);
+           ->boolean['is_recursive']->isIdenticalTo(false);
 
         $this->boolean($ios->can($ios->getID(), READ))->isTrue();
 
@@ -260,7 +266,7 @@ class Item_OperatingSystem extends DbTestCase
            ->string['itemtype']->isIdenticalTo('Computer')
            ->integer['items_id']->isIdenticalTo($computer->getID())
            ->integer['entities_id']->isIdenticalTo($eid)
-           ->integer['is_recursive']->isIdenticalTo(1);
+           ->boolean['is_recursive']->isIdenticalTo(true);
 
         //not recursive
         $this->setEntity('Root Entity', true);

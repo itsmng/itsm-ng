@@ -80,6 +80,7 @@ class SchemaFingerprint extends \GLPITestCase
             'columns' => [
                 ['name' => 'id', 'type' => 'int32', 'nullable' => false, 'autoIncrement' => true],
                 ['name' => 'payload', 'type' => 'json', 'nullable' => true],
+                ['name' => 'ipv4_chunk', 'type' => 'int32', 'unsigned' => true, 'nullable' => false, 'default' => '0'],
             ],
             'indexes' => [
                 ['name' => 'PRIMARY', 'type' => 'primary', 'columns' => [['name' => 'id']]],
@@ -90,6 +91,7 @@ class SchemaFingerprint extends \GLPITestCase
         $this->string($statements[0])->contains('CREATE TABLE "glpi_demo"');
         $this->string($statements[0])->contains('"id" SERIAL NOT NULL');
         $this->string($statements[0])->contains('"payload" JSONB NULL');
+        $this->string($statements[0])->contains('"ipv4_chunk" BIGINT NOT NULL DEFAULT \'0\'');
         $this->string($statements[0])->contains('PRIMARY KEY ("id")');
     }
 

@@ -1433,23 +1433,27 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                         ];
                     }
 
-                    $expr = "(MATCH(" . $DB->quoteName('glpi_knowbaseitems.name') . ", " . $DB->quoteName('glpi_knowbaseitems.answer') . ")
-                           AGAINST(" . $DB->quote($search_wilcard) . " IN BOOLEAN MODE)";
-
-                    if (!empty($addscore)) {
-                        foreach ($addscore as $addscore_field) {
-                            $expr .= " + MATCH(" . $DB->quoteName($addscore_field) . ")
-                                        AGAINST(" . $DB->quote($search_wilcard) . " IN BOOLEAN MODE)";
-                        }
+                    $score_fields = [
+                       $DB->quoteName('glpi_knowbaseitems.name'),
+                       $DB->quoteName('glpi_knowbaseitems.answer')
+                    ];
+                    foreach ($addscore as $addscore_field) {
+                        $score_fields[] = $DB->quoteName($addscore_field);
                     }
-                    $expr .= " ) AS SCORE ";
-                    $criteria['SELECT'][] = new QueryExpression($expr);
+
+                    $criteria['SELECT'][] = new QueryExpression(
+                        $DB->sqlFullTextBooleanScore($score_fields, $search_wilcard) . ' AS SCORE'
+                    );
 
                     $ors = [
                        new QueryExpression(
-                           "MATCH(" . $DB->quoteName('glpi_knowbaseitems.name') . ",
-                        " . $DB->quoteName('glpi_knowbaseitems.answer') . ")
-                        AGAINST(" . $DB->quote($search_wilcard) . " IN BOOLEAN MODE)"
+                           $DB->sqlFullTextBooleanMatch(
+                               [
+                                  $DB->quoteName('glpi_knowbaseitems.name'),
+                                  $DB->quoteName('glpi_knowbaseitems.answer')
+                               ],
+                               $search_wilcard
+                           )
                        )
                     ];
 
@@ -1458,8 +1462,10 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                             $ors[] = [
                                'NOT' => [$addscore_field => null],
                                new QueryExpression(
-                                   "MATCH(" . $DB->quoteName($addscore_field) . ")
-                              AGAINST(" . $DB->quote($search_wilcard) . " IN BOOLEAN MODE)"
+                                   $DB->sqlFullTextBooleanMatch(
+                                       [$DB->quoteName($addscore_field)],
+                                       $search_wilcard
+                                   )
                                )
                             ];
                         }
@@ -1485,7 +1491,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                     ];
                     $search_where[] = $visibility_crit;
 
-                    $criteria['ORDERBY'] = ['SCORE DESC'];
+                    $criteria['ORDERBY'] = [new QueryExpression('SCORE DESC')];
 
                     // preliminar query to allow alternate search if no result with fulltext
                     $search_criteria = [

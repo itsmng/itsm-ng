@@ -975,7 +975,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'do_count',
-                            'type' => 'boolean',
+                            'type' => 'int32',
                             'nullable' => false,
                             'default' => '2',
                             'comment' => 'Do or do not count results on list display see SavedSearch::COUNT_* constants',
@@ -1839,7 +1839,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'day',
-                            'type' => 'boolean',
+                            'type' => 'int32',
                             'nullable' => false,
                             'default' => '1',
                             'comment' => 'numer of the day based on date(w)',
@@ -3869,7 +3869,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'timeline_position',
-                            'type' => 'boolean',
+                            'type' => 'int16',
                             'nullable' => false,
                             'default' => '0',
                         ],
@@ -4094,7 +4094,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'timeline_position',
-                            'type' => 'boolean',
+                            'type' => 'int16',
                             'nullable' => false,
                             'default' => '0',
                         ],
@@ -8063,6 +8063,7 @@ class CoreSchema
                             'type' => 'string',
                             'length' => 100,
                             'nullable' => false,
+                            'default' => '',
                         ],
                         [
                             'name' => 'name',
@@ -11854,7 +11855,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'timeline_position',
-                            'type' => 'boolean',
+                            'type' => 'int16',
                             'nullable' => false,
                             'default' => '0',
                         ],
@@ -12333,7 +12334,7 @@ class CoreSchema
                             'name' => 'id',
                             'type' => 'int32',
                             'nullable' => false,
-                            'default' => '0',
+                            'autoIncrement' => true,
                         ],
                         [
                             'name' => 'name',
@@ -21606,6 +21607,7 @@ class CoreSchema
                             'type' => 'string',
                             'length' => 100,
                             'nullable' => false,
+                            'default' => '',
                         ],
                         [
                             'name' => 'name',
@@ -23060,6 +23062,7 @@ class CoreSchema
                             'type' => 'string',
                             'length' => 20,
                             'nullable' => false,
+                            'default' => '',
                             'comment' => 'See Notification_NotificationTemplate::MODE_* constants',
                         ],
                         [
@@ -26894,7 +26897,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'timeline_position',
-                            'type' => 'boolean',
+                            'type' => 'int16',
                             'nullable' => false,
                             'default' => '0',
                         ],
@@ -30834,7 +30837,7 @@ class CoreSchema
                         [
                             'name' => 'comment',
                             'type' => 'text',
-                            'nullable' => false,
+                            'nullable' => true,
                         ],
                         [
                             'name' => 'date_mod',
@@ -35680,7 +35683,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'timeline_position',
-                            'type' => 'boolean',
+                            'type' => 'int16',
                             'nullable' => false,
                             'default' => '0',
                         ],
@@ -36598,7 +36601,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'timeline_position',
-                            'type' => 'boolean',
+                            'type' => 'int16',
                             'nullable' => false,
                             'default' => '0',
                         ],
@@ -40145,7 +40148,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'orientation',
-                            'type' => 'boolean',
+                            'type' => 'int16',
                             'nullable' => true,
                         ],
                         [
@@ -40156,7 +40159,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'hpos',
-                            'type' => 'boolean',
+                            'type' => 'int16',
                             'nullable' => false,
                             'default' => '0',
                         ],
@@ -41508,7 +41511,7 @@ class CoreSchema
                         ],
                         [
                             'name' => 'timeline_position',
-                            'type' => 'boolean',
+                            'type' => 'int16',
                             'nullable' => false,
                             'default' => '0',
                         ],

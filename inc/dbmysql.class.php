@@ -42,6 +42,8 @@ use Glpi\Application\ErrorHandler;
 **/
 class DBmysql
 {
+    private const DEFAULT_DBTYPE = 'mysql';
+
     /**
      * List of keys that are allowed to use signed integers.
      *
@@ -76,14 +78,18 @@ class DBmysql
     public $dbpassword         = "";
     //! Default Database
     public $dbdefault          = "";
+    //! Database type
+    public $dbtype             = self::DEFAULT_DBTYPE;
     //! Database Handler
-    private $dbh;
+    protected $dbh;
+    //! Last inserted identifier tracked by the abstraction layer
+    protected $last_insert_id  = null;
     //! Database Error
     public $error              = 0;
 
     // Slave management
     public $slave              = false;
-    private $in_transaction;
+    protected $in_transaction;
 
     /**
      * Defines if connection must use SSL.
@@ -145,7 +151,7 @@ class DBmysql
     //to calculate execution time
     public $execution_time          = false;
 
-    private $cache_disabled = false;
+    protected $cache_disabled = false;
 
     /**
      * Cached list fo tables.
@@ -153,7 +159,7 @@ class DBmysql
      * @var array
      * @see self::tableExists()
      */
-    private $table_cache = [];
+    protected $table_cache = [];
 
     /**
      * Cached list of fields.
@@ -161,7 +167,19 @@ class DBmysql
      * @var array
      * @see self::listFields()
      */
-    private $field_cache = [];
+    protected $field_cache = [];
+
+    protected $last_affected_rows = -1;
+
+    protected int|string $last_error_code = 0;
+
+    protected string $last_error_message = '';
+
+    protected static string $default_dbtype = self::DEFAULT_DBTYPE;
+
+    private ?array $logical_boolean_columns = null;
+
+    protected int $savepoint_counter = 0;
 
     /**
      * Constructor / Connect to the MySQL Database
@@ -172,6 +190,14 @@ class DBmysql
      */
     public function __construct($choice = null)
     {
+        if (is_array($choice)) {
+            foreach ($choice as $property => $value) {
+                $this->$property = $value;
+            }
+            $choice = $choice['choice'] ?? null;
+        }
+
+        $this->rememberActiveDialect();
         $this->connect($choice);
     }
 
@@ -186,17 +212,9 @@ class DBmysql
     public function connect($choice = null)
     {
         $this->connected = false;
-        $this->dbh = @new mysqli();
-        if ($this->dbssl) {
-            mysqli_ssl_set(
-                $this->dbh,
-                $this->dbsslkey,
-                $this->dbsslcert,
-                $this->dbsslca,
-                $this->dbsslcapath,
-                $this->dbsslcacipher
-            );
-        }
+        $this->dbh = null;
+        $this->in_transaction = false;
+        $this->rememberActiveDialect();
 
         if (is_array($this->dbhost)) {
             // Round robin choice
@@ -206,51 +224,260 @@ class DBmysql
             $host = $this->dbhost;
         }
 
-        $hostport = explode(":", (string) $host);
-        if (count($hostport) < 2) {
-            // Host
-            $this->dbh->real_connect($host, $this->dbuser, rawurldecode((string) $this->dbpassword), $this->dbdefault);
-        } elseif (intval($hostport[1]) > 0) {
-            // Host:port
-            $this->dbh->real_connect($hostport[0], $this->dbuser, rawurldecode((string) $this->dbpassword), $this->dbdefault, $hostport[1]);
-        } else {
-            // :Socket
-            $this->dbh->real_connect($hostport[0], $this->dbuser, rawurldecode((string) $this->dbpassword), $this->dbdefault, ini_get('mysqli.default_port'), $hostport[1]);
+        $dsn_parts = [];
+        $host_value = (string) $host;
+        if ($host_value !== '') {
+            $host_parts = explode(':', $host_value, 2);
+            if (count($host_parts) === 2 && ctype_digit($host_parts[1])) {
+                $dsn_parts[] = 'host=' . $host_parts[0];
+                $dsn_parts[] = 'port=' . $host_parts[1];
+            } elseif (count($host_parts) === 2 && $host_parts[1] !== '') {
+                if ($host_parts[0] !== '') {
+                    $dsn_parts[] = 'host=' . $host_parts[0];
+                }
+                $dsn_parts[] = 'unix_socket=' . $host_parts[1];
+            } else {
+                $dsn_parts[] = 'host=' . $host_value;
+            }
         }
 
-        if ($this->dbh->connect_error) {
+        if (!empty($this->dbdefault)) {
+            $dsn_parts[] = 'dbname=' . $this->dbdefault;
+        }
+
+        if (isset($this->dbenc)) {
+            Toolbox::deprecated('Usage of alternative DB connection encoding (`DB::$dbenc` property) is deprecated.');
+        }
+        $dbenc = isset($this->dbenc) ? $this->dbenc : 'utf8';
+        $dsn_parts[] = 'charset=' . $dbenc;
+
+        $options = [
+            \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+            \PDO::ATTR_EMULATE_PREPARES   => false,
+            \PDO::ATTR_STRINGIFY_FETCHES  => false,
+        ];
+
+        if ($this->dbssl) {
+            if ($this->dbsslkey !== null && defined('PDO::MYSQL_ATTR_SSL_KEY')) {
+                $options[\PDO::MYSQL_ATTR_SSL_KEY] = $this->dbsslkey;
+            }
+            if ($this->dbsslcert !== null && defined('PDO::MYSQL_ATTR_SSL_CERT')) {
+                $options[\PDO::MYSQL_ATTR_SSL_CERT] = $this->dbsslcert;
+            }
+            if ($this->dbsslca !== null && defined('PDO::MYSQL_ATTR_SSL_CA')) {
+                $options[\PDO::MYSQL_ATTR_SSL_CA] = $this->dbsslca;
+            }
+            if ($this->dbsslcapath !== null && defined('PDO::MYSQL_ATTR_SSL_CAPATH')) {
+                $options[\PDO::MYSQL_ATTR_SSL_CAPATH] = $this->dbsslcapath;
+            }
+            if ($this->dbsslcacipher !== null && defined('PDO::MYSQL_ATTR_SSL_CIPHER')) {
+                $options[\PDO::MYSQL_ATTR_SSL_CIPHER] = $this->dbsslcacipher;
+            }
+        }
+
+        try {
+            $this->dbh = new \PDO(
+                'mysql:' . implode(';', $dsn_parts),
+                $this->dbuser,
+                rawurldecode((string) $this->dbpassword),
+                $options
+            );
+        } catch (\PDOException $exception) {
             $this->connected = false;
             $this->error     = 1;
-        } elseif (!defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {
-            $this->connected = false;
-            $this->error     = 2;
-        } else {
-            if (isset($this->dbenc)) {
-                Toolbox::deprecated('Usage of alternative DB connection encoding (`DB::$dbenc` property) is deprecated.');
+            $this->registerError($exception->getCode(), $exception->getMessage());
+            return;
+        }
+
+        if ($dbenc === 'utf8') {
+            $this->dbh->exec("SET NAMES 'utf8' COLLATE 'utf8_unicode_ci'");
+        }
+
+        if (GLPI_FORCE_EMPTY_SQL_MODE) {
+            // Keep legacy non-strict behavior while preserving explicit id=0 inserts
+            // used by core fixtures such as the root entity.
+            $this->dbh->exec("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
+        }
+
+        $this->connected = true;
+        $this->error = 0;
+        $this->clearLastError();
+        $this->rememberActiveDialect();
+
+        $this->setTimezone($this->guessTimezone());
+    }
+
+    protected function rememberActiveDialect(): void
+    {
+        static::$default_dbtype = $this->dbtype ?: self::DEFAULT_DBTYPE;
+    }
+
+    protected function prepareQueryString(string $query): string
+    {
+        return $query;
+    }
+
+    protected function executeQuery(string $query)
+    {
+        $savepoint = $this->beginTransactionalSavepoint();
+
+        try {
+            $result = $this->dbh->query($query);
+            $this->releaseTransactionalSavepoint($savepoint);
+            $this->last_affected_rows = $result instanceof \PDOStatement ? $result->rowCount() : -1;
+            if ($result instanceof \PDOStatement && $result->columnCount() === 0) {
+                $result->closeCursor();
+                return true;
             }
-            $dbenc = isset($this->dbenc) ? $this->dbenc : "utf8";
-            $this->dbh->set_charset($dbenc);
-            if ($dbenc === "utf8") {
-                // The mysqli::set_charset function will make COLLATE to be defined to the default one for used charset.
-                //
-                // For 'utf8' charset, default one is 'utf8_general_ci',
-                // so we have to redefine it to 'utf8_unicode_ci'.
-                //
-                // If encoding used by connection is not the default one (i.e utf8), then we assume
-                // that we cannot be sure of used COLLATE and that using the default one is the best option.
-                $this->dbh->query("SET NAMES 'utf8' COLLATE 'utf8_unicode_ci';");
-            }
 
-            // force mysqlnd to return int and float types correctly (not as strings)
-            $this->dbh->options(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, true);
+            return $result;
+        } catch (\Throwable $throwable) {
+            $this->rollBackTransactionalSavepoint($savepoint);
+            throw $throwable;
+        }
+    }
 
-            if (GLPI_FORCE_EMPTY_SQL_MODE) {
-                $this->dbh->query("SET SESSION sql_mode = ''");
-            }
+    protected function executePreparedQuery(string $query)
+    {
+        return $this->dbh->prepare($query);
+    }
 
-            $this->connected = true;
+    protected function wrapQueryResult($result)
+    {
+        if ($result instanceof DBmysqlResult) {
+            return $result;
+        }
 
-            $this->setTimezone($this->guessTimezone());
+        if ($result instanceof \mysqli_result || $result instanceof \PDOStatement) {
+            return new DBmysqlResult($result, $this);
+        }
+
+        return $result;
+    }
+
+    protected function wrapPreparedStatement($statement)
+    {
+        if ($statement instanceof DBmysqlStatement) {
+            return $statement;
+        }
+
+        if ($statement instanceof \mysqli_stmt || $statement instanceof \PDOStatement) {
+            return new DBmysqlStatement($statement);
+        }
+
+        return $statement;
+    }
+
+    protected function getDriverErrorCode(?\Throwable $exception = null)
+    {
+        if ($exception instanceof \PDOException) {
+            return $exception->getCode();
+        }
+
+        if ($exception instanceof \mysqli_sql_exception) {
+            return $exception->getCode();
+        }
+
+        if ($this->dbh instanceof \PDO) {
+            return $this->dbh->errorInfo()[1] ?? $this->dbh->errorInfo()[0] ?? 0;
+        }
+
+        return $this->dbh instanceof \mysqli ? $this->dbh->errno : 0;
+    }
+
+    protected function getDriverErrorMessage(?\Throwable $exception = null): string
+    {
+        if ($exception !== null) {
+            return $exception->getMessage();
+        }
+
+        if ($this->dbh instanceof \PDO) {
+            return (string) ($this->dbh->errorInfo()[2] ?? '');
+        }
+
+        return $this->dbh instanceof \mysqli ? $this->dbh->error : '';
+    }
+
+    protected function registerError(int|string $code, string $message): void
+    {
+        $this->last_error_code = $code;
+        $this->last_error_message = $message;
+    }
+
+    protected function clearLastError(): void
+    {
+        $this->registerError(0, '');
+    }
+
+    protected function handleQueryFailure(string $query, ?\Throwable $exception = null): void
+    {
+        global $CFG_GLPI, $DEBUG_SQL, $GLPI, $SQL_TOTAL_REQUEST;
+
+        $code = $this->getDriverErrorCode($exception);
+        $message = $this->getDriverErrorMessage($exception);
+        $this->registerError($code, $message);
+
+        $label = $this->dbtype === 'pgsql' ? 'PostgreSQL' : 'MySQL';
+        $error = "  *** {$label} query error:\n  SQL: " . $query . "\n  Error: " . $message . "\n";
+        $error .= Toolbox::backtrace(false, 'DBmysql->query()', ['Toolbox::backtrace()']);
+
+        Toolbox::logSqlError($error);
+
+        $error_handler = $GLPI->getErrorHandler();
+        if ($error_handler instanceof ErrorHandler) {
+            $error_handler->handleSqlError((int) $code, $message, $query);
+        }
+
+        $is_debug = isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
+        if (($is_debug || isAPI()) && $CFG_GLPI["debug_sql"]) {
+            $DEBUG_SQL["errors"][$SQL_TOTAL_REQUEST] = $this->error();
+        }
+    }
+
+    protected function beginTransactionalSavepoint(): ?string
+    {
+        if (
+            $this->dbtype !== 'pgsql'
+            || !$this->dbh instanceof \PDO
+        ) {
+            return null;
+        }
+
+        $savepoint = 'glpi_sp_' . (++$this->savepoint_counter);
+        try {
+            $this->dbh->exec('SAVEPOINT ' . $savepoint);
+        } catch (\Throwable $throwable) {
+            return null;
+        }
+
+        return $savepoint;
+    }
+
+    protected function releaseTransactionalSavepoint(?string $savepoint): void
+    {
+        if ($savepoint === null || !$this->dbh instanceof \PDO) {
+            return;
+        }
+
+        try {
+            $this->dbh->exec('RELEASE SAVEPOINT ' . $savepoint);
+        } catch (\Throwable $throwable) {
+            return;
+        }
+    }
+
+    protected function rollBackTransactionalSavepoint(?string $savepoint): void
+    {
+        if ($savepoint === null || !$this->dbh instanceof \PDO) {
+            return;
+        }
+
+        try {
+            $this->dbh->exec('ROLLBACK TO SAVEPOINT ' . $savepoint);
+            $this->dbh->exec('RELEASE SAVEPOINT ' . $savepoint);
+        } catch (\Throwable $throwable) {
+            return;
         }
     }
 
@@ -301,7 +528,163 @@ class DBmysql
      */
     public function escape($string)
     {
-        return $this->dbh->real_escape_string($string ?? '');
+        if ($this->dbh instanceof \mysqli) {
+            return $this->dbh->real_escape_string($string ?? '');
+        }
+
+        return $this->escapeWithMysqlCompatibilityMap((string) ($string ?? ''));
+    }
+
+    protected function escapeWithMysqlCompatibilityMap(string $string): string
+    {
+        return strtr(
+            $string,
+            [
+                "\\" => "\\\\",
+                "\0" => "\\0",
+                "\n" => "\\n",
+                "\r" => "\\r",
+                "'"  => "\\'",
+                '"'  => '\\"',
+                "\x1a" => "\\Z",
+            ]
+        );
+    }
+
+    public function normalizeCompatibleFetchedRow(array $row, array $field_names = [], array $field_meta = []): array
+    {
+        if (!$this->shouldNormalizeFetchedValues()) {
+            return $row;
+        }
+
+        foreach ($field_names as $index => $name) {
+            if (!array_key_exists($name, $row)) {
+                continue;
+            }
+
+            $meta = $field_meta[$index] ?? [];
+            $native_type = strtolower((string) ($meta['native_type'] ?? ''));
+            $pgsql_type = strtolower((string) ($meta['pgsql:oid_name'] ?? ''));
+            $table_name = is_string($meta['table'] ?? null)
+                ? $meta['table']
+                : (is_string($meta['table_name'] ?? null) ? $meta['table_name'] : null);
+            if (
+                in_array($native_type, ['bool', 'boolean'], true)
+                || in_array($pgsql_type, ['bool', 'boolean'], true)
+                || $this->isLogicalBooleanField((string) $name, $table_name)
+            ) {
+                $row[$name] = $this->normalizeLogicalBooleanValue($row[$name]);
+                continue;
+            }
+
+            $row[$name] = $this->normalizeCompatibleFetchedValue($row[$name], $meta);
+        }
+
+        return $row;
+    }
+
+    public function normalizeCompatibleFetchedValue($value, array $meta = [])
+    {
+        if (!$this->shouldNormalizeFetchedValues()) {
+            return $value;
+        }
+
+        if (!is_string($value)) {
+            return $value;
+        }
+
+        $native_type = strtolower((string) ($meta['native_type'] ?? ''));
+        $pgsql_type = strtolower((string) ($meta['pgsql:oid_name'] ?? ''));
+
+        if (in_array($native_type, ['bpchar', 'char'], true) || $pgsql_type === 'bpchar') {
+            return rtrim($value, ' ');
+        }
+
+        if (
+            $this->dbtype === 'pgsql'
+            && (
+                in_array($native_type, ['timestamp', 'timestamptz'], true)
+                || in_array($pgsql_type, ['timestamp', 'timestamptz'], true)
+            )
+        ) {
+            return preg_replace('/(?:\.\d+)?(?:[+-]\d{2}(?::?\d{2})?)$/', '', $value) ?? $value;
+        }
+
+        return $value;
+    }
+
+    protected function shouldNormalizeFetchedValues(): bool
+    {
+        return $this->dbtype === 'pgsql' || $this->getLogicalBooleanColumns() !== [];
+    }
+
+    protected function getLogicalBooleanColumns(): array
+    {
+        if (is_array($this->logical_boolean_columns)) {
+            return $this->logical_boolean_columns;
+        }
+
+        $this->logical_boolean_columns = [];
+
+        foreach (\itsmng\Database\Schema\CoreSchema::definition()['tables'] ?? [] as $table) {
+            $table_name = strtolower((string) ($table['name'] ?? ''));
+            if ($table_name === '') {
+                continue;
+            }
+
+            foreach ($table['columns'] ?? [] as $column) {
+                if (($column['type'] ?? null) !== 'boolean') {
+                    continue;
+                }
+
+                $column_name = strtolower((string) ($column['name'] ?? ''));
+                if ($column_name !== '') {
+                    $this->logical_boolean_columns[$table_name][$column_name] = true;
+                }
+            }
+        }
+
+        return $this->logical_boolean_columns;
+    }
+
+    public function isLogicalBooleanField(string $field_name, ?string $table_name = null): bool
+    {
+        $normalized_field = strtolower((string) preg_replace('/^.*\./', '', $field_name));
+        $normalized_table = $table_name !== null
+            ? strtolower(trim($table_name, '`"'))
+            : null;
+
+        if ($normalized_table === null && str_contains($field_name, '.')) {
+            [$resolved_table] = explode('.', strtolower((string) $field_name), 2);
+            $normalized_table = trim($resolved_table, '`"');
+        }
+
+        if ($normalized_table === null || $normalized_field === '') {
+            return false;
+        }
+
+        return isset($this->getLogicalBooleanColumns()[$normalized_table][$normalized_field]);
+    }
+
+    protected function normalizeLogicalBooleanValue($value)
+    {
+        if ($value === null || is_bool($value)) {
+            return $value;
+        }
+
+        if (is_int($value) || is_float($value)) {
+            return ((int) $value) === 1;
+        }
+
+        if (is_string($value)) {
+            return match (strtolower($value)) {
+                '1', 't', 'true', 'y', 'yes' => true,
+                '0', 'f', 'false', 'n', 'no' => false,
+                default => $value,
+            };
+        }
+
+        return $value;
     }
 
     /**
@@ -321,6 +704,7 @@ class DBmysql
     {
         global $CFG_GLPI, $DEBUG_SQL, $GLPI, $SQL_TOTAL_REQUEST;
 
+        $query = $this->prepareQueryString($query);
         $is_debug = isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
         if ($is_debug && $CFG_GLPI["debug_sql"]) {
             $SQL_TOTAL_REQUEST++;
@@ -332,7 +716,17 @@ class DBmysql
         }
 
         try {
-            $res = $this->dbh->query($query);
+            $res = $this->executeQuery($query);
+            if ($res === false) {
+                $this->handleQueryFailure($query);
+                return false;
+            }
+
+            $res = $this->wrapQueryResult($res);
+            if ($res instanceof DBmysqlResult) {
+                $this->last_affected_rows = $res->num_rows;
+            }
+            $this->clearLastError();
 
             if ($is_debug && $CFG_GLPI["debug_sql"]) {
                 $TIME                                   = $TIMER->getTime();
@@ -343,23 +737,11 @@ class DBmysql
                 $this->execution_time = $TIMER->getTime(0, true);
             }
             return $res;
-        } catch (\mysqli_sql_exception $e) {
-            // no translation for error logs
-            $error = "  *** MySQL query error:\n  SQL: " . $query . "\n  Error: " .
-                      $this->dbh->error . "\n";
-            $error .= Toolbox::backtrace(false, 'DBmysql->query()', ['Toolbox::backtrace()']);
-
-            Toolbox::logSqlError($error);
-
-            $error_handler = $GLPI->getErrorHandler();
-            if ($error_handler instanceof ErrorHandler) {
-                $error_handler->handleSqlError($this->dbh->errno, $this->dbh->error, $query);
-            }
-
-            if (($is_debug || isAPI()) && $CFG_GLPI["debug_sql"]) {
-                $DEBUG_SQL["errors"][$SQL_TOTAL_REQUEST] = $this->error();
-            }
+        } catch (\Throwable $exception) {
+            $this->handleQueryFailure($query, $exception);
         }
+
+        return false;
     }
 
     /**
@@ -407,11 +789,22 @@ class DBmysql
     {
         global $CFG_GLPI, $DEBUG_SQL, $SQL_TOTAL_REQUEST;
 
-        $res = $this->dbh->prepare($query);
+        $query = $this->prepareQueryString($query);
+
+        try {
+            $res = $this->executePreparedQuery($query);
+        } catch (\Throwable $exception) {
+            $this->registerError(
+                $this->getDriverErrorCode($exception),
+                $this->getDriverErrorMessage($exception)
+            );
+            $res = false;
+        }
         if (!$res) {
             // no translation for error logs
-            $error = "  *** MySQL prepare error:\n  SQL: " . $query . "\n  Error: " .
-                      $this->dbh->error . "\n";
+            $error = "  *** " . ($this->dbtype === 'pgsql' ? 'PostgreSQL' : 'MySQL') .
+                " prepare error:\n  SQL: " . $query . "\n  Error: " .
+                      $this->error() . "\n";
             $error .= Toolbox::backtrace(false, 'DBmysql->prepare()', ['Toolbox::backtrace()']);
 
             Toolbox::logInFile("sql-errors", $error);
@@ -428,7 +821,8 @@ class DBmysql
                 $DEBUG_SQL["errors"][$SQL_TOTAL_REQUEST] = $this->error();
             }
         }
-        return $res;
+        $this->clearLastError();
+        return $this->wrapPreparedStatement($res);
     }
 
     /**
@@ -461,7 +855,11 @@ class DBmysql
      */
     public function numrows($result)
     {
-        return $result->num_rows;
+        if (!is_object($result) || !property_exists($result, 'num_rows')) {
+            return 0;
+        }
+
+        return (int) $result->num_rows;
     }
 
     /**
@@ -544,6 +942,10 @@ class DBmysql
      */
     public function fetchAssoc($result)
     {
+        if (!is_object($result) || !method_exists($result, 'fetch_assoc')) {
+            return null;
+        }
+
         return $result->fetch_assoc();
     }
 
@@ -622,7 +1024,22 @@ class DBmysql
      */
     public function insertId()
     {
-        return $this->dbh->insert_id;
+        if ($this->last_insert_id !== null) {
+            return ctype_digit((string) $this->last_insert_id)
+                ? (int) $this->last_insert_id
+                : $this->last_insert_id;
+        }
+
+        if ($this->dbh instanceof \PDO) {
+            $insert_id = $this->dbh->lastInsertId();
+            return ctype_digit((string) $insert_id) ? (int) $insert_id : $insert_id;
+        }
+
+        if ($this->dbh instanceof \mysqli) {
+            return $this->dbh->insert_id;
+        }
+
+        return null;
     }
 
     /**
@@ -763,6 +1180,16 @@ class DBmysql
         return false;
     }
 
+    public function listIndexes($table)
+    {
+        if (!$this->tableExists($table)) {
+            trigger_error("Table $table does not exists", E_USER_WARNING);
+            return false;
+        }
+
+        return $this->query('SHOW INDEX FROM ' . $this->quoteName($table));
+    }
+
     /**
      * Get field of a table
      *
@@ -776,7 +1203,12 @@ class DBmysql
     {
 
         $fields = $this->listFields($table, $usecache);
-        return $fields[$field] ?? null;
+        if (!is_array($fields)) {
+            return null;
+        }
+
+        $field_definition = $fields[$field] ?? null;
+        return is_array($field_definition) ? $field_definition : null;
     }
 
     /**
@@ -799,7 +1231,7 @@ class DBmysql
      */
     public function affectedRows()
     {
-        return $this->dbh->affected_rows;
+        return $this->last_affected_rows;
     }
 
 
@@ -837,7 +1269,7 @@ class DBmysql
      */
     public function errno()
     {
-        return $this->dbh->errno;
+        return (int) $this->last_error_code;
     }
 
     /**
@@ -847,7 +1279,7 @@ class DBmysql
      */
     public function error()
     {
-        return $this->dbh->error;
+        return $this->last_error_message;
     }
 
     /**
@@ -857,9 +1289,25 @@ class DBmysql
      */
     public function close()
     {
-        if ($this->connected && $this->dbh) {
-            return $this->dbh->close();
+        if (!$this->connected) {
+            return false;
         }
+
+        if ($this->dbh instanceof \PDO) {
+            $this->dbh = null;
+            $this->connected = false;
+            $this->in_transaction = false;
+            return true;
+        }
+
+        if ($this->dbh instanceof \mysqli) {
+            $result = $this->dbh->close();
+            if ($result) {
+                $this->connected = false;
+            }
+            return $result;
+        }
+
         return false;
     }
 
@@ -969,7 +1417,7 @@ class DBmysql
             if ($data['vers']) {
                 $ret['Server Version'] = $data['vers'];
             } else {
-                $ret['Server Version'] = $this->dbh->server_info;
+                $ret['Server Version'] = '';
             }
             if ($data['mode']) {
                 $ret['Server SQL Mode'] = $data['mode'];
@@ -978,9 +1426,38 @@ class DBmysql
             }
         }
         $ret['Parameters'] = $this->dbuser . "@" . $this->dbhost . "/" . $this->dbdefault;
-        $ret['Host info']  = $this->dbh->host_info;
+        $ret['Host info']  = $this->dbh instanceof \PDO && defined('PDO::ATTR_CONNECTION_STATUS')
+            ? (string) $this->dbh->getAttribute(\PDO::ATTR_CONNECTION_STATUS)
+            : '';
 
         return $ret;
+    }
+
+    public function setGroupConcatMaxLen(int $length): bool
+    {
+        return (bool) $this->query('SET SESSION group_concat_max_len = ' . $length);
+    }
+
+    public function getLastWarning(): ?array
+    {
+        $result = $this->query('SHOW WARNINGS');
+        if (!$result || $this->numrows($result) === 0) {
+            return null;
+        }
+
+        $warning = $this->fetchAssoc($result);
+        return is_array($warning) ? $warning : null;
+    }
+
+    public function getDatabaseSize(): string
+    {
+        $size_res = $this->request([
+            'SELECT' => new \QueryExpression('ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS dbsize'),
+            'FROM'   => 'information_schema.tables',
+            'WHERE'  => ['table_schema' => $this->dbdefault]
+        ])->next();
+
+        return (string) ($size_res['dbsize'] ?? '');
     }
 
     /**
@@ -1154,23 +1631,23 @@ class DBmysql
      */
     public static function quoteName($name)
     {
+        $quote = static::getQuoteNameChar();
+
         // handle verbatim names
         if ($name instanceof QueryExpression) {
             return $name->getValue();
         }
 
         // handle aliases
-        $name_matches = [];
-        if (preg_match('/^(?<name>.+[\s|`])AS(?<alias>[\s|`].+)$/i', $name, $name_matches) === 1) {
-            $name = rtrim($name_matches['name']);
-            $alias = ltrim($name_matches['alias']);
-            return self::quoteName($name) . ' AS ' . self::quoteName($alias);
+        $name_matches = preg_split('/\s+AS\s+/i', (string) $name, 2);
+        if (is_array($name_matches) && count($name_matches) === 2) {
+            return static::quoteName($name_matches[0]) . ' AS ' . static::quoteName($name_matches[1]);
         }
 
         // handle names with multiple chunks (e.g. db.table.field or table.field)
         if (strpos($name, '.')) {
             $names = explode('.', $name);
-            return implode('.', array_map(self::quoteName(...), $names));
+            return implode('.', array_map(static::quoteName(...), $names));
         }
 
         // do not quote wildcard (*)
@@ -1178,15 +1655,20 @@ class DBmysql
             return $name;
         }
 
-        // do not quote alreay quoted names
-        if (preg_match('/^`[^`]+`$/', $name) === 1) {
-            return $name;
+        foreach (['`', '"'] as $already_quote) {
+            if (
+                str_starts_with((string) $name, $already_quote)
+                && str_ends_with((string) $name, $already_quote)
+            ) {
+                $name = trim($name, $already_quote);
+                break;
+            }
         }
 
-        // escape backticks by doubling them
         return sprintf(
-            '`%s`',
-            str_replace('`', '``', $name)
+            '%1$s%2$s%1$s',
+            $quote,
+            str_replace($quote, $quote . $quote, $name)
         );
     }
 
@@ -1199,19 +1681,100 @@ class DBmysql
      */
     public static function quoteValue($value)
     {
-        if ($value instanceof QueryParam || $value instanceof QueryExpression) {
-            //no quote for query parameters nor expressions
-            $value = $value->getValue();
-        } elseif ($value === null || $value === 'NULL' || $value === 'null') {
-            $value = 'NULL';
-        } elseif (is_bool($value)) {
-            // transform boolean as int (prevent `false` to be transformed to empty string)
-            $value = "'" . (int)$value . "'";
-        } else {
-            //phone numbers may start with '+' and will be considered as numeric
-            $value = "'$value'";
+        global $DB;
+
+        if ($DB instanceof self) {
+            return $DB->quoteCompatibleValue($value);
         }
-        return $value;
+
+        if ($value instanceof QueryParam || $value instanceof QueryExpression) {
+            return $value->getValue();
+        }
+
+        if ($value === null || $value === 'NULL' || $value === 'null') {
+            return 'NULL';
+        }
+
+        if (is_bool($value)) {
+            return $value ? 'TRUE' : 'FALSE';
+        }
+
+        return "'$value'";
+    }
+
+    public function quoteCompatibleValue($value)
+    {
+        if ($value instanceof QueryParam || $value instanceof QueryExpression) {
+            return $value->getValue();
+        }
+
+        if ($value === null || $value === 'NULL' || $value === 'null') {
+            return 'NULL';
+        }
+
+        if (is_bool($value)) {
+            return $value ? 'TRUE' : 'FALSE';
+        }
+
+        if (is_int($value) || is_float($value)) {
+            return "'" . (string) $value . "'";
+        }
+
+        return $this->quote(
+            $this->normalizeLegacySqlStringValue((string) $value)
+        );
+    }
+
+    public function quoteFieldValue(?string $table, string $field, $value)
+    {
+        $normalized_field = strtolower((string) preg_replace('/^.*\./', '', $field));
+        $normalized_table = $table !== null ? trim($table, '`"') : null;
+        $is_boolean_field = $this->isLogicalBooleanField($normalized_field, $normalized_table);
+
+        if (
+            !$is_boolean_field
+            && $this->dbtype === 'pgsql'
+            && $normalized_table !== null
+        ) {
+            $field_definition = $this->getField($normalized_table, trim($field, '`"'));
+            $is_boolean_field = ($field_definition['Type'] ?? null) === 'boolean';
+        }
+
+        if ($is_boolean_field) {
+            return $this->quoteBooleanValue($value);
+        }
+
+        if (is_bool($value)) {
+            return $this->quoteCompatibleValue((int) $value);
+        }
+
+        return $this->quoteCompatibleValue($value);
+    }
+
+    protected function quoteBooleanValue($value): string
+    {
+        if ($value === null || $value === 'NULL' || $value === 'null') {
+            return 'NULL';
+        }
+
+        if (is_bool($value)) {
+            return $value ? 'TRUE' : 'FALSE';
+        }
+
+        if (is_int($value) || is_float($value)) {
+            return ((int) $value) === 0 ? 'FALSE' : 'TRUE';
+        }
+
+        if (is_string($value)) {
+            $normalized = strtolower(trim($value));
+            return match ($normalized) {
+                '', '0', 'false', 'f', 'n', 'no' => 'FALSE',
+                '1', 'true', 't', 'y', 'yes' => 'TRUE',
+                default => $this->quoteCompatibleValue($value),
+            };
+        }
+
+        return $this->quoteCompatibleValue($value);
     }
 
     /**
@@ -1231,7 +1794,19 @@ class DBmysql
         $fields = [];
         foreach ($params as $key => &$value) {
             $fields[] = $this->quoteName($key);
-            $value = $this->quoteValue($value);
+
+            if (
+                $this->dbtype === 'pgsql'
+                && ($value === null || $value === 'NULL' || $value === 'null')
+            ) {
+                $field = $this->getField($table, $key);
+                if (($field['Extra'] ?? '') === 'auto_increment' || $key === 'id') {
+                    $value = 'DEFAULT';
+                    continue;
+                }
+            }
+
+            $value = $this->quoteFieldValue((string) $table, (string) $key, $value);
         }
 
         $query .= implode(', ', $fields);
@@ -1254,6 +1829,7 @@ class DBmysql
      */
     public function insert($table, $params)
     {
+        $this->last_insert_id = null;
         $result = $this->query(
             $this->buildInsert($table, $params)
         );
@@ -1331,19 +1907,34 @@ class DBmysql
             throw new \RuntimeException('Cannot run an UPDATE query without WHERE clause!');
         }
 
-        $query  = "UPDATE " . self::quoteName($table);
-
-        //JOINS
         $it = new DBmysqlIterator($this);
-        $query .= $it->analyseJoins($joins);
+        if ($this->requiresPgSqlLimitedUpdate($clauses)) {
+            return $this->buildPgSqlLimitedUpdate((string) $table, $params, $clauses, $joins, $it);
+        }
+
+        $query  = "UPDATE " . self::quoteName($table);
+        $join_where = [];
+        if ($this->dbtype === 'pgsql') {
+            $join_tables = $this->buildJoinTargets($joins, $join_where);
+            if ($join_tables !== []) {
+                $query .= ' FROM ' . implode(', ', $join_tables);
+            }
+        } else {
+            $query .= $it->analyseJoins($joins);
+        }
 
         $query .= " SET ";
         foreach ($params as $field => $value) {
-            $query .= self::quoteName($field) . " = " . $this->quoteValue($value) . ", ";
+            $query .= self::quoteName($field) . " = " . $this->quoteFieldValue((string) $table, (string) $field, $value) . ", ";
         }
         $query = rtrim($query, ', ');
 
-        $query .= " WHERE " . $it->analyseCrit($clauses['WHERE']);
+        $where_parts = [];
+        if ($join_where !== []) {
+            $where_parts[] = implode(' AND ', $join_where);
+        }
+        $where_parts[] = $it->analyseCrit($clauses['WHERE']);
+        $query .= " WHERE " . implode(' AND ', $where_parts);
 
         // ORDER BY
         if (isset($clauses['ORDER']) && !empty($clauses['ORDER'])) {
@@ -1354,6 +1945,64 @@ class DBmysql
             $offset = (isset($clauses['START']) && !empty($clauses['START'])) ? $clauses['START'] : null;
             $query .= $it->handleLimits($clauses['LIMIT'], $offset);
         }
+
+        return $query;
+    }
+
+    protected function requiresPgSqlLimitedUpdate(array $clauses): bool
+    {
+        if ($this->dbtype !== 'pgsql') {
+            return false;
+        }
+
+        return !empty($clauses['ORDER'])
+            || !empty($clauses['LIMIT'])
+            || !empty($clauses['START']);
+    }
+
+    protected function buildPgSqlLimitedUpdate(
+        string $table,
+        array $params,
+        array $clauses,
+        array $joins,
+        DBmysqlIterator $iterator
+    ): string {
+        $target_table = self::quoteName($table);
+        $query = "UPDATE " . $target_table . " SET ";
+
+        foreach ($params as $field => $value) {
+            $query .= self::quoteName($field)
+                . " = "
+                . $this->quoteFieldValue($table, (string) $field, $value)
+                . ", ";
+        }
+        $query = rtrim($query, ', ');
+
+        $join_where = [];
+        $join_tables = $this->buildJoinTargets($joins, $join_where);
+
+        $selection = "SELECT " . self::quoteName($table . '.ctid') . " FROM " . $target_table;
+        if ($join_tables !== []) {
+            $selection .= ', ' . implode(', ', $join_tables);
+        }
+
+        $where_parts = [];
+        if ($join_where !== []) {
+            $where_parts[] = implode(' AND ', $join_where);
+        }
+        $where_parts[] = $iterator->analyseCrit($clauses['WHERE']);
+        $selection .= " WHERE " . implode(' AND ', $where_parts);
+
+        if (isset($clauses['ORDER']) && !empty($clauses['ORDER'])) {
+            $selection .= $iterator->handleOrderClause($clauses['ORDER']);
+        }
+
+        if (isset($clauses['LIMIT']) && !empty($clauses['LIMIT'])) {
+            $offset = (isset($clauses['START']) && !empty($clauses['START'])) ? $clauses['START'] : null;
+            $selection .= $iterator->handleLimits($clauses['LIMIT'], $offset);
+        }
+
+        $query .= " WHERE " . self::quoteName('ctid') . " IN (" . $selection . ")";
 
         return $query;
     }
@@ -1461,13 +2110,56 @@ class DBmysql
             throw new \RuntimeException('Cannot run an DELETE query without WHERE clause!');
         }
 
-        $query  = "DELETE " . self::quoteName($table) . " FROM " . self::quoteName($table);
-
         $it = new DBmysqlIterator($this);
-        $query .= $it->analyseJoins($joins);
-        $query .= " WHERE " . $it->analyseCrit($where);
+        $join_where = [];
+        if ($this->dbtype === 'pgsql') {
+            $query = "DELETE FROM " . self::quoteName($table);
+            $join_tables = $this->buildJoinTargets($joins, $join_where);
+            if ($join_tables !== []) {
+                $query .= ' USING ' . implode(', ', $join_tables);
+            }
+        } else {
+            $query  = "DELETE " . self::quoteName($table) . " FROM " . self::quoteName($table);
+            $query .= $it->analyseJoins($joins);
+        }
+
+        $where_parts = [];
+        if ($join_where !== []) {
+            $where_parts[] = implode(' AND ', $join_where);
+        }
+        $where_parts[] = $it->analyseCrit($where);
+        $query .= " WHERE " . implode(' AND ', $where_parts);
 
         return $query;
+    }
+
+    protected function buildJoinTargets(array $joins, array &$conditions = []): array
+    {
+        $targets = [];
+        $iterator = new DBmysqlIterator($this);
+
+        foreach ($joins as $jointables) {
+            if (!is_array($jointables)) {
+                continue;
+            }
+
+            foreach ($jointables as $jointablekey => $jointablecrit) {
+                if (isset($jointablecrit['TABLE'])) {
+                    $jointablekey = $jointablecrit['TABLE'];
+                    unset($jointablecrit['TABLE']);
+                }
+
+                if ($jointablekey instanceof QuerySubQuery) {
+                    $targets[] = $jointablekey->getQuery();
+                } else {
+                    $targets[] = self::quoteName($jointablekey);
+                }
+
+                $conditions[] = '(' . $iterator->analyseCrit($jointablecrit) . ')';
+            }
+        }
+
+        return $targets;
     }
 
     /**
@@ -1627,9 +2319,9 @@ class DBmysql
      */
     public function getVersion()
     {
-        $req = $this->request('SELECT version()')->next();
-        $raw = $req['version()'];
-        return $raw;
+        $result = $this->queryOrDie('SELECT version()', 'Read database version');
+        $row = $this->fetchRow($result);
+        return (string) ($row[0] ?? '');
     }
 
     /**
@@ -1640,7 +2332,7 @@ class DBmysql
     public function beginTransaction()
     {
         $this->in_transaction = true;
-        return $this->dbh->begin_transaction();
+        return $this->dbh->beginTransaction();
     }
 
     /**
@@ -1651,6 +2343,11 @@ class DBmysql
     public function commit()
     {
         $this->in_transaction = false;
+
+        if ($this->dbh instanceof \PDO && !$this->dbh->inTransaction()) {
+            return true;
+        }
+
         return $this->dbh->commit();
     }
 
@@ -1662,6 +2359,11 @@ class DBmysql
     public function rollBack()
     {
         $this->in_transaction = false;
+
+        if ($this->dbh instanceof \PDO && !$this->dbh->inTransaction()) {
+            return true;
+        }
+
         return $this->dbh->rollback();
     }
 
@@ -1737,7 +2439,7 @@ class DBmysql
         //setup timezone
         if ($this->areTimezonesAvailable()) {
             date_default_timezone_set($timezone);
-            $this->dbh->query("SET SESSION time_zone = '$timezone'");
+            $this->query('SET SESSION time_zone = ' . $this->quote($timezone));
             $_SESSION['glpi_currenttime'] = date("Y-m-d H:i:s");
         }
         return $this;
@@ -1913,6 +2615,37 @@ class DBmysql
         $this->field_cache = [];
     }
 
+    public function databaseExists(string $database): bool
+    {
+        $result = $this->request([
+            'COUNT' => 'cpt',
+            'FROM'  => 'information_schema.schemata',
+            'WHERE' => [
+                'schema_name' => $database,
+            ],
+        ])->next();
+
+        return (int) ($result['cpt'] ?? 0) > 0;
+    }
+
+    public function createDatabase(string $database): bool
+    {
+        return (bool) $this->query(
+            'CREATE DATABASE IF NOT EXISTS ' . self::quoteName($database)
+        );
+    }
+
+    public function useDatabase(string $database): bool
+    {
+        $this->dbdefault = $database;
+        $this->clearSchemaCache();
+
+        $this->close();
+        $this->connect();
+
+        return $this->connected;
+    }
+
     /**
      * Quote a value for a specified type
      * Should be used for PDO, but this will prevent heavy
@@ -1927,8 +2660,268 @@ class DBmysql
      */
     public function quote($value, int $type = 2/*\PDO::PARAM_STR*/)
     {
-        return "'" . $this->escape($value) . "'";
-        //return $this->dbh->quote($value, $type);
+        if ($value === null) {
+            return 'NULL';
+        }
+
+        return $this->dbh instanceof \PDO
+            ? $this->dbh->quote((string) $value, $type)
+            : "'" . $this->escape($value) . "'";
+    }
+
+    public function sqlConcat(array $expressions): string
+    {
+        return 'CONCAT(' . implode(', ', $expressions) . ')';
+    }
+
+    public function sqlPosition(string $needle, string $haystack): string
+    {
+        return 'LOCATE(' . $needle . ', ' . $haystack . ')';
+    }
+
+    public function sqlIf(string $condition, string $when_true, string $when_false): string
+    {
+        return 'IF(' . $condition . ', ' . $when_true . ', ' . $when_false . ')';
+    }
+
+    public function sqlGroupConcat(
+        string $expression,
+        string $separator = ',',
+        bool $distinct = false,
+        ?string $order_by = null
+    ): string
+    {
+        $sql = 'GROUP_CONCAT(';
+        if ($distinct) {
+            $sql .= 'DISTINCT ';
+        }
+
+        $sql .= $expression;
+        if ($order_by !== null && $order_by !== '') {
+            $sql .= ' ORDER BY ' . $order_by;
+        }
+        $sql .= ' SEPARATOR ' . $this->quote($separator);
+
+        return $sql . ')';
+    }
+
+    public function sqlIfNull(string $expression, string $fallback): string
+    {
+        return 'IFNULL(' . $expression . ', ' . $fallback . ')';
+    }
+
+    public function sqlNullIf(string $expression, string $fallback): string
+    {
+        return 'NULLIF(' . $expression . ', ' . $fallback . ')';
+    }
+
+    public function sqlCastAsString(string $expression): string
+    {
+        return 'CAST(' . $expression . ' AS CHAR)';
+    }
+
+    public function sqlTextSearchExpression(string $expression): string
+    {
+        return $expression;
+    }
+
+    public function sqlCastIpAddress(string $expression): string
+    {
+        return 'INET_ATON(' . $expression . ')';
+    }
+
+    public function sqlOrderByIpAddress(string $expression, string $alias): string
+    {
+        return $this->sqlCastIpAddress($expression);
+    }
+
+    public function sqlCastAsUnsignedInteger(string $expression): string
+    {
+        return 'CAST(' . $expression . ' AS UNSIGNED)';
+    }
+
+    public function sqlNow(): string
+    {
+        return 'NOW()';
+    }
+
+    public function sqlCurrentTimestamp(): string
+    {
+        return 'CURRENT_TIMESTAMP()';
+    }
+
+    public function sqlCurrentDate(): string
+    {
+        return 'CURDATE()';
+    }
+
+    public function sqlCurrentHour(): string
+    {
+        return 'HOUR(CURTIME())';
+    }
+
+    public function sqlLike(string $expression, string $pattern, bool $case_sensitive = true): string
+    {
+        return $expression . ' LIKE ' . $this->quote($pattern);
+    }
+
+    public function sqlFullTextBooleanMatch(array $expressions, string $search): string
+    {
+        if ($expressions === []) {
+            return 'FALSE';
+        }
+
+        return 'MATCH('
+            . implode(', ', $expressions)
+            . ') AGAINST('
+            . $this->quote($search)
+            . ' IN BOOLEAN MODE)';
+    }
+
+    public function sqlFullTextBooleanScore(array $expressions, string $search): string
+    {
+        return '(' . $this->sqlFullTextBooleanMatch($expressions, $search) . ')';
+    }
+
+    public function sqlBitCount(string $expression, int $width = 32): string
+    {
+        return 'BIT_COUNT(' . $expression . ')';
+    }
+
+    public function sqlBitwiseAnd(string $left, string $right): string
+    {
+        return '((' . $left . ') & (' . $right . '))';
+    }
+
+    public function sqlBitTest(string $left, string $right): string
+    {
+        return $this->sqlBitwiseAnd($left, $right) . ' <> 0';
+    }
+
+    public function sqlUnixTimestamp(?string $expression = null): string
+    {
+        if ($expression === null) {
+            return 'UNIX_TIMESTAMP()';
+        }
+
+        return 'UNIX_TIMESTAMP(' . $expression . ')';
+    }
+
+    public function sqlDateFormat(string $expression, string $format): string
+    {
+        return 'DATE_FORMAT(' . $expression . ', ' . $this->quote($format) . ')';
+    }
+
+    public function sqlDateTruncateToMinute(?string $expression = null): string
+    {
+        $value = $expression ?? $this->sqlNow();
+
+        return 'DATE_FORMAT(' . $value . ', ' . $this->quote('%Y-%m-%d %H:%i:00') . ')';
+    }
+
+    public function sqlDateAddInterval(string $expression, $value, string $unit): string
+    {
+        return sprintf('DATE_ADD(%s, INTERVAL %s %s)', $expression, (string) $value, strtoupper($unit));
+    }
+
+    public function sqlDateSubInterval(string $expression, $value, string $unit): string
+    {
+        return sprintf('DATE_SUB(%s, INTERVAL %s %s)', $expression, (string) $value, strtoupper($unit));
+    }
+
+    public function sqlDateDiffDays(string $left, string $right): string
+    {
+        return 'DATEDIFF(' . $left . ', ' . $right . ')';
+    }
+
+    public function sqlMonthDayOrdinal(string $expression): string
+    {
+        return '(MONTH(' . $expression . ') * 100 + DAY(' . $expression . '))';
+    }
+
+    public function sqlTimeDiffInSeconds(string $left, string $right): string
+    {
+        return 'TIME_TO_SEC(TIMEDIFF(' . $left . ', ' . $right . '))';
+    }
+
+    public function sqlHavingReference(string $alias, string $expression): string
+    {
+        return $this->quoteName($alias);
+    }
+
+    protected function normalizeLegacySqlStringValue(string $value): string
+    {
+        return $this->decodeLegacyMysqlEscapes($value);
+    }
+
+    /**
+     * Extract normalized search tokens from a boolean full-text query string.
+     *
+     * This is intentionally scoped to search input, not SQL parsing.
+     *
+     * @return string[]
+     */
+    protected function extractFullTextSearchTerms(string $search): array
+    {
+        $normalized = preg_replace('/[\\\\\"+~<>()-]+/', ' ', $search) ?? $search;
+        $normalized = preg_replace('/\s+/', ' ', trim($normalized)) ?? trim($normalized);
+        if ($normalized === '') {
+            return [];
+        }
+
+        $terms = [];
+        foreach (explode(' ', $normalized) as $term) {
+            $term = trim($term);
+            if ($term === '') {
+                continue;
+            }
+
+            $term = rtrim($term, '*');
+            if ($term === '') {
+                continue;
+            }
+
+            $terms[] = $term;
+        }
+
+        return array_values(array_unique($terms));
+    }
+
+    protected function decodeLegacyMysqlEscapes(string $value): string
+    {
+        $length = strlen($value);
+        $decoded = '';
+
+        for ($index = 0; $index < $length; $index++) {
+            $char = $value[$index];
+            if ($char !== '\\' || $index + 1 >= $length) {
+                $decoded .= $char;
+                continue;
+            }
+
+            $index++;
+            $next = $value[$index];
+            $decoded .= match ($next) {
+                '0' => "\0",
+                'b' => "\b",
+                'n' => "\n",
+                'r' => "\r",
+                't' => "\t",
+                'Z' => "\x1a",
+                default => $next,
+            };
+        }
+
+        return $decoded;
+    }
+
+    public function syncAllAutoIncrementSequences(): void
+    {
+    }
+
+    public function getImplicitInsertDefaults(string $table, array $reference): array
+    {
+        return [];
     }
 
     /**
@@ -1940,7 +2933,7 @@ class DBmysql
      */
     public static function getQuoteNameChar(): string
     {
-        return '`';
+        return static::getCurrentDbType() === 'pgsql' ? '"' : '`';
     }
 
     /**
@@ -1954,8 +2947,28 @@ class DBmysql
      */
     public static function isNameQuoted($value): bool
     {
-        $quote = static::getQuoteNameChar();
-        return is_string($value) && trim($value, $quote) != $value;
+        if (!is_string($value)) {
+            return false;
+        }
+
+        foreach (['`', '"'] as $quote) {
+            if (trim($value, $quote) != $value) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected static function getCurrentDbType(): string
+    {
+        global $DB;
+
+        if ($DB instanceof self && !empty($DB->dbtype)) {
+            return $DB->dbtype;
+        }
+
+        return static::$default_dbtype;
     }
 
     /**

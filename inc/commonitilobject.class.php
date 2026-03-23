@@ -269,6 +269,11 @@ abstract class CommonITILObject extends CommonDBTM
             return false;
         }
 
+        if (!(int) $this->getID()) {
+            // Validation rows can only exist for persisted objects.
+            return false;
+        }
+
         $validation_class = static::class . "Validation";
         $valitation_obj = new $validation_class();
         $validation_requests = $valitation_obj->find([
@@ -4057,11 +4062,11 @@ abstract class CommonITILObject extends CommonDBTM
               'jointype'  => 'itemtype_item',
               // Get only last created solution
               'condition' => '
-               AND NEWTABLE.`id` = (
-                  SELECT `id` FROM `' . ITILSolution::getTable() . '`
-                  WHERE `' . ITILSolution::getTable() . '`.`items_id` = REFTABLE.`id`
-                     AND `' . ITILSolution::getTable() . '`.`itemtype` = \'' . static::getType() . '\'
-                  ORDER BY `' . ITILSolution::getTable() . '`.`id` DESC
+               AND NEWTABLE.id = (
+                  SELECT id FROM ' . ITILSolution::getTable() . '
+                  WHERE ' . ITILSolution::getTable() . '.items_id = REFTABLE.id
+                     AND ' . ITILSolution::getTable() . ".itemtype = '" . static::getType() . "'
+                  ORDER BY " . ITILSolution::getTable() . '.id DESC
                   LIMIT 1
                )'
            ]
@@ -4137,7 +4142,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->userlinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::REQUESTER
+                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::REQUESTER
                  ]
               ]
            ]
@@ -4165,7 +4170,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->grouplinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::REQUESTER
+                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::REQUESTER
                  ]
               ]
            ]
@@ -4219,7 +4224,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->userlinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::OBSERVER
+                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::OBSERVER
                  ]
               ]
            ]
@@ -4239,7 +4244,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->grouplinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::OBSERVER
+                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::OBSERVER
                  ]
               ]
            ]
@@ -4264,7 +4269,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->userlinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::ASSIGN
+                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::ASSIGN
                  ]
               ]
            ]
@@ -4283,7 +4288,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->supplierlinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::ASSIGN
+                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::ASSIGN
                  ]
               ]
            ]
@@ -4303,7 +4308,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->grouplinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::ASSIGN
+                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::ASSIGN
                  ]
               ]
            ]
@@ -4323,7 +4328,7 @@ abstract class CommonITILObject extends CommonDBTM
            'massiveaction'      => false,
            'joinparams'         => [
               'jointype'           => 'child',
-              'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::REQUESTER
+              'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::REQUESTER
            ]
         ];
 
@@ -4336,7 +4341,7 @@ abstract class CommonITILObject extends CommonDBTM
            'massiveaction'      => false,
            'joinparams'         => [
               'jointype'           => 'child',
-              'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::REQUESTER
+              'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::REQUESTER
            ]
         ];
 
@@ -4350,24 +4355,32 @@ abstract class CommonITILObject extends CommonDBTM
         switch ($type) {
             case 'internal_time_to_own':
             case 'time_to_own':
-                return 'IF(' . $DB->quoteName($table . '.' . $type) . ' IS NOT NULL
+                return $DB->sqlIf(
+                    $DB->quoteName($table . '.' . $type) . ' IS NOT NULL
             AND ' . $DB->quoteName($table . '.status') . ' <> ' . self::WAITING . '
             AND (' . $DB->quoteName($table . '.takeintoaccount_delay_stat') . '
-                        > TIME_TO_SEC(TIMEDIFF(' . $DB->quoteName($table . '.' . $type) . ',
-                                               ' . $DB->quoteName($table . '.date') . '))
+                        > ' . $DB->sqlTimeDiffInSeconds(
+                            $DB->quoteName($table . '.' . $type),
+                            $DB->quoteName($table . '.date')
+                        ) . '
                  OR (' . $DB->quoteName($table . '.takeintoaccount_delay_stat') . ' = 0
-                      AND ' . $DB->quoteName($table . '.' . $type) . ' < NOW())),
-            1, 0)';
+                      AND ' . $DB->quoteName($table . '.' . $type) . ' < ' . $DB->sqlNow() . '))',
+                    $DB->quoteValue(true),
+                    $DB->quoteValue(false)
+                );
                 break;
 
             case 'internal_time_to_resolve':
             case 'time_to_resolve':
-                return 'IF(' . $DB->quoteName($table . '.' . $type) . ' IS NOT NULL
+                return $DB->sqlIf(
+                    $DB->quoteName($table . '.' . $type) . ' IS NOT NULL
             AND ' . $DB->quoteName($table . '.status') . ' <> 4
             AND (' . $DB->quoteName($table . '.solvedate') . ' > ' . $DB->quoteName($table . '.' . $type) . '
                   OR (' . $DB->quoteName($table . '.solvedate') . ' IS NULL
-                     AND ' . $DB->quoteName($table . '.' . $type) . ' < NOW())),
-            1, 0)';
+                     AND ' . $DB->quoteName($table . '.' . $type) . ' < ' . $DB->sqlNow() . '))',
+                    $DB->quoteValue(true),
+                    $DB->quoteValue(false)
+                );
                 break;
         }
     }

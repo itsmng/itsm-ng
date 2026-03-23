@@ -195,11 +195,10 @@ class CalendarSegment extends CommonDBChild
         $iterator = $DB->request([
            'SELECT' => [
               new \QueryExpression(
-                  "
-               TIMEDIFF(
-                   LEAST(" . $DB->quoteValue($end_time) . ", " . $DB->quoteName('end') . "),
-                   GREATEST(" . $DB->quoteName('begin') . ", " . $DB->quoteValue($begin_time) . ")
-               ) AS " . $DB->quoteName('TDIFF')
+                  $DB->sqlTimeDiffInSeconds(
+                      'LEAST(' . $DB->quoteValue($end_time) . ', ' . $DB->quoteName('end') . ')',
+                      'GREATEST(' . $DB->quoteName('begin') . ', ' . $DB->quoteValue($begin_time) . ')'
+                  ) . ' AS ' . $DB->quoteName('TDIFF')
               )
            ],
            'FROM'   => 'glpi_calendarsegments',
@@ -212,8 +211,7 @@ class CalendarSegment extends CommonDBChild
         ]);
 
         while ($data = $iterator->next()) {
-            list($hour, $minute, $second) = explode(':', (string) $data['TDIFF']);
-            $sum += $hour * HOUR_TIMESTAMP + $minute * MINUTE_TIMESTAMP + $second;
+            $sum += (int) round((float) $data['TDIFF']);
         }
         return $sum;
     }
@@ -240,7 +238,10 @@ class CalendarSegment extends CommonDBChild
                   "GREATEST(" . $DB->quoteName('begin') . ", " . $DB->quoteValue($begin_time)  . ") AS " . $DB->quoteName('BEGIN')
               ),
               new \QueryExpression(
-                  "TIMEDIFF(" . $DB->quoteName('end') . ", GREATEST(" . $DB->quoteName('begin') . ", " . $DB->quoteValue($begin_time) . ")) AS " . $DB->quoteName('TDIFF')
+                  $DB->sqlTimeDiffInSeconds(
+                      $DB->quoteName('end'),
+                      'GREATEST(' . $DB->quoteName('begin') . ', ' . $DB->quoteValue($begin_time) . ')'
+                  ) . ' AS ' . $DB->quoteName('TDIFF')
               )
            ],
            'FROM'   => 'glpi_calendarsegments',
@@ -253,8 +254,7 @@ class CalendarSegment extends CommonDBChild
         ]);
 
         while ($data = $iterator->next()) {
-            list($hour, $minute, $second) = explode(':', (string) $data['TDIFF']);
-            $tstamp = $hour * HOUR_TIMESTAMP + $minute * MINUTE_TIMESTAMP + $second;
+            $tstamp = (int) round((float) $data['TDIFF']);
 
             // Delay is completed
             if ($delay <= $tstamp) {

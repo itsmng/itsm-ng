@@ -801,8 +801,7 @@ class Log extends CommonDBTM
            'WHERE'  => [
                  'items_id'  => $items_id,
                  'itemtype'  => $itemtype
-              ],
-           'ORDER'  => 'id DESC'
+              ]
         ]);
 
         $values = [];
@@ -844,8 +843,7 @@ class Log extends CommonDBTM
                  'items_id'  => $items_id,
                  'itemtype'  => $itemtype
               ],
-           'GROUPBY' => $affected_fields,
-           'ORDER'   => 'id DESC'
+           'GROUPBY' => $affected_fields
         ]);
 
         $values = [];
@@ -1015,8 +1013,7 @@ class Log extends CommonDBTM
            'WHERE'  => [
                  'items_id'  => $items_id,
                  'itemtype'  => $itemtype
-              ],
-           'ORDER'           => 'id DESC'
+              ]
         ]);
 
         $values = [];

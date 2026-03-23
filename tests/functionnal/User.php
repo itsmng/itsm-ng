@@ -432,8 +432,8 @@ class User extends \DbTestCase
         $this->array($puser->fields)
            ->integer['profiles_id']->isEqualTo($pid)
            ->integer['entities_id']->isEqualTo($eid)
-           ->integer['is_recursive']->isEqualTo(0)
-           ->integer['is_dynamic']->isEqualTo(0);
+           ->boolean['is_recursive']->isFalse()
+           ->boolean['is_dynamic']->isFalse();
 
         $pid = (int)\Profile::getDefault();
         $this->integer($pid)->isGreaterThan(0);
@@ -454,8 +454,8 @@ class User extends \DbTestCase
         $this->array($puser->fields)
            ->integer['profiles_id']->isEqualTo($pid)
            ->integer['entities_id']->isEqualTo($eid)
-           ->integer['is_recursive']->isEqualTo(0)
-           ->integer['is_dynamic']->isEqualTo(1);
+           ->boolean['is_recursive']->isFalse()
+           ->boolean['is_dynamic']->isTrue();
 
         //user with entity not recursive
         $eid2 = (int)getItemByTypeName('Entity', '_test_child_1', true);
@@ -475,8 +475,8 @@ class User extends \DbTestCase
         $this->array($puser->fields)
            ->integer['profiles_id']->isEqualTo($pid)
            ->integer['entities_id']->isEqualTo($eid2)
-           ->integer['is_recursive']->isEqualTo(0)
-           ->integer['is_dynamic']->isEqualTo(1);
+           ->boolean['is_recursive']->isFalse()
+           ->boolean['is_dynamic']->isTrue();
 
         //user with entity recursive
         $uid4 = (int)$user->add([
@@ -495,8 +495,8 @@ class User extends \DbTestCase
         $this->array($puser->fields)
            ->integer['profiles_id']->isEqualTo($pid)
            ->integer['entities_id']->isEqualTo($eid2)
-           ->integer['is_recursive']->isEqualTo(1)
-           ->integer['is_dynamic']->isEqualTo(1);
+           ->boolean['is_recursive']->isTrue()
+           ->boolean['is_dynamic']->isTrue();
 
     }
 

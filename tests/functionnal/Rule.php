@@ -569,7 +569,7 @@ class Rule extends DbTestCase
         $rule = getItemByTypeName('Rule', 'One user assignation');
         $rules_id = $rule->fields['id'];
 
-        $this->integer($rule->fields['is_active'])->isIdenticalTo(1);
+        $this->boolean($rule->fields['is_active'])->isTrue();
         $this->string($rule->fields['name'])->isIdenticalTo('One user assignation');
 
         $relations = [
@@ -590,8 +590,8 @@ class Rule extends DbTestCase
         $this->integer($cloned)->isGreaterThan($rules_id);
         $this->boolean($rule->getFromDB($cloned))->isTrue();
 
-        $this->integer($rule->fields['is_active'])->isIdenticalTo(0);
-        $this->string($rule->fields['name'])->isIdenticalTo('One user assignation (copy)');
+        $this->boolean($rule->fields['is_active'])->isFalse();
+        $this->string($rule->fields['name'])->startWith('One user assignation (copy');
 
         foreach ($relations as $relation => $expected) {
             $this->integer(

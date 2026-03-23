@@ -34,12 +34,12 @@
 namespace Glpi\System;
 
 use Glpi\System\Requirement\DirectoryWriteAccess;
+use Glpi\System\Requirement\DbClient;
 use Glpi\System\Requirement\Extension;
 use Glpi\System\Requirement\ExtensionClass;
 use Glpi\System\Requirement\ExtensionFunction;
 use Glpi\System\Requirement\LogsWriteAccess;
 use Glpi\System\Requirement\MemoryLimit;
-use Glpi\System\Requirement\MysqliMysqlnd;
 use Glpi\System\Requirement\PhpVersion;
 use Glpi\System\Requirement\ProtectedWebAccess;
 use Glpi\System\Requirement\SeLinux;
@@ -73,7 +73,15 @@ class RequirementsManager
 
         $requirements[] = new MemoryLimit(64 * 1024 * 1024);
 
-        $requirements[] = new MysqliMysqlnd();
+        if ($db instanceof \DBmysql) {
+            if (($db->dbtype ?? 'mysql') === 'pgsql') {
+                $requirements[] = new Extension('pdo_pgsql');
+            } else {
+                $requirements[] = new Extension('pdo_mysql');
+            }
+        } else {
+            $requirements[] = new DbClient();
+        }
         $requirements[] = new Extension('ctype');
         $requirements[] = new Extension('fileinfo');
         $requirements[] = new Extension('json');

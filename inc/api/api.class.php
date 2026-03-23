@@ -822,8 +822,14 @@ abstract class API extends CommonGLPI
                         if (isset($data['netport_id'])) {
                             // append network name
                             $concat_expr = new QueryExpression(
-                                "GROUP_CONCAT(CONCAT(" . $DB->quoteName('ipadr.id') . ", " . $DB->quoteValue(Search::SHORTSEP) . " , " . $DB->quoteName('ipadr.name') . ")
-                        SEPARATOR " . $DB->quoteValue(Search::LONGSEP) . ") AS " . $DB->quoteName('ipadresses')
+                                $DB->sqlGroupConcat(
+                                    $DB->sqlConcat([
+                                        $DB->quoteName('ipadr.id'),
+                                        $DB->quoteValue(Search::SHORTSEP),
+                                        $DB->quoteName('ipadr.name'),
+                                    ]),
+                                    Search::LONGSEP
+                                ) . ' AS ' . $DB->quoteName('ipadresses')
                             );
                             $netn_iterator = $DB->request([
                                'SELECT'    => [

@@ -37,6 +37,25 @@ namespace tests\units;
 
 class DB extends \GLPITestCase
 {
+    private function isPgsql(): bool
+    {
+        global $DB;
+
+        return $DB instanceof \DBmysql && $DB->dbtype === 'pgsql';
+    }
+
+    private function normalizeSql(string $sql): string
+    {
+        if (!$this->isPgsql()) {
+            return $sql;
+        }
+
+        $sql = str_replace('"', '`', $sql);
+        $sql = preg_replace('/^DELETE FROM `([^`]+)` WHERE/', 'DELETE `$1` FROM `$1` WHERE', $sql);
+
+        return $sql;
+    }
+
     public function testTableExist()
     {
         $this
@@ -89,7 +108,7 @@ class DB extends \GLPITestCase
      */
     public function testQuoteName($raw, $quoted)
     {
-        $this->string(\DB::quoteName($raw))->isIdenticalTo($quoted);
+        $this->string($this->normalizeSql(\DB::quoteName($raw)))->isIdenticalTo($quoted);
     }
 
     protected function dataValue()
@@ -104,8 +123,8 @@ class DB extends \GLPITestCase
            ['NULL', 'NULL'],
            [new \QueryExpression('`field`'), '`field`'],
            ['`field', "'`field'"],
-           [false, "'0'"],
-           [true, "'1'"],
+           [false, 'FALSE'],
+           [true, 'TRUE'],
         ];
     }
 
@@ -157,7 +176,7 @@ class DB extends \GLPITestCase
         $this
            ->if($this->newTestedInstance)
            ->then
-              ->string($this->testedInstance->buildInsert($table, $values))->isIdenticalTo($expected);
+              ->string($this->normalizeSql($this->testedInstance->buildInsert($table, $values)))->isIdenticalTo($expected);
     }
 
     protected function dataUpdate()
@@ -218,7 +237,7 @@ class DB extends \GLPITestCase
         $this
           ->if($this->newTestedInstance)
           ->then
-             ->string($this->testedInstance->buildUpdate($table, $values, $where))->isIdenticalTo($expected);
+             ->string($this->normalizeSql($this->testedInstance->buildUpdate($table, $values, $where)))->isIdenticalTo($expected);
     }
 
     public function testBuildUpdateWException()
@@ -273,7 +292,7 @@ class DB extends \GLPITestCase
         $this
           ->if($this->newTestedInstance)
           ->then
-             ->string($this->testedInstance->buildDelete($table, $where))->isIdenticalTo($expected);
+             ->string($this->normalizeSql($this->testedInstance->buildDelete($table, $where)))->isIdenticalTo($expected);
     }
 
     public function testBuildDeleteWException()
@@ -333,14 +352,19 @@ class DB extends \GLPITestCase
 
     public function testEscape()
     {
+        $expected_quote_escape = "shoul\\'be escaped";
+        $expected_newline = "First\\nSecond";
+        $expected_carriage_return = "First\\rSecond";
+        $expected_double_quotes = 'Hi, \\"you\\"';
+
         $this
            ->if($this->newTestedInstance)
            ->then
               ->string($this->testedInstance->escape('nothing to do'))->isIdenticalTo('nothing to do')
-              ->string($this->testedInstance->escape("shoul'be escaped"))->isIdenticalTo("shoul\\'be escaped")
-              ->string($this->testedInstance->escape("First\nSecond"))->isIdenticalTo("First\\nSecond")
-              ->string($this->testedInstance->escape("First\rSecond"))->isIdenticalTo("First\\rSecond")
-              ->string($this->testedInstance->escape('Hi, "you"'))->isIdenticalTo('Hi, \\"you\\"');
+              ->string($this->testedInstance->escape("shoul'be escaped"))->isIdenticalTo($expected_quote_escape)
+              ->string($this->testedInstance->escape("First\nSecond"))->isIdenticalTo($expected_newline)
+              ->string($this->testedInstance->escape("First\rSecond"))->isIdenticalTo($expected_carriage_return)
+              ->string($this->testedInstance->escape('Hi, "you"'))->isIdenticalTo($expected_double_quotes);
     }
 
     protected function commentsProvider()

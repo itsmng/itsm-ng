@@ -9,6 +9,11 @@ services:
     command: ["sleep", "infinity"]
     environment:
       CODE_COVERAGE: "${CODE_COVERAGE:-false}"
+      DB_TYPE: "${DB_TYPE:-mysql}"
+      TEST_DB_HOST: "${TEST_DB_HOST:-db}"
+      TEST_DB_NAME: "${TEST_DB_NAME:-glpi}"
+      TEST_DB_USER: "${TEST_DB_USER:-}"
+      TEST_DB_PASSWORD: "${TEST_DB_PASSWORD:-}"
     volumes:
       - "${APPLICATION_ROOT}:/var/itsm:z"
       - "${APP_CONTAINER_HOME}:/home/itsm:z"

@@ -5,6 +5,8 @@ define('GLPI_ROOT', realpath('..'));
 
 include_once(GLPI_ROOT . "/inc/based_config.php");
 include_once(GLPI_ROOT . "/inc/db.function.php");
+include_once(GLPI_ROOT . "/inc/dbmysql.class.php");
+include_once(GLPI_ROOT . "/inc/dbpgsql.class.php");
 include_once(GLPI_ROOT . "/src/twig/twig.utils.php");
 
 $GLPI = new GLPI();
@@ -57,6 +59,86 @@ if (isset($_GET['step']) and in_array($_GET['step'], $steps)) {
     $step = $_GET['step'];
 } else {
     $step = '0';
+}
+
+function normalizeInstallDbType(?string $db_type): string
+{
+    return match (strtolower(trim((string) $db_type))) {
+        'pgsql', 'postgres', 'postgresql' => 'pgsql',
+        default                           => 'mysql',
+    };
+}
+
+function getInstallAdminDatabaseName(string $db_type): string
+{
+    return $db_type === 'pgsql' ? 'postgres' : '';
+}
+
+function createInstallDatabaseConnection(
+    string $db_type,
+    string $db_host,
+    string $db_user,
+    string $db_pass,
+    string $db_name = ''
+) {
+    $class = $db_type === 'pgsql' ? DBpgsql::class : DBmysql::class;
+
+    return new $class([
+        'dbhost'     => $db_host,
+        'dbuser'     => $db_user,
+        'dbpassword' => rawurlencode($db_pass),
+        'dbdefault'  => $db_name,
+        'dbtype'     => $db_type,
+    ]);
+}
+
+function getInstallDatabasesInfo($db_connection, string $db_type): array
+{
+    $databases_info = [];
+
+    if ($db_type === 'pgsql') {
+        $result = $db_connection->query(
+            "SELECT datname AS name
+            FROM pg_database
+            WHERE datistemplate = false
+            ORDER BY datname"
+        );
+
+        if ($result) {
+            while ($row = $db_connection->fetchAssoc($result)) {
+                $databases_info[] = [
+                    'name'          => $row['name'],
+                    'table_count'   => '',
+                    'creation_date' => '',
+                    'last_update'   => '',
+                ];
+            }
+        }
+
+        return $databases_info;
+    }
+
+    $result = $db_connection->query(
+        "SELECT S.schema_name AS name,
+                COUNT(T.table_name) AS table_count,
+                DATE(MIN(T.create_time)) AS creation_date,
+                DATE(MAX(T.update_time)) AS last_update
+        FROM information_schema.tables AS T
+        RIGHT JOIN information_schema.schemata AS S
+            ON S.schema_name = T.table_schema
+        GROUP BY S.schema_name
+        ORDER BY S.schema_name"
+    );
+
+    if ($result) {
+        while ($row = $db_connection->fetchAssoc($result)) {
+            if (!in_array($row['name'], ["information_schema", "mysql", "performance_schema", "sys"])) {
+                $databases_info[] = $row;
+            }
+        }
+    }
+
+    return $databases_info;
 }
 
 $twig_vars = [];
@@ -116,8 +198,9 @@ switch ($step) {
     case "4":
         $host = isset($_SESSION['db_host']) ? $_SESSION['db_host'] : "";
         $user = isset($_SESSION['db_user']) ? $_SESSION['db_user'] : "";
+        $db_type = normalizeInstallDbType($_SESSION['db_type'] ?? 'mysql');
 
-        $twig_vars = ['host' => $host, 'user' => $user];
+        $twig_vars = ['host' => $host, 'user' => $user, 'db_type' => $db_type];
         break;
 
     case "5":
@@ -125,52 +208,47 @@ switch ($step) {
             $_SESSION['db_host'] = $_POST['db_host'];
             $_SESSION['db_user'] = $_POST['db_user'];
             $_SESSION['db_pass'] = $_POST['db_pass'];
+            $_SESSION['db_type'] = normalizeInstallDbType($_POST['db_type'] ?? 'mysql');
         }
-        error_reporting(16);
-        mysqli_report(MYSQLI_REPORT_OFF);
-        $hostport = explode(":", $_SESSION['db_host']);
-        if (count($hostport) < 2) {
-            $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass']);
-        } else {
-            $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass'], '', $hostport[1]);
-        }
-        $connect_error = $link->connect_error;
+
+        $db_type = normalizeInstallDbType($_SESSION['db_type'] ?? 'mysql');
+        $_SESSION['db_type'] = $db_type;
+
+        $version = '';
+        $ver_too_old = false;
+        $databases_info = [];
+        $connect_error = '';
+
+        $link = createInstallDatabaseConnection(
+            $db_type,
+            $_SESSION['db_host'],
+            $_SESSION['db_user'],
+            $_SESSION['db_pass'],
+            getInstallAdminDatabaseName($db_type)
+        );
+        $connect_error = $link->connected ? '' : $link->error();
         if (!$connect_error) {
-            $DB_ver = $link->query("SELECT version()");
-            $row = $DB_ver->fetch_array();
-            $version = $row[0];
-            $result = Config::checkDbEngine($version);
+            $version = $link->getVersion();
+            $result = Config::checkDbEngine($version, $db_type);
             $version = key($result);
             $db_ver = $result[$version];
             if (!$db_ver) {
                 $ver_too_old = true;
             } else {
-                $ver_too_old = false;
-                $databases_info = [];
-                $db_info = [];
-                if ($DB_list = $link->query(
-                    "SELECT S.schema_name AS 'name', COUNT(T.table_name) AS 'table_count', DATE(MIN(T.create_time)) AS 'table_create', DATE(MAX(T.update_time)) AS 'table_update'
-                    FROM information_schema.tables AS T
-                    RIGHT JOIN information_schema.schemata AS S
-                    ON S.schema_name = T.table_schema
-                    GROUP BY S.schema_name;"
-                )) {
-                    while ($row = $DB_list->fetch_array(MYSQLI_NUM)) {
-                        if (!in_array($row[0], ["information_schema","mysql","performance_schema","sys"])) {
-                            $databases_info[] = array_combine(["name", "table_count", "creation_date", "last_update"], $row);
-                        }
-                    }
-                }
+                $databases_info = getInstallDatabasesInfo($link, $db_type);
             }
             $link->close();
         }
         $twig_vars = [  'host' =>           $_SESSION['db_host'],   'user' =>       $_SESSION['db_user'],
                         'connect_error' =>  $connect_error,         'version' =>    $version,
                         'ver_too_old' =>    $ver_too_old,           'action' =>     $_SESSION['action'],
-                        'databases' =>      $databases_info];
+                        'databases' =>      $databases_info,        'db_type' =>    $db_type];
         break;
 
     case "6":
+        $db_type = normalizeInstallDbType($_SESSION['db_type'] ?? 'mysql');
+        $_SESSION['db_type'] = $db_type;
+
         if (isset($_POST['newdatabasename']) and $_POST['newdatabasename'] != "") {
             $new_db = true;
             $_SESSION["databasename"] = $_POST['newdatabasename'];
@@ -190,37 +268,66 @@ switch ($step) {
                 $error = "secured";
             }
             if ($secured) {
-                mysqli_report(MYSQLI_REPORT_OFF);
-                $hostport = explode(":", $_SESSION['db_host']);
-                if (count($hostport) < 2) {
-                    $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass']);
-                } else {
-                    $link = new mysqli($hostport[0], $_SESSION['db_user'], $_SESSION['db_pass'], '', $hostport[1]);
-                }
-                $databasename = $link->real_escape_string($_SESSION['databasename']);// use db already created
-                $DB_selected = $link->select_db($databasename);
-                if ($new_db && !$DB_selected) {
-                    if ($link->query("CREATE DATABASE IF NOT EXISTS `".$databasename."`")) {
-                        $DB_selected = $link->select_db($databasename);
-                        $db_created = true;
-                    } else {
-                        $error = "create_db";
-                    }
-                }
-                if (!$DB_selected) {
-                    $sql_error = $link->error;
+                $link = createInstallDatabaseConnection(
+                    $db_type,
+                    $_SESSION['db_host'],
+                    $_SESSION['db_user'],
+                    $_SESSION['db_pass'],
+                    getInstallAdminDatabaseName($db_type)
+                );
+
+                if (!$link->connected) {
+                    $sql_error = $link->error();
                     $error = "use";
                 } else {
-                    if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])) {
-                    } else {
-                        $error = "setup";
+                    $DB_selected = createInstallDatabaseConnection(
+                        $db_type,
+                        $_SESSION['db_host'],
+                        $_SESSION['db_user'],
+                        $_SESSION['db_pass'],
+                        $_SESSION['databasename']
+                    );
+
+                    if (!$DB_selected->connected && $new_db) {
+                        $database_exists = $link->databaseExists($_SESSION['databasename']);
+                        if ($link->createDatabase($_SESSION['databasename'])) {
+                            $DB_selected = createInstallDatabaseConnection(
+                                $db_type,
+                                $_SESSION['db_host'],
+                                $_SESSION['db_user'],
+                                $_SESSION['db_pass'],
+                                $_SESSION['databasename']
+                            );
+                            $db_created = !$database_exists;
+                        } else {
+                            $sql_error = $link->error();
+                            $error = "create_db";
+                        }
+                    }
+
+                    if ($error === "") {
+                        if (!$DB_selected->connected) {
+                            $sql_error = $DB_selected->error();
+                            $error = "use";
+                        } elseif (!DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'], $db_type)) {
+                            $error = "setup";
+                        } else {
+                            $DB_selected->close();
+                        }
+                    }
+
+                    if ($link->connected) {
+                        $link->close();
+                    }
+                    if (isset($DB_selected) && $DB_selected instanceof DBmysql && $DB_selected->connected) {
+                        $DB_selected->close();
                     }
                 }
             } else {
                 $error = "select";
             }
         } elseif ($_SESSION['action'] == 'update') {
-            if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'])) {
+            if (DBConnection::createMainConfig($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['databasename'], $db_type)) {
                 global $DB;
                 $_SESSION['can_process_update'] = true;
                 $update = [
@@ -244,12 +351,14 @@ switch ($step) {
                     ];
         break;
     case "7":
-        Toolbox::createSchema($_SESSION['language']);
-        // no break
     case "8":
-        include_once(GLPI_ROOT . "/inc/dbmysql.class.php");
+        $db_type = normalizeInstallDbType($_SESSION['db_type'] ?? 'mysql');
         include_once(GLPI_CONFIG_DIR . "/config_db.php");
         $DB = new DB();
+
+        if ($step === "7") {
+            Toolbox::createSchema($_SESSION['language'], $DB);
+        }
 
         $url_base = str_replace("/install/install.php", "", $_SERVER['HTTP_REFERER']);
         $DB->update(
@@ -270,6 +379,7 @@ switch ($step) {
                 'name'      => 'url_base_api'
             ]
         );
+        break;
 }
 
 try {

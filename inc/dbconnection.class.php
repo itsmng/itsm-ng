@@ -59,18 +59,20 @@ class DBConnection extends CommonDBTM
      * @param string $user      The DB user
      * @param string $password  The DB password
      * @param string $DBname    The name of the DB
+     * @param string $dbtype    The database engine
      *
      * @return boolean
      *
     **/
-    public static function createMainConfig($host, $user, $password, $DBname)
+    public static function createMainConfig($host, $user, $password, $DBname, $dbtype = 'mysql')
     {
-
-        $DB_str = "<?php\nclass DB extends DBmysql {\n" .
+        $dbclass = $dbtype === 'pgsql' ? 'DBpgsql' : 'DBmysql';
+        $DB_str = "<?php\nclass DB extends $dbclass {\n" .
                   "   public \$dbhost     = '$host';\n" .
                   "   public \$dbuser     = '$user';\n" .
                   "   public \$dbpassword = '" . rawurlencode($password) . "';\n" .
                   "   public \$dbdefault  = '$DBname';\n" .
+                  "   public \$dbtype     = '$dbtype';\n" .
                   "}\n";
 
         return Toolbox::writeConfig('config_db.php', $DB_str);
@@ -84,13 +86,14 @@ class DBConnection extends CommonDBTM
      * @param string $user      The slave DB user
      * @param string $password  The slave DB password
      * @param string $DBname    The name of the slave DB
+     * @param string $dbtype    The database engine
      *
      * @return boolean for success
     **/
-    public static function createSlaveConnectionFile($host, $user, $password, $DBname)
+    public static function createSlaveConnectionFile($host, $user, $password, $DBname, $dbtype = 'mysql')
     {
-
-        $DB_str = "<?php \n class DBSlave extends DBmysql { \n public \$slave = true; \n public \$dbhost = ";
+        $dbclass = $dbtype === 'pgsql' ? 'DBpgsql' : 'DBmysql';
+        $DB_str = "<?php \n class DBSlave extends $dbclass { \n public \$slave = true; \n public \$dbtype = '$dbtype'; \n public \$dbhost = ";
         $host   = trim($host);
         if (strpos($host, ' ')) {
             $hosts = explode(' ', $host);
@@ -149,7 +152,10 @@ class DBConnection extends CommonDBTM
     **/
     public static function createDBSlaveConfig()
     {
-        self::createSlaveConnectionFile("localhost", "glpi", "glpi", "glpi");
+        global $DB;
+
+        $dbtype = $DB instanceof DBmysql ? $DB->dbtype : 'mysql';
+        self::createSlaveConnectionFile("localhost", "glpi", "glpi", "glpi", $dbtype);
     }
 
 
@@ -163,7 +169,10 @@ class DBConnection extends CommonDBTM
     **/
     public static function saveDBSlaveConf($host, $user, $password, $DBname)
     {
-        self::createSlaveConnectionFile($host, $user, $password, $DBname);
+        global $DB;
+
+        $dbtype = $DB instanceof DBmysql ? $DB->dbtype : 'mysql';
+        self::createSlaveConnectionFile($host, $user, $password, $DBname, $dbtype);
     }
 
 
@@ -357,8 +366,10 @@ class DBConnection extends CommonDBTM
     {
 
         if ($DBconnection->connected) {
-            $result = $DBconnection->query("SELECT UNIX_TIMESTAMP(MAX(`date_mod`)) AS max_date
-                                         FROM `glpi_logs`");
+            $result = $DBconnection->query(
+                'SELECT ' . $DBconnection->sqlUnixTimestamp('MAX(' . $DBconnection->quoteName('date_mod') . ')')
+                . ' AS max_date FROM ' . $DBconnection->quoteName('glpi_logs')
+            );
             if ($DBconnection->numrows($result) > 0) {
                 return $DBconnection->result($result, 0, "max_date");
             }
@@ -377,8 +388,8 @@ class DBConnection extends CommonDBTM
         $error = $DB instanceof DBmysql ? $DB->error : 1;
         switch ($error) {
             case 2:
-                $en_msg = "Use of mysqlnd driver is required for exchanges with the MySQL server.";
-                $fr_msg = "L'utilisation du driver mysqlnd est requise pour les échanges avec le serveur MySQL.";
+                $en_msg = "Use of the pdo_mysql extension is required for exchanges with the MySQL server.";
+                $fr_msg = "L'utilisation de l'extension pdo_mysql est requise pour les échanges avec le serveur MySQL.";
                 break;
             case 1:
             default:

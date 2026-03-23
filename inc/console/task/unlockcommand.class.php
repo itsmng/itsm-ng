@@ -106,19 +106,21 @@ class UnlockCommand extends AbstractCommand
               'SELECT' => [
                  'id',
                  new QueryExpression(
-                     'CONCAT('
-                     . $this->db->quoteName('itemtype')
-                     . ', ' . $this->db->quoteValue('::')
-                     . ', ' . $this->db->quoteName('name')
-                     . ') AS ' . $this->db->quoteName('task')
+                     $this->db->sqlConcat(
+                         [
+                             $this->db->quoteName('itemtype'),
+                             $this->db->quoteValue('::'),
+                             $this->db->quoteName('name')
+                         ]
+                     ) . ' AS ' . $this->db->quoteName('task')
                  )
               ],
               'FROM'   => CronTask::getTable(),
               'WHERE'  => [
                  'state' => CronTask::STATE_RUNNING,
                  new QueryExpression(
-                     'UNIX_TIMESTAMP(' .  $this->db->quoteName('lastrun') . ') + ' . $delay
-                     . ' <  UNIX_TIMESTAMP(NOW())'
+                     $this->db->sqlUnixTimestamp($this->db->quoteName('lastrun')) . ' + ' . $delay
+                     . ' < ' . $this->db->sqlUnixTimestamp($this->db->sqlNow())
                  )
               ]
             ]

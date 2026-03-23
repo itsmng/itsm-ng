@@ -507,9 +507,23 @@ final class DbUtils
             return false;
         }
 
-        $result = $DB->query("SHOW INDEX FROM `$table`");
+        $result = $DB->listIndexes($table);
 
-        if ($result && $DB->numrows($result)) {
+        if (!$result) {
+            return false;
+        }
+
+        if ($result instanceof DBmysqlIterator) {
+            while ($data = $result->next()) {
+                if (($data["Key_name"] ?? null) == $field) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        if ($DB->numrows($result)) {
             while ($data = $DB->fetchAssoc($result)) {
                 if ($data["Key_name"] == $field) {
                     return true;
@@ -616,7 +630,7 @@ final class DbUtils
                     $query .= " OR $field IN ('" . implode("','", $ancestors) . "')";
                 } else {
                     $recur = $DB->quoteName((empty($table) ? 'is_recursive' : "$table.is_recursive"));
-                    $query .= " OR ($recur='1' AND $field IN (" . implode(', ', $ancestors) . '))';
+                    $query .= " OR ($recur=" . $DB->quoteValue(true) . " AND $field IN (" . implode(', ', $ancestors) . '))';
                 }
             }
         }
@@ -949,6 +963,8 @@ final class DbUtils
                 }
             }
         }
+
+        ksort($ancestors, SORT_NUMERIC);
 
         if (Toolbox::useCache()) {
             $GLPI_CACHE->set($ckey, $ancestors);
@@ -1736,8 +1752,9 @@ final class DbUtils
                     $criteria = [
                        'SELECT' => [
                           new \QueryExpression(
-                              "CAST(SUBSTRING(" . $DB->quoteName('code') . ", $pos, $len) AS " .
-                              "unsigned) AS " . $DB->quoteName('no')
+                              $DB->sqlCastAsUnsignedInteger(
+                                  "SUBSTRING(" . $DB->quoteName('code') . ", $pos, $len)"
+                              ) . " AS " . $DB->quoteName('no')
                           )
                        ],
                        'FROM'   => new \QueryUnion($subqueries, false, 'codes')
@@ -1747,8 +1764,9 @@ final class DbUtils
                     $criteria = [
                        'SELECT' => [
                           new \QueryExpression(
-                              "CAST(SUBSTRING(" . $DB->quoteName($field) . ", $pos, $len) AS " .
-                              "unsigned) AS " . $DB->quoteName('no')
+                              $DB->sqlCastAsUnsignedInteger(
+                                  "SUBSTRING(" . $DB->quoteName($field) . ", $pos, $len)"
+                              ) . " AS " . $DB->quoteName('no')
                           )
                        ],
                        'FROM'   => $table,

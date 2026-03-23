@@ -4,23 +4,51 @@ on: [pull_request]
 
 jobs:
   tests:
-    name: Run web API tests
+    name: Run web API tests (${{ matrix.db.label }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        db:
+          - image: mariadb:11.8
+            label: MariaDB 11.8
+            type: mysql
+            port: 3306
+            user: test
+            healthcheck: mariadb-admin ping
+          - image: mysql:8.4
+            label: MySQL 8.4
+            type: mysql
+            port: 3306
+            user: test
+            healthcheck: mysqladmin ping
+          - image: postgres:16
+            label: PostgreSQL 16
+            type: pgsql
+            port: 5432
+            user: postgres
+            healthcheck: pg_isready -U postgres -d test_db
     env:
       DB_DATABASE: test_db
-      DB_USER: test
+      DB_USER: ${{ matrix.db.user }}
       DB_PASSWORD: test
+      DB_TYPE: ${{ matrix.db.type }}
+      DB_HOST: 127.0.0.1:${{ matrix.db.port }}
 
     services:
-      mariadb:
-        image: mariadb:latest
+      db:
+        image: ${{ matrix.db.image }}
         ports:
-          - 3306:3306
+          - "${{ matrix.db.port }}:${{ matrix.db.port }}"
         env:
           MYSQL_USER: ${{env.DB_USER}}
           MYSQL_PASSWORD: ${{env.DB_PASSWORD}}
           MYSQL_DATABASE: ${{env.DB_DATABASE}}
           MYSQL_ROOT_PASSWORD: ${{env.DB_PASSWORD}}
+          POSTGRES_DB: ${{env.DB_DATABASE}}
+          POSTGRES_USER: ${{env.DB_USER}}
+          POSTGRES_PASSWORD: ${{env.DB_PASSWORD}}
+        options: --health-cmd "${{ matrix.db.healthcheck }}" --health-interval 5s --health-timeout 3s --health-retries 20
 
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +57,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.3
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_mysql, pdo_pgsql, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
           coverage: none
 
       - name: Install NodeJS
@@ -41,7 +69,7 @@ jobs:
         run: export NODE_OPTIONS=--openssl-legacy-provider && php bin/console dependencies install
 
       - name: Install ITSM-ng
-        run: php bin/console itsmng:database:install --config-dir=${{ github.workspace }}/tests/config -H 127.0.0.1 -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE -n
+        run: php bin/console itsmng:database:install --config-dir=${{ github.workspace }}/tests/config --db-type=$DB_TYPE --db-host=$DB_HOST --db-user=$DB_USER --db-password=$DB_PASSWORD --db-name=$DB_DATABASE -n
 
       - name: Start PHP development server
         run: php -S localhost:8088 tests/router.php &>/dev/null &

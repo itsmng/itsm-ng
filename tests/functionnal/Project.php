@@ -130,6 +130,7 @@ class Project extends DbTestCase
     public function testCreateFromTemplate()
     {
         $this->login();
+        $this->setEntity('_test_root_entity', true);
 
         $date = date('Y-m-d H:i:s');
         $_SESSION['glpi_currenttime'] = $date;
@@ -182,14 +183,14 @@ class Project extends DbTestCase
 
         // Check created project
         $this->integer($project->fields['entities_id'])->isEqualTo($entity_id);
-        $this->integer($project->fields['is_recursive'])->isEqualTo(0);
+        $this->boolean($project->fields['is_recursive'])->isFalse();
 
         // Check created tasks
         $tasks_data = getAllDataFromTable($project_task->getTable(), ['projects_id' => $project_id]);
         $this->array($tasks_data)->hasSize(2);
         foreach ($tasks_data as $task_data) {
             $this->integer($task_data['entities_id'])->isEqualTo($entity_id);
-            $this->integer($task_data['is_recursive'])->isEqualTo(0);
+            $this->boolean($task_data['is_recursive'])->isFalse();
         }
     }
 

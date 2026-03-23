@@ -71,14 +71,14 @@ class NetworkPort extends DbTestCase
             'items_id'           => $computer1->getID(),
             'itemtype'           => 'Computer',
             'entities_id'        => $computer1->fields['entities_id'],
-            'is_recursive'       => 0,
+            'is_recursive'       => false,
             'logical_number'     => 1,
             'name'               => 'eth1',
             'instantiation_type' => 'NetworkPortEthernet',
             'mac'                => '00:24:81:eb:c6:d0',
             'comment'            => null,
-            'is_deleted'         => 0,
-            'is_dynamic'         => 0,
+            'is_deleted'         => false,
+            'is_dynamic'         => false,
         ];
         $this->array($current_networkport)->isIdenticalTo($expected);
 
@@ -165,8 +165,8 @@ class NetworkPort extends DbTestCase
             'name'        => 'test1',
             'comment'     => 'test1 comment',
             'fqdns_id'    => 0,
-            'is_deleted'  => 0,
-            'is_dynamic'  => 0,
+            'is_deleted'  => false,
+            'is_dynamic'  => false,
         ];
         $this->array($networkname)->isIdenticalTo($expected);
 
@@ -186,8 +186,8 @@ class NetworkPort extends DbTestCase
             'binary_1'     => 0,
             'binary_2'     => 65535,
             'binary_3'     => 3232240641,
-            'is_deleted'   => 0,
-            'is_dynamic'   => 0,
+            'is_deleted'   => false,
+            'is_dynamic'   => false,
             'mainitems_id' => $computer1->getID(),
             'mainitemtype' => 'Computer',
         ];

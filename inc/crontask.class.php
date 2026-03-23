@@ -281,7 +281,7 @@ class CronTask extends CommonDBTM
             $this->getTable(),
             [
                 'state' => self::STATE_RUNNING,
-                'lastrun' => new \QueryExpression('DATE_FORMAT(NOW(),\'%Y-%m-%d %H:%i:00\')')
+                'lastrun' => new \QueryExpression($DB->sqlDateTruncateToMinute())
             ],
             [
                 'id' => $this->fields['id'],
@@ -444,21 +444,31 @@ class CronTask extends CommonDBTM
     {
         global $DB;
 
-        $hour_criteria = new QueryExpression('hour(curtime())');
+        $hour_criteria = new QueryExpression($DB->sqlCurrentHour());
 
         $itemtype_orwhere = [
             // Core crontasks
             [
-                ['NOT' => ['itemtype' => ['LIKE', 'Plugin%']]],
-                ['NOT' => ['itemtype' => ['LIKE', addslashes('GlpiPlugin\\\\') . '%']]]
+                new QueryExpression('NOT (' . $DB->sqlLike($DB->quoteName('itemtype'), 'Plugin%', false) . ')'),
+                new QueryExpression(
+                    'NOT (' . $DB->sqlLike($DB->quoteName('itemtype'), addslashes('GlpiPlugin\\\\') . '%', false) . ')'
+                )
             ]
         ];
         foreach (Plugin::getPlugins() as $plug) {
             // Activated plugin tasks
             $itemtype_orwhere[] = [
                 'OR' => [
-                    ['itemtype' => ['LIKE', sprintf('Plugin%s', $plug) . '%']],
-                    ['itemtype' => ['LIKE', addslashes(sprintf('GlpiPlugin\\\\%s\\\\', $plug)) . '%']]
+                    new QueryExpression(
+                        $DB->sqlLike($DB->quoteName('itemtype'), sprintf('Plugin%s', $plug) . '%', false)
+                    ),
+                    new QueryExpression(
+                        $DB->sqlLike(
+                            $DB->quoteName('itemtype'),
+                            addslashes(sprintf('GlpiPlugin\\\\%s\\\\', $plug)) . '%',
+                            false
+                        )
+                    )
                 ]
             ];
         }
@@ -521,7 +531,11 @@ class CronTask extends CommonDBTM
             $WHERE[] = [
                 'OR' => [
                     'lastrun' => null,
-                    new \QueryExpression('unix_timestamp(' . $DB->quoteName('lastrun') . ') + ' . $DB->quoteName('frequency') . ' <= unix_timestamp(now())')
+                    new \QueryExpression(
+                        $DB->sqlUnixTimestamp($DB->quoteName('lastrun'))
+                        . ' + ' . $DB->quoteName('frequency')
+                        . ' <= ' . $DB->sqlUnixTimestamp($DB->sqlNow())
+                    )
                 ]
             ];
         }
@@ -529,14 +543,19 @@ class CronTask extends CommonDBTM
         $iterator = $DB->request([
             'SELECT' => [
                 '*',
-                new \QueryExpression("LOCATE('Plugin', " . $DB->quoteName('itemtype') . ") AS ISPLUGIN")
+                new \QueryExpression(
+                    $DB->sqlPosition($DB->quoteValue('Plugin'), $DB->quoteName('itemtype'))
+                    . ' AS ISPLUGIN'
+                )
             ],
             'FROM' => $this->getTable(),
             'WHERE' => $WHERE,
             // Core task before plugins
             'ORDER' => [
-                'ISPLUGIN',
-                new \QueryExpression('unix_timestamp(' . $DB->quoteName('lastrun') . ')+' . $DB->quoteName('frequency') . '')
+                new \QueryExpression('ISPLUGIN'),
+                new \QueryExpression(
+                    $DB->sqlUnixTimestamp($DB->quoteName('lastrun')) . '+' . $DB->quoteName('frequency')
+                )
             ]
         ]);
 
@@ -560,7 +579,7 @@ class CronTask extends CommonDBTM
                 'WHERE' => [
                     'items_id' => $this->fields['id'],
                     'itemtype' => 'CronTask',
-                    'date' => ['>', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL 1 day')],
+                    'date' => ['>', new QueryExpression($DB->sqlDateAddInterval($DB->sqlCurrentTimestamp(), -1, 'DAY'))],
                 ],
             ]
         );
@@ -2109,8 +2128,16 @@ class CronTask extends CommonDBTM
             'WHERE' => [
                 'state' => self::STATE_RUNNING,
                 'OR' => [
-                    new \QueryExpression('unix_timestamp(' . $DB->quoteName('lastrun') . ') + 2 * ' . $DB->quoteName('frequency') . ' < unix_timestamp(now())'),
-                    new \QueryExpression('unix_timestamp(' . $DB->quoteName('lastrun') . ') + 2 * ' . HOUR_TIMESTAMP . ' < unix_timestamp(now())')
+                    new \QueryExpression(
+                        $DB->sqlUnixTimestamp($DB->quoteName('lastrun'))
+                        . ' + 2 * ' . $DB->quoteName('frequency')
+                        . ' < ' . $DB->sqlUnixTimestamp($DB->sqlNow())
+                    ),
+                    new \QueryExpression(
+                        $DB->sqlUnixTimestamp($DB->quoteName('lastrun'))
+                        . ' + 2 * ' . HOUR_TIMESTAMP
+                        . ' < ' . $DB->sqlUnixTimestamp($DB->sqlNow())
+                    )
                 ]
             ]
         ]);

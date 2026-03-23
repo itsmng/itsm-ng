@@ -133,7 +133,7 @@ class MySqlDialect extends AbstractDialect
     private function columnType(array $column): string
     {
         return match ($column['type']) {
-            'boolean' => 'TINYINT(1)',
+            'boolean' => 'BOOLEAN',
             'char'    => 'CHAR(' . (int) ($column['length'] ?? 1) . ')',
             'string'  => 'VARCHAR(' . (int) ($column['length'] ?? 255) . ') COLLATE utf8_unicode_ci',
             'text'    => 'TEXT COLLATE utf8_unicode_ci',
@@ -169,7 +169,7 @@ class MySqlDialect extends AbstractDialect
         }
 
         if (is_bool($default)) {
-            return $default ? "'1'" : "'0'";
+            return $default ? 'TRUE' : 'FALSE';
         }
 
         if (is_int($default) || is_float($default)) {

@@ -3,10 +3,12 @@
 namespace itsmng\Database\Migrations;
 
 use DBmysql;
+use itsmng\Database\Schema\Dialect\DialectResolver;
 
 class MigrationHistoryRepository
 {
     public const TABLE = 'glpi_schema_migrations';
+    public const BASELINE_MIGRATION = 'baseline';
 
     public function __construct(
         private readonly DBmysql $database
@@ -19,19 +21,13 @@ class MigrationHistoryRepository
             return;
         }
 
-        $this->database->queryOrDie(
-            "CREATE TABLE `glpi_schema_migrations` (
-              `id` INT(11) NOT NULL AUTO_INCREMENT,
-              `version` VARCHAR(32) NOT NULL,
-              `migration` VARCHAR(255) NOT NULL,
-              `applied_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-              `batch` INT(11) NOT NULL DEFAULT '0',
-              PRIMARY KEY (`id`),
-              UNIQUE KEY `version` (`version`),
-              KEY `batch` (`batch`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci",
-            'Create schema migration history table'
-        );
+        $dialect = (new DialectResolver())->resolve($this->database);
+        foreach ($dialect->createTableStatements($this->getTableDefinition()) as $statement) {
+            $this->database->queryOrDie(
+                $statement,
+                'Create schema migration history table'
+            );
+        }
     }
 
     /**
@@ -40,9 +36,13 @@ class MigrationHistoryRepository
     public function applied(): array
     {
         $this->ensureTable();
+        $table = $this->database->quoteName(self::TABLE);
+        $version = $this->database->quoteName('version');
+        $migration = $this->database->quoteName('migration');
+        $batch = $this->database->quoteName('batch');
 
         $result = $this->database->queryOrDie(
-            'SELECT `version`, `migration`, `batch` FROM `glpi_schema_migrations` ORDER BY `version` ASC',
+            sprintf('SELECT %s, %s, %s FROM %s ORDER BY %s ASC', $version, $migration, $batch, $table, $version),
             'Load applied schema migrations'
         );
 
@@ -60,8 +60,10 @@ class MigrationHistoryRepository
     public function nextBatch(): int
     {
         $this->ensureTable();
+        $table = $this->database->quoteName(self::TABLE);
+        $batch = $this->database->quoteName('batch');
         $result = $this->database->queryOrDie(
-            'SELECT MAX(`batch`) AS `batch` FROM `glpi_schema_migrations`',
+            sprintf('SELECT MAX(%s) AS %s FROM %s', $batch, $batch, $table),
             'Compute next schema migration batch'
         );
         $row = $this->database->fetchAssoc($result);
@@ -79,6 +81,16 @@ class MigrationHistoryRepository
         ], 'Record applied schema migration');
     }
 
+    public function ensureBaseline(string $version, string $migration = self::BASELINE_MIGRATION, int $batch = 1): void
+    {
+        $applied = $this->applied();
+        if (isset($applied[$version])) {
+            return;
+        }
+
+        $this->record($version, $migration, $batch);
+    }
+
     public function delete(string $version): void
     {
         $this->ensureTable();
@@ -93,8 +105,12 @@ class MigrationHistoryRepository
     public function latestBatchMigrations(): array
     {
         $this->ensureTable();
+        $table = $this->database->quoteName(self::TABLE);
+        $version = $this->database->quoteName('version');
+        $migration = $this->database->quoteName('migration');
+        $batch_column = $this->database->quoteName('batch');
         $result = $this->database->queryOrDie(
-            'SELECT MAX(`batch`) AS `batch` FROM `glpi_schema_migrations`',
+            sprintf('SELECT MAX(%s) AS %s FROM %s', $batch_column, $batch_column, $table),
             'Load latest schema migration batch'
         );
         $row = $this->database->fetchAssoc($result);
@@ -104,7 +120,16 @@ class MigrationHistoryRepository
         }
 
         $result = $this->database->queryOrDie(
-            'SELECT `version`, `migration`, `batch` FROM `glpi_schema_migrations` WHERE `batch` = ' . $batch . ' ORDER BY `version` DESC',
+            sprintf(
+                'SELECT %s, %s, %s FROM %s WHERE %s = %d ORDER BY %s DESC',
+                $version,
+                $migration,
+                $batch_column,
+                $table,
+                $batch_column,
+                $batch,
+                $version
+            ),
             'Load latest schema migration entries'
         );
 
@@ -118,5 +143,77 @@ class MigrationHistoryRepository
         }
 
         return $migrations;
+    }
+
+    public function isBaselineMigration(string $migration): bool
+    {
+        return $migration === self::BASELINE_MIGRATION;
+    }
+
+    private function getTableDefinition(): array
+    {
+        return [
+            'name'    => self::TABLE,
+            'columns' => [
+                [
+                    'name'          => 'id',
+                    'type'          => 'int32',
+                    'nullable'      => false,
+                    'unsigned'      => true,
+                    'autoIncrement' => true,
+                ],
+                [
+                    'name'     => 'version',
+                    'type'     => 'string',
+                    'length'   => 32,
+                    'nullable' => false,
+                ],
+                [
+                    'name'     => 'migration',
+                    'type'     => 'string',
+                    'length'   => 255,
+                    'nullable' => false,
+                ],
+                [
+                    'name'     => 'applied_at',
+                    'type'     => 'timestamp',
+                    'nullable' => false,
+                    'default'  => [
+                        'kind'  => 'expression',
+                        'value' => 'CURRENT_TIMESTAMP',
+                    ],
+                ],
+                [
+                    'name'     => 'batch',
+                    'type'     => 'int32',
+                    'nullable' => false,
+                    'unsigned' => true,
+                    'default'  => 0,
+                ],
+            ],
+            'indexes' => [
+                [
+                    'name'    => 'PRIMARY',
+                    'type'    => 'primary',
+                    'columns' => [
+                        ['name' => 'id'],
+                    ],
+                ],
+                [
+                    'name'    => 'glpi_schema_migrations_version',
+                    'type'    => 'unique',
+                    'columns' => [
+                        ['name' => 'version'],
+                    ],
+                ],
+                [
+                    'name'    => 'glpi_schema_migrations_batch',
+                    'type'    => 'index',
+                    'columns' => [
+                        ['name' => 'batch'],
+                    ],
+                ],
+            ],
+        ];
     }
 }
