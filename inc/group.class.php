@@ -828,43 +828,70 @@ class Group extends CommonTreeDropdown
         if (!in_array($type, $types)) {
             $type = '';
         }
-        echo "<div class='spaced'>";
-        // Mini Search engine
-        echo "<table class='tab_cadre_fixe' aria-label='Search parameters'>";
-        echo "<tr class='tab_bg_1'><th colspan='3'>$title</tr>";
-        echo "<tr class='tab_bg_1'><td class='center'>";
-        echo _n('Type', 'Types', 1) . "&nbsp;";
-        Dropdown::showItemType(
-            $types,
-            ['value'      => $type,
-                                     'name'       => 'onlytype',
-                                     'plural'     => true,
-                                     'on_change'  => 'reloadTab("start=0&onlytype="+this.value)',
-                                     'checkright' => true]
-        );
+        $filters = [];
+        $filters[] = [
+           'label' => _n('Type', 'Types', 1),
+           'control' => Dropdown::showItemType(
+               $types,
+               [
+                  'value'      => $type,
+                  'name'       => 'onlytype',
+                  'plural'     => true,
+                  'on_change'  => 'reloadTab("start=0&onlytype="+this.value)',
+                  'checkright' => true,
+                  'display'    => false
+               ]
+           )
+        ];
+
         if ($this->haveChildren()) {
-            echo "</td><td class='center'>" . __('Child groups') . "&nbsp;";
-            Dropdown::showYesNo(
-                'tree',
-                $tree,
-                -1,
-                ['on_change' => 'reloadTab("start=0&tree="+this.value)']
-            );
+            $filters[] = [
+               'label' => __('Child groups'),
+               'control' => Dropdown::showYesNo(
+                   'tree',
+                   $tree,
+                   -1,
+                   [
+                      'on_change' => 'reloadTab("start=0&tree="+this.value)',
+                      'display'   => false
+                   ]
+               )
+            ];
         } else {
             $tree = 0;
         }
+
         if ($this->getField('is_usergroup')) {
-            echo "</td><td class='center'>" . User::getTypeName(Session::getPluralNumber()) . "&nbsp;";
-            Dropdown::showYesNo(
-                'user',
-                $user,
-                -1,
-                ['on_change' => 'reloadTab("start=0&user="+this.value)']
-            );
+            $filters[] = [
+               'label' => User::getTypeName(Session::getPluralNumber()),
+               'control' => Dropdown::showYesNo(
+                   'user',
+                   $user,
+                   -1,
+                   [
+                      'on_change' => 'reloadTab("start=0&user="+this.value)',
+                      'display'   => false
+                   ]
+               )
+            ];
         } else {
             $user = 0;
         }
-        echo "</td></tr></table>";
+
+        echo "<div class='spaced'>";
+        echo "<section class='form-section' aria-label='" . Html::entities_deep($title) . "'>";
+        echo "<h2 class='form-section-header'>$title</h2>";
+        echo "<div class='form-section-content'>";
+        echo "<div class='row'>";
+        foreach ($filters as $filter) {
+            echo "<div class='col-12 col-md-4 mb-3'>";
+            echo "<label class='form-label d-block'>" . $filter['label'] . "</label>";
+            echo $filter['control'];
+            echo "</div>";
+        }
+        echo "</div>";
+        echo "</div>";
+        echo "</section>";
 
         $datas = [];
         if ($type) {
@@ -872,111 +899,103 @@ class Group extends CommonTreeDropdown
         }
         $start  = (isset($_GET['start']) ? intval($_GET['start']) : 0);
         $nb     = $this->getDataItems($types, $field, $tree, $user, $start, $datas);
-        $nbcan  = 0;
+        $values = [];
+        $massiveaction_values = [];
+        $can_massive_action = false;
 
         if ($nb) {
-            Html::printAjaxPager('', $start, $nb);
-            foreach ($datas as $data) {
-                if (!($item = getItemForItemtype($data['itemtype']))) {
-                    continue;
-                }
-            }
-            if (
-                $item->canUpdate($data['items_id'])
-                || ($item->canView($data['items_id'])
-                    && self::canUpdate())
-            ) {
-                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                echo Html::hidden('field', ['value'                 => $field,
-                                                 'data-glpicore-ma-tags' => 'common']);
-
-                $massiveactionparams = ['num_displayed'    => min($_SESSION['glpilist_limit'], $nb),
-                                             'check_itemtype'   => 'Group',
-                                             'check_items_id'   => $ID,
-                                             'container'        => 'mass' . __CLASS__ . $rand,
-                                             'extraparams'      => ['is_tech' => $tech ? 1 : 0,
-                                                                      'massive_action_fields' => ['field']],
-                                             'specific_actions' => [__CLASS__ .
-                                                                        MassiveAction::CLASS_ACTION_SEPARATOR .
-                                                                        'changegroup' => __('Move')] ];
-                Html::showMassiveActions($massiveactionparams);
-            }
-            echo "<table class='tab_cadre_fixehov' aria-label='Selectable Items Table'>";
-            $header_begin  = "<tr><th width='10'>";
-            if (
-                $item->canUpdate($data['items_id'])
-                || ($item->canView($data['items_id'])
-                    && self::canUpdate())
-            ) {
-                $header_top    = Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                $header_bottom = Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-            } else {
-                $header_top = $header_bottom = '';
-            }
-            $header_end    = '</th>';
-
-            $header_end .= "<th>" . _n('Type', 'Types', 1) . "</th><th>" . __('Name') . "</th><th>" . Entity::getTypeName(1) . "</th>";
-            if ($tree || $user) {
-                $header_end .= "<th>" .
-                                 sprintf(__('%1$s / %2$s'), self::getTypeName(1), User::getTypeName(1)) .
-                               "</th>";
-            }
-            $header_end .= "</tr>";
-            echo $header_begin . $header_top . $header_end;
-
-            $tuser = new User();
             $group = new Group();
-
+            $tuser = new User();
             foreach ($datas as $data) {
                 if (!($item = getItemForItemtype($data['itemtype']))) {
                     continue;
                 }
                 $item->getFromDB($data['items_id']);
-                echo "<tr class='tab_bg_1'><td>";
-                if (
-                    $item->canUpdate($data['items_id'])
-                    || ($item->canView($data['items_id'])
-                        && self::canUpdate())
-                ) {
-                    Html::showMassiveActionCheckBox($data['itemtype'], $data['items_id']);
-                }
-                echo "</td><td>" . $item->getTypeName(1);
-                echo "</td><td>" . $item->getLink(['comments' => true]);
-                echo "</td><td>" . Dropdown::getDropdownName("glpi_entities", $item->getEntityID());
+
+                $row_can_edit = $item->canUpdate($data['items_id'])
+                    || ($item->canView($data['items_id']) && self::canUpdate());
+
+                $value = [
+                   'type'   => $item->getTypeName(1),
+                   'name'   => $item->getLink(['comments' => true]),
+                   'entity' => Dropdown::getDropdownName("glpi_entities", $item->getEntityID()),
+                ];
+
                 if ($tree || $user) {
-                    echo "</td><td>";
+                    $value['actor'] = '';
                     if ($grp = $item->getField($field)) {
                         if ($group->getFromDB($grp)) {
-                            echo $group->getLink(['comments' => true]);
+                            $value['actor'] = $group->getLink(['comments' => true]);
                         }
                     } elseif ($usr = $item->getField(str_replace('groups', 'users', $field))) {
                         if ($tuser->getFromDB($usr)) {
-                            echo $tuser->getLink(['comments' => true]);
+                            $value['actor'] = $tuser->getLink(['comments' => true]);
                         }
                     }
                 }
-                echo "</td></tr>";
+
+                $values[] = $value;
+
+                if ($row_can_edit) {
+                    $can_massive_action = true;
+                    $massiveaction_values[] = sprintf('item[%s][%s]', $data['itemtype'], $data['items_id']);
+                } else {
+                    $massiveaction_values[] = null;
+                }
             }
-            echo $header_begin . $header_bottom . $header_end;
-            echo "</table>";
+
+            if ($can_massive_action) {
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
+                echo Html::hidden('field', [
+                   'value'                 => $field,
+                   'data-glpicore-ma-tags' => 'common'
+                ]);
+
+                $massiveactionparams = [
+                   'num_displayed'    => min($_SESSION['glpilist_limit'], $nb),
+                   'check_itemtype'   => 'Group',
+                   'check_items_id'   => $ID,
+                    'container'        => 'mass' . __CLASS__ . $rand,
+                   'display_arrow'    => false,
+                   'forcecreate'      => true,
+                   'extraparams'      => [
+                      'is_tech' => $tech ? 1 : 0,
+                      'massive_action_fields' => ['field']
+                   ],
+                   'specific_actions' => [
+                      __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'changegroup' => __('Move')
+                   ]
+                ];
+                Html::showMassiveActions($massiveactionparams);
+            }
+
+            $fields = [
+               'type'   => _n('Type', 'Types', 1),
+               'name'   => __('Name'),
+               'entity' => Entity::getTypeName(1),
+            ];
+
+            if ($tree || $user) {
+                $fields['actor'] = sprintf(__('%1$s / %2$s'), self::getTypeName(1), User::getTypeName(1));
+            }
+
+            $table_params = [
+               'id'             => 'mass' . __CLASS__ . $rand,
+               'fields'         => $fields,
+               'values'         => $values,
+               'pageSize'       => $_SESSION['glpilist_limit'],
+            ];
+            if ($can_massive_action) {
+                $table_params['massive_action'] = $massiveaction_values;
+            }
+
+            renderTwigTemplate('table.twig', $table_params);
         } else {
             echo "<p class='center b'>" . __('No item found') . "</p>";
         }
 
-        if ($nb) {
-            if (
-                $item->canUpdate($data['items_id'])
-                || ($item->canView($data['items_id'])
-                    && self::canUpdate())
-            ) {
-                $massiveactionparams['ontop'] = false;
-                Html::showMassiveActions($massiveactionparams);
-            }
-        }
-        Html::closeForm();
-
-        if ($nb) {
-            Html::printAjaxPager('', $start, $nb);
+        if ($nb && $can_massive_action) {
+            Html::closeForm();
         }
 
         echo "</div>";
