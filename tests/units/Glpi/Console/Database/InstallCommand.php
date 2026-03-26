@@ -140,6 +140,7 @@ class InstallCommand extends \GLPITestCase
             '--db-user' => 'glpi',
             '--db-password' => 'secret',
             '--db-type' => 'pgsql',
+            '--reconfigure' => true,
         ]);
 
         $this

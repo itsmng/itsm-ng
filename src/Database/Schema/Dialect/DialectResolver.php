@@ -2,20 +2,20 @@
 
 namespace itsmng\Database\Schema\Dialect;
 
-use DBmysql;
 use RuntimeException;
+use itsmng\Database\Runtime\DatabaseInterface;
 
 class DialectResolver
 {
-    public function resolve(?DBmysql $database = null): DialectInterface
+    public function resolve(?DatabaseInterface $database = null): DialectInterface
     {
         $database ??= $GLOBALS['DB'] ?? null;
 
-        if ($database !== null && property_exists($database, 'dbtype') && $database->dbtype === 'pgsql') {
+        if ($database instanceof DatabaseInterface && $database->getDbType() === 'pgsql') {
             return new PostgreSqlDialect();
         }
 
-        if ($database instanceof DBmysql) {
+        if ($database instanceof DatabaseInterface) {
             return new MySqlDialect();
         }
 

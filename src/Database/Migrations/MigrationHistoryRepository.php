@@ -2,7 +2,7 @@
 
 namespace itsmng\Database\Migrations;
 
-use DBmysql;
+use itsmng\Database\Runtime\DatabaseInterface;
 use itsmng\Database\Schema\Dialect\DialectResolver;
 
 class MigrationHistoryRepository
@@ -11,7 +11,7 @@ class MigrationHistoryRepository
     public const BASELINE_MIGRATION = 'baseline';
 
     public function __construct(
-        private readonly DBmysql $database
+        private readonly DatabaseInterface $database
     ) {
     }
 

@@ -2,15 +2,15 @@
 
 namespace itsmng\Database\Migrations;
 
-use DBmysql;
 use RuntimeException;
+use itsmng\Database\Runtime\DatabaseInterface;
 use itsmng\Database\Schema\Dialect\DialectResolver;
 use itsmng\Database\Schema\SchemaInstaller;
 
 class MigrationRunner
 {
     public function __construct(
-        private readonly DBmysql $database,
+        private readonly DatabaseInterface $database,
         private readonly MigrationRepository $repository,
         private readonly ?MigrationHistoryRepository $history = null,
         private readonly ?SchemaInstaller $installer = null,

@@ -208,24 +208,24 @@ class DB extends \GLPITestCase
               ], [
                  'NOT'  => ['id' => [1, 2]]
               ],
-              'UPDATE `table` SET `field` = \'value\' WHERE  NOT (`id` IN (\'1\', \'2\'))',
-              'UPDATE "table" SET "field" = \'value\' WHERE  NOT ("id" IN (\'1\', \'2\'))'
+              'UPDATE `table` SET `field` = \'value\' WHERE NOT (`id` IN (\'1\', \'2\'))',
+              'UPDATE "table" SET "field" = \'value\' WHERE NOT ("id" IN (\'1\', \'2\'))'
            ], [
               'table', [
                  'field'  => new \QueryParam()
               ], [
                  'NOT' => ['id' => [new \QueryParam(), new \QueryParam()]]
               ],
-              'UPDATE `table` SET `field` = ? WHERE  NOT (`id` IN (?, ?))',
-              'UPDATE "table" SET "field" = ? WHERE  NOT ("id" IN (?, ?))'
+              'UPDATE `table` SET `field` = ? WHERE NOT (`id` IN (?, ?))',
+              'UPDATE "table" SET "field" = ? WHERE NOT ("id" IN (?, ?))'
            ], [
               'table', [
                  'field'  => new \QueryParam('field')
               ], [
                  'NOT' => ['id' => [new \QueryParam('idone'), new \QueryParam('idtwo')]]
               ],
-              'UPDATE `table` SET `field` = :field WHERE  NOT (`id` IN (:idone, :idtwo))',
-              'UPDATE "table" SET "field" = :field WHERE  NOT ("id" IN (:idone, :idtwo))'
+              'UPDATE `table` SET `field` = :field WHERE NOT (`id` IN (:idone, :idtwo))',
+              'UPDATE "table" SET "field" = :field WHERE NOT ("id" IN (:idone, :idtwo))'
            ], [
               'table', [
                  'field'  => new \QueryExpression(\DB::quoteName('field') . ' + 1')
@@ -328,20 +328,20 @@ class DB extends \GLPITestCase
               'table', [
                  'NOT'  => ['id' => [1, 2]]
               ],
-              'DELETE `table` FROM `table` WHERE  NOT (`id` IN (\'1\', \'2\'))',
-              'DELETE FROM "table" WHERE  NOT ("id" IN (\'1\', \'2\'))'
+              'DELETE `table` FROM `table` WHERE NOT (`id` IN (\'1\', \'2\'))',
+              'DELETE FROM "table" WHERE NOT ("id" IN (\'1\', \'2\'))'
            ], [
               'table', [
                  'NOT'  => ['id' => [new \QueryParam(), new \QueryParam()]]
               ],
-              'DELETE `table` FROM `table` WHERE  NOT (`id` IN (?, ?))',
-              'DELETE FROM "table" WHERE  NOT ("id" IN (?, ?))'
+              'DELETE `table` FROM `table` WHERE NOT (`id` IN (?, ?))',
+              'DELETE FROM "table" WHERE NOT ("id" IN (?, ?))'
            ], [
               'table', [
                  'NOT'  => ['id' => [new \QueryParam('idone'), new \QueryParam('idtwo')]]
               ],
-              'DELETE `table` FROM `table` WHERE  NOT (`id` IN (:idone, :idtwo))',
-              'DELETE FROM "table" WHERE  NOT ("id" IN (:idone, :idtwo))'
+              'DELETE `table` FROM `table` WHERE NOT (`id` IN (:idone, :idtwo))',
+              'DELETE FROM "table" WHERE NOT ("id" IN (:idone, :idtwo))'
            ]
         ];
     }

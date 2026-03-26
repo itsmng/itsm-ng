@@ -2,11 +2,11 @@
 
 namespace itsmng\Search\Provider;
 
-use DBmysql;
+use itsmng\Database\Runtime\DatabaseInterface;
 
 final class LegacySQLProvider
 {
-    private static function db(): DBmysql
+    private static function db(): DatabaseInterface
     {
         global $DB;
 
@@ -20,7 +20,7 @@ final class LegacySQLProvider
 
     private static function isPgsql(): bool
     {
-        return self::db()->dbtype === 'pgsql';
+        return self::db()->getDbType() === 'pgsql';
     }
 
     public static function makeTextCriteria(string $field, string $val, bool $not = false, string $link = 'AND'): string

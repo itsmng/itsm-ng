@@ -2,9 +2,9 @@
 
 namespace itsmng\Database\Schema;
 
-use DBmysql;
 use RuntimeException;
 use itsmng\Database\Migrations\MigrationHistoryRepository;
+use itsmng\Database\Runtime\DatabaseInterface;
 use itsmng\Database\Schema\Dialect\DialectInterface;
 use itsmng\Database\Schema\Dialect\DialectResolver;
 
@@ -15,10 +15,10 @@ class SchemaInstaller
     ) {
     }
 
-    public function install(array $schema, ?DBmysql $database = null): void
+    public function install(array $schema, ?DatabaseInterface $database = null): void
     {
         $database ??= $GLOBALS['DB'] ?? null;
-        if (!$database instanceof DBmysql) {
+        if (!$database instanceof DatabaseInterface) {
             throw new RuntimeException('Schema installation requires an active database connection.');
         }
 
@@ -38,10 +38,10 @@ class SchemaInstaller
         }
     }
 
-    public function executeOperations(array $operations, ?DBmysql $database = null): void
+    public function executeOperations(array $operations, ?DatabaseInterface $database = null): void
     {
         $database ??= $GLOBALS['DB'] ?? null;
-        if (!$database instanceof DBmysql) {
+        if (!$database instanceof DatabaseInterface) {
             throw new RuntimeException('Schema operation execution requires an active database connection.');
         }
 
