@@ -83,7 +83,7 @@ class Log extends CommonDBTM
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
         $nb = 0;
-        if ($_SESSION['glpishow_count_on_tabs']) {
+        if ($_SESSION['glpishow_count_on_tabs'] && !($item instanceof CommonDBTM && $item->isNewItem())) {
             $items_id = 0;
             if ($item instanceof CommonDBTM) {
                 $items_id = $item->getID();

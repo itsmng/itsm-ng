@@ -668,18 +668,22 @@ class DBmysql
 
     protected function normalizeLogicalBooleanValue($value)
     {
-        if ($value === null || is_bool($value)) {
-            return $value;
+        if ($value === null) {
+            return null;
+        }
+
+        if (is_bool($value)) {
+            return (int) $value;
         }
 
         if (is_int($value) || is_float($value)) {
-            return ((int) $value) === 1;
+            return ((int) $value) === 0 ? 0 : 1;
         }
 
         if (is_string($value)) {
             return match (strtolower($value)) {
-                '1', 't', 'true', 'y', 'yes' => true,
-                '0', 'f', 'false', 'n', 'no' => false,
+                '1', 't', 'true', 'y', 'yes' => 1,
+                '0', 'f', 'false', 'n', 'no' => 0,
                 default => $value,
             };
         }
@@ -1908,33 +1912,17 @@ class DBmysql
         }
 
         $it = new DBmysqlIterator($this);
-        if ($this->requiresPgSqlLimitedUpdate($clauses)) {
-            return $this->buildPgSqlLimitedUpdate((string) $table, $params, $clauses, $joins, $it);
+        if ($this->requiresPgSqlSubselectUpdate($clauses, $joins)) {
+            return $this->buildPgSqlSubselectUpdate((string) $table, $params, $clauses, $joins, $it);
         }
 
         $query  = "UPDATE " . self::quoteName($table);
-        $join_where = [];
-        if ($this->dbtype === 'pgsql') {
-            $join_tables = $this->buildJoinTargets($joins, $join_where);
-            if ($join_tables !== []) {
-                $query .= ' FROM ' . implode(', ', $join_tables);
-            }
-        } else {
+        if ($this->dbtype !== 'pgsql') {
             $query .= $it->analyseJoins($joins);
         }
 
-        $query .= " SET ";
-        foreach ($params as $field => $value) {
-            $query .= self::quoteName($field) . " = " . $this->quoteFieldValue((string) $table, (string) $field, $value) . ", ";
-        }
-        $query = rtrim($query, ', ');
-
-        $where_parts = [];
-        if ($join_where !== []) {
-            $where_parts[] = implode(' AND ', $join_where);
-        }
-        $where_parts[] = $it->analyseCrit($clauses['WHERE']);
-        $query .= " WHERE " . implode(' AND ', $where_parts);
+        $query .= $this->buildUpdateSetClause((string) $table, $params);
+        $query .= " WHERE " . $it->analyseCrit($clauses['WHERE']);
 
         // ORDER BY
         if (isset($clauses['ORDER']) && !empty($clauses['ORDER'])) {
@@ -1949,18 +1937,19 @@ class DBmysql
         return $query;
     }
 
-    protected function requiresPgSqlLimitedUpdate(array $clauses): bool
+    protected function requiresPgSqlSubselectUpdate(array $clauses, array $joins): bool
     {
         if ($this->dbtype !== 'pgsql') {
             return false;
         }
 
-        return !empty($clauses['ORDER'])
+        return $joins !== []
+            || !empty($clauses['ORDER'])
             || !empty($clauses['LIMIT'])
             || !empty($clauses['START']);
     }
 
-    protected function buildPgSqlLimitedUpdate(
+    protected function buildPgSqlSubselectUpdate(
         string $table,
         array $params,
         array $clauses,
@@ -1968,30 +1957,15 @@ class DBmysql
         DBmysqlIterator $iterator
     ): string {
         $target_table = self::quoteName($table);
-        $query = "UPDATE " . $target_table . " SET ";
-
-        foreach ($params as $field => $value) {
-            $query .= self::quoteName($field)
-                . " = "
-                . $this->quoteFieldValue($table, (string) $field, $value)
-                . ", ";
-        }
-        $query = rtrim($query, ', ');
-
-        $join_where = [];
-        $join_tables = $this->buildJoinTargets($joins, $join_where);
+        $query = "UPDATE " . $target_table;
+        $query .= $this->buildUpdateSetClause($table, $params);
 
         $selection = "SELECT " . self::quoteName($table . '.ctid') . " FROM " . $target_table;
-        if ($join_tables !== []) {
-            $selection .= ', ' . implode(', ', $join_tables);
+        if ($joins !== []) {
+            $selection .= $iterator->analyseJoins($joins);
         }
 
-        $where_parts = [];
-        if ($join_where !== []) {
-            $where_parts[] = implode(' AND ', $join_where);
-        }
-        $where_parts[] = $iterator->analyseCrit($clauses['WHERE']);
-        $selection .= " WHERE " . implode(' AND ', $where_parts);
+        $selection .= " WHERE " . $iterator->analyseCrit($clauses['WHERE']);
 
         if (isset($clauses['ORDER']) && !empty($clauses['ORDER'])) {
             $selection .= $iterator->handleOrderClause($clauses['ORDER']);
@@ -2005,6 +1979,29 @@ class DBmysql
         $query .= " WHERE " . self::quoteName('ctid') . " IN (" . $selection . ")";
 
         return $query;
+    }
+
+    protected function buildUpdateSetClause(string $table, array $params): string
+    {
+        $clause = " SET ";
+        foreach ($params as $field => $value) {
+            $target_field = $this->normalizeUpdateTargetField((string) $field);
+            $clause .= self::quoteName($target_field)
+                . " = "
+                . $this->quoteFieldValue($table, $target_field, $value)
+                . ", ";
+        }
+
+        return rtrim($clause, ', ');
+    }
+
+    protected function normalizeUpdateTargetField(string $field): string
+    {
+        if ($this->dbtype !== 'pgsql') {
+            return $field;
+        }
+
+        return (string) preg_replace('/^.*\./', '', $field);
     }
 
     /**
@@ -2231,6 +2228,8 @@ class DBmysql
         if ($structure === null) {
             $structure = $this->query("SHOW CREATE TABLE `$table`")->fetch_row();
             $structure = $structure[1];
+        } elseif (is_array($structure)) {
+            $structure = $structure[0] ?? '';
         }
 
         //get table index
@@ -2689,8 +2688,7 @@ class DBmysql
         string $separator = ',',
         bool $distinct = false,
         ?string $order_by = null
-    ): string
-    {
+    ): string {
         $sql = 'GROUP_CONCAT(';
         if ($distinct) {
             $sql .= 'DISTINCT ';
@@ -2718,21 +2716,6 @@ class DBmysql
     public function sqlCastAsString(string $expression): string
     {
         return 'CAST(' . $expression . ' AS CHAR)';
-    }
-
-    public function sqlTextSearchExpression(string $expression): string
-    {
-        return $expression;
-    }
-
-    public function sqlCastIpAddress(string $expression): string
-    {
-        return 'INET_ATON(' . $expression . ')';
-    }
-
-    public function sqlOrderByIpAddress(string $expression, string $alias): string
-    {
-        return $this->sqlCastIpAddress($expression);
     }
 
     public function sqlCastAsUnsignedInteger(string $expression): string
@@ -2844,9 +2827,9 @@ class DBmysql
         return 'TIME_TO_SEC(TIMEDIFF(' . $left . ', ' . $right . '))';
     }
 
-    public function sqlHavingReference(string $alias, string $expression): string
+    public function sqlClockTimeDiffInSeconds(string $left, string $right): string
     {
-        return $this->quoteName($alias);
+        return 'TIME_TO_SEC(TIMEDIFF(' . $left . ', ' . $right . '))';
     }
 
     protected function normalizeLegacySqlStringValue(string $value): string

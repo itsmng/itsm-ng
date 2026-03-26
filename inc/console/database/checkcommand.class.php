@@ -43,6 +43,7 @@ use itsmng\Database\Schema\Dialect\DialectResolver;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
 
 class CheckCommand extends AbstractCommand
 {
@@ -65,9 +66,9 @@ class CheckCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $differ = new Differ();
-        $dialect = (new DialectResolver())->resolve($this->db);
-        foreach (CoreSchema::definition()['tables'] as $table) {
+        $differ = new Differ(new DiffOnlyOutputBuilder(''));
+        $dialect = $this->resolveDialect();
+        foreach ($this->getSchemaTables() as $table) {
             $table_name = $table['name'];
 
             $output->writeln(
@@ -76,21 +77,42 @@ class CheckCommand extends AbstractCommand
             );
 
             $statements = $dialect->createTableStatements($table);
-            $base_table_struct = $this->db->getTableSchema($table_name, $statements[0]);
+            $base_table_struct = $this->db->getTableSchema($table_name, $statements);
             $existing_table_struct = $this->db->getTableSchema($table_name);
 
-            if ($existing_table_struct['schema'] != $base_table_struct['schema']) {
+            if ($existing_table_struct != $base_table_struct) {
                 $message = sprintf(__('Table schema differs for table "%s".'), $table_name);
                 $output->writeln(
                     '<info>' . $message . '</info>',
                     OutputInterface::VERBOSITY_QUIET
                 );
-                $output->write(
-                    $differ->diff($base_table_struct['schema'], $existing_table_struct['schema'])
-                );
+                if ($existing_table_struct['schema'] != $base_table_struct['schema']) {
+                    $output->write(
+                        $differ->diff($base_table_struct['schema'], $existing_table_struct['schema'])
+                    );
+                }
+
+                if ($existing_table_struct['index'] != $base_table_struct['index']) {
+                    $output->write(
+                        $differ->diff(
+                            implode("\n", $base_table_struct['index']),
+                            implode("\n", $existing_table_struct['index'])
+                        )
+                    );
+                }
             }
         }
 
         return 0; // Success
+    }
+
+    protected function getSchemaTables(): array
+    {
+        return CoreSchema::definition()['tables'];
+    }
+
+    protected function resolveDialect()
+    {
+        return (new DialectResolver())->resolve($this->db);
     }
 }

@@ -214,8 +214,7 @@ class InstallCommand extends AbstractConfigureCommand
         }
 
         // Create security key
-        $glpikey = new GLPIKey();
-        if (!$glpikey->keyExists() && !$glpikey->generate()) {
+        if (!$this->ensureSecurityKey()) {
             $message = __('Security key cannot be generated!');
             $output->writeln('<error>' . $message . '</error>', OutputInterface::VERBOSITY_QUIET);
             return self::ERROR_CANNOT_CREATE_ENCRYPTION_KEY_FILE;
@@ -285,11 +284,10 @@ class InstallCommand extends AbstractConfigureCommand
             '<comment>' . __('Loading default schema...') . '</comment>',
             OutputInterface::VERBOSITY_VERBOSE
         );
-        // TODO Get rid of output buffering
-        ob_start();
-        Toolbox::createSchema($default_language, $db_instance);
-        $message = ob_get_clean();
-        if (!empty($message)) {
+        try {
+            $this->createSchema($default_language, $db_instance);
+        } catch (\Throwable $throwable) {
+            $message = $throwable->getMessage();
             $output->writeln('<error>' . $message . '</error>', OutputInterface::VERBOSITY_QUIET);
             return self::ERROR_SCHEMA_CREATION_FAILED;
         }
@@ -297,6 +295,18 @@ class InstallCommand extends AbstractConfigureCommand
         $output->writeln('<info>' . __('Installation done.') . '</info>');
 
         return 0; // Success
+    }
+
+    protected function createSchema(string $default_language, \DBmysql $db_instance): void
+    {
+        Toolbox::createSchema($default_language, $db_instance);
+    }
+
+    protected function ensureSecurityKey(): bool
+    {
+        $glpikey = new GLPIKey();
+
+        return $glpikey->keyExists() || $glpikey->generate();
     }
 
     /**

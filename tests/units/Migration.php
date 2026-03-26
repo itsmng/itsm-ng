@@ -59,23 +59,16 @@ class Migration extends \GLPITestCase
      */
     private $runtimeDb;
 
-    private function normalizeSql(string $sql): string
+    private function isPgsql(): bool
     {
-        $sql = str_replace('"', '`', $sql);
-        $sql = preg_replace('/^DELETE FROM `([^`]+)` WHERE/', 'DELETE `$1` FROM `$1` WHERE', $sql);
-        $sql = preg_replace('/\s+ESCAPE E\'\\\\\'/', '', $sql);
-        $sql = str_replace(
-            " WHERE `table_catalog` = 'glpi' AND `table_schema` = 'public' AND",
-            " WHERE `table_schema` = 'glpi' AND",
-            $sql
-        );
+        $db = $this->runtimeDb ?? $this->db;
 
-        return $sql ?? '';
+        return $db instanceof \DB && $db->dbtype === 'pgsql';
     }
 
-    private function normalizeQueries(array $queries): array
+    private function filterObservedQueries(array $queries): array
     {
-        $queries = array_values(array_filter(
+        return array_values(array_filter(
             $queries,
             static function (string $query): bool {
                 if (strpos($query, 'SELECT pg_get_serial_sequence(') === 0) {
@@ -100,8 +93,12 @@ class Migration extends \GLPITestCase
                 return true;
             }
         ));
+    }
 
-        return array_map(fn(string $query): string => $this->normalizeSql($query), $queries);
+    private function assertQueriesForBackend(array $mysql_queries, ?array $pgsql_queries = null): void
+    {
+        $expected_queries = $this->isPgsql() ? ($pgsql_queries ?? $mysql_queries) : $mysql_queries;
+        $this->array($this->filterObservedQueries($this->queries))->isIdenticalTo($expected_queries);
     }
 
     public function beforeTestMethod($method)
@@ -215,8 +212,7 @@ class Migration extends \GLPITestCase
            7 => 'SELECT * FROM `glpi_configs` WHERE `glpi_configs`.`id` = \'0\' LIMIT 1',
            8 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \''.$_SESSION['glpi_currenttime'].'\', \'1\', \'two \', \'value\')',
         ];
-        $this->array($this->normalizeQueries($this->queries))
-            ->isIdenticalTo($this->normalizeQueries($core_queries));
+        $this->assertQueriesForBackend($core_queries);
 
         //test with existing value on different context => new keys should be inserted in correct context
         $this->queries = [];
@@ -231,7 +227,7 @@ class Migration extends \GLPITestCase
             }
         )->isIdenticalTo('Configuration values added for one, two (test-context).Task completed.');
 
-        $this->array($this->normalizeQueries($this->queries))->isIdenticalTo($this->normalizeQueries([
+        $this->assertQueriesForBackend([
            0 => 'SELECT * FROM `glpi_configs` WHERE `context` = \'test-context\' AND `name` IN (\'one\', \'two\')',
            1 => 'SELECT `id` FROM `glpi_configs` WHERE `context` = \'test-context\' AND `name` = \'one\'',
            2 => 'INSERT INTO `glpi_configs` (`context`, `name`, `value`) VALUES (\'test-context\', \'one\', \'key\')',
@@ -241,7 +237,7 @@ class Migration extends \GLPITestCase
            6 => 'INSERT INTO `glpi_configs` (`context`, `name`, `value`) VALUES (\'test-context\', \'two\', \'value\')',
            7 => 'SELECT * FROM `glpi_configs` WHERE `glpi_configs`.`id` = \'0\' LIMIT 1',
            8 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \''.$_SESSION['glpi_currenttime'].'\', \'1\', \'two (test-context) \', \'value\')',
-        ]));
+        ]);
 
         //test with one existing value => only new key should be inserted
         $this->migration->addConfig([
@@ -274,10 +270,10 @@ class Migration extends \GLPITestCase
             }
         )->isIdenticalTo('Configuration values added for two (core).Task completed.');
 
-        $this->array($this->normalizeQueries($this->queries))->isIdenticalTo($this->normalizeQueries([
+        $this->assertQueriesForBackend([
            0 => 'INSERT INTO `glpi_configs` (`context`, `name`, `value`) VALUES (\'core\', \'two\', \'value\')',
            1 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \''.$_SESSION['glpi_currenttime'].'\', \'1\', \'two \', \'value\')',
-        ]));
+        ]);
     }
 
     public function testBackupTables()
@@ -294,14 +290,21 @@ class Migration extends \GLPITestCase
             }
         )->isIdenticalTo("Task completed.");
 
-        $this->array($this->normalizeQueries($this->queries))->isIdenticalTo($this->normalizeQueries([
+        $this->assertQueriesForBackend([
            0 => 'SELECT `table_name` AS `TABLE_NAME` FROM `information_schema`.`tables`' .
                  ' WHERE `table_schema` = \'' . $DB->dbdefault .
                  '\' AND `table_type` = \'BASE TABLE\' AND `table_name` LIKE \'table1\'',
            1 => 'SELECT `table_name` AS `TABLE_NAME` FROM `information_schema`.`tables`' .
                  ' WHERE `table_schema` = \'' . $DB->dbdefault  .
                  '\' AND `table_type` = \'BASE TABLE\' AND `table_name` LIKE \'table2\''
-               ]));
+               ], [
+           0 => 'SELECT `table_name` AS `TABLE_NAME` FROM `information_schema`.`tables`' .
+                 ' WHERE `table_catalog` = \'' . $DB->dbdefault .
+                 '\' AND `table_schema` = \'public\' AND `table_type` = \'BASE TABLE\' AND `table_name` LIKE \'table1\'',
+           1 => 'SELECT `table_name` AS `TABLE_NAME` FROM `information_schema`.`tables`' .
+                 ' WHERE `table_catalog` = \'' . $DB->dbdefault .
+                 '\' AND `table_schema` = \'public\' AND `table_type` = \'BASE TABLE\' AND `table_name` LIKE \'table2\''
+               ]);
 
         //try to backup existant tables
         $this->queries = [];
@@ -689,7 +692,7 @@ class Migration extends \GLPITestCase
 
         $this->migration->renameTable('glpi_oldtable', 'glpi_newtable');
 
-        $this->array($this->normalizeQueries($this->queries))->isIdenticalTo(
+        $this->assertQueriesForBackend(
             [
               "RENAME TABLE `glpi_oldtable` TO `glpi_newtable`",
          ]
@@ -704,7 +707,7 @@ class Migration extends \GLPITestCase
         $this->migration->migrationOneTable('glpi_oldtable');
         $this->migration->renameTable('glpi_oldtable', 'glpi_newtable');
 
-        $this->array($this->normalizeQueries($this->queries))->isIdenticalTo(
+        $this->assertQueriesForBackend(
             [
               "ALTER TABLE `glpi_oldtable` ADD `bool_field` TINYINT(1) NOT NULL DEFAULT '0'   ",
               "ALTER TABLE `glpi_oldtable` ADD FULLTEXT `fulltext_key` (`fulltext_key`)",
@@ -722,7 +725,7 @@ class Migration extends \GLPITestCase
         $this->migration->renameTable('glpi_oldtable', 'glpi_newtable');
         $this->migration->migrationOneTable('glpi_newtable');
 
-        $this->array($this->normalizeQueries($this->queries))->isIdenticalTo(
+        $this->assertQueriesForBackend(
             [
               "RENAME TABLE `glpi_oldtable` TO `glpi_newtable`",
               "ALTER TABLE `glpi_newtable` ADD `bool_field` TINYINT(1) NOT NULL DEFAULT '0'   ",
@@ -860,7 +863,7 @@ class Migration extends \GLPITestCase
             )
         );
 
-        $this->array($this->normalizeQueries($this->queries))->isIdenticalTo([
+        $this->assertQueriesForBackend([
            "RENAME TABLE `glpi_someoldtypes` TO `glpi_newnames`",
            "ALTER TABLE `glpi_oneitem_with_fkey` CHANGE `someoldtypes_id` `newnames_id` INT(11) NOT NULL DEFAULT '0'   ",
            "ALTER TABLE `glpi_anotheritem_with_fkey` CHANGE `someoldtypes_id` `newnames_id` INT(11) NOT NULL DEFAULT '0'   ,\n"
@@ -950,7 +953,7 @@ class Migration extends \GLPITestCase
         $this->migration->changeSearchOption('Computer', 40, 100);
         $this->migration->executeMigration();
 
-        $this->array($this->normalizeQueries($this->queries))->isIdenticalTo([
+        $this->assertQueriesForBackend([
            "UPDATE `glpi_displaypreferences` SET `num` = '100' WHERE `itemtype` = 'Computer' AND `num` = '40'",
            "UPDATE `glpi_savedsearches` SET `query` = 'is_deleted=0&as_map=0&criteria%5B0%5D%5Blink%5D=AND&criteria%5B0%5D%5Bfield%5D=100&criteria%5B0%5D%5Bsearchtype%5D=contains&criteria%5B0%5D%5Bvalue%5D=LT1&criteria%5B1%5D%5Blink%5D=AND&criteria%5B1%5D%5Bitemtype%5D=Budget&criteria%5B1%5D%5Bmeta%5D=1&criteria%5B1%5D%5Bfield%5D=4&criteria%5B1%5D%5Bsearchtype%5D=contains&criteria%5B1%5D%5Bvalue%5D=&search=Search&itemtype=Computer' WHERE `id` = '0'",
            "UPDATE `glpi_savedsearches` SET `query` = 'is_deleted=0&as_map=0&criteria%5B0%5D%5Blink%5D=AND&criteria%5B0%5D%5Bfield%5D=40&criteria%5B0%5D%5Bsearchtype%5D=contains&criteria%5B0%5D%5Bvalue%5D=LT1&criteria%5B1%5D%5Blink%5D=AND&criteria%5B1%5D%5Bitemtype%5D=Computer&criteria%5B1%5D%5Bmeta%5D=1&criteria%5B1%5D%5Bfield%5D=100&criteria%5B1%5D%5Bsearchtype%5D=contains&criteria%5B1%5D%5Bvalue%5D=&search=Search&itemtype=Computer' WHERE `id` = '1'",

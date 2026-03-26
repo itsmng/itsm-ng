@@ -385,7 +385,7 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
         $db_user,
         $db_type = null
     ) {
- 
+
         $informations = new Table($output);
         if ($db_type !== null) {
             $informations->addRow([__('Database type'), $db_type]);

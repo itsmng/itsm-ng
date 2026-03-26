@@ -18,18 +18,22 @@ final class LegacySQLProvider
         return self::db()->quoteName($table . '.' . $field);
     }
 
+    private static function isPgsql(): bool
+    {
+        return self::db()->dbtype === 'pgsql';
+    }
+
     public static function makeTextCriteria(string $field, string $val, bool $not = false, string $link = 'AND'): string
     {
-        $db = self::db();
         $pattern = \Search::makeTextSearchValue($val);
-        $like_field = $pattern !== null ? $db->sqlTextSearchExpression($field) : $field;
+        $like_field = $pattern !== null ? self::textSearchExpression($field) : $field;
 
         if ($pattern === null) {
             $sql = $field . ' IS ' . ($not ? 'NOT ' : '') . 'NULL';
         } else {
             $sql = $not
-                ? 'NOT (' . $db->sqlLike($like_field, $pattern, false) . ')'
-                : $db->sqlLike($like_field, $pattern, false);
+                ? 'NOT (' . self::db()->sqlLike($like_field, $pattern, false) . ')'
+                : self::db()->sqlLike($like_field, $pattern, false);
         }
 
         $sql_or = '';
@@ -49,17 +53,30 @@ final class LegacySQLProvider
 
     public static function havingReference(string $alias, string $expression): string
     {
-        return self::db()->sqlHavingReference($alias, $expression);
+        return self::isPgsql()
+            ? $expression
+            : self::db()->quoteName($alias);
     }
 
     public static function orderByIpAddress(string $expression, string $alias): string
     {
-        return self::db()->sqlOrderByIpAddress($expression, $alias);
+        return self::isPgsql()
+            ? self::db()->quoteName($alias)
+            : self::castIpAddress($expression);
     }
 
     public static function textSearchExpression(string $expression): string
     {
-        return self::db()->sqlTextSearchExpression($expression);
+        return self::isPgsql()
+            ? self::db()->sqlCastAsString($expression)
+            : $expression;
+    }
+
+    public static function castIpAddress(string $expression): string
+    {
+        return self::isPgsql()
+            ? 'CAST(' . $expression . ' AS inet)'
+            : 'INET_ATON(' . $expression . ')';
     }
 
     public static function softwareLicenseNumberHavingExpression(string $qualified_table, string $field): string

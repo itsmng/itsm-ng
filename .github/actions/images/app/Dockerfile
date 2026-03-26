@@ -42,6 +42,8 @@ RUN apt-get update \
     soap \
     xsl \
     zip \
+ && pecl install apcu \
+ && docker-php-ext-enable apcu \
  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer

@@ -769,7 +769,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
            'joinparams'         => [
               'jointype'           => 'child',
               'specific_itemtype'  => 'ProjectCost',
-              'condition'          => 'AND NEWTABLE.projects_id = REFTABLE.id',
+              'condition_criteria' => ['NEWTABLE.projects_id' => 'REFTABLE.id'],
               'beforejoin'         => [
                  'table'        => $this->getTable(),
                  'joinparams'   => [
@@ -799,7 +799,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                'massiveaction'      => false,
                'joinparams'         => [
                   'jointype'           => 'child',
-                  'condition'          => "AND NEWTABLE.itemtype = '$itil_type'"
+                  'condition_criteria' => ['NEWTABLE.itemtype' => $itil_type]
                ]
             ];
             $index++;

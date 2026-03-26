@@ -2743,7 +2743,11 @@ class Toolbox
                 );
             }
         } catch (\Throwable $throwable) {
-            echo "Errors occurred inserting default database: " . $throwable->getMessage();
+            throw new \RuntimeException(
+                'Errors occurred inserting default database: ' . $throwable->getMessage(),
+                0,
+                $throwable
+            );
         }
     }
 

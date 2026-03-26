@@ -273,9 +273,21 @@ SQL;
     public function getTableSchema($table, $structure = null)
     {
         if ($structure !== null) {
+            if (!is_array($structure)) {
+                $structure = [$structure];
+            }
+
+            $table_structure = array_shift($structure);
+            $indexes = [];
+            foreach ($structure as $statement) {
+                if (preg_match('/^CREATE(?: UNIQUE)? INDEX /i', trim((string) $statement)) === 1) {
+                    $indexes[] = $this->normalizeTableSchema((string) $statement);
+                }
+            }
+
             return [
-                'schema' => $this->normalizeTableSchema($structure),
-                'index'  => [],
+                'schema' => $this->normalizeTableSchema((string) $table_structure),
+                'index'  => $indexes,
             ];
         }
 
@@ -611,23 +623,6 @@ SQL;
         return (bool) $this->query('CREATE DATABASE ' . $this->quoteName($database));
     }
 
-    protected function executeQuery(string $query)
-    {
-        $statement = $this->dbh->query($query);
-        $this->last_affected_rows = $statement->rowCount();
-        if ($statement->columnCount() === 0) {
-            $statement->closeCursor();
-            return true;
-        }
-
-        return $statement;
-    }
-
-    protected function executePreparedQuery(string $query)
-    {
-        return $this->dbh->prepare($query);
-    }
-
     protected function getDriverErrorCode(?\Throwable $exception = null)
     {
         if ($exception instanceof \PDOException) {
@@ -649,11 +644,6 @@ SQL;
         }
 
         return '';
-    }
-
-    protected function prepareQueryString(string $query): string
-    {
-        return parent::prepareQueryString($query);
     }
 
     private function syncAutoIncrementSequence(string $table, array $params): void
@@ -707,8 +697,7 @@ SQL;
         string $separator = ',',
         bool $distinct = false,
         ?string $order_by = null
-    ): string
-    {
+    ): string {
         $expression = 'CAST((' . $expression . ') AS TEXT)';
         $sql = 'STRING_AGG(';
         if ($distinct) {
@@ -716,7 +705,7 @@ SQL;
             if ($order_by !== null && $order_by !== '') {
                 // PostgreSQL requires ORDER BY expressions used with DISTINCT aggregates
                 // to match the aggregated expression. Ordering by the rendered value keeps
-                // deterministic output without forcing call sites to special-case pgsql.
+                // deterministic output without forcing call sites to special-case postgres.
                 $order_by = $expression;
             }
         }
@@ -750,24 +739,9 @@ SQL;
         return 'CAST(' . $expression . ' AS TEXT)';
     }
 
-    public function sqlTextSearchExpression(string $expression): string
-    {
-        return $this->sqlCastAsString($expression);
-    }
-
-    public function sqlCastIpAddress(string $expression): string
-    {
-        return 'CAST(' . $expression . ' AS inet)';
-    }
-
-    public function sqlOrderByIpAddress(string $expression, string $alias): string
-    {
-        return $this->quoteName($alias);
-    }
-
     public function sqlCastAsUnsignedInteger(string $expression): string
     {
-        return 'CAST(FLOOR(((' . $expression . ')::numeric)) AS INTEGER)';
+        return 'CAST(FLOOR(((' . $expression . ')::numeric)) AS BIGINT)';
     }
 
     public function sqlCurrentTimestamp(): string
@@ -915,12 +889,12 @@ SQL;
 
     public function sqlTimeDiffInSeconds(string $left, string $right): string
     {
-        return 'EXTRACT(EPOCH FROM (((' . $left . ')::time) - ((' . $right . ')::time)))';
+        return 'EXTRACT(EPOCH FROM (((' . $left . ')::timestamp) - ((' . $right . ')::timestamp)))';
     }
 
-    public function sqlHavingReference(string $alias, string $expression): string
+    public function sqlClockTimeDiffInSeconds(string $left, string $right): string
     {
-        return $expression;
+        return 'EXTRACT(EPOCH FROM (((' . $left . ')::time) - ((' . $right . ')::time)))';
     }
 
     public function getImplicitInsertDefaults(string $table, array $reference): array
@@ -1089,8 +1063,4 @@ SQL;
         ]);
     }
 
-    protected function normalizeLegacySqlStringValue(string $value): string
-    {
-        return $this->decodeLegacyMysqlEscapes($value);
-    }
 }

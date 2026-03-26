@@ -241,7 +241,7 @@ class Item_OperatingSystem extends DbTestCase
            ->string['itemtype']->isIdenticalTo('Computer')
            ->integer['items_id']->isIdenticalTo($computer->getID())
            ->integer['entities_id']->isIdenticalTo($eid)
-           ->boolean['is_recursive']->isIdenticalTo(false);
+           ->integer['is_recursive']->isIdenticalTo(0);
 
         $this->boolean($ios->can($ios->getID(), READ))->isTrue();
 
@@ -266,7 +266,7 @@ class Item_OperatingSystem extends DbTestCase
            ->string['itemtype']->isIdenticalTo('Computer')
            ->integer['items_id']->isIdenticalTo($computer->getID())
            ->integer['entities_id']->isIdenticalTo($eid)
-           ->boolean['is_recursive']->isIdenticalTo(true);
+           ->integer['is_recursive']->isIdenticalTo(1);
 
         //not recursive
         $this->setEntity('Root Entity', true);

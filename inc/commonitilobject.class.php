@@ -4142,7 +4142,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->userlinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::REQUESTER
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::REQUESTER]
                  ]
               ]
            ]
@@ -4170,7 +4170,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->grouplinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::REQUESTER
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::REQUESTER]
                  ]
               ]
            ]
@@ -4224,7 +4224,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->userlinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::OBSERVER
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::OBSERVER]
                  ]
               ]
            ]
@@ -4244,7 +4244,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->grouplinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::OBSERVER
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::OBSERVER]
                  ]
               ]
            ]
@@ -4269,7 +4269,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->userlinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::ASSIGN
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::ASSIGN]
                  ]
               ]
            ]
@@ -4288,7 +4288,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->supplierlinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::ASSIGN
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::ASSIGN]
                  ]
               ]
            ]
@@ -4308,7 +4308,7 @@ abstract class CommonITILObject extends CommonDBTM
                  'table'              => getTableForItemType($this->grouplinkclass),
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::ASSIGN
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::ASSIGN]
                  ]
               ]
            ]
@@ -4328,7 +4328,7 @@ abstract class CommonITILObject extends CommonDBTM
            'massiveaction'      => false,
            'joinparams'         => [
               'jointype'           => 'child',
-              'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::REQUESTER
+              'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::REQUESTER]
            ]
         ];
 
@@ -4341,7 +4341,7 @@ abstract class CommonITILObject extends CommonDBTM
            'massiveaction'      => false,
            'joinparams'         => [
               'jointype'           => 'child',
-              'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::REQUESTER
+              'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::REQUESTER]
            ]
         ];
 
@@ -4360,9 +4360,9 @@ abstract class CommonITILObject extends CommonDBTM
             AND ' . $DB->quoteName($table . '.status') . ' <> ' . self::WAITING . '
             AND (' . $DB->quoteName($table . '.takeintoaccount_delay_stat') . '
                         > ' . $DB->sqlTimeDiffInSeconds(
-                            $DB->quoteName($table . '.' . $type),
-                            $DB->quoteName($table . '.date')
-                        ) . '
+                        $DB->quoteName($table . '.' . $type),
+                        $DB->quoteName($table . '.date')
+                    ) . '
                  OR (' . $DB->quoteName($table . '.takeintoaccount_delay_stat') . ' = 0
                       AND ' . $DB->quoteName($table . '.' . $type) . ' < ' . $DB->sqlNow() . '))',
                     $DB->quoteValue(true),

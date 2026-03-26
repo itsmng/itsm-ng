@@ -3168,7 +3168,7 @@ class Ticket extends CommonITILObject
            'massiveaction'      => false,
            'datatype'           => 'dropdown',
            'joinparams'         => [
-              'condition'          => "AND NEWTABLE.type = '" . SLM::TTO . "'"
+              'condition_criteria' => ['NEWTABLE.type' => SLM::TTO]
            ],
            'condition'          => ['glpi_slas.type' => SLM::TTO],
         ];
@@ -3182,7 +3182,7 @@ class Ticket extends CommonITILObject
            'massiveaction'      => false,
            'datatype'           => 'dropdown',
            'joinparams'         => [
-              'condition'          => "AND NEWTABLE.type = '" . SLM::TTR . "'"
+              'condition_criteria' => ['NEWTABLE.type' => SLM::TTR]
            ],
            'condition'          => ['glpi_slas.type' => SLM::TTR],
         ];
@@ -3219,7 +3219,7 @@ class Ticket extends CommonITILObject
            'massiveaction'      => false,
            'datatype'           => 'dropdown',
            'joinparams'         => [
-              'condition'          => "AND NEWTABLE.type = '" . SLM::TTO . "'"
+              'condition_criteria' => ['NEWTABLE.type' => SLM::TTO]
            ],
            'condition'          => ['glpi_olas.type' => SLM::TTO],
         ];
@@ -3233,7 +3233,7 @@ class Ticket extends CommonITILObject
            'massiveaction'      => false,
            'datatype'           => 'dropdown',
            'joinparams'         => [
-              'condition'          => "AND NEWTABLE.type = '" . SLM::TTR . "'"
+              'condition_criteria' => ['NEWTABLE.type' => SLM::TTR]
            ],
            'condition'          => ['glpi_olas.type' => SLM::TTR],
         ];
@@ -3391,7 +3391,7 @@ class Ticket extends CommonITILObject
                'searchtype'         => 'equals',
                'joinparams'         => [
                   'jointype'           => 'item_item',
-                  'condition'          => 'AND NEWTABLE.link = ' . Ticket_Ticket::DUPLICATE_WITH
+                  'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::DUPLICATE_WITH]
                ],
                'additionalfields'   => ['tickets_id_2'],
                'forcegroupby'       => true
@@ -3420,7 +3420,7 @@ class Ticket extends CommonITILObject
                'usehaving'          => true,
                'joinparams'         => [
                   'jointype'           => 'item_item',
-                  'condition'          => 'AND NEWTABLE.link = ' . Ticket_Ticket::DUPLICATE_WITH
+                  'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::DUPLICATE_WITH]
                ]
             ];
 
@@ -3440,7 +3440,7 @@ class Ticket extends CommonITILObject
                      'joinparams'         => [
                         'jointype'           => 'child',
                         'linkfield'          => 'tickets_id_1',
-                        'condition'          => 'AND NEWTABLE.link = ' . Ticket_Ticket::SON_OF,
+                        'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::SON_OF],
                      ]
                   ]
                ],
@@ -3463,7 +3463,7 @@ class Ticket extends CommonITILObject
                      'joinparams'         => [
                         'jointype'           => 'child',
                         'linkfield'          => 'tickets_id_2',
-                        'condition'          => 'AND NEWTABLE.link = ' . Ticket_Ticket::SON_OF,
+                        'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::SON_OF],
                      ]
                   ]
                ],
@@ -3481,7 +3481,7 @@ class Ticket extends CommonITILObject
                'joinparams'         => [
                   'linkfield'          => 'tickets_id_2',
                   'jointype'           => 'child',
-                  'condition'          => 'AND NEWTABLE.link = ' . Ticket_Ticket::SON_OF
+                  'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::SON_OF]
                ],
                'forcegroupby'       => true
             ];
@@ -3497,7 +3497,7 @@ class Ticket extends CommonITILObject
                'joinparams'         => [
                   'linkfield'          => 'tickets_id_1',
                   'jointype'           => 'child',
-                  'condition'          => 'AND NEWTABLE.link = ' . Ticket_Ticket::SON_OF
+                  'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::SON_OF]
                ],
                'additionalfields'   => ['tickets_id_2']
             ];

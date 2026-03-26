@@ -129,9 +129,22 @@ class Config extends DbTestCase
                  ->isIdenticalTo($expected);
     }
 
-    public function testPrepareInputForUpdate()
+    public function testPrepareInputForUpdate(): void
     {
-        // /!\ Config::prepareInputForUpdate() do store data! /!\
+        $config = new \Config();
+
+        $input = [
+           'context'     => 'core',
+           'name'        => 'unit_test_config',
+           'value'       => 'value',
+           '_no_history' => 1,
+        ];
+
+        $this->array($config->prepareInputForUpdate($input))->isIdenticalTo([
+           'context' => 'core',
+           'name'    => 'unit_test_config',
+           'value'   => 'value',
+        ]);
     }
 
     public function testUnsetUndisclosedFields()

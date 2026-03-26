@@ -53,8 +53,17 @@ class Computer extends DbTestCase
 
     private function getExpectedGetFromDbByCritWarning(): string
     {
+        global $DB;
+
+        $operator = ($DB instanceof \DBmysql && $DB->dbtype === 'pgsql')
+            ? 'ILIKE'
+            : 'LIKE';
+
         return 'getFromDBByCrit expects to get one result, 8 found in query "'
-            . $this->normalizeSql('SELECT "id" FROM "glpi_computers" WHERE "name" LIKE \'_test%\' ESCAPE E\'\\\\\'')
+            . $this->normalizeSql(sprintf(
+                'SELECT "id" FROM "glpi_computers" WHERE "name" %s \'_test%%\' ESCAPE E\'\\\\\'',
+                $operator
+            ))
             . '".';
     }
 

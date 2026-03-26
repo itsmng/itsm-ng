@@ -93,6 +93,10 @@ class User extends CommonDBTM
 
     public function canViewItem()
     {
+        if ((int) ($this->fields['id'] ?? 0) === (int) Session::getLoginUserID()) {
+            return true;
+        }
+
         if (
             Session::canViewAllEntities()
             || Session::haveAccessToOneOfEntities($this->getEntities())
@@ -3355,7 +3359,7 @@ class User extends CommonDBTM
            'name'               => __('LDAP directory for authentication'),
            'massiveaction'      => false,
            'joinparams'         => [
-               'condition'          => 'AND REFTABLE.authtype = ' . Auth::LDAP
+               'condition_criteria' => ['REFTABLE.authtype' => Auth::LDAP]
            ],
            'datatype'           => 'dropdown'
         ];
@@ -3368,7 +3372,7 @@ class User extends CommonDBTM
            'name'               => __('Email server for authentication'),
            'massiveaction'      => false,
            'joinparams'         => [
-              'condition'          => 'AND REFTABLE.authtype = ' . Auth::MAIL
+              'condition_criteria' => ['REFTABLE.authtype' => Auth::MAIL]
            ],
            'datatype'           => 'dropdown'
         ];
@@ -3553,7 +3557,7 @@ class User extends CommonDBTM
                  'table'              => 'glpi_tickets_users',
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::REQUESTER
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::REQUESTER]
                  ]
               ]
            ]
@@ -3588,7 +3592,7 @@ class User extends CommonDBTM
                  'table'              => 'glpi_tickets_users',
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.type = ' . CommonITILActor::ASSIGN
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::ASSIGN]
                  ]
               ]
            ]

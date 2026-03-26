@@ -32,6 +32,8 @@
  */
 
 use Glpi\Toolbox\URL;
+use itsmng\Search\Provider\LegacyMySQLSearchProvider;
+use itsmng\Search\Provider\LegacyPostgreSQLSearchProvider;
 use itsmng\Search\Provider\LegacySQLProvider;
 
 if (!defined('GLPI_ROOT')) {
@@ -93,7 +95,7 @@ class Search
     private static function quoteValuesList(array $values): string
     {
         return implode(', ', array_map(
-            static fn($value) => self::quoteValue($value),
+            static fn ($value) => self::quoteValue($value),
             array_values($values)
         ));
     }
@@ -237,9 +239,7 @@ class Search
 
     private static function sqlCastIpAddress(string $expression): string
     {
-        global $DB;
-
-        return $DB->sqlCastIpAddress($expression);
+        return LegacySQLProvider::castIpAddress($expression);
     }
 
     private static function sqlBitTest(string $left, string $right): string
@@ -284,6 +284,130 @@ class Search
         }
 
         return trim(substr($select, 0, $pos));
+    }
+
+    private static function getSearchProviderClass(): string
+    {
+        global $DB;
+
+        if ($DB instanceof DBmysql && $DB->dbtype === 'pgsql') {
+            return LegacyPostgreSQLSearchProvider::class;
+        }
+
+        return LegacyMySQLSearchProvider::class;
+    }
+
+    private static function ensureJoinConditionPrefix(string $condition): string
+    {
+        $condition = trim($condition);
+        if ($condition === '') {
+            return '';
+        }
+
+        if (preg_match('/^(AND|OR)\b/i', $condition) !== 1) {
+            $condition = 'AND ' . $condition;
+        }
+
+        return $condition . ' ';
+    }
+
+    private static function replaceJoinConditionPlaceholders(string $condition, string $ref_table, string $new_table): string
+    {
+        $from = [
+            '`REFTABLE`',
+            self::quoteName('REFTABLE'),
+            'REFTABLE',
+            '`NEWTABLE`',
+            self::quoteName('NEWTABLE'),
+            'NEWTABLE',
+        ];
+        $to = [
+            self::quoteName($ref_table),
+            self::quoteName($ref_table),
+            self::quoteName($ref_table),
+            self::quoteName($new_table),
+            self::quoteName($new_table),
+            self::quoteName($new_table),
+        ];
+
+        return str_replace($from, $to, $condition);
+    }
+
+    private static function normalizeJoinConditionCriteria($criteria, string $ref_table, string $new_table)
+    {
+        if ($criteria instanceof QueryExpression) {
+            return new QueryExpression(
+                self::replaceJoinConditionPlaceholders($criteria->getValue(), $ref_table, $new_table)
+            );
+        }
+
+        if (is_array($criteria)) {
+            $normalized = [];
+            foreach ($criteria as $key => $value) {
+                $normalized_key = is_string($key)
+                    ? str_replace(
+                        ['REFTABLE.', 'NEWTABLE.'],
+                        [$ref_table . '.', $new_table . '.'],
+                        $key
+                    )
+                    : $key;
+                $normalized[$normalized_key] = self::normalizeJoinConditionCriteria($value, $ref_table, $new_table);
+            }
+
+            return $normalized;
+        }
+
+        if (
+            is_string($criteria)
+            && preg_match('/^(REFTABLE|NEWTABLE)\.([a-zA-Z0-9_]+)$/', $criteria, $matches) === 1
+        ) {
+            $table = $matches[1] === 'REFTABLE' ? $ref_table : $new_table;
+
+            return new QueryExpression(self::quoteColumn($table, $matches[2]));
+        }
+
+        return $criteria;
+    }
+
+    private static function buildJoinConditionClause(array $joinparams, string $ref_table, string $new_table): string
+    {
+        $conditions = [];
+
+        if (isset($joinparams['condition_criteria'])) {
+            $iterator = new DBmysqlIterator(null);
+            $criteria = self::normalizeJoinConditionCriteria(
+                $joinparams['condition_criteria'],
+                $ref_table,
+                $new_table
+            );
+            $conditions[] = self::ensureJoinConditionPrefix($iterator->analyseCrit($criteria));
+        }
+
+        if (isset($joinparams['condition_expr'])) {
+            $expression = $joinparams['condition_expr'];
+            if ($expression instanceof QueryExpression) {
+                $expression = $expression->getValue();
+            }
+            if (is_string($expression)) {
+                $conditions[] = self::ensureJoinConditionPrefix(
+                    self::replaceJoinConditionPlaceholders($expression, $ref_table, $new_table)
+                );
+            }
+        }
+
+        if (isset($joinparams['condition'])) {
+            $condition = $joinparams['condition'];
+            if (is_array($condition)) {
+                $iterator = new DBmysqlIterator(null);
+                $condition = $iterator->analyseCrit($condition);
+            }
+
+            $conditions[] = self::ensureJoinConditionPrefix(
+                self::replaceJoinConditionPlaceholders((string) $condition, $ref_table, $new_table)
+            );
+        }
+
+        return implode('', array_filter($conditions));
     }
 
     /**
@@ -776,6 +900,11 @@ class Search
      * @return void
     **/
     public static function constructSQL(array &$data)
+    {
+        self::getSearchProviderClass()::constructSQL($data);
+    }
+
+    public static function constructSQLInternal(array &$data)
     {
         global $CFG_GLPI, $DB;
 
@@ -1545,6 +1674,11 @@ class Search
      * @return void
     **/
     public static function constructData(array &$data, $onlycount = false)
+    {
+        self::getSearchProviderClass()::constructData($data, $onlycount);
+    }
+
+    public static function constructDataInternal(array &$data, $onlycount = false)
     {
         if (!isset($data['sql']) || !isset($data['sql']['search'])) {
             return false;
@@ -3505,6 +3639,11 @@ JAVASCRIPT;
     **/
     public static function addHaving($LINK, $NOT, $itemtype, $ID, $searchtype, $val, bool $meta = false, ?string $meta_type = null)
     {
+        return self::getSearchProviderClass()::addHaving($LINK, $NOT, $itemtype, $ID, $searchtype, $val, $meta, $meta_type);
+    }
+
+    public static function addHavingInternal($LINK, $NOT, $itemtype, $ID, $searchtype, $val, bool $meta = false, ?string $meta_type = null)
+    {
 
         global $DB;
 
@@ -3699,6 +3838,11 @@ JAVASCRIPT;
     **/
     public static function addOrderBy($itemtype, $ID, $order)
     {
+        return self::getSearchProviderClass()::addOrderBy($itemtype, $ID, $order);
+    }
+
+    public static function addOrderByInternal($itemtype, $ID, $order)
+    {
         global $CFG_GLPI;
 
         // Security test for order
@@ -3889,6 +4033,11 @@ JAVASCRIPT;
     **/
     public static function addDefaultSelect($itemtype, array &$groupby_fields = [])
     {
+        return self::getSearchProviderClass()::addDefaultSelect($itemtype, $groupby_fields);
+    }
+
+    public static function addDefaultSelectInternal($itemtype, array &$groupby_fields = [])
+    {
         global $DB;
 
         $itemtable = self::getOrigTableName($itemtype);
@@ -3950,8 +4099,25 @@ JAVASCRIPT;
         $meta_type = 0,
         array &$groupby_fields = [],
         ?array $searchopt_override = null
-    )
-    {
+    ) {
+        return self::getSearchProviderClass()::addSelect(
+            $itemtype,
+            $ID,
+            $meta,
+            $meta_type,
+            $groupby_fields,
+            $searchopt_override
+        );
+    }
+
+    public static function addSelectInternal(
+        $itemtype,
+        $ID,
+        $meta = 0,
+        $meta_type = 0,
+        array &$groupby_fields = [],
+        ?array $searchopt_override = null
+    ) {
         global $DB, $CFG_GLPI;
 
         $searchopt   = $searchopt_override ?? self::getOptions($itemtype);
@@ -4080,7 +4246,7 @@ JAVASCRIPT;
                                    true
                                ) . ' AS ' . self::alias($NAME . "_2") . ", ";
                         }
-                    return ' ' . self::sqlGroupConcat(
+                        return ' ' . self::sqlGroupConcat(
                             self::quoteColumn($qualified_table, 'id'),
                             self::LONGSEP,
                             true
@@ -4178,14 +4344,14 @@ JAVASCRIPT;
                 return " " . self::quoteColumn('glpi_users', 'authtype') . " AS " . self::alias($NAME) . ",
                      " . self::quoteColumn('glpi_users', 'auths_id') . " AS " . self::alias($NAME . "_auths_id") . ",
                      " . self::quoteColumn(
-                         'glpi_authldaps' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[30]['joinparams']) . $addmeta,
-                         $field
-                     ) . "
+                    'glpi_authldaps' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[30]['joinparams']) . $addmeta,
+                    $field
+                ) . "
                               AS " . self::alias($NAME . "_" . $ID . "_ldapname") . ",
                      " . self::quoteColumn(
-                         'glpi_authmails' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[31]['joinparams']) . $addmeta,
-                         $field
-                     ) . "
+                    'glpi_authmails' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[31]['joinparams']) . $addmeta,
+                    $field
+                ) . "
                               AS " . self::alias($NAME . "_mailname") . ",
                      $ADDITONALFIELDS";
 
@@ -4996,9 +5162,9 @@ JAVASCRIPT;
                 ) . "
                            $SEARCH
                            $tmplink " . self::quoteColumn(
-                               'glpi_authldaps' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[30]['joinparams']) . $addmeta,
-                               'name'
-                           ) . "
+                    'glpi_authldaps' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[30]['joinparams']) . $addmeta,
+                    'name'
+                ) . "
                            $SEARCH ) ";
 
             case "glpi_ipaddresses.name":
@@ -5773,6 +5939,30 @@ JAVASCRIPT;
         $joinparams = [],
         $field = ''
     ) {
+        return self::getSearchProviderClass()::addLeftJoin(
+            $itemtype,
+            $ref_table,
+            $already_link_tables,
+            $new_table,
+            $linkfield,
+            $meta,
+            $meta_type,
+            $joinparams,
+            $field
+        );
+    }
+
+    public static function addLeftJoinInternal(
+        $itemtype,
+        $ref_table,
+        array &$already_link_tables,
+        $new_table,
+        $linkfield,
+        $meta = 0,
+        $meta_type = 0,
+        $joinparams = [],
+        $field = ''
+    ) {
 
         // Rename table for meta left join
         $AS = "";
@@ -5941,32 +6131,7 @@ JAVASCRIPT;
                 }
             }
 
-            $addcondition = '';
-            if (isset($joinparams['condition'])) {
-                $condition = $joinparams['condition'];
-                if (is_array($condition)) {
-                    $it = new DBmysqlIterator(null);
-                    $condition = $it->analyseCrit($condition);
-                }
-                $from         = [
-                    "`REFTABLE`",
-                    self::quoteName('REFTABLE'),
-                    "REFTABLE",
-                    "`NEWTABLE`",
-                    self::quoteName('NEWTABLE'),
-                    "NEWTABLE",
-                ];
-                $to           = [
-                    self::quoteName($rt),
-                    self::quoteName($rt),
-                    self::quoteName($rt),
-                    self::quoteName($nt),
-                    self::quoteName($nt),
-                    self::quoteName($nt),
-                ];
-                $addcondition = str_replace($from, $to, $condition);
-                $addcondition = $addcondition . " ";
-            }
+            $addcondition = self::buildJoinConditionClause($joinparams, $rt, $nt);
 
             if (!isset($joinparams['jointype'])) {
                 $joinparams['jointype'] = 'standard';
@@ -8853,6 +9018,14 @@ JAVASCRIPT;
                 $complexjoin .= $joinparams['condition'];
             }
         }
+        if (isset($joinparams['condition_criteria'])) {
+            $complexjoin .= print_r($joinparams['condition_criteria'], true);
+        }
+        if (isset($joinparams['condition_expr'])) {
+            $complexjoin .= $joinparams['condition_expr'] instanceof QueryExpression
+                ? $joinparams['condition_expr']->getValue()
+                : (string) $joinparams['condition_expr'];
+        }
 
         // For jointype == child
         if (
@@ -8870,11 +9043,21 @@ JAVASCRIPT;
                 if (isset($tab['table'])) {
                     $complexjoin .= $tab['table'];
                 }
-                if (isset($tab['joinparams']) && isset($tab['joinparams']['condition'])) {
-                    if (is_array($tab['joinparams']['condition'])) {
-                        $complexjoin .= print_r($tab['joinparams']['condition'], true);
-                    } else {
-                        $complexjoin .= $tab['joinparams']['condition'];
+                if (isset($tab['joinparams'])) {
+                    if (isset($tab['joinparams']['condition'])) {
+                        if (is_array($tab['joinparams']['condition'])) {
+                            $complexjoin .= print_r($tab['joinparams']['condition'], true);
+                        } else {
+                            $complexjoin .= $tab['joinparams']['condition'];
+                        }
+                    }
+                    if (isset($tab['joinparams']['condition_criteria'])) {
+                        $complexjoin .= print_r($tab['joinparams']['condition_criteria'], true);
+                    }
+                    if (isset($tab['joinparams']['condition_expr'])) {
+                        $complexjoin .= $tab['joinparams']['condition_expr'] instanceof QueryExpression
+                            ? $tab['joinparams']['condition_expr']->getValue()
+                            : (string) $tab['joinparams']['condition_expr'];
                     }
                 }
             }
@@ -8939,6 +9122,11 @@ JAVASCRIPT;
      * @return search SQL string
     **/
     public static function makeTextCriteria($field, $val, $not = false, $link = 'AND')
+    {
+        return self::getSearchProviderClass()::makeTextCriteria($field, $val, $not, $link);
+    }
+
+    public static function makeTextCriteriaInternal($field, $val, $not = false, $link = 'AND')
     {
         return LegacySQLProvider::makeTextCriteria($field, $val, $not, $link);
     }

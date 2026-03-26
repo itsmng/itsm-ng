@@ -1299,7 +1299,8 @@ abstract class API extends CommonGLPI
             $where = "1=1 ";
         }
         if ($item->maybeDeleted()) {
-            $where .= "AND " . $DB->quoteName("$table.is_deleted") . " = " . (int)$params['is_deleted'];
+            $where .= "AND " . $DB->quoteName("$table.is_deleted") . " = "
+                . $DB->quoteFieldValue($table, 'is_deleted', (bool) $params['is_deleted']);
         }
 
         // add filter for a parent itemtype
@@ -1373,8 +1374,10 @@ abstract class API extends CommonGLPI
             // make text search
             foreach ($params['searchText'] as $filter_field => $filter_value) {
                 if (!empty($filter_value)) {
-                    $search_value = Search::makeTextSearch($DB->escape($filter_value));
-                    $where .= " AND (" . $DB->quoteName("$table.$filter_field") . " $search_value)";
+                    $where .= Search::makeTextCriteria(
+                        $DB->quoteName("$table.$filter_field"),
+                        (string) $filter_value
+                    );
                 }
             }
         }
@@ -1412,7 +1415,7 @@ abstract class API extends CommonGLPI
                 $join
                 WHERE $where
                 ORDER BY " . $DB->quoteName($params['sort']) . " " . $params['order'] . "
-                LIMIT " . (int)$params['start'] . ", " . (int)$params['list_limit'];
+                LIMIT " . (int)$params['list_limit'] . " OFFSET " . (int)$params['start'];
         if ($result = $DB->query($query)) {
             while ($data = $DB->fetchAssoc($result)) {
                 if ($add_keys_names) {
@@ -1429,8 +1432,12 @@ abstract class API extends CommonGLPI
         }
 
         // get result full row counts
-        $count_query = "SELECT COUNT(*) FROM {$DB->quoteName($table)} $join WHERE $where";
-        $totalcount = $DB->query($count_query)->fetch_row()[0];
+        $count_query = "SELECT COUNT(DISTINCT " . $DB->quoteName("$table.id") . ")
+                FROM " . $DB->quoteName($table) . "
+                $join
+                WHERE $where";
+        $count_result = $DB->query($count_query);
+        $totalcount = $count_result ? $count_result->fetch_row()[0] : 0;
 
         if ($params['range'][0] > $totalcount) {
             $this->returnError(

@@ -615,7 +615,7 @@ class DBmysqlIterator implements Iterator, Countable
             if (
                 $this->conn instanceof DBmysql
                 && $this->conn->dbtype === 'pgsql'
-                && in_array($comparison, ['LIKE', 'NOT LIKE'], true)
+                && in_array($comparison, ['LIKE', 'NOT LIKE', 'ILIKE', 'NOT ILIKE'], true)
             ) {
                 $criterion .= " ESCAPE E'\\\\'";
             }
@@ -846,6 +846,8 @@ class DBmysqlIterator implements Iterator, Countable
     {
         if ($this->conn instanceof DBmysql && $this->conn->dbtype === 'pgsql') {
             return match (strtoupper($operator)) {
+                'LIKE'        => 'ILIKE',
+                'NOT LIKE'    => 'NOT ILIKE',
                 'REGEXP'      => '~',
                 'NOT REGEX',
                 'NOT REGEXP'  => '!~',

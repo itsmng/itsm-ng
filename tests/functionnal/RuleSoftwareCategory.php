@@ -86,7 +86,7 @@ class RuleSoftwareCategory extends DbTestCase
         $rule = getItemByTypeName('RuleSoftwareCategory', 'Import category from inventory tool');
         $rules_id = $rule->fields['id'];
 
-        $this->boolean($rule->fields['is_active'])->isFalse();
+        $this->integer($rule->fields['is_active'])->isEqualTo(0);
 
         $relations = [
            \RuleAction::class => 1,
@@ -106,7 +106,7 @@ class RuleSoftwareCategory extends DbTestCase
         $this->integer($cloned)->isGreaterThan($rules_id);
         $this->boolean($rule->getFromDB($cloned))->isTrue();
 
-        $this->boolean($rule->fields['is_active'])->isFalse();
+        $this->integer($rule->fields['is_active'])->isEqualTo(0);
         $this->string($rule->fields['name'])->startWith('Import category from inventory tool (copy');
 
         foreach ($relations as $relation => $expected) {

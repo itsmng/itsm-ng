@@ -356,9 +356,54 @@ class Rule extends DbTestCase
         $this->string($ruleTicket->getActionName($field))->isIdenticalTo($label);
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
+        $this->login();
 
+        $rule = new \Rule();
+        $criteria = new \RuleCriteria();
+        $action = new \RuleAction();
+
+        $pattern = 'rule-process-' . $this->getUniqueString();
+        $rules_id = $rule->add([
+           'name'        => 'Process rule ' . $pattern,
+           'is_active'   => 1,
+           'entities_id' => 0,
+           'sub_type'    => 'RuleDictionnarySoftware',
+           'match'       => \Rule::AND_MATCHING,
+           'condition'   => 0,
+           'description' => '',
+        ]);
+        $this->integer((int)$rules_id)->isGreaterThan(0);
+
+        $criteria_id = $criteria->add([
+           'rules_id'  => $rules_id,
+           'criteria'  => 'name',
+           'condition' => \Rule::PATTERN_IS,
+           'pattern'   => $pattern,
+        ]);
+        $this->integer((int)$criteria_id)->isGreaterThan(0);
+
+        $action_id = $action->add([
+           'rules_id'    => $rules_id,
+           'action_type' => 'assign',
+           'field'       => 'version',
+           'value'       => '1.0',
+        ]);
+        $this->integer((int)$action_id)->isGreaterThan(0);
+
+        $rule_instance = new \RuleDictionnarySoftware();
+        $this->boolean($rule_instance->getRuleWithCriteriasAndActions($rules_id, 1, 1))->isTrue();
+
+        $input = ['name' => $pattern];
+        $output = ['_no_rule_matches' => '1'];
+        $params = [];
+        $rule_instance->process($input, $output, $params);
+
+        $this->array($output)->isIdenticalTo([
+           'version'       => '1.0',
+           '_rule_process' => true,
+        ]);
     }
 
     public function testPrepareInputDataForProcess()
@@ -569,7 +614,7 @@ class Rule extends DbTestCase
         $rule = getItemByTypeName('Rule', 'One user assignation');
         $rules_id = $rule->fields['id'];
 
-        $this->boolean($rule->fields['is_active'])->isTrue();
+        $this->integer($rule->fields['is_active'])->isEqualTo(1);
         $this->string($rule->fields['name'])->isIdenticalTo('One user assignation');
 
         $relations = [
@@ -590,7 +635,7 @@ class Rule extends DbTestCase
         $this->integer($cloned)->isGreaterThan($rules_id);
         $this->boolean($rule->getFromDB($cloned))->isTrue();
 
-        $this->boolean($rule->fields['is_active'])->isFalse();
+        $this->integer($rule->fields['is_active'])->isEqualTo(0);
         $this->string($rule->fields['name'])->startWith('One user assignation (copy');
 
         foreach ($relations as $relation => $expected) {

@@ -195,7 +195,7 @@ class CalendarSegment extends CommonDBChild
         $iterator = $DB->request([
            'SELECT' => [
               new \QueryExpression(
-                  $DB->sqlTimeDiffInSeconds(
+                  $DB->sqlClockTimeDiffInSeconds(
                       'LEAST(' . $DB->quoteValue($end_time) . ', ' . $DB->quoteName('end') . ')',
                       'GREATEST(' . $DB->quoteName('begin') . ', ' . $DB->quoteValue($begin_time) . ')'
                   ) . ' AS ' . $DB->quoteName('TDIFF')
@@ -238,7 +238,7 @@ class CalendarSegment extends CommonDBChild
                   "GREATEST(" . $DB->quoteName('begin') . ", " . $DB->quoteValue($begin_time)  . ") AS " . $DB->quoteName('BEGIN')
               ),
               new \QueryExpression(
-                  $DB->sqlTimeDiffInSeconds(
+                  $DB->sqlClockTimeDiffInSeconds(
                       $DB->quoteName('end'),
                       'GREATEST(' . $DB->quoteName('begin') . ', ' . $DB->quoteValue($begin_time) . ')'
                   ) . ' AS ' . $DB->quoteName('TDIFF')
