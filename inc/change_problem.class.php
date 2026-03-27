@@ -160,76 +160,223 @@ class Change_Problem extends CommonDBRelation
         }
 
         if ($canedit) {
-            echo "<div class='firstbloc'>";
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                  [
+                     'name' => 'add',
+                     'value' => _sx('button', 'Add'),
+                     'class' => 'btn btn-secondary',
+                  ]
+               ],
+               'content' => [
+                  __('Add a change') => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'problems_id',
+                           'value' => $ID,
+                        ],
+                        Change::getTypeName(1) => [
+                           'type' => 'select',
+                           'name' => 'changes_id',
+                           'itemtype' => Change::class,
+                           'used' => $used,
+                           'condition' => [
+                              'entities_id' => $problem->getEntityID(),
+                              'is_recursive' => $problem->isRecursive(),
+                           ],
+                           'col_lg' => 12,
+                           'col_md' => 12,
+                           'actions' => getItemActionButtons(['info'], Change::class),
+                        ],
+                        '' => Session::haveRight('change', CREATE) ? [
+                           'content' => "<a href='" . Toolbox::getItemTypeFormURL('Change') . "?problems_id={$ID}'>"
+                              . __('Create a change from this problem') . '</a>',
+                        ] : [],
+                     ]
+                  ]
+               ]
+            ];
+            renderTwigForm($form);
+        }
 
-            echo "<form aria-label='Problem Changes' name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
-                action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
+        $massiveActionContainerID = 'TableFor' . __CLASS__ . $rand;
+        if ($canedit && $numrows) {
+            $massiveactionparams = [
+               'container'     => $massiveActionContainerID,
+               'display_arrow' => false,
+               'specific_actions' => [
+                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+               ],
+            ];
+            Html::showMassiveActions($massiveactionparams);
+        }
 
-            echo "<table class='tab_cadre_fixe' aria-label='Problem Changes Table'>";
-            echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add a change') . "</th></tr>";
+        $fields = [
+           __('Status'),
+           _n('Date', 'Dates', 1),
+           __('Last update'),
+           __('Priority'),
+           _n('Requester', 'Requesters', 1),
+           __('Assigned'),
+           __('Category'),
+           __('Title'),
+           __('Planification'),
+        ];
+        if (count($_SESSION["glpiactiveentities"]) > 1) {
+            $fields[] = Entity::getTypeName(Session::getPluralNumber());
+        }
 
-            echo "<tr class='tab_bg_2'><td>";
-            echo "<input type='hidden' name='problems_id' value='$ID'>";
-            Change::dropdown([
-               'used'        => $used,
-               'entity'      => $problem->getEntityID(),
-               'entity_sons' => $problem->isRecursive(),
+        $values = [];
+        $massive_action = [];
+        foreach ($changes as $data) {
+            $change = new Change();
+            $change->getFromDB($data['id']);
+
+            $newValue = [];
+            $newValue[] = sprintf(__('%1$s: %2$s'), __('ID'), $data["id"])
+               . "&nbsp;" . CommonITILObject::getStatusIcon($data["status"]);
+
+            if ($data['status'] == CommonITILObject::CLOSED) {
+                $newValue[] = sprintf(__('Closed on %s'), '<br>') . Html::convDateTime($data['closedate']);
+            } elseif ($data['status'] == CommonITILObject::SOLVED) {
+                $newValue[] = sprintf(__('Solved on %s'), '<br>') . Html::convDateTime($data['solvedate']);
+            } elseif ($data['begin_waiting_date']) {
+                $newValue[] = sprintf(__('Put on hold on %s'), '<br>') . Html::convDateTime($data['begin_waiting_date']);
+            } elseif ($data['time_to_resolve']) {
+                $newValue[] = sprintf(__('%1$s: %2$s'), __('Time to resolve'), '<br>') . Html::convDateTime($data['time_to_resolve']);
+            } else {
+                $newValue[] = sprintf(__('Opened on %s'), '<br>') . Html::convDateTime($data['date']);
+            }
+
+            $newValue[] = Html::convDateTime($data["date_mod"]);
+            $newValue[] = CommonITILObject::getPriorityName($data["priority"]);
+
+            $cell = '';
+            foreach ($change->getUsers(CommonITILActor::REQUESTER) as $d) {
+                $userdata = getUserName($d["users_id"], 2);
+                $cell .= sprintf(
+                    __('%1$s %2$s'),
+                    "<span class='b'>" . $userdata['name'] . "</span>",
+                    Html::showToolTip(
+                        $userdata["comment"],
+                        [
+                           'link' => $userdata["link"],
+                           'display' => false,
+                        ]
+                    )
+                );
+                $cell .= "<br>";
+            }
+            foreach ($change->getGroups(CommonITILActor::REQUESTER) as $d) {
+                $cell .= Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
+                $cell .= "<br>";
+            }
+            $newValue[] = $cell;
+
+            $cell = '';
+            $entity = $change->getEntityID();
+            $anonymize_helpdesk = Entity::getUsedConfig('anonymize_support_agents', $entity)
+               && Session::getCurrentInterface() == 'helpdesk';
+            foreach ($change->getUsers(CommonITILActor::ASSIGN) as $d) {
+                if ($anonymize_helpdesk) {
+                    $cell .= __("Helpdesk");
+                } else {
+                    $userdata = getUserName($d["users_id"], 2);
+                    $cell .= sprintf(
+                        __('%1$s %2$s'),
+                        "<span class='b'>" . $userdata['name'] . "</span>",
+                        Html::showToolTip(
+                            $userdata["comment"],
+                            [
+                               'link' => $userdata["link"],
+                               'display' => false,
+                            ]
+                        )
+                    );
+                }
+                $cell .= "<br>";
+            }
+            foreach ($change->getGroups(CommonITILActor::ASSIGN) as $d) {
+                if ($anonymize_helpdesk) {
+                    $cell .= __("Helpdesk group");
+                } else {
+                    $cell .= Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
+                }
+                $cell .= "<br>";
+            }
+            foreach ($change->getSuppliers(CommonITILActor::ASSIGN) as $d) {
+                $cell .= Dropdown::getDropdownName("glpi_suppliers", $d["suppliers_id"]);
+                $cell .= "<br>";
+            }
+            $newValue[] = $cell;
+
+            $newValue[] = Dropdown::getDropdownName('glpi_itilcategories', $change->fields["itilcategories_id"]);
+            $newValue[] = ($change->canViewItem())
+               ? "<a id='" . $change->getType() . $change->fields["id"] . "$rand' href=\"" . $change->getLinkURL()
+                  . "\">" . $change->getName() . "</a>"
+               : $change->getName();
+
+            $cell = '';
+            $planned_infos = '';
+            $tasktype = $change->getType() . "Task";
+            $plan = new $tasktype();
+            $items = [];
+            $result = $DB->request([
+               'FROM'  => $plan->getTable(),
+               'WHERE' => [
+                  $change->getForeignKeyField() => $change->fields['id'],
+               ],
             ]);
-            echo "</td><td class='center'>";
-            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
-            echo "</td><td>";
-            if (Session::haveRight('change', CREATE)) {
-                echo "<a href='" . Toolbox::getItemTypeFormURL('Change') . "?problems_id=$ID'>";
-                echo __('Create a change from this problem');
-                echo "</a>";
+            foreach ($result as $plan) {
+                if (isset($plan['begin']) && $plan['begin']) {
+                    $items[$plan['id']] = $plan['id'];
+                    $planned_infos .= sprintf(__('From %s') . '<br>', Html::convDateTime($plan['begin']));
+                    $planned_infos .= sprintf(__('To %s') . '<br>', Html::convDateTime($plan['end']));
+                    if ($plan['users_id_tech']) {
+                        $planned_infos .= sprintf(__('By %s') . '<br>', getUserName($plan['users_id_tech']));
+                    }
+                    $planned_infos .= "<br>";
+                }
             }
-            echo "</td></tr></table>";
-            Html::closeForm();
-            echo "</div>";
-        }
 
-        echo "<div class='spaced'>";
-        if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-                                         'container'     => 'mass' . __CLASS__ . $rand];
-            Html::showMassiveActions($massiveactionparams);
-        }
-
-        echo "<table class='tab_cadre_fixehov' aria-label='Changes Table'>";
-        echo "<tr class='noHover'><th colspan='12'>" . Change::getTypeName($numrows) . "</th>";
-        echo "</tr>";
-        if ($numrows) {
-            Change::commonListHeader(Search::HTML_OUTPUT, 'mass' . __CLASS__ . $rand);
-            Session::initNavigateListItems(
-                'Change',
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    Problem::getTypeName(1),
-                    $problem->fields["name"]
-                )
-            );
-
-            $i = 0;
-            foreach ($changes as $data) {
-                Session::addToNavigateListItems('Change', $data["id"]);
-                Change::showShort($data['id'], ['row_num'                => $i,
-                                                     'type_for_massiveaction' => __CLASS__,
-                                                     'id_for_massiveaction'   => $data['linkid']]);
-                $i++;
+            $cell = count($items);
+            if ($cell) {
+                $cell = "<span class='pointer'
+                              id='" . $change->getType() . $change->fields["id"] . "planning$rand'>" .
+                                  $cell . '</span>';
+                $cell = sprintf(
+                    __('%1$s %2$s'),
+                    $cell,
+                    Html::showToolTip(
+                        $planned_infos,
+                        [
+                           'display' => false,
+                           'applyto' => $change->getType() .
+                              $change->fields["id"] .
+                              "planning" . $rand
+                        ]
+                    )
+                );
             }
-            Change::commonListHeader(Search::HTML_OUTPUT, 'mass' . __CLASS__ . $rand);
-        }
-        echo "</table>";
+            $newValue[] = $cell;
 
-        if ($canedit && $numrows) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
+            if (count($_SESSION["glpiactiveentities"]) > 1) {
+                $newValue[] = Dropdown::getDropdownName('glpi_entities', $data['entities_id']);
+            }
+
+            $values[] = $newValue;
+            $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
         }
-        echo "</div>";
+
+        renderTwigTemplate('table.twig', [
+           'id' => $massiveActionContainerID,
+           'fields' => $fields,
+           'values' => $values,
+           'massive_action' => $massive_action,
+        ]);
     }
 
 
