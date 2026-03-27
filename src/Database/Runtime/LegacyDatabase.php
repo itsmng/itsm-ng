@@ -464,6 +464,7 @@ class LegacyDatabase implements DatabaseInterface
         if (
             $this->dbtype !== 'pgsql'
             || !$this->dbh instanceof \PDO
+            || !$this->dbh->inTransaction()
         ) {
             return null;
         }
