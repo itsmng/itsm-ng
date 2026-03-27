@@ -238,7 +238,7 @@ SQL;
         }
 
         $definition = 'CREATE TABLE ' . $database->quoteName($table) . " (\n";
-        $definition .= implode(",\n", array_map(static fn(string $column): string => '  ' . $column, $columns));
+        $definition .= implode(",\n", array_map(static fn (string $column): string => '  ' . $column, $columns));
         if ($primary_key_columns !== []) {
             $definition .= ",\n  PRIMARY KEY (" . implode(', ', $primary_key_columns) . ')';
         }

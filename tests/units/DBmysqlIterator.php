@@ -425,9 +425,10 @@ class DBmysqlIterator extends DbTestCase
               ]
          ]
         );
-        $this->assertSqlEquals($it->getSql(), 
+        $this->assertSqlEquals(
+            $it->getSql(),
             'SELECT * FROM `foo` LEFT JOIN `bar` ON (`bar`.`id` = `foo`.`fk`) '.
-         'LEFT JOIN `baz` ON (`baz`.`id` = `foo`.`baz_id`)'
+            'LEFT JOIN `baz` ON (`baz`.`id` = `foo`.`baz_id`)'
         );
 
         $it = $this->it->execute('foo', ['INNER JOIN' => []]);
@@ -482,7 +483,8 @@ class DBmysqlIterator extends DbTestCase
               ]
          ]
         );
-        $this->assertSqlEquals($it->getSql(), 
+        $this->assertSqlEquals(
+            $it->getSql(),
             'SELECT * FROM `foo` LEFT JOIN `bar` ON (`bar`.`id` = `foo`.`fk` OR `field` > \'20\')'
         );
 
@@ -501,7 +503,8 @@ class DBmysqlIterator extends DbTestCase
               ]
          ]
         );
-        $this->assertSqlEquals($it->getSql(), 
+        $this->assertSqlEquals(
+            $it->getSql(),
             'SELECT * FROM `foo` LEFT JOIN `bar` ON (`bar`.`id` = `foo`.`fk` AND `field` = \'42\')'
         );
 
@@ -520,7 +523,8 @@ class DBmysqlIterator extends DbTestCase
               ]
          ]
         );
-        $this->assertSqlEquals($it->getSql(), 
+        $this->assertSqlEquals(
+            $it->getSql(),
             'SELECT * FROM `foo` LEFT JOIN (SELECT * FROM `bar`) AS `t2` ON (`t2`.`id` = `foo`.`fk`)'
         );
 
@@ -613,7 +617,8 @@ class DBmysqlIterator extends DbTestCase
         } else {
             $it = $it->execute('foo', ['a' => ['&', 1]]);
         }
-        $this->assertSqlEquals($it->getSql(), 
+        $this->assertSqlEquals(
+            $it->getSql(),
             $this->isPgsql()
                 ? 'SELECT * FROM `foo` WHERE (`a` & \'1\') <> 0'
                 : 'SELECT * FROM `foo` WHERE `a` & \'1\''
@@ -626,7 +631,8 @@ class DBmysqlIterator extends DbTestCase
         } else {
             $it = $it->execute('foo', ['a' => ['|', 1]]);
         }
-        $this->assertSqlEquals($it->getSql(), 
+        $this->assertSqlEquals(
+            $it->getSql(),
             $this->isPgsql()
                 ? 'SELECT * FROM `foo` WHERE (`a` | \'1\') <> 0'
                 : 'SELECT * FROM `foo` WHERE `a` | \'1\''

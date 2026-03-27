@@ -6,7 +6,6 @@ if (!defined('GLPI_ROOT')) {
 
 class DBpgsql extends DBmysql
 {
-    public $dbtype = 'pgsql';
-
     use \itsmng\Database\Runtime\PostgreSqlDatabaseTrait;
+    public $dbtype = 'pgsql';
 }
