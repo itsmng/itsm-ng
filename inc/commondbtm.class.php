@@ -625,6 +625,10 @@ class CommonDBTM extends CommonGLPI
     {
         global $DB;
 
+        if (isset($this->fields['id']) && $this->isNewID($this->fields['id'])) {
+            unset($this->fields['id']);
+        }
+
         $nb_fields = count($this->fields);
         if ($nb_fields > 0) {
             $params = [];

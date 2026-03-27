@@ -76,6 +76,23 @@ class Problem extends DbTestCase
         $this->integer((int)$problem->fields['status'])->isEqualTo(\Problem::ASSIGNED);
     }
 
+    public function testAddIgnoresNewItemPlaceholderId()
+    {
+        $this->login();
+
+        $problem = new \Problem();
+        $problems_id = $problem->add([
+           'id'      => -1,
+           'name'    => 'problem created from form placeholder id',
+           'content' => 'id placeholder must not be stored as the real primary key',
+        ]);
+
+        $this->integer((int)$problems_id)->isGreaterThan(0);
+        $this->integer((int)$problems_id)->isNotEqualTo(-1);
+        $this->boolean($problem->getFromDB($problems_id))->isTrue();
+        $this->integer((int)$problem->fields['id'])->isEqualTo((int)$problems_id);
+    }
+
     public function testReopenViaFollowup()
     {
         $this->login();
