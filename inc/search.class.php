@@ -32,6 +32,9 @@
  */
 
 use Glpi\Toolbox\URL;
+use itsmng\Search\Provider\LegacyMySQLSearchProvider;
+use itsmng\Search\Provider\LegacyPostgreSQLSearchProvider;
+use itsmng\Search\Provider\LegacySQLProvider;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
@@ -64,6 +67,348 @@ class Search
 
     public static $output_type = self::HTML_OUTPUT;
     public static $search = [];
+
+    private static function quoteName(string $name): string
+    {
+        global $DB;
+
+        return $DB->quoteName($name);
+    }
+
+    private static function quoteValue($value): string
+    {
+        global $DB;
+
+        return $DB->quoteValue($value);
+    }
+
+    private static function quoteColumn(string $table, string $field): string
+    {
+        return self::quoteName($table . '.' . $field);
+    }
+
+    private static function alias(string $name): string
+    {
+        return self::quoteName($name);
+    }
+
+    private static function quoteValuesList(array $values): string
+    {
+        return implode(', ', array_map(
+            static fn ($value) => self::quoteValue($value),
+            array_values($values)
+        ));
+    }
+
+    private static function collectGroupByField(array &$groupby_fields, ?string $expression): void
+    {
+        if ($expression === null || $expression === '') {
+            return;
+        }
+
+        if (!in_array($expression, $groupby_fields, true)) {
+            $groupby_fields[] = $expression;
+        }
+    }
+
+    private static function shouldGroupByComputedField(array $search_option): bool
+    {
+        if (!isset($search_option['computation'])) {
+            return true;
+        }
+
+        if (
+            isset($search_option['forcegroupby'])
+            && $search_option['forcegroupby']
+            && (!isset($search_option['computationgroupby']) || !$search_option['computationgroupby'])
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static function getFreshSearchOption(string $itemtype, int|string $ID): ?array
+    {
+        global $CFG_GLPI;
+
+        $cached_options = self::getOptions($itemtype);
+        $cached_option = $cached_options[$ID] ?? null;
+
+        $item = getItemForItemtype($itemtype);
+        if (!$item instanceof CommonDBTM) {
+            return $cached_option;
+        }
+
+        $options = $item->searchOptions();
+        if (!isset($options[$ID]) || !is_array($options[$ID])) {
+            return $cached_option;
+        }
+
+        $option = $options[$ID];
+        if (is_array($cached_option)) {
+            foreach (['joinparams', 'linkfield'] as $normalized_key) {
+                if (!array_key_exists($normalized_key, $option) && array_key_exists($normalized_key, $cached_option)) {
+                    $option[$normalized_key] = $cached_option[$normalized_key];
+                }
+            }
+        }
+
+        if (!isset($option['joinparams']) || !is_array($option['joinparams'])) {
+            $option['joinparams'] = [];
+        }
+
+        if (!isset($option['linkfield']) || $option['linkfield'] === '') {
+            $itemtable = $itemtype::getTable();
+            if (isset($CFG_GLPI['union_search_type'][$itemtype])) {
+                $itemtable = $CFG_GLPI['union_search_type'][$itemtype];
+            }
+
+            if (
+                isset($option['table'], $option['field'])
+                && $itemtable === $option['table']
+                && count($option['joinparams']) === 0
+            ) {
+                $option['linkfield'] = $option['field'];
+            } elseif (isset($option['table'])) {
+                $option['linkfield'] = getForeignKeyFieldForTable($option['table']);
+            }
+        }
+
+        return $option;
+    }
+
+    private static function quoteLogicalFieldValue(string $table, string $field, bool $value): string
+    {
+        global $DB;
+
+        $field_definition = $DB->getField($table, $field);
+        $field_type = strtolower((string)($field_definition['Type'] ?? ''));
+        if (preg_match('/\b(int|smallint|tinyint|bigint|numeric|decimal)\b/', $field_type)) {
+            return self::quoteValue((int)$value);
+        }
+
+        return self::quoteValue($value);
+    }
+
+    private static function collectGroupByFields(array &$groupby_fields, array $expressions): void
+    {
+        foreach ($expressions as $expression) {
+            self::collectGroupByField($groupby_fields, $expression);
+        }
+    }
+
+    private static function sqlIfNull(string $expression, string $fallback): string
+    {
+        global $DB;
+
+        return $DB->sqlIfNull($expression, $fallback);
+    }
+
+    private static function sqlGroupConcat(
+        string $expression,
+        string $separator = self::LONGSEP,
+        bool $distinct = false,
+        ?string $order_by = null
+    ): string {
+        global $DB;
+
+        return $DB->sqlGroupConcat($expression, $separator, $distinct, $order_by);
+    }
+
+    private static function sqlConcat(array $expressions): string
+    {
+        global $DB;
+
+        return $DB->sqlConcat($expressions);
+    }
+
+    private static function sqlDateAddInterval(string $expression, $value, string $unit): string
+    {
+        global $DB;
+
+        return $DB->sqlDateAddInterval($expression, $value, $unit);
+    }
+
+    private static function sqlCurrentTimestamp(): string
+    {
+        global $DB;
+
+        return $DB->sqlCurrentTimestamp();
+    }
+
+    private static function sqlCastIpAddress(string $expression): string
+    {
+        return LegacySQLProvider::castIpAddress($expression);
+    }
+
+    private static function sqlBitTest(string $left, string $right): string
+    {
+        global $DB;
+
+        return $DB->sqlBitTest($left, $right);
+    }
+
+    private static function sqlCastAsString(string $expression): string
+    {
+        global $DB;
+
+        return $DB->sqlCastAsString($expression);
+    }
+
+    private static function sqlConcatValueWithId(string $value_expression, string $id_expression, bool $null_safe = true): string
+    {
+        $string_value_expression = self::sqlCastAsString($value_expression);
+        if ($null_safe) {
+            $string_value_expression = self::sqlIfNull($string_value_expression, self::quoteValue(self::NULLVALUE));
+        }
+
+        return "CONCAT($string_value_expression, '" . self::SHORTSEP . "', $id_expression)";
+    }
+
+    private static function getHavingExpression(string $itemtype, int|string $ID, bool $meta = false, string|int|null $meta_type = null): string
+    {
+        global $DB;
+
+        $searchopt_override = null;
+        if ($meta && ($fresh_option = self::getFreshSearchOption($itemtype, $ID)) !== null) {
+            $searchopt_override = self::getOptions($itemtype);
+            $searchopt_override[$ID] = $fresh_option;
+        }
+
+        $select = self::addSelect($itemtype, $ID, $meta, $meta_type ?? 0, searchopt_override: $searchopt_override);
+        $alias = ' AS ' . self::alias("ITEM_{$itemtype}_{$ID}");
+        $pos = strpos($select, $alias);
+        if ($pos === false) {
+            return $DB->quoteName("ITEM_{$itemtype}_{$ID}");
+        }
+
+        return trim(substr($select, 0, $pos));
+    }
+
+    private static function getSearchProviderClass(): string
+    {
+        global $DB;
+
+        if ($DB instanceof DBmysql && $DB->dbtype === 'pgsql') {
+            return LegacyPostgreSQLSearchProvider::class;
+        }
+
+        return LegacyMySQLSearchProvider::class;
+    }
+
+    private static function ensureJoinConditionPrefix(string $condition): string
+    {
+        $condition = trim($condition);
+        if ($condition === '') {
+            return '';
+        }
+
+        if (preg_match('/^(AND|OR)\b/i', $condition) !== 1) {
+            $condition = 'AND ' . $condition;
+        }
+
+        return $condition . ' ';
+    }
+
+    private static function replaceJoinConditionPlaceholders(string $condition, string $ref_table, string $new_table): string
+    {
+        $from = [
+            '`REFTABLE`',
+            self::quoteName('REFTABLE'),
+            'REFTABLE',
+            '`NEWTABLE`',
+            self::quoteName('NEWTABLE'),
+            'NEWTABLE',
+        ];
+        $to = [
+            self::quoteName($ref_table),
+            self::quoteName($ref_table),
+            self::quoteName($ref_table),
+            self::quoteName($new_table),
+            self::quoteName($new_table),
+            self::quoteName($new_table),
+        ];
+
+        return str_replace($from, $to, $condition);
+    }
+
+    private static function normalizeJoinConditionCriteria($criteria, string $ref_table, string $new_table)
+    {
+        if ($criteria instanceof QueryExpression) {
+            return new QueryExpression(
+                self::replaceJoinConditionPlaceholders($criteria->getValue(), $ref_table, $new_table)
+            );
+        }
+
+        if (is_array($criteria)) {
+            $normalized = [];
+            foreach ($criteria as $key => $value) {
+                $normalized_key = is_string($key)
+                    ? str_replace(
+                        ['REFTABLE.', 'NEWTABLE.'],
+                        [$ref_table . '.', $new_table . '.'],
+                        $key
+                    )
+                    : $key;
+                $normalized[$normalized_key] = self::normalizeJoinConditionCriteria($value, $ref_table, $new_table);
+            }
+
+            return $normalized;
+        }
+
+        if (
+            is_string($criteria)
+            && preg_match('/^(REFTABLE|NEWTABLE)\.([a-zA-Z0-9_]+)$/', $criteria, $matches) === 1
+        ) {
+            $table = $matches[1] === 'REFTABLE' ? $ref_table : $new_table;
+
+            return new QueryExpression(self::quoteColumn($table, $matches[2]));
+        }
+
+        return $criteria;
+    }
+
+    private static function buildJoinConditionClause(array $joinparams, string $ref_table, string $new_table): string
+    {
+        $conditions = [];
+
+        if (isset($joinparams['condition_criteria'])) {
+            $iterator = new DBmysqlIterator(null);
+            $criteria = self::normalizeJoinConditionCriteria(
+                $joinparams['condition_criteria'],
+                $ref_table,
+                $new_table
+            );
+            $conditions[] = self::ensureJoinConditionPrefix($iterator->analyseCrit($criteria));
+        }
+
+        if (isset($joinparams['condition_expr'])) {
+            $expression = $joinparams['condition_expr'];
+            if ($expression instanceof QueryExpression) {
+                $expression = $expression->getValue();
+            }
+            if (is_string($expression)) {
+                $conditions[] = self::ensureJoinConditionPrefix(
+                    self::replaceJoinConditionPlaceholders($expression, $ref_table, $new_table)
+                );
+            }
+        }
+
+        if (isset($joinparams['condition'])) {
+            $condition = $joinparams['condition'];
+            if (is_array($condition)) {
+                $iterator = new DBmysqlIterator(null);
+                $condition = $iterator->analyseCrit($condition);
+            }
+
+            $conditions[] = self::ensureJoinConditionPrefix(
+                self::replaceJoinConditionPlaceholders((string) $condition, $ref_table, $new_table)
+            );
+        }
+
+        return implode('', array_filter($conditions));
+    }
 
     /**
      * Display search engine for an type
@@ -556,6 +901,11 @@ class Search
     **/
     public static function constructSQL(array &$data)
     {
+        self::getSearchProviderClass()::constructSQL($data);
+    }
+
+    public static function constructSQLInternal(array &$data)
+    {
         global $CFG_GLPI, $DB;
 
         if (!isset($data['itemtype'])) {
@@ -587,21 +937,25 @@ class Search
 
         //// 1 - SELECT
         // request currentuser for SQL supervision, not displayed
-        $SELECT = "SELECT DISTINCT `$itemtable`.`id` AS id, '" . Toolbox::addslashes_deep($_SESSION['glpiname']) . "' AS currentuser,
-                        " . self::addDefaultSelect($data['itemtype']);
+        $item_id = self::quoteColumn($itemtable, 'id');
+        $groupby_fields = [];
+
+        $SELECT = "SELECT DISTINCT $item_id AS id, '" . Toolbox::addslashes_deep($_SESSION['glpiname']) . "' AS currentuser,
+                        " . self::addDefaultSelect($data['itemtype'], $groupby_fields);
 
         // Add select for all toview item
         foreach ($data['toview'] as $val) {
-            $SELECT .= self::addSelect($data['itemtype'], $val);
+            $SELECT .= self::addSelect($data['itemtype'], $val, 0, 0, $groupby_fields);
         }
 
         if (isset($data['search']['as_map']) && $data['search']['as_map'] == 1 && $data['itemtype'] != 'Entity') {
-            $SELECT .= ' `glpi_locations`.`id` AS loc_id, ';
+            $SELECT .= ' ' . self::quoteColumn('glpi_locations', 'id') . ' AS loc_id, ';
+            self::collectGroupByField($groupby_fields, self::quoteColumn('glpi_locations', 'id'));
         }
 
         //// 2 - FROM AND LEFT JOIN
         // Set reference table
-        $FROM = " FROM `$itemtable`";
+        $FROM = " FROM " . self::quoteName($itemtable);
 
         // Init already linked tables array in order not to link a table several times
         $already_link_tables = [];
@@ -664,7 +1018,8 @@ class Search
                 $LINK  = " ";
                 $first = false;
             }
-            $COMMONWHERE .= $LINK . "`$itemtable`.`is_deleted` = " . (int)$data['search']['is_deleted'] . " ";
+            $COMMONWHERE .= $LINK . self::quoteColumn($itemtable, 'is_deleted') . " = "
+                . self::quoteValue((bool) $data['search']['is_deleted']) . " ";
         }
 
         // Remove template items
@@ -674,7 +1029,7 @@ class Search
                 $LINK  = " ";
                 $first = false;
             }
-            $COMMONWHERE .= $LINK . "`$itemtable`.`is_template` = 0 ";
+            $COMMONWHERE .= $LINK . self::quoteColumn($itemtable, 'is_template') . " = " . self::quoteValue(false) . " ";
         }
 
         // Add Restrict to current entities
@@ -714,7 +1069,7 @@ class Search
         }
 
         //// 4 - ORDER
-        $ORDER = " ORDER BY `id` ";
+        $ORDER = " ORDER BY " . self::alias('id') . " ";
         foreach ($data['tocompute'] as $val) {
             if ($data['search']['sort'] == $val) {
                 $ORDER = self::addOrderBy(
@@ -740,7 +1095,7 @@ class Search
             || !empty($HAVING)
             || $data['search']['all_search']
         ) {
-            $GROUPBY = " GROUP BY `$itemtable`.`id`";
+            $GROUPBY = " GROUP BY " . implode(', ', array_unique(array_merge([$item_id], $groupby_fields)));
         }
 
         if (empty($GROUPBY)) {
@@ -749,7 +1104,7 @@ class Search
                     break;
                 }
                 if (isset($searchopt[$val2]["forcegroupby"])) {
-                    $GROUPBY = " GROUP BY `$itemtable`.`id`";
+                    $GROUPBY = " GROUP BY " . implode(', ', array_unique(array_merge([$item_id], $groupby_fields)));
                 }
             }
         }
@@ -761,13 +1116,13 @@ class Search
             if ($data['search']['list_limit'] == 0) {
                 $data['search']['list_limit'] = '18446744073709551615';
             }
-            $LIMIT = " LIMIT " . (int)$data['search']['start'] . ", " . (int)$data['search']['list_limit'];
+            $LIMIT = " LIMIT " . (int)$data['search']['list_limit'] . " OFFSET " . (int)$data['search']['start'];
 
-            $count = "count(DISTINCT `$itemtable`.`id`)";
+            $count = "count(DISTINCT $item_id)";
             // request currentuser for SQL supervision, not displayed
             $query_num = "SELECT $count,
                               '" . Toolbox::addslashes_deep($_SESSION['glpiname']) . "' AS currentuser
-                       FROM `$itemtable`" .
+                       FROM " . self::quoteName($itemtable) .
                           $COMMONLEFTJOIN;
 
             $first     = true;
@@ -798,35 +1153,33 @@ class Search
                                 $tmpquery
                             );
                             $query_num  = str_replace($data['itemtype'], $ctype, $query_num);
-                            $query_num .= " AND `$ctable`.`id` IS NOT NULL ";
+                            $query_num .= " AND " . self::quoteColumn($ctable, 'id') . " IS NOT NULL ";
 
                             // Add deleted if item have it
                             if ($citem && $citem->maybeDeleted()) {
-                                $query_num .= " AND `$ctable`.`is_deleted` = 0 ";
+                                $query_num .= " AND " . self::quoteColumn($ctable, 'is_deleted') . " = " . self::quoteValue(false) . " ";
                             }
 
                             // Remove template items
                             if ($citem && $citem->maybeTemplate()) {
-                                $query_num .= " AND `$ctable`.`is_template` = 0 ";
+                                $query_num .= " AND " . self::quoteColumn($ctable, 'is_template') . " = " . self::quoteValue(false) . " ";
                             }
                         } else {// Ref table case
                             $reftable = $data['itemtype']::getTable();
                             if ($data['item'] && $data['item']->maybeDeleted()) {
                                 $tmpquery = str_replace(
-                                    "`" . $CFG_GLPI["union_search_type"][$data['itemtype']] . "`.
-                                                   `is_deleted`",
-                                    "`$reftable`.`is_deleted`",
+                                    self::quoteColumn($CFG_GLPI["union_search_type"][$data['itemtype']], 'is_deleted'),
+                                    self::quoteColumn($reftable, 'is_deleted'),
                                     $tmpquery
                                 );
                             }
-                            $replace  = "FROM `$reftable`
-                                  INNER JOIN `$ctable`
-                                       ON (`$reftable`.`items_id` =`$ctable`.`id`
-                                           AND `$reftable`.`itemtype` = '$ctype')";
+                            $replace  = "FROM " . self::quoteName($reftable) . "
+                                  INNER JOIN " . self::quoteName($ctable) . "
+                                       ON (" . self::quoteColumn($reftable, 'items_id') . " =" . self::quoteColumn($ctable, 'id') . "
+                                           AND " . self::quoteColumn($reftable, 'itemtype') . " = '$ctype')";
 
                             $query_num = str_replace(
-                                "FROM `" .
-                                                       $CFG_GLPI["union_search_type"][$data['itemtype']] . "`",
+                                "FROM " . self::quoteName($CFG_GLPI["union_search_type"][$data['itemtype']]),
                                 $replace,
                                 $tmpquery
                             );
@@ -895,16 +1248,16 @@ class Search
                                     $FROM .
                                     $WHERE;
 
-                        $tmpquery .= " AND `$ctable`.`id` IS NOT NULL ";
+                        $tmpquery .= " AND " . self::quoteColumn($ctable, 'id') . " IS NOT NULL ";
 
                         // Add deleted if item have it
                         if ($citem && $citem->maybeDeleted()) {
-                            $tmpquery .= " AND `$ctable`.`is_deleted` = 0 ";
+                            $tmpquery .= " AND " . self::quoteColumn($ctable, 'is_deleted') . " = " . self::quoteValue(false) . " ";
                         }
 
                         // Remove template items
                         if ($citem && $citem->maybeTemplate()) {
-                            $tmpquery .= " AND `$ctable`.`is_template` = 0 ";
+                            $tmpquery .= " AND " . self::quoteColumn($ctable, 'is_template') . " = " . self::quoteValue(false) . " ";
                         }
 
                         $tmpquery .= $GROUPBY .
@@ -927,26 +1280,24 @@ class Search
                         $reftable = $data['itemtype']::getTable();
 
                         $tmpquery = $SELECT . ", '$ctype' AS TYPE,
-                                      `$reftable`.`id` AS refID, " . "
-                                      `$ctable`.`entities_id` AS ENTITY " .
+                                      " . self::quoteColumn($reftable, 'id') . " AS refID, " . "
+                                      " . self::quoteColumn($ctable, 'entities_id') . " AS ENTITY " .
                                     $FROM .
                                     $WHERE;
                         if ($data['item']->maybeDeleted()) {
                             $tmpquery = str_replace(
-                                "`" . $CFG_GLPI["union_search_type"][$data['itemtype']] . "`.
-                                                `is_deleted`",
-                                "`$reftable`.`is_deleted`",
+                                self::quoteColumn($CFG_GLPI["union_search_type"][$data['itemtype']], 'is_deleted'),
+                                self::quoteColumn($reftable, 'is_deleted'),
                                 $tmpquery
                             );
                         }
 
-                        $replace = "FROM `$reftable`" . "
-                              INNER JOIN `$ctable`" . "
-                                 ON (`$reftable`.`items_id`=`$ctable`.`id`" . "
-                                     AND `$reftable`.`itemtype` = '$ctype')";
+                        $replace = "FROM " . self::quoteName($reftable) . "
+                              INNER JOIN " . self::quoteName($ctable) . "
+                                 ON (" . self::quoteColumn($reftable, 'items_id') . "=" . self::quoteColumn($ctable, 'id') . "
+                                     AND " . self::quoteColumn($reftable, 'itemtype') . " = '$ctype')";
                         $tmpquery = str_replace(
-                            "FROM `" .
-                                                   $CFG_GLPI["union_search_type"][$data['itemtype']] . "`",
+                            "FROM " . self::quoteName($CFG_GLPI["union_search_type"][$data['itemtype']]),
                             $replace,
                             $tmpquery
                         );
@@ -956,7 +1307,11 @@ class Search
                             $tmpquery
                         );
                         $name_field = $ctype::getNameField();
-                        $tmpquery = str_replace("`$ctable`.`name`", "`$ctable`.`$name_field`", $tmpquery);
+                        $tmpquery = str_replace(
+                            self::quoteColumn($ctable, 'name'),
+                            self::quoteColumn($ctable, $name_field),
+                            $tmpquery
+                        );
                     }
                     $tmpquery = str_replace(
                         "ENTITYRESTRICT",
@@ -972,8 +1327,8 @@ class Search
 
                     // SOFTWARE HACK
                     if ($ctype == 'Software') {
-                        $tmpquery = str_replace("`glpi_softwares`.`serial`", "''", $tmpquery);
-                        $tmpquery = str_replace("`glpi_softwares`.`otherserial`", "''", $tmpquery);
+                        $tmpquery = str_replace(self::quoteColumn('glpi_softwares', 'serial'), "''", $tmpquery);
+                        $tmpquery = str_replace(self::quoteColumn('glpi_softwares', 'otherserial'), "''", $tmpquery);
                     }
                     $QUERY .= $tmpquery;
                 }
@@ -993,6 +1348,7 @@ class Search
                      $ORDER .
                      $LIMIT;
         }
+
         $data['sql']['search'] = $QUERY;
     }
 
@@ -1095,7 +1451,9 @@ class Search
                         $itemtype,
                         $criterion['field'],
                         $criterion['searchtype'],
-                        $criterion['value']
+                        $criterion['value'],
+                        !empty($criterion['meta']),
+                        (!empty($criterion['meta']) ? $criterion['itemtype'] : null)
                     );
                     if ($new_having !== false) {
                         $sql .= $new_having;
@@ -1247,18 +1605,37 @@ class Search
             }
 
             $m_itemtype = $criterion['itemtype'];
-            $metaopt = &self::getOptions($m_itemtype);
-            $sopt    = $metaopt[$criterion['field']];
+            $metaopt = self::getOptions($m_itemtype);
+            if (($fresh_option = self::getFreshSearchOption($m_itemtype, $criterion['field'])) !== null) {
+                $metaopt[$criterion['field']] = $fresh_option;
+            }
+            $sopt = $metaopt[$criterion['field']];
 
-            //add toview for meta criterion
-            $data['meta_toview'][$m_itemtype][] = $criterion['field'];
-
-            $SELECT .= self::addSelect(
-                $m_itemtype,
-                $criterion['field'],
-                true, // meta-criterion
-                $m_itemtype
+            $field_key = (string) $criterion['field'];
+            $already_in_main_view = $m_itemtype === $data['itemtype']
+                && in_array($field_key, array_map('strval', $data['toview']), true);
+            $already_in_meta_view = in_array(
+                $field_key,
+                array_map('strval', $data['meta_toview'][$m_itemtype] ?? []),
+                true
             );
+
+            // Meta criteria need a selected column only once. Re-adding the same field as both a
+            // main column and a meta column produces duplicate aliases that PostgreSQL rejects in
+            // ORDER BY clauses.
+            if (!$already_in_main_view && !$already_in_meta_view) {
+                $data['meta_toview'][$m_itemtype][] = $criterion['field'];
+                $meta_groupby_fields = [];
+
+                $SELECT .= self::addSelect(
+                    $m_itemtype,
+                    $criterion['field'],
+                    true, // meta-criterion
+                    $m_itemtype,
+                    $meta_groupby_fields,
+                    $metaopt
+                );
+            }
 
             $FROM .= self::addMetaLeftJoin(
                 $data['itemtype'],
@@ -1298,6 +1675,11 @@ class Search
     **/
     public static function constructData(array &$data, $onlycount = false)
     {
+        self::getSearchProviderClass()::constructData($data, $onlycount);
+    }
+
+    public static function constructDataInternal(array &$data, $onlycount = false)
+    {
         if (!isset($data['sql']) || !isset($data['sql']['search'])) {
             return false;
         }
@@ -1305,7 +1687,7 @@ class Search
 
         // Use a ReadOnly connection if available and configured to be used
         $DBread = DBConnection::getReadConnection();
-        $DBread->query("SET SESSION group_concat_max_len = 16384;");
+        $DBread->setGroupConcatMaxLen(16384);
 
         // directly increase group_concat_max_len to avoid double query
         if (count($data['search']['metacriteria'])) {
@@ -1314,7 +1696,7 @@ class Search
                     $metacriterion['link'] == 'AND NOT'
                     || $metacriterion['link'] == 'OR NOT'
                 ) {
-                    $DBread->query("SET SESSION group_concat_max_len = 4194304;");
+                    $DBread->setGroupConcatMaxLen(4194304);
                     break;
                 }
             }
@@ -1323,24 +1705,21 @@ class Search
         $DBread->execution_time = true;
         $result = $DBread->query($data['sql']['search']);
         /// Check group concat limit : if warning : increase limit
-        if ($result2 = $DBread->query('SHOW WARNINGS')) {
-            if ($DBread->numrows($result2) > 0) {
-                $res = $DBread->fetchAssoc($result2);
-                if ($res['Code'] == 1260) {
-                    $DBread->query("SET SESSION group_concat_max_len = 8194304;");
-                    $DBread->execution_time = true;
-                    $result = $DBread->query($data['sql']['search']);
-                }
+        if (($res = $DBread->getLastWarning()) !== null) {
+            if ($res['Code'] == 1260) {
+                $DBread->setGroupConcatMaxLen(8194304);
+                $DBread->execution_time = true;
+                $result = $DBread->query($data['sql']['search']);
+            }
 
-                if ($res['Code'] == 1116) { // too many tables
-                    echo self::showError(
-                        $data['search']['display_type'],
-                        __("'All' criterion is not usable with this object list, " .
-                                            "sql query fails (too many tables). " .
-                                            "Please use 'Items seen' criterion instead")
-                    );
-                    return false;
-                }
+            if ($res['Code'] == 1116) { // too many tables
+                echo self::showError(
+                    $data['search']['display_type'],
+                    __("'All' criterion is not usable with this object list, " .
+                                        "sql query fails (too many tables). " .
+                                        "Please use 'Items seen' criterion instead")
+                );
+                return false;
             }
         }
 
@@ -3270,7 +3649,12 @@ JAVASCRIPT;
      *
      * @return select string
     **/
-    public static function addHaving($LINK, $NOT, $itemtype, $ID, $searchtype, $val)
+    public static function addHaving($LINK, $NOT, $itemtype, $ID, $searchtype, $val, bool $meta = false, ?string $meta_type = null)
+    {
+        return self::getSearchProviderClass()::addHaving($LINK, $NOT, $itemtype, $ID, $searchtype, $val, $meta, $meta_type);
+    }
+
+    public static function addHavingInternal($LINK, $NOT, $itemtype, $ID, $searchtype, $val, bool $meta = false, ?string $meta_type = null)
     {
 
         global $DB;
@@ -3281,6 +3665,30 @@ JAVASCRIPT;
         }
         $table = $searchopt[$ID]["table"];
         $NAME = "ITEM_{$itemtype}_{$ID}";
+        $addtable = '';
+        $complexjoin = '';
+        if (isset($searchopt[$ID]['joinparams'])) {
+            $complexjoin = self::computeComplexJoinID($searchopt[$ID]['joinparams']);
+        }
+        $is_fkey_composite_on_self = getTableNameForForeignKeyField($searchopt[$ID]["linkfield"]) == $table
+           && $searchopt[$ID]["linkfield"] != getForeignKeyFieldForTable($table);
+        $orig_table = self::getOrigTableName($itemtype);
+        if (
+            ((($is_fkey_composite_on_self || $table != $orig_table)
+              && (!isset($GLOBALS['CFG_GLPI']["union_search_type"][$itemtype])
+                  || ($GLOBALS['CFG_GLPI']["union_search_type"][$itemtype] != $table)))
+             || !empty($complexjoin))
+            && ($searchopt[$ID]["linkfield"] != getForeignKeyFieldForTable($table))
+        ) {
+            $addtable .= "_" . $searchopt[$ID]["linkfield"];
+        }
+        if (!empty($complexjoin)) {
+            $addtable .= "_" . $complexjoin;
+        }
+        if ($meta && $meta_type !== null && $meta_type::getTable() != $table) {
+            $addtable .= "_" . $meta_type;
+        }
+        $qualified_table = $table . $addtable;
 
         // Plugin can override core definition for its type
         if ($plug = isPluginItemType($itemtype)) {
@@ -3324,6 +3732,11 @@ JAVASCRIPT;
             $NOT = !$NOT;
         }
 
+        $having_field = LegacySQLProvider::havingReference(
+            $NAME,
+            self::getHavingExpression($itemtype, $ID, $meta, $meta_type)
+        );
+
         // Preformat items
         if (isset($searchopt[$ID]["datatype"])) {
             switch ($searchopt[$ID]["datatype"]) {
@@ -3355,12 +3768,16 @@ JAVASCRIPT;
                             break;
                     }
 
-                    return " {$LINK} ({$DB->quoteName($NAME)} $operator {$DB->quoteValue($val)}) ";
+                    return " {$LINK} ({$having_field} $operator {$DB->quoteValue($val)}) ";
                     break;
                 case "count":
                 case "number":
                 case "decimal":
                 case "timestamp":
+                    if (in_array($searchtype, ['contains', 'notcontains'])) {
+                        return self::makeTextCriteria(self::sqlCastAsString($having_field), $val, $NOT, $LINK);
+                    }
+
                     $search  = ["/\&lt;/","/\&gt;/"];
                     $replace = ["<",">"];
                     $val     = preg_replace($search, $replace, $val);
@@ -3373,31 +3790,49 @@ JAVASCRIPT;
                             }
                         }
                         $regs[1] .= $regs[2];
-                        return " $LINK (`$NAME` " . $regs[1] . " " . $regs[3] . " ) ";
+                        if (
+                            $searchopt[$ID]["datatype"] === 'number'
+                            && ($table . "." . $searchopt[$ID]["field"]) === 'glpi_softwarelicenses.number'
+                        ) {
+                            $having_field = LegacySQLProvider::softwareLicenseNumberHavingExpression(
+                                $qualified_table,
+                                $searchopt[$ID]["field"]
+                            );
+                        }
+                        return " $LINK ($having_field " . $regs[1] . " " . $regs[3] . " ) ";
                     }
 
                     if (is_numeric($val)) {
                         if (isset($searchopt[$ID]["width"])) {
                             if (!$NOT) {
-                                return " $LINK (`$NAME` < " . (intval($val) + $searchopt[$ID]["width"]) . "
-                                        AND `$NAME` > " .
+                                return " $LINK ($having_field < " . (intval($val) + $searchopt[$ID]["width"]) . "
+                                        AND $having_field > " .
                                                    (intval($val) - $searchopt[$ID]["width"]) . ") ";
                             }
-                            return " $LINK (`$NAME` > " . (intval($val) + $searchopt[$ID]["width"]) . "
-                                     OR `$NAME` < " .
+                            return " $LINK ($having_field > " . (intval($val) + $searchopt[$ID]["width"]) . "
+                                     OR $having_field < " .
                                                (intval($val) - $searchopt[$ID]["width"]) . " ) ";
                         }
                         // Exact search
-                        if (!$NOT) {
-                            return " $LINK (`$NAME` = " . (intval($val)) . ") ";
+                        if (
+                            $searchopt[$ID]["datatype"] === 'number'
+                            && ($table . "." . $searchopt[$ID]["field"]) === 'glpi_softwarelicenses.number'
+                        ) {
+                            $having_field = LegacySQLProvider::softwareLicenseNumberHavingExpression(
+                                $qualified_table,
+                                $searchopt[$ID]["field"]
+                            );
                         }
-                        return " $LINK (`$NAME` <> " . (intval($val)) . ") ";
+                        if (!$NOT) {
+                            return " $LINK ($having_field = " . (intval($val)) . ") ";
+                        }
+                        return " $LINK ($having_field <> " . (intval($val)) . ") ";
                     }
                     break;
             }
         }
 
-        return self::makeTextCriteria("`$NAME`", $val, $NOT, $LINK);
+        return self::makeTextCriteria($having_field, $val, $NOT, $LINK);
     }
 
 
@@ -3414,6 +3849,11 @@ JAVASCRIPT;
      *
     **/
     public static function addOrderBy($itemtype, $ID, $order)
+    {
+        return self::getSearchProviderClass()::addOrderBy($itemtype, $ID, $order);
+    }
+
+    public static function addOrderByInternal($itemtype, $ID, $order)
     {
         global $CFG_GLPI;
 
@@ -3447,7 +3887,7 @@ JAVASCRIPT;
         }
 
         if (isset($CFG_GLPI["union_search_type"][$itemtype])) {
-            return " ORDER BY `ITEM_{$itemtype}_{$ID}` $order ";
+            return " ORDER BY " . self::alias("ITEM_{$itemtype}_{$ID}") . " $order ";
         }
 
         // Plugin can override core definition for its type
@@ -3468,13 +3908,16 @@ JAVASCRIPT;
         switch ($table . "." . $field) {
             case "glpi_auth_tables.name":
                 $user_searchopt = self::getOptions('User');
-                return " ORDER BY `glpi_users`.`authtype` $order,
-                              `glpi_authldaps" . $addtable . "_" .
-                                     self::computeComplexJoinID($user_searchopt[30]['joinparams']) . "`.
-                                 `name` $order,
-                              `glpi_authmails" . $addtable . "_" .
-                                     self::computeComplexJoinID($user_searchopt[31]['joinparams']) . "`.
-                                 `name` $order ";
+                return " ORDER BY "
+                    . self::quoteColumn('glpi_users', 'authtype') . " $order, "
+                    . self::quoteColumn(
+                        'glpi_authldaps' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[30]['joinparams']),
+                        'name'
+                    ) . " $order, "
+                    . self::quoteColumn(
+                        'glpi_authmails' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[31]['joinparams']),
+                        'name'
+                    ) . " $order ";
 
             case "glpi_users.name":
                 if ($itemtype != 'User') {
@@ -3485,15 +3928,24 @@ JAVASCRIPT;
                         $name1 = 'realname';
                         $name2 = 'firstname';
                     }
-                    return " ORDER BY `" . $table . $addtable . "`.`$name1` $order,
-                                 `" . $table . $addtable . "`.`$name2` $order,
-                                 `" . $table . $addtable . "`.`name` $order";
+                    return " ORDER BY "
+                        . self::quoteColumn($table . $addtable, $name1) . " $order, "
+                        . self::quoteColumn($table . $addtable, $name2) . " $order, "
+                        . self::quoteColumn($table . $addtable, 'name') . " $order";
                 }
-                return " ORDER BY `" . $table . $addtable . "`.`name` $order";
+                if (isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"]) {
+                    return " ORDER BY " . self::alias("ITEM_{$itemtype}_{$ID}") . " $order";
+                }
+                return " ORDER BY " . self::quoteColumn($table . $addtable, 'name') . " $order";
 
             case "glpi_networkequipments.ip":
             case "glpi_ipaddresses.name":
-                return " ORDER BY INET_ATON(`$table$addtable`.`$field`) $order ";
+                return " ORDER BY "
+                    . LegacySQLProvider::orderByIpAddress(
+                        self::quoteColumn($table . $addtable, $field),
+                        "ITEM_{$itemtype}_{$ID}"
+                    )
+                    . " $order ";
         }
 
         //// Default cases
@@ -3527,16 +3979,18 @@ JAVASCRIPT;
 
                     $add_minus = '';
                     if (isset($searchopt[$ID]["datafields"][3])) {
-                        $add_minus = "- `$table$addtable`.`" . $searchopt[$ID]["datafields"][3] . "`";
+                        $add_minus = "- " . self::quoteColumn($table . $addtable, $searchopt[$ID]["datafields"][3]);
                     }
-                    return " ORDER BY ADDDATE(`$table$addtable`.`" . $searchopt[$ID]["datafields"][1] . "`,
-                                         INTERVAL (`$table$addtable`.`" .
-                                                        $searchopt[$ID]["datafields"][2] . "` $add_minus)
-                                         $interval) $order ";
+                    $date_expression = self::sqlDateAddInterval(
+                        self::quoteColumn($table . $addtable, $searchopt[$ID]["datafields"][1]),
+                        '(' . self::quoteColumn($table . $addtable, $searchopt[$ID]["datafields"][2]) . " $add_minus)",
+                        $interval
+                    );
+                    return " ORDER BY $date_expression $order ";
             }
         }
 
-        return " ORDER BY `ITEM_{$itemtype}_{$ID}` $order ";
+        return " ORDER BY " . self::alias("ITEM_{$itemtype}_{$ID}") . " $order ";
     }
 
 
@@ -3589,7 +4043,12 @@ JAVASCRIPT;
      *
      * @return string Select string
     **/
-    public static function addDefaultSelect($itemtype)
+    public static function addDefaultSelect($itemtype, array &$groupby_fields = [])
+    {
+        return self::getSearchProviderClass()::addDefaultSelect($itemtype, $groupby_fields);
+    }
+
+    public static function addDefaultSelectInternal($itemtype, array &$groupby_fields = [])
     {
         global $DB;
 
@@ -3603,7 +4062,8 @@ JAVASCRIPT;
         $ret = "";
         switch ($itemtype) {
             case 'FieldUnicity':
-                $ret = "`glpi_fieldunicities`.`itemtype` AS ITEMTYPE,";
+                $ret = self::quoteColumn('glpi_fieldunicities', 'itemtype') . " AS ITEMTYPE,";
+                self::collectGroupByField($groupby_fields, self::quoteColumn('glpi_fieldunicities', 'itemtype'));
                 break;
 
             default:
@@ -3617,13 +4077,15 @@ JAVASCRIPT;
                 }
         }
         if ($itemtable == 'glpi_entities') {
-            $ret .= "`$itemtable`.`id` AS entities_id, '1' AS is_recursive, ";
+            $ret .= self::quoteColumn($itemtable, 'id') . " AS entities_id, " . self::quoteValue(true) . " AS is_recursive, ";
         } elseif ($mayberecursive) {
             if ($item->isField('entities_id')) {
                 $ret .= $DB->quoteName("$itemtable.entities_id") . ", ";
+                self::collectGroupByField($groupby_fields, self::quoteColumn($itemtable, 'entities_id'));
             }
             if ($item->isField('is_recursive')) {
                 $ret .= $DB->quoteName("$itemtable.is_recursive") . ", ";
+                self::collectGroupByField($groupby_fields, self::quoteColumn($itemtable, 'is_recursive'));
             }
         }
         return $ret;
@@ -3642,11 +4104,35 @@ JAVASCRIPT;
      *
      * @return string Select string
     **/
-    public static function addSelect($itemtype, $ID, $meta = 0, $meta_type = 0)
-    {
+    public static function addSelect(
+        $itemtype,
+        $ID,
+        $meta = 0,
+        $meta_type = 0,
+        array &$groupby_fields = [],
+        ?array $searchopt_override = null
+    ) {
+        return self::getSearchProviderClass()::addSelect(
+            $itemtype,
+            $ID,
+            $meta,
+            $meta_type,
+            $groupby_fields,
+            $searchopt_override
+        );
+    }
+
+    public static function addSelectInternal(
+        $itemtype,
+        $ID,
+        $meta = 0,
+        $meta_type = 0,
+        array &$groupby_fields = [],
+        ?array $searchopt_override = null
+    ) {
         global $DB, $CFG_GLPI;
 
-        $searchopt   = &self::getOptions($itemtype);
+        $searchopt   = $searchopt_override ?? self::getOptions($itemtype);
         $table       = $searchopt[$ID]["table"];
         $field       = $searchopt[$ID]["field"];
         $addtable    = "";
@@ -3701,12 +4187,17 @@ JAVASCRIPT;
             }
         }
 
-        $tocompute      = "`$table$addtable`.`$field`";
-        $tocomputeid    = "`$table$addtable`.`id`";
+        $qualified_table = $table . $addtable;
+        $tocompute       = self::quoteColumn($qualified_table, $field);
+        $tocomputeid     = self::quoteColumn($qualified_table, 'id');
 
-        $tocomputetrans = "IFNULL(`$table" . $addtable . "_trans_" . $field . "`.`value`,'" . self::NULLVALUE . "') ";
+        $tocomputetrans = self::sqlIfNull(
+            self::quoteColumn($table . $addtable . "_trans_" . $field, 'value'),
+            self::quoteValue(self::NULLVALUE)
+        ) . ' ';
 
         $ADDITONALFIELDS = '';
+        $additional_groupby_fields = [];
         if (
             isset($searchopt[$ID]["additionalfields"])
             && count($searchopt[$ID]["additionalfields"])
@@ -3716,12 +4207,18 @@ JAVASCRIPT;
                     $meta
                     || (isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])
                 ) {
-                    $ADDITONALFIELDS .= " IFNULL(GROUP_CONCAT(DISTINCT CONCAT(IFNULL(`$table$addtable`.`$key`,
-                                                                         '" . self::NULLVALUE . "'),
-                                                   '" . self::SHORTSEP . "', $tocomputeid)ORDER BY $tocomputeid SEPARATOR '" . self::LONGSEP . "'), '" . self::NULLVALUE . self::SHORTSEP . "')
-                                    AS `" . $NAME . "_$key`, ";
+                    $additional_expression = self::sqlConcatValueWithId(
+                        self::quoteColumn($qualified_table, $key),
+                        $tocomputeid
+                    );
+                    $ADDITONALFIELDS .= ' ' . self::sqlIfNull(
+                        self::sqlGroupConcat($additional_expression, self::LONGSEP, true, $tocomputeid),
+                        self::quoteValue(self::NULLVALUE . self::SHORTSEP)
+                    ) . ' AS ' . self::alias($NAME . "_$key") . ", ";
                 } else {
-                    $ADDITONALFIELDS .= "`$table$addtable`.`$key` AS `" . $NAME . "_$key`, ";
+                    $additional_field = self::quoteColumn($qualified_table, $key);
+                    $ADDITONALFIELDS .= $additional_field . ' AS ' . self::alias($NAME . "_$key") . ", ";
+                    $additional_groupby_fields[] = $additional_field;
                 }
             }
         }
@@ -3734,7 +4231,7 @@ JAVASCRIPT;
         switch ($table . "." . $field) {
             case "glpi_users.name":
                 if ($itemtype != 'User') {
-                    if ((isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])) {
+                    if ($meta || (isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])) {
                         $addaltemail = "";
                         if (
                             (($itemtype == 'Ticket') || ($itemtype == 'Problem'))
@@ -3751,35 +4248,51 @@ JAVASCRIPT;
                                  "_" . self::computeComplexJoinID($searchopt[$ID]['joinparams']['beforejoin']
                                                                           ['joinparams']) . $addmeta;
                             $addaltemail
-                               = "GROUP_CONCAT(DISTINCT CONCAT(`$ticket_user_table`.`users_id`, ' ',
-                                                        `$ticket_user_table`.`alternative_email`)
-                                                        SEPARATOR '" . self::LONGSEP . "') AS `" . $NAME . "_2`, ";
+                               = self::sqlGroupConcat(
+                                   "CONCAT("
+                                   . self::quoteColumn($ticket_user_table, 'users_id')
+                                   . ", ' ', "
+                                   . self::quoteColumn($ticket_user_table, 'alternative_email')
+                                   . ')',
+                                   self::LONGSEP,
+                                   true
+                               ) . ' AS ' . self::alias($NAME . "_2") . ", ";
                         }
-                        return " GROUP_CONCAT(DISTINCT `$table$addtable`.`id` SEPARATOR '" . self::LONGSEP . "')
-                                       AS `" . $NAME . "`,
+                        return ' ' . self::sqlGroupConcat(
+                            self::quoteColumn($qualified_table, 'id'),
+                            self::LONGSEP,
+                            true
+                        ) . ' AS ' . self::alias($NAME) . ",
                            $addaltemail
                            $ADDITONALFIELDS";
                     }
-                    return " `$table$addtable`.`$field` AS `" . $NAME . "`,
-                        `$table$addtable`.`realname` AS `" . $NAME . "_realname`,
-                        `$table$addtable`.`id`  AS `" . $NAME . "_id`,
-                        `$table$addtable`.`firstname` AS `" . $NAME . "_firstname`,
+                    self::collectGroupByFields($groupby_fields, [
+                        self::quoteColumn($qualified_table, $field),
+                        self::quoteColumn($qualified_table, 'realname'),
+                        self::quoteColumn($qualified_table, 'id'),
+                        self::quoteColumn($qualified_table, 'firstname'),
+                        ...$additional_groupby_fields,
+                    ]);
+                    return " " . self::quoteColumn($qualified_table, $field) . " AS " . self::alias($NAME) . ",
+                        " . self::quoteColumn($qualified_table, 'realname') . " AS " . self::alias($NAME . "_realname") . ",
+                        " . self::quoteColumn($qualified_table, 'id') . "  AS " . self::alias($NAME . "_id") . ",
+                        " . self::quoteColumn($qualified_table, 'firstname') . " AS " . self::alias($NAME . "_firstname") . ",
                         $ADDITONALFIELDS";
                 }
                 break;
 
             case "glpi_softwarelicenses.number":
                 if ($meta) {
-                    return " FLOOR(SUM(`$table$addtable2`.`$field`)
-                              * COUNT(DISTINCT `$table$addtable2`.`id`)
-                              / COUNT(`$table$addtable2`.`id`)) AS `" . $NAME . "`,
-                        MIN(`$table$addtable2`.`$field`) AS `" . $NAME . "_min`,
+                    return " FLOOR(SUM(" . self::quoteColumn($table . $addtable2, $field) . ")
+                              * COUNT(DISTINCT " . self::quoteColumn($table . $addtable2, 'id') . ")
+                              / COUNT(" . self::quoteColumn($table . $addtable2, 'id') . ")) AS " . self::alias($NAME) . ",
+                        MIN(" . self::quoteColumn($table . $addtable2, $field) . ") AS " . self::alias($NAME . "_min") . ",
                          $ADDITONALFIELDS";
                 } else {
-                    return " FLOOR(SUM(`$table$addtable`.`$field`)
-                              * COUNT(DISTINCT `$table$addtable`.`id`)
-                              / COUNT(`$table$addtable`.`id`)) AS `" . $NAME . "`,
-                        MIN(`$table$addtable`.`$field`) AS `" . $NAME . "_min`,
+                    return " FLOOR(SUM(" . self::quoteColumn($qualified_table, $field) . ")
+                              * COUNT(DISTINCT " . self::quoteColumn($qualified_table, 'id') . ")
+                              / COUNT(" . self::quoteColumn($qualified_table, 'id') . ")) AS " . self::alias($NAME) . ",
+                        MIN(" . self::quoteColumn($qualified_table, $field) . ") AS " . self::alias($NAME . "_min") . ",
                          $ADDITONALFIELDS";
                 }
 
@@ -3793,13 +4306,13 @@ JAVASCRIPT;
                     if ($meta) {
                         $addtable2 = "_" . $meta_type;
                     }
-                    return " GROUP_CONCAT(`$table$addtable`.`$field` SEPARATOR '" . self::LONGSEP . "') AS `" . $NAME . "`,
-                        GROUP_CONCAT(`glpi_profiles_users$addtable2`.`entities_id` SEPARATOR '" . self::LONGSEP . "')
-                                    AS `" . $NAME . "_entities_id`,
-                        GROUP_CONCAT(`glpi_profiles_users$addtable2`.`is_recursive` SEPARATOR '" . self::LONGSEP . "')
-                                    AS `" . $NAME . "_is_recursive`,
-                        GROUP_CONCAT(`glpi_profiles_users$addtable2`.`is_dynamic` SEPARATOR '" . self::LONGSEP . "')
-                                    AS `" . $NAME . "_is_dynamic`,
+                    return " " . self::sqlGroupConcat(self::quoteColumn($qualified_table, $field), self::LONGSEP) . " AS " . self::alias($NAME) . ",
+                        " . self::sqlGroupConcat(self::quoteColumn('glpi_profiles_users' . $addtable2, 'entities_id'), self::LONGSEP) . "
+                                    AS " . self::alias($NAME . "_entities_id") . ",
+                        " . self::sqlGroupConcat(self::quoteColumn('glpi_profiles_users' . $addtable2, 'is_recursive'), self::LONGSEP) . "
+                                    AS " . self::alias($NAME . "_is_recursive") . ",
+                        " . self::sqlGroupConcat(self::quoteColumn('glpi_profiles_users' . $addtable2, 'is_dynamic'), self::LONGSEP) . "
+                                    AS " . self::alias($NAME . "_is_dynamic") . ",
                         $ADDITONALFIELDS";
                 }
                 break;
@@ -3813,67 +4326,128 @@ JAVASCRIPT;
                     if ($meta) {
                         $addtable2 = "_" . $meta_type;
                     }
-                    return " GROUP_CONCAT(`$table$addtable`.`completename` SEPARATOR '" . self::LONGSEP . "')
-                                    AS `" . $NAME . "`,
-                        GROUP_CONCAT(`glpi_profiles_users$addtable2`.`profiles_id` SEPARATOR '" . self::LONGSEP . "')
-                                    AS `" . $NAME . "_profiles_id`,
-                        GROUP_CONCAT(`glpi_profiles_users$addtable2`.`is_recursive` SEPARATOR '" . self::LONGSEP . "')
-                                    AS `" . $NAME . "_is_recursive`,
-                        GROUP_CONCAT(`glpi_profiles_users$addtable2`.`is_dynamic` SEPARATOR '" . self::LONGSEP . "')
-                                    AS `" . $NAME . "_is_dynamic`,
+                    return " " . self::sqlGroupConcat(self::quoteColumn($qualified_table, 'completename'), self::LONGSEP) . "
+                                    AS " . self::alias($NAME) . ",
+                        " . self::sqlGroupConcat(self::quoteColumn('glpi_profiles_users' . $addtable2, 'profiles_id'), self::LONGSEP) . "
+                                    AS " . self::alias($NAME . "_profiles_id") . ",
+                        " . self::sqlGroupConcat(self::quoteColumn('glpi_profiles_users' . $addtable2, 'is_recursive'), self::LONGSEP) . "
+                                    AS " . self::alias($NAME . "_is_recursive") . ",
+                        " . self::sqlGroupConcat(self::quoteColumn('glpi_profiles_users' . $addtable2, 'is_dynamic'), self::LONGSEP) . "
+                                    AS " . self::alias($NAME . "_is_dynamic") . ",
                         $ADDITONALFIELDS";
                 }
                 break;
 
             case "glpi_auth_tables.name":
                 $user_searchopt = self::getOptions('User');
-                return " `glpi_users`.`authtype` AS `" . $NAME . "`,
-                     `glpi_users`.`auths_id` AS `" . $NAME . "_auths_id`,
-                     `glpi_authldaps" . $addtable . "_" .
-                               self::computeComplexJoinID($user_searchopt[30]['joinparams']) . $addmeta . "`.`$field`
-                              AS `" . $NAME . "_" . $ID . "_ldapname`,
-                     `glpi_authmails" . $addtable . "_" .
-                               self::computeComplexJoinID($user_searchopt[31]['joinparams']) . $addmeta . "`.`$field`
-                              AS `" . $NAME . "_mailname`,
+                self::collectGroupByFields($groupby_fields, [
+                    self::quoteColumn('glpi_users', 'authtype'),
+                    self::quoteColumn('glpi_users', 'auths_id'),
+                    self::quoteColumn(
+                        'glpi_authldaps' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[30]['joinparams']) . $addmeta,
+                        $field
+                    ),
+                    self::quoteColumn(
+                        'glpi_authmails' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[31]['joinparams']) . $addmeta,
+                        $field
+                    ),
+                    ...$additional_groupby_fields,
+                ]);
+                return " " . self::quoteColumn('glpi_users', 'authtype') . " AS " . self::alias($NAME) . ",
+                     " . self::quoteColumn('glpi_users', 'auths_id') . " AS " . self::alias($NAME . "_auths_id") . ",
+                     " . self::quoteColumn(
+                    'glpi_authldaps' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[30]['joinparams']) . $addmeta,
+                    $field
+                ) . "
+                              AS " . self::alias($NAME . "_" . $ID . "_ldapname") . ",
+                     " . self::quoteColumn(
+                    'glpi_authmails' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[31]['joinparams']) . $addmeta,
+                    $field
+                ) . "
+                              AS " . self::alias($NAME . "_mailname") . ",
                      $ADDITONALFIELDS";
 
             case "glpi_softwareversions.name":
                 if ($meta && ($meta_type == 'Software')) {
-                    return " GROUP_CONCAT(DISTINCT CONCAT(`glpi_softwares`.`name`, ' - ',
-                                                     `$table$addtable2`.`$field`, '" . self::SHORTSEP . "',
-                                                     `$table$addtable2`.`id`) SEPARATOR '" . self::LONGSEP . "')
-                                    AS `" . $NAME . "`,
+                    return " " . self::sqlGroupConcat(
+                        "CONCAT("
+                        . self::quoteColumn('glpi_softwares', 'name')
+                        . ", ' - ', "
+                        . self::quoteColumn($table . $addtable2, $field)
+                        . ", '" . self::SHORTSEP . "', "
+                        . self::quoteColumn($table . $addtable2, 'id')
+                        . ')',
+                        self::LONGSEP,
+                        true
+                    ) . "
+                                    AS " . self::alias($NAME) . ",
                         $ADDITONALFIELDS";
                 }
                 break;
 
             case "glpi_softwareversions.comment":
                 if ($meta && ($meta_type == 'Software')) {
-                    return " GROUP_CONCAT(DISTINCT CONCAT(`glpi_softwares`.`name`, ' - ',
-                                                     `$table$addtable2`.`$field`,'" . self::SHORTSEP . "',
-                                                     `$table$addtable2`.`id`) SEPARATOR '" . self::LONGSEP . "')
-                                    AS `" . $NAME . "`,
+                    return " " . self::sqlGroupConcat(
+                        "CONCAT("
+                        . self::quoteColumn('glpi_softwares', 'name')
+                        . ", ' - ', "
+                        . self::quoteColumn($table . $addtable2, $field)
+                        . ", '" . self::SHORTSEP . "', "
+                        . self::quoteColumn($table . $addtable2, 'id')
+                        . ')',
+                        self::LONGSEP,
+                        true
+                    ) . "
+                                    AS " . self::alias($NAME) . ",
                         $ADDITONALFIELDS";
                 }
-                return " GROUP_CONCAT(DISTINCT CONCAT(`$table$addtable`.`name`, ' - ',
-                                                  `$table$addtable`.`$field`, '" . self::SHORTSEP . "',
-                                                  `$table$addtable`.`id`) SEPARATOR '" . self::LONGSEP . "')
-                                 AS `" . $NAME . "`,
+                if ($meta || (isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"]) || $itemtype == 'Software') {
+                    return " " . self::sqlGroupConcat(
+                        "CONCAT("
+                        . self::sqlCastAsString(self::quoteColumn($qualified_table, 'name'))
+                        . ", ' - ', "
+                        . self::sqlCastAsString(self::quoteColumn($qualified_table, $field))
+                        . ", '" . self::SHORTSEP . "', "
+                        . self::quoteColumn($qualified_table, 'id')
+                        . ')',
+                        self::LONGSEP,
+                        true
+                    ) . "
+                                 AS " . self::alias($NAME) . ",
                      $ADDITONALFIELDS";
+                }
+                break;
 
             case "glpi_states.name":
                 if ($meta && ($meta_type == 'Software')) {
-                    return " GROUP_CONCAT(DISTINCT CONCAT(`glpi_softwares`.`name`, ' - ',
-                                                     `glpi_softwareversions$addtable`.`name`, ' - ',
-                                                     `$table$addtable2`.`$field`, '" . self::SHORTSEP . "',
-                                                     `$table$addtable2`.`id`) SEPARATOR '" . self::LONGSEP . "')
-                                     AS `" . $NAME . "`,
+                    return " " . self::sqlGroupConcat(
+                        "CONCAT("
+                        . self::quoteColumn('glpi_softwares', 'name')
+                        . ", ' - ', "
+                        . self::quoteColumn('glpi_softwareversions' . $addtable, 'name')
+                        . ", ' - ', "
+                        . self::quoteColumn($table . $addtable2, $field)
+                        . ", '" . self::SHORTSEP . "', "
+                        . self::quoteColumn($table . $addtable2, 'id')
+                        . ')',
+                        self::LONGSEP,
+                        true
+                    ) . "
+                                     AS " . self::alias($NAME) . ",
                         $ADDITONALFIELDS";
                 } elseif ($itemtype == 'Software') {
-                    return " GROUP_CONCAT(DISTINCT CONCAT(`glpi_softwareversions`.`name`, ' - ',
-                                                     `$table$addtable`.`$field`,'" . self::SHORTSEP . "',
-                                                     `$table$addtable`.`id`) SEPARATOR '" . self::LONGSEP . "')
-                                    AS `" . $NAME . "`,
+                    return " " . self::sqlGroupConcat(
+                        "CONCAT("
+                        . self::quoteColumn('glpi_softwareversions', 'name')
+                        . ", ' - ', "
+                        . self::quoteColumn($qualified_table, $field)
+                        . ", '" . self::SHORTSEP . "', "
+                        . self::quoteColumn($qualified_table, 'id')
+                        . ')',
+                        self::LONGSEP,
+                        true
+                    ) . "
+                                    AS " . self::alias($NAME) . ",
                         $ADDITONALFIELDS";
                 }
                 break;
@@ -3883,15 +4457,17 @@ JAVASCRIPT;
             case "glpi_changetasks.content":
                 if (is_subclass_of($itemtype, "CommonITILObject")) {
                     // force ordering by date desc
-                    return " GROUP_CONCAT(
-                  DISTINCT CONCAT(
-                     IFNULL($tocompute, '" . self::NULLVALUE . "'),
-                     '" . self::SHORTSEP . "',
-                     $tocomputeid
-                  )
-                  ORDER BY `$table$addtable`.`date` DESC
-                  SEPARATOR '" . self::LONGSEP . "'
-               ) AS `" . $NAME . "`, $ADDITONALFIELDS";
+                    $content_expression = "CONCAT("
+                        . self::sqlIfNull(self::sqlCastAsString($tocompute), self::quoteValue(self::NULLVALUE))
+                        . ", '" . self::SHORTSEP . "', "
+                        . $tocomputeid
+                        . ')';
+                    return " " . self::sqlGroupConcat(
+                        $content_expression,
+                        self::LONGSEP,
+                        true,
+                        self::quoteColumn($qualified_table, 'date') . " DESC"
+                    ) . " AS " . self::alias($NAME) . ", $ADDITONALFIELDS";
                 }
                 break;
 
@@ -3926,7 +4502,7 @@ JAVASCRIPT;
         if (isset($searchopt[$ID]["datatype"])) {
             switch ($searchopt[$ID]["datatype"]) {
                 case "count":
-                    return " COUNT(DISTINCT `$table$addtable`.`$field`) AS `" . $NAME . "`,
+                    return " COUNT(DISTINCT " . self::quoteColumn($qualified_table, $field) . ") AS " . self::alias($NAME) . ",
                      $ADDITONALFIELDS";
 
                 case "date_delay":
@@ -3937,23 +4513,25 @@ JAVASCRIPT;
 
                     $add_minus = '';
                     if (isset($searchopt[$ID]["datafields"][3])) {
-                        $add_minus = "-`$table$addtable`.`" . $searchopt[$ID]["datafields"][3] . "`";
+                        $add_minus = "-" . self::quoteColumn($qualified_table, $searchopt[$ID]["datafields"][3]);
                     }
+                    $date_delay_expression = self::sqlDateAddInterval(
+                        self::quoteColumn($qualified_table, $searchopt[$ID]["datafields"][1]),
+                        '(' . self::quoteColumn($qualified_table, $searchopt[$ID]["datafields"][2]) . " $add_minus)",
+                        $interval
+                    );
                     if (
                         $meta
                         || (isset($searchopt[$ID]["forcegroupby"]) && $searchopt[$ID]["forcegroupby"])
                     ) {
-                        return " GROUP_CONCAT(DISTINCT ADDDATE(`$table$addtable`.`" .
-                                                                  $searchopt[$ID]["datafields"][1] . "`,
-                                                         INTERVAL (`$table$addtable`.`" .
-                                                                          $searchopt[$ID]["datafields"][2] .
-                                                                          "` $add_minus) $interval)
-                                         SEPARATOR '" . self::LONGSEP . "') AS `" . $NAME . "`,
+                        return " " . self::sqlGroupConcat($date_delay_expression, self::LONGSEP, true) . " AS " . self::alias($NAME) . ",
                            $ADDITONALFIELDS";
                     }
-                    return "ADDDATE(`$table$addtable`.`" . $searchopt[$ID]["datafields"][1] . "`,
-                               INTERVAL (`$table$addtable`.`" . $searchopt[$ID]["datafields"][2] .
-                                               "` $add_minus) $interval) AS `" . $NAME . "`,
+                    self::collectGroupByFields($groupby_fields, [
+                        $date_delay_expression,
+                        ...$additional_groupby_fields,
+                    ]);
+                    return $date_delay_expression . " AS " . self::alias($NAME) . ",
                        $ADDITONALFIELDS";
 
                 case "itemlink":
@@ -3963,20 +4541,30 @@ JAVASCRIPT;
                     ) {
                         $TRANS = '';
                         if (Session::haveTranslations(getItemTypeForTable($table), $field)) {
-                            $TRANS = "GROUP_CONCAT(DISTINCT CONCAT(IFNULL($tocomputetrans, '" . self::NULLVALUE . "'),
-                                                             '" . self::SHORTSEP . "',$tocomputeid) ORDER BY $tocomputeid
-                                             SEPARATOR '" . self::LONGSEP . "')
-                                     AS `" . $NAME . "_trans_" . $field . "`, ";
+                            $TRANS = self::sqlGroupConcat(
+                                self::sqlConcatValueWithId($tocomputetrans, $tocomputeid),
+                                self::LONGSEP,
+                                true,
+                                $tocomputeid
+                            ) . ' AS ' . self::alias($NAME . "_trans_" . $field) . ", ";
                         }
 
-                        return " GROUP_CONCAT(DISTINCT CONCAT($tocompute, '" . self::SHORTSEP . "' ,
-                                                        `$table$addtable`.`id`) ORDER BY `$table$addtable`.`id`
-                                        SEPARATOR '" . self::LONGSEP . "') AS `" . $NAME . "`,
+                        return " " . self::sqlGroupConcat(
+                            "CONCAT($tocompute, '" . self::SHORTSEP . "', " . self::quoteColumn($qualified_table, 'id') . ')',
+                            self::LONGSEP,
+                            true,
+                            self::quoteColumn($qualified_table, 'id')
+                        ) . " AS " . self::alias($NAME) . ",
                            $TRANS
                            $ADDITONALFIELDS";
                     }
-                    return " $tocompute AS `" . $NAME . "`,
-                        `$table$addtable`.`id` AS `" . $NAME . "_id`,
+                    self::collectGroupByFields($groupby_fields, [
+                        $tocompute,
+                        self::quoteColumn($qualified_table, 'id'),
+                        ...$additional_groupby_fields,
+                    ]);
+                    return " $tocompute AS " . self::alias($NAME) . ",
+                        " . self::quoteColumn($qualified_table, 'id') . " AS " . self::alias($NAME . "_id") . ",
                         $ADDITONALFIELDS";
             }
         }
@@ -3991,21 +4579,37 @@ JAVASCRIPT;
         ) { // Not specific computation
             $TRANS = '';
             if (Session::haveTranslations(getItemTypeForTable($table), $field)) {
-                $TRANS = "GROUP_CONCAT(DISTINCT CONCAT(IFNULL($tocomputetrans, '" . self::NULLVALUE . "'),
-                                                   '" . self::SHORTSEP . "',$tocomputeid) ORDER BY $tocomputeid SEPARATOR '" . self::LONGSEP . "')
-                                  AS `" . $NAME . "_trans_" . $field . "`, ";
+                $TRANS = self::sqlGroupConcat(
+                    self::sqlConcatValueWithId($tocomputetrans, $tocomputeid),
+                    self::LONGSEP,
+                    true,
+                    $tocomputeid
+                ) . ' AS ' . self::alias($NAME . "_trans_" . $field) . ", ";
             }
-            return " GROUP_CONCAT(DISTINCT CONCAT(IFNULL($tocompute, '" . self::NULLVALUE . "'),
-                                               '" . self::SHORTSEP . "',$tocomputeid) ORDER BY $tocomputeid SEPARATOR '" . self::LONGSEP . "')
-                              AS `" . $NAME . "`,
+            return " " . self::sqlGroupConcat(
+                self::sqlConcatValueWithId($tocompute, $tocomputeid),
+                self::LONGSEP,
+                true,
+                $tocomputeid
+            ) . "
+                              AS " . self::alias($NAME) . ",
                   $TRANS
                   $ADDITONALFIELDS";
         }
         $TRANS = '';
         if (Session::haveTranslations(getItemTypeForTable($table), $field)) {
-            $TRANS = $tocomputetrans . " AS `" . $NAME . "_trans_" . $field . "`, ";
+            $TRANS = $tocomputetrans . " AS " . self::alias($NAME . "_trans_" . $field) . ", ";
         }
-        return "$tocompute AS `" . $NAME . "`, $TRANS $ADDITONALFIELDS";
+        if (self::shouldGroupByComputedField($searchopt[$ID])) {
+            self::collectGroupByFields($groupby_fields, [
+                $tocompute,
+                (Session::haveTranslations(getItemTypeForTable($table), $field) ? $tocomputetrans : null),
+                ...$additional_groupby_fields,
+            ]);
+        } else {
+            self::collectGroupByFields($groupby_fields, $additional_groupby_fields);
+        }
+        return "$tocompute AS " . self::alias($NAME) . ", $TRANS $ADDITONALFIELDS";
     }
 
 
@@ -4031,7 +4635,8 @@ JAVASCRIPT;
 
             case 'Notification':
                 if (!Config::canView()) {
-                    $condition = " `glpi_notifications`.`itemtype` NOT IN ('CronTask', 'DBConnection') ";
+                    $condition = ' ' . self::quoteColumn('glpi_notifications', 'itemtype')
+                        . ' NOT IN (' . self::quoteValuesList(['CronTask', 'DBConnection']) . ') ';
                 }
                 break;
 
@@ -4046,13 +4651,12 @@ JAVASCRIPT;
             case 'ProjectTask':
                 $condition  = '';
                 $teamtable  = 'glpi_projecttaskteams';
-                $condition .= "`glpi_projects`.`is_template` = 0";
-                $condition .= " AND ((`$teamtable`.`itemtype` = 'User'
-                             AND `$teamtable`.`items_id` = '" . Session::getLoginUserID() . "')";
+                $condition .= self::quoteColumn('glpi_projects', 'is_template') . ' = ' . self::quoteValue(0);
+                $condition .= ' AND ((' . self::quoteColumn($teamtable, 'itemtype') . ' = ' . self::quoteValue('User')
+                    . ' AND ' . self::quoteColumn($teamtable, 'items_id') . ' = ' . self::quoteValue(Session::getLoginUserID()) . ')';
                 if (count($_SESSION['glpigroups'])) {
-                    $condition .= " OR (`$teamtable`.`itemtype` = 'Group'
-                                    AND `$teamtable`.`items_id`
-                                       IN (" . implode(",", $_SESSION['glpigroups']) . "))";
+                    $condition .= ' OR (' . self::quoteColumn($teamtable, 'itemtype') . ' = ' . self::quoteValue('Group')
+                        . ' AND ' . self::quoteColumn($teamtable, 'items_id') . ' IN (' . implode(',', $_SESSION['glpigroups']) . '))';
                 }
                 $condition .= ") ";
                 break;
@@ -4061,15 +4665,15 @@ JAVASCRIPT;
                 $condition = '';
                 if (!Session::haveRight("project", Project::READALL)) {
                     $teamtable  = 'glpi_projectteams';
-                    $condition .= "(`glpi_projects`.users_id = '" . Session::getLoginUserID() . "'
-                               OR (`$teamtable`.`itemtype` = 'User'
-                                   AND `$teamtable`.`items_id` = '" . Session::getLoginUserID() . "')";
+                    $condition .= '(' . self::quoteColumn('glpi_projects', 'users_id') . ' = ' . self::quoteValue(Session::getLoginUserID())
+                        . ' OR (' . self::quoteColumn($teamtable, 'itemtype') . ' = ' . self::quoteValue('User')
+                        . ' AND ' . self::quoteColumn($teamtable, 'items_id') . ' = ' . self::quoteValue(Session::getLoginUserID()) . ')';
                     if (count($_SESSION['glpigroups'])) {
-                        $condition .= " OR (`glpi_projects`.`groups_id`
-                                       IN (" . implode(",", $_SESSION['glpigroups']) . "))";
-                        $condition .= " OR (`$teamtable`.`itemtype` = 'Group'
-                                      AND `$teamtable`.`items_id`
-                                          IN (" . implode(",", $_SESSION['glpigroups']) . "))";
+                        $condition .= ' OR (' . self::quoteColumn('glpi_projects', 'groups_id')
+                            . ' IN (' . implode(",", $_SESSION['glpigroups']) . '))';
+                        $condition .= ' OR (' . self::quoteColumn($teamtable, 'itemtype') . ' = ' . self::quoteValue('Group')
+                            . ' AND ' . self::quoteColumn($teamtable, 'items_id')
+                            . ' IN (' . implode(",", $_SESSION['glpigroups']) . '))';
                     }
                     $condition .= ") ";
                 }
@@ -4081,64 +4685,52 @@ JAVASCRIPT;
                 if (!Session::haveRight("ticket", Ticket::READALL)) {
                     $searchopt
                        = &self::getOptions($itemtype);
-                    $requester_table
-                       = '`glpi_tickets_users_' .
-                          self::computeComplexJoinID($searchopt[4]['joinparams']['beforejoin']
-                                                               ['joinparams']) . '`';
-                    $requestergroup_table
-                       = '`glpi_groups_tickets_' .
-                          self::computeComplexJoinID($searchopt[71]['joinparams']['beforejoin']
-                                                               ['joinparams']) . '`';
+                    $requester_table = self::quoteName('glpi_tickets_users_' .
+                        self::computeComplexJoinID($searchopt[4]['joinparams']['beforejoin']['joinparams']));
+                    $requestergroup_table = self::quoteName('glpi_groups_tickets_' .
+                        self::computeComplexJoinID($searchopt[71]['joinparams']['beforejoin']['joinparams']));
 
-                    $assign_table
-                       = '`glpi_tickets_users_' .
-                          self::computeComplexJoinID($searchopt[5]['joinparams']['beforejoin']
-                                                               ['joinparams']) . '`';
-                    $assigngroup_table
-                       = '`glpi_groups_tickets_' .
-                          self::computeComplexJoinID($searchopt[8]['joinparams']['beforejoin']
-                                                               ['joinparams']) . '`';
+                    $assign_table = self::quoteName('glpi_tickets_users_' .
+                        self::computeComplexJoinID($searchopt[5]['joinparams']['beforejoin']['joinparams']));
+                    $assigngroup_table = self::quoteName('glpi_groups_tickets_' .
+                        self::computeComplexJoinID($searchopt[8]['joinparams']['beforejoin']['joinparams']));
 
-                    $observer_table
-                       = '`glpi_tickets_users_' .
-                          self::computeComplexJoinID($searchopt[66]['joinparams']['beforejoin']
-                                                               ['joinparams']) . '`';
-                    $observergroup_table
-                       = '`glpi_groups_tickets_' .
-                          self::computeComplexJoinID($searchopt[65]['joinparams']['beforejoin']
-                                                               ['joinparams']) . '`';
+                    $observer_table = self::quoteName('glpi_tickets_users_' .
+                        self::computeComplexJoinID($searchopt[66]['joinparams']['beforejoin']['joinparams']));
+                    $observergroup_table = self::quoteName('glpi_groups_tickets_' .
+                        self::computeComplexJoinID($searchopt[65]['joinparams']['beforejoin']['joinparams']));
 
                     $condition = "(";
 
                     if (Session::haveRight("ticket", Ticket::READMY)) {
-                        $condition .= " $requester_table.users_id = '" . Session::getLoginUserID() . "'
-                                    OR $observer_table.users_id = '" . Session::getLoginUserID() . "'
-                                    OR `glpi_tickets`.`users_id_recipient` = '" . Session::getLoginUserID() . "'";
+                        $condition .= ' ' . self::quoteColumn(trim($requester_table, '`"'), 'users_id') . ' = ' . self::quoteValue(Session::getLoginUserID())
+                            . ' OR ' . self::quoteColumn(trim($observer_table, '`"'), 'users_id') . ' = ' . self::quoteValue(Session::getLoginUserID())
+                            . ' OR ' . self::quoteColumn('glpi_tickets', 'users_id_recipient') . ' = ' . self::quoteValue(Session::getLoginUserID());
                     } else {
                         $condition .= "0=1";
                     }
 
                     if (Session::haveRight("ticket", Ticket::READGROUP)) {
                         if (count($_SESSION['glpigroups'])) {
-                            $condition .= " OR $requestergroup_table.`groups_id`
-                                             IN (" . implode(",", $_SESSION['glpigroups']) . ")";
-                            $condition .= " OR $observergroup_table.`groups_id`
-                                             IN (" . implode(",", $_SESSION['glpigroups']) . ")";
+                            $condition .= ' OR ' . self::quoteColumn(trim($requestergroup_table, '`"'), 'groups_id')
+                                . ' IN (' . implode(",", $_SESSION['glpigroups']) . ')';
+                            $condition .= ' OR ' . self::quoteColumn(trim($observergroup_table, '`"'), 'groups_id')
+                                . ' IN (' . implode(",", $_SESSION['glpigroups']) . ')';
                         }
                     }
 
                     if (Session::haveRight("ticket", Ticket::OWN)) {// Can own ticket : show assign to me
-                        $condition .= " OR $assign_table.users_id = '" . Session::getLoginUserID() . "' ";
+                        $condition .= ' OR ' . self::quoteColumn(trim($assign_table, '`"'), 'users_id') . ' = ' . self::quoteValue(Session::getLoginUserID()) . ' ';
                     }
 
                     if (Session::haveRight("ticket", Ticket::READASSIGN)) { // assign to me
-                        $condition .= " OR $assign_table.`users_id` = '" . Session::getLoginUserID() . "'";
+                        $condition .= ' OR ' . self::quoteColumn(trim($assign_table, '`"'), 'users_id') . ' = ' . self::quoteValue(Session::getLoginUserID());
                         if (count($_SESSION['glpigroups'])) {
-                            $condition .= " OR $assigngroup_table.`groups_id`
-                                             IN (" . implode(",", $_SESSION['glpigroups']) . ")";
+                            $condition .= ' OR ' . self::quoteColumn(trim($assigngroup_table, '`"'), 'groups_id')
+                                . ' IN (' . implode(",", $_SESSION['glpigroups']) . ')';
                         }
                         if (Session::haveRight('ticket', Ticket::ASSIGN)) {
-                            $condition .= " OR `glpi_tickets`.`status`='" . CommonITILObject::INCOMING . "'";
+                            $condition .= ' OR ' . self::quoteColumn('glpi_tickets', 'status') . '=' . self::quoteValue(CommonITILObject::INCOMING);
                         }
                     }
 
@@ -4149,8 +4741,8 @@ JAVASCRIPT;
                                                     TicketValidation::VALIDATEREQUEST]
                         )
                     ) {
-                        $condition .= " OR `glpi_ticketvalidations`.`users_id_validate`
-                                          = '" . Session::getLoginUserID() . "'";
+                        $condition .= ' OR ' . self::quoteColumn('glpi_ticketvalidations', 'users_id_validate')
+                            . ' = ' . self::quoteValue(Session::getLoginUserID());
                     }
                     $condition .= ") ";
                 }
@@ -4161,50 +4753,44 @@ JAVASCRIPT;
                 if ($itemtype == 'Change') {
                     $right       = 'change';
                     $table       = 'changes';
-                    $groupetable = "`glpi_changes_groups_";
+                    $groupetable = 'glpi_changes_groups_';
                 } elseif ($itemtype == 'Problem') {
                     $right       = 'problem';
                     $table       = 'problems';
-                    $groupetable = "`glpi_groups_problems_";
+                    $groupetable = 'glpi_groups_problems_';
                 }
                 // Same structure in addDefaultJoin
                 $condition = '';
                 if (!Session::haveRight("$right", $itemtype::READALL)) {
                     $searchopt       = &self::getOptions($itemtype);
                     if (Session::haveRight("$right", $itemtype::READMY)) {
-                        $requester_table      = '`glpi_' . $table . '_users_' .
-                                                self::computeComplexJoinID($searchopt[4]['joinparams']
-                                                                           ['beforejoin']['joinparams']) . '`';
+                        $requester_table = 'glpi_' . $table . '_users_' .
+                            self::computeComplexJoinID($searchopt[4]['joinparams']['beforejoin']['joinparams']);
                         $requestergroup_table = $groupetable .
-                                                self::computeComplexJoinID($searchopt[71]['joinparams']
-                                                                           ['beforejoin']['joinparams']) . '`';
+                            self::computeComplexJoinID($searchopt[71]['joinparams']['beforejoin']['joinparams']);
 
-                        $observer_table       = '`glpi_' . $table . '_users_' .
-                                                self::computeComplexJoinID($searchopt[66]['joinparams']
-                                                                           ['beforejoin']['joinparams']) . '`';
-                        $observergroup_table  = $groupetable .
-                                                self::computeComplexJoinID($searchopt[65]['joinparams']
-                                                                          ['beforejoin']['joinparams']) . '`';
+                        $observer_table = 'glpi_' . $table . '_users_' .
+                            self::computeComplexJoinID($searchopt[66]['joinparams']['beforejoin']['joinparams']);
+                        $observergroup_table = $groupetable .
+                            self::computeComplexJoinID($searchopt[65]['joinparams']['beforejoin']['joinparams']);
 
-                        $assign_table         = '`glpi_' . $table . '_users_' .
-                                                self::computeComplexJoinID($searchopt[5]['joinparams']
-                                                                           ['beforejoin']['joinparams']) . '`';
-                        $assigngroup_table    = $groupetable .
-                                                self::computeComplexJoinID($searchopt[8]['joinparams']
-                                                                           ['beforejoin']['joinparams']) . '`';
+                        $assign_table = 'glpi_' . $table . '_users_' .
+                            self::computeComplexJoinID($searchopt[5]['joinparams']['beforejoin']['joinparams']);
+                        $assigngroup_table = $groupetable .
+                            self::computeComplexJoinID($searchopt[8]['joinparams']['beforejoin']['joinparams']);
                     }
                     $condition = "(";
 
                     if (Session::haveRight("$right", $itemtype::READMY)) {
-                        $condition .= " $requester_table.users_id = '" . Session::getLoginUserID() . "'
-                                 OR $observer_table.users_id = '" . Session::getLoginUserID() . "'
-                                 OR $assign_table.users_id = '" . Session::getLoginUserID() . "'
-                                 OR `glpi_" . $table . "`.`users_id_recipient` = '" . Session::getLoginUserID() . "'";
+                        $condition .= ' ' . self::quoteColumn($requester_table, 'users_id') . ' = ' . self::quoteValue(Session::getLoginUserID())
+                            . ' OR ' . self::quoteColumn($observer_table, 'users_id') . ' = ' . self::quoteValue(Session::getLoginUserID())
+                            . ' OR ' . self::quoteColumn($assign_table, 'users_id') . ' = ' . self::quoteValue(Session::getLoginUserID())
+                            . ' OR ' . self::quoteColumn('glpi_' . $table, 'users_id_recipient') . ' = ' . self::quoteValue(Session::getLoginUserID());
                         if (count($_SESSION['glpigroups'])) {
-                            $my_groups_keys = "'" . implode("','", $_SESSION['glpigroups']) . "'";
-                            $condition .= " OR $requestergroup_table.groups_id IN ($my_groups_keys)
-                                 OR $observergroup_table.groups_id IN ($my_groups_keys)
-                                 OR $assigngroup_table.groups_id IN ($my_groups_keys)";
+                            $my_groups_keys = self::quoteValuesList($_SESSION['glpigroups']);
+                            $condition .= ' OR ' . self::quoteColumn($requestergroup_table, 'groups_id') . " IN ($my_groups_keys)"
+                                . ' OR ' . self::quoteColumn($observergroup_table, 'groups_id') . " IN ($my_groups_keys)"
+                                . ' OR ' . self::quoteColumn($assigngroup_table, 'groups_id') . " IN ($my_groups_keys)";
                         }
                     } else {
                         $condition .= "0=1";
@@ -4216,8 +4802,7 @@ JAVASCRIPT;
 
             case 'Config':
                 $availableContexts = ['core'] + Plugin::getPlugins();
-                $availableContexts = implode("', '", $availableContexts);
-                $condition = "`context` IN ('$availableContexts')";
+                $condition = self::quoteName('context') . ' IN (' . self::quoteValuesList($availableContexts) . ')';
                 break;
 
             case 'SavedSearch':
@@ -4240,12 +4825,12 @@ JAVASCRIPT;
                     break;
                 }
 
-                $in = "IN ('" . implode("','", $allowed_is_private) . "')";
-                $condition = "(`glpi_tickettasks`.`is_private` $in ";
+                $in = 'IN (' . self::quoteValuesList($allowed_is_private) . ')';
+                $condition = '(' . self::quoteColumn('glpi_tickettasks', 'is_private') . " $in ";
 
                 // Check for assigned or created tasks
-                $condition .= "OR `glpi_tickettasks`.`users_id` = " . Session::getLoginUserID() . " ";
-                $condition .= "OR `glpi_tickettasks`.`users_id_tech` = " . Session::getLoginUserID() . " ";
+                $condition .= 'OR ' . self::quoteColumn('glpi_tickettasks', 'users_id') . ' = ' . Session::getLoginUserID() . ' ';
+                $condition .= 'OR ' . self::quoteColumn('glpi_tickettasks', 'users_id_tech') . ' = ' . Session::getLoginUserID() . ' ';
 
                 // Check for parent item visibility unless the user can see all the
                 // possible parents
@@ -4273,8 +4858,8 @@ JAVASCRIPT;
                     break;
                 }
 
-                $in = "IN ('" . implode("','", $allowed_is_private) . "')";
-                $condition = "(`glpi_itilfollowups`.`is_private` $in ";
+                $in = 'IN (' . self::quoteValuesList($allowed_is_private) . ')';
+                $condition = '(' . self::quoteColumn('glpi_itilfollowups', 'is_private') . " $in ";
 
                 // Now filter on parent item visiblity
                 $condition .= "AND (";
@@ -4334,7 +4919,10 @@ JAVASCRIPT;
 
         global $DB;
 
-        $searchopt = &self::getOptions($itemtype);
+        $searchopt = self::getOptions($itemtype);
+        if ($meta && ($fresh_option = self::getFreshSearchOption($itemtype, $ID)) !== null) {
+            $searchopt[$ID] = $fresh_option;
+        }
         if (!isset($searchopt[$ID]['table'])) {
             return false;
         }
@@ -4372,10 +4960,12 @@ JAVASCRIPT;
             $table .= $addmeta;
         }
 
+        $quoted_table = self::quoteName($table);
+
         // Hack to allow search by ID on every sub-table
         if (preg_match('/^\$\$\$\$([0-9]+)$/', $val, $regs)) {
-            return $link . " (`$table`.`id` " . ($nott ? "<>" : "=") . $regs[1] . " " .
-                            (($regs[1] == 0) ? " OR `$table`.`id` IS NULL" : '') . ") ";
+            return $link . " (" . self::quoteColumn($table, 'id') . ' ' . ($nott ? '<>' : '=') . $regs[1] . ' '
+                . (($regs[1] == 0) ? ' OR ' . self::quoteColumn($table, 'id') . ' IS NULL' : '') . ') ';
         }
 
         // Preparse value
@@ -4469,7 +5059,7 @@ JAVASCRIPT;
             case "glpi_users.name":
                 if ($itemtype == 'User') { // glpi_users case / not link table
                     if (in_array($searchtype, ['equals', 'notequals'])) {
-                        $search_str = "`$table`.`id`" . $SEARCH;
+                        $search_str = self::quoteColumn($table, 'id') . $SEARCH;
 
                         if ($searchtype == 'notequals') {
                             $nott = !$nott;
@@ -4478,12 +5068,12 @@ JAVASCRIPT;
                         // Add NULL if $val = 0 and not negative search
                         // Or negative search on real value
                         if ((!$nott && ($val == 0)) || ($nott && ($val != 0))) {
-                            $search_str .= " OR `$table`.`id` IS NULL";
+                            $search_str .= " OR " . self::quoteColumn($table, 'id') . " IS NULL";
                         }
 
                         return " $link ($search_str)";
                     }
-                    return self::makeTextCriteria("`$table`.`$field`", $val, $nott, $link);
+                    return self::makeTextCriteria(self::quoteColumn($table, $field), $val, $nott, $link);
                 }
                 if ($_SESSION["glpinames_format"] == User::FIRSTNAME_BEFORE) {
                     $name1 = 'firstname';
@@ -4494,8 +5084,8 @@ JAVASCRIPT;
                 }
 
                 if (in_array($searchtype, ['equals', 'notequals'])) {
-                    return " $link (`$table`.`id`" . $SEARCH .
-                                    (($val == 0) ? " OR `$table`.`id` IS" .
+                    return " $link (" . self::quoteColumn($table, 'id') . $SEARCH .
+                                    (($val == 0) ? " OR " . self::quoteColumn($table, 'id') . " IS" .
                                         (($searchtype == "notequals") ? " NOT" : "") . " NULL" : '') . ') ';
                 }
                 $toadd   = '';
@@ -4520,14 +5110,14 @@ JAVASCRIPT;
                         $linktable = $bj['table'] . '_' . self::computeComplexJoinID($bj['joinparams']) . $addmeta;
                         //$toadd     = "`$linktable`.`alternative_email` $SEARCH $tmplink ";
                         $toadd     = self::makeTextCriteria(
-                            "`$linktable`.`alternative_email`",
+                            self::quoteColumn($linktable, 'alternative_email'),
                             $val,
                             $nott,
                             $tmplink
                         );
                         if ($val == '^$') {
-                            return $link . " ((`$linktable`.`users_id` IS NULL)
-                            OR `$linktable`.`alternative_email` IS NULL)";
+                            return $link . " ((" . self::quoteColumn($linktable, 'users_id') . " IS NULL)
+                            OR " . self::quoteColumn($linktable, 'alternative_email') . " IS NULL)";
                         }
                     }
                 }
@@ -4536,28 +5126,22 @@ JAVASCRIPT;
                     $nott
                     && ($val != 'NULL') && ($val != 'null')
                 ) {
-                    $toadd2 = " OR `$table`.`$field` IS NULL";
+                    $toadd2 = " OR " . self::quoteColumn($table, $field) . " IS NULL";
                 }
-                return $link . " (((`$table`.`$name1` $SEARCH
-                            $tmplink `$table`.`$name2` $SEARCH
-                            $tmplink `$table`.`$field` $SEARCH
-                            $tmplink CONCAT(`$table`.`$name1`, ' ', `$table`.`$name2`) $SEARCH )
+                return $link . " (((" . self::quoteColumn($table, $name1) . " $SEARCH
+                            $tmplink " . self::quoteColumn($table, $name2) . " $SEARCH
+                            $tmplink " . self::quoteColumn($table, $field) . " $SEARCH
+                            $tmplink " . self::sqlConcat([self::quoteColumn($table, $name1), self::quoteValue(' '), self::quoteColumn($table, $name2)]) . " $SEARCH )
                             $toadd2) $toadd)";
 
             case "glpi_groups.completename":
                 if ($val == 'mygroups') {
                     switch ($searchtype) {
                         case 'equals':
-                            return " $link (`$table`.`id` IN ('" . implode(
-                                "','",
-                                $_SESSION['glpigroups']
-                            ) . "')) ";
+                            return " $link (" . self::quoteColumn($table, 'id') . " IN (" . self::quoteValuesList($_SESSION['glpigroups']) . ')) ';
 
                         case 'notequals':
-                            return " $link (`$table`.`id` NOT IN ('" . implode(
-                                "','",
-                                $_SESSION['glpigroups']
-                            ) . "')) ";
+                            return " $link (" . self::quoteColumn($table, 'id') . " NOT IN (" . self::quoteValuesList($_SESSION['glpigroups']) . ')) ';
 
                         case 'under':
                             $groups = $_SESSION['glpigroups'];
@@ -4565,7 +5149,7 @@ JAVASCRIPT;
                                 $groups += getSonsOf($inittable, $g);
                             }
                             $groups = array_unique($groups);
-                            return " $link (`$table`.`id` IN ('" . implode("','", $groups) . "')) ";
+                            return " $link (" . self::quoteColumn($table, 'id') . " IN (" . self::quoteValuesList($groups) . ')) ';
 
                         case 'notunder':
                             $groups = $_SESSION['glpigroups'];
@@ -4573,7 +5157,7 @@ JAVASCRIPT;
                                 $groups += getSonsOf($inittable, $g);
                             }
                             $groups = array_unique($groups);
-                            return " $link (`$table`.`id` NOT IN ('" . implode("','", $groups) . "')) ";
+                            return " $link (" . self::quoteColumn($table, 'id') . " NOT IN (" . self::quoteValuesList($groups) . ')) ';
                     }
                 }
                 break;
@@ -4584,11 +5168,15 @@ JAVASCRIPT;
                 if ($nott) {
                     $tmplink = 'AND';
                 }
-                return $link . " (`glpi_authmails" . $addtable . "_" .
-                                  self::computeComplexJoinID($user_searchopt[31]['joinparams']) . $addmeta . "`.`name`
+                return $link . " (" . self::quoteColumn(
+                    'glpi_authmails' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[31]['joinparams']) . $addmeta,
+                    'name'
+                ) . "
                            $SEARCH
-                           $tmplink `glpi_authldaps" . $addtable . "_" .
-                                  self::computeComplexJoinID($user_searchopt[30]['joinparams']) . $addmeta . "`.`name`
+                           $tmplink " . self::quoteColumn(
+                    'glpi_authldaps' . $addtable . "_" . self::computeComplexJoinID($user_searchopt[30]['joinparams']) . $addmeta,
+                    'name'
+                ) . "
                            $SEARCH ) ";
 
             case "glpi_ipaddresses.name":
@@ -4604,7 +5192,8 @@ JAVASCRIPT;
                         }
                     }
                     $regs[1] .= $regs[2];
-                    return $link . " (INET_ATON(`$table`.`$field`) " . $regs[1] . " INET_ATON('" . $regs[3] . "')) ";
+                    return $link . " (" . self::sqlCastIpAddress(self::quoteColumn($table, $field)) . " " . $regs[1] . " "
+                        . self::sqlCastIpAddress(self::quoteValue($regs[3])) . ") ";
                 }
                 break;
 
@@ -4654,9 +5243,9 @@ JAVASCRIPT;
 
                 if (count($tocheck)) {
                     if ($nott) {
-                        return $link . " `$table`.`$field` NOT IN ('" . implode("','", $tocheck) . "')";
+                        return $link . ' ' . self::quoteColumn($table, $field) . ' NOT IN (' . self::quoteValuesList($tocheck) . ')';
                     }
-                    return $link . " `$table`.`$field` IN ('" . implode("','", $tocheck) . "')";
+                    return $link . ' ' . self::quoteColumn($table, $field) . ' IN (' . self::quoteValuesList($tocheck) . ')';
                 }
                 break;
 
@@ -4672,12 +5261,12 @@ JAVASCRIPT;
                     $nott
                     && ($val != 'NULL') && ($val != 'null')
                 ) {
-                    $toadd2 = " OR `$table`.`$field` IS NULL";
+                    $toadd2 = " OR " . self::quoteColumn($table, $field) . " IS NULL";
                 }
 
-                return $link . " (((`$table`.`tickets_id_1` $compare '$val'
-                              $tmplink `$table`.`tickets_id_2` $compare '$val')
-                             AND `glpi_tickets`.`id` <> '$val')
+                return $link . " (((" . self::quoteColumn($table, 'tickets_id_1') . " $compare " . self::quoteValue($val) . "
+                              $tmplink " . self::quoteColumn($table, 'tickets_id_2') . " $compare " . self::quoteValue($val) . ")
+                             AND " . self::quoteColumn('glpi_tickets', 'id') . " <> " . self::quoteValue($val) . ")
                             $toadd2)";
 
             case "glpi_tickets.priority":
@@ -4693,15 +5282,15 @@ JAVASCRIPT;
                 if (is_numeric($val)) {
                     if ($val > 0) {
                         $compare = ($nott ? '<>' : '=');
-                        return $link . " `$table`.`$field` $compare '$val'";
+                        return $link . ' ' . self::quoteColumn($table, $field) . " $compare " . self::quoteValue($val);
                     }
                     if ($val < 0) {
                         $compare = ($nott ? '<' : '>=');
-                        return $link . " `$table`.`$field` $compare '" . abs($val) . "'";
+                        return $link . ' ' . self::quoteColumn($table, $field) . " $compare " . self::quoteValue(abs($val));
                     }
                     // Show all
                     $compare = ($nott ? '<' : '>=');
-                    return $link . " `$table`.`$field` $compare '0' ";
+                    return $link . ' ' . self::quoteColumn($table, $field) . " $compare " . self::quoteValue(0) . ' ';
                 }
                 return "";
 
@@ -4727,9 +5316,9 @@ JAVASCRIPT;
                 }
                 if (count($tocheck)) {
                     if ($nott) {
-                        return $link . " `$table`.`$field` NOT IN ('" . implode("','", $tocheck) . "')";
+                        return $link . ' ' . self::quoteColumn($table, $field) . ' NOT IN (' . self::quoteValuesList($tocheck) . ')';
                     }
-                    return $link . " `$table`.`$field` IN ('" . implode("','", $tocheck) . "')";
+                    return $link . ' ' . self::quoteColumn($table, $field) . ' IN (' . self::quoteValuesList($tocheck) . ')';
                 }
                 break;
 
@@ -4737,8 +5326,8 @@ JAVASCRIPT;
                 if (in_array($searchtype, ['equals', 'notequals']) && strpos($val, self::SHORTSEP)) {
                     $not = 'notequals' === $searchtype ? 'NOT' : '';
                     list($itemtype_val, $event_val) = explode(self::SHORTSEP, $val);
-                    return " $link $not(`$table`.`event` = '$event_val'
-                               AND `$table`.`itemtype` = '$itemtype_val')";
+                    return " $link $not(" . self::quoteColumn($table, 'event') . ' = ' . self::quoteValue($event_val)
+                               . ' AND ' . self::quoteColumn($table, 'itemtype') . ' = ' . self::quoteValue($itemtype_val) . ')';
                 }
                 break;
         }
@@ -4765,8 +5354,8 @@ JAVASCRIPT;
             }
         }
 
-        $tocompute      = "`$table`.`$field`";
-        $tocomputetrans = "`" . $table . "_trans_" . $field . "`.`value`";
+        $tocompute      = self::quoteColumn($table, $field);
+        $tocomputetrans = self::quoteColumn($table . "_trans_" . $field, 'value');
         if (isset($searchopt[$ID]["computation"])) {
             $tocompute = $searchopt[$ID]["computation"];
             $tocompute = str_replace($DB->quoteName('TABLE'), 'TABLE', $tocompute);
@@ -4776,15 +5365,21 @@ JAVASCRIPT;
         // Preformat items
         if (isset($searchopt[$ID]["datatype"])) {
             switch ($searchopt[$ID]["datatype"]) {
+                case "specific":
+                    if (in_array($searchtype, ['contains', 'notcontains'])) {
+                        return self::makeTextCriteria(self::sqlCastAsString($tocompute), $val, $nott, $link);
+                    }
+                    break;
+
                 case "itemtypename":
                     if (in_array($searchtype, ['equals', 'notequals'])) {
-                        return " $link (`$table`.`$field`" . $SEARCH . ') ';
+                        return " $link (" . self::quoteColumn($table, $field) . $SEARCH . ') ';
                     }
                     break;
 
                 case "itemlink":
                     if (in_array($searchtype, ['equals', 'notequals', 'under', 'notunder'])) {
-                        return " $link (`$table`.`id`" . $SEARCH . ') ';
+                        return " $link (" . self::quoteColumn($table, 'id') . $SEARCH . ') ';
                     }
                     break;
 
@@ -4801,7 +5396,12 @@ JAVASCRIPT;
                             if ($searchtype == 'notequals') {
                                 $nott = !$nott;
                             }
-                            return self::makeTextCriteria("`$table`.`$field`", $val, $nott, $link);
+                            return self::makeTextCriteria(
+                                self::sqlCastAsString(self::quoteColumn($table, $field)),
+                                $val,
+                                $nott,
+                                $link
+                            );
                         }
                     }
                     if ($searchtype == 'lessthan') {
@@ -4814,7 +5414,7 @@ JAVASCRIPT;
                         $date_computation = $tocompute;
                     }
                     if (in_array($searchtype, ["contains", "notcontains"])) {
-                        $date_computation = "CONVERT($date_computation USING utf8)";
+                        $date_computation = self::sqlCastAsString($date_computation);
                     }
                     $search_unit = ' MONTH ';
                     if (isset($searchopt[$ID]['searchunit'])) {
@@ -4827,12 +5427,13 @@ JAVASCRIPT;
                         }
                         $add_minus = '';
                         if (isset($searchopt[$ID]["datafields"][3])) {
-                            $add_minus = "-`$table`.`" . $searchopt[$ID]["datafields"][3] . "`";
+                            $add_minus = "-" . self::quoteColumn($table, $searchopt[$ID]["datafields"][3]);
                         }
-                        $date_computation = "ADDDATE(`$table`." . $searchopt[$ID]["datafields"][1] . ",
-                                               INTERVAL (`$table`." . $searchopt[$ID]["datafields"][2] . "
-                                                         $add_minus)
-                                               $delay_unit)";
+                        $date_computation = self::sqlDateAddInterval(
+                            self::quoteColumn($table, $searchopt[$ID]["datafields"][1]),
+                            '(' . self::quoteColumn($table, $searchopt[$ID]["datafields"][2]) . " $add_minus)",
+                            trim($delay_unit)
+                        );
                     }
                     if (in_array($searchtype, ['equals', 'notequals'])) {
                         return " $link ($date_computation " . $SEARCH . ') ';
@@ -4843,7 +5444,7 @@ JAVASCRIPT;
                     if (preg_match("/^\s*([<>=]+)(.*)/", (string) $val, $regs)) {
                         if (is_numeric($regs[2])) {
                             return $link . " $date_computation " . $regs[1] . "
-                            ADDDATE(NOW(), INTERVAL " . $regs[2] . " $search_unit) ";
+                            " . self::sqlDateAddInterval(self::sqlCurrentTimestamp(), $regs[2], trim($search_unit)) . " ";
                         }
                         // ELSE Reformat date if needed
                         $regs[2] = preg_replace(
@@ -4876,7 +5477,7 @@ JAVASCRIPT;
                     if ($searchtype == 'notequals') {
                         $nott = !$nott;
                     }
-                    return $link . ($nott ? ' NOT' : '') . " ($tocompute & '$val') ";
+                    return $link . ($nott ? ' NOT' : '') . ' (' . self::sqlBitTest($tocompute, self::quoteValue($val)) . ') ';
 
                 case "bool":
                     if (!is_numeric($val)) {
@@ -4886,13 +5487,22 @@ JAVASCRIPT;
                             $val = 1;
                         }
                     }
-                    // no break here : use number comparaison case
+                    if (in_array($searchtype, ["notequals", "notcontains"])) {
+                        $nott = !$nott;
+                    }
+
+                    return " $link ($tocompute " . (!$nott ? '=' : '<>') . ' '
+                        . self::quoteLogicalFieldValue($inittable, $field, (bool)$val) . ") ";
 
                 case "count":
                 case "number":
                 case "decimal":
                 case "timestamp":
                 case "progressbar":
+                    if (in_array($searchtype, ['contains', 'notcontains'])) {
+                        return self::makeTextCriteria(self::sqlCastAsString($tocompute), $val, $nott, $link);
+                    }
+
                     $search  = ["/\&lt;/", "/\&gt;/"];
                     $replace = ["<", ">"];
                     $val     = preg_replace($search, $replace, (string) $val);
@@ -4946,6 +5556,33 @@ JAVASCRIPT;
         }
 
         // Default case
+        if (
+            in_array($searchtype, ['equals', 'notequals'])
+            && preg_match('/^is_/', (string) $field)
+            && is_numeric($val)
+        ) {
+            $compare = ($searchtype === 'notequals') ? '<>' : '=';
+            if ($nott) {
+                $compare = $compare === '=' ? '<>' : '=';
+            }
+            return " $link ($tocompute $compare "
+                . self::quoteLogicalFieldValue($inittable, $field, (bool)$val) . ') ';
+        }
+
+        if (
+            in_array($searchtype, ['contains', 'notcontains'])
+            && preg_match('/(^id$|_id$|^type$|_type$)/', (string) $field)
+        ) {
+            return self::makeTextCriteria(self::sqlCastAsString($tocompute), $val, $nott, $link);
+        }
+
+        if (
+            in_array($searchtype, ['contains', 'notcontains'])
+            && preg_match('/(^date$|^date_|_date$|_date_|date_mod$|expire$|time_to_)/', (string) $field)
+        ) {
+            return self::makeTextCriteria(self::sqlCastAsString($tocompute), $val, $nott, $link);
+        }
+
         if (in_array($searchtype, ['equals', 'notequals','under', 'notunder'])) {
             if (
                 (!isset($searchopt[$ID]['searchequalsonfield'])
@@ -4953,9 +5590,9 @@ JAVASCRIPT;
                 && ($itemtype == 'AllAssets'
                    || $table != $itemtype::getTable())
             ) {
-                $out = " $link (`$table`.`id`" . $SEARCH;
+                $out = " $link (" . self::quoteColumn($table, 'id') . $SEARCH;
             } else {
-                $out = " $link (`$table`.`$field`" . $SEARCH;
+                $out = " $link (" . self::quoteColumn($table, $field) . $SEARCH;
             }
             if ($searchtype == 'notequals') {
                 $nott = !$nott;
@@ -4966,7 +5603,7 @@ JAVASCRIPT;
                 (!$nott && ($val == 0))
                 || ($nott && ($val != 0))
             ) {
-                $out .= " OR `$table`.`id` IS NULL";
+                $out .= " OR " . self::quoteColumn($table, 'id') . " IS NULL";
             }
             $out .= ')';
             return $out;
@@ -5314,6 +5951,30 @@ JAVASCRIPT;
         $joinparams = [],
         $field = ''
     ) {
+        return self::getSearchProviderClass()::addLeftJoin(
+            $itemtype,
+            $ref_table,
+            $already_link_tables,
+            $new_table,
+            $linkfield,
+            $meta,
+            $meta_type,
+            $joinparams,
+            $field
+        );
+    }
+
+    public static function addLeftJoinInternal(
+        $itemtype,
+        $ref_table,
+        array &$already_link_tables,
+        $new_table,
+        $linkfield,
+        $meta = 0,
+        $meta_type = 0,
+        $joinparams = [],
+        $field = ''
+    ) {
 
         // Rename table for meta left join
         $AS = "";
@@ -5323,6 +5984,17 @@ JAVASCRIPT;
         // Virtual field no link
         if (strpos($linkfield, '_virtual') === 0) {
             return false;
+        }
+
+        if (
+            $meta
+            && $meta_type !== 0
+            && $itemtype !== $meta_type
+            && $new_table === self::getOrigTableName($itemtype)
+            && $ref_table === $meta_type::getTable()
+            && $field === $linkfield
+        ) {
+            return "";
         }
 
         $complexjoin = self::computeComplexJoinID($joinparams);
@@ -5349,15 +6021,28 @@ JAVASCRIPT;
             return "";
         }
 
+        // Base-table fields with implicit linkfields such as "name" or "content" do not
+        // define a real join path. If we are no longer on the base table, rejoining it on
+        // that field would incorrectly produce clauses like "table.name = alias.id".
+        if (
+            $new_table === self::getOrigTableName($itemtype)
+            && $ref_table !== $new_table
+            && empty($complexjoin)
+            && empty($joinparams)
+            && $linkfield === $field
+        ) {
+            return "";
+        }
+
         // Multiple link possibilies case
         if (!empty($linkfield) && ($linkfield != getForeignKeyFieldForTable($new_table))) {
             $nt .= "_" . $linkfield;
-            $AS  = " AS `$nt`";
+            $AS  = " AS " . self::quoteName($nt);
         }
 
         if (!empty($complexjoin)) {
             $nt .= "_" . $complexjoin;
-            $AS  = " AS `$nt`";
+            $AS  = " AS " . self::quoteName($nt);
         }
 
         $addmetanum = "";
@@ -5365,7 +6050,7 @@ JAVASCRIPT;
         $cleanrt    = $rt;
         if ($meta && $meta_type::getTable() != $new_table) {
             $addmetanum = "_" . $meta_type;
-            $AS         = " AS `$nt$addmetanum`";
+            $AS         = " AS " . self::quoteName($nt . $addmetanum);
             $nt         = $nt . $addmetanum;
         }
 
@@ -5458,18 +6143,7 @@ JAVASCRIPT;
                 }
             }
 
-            $addcondition = '';
-            if (isset($joinparams['condition'])) {
-                $condition = $joinparams['condition'];
-                if (is_array($condition)) {
-                    $it = new DBmysqlIterator(null);
-                    $condition = $it->analyseCrit($condition);
-                }
-                $from         = ["`REFTABLE`", "REFTABLE", "`NEWTABLE`", "NEWTABLE"];
-                $to           = ["`$rt`", "`$rt`", "`$nt`", "`$nt`"];
-                $addcondition = str_replace($from, $to, $condition);
-                $addcondition = $addcondition . " ";
-            }
+            $addcondition = self::buildJoinConditionClause($joinparams, $rt, $nt);
 
             if (!isset($joinparams['jointype'])) {
                 $joinparams['jointype'] = 'standard';
@@ -5514,28 +6188,28 @@ JAVASCRIPT;
                         }
 
                         // Child join
-                        $specific_leftjoin = " LEFT JOIN `$new_table` $AS
-                                             ON (`$rt`.`id` = `$nt`.`$linkfield`
+                        $specific_leftjoin = " LEFT JOIN " . self::quoteName($new_table) . " $AS
+                                             ON (" . self::quoteColumn($rt, 'id') . " = " . self::quoteColumn($nt, $linkfield) . "
                                                  $addcondition)";
                         break;
 
                     case 'item_item':
                         // Item_Item join
-                        $specific_leftjoin = " LEFT JOIN `$new_table` $AS
-                                          ON ((`$rt`.`id`
-                                                = `$nt`.`" . getForeignKeyFieldForTable($cleanrt) . "_1`
-                                               OR `$rt`.`id`
-                                                 = `$nt`.`" . getForeignKeyFieldForTable($cleanrt) . "_2`)
+                        $specific_leftjoin = " LEFT JOIN " . self::quoteName($new_table) . " $AS
+                                          ON ((" . self::quoteColumn($rt, 'id') . "
+                                                = " . self::quoteColumn($nt, getForeignKeyFieldForTable($cleanrt) . "_1") . "
+                                               OR " . self::quoteColumn($rt, 'id') . "
+                                                 = " . self::quoteColumn($nt, getForeignKeyFieldForTable($cleanrt) . "_2") . ")
                                               $addcondition)";
                         break;
 
                     case 'item_item_revert':
                         // Item_Item join reverting previous item_item
-                        $specific_leftjoin = " LEFT JOIN `$new_table` $AS
-                                          ON ((`$nt`.`id`
-                                                = `$rt`.`" . getForeignKeyFieldForTable($cleannt) . "_1`
-                                               OR `$nt`.`id`
-                                                 = `$rt`.`" . getForeignKeyFieldForTable($cleannt) . "_2`)
+                        $specific_leftjoin = " LEFT JOIN " . self::quoteName($new_table) . " $AS
+                                          ON ((" . self::quoteColumn($nt, 'id') . "
+                                                = " . self::quoteColumn($rt, getForeignKeyFieldForTable($cleannt) . "_1") . "
+                                               OR " . self::quoteColumn($nt, 'id') . "
+                                                 = " . self::quoteColumn($rt, getForeignKeyFieldForTable($cleannt) . "_2") . ")
                                               $addcondition)";
                         break;
 
@@ -5555,9 +6229,9 @@ JAVASCRIPT;
                             $used_itemtype = $joinparams['specific_itemtype'];
                         }
                         // Itemtype join
-                        $specific_leftjoin = " LEFT JOIN `$new_table` $AS
-                                          ON (`$rt`.`id` = `$nt`.`" . $addmain . "items_id`
-                                              AND `$nt`.`" . $addmain . "itemtype` = '$used_itemtype'
+                        $specific_leftjoin = " LEFT JOIN " . self::quoteName($new_table) . " $AS
+                                          ON (" . self::quoteColumn($rt, 'id') . " = " . self::quoteColumn($nt, $addmain . "items_id") . "
+                                              AND " . self::quoteColumn($nt, $addmain . "itemtype") . " = '$used_itemtype'
                                               $addcondition) ";
                         break;
 
@@ -5573,9 +6247,9 @@ JAVASCRIPT;
                             $used_itemtype = $joinparams['specific_itemtype'];
                         }
                         // Itemtype join
-                        $specific_leftjoin = " LEFT JOIN `$new_table` $AS
-                                          ON (`$nt`.`id` = `$rt`.`" . $addmain . "items_id`
-                                              AND `$rt`.`" . $addmain . "itemtype` = '$used_itemtype'
+                        $specific_leftjoin = " LEFT JOIN " . self::quoteName($new_table) . " $AS
+                                          ON (" . self::quoteColumn($nt, 'id') . " = " . self::quoteColumn($rt, $addmain . "items_id") . "
+                                              AND " . self::quoteColumn($rt, $addmain . "itemtype") . " = '$used_itemtype'
                                               $addcondition) ";
                         break;
 
@@ -5588,15 +6262,15 @@ JAVASCRIPT;
                             $used_itemtype = $joinparams['specific_itemtype'];
                         }
                         // Itemtype join
-                        $specific_leftjoin = " LEFT JOIN `$new_table` $AS
-                                          ON (`$nt`.`itemtype` = '$used_itemtype'
+                        $specific_leftjoin = " LEFT JOIN " . self::quoteName($new_table) . " $AS
+                                          ON (" . self::quoteColumn($nt, 'itemtype') . " = '$used_itemtype'
                                               $addcondition) ";
                         break;
 
                     default:
                         // Standard join
-                        $specific_leftjoin = "LEFT JOIN `$new_table` $AS
-                                          ON (`$rt`.`$linkfield` = `$nt`.`id`
+                        $specific_leftjoin = "LEFT JOIN " . self::quoteName($new_table) . " $AS
+                                          ON (" . self::quoteColumn($rt, $linkfield) . " = " . self::quoteColumn($nt, 'id') . "
                                               $addcondition)";
                         $transitemtype = getItemTypeForTable($new_table);
                         if (Session::haveTranslations($transitemtype, $field)) {
@@ -5656,22 +6330,22 @@ JAVASCRIPT;
             $softwareversions_table = "glpi_softwareversions{$alias_suffix}";
             if (!in_array($softwareversions_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $softwareversions_table);
-                $JOIN .= "$LINK `glpi_softwareversions` AS `$softwareversions_table`
-                         ON (`$softwareversions_table`.`softwares_id` = `$from_table`.`id`) ";
+                $JOIN .= "$LINK " . self::quoteName('glpi_softwareversions') . " AS " . self::quoteName($softwareversions_table) . "
+                         ON (" . self::quoteColumn($softwareversions_table, 'softwares_id') . " = " . self::quoteColumn($from_table, 'id') . ") ";
             }
             $items_softwareversions_table = "glpi_items_softwareversions_{$alias_suffix}";
             if (!in_array($items_softwareversions_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $items_softwareversions_table);
-                $JOIN .= "$LINK `glpi_items_softwareversions` AS `$items_softwareversions_table`
-                         ON (`$items_softwareversions_table`.`softwareversions_id` = `$softwareversions_table`.`id`
-                             AND `$items_softwareversions_table`.`itemtype` = '$to_type'
-                             AND `$items_softwareversions_table`.`is_deleted` = 0) ";
+                $JOIN .= "$LINK " . self::quoteName('glpi_items_softwareversions') . " AS " . self::quoteName($items_softwareversions_table) . "
+                         ON (" . self::quoteColumn($items_softwareversions_table, 'softwareversions_id') . " = " . self::quoteColumn($softwareversions_table, 'id') . "
+                             AND " . self::quoteColumn($items_softwareversions_table, 'itemtype') . " = '$to_type'
+                             AND " . self::quoteColumn($items_softwareversions_table, 'is_deleted') . " = " . self::quoteValue(false) . ") ";
             }
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$items_softwareversions_table`.`items_id` = `$to_table`.`id`
-                             AND `$items_softwareversions_table`.`itemtype` = '$to_type'
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($items_softwareversions_table, 'items_id') . " = " . self::quoteColumn($to_table, 'id') . "
+                             AND " . self::quoteColumn($items_softwareversions_table, 'itemtype') . " = '$to_type'
                              $to_entity_restrict) ";
             }
             return $JOIN;
@@ -5682,27 +6356,27 @@ JAVASCRIPT;
             $items_softwareversions_table = "glpi_items_softwareversions{$alias_suffix}";
             if (!in_array($items_softwareversions_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $items_softwareversions_table);
-                $JOIN .= "$LINK `glpi_items_softwareversions` AS `$items_softwareversions_table`
-                         ON (`$items_softwareversions_table`.`items_id` = `$from_table`.`id`
-                             AND `$items_softwareversions_table`.`itemtype` = '$from_type'
-                             AND `$items_softwareversions_table`.`is_deleted` = 0) ";
+                $JOIN .= "$LINK " . self::quoteName('glpi_items_softwareversions') . " AS " . self::quoteName($items_softwareversions_table) . "
+                         ON (" . self::quoteColumn($items_softwareversions_table, 'items_id') . " = " . self::quoteColumn($from_table, 'id') . "
+                             AND " . self::quoteColumn($items_softwareversions_table, 'itemtype') . " = '$from_type'
+                             AND " . self::quoteColumn($items_softwareversions_table, 'is_deleted') . " = " . self::quoteValue(false) . ") ";
             }
             $softwareversions_table = "glpi_softwareversions{$alias_suffix}";
             if (!in_array($softwareversions_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $softwareversions_table);
-                $JOIN .= "$LINK `glpi_softwareversions` AS `$softwareversions_table`
-                         ON (`$items_softwareversions_table`.`softwareversions_id` = `$softwareversions_table`.`id`) ";
+                $JOIN .= "$LINK " . self::quoteName('glpi_softwareversions') . " AS " . self::quoteName($softwareversions_table) . "
+                         ON (" . self::quoteColumn($items_softwareversions_table, 'softwareversions_id') . " = " . self::quoteColumn($softwareversions_table, 'id') . ") ";
             }
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$softwareversions_table`.`softwares_id` = `$to_table`.`id`) ";
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($softwareversions_table, 'softwares_id') . " = " . self::quoteColumn($to_table, 'id') . ") ";
             }
             $softwarelicenses_table = "glpi_softwarelicenses{$alias_suffix}";
             if (!in_array($softwarelicenses_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $softwarelicenses_table);
-                $JOIN .= "$LINK `glpi_softwarelicenses` AS `$softwarelicenses_table`
-                        ON ($to_table.`id` = `$softwarelicenses_table`.`softwares_id`"
+                $JOIN .= "$LINK " . self::quoteName('glpi_softwarelicenses') . " AS " . self::quoteName($softwarelicenses_table) . "
+                        ON (" . self::quoteColumn($to_table, 'id') . " = " . self::quoteColumn($softwarelicenses_table, 'softwares_id')
                               . getEntitiesRestrictRequest(' AND', $softwarelicenses_table, '', '', true) . ") ";
             }
             return $JOIN;
@@ -5713,14 +6387,14 @@ JAVASCRIPT;
             $infocom_alias = "glpi_infocoms{$alias_suffix}";
             if (!in_array($infocom_alias, $already_link_tables2)) {
                 array_push($already_link_tables2, $infocom_alias);
-                $JOIN .= "$LINK `glpi_infocoms` AS `$infocom_alias`
-                         ON (`$from_table`.`id` = `$infocom_alias`.`budgets_id`) ";
+                $JOIN .= "$LINK " . self::quoteName('glpi_infocoms') . " AS " . self::quoteName($infocom_alias) . "
+                         ON (" . self::quoteColumn($from_table, 'id') . " = " . self::quoteColumn($infocom_alias, 'budgets_id') . ") ";
             }
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$to_table`.`id` = `$infocom_alias`.`items_id`
-                             AND `$infocom_alias`.`itemtype` = '$to_type'
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($to_table, 'id') . " = " . self::quoteColumn($infocom_alias, 'items_id') . "
+                             AND " . self::quoteColumn($infocom_alias, 'itemtype') . " = " . self::quoteValue($to_type) . "
                              $to_entity_restrict) ";
             }
             return $JOIN;
@@ -5731,14 +6405,14 @@ JAVASCRIPT;
             $infocom_alias = "glpi_infocoms{$alias_suffix}";
             if (!in_array($infocom_alias, $already_link_tables2)) {
                 array_push($already_link_tables2, $infocom_alias);
-                $JOIN .= "$LINK `glpi_infocoms` AS `$infocom_alias`
-                         ON (`$from_table`.`id` = `$infocom_alias`.`items_id`
-                             AND `$infocom_alias`.`itemtype` = '$from_type') ";
+                $JOIN .= "$LINK " . self::quoteName('glpi_infocoms') . " AS " . self::quoteName($infocom_alias) . "
+                         ON (" . self::quoteColumn($from_table, 'id') . " = " . self::quoteColumn($infocom_alias, 'items_id') . "
+                             AND " . self::quoteColumn($infocom_alias, 'itemtype') . " = " . self::quoteValue($from_type) . ") ";
             }
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$infocom_alias`.`$to_fk` = `$to_table`.`id`
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($infocom_alias, $to_fk) . " = " . self::quoteColumn($to_table, 'id') . "
                              $to_entity_restrict) ";
             }
             return $JOIN;
@@ -5749,14 +6423,14 @@ JAVASCRIPT;
             $reservationitems_alias = "glpi_reservationitems{$alias_suffix}";
             if (!in_array($reservationitems_alias, $already_link_tables2)) {
                 array_push($already_link_tables2, $reservationitems_alias);
-                $JOIN .= "$LINK `glpi_reservationitems` AS `$reservationitems_alias`
-                         ON (`$from_table`.`reservationitems_id` = `$reservationitems_alias`.`id`) ";
+                $JOIN .= "$LINK " . self::quoteName('glpi_reservationitems') . " AS " . self::quoteName($reservationitems_alias) . "
+                         ON (" . self::quoteColumn($from_table, 'reservationitems_id') . " = " . self::quoteColumn($reservationitems_alias, 'id') . ") ";
             }
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$to_table`.`id` = `$reservationitems_alias`.`items_id`
-                             AND `$reservationitems_alias`.`itemtype` = '$to_type'
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($to_table, 'id') . " = " . self::quoteColumn($reservationitems_alias, 'items_id') . "
+                             AND " . self::quoteColumn($reservationitems_alias, 'itemtype') . " = " . self::quoteValue($to_type) . "
                              $to_entity_restrict) ";
             }
             return $JOIN;
@@ -5765,16 +6439,16 @@ JAVASCRIPT;
         if ($to_type === 'Reservation' && in_array($from_referencetype, $CFG_GLPI['reservation_types'])) {
             // From reservation_types to Reservation
             $reservationitems_alias = "glpi_reservationitems{$alias_suffix}";
-            if (!in_array($infocom_alias, $already_link_tables2)) {
-                array_push($already_link_tables2, $infocom_alias);
-                $JOIN .= "$LINK `glpi_reservationitems` AS `$reservationitems_alias`
-                         ON (`$from_table`.`id` = `$reservationitems_alias`.`items_id`
-                             AND `$reservationitems_alias`.`itemtype` = '$from_type') ";
+            if (!in_array($reservationitems_alias, $already_link_tables2)) {
+                array_push($already_link_tables2, $reservationitems_alias);
+                $JOIN .= "$LINK " . self::quoteName('glpi_reservationitems') . " AS " . self::quoteName($reservationitems_alias) . "
+                         ON (" . self::quoteColumn($from_table, 'id') . " = " . self::quoteColumn($reservationitems_alias, 'items_id') . "
+                             AND " . self::quoteColumn($reservationitems_alias, 'itemtype') . " = " . self::quoteValue($from_type) . ") ";
             }
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$reservationitems_alias`.`id` = `$to_table`.`reservationitems_id`
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($reservationitems_alias, 'id') . " = " . self::quoteColumn($to_table, 'reservationitems_id') . "
                              $to_entity_restrict) ";
             }
             return $JOIN;
@@ -5802,34 +6476,34 @@ JAVASCRIPT;
             // $from_table has a foreign key corresponding to $to_table
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$from_table`.`$to_fk` = `$to_table`.`id`
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($from_table, $to_fk) . " = " . self::quoteColumn($to_table, 'id') . "
                              $to_entity_restrict) ";
             }
         } elseif ($to_obj && $to_obj->isField($from_fk)) {
             // $to_table has a foreign key corresponding to $from_table
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$from_table`.`id` = `$to_table`.`$from_fk`
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($from_table, 'id') . " = " . self::quoteColumn($to_table, $from_fk) . "
                              $to_entity_restrict) ";
             }
         } elseif ($from_obj && $from_obj->isField('itemtype') && $from_obj->isField('items_id')) {
             // $from_table has items_id/itemtype fields
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$from_table`.`items_id` = `$to_table`.`id`
-                             AND `$from_table`.`itemtype` = '$to_type'
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($from_table, 'items_id') . " = " . self::quoteColumn($to_table, 'id') . "
+                             AND " . self::quoteColumn($from_table, 'itemtype') . " = '$to_type'
                              $to_entity_restrict) ";
             }
         } elseif ($to_obj && $to_obj->isField('itemtype') && $to_obj->isField('items_id')) {
             // $to_table has items_id/itemtype fields
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$from_table`.`id` = `$to_table`.`items_id`
-                             AND `$to_table`.`itemtype` = '$from_type'
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($from_table, 'id') . " = " . self::quoteColumn($to_table, 'items_id') . "
+                             AND " . self::quoteColumn($to_table, 'itemtype') . " = '$from_type'
                              $to_entity_restrict) ";
             }
         } elseif ($from_item_obj && $from_item_obj->isField($from_fk)) {
@@ -5838,16 +6512,18 @@ JAVASCRIPT;
             $items_table_alias = $items_table . $alias_suffix;
             if (!in_array($items_table_alias, $already_link_tables2)) {
                 array_push($already_link_tables2, $items_table_alias);
-                $deleted = $from_item_obj->isField('is_deleted') ? "AND `$items_table_alias`.`is_deleted` = 0" : "";
-                $JOIN .= "$LINK `$items_table` AS `$items_table_alias`
-                         ON (`$items_table_alias`.`$from_fk` = `$from_table`.`id`
-                             AND `$items_table_alias`.`itemtype` = '$to_type'
+                $deleted = $from_item_obj->isField('is_deleted')
+                    ? "AND " . self::quoteColumn($items_table_alias, 'is_deleted') . " = " . self::quoteValue(false)
+                    : "";
+                $JOIN .= "$LINK " . self::quoteName($items_table) . " AS " . self::quoteName($items_table_alias) . "
+                         ON (" . self::quoteColumn($items_table_alias, $from_fk) . " = " . self::quoteColumn($from_table, 'id') . "
+                             AND " . self::quoteColumn($items_table_alias, 'itemtype') . " = " . self::quoteValue($to_type) . "
                              $deleted)";
             }
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$items_table_alias`.`items_id` = `$to_table`.`id`
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($items_table_alias, 'items_id') . " = " . self::quoteColumn($to_table, 'id') . "
                              $to_entity_restrict) ";
             }
         } elseif ($to_item_obj && $to_item_obj->isField($to_fk)) {
@@ -5856,16 +6532,18 @@ JAVASCRIPT;
             $items_table_alias = $items_table . $alias_suffix;
             if (!in_array($items_table_alias, $already_link_tables2)) {
                 array_push($already_link_tables2, $items_table_alias);
-                $deleted = $to_item_obj->isField('is_deleted') ? "AND `$items_table_alias`.`is_deleted` = 0" : "";
-                $JOIN .= "$LINK `$items_table` AS `$items_table_alias`
-                         ON (`$items_table_alias`.`items_id` = `$from_table`.`id`
-                             AND `$items_table_alias`.`itemtype` = '$from_type'
+                $deleted = $to_item_obj->isField('is_deleted')
+                    ? "AND " . self::quoteColumn($items_table_alias, 'is_deleted') . " = " . self::quoteValue(false)
+                    : "";
+                $JOIN .= "$LINK " . self::quoteName($items_table) . " AS " . self::quoteName($items_table_alias) . "
+                         ON (" . self::quoteColumn($items_table_alias, 'items_id') . " = " . self::quoteColumn($from_table, 'id') . "
+                             AND " . self::quoteColumn($items_table_alias, 'itemtype') . " = " . self::quoteValue($from_type) . "
                              $deleted)";
             }
             if (!in_array($to_table, $already_link_tables2)) {
                 array_push($already_link_tables2, $to_table);
-                $JOIN .= "$LINK `$to_table`
-                         ON (`$items_table_alias`.`$to_fk` = `$to_table`.`id`
+                $JOIN .= "$LINK " . self::quoteName($to_table) . "
+                         ON (" . self::quoteColumn($items_table_alias, $to_fk) . " = " . self::quoteColumn($to_table, 'id') . "
                              $to_entity_restrict) ";
             }
         }
@@ -5972,6 +6650,11 @@ JAVASCRIPT;
             $itemtype == 'AllAssets' || isset($CFG_GLPI["union_search_type"][$itemtype])
             && ($CFG_GLPI["union_search_type"][$itemtype] == $searchopt[$ID]["table"])
         ) {
+            $subtype = $data['TYPE'] ?? null;
+            if (!is_string($subtype) || $subtype === '') {
+                return '';
+            }
+
             $oparams = [];
             if (
                 isset($searchopt[$ID]['addobjectparams'])
@@ -5982,12 +6665,12 @@ JAVASCRIPT;
 
             // Search option may not exists in subtype
             // This is the case for "Inventory number" for a Software listed from ReservationItem search
-            $subtype_so = &self::getOptions($data["TYPE"]);
-            if (!array_key_exists($ID, $subtype_so)) {
+            $subtype_so = &self::getOptions($subtype);
+            if (!is_array($subtype_so) || !array_key_exists($ID, $subtype_so)) {
                 return '';
             }
 
-            return self::giveItem($data["TYPE"], $ID, $data, $meta, $oparams, $itemtype);
+            return self::giveItem($subtype, $ID, $data, $meta, $oparams, $itemtype);
         }
         $so = $searchopt[$ID];
         $orig_id = $ID;
@@ -8347,6 +9030,14 @@ JAVASCRIPT;
                 $complexjoin .= $joinparams['condition'];
             }
         }
+        if (isset($joinparams['condition_criteria'])) {
+            $complexjoin .= print_r($joinparams['condition_criteria'], true);
+        }
+        if (isset($joinparams['condition_expr'])) {
+            $complexjoin .= $joinparams['condition_expr'] instanceof QueryExpression
+                ? $joinparams['condition_expr']->getValue()
+                : (string) $joinparams['condition_expr'];
+        }
 
         // For jointype == child
         if (
@@ -8364,11 +9055,21 @@ JAVASCRIPT;
                 if (isset($tab['table'])) {
                     $complexjoin .= $tab['table'];
                 }
-                if (isset($tab['joinparams']) && isset($tab['joinparams']['condition'])) {
-                    if (is_array($tab['joinparams']['condition'])) {
-                        $complexjoin .= print_r($tab['joinparams']['condition'], true);
-                    } else {
-                        $complexjoin .= $tab['joinparams']['condition'];
+                if (isset($tab['joinparams'])) {
+                    if (isset($tab['joinparams']['condition'])) {
+                        if (is_array($tab['joinparams']['condition'])) {
+                            $complexjoin .= print_r($tab['joinparams']['condition'], true);
+                        } else {
+                            $complexjoin .= $tab['joinparams']['condition'];
+                        }
+                    }
+                    if (isset($tab['joinparams']['condition_criteria'])) {
+                        $complexjoin .= print_r($tab['joinparams']['condition_criteria'], true);
+                    }
+                    if (isset($tab['joinparams']['condition_expr'])) {
+                        $complexjoin .= $tab['joinparams']['condition_expr'] instanceof QueryExpression
+                            ? $tab['joinparams']['condition_expr']->getValue()
+                            : (string) $tab['joinparams']['condition_expr'];
                     }
                 }
             }
@@ -8434,21 +9135,12 @@ JAVASCRIPT;
     **/
     public static function makeTextCriteria($field, $val, $not = false, $link = 'AND')
     {
+        return self::getSearchProviderClass()::makeTextCriteria($field, $val, $not, $link);
+    }
 
-        $sql = $field . self::makeTextSearch($val, $not);
-        // mange empty field (string with length = 0)
-        $sql_or = "";
-        if (strtolower($val) == "null") {
-            $sql_or = "OR $field = ''";
-        }
-
-        if (
-            ($not && ($val != 'NULL') && ($val != 'null') && ($val != '^$'))    // Not something
-            || (!$not && ($val == '^$'))
-        ) {   // Empty
-            $sql = "($sql OR $field IS NULL)";
-        }
-        return " $link ($sql $sql_or)";
+    public static function makeTextCriteriaInternal($field, $val, $not = false, $link = 'AND')
+    {
+        return LegacySQLProvider::makeTextCriteria($field, $val, $not, $link);
     }
 
     /**
@@ -8568,12 +9260,12 @@ JAVASCRIPT;
      */
     public static function joinDropdownTranslations($alias, $table, $itemtype, $field)
     {
-        return "LEFT JOIN `glpi_dropdowntranslations` AS `$alias`
-                  ON (`$alias`.`itemtype` = '$itemtype'
-                        AND `$alias`.`items_id` = `$table`.`id`
-                        AND `$alias`.`language` = '" .
+        return "LEFT JOIN " . self::quoteName('glpi_dropdowntranslations') . " AS " . self::quoteName($alias) . "
+                  ON (" . self::quoteColumn($alias, 'itemtype') . " = '$itemtype'
+                        AND " . self::quoteColumn($alias, 'items_id') . " = " . self::quoteColumn($table, 'id') . "
+                        AND " . self::quoteColumn($alias, 'language') . " = '" .
                                 $_SESSION['glpilanguage'] . "'
-                        AND `$alias`.`field` = '$field')";
+                        AND " . self::quoteColumn($alias, 'field') . " = '$field')";
     }
 
     /**

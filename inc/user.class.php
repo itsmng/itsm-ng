@@ -93,6 +93,10 @@ class User extends CommonDBTM
 
     public function canViewItem()
     {
+        if ((int) ($this->fields['id'] ?? 0) === (int) Session::getLoginUserID()) {
+            return true;
+        }
+
         if (
             Session::canViewAllEntities()
             || Session::haveAccessToOneOfEntities($this->getEntities())
@@ -3355,7 +3359,7 @@ class User extends CommonDBTM
            'name'               => __('LDAP directory for authentication'),
            'massiveaction'      => false,
            'joinparams'         => [
-               'condition'          => 'AND REFTABLE.`authtype` = ' . Auth::LDAP
+               'condition_criteria' => ['REFTABLE.authtype' => Auth::LDAP]
            ],
            'datatype'           => 'dropdown'
         ];
@@ -3368,7 +3372,7 @@ class User extends CommonDBTM
            'name'               => __('Email server for authentication'),
            'massiveaction'      => false,
            'joinparams'         => [
-              'condition'          => 'AND REFTABLE.`authtype` = ' . Auth::MAIL
+              'condition_criteria' => ['REFTABLE.authtype' => Auth::MAIL]
            ],
            'datatype'           => 'dropdown'
         ];
@@ -3553,7 +3557,7 @@ class User extends CommonDBTM
                  'table'              => 'glpi_tickets_users',
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::REQUESTER
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::REQUESTER]
                  ]
               ]
            ]
@@ -3588,7 +3592,7 @@ class User extends CommonDBTM
                  'table'              => 'glpi_tickets_users',
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`type` = ' . CommonITILActor::ASSIGN
+                    'condition_criteria' => ['NEWTABLE.type' => CommonITILActor::ASSIGN]
                  ]
               ]
            ]
@@ -5699,16 +5703,16 @@ class User extends CommonDBTM
                   self::getTableField('is_active')  => 1,
                   self::getTableField('authtype')   => Auth::DB_GLPI,
                   new QueryExpression(
-                      sprintf(
-                          'NOW() > ADDDATE(%s, INTERVAL %s DAY)',
+                      $DB->sqlNow() . ' > ' . $DB->sqlDateAddInterval(
                           $DB->quoteName(self::getTableField('password_last_update')),
-                          $expiration_delay - $notice_time
+                          $expiration_delay - $notice_time,
+                          'DAY'
                       )
                   ),
                   // Get only users that has not yet been notified within last day
                   'OR'                              => [
                      [Alert::getTableField('date') => null],
-                     [Alert::getTableField('date') => ['<', new QueryExpression('CURRENT_TIMESTAMP() - INTERVAL 1 day')]],
+                     [Alert::getTableField('date') => ['<', new QueryExpression($DB->sqlDateAddInterval($DB->sqlCurrentTimestamp(), -1, 'DAY'))]],
                   ],
                ],
             ];
@@ -5783,11 +5787,14 @@ class User extends CommonDBTM
                   'is_active'  => 1,
                   'authtype'   => Auth::DB_GLPI,
                   new QueryExpression(
-                      sprintf(
-                          'NOW() > ADDDATE(ADDDATE(%s, INTERVAL %d DAY), INTERVAL %s DAY)',
-                          $DB->quoteName(self::getTableField('password_last_update')),
-                          $expiration_delay,
-                          $lock_delay
+                      $DB->sqlNow() . ' > ' . $DB->sqlDateAddInterval(
+                          $DB->sqlDateAddInterval(
+                              $DB->quoteName(self::getTableField('password_last_update')),
+                              $expiration_delay,
+                              'DAY'
+                          ),
+                          $lock_delay,
+                          'DAY'
                       )
                   ),
                 ]
@@ -5889,6 +5896,8 @@ class User extends CommonDBTM
 
     public static function getFriendlyNameFields(string $alias = "name")
     {
+        global $DB;
+
         $config = Config::getConfigurationValues('core');
         if ($config['names_format'] == User::FIRSTNAME_BEFORE) {
             $first = "firstname";
@@ -5905,11 +5914,11 @@ class User extends CommonDBTM
         $name   = DB::quoteName(self::getNameField());
 
         return new QueryExpression(
-            "IF(
-            $first <> '' && $second <> '',
-            CONCAT($first, ' ', $second),
-            $name
-         ) AS $alias"
+            $DB->sqlIf(
+                "$first <> '' AND $second <> ''",
+                $DB->sqlConcat([$first, $DB->quoteValue(' '), $second]),
+                $name
+            ) . " AS $alias"
         );
     }
 
@@ -5967,7 +5976,13 @@ class User extends CommonDBTM
            'FROM'   => self::getTable(),
            'WHERE'  => [
               'password_forget_token'       => $token,
-              new \QueryExpression('NOW() < ADDDATE(' . $DB->quoteName('password_forget_token_date') . ', INTERVAL 1 DAY)')
+              new \QueryExpression(
+                  $DB->sqlNow() . ' < ' . $DB->sqlDateAddInterval(
+                      $DB->quoteName('password_forget_token_date'),
+                      1,
+                      'DAY'
+                  )
+              )
            ]
         ]);
 

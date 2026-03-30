@@ -41,30 +41,36 @@ class Reminder extends DbTestCase
 {
     public function testAddVisibilityRestrict()
     {
+        global $DB;
+
+        $reminders_users_field = $DB->quoteName('glpi_reminders.users_id');
+        $profiles_field = $DB->quoteName('glpi_profiles_reminders.profiles_id');
+        $groups_field = $DB->quoteName('glpi_groups_reminders.groups_id');
+
         //first, as a super-admin
         $this->login();
         $restrict = trim((string) preg_replace('/\s+/', ' ', \Reminder::addVisibilityRestrict()));
         $this->string($restrict)
-           ->contains("`glpi_reminders`.`users_id` = '" . $_SESSION['glpiID'] . "'")
-           ->contains("`glpi_profiles_reminders`.`profiles_id` = '" . $_SESSION['glpiactiveprofile']['id'] . "'");
+           ->contains($reminders_users_field . " = '" . $_SESSION['glpiID'] . "'")
+           ->contains($profiles_field . " = '" . $_SESSION['glpiactiveprofile']['id'] . "'");
 
         $this->login('normal', 'normal');
         $restrict = trim((string) preg_replace('/\s+/', ' ', \Reminder::addVisibilityRestrict()));
         $this->string($restrict)
-           ->contains("`glpi_reminders`.`users_id` = '" . $_SESSION['glpiID'] . "'")
-           ->contains("`glpi_profiles_reminders`.`profiles_id` = '" . $_SESSION['glpiactiveprofile']['id'] . "'");
+           ->contains($reminders_users_field . " = '" . $_SESSION['glpiID'] . "'")
+           ->contains($profiles_field . " = '" . $_SESSION['glpiactiveprofile']['id'] . "'");
 
         $this->login('tech', 'tech');
         $restrict = trim((string) preg_replace('/\s+/', ' ', \Reminder::addVisibilityRestrict()));
         $this->string($restrict)
-           ->contains("`glpi_reminders`.`users_id` = '" . $_SESSION['glpiID'] . "'")
-           ->contains("`glpi_profiles_reminders`.`profiles_id` = '" . $_SESSION['glpiactiveprofile']['id'] . "'");
+           ->contains($reminders_users_field . " = '" . $_SESSION['glpiID'] . "'")
+           ->contains($profiles_field . " = '" . $_SESSION['glpiactiveprofile']['id'] . "'");
 
         $bkp_groups = $_SESSION['glpigroups'];
         $_SESSION['glpigroups'] = [42, 1337];
         $str = \Reminder::addVisibilityRestrict();
         $_SESSION['glpigroups'] = $bkp_groups;
         $this->string(trim((string) preg_replace('/\s+/', ' ', $str)))
-           ->contains("`glpi_groups_reminders`.`groups_id` IN ('42', '1337')");
+           ->contains($groups_field . " IN ('42', '1337')");
     }
 }

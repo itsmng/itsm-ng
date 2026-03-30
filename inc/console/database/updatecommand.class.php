@@ -149,6 +149,9 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
         }
 
         if (version_compare($current_db_version, ITSM_SCHEMA_VERSION, 'eq') && !$force && version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'eq')) {
+            (new \itsmng\Database\Migrations\MigrationHistoryRepository($this->db))
+                ->ensureBaseline(ITSM_SCHEMA_VERSION);
+
             $output->writeln('<info>' . __('No migration needed.') . '</info>');
             return 0;
         }
@@ -190,6 +193,9 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
         }
 
         if (version_compare($current_db_version, ITSM_SCHEMA_VERSION, 'ne') && version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'ne')) {
+            (new \itsmng\Database\Migrations\MigrationHistoryRepository($this->db))
+                ->ensureBaseline(ITSM_SCHEMA_VERSION);
+
             // Migration is considered as done as Update class has the responsibility
             // to run updates if schema has changed (even for "pre-versions".
             $output->writeln('<info>' . __('Migration done.') . '</info>');

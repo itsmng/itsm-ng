@@ -261,7 +261,7 @@ function getLinkedDocumentsForItem($itemType, $items_id)
         "SELECT" => ["id", "documents_id"],
         "FROM" => Document_Item::getTable(),
         "WHERE" => [
-            "itemType" => $itemType,
+            "itemtype" => $itemType,
             "items_id" => $items_id,
         ],
     ]);

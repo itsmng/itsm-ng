@@ -622,11 +622,12 @@ class Session
                'entities_id',
                $_SESSION['glpiactiveentities'],
                true
-           )
+           ),
+           'ORDER'     => [Group_User::getTable() . '.groups_id']
         ]);
 
         while ($data = $iterator->next()) {
-            $_SESSION["glpigroups"][] = $data["groups_id"];
+            $_SESSION["glpigroups"][] = (string) $data["groups_id"];
         }
     }
 

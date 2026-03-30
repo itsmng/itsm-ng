@@ -54,11 +54,62 @@ class Migration extends \GLPITestCase
      */
     private $queries;
 
+    /**
+     * @var \DB|null
+     */
+    private $runtimeDb;
+
+    private function isPgsql(): bool
+    {
+        $db = $this->runtimeDb ?? $this->db;
+
+        return $db instanceof \DB && $db->dbtype === 'pgsql';
+    }
+
+    private function filterObservedQueries(array $queries): array
+    {
+        return array_values(array_filter(
+            $queries,
+            static function (string $query): bool {
+                if (strpos($query, 'SELECT pg_get_serial_sequence(') === 0) {
+                    return false;
+                }
+
+                if (
+                    strpos($query, 'SELECT CASE') === 0
+                    && str_contains($query, 'pg_catalog')
+                    && str_contains($query, 'pg_indexes')
+                ) {
+                    return false;
+                }
+
+                if (
+                    strpos($query, 'SELECT') === 0
+                    && str_contains($query, 'information_schema.columns cols')
+                ) {
+                    return false;
+                }
+
+                return true;
+            }
+        ));
+    }
+
+    private function assertQueriesForBackend(array $mysql_queries, ?array $pgsql_queries = null): void
+    {
+        $expected_queries = $this->isPgsql() ? ($pgsql_queries ?? $mysql_queries) : $mysql_queries;
+        $this->array($this->filterObservedQueries($this->queries))->isIdenticalTo($expected_queries);
+    }
+
     public function beforeTestMethod($method)
     {
+        global $DB;
+
         parent::beforeTestMethod($method);
+        $this->runtimeDb = $DB instanceof \DB ? $DB : null;
         if ($method !== 'testConstructor') {
             $this->db = new \mock\DB();
+            $this->db->dbtype = 'mysql';
             $queries = [];
             $this->queries = &$queries;
             $this->calling($this->db)->query = function ($query) use (&$queries) {
@@ -66,6 +117,7 @@ class Migration extends \GLPITestCase
                 return true;
             };
             $this->calling($this->db)->freeResult = true;
+            $this->calling($this->db)->insertId = 0;
 
             $this->output(
                 function () {
@@ -79,6 +131,17 @@ class Migration extends \GLPITestCase
                 }
             );
         }
+    }
+
+    public function afterTestMethod($method)
+    {
+        global $DB;
+
+        if ($this->runtimeDb instanceof \DB) {
+            $DB = $this->runtimeDb;
+        }
+
+        parent::afterTestMethod($method);
     }
 
     public function testConstructor()
@@ -149,7 +212,7 @@ class Migration extends \GLPITestCase
            7 => 'SELECT * FROM `glpi_configs` WHERE `glpi_configs`.`id` = \'0\' LIMIT 1',
            8 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \''.$_SESSION['glpi_currenttime'].'\', \'1\', \'two \', \'value\')',
         ];
-        $this->array($this->queries)->isIdenticalTo($core_queries);
+        $this->assertQueriesForBackend($core_queries);
 
         //test with existing value on different context => new keys should be inserted in correct context
         $this->queries = [];
@@ -164,7 +227,7 @@ class Migration extends \GLPITestCase
             }
         )->isIdenticalTo('Configuration values added for one, two (test-context).Task completed.');
 
-        $this->array($this->queries)->isIdenticalTo([
+        $this->assertQueriesForBackend([
            0 => 'SELECT * FROM `glpi_configs` WHERE `context` = \'test-context\' AND `name` IN (\'one\', \'two\')',
            1 => 'SELECT `id` FROM `glpi_configs` WHERE `context` = \'test-context\' AND `name` = \'one\'',
            2 => 'INSERT INTO `glpi_configs` (`context`, `name`, `value`) VALUES (\'test-context\', \'one\', \'key\')',
@@ -207,7 +270,7 @@ class Migration extends \GLPITestCase
             }
         )->isIdenticalTo('Configuration values added for two (core).Task completed.');
 
-        $this->array($this->queries)->isIdenticalTo([
+        $this->assertQueriesForBackend([
            0 => 'INSERT INTO `glpi_configs` (`context`, `name`, `value`) VALUES (\'core\', \'two\', \'value\')',
            1 => 'INSERT INTO `glpi_logs` (`items_id`, `itemtype`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) VALUES (\'1\', \'Config\', \'\', \'0\', \'\', \''.$_SESSION['glpi_currenttime'].'\', \'1\', \'two \', \'value\')',
         ]);
@@ -227,13 +290,20 @@ class Migration extends \GLPITestCase
             }
         )->isIdenticalTo("Task completed.");
 
-        $this->array($this->queries)->isIdenticalTo([
+        $this->assertQueriesForBackend([
            0 => 'SELECT `table_name` AS `TABLE_NAME` FROM `information_schema`.`tables`' .
                  ' WHERE `table_schema` = \'' . $DB->dbdefault .
                  '\' AND `table_type` = \'BASE TABLE\' AND `table_name` LIKE \'table1\'',
            1 => 'SELECT `table_name` AS `TABLE_NAME` FROM `information_schema`.`tables`' .
                  ' WHERE `table_schema` = \'' . $DB->dbdefault  .
                  '\' AND `table_type` = \'BASE TABLE\' AND `table_name` LIKE \'table2\''
+               ], [
+           0 => 'SELECT `table_name` AS `TABLE_NAME` FROM `information_schema`.`tables`' .
+                 ' WHERE `table_catalog` = \'' . $DB->dbdefault .
+                 '\' AND `table_schema` = \'public\' AND `table_type` = \'BASE TABLE\' AND `table_name` LIKE \'table1\'',
+           1 => 'SELECT `table_name` AS `TABLE_NAME` FROM `information_schema`.`tables`' .
+                 ' WHERE `table_catalog` = \'' . $DB->dbdefault .
+                 '\' AND `table_schema` = \'public\' AND `table_type` = \'BASE TABLE\' AND `table_name` LIKE \'table2\''
                ]);
 
         //try to backup existant tables
@@ -484,15 +554,14 @@ class Migration extends \GLPITestCase
         $this->calling($this->db)->fieldExists = false;
         $this->queries = [];
 
-        $this->when(
+        $this->exception(
             function () {
                 $this->migration->addField('my_table', 'my_field', 'bool', ['value' => 2]);
                 $this->migration->executeMigration();
             }
-        )->error()
-           ->withType(E_USER_ERROR)
-           ->withMessage('default_value must be 0 or 1')
-           ->exists();
+        )
+           ->isInstanceOf(\InvalidArgumentException::class)
+           ->hasMessage('default_value must be 0 or 1');
     }
 
     public function testFormatIntegerBadDefault()
@@ -502,90 +571,96 @@ class Migration extends \GLPITestCase
         $this->calling($this->db)->fieldExists = false;
         $this->queries = [];
 
-        $this->when(
+        $this->exception(
             function () {
                 $this->migration->addField('my_table', 'my_field', 'integer', ['value' => 'foo']);
                 $this->migration->executeMigration();
             }
-        )->error()
-           ->withType(E_USER_ERROR)
-           ->withMessage('default_value must be numeric')
-           ->exists();
+        )
+           ->isInstanceOf(\InvalidArgumentException::class)
+           ->hasMessage('default_value must be numeric');
     }
 
     public function testAddRight()
     {
         global $DB;
+        $real_db = new \DB();
+        $DB = $real_db;
+        $this->migration = new \Migration(GLPI_VERSION);
 
-        $DB->delete('glpi_profilerights', [
-           'name' => [
-              'testright1', 'testright2', 'testright3', 'testright4'
-           ]
-        ]);
-        //Test adding a READ right when profile has READ and UPDATE config right (Default)
-        $this->migration->addRight('testright1', READ);
-        //Test adding a READ right when profile has UPDATE group right
-        $this->migration->addRight('testright2', READ, ['group' => UPDATE]);
-        //Test adding an UPDATE right when profile has READ and UPDATE group right and CREATE entity right
-        $this->migration->addRight('testright3', UPDATE, [
-           'group'  => READ | UPDATE,
-           'entity' => CREATE
-        ]);
-        //Test adding a READ right when profile with no requirements
-        $this->migration->addRight('testright4', READ, []);
+        try {
+            $DB->delete('glpi_profilerights', [
+               'name' => [
+                  'testright1', 'testright2', 'testright3', 'testright4'
+               ]
+            ]);
+            //Test adding a READ right when profile has READ and UPDATE config right (Default)
+            $this->migration->addRight('testright1', READ);
+            //Test adding a READ right when profile has UPDATE group right
+            $this->migration->addRight('testright2', READ, ['group' => UPDATE]);
+            //Test adding an UPDATE right when profile has READ and UPDATE group right and CREATE entity right
+            $this->migration->addRight('testright3', UPDATE, [
+               'group'  => READ | UPDATE,
+               'entity' => CREATE
+            ]);
+            //Test adding a READ right when profile with no requirements
+            $this->migration->addRight('testright4', READ, []);
 
-        $right1 = $DB->request([
-           'FROM' => 'glpi_profilerights',
-           'WHERE'  => [
-              'name'   => 'testright1',
-              'rights' => READ
-           ]
-        ]);
-        $this->integer(count($right1))->isEqualTo(1);
+            $right1 = $DB->request([
+               'FROM' => 'glpi_profilerights',
+               'WHERE'  => [
+                  'name'   => 'testright1',
+                  'rights' => READ
+               ]
+            ]);
+            $this->integer(count($right1))->isEqualTo(1);
 
-        $right1 = $DB->request([
-           'FROM' => 'glpi_profilerights',
-           'WHERE'  => [
-              'name'   => 'testright2',
-              'rights' => READ
-           ]
-        ]);
-        $this->integer(count($right1))->isEqualTo(2);
+            $right1 = $DB->request([
+               'FROM' => 'glpi_profilerights',
+               'WHERE'  => [
+                  'name'   => 'testright2',
+                  'rights' => READ
+               ]
+            ]);
+            $this->integer(count($right1))->isEqualTo(2);
 
-        $right1 = $DB->request([
-           'FROM' => 'glpi_profilerights',
-           'WHERE'  => [
-              'name'   => 'testright3',
-              'rights' => UPDATE
-           ]
-        ]);
-        $this->integer(count($right1))->isEqualTo(1);
+            $right1 = $DB->request([
+               'FROM' => 'glpi_profilerights',
+               'WHERE'  => [
+                  'name'   => 'testright3',
+                  'rights' => UPDATE
+               ]
+            ]);
+            $this->integer(count($right1))->isEqualTo(1);
 
-        $right1 = $DB->request([
-           'FROM' => 'glpi_profilerights',
-           'WHERE'  => [
-              'name'   => 'testright4',
-              'rights' => READ
-           ]
-        ]);
-        $this->integer(count($right1))->isEqualTo(8);
+            $right1 = $DB->request([
+               'FROM' => 'glpi_profilerights',
+               'WHERE'  => [
+                  'name'   => 'testright4',
+                  'rights' => READ
+               ]
+            ]);
+            $this->integer(count($right1))->isEqualTo(8);
 
-        //Test adding a READ right only on profiles where it has not been set yet
-        $DB->delete('glpi_profilerights', [
-           'profiles_id' => [1, 2, 3, 4],
-           'name' => 'testright4'
-        ]);
+            //Test adding a READ right only on profiles where it has not been set yet
+            $DB->delete('glpi_profilerights', [
+               'profiles_id' => [1, 2, 3, 4],
+               'name' => 'testright4'
+            ]);
 
-        $this->migration->addRight('testright4', READ | UPDATE, []);
+            $this->migration->addRight('testright4', READ | UPDATE, []);
 
-        $right4 = $DB->request([
-           'FROM' => 'glpi_profilerights',
-           'WHERE'  => [
-              'name'   => 'testright4',
-              'rights' => READ | UPDATE
-           ]
-        ]);
-        $this->integer(count($right4))->isEqualTo(4);
+            $right4 = $DB->request([
+               'FROM' => 'glpi_profilerights',
+               'WHERE'  => [
+                  'name'   => 'testright4',
+                  'rights' => READ | UPDATE
+               ]
+            ]);
+            $this->integer(count($right4))->isEqualTo(4);
+        } finally {
+            $DB = $this->runtimeDb;
+        }
     }
 
     public function testRenameTable()
@@ -617,7 +692,7 @@ class Migration extends \GLPITestCase
 
         $this->migration->renameTable('glpi_oldtable', 'glpi_newtable');
 
-        $this->array($this->queries)->isIdenticalTo(
+        $this->assertQueriesForBackend(
             [
               "RENAME TABLE `glpi_oldtable` TO `glpi_newtable`",
          ]
@@ -632,7 +707,7 @@ class Migration extends \GLPITestCase
         $this->migration->migrationOneTable('glpi_oldtable');
         $this->migration->renameTable('glpi_oldtable', 'glpi_newtable');
 
-        $this->array($this->queries)->isIdenticalTo(
+        $this->assertQueriesForBackend(
             [
               "ALTER TABLE `glpi_oldtable` ADD `bool_field` TINYINT(1) NOT NULL DEFAULT '0'   ",
               "ALTER TABLE `glpi_oldtable` ADD FULLTEXT `fulltext_key` (`fulltext_key`)",
@@ -650,7 +725,7 @@ class Migration extends \GLPITestCase
         $this->migration->renameTable('glpi_oldtable', 'glpi_newtable');
         $this->migration->migrationOneTable('glpi_newtable');
 
-        $this->array($this->queries)->isIdenticalTo(
+        $this->assertQueriesForBackend(
             [
               "RENAME TABLE `glpi_oldtable` TO `glpi_newtable`",
               "ALTER TABLE `glpi_newtable` ADD `bool_field` TINYINT(1) NOT NULL DEFAULT '0'   ",
@@ -788,7 +863,7 @@ class Migration extends \GLPITestCase
             )
         );
 
-        $this->array($this->queries)->isIdenticalTo([
+        $this->assertQueriesForBackend([
            "RENAME TABLE `glpi_someoldtypes` TO `glpi_newnames`",
            "ALTER TABLE `glpi_oneitem_with_fkey` CHANGE `someoldtypes_id` `newnames_id` INT(11) NOT NULL DEFAULT '0'   ",
            "ALTER TABLE `glpi_anotheritem_with_fkey` CHANGE `someoldtypes_id` `newnames_id` INT(11) NOT NULL DEFAULT '0'   ,\n"
@@ -878,7 +953,7 @@ class Migration extends \GLPITestCase
         $this->migration->changeSearchOption('Computer', 40, 100);
         $this->migration->executeMigration();
 
-        $this->array($this->queries)->isIdenticalTo([
+        $this->assertQueriesForBackend([
            "UPDATE `glpi_displaypreferences` SET `num` = '100' WHERE `itemtype` = 'Computer' AND `num` = '40'",
            "UPDATE `glpi_savedsearches` SET `query` = 'is_deleted=0&as_map=0&criteria%5B0%5D%5Blink%5D=AND&criteria%5B0%5D%5Bfield%5D=100&criteria%5B0%5D%5Bsearchtype%5D=contains&criteria%5B0%5D%5Bvalue%5D=LT1&criteria%5B1%5D%5Blink%5D=AND&criteria%5B1%5D%5Bitemtype%5D=Budget&criteria%5B1%5D%5Bmeta%5D=1&criteria%5B1%5D%5Bfield%5D=4&criteria%5B1%5D%5Bsearchtype%5D=contains&criteria%5B1%5D%5Bvalue%5D=&search=Search&itemtype=Computer' WHERE `id` = '0'",
            "UPDATE `glpi_savedsearches` SET `query` = 'is_deleted=0&as_map=0&criteria%5B0%5D%5Blink%5D=AND&criteria%5B0%5D%5Bfield%5D=40&criteria%5B0%5D%5Bsearchtype%5D=contains&criteria%5B0%5D%5Bvalue%5D=LT1&criteria%5B1%5D%5Blink%5D=AND&criteria%5B1%5D%5Bitemtype%5D=Computer&criteria%5B1%5D%5Bmeta%5D=1&criteria%5B1%5D%5Bfield%5D=100&criteria%5B1%5D%5Bsearchtype%5D=contains&criteria%5B1%5D%5Bvalue%5D=&search=Search&itemtype=Computer' WHERE `id` = '1'",

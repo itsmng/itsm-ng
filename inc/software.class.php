@@ -475,6 +475,8 @@ class Software extends CommonDBTM
 
     public function rawSearchOptions()
     {
+        global $DB;
+
         // Only use for History (not by search Engine)
         $tab = parent::rawSearchOptions();
 
@@ -622,9 +624,9 @@ class Software extends CommonDBTM
                  'table'      => 'glpi_softwareversions',
                  'joinparams' => ['jointype' => 'child'],
               ],
-              'condition'  => "AND NEWTABLE.`is_deleted_item` = 0
-                             AND NEWTABLE.`is_deleted` = 0
-                             AND NEWTABLE.`is_template_item` = 0",
+              'condition'  => 'AND NEWTABLE.is_deleted_item = ' . $DB->quoteValue(false) . "
+                             AND NEWTABLE.is_deleted = " . $DB->quoteValue(false) . "
+                             AND NEWTABLE.is_template_item = " . $DB->quoteValue(false),
            ]
         ];
 
@@ -646,9 +648,9 @@ class Software extends CommonDBTM
                  'table'      => 'glpi_softwareversions',
                  'joinparams' => ['jointype' => 'child'],
               ],
-              'condition'  => "AND NEWTABLE.`is_deleted_item` = 0
-                             AND NEWTABLE.`is_deleted` = 0
-                             AND NEWTABLE.`is_template_item` = 0",
+              'condition'  => 'AND NEWTABLE.is_deleted_item = ' . $DB->quoteValue(false) . "
+                             AND NEWTABLE.is_deleted = " . $DB->quoteValue(false) . "
+                             AND NEWTABLE.is_template_item = " . $DB->quoteValue(false),
            ]
         ];
 

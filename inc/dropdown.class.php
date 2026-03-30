@@ -2406,7 +2406,11 @@ class Dropdown
                         ($_SESSION['glpiis_ids_visible'] || $post['itemtype'] == 'Ticket')
                         && is_numeric($post['searchText']) && (int)$post['searchText'] == $post['searchText']
                     ) {
-                        $swhere[$table . '.' . $item->getIndexName()] = ['LIKE', "%{$post['searchText']}%"];
+                        $swhere[] = new QueryExpression(
+                            $DB->sqlCastAsString($DB->quoteName($table . '.' . $item->getIndexName()))
+                            . ' LIKE '
+                            . $DB->quoteValue("%{$post['searchText']}%")
+                        );
                     }
 
                     // search also in displaywith columns
@@ -2784,7 +2788,11 @@ class Dropdown
                     ($_SESSION['glpiis_ids_visible'] || $post['itemtype'] == 'Ticket')
                     && is_numeric($post['searchText']) && (int)$post['searchText'] == $post['searchText']
                 ) {
-                    $orwhere[$table . '.' . $item->getIndexName()] = ['LIKE', "%{$post['searchText']}%"];
+                    $orwhere[] = new QueryExpression(
+                        $DB->sqlCastAsString($DB->quoteName($table . '.' . $item->getIndexName()))
+                        . ' LIKE '
+                        . $DB->quoteValue("%{$post['searchText']}%")
+                    );
                 }
 
                 if ($item instanceof CommonDCModelDropdown) {
@@ -2847,8 +2855,11 @@ class Dropdown
                        'SELECT' => [
                           "$table.entities_id",
                           new \QueryExpression(
-                              "CONCAT(IFNULL(" . $DB->quoteName('name') . ",''),' ',IFNULL(" .
-                              $DB->quoteName('firstname') . ",'')) AS " . $DB->quoteName($field)
+                              $DB->sqlConcat([
+                                  $DB->sqlIfNull($DB->quoteName('name'), $DB->quoteValue('')),
+                                  $DB->quoteValue(' '),
+                                  $DB->sqlIfNull($DB->quoteName('firstname'), $DB->quoteValue('')),
+                              ]) . ' AS ' . $DB->quoteName($field)
                           ),
                           "$table.comment",
                           "$table.id"
@@ -2982,6 +2993,7 @@ class Dropdown
                     }
 
                     // Process iterator results
+                    $user_datas = [];
                     if (count($iterator)) {
                         while ($data = $iterator->next()) {
                             $outputval = formatUserName(
@@ -3017,7 +3029,7 @@ class Dropdown
                                 }
                             }
 
-                            $datas[] = [
+                            $user_datas[] = [
                                'id' => $data['id'],
                                'text' => $outputval,
                                'title' => $title
@@ -3025,6 +3037,32 @@ class Dropdown
                             $count++;
                         }
                     }
+
+                    usort(
+                        $user_datas,
+                        static function (array $left, array $right): int {
+                            $left_text = (string) ($left['text'] ?? '');
+                            $right_text = (string) ($right['text'] ?? '');
+                            $left_prefix = str_starts_with($left_text, '_') ? 0 : 1;
+                            $right_prefix = str_starts_with($right_text, '_') ? 0 : 1;
+
+                            if ($left_prefix !== $right_prefix) {
+                                return $left_prefix <=> $right_prefix;
+                            }
+
+                            $text_cmp = strcmp(
+                                mb_strtolower($left_text),
+                                mb_strtolower($right_text)
+                            );
+                            if ($text_cmp !== 0) {
+                                return $text_cmp;
+                            }
+
+                            return ($left['id'] ?? 0) <=> ($right['id'] ?? 0);
+                        }
+                    );
+
+                    $datas = array_merge($datas, $user_datas);
 
                     $ret['results'] = $datas;
                     $ret['count']   = $count;
@@ -3903,6 +3941,23 @@ class Dropdown
         }
 
         if (count($users)) {
+            uasort(
+                $users,
+                static function (string $left, string $right): int {
+                    $left_prefix = str_starts_with($left, '_') ? 0 : 1;
+                    $right_prefix = str_starts_with($right, '_') ? 0 : 1;
+
+                    if ($left_prefix !== $right_prefix) {
+                        return $left_prefix <=> $right_prefix;
+                    }
+
+                    return strcmp(
+                        mb_strtolower($left),
+                        mb_strtolower($right)
+                    );
+                }
+            );
+
             foreach ($users as $ID => $output) {
                 $title = sprintf(__('%1$s - %2$s'), $output, $logins[$ID]);
 

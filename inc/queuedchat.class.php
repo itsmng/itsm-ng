@@ -137,6 +137,10 @@ class QueuedChat extends CommonDBTM
         }
         $input['sent_try'] = 0;
 
+        if (!isset($input['mode']) || $input['mode'] === null) {
+            $input['mode'] = '';
+        }
+
 
         // Force items_id to integer
         if (!isset($input['items_id']) || empty($input['items_id'])) {

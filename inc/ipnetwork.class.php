@@ -593,7 +593,11 @@ class IPNetwork extends CommonImplicitTreeDropdown
             if ($relation == "equals") {
                 for ($i = $startIndex; $i < 4; ++$i) {
                     $WHERE = [
-                       new \QueryExpression("(" . $DB->quoteName($addressDB[$i]) . " & " . $DB->quoteValue($netmaskPa[$i]) . ") = (" . $DB->quoteValue($addressPa[$i]) . " & " . $DB->quoteValue($netmaskPa[$i]) . ")"),
+                       new \QueryExpression(
+                           $DB->sqlBitwiseAnd($DB->quoteName($addressDB[$i]), $DB->quoteValue($netmaskPa[$i]))
+                           . ' = '
+                           . $DB->sqlBitwiseAnd($DB->quoteValue($addressPa[$i]), $DB->quoteValue($netmaskPa[$i]))
+                       ),
                        $netmaskDB[$i]  => $netmaskPa[$i]
                     ];
                 }
@@ -606,8 +610,16 @@ class IPNetwork extends CommonImplicitTreeDropdown
                     }
 
                     $WHERE = [
-                       new \QueryExpression("(" . $DB->quoteName($addressDB[$i]) . " & $globalNetmask) = (" . $DB->quoteValue($addressPa[$i]) . " & $globalNetmask)"),
-                       new \QueryExpression("(" . $DB->quoteValue($netmaskPa[$i]) . " & " . $DB->quoteName($netmaskDB[$i]) . ")=$globalNetmask")
+                       new \QueryExpression(
+                           $DB->sqlBitwiseAnd($DB->quoteName($addressDB[$i]), $globalNetmask)
+                           . ' = '
+                           . $DB->sqlBitwiseAnd($DB->quoteValue($addressPa[$i]), $globalNetmask)
+                       ),
+                       new \QueryExpression(
+                           $DB->sqlBitwiseAnd($DB->quoteValue($netmaskPa[$i]), $DB->quoteName($netmaskDB[$i]))
+                           . ' = '
+                           . $globalNetmask
+                       )
                     ];
                 }
             }
@@ -661,7 +673,9 @@ class IPNetwork extends CommonImplicitTreeDropdown
         // the last should be 0.0.0.0/0.0.0.0 of x.y.z.a/255.255.255.255 regarding the interested
         // element)
         for ($i = $startIndex; $i < 4; ++$i) {
-            $ORDER[] = new \QueryExpression("BIT_COUNT(" . $DB->quoteName($netmaskDB[$i]) . ") $ORDER_ORIENTATION");
+            $ORDER[] = new \QueryExpression(
+                $DB->sqlBitCount($DB->quoteName($netmaskDB[$i])) . " $ORDER_ORIENTATION"
+            );
         }
 
         if (!empty($condition["where"])) {
@@ -728,7 +742,10 @@ class IPNetwork extends CommonImplicitTreeDropdown
         $result = [];
         for ($i = ($version == 4 ? 3 : 0); $i < 4; ++$i) {
             $result[] = new \QueryExpression(
-                "({$DB->quoteName($tableName.'.'.$binaryFieldPrefix.'_'.$i)} & " . $this->fields["netmask_$i"] . ") = ({$start[$i]})"
+                $DB->sqlBitwiseAnd(
+                    $DB->quoteName($tableName . '.' . $binaryFieldPrefix . '_' . $i),
+                    (string) $this->fields["netmask_$i"]
+                ) . ' = (' . $start[$i] . ')'
             );
         }
         $result["$tableName.version"] = $version;

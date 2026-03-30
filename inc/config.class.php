@@ -2542,17 +2542,18 @@ class Config extends CommonDBTM
      *
      * @since 9.3
      *
-     * @param boolean $fordebug display for debug (no html required) (false by default)
-     * @param string  $version  Version to check (mainly from install), defaults to null
+     * @param boolean     $fordebug display for debug (no html required) (false by default)
+     * @param string|null $version  Version to check (mainly from install), defaults to null
+     * @param string|null $dbtype   Database type to check, defaults to null
      *
      * @return integer 2: missing extension,  1: missing optionnal extension, 0: OK,
      **/
-    public static function displayCheckDbEngine($fordebug = false, $version = null)
+    public static function displayCheckDbEngine($fordebug = false, $version = null, $dbtype = null)
     {
         global $CFG_GLPI;
 
         $error = 0;
-        $result = self::checkDbEngine($version);
+        $result = self::checkDbEngine($version, $dbtype);
         $version = key($result);
         $db_ver = $result[$version];
 
@@ -2645,24 +2646,51 @@ class Config extends CommonDBTM
      *
      * @since 9.3
      *
-     * @param string $raw Raw version to check (mainly from install), defaults to null
+     * @param string|null $raw    Raw version to check (mainly from install), defaults to null
+     * @param string|null $dbtype Database type to check, defaults to null
      *
      * @return boolean
     **/
-    public static function checkDbEngine($raw = null)
+    public static function checkDbEngine($raw = null, $dbtype = null)
     {
-        // MySQL >= 5.6 || MariaDB >= 10
         if ($raw === null) {
             global $DB;
             $raw = $DB->getVersion();
+            $dbtype = $dbtype ?? ($DB->dbtype ?? null);
         }
 
         /** @var array $found */
         preg_match('/(\d+(\.)?)+/', (string) $raw, $found);
-        $version = $found[0];
+        $version = $found[0] ?? '0';
 
-        $db_ver = version_compare($version, '5.6', '>=');
+        $dbtype = self::detectDbEngineType((string) $raw, $dbtype);
+
+        $db_ver = match ($dbtype) {
+            'pgsql'   => version_compare($version, '12.0', '>='),
+            'mariadb' => version_compare($version, '10.0', '>='),
+            default   => version_compare($version, '5.6', '>='),
+        };
+
         return [$version => $db_ver];
+    }
+
+    private static function detectDbEngineType(string $raw, ?string $dbtype): string
+    {
+        $normalized_dbtype = strtolower((string) $dbtype);
+        if (in_array($normalized_dbtype, ['pgsql', 'postgres', 'postgresql'], true)) {
+            return 'pgsql';
+        }
+
+        $normalized_raw = strtolower($raw);
+        if (str_contains($normalized_raw, 'postgresql')) {
+            return 'pgsql';
+        }
+
+        if (str_contains($normalized_raw, 'mariadb')) {
+            return 'mariadb';
+        }
+
+        return 'mysql';
     }
 
 
@@ -2684,7 +2712,7 @@ class Config extends CommonDBTM
     {
         if ($list === null) {
             $extensions_to_check = [
-               'mysqli'   => [
+               'pdo_mysql'   => [
                   'required'  => true
                ],
                'ctype'    => [

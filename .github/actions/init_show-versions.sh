@@ -7,5 +7,9 @@ docker-compose exec -T app sh -c 'echo "node $(node --version)"'
 docker-compose exec -T app sh -c 'echo "npm $(npm --version)"'
 
 if [[ -n $(docker-compose ps --all --services | grep "db") ]]; then
-  docker-compose exec -T db mysql --version;
+  if [[ "${DB_TYPE:-mysql}" = "pgsql" ]]; then
+    docker-compose exec -T db psql --version;
+  else
+    docker-compose exec -T db mysql --version;
+  fi
 fi

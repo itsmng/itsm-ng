@@ -38,9 +38,12 @@ if (!defined('GLPI_ROOT')) {
 }
 
 use Glpi\Console\AbstractCommand;
+use itsmng\Database\Schema\CoreSchema;
+use itsmng\Database\Schema\Dialect\DialectResolver;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
 
 class CheckCommand extends AbstractCommand
 {
@@ -63,48 +66,53 @@ class CheckCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $differ = new Differ();
-
-        if (
-            false === ($empty_file = realpath(GLPI_ROOT . '/install/mysql/glpi-empty.sql'))
-            || false === ($empty_sql = file_get_contents($empty_file))
-        ) {
-            $message = sprintf(__('Unable to read installation file "%s".'), $empty_file);
-            $output->writeln(
-                '<error>' . $message . '</error>',
-                OutputInterface::VERBOSITY_QUIET
-            );
-            return self::ERROR_UNABLE_TO_READ_EMPTYSQL;
-        }
-
-        $matches = [];
-        preg_match_all('/CREATE TABLE `(.+)`[^;]+/', $empty_sql, $matches);
-        $empty_tables_names   = $matches[1];
-        $empty_tables_schemas = $matches[0];
-
-        foreach ($empty_tables_schemas as $index => $table_schema) {
-            $table_name = $empty_tables_names[$index];
+        $differ = new Differ(new DiffOnlyOutputBuilder(''));
+        $dialect = $this->resolveDialect();
+        foreach ($this->getSchemaTables() as $table) {
+            $table_name = $table['name'];
 
             $output->writeln(
                 sprintf(__('Processing table "%s"...'), $table_name),
                 OutputInterface::VERBOSITY_VERY_VERBOSE
             );
 
-            $base_table_struct     = $this->db->getTableSchema($table_name, $table_schema);
+            $statements = $dialect->createTableStatements($table);
+            $base_table_struct = $this->db->getTableSchema($table_name, $statements);
             $existing_table_struct = $this->db->getTableSchema($table_name);
 
-            if ($existing_table_struct['schema'] != $base_table_struct['schema']) {
+            if ($existing_table_struct != $base_table_struct) {
                 $message = sprintf(__('Table schema differs for table "%s".'), $table_name);
                 $output->writeln(
                     '<info>' . $message . '</info>',
                     OutputInterface::VERBOSITY_QUIET
                 );
-                $output->write(
-                    $differ->diff($base_table_struct['schema'], $existing_table_struct['schema'])
-                );
+                if ($existing_table_struct['schema'] != $base_table_struct['schema']) {
+                    $output->write(
+                        $differ->diff($base_table_struct['schema'], $existing_table_struct['schema'])
+                    );
+                }
+
+                if ($existing_table_struct['index'] != $base_table_struct['index']) {
+                    $output->write(
+                        $differ->diff(
+                            implode("\n", $base_table_struct['index']),
+                            implode("\n", $existing_table_struct['index'])
+                        )
+                    );
+                }
             }
         }
 
         return 0; // Success
+    }
+
+    protected function getSchemaTables(): array
+    {
+        return CoreSchema::definition()['tables'];
+    }
+
+    protected function resolveDialect()
+    {
+        return (new DialectResolver())->resolve($this->db);
     }
 }

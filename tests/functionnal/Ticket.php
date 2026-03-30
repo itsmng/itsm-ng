@@ -42,6 +42,17 @@ use User;
 
 class Ticket extends DbTestCase
 {
+    private function normalizeSql(string $sql): string
+    {
+        global $DB;
+
+        if ($DB instanceof \DBmysql && $DB->dbtype === 'pgsql') {
+            return str_replace('"', '`', $sql);
+        }
+
+        return $sql;
+    }
+
     public function ticketProvider()
     {
         return [
@@ -3374,7 +3385,8 @@ class Ticket extends DbTestCase
 
         $it = new \DBmysqlIterator(null);
         $it->execute('glpi_tickets', $crit);
-        $this->string($it->getSql())->isIdenticalTo('SELECT * FROM `glpi_tickets` WHERE (' . $expected_where . ')');
+        $this->string($this->normalizeSql($it->getSql()))
+            ->isIdenticalTo('SELECT * FROM `glpi_tickets` WHERE (' . $expected_where . ')');
     }
 
     public function testKeepScreenshotsOnFormReload()

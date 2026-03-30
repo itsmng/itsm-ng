@@ -37,6 +37,23 @@ namespace tests\units;
 
 class DB extends \GLPITestCase
 {
+    private function isPgsql(): bool
+    {
+        global $DB;
+
+        return $DB instanceof \DBmysql && $DB->dbtype === 'pgsql';
+    }
+
+    private function assertSqlEquals(string $actual, string $mysql_expected, ?string $pgsql_expected = null): void
+    {
+        if ($this->isPgsql()) {
+            $this->string($actual)->isIdenticalTo($pgsql_expected ?? $mysql_expected);
+            return;
+        }
+
+        $this->string($actual)->isIdenticalTo($mysql_expected);
+    }
+
     public function testTableExist()
     {
         $this
@@ -73,23 +90,23 @@ class DB extends \GLPITestCase
     protected function dataName()
     {
         return [
-           ['field', '`field`'],
-           ['`field`', '`field`'],
-           ['*', '*'],
-           ['table.field', '`table`.`field`'],
-           ['table.*', '`table`.*'],
-           ['field AS f', '`field` AS `f`'],
-           ['field as f', '`field` AS `f`'],
-           ['table.field as f', '`table`.`field` AS `f`'],
+           ['field', '`field`', '"field"'],
+           ['`field`', '`field`', '"field"'],
+           ['*', '*', '*'],
+           ['table.field', '`table`.`field`', '"table"."field"'],
+           ['table.*', '`table`.*', '"table".*'],
+           ['field AS f', '`field` AS `f`', '"field" AS "f"'],
+           ['field as f', '`field` AS `f`', '"field" AS "f"'],
+           ['table.field as f', '`table`.`field` AS `f`', '"table"."field" AS "f"'],
         ];
     }
 
     /**
      * @dataProvider dataName
      */
-    public function testQuoteName($raw, $quoted)
+    public function testQuoteName($raw, $mysql_quoted, $pgsql_quoted)
     {
-        $this->string(\DB::quoteName($raw))->isIdenticalTo($quoted);
+        $this->assertSqlEquals(\DB::quoteName($raw), $mysql_quoted, $pgsql_quoted);
     }
 
     protected function dataValue()
@@ -104,8 +121,8 @@ class DB extends \GLPITestCase
            ['NULL', 'NULL'],
            [new \QueryExpression('`field`'), '`field`'],
            ['`field', "'`field'"],
-           [false, "'0'"],
-           [true, "'1'"],
+           [false, 'FALSE'],
+           [true, 'TRUE'],
         ];
     }
 
@@ -126,25 +143,29 @@ class DB extends \GLPITestCase
                  'field'  => 'value',
                  'other'  => 'doe'
               ],
-              'INSERT INTO `table` (`field`, `other`) VALUES (\'value\', \'doe\')'
+              'INSERT INTO `table` (`field`, `other`) VALUES (\'value\', \'doe\')',
+              'INSERT INTO "table" ("field", "other") VALUES (\'value\', \'doe\')'
            ], [
               '`table`', [
                  '`field`'  => 'value',
                  '`other`'  => 'doe'
               ],
-              'INSERT INTO `table` (`field`, `other`) VALUES (\'value\', \'doe\')'
+              'INSERT INTO `table` (`field`, `other`) VALUES (\'value\', \'doe\')',
+              'INSERT INTO "table" ("field", "other") VALUES (\'value\', \'doe\')'
            ], [
               'table', [
                  'field'  => new \QueryParam(),
                  'other'  => new \QueryParam()
               ],
-              'INSERT INTO `table` (`field`, `other`) VALUES (?, ?)'
+              'INSERT INTO `table` (`field`, `other`) VALUES (?, ?)',
+              'INSERT INTO "table" ("field", "other") VALUES (?, ?)'
            ], [
               'table', [
                  'field'  => new \QueryParam('field'),
                  'other'  => new \QueryParam('other')
               ],
-              'INSERT INTO `table` (`field`, `other`) VALUES (:field, :other)'
+              'INSERT INTO `table` (`field`, `other`) VALUES (:field, :other)',
+              'INSERT INTO "table" ("field", "other") VALUES (:field, :other)'
            ]
         ];
     }
@@ -152,12 +173,13 @@ class DB extends \GLPITestCase
     /**
      * @dataProvider dataInsert
      */
-    public function testBuildInsert($table, $values, $expected)
+    public function testBuildInsert($table, $values, $mysql_expected, $pgsql_expected)
     {
         $this
            ->if($this->newTestedInstance)
            ->then
-              ->string($this->testedInstance->buildInsert($table, $values))->isIdenticalTo($expected);
+              ->string($this->testedInstance->buildInsert($table, $values))
+                 ->isIdenticalTo($this->isPgsql() ? $pgsql_expected : $mysql_expected);
     }
 
     protected function dataUpdate()
@@ -170,42 +192,48 @@ class DB extends \GLPITestCase
               ], [
                  'id'  => 1
               ],
-              'UPDATE `table` SET `field` = \'value\', `other` = \'doe\' WHERE `id` = \'1\''
+              'UPDATE `table` SET `field` = \'value\', `other` = \'doe\' WHERE `id` = \'1\'',
+              'UPDATE "table" SET "field" = \'value\', "other" = \'doe\' WHERE "id" = \'1\''
            ], [
               'table', [
                  'field'  => 'value'
               ], [
                  'id'  => [1, 2]
               ],
-              'UPDATE `table` SET `field` = \'value\' WHERE `id` IN (\'1\', \'2\')'
+              'UPDATE `table` SET `field` = \'value\' WHERE `id` IN (\'1\', \'2\')',
+              'UPDATE "table" SET "field" = \'value\' WHERE "id" IN (\'1\', \'2\')'
            ], [
               'table', [
                  'field'  => 'value'
               ], [
                  'NOT'  => ['id' => [1, 2]]
               ],
-              'UPDATE `table` SET `field` = \'value\' WHERE  NOT (`id` IN (\'1\', \'2\'))'
+              'UPDATE `table` SET `field` = \'value\' WHERE NOT (`id` IN (\'1\', \'2\'))',
+              'UPDATE "table" SET "field" = \'value\' WHERE NOT ("id" IN (\'1\', \'2\'))'
            ], [
               'table', [
                  'field'  => new \QueryParam()
               ], [
                  'NOT' => ['id' => [new \QueryParam(), new \QueryParam()]]
               ],
-              'UPDATE `table` SET `field` = ? WHERE  NOT (`id` IN (?, ?))'
+              'UPDATE `table` SET `field` = ? WHERE NOT (`id` IN (?, ?))',
+              'UPDATE "table" SET "field" = ? WHERE NOT ("id" IN (?, ?))'
            ], [
               'table', [
                  'field'  => new \QueryParam('field')
               ], [
                  'NOT' => ['id' => [new \QueryParam('idone'), new \QueryParam('idtwo')]]
               ],
-              'UPDATE `table` SET `field` = :field WHERE  NOT (`id` IN (:idone, :idtwo))'
+              'UPDATE `table` SET `field` = :field WHERE NOT (`id` IN (:idone, :idtwo))',
+              'UPDATE "table" SET "field" = :field WHERE NOT ("id" IN (:idone, :idtwo))'
            ], [
               'table', [
                  'field'  => new \QueryExpression(\DB::quoteName('field') . ' + 1')
               ], [
                  'id'  => [1, 2]
               ],
-              'UPDATE `table` SET `field` = `field` + 1 WHERE `id` IN (\'1\', \'2\')'
+              'UPDATE `table` SET `field` = `field` + 1 WHERE `id` IN (\'1\', \'2\')',
+              'UPDATE "table" SET "field" = "field" + 1 WHERE "id" IN (\'1\', \'2\')'
            ]
         ];
     }
@@ -213,12 +241,60 @@ class DB extends \GLPITestCase
     /**
      * @dataProvider dataUpdate
      */
-    public function testBuildUpdate($table, $values, $where, $expected)
+    public function testBuildUpdate($table, $values, $where, $mysql_expected, $pgsql_expected)
     {
         $this
           ->if($this->newTestedInstance)
           ->then
-             ->string($this->testedInstance->buildUpdate($table, $values, $where))->isIdenticalTo($expected);
+             ->string($this->testedInstance->buildUpdate($table, $values, $where))
+                ->isIdenticalTo($this->isPgsql() ? $pgsql_expected : $mysql_expected);
+    }
+
+    public function testBuildUpdateWithJoins()
+    {
+        $joins = [
+           'LEFT JOIN' => [
+              'glpi_locations' => [
+                 'ON' => [
+                    'glpi_computers'   => 'locations_id',
+                    'glpi_locations'   => 'id'
+                 ]
+              ],
+              'glpi_computertypes' => [
+                 'ON' => [
+                    'glpi_computers'       => 'computertypes_id',
+                    'glpi_computertypes'   => 'id'
+                 ]
+              ]
+           ]
+        ];
+        $where = [
+           'glpi_locations.name'     => 'test',
+           'glpi_computertypes.name' => 'laptop'
+        ];
+
+        $mysql_expected = "UPDATE `glpi_computers`"
+           . " LEFT JOIN `glpi_locations` ON (`glpi_computers`.`locations_id` = `glpi_locations`.`id`)"
+           . " LEFT JOIN `glpi_computertypes` ON (`glpi_computers`.`computertypes_id` = `glpi_computertypes`.`id`)"
+           . " SET `glpi_computers`.`name` = '_join_computer1' WHERE `glpi_locations`.`name` = 'test'"
+           . " AND `glpi_computertypes`.`name` = 'laptop'";
+
+        $pgsql_expected = 'UPDATE "glpi_computers" SET "name" = \'_join_computer1\''
+           . ' WHERE "ctid" IN (SELECT "glpi_computers"."ctid" FROM "glpi_computers"'
+           . ' LEFT JOIN "glpi_locations" ON ("glpi_computers"."locations_id" = "glpi_locations"."id")'
+           . ' LEFT JOIN "glpi_computertypes" ON ("glpi_computers"."computertypes_id" = "glpi_computertypes"."id")'
+           . ' WHERE "glpi_locations"."name" = \'test\' AND "glpi_computertypes"."name" = \'laptop\')';
+
+        $this
+           ->if($this->newTestedInstance)
+           ->then
+              ->string($this->testedInstance->buildUpdate(
+                  'glpi_computers',
+                  ['glpi_computers.name' => '_join_computer1'],
+                  $where,
+                  $joins
+              ))
+                 ->isIdenticalTo($this->isPgsql() ? $pgsql_expected : $mysql_expected);
     }
 
     public function testBuildUpdateWException()
@@ -240,27 +316,32 @@ class DB extends \GLPITestCase
               'table', [
                  'id'  => 1
               ],
-              'DELETE `table` FROM `table` WHERE `id` = \'1\''
+              'DELETE `table` FROM `table` WHERE `id` = \'1\'',
+              'DELETE FROM "table" WHERE "id" = \'1\''
            ], [
               'table', [
                  'id'  => [1, 2]
               ],
-              'DELETE `table` FROM `table` WHERE `id` IN (\'1\', \'2\')'
+              'DELETE `table` FROM `table` WHERE `id` IN (\'1\', \'2\')',
+              'DELETE FROM "table" WHERE "id" IN (\'1\', \'2\')'
            ], [
               'table', [
                  'NOT'  => ['id' => [1, 2]]
               ],
-              'DELETE `table` FROM `table` WHERE  NOT (`id` IN (\'1\', \'2\'))'
+              'DELETE `table` FROM `table` WHERE NOT (`id` IN (\'1\', \'2\'))',
+              'DELETE FROM "table" WHERE NOT ("id" IN (\'1\', \'2\'))'
            ], [
               'table', [
                  'NOT'  => ['id' => [new \QueryParam(), new \QueryParam()]]
               ],
-              'DELETE `table` FROM `table` WHERE  NOT (`id` IN (?, ?))'
+              'DELETE `table` FROM `table` WHERE NOT (`id` IN (?, ?))',
+              'DELETE FROM "table" WHERE NOT ("id" IN (?, ?))'
            ], [
               'table', [
                  'NOT'  => ['id' => [new \QueryParam('idone'), new \QueryParam('idtwo')]]
               ],
-              'DELETE `table` FROM `table` WHERE  NOT (`id` IN (:idone, :idtwo))'
+              'DELETE `table` FROM `table` WHERE NOT (`id` IN (:idone, :idtwo))',
+              'DELETE FROM "table" WHERE NOT ("id" IN (:idone, :idtwo))'
            ]
         ];
     }
@@ -268,12 +349,13 @@ class DB extends \GLPITestCase
     /**
      * @dataProvider dataDelete
      */
-    public function testBuildDelete($table, $where, $expected)
+    public function testBuildDelete($table, $where, $mysql_expected, $pgsql_expected)
     {
         $this
           ->if($this->newTestedInstance)
           ->then
-             ->string($this->testedInstance->buildDelete($table, $where))->isIdenticalTo($expected);
+             ->string($this->testedInstance->buildDelete($table, $where))
+                ->isIdenticalTo($this->isPgsql() ? $pgsql_expected : $mysql_expected);
     }
 
     public function testBuildDeleteWException()
@@ -318,7 +400,7 @@ class DB extends \GLPITestCase
             $this->array($line)
                ->hasSize(1);
             $table = $line['TABLE_NAME'];
-            if (in_array($table, ['glpi_appliancerelations', 'glpi_oidc_config', 'glpi_oidc_users', 'glpi_oidc_mapping'])) {
+            if (in_array($table, ['glpi_appliancerelations', 'glpi_oidc_config', 'glpi_oidc_users', 'glpi_oidc_mapping', 'glpi_schema_migrations'])) {
                 //FIXME temporary hack for unit tests
                 continue;
             }
@@ -333,14 +415,19 @@ class DB extends \GLPITestCase
 
     public function testEscape()
     {
+        $expected_quote_escape = "shoul\\'be escaped";
+        $expected_newline = "First\\nSecond";
+        $expected_carriage_return = "First\\rSecond";
+        $expected_double_quotes = 'Hi, \\"you\\"';
+
         $this
            ->if($this->newTestedInstance)
            ->then
               ->string($this->testedInstance->escape('nothing to do'))->isIdenticalTo('nothing to do')
-              ->string($this->testedInstance->escape("shoul'be escaped"))->isIdenticalTo("shoul\\'be escaped")
-              ->string($this->testedInstance->escape("First\nSecond"))->isIdenticalTo("First\\nSecond")
-              ->string($this->testedInstance->escape("First\rSecond"))->isIdenticalTo("First\\rSecond")
-              ->string($this->testedInstance->escape('Hi, "you"'))->isIdenticalTo('Hi, \\"you\\"');
+              ->string($this->testedInstance->escape("shoul'be escaped"))->isIdenticalTo($expected_quote_escape)
+              ->string($this->testedInstance->escape("First\nSecond"))->isIdenticalTo($expected_newline)
+              ->string($this->testedInstance->escape("First\rSecond"))->isIdenticalTo($expected_carriage_return)
+              ->string($this->testedInstance->escape('Hi, "you"'))->isIdenticalTo($expected_double_quotes);
     }
 
     protected function commentsProvider()
@@ -391,5 +478,31 @@ OTHER EXPRESSION;"
            ->if($this->newTestedInstance)
            ->then
               ->string($this->testedInstance->removeSqlRemarks($sql))->isIdenticalTo($expected);
+    }
+
+    public function testSqlTimeDiffInSeconds()
+    {
+        $this
+           ->if($this->newTestedInstance)
+           ->then;
+
+        $this->assertSqlEquals(
+            $this->testedInstance->sqlTimeDiffInSeconds('left_expr', 'right_expr'),
+            'TIME_TO_SEC(TIMEDIFF(left_expr, right_expr))',
+            'EXTRACT(EPOCH FROM (((left_expr)::timestamp) - ((right_expr)::timestamp)))'
+        );
+    }
+
+    public function testSqlClockTimeDiffInSeconds()
+    {
+        $this
+           ->if($this->newTestedInstance)
+           ->then;
+
+        $this->assertSqlEquals(
+            $this->testedInstance->sqlClockTimeDiffInSeconds('left_expr', 'right_expr'),
+            'TIME_TO_SEC(TIMEDIFF(left_expr, right_expr))',
+            'EXTRACT(EPOCH FROM (((left_expr)::time) - ((right_expr)::time)))'
+        );
     }
 }

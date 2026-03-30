@@ -14,12 +14,14 @@ RUN apt-get update \
     libicu-dev \
     libjpeg62-turbo-dev \
     libldap2-dev \
+    libpq-dev \
     libpng-dev \
     libxml2-dev \
     libxslt1-dev \
     libzip-dev \
     nodejs \
     npm \
+    postgresql-client \
     unzip \
     zip \
  && docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -34,10 +36,14 @@ RUN apt-get update \
     mysqli \
     opcache \
     pcntl \
+    pdo_pgsql \
     pdo_mysql \
+    pgsql \
     soap \
     xsl \
     zip \
+ && pecl install apcu \
+ && docker-php-ext-enable apcu \
  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer

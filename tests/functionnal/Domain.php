@@ -39,6 +39,20 @@ use DbTestCase;
 
 class Domain extends DbTestCase
 {
+    private function normalizeSql(string $sql): string
+    {
+        $sql = str_replace('"', '`', $sql);
+        $sql = str_replace(
+            '((CURRENT_DATE)::date - (`date_expiration`)::date)',
+            'DATEDIFF(CURDATE(), `date_expiration`)',
+            $sql
+        );
+        $sql = str_replace(' = FALSE', " = '0'", $sql);
+        $sql = str_replace(' = TRUE', " = '1'", $sql);
+
+        return $sql;
+    }
+
     public function testTypeName()
     {
         $this->string(\Domain::getTypeName(1))->isIdenticalTo('Domain');
@@ -118,14 +132,14 @@ class Domain extends DbTestCase
         ]);
 
         $iterator = $DB->request(\Domain::expiredDomainsCriteria($entity->fields['id']));
-        $this->string($iterator->getSql())->isIdenticalTo(
+        $this->string($this->normalizeSql($iterator->getSql()))->isIdenticalTo(
             "SELECT * FROM `glpi_domains` WHERE " .
          "NOT (`date_expiration` IS NULL) AND `entities_id` = '{$entity->fields['id']}' AND `is_deleted` = '0' ".
          "AND DATEDIFF(CURDATE(), `date_expiration`) > 1 AND DATEDIFF(CURDATE(), `date_expiration`) > 0"
         );
 
         $iterator = $DB->request(\Domain::closeExpiriesDomainsCriteria($entity->fields['id']));
-        $this->string($iterator->getSql())->isIdenticalTo(
+        $this->string($this->normalizeSql($iterator->getSql()))->isIdenticalTo(
             "SELECT * FROM `glpi_domains` WHERE " .
          "NOT (`date_expiration` IS NULL) AND `entities_id` = '{$entity->fields['id']}' AND `is_deleted` = '0' ".
          "AND DATEDIFF(CURDATE(), `date_expiration`) > -7 AND DATEDIFF(CURDATE(), `date_expiration`) < 0"

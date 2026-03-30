@@ -18,7 +18,6 @@
         "ext-intl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "ext-mysqli": "*",
         "ext-simplexml": "*",
         "ext-zlib": "*",
         "apereo/phpcas": "^1.6",
@@ -85,6 +84,8 @@
     },
     "suggest": {
         "ext-ldap": "Used to provide LDAP authentication and synchronization",
+        "ext-pdo_mysql": "Required when using MySQL or MariaDB as the database backend",
+        "ext-pdo_pgsql": "Required when using PostgreSQL as the database backend",
         "ext-sodium": "Used to provide strong encryption for sensitive data in database"
     },
     "config": {

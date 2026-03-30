@@ -142,6 +142,14 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
         );
 
         $this->addOption(
+            'db-type',
+            't',
+            InputOption::VALUE_OPTIONAL,
+            __('Database type'),
+            'mysql'
+        );
+
+        $this->addOption(
             'reconfigure',
             'r',
             InputOption::VALUE_NONE,
@@ -190,6 +198,7 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
         $db_host     = $input->getOption('db-host');
         $db_name     = $input->getOption('db-name');
         $db_port     = $input->getOption('db-port');
+        $db_type     = $this->getDbType($input);
         $db_user     = $input->getOption('db-user');
         $db_hostport = $db_host . (!empty($db_port) ? ':' . $db_port : '');
 
@@ -210,7 +219,8 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
             $output,
             $db_hostport,
             $db_name,
-            $db_user
+            $db_user,
+            $db_type
         );
         if (!$run) {
             $output->writeln(
@@ -220,41 +230,37 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
             return self::ABORTED_BY_USER;
         }
 
-        $mysqli = new \mysqli();
-        if (intval($db_port) > 0) {
-            // Network port
-            @$mysqli->connect($db_host, $db_user, $db_pass, null, $db_port);
-        } else {
-            // Unix Domain Socket
-            @$mysqli->connect($db_host, $db_user, $db_pass, null, 0, $db_port);
-        }
+        $db_connection = $this->createDatabaseConnection(
+            $db_type,
+            $db_hostport,
+            $db_user,
+            $db_pass,
+            $this->getAdminDatabaseName($db_type)
+        );
 
-        if (0 !== $mysqli->connect_errno) {
+        if (!$db_connection->connected) {
             $message = sprintf(
                 __('Database connection failed with message "(%s) %s".'),
-                $mysqli->connect_errno,
-                $mysqli->connect_error
+                $db_connection->errno(),
+                $db_connection->error()
             );
             $output->writeln('<error>' . $message . '</error>', OutputInterface::VERBOSITY_QUIET);
             return self::ERROR_DB_CONNECTION_FAILED;
         }
 
         ob_start();
-        $db_version_data = $mysqli->query('SELECT version()')->fetch_array();
-        $checkdb = Config::displayCheckDbEngine(false, $db_version_data[0]);
+        $checkdb = Config::displayCheckDbEngine(false, $db_connection->getVersion(), $db_type);
         $message = ob_get_clean();
         if ($checkdb > 0) {
             $output->writeln('<error>' . $message . '</error>', OutputInterface::VERBOSITY_QUIET);
             return self::ERROR_DB_ENGINE_UNSUPPORTED;
         }
 
-        $db_name = $mysqli->real_escape_string($db_name);
-
         $output->writeln(
             '<comment>' . __('Saving configuration file...') . '</comment>',
             OutputInterface::VERBOSITY_VERBOSE
         );
-        if (!DBConnection::createMainConfig($db_hostport, $db_user, $db_pass, $db_name)) {
+        if (!DBConnection::createMainConfig($db_hostport, $db_user, $db_pass, $db_name, $db_type)) {
             $message = sprintf(
                 __('Cannot write configuration file "%s".'),
                 GLPI_CONFIG_DIR . DIRECTORY_SEPARATOR . 'config_db.php'
@@ -267,6 +273,45 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
         }
 
         return self::SUCCESS;
+    }
+
+    protected function getDbType(InputInterface $input): string
+    {
+        $db_type = strtolower(trim((string) $input->getOption('db-type')));
+
+        return match ($db_type) {
+            'mysql', 'mariadb'             => 'mysql',
+            'pgsql'                        => 'pgsql',
+            default                        => throw new InvalidArgumentException(
+                sprintf(
+                    __('Unsupported database type "%s". Allowed values are: mysql, pgsql.'),
+                    $db_type
+                )
+            ),
+        };
+    }
+
+    protected function getAdminDatabaseName(string $db_type): string
+    {
+        return $db_type === 'pgsql' ? 'postgres' : '';
+    }
+
+    protected function createDatabaseConnection(
+        string $db_type,
+        string $db_hostport,
+        string $db_user,
+        string $db_pass,
+        string $db_name
+    ): \DBmysql {
+        $class = $db_type === 'pgsql' ? \DBpgsql::class : \DBmysql::class;
+
+        return new $class([
+            'dbhost'     => $db_hostport,
+            'dbuser'     => $db_user,
+            'dbpassword' => rawurlencode($db_pass),
+            'dbdefault'  => $db_name,
+            'dbtype'     => $db_type,
+        ]);
     }
 
     public function getNoPluginsOptionValue()
@@ -328,6 +373,7 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
      * @param string $db_hostport DB host and port
      * @param string $db_name DB name
      * @param string $db_user DB username
+     * @param string|null $db_type Database type
      *
      * @return boolean
      */
@@ -336,10 +382,14 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
         OutputInterface $output,
         $db_hostport,
         $db_name,
-        $db_user
+        $db_user,
+        $db_type = null
     ) {
 
         $informations = new Table($output);
+        if ($db_type !== null) {
+            $informations->addRow([__('Database type'), $db_type]);
+        }
         $informations->addRow([__('Database host'), $db_hostport]);
         $informations->addRow([__('Database name'), $db_name]);
         $informations->addRow([__('Database user'), $db_user]);

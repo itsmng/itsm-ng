@@ -1500,7 +1500,9 @@ class Document extends CommonDBTM
         $iterator = $DB->request([
            'FROM'   => 'glpi_documenttypes',
            'WHERE'  => [
-              'ext'             => ['LIKE', $ext],
+              'RAW'             => [
+                  'LOWER(' . $DB->quoteName('ext') . ')' => Toolbox::strtolower($ext),
+              ],
               'is_uploadable'   => 1
            ]
         ]);

@@ -268,7 +268,7 @@ class ProfileRight extends CommonDBChild
            'FROM'   => 'glpi_profilerights AS CURRENT',
            'WHERE'  => [
               'CURRENT.profiles_id'   => $profiles_id,
-              'CURRENT.NAME'          => new \QueryExpression('POSSIBLE.NAME')
+              'CURRENT.name'          => new \QueryExpression($DB->quoteName('POSSIBLE.name'))
            ]
         ]);
 

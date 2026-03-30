@@ -43,11 +43,12 @@
             {% elseif step['number'] == 3 %}
                 {% include "install/requirements.twig" with {'requirements' : requirements, 'missing_requirements': missing_requirements} %}
             {% elseif step['number'] == 4 %}
-                {% include "install/sql_login.twig"  with {'host' : host, 'user' : user} %}
+                {% include "install/sql_login.twig"  with {'host' : host, 'user' : user, 'db_type' : db_type} %}
             {% elseif step['number'] == 5 %}
                 {% include "install/databases.twig" with { 'host' :            host,               'user' :    user,                  
                                                     'connect_error' :   connect_error,      'version' : version,    
                                                     'ver_too_old' :     ver_too_old,        'action' :  action,
+                                                    'db_type' :         db_type,
                                                     'databases' :       databases} %}
             {% elseif step['number'] == 6 %}
                 {% include "install/initialization.twig" with { 'db_state' :        db_state,            'new' :    new, 

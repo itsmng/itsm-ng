@@ -48,6 +48,62 @@ use ITILFollowup;
  */
 class APIRest extends APIBaseClass
 {
+    private function createTemporaryComputerId(): int
+    {
+        $computer = new \Computer();
+        $computer_id = $computer->add([
+           'name'        => 'api-deprecated-' . uniqid('', true),
+           'entities_id' => getItemByTypeName('Entity', '_test_root_entity', true),
+        ]);
+
+        $this->integer($computer_id)->isGreaterThan(0);
+
+        return $computer_id;
+    }
+
+    private function adjustDeprecatedRelationInputs(
+        string $itemtype,
+        array $add_input,
+        array $update_input = [],
+        array $expected_after_insert = [],
+        array $expected_after_update = []
+    ): array {
+        if (!in_array($itemtype, ['Item_SoftwareVersion', 'Item_SoftwareLicense'], true)) {
+            return [
+               'add_input'             => $add_input,
+               'update_input'          => $update_input,
+               'expected_after_insert' => $expected_after_insert,
+               'expected_after_update' => $expected_after_update,
+            ];
+        }
+
+        $source_computer_id = $this->createTemporaryComputerId();
+        $target_computer_id = $this->createTemporaryComputerId();
+
+        if (array_key_exists('items_id', $add_input)) {
+            $add_input['items_id'] = $source_computer_id;
+        }
+        if (array_key_exists('computers_id', $add_input)) {
+            $add_input['computers_id'] = $source_computer_id;
+        }
+        if (array_key_exists('computers_id', $update_input)) {
+            $update_input['computers_id'] = $target_computer_id;
+        }
+        if (array_key_exists('items_id', $expected_after_insert)) {
+            $expected_after_insert['items_id'] = $source_computer_id;
+        }
+        if (array_key_exists('items_id', $expected_after_update)) {
+            $expected_after_update['items_id'] = $target_computer_id;
+        }
+
+        return [
+           'add_input'             => $add_input,
+           'update_input'          => $update_input,
+           'expected_after_insert' => $expected_after_insert,
+           'expected_after_update' => $expected_after_update,
+        ];
+    }
+
     protected function getLogFilePath(): string
     {
         return __DIR__ . "/../../files/_log/php-errors.log";
@@ -637,6 +693,14 @@ class APIRest extends APIBaseClass
         $itemtype              = $provider::getCurrentType();
         $input                 = $provider::getDeprecatedAddInput();
         $expected_after_insert = $provider::getExpectedAfterInsert();
+        $adjusted_inputs       = $this->adjustDeprecatedRelationInputs(
+            $itemtype,
+            $input,
+            [],
+            $expected_after_insert
+        );
+        $input                 = $adjusted_inputs['add_input'];
+        $expected_after_insert = $adjusted_inputs['expected_after_insert'];
 
         $headers = ['Session-Token' => $this->session_token];
 
@@ -671,6 +735,16 @@ class APIRest extends APIBaseClass
         $add_input             = $provider::getCurrentAddInput();
         $update_input          = $provider::getDeprecatedUpdateInput();
         $expected_after_update = $provider::getExpectedAfterUpdate();
+        $adjusted_inputs       = $this->adjustDeprecatedRelationInputs(
+            $itemtype,
+            $add_input,
+            $update_input,
+            [],
+            $expected_after_update
+        );
+        $add_input             = $adjusted_inputs['add_input'];
+        $update_input          = $adjusted_inputs['update_input'];
+        $expected_after_update = $adjusted_inputs['expected_after_update'];
 
         $headers = ['Session-Token' => $this->session_token];
 
@@ -706,6 +780,8 @@ class APIRest extends APIBaseClass
         $deprecated_itemtype   = $provider::getDeprecatedType();
         $itemtype              = $provider::getCurrentType();
         $add_input             = $provider::getCurrentAddInput();
+        $adjusted_inputs       = $this->adjustDeprecatedRelationInputs($itemtype, $add_input);
+        $add_input             = $adjusted_inputs['add_input'];
 
         $headers = ['Session-Token' => $this->session_token];
 

@@ -45,13 +45,28 @@ TESTS_SUITES=(
 
 # Extract named options
 while [[ $# -gt 0 ]]; do
-  if [[ $1 == "--"* ]]; then
-    ## Remove -- prefix, replace - by _ and uppercase all
-    declare $(echo $1 | sed -e 's/^--//g' | sed -e 's/-/_/g' -e 's/\(.*\)/\U\1/')=true
-    shift
-  else
-    break
-  fi
+  case $1 in
+    --db-type=*)
+      DB_TYPE="${1#*=}"
+      shift
+      ;;
+    --db-type)
+      if [[ $# -lt 2 ]]; then
+        echo '"--db-type" option requires a value'
+        exit 1
+      fi
+      DB_TYPE="$2"
+      shift 2
+      ;;
+    --*)
+      ## Remove -- prefix, replace - by _ and uppercase all
+      declare $(echo $1 | sed -e 's/^--//g' | sed -e 's/-/_/g' -e 's/\(.*\)/\U\1/')=true
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
 done
 
 # Extract list of tests suites to run
@@ -93,8 +108,9 @@ Examples:
  - run_tests.sh units
 
 Available options:
- --all      run all tests suites
- --build    build dependencies and translation files before running test suites
+  --all      run all tests suites
+  --build    build dependencies and translation files before running test suites
+  --db-type  select database engine to use for tests (mysql or pgsql)
 
 Available tests suites:
  - install
@@ -123,7 +139,21 @@ fi
 # Define variables (some may be defined in .env file)
 APPLICATION_ROOT=$(readlink -f "$WORKING_DIR/..")
 [[ ! -z "$APP_CONTAINER_HOME" ]] || APP_CONTAINER_HOME=$(mktemp -d -t glpi-tests-home-XXXXXXXXXX)
-[[ ! -z "$DB_IMAGE" ]] || DB_IMAGE=mariadb:10.11
+[[ ! -z "$DB_TYPE" ]] || DB_TYPE=mysql
+if [[ "$DB_TYPE" = "postgres" || "$DB_TYPE" = "postgresql" ]]; then
+  DB_TYPE=pgsql
+fi
+if [[ "$DB_TYPE" != "mysql" && "$DB_TYPE" != "pgsql" ]]; then
+  echo "Unsupported database type \"$DB_TYPE\". Allowed values are: mysql, pgsql"
+  exit 1
+fi
+if [[ -z "$DB_IMAGE" ]]; then
+  if [[ "$DB_TYPE" = "pgsql" ]]; then
+    DB_IMAGE=postgres:16
+  else
+    DB_IMAGE=mariadb:10.11
+  fi
+fi
 [[ ! -z "$PHP_IMAGE" ]] || PHP_IMAGE=itsm-tests-app:local
 
 # Backup configuration files
@@ -135,8 +165,13 @@ export COMPOSE_FILE="$APPLICATION_ROOT/.github/actions/docker-compose-app.yml"
 [[ "${TESTS_TO_RUN[@]}" == "lint" ]] || export COMPOSE_FILE="$COMPOSE_FILE:$APPLICATION_ROOT/.github/actions/docker-compose-services.yml"
 export APPLICATION_ROOT
 export APP_CONTAINER_HOME
+export DB_TYPE
 export DB_IMAGE
 export PHP_IMAGE
+export TEST_DB_HOST
+export TEST_DB_NAME
+export TEST_DB_USER
+export TEST_DB_PASSWORD
 cd $WORKING_DIR # Ensure docker-compose will look for .env in current directory
 $APPLICATION_ROOT/.github/actions/init_containers-start.sh
 $APPLICATION_ROOT/.github/actions/init_show-versions.sh
@@ -155,9 +190,13 @@ do
       || LAST_EXIT_CODE=$?
       ;;
     "update")
-         $APPLICATION_ROOT/.github/actions/init_initialize-old-dbs.sh \
-      && docker-compose exec -T app .github/actions/test_update-from-older-version.sh \
-      || LAST_EXIT_CODE=$?
+      if [[ "$DB_TYPE" = "pgsql" ]]; then
+        echo -e "\e[1;30;43m Skipping \"update\" test suite on PostgreSQL \e[0m"
+      else
+           $APPLICATION_ROOT/.github/actions/init_initialize-old-dbs.sh \
+        && docker-compose exec -T app .github/actions/test_update-from-older-version.sh \
+        || LAST_EXIT_CODE=$?
+      fi
       ;;
     "units")
          docker-compose exec -T app .github/actions/test_tests-units.sh \

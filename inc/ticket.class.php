@@ -3038,36 +3038,46 @@ class Ticket extends CommonITILObject
            'computation'        => self::generateSLAOLAComputation('internal_time_to_own')
         ];
 
-        $max_date = '99999999';
+        $max_date = $DB->quoteValue('9999-12-31 23:59:59');
         $tab[] = [
            'id'                 => '188',
            'table'              => $this->getTable(),
            'field'              => 'next_escalation_level',
            'name'               => __('Next escalation level'),
-           'datatype'           => 'date',
+           'datatype'           => 'datetime',
            'usehaving'          => true,
            'maybefuture'        => true,
            'massiveaction'      => false,
            // Get least value from TTO/TTR fields:
            // - use TTO fields only if ticket not already taken into account,
            // - use TTR fields only if ticket not already solved,
-           // - replace NULL or not kept values with 99999999 to be sure that they will not be returned by the LEAST function,
-           // - replace 99999999 by empty string to keep only valid values.
-           'computation'        => "REPLACE(
-            LEAST(
-               IF(" . $DB->quoteName('TABLE.takeintoaccount_delay_stat') . " <= 0,
-                  COALESCE(" . $DB->quoteName('TABLE.time_to_own') . ", $max_date),
-                  $max_date),
-               IF(" . $DB->quoteName('TABLE.takeintoaccount_delay_stat') . " <= 0,
-                  COALESCE(" . $DB->quoteName('TABLE.internal_time_to_own') . ", $max_date),
-                  $max_date),
-               IF(" . $DB->quoteName('TABLE.solvedate') . " IS NULL,
-                  COALESCE(" . $DB->quoteName('TABLE.time_to_resolve') . ", $max_date),
-                  $max_date),
-               IF(" . $DB->quoteName('TABLE.solvedate') . " IS NULL,
-                  COALESCE(" . $DB->quoteName('TABLE.internal_time_to_resolve') . ", $max_date),
-                  $max_date)
-            ), $max_date, '')"
+           // - replace NULL or not kept values with a far-future timestamp so LEAST() keeps only valid dates,
+           // - replace this sentinel by empty string to keep only valid values.
+           'computation'        => $DB->sqlNullIf(
+               "LEAST(
+               " . $DB->sqlIf(
+                   $DB->quoteName('TABLE.takeintoaccount_delay_stat') . " <= 0",
+                   "COALESCE(" . $DB->quoteName('TABLE.time_to_own') . ", $max_date)",
+                   $max_date
+               ) . ",
+               " . $DB->sqlIf(
+                   $DB->quoteName('TABLE.takeintoaccount_delay_stat') . " <= 0",
+                   "COALESCE(" . $DB->quoteName('TABLE.internal_time_to_own') . ", $max_date)",
+                   $max_date
+               ) . ",
+               " . $DB->sqlIf(
+                   $DB->quoteName('TABLE.solvedate') . " IS NULL",
+                   "COALESCE(" . $DB->quoteName('TABLE.time_to_resolve') . ", $max_date)",
+                   $max_date
+               ) . ",
+               " . $DB->sqlIf(
+                   $DB->quoteName('TABLE.solvedate') . " IS NULL",
+                   "COALESCE(" . $DB->quoteName('TABLE.internal_time_to_resolve') . ", $max_date)",
+                   $max_date
+               ) . "
+            )",
+               $max_date
+           )
         ];
 
         $tab[] = [
@@ -3158,7 +3168,7 @@ class Ticket extends CommonITILObject
            'massiveaction'      => false,
            'datatype'           => 'dropdown',
            'joinparams'         => [
-              'condition'          => "AND NEWTABLE.`type` = '" . SLM::TTO . "'"
+              'condition_criteria' => ['NEWTABLE.type' => SLM::TTO]
            ],
            'condition'          => ['glpi_slas.type' => SLM::TTO],
         ];
@@ -3172,7 +3182,7 @@ class Ticket extends CommonITILObject
            'massiveaction'      => false,
            'datatype'           => 'dropdown',
            'joinparams'         => [
-              'condition'          => "AND NEWTABLE.`type` = '" . SLM::TTR . "'"
+              'condition_criteria' => ['NEWTABLE.type' => SLM::TTR]
            ],
            'condition'          => ['glpi_slas.type' => SLM::TTR],
         ];
@@ -3209,7 +3219,7 @@ class Ticket extends CommonITILObject
            'massiveaction'      => false,
            'datatype'           => 'dropdown',
            'joinparams'         => [
-              'condition'          => "AND NEWTABLE.`type` = '" . SLM::TTO . "'"
+              'condition_criteria' => ['NEWTABLE.type' => SLM::TTO]
            ],
            'condition'          => ['glpi_olas.type' => SLM::TTO],
         ];
@@ -3223,7 +3233,7 @@ class Ticket extends CommonITILObject
            'massiveaction'      => false,
            'datatype'           => 'dropdown',
            'joinparams'         => [
-              'condition'          => "AND NEWTABLE.`type` = '" . SLM::TTR . "'"
+              'condition_criteria' => ['NEWTABLE.type' => SLM::TTR]
            ],
            'condition'          => ['glpi_olas.type' => SLM::TTR],
         ];
@@ -3381,7 +3391,7 @@ class Ticket extends CommonITILObject
                'searchtype'         => 'equals',
                'joinparams'         => [
                   'jointype'           => 'item_item',
-                  'condition'          => 'AND NEWTABLE.`link` = ' . Ticket_Ticket::DUPLICATE_WITH
+                  'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::DUPLICATE_WITH]
                ],
                'additionalfields'   => ['tickets_id_2'],
                'forcegroupby'       => true
@@ -3410,7 +3420,7 @@ class Ticket extends CommonITILObject
                'usehaving'          => true,
                'joinparams'         => [
                   'jointype'           => 'item_item',
-                  'condition'          => 'AND NEWTABLE.`link` = ' . Ticket_Ticket::DUPLICATE_WITH
+                  'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::DUPLICATE_WITH]
                ]
             ];
 
@@ -3430,7 +3440,7 @@ class Ticket extends CommonITILObject
                      'joinparams'         => [
                         'jointype'           => 'child',
                         'linkfield'          => 'tickets_id_1',
-                        'condition'          => 'AND NEWTABLE.`link` = ' . Ticket_Ticket::SON_OF,
+                        'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::SON_OF],
                      ]
                   ]
                ],
@@ -3453,7 +3463,7 @@ class Ticket extends CommonITILObject
                      'joinparams'         => [
                         'jointype'           => 'child',
                         'linkfield'          => 'tickets_id_2',
-                        'condition'          => 'AND NEWTABLE.`link` = ' . Ticket_Ticket::SON_OF,
+                        'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::SON_OF],
                      ]
                   ]
                ],
@@ -3471,7 +3481,7 @@ class Ticket extends CommonITILObject
                'joinparams'         => [
                   'linkfield'          => 'tickets_id_2',
                   'jointype'           => 'child',
-                  'condition'          => 'AND NEWTABLE.`link` = ' . Ticket_Ticket::SON_OF
+                  'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::SON_OF]
                ],
                'forcegroupby'       => true
             ];
@@ -3487,7 +3497,7 @@ class Ticket extends CommonITILObject
                'joinparams'         => [
                   'linkfield'          => 'tickets_id_1',
                   'jointype'           => 'child',
-                  'condition'          => 'AND NEWTABLE.`link` = ' . Ticket_Ticket::SON_OF
+                  'condition_criteria' => ['NEWTABLE.link' => Ticket_Ticket::SON_OF]
                ],
                'additionalfields'   => ['tickets_id_2']
             ];
@@ -3672,10 +3682,25 @@ class Ticket extends CommonITILObject
         $criteria = "SELECT * FROM glpi_specialstatuses";
         $iterators = $DB->request($criteria);
 
+        $do_sort = [];
+        $status_db = [];
+        $tab = [
+            'name'           => [],
+            'name_translate' => [],
+            'id'             => [],
+            'weight'         => [],
+            'color'          => [],
+        ];
+
         while ($data = $iterators->next()) {
             $do_sort[] = $data['weight'];
             $status_db[] = $data;
         }
+
+        if ($do_sort === []) {
+            return $alldata ? $tab : $tab['name'];
+        }
+
         sort($do_sort);
 
         for ($i = 0; count($do_sort) > 0; $i++) {
@@ -7543,7 +7568,9 @@ class Ticket extends CommonITILObject
 
                 if ($delay > 0) {
                     // remove all days
-                    $criteria['WHERE'][] = new \QueryExpression("ADDDATE(`closedate`, INTERVAL " . $delay . " DAY) < NOW()");
+                    $criteria['WHERE'][] = new \QueryExpression(
+                        $DB->sqlDateAddInterval($DB->quoteName('closedate'), $delay, 'DAY') . ' < ' . $DB->sqlNow()
+                    );
                 }
 
                 $iterator = $DB->request($criteria);
