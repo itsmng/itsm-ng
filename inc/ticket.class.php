@@ -537,6 +537,14 @@ class Ticket extends CommonITILObject
     }
 
 
+    protected function isTicketDateLocked(?int $entities_id = null): bool
+    {
+        $entities_id ??= $this->fields['entities_id'] ?? 0;
+
+        return (bool) Entity::getUsedConfig('lock_ticket_date', $entities_id, '', 0);
+    }
+
+
     /**
      * Is the current user is a requester of the current ticket and have the right to update it ?
      *
@@ -980,6 +988,29 @@ class Ticket extends CommonITILObject
 
         // Get ticket : need for comparison
         $this->getFromDB($input['id']);
+
+        $entid = $input['entities_id'] ?? $this->fields['entities_id'];
+        if ($this->isTicketDateLocked((int) $entid)) {
+            if (array_key_exists('date', $input)) {
+                $current_date = (string) $this->fields['date'];
+                $input_date = (string) $input['date'];
+                if (
+                    $input_date === ''
+                    || $input_date === 'NULL'
+                    || substr($current_date, 0, 16) !== substr($input_date, 0, 16)
+                ) {
+                    Session::addMessageAfterRedirect(
+                        __('Ticket creation date modification is not allowed for this entity.'),
+                        false,
+                        ERROR
+                    );
+                    $input['date'] = $this->fields['date'];
+                    if (isset($_SESSION['saveInput'][$this->getType()]['date'])) {
+                        $_SESSION['saveInput'][$this->getType()]['date'] = $this->fields['date'];
+                    }
+                }
+            }
+        }
 
         // Clean new lines before passing to rules
         if (isset($input["content"])) {
@@ -5395,6 +5426,8 @@ class Ticket extends CommonITILObject
             $options['_noupdate'] = true;
         }
 
+        $canedit_opening_date = $canupdate && !$this->isTicketDateLocked();
+
         $showuserlink              = 0;
         if (Session::haveRight('user', READ)) {
             $showuserlink = 1;
@@ -5465,7 +5498,7 @@ class Ticket extends CommonITILObject
                        'id' => rand(),
                        'name' => 'date',
                        'value' => $this->fields["date"],
-                       $canupdate ? '' : 'disabled' => ''
+                       $canedit_opening_date ? '' : 'disabled' => ''
                     ] : [],
                     __('By') => $ID ? [
                        'type' => 'select',
