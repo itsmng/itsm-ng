@@ -1,0 +1,29 @@
+services:
+  app-web:
+    container_name: "app-web"
+    image: "${PHP_IMAGE:-itsm-tests-app:local}"
+    working_dir: "/var/itsm"
+    command: ["php", "-S", "0.0.0.0:8088", "tests/router.php"]
+    environment:
+      CODE_COVERAGE: "${CODE_COVERAGE:-false}"
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://127.0.0.1:8088/index.php"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - "${APPLICATION_ROOT}:/var/itsm:z"
+      - "${APP_CONTAINER_HOME}:/home/itsm:z"
+
+  e2e:
+    container_name: "e2e"
+    image: "${E2E_IMAGE:-mcr.microsoft.com/playwright:v1.58.2-jammy}"
+    working_dir: "/var/itsm"
+    command: ["sleep", "infinity"]
+    ipc: host
+    depends_on:
+      - app-web
+    volumes:
+      - "${APPLICATION_ROOT}:/var/itsm:z"

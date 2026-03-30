@@ -1,0 +1,55 @@
+name: End-to-End Tests
+
+on: [pull_request]
+
+jobs:
+  tests:
+    name: Run Playwright E2E tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    env:
+      COMPOSE_FILE: .github/actions/docker-compose-app.yml:.github/actions/docker-compose-services.yml:.github/actions/docker-compose-e2e.yml
+      APPLICATION_ROOT: ${{ github.workspace }}
+      APP_CONTAINER_HOME: ${{ runner.temp }}/app_home
+      DB_IMAGE: mariadb:10.11
+      PHP_IMAGE: itsm-tests-app:local
+      UPDATE_FILES_ACL: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialize containers
+        run: .github/actions/init_containers-start.sh
+
+      - name: Show versions
+        if: ${{ !cancelled() }}
+        run: .github/actions/init_show-versions.sh
+
+      - name: Install dependencies
+        if: ${{ !cancelled() }}
+        run: .github/actions/docker-compose.sh exec -T app .github/actions/init_install-dependencies.sh
+
+      - name: Install ITSM-ng test database
+        if: ${{ !cancelled() }}
+        run: .github/actions/docker-compose.sh exec -T app .github/actions/test_install.sh
+
+      - name: Prepare E2E API access
+        if: ${{ !cancelled() }}
+        run: .github/actions/docker-compose.sh exec -T app bash .github/actions/test_tests-e2e-prepare.sh
+
+      - name: Run Playwright E2E tests
+        if: ${{ !cancelled() }}
+        run: .github/actions/docker-compose.sh exec -T e2e bash .github/actions/test_tests-e2e.sh
+
+      - name: Upload Playwright artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: tests/files/_playwright
+
+      - name: Cleanup containers
+        if: ${{ always() }}
+        run: .github/actions/teardown_containers-cleanup.sh
