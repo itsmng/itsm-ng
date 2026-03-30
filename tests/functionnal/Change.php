@@ -182,4 +182,28 @@ class Change extends DbTestCase
         $this->array($input)->hasKey('_users_id_requester');
         $this->integer((int)$input['_users_id_requester'])->isEqualTo($users_id_requester);
     }
+
+    public function testAddFromProblemCreatesRelationFromLegacyInputKey()
+    {
+        $this->login();
+
+        $problem = new \Problem();
+        $problems_id = $problem->add([
+           'name'    => 'problem source for change relation',
+           'content' => 'problem content copied to change creation flow',
+        ]);
+        $this->integer((int)$problems_id)->isGreaterThan(0);
+
+        $change = new \Change();
+        $changes_id = $change->add([
+           'name'        => 'change linked from problem',
+           'content'     => 'ensure relation is created when problems_id is used',
+           'problems_id' => $problems_id,
+        ]);
+        $this->integer((int)$changes_id)->isGreaterThan(0);
+        $this->boolean($change->getFromDB($changes_id))->isTrue();
+
+        $change_problem = new \Change_Problem();
+        $this->boolean($change_problem->getFromDBForItems($change, $problem))->isTrue();
+    }
 }

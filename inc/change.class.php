@@ -331,11 +331,12 @@ class Change extends CommonITILObject
 
         parent::post_addItem();
 
-        if (isset($this->input['_tickets_id'])) {
+        $tickets_id = $this->input['_tickets_id'] ?? $this->input['tickets_id'] ?? null;
+        if ($tickets_id !== null) {
             $ticket = new Ticket();
-            if ($ticket->getFromDB($this->input['_tickets_id'])) {
+            if ($ticket->getFromDB($tickets_id)) {
                 $pt = new Change_Ticket();
-                $pt->add(['tickets_id' => $this->input['_tickets_id'],
+                $pt->add(['tickets_id' => $tickets_id,
                                'changes_id' => $this->fields['id']]);
 
                 if (!empty($ticket->fields['itemtype']) && $ticket->fields['items_id'] > 0) {
@@ -349,7 +350,7 @@ class Change extends CommonITILObject
                 $iterator = $DB->request([
                    'FROM'   => Item_Ticket::getTable(),
                    'WHERE'  => [
-                      'tickets_id'   => $this->input['_tickets_id']
+                      'tickets_id'   => $tickets_id
                    ]
                 ]);
                 $assoc = new Change_Item();
@@ -362,18 +363,19 @@ class Change extends CommonITILObject
             }
         }
 
-        if (isset($this->input['_problems_id'])) {
+        $problems_id = $this->input['_problems_id'] ?? $this->input['problems_id'] ?? null;
+        if ($problems_id !== null) {
             $problem = new Problem();
-            if ($problem->getFromDB($this->input['_problems_id'])) {
+            if ($problem->getFromDB($problems_id)) {
                 $cp = new Change_Problem();
-                $cp->add(['problems_id' => $this->input['_problems_id'],
+                $cp->add(['problems_id' => $problems_id,
                                'changes_id'  => $this->fields['id']]);
 
                 //Copy associated elements
                 $iterator = $DB->request([
                    'FROM'   => Item_Problem::getTable(),
                    'WHERE'  => [
-                      'problems_id'   => $this->input['_problems_id']
+                      'problems_id'   => $problems_id
                    ]
                 ]);
                 $assoc = new Change_Item();
