@@ -513,17 +513,6 @@ function renderTwigPage(
         ];
     }
 
-    ob_start();
-    Html::showProfileSelecter(
-        $CFG_GLPI["root_doc"] .
-            "/front/" .
-            (Session::getCurrentInterface() == "central"
-                ? "central"
-                : "helpdesk.public") .
-            ".php",
-    );
-    $profileSelect = ob_get_clean();
-
     $impersonate_banner = Html::getImpersonateBanner();
 
     $twig_vars = [
@@ -533,7 +522,7 @@ function renderTwigPage(
         "css" => Html::getCss(),
         "js" => Html::getJs(),
         "breadcrumb_items" => $breadcrumb_items,
-        "profileSelect" => $profileSelect,
+        "profileSelect" => $mainMenu["args"]["profileSelect"] ?? "",
         "is_debug_active" => $_SESSION["glpi_use_mode"] == Session::DEBUG_MODE,
         "can_update" => Config::canUpdate(),
         "username" => getUserName(Session::getLoginUserID()),
