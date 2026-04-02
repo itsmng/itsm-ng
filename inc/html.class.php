@@ -7400,8 +7400,9 @@ JAVASCRIPT;
         // Profile selector
         // check user id : header used for display messages when session logout
         if (Session::getLoginUserID()) {
+            $profile_target = $CFG_GLPI["root_doc"] . "/front/" . (Session::getCurrentInterface() == "central" ? "central" : "helpdesk.public") . ".php";
             ob_start();
-            self::showProfileSelecter($CFG_GLPI["root_doc"] . "/front/$mainurl.php");
+            self::showProfileSelecter($profile_target);
             $twig_vars['profileSelect'] = ob_get_clean();
         }
         return ["path" => $template_path, "args" => $twig_vars];
