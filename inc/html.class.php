@@ -1977,11 +1977,7 @@ JAVASCRIPT;
         );
 
 
-        ob_start();
-        Html::showProfileSelecter($CFG_GLPI["root_doc"]
-           . "/front/"
-           . (Session::getCurrentInterface() == 'central' ? 'central' : 'helpdesk.public') . ".php");
-        $twig_vars['profileSelect'] = ob_get_clean();
+        $twig_vars['profileSelect'] = $mainMenu['args']['profileSelect'] ?? '';
 
         $user = new User();
         $user->getFromDB(Session::getLoginUserID());
@@ -7401,12 +7397,14 @@ JAVASCRIPT;
         $twig_vars['menu_small'] = filter_var($twig_vars['menu_small'], FILTER_VALIDATE_BOOLEAN);
         $twig_vars['compact_mode_ui'] = self::useCompactMode();
 
-        // TODO: add profile selector
         // Profile selector
         // check user id : header used for display messages when session logout
-        // if (Session::getLoginUserID()) {
-        //    self::showProfileSelecter($CFG_GLPI["root_doc"] . "/front/$mainurl.php");
-        // }
+        if (Session::getLoginUserID()) {
+            $profile_target = $CFG_GLPI["root_doc"] . "/front/" . (Session::getCurrentInterface() == "central" ? "central" : "helpdesk.public") . ".php";
+            ob_start();
+            self::showProfileSelecter($profile_target);
+            $twig_vars['profileSelect'] = ob_get_clean();
+        }
         return ["path" => $template_path, "args" => $twig_vars];
     }
 
