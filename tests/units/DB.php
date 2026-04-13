@@ -171,7 +171,7 @@ class DB extends \GLPITestCase
                  'field' => 'tests\\fixtures\\plugins\\portabledbtest\\migrations\\Migration202603270101CreateRecordsTable',
               ],
               'INSERT INTO `table` (`field`) VALUES (\'tests\\\\fixtures\\\\plugins\\\\portabledbtest\\\\migrations\\\\Migration202603270101CreateRecordsTable\')',
-              'INSERT INTO "table" ("field") VALUES (\'tests\\\\fixtures\\\\plugins\\\\portabledbtest\\\\migrations\\\\Migration202603270101CreateRecordsTable\')'
+              'INSERT INTO "table" ("field") VALUES (\'tests\\fixtures\\plugins\\portabledbtest\\migrations\\Migration202603270101CreateRecordsTable\')'
            ]
         ];
     }

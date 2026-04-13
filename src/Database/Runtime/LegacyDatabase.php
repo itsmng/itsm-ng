@@ -1682,13 +1682,9 @@ class LegacyDatabase implements DatabaseInterface, SupportsIndexListing, Support
             return "'" . (string) $value . "'";
         }
 
-        $normalized = $this->normalizeLegacySqlStringValue((string) $value);
-        if ($this->dbtype === 'pgsql') {
-            // Keep legacy SQL literal shape expected by callers/tests across engines.
-            $normalized = str_replace('\\', '\\\\', $normalized);
-        }
-
-        return $this->quote($normalized);
+        return $this->quote(
+            $this->normalizeLegacySqlStringValue((string) $value)
+        );
     }
 
     public function quoteFieldValue(?string $table, string $field, $value)
