@@ -4,6 +4,11 @@ namespace tests\units\itsmng\Database\Migrations;
 
 class Migration202603271200_AddForeignKeys extends \GLPITestCase
 {
+    public function getTestedClassName()
+    {
+        return \itsmng\Database\Migrations\Core\Migration202603271200_AddForeignKeys::class;
+    }
+
     public function testDisplayPreferencesUsersIdUsesNullableGlobalDefaultPolicy()
     {
         $migration = new \itsmng\Database\Migrations\Core\Migration202603271200_AddForeignKeys();
