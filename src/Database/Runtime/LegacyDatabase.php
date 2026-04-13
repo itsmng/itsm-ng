@@ -2517,7 +2517,10 @@ class LegacyDatabase implements DatabaseInterface
                 'r' => "\r",
                 't' => "\t",
                 'Z' => "\x1a",
-                default => $next,
+                "'" => "'",
+                '"' => '"',
+                '\\' => '\\',
+                default => '\\' . $next,
             };
         }
 
