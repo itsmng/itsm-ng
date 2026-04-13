@@ -4,7 +4,10 @@ namespace itsmng\Database\Schema;
 
 use RuntimeException;
 use itsmng\Database\Migrations\MigrationHistoryRepository;
+use itsmng\Database\Runtime\Capabilities\SupportsConstraintExists;
+use itsmng\Database\Runtime\Capabilities\SupportsIndexListing;
 use itsmng\Database\Runtime\DatabaseInterface;
+use itsmng\Database\Runtime\LegacySqlQuoter;
 use itsmng\Database\Schema\Dialect\DialectInterface;
 use itsmng\Database\Schema\Dialect\DialectResolver;
 
@@ -111,7 +114,7 @@ class SchemaInstaller
             }
 
             $database->queryOrDie(
-                sprintf('ALTER TABLE %s ENGINE = InnoDB', $database::quoteName($table)),
+                sprintf('ALTER TABLE %s ENGINE = InnoDB', LegacySqlQuoter::quoteName($table, $database->getDbType())),
                 'Prepare table engine for foreign key migration'
             );
             $prepared_tables[$table] = true;
@@ -131,7 +134,7 @@ class SchemaInstaller
             $database->getDbType() !== 'mysql'
             || ($operation['kind'] ?? null) !== 'alter_table'
             || empty($operation['indexes'])
-            || !method_exists($database, 'listIndexes')
+            || !($database instanceof SupportsIndexListing)
         ) {
             return $operation;
         }
@@ -168,7 +171,7 @@ class SchemaInstaller
         if (
             ($operation['kind'] ?? null) !== 'alter_table'
             || empty($operation['foreign_keys'])
-            || !method_exists($database, 'constraintExists')
+            || !($database instanceof SupportsConstraintExists)
         ) {
             return $operation;
         }

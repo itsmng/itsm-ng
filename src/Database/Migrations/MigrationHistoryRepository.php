@@ -2,6 +2,7 @@
 
 namespace itsmng\Database\Migrations;
 
+use itsmng\Database\Runtime\Capabilities\SupportsFieldLookup;
 use itsmng\Database\Runtime\DatabaseInterface;
 use itsmng\Database\Runtime\LegacySqlQuoter;
 use itsmng\Database\Schema\Dialect\DialectResolver;
@@ -47,7 +48,7 @@ class MigrationHistoryRepository
 
     private function ensureColumnLength(string $column, int $minimum_length): void
     {
-        if (!method_exists($this->database, 'getField')) {
+        if (!($this->database instanceof SupportsFieldLookup)) {
             return;
         }
 

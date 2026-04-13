@@ -11,6 +11,7 @@ class SchemaInstaller extends \GLPITestCase
         $queries = [];
         $db = new \mock\DBmysql();
         $this->calling($db)->getDbType = 'mysql';
+        $this->calling($db)->constraintExists = false;
         $this->calling($db)->listTables = static function (string $table, array $where = []) {
             return new class ($where) {
                 public function __construct(private array $where)

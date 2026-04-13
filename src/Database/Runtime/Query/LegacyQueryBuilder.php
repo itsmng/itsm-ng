@@ -541,10 +541,11 @@ class LegacyQueryBuilder
 
     private function normalizeOperator(string $operator): string
     {
-        $platform = $this->conn !== null
-            ? PlatformResolver::resolve($this->conn)
-            : PlatformResolver::resolveByType(null);
-        return $platform->normalizeOperator($operator);
+        if ($this->conn !== null) {
+            return $this->conn->normalizeOperator($operator);
+        }
+
+        return PlatformResolver::resolveByType(null)->normalizeOperator($operator);
     }
 
     private function quoteName($name): string

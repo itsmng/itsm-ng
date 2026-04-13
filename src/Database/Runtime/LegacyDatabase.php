@@ -15,13 +15,16 @@ use QuerySubQuery;
 use Session;
 use Timer;
 use Toolbox;
+use itsmng\Database\Runtime\Capabilities\SupportsConstraintExists;
+use itsmng\Database\Runtime\Capabilities\SupportsFieldLookup;
+use itsmng\Database\Runtime\Capabilities\SupportsIndexListing;
 use itsmng\Database\Runtime\Platform\DatabasePlatformInterface;
 use itsmng\Database\Runtime\Platform\PlatformResolver;
 
 /**
  *  Database class for Mysql
 **/
-class LegacyDatabase implements DatabaseInterface
+class LegacyDatabase implements DatabaseInterface, SupportsIndexListing, SupportsConstraintExists, SupportsFieldLookup
 {
     private const DEFAULT_DBTYPE = 'mysql';
 
@@ -157,6 +160,8 @@ class LegacyDatabase implements DatabaseInterface
     protected string $last_error_message = '';
 
     protected static string $default_dbtype = self::DEFAULT_DBTYPE;
+
+    private static ?array $shared_logical_boolean_columns = null;
 
     private ?array $logical_boolean_columns = null;
 
@@ -646,7 +651,18 @@ class LegacyDatabase implements DatabaseInterface
             return $this->logical_boolean_columns;
         }
 
-        $this->logical_boolean_columns = [];
+        $this->logical_boolean_columns = self::getSharedLogicalBooleanColumns();
+
+        return $this->logical_boolean_columns;
+    }
+
+    private static function getSharedLogicalBooleanColumns(): array
+    {
+        if (is_array(self::$shared_logical_boolean_columns)) {
+            return self::$shared_logical_boolean_columns;
+        }
+
+        $logical_boolean_columns = [];
 
         foreach (\itsmng\Database\Schema\CoreSchema::definition()['tables'] ?? [] as $table) {
             $table_name = strtolower((string) ($table['name'] ?? ''));
@@ -661,12 +677,14 @@ class LegacyDatabase implements DatabaseInterface
 
                 $column_name = strtolower((string) ($column['name'] ?? ''));
                 if ($column_name !== '') {
-                    $this->logical_boolean_columns[$table_name][$column_name] = true;
+                    $logical_boolean_columns[$table_name][$column_name] = true;
                 }
             }
         }
 
-        return $this->logical_boolean_columns;
+        self::$shared_logical_boolean_columns = $logical_boolean_columns;
+
+        return self::$shared_logical_boolean_columns;
     }
 
     public function isLogicalBooleanField(string $field_name, ?string $table_name = null): bool
@@ -1664,9 +1682,13 @@ class LegacyDatabase implements DatabaseInterface
             return "'" . (string) $value . "'";
         }
 
-        return $this->quote(
-            $this->normalizeLegacySqlStringValue((string) $value)
-        );
+        $normalized = $this->normalizeLegacySqlStringValue((string) $value);
+        if ($this->dbtype === 'pgsql') {
+            // Keep legacy SQL literal shape expected by callers/tests across engines.
+            $normalized = str_replace('\\', '\\\\', $normalized);
+        }
+
+        return $this->quote($normalized);
     }
 
     public function quoteFieldValue(?string $table, string $field, $value)
@@ -2255,6 +2277,11 @@ class LegacyDatabase implements DatabaseInterface
         return $this->getPlatform()->getForeignKeysContraints();
     }
 
+    public function normalizeOperator(string $operator): string
+    {
+        return $this->getPlatform()->normalizeOperator($operator);
+    }
+
     /**
      * Clear cached schema information.
      *
@@ -2466,7 +2493,7 @@ class LegacyDatabase implements DatabaseInterface
      *
      * @return string[]
      */
-    protected function extractFullTextSearchTerms(string $search): array
+    public static function normalizeFullTextSearchTerms(string $search): array
     {
         $normalized = preg_replace('/[\\\\\"+~<>()-]+/', ' ', $search) ?? $search;
         $normalized = preg_replace('/\s+/', ' ', trim($normalized)) ?? trim($normalized);
@@ -2490,6 +2517,14 @@ class LegacyDatabase implements DatabaseInterface
         }
 
         return array_values(array_unique($terms));
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function extractFullTextSearchTerms(string $search): array
+    {
+        return self::normalizeFullTextSearchTerms($search);
     }
 
     protected function decodeLegacyMysqlEscapes(string $value, bool $preserve_like_escapes = false): string

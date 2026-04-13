@@ -6,14 +6,11 @@ use itsmng\Database\Runtime\LegacyDatabase;
 
 class PlatformResolver
 {
-    private static array $cache = [];
+    private static array $type_cache = [];
 
     public static function resolve(LegacyDatabase $database): DatabasePlatformInterface
     {
-        $key = spl_object_id($database);
-        return self::$cache[$key] ??= strtolower((string) $database->dbtype) === 'pgsql'
-            ? new PostgreSqlPlatform($database)
-            : new MySqlPlatform($database);
+        return self::resolveForType(strtolower((string) $database->dbtype), $database);
     }
 
     /**
@@ -24,8 +21,13 @@ class PlatformResolver
     public static function resolveByType(?string $dbtype = null): DatabasePlatformInterface
     {
         $type = strtolower((string) $dbtype);
-        return self::$cache['type:' . $type] ??= $type === 'pgsql'
-            ? new PostgreSqlPlatform(null)
-            : new MySqlPlatform(null);
+        return self::$type_cache[$type] ??= self::resolveForType($type, null);
+    }
+
+    private static function resolveForType(string $dbtype, ?LegacyDatabase $database): DatabasePlatformInterface
+    {
+        return $dbtype === 'pgsql'
+            ? new PostgreSqlPlatform($database)
+            : new MySqlPlatform($database);
     }
 }

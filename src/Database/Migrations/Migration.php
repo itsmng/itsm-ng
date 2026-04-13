@@ -3,6 +3,9 @@
 namespace itsmng\Database\Migrations;
 
 use LogicException;
+use itsmng\Database\Migrations\Builders\DeleteColumnOperationBuilder;
+use itsmng\Database\Migrations\Builders\DeleteIndexOperationBuilder;
+use itsmng\Database\Migrations\Builders\RenameColumnOperationBuilder;
 
 abstract class Migration
 {
@@ -72,14 +75,6 @@ abstract class Migration
     {
         $this->builders[] = $builder;
     }
-}
-
-interface MigrationBuilderInterface
-{
-    /**
-     * @return array<string, mixed>
-     */
-    public function build(): array;
 }
 
 final class CreateFacade
@@ -607,20 +602,7 @@ final class DeleteColumnBuilder implements MigrationBuilderInterface
 
     public function fromTable(string $table): void
     {
-        $this->migration->registerBuilder(new class ($table, $this->columns) implements MigrationBuilderInterface {
-            public function __construct(private readonly string $table, private readonly array $columns)
-            {
-            }
-
-            public function build(): array
-            {
-                return [
-                    'kind'    => 'delete_column',
-                    'table'   => $this->table,
-                    'columns' => $this->columns,
-                ];
-            }
-        });
+        $this->migration->registerBuilder(new DeleteColumnOperationBuilder($table, $this->columns));
     }
 
     public function build(): array
@@ -639,20 +621,7 @@ final class DeleteIndexBuilder implements MigrationBuilderInterface
 
     public function onTable(string $table): void
     {
-        $this->migration->registerBuilder(new class ($table, $this->name) implements MigrationBuilderInterface {
-            public function __construct(private readonly string $table, private readonly string $name)
-            {
-            }
-
-            public function build(): array
-            {
-                return [
-                    'kind'  => 'delete_index',
-                    'table' => $this->table,
-                    'name'  => $this->name,
-                ];
-            }
-        });
+        $this->migration->registerBuilder(new DeleteIndexOperationBuilder($table, $this->name));
     }
 
     public function build(): array
@@ -713,26 +682,7 @@ final class RenameColumnBuilder implements MigrationBuilderInterface
             throw new LogicException('RenameColumnBuilder requires onTable() before to().');
         }
 
-        $table = $this->table;
-        $from  = $this->from;
-        $this->migration->registerBuilder(new class ($table, $from, $to) implements MigrationBuilderInterface {
-            public function __construct(
-                private readonly string $table,
-                private readonly string $from,
-                private readonly string $to
-            ) {
-            }
-
-            public function build(): array
-            {
-                return [
-                    'kind'  => 'rename_column',
-                    'table' => $this->table,
-                    'from'  => $this->from,
-                    'to'    => $this->to,
-                ];
-            }
-        });
+        $this->migration->registerBuilder(new RenameColumnOperationBuilder($this->table, $this->from, $to));
     }
 
     public function build(): array

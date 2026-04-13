@@ -557,7 +557,7 @@ SQL;
 
     public function sqlFullTextBooleanMatch(array $expressions, string $search): string
     {
-        $terms = $this->extractFullTextSearchTerms($search);
+        $terms = LegacyDatabase::normalizeFullTextSearchTerms($search);
         if ($expressions === [] || $terms === []) {
             return 'FALSE';
         }
@@ -587,7 +587,7 @@ SQL;
 
     public function sqlFullTextBooleanScore(array $expressions, string $search): string
     {
-        $terms = $this->extractFullTextSearchTerms($search);
+        $terms = LegacyDatabase::normalizeFullTextSearchTerms($search);
         if ($expressions === [] || $terms === []) {
             return '0';
         }
@@ -757,28 +757,6 @@ SQL;
         }
 
         return $definition;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function extractFullTextSearchTerms(string $search): array
-    {
-        $normalized = preg_replace('/[\\\\\"+~<>()-]+/', ' ', $search) ?? $search;
-        $normalized = preg_replace('/\s+/', ' ', trim($normalized)) ?? trim($normalized);
-        if ($normalized === '') {
-            return [];
-        }
-
-        $terms = [];
-        foreach (explode(' ', $normalized) as $term) {
-            $term = rtrim(trim($term), '*');
-            if ($term !== '') {
-                $terms[] = $term;
-            }
-        }
-
-        return array_values(array_unique($terms));
     }
 
     private function normalizeIntervalUnit(string $unit): string

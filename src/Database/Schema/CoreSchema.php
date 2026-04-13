@@ -6,6 +6,11 @@ class CoreSchema
 {
     public static function definition(): array
     {
+        static $cached_schema = null;
+        if (is_array($cached_schema)) {
+            return $cached_schema;
+        }
+
         $schema = [
             'tables' => [
                 [
@@ -43334,6 +43339,8 @@ class CoreSchema
 
         $schema['tables'] = array_values($tables);
 
-        return $schema;
+        $cached_schema = $schema;
+
+        return $cached_schema;
     }
 }
