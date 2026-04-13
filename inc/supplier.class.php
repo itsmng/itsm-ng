@@ -385,7 +385,7 @@ class Supplier extends CommonDBTM
            'forcegroupby'       => true,
            'datatype'           => 'itemlink',
            'massiveaction'      => false,
-           'computation'        => "CONCAT(" . $DB->quoteName("TABLE.$name1") . ", ' ', " . $DB->quoteName("TABLE.$name2") . ")",
+           'computation'        => $DB->sqlConcat([$DB->quoteName("TABLE.$name1"), "' '", $DB->quoteName("TABLE.$name2")]),
            'computationgroupby' => true,
            'joinparams'         => [
               'beforejoin'         => [

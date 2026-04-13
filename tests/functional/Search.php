@@ -124,7 +124,7 @@ class Search extends DbTestCase
         $labels = [];
 
         foreach ($this->searchRows($data) as $row) {
-            $type = $row['TYPE'] ?? null;
+            $type = $row['TYPE'] ?? $row['type'] ?? null;
             if (is_string($type)) {
                 $parsed_key = $type . '_1';
                 if (isset($row[$parsed_key][0]['name']) && is_string($row[$parsed_key][0]['name']) && $row[$parsed_key][0]['name'] !== '') {
@@ -161,6 +161,50 @@ class Search extends DbTestCase
     {
         sort($expectedLabels);
         $this->array($this->extractRowLabels($data, $itemtype, $field))->isIdenticalTo($expectedLabels);
+    }
+
+    public function testConstructSQLNormalizesStandaloneNumericWhereLiteral()
+    {
+        $this->login();
+
+        SearchAlwaysTrueEntity::forceTable('glpi_entities');
+
+        $data = \Search::prepareDatasForSearch(SearchAlwaysTrueEntity::class, [
+            'criteria' => [
+                [
+                    'field' => 1,
+                    'searchtype' => 'equals',
+                    'value' => '0',
+                ],
+            ],
+            'sort' => 1,
+            'order' => 'ASC',
+        ]);
+
+        \Search::constructSQL($data);
+
+        $this->string($data['sql']['search'])
+            ->contains(' AND ( ' . \DB::quoteValue(true) . ' )')
+            ->notContains(' AND ( 1 )')
+            ->notContains(' WHERE 1 ');
+    }
+
+    public function testConstructSQLAllAssetsNormalizesEntityRestrictTautology()
+    {
+        $this->login();
+        $_SESSION['glpishowallentities'] = true;
+
+        $data = \Search::prepareDatasForSearch('AllAssets', [
+            'sort' => 1,
+            'order' => 'ASC',
+        ]);
+
+        \Search::constructSQL($data);
+
+        $this->string($data['sql']['search'])
+            ->contains(\DB::quoteValue(true) . ' )')
+            ->notContains('(  1 )')
+            ->notContains('( 1 )');
     }
 
     private function assertSearchContainsText(array $data, string $expectedText): void
@@ -1946,6 +1990,58 @@ class Search extends DbTestCase
         }
     }
 
+    public function testSearchAllAssetsAjaxRowsExposeConcreteLabels()
+    {
+        $entities_id = $this->createSearchEntityContext();
+        $suffix = $this->getUniqueString();
+        $expected_labels = [];
+
+        foreach ([\Computer::class, \Monitor::class] as $itemtype) {
+            $name = 'allassets-ajax-' . strtolower($itemtype) . '-' . $suffix;
+            $this->createItem($itemtype, [
+                'name' => $name,
+                'entities_id' => $entities_id,
+            ]);
+            $expected_labels[] = $name;
+        }
+
+        sort($expected_labels);
+
+        $data = $this->doSearch('AllAssets', [
+            'reset' => 'reset',
+            'is_deleted' => 0,
+            'start' => 0,
+            'search' => 'Search',
+            'criteria' => [
+                [
+                    'link' => 'AND',
+                    'field' => 'view',
+                    'searchtype' => 'contains',
+                    'value' => $suffix,
+                ],
+            ]
+        ]);
+
+        $ajax_rows = \Search::formatAjaxRows($data);
+        $ajax_labels = array_column($ajax_rows, 1);
+
+        $this->integer($data['data']['totalcount'])->isIdenticalTo(2);
+        $this->integer(count($ajax_labels))->isIdenticalTo(2);
+
+        foreach ($expected_labels as $expected_label) {
+            $matching_labels = array_values(array_filter(
+                $ajax_labels,
+                static function ($label) use ($expected_label) {
+                    return is_string($label)
+                        && str_contains($label, 'href=')
+                        && str_contains($label, $expected_label);
+                }
+            ));
+
+            $this->array($matching_labels)->hasSize(1);
+        }
+    }
+
     public function testSearchWithNamespacedItem()
     {
         // Create one computer and search it through the namespaced item type alias.
@@ -2088,6 +2184,14 @@ class DupSearchOpt extends \CommonDBTM
         ];
 
         return $tab;
+    }
+}
+
+class SearchAlwaysTrueEntity extends \Entity
+{
+    public static function addWhere($link, $nott, $itemtype, $ID, $searchtype, $val)
+    {
+        return '1';
     }
 }
 

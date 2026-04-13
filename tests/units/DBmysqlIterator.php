@@ -639,6 +639,83 @@ class DBmysqlIterator extends DbTestCase
         );
     }
 
+    /**
+     * Integration test: execute LIKE / ILIKE queries against a real PG
+     * connection and verify that results match expected case-insensitive
+     * semantics.
+     *
+     * On PostgreSQL, LIKE is rewritten to ILIKE (case-insensitive).
+     * These tests verify that the rewritten queries actually execute and
+     * return correct result sets.
+     */
+    public function testLikeIlikeExecutionOnPgsql()
+    {
+        global $DB;
+
+        if (!$this->isPgsql()) {
+            // Skip on MySQL — the LIKE rewrite is PG-specific
+            $this->boolean(true)->isTrue();
+            return;
+        }
+
+        // Use a temporary table to avoid polluting real schema
+        $DB->query('CREATE TEMPORARY TABLE _test_like (id SERIAL PRIMARY KEY, name TEXT)');
+        $DB->query("INSERT INTO _test_like (name) VALUES ('Alice'), ('ALICE'), ('alice'), ('Bob'), ('bob')");
+
+        // LIKE '%alice%' should be rewritten to ILIKE and match all three Alice rows
+        $result = $DB->request('_test_like', ['name' => ['LIKE', '%alice%']]);
+        $this->integer(count($result))->isIdenticalTo(3);
+
+        // LIKE 'alice' (exact, case-insensitive) should match all three
+        $result = $DB->request('_test_like', ['name' => ['LIKE', 'alice']]);
+        $this->integer(count($result))->isIdenticalTo(3);
+
+        // LIKE 'Bob' — case-insensitive — should match both Bob and bob
+        $result = $DB->request('_test_like', ['name' => ['LIKE', 'Bob']]);
+        $this->integer(count($result))->isIdenticalTo(2);
+
+        // NOT LIKE '%alice%' should exclude all Alice rows, leaving Bob + bob = 2
+        $result = $DB->request('_test_like', ['name' => ['NOT LIKE', '%alice%']]);
+        $this->integer(count($result))->isIdenticalTo(2);
+
+        // LIKE with underscore wildcard: '_ob' should match 'Bob' and 'bob'
+        $result = $DB->request('_test_like', ['name' => ['LIKE', '_ob']]);
+        $this->integer(count($result))->isIdenticalTo(2);
+
+        $DB->query('DROP TABLE IF EXISTS _test_like');
+    }
+
+    /**
+     * Integration test: ensure LIKE with special characters (%, _) that are
+     * part of the data (not wildcards) works correctly when escaped.
+     */
+    public function testLikeEscapeSpecialCharsOnPgsql()
+    {
+        global $DB;
+
+        if (!$this->isPgsql()) {
+            $this->boolean(true)->isTrue();
+            return;
+        }
+
+        $DB->query('CREATE TEMPORARY TABLE _test_like_esc (id SERIAL PRIMARY KEY, val TEXT)');
+        $DB->query("INSERT INTO _test_like_esc (val) VALUES ('100%'), ('50_50'), ('normal')");
+
+        // Search for literal '%' — use LIKE with escaped percent
+        $result = $DB->request('_test_like_esc', ['val' => ['LIKE', '%\\%%']]);
+        $this->integer(count($result))->isIdenticalTo(1);
+        $row = $result->next();
+        $this->string($row['val'])->isIdenticalTo('100%');
+
+        // Search for literal '_' — use LIKE with escaped underscore
+        $result = $DB->request('_test_like_esc', ['val' => ['LIKE', '%\\_%']]);
+        $this->integer(count($result))->isIdenticalTo(1);
+        $row = $result->next();
+        $this->string($row['val'])->isIdenticalTo('50_50');
+
+        $DB->query('DROP TABLE IF EXISTS _test_like_esc');
+    }
+
 
     public function testWhere()
     {

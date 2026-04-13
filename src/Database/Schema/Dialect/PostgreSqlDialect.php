@@ -51,7 +51,7 @@ class PostgreSqlDialect extends AbstractDialect
         return array_merge($statements, $this->createIndexStatements($table));
     }
 
-    protected function alterColumnStatement(string $table, array $column): string
+    protected function alterColumnStatements(string $table, array $column): array
     {
         $column_name = $this->quoteIdentifier($column['name']);
         $table_name  = $this->quoteIdentifier($table);
@@ -77,7 +77,7 @@ class PostgreSqlDialect extends AbstractDialect
             $parts[] = sprintf('ALTER TABLE %s ALTER COLUMN %s DROP DEFAULT', $table_name, $column_name);
         }
 
-        return implode('; ', $parts);
+        return $parts;
     }
 
     protected function createIndexStatement(string $table, array $index): string
@@ -90,6 +90,15 @@ class PostgreSqlDialect extends AbstractDialect
     protected function deleteIndexStatement(string $table, string $name): string
     {
         return 'DROP INDEX IF EXISTS ' . $this->quoteIdentifier($this->normalizeIndexName($table, $name));
+    }
+
+    protected function dropForeignKeyStatement(string $table, string $name): string
+    {
+        return sprintf(
+            'ALTER TABLE %s DROP CONSTRAINT IF EXISTS %s',
+            $this->quoteIdentifier($table),
+            $this->quoteIdentifier($this->normalizeConstraintName($table, $name))
+        );
     }
 
     protected function quoteIdentifier(string $identifier): string
@@ -228,6 +237,15 @@ class PostgreSqlDialect extends AbstractDialect
         $prefixed_name = str_starts_with($name, $table . '_') ? $name : $table . '_' . $name;
         if (strlen($prefixed_name) <= 63) {
             return $prefixed_name;
+        }
+
+        return substr($table, 0, 38) . '_' . substr(sha1($table . ':' . $name), 0, 24);
+    }
+
+    protected function normalizeConstraintName(string $table, string $name): string
+    {
+        if (strlen($name) <= 63) {
+            return $name;
         }
 
         return substr($table, 0, 38) . '_' . substr(sha1($table . ':' . $name), 0, 24);

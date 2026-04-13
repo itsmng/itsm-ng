@@ -15,6 +15,9 @@ abstract class AbstractDialect implements DialectInterface
             'rename_column' => [$this->renameColumnStatement($operation['table'], $operation['from'], $operation['to'])],
             'delete_column' => [$this->deleteColumnStatement($operation['table'], $operation['columns'])],
             'delete_index'  => [$this->deleteIndexStatement($operation['table'], $operation['name'])],
+            'raw_sql'       => [$operation['sql']],
+            'nullify_non_positive' => [$this->nullifyNonPositiveStatement($operation['table'], $operation['column'])],
+            'replace_null_with_zero' => [$this->replaceNullWithZeroStatement($operation['table'], $operation['column'])],
             'alter_table'   => $this->alterTableStatements($operation),
             default         => throw new InvalidArgumentException('Unsupported schema operation: ' . ($operation['kind'] ?? 'unknown')),
         };
@@ -34,7 +37,9 @@ abstract class AbstractDialect implements DialectInterface
         }
 
         foreach ($operation['alter_columns'] ?? [] as $column) {
-            $statements[] = $this->alterColumnStatement($table, $column);
+            foreach ($this->alterColumnStatements($table, $column) as $statement) {
+                $statements[] = $statement;
+            }
         }
 
         foreach ($operation['drop_columns'] ?? [] as $column) {
@@ -43,6 +48,13 @@ abstract class AbstractDialect implements DialectInterface
 
         foreach ($operation['indexes'] ?? [] as $index) {
             $statements[] = $this->createIndexStatement($table, $index);
+        }
+
+        foreach ($operation['foreign_keys'] ?? [] as $foreign_key) {
+            $statements[] = match ($foreign_key['action'] ?? 'add') {
+                'drop' => $this->dropForeignKeyStatement($table, $foreign_key['name']),
+                default => $this->addForeignKeyStatement($table, $foreign_key),
+            };
         }
 
         return $statements;
@@ -132,9 +144,66 @@ abstract class AbstractDialect implements DialectInterface
         return 'DROP TABLE IF EXISTS ' . $this->quoteIdentifier($table);
     }
 
+    protected function nullifyNonPositiveStatement(string $table, string $column): string
+    {
+        $quoted_table = $this->quoteIdentifier($table);
+        $quoted_column = $this->quoteIdentifier($column);
+
+        return sprintf(
+            'UPDATE %s SET %s = NULL WHERE %s <= 0',
+            $quoted_table,
+            $quoted_column,
+            $quoted_column
+        );
+    }
+
+    protected function replaceNullWithZeroStatement(string $table, string $column): string
+    {
+        $quoted_table = $this->quoteIdentifier($table);
+        $quoted_column = $this->quoteIdentifier($column);
+
+        return sprintf(
+            'UPDATE %s SET %s = 0 WHERE %s IS NULL',
+            $quoted_table,
+            $quoted_column,
+            $quoted_column
+        );
+    }
+
     abstract protected function deleteIndexStatement(string $table, string $name): string;
 
-    abstract protected function alterColumnStatement(string $table, array $column): string;
+    protected function addForeignKeyStatement(string $table, array $foreign_key): string
+    {
+        $columns = implode(', ', array_map(
+            fn (string $column): string => $this->quoteIdentifier($column),
+            $foreign_key['columns']
+        ));
+        $referenced_columns = implode(', ', array_map(
+            fn (string $column): string => $this->quoteIdentifier($column),
+            $foreign_key['referenced_columns']
+        ));
+
+        return sprintf(
+            'ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s (%s)',
+            $this->quoteIdentifier($table),
+            $this->quoteIdentifier($this->normalizeConstraintName($table, $foreign_key['name'])),
+            $columns,
+            $this->quoteIdentifier($foreign_key['referenced_table']),
+            $referenced_columns
+        );
+    }
+
+    protected function normalizeConstraintName(string $table, string $name): string
+    {
+        return $name;
+    }
+
+    abstract protected function dropForeignKeyStatement(string $table, string $name): string;
+
+    /**
+     * @return string[]
+     */
+    abstract protected function alterColumnStatements(string $table, array $column): array;
 
     abstract protected function columnDefinition(array $column): string;
 

@@ -35,6 +35,21 @@ abstract class Migration
         return new RenameFacade($this);
     }
 
+    public function execute(string $sql): void
+    {
+        $this->registerBuilder(new RawSqlBuilder($sql));
+    }
+
+    public function nullifyNonPositive(string $table, string $column): void
+    {
+        $this->registerBuilder(new DataCleanupBuilder('nullify_non_positive', $table, $column));
+    }
+
+    public function replaceNullWithZero(string $table, string $column): void
+    {
+        $this->registerBuilder(new DataCleanupBuilder('replace_null_with_zero', $table, $column));
+    }
+
     /**
      * @return array<int, array<string, mixed>>
      */
@@ -202,6 +217,7 @@ final class AlterTableBuilder implements MigrationBuilderInterface
             'alter_columns' => [],
             'drop_columns'  => [],
             'indexes'       => [],
+            'foreign_keys'  => [],
         ];
     }
 
@@ -245,20 +261,80 @@ final class AlterTableBuilder implements MigrationBuilderInterface
         $this->operation['indexes'][] = $index;
     }
 
+    public function addForeignKey(
+        string $name,
+        string|array $columns,
+        string $referenced_table,
+        string|array $referenced_columns = 'id'
+    ): self {
+        $this->operation['foreign_keys'][] = [
+            'action'             => 'add',
+            'name'               => $name,
+            'columns'            => array_values((array) $columns),
+            'referenced_table'   => $referenced_table,
+            'referenced_columns' => array_values((array) $referenced_columns),
+        ];
+
+        return $this;
+    }
+
+    public function dropForeignKey(string $name): self
+    {
+        $this->operation['foreign_keys'][] = [
+            'action' => 'drop',
+            'name'   => $name,
+        ];
+
+        return $this;
+    }
+
     public function build(): array
     {
         return $this->operation;
     }
 }
 
+final class RawSqlBuilder implements MigrationBuilderInterface
+{
+    public function __construct(private readonly string $sql)
+    {
+    }
+
+    public function build(): array
+    {
+        return [
+            'kind' => 'raw_sql',
+            'sql'  => $this->sql,
+        ];
+    }
+}
+
+final class DataCleanupBuilder implements MigrationBuilderInterface
+{
+    public function __construct(
+        private readonly string $kind,
+        private readonly string $table,
+        private readonly string $column
+    ) {
+    }
+
+    public function build(): array
+    {
+        return [
+            'kind'   => $this->kind,
+            'table'  => $this->table,
+            'column' => $this->column,
+        ];
+    }
+}
+
 final class ColumnBuilder
 {
     /**
-     * @param CreateTableBuilder|AlterTableBuilder $parent
-     * @param array<string, mixed>                 $column
+     * @param array<string, mixed> $column
      */
     public function __construct(
-        private readonly object $parent,
+        private readonly CreateTableBuilder|AlterTableBuilder $parent,
         private array &$column,
         private readonly string $mode
     ) {
@@ -266,11 +342,17 @@ final class ColumnBuilder
 
     public function withColumn(string $name): self
     {
+        if (!$this->parent instanceof CreateTableBuilder) {
+            throw new LogicException('withColumn() is only available on CreateTableBuilder.');
+        }
         return $this->parent->withColumn($name);
     }
 
     public function addColumn(string $name): self
     {
+        if (!$this->parent instanceof AlterTableBuilder) {
+            throw new LogicException('addColumn() is only available on AlterTableBuilder.');
+        }
         return $this->parent->addColumn($name);
     }
 

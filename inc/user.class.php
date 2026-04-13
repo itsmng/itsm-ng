@@ -4033,8 +4033,15 @@ class User extends CommonDBTM
                    ? [$firstname_field, $realname_field]
                    : [$realname_field, $firstname_field];
 
+                $concat_parts = [];
+                foreach ($fields as $i => $f) {
+                    if ($i > 0) {
+                        $concat_parts[] = $DB->quoteValue(' ');
+                    }
+                    $concat_parts[] = $f;
+                }
                 $concat = new \QueryExpression(
-                    'CONCAT(' . implode(',' . $DB->quoteValue(' ') . ',', $fields) . ')'
+                    $DB->sqlConcat($concat_parts)
                     . ' LIKE ' . $DB->quoteValue($txt_search)
                 );
                 $WHERE[] = [
@@ -5877,6 +5884,8 @@ class User extends CommonDBTM
 
     public static function getFriendlyNameSearchCriteria(string $filter): array
     {
+        global $DB;
+
         $table     = self::getTable();
         $login     = DBmysql::quoteName("$table.name");
         $firstname = DBmysql::quoteName("$table.firstname");
@@ -5885,11 +5894,14 @@ class User extends CommonDBTM
         $filter = strtolower($filter);
         $filter_no_spaces = str_replace(" ", "", $filter);
 
+        $concat_fn = $DB->sqlConcat([$firstname, $lastname]);
+        $concat_ln = $DB->sqlConcat([$lastname, $firstname]);
+
         return [
            'OR' => [
               ['RAW' => ["LOWER($login)" => ['LIKE', "%$filter%"]]],
-              ['RAW' => ["LOWER(REPLACE(CONCAT($firstname, $lastname), ' ', ''))" => ['LIKE', "%$filter_no_spaces%"]]],
-              ['RAW' => ["LOWER(REPLACE(CONCAT($lastname, $firstname), ' ', ''))" => ['LIKE', "%$filter_no_spaces%"]]],
+              ['RAW' => ["LOWER(REPLACE($concat_fn, ' ', ''))" => ['LIKE', "%$filter_no_spaces%"]]],
+              ['RAW' => ["LOWER(REPLACE($concat_ln, ' ', ''))" => ['LIKE', "%$filter_no_spaces%"]]],
            ]
         ];
     }

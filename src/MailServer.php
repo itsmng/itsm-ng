@@ -163,9 +163,11 @@ class MailServer
      * @param string $value  host connect string ex {localhost:993/imap/ssl}INBOX
      * @param boolean $allow_plugins_protocols
      *
-     * @return array
-     **/
-    public static function showMailServerConfig($value, bool $allow_plugins_protocols): array
+     * @return (array|mixed|string)[]|false
+     *
+     * @psalm-return array{address: mixed, protocols: array, types: array<string, mixed>, select_type: string, ssl: array{'': '-----', '/ssl': mixed}, select_ssl: ''|'/ssl', tls_types: array{'/tls': mixed, '/notls': mixed}, select_tls: ''|'/notls'|'/tls', validate_cert: array{'/novalidate-cert': mixed, '/validate-cert': mixed}, select_validate_cert: ''|'/novalidate-cert'|'/validate-cert', norsh: array{'/rsh': '-----', '/norsh': mixed}, select_norsh: ''|'/norsh', secure: array{'/nosecure': '-----', '/secure': mixed}, select_secure: ''|'/secure', debug: array{'': string, '/debug': mixed}, select_debug: ''|'/debug'}|false
+     */
+    public static function showMailServerConfig($value, bool $allow_plugins_protocols): array|false
     {
         $data = array();
 

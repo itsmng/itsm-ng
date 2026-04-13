@@ -10,7 +10,7 @@ class LegacySqlQuoter
 {
     public static function quoteName($name, ?string $dbtype = null): string
     {
-        $quote = PlatformResolver::resolve($dbtype ?? self::resolveCurrentDbType())->getIdentifierQuoteChar();
+        $quote = PlatformResolver::resolveByType($dbtype ?? self::resolveCurrentDbType())->getIdentifierQuoteChar();
 
         if ($name instanceof QueryExpression) {
             return $name->getValue();
@@ -65,22 +65,19 @@ class LegacySqlQuoter
             return $value ? 'TRUE' : 'FALSE';
         }
 
-        return "'" . (string) $value . "'";
+        // Fallback: escape single quotes using SQL-standard doubling
+        $escaped = str_replace("'", "''", (string) $value);
+        return "'" . $escaped . "'";
     }
 
     public static function isNameQuoted($value): bool
     {
-        if (!is_string($value)) {
+        if (!is_string($value) || strlen($value) < 2) {
             return false;
         }
 
-        foreach (['`', '"'] as $quote) {
-            if (trim($value, $quote) != $value) {
-                return true;
-            }
-        }
-
-        return false;
+        return ($value[0] === '`' && $value[-1] === '`')
+            || ($value[0] === '"' && $value[-1] === '"');
     }
 
     private static function resolveCurrentDbType(): string

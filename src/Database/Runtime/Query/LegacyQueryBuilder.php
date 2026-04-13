@@ -3,9 +3,7 @@
 namespace itsmng\Database\Runtime\Query;
 
 use AbstractQuery;
-use Countable;
 use InvalidArgumentException;
-use Iterator;
 use QueryExpression;
 use QueryParam;
 use QuerySubQuery;
@@ -48,9 +46,9 @@ class LegacyQueryBuilder
         $this->sql = null;
 
         $is_legacy = false;
-        if (is_string($table) && strpos($table, " ")) {
+        if (is_string($table) && str_contains($table, ' ')) {
             $names = preg_split('/\s+AS\s+/i', $table);
-            if (isset($names[1]) && strpos($names[1], ' ') || !isset($names[1]) || strpos($names[0], ' ')) {
+            if ((isset($names[1]) && str_contains($names[1], ' ')) || !isset($names[1]) || str_contains($names[0], ' ')) {
                 $is_legacy = true;
             }
         }
@@ -231,7 +229,7 @@ class LegacyQueryBuilder
             $this->sql .= $this->handleLimits($limit, $start);
         }
 
-        if ($log == true || defined('GLPI_SQL_DEBUG') && GLPI_SQL_DEBUG == true) {
+        if ($log === true || (defined('GLPI_SQL_DEBUG') && GLPI_SQL_DEBUG === true)) {
             Toolbox::logSqlDebug("Generated query:", $this->getSql());
         }
 
@@ -475,16 +473,19 @@ class LegacyQueryBuilder
             return $comparison . ' ' . $this->getCriterionValue($criterion_value, $field_name) . ') <> 0';
         }
 
-        $criterion = "$comparison " . $this->getCriterionValue($criterion_value, $field_name);
         if (
             $this->conn instanceof LegacyDatabase
             && $this->conn->dbtype === 'pgsql'
             && in_array($comparison, ['LIKE', 'NOT LIKE', 'ILIKE', 'NOT ILIKE'], true)
         ) {
-            $criterion .= " ESCAPE E'\\\\'";
+            $quoted_value = is_string($criterion_value)
+                ? $this->conn->quoteLikePattern($criterion_value)
+                : $this->getCriterionValue($criterion_value, $field_name);
+
+            return "$comparison $quoted_value ESCAPE E'\\\\'";
         }
 
-        return $criterion;
+        return "$comparison " . $this->getCriterionValue($criterion_value, $field_name);
     }
 
     private function getCriterionValue($value, ?string $field_name = null): string
@@ -540,7 +541,10 @@ class LegacyQueryBuilder
 
     private function normalizeOperator(string $operator): string
     {
-        return PlatformResolver::resolve($this->conn?->dbtype)->normalizeOperator($operator);
+        $platform = $this->conn !== null
+            ? PlatformResolver::resolve($this->conn)
+            : PlatformResolver::resolveByType(null);
+        return $platform->normalizeOperator($operator);
     }
 
     private function quoteName($name): string
@@ -554,11 +558,6 @@ class LegacyQueryBuilder
             return $this->conn->quoteFieldValue(null, $field_name ?? '', $value);
         }
 
-        return LegacySqlQuoter::quoteValue(
-            $value,
-            $this->conn instanceof LegacyDatabase && ($this->conn->connected ?? false)
-                ? $this->conn->quoteCompatibleValue(...)
-                : null
-        );
+        return LegacySqlQuoter::quoteValue($value);
     }
 }

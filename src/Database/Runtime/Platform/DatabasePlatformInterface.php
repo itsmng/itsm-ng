@@ -10,87 +10,87 @@ interface DatabasePlatformInterface
 
     public function normalizeOperator(string $operator): string;
 
-    public function listTables(\itsmng\Database\Runtime\LegacyDatabase $database, $table = 'glpi\_%', array $where = []): \DBmysqlIterator;
+    public function listTables($table = 'glpi\_%', array $where = []): \DBmysqlIterator;
 
-    public function getMyIsamTables(\itsmng\Database\Runtime\LegacyDatabase $database): \DBmysqlIterator;
+    public function listFields($table, $usecache = true);
 
-    public function listFields(\itsmng\Database\Runtime\LegacyDatabase $database, $table, $usecache = true);
+    public function listIndexes($table);
 
-    public function listIndexes(\itsmng\Database\Runtime\LegacyDatabase $database, $table);
+    public function constraintExists($table, $constraint);
 
-    public function constraintExists(\itsmng\Database\Runtime\LegacyDatabase $database, $table, $constraint);
+    public function getTableSchema($table, $structure = null);
 
-    public function getTableSchema(\itsmng\Database\Runtime\LegacyDatabase $database, $table, $structure = null);
+    public function areTimezonesAvailable(string &$msg = ''): bool;
 
-    public function areTimezonesAvailable(\itsmng\Database\Runtime\LegacyDatabase $database, string &$msg = ''): bool;
+    public function setTimezone($timezone): \itsmng\Database\Runtime\LegacyDatabase;
 
-    public function setTimezone(\itsmng\Database\Runtime\LegacyDatabase $database, $timezone): \itsmng\Database\Runtime\LegacyDatabase;
+    public function getTimezones(): array;
 
-    public function getTimezones(\itsmng\Database\Runtime\LegacyDatabase $database): array;
+    public function notTzMigrated(): int;
 
-    public function notTzMigrated(\itsmng\Database\Runtime\LegacyDatabase $database): int;
+    public function getSignedKeysColumns(): \DBmysqlIterator;
 
-    public function getSignedKeysColumns(\itsmng\Database\Runtime\LegacyDatabase $database): \DBmysqlIterator;
+    public function getForeignKeysContraints(): \DBmysqlIterator;
 
-    public function getForeignKeysContraints(\itsmng\Database\Runtime\LegacyDatabase $database): \DBmysqlIterator;
+    public function getInfo(): array;
 
-    public function getInfo(\itsmng\Database\Runtime\LegacyDatabase $database): array;
+    public function getDatabaseSize(): string;
 
-    public function getDatabaseSize(\itsmng\Database\Runtime\LegacyDatabase $database): string;
+    public function getLock(string $name): bool;
 
-    public function getLock(\itsmng\Database\Runtime\LegacyDatabase $database, string $name): bool;
+    public function releaseLock(string $name): bool;
 
-    public function releaseLock(\itsmng\Database\Runtime\LegacyDatabase $database, string $name): bool;
+    public function databaseExists(string $database_name): bool;
 
-    public function databaseExists(\itsmng\Database\Runtime\LegacyDatabase $database, string $database_name): bool;
+    public function createDatabase(string $database_name): bool;
 
-    public function createDatabase(\itsmng\Database\Runtime\LegacyDatabase $database, string $database_name): bool;
+    public function sqlPosition(string $needle, string $haystack): string;
 
-    public function sqlPosition(\itsmng\Database\Runtime\LegacyDatabase $database, string $needle, string $haystack): string;
+    public function sqlIf(string $condition, string $when_true, string $when_false): string;
 
-    public function sqlIf(\itsmng\Database\Runtime\LegacyDatabase $database, string $condition, string $when_true, string $when_false): string;
+    public function sqlGroupConcat(string $expression, string $separator = ',', bool $distinct = false, ?string $order_by = null): string;
 
-    public function sqlGroupConcat(\itsmng\Database\Runtime\LegacyDatabase $database, string $expression, string $separator = ',', bool $distinct = false, ?string $order_by = null): string;
+    public function sqlIfNull(string $expression, string $fallback): string;
 
-    public function sqlIfNull(\itsmng\Database\Runtime\LegacyDatabase $database, string $expression, string $fallback): string;
+    public function sqlCastAsString(string $expression): string;
 
-    public function sqlCastAsString(\itsmng\Database\Runtime\LegacyDatabase $database, string $expression): string;
+    public function sqlConcat(array $expressions): string;
 
-    public function sqlCastAsUnsignedInteger(\itsmng\Database\Runtime\LegacyDatabase $database, string $expression): string;
+    public function sqlCastAsUnsignedInteger(string $expression): string;
 
-    public function sqlCurrentTimestamp(\itsmng\Database\Runtime\LegacyDatabase $database): string;
+    public function sqlCurrentTimestamp(): string;
 
-    public function sqlCurrentDate(\itsmng\Database\Runtime\LegacyDatabase $database): string;
+    public function sqlCurrentDate(): string;
 
-    public function sqlCurrentHour(\itsmng\Database\Runtime\LegacyDatabase $database): string;
+    public function sqlCurrentHour(): string;
 
-    public function sqlLike(\itsmng\Database\Runtime\LegacyDatabase $database, string $expression, string $pattern, bool $case_sensitive = true): string;
+    public function sqlLike(string $expression, string $pattern, bool $case_sensitive = true): string;
 
-    public function sqlFullTextBooleanMatch(\itsmng\Database\Runtime\LegacyDatabase $database, array $expressions, string $search): string;
+    public function sqlFullTextBooleanMatch(array $expressions, string $search): string;
 
-    public function sqlFullTextBooleanScore(\itsmng\Database\Runtime\LegacyDatabase $database, array $expressions, string $search): string;
+    public function sqlFullTextBooleanScore(array $expressions, string $search): string;
 
-    public function sqlBitCount(\itsmng\Database\Runtime\LegacyDatabase $database, string $expression, int $width = 32): string;
+    public function sqlBitCount(string $expression, int $width = 32): string;
 
-    public function sqlBitwiseAnd(\itsmng\Database\Runtime\LegacyDatabase $database, string $left, string $right): string;
+    public function sqlBitwiseAnd(string $left, string $right): string;
 
-    public function sqlUnixTimestamp(\itsmng\Database\Runtime\LegacyDatabase $database, ?string $expression = null): string;
+    public function sqlUnixTimestamp(?string $expression = null): string;
 
-    public function sqlDateFormat(\itsmng\Database\Runtime\LegacyDatabase $database, string $expression, string $format): string;
+    public function sqlDateFormat(string $expression, string $format): string;
 
-    public function sqlDateTruncateToMinute(\itsmng\Database\Runtime\LegacyDatabase $database, ?string $expression = null): string;
+    public function sqlDateTruncateToMinute(?string $expression = null): string;
 
-    public function sqlDateAddInterval(\itsmng\Database\Runtime\LegacyDatabase $database, string $expression, $value, string $unit): string;
+    public function sqlDateAddInterval(string $expression, $value, string $unit): string;
 
-    public function sqlDateSubInterval(\itsmng\Database\Runtime\LegacyDatabase $database, string $expression, $value, string $unit): string;
+    public function sqlDateSubInterval(string $expression, $value, string $unit): string;
 
-    public function sqlDateDiffDays(\itsmng\Database\Runtime\LegacyDatabase $database, string $left, string $right): string;
+    public function sqlDateDiffDays(string $left, string $right): string;
 
-    public function sqlMonthDayOrdinal(\itsmng\Database\Runtime\LegacyDatabase $database, string $expression): string;
+    public function sqlMonthDayOrdinal(string $expression): string;
 
-    public function sqlTimeDiffInSeconds(\itsmng\Database\Runtime\LegacyDatabase $database, string $left, string $right): string;
+    public function sqlTimeDiffInSeconds(string $left, string $right): string;
 
-    public function sqlClockTimeDiffInSeconds(\itsmng\Database\Runtime\LegacyDatabase $database, string $left, string $right): string;
+    public function sqlClockTimeDiffInSeconds(string $left, string $right): string;
 
-    public function getImplicitInsertDefaults(\itsmng\Database\Runtime\LegacyDatabase $database, string $table, array $reference): array;
+    public function getImplicitInsertDefaults(string $table, array $reference): array;
 }

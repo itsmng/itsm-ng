@@ -15,6 +15,17 @@ class LegacyConnectionConfigManager extends CommonDBTM
 {
     protected static $notable = true;
 
+    private static function resolveDbClass(string $dbtype): string
+    {
+        return $dbtype === 'pgsql' ? 'DBpgsql' : 'DBmysql';
+    }
+
+    private static function resolveCurrentDbType(): string
+    {
+        global $DB;
+        return $DB instanceof DatabaseInterface ? $DB->getDbType() : 'mysql';
+    }
+
 
     public static function getTypeName($nb = 0)
     {
@@ -38,13 +49,17 @@ class LegacyConnectionConfigManager extends CommonDBTM
     **/
     public static function createMainConfig($host, $user, $password, $DBname, $dbtype = 'mysql')
     {
-        $dbclass = $dbtype === 'pgsql' ? 'DBpgsql' : 'DBmysql';
+        $dbclass = self::resolveDbClass($dbtype);
+        $safe_host = addcslashes($host, "'\\");
+        $safe_user = addcslashes($user, "'\\");
+        $safe_dbname = addcslashes($DBname, "'\\");
+        $safe_dbtype = addcslashes($dbtype, "'\\");
         $DB_str = "<?php\nclass DB extends $dbclass {\n" .
-                  "   public \$dbhost     = '$host';\n" .
-                  "   public \$dbuser     = '$user';\n" .
+                  "   public \$dbhost     = '$safe_host';\n" .
+                  "   public \$dbuser     = '$safe_user';\n" .
                   "   public \$dbpassword = '" . rawurlencode($password) . "';\n" .
-                  "   public \$dbdefault  = '$DBname';\n" .
-                  "   public \$dbtype     = '$dbtype';\n" .
+                  "   public \$dbdefault  = '$safe_dbname';\n" .
+                  "   public \$dbtype     = '$safe_dbtype';\n" .
                   "}\n";
 
         return Toolbox::writeConfig('config_db.php', $DB_str);
@@ -64,15 +79,17 @@ class LegacyConnectionConfigManager extends CommonDBTM
     **/
     public static function createSlaveConnectionFile($host, $user, $password, $DBname, $dbtype = 'mysql')
     {
-        $dbclass = $dbtype === 'pgsql' ? 'DBpgsql' : 'DBmysql';
-        $DB_str = "<?php \n class DBSlave extends $dbclass { \n public \$slave = true; \n public \$dbtype = '$dbtype'; \n public \$dbhost = ";
+        $dbclass = self::resolveDbClass($dbtype);
+        $safe_dbtype = addcslashes($dbtype, "'\\");
+        $DB_str = "<?php \n class DBSlave extends $dbclass { \n public \$slave = true; \n public \$dbtype = '$safe_dbtype'; \n public \$dbhost = ";
         $host   = trim($host);
-        if (strpos($host, ' ')) {
+        if (str_contains($host, ' ')) {
             $hosts = explode(' ', $host);
             $first = true;
             foreach ($hosts as $host) {
                 if (!empty($host)) {
-                    $DB_str .= ($first ? "array('" : ",'") . $host . "'";
+                    $safe_host = addcslashes($host, "'\\");
+                    $DB_str .= ($first ? "array('" : ",'") . $safe_host . "'";
                     $first   = false;
                 }
             }
@@ -82,10 +99,13 @@ class LegacyConnectionConfigManager extends CommonDBTM
             }
             $DB_str .= ");\n";
         } else {
-            $DB_str .= "'$host';\n";
+            $safe_host = addcslashes($host, "'\\");
+            $DB_str .= "'$safe_host';\n";
         }
-        $DB_str .= " public \$dbuser = '" . $user . "'; \n public \$dbpassword= '" .
-                    rawurlencode($password) . "'; \n public \$dbdefault = '" . $DBname . "'; \n }\n";
+        $safe_user = addcslashes($user, "'\\");
+        $safe_dbname = addcslashes($DBname, "'\\");
+        $DB_str .= " public \$dbuser = '" . $safe_user . "'; \n public \$dbpassword= '" .
+                    rawurlencode($password) . "'; \n public \$dbdefault = '" . $safe_dbname . "'; \n }\n";
 
         return Toolbox::writeConfig('config_db_slave.php', $DB_str);
     }
@@ -124,9 +144,7 @@ class LegacyConnectionConfigManager extends CommonDBTM
     **/
     public static function createDBSlaveConfig()
     {
-        global $DB;
-
-        $dbtype = $DB instanceof DatabaseInterface ? $DB->getDbType() : 'mysql';
+        $dbtype = self::resolveCurrentDbType();
         self::createSlaveConnectionFile("localhost", "glpi", "glpi", "glpi", $dbtype);
     }
 
@@ -141,9 +159,7 @@ class LegacyConnectionConfigManager extends CommonDBTM
     **/
     public static function saveDBSlaveConf($host, $user, $password, $DBname)
     {
-        global $DB;
-
-        $dbtype = $DB instanceof DatabaseInterface ? $DB->getDbType() : 'mysql';
+        $dbtype = self::resolveCurrentDbType();
         self::createSlaveConnectionFile($host, $user, $password, $DBname, $dbtype);
     }
 
@@ -204,9 +220,6 @@ class LegacyConnectionConfigManager extends CommonDBTM
             $DBread = new DBSlave();
 
             if ($DBread->connected) {
-                $sql = "SELECT MAX(`id`) AS maxid
-                    FROM `glpi_logs`";
-
                 switch ($CFG_GLPI['use_slave_for_search']) {
                     case 3: // If synced or read-only account
                         if (Session::isReadOnlyAccount()) {
@@ -216,8 +229,8 @@ class LegacyConnectionConfigManager extends CommonDBTM
 
                         // no break
                     case 1: // If synced (all changes)
-                        $slave  = $DBread->request($sql)->next();
-                        $master = $DB->request($sql)->next();
+                        $slave  = $DBread->request(self::buildReadReplicaSyncQuery($DBread))->next();
+                        $master = $DB->request(self::buildReadReplicaSyncQuery($DB))->next();
                         if (
                             isset($slave['maxid']) && isset($master['maxid'])
                             && ($slave['maxid'] == $master['maxid'])
@@ -232,7 +245,7 @@ class LegacyConnectionConfigManager extends CommonDBTM
                             // No change yet
                             return $DBread;
                         }
-                        $slave  = $DBread->request($sql)->next();
+                        $slave  = $DBread->request(self::buildReadReplicaSyncQuery($DBread))->next();
                         if (
                             isset($slave['maxid'])
                             && ($slave['maxid'] >= $_SESSION['glpi_maxhistory'])
@@ -248,6 +261,12 @@ class LegacyConnectionConfigManager extends CommonDBTM
             }
         }
         return $DB;
+    }
+
+    protected static function buildReadReplicaSyncQuery(\DBmysql $connection): string
+    {
+        return 'SELECT MAX(' . $connection->quoteName('id') . ') AS maxid'
+            . ' FROM ' . $connection->quoteName('glpi_logs');
     }
 
 
@@ -351,27 +370,27 @@ class LegacyConnectionConfigManager extends CommonDBTM
 
 
     /**
-     *  Display a common mysql connection error
+     *  Display a common database connection error
     **/
-    public static function displayMySQLError()
+    public static function displayDatabaseError()
     {
         global $DB;
 
-        $error = $DB instanceof DBmysql ? $DB->error : 1;
+        $error = $DB instanceof \DBmysql ? $DB->error : 1;
         switch ($error) {
             case 2:
-                $en_msg = "Use of the pdo_mysql extension is required for exchanges with the MySQL server.";
-                $fr_msg = "L'utilisation de l'extension pdo_mysql est requise pour les échanges avec le serveur MySQL.";
+                $en_msg = "Use of the required PDO extension (pdo_mysql or pdo_pgsql) is missing.";
+                $fr_msg = "L'extension PDO requise (pdo_mysql ou pdo_pgsql) est manquante.";
                 break;
             case 1:
             default:
-                $fr_msg = "Le serveur Mysql est inaccessible. Vérifiez votre configuration.";
+                $fr_msg = "Le serveur de base de données est inaccessible. Vérifiez votre configuration.";
                 $en_msg = "A link to the SQL server could not be established. Please check your configuration.";
                 break;
         }
 
         if (!isCommandLine()) {
-            Html::nullHeader("Mysql Error", '');
+            Html::nullHeader("SQL Error", '');
             echo "<div class='center'><p class ='b'>$en_msg</p><p class='b'>$fr_msg</p></div>";
             Html::nullFooter();
         } else {
@@ -379,6 +398,14 @@ class LegacyConnectionConfigManager extends CommonDBTM
         }
 
         die(1);
+    }
+
+    /**
+     * @deprecated Use displayDatabaseError() instead
+     */
+    public static function displayMySQLError()
+    {
+        self::displayDatabaseError();
     }
 
 

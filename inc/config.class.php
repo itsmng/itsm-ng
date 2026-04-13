@@ -2711,8 +2711,17 @@ class Config extends CommonDBTM
     public static function checkExtensions($list = null)
     {
         if ($list === null) {
+            // Determine which PDO database extension is required based on current config
+            $db_extension_required = 'pdo_mysql';
+            if (
+                (isset($GLOBALS['DB']) && $GLOBALS['DB'] instanceof DBmysql && $GLOBALS['DB']->dbtype === 'pgsql')
+                || (defined('GLPI_DB_TYPE') && GLPI_DB_TYPE === 'pgsql')
+            ) {
+                $db_extension_required = 'pdo_pgsql';
+            }
+
             $extensions_to_check = [
-               'pdo_mysql'   => [
+               $db_extension_required => [
                   'required'  => true
                ],
                'ctype'    => [

@@ -45,6 +45,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use itsmng\Database\Migrations\MigrationHistoryRepository;
+use itsmng\Database\Migrations\MigrationRepository;
+use itsmng\Database\Migrations\MigrationRunner;
 
 class InstallCommand extends AbstractConfigureCommand
 {
@@ -220,12 +223,12 @@ class InstallCommand extends AbstractConfigureCommand
             return self::ERROR_CANNOT_CREATE_ENCRYPTION_KEY_FILE;
         }
 
-        $admin_db = $this->createDatabaseConnection(
+        $admin_db = $this->createDatabaseManagementConnection(
             $db_type,
             $db_hostport,
             $db_user,
             $db_pass,
-            $this->getAdminDatabaseName($db_type)
+            $db_name
         );
 
         if (!$admin_db->connected) {
@@ -286,6 +289,19 @@ class InstallCommand extends AbstractConfigureCommand
         );
         try {
             $this->createSchema($default_language, $db_instance);
+
+            $history = new MigrationHistoryRepository($db_instance);
+            $history->ensureBaseline(ITSM_SCHEMA_VERSION);
+
+            $versions = (new MigrationRunner(
+                $db_instance,
+                new MigrationRepository(GLPI_ROOT . '/src/Database/Migrations/Core'),
+                $history
+            ))->migrate();
+
+            foreach ($versions as $version) {
+                $output->writeln('<info>' . sprintf(__('Applied schema migration %s.'), $version) . '</info>');
+            }
         } catch (\Throwable $throwable) {
             $message = $throwable->getMessage();
             $output->writeln('<error>' . $message . '</error>', OutputInterface::VERBOSITY_QUIET);

@@ -38,6 +38,8 @@ $header_data = [
         Html::script("public/lib/nanostores.js"),
         Html::script("node_modules/htm/dist/htm.umd.js"),
         Html::script("node_modules/vhtml/dist/vhtml.min.js"),
+        Html::script("node_modules/preact/dist/preact.umd.js"),
+        Html::script("node_modules/preact/hooks/dist/hooks.umd.js"),
         Html::script("js/table.js"),
         ],
     "css"     =>  [
@@ -90,6 +92,62 @@ function createInstallDatabaseConnection(
         'dbdefault'  => $db_name,
         'dbtype'     => $db_type,
     ]);
+}
+
+function createInstallDatabaseManagementConnection(
+    string $db_type,
+    string $db_host,
+    string $db_user,
+    string $db_pass,
+    string $db_name
+) {
+    if ($db_type !== 'pgsql') {
+        return createInstallDatabaseConnection(
+            $db_type,
+            $db_host,
+            $db_user,
+            $db_pass,
+            getInstallAdminDatabaseName($db_type)
+        );
+    }
+
+    $target_connection = createInstallDatabaseConnection(
+        $db_type,
+        $db_host,
+        $db_user,
+        $db_pass,
+        $db_name
+    );
+    if ($target_connection->connected) {
+        return $target_connection;
+    }
+
+    $admin_database = getInstallAdminDatabaseName($db_type);
+    if ($admin_database === $db_name) {
+        return $target_connection;
+    }
+
+    $admin_connection = createInstallDatabaseConnection(
+        $db_type,
+        $db_host,
+        $db_user,
+        $db_pass,
+        $admin_database
+    );
+
+    return $admin_connection->connected ? $admin_connection : $target_connection;
+}
+
+function runInstallPendingMigrations(\DBmysql $database): void
+{
+    $history = new \itsmng\Database\Migrations\MigrationHistoryRepository($database);
+    $history->ensureBaseline(ITSM_SCHEMA_VERSION);
+
+    (new \itsmng\Database\Migrations\MigrationRunner(
+        $database,
+        new \itsmng\Database\Migrations\MigrationRepository(GLPI_ROOT . '/src/Database/Migrations/Core'),
+        $history
+    ))->migrate();
 }
 
 function getInstallDatabasesInfo($db_connection, string $db_type): array
@@ -268,12 +326,12 @@ switch ($step) {
                 $error = "secured";
             }
             if ($secured) {
-                $link = createInstallDatabaseConnection(
+                $link = createInstallDatabaseManagementConnection(
                     $db_type,
                     $_SESSION['db_host'],
                     $_SESSION['db_user'],
                     $_SESSION['db_pass'],
-                    getInstallAdminDatabaseName($db_type)
+                    $_SESSION['databasename']
                 );
 
                 if (!$link->connected) {
@@ -358,6 +416,7 @@ switch ($step) {
 
         if ($step === "7") {
             Toolbox::createSchema($_SESSION['language'], $DB);
+            runInstallPendingMigrations($DB);
         }
 
         $url_base = str_replace("/install/install.php", "", $_SERVER['HTTP_REFERER']);

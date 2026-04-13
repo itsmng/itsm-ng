@@ -42,8 +42,10 @@ class InstallCommandConnectionDouble extends \DBmysql
 
     public function __construct(
         private bool $create_database_result = true,
-        private int $table_count = 0
+        private int $table_count = 0,
+        bool $connected = true
     ) {
+        $this->connected = $connected;
     }
 
     public function createDatabase(string $database): bool
@@ -80,6 +82,8 @@ class InstallCommandTestDouble extends \Glpi\Console\Database\InstallCommand
 {
     private array $connections = [];
 
+    public array $requested_databases = [];
+
     public ?\Throwable $schema_throwable = null;
 
     public function queueConnection(\DBmysql $connection): void
@@ -110,6 +114,8 @@ class InstallCommandTestDouble extends \Glpi\Console\Database\InstallCommand
         string $db_pass,
         string $db_name
     ): \DBmysql {
+        $this->requested_databases[] = $db_name;
+
         return array_shift($this->connections);
     }
 
@@ -128,6 +134,49 @@ class InstallCommandTestDouble extends \Glpi\Console\Database\InstallCommand
 
 class InstallCommand extends \GLPITestCase
 {
+    public function testExecuteUsesTargetDatabaseForPostgreSqlManagementConnection()
+    {
+        $command = new InstallCommandTestDouble();
+        $command->queueConnection(new InstallCommandConnectionDouble());
+        $command->queueConnection(new InstallCommandConnectionDouble());
+
+        [$code] = $command->runForTest([
+            '--db-name' => 'glpi',
+            '--db-user' => 'glpi',
+            '--db-password' => 'secret',
+            '--db-type' => 'pgsql',
+            '--reconfigure' => true,
+        ]);
+
+        $this
+           ->integer($code)
+              ->isIdenticalTo(\Glpi\Console\Database\InstallCommand::ERROR_SCHEMA_CREATION_FAILED)
+           ->array($command->requested_databases)
+              ->isIdenticalTo(['glpi', 'glpi']);
+    }
+
+    public function testExecuteFallsBackToPostgreSqlAdminDatabaseWhenTargetDatabaseIsUnavailable()
+    {
+        $command = new InstallCommandTestDouble();
+        $command->queueConnection(new InstallCommandConnectionDouble(true, 0, false));
+        $command->queueConnection(new InstallCommandConnectionDouble(true));
+        $command->queueConnection(new InstallCommandConnectionDouble(true));
+
+        [$code] = $command->runForTest([
+            '--db-name' => 'glpi',
+            '--db-user' => 'glpi',
+            '--db-password' => 'secret',
+            '--db-type' => 'pgsql',
+            '--reconfigure' => true,
+        ]);
+
+        $this
+           ->integer($code)
+              ->isIdenticalTo(\Glpi\Console\Database\InstallCommand::ERROR_SCHEMA_CREATION_FAILED)
+           ->array($command->requested_databases)
+              ->isIdenticalTo(['glpi', 'postgres', 'glpi']);
+    }
+
     public function testExecuteReturnsSchemaCreationFailureWhenSchemaCreationThrows()
     {
         $command = new InstallCommandTestDouble();

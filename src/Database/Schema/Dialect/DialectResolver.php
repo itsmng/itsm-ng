@@ -11,14 +11,13 @@ class DialectResolver
     {
         $database ??= $GLOBALS['DB'] ?? null;
 
-        if ($database instanceof DatabaseInterface && $database->getDbType() === 'pgsql') {
-            return new PostgreSqlDialect();
+        if (!$database instanceof DatabaseInterface) {
+            throw new RuntimeException('Unable to resolve database schema dialect.');
         }
 
-        if ($database instanceof DatabaseInterface) {
-            return new MySqlDialect();
-        }
-
-        throw new RuntimeException('Unable to resolve database schema dialect.');
+        return match ($database->getDbType()) {
+            'pgsql' => new PostgreSqlDialect(),
+            default => new MySqlDialect(),
+        };
     }
 }

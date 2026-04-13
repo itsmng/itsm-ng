@@ -6282,7 +6282,7 @@ class CoreSchema
                             'type' => 'string',
                             'length' => 255,
                             'nullable' => false,
-                            'default' => '\' COLLATE \'utf8_unicode_ci',
+                            'default' => '',
                         ],
                         [
                             'name' => 'items_id_source',
@@ -6295,7 +6295,7 @@ class CoreSchema
                             'type' => 'string',
                             'length' => 255,
                             'nullable' => false,
-                            'default' => '\' COLLATE \'utf8_unicode_ci',
+                            'default' => '',
                         ],
                         [
                             'name' => 'items_id_impacted',
@@ -6372,14 +6372,14 @@ class CoreSchema
                             'type' => 'string',
                             'length' => 255,
                             'nullable' => true,
-                            'default' => '\' COLLATE \'utf8_unicode_ci',
+                            'default' => '',
                         ],
                         [
                             'name' => 'color',
                             'type' => 'string',
                             'length' => 255,
                             'nullable' => false,
-                            'default' => '\' COLLATE \'utf8_unicode_ci',
+                            'default' => '',
                         ],
                     ],
                     'indexes' => [
@@ -6408,7 +6408,7 @@ class CoreSchema
                             'type' => 'string',
                             'length' => 255,
                             'nullable' => false,
-                            'default' => '\' COLLATE \'utf8_unicode_ci',
+                            'default' => '',
                         ],
                         [
                             'name' => 'items_id',
@@ -6501,7 +6501,7 @@ class CoreSchema
                         [
                             'name' => 'positions',
                             'type' => 'custom',
-                            'custom' => 'TEXT COLLATE \'utf8_unicode_ci\'',
+                            'custom' => 'TEXT',
                             'nullable' => false,
                         ],
                         [
@@ -6527,21 +6527,21 @@ class CoreSchema
                             'type' => 'string',
                             'length' => 255,
                             'nullable' => false,
-                            'default' => '\' COLLATE \'utf8_unicode_ci',
+                            'default' => '',
                         ],
                         [
                             'name' => 'depends_color',
                             'type' => 'string',
                             'length' => 255,
                             'nullable' => false,
-                            'default' => '\' COLLATE \'utf8_unicode_ci',
+                            'default' => '',
                         ],
                         [
                             'name' => 'impact_and_depends_color',
                             'type' => 'string',
                             'length' => 255,
                             'nullable' => false,
-                            'default' => '\' COLLATE \'utf8_unicode_ci',
+                            'default' => '',
                         ],
                         [
                             'name' => 'show_depends',
@@ -11423,8 +11423,7 @@ class CoreSchema
                         [
                             'name' => 'users_id',
                             'type' => 'int32',
-                            'nullable' => false,
-                            'default' => '0',
+                            'nullable' => true,
                         ],
                     ],
                     'indexes' => [
@@ -41342,12 +41341,11 @@ class CoreSchema
                             'type' => 'string',
                             'length' => 255,
                             'nullable' => true,
-                            'default' => 'NULL COLLATE \'utf8_unicode_ci\'',
                         ],
                         [
                             'name' => 'content',
                             'type' => 'custom',
-                            'custom' => 'TEXT COLLATE \'utf8_unicode_ci\'',
+                            'custom' => 'TEXT',
                             'nullable' => true,
                         ],
                         [
@@ -41365,7 +41363,7 @@ class CoreSchema
                         [
                             'name' => 'comment',
                             'type' => 'custom',
-                            'custom' => 'TEXT COLLATE \'utf8_unicode_ci\'',
+                            'custom' => 'TEXT',
                             'nullable' => true,
                         ],
                     ],

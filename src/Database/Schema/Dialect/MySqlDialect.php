@@ -61,13 +61,15 @@ class MySqlDialect extends AbstractDialect
         return $table;
     }
 
-    protected function alterColumnStatement(string $table, array $column): string
+    protected function alterColumnStatements(string $table, array $column): array
     {
-        return sprintf(
-            'ALTER TABLE %s MODIFY %s',
-            $this->quoteIdentifier($table),
-            $this->columnDefinition($column)
-        );
+        return [
+            sprintf(
+                'ALTER TABLE %s MODIFY %s',
+                $this->quoteIdentifier($table),
+                $this->columnDefinition($column)
+            ),
+        ];
     }
 
     protected function renameTableStatement(string $from, string $to): string
@@ -84,6 +86,15 @@ class MySqlDialect extends AbstractDialect
     {
         return sprintf(
             'ALTER TABLE %s DROP INDEX %s',
+            $this->quoteIdentifier($table),
+            $this->quoteIdentifier($name)
+        );
+    }
+
+    protected function dropForeignKeyStatement(string $table, string $name): string
+    {
+        return sprintf(
+            'ALTER TABLE %s DROP FOREIGN KEY %s',
             $this->quoteIdentifier($table),
             $this->quoteIdentifier($name)
         );

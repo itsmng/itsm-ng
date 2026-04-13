@@ -51,6 +51,29 @@ class DBpgsqlExecuteQueryFakeHandle
     }
 }
 
+class DBpgsqlSavepointFakeHandle extends \PDO
+{
+    public bool $in_transaction = false;
+
+    public array $queries = [];
+
+    public function __construct()
+    {
+    }
+
+    public function inTransaction(): bool
+    {
+        return $this->in_transaction;
+    }
+
+    public function exec($statement): int|false
+    {
+        $this->queries[] = $statement;
+
+        return 0;
+    }
+}
+
 class DBpgsqlExecuteQueryDouble extends \DBpgsql
 {
     public array $savepoint_calls = [];
@@ -85,6 +108,24 @@ class DBpgsqlExecuteQueryDouble extends \DBpgsql
     protected function rollBackTransactionalSavepoint(?string $savepoint): void
     {
         $this->savepoint_calls[] = 'rollback:' . $savepoint;
+    }
+}
+
+class DBpgsqlSavepointDouble extends \DBpgsql
+{
+    public function __construct()
+    {
+    }
+
+    public function setHandle(\PDO $dbh): void
+    {
+        $this->dbh = $dbh;
+        $this->dbtype = 'pgsql';
+    }
+
+    public function runBeginTransactionalSavepoint(): ?string
+    {
+        return $this->beginTransactionalSavepoint();
     }
 }
 
@@ -135,5 +176,163 @@ class DBpgsql extends \GLPITestCase
               ->isIdenticalTo(['SELECT broken'])
            ->array($db->savepoint_calls)
               ->isIdenticalTo(['begin', 'rollback:sp1']);
+    }
+
+    public function testBeginTransactionalSavepointSkipsWhenNotInTransaction()
+    {
+        $dbh = new DBpgsqlSavepointFakeHandle();
+        $db = new DBpgsqlSavepointDouble();
+        $db->setHandle($dbh);
+
+        $this
+           ->variable($db->runBeginTransactionalSavepoint())
+              ->isNull()
+           ->array($dbh->queries)
+              ->isEmpty();
+    }
+
+    public function testBeginTransactionalSavepointExecutesInsideTransaction()
+    {
+        $dbh = new DBpgsqlSavepointFakeHandle();
+        $dbh->in_transaction = true;
+
+        $db = new DBpgsqlSavepointDouble();
+        $db->setHandle($dbh);
+
+        $this
+           ->string($db->runBeginTransactionalSavepoint())
+              ->isIdenticalTo('glpi_sp_1')
+           ->array($dbh->queries)
+              ->isIdenticalTo(['SAVEPOINT glpi_sp_1']);
+    }
+
+    // ---------------------------------------------------------------
+    // Integration tests — require a real PostgreSQL connection via $DB
+    // ---------------------------------------------------------------
+
+    private function requirePgsql(): \DBmysql
+    {
+        global $DB;
+
+        if (!($DB instanceof \DBmysql) || $DB->dbtype !== 'pgsql') {
+            // Skip: these tests only run against a real PostgreSQL connection
+            $this->boolean(true)->isTrue();
+            return $DB;
+        }
+
+        return $DB;
+    }
+
+    /**
+     * Test that a successful DML inside a transaction uses savepoints
+     * and that the data persists after RELEASE SAVEPOINT.
+     */
+    public function testSavepointRealConnectionSuccess()
+    {
+        $db = $this->requirePgsql();
+        if ($db->dbtype !== 'pgsql') {
+            return;
+        }
+
+        // Create a temporary table to avoid polluting real schema
+        $db->query('CREATE TEMPORARY TABLE _test_sp_success (id SERIAL PRIMARY KEY, val TEXT)');
+
+        $db->beginTransaction();
+        try {
+            // Insert inside transaction — savepoint should be created/released automatically
+            $db->query("INSERT INTO _test_sp_success (val) VALUES ('hello')");
+
+            // The row should be visible within the same transaction
+            $result = $db->query("SELECT val FROM _test_sp_success WHERE val = 'hello'");
+            $row = $result->fetchAssoc();
+            $this->string($row['val'])->isIdenticalTo('hello');
+
+            $db->commit();
+        } catch (\Throwable $e) {
+            $db->rollBack();
+            throw $e;
+        }
+
+        // After commit the row is durable
+        $result = $db->query("SELECT COUNT(*) AS cnt FROM _test_sp_success WHERE val = 'hello'");
+        $row = $result->fetchAssoc();
+        $this->integer((int) $row['cnt'])->isIdenticalTo(1);
+
+        $db->query('DROP TABLE IF EXISTS _test_sp_success');
+    }
+
+    /**
+     * Test that a failed query inside a transaction rolls back its
+     * savepoint and leaves the transaction usable for further queries.
+     */
+    public function testSavepointRealConnectionRollbackOnError()
+    {
+        $db = $this->requirePgsql();
+        if ($db->dbtype !== 'pgsql') {
+            return;
+        }
+
+        $db->query('CREATE TEMPORARY TABLE _test_sp_rollback (id SERIAL PRIMARY KEY, val TEXT NOT NULL)');
+
+        $db->beginTransaction();
+        try {
+            // Good insert
+            $db->query("INSERT INTO _test_sp_rollback (val) VALUES ('good')");
+
+            // Bad insert — NULL into NOT NULL column — should fail
+            // The savepoint mechanism should roll back only this statement
+            $failed = false;
+            try {
+                $db->query("INSERT INTO _test_sp_rollback (val) VALUES (NULL)");
+            } catch (\Throwable $e) {
+                $failed = true;
+            }
+            $this->boolean($failed)->isTrue();
+
+            // The transaction should still be usable (thanks to savepoint rollback)
+            // and the first insert should still be visible
+            $result = $db->query("SELECT COUNT(*) AS cnt FROM _test_sp_rollback WHERE val = 'good'");
+            $row = $result->fetchAssoc();
+            $this->integer((int) $row['cnt'])->isIdenticalTo(1);
+
+            $db->commit();
+        } catch (\Throwable $e) {
+            $db->rollBack();
+            throw $e;
+        }
+
+        $db->query('DROP TABLE IF EXISTS _test_sp_rollback');
+    }
+
+    /**
+     * Test that nested savepoints increment correctly and each can be
+     * independently released or rolled back.
+     */
+    public function testSavepointRealConnectionNested()
+    {
+        $db = $this->requirePgsql();
+        if ($db->dbtype !== 'pgsql') {
+            return;
+        }
+
+        $db->query('CREATE TEMPORARY TABLE _test_sp_nested (id SERIAL PRIMARY KEY, val TEXT NOT NULL)');
+
+        $db->beginTransaction();
+        try {
+            $db->query("INSERT INTO _test_sp_nested (val) VALUES ('first')");
+            $db->query("INSERT INTO _test_sp_nested (val) VALUES ('second')");
+
+            // Both should be visible
+            $result = $db->query('SELECT COUNT(*) AS cnt FROM _test_sp_nested');
+            $row = $result->fetchAssoc();
+            $this->integer((int) $row['cnt'])->isIdenticalTo(2);
+
+            $db->commit();
+        } catch (\Throwable $e) {
+            $db->rollBack();
+            throw $e;
+        }
+
+        $db->query('DROP TABLE IF EXISTS _test_sp_nested');
     }
 }

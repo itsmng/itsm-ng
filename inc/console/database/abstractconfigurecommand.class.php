@@ -230,12 +230,12 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
             return self::ABORTED_BY_USER;
         }
 
-        $db_connection = $this->createDatabaseConnection(
+        $db_connection = $this->createDatabaseManagementConnection(
             $db_type,
             $db_hostport,
             $db_user,
             $db_pass,
-            $this->getAdminDatabaseName($db_type)
+            $db_name
         );
 
         if (!$db_connection->connected) {
@@ -294,6 +294,50 @@ abstract class AbstractConfigureCommand extends AbstractCommand implements Force
     protected function getAdminDatabaseName(string $db_type): string
     {
         return $db_type === 'pgsql' ? 'postgres' : '';
+    }
+
+    protected function createDatabaseManagementConnection(
+        string $db_type,
+        string $db_hostport,
+        string $db_user,
+        string $db_pass,
+        string $db_name
+    ): \DBmysql {
+        if ($db_type !== 'pgsql') {
+            return $this->createDatabaseConnection(
+                $db_type,
+                $db_hostport,
+                $db_user,
+                $db_pass,
+                $this->getAdminDatabaseName($db_type)
+            );
+        }
+
+        $target_connection = $this->createDatabaseConnection(
+            $db_type,
+            $db_hostport,
+            $db_user,
+            $db_pass,
+            $db_name
+        );
+        if ($target_connection->connected) {
+            return $target_connection;
+        }
+
+        $admin_database = $this->getAdminDatabaseName($db_type);
+        if ($admin_database === $db_name) {
+            return $target_connection;
+        }
+
+        $admin_connection = $this->createDatabaseConnection(
+            $db_type,
+            $db_hostport,
+            $db_user,
+            $db_pass,
+            $admin_database
+        );
+
+        return $admin_connection->connected ? $admin_connection : $target_connection;
     }
 
     protected function createDatabaseConnection(

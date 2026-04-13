@@ -9,9 +9,11 @@ use itsmng\Database\Migrations\Attribute\SchemaMigration;
 
 class MigrationRepository
 {
-    public function __construct(
-        private readonly string $directory
-    ) {
+    private readonly string $directory;
+
+    public function __construct(string $directory)
+    {
+        $this->directory = rtrim((string) (realpath($directory) ?: $directory), DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -43,7 +45,13 @@ class MigrationRepository
                 continue;
             }
 
-            if (!$reflection->getFileName() || !str_starts_with($reflection->getFileName(), $this->directory)) {
+            $filename = $reflection->getFileName();
+            if ($filename === false) {
+                continue;
+            }
+
+            $filename = (string) (realpath($filename) ?: $filename);
+            if ($filename !== $this->directory && !str_starts_with($filename, $this->directory . DIRECTORY_SEPARATOR)) {
                 continue;
             }
 

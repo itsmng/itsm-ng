@@ -3,10 +3,13 @@
 namespace itsmng\Database\Runtime\Query;
 
 use Countable;
-use DBmysqlResult;
 use Iterator;
 use itsmng\Database\Runtime\LegacyDatabase;
+use itsmng\Database\Runtime\Result\LegacyResult;
 
+/**
+ * @implements Iterator<int|string, array<string, mixed>>
+ */
 class LegacyQueryRequest implements Iterator, Countable
 {
     private ?LegacyDatabase $conn;
@@ -57,7 +60,7 @@ class LegacyQueryRequest implements Iterator, Countable
 
     public function __destruct()
     {
-        if ($this->res instanceof DBmysqlResult) {
+        if ($this->res instanceof LegacyResult) {
             $this->conn?->freeResult($this->res);
         }
     }
@@ -88,36 +91,45 @@ class LegacyQueryRequest implements Iterator, Countable
 
     public function key(): mixed
     {
-        return (isset($this->row["id"]) ? $this->row["id"] : $this->position - 1);
+        return $this->row["id"] ?? $this->position - 1;
     }
 
+    /**
+     * @return false|string[]
+     *
+     * @psalm-return array<string>|false
+     */
     #[\ReturnTypeWillChange]
-    public function next()
+    public function next(): array|false
     {
-        if (!($this->res instanceof DBmysqlResult) || $this->conn === null) {
+        if (!($this->res instanceof LegacyResult) || $this->conn === null) {
+            $this->row = null;
             return false;
         }
         $this->row = $this->conn->fetchAssoc($this->res);
+        if ($this->row === null) {
+            return false;
+        }
         ++$this->position;
         return $this->row;
     }
 
     public function valid(): bool
     {
-        return $this->res instanceof DBmysqlResult && $this->row;
+        return $this->res instanceof LegacyResult && $this->row !== null;
     }
 
-    public function numrows()
+    public function numrows(): int
     {
-        return ($this->res instanceof DBmysqlResult && $this->conn !== null ? $this->conn->numrows($this->res) : 0);
+        return $this->count();
     }
 
     public function count(): int
     {
-        return ($this->res instanceof DBmysqlResult && $this->conn !== null ? $this->conn->numrows($this->res) : 0);
+        return ($this->res instanceof LegacyResult && $this->conn !== null ? $this->conn->numrows($this->res) : 0);
     }
 
-    public function isOperator($value)
+    public function isOperator($value): bool
     {
         return $this->builder->isOperator($value);
     }

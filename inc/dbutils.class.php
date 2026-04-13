@@ -574,7 +574,7 @@ final class DbUtils
             if (trim($separator) == "AND") {
                 return "";
             }
-            return $query . " 1 ) ";
+            return $query . ' ' . $DB->quoteValue(true) . ' ) ';
         }
 
         if (empty($field)) {

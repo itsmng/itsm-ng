@@ -6,6 +6,10 @@ use itsmng\Database\Runtime\LegacyDatabase;
 
 class LegacyResult
 {
+    private const FETCH_ASSOC = 1;
+    private const FETCH_NUM = 2;
+    private const FETCH_BOTH = 3;
+
     private ?\mysqli_result $result = null;
 
     private ?\PDOStatement $pdo_statement = null;
@@ -46,7 +50,7 @@ class LegacyResult
         throw new \InvalidArgumentException('Unsupported query result handler.');
     }
 
-    public function fetch_assoc()
+    public function fetch_assoc(): array|null
     {
         if ($this->result instanceof \mysqli_result) {
             return $this->normalizeRow($this->result->fetch_assoc());
@@ -56,14 +60,20 @@ class LegacyResult
             return $this->normalizeRow($this->rows[$this->cursor++]);
         }
 
-        if (!isset($this->rows[$this->cursor])) {
-            return null;
-        }
-
-        return $this->normalizeRow($this->rows[$this->cursor++]);
+        return null;
     }
 
-    public function fetch_row()
+    public function fetchAssoc()
+    {
+        return $this->fetch_assoc();
+    }
+
+    /**
+     * @return (float|int|null|string|value-of<TArray>)[]|false|null
+     *
+     * @psalm-return false|list<float|int|null|string|value-of<array>>|null
+     */
+    public function fetch_row(): array|false|null
     {
         if ($this->result instanceof \mysqli_result) {
             return $this->result->fetch_row();
@@ -77,9 +87,14 @@ class LegacyResult
         return array_values($row);
     }
 
+    public function fetchRow()
+    {
+        return $this->fetch_row();
+    }
+
     public function fetch_array($mode = null)
     {
-        $mode ??= $this->getFetchBothMode();
+        $mode ??= defined('MYSQLI_BOTH') ? MYSQLI_BOTH : self::FETCH_BOTH;
 
         if ($this->result instanceof \mysqli_result) {
             return $this->result->fetch_array($mode);
@@ -90,24 +105,25 @@ class LegacyResult
             return null;
         }
 
-        if ($mode === $this->getFetchAssocMode()) {
-            return $row;
-        }
+        $assoc = defined('MYSQLI_ASSOC') ? MYSQLI_ASSOC : self::FETCH_ASSOC;
+        $num   = defined('MYSQLI_NUM') ? MYSQLI_NUM : self::FETCH_NUM;
 
-        $numeric = array_values($row);
-        if ($mode === $this->getFetchNumMode()) {
-            return $numeric;
-        }
-
-        $both = $numeric;
-        foreach ($row as $key => $value) {
-            $both[$key] = $value;
-        }
-
-        return $both;
+        return match ($mode) {
+            $assoc => $row,
+            $num   => array_values($row),
+            default => array_values($row) + $row,
+        };
     }
 
-    public function fetch_object()
+    public function fetchArray($mode = null)
+    {
+        return $this->fetch_array($mode);
+    }
+
+    /**
+     * @return false|null|object
+     */
+    public function fetch_object(): object|false|null
     {
         if ($this->result instanceof \mysqli_result) {
             return $this->result->fetch_object();
@@ -119,6 +135,11 @@ class LegacyResult
         }
 
         return (object) $row;
+    }
+
+    public function fetchObject()
+    {
+        return $this->fetch_object();
     }
 
     public function fetch_fields(): array
@@ -135,6 +156,11 @@ class LegacyResult
         );
     }
 
+    public function fetchFields(): array
+    {
+        return $this->fetch_fields();
+    }
+
     public function data_seek(int $offset): bool
     {
         if ($this->result instanceof \mysqli_result) {
@@ -145,7 +171,7 @@ class LegacyResult
             return false;
         }
 
-        if ($this->num_rows > 0 && $offset > $this->num_rows) {
+        if ($this->num_rows > 0 && $offset >= $this->num_rows) {
             return false;
         }
 
@@ -161,6 +187,11 @@ class LegacyResult
 
         $this->cursor = $offset;
         return true;
+    }
+
+    public function dataSeek(int $offset): bool
+    {
+        return $this->data_seek($offset);
     }
 
     public function free(): bool
@@ -231,11 +262,6 @@ class LegacyResult
             return false;
         }
 
-        if ($this->field_names === []) {
-            $this->field_names = array_keys($row);
-            $this->field_count = count($this->field_names);
-        }
-
         $this->rows[] = $row;
 
         return true;
@@ -256,20 +282,5 @@ class LegacyResult
             $this->field_names,
             $this->field_meta
         );
-    }
-
-    private function getFetchAssocMode(): int
-    {
-        return defined('MYSQLI_ASSOC') ? MYSQLI_ASSOC : 1;
-    }
-
-    private function getFetchNumMode(): int
-    {
-        return defined('MYSQLI_NUM') ? MYSQLI_NUM : 2;
-    }
-
-    private function getFetchBothMode(): int
-    {
-        return defined('MYSQLI_BOTH') ? MYSQLI_BOTH : 3;
     }
 }

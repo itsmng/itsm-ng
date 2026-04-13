@@ -27,7 +27,12 @@ class SchemaInstaller
         while ($table = $existing_tables->next()) {
             $table_name = $table['TABLE_NAME'];
             if ($table_name === MigrationHistoryRepository::TABLE || str_starts_with($table_name, 'glpi_')) {
-                $database->queryOrDie('DROP TABLE IF EXISTS ' . $database->quoteName($table_name), 'Drop existing schema table');
+                $statement = 'DROP TABLE IF EXISTS ' . $database->quoteName($table_name);
+                if ($database->getDbType() === 'pgsql') {
+                    $statement .= ' CASCADE';
+                }
+
+                $database->queryOrDie($statement, 'Drop existing schema table');
             }
         }
 

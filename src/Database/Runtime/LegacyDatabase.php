@@ -201,7 +201,7 @@ class LegacyDatabase implements DatabaseInterface
 
         if (is_array($this->dbhost)) {
             // Round robin choice
-            $i    = (isset($choice) ? $choice : mt_rand(0, count($this->dbhost) - 1));
+            $i    = $choice ?? mt_rand(0, count($this->dbhost) - 1);
             $host = $this->dbhost[$i];
         } else {
             $host = $this->dbhost;
@@ -231,7 +231,7 @@ class LegacyDatabase implements DatabaseInterface
         if (isset($this->dbenc)) {
             Toolbox::deprecated('Usage of alternative DB connection encoding (`DB::$dbenc` property) is deprecated.');
         }
-        $dbenc = isset($this->dbenc) ? $this->dbenc : 'utf8';
+        $dbenc = $this->dbenc ?? 'utf8';
         $dsn_parts[] = 'charset=' . $dbenc;
 
         $options = [
@@ -242,20 +242,17 @@ class LegacyDatabase implements DatabaseInterface
         ];
 
         if ($this->dbssl) {
-            if ($this->dbsslkey !== null && defined('PDO::MYSQL_ATTR_SSL_KEY')) {
-                $options[\PDO::MYSQL_ATTR_SSL_KEY] = $this->dbsslkey;
-            }
-            if ($this->dbsslcert !== null && defined('PDO::MYSQL_ATTR_SSL_CERT')) {
-                $options[\PDO::MYSQL_ATTR_SSL_CERT] = $this->dbsslcert;
-            }
-            if ($this->dbsslca !== null && defined('PDO::MYSQL_ATTR_SSL_CA')) {
-                $options[\PDO::MYSQL_ATTR_SSL_CA] = $this->dbsslca;
-            }
-            if ($this->dbsslcapath !== null && defined('PDO::MYSQL_ATTR_SSL_CAPATH')) {
-                $options[\PDO::MYSQL_ATTR_SSL_CAPATH] = $this->dbsslcapath;
-            }
-            if ($this->dbsslcacipher !== null && defined('PDO::MYSQL_ATTR_SSL_CIPHER')) {
-                $options[\PDO::MYSQL_ATTR_SSL_CIPHER] = $this->dbsslcacipher;
+            $sslMap = [
+                'dbsslkey'      => 'MYSQL_ATTR_SSL_KEY',
+                'dbsslcert'     => 'MYSQL_ATTR_SSL_CERT',
+                'dbsslca'       => 'MYSQL_ATTR_SSL_CA',
+                'dbsslcapath'   => 'MYSQL_ATTR_SSL_CAPATH',
+                'dbsslcacipher' => 'MYSQL_ATTR_SSL_CIPHER',
+            ];
+            foreach ($sslMap as $property => $constant) {
+                if ($this->$property !== null && defined('PDO::' . $constant)) {
+                    $options[constant('PDO::' . $constant)] = $this->$property;
+                }
             }
         }
 
@@ -304,7 +301,7 @@ class LegacyDatabase implements DatabaseInterface
 
     protected function getPlatform(): DatabasePlatformInterface
     {
-        return $this->runtime_platform ??= PlatformResolver::resolve($this->getDbType());
+        return $this->runtime_platform ??= PlatformResolver::resolve($this);
     }
 
     public function getConnectionHandle()
@@ -319,7 +316,7 @@ class LegacyDatabase implements DatabaseInterface
 
     public function hasCachedFieldList(string $table): bool
     {
-        return array_key_exists($table, $this->field_cache);
+        return isset($this->field_cache[$table]);
     }
 
     public function getCachedFieldList(string $table): array
@@ -393,7 +390,7 @@ class LegacyDatabase implements DatabaseInterface
         return $statement;
     }
 
-    protected function getDriverErrorCode(?\Throwable $exception = null)
+    protected function getDriverErrorCode(?\Throwable $exception = null): int|string
     {
         if ($exception instanceof \PDOException) {
             return $exception->getCode();
@@ -453,7 +450,7 @@ class LegacyDatabase implements DatabaseInterface
             $error_handler->handleSqlError((int) $code, $message, $query);
         }
 
-        $is_debug = isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
+        $is_debug = isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] === Session::DEBUG_MODE);
         if (($is_debug || isAPI()) && $CFG_GLPI["debug_sql"]) {
             $DEBUG_SQL["errors"][$SQL_TOTAL_REQUEST] = $this->error();
         }
@@ -725,7 +722,7 @@ class LegacyDatabase implements DatabaseInterface
      * @var array   $DEBUG_SQL
      * @var integer $SQL_TOTAL_REQUEST
      *
-     * @return mysqli_result|boolean Query result handler
+     * @return mysqli_result|bool Query result handler
      *
      * @throws GlpitestSQLError
      */
@@ -734,7 +731,7 @@ class LegacyDatabase implements DatabaseInterface
         global $CFG_GLPI, $DEBUG_SQL, $GLPI, $SQL_TOTAL_REQUEST;
 
         $query = $this->prepareQueryString($query);
-        $is_debug = isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
+        $is_debug = isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] === Session::DEBUG_MODE);
         if ($is_debug && $CFG_GLPI["debug_sql"]) {
             $SQL_TOTAL_REQUEST++;
             $DEBUG_SQL["queries"][$SQL_TOTAL_REQUEST] = $query;
@@ -782,27 +779,33 @@ class LegacyDatabase implements DatabaseInterface
      * @param string $query   Query to execute
      * @param string $message Explanation of query (default '')
      *
-     * @return mysqli_result Query result handler
+     * @return mysqli_result|bool Query result handler
      */
     public function queryOrDie($query, $message = '')
     {
-        $res = $this->query($query);
-        if (!$res) {
-            //TRANS: %1$s is the description, %2$s is the query, %3$s is the error message
-            $message = sprintf(
-                __('%1$s - Error during the database query: %2$s - Error is %3$s'),
-                $message,
-                $query,
-                $this->error()
-            );
-            if (isCommandLine()) {
-                throw new \RuntimeException($message);
-            } else {
-                echo $message . "\n";
-                die(1);
-            }
+        return $this->executeOrDie($this->query($query), $query, $message);
+    }
+
+    private function executeOrDie($result, string $sql, ?string $message)
+    {
+        if ($result) {
+            return $result;
         }
-        return $res;
+
+        //TRANS: %1$s is the description, %2$s is the query, %3$s is the error message
+        $message = sprintf(
+            __('%1$s - Error during the database query: %2$s - Error is %3$s'),
+            $message ?? '',
+            $sql,
+            $this->error()
+        );
+
+        if (isCommandLine()) {
+            throw new \RuntimeException($message);
+        }
+
+        echo $message . "\n";
+        die(1);
     }
 
     /**
@@ -810,7 +813,7 @@ class LegacyDatabase implements DatabaseInterface
      *
      * @param string $query Query to prepare
      *
-     * @return mysqli_stmt|boolean statement object or FALSE if an error occurred.
+     * @return mysqli_stmt|bool statement object or FALSE if an error occurred.
      *
      * @throws GlpitestSQLError
      */
@@ -843,7 +846,7 @@ class LegacyDatabase implements DatabaseInterface
 
             if (
                 isset($_SESSION['glpi_use_mode'])
-                && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE
+                && $_SESSION['glpi_use_mode'] === Session::DEBUG_MODE
                 && $CFG_GLPI["debug_sql"]
             ) {
                 $SQL_TOTAL_REQUEST++;
@@ -1142,7 +1145,7 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function listTables($table = 'glpi\_%', array $where = [])
     {
-        return $this->getPlatform()->listTables($this, $table, $where);
+        return $this->getPlatform()->listTables($table, $where);
     }
 
     /**
@@ -1152,7 +1155,7 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function getMyIsamTables(): DBmysqlIterator
     {
-        return $this->getPlatform()->getMyIsamTables($this);
+        return $this->getPlatform()->getMyIsamTables();
     }
 
     /**
@@ -1181,12 +1184,12 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function listFields($table, $usecache = true)
     {
-        return $this->getPlatform()->listFields($this, $table, $usecache);
+        return $this->getPlatform()->listFields($table, $usecache);
     }
 
     public function listIndexes($table)
     {
-        return $this->getPlatform()->listIndexes($this, $table);
+        return $this->getPlatform()->listIndexes($table);
     }
 
     /**
@@ -1344,7 +1347,7 @@ class LegacyDatabase implements DatabaseInterface
 
         foreach ($queries as $query) {
             $query = trim($query);
-            if ($query != '') {
+            if ($query !== '') {
                 if (!$this->query($query)) {
                     return false;
                 }
@@ -1405,7 +1408,7 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function getInfo()
     {
-        return $this->getPlatform()->getInfo($this);
+        return $this->getPlatform()->getInfo();
     }
 
     public function setGroupConcatMaxLen(int $length): bool
@@ -1426,7 +1429,7 @@ class LegacyDatabase implements DatabaseInterface
 
     public function getDatabaseSize(): string
     {
-        return $this->getPlatform()->getDatabaseSize($this);
+        return $this->getPlatform()->getDatabaseSize();
     }
 
     /**
@@ -1467,7 +1470,7 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function getLock($name)
     {
-        return $this->getPlatform()->getLock($this, (string) $name);
+        return $this->getPlatform()->getLock((string) $name);
     }
 
     /**
@@ -1481,7 +1484,7 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function releaseLock($name)
     {
-        return $this->getPlatform()->releaseLock($this, (string) $name);
+        return $this->getPlatform()->releaseLock((string) $name);
     }
 
 
@@ -1517,11 +1520,7 @@ class LegacyDatabase implements DatabaseInterface
             $this->table_cache = array_unique(array_merge($this->table_cache, $found_tables));
         }
 
-        if (in_array($tablename, $found_tables)) {
-            return true;
-        }
-
-        return false;
+        return in_array($tablename, $found_tables);
     }
 
     /**
@@ -1543,17 +1542,14 @@ class LegacyDatabase implements DatabaseInterface
         }
 
         if ($fields = $this->listFields($table, $usecache)) {
-            if (isset($fields[$field])) {
-                return true;
-            }
-            return false;
+            return isset($fields[$field]);
         }
         return false;
     }
 
     public function constraintExists($table, $constraint)
     {
-        return $this->getPlatform()->constraintExists($this, $table, $constraint);
+        return $this->getPlatform()->constraintExists($table, $constraint);
     }
 
     /**
@@ -1591,7 +1587,7 @@ class LegacyDatabase implements DatabaseInterface
         }
 
         // handle names with multiple chunks (e.g. db.table.field or table.field)
-        if (strpos($name, '.')) {
+        if (str_contains($name, '.')) {
             $names = explode('.', $name);
             return implode('.', array_map(static::quoteName(...), $names));
         }
@@ -1645,7 +1641,9 @@ class LegacyDatabase implements DatabaseInterface
             return $value ? 'TRUE' : 'FALSE';
         }
 
-        return "'$value'";
+        // Fallback: escape single quotes using SQL-standard doubling
+        $escaped = str_replace("'", "''", (string) $value);
+        return "'$escaped'";
     }
 
     public function quoteCompatibleValue($value)
@@ -1796,24 +1794,8 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function insertOrDie($table, $params, $message = '')
     {
-        $insert = $this->buildInsert($table, $params);
-        $res = $this->query($insert);
-        if (!$res) {
-            //TRANS: %1$s is the description, %2$s is the query, %3$s is the error message
-            $message = sprintf(
-                __('%1$s - Error during the database query: %2$s - Error is %3$s'),
-                $message,
-                $insert,
-                $this->error()
-            );
-            if (isCommandLine()) {
-                throw new \RuntimeException($message);
-            } else {
-                echo $message . "\n";
-                die(1);
-            }
-        }
-        return $res;
+        $sql = $this->buildInsert($table, $params);
+        return $this->executeOrDie($this->query($sql), $sql, $message);
     }
 
     /**
@@ -1872,7 +1854,7 @@ class LegacyDatabase implements DatabaseInterface
         }
 
         if (isset($clauses['LIMIT']) && !empty($clauses['LIMIT'])) {
-            $offset = (isset($clauses['START']) && !empty($clauses['START'])) ? $clauses['START'] : null;
+            $offset = !empty($clauses['START']) ? $clauses['START'] : null;
             $query .= $it->handleLimits($clauses['LIMIT'], $offset);
         }
 
@@ -1914,7 +1896,7 @@ class LegacyDatabase implements DatabaseInterface
         }
 
         if (isset($clauses['LIMIT']) && !empty($clauses['LIMIT'])) {
-            $offset = (isset($clauses['START']) && !empty($clauses['START'])) ? $clauses['START'] : null;
+            $offset = !empty($clauses['START']) ? $clauses['START'] : null;
             $selection .= $iterator->handleLimits($clauses['LIMIT'], $offset);
         }
 
@@ -1983,24 +1965,8 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function updateOrDie($table, $params, $where, $message = '', array $joins = [])
     {
-        $update = $this->buildUpdate($table, $params, $where, $joins);
-        $res = $this->query($update);
-        if (!$res) {
-            //TRANS: %1$s is the description, %2$s is the query, %3$s is the error message
-            $message = sprintf(
-                __('%1$s - Error during the database query: %2$s - Error is %3$s'),
-                $message,
-                $update,
-                $this->error()
-            );
-            if (isCommandLine()) {
-                throw new \RuntimeException($message);
-            } else {
-                echo $message . "\n";
-                die(1);
-            }
-        }
-        return $res;
+        $sql = $this->buildUpdate($table, $params, $where, $joins);
+        return $this->executeOrDie($this->query($sql), $sql, $message);
     }
 
     /**
@@ -2136,24 +2102,8 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function deleteOrDie($table, $where, $message = '', array $joins = [])
     {
-        $update = $this->buildDelete($table, $where, $joins);
-        $res = $this->query($update);
-        if (!$res) {
-            //TRANS: %1$s is the description, %2$s is the query, %3$s is the error message
-            $message = sprintf(
-                __('%1$s - Error during the database query: %2$s - Error is %3$s'),
-                $message,
-                $update,
-                $this->error()
-            );
-            if (isCommandLine()) {
-                throw new \RuntimeException($message);
-            } else {
-                echo $message . "\n";
-                die(1);
-            }
-        }
-        return $res;
+        $sql = $this->buildDelete($table, $where, $joins);
+        return $this->executeOrDie($this->query($sql), $sql, $message);
     }
 
 
@@ -2167,7 +2117,7 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function getTableSchema($table, $structure = null)
     {
-        return $this->getPlatform()->getTableSchema($this, $table, $structure);
+        return $this->getPlatform()->getTableSchema($table, $structure);
     }
 
     /**
@@ -2246,19 +2196,17 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function areTimezonesAvailable(string &$msg = '')
     {
-        return $this->getPlatform()->areTimezonesAvailable($this, $msg);
+        return $this->getPlatform()->areTimezonesAvailable($msg);
     }
 
     /**
      * Defines timezone to use.
      *
      * @param string $timezone
-     *
-     * @return DBmysql
      */
-    public function setTimezone($timezone)
+    public function setTimezone($timezone): self
     {
-        return $this->getPlatform()->setTimezone($this, $timezone);
+        return $this->getPlatform()->setTimezone($timezone);
     }
 
     /**
@@ -2270,19 +2218,17 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function getTimezones()
     {
-        return $this->getPlatform()->getTimezones($this);
+        return $this->getPlatform()->getTimezones();
     }
 
     /**
      * Returns count of tables that were not migrated to be compatible with timezones usage.
      *
-     * @return number
-     *
      * @since 9.5.0
      */
-    public function notTzMigrated()
+    public function notTzMigrated(): int
     {
-        return $this->getPlatform()->notTzMigrated($this);
+        return $this->getPlatform()->notTzMigrated();
     }
 
     /**
@@ -2294,7 +2240,7 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function getSignedKeysColumns()
     {
-        return $this->getPlatform()->getSignedKeysColumns($this);
+        return $this->getPlatform()->getSignedKeysColumns();
     }
 
     /**
@@ -2306,7 +2252,7 @@ class LegacyDatabase implements DatabaseInterface
      */
     public function getForeignKeysContraints()
     {
-        return $this->getPlatform()->getForeignKeysContraints($this);
+        return $this->getPlatform()->getForeignKeysContraints();
     }
 
     /**
@@ -2322,12 +2268,12 @@ class LegacyDatabase implements DatabaseInterface
 
     public function databaseExists(string $database): bool
     {
-        return $this->getPlatform()->databaseExists($this, $database);
+        return $this->getPlatform()->databaseExists($database);
     }
 
     public function createDatabase(string $database): bool
     {
-        return $this->getPlatform()->createDatabase($this, $database);
+        return $this->getPlatform()->createDatabase($database);
     }
 
     public function useDatabase(string $database): bool
@@ -2364,19 +2310,24 @@ class LegacyDatabase implements DatabaseInterface
             : "'" . $this->escape($value) . "'";
     }
 
+    public function quoteLikePattern(string $pattern): string
+    {
+        return $this->quote($this->decodeLegacyMysqlEscapes($pattern, true));
+    }
+
     public function sqlConcat(array $expressions): string
     {
-        return 'CONCAT(' . implode(', ', $expressions) . ')';
+        return $this->getPlatform()->sqlConcat($expressions);
     }
 
     public function sqlPosition(string $needle, string $haystack): string
     {
-        return $this->getPlatform()->sqlPosition($this, $needle, $haystack);
+        return $this->getPlatform()->sqlPosition($needle, $haystack);
     }
 
     public function sqlIf(string $condition, string $when_true, string $when_false): string
     {
-        return $this->getPlatform()->sqlIf($this, $condition, $when_true, $when_false);
+        return $this->getPlatform()->sqlIf($condition, $when_true, $when_false);
     }
 
     public function sqlGroupConcat(
@@ -2385,12 +2336,12 @@ class LegacyDatabase implements DatabaseInterface
         bool $distinct = false,
         ?string $order_by = null
     ): string {
-        return $this->getPlatform()->sqlGroupConcat($this, $expression, $separator, $distinct, $order_by);
+        return $this->getPlatform()->sqlGroupConcat($expression, $separator, $distinct, $order_by);
     }
 
     public function sqlIfNull(string $expression, string $fallback): string
     {
-        return $this->getPlatform()->sqlIfNull($this, $expression, $fallback);
+        return $this->getPlatform()->sqlIfNull($expression, $fallback);
     }
 
     public function sqlNullIf(string $expression, string $fallback): string
@@ -2400,12 +2351,12 @@ class LegacyDatabase implements DatabaseInterface
 
     public function sqlCastAsString(string $expression): string
     {
-        return $this->getPlatform()->sqlCastAsString($this, $expression);
+        return $this->getPlatform()->sqlCastAsString($expression);
     }
 
     public function sqlCastAsUnsignedInteger(string $expression): string
     {
-        return $this->getPlatform()->sqlCastAsUnsignedInteger($this, $expression);
+        return $this->getPlatform()->sqlCastAsUnsignedInteger($expression);
     }
 
     public function sqlNow(): string
@@ -2415,42 +2366,42 @@ class LegacyDatabase implements DatabaseInterface
 
     public function sqlCurrentTimestamp(): string
     {
-        return $this->getPlatform()->sqlCurrentTimestamp($this);
+        return $this->getPlatform()->sqlCurrentTimestamp();
     }
 
     public function sqlCurrentDate(): string
     {
-        return $this->getPlatform()->sqlCurrentDate($this);
+        return $this->getPlatform()->sqlCurrentDate();
     }
 
     public function sqlCurrentHour(): string
     {
-        return $this->getPlatform()->sqlCurrentHour($this);
+        return $this->getPlatform()->sqlCurrentHour();
     }
 
     public function sqlLike(string $expression, string $pattern, bool $case_sensitive = true): string
     {
-        return $this->getPlatform()->sqlLike($this, $expression, $pattern, $case_sensitive);
+        return $this->getPlatform()->sqlLike($expression, $pattern, $case_sensitive);
     }
 
     public function sqlFullTextBooleanMatch(array $expressions, string $search): string
     {
-        return $this->getPlatform()->sqlFullTextBooleanMatch($this, $expressions, $search);
+        return $this->getPlatform()->sqlFullTextBooleanMatch($expressions, $search);
     }
 
     public function sqlFullTextBooleanScore(array $expressions, string $search): string
     {
-        return $this->getPlatform()->sqlFullTextBooleanScore($this, $expressions, $search);
+        return $this->getPlatform()->sqlFullTextBooleanScore($expressions, $search);
     }
 
     public function sqlBitCount(string $expression, int $width = 32): string
     {
-        return $this->getPlatform()->sqlBitCount($this, $expression, $width);
+        return $this->getPlatform()->sqlBitCount($expression, $width);
     }
 
     public function sqlBitwiseAnd(string $left, string $right): string
     {
-        return $this->getPlatform()->sqlBitwiseAnd($this, $left, $right);
+        return $this->getPlatform()->sqlBitwiseAnd($left, $right);
     }
 
     public function sqlBitTest(string $left, string $right): string
@@ -2460,47 +2411,47 @@ class LegacyDatabase implements DatabaseInterface
 
     public function sqlUnixTimestamp(?string $expression = null): string
     {
-        return $this->getPlatform()->sqlUnixTimestamp($this, $expression);
+        return $this->getPlatform()->sqlUnixTimestamp($expression);
     }
 
     public function sqlDateFormat(string $expression, string $format): string
     {
-        return $this->getPlatform()->sqlDateFormat($this, $expression, $format);
+        return $this->getPlatform()->sqlDateFormat($expression, $format);
     }
 
     public function sqlDateTruncateToMinute(?string $expression = null): string
     {
-        return $this->getPlatform()->sqlDateTruncateToMinute($this, $expression);
+        return $this->getPlatform()->sqlDateTruncateToMinute($expression);
     }
 
     public function sqlDateAddInterval(string $expression, $value, string $unit): string
     {
-        return $this->getPlatform()->sqlDateAddInterval($this, $expression, $value, $unit);
+        return $this->getPlatform()->sqlDateAddInterval($expression, $value, $unit);
     }
 
     public function sqlDateSubInterval(string $expression, $value, string $unit): string
     {
-        return $this->getPlatform()->sqlDateSubInterval($this, $expression, $value, $unit);
+        return $this->getPlatform()->sqlDateSubInterval($expression, $value, $unit);
     }
 
     public function sqlDateDiffDays(string $left, string $right): string
     {
-        return $this->getPlatform()->sqlDateDiffDays($this, $left, $right);
+        return $this->getPlatform()->sqlDateDiffDays($left, $right);
     }
 
     public function sqlMonthDayOrdinal(string $expression): string
     {
-        return $this->getPlatform()->sqlMonthDayOrdinal($this, $expression);
+        return $this->getPlatform()->sqlMonthDayOrdinal($expression);
     }
 
     public function sqlTimeDiffInSeconds(string $left, string $right): string
     {
-        return $this->getPlatform()->sqlTimeDiffInSeconds($this, $left, $right);
+        return $this->getPlatform()->sqlTimeDiffInSeconds($left, $right);
     }
 
     public function sqlClockTimeDiffInSeconds(string $left, string $right): string
     {
-        return $this->getPlatform()->sqlClockTimeDiffInSeconds($this, $left, $right);
+        return $this->getPlatform()->sqlClockTimeDiffInSeconds($left, $right);
     }
 
     protected function normalizeLegacySqlStringValue(string $value): string
@@ -2541,7 +2492,7 @@ class LegacyDatabase implements DatabaseInterface
         return array_values(array_unique($terms));
     }
 
-    protected function decodeLegacyMysqlEscapes(string $value): string
+    protected function decodeLegacyMysqlEscapes(string $value, bool $preserve_like_escapes = false): string
     {
         $length = strlen($value);
         $decoded = '';
@@ -2555,6 +2506,10 @@ class LegacyDatabase implements DatabaseInterface
 
             $index++;
             $next = $value[$index];
+            if ($preserve_like_escapes && in_array($next, ['%', '_', '\\'], true)) {
+                $decoded .= '\\' . $next;
+                continue;
+            }
             $decoded .= match ($next) {
                 '0' => "\0",
                 'b' => "\b",
@@ -2575,7 +2530,7 @@ class LegacyDatabase implements DatabaseInterface
 
     public function getImplicitInsertDefaults(string $table, array $reference): array
     {
-        return $this->getPlatform()->getImplicitInsertDefaults($this, $table, $reference);
+        return $this->getPlatform()->getImplicitInsertDefaults($table, $reference);
     }
 
     /**
@@ -2587,7 +2542,7 @@ class LegacyDatabase implements DatabaseInterface
      */
     public static function getQuoteNameChar(): string
     {
-        return PlatformResolver::resolve(static::getCurrentDbType())->getIdentifierQuoteChar();
+        return PlatformResolver::resolveByType(static::getCurrentDbType())->getIdentifierQuoteChar();
     }
 
     /**
@@ -2601,12 +2556,12 @@ class LegacyDatabase implements DatabaseInterface
      */
     public static function isNameQuoted($value): bool
     {
-        if (!is_string($value)) {
+        if (!is_string($value) || strlen($value) < 2) {
             return false;
         }
 
         foreach (['`', '"'] as $quote) {
-            if (trim($value, $quote) != $value) {
+            if ($value[0] === $quote && $value[-1] === $quote) {
                 return true;
             }
         }
@@ -2669,7 +2624,7 @@ class LegacyDatabase implements DatabaseInterface
      *
      * @return string
      */
-    public function removeSqlRemarks($sql)
+    public function removeSqlRemarks($sql): string
     {
         $lines = explode("\n", (string) $sql);
 
@@ -2680,9 +2635,9 @@ class LegacyDatabase implements DatabaseInterface
         $output = "";
 
         for ($i = 0; $i < $linecount; $i++) {
-            if (($i != ($linecount - 1)) || (strlen($lines[$i]) > 0)) {
+            if (($i !== ($linecount - 1)) || (strlen($lines[$i]) > 0)) {
                 if (isset($lines[$i][0])) {
-                    if ($lines[$i][0] != "#" && substr($lines[$i], 0, 2) != "--") {
+                    if ($lines[$i][0] !== "#" && !str_starts_with($lines[$i], '--')) {
                         $output .= $lines[$i] . "\n";
                     } else {
                         $output .= "\n";

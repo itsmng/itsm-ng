@@ -29,38 +29,34 @@ class PostgreSqlPlatform extends AbstractPlatform
         };
     }
 
-    public function listTables(LegacyDatabase $database, $table = 'glpi\_%', array $where = []): \DBmysqlIterator
+    public function listTables($table = 'glpi\_%', array $where = []): \DBmysqlIterator
     {
-        return $database->request([
+        return $this->database->request([
             'SELECT' => 'table_name as TABLE_NAME',
             'FROM'   => 'information_schema.tables',
             'WHERE'  => [
-                'table_catalog' => $database->dbdefault,
-                'table_schema'  => $database->dbschema,
+                'table_catalog' => $this->database->dbdefault,
+                'table_schema'  => $this->database->dbschema,
                 'table_type'    => 'BASE TABLE',
                 'table_name'    => ['LIKE', $table],
             ] + $where,
         ]);
     }
 
-    public function getMyIsamTables(LegacyDatabase $database): \DBmysqlIterator
+    /**
+     * @return (mixed|string[])[]|false
+     *
+     * @psalm-return array<array<string>|mixed>|false
+     */
+    public function listFields($table, $usecache = true)
     {
-        return $database->request([
-            'SELECT' => 'table_name as TABLE_NAME',
-            'FROM'   => 'information_schema.tables',
-            'WHERE'  => [false],
-        ]);
-    }
-
-    public function listFields(LegacyDatabase $database, $table, $usecache = true)
-    {
-        if (!$database->isCacheDisabled() && $usecache && $database->hasCachedFieldList($table)) {
-            return $database->getCachedFieldList($table);
+        if (!$this->database->isCacheDisabled() && $usecache && $this->database->hasCachedFieldList($table)) {
+            return $this->database->getCachedFieldList($table);
         }
 
-        $table_name = $database->quote($table);
-        $schema_name = $database->quote($database->dbschema);
-        $catalog_name = $database->quote($database->dbdefault);
+        $table_name = $this->database->quote($table);
+        $schema_name = $this->database->quote($this->database->dbschema);
+        $catalog_name = $this->database->quote($this->database->dbdefault);
 
         $query = <<<SQL
 SELECT
@@ -108,27 +104,30 @@ WHERE cols.table_catalog = {$catalog_name}
 ORDER BY cols.ordinal_position
 SQL;
 
-        $result = $database->query($query);
+        $result = $this->database->query($query);
         if ($result) {
             $fields = [];
-            while ($data = $database->fetchAssoc($result)) {
+            while ($data = $this->database->fetchAssoc($result)) {
                 $fields[$data['Field']] = $data;
             }
-            $database->setCachedFieldList($table, $fields);
+            $this->database->setCachedFieldList($table, $fields);
             return $fields;
         }
 
         return false;
     }
 
-    public function listIndexes(LegacyDatabase $database, $table)
+    /**
+     * @return \DBmysqlIterator|false
+     */
+    public function listIndexes($table)
     {
-        if (!$database->tableExists($table)) {
+        if (!$this->database->tableExists($table)) {
             trigger_error("Table $table does not exists", E_USER_WARNING);
             return false;
         }
 
-        return $database->request([
+        return $this->database->request([
             'SELECT' => [
                 new QueryExpression(
                     "CASE
@@ -139,26 +138,29 @@ SQL;
             ],
             'FROM'   => 'pg_catalog.pg_indexes',
             'WHERE'  => [
-                'schemaname' => $database->dbschema,
+                'schemaname' => $this->database->dbschema,
                 'tablename'  => $table,
             ],
             'ORDER'  => ['indexname'],
         ]);
     }
 
-    public function constraintExists(LegacyDatabase $database, $table, $constraint)
+    /**
+     * @return bool
+     */
+    public function constraintExists($table, $constraint)
     {
-        if (!$database->tableExists($table)) {
+        if (!$this->database->tableExists($table)) {
             trigger_error("Table $table does not exists", E_USER_WARNING);
             return false;
         }
 
-        $result = $database->request([
+        $result = $this->database->request([
             'COUNT' => 'cpt',
             'FROM'  => 'information_schema.table_constraints',
             'WHERE' => [
-                'table_catalog'   => $database->dbdefault,
-                'table_schema'    => $database->dbschema,
+                'table_catalog'   => $this->database->dbdefault,
+                'table_schema'    => $this->database->dbschema,
                 'table_name'      => $table,
                 'constraint_name' => $constraint,
             ],
@@ -167,7 +169,12 @@ SQL;
         return (int) ($result['cpt'] ?? 0) > 0;
     }
 
-    public function getTableSchema(LegacyDatabase $database, $table, $structure = null)
+    /**
+     * @return (string|string[])[]
+     *
+     * @psalm-return array{schema: string, index: list<string>}
+     */
+    public function getTableSchema($table, $structure = null)
     {
         if ($structure !== null) {
             if (!is_array($structure)) {
@@ -202,17 +209,17 @@ INNER JOIN pg_catalog.pg_namespace namespaces
 LEFT JOIN pg_catalog.pg_attrdef defaults
    ON defaults.adrelid = attrs.attrelid
    AND defaults.adnum = attrs.attnum
-WHERE namespaces.nspname = {$database->quote($database->dbschema)}
-   AND classes.relname = {$database->quote($table)}
+WHERE namespaces.nspname = {$this->database->quote($this->database->dbschema)}
+   AND classes.relname = {$this->database->quote($table)}
    AND attrs.attnum > 0
    AND NOT attrs.attisdropped
 ORDER BY attrs.attnum
 SQL;
 
         $columns = [];
-        $result = $database->queryOrDie($columns_query, 'Read PostgreSQL table columns');
-        while ($column = $database->fetchAssoc($result)) {
-            $columns[] = $this->normalizeColumnDefinition($database, $column);
+        $result = $this->database->queryOrDie($columns_query, 'Read PostgreSQL table columns');
+        while ($column = $this->database->fetchAssoc($result)) {
+            $columns[] = $this->normalizeColumnDefinition($column);
         }
 
         $primary_key_columns = [];
@@ -226,18 +233,18 @@ INNER JOIN pg_catalog.pg_namespace namespaces
 INNER JOIN pg_catalog.pg_attribute attrs
    ON attrs.attrelid = classes.oid
    AND attrs.attnum = ANY(indexes.indkey)
-WHERE namespaces.nspname = {$database->quote($database->dbschema)}
-   AND classes.relname = {$database->quote($table)}
+WHERE namespaces.nspname = {$this->database->quote($this->database->dbschema)}
+   AND classes.relname = {$this->database->quote($table)}
    AND indexes.indisprimary
 ORDER BY array_position(indexes.indkey, attrs.attnum)
 SQL;
 
-        $result = $database->queryOrDie($pk_query, 'Read PostgreSQL primary key');
-        while ($column = $database->fetchAssoc($result)) {
-            $primary_key_columns[] = $database->quoteName($column['column_name']);
+        $result = $this->database->queryOrDie($pk_query, 'Read PostgreSQL primary key');
+        while ($column = $this->database->fetchAssoc($result)) {
+            $primary_key_columns[] = $this->database->quoteName($column['column_name']);
         }
 
-        $definition = 'CREATE TABLE ' . $database->quoteName($table) . " (\n";
+        $definition = 'CREATE TABLE ' . $this->database->quoteName($table) . " (\n";
         $definition .= implode(",\n", array_map(static fn (string $column): string => '  ' . $column, $columns));
         if ($primary_key_columns !== []) {
             $definition .= ",\n  PRIMARY KEY (" . implode(', ', $primary_key_columns) . ')';
@@ -248,13 +255,13 @@ SQL;
         $index_query = <<<SQL
 SELECT indexdef
 FROM pg_catalog.pg_indexes
-WHERE schemaname = {$database->quote($database->dbschema)}
-   AND tablename = {$database->quote($table)}
-   AND indexname NOT LIKE {$database->quote('%_pkey')}
+WHERE schemaname = {$this->database->quote($this->database->dbschema)}
+   AND tablename = {$this->database->quote($table)}
+   AND indexname NOT LIKE {$this->database->quote('%_pkey')}
 ORDER BY indexname
 SQL;
-        $result = $database->queryOrDie($index_query, 'Read PostgreSQL indexes');
-        while ($index = $database->fetchRow($result)) {
+        $result = $this->database->queryOrDie($index_query, 'Read PostgreSQL indexes');
+        while ($index = $this->database->fetchRow($result)) {
             $indexes[] = $this->normalizeTableSchema((string) $index[0]);
         }
 
@@ -264,7 +271,7 @@ SQL;
         ];
     }
 
-    public function areTimezonesAvailable(LegacyDatabase $database, string &$msg = ''): bool
+    public function areTimezonesAvailable(string &$msg = ''): bool
     {
         $cache = \Config::getCache('cache_db');
         if ($cache->has('are_timezones_available')) {
@@ -272,7 +279,7 @@ SQL;
         }
 
         $cache->set('are_timezones_available', false, DAY_TIMESTAMP);
-        $result = $database->request('SELECT COUNT(*) AS cpt FROM pg_timezone_names')->next();
+        $result = $this->database->request('SELECT COUNT(*) AS cpt FROM pg_timezone_names')->next();
         if ((int) ($result['cpt'] ?? 0) === 0) {
             $msg = __('Timezones seems not loaded in PostgreSQL timezone catalog.');
             return false;
@@ -282,21 +289,21 @@ SQL;
         return true;
     }
 
-    public function setTimezone(LegacyDatabase $database, $timezone): LegacyDatabase
+    public function setTimezone($timezone): LegacyDatabase|null
     {
-        if ($this->areTimezonesAvailable($database)) {
+        if ($this->areTimezonesAvailable()) {
             date_default_timezone_set($timezone);
-            $database->query('SET TIME ZONE ' . $database->quote($timezone));
+            $this->database->query('SET TIME ZONE ' . $this->database->quote($timezone));
             $_SESSION['glpi_currenttime'] = date("Y-m-d H:i:s");
         }
 
-        return $database;
+        return $this->database;
     }
 
-    public function getTimezones(LegacyDatabase $database): array
+    public function getTimezones(): array
     {
         $list = [];
-        $iterator = $database->request('SELECT name FROM pg_timezone_names ORDER BY name ASC');
+        $iterator = $this->database->request('SELECT name FROM pg_timezone_names ORDER BY name ASC');
         $now = new \DateTime();
         while ($row = $iterator->next()) {
             try {
@@ -311,14 +318,14 @@ SQL;
         return $list;
     }
 
-    public function notTzMigrated(LegacyDatabase $database): int
+    public function notTzMigrated(): int
     {
-        $result = $database->request([
+        $result = $this->database->request([
             'COUNT' => 'cpt',
             'FROM'  => 'information_schema.columns',
             'WHERE' => [
-                'table_catalog' => $database->dbdefault,
-                'table_schema'  => $database->dbschema,
+                'table_catalog' => $this->database->dbdefault,
+                'table_schema'  => $this->database->dbschema,
                 'table_name'    => ['LIKE', 'glpi\_%'],
                 'data_type'     => 'timestamp without time zone',
             ],
@@ -327,9 +334,9 @@ SQL;
         return (int) ($result['cpt'] ?? 0);
     }
 
-    public function getSignedKeysColumns(LegacyDatabase $database): \DBmysqlIterator
+    public function getSignedKeysColumns(): \DBmysqlIterator
     {
-        return $database->request([
+        return $this->database->request([
             'SELECT' => [
                 'NULL AS TABLE_NAME',
                 'NULL AS COLUMN_NAME',
@@ -338,14 +345,14 @@ SQL;
                 'NULL AS IS_NULLABLE',
                 'NULL AS EXTRA',
             ],
-            'FROM'   => new QueryExpression('(SELECT 1) AS ' . $database->quoteName('empty_signed_keys')),
+            'FROM'   => new QueryExpression('(SELECT 1) AS ' . $this->database->quoteName('empty_signed_keys')),
             'WHERE'  => [false],
         ]);
     }
 
-    public function getForeignKeysContraints(LegacyDatabase $database): \DBmysqlIterator
+    public function getForeignKeysContraints(): \DBmysqlIterator
     {
-        return $database->request([
+        return $this->database->request([
             'SELECT' => [
                 'tc.table_schema AS TABLE_SCHEMA',
                 'tc.table_name AS TABLE_NAME',
@@ -362,14 +369,14 @@ SQL;
                         [
                             'RAW' => [
                                 'tc.constraint_name' => new QueryExpression(
-                                    '= ' . $database->quoteName('kcu.constraint_name')
+                                    '= ' . $this->database->quoteName('kcu.constraint_name')
                                 ),
                             ],
                         ],
                         [
                             'RAW' => [
                                 'tc.table_schema' => new QueryExpression(
-                                    '= ' . $database->quoteName('kcu.table_schema')
+                                    '= ' . $this->database->quoteName('kcu.table_schema')
                                 ),
                             ],
                         ],
@@ -380,14 +387,14 @@ SQL;
                         [
                             'RAW' => [
                                 'ccu.constraint_name' => new QueryExpression(
-                                    '= ' . $database->quoteName('tc.constraint_name')
+                                    '= ' . $this->database->quoteName('tc.constraint_name')
                                 ),
                             ],
                         ],
                         [
                             'RAW' => [
                                 'ccu.table_schema' => new QueryExpression(
-                                    '= ' . $database->quoteName('tc.table_schema')
+                                    '= ' . $this->database->quoteName('tc.table_schema')
                                 ),
                             ],
                         ],
@@ -396,86 +403,86 @@ SQL;
             ],
             'WHERE' => [
                 'tc.constraint_type' => 'FOREIGN KEY',
-                'ccu.table_catalog'  => $database->dbdefault,
+                'ccu.table_catalog'  => $this->database->dbdefault,
                 'ccu.table_name'     => ['LIKE', 'glpi\_%'],
             ],
             'ORDER' => ['TABLE_NAME'],
         ]);
     }
 
-    public function getInfo(LegacyDatabase $database): array
+    public function getInfo(): array
     {
         $ret = [];
-        $req = $database->request('SELECT version() AS vers')->next();
+        $req = $this->database->request('SELECT version() AS vers')->next();
         if ($req['vers']) {
             $ret['Server Software'] = 'PostgreSQL';
             $ret['Server Version'] = $req['vers'];
         }
 
         $ret['Server SQL Mode'] = '';
-        $ret['Parameters'] = $database->dbuser . '@' . $database->dbhost . '/' . $database->dbdefault;
-        $ret['Host info'] = (string) $database->dbhost;
+        $ret['Parameters'] = $this->database->dbuser . '@' . $this->database->dbhost . '/' . $this->database->dbdefault;
+        $ret['Host info'] = (string) $this->database->dbhost;
 
         return $ret;
     }
 
-    public function getDatabaseSize(LegacyDatabase $database): string
+    public function getDatabaseSize(): string
     {
-        $result = $database->request([
+        $result = $this->database->request([
             'SELECT' => new QueryExpression('ROUND(pg_database_size(current_database()) / 1024.0 / 1024.0, 1) AS dbsize'),
         ])->next();
 
         return (string) ($result['dbsize'] ?? '');
     }
 
-    public function getLock(LegacyDatabase $database, string $name): bool
+    public function getLock(string $name): bool
     {
-        $lock_id = sprintf('%u', crc32($database->dbdefault . '.' . $name));
-        $result = $database->query('SELECT pg_try_advisory_lock(' . $lock_id . ')');
-        [$lock_ok] = $database->fetchRow($result);
+        $lock_id = sprintf('%u', crc32($this->database->dbdefault . '.' . $name));
+        $result = $this->database->query('SELECT pg_try_advisory_lock(' . $lock_id . ')');
+        [$lock_ok] = $this->database->fetchRow($result);
 
         return (bool) $lock_ok;
     }
 
-    public function releaseLock(LegacyDatabase $database, string $name): bool
+    public function releaseLock(string $name): bool
     {
-        $lock_id = sprintf('%u', crc32($database->dbdefault . '.' . $name));
-        $result = $database->query('SELECT pg_advisory_unlock(' . $lock_id . ')');
-        [$lock_ok] = $database->fetchRow($result);
+        $lock_id = sprintf('%u', crc32($this->database->dbdefault . '.' . $name));
+        $result = $this->database->query('SELECT pg_advisory_unlock(' . $lock_id . ')');
+        [$lock_ok] = $this->database->fetchRow($result);
 
         return (bool) $lock_ok;
     }
 
-    public function databaseExists(LegacyDatabase $database, string $database_name): bool
+    public function databaseExists(string $database_name): bool
     {
-        $result = $database->queryOrDie(
-            'SELECT 1 FROM pg_database WHERE datname = ' . $database->quote($database_name),
+        $result = $this->database->queryOrDie(
+            'SELECT 1 FROM pg_database WHERE datname = ' . $this->database->quote($database_name),
             'Check PostgreSQL database existence'
         );
 
-        return $database->numrows($result) > 0;
+        return $this->database->numrows($result) > 0;
     }
 
-    public function createDatabase(LegacyDatabase $database, string $database_name): bool
+    public function createDatabase(string $database_name): bool
     {
-        if ($this->databaseExists($database, $database_name)) {
+        if ($this->databaseExists($database_name)) {
             return true;
         }
 
-        return (bool) $database->query('CREATE DATABASE ' . $database->quoteName($database_name));
+        return (bool) $this->database->query('CREATE DATABASE ' . $this->database->quoteName($database_name));
     }
 
-    public function sqlPosition(LegacyDatabase $database, string $needle, string $haystack): string
+    public function sqlPosition(string $needle, string $haystack): string
     {
         return 'POSITION(' . $needle . ' IN ' . $haystack . ')';
     }
 
-    public function sqlIf(LegacyDatabase $database, string $condition, string $when_true, string $when_false): string
+    public function sqlIf(string $condition, string $when_true, string $when_false): string
     {
         return 'CASE WHEN ' . $condition . ' THEN ' . $when_true . ' ELSE ' . $when_false . ' END';
     }
 
-    public function sqlGroupConcat(LegacyDatabase $database, string $expression, string $separator = ',', bool $distinct = false, ?string $order_by = null): string
+    public function sqlGroupConcat(string $expression, string $separator = ',', bool $distinct = false, ?string $order_by = null): string
     {
         $expression = 'CAST((' . $expression . ') AS TEXT)';
         $sql = 'STRING_AGG(';
@@ -486,7 +493,7 @@ SQL;
             }
         }
 
-        $sql .= $expression . ', ' . $database->quote($separator);
+        $sql .= $expression . ', ' . $this->database->quote($separator);
         if ($order_by !== null && $order_by !== '') {
             $sql .= ' ORDER BY ' . $order_by;
         }
@@ -494,44 +501,57 @@ SQL;
         return $sql . ')';
     }
 
-    public function sqlIfNull(LegacyDatabase $database, string $expression, string $fallback): string
+    public function sqlIfNull(string $expression, string $fallback): string
     {
         return 'COALESCE(' . $expression . ', ' . $fallback . ')';
     }
 
-    public function sqlCastAsString(LegacyDatabase $database, string $expression): string
+    public function sqlCastAsString(string $expression): string
     {
         return 'CAST(' . $expression . ' AS TEXT)';
     }
 
-    public function sqlCastAsUnsignedInteger(LegacyDatabase $database, string $expression): string
+    public function sqlConcat(array $expressions): string
+    {
+        if ($expressions === []) {
+            return "''";
+        }
+
+        if (count($expressions) === 1) {
+            return reset($expressions);
+        }
+
+        return '(' . implode(' || ', $expressions) . ')';
+    }
+
+    public function sqlCastAsUnsignedInteger(string $expression): string
     {
         return 'CAST(FLOOR(((' . $expression . ')::numeric)) AS BIGINT)';
     }
 
-    public function sqlCurrentTimestamp(LegacyDatabase $database): string
+    public function sqlCurrentTimestamp(): string
     {
         return 'CURRENT_TIMESTAMP';
     }
 
-    public function sqlCurrentDate(LegacyDatabase $database): string
+    public function sqlCurrentDate(): string
     {
         return 'CURRENT_DATE';
     }
 
-    public function sqlCurrentHour(LegacyDatabase $database): string
+    public function sqlCurrentHour(): string
     {
         return 'EXTRACT(HOUR FROM CURRENT_TIME)';
     }
 
-    public function sqlLike(LegacyDatabase $database, string $expression, string $pattern, bool $case_sensitive = true): string
+    public function sqlLike(string $expression, string $pattern, bool $case_sensitive = true): string
     {
         return $expression
             . ($case_sensitive ? ' LIKE ' : ' ILIKE ')
-            . $database->quote($pattern);
+            . $this->database->quote($pattern);
     }
 
-    public function sqlFullTextBooleanMatch(LegacyDatabase $database, array $expressions, string $search): string
+    public function sqlFullTextBooleanMatch(array $expressions, string $search): string
     {
         $terms = $this->extractFullTextSearchTerms($search);
         if ($expressions === [] || $terms === []) {
@@ -543,7 +563,6 @@ SQL;
             $term_matches = [];
             foreach ($terms as $term) {
                 $term_matches[] = $this->sqlLike(
-                    $database,
                     'CAST((' . $expression . ') AS TEXT)',
                     '%' . $term . '%',
                     false
@@ -562,7 +581,7 @@ SQL;
         return '(' . implode(' OR ', $field_matches) . ')';
     }
 
-    public function sqlFullTextBooleanScore(LegacyDatabase $database, array $expressions, string $search): string
+    public function sqlFullTextBooleanScore(array $expressions, string $search): string
     {
         $terms = $this->extractFullTextSearchTerms($search);
         if ($expressions === [] || $terms === []) {
@@ -574,7 +593,7 @@ SQL;
             $cast_expression = 'CAST((' . $expression . ') AS TEXT)';
             foreach ($terms as $term) {
                 $scores[] = 'CASE WHEN '
-                    . $this->sqlLike($database, $cast_expression, '%' . $term . '%', false)
+                    . $this->sqlLike($cast_expression, '%' . $term . '%', false)
                     . ' THEN 1 ELSE 0 END';
             }
         }
@@ -586,83 +605,81 @@ SQL;
         return '(' . implode(' + ', $scores) . ')';
     }
 
-    public function sqlBitCount(LegacyDatabase $database, string $expression, int $width = 32): string
+    public function sqlBitCount(string $expression, int $width = 32): string
     {
         return "LENGTH(REPLACE(({$expression})::bit({$width})::text, '0', ''))";
     }
 
-    public function sqlBitwiseAnd(LegacyDatabase $database, string $left, string $right): string
+    public function sqlBitwiseAnd(string $left, string $right): string
     {
         return '(((' . $left . ')::bigint) & ((' . $right . ')::bigint))';
     }
 
-    public function sqlUnixTimestamp(LegacyDatabase $database, ?string $expression = null): string
+    public function sqlUnixTimestamp(?string $expression = null): string
     {
-        if ($expression === null) {
-            return 'EXTRACT(EPOCH FROM NOW())';
-        }
-
-        return 'EXTRACT(EPOCH FROM ' . $expression . ')';
+        return $expression === null
+            ? 'EXTRACT(EPOCH FROM NOW())'
+            : 'EXTRACT(EPOCH FROM ' . $expression . ')';
     }
 
-    public function sqlDateFormat(LegacyDatabase $database, string $expression, string $format): string
+    public function sqlDateFormat(string $expression, string $format): string
     {
-        return 'TO_CHAR(' . $expression . ', ' . $database->quote($this->convertDateFormatToPostgreSql($format)) . ')';
+        return 'TO_CHAR(' . $expression . ', ' . $this->database->quote($this->convertDateFormatToPostgreSql($format)) . ')';
     }
 
-    public function sqlDateTruncateToMinute(LegacyDatabase $database, ?string $expression = null): string
+    public function sqlDateTruncateToMinute(?string $expression = null): string
     {
         return 'DATE_TRUNC('
-            . $database->quote('minute')
+            . $this->database->quote('minute')
             . ', '
-            . ($expression ?? $this->sqlCurrentTimestamp($database))
+            . ($expression ?? $this->sqlCurrentTimestamp())
             . ')';
     }
 
-    public function sqlDateAddInterval(LegacyDatabase $database, string $expression, $value, string $unit): string
+    public function sqlDateAddInterval(string $expression, $value, string $unit): string
     {
         return sprintf(
             '(((%s)::timestamp) + ((%s) * INTERVAL %s))',
             $expression,
             (string) $value,
-            $database->quote('1 ' . $this->normalizeIntervalUnit($unit))
+            $this->database->quote('1 ' . $this->normalizeIntervalUnit($unit))
         );
     }
 
-    public function sqlDateSubInterval(LegacyDatabase $database, string $expression, $value, string $unit): string
+    public function sqlDateSubInterval(string $expression, $value, string $unit): string
     {
         return sprintf(
             '(((%s)::timestamp) - ((%s) * INTERVAL %s))',
             $expression,
             (string) $value,
-            $database->quote('1 ' . $this->normalizeIntervalUnit($unit))
+            $this->database->quote('1 ' . $this->normalizeIntervalUnit($unit))
         );
     }
 
-    public function sqlDateDiffDays(LegacyDatabase $database, string $left, string $right): string
+    public function sqlDateDiffDays(string $left, string $right): string
     {
         return '((' . $left . ')::date - (' . $right . ')::date)';
     }
 
-    public function sqlMonthDayOrdinal(LegacyDatabase $database, string $expression): string
+    public function sqlMonthDayOrdinal(string $expression): string
     {
         return '((EXTRACT(MONTH FROM ' . $expression . ') * 100) + EXTRACT(DAY FROM ' . $expression . '))';
     }
 
-    public function sqlTimeDiffInSeconds(LegacyDatabase $database, string $left, string $right): string
+    public function sqlTimeDiffInSeconds(string $left, string $right): string
     {
         return 'EXTRACT(EPOCH FROM (((' . $left . ')::timestamp) - ((' . $right . ')::timestamp)))';
     }
 
-    public function sqlClockTimeDiffInSeconds(LegacyDatabase $database, string $left, string $right): string
+    public function sqlClockTimeDiffInSeconds(string $left, string $right): string
     {
         return 'EXTRACT(EPOCH FROM (((' . $left . ')::time) - ((' . $right . ')::time)))';
     }
 
-    public function getImplicitInsertDefaults(LegacyDatabase $database, string $table, array $reference): array
+    public function getImplicitInsertDefaults(string $table, array $reference): array
     {
         $implicit_defaults = [];
-        $fields = $database->listFields($table);
+        $fields = $this->database->listFields($table);
         if (!is_array($fields)) {
             return $implicit_defaults;
         }
@@ -713,9 +730,9 @@ SQL;
         return $implicit_defaults;
     }
 
-    private function normalizeColumnDefinition(LegacyDatabase $database, array $column): string
+    private function normalizeColumnDefinition(array $column): string
     {
-        $name = $database->quoteName($column['column_name']);
+        $name = $this->database->quoteName($column['column_name']);
         $type = strtolower((string) $column['formatted_type']);
         $default = $column['column_default'];
 
@@ -751,17 +768,10 @@ SQL;
 
         $terms = [];
         foreach (explode(' ', $normalized) as $term) {
-            $term = trim($term);
-            if ($term === '') {
-                continue;
+            $term = rtrim(trim($term), '*');
+            if ($term !== '') {
+                $terms[] = $term;
             }
-
-            $term = rtrim($term, '*');
-            if ($term === '') {
-                continue;
-            }
-
-            $terms[] = $term;
         }
 
         return array_values(array_unique($terms));
@@ -782,29 +792,17 @@ SQL;
 
     private function normalizeDefaultExpression(string $expression): string
     {
-        if (strcasecmp($expression, 'CURRENT_TIMESTAMP') === 0) {
-            return 'CURRENT_TIMESTAMP';
-        }
-
-        if (preg_match('/^CURRENT_TIMESTAMP\(\)$/i', $expression) === 1) {
-            return 'CURRENT_TIMESTAMP';
-        }
-
-        if (strcasecmp($expression, 'true') === 0) {
-            return 'TRUE';
-        }
-
-        if (strcasecmp($expression, 'false') === 0) {
-            return 'FALSE';
-        }
-
-        return $expression;
+        return match (strtolower($expression)) {
+            'current_timestamp', 'current_timestamp()' => 'CURRENT_TIMESTAMP',
+            'true' => 'TRUE',
+            'false' => 'FALSE',
+            default => $expression,
+        };
     }
 
     private function normalizeTableSchema(string $schema): string
     {
         $schema = preg_replace('/\s+/', ' ', trim($schema));
-        $schema = str_replace(', ', ',', $schema);
         $schema = preg_replace('/\s*,\s*/', ',', $schema);
         $schema = preg_replace('/\s*\(\s*/', ' (', $schema);
         $schema = preg_replace('/\s*\)\s*/', ')', $schema);

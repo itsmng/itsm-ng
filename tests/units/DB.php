@@ -370,6 +370,112 @@ class DB extends \GLPITestCase
         )->hasMessage('Cannot run an DELETE query without WHERE clause!');
     }
 
+    /**
+     * Test buildDelete with JOINs produces correct SQL for both MySQL and PG.
+     */
+    public function testBuildDeleteWithJoins()
+    {
+        $this->newTestedInstance();
+
+        $joins = [
+            'LEFT JOIN' => [
+                'glpi_locations' => [
+                    'ON' => [
+                        'glpi_computers'   => 'locations_id',
+                        'glpi_locations'   => 'id'
+                    ]
+                ]
+            ]
+        ];
+        $where = [
+            'glpi_locations.name' => 'obsolete_location'
+        ];
+
+        $sql = $this->testedInstance->buildDelete('glpi_computers', $where, $joins);
+
+        if ($this->isPgsql()) {
+            // PostgreSQL uses USING syntax
+            $this->string($sql)->contains('DELETE FROM');
+            $this->string($sql)->contains('USING');
+            $this->string($sql)->contains('"glpi_locations"');
+            $this->string($sql)->contains('"glpi_computers"."locations_id" = "glpi_locations"."id"');
+        } else {
+            // MySQL uses multi-table DELETE syntax
+            $this->string($sql)->contains('DELETE `glpi_computers` FROM `glpi_computers`');
+            $this->string($sql)->contains('LEFT JOIN `glpi_locations`');
+        }
+    }
+
+    /**
+     * Integration test: execute a multi-table DELETE with JOINs on a real
+     * PostgreSQL connection and verify the correct rows are deleted.
+     */
+    public function testDeleteWithJoinsExecutionOnPgsql()
+    {
+        global $DB;
+
+        if (!$this->isPgsql()) {
+            $this->boolean(true)->isTrue();
+            return;
+        }
+
+        // Create temporary tables simulating a parent-child relationship
+        $DB->query('CREATE TEMPORARY TABLE _test_del_parent (id SERIAL PRIMARY KEY, name TEXT)');
+        $DB->query('CREATE TEMPORARY TABLE _test_del_child (id SERIAL PRIMARY KEY, parent_id INTEGER, val TEXT)');
+
+        // Insert parent rows
+        $DB->query("INSERT INTO _test_del_parent (name) VALUES ('keep')");
+        $DB->query("INSERT INTO _test_del_parent (name) VALUES ('remove')");
+
+        // Get parent IDs
+        $result = $DB->query("SELECT id FROM _test_del_parent WHERE name = 'keep'");
+        $keep_id = (int) $result->fetchAssoc()['id'];
+
+        $result = $DB->query("SELECT id FROM _test_del_parent WHERE name = 'remove'");
+        $remove_id = (int) $result->fetchAssoc()['id'];
+
+        // Insert child rows
+        $DB->query("INSERT INTO _test_del_child (parent_id, val) VALUES ($keep_id, 'child_keep_1')");
+        $DB->query("INSERT INTO _test_del_child (parent_id, val) VALUES ($keep_id, 'child_keep_2')");
+        $DB->query("INSERT INTO _test_del_child (parent_id, val) VALUES ($remove_id, 'child_remove_1')");
+        $DB->query("INSERT INTO _test_del_child (parent_id, val) VALUES ($remove_id, 'child_remove_2')");
+
+        // Verify initial state: 4 children total
+        $result = $DB->query('SELECT COUNT(*) AS cnt FROM _test_del_child');
+        $this->integer((int) $result->fetchAssoc()['cnt'])->isIdenticalTo(4);
+
+        // Delete children whose parent name = 'remove' using a JOIN
+        $joins = [
+            'LEFT JOIN' => [
+                '_test_del_parent' => [
+                    'ON' => [
+                        '_test_del_child'  => 'parent_id',
+                        '_test_del_parent' => 'id'
+                    ]
+                ]
+            ]
+        ];
+        $where = ['_test_del_parent.name' => 'remove'];
+
+        $DB->delete('_test_del_child', $where, $joins);
+
+        // After delete: only the 2 'keep' children should remain
+        $result = $DB->query('SELECT COUNT(*) AS cnt FROM _test_del_child');
+        $this->integer((int) $result->fetchAssoc()['cnt'])->isIdenticalTo(2);
+
+        // Verify the remaining children are the correct ones
+        $result = $DB->request('_test_del_child', ['FIELDS' => 'val', 'ORDER' => 'val']);
+        $remaining = [];
+        foreach ($result as $row) {
+            $remaining[] = $row['val'];
+        }
+        $this->array($remaining)->isIdenticalTo(['child_keep_1', 'child_keep_2']);
+
+        // Clean up
+        $DB->query('DROP TABLE IF EXISTS _test_del_child');
+        $DB->query('DROP TABLE IF EXISTS _test_del_parent');
+    }
+
     public function testListTables()
     {
         $this

@@ -3883,7 +3883,6 @@ JS;
                 ]
             );
             Html::closeForm();
-            echo '</li>';
         }
 
         if (Session::isMultiEntitiesMode()) {

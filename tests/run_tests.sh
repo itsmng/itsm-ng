@@ -164,6 +164,9 @@ fi
 [[ ! -z "$PHP_IMAGE" ]] || PHP_IMAGE=itsm-tests-app:local
 COMPOSE_CMD="$APPLICATION_ROOT/.github/actions/docker-compose.sh"
 
+rm -rf "$APPLICATION_ROOT/tests/files/_log/xunit"
+mkdir -p "$APPLICATION_ROOT/tests/files/_log/xunit"
+
 # Backup configuration files
 BACKUP_DIR=$(mktemp -d -t glpi-tests-backup-XXXXXXXXXX)
 find "$APPLICATION_ROOT/tests/config" -mindepth 1 ! -iname ".gitignore" -exec mv {} $BACKUP_DIR \;

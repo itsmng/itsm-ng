@@ -14,7 +14,7 @@ trait PostgreSqlDatabaseTrait
         $this->rememberActiveDialect();
 
         if (is_array($this->dbhost)) {
-            $index = (isset($choice) ? $choice : mt_rand(0, count($this->dbhost) - 1));
+            $index = $choice ?? random_int(0, count($this->dbhost) - 1);
             $host = $this->dbhost[$index];
         } else {
             $host = $this->dbhost;
@@ -148,14 +148,8 @@ trait PostgreSqlDatabaseTrait
                 continue;
             }
 
-            $sequence_result = $this->query(sprintf(
-                'SELECT pg_get_serial_sequence(%s, %s) AS sequence_name',
-                $this->quote($table),
-                $this->quote($field_name)
-            ));
-            $sequence_row = $this->fetchAssoc($sequence_result);
-            $sequence_name = $sequence_row['sequence_name'] ?? null;
-            if (!is_string($sequence_name) || $sequence_name === '') {
+            $sequence_name = $this->getSequenceName($table, $field_name);
+            if ($sequence_name === null) {
                 continue;
             }
 
@@ -180,14 +174,8 @@ trait PostgreSqlDatabaseTrait
             return $params['id'];
         }
 
-        $sequence_result = $this->query(sprintf(
-            'SELECT pg_get_serial_sequence(%s, %s) AS sequence_name',
-            $this->quote($table),
-            $this->quote('id')
-        ));
-        $sequence_row = $this->fetchAssoc($sequence_result);
-        $sequence_name = $sequence_row['sequence_name'] ?? null;
-        if (!is_string($sequence_name) || $sequence_name === '') {
+        $sequence_name = $this->getSequenceName($table, 'id');
+        if ($sequence_name === null) {
             return null;
         }
 
@@ -198,5 +186,18 @@ trait PostgreSqlDatabaseTrait
         $value_row = $this->fetchAssoc($value_result);
 
         return $value_row['last_insert_id'] ?? null;
+    }
+
+    private function getSequenceName(string $table, string $column): ?string
+    {
+        $result = $this->query(sprintf(
+            'SELECT pg_get_serial_sequence(%s, %s) AS sequence_name',
+            $this->quote($table),
+            $this->quote($column)
+        ));
+        $row = $this->fetchAssoc($result);
+        $name = $row['sequence_name'] ?? null;
+
+        return (is_string($name) && $name !== '') ? $name : null;
     }
 }

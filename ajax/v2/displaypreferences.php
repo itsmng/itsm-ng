@@ -59,7 +59,7 @@ if (!$can_personal && !$can_global) {
     exit;
 }
 $personal_view = Session::getLoginUserID();
-$global_view = 0;
+$global_view = null;
 
 if ($view === 'global' && !$can_global && $can_personal) {
     $view = 'personal';

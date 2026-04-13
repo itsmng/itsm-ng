@@ -4,11 +4,14 @@ namespace itsmng\Database\Migrations;
 
 use RuntimeException;
 use itsmng\Database\Runtime\DatabaseInterface;
+use itsmng\Database\Runtime\LegacyDatabase;
 use itsmng\Database\Schema\Dialect\DialectResolver;
 use itsmng\Database\Schema\SchemaInstaller;
 
 class MigrationRunner
 {
+    private const MIGRATION_LOCK_NAME = 'itsmng_migration';
+
     public function __construct(
         private readonly DatabaseInterface $database,
         private readonly MigrationRepository $repository,
@@ -24,28 +27,23 @@ class MigrationRunner
     public function migrate(): array
     {
         $history = $this->history ?? new MigrationHistoryRepository($this->database);
-        $history->ensureTable();
 
-        $applied = $history->applied();
-        $pending = array_diff_key($this->repository->all(), $applied);
-        if ($pending === []) {
-            return [];
-        }
+        return $this->withinLockAndTransaction('Schema migration failed', function () use ($history): array {
+            $history->ensureTable();
+            $applied = $history->applied();
+            $pending = array_diff_key($this->repository->all(), $applied);
+            if ($pending === []) {
+                return [];
+            }
 
-        $batch = $history->nextBatch();
-        $ran = [];
+            $batch = $history->nextBatch();
+            $ran = [];
+            $installer = $this->installer ?? new SchemaInstaller($this->dialect_resolver);
 
-        $dialect = ($this->dialect_resolver ?? new DialectResolver())->resolve($this->database);
-        $transactional = $dialect->supportsTransactionalDdl();
-        if ($transactional) {
-            $this->database->beginTransaction();
-        }
-
-        try {
             foreach ($pending as $version => $metadata) {
                 /** @var Migration $migration */
                 $migration = new $metadata['class']();
-                ($this->installer ?? new SchemaInstaller($this->dialect_resolver))->executeOperations(
+                $installer->executeOperations(
                     $migration->buildOperations('up'),
                     $this->database
                 );
@@ -53,18 +51,8 @@ class MigrationRunner
                 $ran[] = $version;
             }
 
-            if ($transactional) {
-                $this->database->commit();
-            }
-        } catch (\Throwable $throwable) {
-            if ($transactional && $this->database->inTransaction()) {
-                $this->database->rollBack();
-            }
-
-            throw new RuntimeException('Schema migration failed: ' . $throwable->getMessage(), 0, $throwable);
-        }
-
-        return $ran;
+            return $ran;
+        });
     }
 
     /**
@@ -73,49 +61,100 @@ class MigrationRunner
     public function rollbackLatestBatch(): array
     {
         $history = $this->history ?? new MigrationHistoryRepository($this->database);
-        $applied = array_values(array_filter(
-            $history->latestBatchMigrations(),
-            static fn (array $migration_row): bool => !$history->isBaselineMigration($migration_row['migration'])
-        ));
-        if ($applied === []) {
-            return [];
-        }
 
-        $available = $this->repository->all();
-        $rolled_back = [];
-        $dialect = ($this->dialect_resolver ?? new DialectResolver())->resolve($this->database);
-        $transactional = $dialect->supportsTransactionalDdl();
-        if ($transactional) {
-            $this->database->beginTransaction();
-        }
+        return $this->withinLockAndTransaction('Schema rollback failed', function () use ($history): array {
+            $applied = array_values(array_filter(
+                $history->latestBatchMigrations(),
+                static fn (array $row): bool => !$history->isBaselineMigration($row)
+            ));
+            if ($applied === []) {
+                return [];
+            }
 
-        try {
-            foreach ($applied as $migration_row) {
-                if (!isset($available[$migration_row['version']])) {
-                    throw new RuntimeException('Missing migration class for version ' . $migration_row['version']);
+            $available = $this->repository->all();
+            $rolled_back = [];
+            $installer = $this->installer ?? new SchemaInstaller($this->dialect_resolver);
+
+            foreach ($applied as $row) {
+                if (!isset($available[$row['version']])) {
+                    throw new RuntimeException('Missing migration class for version ' . $row['version']);
                 }
 
                 /** @var Migration $migration */
-                $migration = new $available[$migration_row['version']]['class']();
-                ($this->installer ?? new SchemaInstaller($this->dialect_resolver))->executeOperations(
+                $migration = new $available[$row['version']]['class']();
+                $installer->executeOperations(
                     $migration->buildOperations('down'),
                     $this->database
                 );
-                $history->delete($migration_row['version']);
-                $rolled_back[] = $migration_row['version'];
+                $history->delete($row['version']);
+                $rolled_back[] = $row['version'];
             }
+
+            return $rolled_back;
+        });
+    }
+
+    /**
+     * Execute a callback within an advisory lock and optional DDL transaction.
+     *
+     * @template T
+     * @param string $errorPrefix Error message prefix on failure
+     * @param callable(): T $callback
+     * @return T
+     */
+    private function withinLockAndTransaction(string $errorPrefix, callable $callback): mixed
+    {
+        $this->acquireLock();
+
+        try {
+            $dialect = ($this->dialect_resolver ?? new DialectResolver())->resolve($this->database);
+            $transactional = $dialect->supportsTransactionalDdl();
 
             if ($transactional) {
-                $this->database->commit();
-            }
-        } catch (\Throwable $throwable) {
-            if ($transactional && $this->database->inTransaction()) {
-                $this->database->rollBack();
+                $this->database->beginTransaction();
             }
 
-            throw new RuntimeException('Schema rollback failed: ' . $throwable->getMessage(), 0, $throwable);
+            try {
+                $result = $callback();
+
+                if ($transactional) {
+                    $this->database->commit();
+                }
+
+                return $result;
+            } catch (\Throwable $throwable) {
+                if ($transactional && $this->database->inTransaction()) {
+                    $this->database->rollBack();
+                }
+
+                throw new RuntimeException($errorPrefix . ': ' . $throwable->getMessage(), 0, $throwable);
+            }
+        } finally {
+            $this->releaseLock();
         }
+    }
 
-        return $rolled_back;
+    private function acquireLock(): void
+    {
+        if (
+            $this->database instanceof LegacyDatabase
+            && $this->database->getConnectionHandle() !== null
+        ) {
+            if (!$this->database->getLock(self::MIGRATION_LOCK_NAME)) {
+                throw new RuntimeException(
+                    'Could not acquire migration lock. Another migration may be running concurrently.'
+                );
+            }
+        }
+    }
+
+    private function releaseLock(): void
+    {
+        if (
+            $this->database instanceof LegacyDatabase
+            && $this->database->getConnectionHandle() !== null
+        ) {
+            $this->database->releaseLock(self::MIGRATION_LOCK_NAME);
+        }
     }
 }

@@ -300,10 +300,10 @@ class Migration extends \GLPITestCase
                ], [
            0 => 'SELECT `table_name` AS `TABLE_NAME` FROM `information_schema`.`tables`' .
                  ' WHERE `table_catalog` = \'' . $DB->dbdefault .
-                 '\' AND `table_schema` = \'public\' AND `table_type` = \'BASE TABLE\' AND `table_name` LIKE \'table1\'',
+                 '\' AND `table_schema` = \'public\' AND `table_type` = \'BASE TABLE\' AND `table_name` ILIKE \'table1\'',
            1 => 'SELECT `table_name` AS `TABLE_NAME` FROM `information_schema`.`tables`' .
                  ' WHERE `table_catalog` = \'' . $DB->dbdefault .
-                 '\' AND `table_schema` = \'public\' AND `table_type` = \'BASE TABLE\' AND `table_name` LIKE \'table2\''
+                 '\' AND `table_schema` = \'public\' AND `table_type` = \'BASE TABLE\' AND `table_name` ILIKE \'table2\''
                ]);
 
         //try to backup existant tables

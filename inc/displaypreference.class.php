@@ -51,19 +51,38 @@ class DisplayPreference extends CommonDBTM
 
     public const PERSONAL = 1024;
     public const GENERAL  = 2048;
-
+    private static function normalizeUsersIdForStorage($users_id)
+    {
+        return ($users_id === null || $users_id === '') ? null : (int)$users_id;
+    }
 
 
     public function prepareInputForAdd($input)
     {
         global $DB;
 
+        $input['users_id'] = self::normalizeUsersIdForStorage($input['users_id'] ?? null);
+
+        $existing = $DB->request([
+           'SELECT' => 'id',
+           'FROM'   => $this->getTable(),
+           'WHERE'  => [
+              'itemtype' => $input['itemtype'],
+              'num'      => $input['num'],
+              'users_id' => $input['users_id']
+           ]
+        ]);
+        if (count($existing) > 0) {
+            Session::addMessageAfterRedirect(__('This display preference already exists.'), false, ERROR);
+            return false;
+        }
+
         $result = $DB->request([
            'SELECT' => ['MAX' => 'rank AS maxrank'],
            'FROM'   => $this->getTable(),
            'WHERE'  => [
               'itemtype'  => $input['itemtype'],
-              'users_id'  => $input['users_id']
+              'users_id' => $input['users_id']
            ]
         ])->next();
         $input['rank'] = $result['maxrank'] + 1;
@@ -122,26 +141,34 @@ class DisplayPreference extends CommonDBTM
 
         $iterator = $DB->request([
            'FROM'   => self::getTable(),
-           'WHERE'  => [
-              'itemtype'  => $itemtype,
-              'OR'        => [
-                 ['users_id' => $user_id],
-                 ['users_id' => 0]
+           'WHERE'  => self::normalizeUsersIdForStorage($user_id) === null
+              ? [
+                 'itemtype' => $itemtype,
+                 'users_id' => null,
               ]
-           ],
-           'ORDER'  => ['users_id', 'rank']
+              : [
+                 'itemtype' => $itemtype,
+                 'OR'       => [
+                    ['users_id' => (int)$user_id],
+                    ['users_id' => null],
+                 ],
+              ],
+           'ORDER'  => 'rank'
         ]);
 
         $default_prefs = [];
         $user_prefs = [];
 
         while ($data = $iterator->next()) {
-            if ($data["users_id"] != 0) {
-                $user_prefs[] = $data["num"];
-            } else {
+            if ($data["users_id"] === null) {
                 $default_prefs[] = $data["num"];
+            } else {
+                $user_prefs[] = $data["num"];
             }
         }
+
+        $default_prefs = array_values(array_unique($default_prefs));
+        $user_prefs = array_values(array_unique($user_prefs));
 
         return count($user_prefs) ? $user_prefs : $default_prefs;
     }
@@ -163,15 +190,15 @@ class DisplayPreference extends CommonDBTM
         $iterator = $DB->request([
            'FROM'   => self::getTable(),
            'WHERE'  => [
-              'itemtype'  => $input['itemtype'],
-              'users_id'  => 0
+              'itemtype' => $input['itemtype'],
+              'users_id' => null,
            ]
         ]);
 
         if (count($iterator)) {
             while ($data = $iterator->next()) {
                 unset($data["id"]);
-                $data["users_id"] = $input["users_id"];
+                $data["users_id"] = (int)$input["users_id"];
                 $this->fields     = $data;
                 $this->addToDB();
             }
@@ -241,8 +268,9 @@ class DisplayPreference extends CommonDBTM
            'SELECT' => ['id', 'rank'],
            'FROM'   => $this->getTable(),
            'WHERE'  => [
-              'itemtype'  => $input['itemtype'],
-              'users_id'  => $input["users_id"]
+              'itemtype'  => $input['itemtype']
+              ,
+              'users_id'  => self::normalizeUsersIdForStorage($input["users_id"])
            ] + $where,
            'ORDER'  => $order,
            'LIMIT'  => 1
@@ -294,8 +322,9 @@ class DisplayPreference extends CommonDBTM
         $iterator = $DB->request([
            'FROM'   => $this->getTable(),
            'WHERE'  => [
-              'itemtype'  => $itemtype,
-              'users_id'  => $IDuser
+              'itemtype'  => $itemtype
+              ,
+              'users_id'  => (int)$IDuser,
            ],
            'ORDER'  => 'rank'
         ]);
@@ -533,7 +562,7 @@ class DisplayPreference extends CommonDBTM
         if (!is_array($searchopt)) {
             return false;
         }
-        $IDuser = 0;
+        $IDuser = null;
 
         $item = null;
         if ($itemtype != 'AllAssets') {
@@ -547,7 +576,7 @@ class DisplayPreference extends CommonDBTM
            'FROM'   => $this->getTable(),
            'WHERE'  => [
               'itemtype'  => $itemtype,
-              'users_id'  => $IDuser
+              'users_id'  => null,
            ],
            'ORDER'  => 'rank'
         ]);

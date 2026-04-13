@@ -54,4 +54,48 @@ class MigrationRunner extends \GLPITestCase
 
         $this->array($runner->rollbackLatestBatch())->isIdenticalTo([]);
     }
+
+    public function testMigrateLocksBeforeEnsuringHistoryTable()
+    {
+        $this->mockGenerator->orphanize('__construct');
+
+        $calls = [];
+        $db = new \mock\DBmysql();
+        $repository = new \mock\itsmng\Database\Migrations\MigrationRepository('/tmp');
+        $history = new \mock\itsmng\Database\Migrations\MigrationHistoryRepository($db);
+
+        $this->calling($db)->getConnectionHandle = new \stdClass();
+        $this->calling($db)->getLock = function () use (&$calls) {
+            $calls[] = 'lock';
+            return true;
+        };
+        $this->calling($db)->releaseLock = function () use (&$calls) {
+            $calls[] = 'unlock';
+            return true;
+        };
+        $this->calling($db)->getDbType = 'mysql';
+
+        $this->calling($history)->ensureTable = function () use (&$calls) {
+            $calls[] = 'ensureTable';
+        };
+        $this->calling($history)->applied = function () use (&$calls) {
+            $calls[] = 'applied';
+            return [];
+        };
+        $this->calling($repository)->all = function () use (&$calls) {
+            $calls[] = 'all';
+            return [];
+        };
+
+        $runner = new \itsmng\Database\Migrations\MigrationRunner($db, $repository, $history);
+
+        $this->array($runner->migrate())->isIdenticalTo([]);
+        $this->array($calls)->isIdenticalTo([
+            'lock',
+            'ensureTable',
+            'applied',
+            'all',
+            'unlock',
+        ]);
+    }
 }

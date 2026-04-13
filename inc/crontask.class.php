@@ -451,7 +451,7 @@ class CronTask extends CommonDBTM
             [
                 new QueryExpression('NOT (' . $DB->sqlLike($DB->quoteName('itemtype'), 'Plugin%', false) . ')'),
                 new QueryExpression(
-                    'NOT (' . $DB->sqlLike($DB->quoteName('itemtype'), addslashes('GlpiPlugin\\\\') . '%', false) . ')'
+                    'NOT (' . $DB->sqlLike($DB->quoteName('itemtype'), 'GlpiPlugin\\\\' . '%', false) . ')'
                 )
             ]
         ];
@@ -465,7 +465,7 @@ class CronTask extends CommonDBTM
                     new QueryExpression(
                         $DB->sqlLike(
                             $DB->quoteName('itemtype'),
-                            addslashes(sprintf('GlpiPlugin\\\\%s\\\\', $plug)) . '%',
+                            sprintf('GlpiPlugin\\\\%s\\\\', $plug) . '%',
                             false
                         )
                     )
@@ -1267,16 +1267,16 @@ class CronTask extends CommonDBTM
         $ret = true;
 
         $iterator = $DB->request([
-            'FROM' => self::getTable(),
-            'WHERE' => [
-                'OR' => [
-                    ['itemtype' => ['LIKE', sprintf('Plugin%s', $plugin) . '%']],
-                    ['itemtype' => ['LIKE', addslashes(sprintf('GlpiPlugin\\\\%s\\\\', $plugin)) . '%']]
-                ]
-            ]
+            'SELECT' => ['id', 'itemtype'],
+            'FROM'   => self::getTable(),
         ]);
 
         while ($data = $iterator->next()) {
+            $plugin_info = isPluginItemType($data['itemtype']);
+            if (!$plugin_info || $plugin_info['plugin'] !== $plugin) {
+                continue;
+            }
+
             if (!$temp->delete($data)) {
                 $ret = false;
             }

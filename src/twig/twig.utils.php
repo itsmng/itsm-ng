@@ -159,7 +159,12 @@ function expandForm($form, $fields = [], $template = null)
     return $form;
 }
 
-function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
+/**
+ * @return (array|mixed)[]
+ *
+ * @psalm-return array<array|mixed>
+ */
+function getItemByEntity($itemtype, $entity, $conditions = [], $used = []): array
 {
     $cond = $conditions;
     if (isset($conditions["entities_id"])) {
@@ -202,13 +207,18 @@ function getItemByEntity($itemtype, $entity, $conditions = [], $used = [])
     return $options;
 }
 
+/**
+ * @return (array|mixed)[]
+ *
+ * @psalm-return array<array|mixed>
+ */
 function getOptionForItems(
     $item,
     $conditions = [],
     $display_emptychoice = true,
     $isDevice = false,
     $used = [],
-) {
+): array {
     $entity_restrict = false;
     if (
         isset($conditions["entities_id"]) &&
@@ -253,7 +263,12 @@ function getOptionForItems(
     return $options;
 }
 
-function getLinkedDocumentsForItem($itemType, $items_id)
+/**
+ * @return string[]
+ *
+ * @psalm-return array<string>
+ */
+function getLinkedDocumentsForItem($itemType, $items_id): array
 {
     global $DB;
 
@@ -287,7 +302,7 @@ function getOptionsForUsers(
     $right,
     $conditions = [],
     $display_emptychoice = true,
-) {
+): array {
     $rights = $right;
     if (gettype($right) != "array") {
         $rights = [$right];
@@ -319,7 +334,7 @@ function getOptionsForUsers(
     return $options;
 }
 
-function renderTwigTemplate($path, $vars, $root = "/templates")
+function renderTwigTemplate($path, $vars, $root = "/templates"): void
 {
     global $CFG_GLPI;
     require_once GLPI_ROOT . "/src/twig/twig.class.php";
@@ -340,15 +355,12 @@ function renderTwigTemplate($path, $vars, $root = "/templates")
     }
 }
 
-/**
- * @return string
- */
 function renderTwigForm(
     $form,
     $additionnalHtml = "",
     $fields = [],
     $template = null,
-) {
+): void {
     global $CFG_GLPI;
 
     $twig = Twig::load(GLPI_ROOT . "/templates", false);
@@ -483,7 +495,7 @@ function renderTwigPage(
     $sector = "none",
     $item = "none",
     $option = "",
-) {
+): void {
     global $CFG_GLPI;
 
     $mainMenu = Html::getMainMenu($sector, $item, $option);

@@ -2872,7 +2872,7 @@ class Dropdown
                     $criteria = [
                        'SELECT' => [
                           "$table.*",
-                          new \QueryExpression("CONCAT(glpi_softwares.name,' - ',glpi_softwarelicenses.name) AS $field")
+                          new \QueryExpression($DB->sqlConcat([$DB->quoteName('glpi_softwares.name'), $DB->quoteValue(' - '), $DB->quoteName('glpi_softwarelicenses.name')]) . " AS $field")
                        ],
                        'FROM'   => $table,
                        'LEFT JOIN' => [
