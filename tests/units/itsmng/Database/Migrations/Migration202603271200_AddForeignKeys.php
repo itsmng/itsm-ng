@@ -16,6 +16,19 @@ class Migration202603271200_AddForeignKeys extends \GLPITestCase
         $up_operations = $migration->buildOperations('up');
         $down_operations = $migration->buildOperations('down');
 
+        $alter_index = $this->findOperationIndex($up_operations, static function (array $operation): bool {
+            return ($operation['kind'] ?? null) === 'alter_table'
+                && ($operation['table'] ?? null) === 'glpi_displaypreferences'
+                && count($operation['alter_columns'] ?? []) > 0
+                && (($operation['alter_columns'][0]['name'] ?? null) === 'users_id');
+        });
+        $cleanup_index = $this->findOperationIndex($up_operations, static function (array $operation): bool {
+            return ($operation['kind'] ?? null) === 'nullify_non_positive'
+                && ($operation['table'] ?? null) === 'glpi_displaypreferences'
+                && ($operation['column'] ?? null) === 'users_id';
+        });
+        $this->integer($alter_index)->isLessThan($cleanup_index);
+
         $this->array($this->findOperation($up_operations, static function (array $operation): bool {
             return ($operation['kind'] ?? null) === 'nullify_non_positive'
                 && ($operation['table'] ?? null) === 'glpi_displaypreferences'
@@ -25,6 +38,12 @@ class Migration202603271200_AddForeignKeys extends \GLPITestCase
             'table'  => 'glpi_displaypreferences',
             'column' => 'users_id',
         ]);
+
+        $this->array($this->findOperation($up_operations, static function (array $operation): bool {
+            return ($operation['kind'] ?? null) === 'raw_sql'
+                && str_contains((string) ($operation['sql'] ?? ''), 'UPDATE glpi_displaypreferences SET users_id = NULL')
+                && str_contains((string) ($operation['sql'] ?? ''), 'FROM glpi_users');
+        }))->hasKey('sql');
 
         $up_column = $this->findAlterColumn($up_operations, 'glpi_displaypreferences', 'users_id');
         $this->array($up_column)->hasKeys(['name', 'type', 'nullable', 'default']);
@@ -95,6 +114,17 @@ class Migration202603271200_AddForeignKeys extends \GLPITestCase
         }
 
         return [];
+    }
+
+    private function findOperationIndex(array $operations, callable $predicate): int
+    {
+        foreach ($operations as $index => $operation) {
+            if ($predicate($operation)) {
+                return $index;
+            }
+        }
+
+        return PHP_INT_MAX;
     }
 
     private function findAlterColumn(array $operations, string $table, string $column): array

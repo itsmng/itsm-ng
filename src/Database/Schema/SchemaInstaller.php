@@ -53,6 +53,8 @@ class SchemaInstaller
         $dialect = ($this->dialect_resolver ?? new DialectResolver())->resolve($database);
         $prepared_mysql_tables = [];
         foreach ($operations as $operation) {
+            $operation = $this->filterExistingMySqlIndexes($operation, $database);
+            $operation = $this->filterExistingForeignKeys($operation, $database);
             $this->prepareMySqlTablesForForeignKeys($operation, $database, $prepared_mysql_tables);
             foreach ($dialect->renderOperation($operation) as $statement) {
                 $database->queryOrDie($statement, 'Schema migration');
@@ -114,5 +116,69 @@ class SchemaInstaller
             );
             $prepared_tables[$table] = true;
         }
+    }
+
+    /**
+     * Legacy MySQL update databases may already contain the target index even
+     * when it is absent from the canonical schema definition.
+     *
+     * @param array<string, mixed> $operation
+     * @return array<string, mixed>
+     */
+    private function filterExistingMySqlIndexes(array $operation, DatabaseInterface $database): array
+    {
+        if (
+            $database->getDbType() !== 'mysql'
+            || ($operation['kind'] ?? null) !== 'alter_table'
+            || empty($operation['indexes'])
+            || !method_exists($database, 'listIndexes')
+        ) {
+            return $operation;
+        }
+
+        $result = $database->listIndexes($operation['table']);
+        if ($result === false) {
+            return $operation;
+        }
+
+        $existing_index_names = [];
+        while (($row = $database->fetchAssoc($result)) !== null) {
+            $index_name = strtolower((string) ($row['Key_name'] ?? ''));
+            if ($index_name !== '') {
+                $existing_index_names[$index_name] = true;
+            }
+        }
+
+        $operation['indexes'] = array_values(array_filter(
+            $operation['indexes'],
+            static fn (array $index): bool => !isset($existing_index_names[strtolower((string) ($index['name'] ?? ''))])
+        ));
+
+        return $operation;
+    }
+
+    /**
+     * Partial MySQL migration retries may hit already-created foreign keys.
+     *
+     * @param array<string, mixed> $operation
+     * @return array<string, mixed>
+     */
+    private function filterExistingForeignKeys(array $operation, DatabaseInterface $database): array
+    {
+        if (
+            ($operation['kind'] ?? null) !== 'alter_table'
+            || empty($operation['foreign_keys'])
+            || !method_exists($database, 'constraintExists')
+        ) {
+            return $operation;
+        }
+
+        $operation['foreign_keys'] = array_values(array_filter(
+            $operation['foreign_keys'],
+            static fn (array $foreign_key): bool => ($foreign_key['action'] ?? 'add') !== 'add'
+                || !$database->constraintExists($operation['table'], (string) ($foreign_key['name'] ?? ''))
+        ));
+
+        return $operation;
     }
 }

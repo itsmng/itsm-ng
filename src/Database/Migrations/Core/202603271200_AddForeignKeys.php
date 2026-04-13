@@ -59,15 +59,31 @@ final class Migration202603271200_AddForeignKeys extends Migration
     public function up(): void
     {
         foreach ($this->foreignKeys() as $foreign_key) {
+            if ($foreign_key['nullable']) {
+                $this->configureColumn(
+                    $this->alter()->table($foreign_key['table'])->alterColumn($foreign_key['column']),
+                    $foreign_key['column_schema'],
+                    true
+                )->end();
+            }
+
             if ($foreign_key['cleanup_up'] === 'nullify_non_positive') {
                 $this->nullifyNonPositive($foreign_key['table'], $foreign_key['column']);
             }
 
-            $this->configureColumn(
-                $this->alter()->table($foreign_key['table'])->alterColumn($foreign_key['column']),
-                $foreign_key['column_schema'],
-                $foreign_key['nullable']
-            )->end();
+            if ($foreign_key['nullable']) {
+                $this->nullifyMissingReferences(
+                    $foreign_key['table'],
+                    $foreign_key['column'],
+                    $foreign_key['referenced_table']
+                );
+            } else {
+                $this->configureColumn(
+                    $this->alter()->table($foreign_key['table'])->alterColumn($foreign_key['column']),
+                    $foreign_key['column_schema'],
+                    false
+                )->end();
+            }
 
             if ($foreign_key['index_name'] !== null) {
                 $this->alter()->table($foreign_key['table'])->addIndex([
@@ -260,6 +276,16 @@ final class Migration202603271200_AddForeignKeys extends Migration
         }
 
         return $builder;
+    }
+
+    private function nullifyMissingReferences(string $table, string $column, string $referenced_table): void
+    {
+        $this->execute(sprintf(
+            'UPDATE %1$s SET %2$s = NULL WHERE %2$s IS NOT NULL AND %2$s > 0 AND NOT EXISTS (SELECT 1 FROM %3$s WHERE %3$s.id = %1$s.%2$s)',
+            $table,
+            $column,
+            $referenced_table
+        ));
     }
 
     /**
