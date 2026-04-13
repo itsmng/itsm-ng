@@ -13,7 +13,7 @@ class MigrationDsl extends \GLPITestCase
 {
     public function testBuildOperationsSupportsRawSqlAndForeignKeys()
     {
-        $migration = new class extends \itsmng\Database\Migrations\Migration {
+        $migration = new class () extends \itsmng\Database\Migrations\Migration {
             public function up(): void
             {
                 $this->execute('UPDATE glpi_tickets SET users_id_recipient = NULL WHERE users_id_recipient = 0');

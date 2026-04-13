@@ -152,8 +152,12 @@ abstract class AbstractPlatform implements DatabasePlatformInterface
         return true;
     }
 
-    public function setTimezone($timezone): LegacyDatabase|null
+    public function setTimezone($timezone): LegacyDatabase
     {
+        if ($this->database === null) {
+            throw new \LogicException('Cannot set timezone without an active database connection.');
+        }
+
         if ($this->areTimezonesAvailable()) {
             date_default_timezone_set($timezone);
             $this->database->query('SET SESSION time_zone = ' . $this->database->quote($timezone));

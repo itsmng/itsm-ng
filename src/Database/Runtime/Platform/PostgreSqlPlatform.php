@@ -289,8 +289,12 @@ SQL;
         return true;
     }
 
-    public function setTimezone($timezone): LegacyDatabase|null
+    public function setTimezone($timezone): LegacyDatabase
     {
+        if ($this->database === null) {
+            throw new \LogicException('Cannot set timezone without an active database connection.');
+        }
+
         if ($this->areTimezonesAvailable()) {
             date_default_timezone_set($timezone);
             $this->database->query('SET TIME ZONE ' . $this->database->quote($timezone));
