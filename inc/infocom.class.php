@@ -663,6 +663,78 @@ class Infocom extends CommonDBChild
 
 
     /**
+     * Get the form input definition for the warranty duration field.
+     *
+     * Returns a select dropdown with common warranty presets and a "Custom"
+     * option that reveals a free-form number input (in months).
+     *
+     * @param integer $currentValue  Current warranty_duration value from DB
+     *
+     * @return array  Form input definition array
+     */
+    public static function getWarrantyDurationInput($currentValue)
+    {
+        $presets = [-1, 0, 6, 12, 24, 36, 60];
+        $isCustom = !in_array((int)$currentValue, $presets);
+
+        $values = [
+            -1  => __('Lifelong'),
+            0   => __('None'),
+            6   => sprintf(_n('%d month', '%d months', 6), 6),
+            12  => sprintf(_n('%d year', '%d years', 1), 1),
+            24  => sprintf(_n('%d year', '%d years', 2), 2),
+            36  => sprintf(_n('%d year', '%d years', 3), 3),
+            60  => sprintf(_n('%d year', '%d years', 5), 5),
+            'custom' => __('Custom'),
+        ];
+
+        $selectValue = $isCustom ? 'custom' : (int)$currentValue;
+
+        $customInputHtml = '<input type="number" class="form-control form-control-sm ms-2" '
+            . 'id="warranty_duration_custom_input" '
+            . 'name="warranty_duration" '
+            . 'min="0" max="120" step="1" '
+            . 'value="' . ($isCustom ? (int)$currentValue : '') . '" '
+            . 'placeholder="' . __('Months') . '" '
+            . 'style="' . ($isCustom ? '' : 'display:none;') . ' max-width:120px;" '
+            . ($isCustom ? '' : 'disabled') . ' />';
+
+        $js = <<<JS
+            (function() {
+                var sel = document.getElementById("warranty_duration_select");
+                var customInput = document.getElementById("warranty_duration_custom_input");
+                if (!sel || !customInput) return;
+                sel.addEventListener("change", function() {
+                    if (this.value === "custom") {
+                        customInput.style.display = "";
+                        customInput.disabled = false;
+                        customInput.name = "warranty_duration";
+                        sel.removeAttribute("name");
+                    } else {
+                        customInput.style.display = "none";
+                        customInput.disabled = true;
+                        customInput.removeAttribute("name");
+                        sel.name = "warranty_duration";
+                    }
+                });
+            })();
+JS;
+
+        return [
+            'type'   => 'select',
+            'id'     => 'warranty_duration_select',
+            'name'   => $isCustom ? '' : 'warranty_duration',
+            'values' => $values,
+            'value'  => $selectValue,
+            'noLib'  => true,
+            'col_md' => 6,
+            'col_lg' => 6,
+            'after'  => $customInputHtml . '<script>' . $js . '</script>',
+        ];
+    }
+
+
+    /**
      * Dropdown of amortissement type for infocoms
      *
      * @param string  $name      select name
@@ -1339,41 +1411,40 @@ class Infocom extends CommonDBChild
                                 ],
                                 ]
                              ],
-                             __('Start date of warranty') => [
-                           'type' => 'date',
-                           'name' => 'warranty_date',
-                           'value' => $ic->fields["warranty_date"],
-                           $withtemplate == 2 ? 'disabled' : '' => true
-                          ],
                              __('Warranty information') => [
                           'visible' => true,
                           'inputs' => [
+                           __('Start date of warranty') => [
+                              'type' => 'date',
+                              'name' => 'warranty_date',
+                              'value' => $ic->fields["warranty_date"],
+                              'col_md' => 6,
+                              'col_lg' => 6,
+                              $withtemplate == 2 ? 'disabled' : '' => true
+                           ],
                            __('Warranty duration') => $withtemplate == 2 ? [
                               'content' => $ic->fields["warranty_duration"] == -1 ? __('Lifelong') :
                                       sprintf(
                                           _n('%d month', '%d months', $ic->fields["warranty_duration"]),
                                           $ic->fields["warranty_duration"]
                                       ),
-                           ] : [
-                              'type' => 'number',
-                              'name' => 'warranty_duration',
-                              'min' => -1,
-                              'max' => 120,
-                              'step' => 1,
-                              'unit' => 'month',
-                              'after' => '(-1 = ' . __('Lifelong') . ')',
-                              'value' => $ic->fields["warranty_duration"],
-                           ],
+                              'col_md' => 6,
+                              'col_lg' => 6,
+                           ] : self::getWarrantyDurationInput($ic->fields["warranty_duration"]),
                            __('Warranty information') => [
                               'type' => 'text',
                               'name' => 'warranty_info',
                               'value' => $ic->fields["warranty_info"],
+                              'col_md' => 6,
+                              'col_lg' => 6,
                            ],
                            __('Alarms on financial and administrative information') => $CFG_GLPI['use_notifications'] ? [
                               'type' => 'select',
                               'name' => 'alert',
                               'values' => self::getAlertName(),
                               'value' => $ic->fields["alert"],
+                              'col_md' => 6,
+                              'col_lg' => 6,
                            ] : [],
                           ]
                           ]

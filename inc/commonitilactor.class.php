@@ -358,6 +358,11 @@ abstract class CommonITILActor extends CommonDBRelation
             );
             return false;
         }
+
+        if ($this->getFromDBByCrit($this->getExistingActorCriteria($input))) {
+            return false;
+        }
+
         return $input;
     }
 
@@ -391,6 +396,24 @@ abstract class CommonITILActor extends CommonDBRelation
 
         $input = parent::prepareInputForUpdate($input);
         return $input;
+    }
+
+    protected function getExistingActorCriteria(array $input): array
+    {
+        $criteria = [
+            static::getItilObjectForeignKey() => $input[static::getItilObjectForeignKey()] ?? 0,
+            'type'                            => $input['type'] ?? 0,
+        ];
+
+        $actorKey = $this->getActorForeignKey();
+        $actorId = (int)($input[$actorKey] ?? 0);
+        $criteria[$actorKey] = $actorId;
+
+        if ($actorId <= 0 && array_key_exists('alternative_email', $input)) {
+            $criteria['alternative_email'] = (string)$input['alternative_email'];
+        }
+
+        return $criteria;
     }
 
     public function post_addItem()

@@ -1,15 +1,18 @@
 #!/bin/bash -e
 
-docker-compose exec -T app php --version
-docker-compose exec -T app php -r 'echo(sprintf("PHP extensions: %s\n", implode(", ", get_loaded_extensions())));'
-docker-compose exec -T app composer --version
-docker-compose exec -T app sh -c 'echo "node $(node --version)"'
-docker-compose exec -T app sh -c 'echo "npm $(npm --version)"'
+ROOT_DIR=$(readlink -f "$(dirname "$0")/../..")
+COMPOSE_CMD="$ROOT_DIR/.github/actions/docker-compose.sh"
 
-if [[ -n $(docker-compose ps --all --services | grep "db") ]]; then
+"$COMPOSE_CMD" exec -T app php --version
+"$COMPOSE_CMD" exec -T app php -r 'echo(sprintf("PHP extensions: %s\n", implode(", ", get_loaded_extensions())));'
+"$COMPOSE_CMD" exec -T app composer --version
+"$COMPOSE_CMD" exec -T app sh -c 'echo "node $(node --version)"'
+"$COMPOSE_CMD" exec -T app sh -c 'echo "npm $(npm --version)"'
+
+if [[ -n $("$COMPOSE_CMD" ps --all --services | grep "db") ]]; then
   if [[ "${DB_TYPE:-mysql}" = "pgsql" ]]; then
-    docker-compose exec -T db psql --version;
+    "$COMPOSE_CMD" exec -T db psql --version
   else
-    docker-compose exec -T db mysql --version;
+    "$COMPOSE_CMD" exec -T db mysql --version
   fi
 fi

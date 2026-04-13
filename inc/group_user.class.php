@@ -283,7 +283,8 @@ class Group_User extends CommonDBRelation
            'id' => 'tab_group_user',
            'fields' => $fields,
            'values' => $values,
-           'massive_action' => $massiveactionparams
+           'massive_action' => $massiveactionparams,
+           'pageSize' => $_SESSION['glpilist_limit']
         ]);
     }
 
@@ -448,6 +449,283 @@ class Group_User extends CommonDBRelation
         return $entityrestrict;
     }
 
+    /**
+     * Get entity restriction for a group members query.
+     *
+     * @param Group $group Group object
+     *
+     * @return array|integer
+     */
+    private static function getEntityRestrictForGroup(Group $group)
+    {
+        if ($group->fields['is_recursive']) {
+            $entityrestrict = getSonsOf('glpi_entities', $group->fields['entities_id']);
+
+            if (
+                ($_SESSION['glpiactive_entity'] != $group->fields['entities_id'])
+                && in_array($_SESSION['glpiactive_entity'], $entityrestrict)
+            ) {
+                $entityrestrict = getSonsOf('glpi_entities', $_SESSION['glpiactive_entity']);
+            }
+        } else {
+            $entityrestrict = $group->fields['entities_id'];
+        }
+
+        return $entityrestrict;
+    }
+
+    /**
+     * Get direct member user ids for the add-user form.
+     *
+     * @param Group $group Group object
+     *
+     * @return array
+     */
+    private static function getDirectMembersForGroup(Group $group)
+    {
+        global $DB;
+
+        $entityrestrict = self::getEntityRestrictForGroup($group);
+        $pu_table       = Profile_User::getTable();
+        $ids            = [];
+
+        $iterator = $DB->request([
+           'SELECT'    => [self::getTable() . '.users_id'],
+           'DISTINCT'  => true,
+           'FROM'      => self::getTable(),
+           'LEFT JOIN' => [
+              User::getTable() => [
+                 'ON' => [
+                    self::getTable() => 'users_id',
+                    User::getTable() => 'id'
+                 ]
+              ],
+              $pu_table => [
+                 'ON' => [
+                    $pu_table        => 'users_id',
+                    User::getTable() => 'id'
+                 ]
+              ]
+           ],
+           'WHERE' => [
+              self::getTable() . '.groups_id' => $group->getID(),
+              'OR' => [
+                 "$pu_table.entities_id" => null
+              ] + getEntitiesRestrictCriteria($pu_table, '', $entityrestrict, 1)
+           ],
+        ]);
+
+        while ($row = $iterator->next()) {
+            $ids[] = (int)$row['users_id'];
+        }
+
+        return $ids;
+    }
+
+    /**
+     * Get allowed sort clauses for the paginated members table.
+     *
+     * @param string  $sort  Requested sort field
+     * @param string  $order Requested sort order
+     * @param boolean $tree  Whether child groups are included
+     *
+     * @return array
+     */
+    private static function getMembersSortClauses($sort, $order, $tree)
+    {
+        $order = (strtoupper($order) === 'DESC') ? 'DESC' : 'ASC';
+
+        switch ($sort) {
+            case 'parent':
+                return [
+                   'glpi_groups.completename ' . $order,
+                   'glpi_users.realname ASC',
+                   'glpi_users.firstname ASC',
+                   'glpi_users.name ASC'
+                ];
+
+            case 'dynamic':
+                return [
+                   self::getTable() . '.is_dynamic ' . $order,
+                   'glpi_users.realname ASC',
+                   'glpi_users.firstname ASC',
+                   'glpi_users.name ASC'
+                ];
+
+            case 'manager':
+                return [
+                   self::getTable() . '.is_manager ' . $order,
+                   'glpi_users.realname ASC',
+                   'glpi_users.firstname ASC',
+                   'glpi_users.name ASC'
+                ];
+
+            case 'delegatee':
+                return [
+                   self::getTable() . '.is_userdelegate ' . $order,
+                   'glpi_users.realname ASC',
+                   'glpi_users.firstname ASC',
+                   'glpi_users.name ASC'
+                ];
+
+            case 'group':
+            default:
+                if ($tree) {
+                    return [
+                       'glpi_groups.completename ' . $order,
+                       'glpi_users.realname ASC',
+                       'glpi_users.firstname ASC',
+                       'glpi_users.name ASC'
+                    ];
+                }
+
+                return [
+                   'glpi_users.realname ' . $order,
+                   'glpi_users.firstname ' . $order,
+                   'glpi_users.name ' . $order
+                ];
+        }
+    }
+
+    /**
+     * Get paginated member rows for a group.
+     *
+     * @param Group   $group  Group object
+     * @param string  $crit   Optional filter
+     * @param boolean $tree   Include child groups
+     * @param integer $offset Row offset
+     * @param integer $limit  Row limit
+     * @param string  $sort   Sort field
+     * @param string  $order  Sort order
+     *
+     * @return array
+     */
+    public static function getPaginatedMembersForGroup(
+        Group $group,
+        $crit = '',
+        $tree = 0,
+        $offset = 0,
+        $limit = 0,
+        $sort = 'group',
+        $order = 'ASC'
+    ) {
+        global $DB, $CFG_GLPI;
+
+        $entityrestrict = self::getEntityRestrictForGroup($group);
+        $restrict       = $tree ? getSonsOf('glpi_groups', $group->getID()) : $group->getID();
+        $pu_table       = Profile_User::getTable();
+        $where          = [
+           self::getTable() . '.groups_id' => $restrict,
+           'OR' => [
+              "$pu_table.entities_id" => null
+           ] + getEntitiesRestrictCriteria($pu_table, '', $entityrestrict, 1)
+        ];
+
+        if (in_array($crit, ['is_manager', 'is_userdelegate'], true)) {
+            $where[self::getTable() . '.' . $crit] = 1;
+        }
+
+        $joins = [
+           User::getTable() => [
+              'ON' => [
+                 self::getTable() => 'users_id',
+                 User::getTable() => 'id'
+              ]
+           ],
+           $pu_table => [
+              'ON' => [
+                 $pu_table        => 'users_id',
+                 User::getTable() => 'id'
+              ]
+           ],
+           Group::getTable() => [
+              'ON' => [
+                 self::getTable() => 'groups_id',
+                 Group::getTable() => 'id'
+              ]
+           ]
+        ];
+
+        $count = $DB->request([
+           'SELECT'    => ['COUNT DISTINCT' => self::getTable() . '.id AS cpt'],
+           'FROM'      => self::getTable(),
+           'LEFT JOIN' => $joins,
+           'WHERE'     => $where
+        ])->next();
+
+        $params = [
+           'SELECT'    => [
+              'glpi_users.id',
+              self::getTable() . '.id AS linkid',
+              self::getTable() . '.groups_id',
+              self::getTable() . '.is_dynamic AS is_dynamic',
+              self::getTable() . '.is_manager AS is_manager',
+              self::getTable() . '.is_userdelegate AS is_userdelegate'
+           ],
+           'DISTINCT'  => true,
+           'FROM'      => self::getTable(),
+           'LEFT JOIN' => $joins,
+           'WHERE'     => $where,
+           'ORDER'     => self::getMembersSortClauses($sort, $order, $tree),
+        ];
+
+        if ($limit > 0) {
+            $params['START'] = max(0, (int)$offset);
+            $params['LIMIT'] = max(1, (int)$limit);
+        }
+
+        $iterator = $DB->request($params);
+        $rows     = [];
+        $user     = new User();
+        $tmpgrp   = new Group();
+        $parent   = new Group();
+
+        while ($data = $iterator->next()) {
+            $user->getFromDB($data["id"]);
+            Session::addToNavigateListItems('User', $data["id"]);
+
+            $row = [
+               'group'     => $user->getLink(),
+               'parent'    => __('Root'),
+               'dynamic'   => '',
+               'manager'   => '',
+               'delegatee' => '',
+            ];
+
+            if ($tree && $tmpgrp->getFromDB($data['groups_id'])) {
+                $row['group'] = $tmpgrp->getLink(['comments' => true]);
+            }
+
+            if ($parent->getFromDB($data['groups_id'])) {
+                $row['parent'] = $parent->getLink(['comments' => true]);
+            }
+
+            if ($data['is_dynamic']) {
+                $row['dynamic'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
+                   __('Dynamic') . "\">";
+            }
+            if ($data['is_manager']) {
+                $row['manager'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
+                   __('Manager') . "\">";
+            }
+            if ($data['is_userdelegate']) {
+                $row['delegatee'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
+                   __('Delegatee') . "\">";
+            }
+
+            if (self::canUpdate()) {
+                $row['value'] = sprintf('item[%s][%s]', self::class, $data['linkid']);
+            }
+
+            $rows[] = $row;
+        }
+
+        return [
+           'total' => (int)$count['cpt'],
+           'rows'  => $rows
+        ];
+    }
+
 
     /**
      * Show users of a group
@@ -470,97 +748,49 @@ class Group_User extends CommonDBRelation
 
         // Have right to manage members
         $canedit = self::canUpdate();
-        $rand    = mt_rand();
-        $user    = new User();
         $crit    = Session::getSavedOption(__CLASS__, 'criterion', '');
         $tree    = Session::getSavedOption(__CLASS__, 'tree', 0);
-        $used    = [];
-        $ids     = [];
-
-        // Retrieve member list
-        // TODO: migrate to use CommonDBRelation::getListForItem()
-        $entityrestrict = self::getDataForGroup($group, $used, $ids, $crit, $tree);
+        $rand    = mt_rand();
 
         if ($canedit) {
+            $entityrestrict = self::getEntityRestrictForGroup($group);
+            $ids = self::getDirectMembersForGroup($group);
             self::showAddUserForm($group, $ids, $entityrestrict, $crit);
         }
 
-        $number = count($used);
-        $start  = (isset($_GET['start']) ? intval($_GET['start']) : 0);
-        if ($start >= $number) {
-            $start = 0;
-        }
+        $fields = [
+           'group' => $tree ? Group::getTypeName(1) : User::getTypeName(1),
+           'parent' => __('Parent'),
+           'dynamic' => __('Dynamic'),
+           'manager' => __('Manager'),
+           'delegatee' => __('Delegatee'),
+        ];
 
-        // Display results
-        if ($number) {
-            $fields = [
-               'group' => $tree ? Group::getTypeName(1) : User::getTypeName(1),
-               'parent' => __('Parent'),
-               'dynamic' => __('Dynamic'),
-               'manager' => __('Manager'),
-               'delegatee' => __('Delegatee'),
-            ];
-            $values = [];
-            $massiveactionValues = [];
-            $massiveactionparams = [
-               'num_displayed' => min($number - $start, $_SESSION['glpilist_limit']),
-               'container' => 'mass' . __CLASS__ . $rand,
+        if ($canedit) {
+            Html::showMassiveActions([
+               'num_displayed' => $_SESSION['glpilist_limit'],
+               'container'     => 'mass' . __CLASS__ . $rand,
                'display_arrow' => false
-            ];
-
-            if ($canedit) {
-                Html::showMassiveActions($massiveactionparams);
-            }
-
-            $tmpgrp = new Group();
-
-            for ($i = $start, $j = 0; ($i < $number) && ($j < $_SESSION['glpilist_limit']); $i++, $j++) {
-                $data = $used[$i];
-                $user->getFromDB($data["id"]);
-                Session::addToNavigateListItems('User', $data["id"]);
-
-                $newValue = ['group' => $user->getLink()];
-                if ($tree) {
-                    if ($tmpgrp->getFromDB($data['groups_id'])) {
-                        $newValue['group'] = $tmpgrp->getLink(['comments' => true]);
-                    }
-                }
-                $parent = new Group();
-                if ($parent->getFromDB($data['groups_id'])) {
-                    $newValue['parent'] = $parent->getLink(['comments' => true]);
-                } else {
-                    $newValue['parent'] = __('Root');
-                }
-                if ($data['is_dynamic']) {
-                    $newValue['dynamic'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
-                       __('Dynamic') . "\">";
-                }
-                if ($data['is_manager']) {
-                    $newValue['manager'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
-                    __('Manager') . "\">";
-                }
-                if ($data['is_userdelegate']) {
-                    $newValue['delegatee'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
-                    __('Delegatee') . "\">";
-                }
-                if ($user->fields['is_active']) {
-                    $newValue['active'] = "<img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' width='14' height='14' alt=\"" .
-                    __('Active') . "\">";
-                }
-                if ($canedit) {
-                    $massiveactionValues[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
-                }
-                $values[] = $newValue;
-            }
-            renderTwigTemplate('table.twig', [
-               'id' => 'mass' . __CLASS__ . $rand,
-               'fields' => $fields,
-               'values' => $values,
-               'massive_action' => $massiveactionValues,
             ]);
-        } else {
-            echo "<p class='center b'>" . __('No item found') . "</p>";
         }
+
+        $url = $CFG_GLPI['root_doc'] . '/ajax/v2/group_user.php'
+             . '?groups_id=' . urlencode((string)$group->getID())
+             . '&tree=' . urlencode((string)$tree)
+             . '&criterion=' . urlencode((string)$crit);
+
+        $table_params = [
+           'id'       => 'mass' . __CLASS__ . $rand,
+           'fields'   => $fields,
+           'url'      => $url,
+           'pageSize' => $_SESSION['glpilist_limit'],
+        ];
+
+        if ($canedit) {
+            $table_params['massive_action'] = [];
+        }
+
+        renderTwigTemplate('table.twig', $table_params);
     }
 
 

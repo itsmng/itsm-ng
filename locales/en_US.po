@@ -24942,6 +24942,14 @@ msgstr "Approver"
 msgid "Group users"
 msgstr "Group Tree"
 
+#: inc/infocom.class.php
+msgid "Custom"
+msgstr "Custom"
+
+#: inc/infocom.class.php
+msgid "Months"
+msgstr "Months"
+
 #~ msgid ""
 #~ "No time zones are available. Please check your database configuration."
 #~ msgstr ""

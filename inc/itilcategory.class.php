@@ -377,17 +377,19 @@ class ITILCategory extends CommonTreeDropdown
     {
         $input = parent::prepareInputForUpdate($input);
 
-        $input['code'] = isset($input['code']) ? trim($input['code']) : '';
-        if (
-            !empty($input["code"])
-              && !in_array(ITILCategory::getITILCategoryIDByCode($input["code"]), [$input['id'],-1])
-        ) {
-            Session::addMessageAfterRedirect(
-                __("Code representing the ticket category is already used"),
-                false,
-                ERROR
-            );
-            return false;
+        if (array_key_exists('code', $input)) {
+            $input['code'] = trim((string)$input['code']);
+            if (
+                !empty($input["code"])
+                  && !in_array(ITILCategory::getITILCategoryIDByCode($input["code"]), [$input['id'], -1])
+            ) {
+                Session::addMessageAfterRedirect(
+                    __("Code representing the ticket category is already used"),
+                    false,
+                    ERROR
+                );
+                return false;
+            }
         }
         return $input;
     }

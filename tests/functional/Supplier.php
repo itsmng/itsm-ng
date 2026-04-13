@@ -60,4 +60,22 @@ class Supplier extends DbTestCase
 
         $this->boolean($obj->delete(['id' => $id]))->isTrue();
     }
+
+    public function testGetLinksSanitizesOutput()
+    {
+        $obj = new \Supplier();
+        $obj->fields = [
+           'id'      => 0,
+           'name'    => '\'"<svg/onload=alert(1)>',
+           'website' => "example.com' onclick='alert(1)",
+        ];
+
+        $links = $obj->getLinks(true);
+
+        $this->string($links)
+           ->contains("&lt;svg/onload=alert(1)&gt;")
+           ->contains("href='http://example.com&#039; onclick=&#039;alert(1)'")
+           ->notContains("<svg/onload=alert(1)>")
+           ->notContains("href='http://example.com' onclick='alert(1)'");
+    }
 }

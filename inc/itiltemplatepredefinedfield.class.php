@@ -97,8 +97,9 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
 
         $itil_class = static::$itiltype;
         $itil_object = new $itil_class();
-        $itemtype_id = $itil_object->getSearchOptionIDByField('field', 'itemtype', $itil_object->getTable());
-        $items_id_id = $itil_object->getSearchOptionIDByField('field', 'items_id', $itil_object->getTable());
+        $items_table = $itil_object->getItemsTable();
+        $itemtype_id = $itil_object->getSearchOptionIDByField('field', 'itemtype', $items_table);
+        $items_id_id = $itil_object->getSearchOptionIDByField('field', 'items_id', $items_table);
 
         // Try to delete itemtype -> delete items_id
         if ($this->fields['num'] == $itemtype_id) {

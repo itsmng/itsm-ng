@@ -1855,7 +1855,6 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'number',
                        'name'  => 'delay_send_emails',
                        'value' => $entity->getField('delay_send_emails'),
-                       'min'   => 0,
                        'max'   => 100,
                        'after'  => 'minute' . (($ID > 0 && ($entity->getField('delay_send_emails') == self::CONFIG_PARENT)) ?
                                    ' ' . self::inheritedValue(self::getSpecificValueToDisplay('delay_send_emails', ['delay_send_emails' => self::getUsedConfig('delay_send_emails', $ID)]), true, false) : ''),
@@ -1895,7 +1894,6 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'number',
                        'name'  => 'default_cartridges_alarm_threshold',
                        'value' => $entity->getField('default_cartridges_alarm_threshold'),
-                       'min'   => 0,
                        'max'   => 100,
                        'step'  => 1,
                        'col_lg' => 6,
@@ -1920,7 +1918,6 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'number',
                        'name'  => 'default_consumables_alarm_threshold',
                        'value' => $entity->getField('default_consumables_alarm_threshold'),
-                       'min'   => 0,
                        'max'   => 100,
                        'step'  => 1,
                        'col_lg' => 6,
@@ -1956,7 +1953,6 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('send_contracts_alert_before_delay'),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('send_contracts_alert_before_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_contracts_alert_before_delay', ['send_contracts_alert_before_delay' => self::getUsedConfig('send_contracts_alert_before_delay', $ID)]), true, false) : ''),
-                       'min'   => 0,
                     ],
                  ]
               ],
@@ -1984,7 +1980,6 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('send_infocoms_alert_before_delay'),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('send_infocoms_alert_before_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_infocoms_alert_before_delay', ['send_infocoms_alert_before_delay' => self::getUsedConfig('send_infocoms_alert_before_delay', $ID)]), true, false) : ''),
-                       'min'   => 0,
                     ],
                  ]
               ],
@@ -2004,7 +1999,6 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('send_licenses_alert_before_delay'),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('send_licenses_alert_before_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_licenses_alert_before_delay', ['send_licenses_alert_before_delay' => self::getUsedConfig('send_licenses_alert_before_delay', $ID)]), true, false) : ''),
-                       'min'   => 0,
                     ],
                  ]
               ],
@@ -2024,7 +2018,6 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('send_certificates_alert_before_delay'),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('send_certificates_alert_before_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_certificates_alert_before_delay', ['send_certificates_alert_before_delay' => self::getUsedConfig('send_certificates_alert_before_delay', $ID)]), true, false) : ''),
-                       'min'   => 0,
                     ],
                  ]
               ],
@@ -2037,7 +2030,6 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('use_reservations_alert'),
                        'after' => __('hours') . (($ID > 0 && ($entity->getField('use_reservations_alert') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('use_reservations_alert', ['use_reservations_alert' => self::getUsedConfig('use_reservations_alert', $ID)]), true, false) : ''),
-                       'min'   => 0,
                     ]
                  ]
               ],
@@ -2050,7 +2042,6 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('notclosed_delay'),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('notclosed_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('notclosed_delay', ['notclosed_delay' => self::getUsedConfig('notclosed_delay', $ID)]), true, false) : ''),
-                       'min'   => 0,
                     ]
                  ]
               ],
@@ -2070,7 +2061,6 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('send_domains_alert_close_expiries_delay'),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('send_domains_alert_close_expiries_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_domains_alert_close_expiries_delay', ['send_domains_alert_close_expiries_delay' => self::getUsedConfig('send_domains_alert_close_expiries_delay', $ID)]), true, false) : ''),
-                       'min'   => 0,
                     ],
                     __('Domains expired') => [
                        'type' => 'number',
@@ -2078,7 +2068,6 @@ class Entity extends CommonTreeDropdown
                        'value' => $entity->getField('send_domains_alert_expired_delay'),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('send_domains_alert_expired_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('send_domains_alert_expired_delay', ['send_domains_alert_expired_delay' => self::getUsedConfig('send_domains_alert_expired_delay', $ID)]), true, false) : ''),
-                       'min'   => 0,
                     ],
                  ]
               ]

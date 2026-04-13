@@ -230,7 +230,7 @@ class NotificationTarget extends CommonDBChild
             ''
         ));
         if (empty($perso_tag)) {
-            $perso_tag = "GLPI";
+            $perso_tag = "ITSM-NG";
         }
         return "[$perso_tag] ";
     }

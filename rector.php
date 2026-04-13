@@ -8,7 +8,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
         __DIR__ . '/src',
         __DIR__ . '/inc',
-        __DIR__ . '/tests/functionnal',
+        __DIR__ . '/tests/functional',
         __DIR__ . '/tests/units',
         __DIR__ . '/tests/imap',
         __DIR__ . '/tests/LDAP',
