@@ -109,13 +109,15 @@ trait PostgreSqlDatabaseTrait
         return null;
     }
 
-    protected function getDriverErrorCode(?\Throwable $exception = null)
+    protected function getDriverErrorCode(?\Throwable $exception = null): int|string
     {
         if ($exception instanceof \PDOException) {
             return $exception->getCode();
         }
 
-        return $this->dbh instanceof \PDO ? (string) ($this->dbh->errorInfo()[0] ?? 0) : 0;
+        return $this->dbh instanceof \PDO
+            ? $this->dbh->errorInfo()[1] ?? $this->dbh->errorInfo()[0] ?? 0
+            : 0;
     }
 
     protected function getDriverErrorMessage(?\Throwable $exception = null): string
