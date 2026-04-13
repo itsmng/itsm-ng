@@ -5,6 +5,11 @@ $(document).ready(() => {
   initializeListeners();
 });
 
+const MENU_HOVER_EXPANDED_CLASS = "menu-hover-expanded";
+const MENU_HOVER_COLLAPSE_DELAY = 120;
+
+let menuHoverCollapseTimeout = null;
+
 function initializeListeners() {
   $(".menu-position-bouton").on("change", function (e) {
     e.stopPropagation();
@@ -28,6 +33,81 @@ function initializeListeners() {
   });
   $("#menu-options-menu").on("click", showMenuOptions);
   $(".star-icon").on("click", addFavorite);
+  initializeMenuHoverListeners();
+}
+
+function initializeMenuHoverListeners() {
+  const menu = $("#menu");
+
+  if (!menu.length) {
+    return;
+  }
+
+  menu.on("mouseenter pointerenter", expandMenuOnHover);
+  menu.on("mouseleave pointerleave", collapseMenuOnHoverLeave);
+  menu.on("focusin", expandMenuOnHover);
+  menu.on("focusout", collapseMenuOnFocusOut);
+}
+
+function supportsMenuHoverExpansion() {
+  return window.matchMedia("(min-width: 768px)").matches;
+}
+
+function canMenuHoverExpand() {
+  return (
+    supportsMenuHoverExpansion() &&
+    $("#menu").hasClass("menu-close") &&
+    !$("#main-test").hasClass("menu-top")
+  );
+}
+
+function clearMenuHoverCollapseTimeout() {
+  if (menuHoverCollapseTimeout !== null) {
+    window.clearTimeout(menuHoverCollapseTimeout);
+    menuHoverCollapseTimeout = null;
+  }
+}
+
+function setMenuHoverExpanded(expanded) {
+  const menu = $("#menu");
+
+  clearMenuHoverCollapseTimeout();
+
+  if (expanded && !canMenuHoverExpand()) {
+    return;
+  }
+
+  menu.toggleClass(MENU_HOVER_EXPANDED_CLASS, expanded);
+}
+
+function clearMenuHoverExpanded() {
+  setMenuHoverExpanded(false);
+}
+
+function expandMenuOnHover() {
+  setMenuHoverExpanded(true);
+}
+
+function collapseMenuOnHoverLeave(event) {
+  const menuElement = $("#menu")[0];
+
+  if (event.relatedTarget && menuElement && menuElement.contains(event.relatedTarget)) {
+    return;
+  }
+
+  menuHoverCollapseTimeout = window.setTimeout(() => {
+    setMenuHoverExpanded(false);
+  }, MENU_HOVER_COLLAPSE_DELAY);
+}
+
+function collapseMenuOnFocusOut(event) {
+  const menuElement = $("#menu")[0];
+
+  if (event.relatedTarget && menuElement && menuElement.contains(event.relatedTarget)) {
+    return;
+  }
+
+  setMenuHoverExpanded(false);
 }
 
 function showMenuOptions() {
@@ -51,6 +131,7 @@ function showMenuPositions(state = null) {
 
 function changeMenuPosition(class_name) {
   //select menu left, right, top
+  clearMenuHoverExpanded();
   if ($("#main-test").hasClass("menu-top") || class_name == "menu-top") {
     clearMenuOpen();
     $("html").css("--nav-top-height", "2rem");
@@ -95,6 +176,7 @@ function clearMenuOpen() {
 
 function changeMenuState(is_menu_close = null) {
   //whether menu is open or collapsed
+  clearMenuHoverExpanded();
   if (is_menu_close == null) {
     is_menu_close = $("#menu").hasClass("menu-close");
   }

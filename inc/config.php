@@ -151,17 +151,55 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
                 echo __('Service is down for maintenance. It will be back shortly.');
                 echo "\n";
             } else {
-                Html::nullHeader("MAINTENANCE MODE", $CFG_GLPI["root_doc"]);
-                echo "<div class='center'>";
+                http_response_code(503);
+                header("Content-Type: text/html; charset=UTF-8");
+                Html::header_nocache();
 
-                echo "<p class='red'>";
-                echo __('Service is down for maintenance. It will be back shortly.');
-                echo "</p>";
+                $title = __('Maintenance mode');
+                $message = __('Service is down for maintenance. It will be back shortly.');
+                $language = $_SESSION['glpilanguage'] ?? 'en_GB';
+
+                $escapedLanguage = htmlspecialchars((string) $language, ENT_QUOTES, 'UTF-8');
+                $escapedTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+                $escapedMessage = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+                $maintenanceTextHtml = '';
                 if (isset($CFG_GLPI["maintenance_text"]) && !empty($CFG_GLPI["maintenance_text"])) {
-                    echo "<p>" . $CFG_GLPI["maintenance_text"] . "</p>";
+                    $maintenanceTextHtml = "<div class='maintenance-text'>{$CFG_GLPI['maintenance_text']}</div>";
                 }
-                echo "</div>";
-                Html::nullFooter();
+
+                echo <<<HTML
+                <!DOCTYPE html>
+                <html lang="{$escapedLanguage}">
+                <head>
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <title>ITSM-NG - {$escapedTitle}</title>
+                    <style>
+                        body{margin:0;font-family:Helvetica,Arial,sans-serif;background:#f5f7fa;color:#1f2933;}
+                        .maintenance-page{min-height:100vh;display:flex;align-items:center;justify-content:center;}
+                        .maintenance-card{max-width:680px;background:#fff;border:1px solid #d9e2ec;border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.08);padding:32px;text-align:center;}
+                        .maintenance-logo{margin-bottom:24px;}
+                        .maintenance-logo img{max-width:180px;height:auto;filter:brightness(0) saturate(100%);}
+                        .maintenance-title{margin:0 0 16px;font-size:1.75rem;color:#b91c1c;}
+                        .maintenance-message{margin:0;font-size:1rem;line-height:1.6;}
+                        .maintenance-text{margin-top:16px;line-height:1.6;color:#52606d;}
+                    </style>
+                </head>
+                <body>
+                    <main class="maintenance-page">
+                        <section class="maintenance-card">
+                            <div class="maintenance-logo">
+                                <img src="/pics/fd_logo.png" alt="ITSM-NG">
+                            </div>
+                            <h1 class="maintenance-title">{$escapedTitle}</h1>
+                            <p class="maintenance-message">{$escapedMessage}</p>
+                            {$maintenanceTextHtml}
+                        </section>
+                    </main>
+                </body>
+                </html>
+                HTML;
+                closeDBConnections();
             }
             exit();
         }

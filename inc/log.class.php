@@ -91,7 +91,7 @@ class Log extends CommonDBTM
             $nb = countElementsInTable(
                 'glpi_logs',
                 [
-                    'itemtype' => $item->getType(), 
+                    'itemtype' => $item->getType(),
                     'items_id' => $items_id
                 ]
             );
@@ -347,8 +347,7 @@ class Log extends CommonDBTM
         $limit = 0,
         array $sqlfilters = [],
         array $options = []
-    )
-    {
+    ) {
         $DBread = DBConnection::getReadConnection();
 
         $itemtype  = $item->getType();

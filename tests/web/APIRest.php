@@ -90,6 +90,23 @@ class APIRest extends APIBaseClass
         $logfile = $this->getLogFilePath();
         $errors = file_get_contents($logfile);
 
+        // Race conditions can happen with log flushing to disk, so some polling is required.
+        if ($expected_errors !== []) {
+            $deadline = microtime(true) + 2.0;
+            while (microtime(true) < $deadline) {
+                $missing_errors = array_filter(
+                    $expected_errors,
+                    static fn (string $error): bool => !str_contains($errors, $error)
+                );
+                if ($missing_errors === []) {
+                    break;
+                }
+
+                usleep(100000);
+                $errors = file_get_contents($logfile);
+            }
+        }
+
         foreach ($expected_errors as $error) {
             $this->string($errors)->contains($error);
         }

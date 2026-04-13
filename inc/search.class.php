@@ -2354,12 +2354,14 @@ class Search
         $p['target'] = URL::sanitizeURL($p['target']);
 
         $main_block_class = '';
+        $main_block_width_class = 'w-100 w-md-50 mx-auto';
         if ($p['mainform']) {
             echo "<form aria-label='Search Form $itemtype' name='searchform$itemtype' method='get' action='" . $p['target'] . "'>";
         } else {
             $main_block_class = "sub_criteria";
+            $main_block_width_class = 'w-100';
         }
-        echo "<div id='searchcriteria' class='$main_block_class w-100 w-md-50 mx-auto'" . ($p['hide'] ? "style='display: none;'" : "") . ">";
+        echo "<div id='searchcriteria' class='$main_block_class $main_block_width_class'" . ($p['hide'] ? "style='display: none;'" : "") . ">";
         $nbsearchcountvar      = 'nbcriteria' . strtolower($itemtype) . mt_rand();
         $searchcriteriatableid = 'criteriatable' . strtolower($itemtype) . mt_rand();
         // init criteria count
@@ -2639,6 +2641,8 @@ JAVASCRIPT;
         $idor_display_criteria = Session::getNewIDORToken($request["itemtype"]);
         $searchtype = isset($criteria['searchtype']) ? $criteria['searchtype'] : '';
 
+        $field_id = Html::cleanId("dropdown_criteria{$prefix}_{$num}_field_{$randrow}");
+
         renderTwigTemplate('search/searchCriteria.twig', [
            'is_deleted' => $p['is_deleted'],
            'as_map' => $p['as_map'],
@@ -2656,7 +2660,7 @@ JAVASCRIPT;
               ],
               [
                  'type' => 'select',
-                 'id' => "dropdown_criteria{$prefix}_{$num}_field_{$randrow}",
+                 'id' => $field_id,
                  'name' => "criteria{$prefix}[$num][field]",
                  'values' => $values,
                  'value' => $value,
@@ -2696,10 +2700,10 @@ JAVASCRIPT;
                                     \$container.append(\$content);
                                 }
                             });
-                  JS,
+                 JS,
                  ],
                  'init' => <<<JS
-                        const \$field = $('#dropdown_criteria{$prefix}_{$num}_field_{$randrow}');
+                        const \$field = $('#{$field_id}');
                         const \$container = $('[data-search-container="{$spanid}"]');
                         const dataKey = 'searchOption_{$spanid}';
                         const expectedField = \$field.val();
@@ -2817,6 +2821,8 @@ JAVASCRIPT;
         //       'parent_itemtype' => $request['itemtype']
         //    ])
         // ];
+        $field_id = Html::cleanId("dropdown_criteria{$prefix}_{$num}_field_{$randrow}");
+
         renderTwigTemplate('search/searchCriteria.twig', [
            'is_deleted' => $p['is_deleted'],
            'as_map' => $p['as_map'],
@@ -2839,7 +2845,7 @@ JAVASCRIPT;
               ],
               [
                  'type' => 'select',
-                 'id' => "dropdown_criteria{$prefix}_{$num}_field_{$randrow}",
+                 'id' => $field_id,
                  'name' => "criteria{$prefix}[$num][itemtype]",
                  'values' => $values,
                  'value' => $value,
@@ -2870,7 +2876,7 @@ JAVASCRIPT;
                      type: 'POST',
                      data: {
                         action: 'display_criteria',
-                        itemtype: $('#dropdown_criteria{$prefix}_{$num}_field_{$randrow}').val(),
+                        itemtype: $('#{$field_id}').val(),
                         parent_itemtype: '$used_itemtype',
                         from_meta: true,
                         num: $num,
@@ -2914,13 +2920,16 @@ JAVASCRIPT;
             ];
         }
 
-        echo "<li class='normalcriteria$addclass' id='$rowid'>";
-        echo "<i class='far fa-minus-square remove-search-criteria' alt='-' title=\"" .
-                 __s('Delete a rule') . "\" data-rowid='$rowid'></i>&nbsp;";
+        echo "<li class='normalcriteria$addclass mb-3 mx-auto' style='max-width: 1100px;' id='$rowid'>";
+        echo "<div class='input-container d-flex flex-row align-items-start gap-3'>";
+        echo "<div class='input-group flex-nowrap align-items-stretch w-auto'>";
+        echo "<i class='far fa-minus-square remove-search-criteria input-group-text' role='button' alt='-' title=\"" .
+                 __s('Delete a rule') . "\" data-rowid='$rowid'></i>";
         Dropdown::showFromArray("criteria{$prefix}[$num][link]", Search::getLogicalOperators(), [
            'value' => isset($criteria["link"]) ? $criteria["link"] : '',
            'width' => '80px'
         ]);
+        echo "</div>";
 
         $parents_num = isset($p['parents_num']) ? $p['parents_num'] : [];
         array_push($parents_num, $num);
@@ -2931,7 +2940,10 @@ JAVASCRIPT;
            'criteria'    => $criteria['criteria'],
         ];
 
+        echo "<div class='flex-grow-1'>";
         echo self::showGenericSearch($request['itemtype'], $params);
+        echo "</div>";
+        echo "</div>";
         echo "</li>";
     }
 

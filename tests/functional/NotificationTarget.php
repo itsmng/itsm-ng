@@ -52,9 +52,9 @@ class NotificationTarget extends DbTestCase
         $ntarget_child_1 = new \NotificationTarget($child_1);
         $ntarget_child_2 = new \NotificationTarget($child_2);
 
-        $this->string($ntarget_parent->getSubjectPrefix())->isEqualTo("[GLPI] ");
-        $this->string($ntarget_child_1->getSubjectPrefix())->isEqualTo("[GLPI] ");
-        $this->string($ntarget_child_2->getSubjectPrefix())->isEqualTo("[GLPI] ");
+        $this->string($ntarget_parent->getSubjectPrefix())->isEqualTo("[ITSM-NG] ");
+        $this->string($ntarget_child_1->getSubjectPrefix())->isEqualTo("[ITSM-NG] ");
+        $this->string($ntarget_child_2->getSubjectPrefix())->isEqualTo("[ITSM-NG] ");
 
         $entity  = new \Entity();
         $this->boolean($entity->update([

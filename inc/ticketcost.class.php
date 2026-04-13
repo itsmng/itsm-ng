@@ -47,4 +47,42 @@ class TicketCost extends CommonITILCost
     public static $items_id  = 'tickets_id';
 
     public static $rightname        = 'ticketcost';
+
+    private function updateLinkedItemsTco(): void
+    {
+        $used_items = \Item_Ticket::getUsedItems((int)$this->fields['tickets_id']);
+
+        foreach ($used_items as $itemtype => $items) {
+            $item = getItemForItemtype($itemtype);
+            if (!$item) {
+                continue;
+            }
+
+            foreach ($items as $items_id) {
+                if (!$item->getFromDB($items_id) || !$item->isField('ticket_tco')) {
+                    continue;
+                }
+
+                $item->update([
+                   'id'         => $items_id,
+                   'ticket_tco' => \Ticket::computeTco($item),
+                ]);
+            }
+        }
+    }
+
+    public function post_addItem()
+    {
+        $this->updateLinkedItemsTco();
+    }
+
+    public function post_updateItem($history = 1)
+    {
+        $this->updateLinkedItemsTco();
+    }
+
+    public function post_purgeItem()
+    {
+        $this->updateLinkedItemsTco();
+    }
 }

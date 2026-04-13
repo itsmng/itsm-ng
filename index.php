@@ -76,7 +76,11 @@ foreach ($iterators as $iterator) {
 
 if (isset($is_activate) && $is_activate) {
     if ($is_forced && !isset($_GET["noAUTO"])) {
-        Html::redirect("front/oidc.php");
+        $redirect = "";
+        if (isset($_GET["redirect"]) && strlen((string) $_GET["redirect"]) > 0) {
+            $redirect = "?redirect=" . rawurlencode((string) $_GET["redirect"]);
+        }
+        Html::redirect("front/oidc.php" . $redirect);
     }
     $twig_vars["is_activate"] = $is_activate;
     if (isset($_POST["login_oidc"])) {

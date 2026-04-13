@@ -173,6 +173,62 @@ class Ticket extends DbTestCase
         $this->variable($ticketUser->getField('use_notification'))->isEqualTo($notify);
     }
 
+    public function testCreateTicketDeduplicatesRequesters()
+    {
+        $this->login();
+
+        $users_id_requester = (int)getItemByTypeName('User', 'post-only', true);
+        $ticket = new \Ticket();
+        $tickets_id = (int)$ticket->add([
+           'name'                => 'ticket duplicate requester guard',
+           'content'             => 'duplicate requester guard',
+           '_users_id_requester' => [$users_id_requester, $users_id_requester],
+        ]);
+
+        $this->integer($tickets_id)->isGreaterThan(0);
+        $this->integer(countElementsInTable(
+            'glpi_tickets_users',
+            [
+                'tickets_id' => $tickets_id,
+                'users_id'   => $users_id_requester,
+                'type'       => \CommonITILActor::REQUESTER,
+            ]
+        ))->isEqualTo(1);
+    }
+
+    public function testUpdateTicketDoesNotDuplicateExistingRequester()
+    {
+        $this->login();
+
+        $users_id_requester = (int)getItemByTypeName('User', 'post-only', true);
+        $ticket = new \Ticket();
+        $tickets_id = (int)$ticket->add([
+           'name'                => 'ticket duplicate requester update guard',
+           'content'             => 'duplicate requester update guard',
+           '_users_id_requester' => $users_id_requester,
+        ]);
+
+        $this->integer($tickets_id)->isGreaterThan(0);
+        $this->boolean($ticket->update([
+           'id'              => $tickets_id,
+           '_itil_requester' => [
+              '_type'             => 'user',
+              'users_id'          => $users_id_requester,
+              'use_notification'  => ['1'],
+              'alternative_email' => [''],
+           ],
+        ]))->isTrue();
+
+        $this->integer(countElementsInTable(
+            'glpi_tickets_users',
+            [
+                'tickets_id' => $tickets_id,
+                'users_id'   => $users_id_requester,
+                'type'       => \CommonITILActor::REQUESTER,
+            ]
+        ))->isEqualTo(1);
+    }
+
     public function testTasksFromTemplate()
     {
         $this->login();
@@ -1823,6 +1879,116 @@ class Ticket extends DbTestCase
         if (isset($expected['name']) && isset($prepared_input['name'])) {
             $this->string($prepared_input['name'])->isIdenticalTo($expected['name']);
         }
+    }
+
+    public function itilActorTranslationProvider()
+    {
+        return [
+           'requester user' => [
+              '_itil_requester',
+              'user',
+              '_users_id_requester',
+              'user:post-only',
+           ],
+           'requester group' => [
+              '_itil_requester',
+              'group',
+              '_groups_id_of_requester',
+              'group',
+           ],
+           'observer user' => [
+              '_itil_observer',
+              'user',
+              '_users_id_observer',
+              'user:normal',
+           ],
+           'observer group' => [
+              '_itil_observer',
+              'group',
+              '_groups_id_observer',
+              'group',
+           ],
+           'assign user' => [
+              '_itil_assign',
+              'user',
+              '_users_id_assign',
+              'user:tech',
+           ],
+           'assign group' => [
+              '_itil_assign',
+              'group',
+              '_groups_id_assign',
+              'group',
+           ],
+           'assign supplier' => [
+              '_itil_assign',
+              'supplier',
+              '_suppliers_id_assign',
+              'supplier',
+           ],
+        ];
+    }
+
+    private function resolveItilActorTranslationValue($source)
+    {
+        if (strpos($source, 'user:') === 0) {
+            return getItemByTypeName('User', substr($source, 5), true);
+        }
+
+        if ($source === 'group') {
+            $group = new \Group();
+            $groupId = (int)$group->add([
+               'name'         => 'actor-format-group-' . uniqid(),
+               'entities_id'  => 0,
+               'is_requester' => 1,
+               'is_assign'    => 1,
+               'is_watcher'   => 1,
+            ]);
+            $this->integer($groupId)->isGreaterThan(0);
+            return $groupId;
+        }
+
+        if ($source === 'supplier') {
+            $supplier = new \Supplier();
+            $supplierId = (int)$supplier->add([
+               'name'        => 'actor-format-supplier-' . uniqid(),
+               'entities_id' => 0,
+            ]);
+            $this->integer($supplierId)->isGreaterThan(0);
+            return $supplierId;
+        }
+
+        throw new \RuntimeException('Unknown actor source: ' . $source);
+    }
+
+    /**
+     * @dataProvider itilActorTranslationProvider
+     */
+    public function testPrepareInputForAddTranslatesItilActorFormats(
+        $itilField,
+        $actorType,
+        $expectedField,
+        $valueSource
+    ) {
+        $this->login();
+        $this->newTestedInstance();
+
+        $value = $this->resolveItilActorTranslationValue($valueSource);
+        $idField = sprintf('%ss_id', $actorType);
+
+        $input = [
+           'name'    => 'actor translation test',
+           'content' => 'actor translation test',
+           $itilField => [
+              '_type'    => $actorType,
+              $idField    => $value,
+           ],
+        ];
+
+        $preparedInput = $this->testedInstance->prepareInputForAdd(\Toolbox::addslashes_deep($input));
+
+        $this->array($preparedInput)->hasKey($expectedField);
+        $this->variable($preparedInput[$expectedField])->isEqualTo($value);
     }
 
     public function testAssignChangeStatus()

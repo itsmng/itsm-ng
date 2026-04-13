@@ -76,6 +76,23 @@ class Problem extends DbTestCase
         $this->integer((int)$problem->fields['status'])->isEqualTo(\Problem::ASSIGNED);
     }
 
+    public function testAddIgnoresNewItemPlaceholderId()
+    {
+        $this->login();
+
+        $problem = new \Problem();
+        $problems_id = $problem->add([
+           'id'      => -1,
+           'name'    => 'problem created from form placeholder id',
+           'content' => 'id placeholder must not be stored as the real primary key',
+        ]);
+
+        $this->integer((int)$problems_id)->isGreaterThan(0);
+        $this->integer((int)$problems_id)->isNotEqualTo(-1);
+        $this->boolean($problem->getFromDB($problems_id))->isTrue();
+        $this->integer((int)$problem->fields['id'])->isEqualTo((int)$problems_id);
+    }
+
     public function testReopenViaFollowup()
     {
         $this->login();
@@ -147,5 +164,26 @@ class Problem extends DbTestCase
         $this->boolean($task->delete(['id' => $task_id]))->isTrue();
         $this->boolean($problem->getFromDB($problems_id))->isTrue();
         $this->integer((int)$problem->fields['actiontime'])->isEqualTo(0);
+    }
+
+    public function testPrepareInputForAddTranslatesItilAssignPayload()
+    {
+        $this->login();
+
+        $problem = new \Problem();
+        $users_id_assign = (int)getItemByTypeName('User', 'tech', true);
+        $input = $problem->prepareInputForAdd([
+           'name'         => 'problem actor panel add',
+           'content'      => 'validate shared actor panel payload on add',
+           '_itil_assign' => [
+              '_type'            => 'user',
+              'users_id'         => $users_id_assign,
+              'use_notification' => ['1'],
+              'alternative_email' => [''],
+           ],
+        ]);
+
+        $this->array($input)->hasKey('_users_id_assign');
+        $this->integer((int)$input['_users_id_assign'])->isEqualTo($users_id_assign);
     }
 }

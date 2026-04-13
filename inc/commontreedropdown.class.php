@@ -674,13 +674,20 @@ abstract class CommonTreeDropdown extends CommonDropdown
         switch ($ma->getAction()) {
             case 'move_under':
                 $itemtype = $ma->getItemType(true);
+                $used = [];
+                foreach (($ma->getItems()[$itemtype] ?? []) as $id) {
+                    $used = array_merge($used, getSonsOf($itemtype::getTable(), $id));
+                }
+                $input = [
+                   'type'  => 'select',
+                   'name'  => 'parent',
+                   'itemtype' => $itemtype,
+                   'used'  => array_unique($used),
+                ];
+                expandSelect($input);
                 renderTwigTemplate('macros/wrappedInput.twig', [
                    'title' => __('As child of'),
-                   'input' => [
-                      'type' => 'select',
-                      'name' => 'parent',
-                      'itemtype' => $itemtype,
-                   ]
+                   'input' => $input
                 ]);
                 echo "<br><br><input type='submit' name='massiveaction' class='btn btn-secondary' value='" .
                                _sx('button', 'Move') . "'>\n";
