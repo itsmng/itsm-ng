@@ -2097,9 +2097,10 @@ $tables['glpi_entities'] = [
       'autofill_decommission_date'           => 0,
       'suppliers_as_private'                 => 0,
       'enable_custom_css'                    => 0,
-       'anonymize_support_agents'             => 0,
-       'lock_ticket_date'                     => 0,
-    ],
+      'anonymize_support_agents'             => 0,
+      'lock_ticket_date'                     => 0,
+      'requesters_private_ticket_content'    => 0,
+   ],
 ];
 
 $tables['glpi_filesystems'] = [
