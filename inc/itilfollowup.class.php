@@ -1183,7 +1183,7 @@ class ITILFollowup extends CommonDBChild
         ];
         if ($itemtype === Ticket::class) {
             $ticket = new Ticket();
-                if ($ticket->getFromDB($ID)) {
+            if ($ticket->getFromDB($ID)) {
                 $where += $ticket->getCurrentUserPrivateITILContentRestriction(
                     self::$rightname,
                     self::SEEPRIVATE,
