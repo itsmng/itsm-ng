@@ -253,6 +253,98 @@ abstract class CommonITILObject extends CommonDBTM
     }
 
     /**
+     * Check if private ticket content must be hidden for current user.
+     * Applies only to tickets and requester-side access without support-side access.
+     *
+     * @return bool
+     */
+    public function shouldHidePrivateTicketContentFromCurrentUser(): bool
+    {
+        if (
+            !$this instanceof Ticket
+            || !isset($this->fields['entities_id'])
+            || (int)Entity::getUsedConfig('requesters_private_ticket_content', (int)$this->fields['entities_id']) !== 1
+        ) {
+            return false;
+        }
+
+        $user_id = Session::getLoginUserID();
+        if ((int)$user_id <= 0) {
+            return false;
+        }
+
+        $is_requester_side = $this->isUser(CommonITILActor::REQUESTER, $user_id)
+            || (
+                isset($_SESSION['glpigroups'])
+                && $this->haveAGroup(CommonITILActor::REQUESTER, $_SESSION['glpigroups'])
+            );
+        if (!$is_requester_side) {
+            return false;
+        }
+
+        $has_support_side_access = Session::haveRight(Ticket::$rightname, Ticket::READALL)
+            || Session::haveRight(Ticket::$rightname, Ticket::READASSIGN)
+            || $this->isUser(CommonITILActor::ASSIGN, $user_id)
+            || (
+                isset($_SESSION['glpigroups'])
+                && $this->haveAGroup(CommonITILActor::ASSIGN, $_SESSION['glpigroups'])
+            );
+
+        return !$has_support_side_access;
+    }
+
+    /**
+     * Check if current user can access private ITIL content for current item.
+     * Combines private right and ticket requester-side policy.
+     *
+     * @param string $rightname
+     * @param int    $private_right
+     *
+     * @return bool
+     */
+    public function canCurrentUserAccessPrivateITILContent(string $rightname, int $private_right): bool
+    {
+        return Session::haveRight($rightname, $private_right)
+            && !$this->shouldHidePrivateTicketContentFromCurrentUser();
+    }
+
+    /**
+     * Get SQL criteria used to restrict private ITIL content visibility for current user.
+     *
+     * @param string $rightname
+     * @param int    $private_right
+     * @param bool   $allow_own_private
+     * @param int    $owner_users_id
+     *
+     * @return array
+     */
+    public function getCurrentUserPrivateITILContentRestriction(
+        string $rightname,
+        int $private_right,
+        bool $allow_own_private = true,
+        int $owner_users_id = 0
+    ): array {
+        if ($this->canCurrentUserAccessPrivateITILContent($rightname, $private_right)) {
+            return [];
+        }
+
+        if ($this->shouldHidePrivateTicketContentFromCurrentUser()) {
+            return ['is_private' => 0];
+        }
+
+        if ($allow_own_private) {
+            return [
+               'OR' => [
+                  'is_private' => 0,
+                  'users_id'   => $owner_users_id > 0 ? $owner_users_id : Session::getLoginUserID(),
+               ]
+            ];
+        }
+
+        return ['is_private' => 0];
+    }
+
+    /**
      * Check if the given users is a validator
      * @param int $users_id
      * @return bool
@@ -7365,7 +7457,6 @@ abstract class CommonITILObject extends CommonDBTM
 
         $candelete   = static::canDelete();
         $canupdate   = Session::haveRight(static::$rightname, UPDATE);
-        $showprivate = Session::haveRight('followup', ITILFollowup::SEEPRIVATE);
         $align       = "class='left'";
         $align_desc  = "class='left";
 
@@ -7602,8 +7693,18 @@ abstract class CommonITILObject extends CommonDBTM
                         $eigth_column,
                         sprintf(
                             __('%1$s - %2$s'),
-                            $item->numberOfFollowups($showprivate),
-                            $item->numberOfTasks($showprivate)
+                            $item->numberOfFollowups(
+                                $item->canCurrentUserAccessPrivateITILContent(
+                                    ITILFollowup::$rightname,
+                                    ITILFollowup::SEEPRIVATE
+                                )
+                            ),
+                            $item->numberOfTasks(
+                                $item->canCurrentUserAccessPrivateITILContent(
+                                    ITILFollowup::$rightname,
+                                    ITILFollowup::SEEPRIVATE
+                                )
+                            )
                         )
                     );
                 }
@@ -8257,11 +8358,22 @@ abstract class CommonITILObject extends CommonDBTM
 
         //checks rights
         $restrict_fup = $restrict_task = [];
-        if (!Session::haveRight("followup", ITILFollowup::SEEPRIVATE)) {
+        $must_hide_private_ticket_content = $this->shouldHidePrivateTicketContentFromCurrentUser();
+        $can_view_private_followups = $this->canCurrentUserAccessPrivateITILContent(
+            ITILFollowup::$rightname,
+            ITILFollowup::SEEPRIVATE
+        );
+        $can_view_private_tasks = $this->canCurrentUserAccessPrivateITILContent(
+            $task_obj::$rightname,
+            CommonITILTask::SEEPRIVATE
+        );
+        if ($must_hide_private_ticket_content) {
+            $restrict_fup = ['is_private' => 0];
+        } elseif (!$can_view_private_followups) {
             $restrict_fup = [
                'OR' => [
-                  'is_private'   => 0,
-                  'users_id'     => Session::getLoginUserID()
+                  'is_private' => 0,
+                  'users_id'   => Session::getLoginUserID()
                ]
             ];
         }
@@ -8269,15 +8381,19 @@ abstract class CommonITILObject extends CommonDBTM
         $restrict_fup['itemtype'] = static::getType();
         $restrict_fup['items_id'] = $this->getID();
 
-        if ($task_obj->maybePrivate() && !Session::haveRight("task", CommonITILTask::SEEPRIVATE)) {
-            $restrict_task = [
-               'OR' => [
-                  'is_private'   => 0,
-                  'users_id'     => Session::getCurrentInterface() == "central"
-                                       ? Session::getLoginUserID()
-                                       : 0
-               ]
-            ];
+        if ($task_obj->maybePrivate()) {
+            if ($must_hide_private_ticket_content) {
+                $restrict_task = ['is_private' => 0];
+            } elseif (!$can_view_private_tasks) {
+                $restrict_task = [
+                   'OR' => [
+                      'is_private' => 0,
+                      'users_id'   => Session::getCurrentInterface() == "central"
+                          ? Session::getLoginUserID()
+                          : 0
+                   ]
+                ];
+            }
         }
 
         //add followups to timeline
@@ -9635,6 +9751,8 @@ abstract class CommonITILObject extends CommonDBTM
     public function getAssociatedDocumentsCriteria($bypass_rights = false): array
     {
         $task_class = $this->getType() . 'Task';
+        $must_hide_private_ticket_content = !$bypass_rights
+            && $this->shouldHidePrivateTicketContentFromCurrentUser();
 
         $or_crits = [
            // documents associated to ITIL item directly
@@ -9650,7 +9768,13 @@ abstract class CommonITILObject extends CommonDBTM
                ITILFollowup::getTableField('itemtype') => $this->getType(),
                ITILFollowup::getTableField('items_id') => $this->getID(),
             ];
-            if (!$bypass_rights && !Session::haveRight(ITILFollowup::$rightname, ITILFollowup::SEEPRIVATE)) {
+            $can_view_private_followups = $this->canCurrentUserAccessPrivateITILContent(
+                ITILFollowup::$rightname,
+                ITILFollowup::SEEPRIVATE
+            );
+            if ($must_hide_private_ticket_content) {
+                $fup_crits['is_private'] = 0;
+            } elseif (!$bypass_rights && !$can_view_private_followups) {
                 $fup_crits[] = [
                    'OR' => ['is_private' => 0, 'users_id' => Session::getLoginUserID()],
                 ];
@@ -9689,7 +9813,13 @@ abstract class CommonITILObject extends CommonDBTM
             $tasks_crit = [
                $this->getForeignKeyField() => $this->getID(),
             ];
-            if (!$bypass_rights && !Session::haveRight($task_class::$rightname, CommonITILTask::SEEPRIVATE)) {
+            $can_view_private_tasks = $this->canCurrentUserAccessPrivateITILContent(
+                $task_class::$rightname,
+                CommonITILTask::SEEPRIVATE
+            );
+            if ($must_hide_private_ticket_content) {
+                $tasks_crit['is_private'] = 0;
+            } elseif (!$bypass_rights && !$can_view_private_tasks) {
                 $tasks_crit[] = [
                    'OR' => ['is_private' => 0, 'users_id' => Session::getLoginUserID()],
                 ];
