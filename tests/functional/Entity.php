@@ -358,6 +358,49 @@ class Entity extends DbTestCase
 
     }
 
+    public function testGetUsedConfigHidePrivateTicketContentForRequesters()
+    {
+        $this->login();
+
+        $root    = getItemByTypeName('Entity', 'Root entity', true);
+        $parent  = getItemByTypeName('Entity', '_test_root_entity', true);
+        $child_1 = getItemByTypeName('Entity', '_test_child_1', true);
+        $child_2 = getItemByTypeName('Entity', '_test_child_2', true);
+
+        $entity = new \Entity();
+        $this->boolean($entity->update([
+           'id' => $root,
+           'requesters_private_ticket_content' => 0,
+        ]))->isTrue();
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $parent))->isEqualTo(0);
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_1))->isEqualTo(0);
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_2))->isEqualTo(0);
+
+        $this->boolean($entity->update([
+           'id' => $parent,
+           'requesters_private_ticket_content' => 1,
+        ]))->isTrue();
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $parent))->isEqualTo(1);
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_1))->isEqualTo(1);
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_2))->isEqualTo(1);
+
+        $this->boolean($entity->update([
+           'id' => $child_1,
+           'requesters_private_ticket_content' => 0,
+        ]))->isTrue();
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $parent))->isEqualTo(1);
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_1))->isEqualTo(0);
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_2))->isEqualTo(1);
+
+        $this->boolean($entity->update([
+           'id' => $child_2,
+           'requesters_private_ticket_content' => 0,
+        ]))->isTrue();
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $parent))->isEqualTo(1);
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_1))->isEqualTo(0);
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_2))->isEqualTo(0);
+    }
+
 
     protected function customCssProvider()
     {

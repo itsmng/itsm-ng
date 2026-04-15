@@ -114,7 +114,8 @@ class Entity extends CommonTreeDropdown
           'inquest_duration','inquest_URL',
           'max_closedate', 'tickettemplates_id',
           'changetemplates_id', 'problemtemplates_id',
-          'suppliers_as_private', 'autopurge_delay', 'anonymize_support_agents'
+          'suppliers_as_private', 'autopurge_delay', 'anonymize_support_agents',
+          'requesters_private_ticket_content'
        ],
        // Configuration
        'config' => ['enable_custom_css', 'custom_css_code']
@@ -2353,6 +2354,10 @@ class Entity extends CommonTreeDropdown
         if ($ID == 0) { // Remove parent option for root entity
             unset($anonymizeValues[self::CONFIG_PARENT]);
         }
+        $hidePrivateTicketContentValues = self::getHidePrivateTicketContentForRequestersValues();
+        if ($ID == 0) { // Remove parent option for root entity
+            unset($hidePrivateTicketContentValues[self::CONFIG_PARENT]);
+        }
 
         $form = [
            'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
@@ -2459,6 +2464,15 @@ class Entity extends CommonTreeDropdown
                        'col_lg' => 6,
                        'after' => ($ID > 0 && ($entity->getField('anonymize_support_agents') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('anonymize_support_agents', ['anonymize_support_agents' => self::getUsedConfig('anonymize_support_agents', $ID)]), false, false) : '',
+                  ],
+                  __('Hide private followups and tasks from requesters') => [
+                       'type'  => 'select',
+                       'name'  => 'requesters_private_ticket_content',
+                       'value' => $entity->fields['requesters_private_ticket_content'],
+                       'values' => $hidePrivateTicketContentValues,
+                       'col_lg' => 6,
+                       'after' => ($ID > 0 && ($entity->getField('requesters_private_ticket_content') == self::CONFIG_PARENT)) ?
+                                  self::inheritedValue(self::getSpecificValueToDisplay('requesters_private_ticket_content', ['requesters_private_ticket_content' => self::getUsedConfig('requesters_private_ticket_content', $ID)]), false, false) : '',
                   ],
                ]
               ],
@@ -2821,6 +2835,21 @@ class Entity extends CommonTreeDropdown
      * @return array
     **/
     public static function getAnonymizeSupportAgentsValues()
+    {
+
+        return [
+           self::CONFIG_PARENT => __('Inheritance of the parent entity'),
+           0 => __('No'),
+           1 => __('Yes'),
+        ];
+    }
+
+    /**
+     * Get values for requesters_private_ticket_content
+     *
+     * @return array
+    **/
+    public static function getHidePrivateTicketContentForRequestersValues()
     {
 
         return [
