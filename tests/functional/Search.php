@@ -1129,6 +1129,72 @@ class Search extends DbTestCase
         }
     }
 
+    public function testHistoryLastEditorSearchOptionIsAddedWhenNeeded()
+    {
+        $computer_options = \Search::getOptions('Computer');
+        $this->array($computer_options)->hasKey(\CommonDBTM::LAST_HISTORY_USER_SEARCH_OPTION);
+        $this->string($computer_options[\CommonDBTM::LAST_HISTORY_USER_SEARCH_OPTION]['name'])
+           ->isEqualTo('Last edit by');
+
+        $ticket_options = \Search::getOptions('Ticket');
+        $this->array($ticket_options)->notHasKey(\CommonDBTM::LAST_HISTORY_USER_SEARCH_OPTION);
+        $this->integer((new \Ticket())->getSearchOptionIDByField('linkfield', 'users_id_lastupdater'))
+           ->isGreaterThan(0);
+    }
+
+    public function testSearchHistoryLastEditor()
+    {
+        $data = $this->doSearch('Computer', [
+           'is_deleted' => 0,
+           'start'      => 0,
+           'search'     => 'Search',
+           'criteria'   => [
+              [
+                 'link'       => 'AND',
+                 'field'      => (string) \CommonDBTM::LAST_HISTORY_USER_SEARCH_OPTION,
+                 'searchtype' => 'contains',
+                 'value'      => 'tech',
+              ],
+           ]
+        ]);
+
+        $this->string($data['sql']['search'])
+           ->contains("SELECT `glpi_logs`.`user_name`")
+           ->contains("`glpi_logs`.`itemtype` = 'Computer'")
+           ->contains("`glpi_logs`.`items_id` = `glpi_computers`.`id`")
+           ->matches("/LIKE '%tech%'/");
+    }
+
+    public function testSearchAllAssetsHistoryLastEditor()
+    {
+        $data = $this->doSearch('AllAssets', [
+           'is_deleted' => 0,
+           'start'      => 0,
+           'search'     => 'Search',
+           'criteria'   => [
+              [
+                 'link'       => 'AND',
+                 'field'      => (string) \CommonDBTM::LAST_HISTORY_USER_SEARCH_OPTION,
+                 'searchtype' => 'contains',
+                 'value'      => 'tech',
+              ],
+           ]
+        ]);
+
+        foreach ([
+            \Computer::getTable()         => 'Computer',
+            \Monitor::getTable()          => 'Monitor',
+            \NetworkEquipment::getTable() => 'NetworkEquipment',
+            \Peripheral::getTable()       => 'Peripheral',
+            \Phone::getTable()            => 'Phone',
+            \Printer::getTable()          => 'Printer',
+        ] as $table => $itemtype) {
+            $this->string($data['sql']['search'])
+               ->contains("`glpi_logs`.`itemtype` = '{$itemtype}'")
+               ->contains("`glpi_logs`.`items_id` = `{$table}`.`id`");
+        }
+    }
+
     public function testProblems()
     {
         $tech_users_id = getItemByTypeName('User', "tech", true);
