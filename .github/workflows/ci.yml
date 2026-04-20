@@ -33,7 +33,7 @@ jobs:
       UPDATE_FILES_ACL: true
     steps:
       - name: "Cancel previous runs"
-        uses: "styfle/cancel-workflow-action@0.12.1"
+        uses: "styfle/cancel-workflow-action@0.13.1"
         with:
           access_token: "${{ github.token }}"
       - name: "Clean workspace"
@@ -42,9 +42,9 @@ jobs:
           rm -rf "${{ env.APPLICATION_ROOT }}/*"
           rm -rf "${{ env.APP_CONTAINER_HOME }}/*"
       - name: "Checkout"
-        uses: "actions/checkout@v4"
+        uses: "actions/checkout@v6"
       - name: "Restore dependencies cache"
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ${{ env.APP_CONTAINER_HOME }}/.composer/cache/
@@ -54,7 +54,7 @@ jobs:
             app_home_deps-${{ matrix.php-version }}-
             app_home_deps-
       - name: "Restore lint cache"
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ${{ env.APP_CONTAINER_HOME }}/phpcs.cache
@@ -101,7 +101,7 @@ jobs:
     steps:
       - name: "Cancel previous runs"
         if: env.skip != 'true'
-        uses: "styfle/cancel-workflow-action@0.12.1"
+        uses: "styfle/cancel-workflow-action@0.13.1"
         with:
           access_token: "${{ github.token }}"
       - name: "Clean workspace"
@@ -112,10 +112,10 @@ jobs:
           rm -rf "${{ env.APP_CONTAINER_HOME }}/*"
       - name: "Checkout"
         if: env.skip != 'true'
-        uses: "actions/checkout@v4"
+        uses: "actions/checkout@v6"
       - name: "Restore dependencies cache"
         if: env.skip != 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ${{ env.APP_CONTAINER_HOME }}/.composer/cache/
