@@ -20,7 +20,7 @@ jobs:
       TAG: ${{ github.ref_name }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: check if version is set
         run:  grep -q "define('ITSM_VERSION', '${TAG#v}');" inc/define.php && echo "Version correspondante" || { echo "La version dans inc/define.php n'est pas bonne"; exit 5; }
@@ -33,7 +33,7 @@ jobs:
           coverage: none
 
       - name: Install NodeJS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
 
@@ -79,13 +79,13 @@ jobs:
           mv /tmp/itsm-ng-${TAG}.tgz /tmp/itsm-ng-v${TAG}.tgz
 
       - name: Upload release
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: itsm-ng-${{ github.ref_name }}.tgz
           path: /tmp/itsm-ng-${{ github.ref_name }}.tgz
 
       - name: Create release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: /tmp/itsm-ng-${{ github.ref_name }}.tgz
           body: "New release is available"
