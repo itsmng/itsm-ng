@@ -44,6 +44,8 @@ if (!defined('GLPI_ROOT')) {
 #[AllowDynamicProperties]
 class CommonDBTM extends CommonGLPI
 {
+    public const LAST_HISTORY_USER_SEARCH_OPTION = 12100;
+
     /**
      * Data fields of the Item.
      *
@@ -4080,10 +4082,57 @@ class CommonDBTM extends CommonGLPI
             ];
         }
 
+        if ($this->dohistory && !$this->isField('users_id_lastupdater')) {
+            $tab[] = self::getLastHistoryUserSearchOption($this->getTable(), $this->getType());
+        }
+
         // add objectlock search options
         $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
 
         return $tab;
+    }
+
+    /**
+     * Get the computed search option used to search who last edited an item through its history.
+     *
+     * This is used for item types that do not have a dedicated `users_id_lastupdater` field.
+     *
+     * @param string $table    Main table used by the item search.
+     * @param string $itemtype Item type stored in history logs.
+     *
+     * @return array
+     */
+    private static function getLastHistoryUserSearchOption(string $table, string $itemtype): array
+    {
+        global $DB;
+
+        $logs_table = Log::getTable();
+
+        return [
+           'id'            => self::LAST_HISTORY_USER_SEARCH_OPTION,
+           'table'         => $table,
+           'field'         => 'id',
+           'name'          => __('Last edit by'),
+           'datatype'      => 'string',
+           'searchtype'    => 'contains',
+           'massiveaction' => false,
+           'computation'   => sprintf(
+               '(SELECT %s
+                   FROM %s
+                  WHERE %s = %s
+                    AND %s = %s
+                  ORDER BY %s DESC, %s DESC
+                  LIMIT 1)',
+               DBmysql::quoteName($logs_table . '.user_name'),
+               DBmysql::quoteName($logs_table),
+               DBmysql::quoteName($logs_table . '.itemtype'),
+               $DB->quoteValue($itemtype),
+               DBmysql::quoteName($logs_table . '.items_id'),
+               DBmysql::quoteName('TABLE.id'),
+               DBmysql::quoteName($logs_table . '.date_mod'),
+               DBmysql::quoteName($logs_table . '.id')
+           )
+        ];
     }
 
     /**
