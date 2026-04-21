@@ -2805,6 +2805,32 @@ CREATE TABLE `glpi_groups_rssfeeds` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+### Dump table glpi_groups_solutiontemplates
+
+DROP TABLE IF EXISTS `glpi_groups_solutiontemplates`;
+CREATE TABLE `glpi_groups_solutiontemplates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `solutiontemplates_id` int(11) NOT NULL DEFAULT '0',
+  `groups_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unicity` (`solutiontemplates_id`,`groups_id`),
+  KEY `groups_id` (`groups_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+### Dump table glpi_groups_tasktemplates
+
+DROP TABLE IF EXISTS `glpi_groups_tasktemplates`;
+CREATE TABLE `glpi_groups_tasktemplates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tasktemplates_id` int(11) NOT NULL DEFAULT '0',
+  `groups_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unicity` (`tasktemplates_id`,`groups_id`),
+  KEY `groups_id` (`groups_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 ### Dump table glpi_groups_tickets
 
 DROP TABLE IF EXISTS `glpi_groups_tickets`;

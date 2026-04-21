@@ -54,6 +54,40 @@ class SolutionTemplate extends CommonDropdown
     }
 
 
+    public function defineTabs($options = [])
+    {
+
+        $ong = [];
+        $this->addDefaultFormTab($ong);
+        $this->addStandardTab(Group_SolutionTemplate::class, $ong, $options);
+        if ($this->dohistory) {
+            $this->addStandardTab('Log', $ong, $options);
+        }
+
+        return $ong;
+    }
+
+
+    public function cleanDBonPurge()
+    {
+        $this->deleteChildrenAndRelationsFromDb([
+           Group_SolutionTemplate::class,
+        ]);
+    }
+
+
+    public static function getGroupVisibilityCondition(?array $groups_ids = null): array
+    {
+        return Group_SolutionTemplate::getItemRestrictionCondition($groups_ids);
+    }
+
+
+    public static function isVisibleForCurrentUser(int $id): bool
+    {
+        return Group_SolutionTemplate::canAccessItem($id);
+    }
+
+
     public function getAdditionalFields()
     {
 
