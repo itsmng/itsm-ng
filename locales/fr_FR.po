@@ -25159,6 +25159,24 @@ msgstr "Personnalisé"
 msgid "Months"
 msgstr "Mois"
 
+#: inc/commontemplategrouprestriction.class.php
+msgid "Allowed groups"
+msgstr "Groupes autorisés"
+
+#: inc/commontemplategrouprestriction.class.php
+msgid "Add a group restriction"
+msgstr "Ajouter une restriction de groupe"
+
+#: front/group_tasktemplate.form.php
+#, php-format
+msgid "%s adds a group restriction on a task template"
+msgstr "%s ajoute une restriction de groupe sur un modèle de tâche"
+
+#: front/group_solutiontemplate.form.php
+#, php-format
+msgid "%s adds a group restriction on a solution template"
+msgstr "%s ajoute une restriction de groupe sur un modèle de solution"
+
 #~ msgid ""
 #~ "No time zones are available. Please check your database configuration."
 #~ msgstr ""
