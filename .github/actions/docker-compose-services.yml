@@ -4,10 +4,12 @@ services:
     image: "${DB_IMAGE:-mariadb:10.11}"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: "glpi"
+      MYSQL_DATABASE: "${TEST_DB_NAME:-glpi}"
+      POSTGRES_DB: "${TEST_DB_NAME:-glpi}"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
     shm_size: '1gb'
     healthcheck:
-      test: ["CMD", "mariadb-admin", "ping", "-h", "127.0.0.1", "-uroot"]
+      test: ["CMD-SHELL", "if [ \"${DB_TYPE:-mysql}\" = \"pgsql\" ]; then pg_isready -h 127.0.0.1 -U postgres -d ${TEST_DB_NAME:-glpi}; else mariadb-admin ping -h 127.0.0.1 -uroot; fi"]
       interval: 5s
       timeout: 3s
       retries: 20

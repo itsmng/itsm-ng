@@ -718,12 +718,27 @@ function loadDataset()
  */
 function getItemByTypeName($type, $name, $onlyid = false)
 {
+    global $DB;
 
     $item = getItemForItemtype($type);
     $nameField = $type::getNameField();
     if ($item->getFromDBByCrit([$nameField => $name])) {
         return ($onlyid ? $item->getField('id') : $item);
     }
+
+    if ($DB instanceof \DBmysql && $DB->dbtype === 'pgsql' && is_string($name)) {
+        $name_field_sql = $DB->quoteName($nameField);
+        $normalized_name = mb_strtolower($name, 'UTF-8');
+
+        if ($item->getFromDBByCrit([
+            'RAW' => [
+                'LOWER(' . $name_field_sql . ')' => $normalized_name,
+            ],
+        ])) {
+            return ($onlyid ? $item->getField('id') : $item);
+        }
+    }
+
     return false;
 }
 

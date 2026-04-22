@@ -98,7 +98,7 @@ if (!$DB->tableExists('glpi_appliancetypes')) {
          PRIMARY KEY (`id`),
          KEY `name` (`name`),
          KEY `entities_id` (`entities_id`),
-         UNIQUE (`externalidentifier`)
+         UNIQUE KEY `unique_externalidentifier` (`externalidentifier`)
       ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
     $DB->queryOrDie($query, "9.5 add table glpi_appliancetypes");
 }

@@ -1005,6 +1005,8 @@ class NetworkPort extends CommonDBChild
     **/
     public static function rawSearchOptionsToAdd($itemtype = null)
     {
+        global $DB;
+
         $tab = [];
 
         $tab[] = [
@@ -1038,7 +1040,7 @@ class NetworkPort extends CommonDBChild
 
         $networkNameJoin = ['jointype'          => 'itemtype_item',
                                  'specific_itemtype' => 'NetworkPort',
-                                 'condition'         => 'AND NEWTABLE.`is_deleted` = 0',
+                                 'condition'         => 'AND NEWTABLE.is_deleted = ' . $DB->quoteValue(false),
                                  'beforejoin'        => ['table'      => 'glpi_networkports',
                                                               'joinparams' => $joinparams]];
         NetworkName::rawSearchOptionsToAdd($tab, $networkNameJoin, $itemtype);

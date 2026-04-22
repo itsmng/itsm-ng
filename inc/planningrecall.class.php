@@ -234,7 +234,11 @@ class PlanningRecall extends CommonDBChild
             'glpi_planningrecalls',
             [
               'when'   => new \QueryExpression(
-                  "DATE_SUB('$begin', INTERVAL " . $DB->quoteName('before_time') . " SECOND)"
+                  $DB->sqlDateSubInterval(
+                      $DB->quote($begin),
+                      $DB->quoteName('before_time'),
+                      'SECOND'
+                  )
               ),
             ],
             [

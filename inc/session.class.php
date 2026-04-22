@@ -276,6 +276,16 @@ class Session
     **/
     public static function isMultiEntitiesMode()
     {
+        if (
+            isset($_SESSION['glpi_multientitiesmode'])
+            && !$_SESSION['glpi_multientitiesmode']
+            && (
+                count((array) ($_SESSION['glpiactiveentities'] ?? [])) > 1
+                || count((array) ($_SESSION['glpiactiveprofile']['entities'] ?? [])) > 1
+            )
+        ) {
+            $_SESSION['glpi_multientitiesmode'] = 1;
+        }
 
         if (!isset($_SESSION['glpi_multientitiesmode'])) {
             if (countElementsInTable("glpi_entities") > 1) {
@@ -622,11 +632,12 @@ class Session
                'entities_id',
                $_SESSION['glpiactiveentities'],
                true
-           )
+           ),
+           'ORDER'     => [Group_User::getTable() . '.groups_id']
         ]);
 
         while ($data = $iterator->next()) {
-            $_SESSION["glpigroups"][] = $data["groups_id"];
+            $_SESSION["glpigroups"][] = (string) $data["groups_id"];
         }
     }
 

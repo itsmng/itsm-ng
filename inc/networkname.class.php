@@ -235,6 +235,8 @@ class NetworkName extends FQDNLabel
     **/
     public static function rawSearchOptionsToAdd(array &$tab, array $joinparams)
     {
+        global $DB;
+
         $tab[] = [
            'id'                 => '126',
            'table'              => 'glpi_ipaddresses',
@@ -244,7 +246,7 @@ class NetworkName extends FQDNLabel
            'massiveaction'      => false,
            'joinparams'         => [
               'jointype'  => 'mainitemtype_mainitem',
-              'condition' => 'AND NEWTABLE.`is_deleted` = 0'
+              'condition' => 'AND NEWTABLE.is_deleted = ' . $DB->quoteValue(false)
            ]
         ];
 

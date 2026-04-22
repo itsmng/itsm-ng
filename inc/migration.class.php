@@ -259,7 +259,7 @@ class Migration
                     } elseif (in_array($default_value, ['0', '1'])) {
                         $format .= " DEFAULT '$default_value'";
                     } else {
-                        trigger_error(__('default_value must be 0 or 1'), E_USER_ERROR);
+                        throw new \InvalidArgumentException(__('default_value must be 0 or 1'));
                     }
                 }
                 break;
@@ -297,7 +297,7 @@ class Migration
                     } elseif (is_numeric($default_value)) {
                         $format .= " DEFAULT '$default_value'";
                     } else {
-                        trigger_error(__('default_value must be numeric'), E_USER_ERROR);
+                        throw new \InvalidArgumentException(__('default_value must be numeric'));
                     }
                 }
                 break;
@@ -828,9 +828,11 @@ class Migration
         $result = $DB->query($sql);
 
         $ranking = 1;
-        if ($DB->numrows($result) > 0) {
+        if (is_object($result) && $DB->numrows($result) > 0) {
             $datas = $DB->fetchAssoc($result);
-            $ranking = $datas["rank"] + 1;
+            if (is_array($datas) && isset($datas["rank"])) {
+                $ranking = $datas["rank"] + 1;
+            }
         }
 
         // The rule itself
@@ -875,6 +877,31 @@ class Migration
     {
         global $DB;
 
+        $supports_null_global = (($DB->getField('glpi_displaypreferences', 'users_id', false)['Null'] ?? 'NO') === 'YES');
+        $normalize_users_id = static function ($users_id) use ($supports_null_global) {
+            if ($users_id !== null && (int)$users_id > 0) {
+                return (int)$users_id;
+            }
+
+            return $supports_null_global ? null : 0;
+        };
+        $criteria_for_users_id = static function ($users_id) use ($supports_null_global) {
+            if ($users_id !== null && (int)$users_id > 0) {
+                return ['users_id' => (int)$users_id];
+            }
+
+            if ($supports_null_global) {
+                return [
+                    'OR' => [
+                        ['users_id' => null],
+                        ['users_id' => 0],
+                    ],
+                ];
+            }
+
+            return ['users_id' => 0];
+        };
+
         //TRANS: %s is the table or item to migrate
         $this->displayMessage(sprintf(__('Data migration - %s'), 'glpi_displaypreferences'));
         if (count($toadd)) {
@@ -887,33 +914,41 @@ class Migration
                 ]);
 
                 if (count($iterator) > 0) {
+                    $users_ids = [];
                     while ($data = $iterator->next()) {
-                        $query = "SELECT MAX(`rank`)
-                              FROM `glpi_displaypreferences`
-                              WHERE `users_id` = '" . $data['users_id'] . "'
-                                    AND `itemtype` = '$type'";
-                        $result = $DB->query($query);
-                        $rank   = $DB->result($result, 0, 0);
-                        $rank++;
+                        $users_id = $normalize_users_id($data['users_id']);
+                        $users_ids[$users_id === null ? 'global' : (string)$users_id] = $users_id;
+                    }
+
+                    foreach ($users_ids as $users_id) {
+                        $rank_data = $DB->request([
+                           'SELECT' => ['MAX' => 'rank AS maxrank'],
+                           'FROM'   => 'glpi_displaypreferences',
+                           'WHERE'  => [
+                              'itemtype' => $type
+                           ] + $criteria_for_users_id($users_id)
+                        ])->next();
+                        $rank = (int)($rank_data['maxrank'] ?? 0) + 1;
 
                         foreach ($tab as $newval) {
-                            $query = "SELECT *
-                                 FROM `glpi_displaypreferences`
-                                 WHERE `users_id` = '" . $data['users_id'] . "'
-                                       AND `num` = '$newval'
-                                       AND `itemtype` = '$type'";
-                            if ($result2 = $DB->query($query)) {
-                                if ($DB->numrows($result2) == 0) {
-                                    $DB->insert(
-                                        'glpi_displaypreferences',
-                                        [
-                                          'itemtype'  => $type,
-                                          'num'       => $newval,
-                                          'rank'      => $rank++,
-                                          'users_id'  => $data['users_id']
-                                        ]
-                                    );
-                                }
+                            $existing = $DB->request([
+                               'SELECT' => 'id',
+                               'FROM'   => 'glpi_displaypreferences',
+                               'WHERE'  => [
+                                  'itemtype' => $type,
+                                  'num'      => $newval
+                               ] + $criteria_for_users_id($users_id)
+                            ]);
+                            if (count($existing) == 0) {
+                                $DB->insert(
+                                    'glpi_displaypreferences',
+                                    [
+                                      'itemtype'  => $type,
+                                      'num'       => $newval,
+                                      'rank'      => $rank++,
+                                      'users_id'  => $users_id
+                                    ]
+                                );
                             }
                         }
                     }
@@ -926,7 +961,7 @@ class Migration
                               'itemtype'  => $type,
                               'num'       => $newval,
                               'rank'      => $rank++,
-                              'users_id'  => 0
+                              'users_id'  => $supports_null_global ? null : 0
                             ]
                         );
                     }

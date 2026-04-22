@@ -2651,22 +2651,21 @@ class Toolbox
         // Set global $DB as it is used in "Config::setConfigurationValues()" just after schema creation
         $DB = $database;
 
-        if (!$DB->runFile(GLPI_ROOT . "/install/mysql/glpi-empty.sql")) {
-            echo "Errors occurred inserting default database";
-        } else {
+        $installer = new \itsmng\Database\Schema\SchemaInstaller();
+        try {
+            $installer->install(\itsmng\Database\Schema\CoreSchema::definition(), $DB);
+
             //dataset
             Session::loadLanguage($lang, false); // Load default language locales to translate empty data
             $tables = require_once(__DIR__ . '/../install/empty_data.php');
             Session::loadLanguage('', false); // Load back session language
 
             foreach ($tables as $table => $data) {
-                $reference = array_replace(
-                    $data[0],
-                    array_fill_keys(
-                        array_keys($data[0]),
-                        new QueryParam()
-                    )
-                );
+                $reference = array_fill_keys(array_keys($data[0]), new QueryParam());
+                $implicit_defaults = $DB->getImplicitInsertDefaults($table, $reference);
+                $reference += array_fill_keys(array_keys($implicit_defaults), new QueryParam());
+
+                $reference = array_replace($data[0], $reference);
 
                 $stmt = $DB->prepare($DB->buildInsert($table, $reference));
                 if (false === $stmt) {
@@ -2674,8 +2673,13 @@ class Toolbox
                     throw new \RuntimeException($msg);
                 }
 
-                $types = str_repeat('s', count($data[0]));
+                $types = str_repeat('s', count($reference));
                 foreach ($data as $row) {
+                    $row = array_replace(
+                        array_fill_keys(array_keys($reference), null),
+                        $implicit_defaults,
+                        $row
+                    );
                     $res = $stmt->bind_param($types, ...array_values($row));
                     if (false === $res) {
                         $msg = "Error binding params in table $table\n";
@@ -2699,6 +2703,8 @@ class Toolbox
                 }
             }
 
+            $DB->syncAllAutoIncrementSequences();
+
             // update default language
             Config::setConfigurationValues(
                 'core',
@@ -2719,6 +2725,9 @@ class Toolbox
                 ]
             );
 
+            $history = new \itsmng\Database\Migrations\MigrationHistoryRepository($DB);
+            $history->ensureBaseline(ITSM_SCHEMA_VERSION);
+
             if (defined('GLPI_SYSTEM_CRON')) {
                 // Downstream packages may provide a good system cron
                 $DB->updateOrDie(
@@ -2733,6 +2742,12 @@ class Toolbox
                     '4203'
                 );
             }
+        } catch (\Throwable $throwable) {
+            throw new \RuntimeException(
+                'Errors occurred inserting default database: ' . $throwable->getMessage(),
+                0,
+                $throwable
+            );
         }
     }
 
@@ -3060,7 +3075,7 @@ class Toolbox
                             //retrieve dimensions
                             $width = $height = null;
                             $attributes = [];
-                            preg_match_all('/(width|height)=\\\"([^"]*)\\\"/i', $match_img, $attributes);
+                            preg_match_all('/(width|height)=\\\\?"([^"\\\\]*)\\\\?"/i', $match_img, $attributes);
                             if (isset($attributes[1][0])) {
                                 ${$attributes[1][0]} = $attributes[2][0];
                             }
@@ -3068,7 +3083,7 @@ class Toolbox
                                 ${$attributes[1][1]} = $attributes[2][1];
                             }
 
-                            if ($width == null || $height == null) {
+                            if (($width == null || $height == null) && isset($image['filepath'])) {
                                 $path = GLPI_DOC_DIR . "/" . $image['filepath'];
                                 $img_infos  = getimagesize($path);
                                 $width = $img_infos[0];

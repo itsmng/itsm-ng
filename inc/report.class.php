@@ -359,13 +359,13 @@ class Report extends CommonGLPI
               'PORT_1.name AS port_1',
               'PORT_1.mac AS mac_1',
               'PORT_1.logical_number AS logical_1',
-              new QueryExpression('GROUP_CONCAT(' . $DB->quoteName('ADDR_1.name') . ' SEPARATOR ' . $DB->quote(',') . ') AS ' . $DB->quoteName('ip_1')),
+              new QueryExpression($DB->sqlGroupConcat($DB->quoteName('ADDR_1.name')) . ' AS ' . $DB->quoteName('ip_1')),
               'PORT_2.itemtype AS itemtype_2',
               'PORT_2.items_id AS items_id_2',
               'PORT_2.id AS id_2',
               'PORT_2.name AS port_2',
               'PORT_2.mac AS mac_2',
-              new QueryExpression('GROUP_CONCAT(' . $DB->quoteName('ADDR_2.name') . ' SEPARATOR ' . $DB->quote(',') . ') AS ' . $DB->quoteName('ip_2'))
+              new QueryExpression($DB->sqlGroupConcat($DB->quoteName('ADDR_2.name')) . ' AS ' . $DB->quoteName('ip_2'))
            ], $select),
            'FROM'         => $from,
            'INNER JOIN'   => $innerjoin + [
@@ -410,9 +410,11 @@ class Report extends CommonGLPI
                  'ON'  => [
                     'PORT_2' => 'id',
                     new QueryExpression(
-                        'IF(' . $DB->quoteName('LINK.networkports_id_1') . ' = ' . $DB->quoteName('PORT_1.id') . ', ' .
-                          $DB->quoteName('LINK.networkports_id_2') . ', ' .
-                          $DB->quoteName('LINK.networkports_id_1') . ')'
+                        $DB->sqlIf(
+                            $DB->quoteName('LINK.networkports_id_1') . ' = ' . $DB->quoteName('PORT_1.id'),
+                            $DB->quoteName('LINK.networkports_id_2'),
+                            $DB->quoteName('LINK.networkports_id_1')
+                        )
                     )
                  ]
               ],

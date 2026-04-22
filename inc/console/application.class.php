@@ -316,7 +316,17 @@ class Application extends BaseApplication
     private function initDb()
     {
 
-        if (!class_exists('DB', false) || !class_exists('mysqli', false)) {
+        if (!class_exists('DB', false)) {
+            return;
+        }
+
+        $db_reflection = new \ReflectionClass('DB');
+        $db_properties = $db_reflection->getDefaultProperties();
+        $db_type = strtolower((string) ($db_properties['dbtype'] ?? 'mysql'));
+        if ($db_type === 'pgsql' && !extension_loaded('pdo_pgsql')) {
+            return;
+        }
+        if (!in_array($db_type, ['pgsql'], true) && !extension_loaded('pdo_mysql')) {
             return;
         }
 

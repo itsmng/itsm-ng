@@ -4,7 +4,7 @@ namespace itsmng;
 
 class Csrf
 {
-    public static function generate()
+    public static function generate(): string
     {
         $token = bin2hex(random_bytes(32));
         $_SESSION['_glpi_csrf_token'] = $token;
@@ -12,7 +12,7 @@ class Csrf
         return $token;
     }
 
-    public static function verify()
+    public static function verify(): bool
     {
         if (
             isset($_SESSION['_glpi_csrf_token'])

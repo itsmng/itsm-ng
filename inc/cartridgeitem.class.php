@@ -330,8 +330,8 @@ class CartridgeItem extends CommonDBTM
            'massiveaction'      => false,
            'joinparams'         => [
               'jointype'           => 'child',
-              'condition'          => 'AND NEWTABLE.`date_use` IS NOT NULL
-                                     AND NEWTABLE.`date_out` IS NULL'
+              'condition'          => 'AND NEWTABLE.date_use IS NOT NULL
+                                     AND NEWTABLE.date_out IS NULL'
            ]
         ];
 
@@ -346,7 +346,7 @@ class CartridgeItem extends CommonDBTM
            'massiveaction'      => false,
            'joinparams'         => [
               'jointype'           => 'child',
-              'condition'          => 'AND NEWTABLE.`date_out` IS NOT NULL'
+              'condition'          => 'AND NEWTABLE.date_out IS NOT NULL'
            ]
         ];
 
@@ -361,8 +361,8 @@ class CartridgeItem extends CommonDBTM
            'massiveaction'      => false,
            'joinparams'         => [
               'jointype'           => 'child',
-              'condition'          => 'AND NEWTABLE.`date_use` IS NULL
-                                     AND NEWTABLE.`date_out` IS NULL'
+              'condition'          => 'AND NEWTABLE.date_use IS NULL
+                                     AND NEWTABLE.date_out IS NULL'
            ]
         ];
 

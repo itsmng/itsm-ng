@@ -37,9 +37,13 @@ define('ITSM_VERSION', '2.1.3');
 if (substr(ITSM_VERSION, -4) === '-dev') {
     //for dev version
     define('ITSM_PREVER', str_replace('-dev', '', ITSM_VERSION));
+    require_once GLPI_ROOT . '/src/Database/Schema/CoreSchema.php';
+    require_once GLPI_ROOT . '/src/Database/Schema/SchemaFingerprint.php';
     define(
         'ITSM_SCHEMA_VERSION',
-        ITSM_PREVER . '@' . sha1_file(GLPI_ROOT . '/install/mysql/glpi-empty.sql')
+        ITSM_PREVER . '@' . (new \itsmng\Database\Schema\SchemaFingerprint())->hash(
+            \itsmng\Database\Schema\CoreSchema::definition()
+        )
     );
 } else {
     //for stable version

@@ -33,6 +33,8 @@
 
 namespace Glpi\System\Requirement;
 
+use Config;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -57,9 +59,11 @@ class DbEngine extends AbstractRequirement
 
     protected function check()
     {
-        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $this->db->getVersion());
+        $result = Config::checkDbEngine($this->db->getVersion(), $this->db->dbtype ?? null);
+        $version = (string) key($result);
+        $validated = (bool) current($result);
 
-        if (version_compare($version, '5.6', '>=')) {
+        if ($validated) {
             $this->validated = true;
             $this->validation_messages[] = sprintf(
                 __('Database version seems correct (%s) - Perfect!'),

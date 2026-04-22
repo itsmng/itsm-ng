@@ -39,6 +39,34 @@ use DbTestCase;
 
 class Computer extends DbTestCase
 {
+    private function normalizeSql(string $sql): string
+    {
+        global $DB;
+
+        if ($DB instanceof \DBmysql && $DB->dbtype === 'pgsql') {
+            return $sql;
+        }
+
+        $sql = str_replace('"', '`', $sql);
+        return str_replace(" ESCAPE E'\\\\'", '', $sql);
+    }
+
+    private function getExpectedGetFromDbByCritWarning(): string
+    {
+        global $DB;
+
+        $operator = ($DB instanceof \DBmysql && $DB->dbtype === 'pgsql')
+            ? 'ILIKE'
+            : 'LIKE';
+
+        return 'getFromDBByCrit expects to get one result, 8 found in query "'
+            . $this->normalizeSql(sprintf(
+                'SELECT "id" FROM "glpi_computers" WHERE "name" %s \'_test%%\' ESCAPE E\'\\\\\'',
+                $operator
+            ))
+            . '".';
+    }
+
     protected function getUniqueString()
     {
         $string = parent::getUniqueString();
@@ -364,7 +392,7 @@ class Computer extends DbTestCase
             }
         )->error()
            ->withType(E_USER_WARNING)
-           ->withMessage('getFromDBByCrit expects to get one result, 8 found in query "SELECT `id` FROM `glpi_computers` WHERE `name` LIKE \'_test%\'".')
+           ->withMessage($this->getExpectedGetFromDbByCritWarning())
            ->exists();
     }
 

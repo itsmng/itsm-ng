@@ -10,7 +10,7 @@ use Twig\TwigFilter;
 
 class Twig
 {
-    public static function load($path = '../templates/', $cache = true, $debug = false)
+    public static function load($path = '../templates/', $cache = true, $debug = false): Environment
     {
         global $CFG_GLPI;
 
@@ -30,7 +30,7 @@ class Twig
         return $twig;
     }
 
-    public static function load_filters($twig)
+    public static function load_filters($twig): void
     {
         $twig->addFilter(new TwigFilter('trans', '__'));
         $twig->addFilter(new TwigFilter('dump', function ($variable) {

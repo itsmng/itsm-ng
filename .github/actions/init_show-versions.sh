@@ -10,5 +10,9 @@ COMPOSE_CMD="$ROOT_DIR/.github/actions/docker-compose.sh"
 "$COMPOSE_CMD" exec -T app sh -c 'echo "npm $(npm --version)"'
 
 if [[ -n $("$COMPOSE_CMD" ps --all --services | grep "db") ]]; then
-  "$COMPOSE_CMD" exec -T db mysql --version;
+  if [[ "${DB_TYPE:-mysql}" = "pgsql" ]]; then
+    "$COMPOSE_CMD" exec -T db psql --version
+  else
+    "$COMPOSE_CMD" exec -T db mysql --version
+  fi
 fi

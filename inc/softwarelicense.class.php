@@ -728,6 +728,8 @@ class SoftwareLicense extends CommonTreeDropdown
 
     public static function rawSearchOptionsToAdd()
     {
+        global $DB;
+
         $tab = [];
         $name = static::getTypeName(Session::getPluralNumber());
 
@@ -743,9 +745,9 @@ class SoftwareLicense extends CommonTreeDropdown
                                     '',
                                     true
                                 ) .
-                                               " AND NEWTABLE.`is_template` = 0
-                                               AND (NEWTABLE.`expire` IS NULL
-                                                   OR NEWTABLE.`expire` > NOW())"];
+                                               ' AND NEWTABLE.is_template = ' . $DB->quoteValue(false) . "
+                                               AND (NEWTABLE.expire IS NULL
+                                                   OR NEWTABLE.expire > " . $DB->sqlNow() . ')'];
 
         $tab[] = [
            'id'                 => 'license',

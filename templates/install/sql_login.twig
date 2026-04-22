@@ -4,10 +4,15 @@
 <h3>{{'Database connection setup'|trans}}</h3>
     <form aria-label="Database connection Setup" action='install.php?step=5' method='post'>
         <div class="fields">
-            <label class="mt-3" for="server">{{"SQL server (MariaDB or MySQL)"|trans}}</label>
-            <input name="db_host" type="text" class="form-control w-50 mx-auto" value="">
+            <label class="mt-3" for="db_type">{{"Database engine"|trans}}</label>
+            <select id="db_type" name="db_type" class="form-select w-50 mx-auto">
+                <option value="mysql" {% if db_type == 'mysql' %}selected{% endif %}>MySQL / MariaDB</option>
+                <option value="pgsql" {% if db_type == 'pgsql' %}selected{% endif %}>PostgreSQL</option>
+            </select>
+            <label class="mt-3" for="server">{{"Database server"|trans}}</label>
+            <input name="db_host" type="text" class="form-control w-50 mx-auto" value="{{ host }}">
             <label class="mt-3" for="user">{{"SQL User"|trans}}</label>
-            <input name="db_user" type="text" class="form-control w-50 mx-auto" value="">
+            <input name="db_user" type="text" class="form-control w-50 mx-auto" value="{{ user }}">
             <label class="mt-3" for="password">{{"Password"|trans}}</label>
             <input name="db_pass" type="password" class="form-control w-50 mx-auto" value="">
         </div>

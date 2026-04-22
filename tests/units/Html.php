@@ -87,6 +87,44 @@ class Html extends \GLPITestCase
         $this->string(\Html::convDateTime($mydate, 2))->isIdenticalTo($expected);
     }
 
+    public function testShowProfileSelecterDisplaysEntitySelectorFromSessionScope()
+    {
+        global $CFG_GLPI;
+
+        $session_backup = $_SESSION;
+        $cfg_backup = $CFG_GLPI;
+
+        $_SESSION['glpi_multientitiesmode'] = 0;
+        $_SESSION['glpiprofiles'] = [
+           4 => ['name' => 'Super-Admin'],
+        ];
+        $_SESSION['glpiactiveprofile'] = [
+           'id'       => 4,
+           'entities' => [
+              0 => ['id' => 0, 'name' => 'Root Entity'],
+              1 => ['id' => 1, 'name' => 'Child Entity'],
+           ],
+        ];
+        $_SESSION['glpiactiveentities'] = [0, 1];
+        $_SESSION['glpiactive_entity_name'] = 'Root Entity (tree structure)';
+        $_SESSION['glpiactive_entity_shortname'] = 'Root Entity';
+        $CFG_GLPI['root_doc'] = '';
+
+        $output = $this->output(
+            function () {
+                \Html::showProfileSelecter('/front/central.php');
+            }
+        );
+
+        $_SESSION = $session_backup;
+        $CFG_GLPI = $cfg_backup;
+
+        $output
+            ->contains('global_entity_select')
+            ->contains('Root Entity')
+            ->notContains('</li>');
+    }
+
     public function testCleanInputText()
     {
         $origin = 'This is a \'string\' with some "replacements" needed, but not « others »!';

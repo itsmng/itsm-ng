@@ -2,6 +2,12 @@
 
 LOG_FILE="./tests/files/_log/migration.log"
 mkdir -p $(dirname "$LOG_FILE")
+
+if [[ "${DB_TYPE:-mysql}" = "pgsql" ]]; then
+  echo "Skipping legacy update checks on PostgreSQL"
+  exit 0
+fi
+
 DB_NAME="glpitest0723"
 CURRENT_ITSM_VERSION=$(grep -Po "^define\\('ITSM_VERSION', '\\K[^']+" inc/define.php | head -n 1)
 CURRENT_ITSM_SCHEMA_VERSION=$(grep -Po "define\\(\"ITSM_SCHEMA_VERSION\", '\\K[^']+" inc/define.php | head -n 1)

@@ -123,16 +123,10 @@ class Telemetry extends CommonGLPI
 
         $dbinfos = $DB->getInfo();
 
-        $size_res = $DB->request([
-           'SELECT' => new \QueryExpression("ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS dbsize"),
-           'FROM'   => 'information_schema.tables',
-           'WHERE'  => ['table_schema' => $DB->dbdefault]
-        ])->next();
-
         $db = [
            'engine'    => $dbinfos['Server Software'],
            'version'   => $hide_sensitive_data ? 'REDACTED' : $dbinfos['Server Version'],
-           'size'      => $size_res['dbsize'],
+           'size'      => $DB->getDatabaseSize(),
            'log_size'  => '',
            'sql_mode'  => $dbinfos['Server SQL Mode']
         ];

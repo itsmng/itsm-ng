@@ -130,6 +130,7 @@ class Project extends DbTestCase
     public function testCreateFromTemplate()
     {
         $this->login();
+        $this->setEntity('_test_root_entity', true);
 
         $date = date('Y-m-d H:i:s');
         $_SESSION['glpi_currenttime'] = $date;

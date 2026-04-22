@@ -177,8 +177,8 @@ class RuleRight extends DbTestCase
         // User should have a single dynamic right
         $this->array($pu)->hasSize(1);
         $right = array_pop($pu);
-        $this->integer($right['is_dynamic'])->isEqualTo(1);
-        $this->integer($right['is_default_profile'])->isEqualTo(1);
+        $this->integer((int) $right['is_dynamic'])->isEqualTo(1);
+        $this->integer((int) $right['is_default_profile'])->isEqualTo(1);
 
         // Log in to force rules right processing
         $this->login($testuser['name'], $testuser['password'], false);
@@ -199,8 +199,8 @@ class RuleRight extends DbTestCase
         ]);
         $this->boolean($res)->isTrue();
         $this->boolean($pu->getFromDB($right2['id']))->isTrue();
-        $this->integer($pu->fields['is_default_profile'])->isEqualTo(1);
-        $this->integer($pu->fields['is_dynamic'])->isEqualTo(1);
+        $this->integer((int) $pu->fields['is_default_profile'])->isEqualTo(1);
+        $this->integer((int) $pu->fields['is_dynamic'])->isEqualTo(1);
 
         $this->login($testuser['name'], $testuser['password'], false);
         $pu = \Profile_User::getForUser($users_id, true);

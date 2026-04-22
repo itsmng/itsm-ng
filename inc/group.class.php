@@ -469,6 +469,8 @@ class Group extends CommonTreeDropdown
 
     public function rawSearchOptions()
     {
+        global $DB;
+
         $tab = parent::rawSearchOptions();
 
         if (AuthLDAP::useAuthLdap()) {
@@ -562,7 +564,7 @@ class Group extends CommonTreeDropdown
                  'table'              => 'glpi_groups_users',
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`is_manager` = 1'
+                    'condition'          => 'AND NEWTABLE.is_manager = ' . $DB->quoteValue(true)
                  ]
               ]
            ]
@@ -582,7 +584,7 @@ class Group extends CommonTreeDropdown
                  'table'              => 'glpi_groups_users',
                  'joinparams'         => [
                     'jointype'           => 'child',
-                    'condition'          => 'AND NEWTABLE.`is_userdelegate` = 1'
+                    'condition'          => 'AND NEWTABLE.is_userdelegate = ' . $DB->quoteValue(true)
                  ]
               ]
            ]

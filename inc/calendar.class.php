@@ -283,6 +283,9 @@ class Calendar extends CommonDropdown
             return $result_cache[$cache_key];
         }
 
+        $end_date_expr = $DB->sqlMonthDayOrdinal($DB->quoteName('end_date'));
+        $begin_date_expr = $DB->sqlMonthDayOrdinal($DB->quoteName('begin_date'));
+
         $result = $DB->request([
            'COUNT'        => 'cpt',
            'FROM'         => 'glpi_calendars_holidays',
@@ -303,13 +306,13 @@ class Calendar extends CommonDropdown
                        'glpi_holidays.begin_date'          => ['<=', $date]
                     ]
                  ],
-                 [
-                    'AND' => [
-                       'glpi_holidays.is_perpetual'  => 1,
-                       new \QueryExpression("MONTH(" . $DB->quoteName('end_date') . ")*100 + DAY(" . $DB->quoteName('end_date') . ") >= " . date('nd', strtotime($date))),
-                       new \QueryExpression("MONTH(" . $DB->quoteName('begin_date') . ")*100 + DAY(" . $DB->quoteName('begin_date') . ") <= " . date('nd', strtotime($date)))
-                    ]
-                 ]
+                  [
+                     'AND' => [
+                        'glpi_holidays.is_perpetual'  => 1,
+                        new \QueryExpression($end_date_expr . ' >= ' . date('nd', strtotime($date))),
+                        new \QueryExpression($begin_date_expr . ' <= ' . date('nd', strtotime($date)))
+                     ]
+                  ]
               ]
            ]
         ])->next();

@@ -75,39 +75,12 @@ if (isset($_GET['criteria'])) {
         $params['criteria'] = array_merge($params['criteria'], $criterias);
     }
 }
-$formattedDatas = [];
 $params['as_map'] = '0';
 
 $datas = Search::getDatas($itemtype, $params);
-
-foreach ($datas['data']['rows'] as $row) {
-    $newData = [$row['id'] => $row['id']];
-    if (
-        !isset($row['entities_id'])
-        || in_array($row['entities_id'], $_SESSION['glpiactiveentities'])
-    ) {
-        $newData['value'] = 'item[' . $itemtype . '][' . $row['id'] . ']';
-    } else {
-        $newData['value'] = null;
-    }
-    foreach ($datas['data']['cols'] as $col) {
-        $newCol = $row[$itemtype . '_' . $col['id']];
-        if (isset($newCol['displayname'])) {
-            $field = $newCol['displayname'];
-        } elseif (isset($newCol[0]['name'])) {
-            $field = $newCol[0][0]['name'];
-        } elseif (isset($newCol[0]['id'])) {
-            $field = $newCol[0][0]['id'];
-        } else {
-            $field = '';
-        }
-        $newData[$col['id']] = $field;
-    }
-    $formattedDatas[] = $newData;
-}
 $return = [
     'total' => $datas['data']['totalcount'],
-    'rows' => $formattedDatas
+    'rows' => Search::formatAjaxRows($datas)
 ];
 
 Header('Content-Type: application/json; charset=UTF-8');

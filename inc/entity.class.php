@@ -282,7 +282,7 @@ class Entity extends CommonTreeDropdown
            ),
            'FROM'   => $this->getTable()
         ])->next();
-        $input['id'] = $result['newID'];
+        $input['id'] = $result['newID'] ?? $result['newid'] ?? 0;
 
         $input['max_closedate'] = $_SESSION["glpi_currenttime"];
 

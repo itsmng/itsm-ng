@@ -2061,7 +2061,10 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
 
         $iterator = $DB->request([
            'SELECT' => [
-              new QueryExpression('CAST(AVG(' . $DB->quoteName('percent_done') . ') AS UNSIGNED) AS percent_done')
+              new QueryExpression(
+                  $DB->sqlCastAsUnsignedInteger('AVG(' . $DB->quoteName('percent_done') . ')')
+                  . ' AS percent_done'
+              )
            ],
            'FROM'   => ProjectTask::getTable(),
            'WHERE'  => [

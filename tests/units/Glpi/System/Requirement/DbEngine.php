@@ -39,32 +39,48 @@ class DbEngine extends \GLPITestCase
     {
         return [
            [
-              'version'   => '5.6.46-log',
-              'validated' => true,
-              'messages'  => ['Database version seems correct (5.6.46) - Perfect!']
-           ],
-           [
-              'version'   => '10.4.8-MariaDB-1:10.4.8+maria~bionic',
-              'validated' => true,
-              'messages'  => ['Database version seems correct (10.4.8) - Perfect!']
-           ],
-           [
-              'version'   => '5.5.38-0ubuntu0.14.04.1',
-              'validated' => false,
-              'messages'  => ['Your database engine version seems too old: 5.5.38.']
-           ],
-        ];
+               'version'   => '5.6.46-log',
+               'dbtype'    => 'mysql',
+               'validated' => true,
+               'messages'  => ['Database version seems correct (5.6.46) - Perfect!']
+            ],
+            [
+               'version'   => '10.4.8-MariaDB-1:10.4.8+maria~bionic',
+               'dbtype'    => 'mysql',
+               'validated' => true,
+               'messages'  => ['Database version seems correct (10.4.8) - Perfect!']
+            ],
+            [
+               'version'   => '5.5.38-0ubuntu0.14.04.1',
+               'dbtype'    => 'mysql',
+               'validated' => false,
+               'messages'  => ['Your database engine version seems too old: 5.5.38.']
+            ],
+            [
+               'version'   => 'PostgreSQL 16.4 (Debian 16.4-1.pgdg120+2)',
+               'dbtype'    => 'pgsql',
+               'validated' => true,
+               'messages'  => ['Database version seems correct (16.4) - Perfect!']
+            ],
+            [
+               'version'   => 'PostgreSQL 11.22 (Debian 11.22-1.pgdg110+1)',
+               'dbtype'    => 'pgsql',
+               'validated' => false,
+               'messages'  => ['Your database engine version seems too old: 11.22.']
+            ],
+         ];
     }
 
     /**
      * @dataProvider versionProvider
      */
-    public function testCheck(string $version, bool $validated, array $messages)
+    public function testCheck(string $version, string $dbtype, bool $validated, array $messages)
     {
 
         $this->mockGenerator->orphanize('__construct');
         $db = new \mock\DB();
         $this->calling($db)->getVersion = $version;
+        $db->dbtype = $dbtype;
 
         $this->newTestedInstance($db);
         $this->boolean($this->testedInstance->isValidated())->isEqualTo($validated);

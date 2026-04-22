@@ -329,6 +329,8 @@ final class StatusChecker
      */
     public static function getCronTaskStatus($public_only = true): array
     {
+        global $DB;
+
         static $status = null;
 
         if ($status === null) {
@@ -343,12 +345,12 @@ final class StatusChecker
                       'state'  => CronTask::STATE_RUNNING,
                       'OR'     => [
                          new \QueryExpression(
-                             '(unix_timestamp(' . DBmysql::quoteName('lastrun') . ') + 2 * ' .
-                             DBmysql::quoteName('frequency') . ' < unix_timestamp(now()))'
+                             '(' . $DB->sqlUnixTimestamp(DBmysql::quoteName('lastrun')) . ' + 2 * ' .
+                             DBmysql::quoteName('frequency') . ' < ' . $DB->sqlUnixTimestamp($DB->sqlNow()) . ')'
                          ),
                          new \QueryExpression(
-                             '(unix_timestamp(' . DBmysql::quoteName('lastrun') . ') + 2 * ' .
-                             HOUR_TIMESTAMP . ' < unix_timestamp(now()))'
+                             '(' . $DB->sqlUnixTimestamp(DBmysql::quoteName('lastrun')) . ' + 2 * ' .
+                             HOUR_TIMESTAMP . ' < ' . $DB->sqlUnixTimestamp($DB->sqlNow()) . ')'
                          )
                       ]
                     ]

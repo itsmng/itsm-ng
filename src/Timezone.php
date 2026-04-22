@@ -54,8 +54,12 @@ class Timezone
      *    - inhours         : only show timestamp in hours not in days
      *    - display         : boolean / display or return string
      *    - width           : string / display width of the item
-    **/
-    public static function GetTimeStamp($options = [])
+     *
+     * @return string[]
+     *
+     * @psalm-return array<array-key|mixed, string>
+     */
+    public static function GetTimeStamp($options = []): array
     {
         global $CFG_GLPI;
 

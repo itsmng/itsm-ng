@@ -42,6 +42,9 @@ use Glpi\Console\Command\ForceNoPluginsOptionCommandInterface;
 use Migration;
 use Session;
 use Update;
+use itsmng\Database\Migrations\MigrationHistoryRepository;
+use itsmng\Database\Migrations\MigrationRepository;
+use itsmng\Database\Migrations\MigrationRunner;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -119,6 +122,12 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
         $current_db_version        = $currents['dbversion'];
         $itsm_current_version      = $currents['itsmversion'] ?? '1.0.0';
         $itsm_current_db_version   = $currents['itsmdbversion'] ?? '1.0.0';
+        $history                   = new MigrationHistoryRepository($this->db);
+        $runner                    = new MigrationRunner(
+            $this->db,
+            new MigrationRepository(GLPI_ROOT . '/src/Database/Migrations/Core'),
+            $history
+        );
 
         global $migration; // Migration scripts are using global migrations
         $migration = new Migration(ITSM_SCHEMA_VERSION);
@@ -149,7 +158,16 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
         }
 
         if (version_compare($current_db_version, ITSM_SCHEMA_VERSION, 'eq') && !$force && version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'eq')) {
-            $output->writeln('<info>' . __('No migration needed.') . '</info>');
+            $history->ensureBaseline(ITSM_SCHEMA_VERSION);
+            $versions = $runner->migrate();
+            if ($versions === []) {
+                $output->writeln('<info>' . __('No migration needed.') . '</info>');
+                return 0;
+            }
+
+            foreach ($versions as $version) {
+                $output->writeln('<info>' . sprintf(__('Applied schema migration %s.'), $version) . '</info>');
+            }
             return 0;
         }
 
@@ -185,21 +203,34 @@ class UpdateCommand extends AbstractCommand implements ForceNoPluginsOptionComma
             }
         }
 
+        $legacy_update_ran = false;
         if (version_compare($current_db_version, ITSM_SCHEMA_VERSION, 'ne')) {
             $update->doUpdates($current_version);
+            $legacy_update_ran = true;
         }
 
         if (version_compare($current_db_version, ITSM_SCHEMA_VERSION, 'ne') && version_compare($itsm_current_db_version, ITSM_SCHEMA_VERSION, 'ne')) {
-            // Migration is considered as done as Update class has the responsibility
-            // to run updates if schema has changed (even for "pre-versions".
-            $output->writeln('<info>' . __('Migration done.') . '</info>');
+            $history->ensureBaseline(ITSM_SCHEMA_VERSION);
         } elseif ($force) {
             // Replay last update script even if there is no schema change.
             // It can be used in dev environment when update script has been updated/fixed.
             include_once(GLPI_ROOT . '/install/itsm_update/update_101_110.php');
             update101to110();
+        }
 
+        $history->ensureBaseline(ITSM_SCHEMA_VERSION);
+
+        $versions = $runner->migrate();
+        if ($versions !== []) {
+            foreach ($versions as $version) {
+                $output->writeln('<info>' . sprintf(__('Applied schema migration %s.'), $version) . '</info>');
+            }
+        } elseif ($force) {
             $output->writeln('<info>' . __('Last migration replayed.') . '</info>');
+        } elseif ($legacy_update_ran) {
+            // Migration is considered as done as Update class has the responsibility
+            // to run updates if schema has changed (even for "pre-versions".
+            $output->writeln('<info>' . __('Migration done.') . '</info>');
         }
 
         return 0; // Success

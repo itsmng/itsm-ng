@@ -129,9 +129,22 @@ class Config extends DbTestCase
                  ->isIdenticalTo($expected);
     }
 
-    public function testPrepareInputForUpdate()
+    public function testPrepareInputForUpdate(): void
     {
-        // /!\ Config::prepareInputForUpdate() do store data! /!\
+        $config = new \Config();
+
+        $input = [
+           'context'     => 'core',
+           'name'        => 'unit_test_config',
+           'value'       => 'value',
+           '_no_history' => 1,
+        ];
+
+        $this->array($config->prepareInputForUpdate($input))->isIdenticalTo([
+           'context' => 'core',
+           'name'    => 'unit_test_config',
+           'value'   => 'value',
+        ]);
     }
 
     public function testUnsetUndisclosedFields()
@@ -287,7 +300,7 @@ class Config extends DbTestCase
         $expected = [
            'error'     => 0,
            'good'      => [
-              'mysqli' => 'mysqli extension is installed',
+              'pdo_mysql' => 'pdo_mysql extension is installed',
            ],
            'missing'   => [],
            'may'       => []
@@ -295,9 +308,9 @@ class Config extends DbTestCase
 
         //check extension from class name
         $list = [
-           'mysqli' => [
+           'pdo_mysql' => [
               'required'  => true,
-              'class'     => 'mysqli'
+              'class'     => 'PDO'
            ]
         ];
         $report = \Config::checkExtensions($list);
@@ -305,9 +318,9 @@ class Config extends DbTestCase
 
         //check extension from method name
         $list = [
-           'mysqli' => [
+           'pdo_mysql' => [
               'required'  => true,
-              'function'  => 'mysqli_commit'
+              'function'  => 'pdo_drivers'
            ]
         ];
         $report = \Config::checkExtensions($list);
@@ -315,7 +328,7 @@ class Config extends DbTestCase
 
         //check extension from its name
         $list = [
-           'mysqli' => [
+           'pdo_mysql' => [
               'required'  => true
            ]
         ];
@@ -330,7 +343,7 @@ class Config extends DbTestCase
         $expected = [
            'error'     => 2,
            'good'      => [
-              'mysqli' => 'mysqli extension is installed',
+              'pdo_mysql' => 'pdo_mysql extension is installed',
            ],
            'missing'   => [
               'notantext' => 'notantext extension is missing'
@@ -346,7 +359,7 @@ class Config extends DbTestCase
         $expected = [
            'error'     => 1,
            'good'      => [
-              'mysqli' => 'mysqli extension is installed',
+              'pdo_mysql' => 'pdo_mysql extension is installed',
            ],
            'missing'   => [],
            'may'       => [
@@ -449,44 +462,56 @@ class Config extends DbTestCase
     protected function dbEngineProvider()
     {
         return [
-           [
-              'raw'       => '10.2.14-MariaDB',
-              'version'   => '10.2.14',
-              'compat'    => true
-           ], [
-              'raw'       => '5.5.10-MariaDB',
-              'version'   => '5.5.10',
-              'compat'    => false
-           ], [
-              'raw'       => '5.6.38-log',
-              'version'   => '5.6.38',
-              'compat'    => true
-           ], [
-              'raw'       => '5-5-57',
-              'version'   => '5',
-              'compat'    => false
-           ], [
-              'raw'       => '5-6-31',
-              'version'   => '5',
-              'compat'    => false // since version is 5, this is not compat.
-           ], [
-              'raw'       => '10-2-35',
-              'version'   => '10',
-              'compat'    => true
-           ]
+            [
+               'raw'       => '10.2.14-MariaDB',
+               'version'   => '10.2.14',
+               'compat'    => true,
+               'dbtype'    => null,
+            ], [
+               'raw'       => '5.5.10-MariaDB',
+               'version'   => '5.5.10',
+               'compat'    => false,
+               'dbtype'    => null,
+            ], [
+               'raw'       => '5.6.38-log',
+               'version'   => '5.6.38',
+               'compat'    => true,
+               'dbtype'    => null,
+            ], [
+               'raw'       => '5-5-57',
+               'version'   => '5',
+               'compat'    => false,
+               'dbtype'    => null,
+            ], [
+               'raw'       => '5-6-31',
+               'version'   => '5',
+               'compat'    => false, // since version is 5, this is not compat.
+               'dbtype'    => null,
+            ], [
+               'raw'       => '10-2-35',
+               'version'   => '10',
+               'compat'    => true,
+               'dbtype'    => null,
+            ], [
+               'raw'       => 'PostgreSQL 16.4 (Debian 16.4-1.pgdg120+2)',
+               'version'   => '16.4',
+               'compat'    => true,
+               'dbtype'    => 'pgsql',
+            ], [
+               'raw'       => 'PostgreSQL 11.22 (Debian 11.22-1.pgdg110+1)',
+               'version'   => '11.22',
+               'compat'    => false,
+               'dbtype'    => 'pgsql',
+            ]
         ];
     }
 
     /**
      * @dataProvider dbEngineProvider
      */
-    public function testCheckDbEngine($raw, $version, $compat)
+    public function testCheckDbEngine($raw, $version, $compat, $dbtype)
     {
-        global $DB;
-        $DB = new \mock\DB();
-        $this->calling($DB)->getVersion = $raw;
-
-        $result = \Config::checkDbEngine();
+        $result = \Config::checkDbEngine($raw, $dbtype);
         $this->array($result)->isIdenticalTo([$version => $compat]);
     }
 

@@ -461,7 +461,9 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
                   'is_deleted'         => 0
                ],
                'GROUPBY'   => 'glpi_softwares.id',
-               'HAVING'    => ['cpt' => 0]
+               'HAVING'    => [
+                  new QueryExpression('COUNT(' . $DB->quoteName('glpi_softwareversions.softwares_id') . ') = 0')
+               ]
             ]);
 
             $software = new Software();
