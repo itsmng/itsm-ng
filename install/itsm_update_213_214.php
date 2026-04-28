@@ -39,7 +39,7 @@
 function update213to214(): bool
 {
     /** @global Migration $migration */
-    global $DB, $migration;
+   global $DB, $migration;
 
    if (!$DB->fieldExists('glpi_entities', 'requesters_private_ticket_content')) {
         $migration->addField(
@@ -80,6 +80,17 @@ function update213to214(): bool
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci",
       $DB->error()
    );
+
+   $task_tables = [
+        'glpi_tickettasks'  => 'tickets_id',
+        'glpi_problemtasks' => 'problems_id',
+        'glpi_changetasks'  => 'changes_id',
+    ];
+
+    foreach ($task_tables as $table => $after) {
+        $migration->addField($table, 'title', 'string', ['after' => $after]);
+   }
+   $migration->addField('glpi_tasktemplates', 'title', 'string', ['after' => 'name']);
 
     $migration->executeMigration();
     return true;

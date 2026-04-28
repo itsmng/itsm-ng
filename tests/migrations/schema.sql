@@ -984,6 +984,7 @@ DROP TABLE IF EXISTS `glpi_changetasks`;
 CREATE TABLE `glpi_changetasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `changes_id` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `taskcategories_id` int(11) NOT NULL DEFAULT '0',
   `state` int(11) NOT NULL DEFAULT '0',
   `date` datetime DEFAULT NULL,
@@ -6381,6 +6382,7 @@ DROP TABLE IF EXISTS `glpi_problemtasks`;
 CREATE TABLE `glpi_problemtasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `problems_id` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `taskcategories_id` int(11) NOT NULL DEFAULT '0',
   `date` datetime DEFAULT NULL,
   `begin` datetime DEFAULT NULL,
@@ -8081,6 +8083,7 @@ CREATE TABLE `glpi_tasktemplates` (
   `entities_id` int(11) NOT NULL DEFAULT '0',
   `is_recursive` tinyint(1) NOT NULL DEFAULT '0',
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `content` text COLLATE utf8_unicode_ci,
   `taskcategories_id` int(11) NOT NULL DEFAULT '0',
   `actiontime` int(11) NOT NULL DEFAULT '0',
@@ -8394,6 +8397,7 @@ DROP TABLE IF EXISTS `glpi_tickettasks`;
 CREATE TABLE `glpi_tickettasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tickets_id` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `taskcategories_id` int(11) NOT NULL DEFAULT '0',
   `date` datetime DEFAULT NULL,
   `users_id` int(11) NOT NULL DEFAULT '0',
