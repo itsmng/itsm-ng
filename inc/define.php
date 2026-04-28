@@ -428,7 +428,8 @@ $CFG_GLPI["rulecollections_types"]        = [
 // Items which can planned something
 $CFG_GLPI['planning_types']               = [
    'ChangeTask', 'ProblemTask', 'Reminder',
-   'TicketTask', 'ProjectTask', 'PlanningExternalEvent'
+   'TicketTask', 'ProjectTask', 'PlanningExternalEvent',
+   'Holiday'
 ];
 $CFG_GLPI['planning_add_types']           = ['PlanningExternalEvent'];
 
