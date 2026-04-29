@@ -1937,6 +1937,9 @@ class Planning extends CommonGLPI
                         }
                     }
                     $planning_params['resourceIds'] = array_values(array_unique($planning_params['resourceIds']));
+                    if (count($planning_params['resourceIds']) === 0) {
+                        continue;
+                    }
 
                     $raw_events = array_merge($raw_events, $planning_type::populatePlanning($planning_params));
                     continue;

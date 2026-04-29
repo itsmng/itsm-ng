@@ -365,4 +365,114 @@ class TicketTask extends DbTestCase
          ]
         );
     }
+
+    public function testPopulatePlanningUsesTaskTitlesAndStateLabels()
+    {
+        $this->login();
+
+        $uid = getItemByTypeName('User', TU_USER, true);
+        $ticket = $this->getNewTicket(true);
+
+        $task = new \TicketTask();
+        $titled_task_id = (int)$task->add([
+           'title'         => 'Explicit planning title',
+           'content'       => 'Body should not be used as title',
+           'state'         => \Planning::TODO,
+           'tickets_id'    => $ticket->fields['id'],
+           'users_id_tech' => $uid,
+           'begin'         => '2026-04-29 08:00:00',
+           'end'           => '2026-04-29 09:00:00',
+           'actiontime'    => HOUR_TIMESTAMP,
+        ]);
+        $this->integer($titled_task_id)->isGreaterThan(0);
+
+        $untitled_task_id = (int)$task->add([
+           'content'       => '<p>Body fallback title</p>',
+           'state'         => \Planning::CANCELLED,
+           'tickets_id'    => $ticket->fields['id'],
+           'users_id_tech' => $uid,
+           'begin'         => '2026-04-29 10:00:00',
+           'end'           => '2026-04-29 11:00:00',
+           'actiontime'    => HOUR_TIMESTAMP,
+        ]);
+        $this->integer($untitled_task_id)->isGreaterThan(0);
+
+        $events = \TicketTask::populatePlanning([
+           'who'      => $uid,
+           'whogroup' => 0,
+           'begin'    => '2026-04-29 00:00:00',
+           'end'      => '2026-04-29 23:59:59',
+        ]);
+
+        $this->array($events)->hasSize(2);
+        $events = array_values($events);
+
+        $this->integer((int)$events[0]['tickettasks_id'])
+           ->isEqualTo($titled_task_id);
+        $this->integer((int)$events[0]['state'])
+           ->isEqualTo(\Planning::TODO);
+        $this->array($events[0])
+           ->string['name']->isEqualTo('Explicit planning title')
+           ->string['task_title']->isEqualTo('Explicit planning title')
+           ->string['parent_name']->isEqualTo('ticket title')
+           ->string['state_label']->isEqualTo(__('To do'));
+
+        $this->integer((int)$events[1]['tickettasks_id'])
+           ->isEqualTo($untitled_task_id);
+        $this->integer((int)$events[1]['state'])
+           ->isEqualTo(\Planning::CANCELLED);
+        $this->array($events[1])
+           ->string['name']->isEqualTo('Body fallback title')
+           ->string['task_title']->isEqualTo('')
+           ->string['parent_name']->isEqualTo('ticket title')
+           ->string['state_label']->isEqualTo(__('Cancelled'));
+    }
+
+    public function testPlanningConflictUsesExplicitTaskTitle()
+    {
+        $this->login();
+
+        $user = getItemByTypeName('User', 'tech');
+        $users_id = (int)$user->fields['id'];
+        $ticket = $this->getNewTicket(true);
+        $tid = $ticket->fields['id'];
+
+        $task = new \TicketTask();
+        $this->integer(
+            (int)$task->add([
+              'title'              => 'Explicit conflicting title',
+              'content'            => 'conflicting body',
+              'tickets_id'         => $tid,
+              'plan'               => [
+                 'begin' => '2026-04-29 08:00:00',
+                 'end'   => '2026-04-29 10:00:00',
+              ],
+              'users_id_tech'      => $users_id,
+              'tasktemplates_id'   => 0,
+         ])
+        )->isGreaterThan(0);
+        $this->hasNoSessionMessages([ERROR, WARNING]);
+
+        $this->integer(
+            (int)$task->add([
+              'content'            => 'subperiod body',
+              'tickets_id'         => $tid,
+              'plan'               => [
+                 'begin' => '2026-04-29 09:00:00',
+                 'end'   => '2026-04-29 09:30:00',
+              ],
+              'users_id_tech'      => $users_id,
+              'tasktemplates_id'   => 0,
+         ])
+        )->isGreaterThan(0);
+
+        $usr_str = '<a href="' . $user->getFormURLWithID($users_id) . '">' . $user->getName() . '</a>';
+        $this->hasSessionMessages(
+            WARNING,
+            [
+              "The user $usr_str is busy at the selected timeframe.<br/>- Ticket task: from 2026-04-29 09:00 to 2026-04-29 09:30:<br/><a href='".
+              $ticket->getFormURLWithID($tid)."&amp;forcetab=TicketTask$1'>Explicit conflicting title</a><br/>"
+         ]
+        );
+    }
 }
