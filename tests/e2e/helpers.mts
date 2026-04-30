@@ -20,6 +20,32 @@ export interface SeedTicketResult {
 
 export type ActorPanelRole = 'requester' | 'observer' | 'assign';
 
+export interface SeedReservationOptions {
+  begin?: string;
+  end?: string;
+  reservationItemId?: number;
+  computerId?: number;
+  computerName?: string;
+}
+
+export interface SeedReservationResult {
+  computerId: number;
+  computerName: string;
+  reservationItemId: number;
+  reservationId: number;
+  reservationBegin: string;
+  reservationEnd: string;
+  reservationComment: string;
+  userId: number;
+}
+
+export interface ReservationApiItem {
+  id: number | string;
+  begin?: string;
+  end?: string;
+  reservationitems_id?: number | string;
+}
+
 interface ApiSession {
   apiUrl: string;
   sessionToken: string;
@@ -214,6 +240,69 @@ export async function seedTicket(request: APIRequestContext, options: SeedTicket
     }
 
     return result;
+  } finally {
+    await closeApiSession(request, session);
+  }
+}
+
+export async function seedReservation(
+  request: APIRequestContext,
+  options: SeedReservationOptions = {}
+): Promise<SeedReservationResult> {
+  const session = await initApiSession(request);
+
+  try {
+    const suffix = `${Date.now()}-${Math.random().toString(16).slice(2, 10)}`;
+    const computerName = options.computerName ?? `E2E Reservable Computer ${suffix}`;
+    const reservationBegin = options.begin ?? '2030-05-01 10:00:00';
+    const reservationEnd = options.end ?? '2030-05-01 11:00:00';
+    const reservationComment = `E2E reservation ${suffix}`;
+
+    const computerId = options.computerId ?? (await createItem(request, session, 'Computer', {
+      name: computerName,
+      entities_id: 0,
+      is_recursive: 0,
+    }));
+
+    const reservationItemId = options.reservationItemId ?? (await createItem(request, session, 'ReservationItem', {
+      itemtype: 'Computer',
+      items_id: computerId,
+      entities_id: 0,
+      is_recursive: 0,
+      is_active: 1,
+      is_deleted: 0,
+      comment: reservationComment,
+    }));
+
+    const reservationId = await createItem(request, session, 'Reservation', {
+      reservationitems_id: reservationItemId,
+      begin: reservationBegin,
+      end: reservationEnd,
+      users_id: session.userId,
+      comment: reservationComment,
+      _ajax_reservation: 1,
+    });
+
+    return {
+      computerId,
+      computerName,
+      reservationItemId,
+      reservationId,
+      reservationBegin,
+      reservationEnd,
+      reservationComment,
+      userId: session.userId,
+    };
+  } finally {
+    await closeApiSession(request, session);
+  }
+}
+
+export async function getReservation(request: APIRequestContext, reservationId: number): Promise<ReservationApiItem> {
+  const session = await initApiSession(request);
+
+  try {
+    return await getItem<ReservationApiItem>(request, session, 'Reservation', reservationId);
   } finally {
     await closeApiSession(request, session);
   }

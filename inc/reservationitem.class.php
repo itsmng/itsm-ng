@@ -581,20 +581,28 @@ class ReservationItem extends CommonDBChild
         echo "<form aria-label='Reservation' name='form' method='GET' action='" . self::getReservationFormURL() . "'>";
 
         echo "<div class='table-responsive'>";
-        echo "<table class='table table-striped table-hover' aria-label='Reservation table' style='width: 90%; table-layout: fixed; border-collapse: collapse; margin: 0 auto;'>";
+        echo "<table class='table table-striped table-hover reservation-table" . ($showentity ? " reservation-table--with-entity" : "") . "' aria-label='Reservation table'>";
+        echo "<colgroup>";
+        echo "<col class='reservation-table__item'>";
+        echo "<col class='reservation-table__location'>";
+        echo "<col class='reservation-table__comment'>";
+        if ($showentity) {
+            echo "<col class='reservation-table__entity'>";
+        }
+        echo "</colgroup>";
         echo "<thead class='table-dark'>";
         echo "<tr>";
-        echo "<th scope='col' style='width: " . ($showentity ? "50%" : "60%") . "; min-width: " . ($showentity ? "50%" : "60%") . ";'>";
+        echo "<th scope='col'>";
         echo "<i class='fas fa-desktop me-1'></i>" . __('Item');
         echo "</th>";
-        echo "<th scope='col' style='width: " . ($showentity ? "25%" : "30%") . "; min-width: " . ($showentity ? "25%" : "30%") . ";'>";
+        echo "<th scope='col'>";
         echo "<i class='fas fa-map-marker-alt me-1'></i>" . __('Location');
         echo "</th>";
-        echo "<th scope='col' style='width: " . ($showentity ? "15%" : "10%") . "; min-width: " . ($showentity ? "15%" : "10%") . ";'>";
+        echo "<th scope='col'>";
         echo "<i class='fas fa-comment me-1'></i>" . __('Comments');
         echo "</th>";
         if ($showentity) {
-            echo "<th scope='col' style='width: 10%; min-width: 10%;'>";
+            echo "<th scope='col'>";
             echo "<i class='fas fa-building me-1'></i>" . Entity::getTypeName(1);
             echo "</th>";
         }
@@ -692,7 +700,7 @@ class ReservationItem extends CommonDBChild
 
             $iterator = $DB->request($criteria);
             while ($row = $iterator->next()) {
-                echo "<tr style='width: 100%;'>";
+                echo "<tr>";
 
                 $typename = $item->getTypeName();
                 if ($itemtype == 'Peripheral') {
@@ -708,12 +716,12 @@ class ReservationItem extends CommonDBChild
                     }
                 }
 
-                echo "<td class='align-middle' style='width: " . ($showentity ? "50%" : "60%") . ";'>";
+                echo "<td class='align-middle'>";
                 echo "<a href='reservation.php?reservationitems_id=" . $row['id'] . "' class='text-decoration-none'>";
-                echo "<div class='d-flex align-items-center'>";
+                echo "<div class='d-flex align-items-center reservation-table__item-cell'>";
                 echo "<input type='checkbox' name='item[" . $row["id"] . "]' value='" . $row["id"] . "' class='form-check-input me-2' style='margin-top: 0;'>";
                 echo "<i class='fas fa-desktop text-primary me-2'></i>";
-                echo "<div>";
+                echo "<div class='reservation-table__item-text'>";
                 echo "<strong>" . htmlspecialchars((string) $row["name"]) . "</strong><br>";
                 echo "<small class='text-muted'>" . htmlspecialchars($typename) . "</small>";
                 if (!empty($row['otherserial'])) {
@@ -724,7 +732,7 @@ class ReservationItem extends CommonDBChild
                 echo "</a>";
                 echo "</td>";
 
-                echo "<td class='align-middle' style='width: " . ($showentity ? "25%" : "30%") . ";'>";
+                echo "<td class='align-middle reservation-table__nowrap'>";
                 if (!empty($row["location_name"])) {
                     echo "<div class='d-flex align-items-center'>";
                     echo "<i class='fas fa-map-marker-alt text-success me-2'></i>";
@@ -735,7 +743,7 @@ class ReservationItem extends CommonDBChild
                 }
                 echo "</td>";
 
-                echo "<td class='align-middle' style='width: " . ($showentity ? "15%" : "10%") . ";'>";
+                echo "<td class='align-middle reservation-table__nowrap'>";
                 if (!empty($row["comment"])) {
                     $comment = htmlspecialchars((string) $row["comment"]);
                     if (strlen($comment) > 100) {
@@ -751,10 +759,10 @@ class ReservationItem extends CommonDBChild
                 echo "</td>";
 
                 if ($showentity) {
-                    echo "<td class='align-middle' style='width: 10%;'>";
+                    echo "<td class='align-middle reservation-table__nowrap'>";
                     echo "<div class='d-flex align-items-center'>";
                     echo "<i class='fas fa-building text-warning me-2'></i>";
-                    echo "<small>" . htmlspecialchars(Dropdown::getDropdownName("glpi_entities", $row["entities_id"])) . "</small>";
+                    echo "<small>" . Html::clean(Dropdown::getDropdownName("glpi_entities", $row["entities_id"])) . "</small>";
                     echo "</div>";
                     echo "</td>";
                 }
