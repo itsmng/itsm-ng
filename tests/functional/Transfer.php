@@ -98,7 +98,8 @@ class Transfer extends DbTestCase
               'Consumable',
               'Infocom',
               'ComputerAntivirus',
-              'TicketRecurrent'
+              'TicketRecurrent',
+              'Appointment'
          ]
         );
 
