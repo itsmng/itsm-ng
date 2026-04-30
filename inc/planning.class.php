@@ -63,7 +63,7 @@ class Planning extends CommonGLPI
                                '#364959', '#8C5344', '#FF8100', '#F600C4', '#0017FF',
                                '#000000', '#FFFFFF', '#005800', '#925EFF'];
 
-    public static $directgroup_itemtype = ['PlanningExternalEvent', 'ProjectTask', 'TicketTask', 'ProblemTask', 'ChangeTask'];
+    public static $directgroup_itemtype = ['PlanningExternalEvent', 'ProjectTask', 'TicketTask', 'ProblemTask', 'ChangeTask', 'Appointment'];
 
     public const READMY    =    1;
     public const READGROUP = 1024;

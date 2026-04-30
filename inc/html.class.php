@@ -1710,7 +1710,7 @@ JAVASCRIPT
               'title' => __('Tools'),
               'types' => [
                  'Project', 'Reminder', 'RSSFeed', 'KnowbaseItem',
-                 'ReservationItem', 'Report', 'MigrationCleaner',
+                 'ReservationItem', 'AppointmentTarget', 'Report', 'MigrationCleaner',
                  'SavedSearch', 'Impact'
               ]
            ],

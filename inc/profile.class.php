@@ -53,6 +53,7 @@ class Profile extends CommonDBTM
        'password_update',
        'personalization',
        'problemtemplates_id',
+       'appointment',
        'reminder_public',
        'reservation',
        'rssfeed_public',
@@ -942,6 +943,11 @@ class Profile extends CommonDBTM
               'field'     => 'knowbase'
            ],
            [
+              'rights'    => Profile::getRightsFor('Appointment', 'helpdesk'),
+              'label'     => Appointment::getTypeName(Session::getPluralNumber()),
+              'field'     => 'appointment'
+           ],
+           [
               'rights'  => Profile::getRightsFor('ReservationItem', 'helpdesk'),
               'label'     => _n('Reservation', 'Reservations', Session::getPluralNumber()),
               'field'     => 'reservation'
@@ -1265,6 +1271,11 @@ class Profile extends CommonDBTM
               'itemtype'  => 'KnowbaseItem',
               'label'     => __('Knowledge base'),
               'field'     => 'knowbase'
+           ],
+           [
+              'itemtype'  => 'Appointment',
+              'label'     => Appointment::getTypeName(Session::getPluralNumber()),
+              'field'     => 'appointment'
            ],
            [
               'itemtype'  => 'ReservationItem',
