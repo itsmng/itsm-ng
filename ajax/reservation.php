@@ -130,7 +130,12 @@ if ($_REQUEST['action'] === 'get_events') {
         $user_label = getUserName($row['users_id']);
         $title = $reservationitems_id > 0 ? $user_label : sprintf(__('%1$s - %2$s'), $item_label, $user_label);
 
-        $can_edit = $reservation->getFromDB($row['id']) && $reservation->canEdit($row['id']);
+        $can_edit = $reservation->getFromDB($row['id'])
+            && $reservation->canEdit($row['id'])
+            && (
+                Session::haveRight("reservation", UPDATE)
+                || (int)$reservation->fields['users_id'] === (int)Session::getLoginUserID()
+            );
         $events[] = [
            'id'              => $row['id'],
            'title'           => $title,
@@ -294,7 +299,15 @@ if ($_REQUEST['action'] === 'update_times') {
     $output = '';
 
     ob_start();
-    if ($id > 0 && $reservation->getFromDB($id) && $reservation->canEdit($id)) {
+    if (
+        $id > 0
+        && $reservation->getFromDB($id)
+        && $reservation->canEdit($id)
+        && (
+            Session::haveRight("reservation", UPDATE)
+            || (int)$reservation->fields['users_id'] === (int)Session::getLoginUserID()
+        )
+    ) {
         $input = [
            'id'                => $id,
            '_item'             => $reservation->fields['reservationitems_id'],

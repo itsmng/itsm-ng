@@ -1,16 +1,18 @@
 /* global FullCalendar, FullCalendarLocales, FullCalendarInteraction */
-var GLPIPlanning = {
-  calendar: null,
-  dom_id: "",
-  all_resources: [],
-  visible_res: [],
-  drag_object: null,
-  last_view: null,
+class PlanningCalendar {
+  constructor() {
+    this.calendar = null;
+    this.dom_id = "";
+    this.all_resources = [];
+    this.visible_res = [];
+    this.drag_object = null;
+    this.last_view = null;
+  }
 
-  display: function (params) {
+  display(params) {
     // get passed options and merge it with default ones
-    var options = typeof params !== "undefined" ? params : {};
-    var default_options = {
+    let options = typeof params !== "undefined" ? params : {};
+    const default_options = {
       full_view: true,
       default_view: "timeGridWeek",
       height: GLPIPlanning.getHeight,
@@ -28,10 +30,9 @@ var GLPIPlanning = {
     options = Object.assign({}, default_options, options);
 
     GLPIPlanning.dom_id = "planning" + options.rand;
-    var window_focused = true;
-    var loaded = false;
-    var disable_qtip = false;
-    var disable_edit = false;
+    let loaded = false;
+    let disable_qtip = false;
+    let disable_edit = false;
 
     // manage visible resources
     this.all_resources = options.resources;
@@ -69,7 +70,7 @@ var GLPIPlanning = {
       //resources: options.resources,
       resources: function (fetchInfo, successCallback) {
         // Filter resources by whether their id is in visible_res.
-        var filteredResources = [];
+        let filteredResources = [];
         filteredResources = options.resources.filter(function (elem, index) {
           return GLPIPlanning.visible_res.indexOf(index.toString()) !== -1;
         });
@@ -83,7 +84,7 @@ var GLPIPlanning = {
             return "";
           },
           visibleRange: function (currentDate) {
-            var current_year = currentDate.getFullYear();
+            const current_year = currentDate.getFullYear();
             return {
               start: new Date(currentDate.getTime()).setFullYear(current_year - 5),
               end: new Date(currentDate.getTime()).setFullYear(current_year + 5),
@@ -106,8 +107,8 @@ var GLPIPlanning = {
         },
       },
       resourceRender: function (info) {
-        var icon = "";
-        var itemtype = info.resource._resource.extendedProps.itemtype || "";
+        let icon = "";
+        const itemtype = info.resource._resource.extendedProps.itemtype || "";
         switch (itemtype.toLowerCase()) {
           case "group":
           case "group_user":
@@ -125,26 +126,25 @@ var GLPIPlanning = {
         }
       },
       eventRender: function (info) {
-        var event = info.event;
-        var extProps = event.extendedProps;
-        var element = $(info.el);
-        var view = info.view;
+        const event = info.event;
+        const extProps = event.extendedProps;
+        const element = $(info.el);
+        const view = info.view;
 
         // append event data to dom (to re-use they in clone behavior)
         element.data("myevent", event);
 
-        var eventtype_marker = '<span class="event_type" style="background-color: ' + extProps.typeColor + '"></span>';
+        const eventtype_marker = '<span class="event_type" style="background-color: ' + extProps.typeColor + '"></span>';
         element.append(eventtype_marker);
 
-        var content = extProps.content;
-        var tooltip = extProps.tooltip;
+        const content = extProps.content;
         if (view.type !== "dayGridMonth" && view.type.indexOf("list") < 0 && event.rendering != "background" && !event.allDay) {
           element.append('<div class="content">' + content + "</div>");
         }
 
         // add icon if exists
         if ("icon" in extProps) {
-          var icon_alt = "";
+          let icon_alt = "";
           if ("icon_alt" in extProps) {
             icon_alt = extProps.icon_alt;
           }
@@ -153,10 +153,10 @@ var GLPIPlanning = {
         }
 
         // add classes to current event
-        var added_classes = "";
+        let added_classes = "";
         if (typeof event.end !== "undefined" && event.end !== null) {
-          var now = new Date();
-          var end = event.end;
+          const now = new Date();
+          const end = event.end;
           added_classes = end.getTime() < now.getTime() ? " event_past" : "";
           added_classes += end.getTime() > now.getTime() ? " event_future" : "";
           added_classes += end.toDateString() === now.toDateString() ? " event_today" : "";
@@ -171,7 +171,7 @@ var GLPIPlanning = {
         // add tooltip to event
         if (!disable_qtip) {
           // detect ideal position
-          var qtip_position = {
+          const qtip_position = {
             target: "mouse",
             adjust: {
               mouse: false,
@@ -215,13 +215,13 @@ var GLPIPlanning = {
           e.preventDefault();
 
           // get offset of the event
-          var offset = element.offset();
+          const offset = element.offset();
 
           // remove old instances
           $(".planning-context-menu").remove();
 
           // create new one
-          var context = $(
+          const context = $(
             '<ul class="planning-context-menu" data-event-id=""> \
                   <li class="clone-event"><i class="far fa-clone" aria-hidden="true"></i>' +
               __("Clone") +
@@ -240,9 +240,9 @@ var GLPIPlanning = {
           });
 
           // get properties of event for context menu actions
-          var extprops = event.extendedProps;
-          var resource = {};
-          var actor = {};
+          const extprops = event.extendedProps;
+          let resource = {};
+          let actor = {};
 
           if (typeof event.getresources === "function") {
             resource = event.getresources();
@@ -279,7 +279,7 @@ var GLPIPlanning = {
           });
           // 2- delete event (manage serie/instance specific events)
           $(".planning-context-menu .delete-event").click(function () {
-            var ajaxDeleteEvent = function (instance) {
+            const ajaxDeleteEvent = function (instance) {
               instance = instance || false;
               $.ajax({
                 url: CFG_GLPI.root_doc + "/ajax/planning.php",
@@ -333,7 +333,7 @@ var GLPIPlanning = {
         });
       },
       datesRender: function (info) {
-        var view = info.view;
+        const view = info.view;
 
         // force refetch events from ajax on view change (don't refetch on first load)
         if (loaded) {
@@ -374,7 +374,7 @@ var GLPIPlanning = {
         });
       },
       viewSkeletonRender: function (info) {
-        var view_type = info.view.type;
+        const view_type = info.view.type;
 
         GLPIPlanning.last_view = view_type;
         // inform backend we changed view (to store it in session)
@@ -394,8 +394,8 @@ var GLPIPlanning = {
         url: CFG_GLPI.root_doc + "/ajax/planning.php",
         type: "POST",
         extraParams: function () {
-          var view_name = GLPIPlanning.calendar ? GLPIPlanning.calendar.state.viewType : options.default_view;
-          var display_done_events = 1;
+          const view_name = GLPIPlanning.calendar ? GLPIPlanning.calendar.state.viewType : options.default_view;
+          let display_done_events = 1;
           if (view_name.indexOf("list") >= 0) {
             display_done_events = 0;
           }
@@ -418,9 +418,9 @@ var GLPIPlanning = {
 
       // EDIT EVENTS
       eventResize: function (info) {
-        var event = info.event;
-        var exprops = event.extendedProps;
-        var is_recurrent = exprops.is_recurrent || false;
+        const event = info.event;
+        const exprops = event.extendedProps;
+        const is_recurrent = exprops.is_recurrent || false;
 
         if (is_recurrent) {
           $("<div></div>")
@@ -468,9 +468,9 @@ var GLPIPlanning = {
       eventDrop: function (info) {
         disable_qtip = false;
 
-        var event = info.event;
-        var exprops = event.extendedProps;
-        var is_recurrent = exprops.is_recurrent || false;
+        const event = info.event;
+        const exprops = event.extendedProps;
+        const is_recurrent = exprops.is_recurrent || false;
 
         if (is_recurrent) {
           $("<div></div>")
@@ -502,11 +502,11 @@ var GLPIPlanning = {
         }
       },
       eventClick: function (info) {
-        var event = info.event;
-        var editable = event.extendedProps._editable; // do not know why editable property is not available
+        const event = info.event;
+        const editable = event.extendedProps._editable; // do not know why editable property is not available
         if (event.extendedProps.ajaxurl && editable && !disable_edit) {
-          var start = event.start;
-          var ajaxurl = event.extendedProps.ajaxurl + "&start=" + start.toISOString();
+          const start = event.start;
+          const ajaxurl = event.extendedProps.ajaxurl + "&start=" + start.toISOString();
           info.jsEvent.preventDefault(); // don't let the browser navigate
           $("<div></div>")
             .dialog({
@@ -534,8 +534,8 @@ var GLPIPlanning = {
       // ADD EVENTS
       selectable: true,
       select: function (info) {
-        var itemtype = ((((info || {}).resource || {})._resource || {}).extendedProps || {}).itemtype || "";
-        var items_id = ((((info || {}).resource || {})._resource || {}).extendedProps || {}).items_id || 0;
+        const itemtype = ((((info || {}).resource || {})._resource || {}).extendedProps || {}).itemtype || "";
+        const items_id = ((((info || {}).resource || {})._resource || {}).extendedProps || {}).items_id || 0;
 
         // prevent adding events on group users
         if (itemtype === "Group_User") {
@@ -543,8 +543,8 @@ var GLPIPlanning = {
           return false;
         }
 
-        var start = info.start;
-        var end = info.end;
+        const start = info.start;
+        const end = info.end;
         $("<div></div>").dialog({
           modal: true,
           width: "auto",
@@ -588,7 +588,7 @@ var GLPIPlanning = {
       },
     });
 
-    var loadedLocales = Object.keys(FullCalendarLocales);
+    const loadedLocales = Object.keys(FullCalendarLocales);
     if (loadedLocales.length === 1) {
       GLPIPlanning.calendar.setOption("locale", loadedLocales[0]);
     }
@@ -601,13 +601,6 @@ var GLPIPlanning = {
       .mouseup(function () {
         disable_qtip = false;
       });
-
-    window.onblur = function () {
-      window_focused = false;
-    };
-    window.onfocus = function () {
-      window_focused = true;
-    };
 
     //window.calendar = calendar; // Required as object is not accessible by forms callback
     GLPIPlanning.calendar.render();
@@ -622,21 +615,21 @@ var GLPIPlanning = {
     $(document).click(function () {
       $(".planning-context-menu").remove();
     });
-  },
+  }
 
-  refresh: function () {
+  refresh() {
     if (typeof GLPIPlanning.calendar.refetchResources == "function") {
       GLPIPlanning.calendar.refetchResources();
     }
     GLPIPlanning.calendar.refetchEvents();
     GLPIPlanning.calendar.rerenderEvents();
     window.displayAjaxMessageAfterRedirect();
-  },
+  }
 
   // add/remove resource (like when toggling it in side bar)
-  toggleResource: function (res_name, active) {
+  toggleResource(res_name, active) {
     // find the index of current resource to find it in our array of visible resources
-    var index = GLPIPlanning.all_resources.findIndex(function (current) {
+    const index = GLPIPlanning.all_resources.findIndex(function (current) {
       return current.id == res_name;
     });
 
@@ -648,19 +641,19 @@ var GLPIPlanning = {
         GLPIPlanning.visible_res.splice(GLPIPlanning.visible_res.indexOf(index.toString()), 1);
       }
     }
-  },
+  }
 
-  setEndofDays: function (view) {
+  setEndofDays(view) {
     // add a class to last col of day in timeline view
     // to visualy separate days
     if (view.constructor.name === "ResourceTimelineView") {
       // compute the number of hour slots displayed
-      var time_beg = CFG_GLPI.planning_begin.split(":");
-      var time_end = CFG_GLPI.planning_end.split(":");
-      var int_beg = parseInt(time_beg[0]) * 60 + parseInt(time_beg[1]);
-      var int_end = parseInt(time_end[0]) * 60 + parseInt(time_end[1]);
-      var sec_inter = int_end - int_beg;
-      var nb_slots = Math.ceil(sec_inter / 60);
+      const time_beg = CFG_GLPI.planning_begin.split(":");
+      const time_end = CFG_GLPI.planning_end.split(":");
+      const int_beg = parseInt(time_beg[0]) * 60 + parseInt(time_beg[1]);
+      const int_end = parseInt(time_end[0]) * 60 + parseInt(time_end[1]);
+      const sec_inter = int_end - int_beg;
+      const nb_slots = Math.ceil(sec_inter / 60);
 
       // add class to day list header
       $("#planning .fc-time-area.fc-widget-header table tr:nth-child(2) th").addClass("end-of-day");
@@ -671,12 +664,12 @@ var GLPIPlanning = {
       // add class to content bg (content slots)
       $("#planning .fc-time-area.fc-widget-content table td:nth-child(" + nb_slots + "n)").addClass("end-of-day");
     }
-  },
+  }
 
-  planningFilters: function () {
+  planningFilters() {
     $("#planning_filter a.planning_add_filter").on("click", function (e) {
       e.preventDefault(); // to prevent change of url on anchor
-      var url = $(this).attr("href");
+      const url = $(this).attr("href");
       $("<div></div>").dialog({
         modal: true,
         open: function () {
@@ -701,8 +694,8 @@ var GLPIPlanning = {
     });
 
     $("#planning_filter .delete_planning").on("click", function () {
-      var deleted = $(this);
-      var li = deleted.closest("ul.filters > li");
+      const deleted = $(this);
+      const li = deleted.closest("ul.filters > li");
       $.ajax({
         url: CFG_GLPI.root_doc + "/ajax/planning.php",
         type: "POST",
@@ -718,15 +711,15 @@ var GLPIPlanning = {
       });
     });
 
-    var sendDisplayEvent = function (current_checkbox, refresh_planning) {
-      var current_li = current_checkbox.parents("li");
-      var parent_name = null;
+    const sendDisplayEvent = function (current_checkbox, refresh_planning) {
+      const current_li = current_checkbox.parents("li");
+      let parent_name = null;
       if (current_li.parent("ul.group_listofusers").length == 1) {
         parent_name = current_li.parent("ul.group_listofusers").parent("li").attr("event_name");
       }
-      var event_name = current_li.attr("event_name");
-      var event_type = current_li.attr("event_type");
-      var checked = current_checkbox.is(":checked");
+      const event_name = current_li.attr("event_name");
+      const event_type = current_li.attr("event_type");
+      const checked = current_checkbox.is(":checked");
 
       return $.ajax({
         url: CFG_GLPI.root_doc + "/ajax/planning.php",
@@ -754,13 +747,13 @@ var GLPIPlanning = {
     });
 
     $('#planning_filter li.group_users > span > input[type="checkbox"]').on("change", function () {
-      var parent_checkbox = $(this);
-      var parent_li = parent_checkbox.parents("li");
-      var checked = parent_checkbox.prop("checked");
-      var event_name = parent_li.attr("event_name");
-      var chidren_checkboxes = parent_checkbox.parents("li.group_users").find('ul.group_listofusers input[type="checkbox"]');
+      const parent_checkbox = $(this);
+      const parent_li = parent_checkbox.parents("li");
+      const checked = parent_checkbox.prop("checked");
+      const event_name = parent_li.attr("event_name");
+      const chidren_checkboxes = parent_checkbox.parents("li.group_users").find('ul.group_listofusers input[type="checkbox"]');
       chidren_checkboxes.prop("checked", checked);
-      var promises = [];
+      const promises = [];
       chidren_checkboxes.each(function () {
         promises.push(sendDisplayEvent($(this), false));
       });
@@ -775,8 +768,8 @@ var GLPIPlanning = {
     });
 
     $("#planning_filter .color_input input").on("change", function () {
-      var current_li = $(this).parents("li");
-      var parent_name = null;
+      let current_li = $(this).parents("li");
+      let parent_name = null;
       if (current_li.length >= 1) {
         parent_name = current_li.eq(1).attr("event_name");
         current_li = current_li.eq(0);
@@ -807,35 +800,35 @@ var GLPIPlanning = {
         $("#planning_container").toggleClass("folded");
       });
     });
-  },
+  }
 
   // send ajax for event storage (on event drag/resize)
-  editEventTimes: function (info, move_instance) {
+  editEventTimes(info, move_instance) {
     move_instance = move_instance || false;
 
-    var event = info.event;
-    var revertFunc = info.revert;
-    var extProps = event.extendedProps;
+    const event = info.event;
+    const revertFunc = info.revert;
+    const extProps = event.extendedProps;
 
-    var old_itemtype = null;
-    var old_items_id = null;
-    var new_itemtype = null;
-    var new_items_id = null;
+    let old_itemtype = null;
+    let old_items_id = null;
+    let new_itemtype = null;
+    let new_items_id = null;
 
     // manage moving the events between resources (users, groups)
     if ("newResource" in info && info.newResource !== null) {
-      var new_extProps = info.newResource._resource.extendedProps;
+      const new_extProps = info.newResource._resource.extendedProps;
       new_itemtype = new_extProps.itemtype;
       new_items_id = new_extProps.items_id;
     }
     if ("oldResource" in info && info.oldResource !== null) {
-      var old_extProps = info.oldResource._resource.extendedProps;
+      const old_extProps = info.oldResource._resource.extendedProps;
       old_itemtype = old_extProps.itemtype;
       old_items_id = old_extProps.items_id;
     }
 
-    var start = event.start;
-    var end = event.end;
+    const start = event.start;
+    let end = event.end;
     if (typeof end === "undefined" || end === null) {
       end = new Date(start.getTime());
       if (event.allDay) {
@@ -845,8 +838,8 @@ var GLPIPlanning = {
       }
     }
 
-    var old_event = info.oldEvent || {};
-    var old_start = old_event.start || start;
+    const old_event = info.oldEvent || {};
+    const old_start = old_event.start || start;
 
     $.ajax({
       url: CFG_GLPI.root_doc + "/ajax/planning.php",
@@ -874,23 +867,23 @@ var GLPIPlanning = {
         revertFunc();
       },
     });
-  },
+  }
 
   // datepicker for planning
-  initFCDatePicker: function (currentDate) {
+  initFCDatePicker(currentDate) {
     $("#planning_datepicker").flatpickr({
       defaultDate: currentDate,
       onChange: function (selected_date) {
         // convert to UTC to avoid timezone issues
-        var date = new Date(Date.UTC(selected_date[0].getFullYear(), selected_date[0].getMonth(), selected_date[0].getDate()));
+        const date = new Date(Date.UTC(selected_date[0].getFullYear(), selected_date[0].getMonth(), selected_date[0].getDate()));
         GLPIPlanning.calendar.gotoDate(date);
       },
     });
-  },
+  }
 
   // set planning height
-  getHeight: function () {
-    var _newheight = $(window).height() - 272;
+  getHeight() {
+    let _newheight = $(window).height() - 272;
     if ($("#debugajax").length > 0) {
       _newheight -= $("#debugajax").height();
     }
@@ -900,11 +893,14 @@ var GLPIPlanning = {
     }
 
     //minimal size
-    var _minheight = 300;
+    const _minheight = 300;
     if (_newheight < _minheight) {
       _newheight = _minheight;
     }
 
     return _newheight;
-  },
-};
+  }
+}
+
+const GLPIPlanning = new PlanningCalendar();
+window.GLPIPlanning = GLPIPlanning;

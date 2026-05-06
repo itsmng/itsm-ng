@@ -152,6 +152,12 @@ class QueuedNotification extends CommonDBTM
             $input['documents'] = '';
         }
 
+        if (isset($input['generated_attachments']) && is_array($input['generated_attachments']) && count($input['generated_attachments'])) {
+            $input["generated_attachments"] = exportArrayToDB($input['generated_attachments']);
+        } else {
+            $input['generated_attachments'] = '';
+        }
+
         // Force items_id to integer
         if (!isset($input['items_id']) || empty($input['items_id'])) {
             $input['items_id'] = 0;

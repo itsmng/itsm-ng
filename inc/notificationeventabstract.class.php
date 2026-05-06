@@ -134,6 +134,7 @@ abstract class NotificationEventAbstract
                             ) {
                                 //Send notification to the user
                                 if ($label == '') {
+                                    $options['event'] = $event;
                                     $send_data = $template->getDataToSend(
                                         $notificationtarget,
                                         $tid,

@@ -1,5 +1,8 @@
 <?php
 
+use Ramsey\Uuid\Uuid;
+use Sabre\VObject\Component\VCalendar;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
@@ -92,7 +95,7 @@ class Appointment extends CommonDBTM
             $input['name'] = __('Appointment');
         }
         if (empty($input['uuid'])) {
-            $input['uuid'] = \Ramsey\Uuid\Uuid::uuid4()->toString();
+            $input['uuid'] = Uuid::uuid4()->toString();
         }
         $input['state'] = Planning::INFO;
         $input['date'] = $_SESSION['glpi_currenttime'];
@@ -103,7 +106,7 @@ class Appointment extends CommonDBTM
     public function prepareInputForUpdate($input)
     {
         if (!Session::haveRight(self::$rightname, UPDATE)) {
-            unset($input['users_id_requester'], $input['users_id_tech'], $input['groups_id_tech']);
+            unset($input['users_id_requester']);
         }
 
         if (isset($input['plan'])) {
@@ -119,10 +122,8 @@ class Appointment extends CommonDBTM
             return false;
         }
 
-        if (isset($input['appointmenttargets_id']) || isset($input['users_id_tech']) || isset($input['groups_id_tech'])) {
-            $input['users_id_tech'] = $candidate['users_id_tech'];
-            $input['groups_id_tech'] = $candidate['groups_id_tech'];
-        }
+        $input['entities_id'] = $candidate['entities_id'];
+        $input['is_recursive'] = $candidate['is_recursive'];
 
         return $input;
     }
@@ -145,14 +146,6 @@ class Appointment extends CommonDBTM
 
         $input['entities_id'] = $target->fields['entities_id'];
         $input['is_recursive'] = $target->fields['is_recursive'];
-
-        if ($target->fields['itemtype'] === 'User') {
-            $input['users_id_tech'] = $target->fields['items_id'];
-            $input['groups_id_tech'] = 0;
-        } else {
-            $input['groups_id_tech'] = $target->fields['items_id'];
-            $input['users_id_tech'] = isset($input['users_id_tech']) ? (int)$input['users_id_tech'] : 0;
-        }
 
         return $input;
     }
@@ -178,12 +171,13 @@ class Appointment extends CommonDBTM
             return false;
         }
 
-        if (!empty($input['users_id_tech'])) {
+        $target = self::getTargetForAppointmentInput($input);
+        if ($target && $target['itemtype'] === 'User') {
             $except = [];
             if (!empty($input['id'])) {
                 $except[self::class] = [(int)$input['id']];
             }
-            if (Planning::checkAlreadyPlanned($input['users_id_tech'], $input['begin'], $input['end'], $except)) {
+            if (Planning::checkAlreadyPlanned($target['items_id'], $input['begin'], $input['end'], $except)) {
                 return false;
             }
         }
@@ -212,6 +206,93 @@ class Appointment extends CommonDBTM
         ])->next();
 
         return (int)$row['cpt'] > 0;
+    }
+
+    private static function getTargetForAppointmentInput(array $input)
+    {
+        if (empty($input['appointmenttargets_id'])) {
+            return false;
+        }
+
+        $target = new AppointmentTarget();
+        if ($target->getFromDB((int)$input['appointmenttargets_id'])) {
+            return $target->fields;
+        }
+
+        return false;
+    }
+
+    public function getAppointmentTarget()
+    {
+        return self::getTargetForAppointmentInput($this->fields);
+    }
+
+    public function getReceiverUsers()
+    {
+        $target = $this->getAppointmentTarget();
+        if (!$target) {
+            return [];
+        }
+
+        if ($target['itemtype'] === 'User') {
+            return [(int)$target['items_id']];
+        }
+
+        if ($target['itemtype'] === 'Group') {
+            $users = [];
+            foreach (Group_User::getGroupUsers($target['items_id']) as $user) {
+                $users[] = (int)$user['id'];
+            }
+            return $users;
+        }
+
+        return [];
+    }
+
+    public function getReceiverLabel()
+    {
+        $target = $this->getAppointmentTarget();
+        return $target ? AppointmentTarget::getTargetLabel($target) : '';
+    }
+
+    public function getIcalAttachment($event)
+    {
+        global $CFG_GLPI;
+
+        $method = $event === 'delete' ? 'CANCEL' : 'REQUEST';
+        $uid = $this->getField('uuid') ?: 'Appointment-' . $this->getID();
+        $description = Html::clean($this->getField('text'));
+        $url = $CFG_GLPI['url_base'] . self::getFormURLWithID($this->getID());
+
+        $date_begin = new DateTime($this->getField('begin'));
+        $date_begin->setTimezone(new DateTimeZone('UTC'));
+        $date_end = new DateTime($this->getField('end'));
+        $date_end->setTimezone(new DateTimeZone('UTC'));
+        $date_stamp = new DateTime($_SESSION['glpi_currenttime'] ?? 'now');
+        $date_stamp->setTimezone(new DateTimeZone('UTC'));
+
+        $vevent = [
+           'UID'         => $uid,
+           'DTSTAMP'     => $date_stamp,
+           'DTSTART'     => $date_begin,
+           'DTEND'       => $date_end,
+           'SUMMARY'     => $this->getField('name'),
+           'DESCRIPTION' => $description,
+           'URL'         => $url,
+        ];
+        if ($event === 'delete') {
+            $vevent['STATUS'] = 'CANCELLED';
+        }
+
+        $vcalendar = new VCalendar();
+        $vcalendar->add('METHOD', $method);
+        $vcalendar->add('VEVENT', $vevent);
+
+        return [
+           'filename' => sprintf('appointment-%s.ics', $this->getID()),
+           'content'  => $vcalendar->serialize(),
+           'type'     => 'text/calendar; method=' . $method . '; charset=utf-8',
+        ];
     }
 
     public function post_addItem()
@@ -248,7 +329,7 @@ class Appointment extends CommonDBTM
     {
         global $CFG_GLPI;
 
-        if (!self::canCreate()) {
+        if (!self::canView()) {
             return false;
         }
 
@@ -262,7 +343,7 @@ class Appointment extends CommonDBTM
                 return false;
             }
             $title = AppointmentTarget::getTargetLabel($target->fields);
-            $can_book = true;
+            $can_book = self::canCreate();
         }
 
         $options = [
@@ -270,7 +351,7 @@ class Appointment extends CommonDBTM
            'can_book'              => $can_book,
            'initial_date'          => date('Y-m-d'),
            'title'                 => $title,
-           'ajax_url'              => $CFG_GLPI['root_doc'] . '/ajax/appointment.php',
+           'ajax_url'              => $CFG_GLPI['root_doc'] . '/ajax/v2/appointment.php',
            'all_url'               => $CFG_GLPI['root_doc'] . '/front/appointment.php',
            'planning_begin'         => $CFG_GLPI['planning_begin'] ?? '08:00:00',
            'planning_end'           => $CFG_GLPI['planning_end'] ?? '20:00:00',
@@ -278,7 +359,7 @@ class Appointment extends CommonDBTM
 
         echo Html::css('public/lib/fullcalendar.css', ['media' => '']);
         echo Html::script('public/lib/fullcalendar.js');
-        echo Html::script('js/appointment.js');
+        echo Html::script('js/appointment.js', ['version' => ITSM_VERSION . '-appointment-search']);
 
         echo "<div class='appointment-calendar-shell'>";
         echo "<div class='appointment-calendar-header'><h2>" . Html::clean($title) . "</h2>";
@@ -291,31 +372,29 @@ class Appointment extends CommonDBTM
 
     public static function showTargetList()
     {
-        global $DB, $CFG_GLPI;
+        global $CFG_GLPI;
 
         if (!self::canView()) {
             return false;
         }
 
-        $iterator = $DB->request([
-           'FROM'  => AppointmentTarget::getTable(),
-           'WHERE' => [
-              'is_active'  => 1,
-              'is_deleted' => 0,
-           ] + getEntitiesRestrictCriteria(AppointmentTarget::getTable(), 'entities_id', $_SESSION['glpiactiveentities']),
-           'ORDER' => ['itemtype', 'items_id'],
-        ]);
+        $fields = [
+           'target'  => __('Appointment target'),
+           'entity'  => Entity::getTypeName(1),
+           'comment' => __('Comments'),
+        ];
 
-        echo "<div class='table-responsive'><table class='table table-striped table-hover' aria-label='Appointments'>";
-        echo "<thead class='table-dark'><tr><th>" . __('Appointment target') . "</th><th>" . Entity::getTypeName(1) . "</th><th>" . __('Comments') . "</th></tr></thead><tbody>";
-        foreach ($iterator as $row) {
-            echo "<tr>";
-            echo "<td><a href='" . $CFG_GLPI['root_doc'] . "/front/appointment.php?appointmenttargets_id=" . $row['id'] . "'>" . Html::clean(AppointmentTarget::getTargetLabel($row)) . "</a></td>";
-            echo "<td>" . Dropdown::getDropdownName('glpi_entities', $row['entities_id']) . "</td>";
-            echo "<td>" . Html::clean($row['comment']) . "</td>";
-            echo "</tr>";
-        }
-        echo "</tbody></table></div>";
+        echo "<div class='appointment-target-list'>";
+        renderTwigTemplate('table.twig', [
+           'id'               => 'appointment-target-table',
+           'fields'           => $fields,
+           'url'              => $CFG_GLPI['root_doc'] . '/ajax/v2/appointment_target.php',
+           'search'           => true,
+           'search_placeholder' => __('Search'),
+           'show_export'      => false,
+           'pageSize'         => (int) $_SESSION['glpilist_limit'],
+        ]);
+        echo "</div>";
     }
 
     public function showForm($ID, $options = [])
@@ -385,12 +464,6 @@ class Appointment extends CommonDBTM
                        'name'  => 'users_id_requester',
                        'value' => $this->fields['users_id_requester'],
                     ] : [],
-                    __('Technician') => Session::haveRight(self::$rightname, UPDATE) ? [
-                       'type'   => 'select',
-                       'name'   => 'users_id_tech',
-                       'values' => [0 => Dropdown::EMPTY_VALUE] + getOptionsForUsers('all'),
-                       'value'  => $this->fields['users_id_tech'],
-                    ] : [],
                     __('Start date') => [
                        'type'  => 'datetime-local',
                        'name'  => 'plan[begin]',
@@ -426,7 +499,7 @@ class Appointment extends CommonDBTM
            'WHERE' => [
               'is_active'  => 1,
               'is_deleted' => 0,
-           ] + getEntitiesRestrictCriteria(AppointmentTarget::getTable(), 'entities_id', $_SESSION['glpiactiveentities']),
+           ] + getEntitiesRestrictCriteria(AppointmentTarget::getTable(), 'entities_id', $_SESSION['glpiactiveentities'], true),
            'ORDER' => ['itemtype', 'items_id'],
         ]);
 
@@ -455,18 +528,37 @@ class Appointment extends CommonDBTM
         if (!empty($options['who'])) {
             $where[] = [
                'OR' => [
-                  self::getTable() . '.users_id_tech'      => (int)$options['who'],
                   self::getTable() . '.users_id_requester' => (int)$options['who'],
+                  [
+                     'AND' => [
+                        AppointmentTarget::getTable() . '.itemtype' => 'User',
+                        AppointmentTarget::getTable() . '.items_id' => (int)$options['who'],
+                     ],
+                  ],
                ]
             ];
         } elseif (!empty($options['whogroup'])) {
-            $where[self::getTable() . '.groups_id_tech'] = (int)$options['whogroup'];
+            $where[AppointmentTarget::getTable() . '.itemtype'] = 'Group';
+            $where[AppointmentTarget::getTable() . '.items_id'] = (int)$options['whogroup'];
         } else {
             return $events;
         }
 
         $iterator = $DB->request([
-           'FROM'  => self::getTable(),
+           'SELECT' => [
+              self::getTable() . '.*',
+              AppointmentTarget::getTable() . '.itemtype AS target_itemtype',
+              AppointmentTarget::getTable() . '.items_id AS target_items_id',
+           ],
+           'FROM' => self::getTable(),
+           'INNER JOIN' => [
+              AppointmentTarget::getTable() => [
+                 'ON' => [
+                    self::getTable()              => 'appointmenttargets_id',
+                    AppointmentTarget::getTable() => 'id',
+                 ],
+              ],
+           ],
            'WHERE' => $where + getEntitiesRestrictCriteria(self::getTable(), 'entities_id', $_SESSION['glpiactiveentities']),
            'ORDER' => 'begin',
         ]);
@@ -478,6 +570,11 @@ class Appointment extends CommonDBTM
                 continue;
             }
 
+            $users_id = (int)$row['users_id_requester'];
+            if ($row['target_itemtype'] === 'User') {
+                $users_id = (int)$row['target_items_id'];
+            }
+
             $key = $row['begin'] . '$$Appointment$$' . $row['id'] . '$$' . ($options['who'] ?? 0) . '$$' . ($options['whogroup'] ?? 0);
             $events[$key] = [
                'color'            => $options['color'] ?? '',
@@ -485,7 +582,7 @@ class Appointment extends CommonDBTM
                'itemtype'         => self::class,
                'appointments_id'  => $row['id'],
                'id'               => $row['id'],
-               'users_id'         => $row['users_id_tech'] ?: $row['users_id_requester'],
+               'users_id'         => $users_id,
                'state'            => Planning::INFO,
                'background'       => false,
                'name'             => Html::clean(Html::resume_text($row['name'], $CFG_GLPI['cut'])),

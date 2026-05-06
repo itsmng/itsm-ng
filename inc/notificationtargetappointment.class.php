@@ -6,8 +6,7 @@ if (!defined('GLPI_ROOT')) {
 
 class NotificationTargetAppointment extends NotificationTarget
 {
-    public const APPOINTMENT_TECH = 10240;
-    public const APPOINTMENT_GROUP = 10241;
+    public const APPOINTMENT_RECEIVER = 10240;
 
     public function getEvents()
     {
@@ -21,31 +20,30 @@ class NotificationTargetAppointment extends NotificationTarget
     public function addAdditionalTargets($event = '')
     {
         $this->addTarget(Notification::AUTHOR, _n('Requester', 'Requesters', 1));
-        $this->addTarget(self::APPOINTMENT_TECH, __('Appointment technician'));
-        $this->addTarget(self::APPOINTMENT_GROUP, __('Appointment group'));
+        $this->addTarget(self::APPOINTMENT_RECEIVER, __('Appointment receiver'));
     }
 
     public function addSpecificTargets($data, $options)
     {
         switch ($data['items_id']) {
-            case self::APPOINTMENT_TECH:
-                if ($this->obj && $this->obj->getField('users_id_tech') > 0) {
-                    $this->addToRecipientsList([
-                       'users_id' => $this->obj->getField('users_id_tech'),
-                    ]);
-                }
-                break;
-
-            case self::APPOINTMENT_GROUP:
-                if ($this->obj && $this->obj->getField('groups_id_tech') > 0) {
-                    foreach (Group_User::getGroupUsers($this->obj->getField('groups_id_tech')) as $user) {
+            case self::APPOINTMENT_RECEIVER:
+                if ($this->obj) {
+                    foreach ($this->obj->getReceiverUsers() as $users_id) {
                         $this->addToRecipientsList([
-                           'users_id' => $user['id'],
+                           'users_id'                => $users_id,
+                           'is_appointment_receiver' => true,
                         ]);
                     }
                 }
                 break;
         }
+    }
+
+    public function addAdditionnalUserInfo(array $data)
+    {
+        return [
+           'is_appointment_receiver' => !empty($data['is_appointment_receiver']),
+        ];
     }
 
     public function addDataForTemplate($event, $options = [])
@@ -57,12 +55,7 @@ class NotificationTargetAppointment extends NotificationTarget
         $this->data['##appointment.end##'] = Html::convDateTime($this->obj->getField('end'));
         $this->data['##appointment.comment##'] = $this->obj->getField('text');
         $this->data['##appointment.requester##'] = getUserName($this->obj->getField('users_id_requester'));
-        $this->data['##appointment.technician##'] = $this->obj->getField('users_id_tech') > 0
-            ? getUserName($this->obj->getField('users_id_tech'))
-            : '';
-        $this->data['##appointment.group##'] = $this->obj->getField('groups_id_tech') > 0
-            ? Dropdown::getDropdownName('glpi_groups', $this->obj->getField('groups_id_tech'))
-            : '';
+        $this->data['##appointment.target##'] = $this->obj->getReceiverLabel();
         $this->data['##appointment.entity##'] = Dropdown::getDropdownName('glpi_entities', $this->obj->getField('entities_id'));
         $this->data['##appointment.url##'] = $this->formatURL(
             $options['additionnaloption']['usertype'],
@@ -86,8 +79,7 @@ class NotificationTargetAppointment extends NotificationTarget
            'appointment.end'        => __('End date'),
            'appointment.comment'    => __('Comments'),
            'appointment.requester'  => _n('Requester', 'Requesters', 1),
-           'appointment.technician' => __('Technician'),
-           'appointment.group'      => Group::getTypeName(1),
+           'appointment.target'     => __('Appointment target'),
            'appointment.entity'     => Entity::getTypeName(1),
            'appointment.url'        => __('URL'),
         ];
@@ -107,5 +99,14 @@ class NotificationTargetAppointment extends NotificationTarget
         if ($this->obj) {
             $this->target_object[] = $this->obj;
         }
+    }
+
+    public function getGeneratedAttachments($event, array $options, array $user_infos)
+    {
+        if (empty($user_infos['additionnaloption']['is_appointment_receiver'])) {
+            return [];
+        }
+
+        return [$this->obj->getIcalAttachment($event)];
     }
 }

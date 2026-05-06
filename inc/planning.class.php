@@ -956,10 +956,13 @@ class Planning extends CommonGLPI
             }
         }
 
+        $checkbox_id = Html::cleanId("planning_filter_" . $filter_key . "_" . mt_rand());
+
         echo "<li event_type='" . $filter_data['type'] . "'
                event_name='$filter_key'
                class='" . $filter_data['type'] . "'>";
-        Html::showCheckbox(['name'          => 'filters[]',
+        Html::showCheckbox(['id'            => $checkbox_id,
+                                 'name'          => 'filters[]',
                                  'value'         => $filter_key,
                                  'title'         => $title,
                                  'checked'       => $filter_data['display']]);
@@ -973,7 +976,7 @@ class Planning extends CommonGLPI
             echo "<i class='actor_icon fa fa-fw fa-$icon' aria-hidden='true'></i>";
         }
 
-        echo "<label for='$filter_key'>$title</label>";
+        echo "<label for='$checkbox_id'>$title</label>";
 
         $color = self::$palette_bg[$params['filter_color_index']];
         if (isset($filter_data['color']) && !empty($filter_data['color'])) {
