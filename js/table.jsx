@@ -1152,4 +1152,14 @@ import { batch, signal } from '@preact/signals';
     } else {
         initConfiguredTables();
     }
+
+    if (window.jQuery) {
+        window.jQuery(() => {
+            window.jQuery('.glpi_tabs').on('tabsload', (event, ui) => {
+                initConfiguredTables(ui.panel && ui.panel[0] ? ui.panel[0] : document);
+            });
+        });
+
+        window.jQuery(document).ajaxComplete(() => initConfiguredTables(document));
+    }
 })(window, document);
