@@ -12,6 +12,7 @@ function update213to214(): bool
 
     $migration->displayTitle(sprintf(__('Update to %s'), '2.1.4'));
     $migration->setVersion('2.1.4');
+    $migration->addField('glpi_queuednotifications', 'generated_attachments', 'text');
 
     if (!$DB->tableExists('glpi_appointmenttargets')) {
         $query = "CREATE TABLE `glpi_appointmenttargets` (
@@ -32,6 +33,12 @@ function update213to214(): bool
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
         $DB->queryOrDie($query, '2.1.4 add appointment targets');
     }
+    $DB->queryOrDie(
+        "UPDATE `glpi_appointmenttargets`
+         SET `entities_id` = 0
+         WHERE `entities_id` < 0",
+        '2.1.4 normalize appointment target entities'
+    );
 
     if (!$DB->tableExists('glpi_appointmentavailabilities')) {
         $query = "CREATE TABLE `glpi_appointmentavailabilities` (
@@ -61,7 +68,7 @@ function update213to214(): bool
           KEY `end` (`end`),
           KEY `is_available` (`is_available`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-        $DB->queryOrDie($query, '2.1.4 add appointment availability exceptions');
+        $DB->queryOrDie($query, '2.1.4 add appointment unavailabilities');
     }
 
     if (!$DB->tableExists('glpi_appointments')) {
@@ -73,8 +80,6 @@ function update213to214(): bool
           `is_recursive` tinyint(1) NOT NULL DEFAULT '0',
           `date` timestamp NULL DEFAULT NULL,
           `users_id_requester` int(11) NOT NULL DEFAULT '0',
-          `users_id_tech` int(11) NOT NULL DEFAULT '0',
-          `groups_id_tech` int(11) NOT NULL DEFAULT '0',
           `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
           `text` text COLLATE utf8_unicode_ci,
           `begin` timestamp NULL DEFAULT NULL,
@@ -89,8 +94,6 @@ function update213to214(): bool
           KEY `entities_id` (`entities_id`),
           KEY `is_recursive` (`is_recursive`),
           KEY `users_id_requester` (`users_id_requester`),
-          KEY `users_id_tech` (`users_id_tech`),
-          KEY `groups_id_tech` (`groups_id_tech`),
           KEY `begin` (`begin`),
           KEY `end` (`end`),
           KEY `is_deleted` (`is_deleted`),
@@ -117,16 +120,14 @@ function update213to214(): bool
               'subject'                  => '##appointment.action##',
               'content_text'             => "##lang.appointment.title##: ##appointment.title##\n"
                  . "##lang.appointment.requester##: ##appointment.requester##\n"
-                 . "##lang.appointment.technician##: ##appointment.technician##\n"
-                 . "##lang.appointment.group##: ##appointment.group##\n"
+                 . "##lang.appointment.target##: ##appointment.target##\n"
                  . "##lang.appointment.begin##: ##appointment.begin##\n"
                  . "##lang.appointment.end##: ##appointment.end##\n"
                  . "##lang.appointment.comment##: ##appointment.comment##\n"
                  . "##appointment.url##",
               'content_html'             => '&lt;p&gt;&lt;strong&gt;##appointment.title##&lt;/strong&gt;&lt;/p&gt;'
                  . '&lt;p&gt;##lang.appointment.requester##: ##appointment.requester##&lt;br /&gt;'
-                 . '##lang.appointment.technician##: ##appointment.technician##&lt;br /&gt;'
-                 . '##lang.appointment.group##: ##appointment.group##&lt;br /&gt;'
+                 . '##lang.appointment.target##: ##appointment.target##&lt;br /&gt;'
                  . '##lang.appointment.begin##: ##appointment.begin##&lt;br /&gt;'
                  . '##lang.appointment.end##: ##appointment.end##&lt;br /&gt;'
                  . '##lang.appointment.comment##: ##appointment.comment##&lt;/p&gt;'
@@ -162,7 +163,7 @@ function update213to214(): bool
               'notificationtemplates_id' => $template_id,
             ]
         );
-        foreach ([Notification::AUTHOR, NotificationTargetAppointment::APPOINTMENT_TECH, NotificationTargetAppointment::APPOINTMENT_GROUP] as $target) {
+        foreach ([Notification::AUTHOR, NotificationTargetAppointment::APPOINTMENT_RECEIVER] as $target) {
             $DB->insert(
                 'glpi_notificationtargets',
                 [

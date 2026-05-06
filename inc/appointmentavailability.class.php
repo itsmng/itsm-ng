@@ -59,10 +59,10 @@ class AppointmentAvailability extends CommonDBChild
         $appointmenttargets_id = (int)$appointmenttargets_id;
         $days = Toolbox::getDaysOfWeekArray();
 
-        echo "<div class='center'>";
-        echo "<table class='tab_cadre_fixe' aria-label='Appointment availability'>";
-        echo "<tr><th colspan='5'>" . self::getTypeName(Session::getPluralNumber()) . "</th></tr>";
-        echo "<tr><th>" . __('Day') . "</th><th>" . __('Start') . "</th><th>" . __('End') . "</th><th colspan='2'></th></tr>";
+        echo "<div class='appointment-office-hours__header'>";
+        echo "<h3>" . self::getTypeName(Session::getPluralNumber()) . "</h3>";
+        echo "</div>";
+        echo "<div class='appointment-office-hours__list'>";
 
         $iterator = $DB->request([
            'FROM'  => self::getTable(),
@@ -70,25 +70,27 @@ class AppointmentAvailability extends CommonDBChild
            'ORDER' => ['day', 'begin'],
         ]);
         foreach ($iterator as $row) {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>" . $days[$row['day']] . "</td>";
-            echo "<td>" . substr((string)$row['begin'], 0, 5) . "</td>";
-            echo "<td>" . substr((string)$row['end'], 0, 5) . "</td>";
-            echo "<td class='center'>";
+            echo "<div class='appointment-office-hours__row'>";
+            echo "<div>";
+            echo "<strong>" . $days[$row['day']] . "</strong>";
+            echo "<span>" . substr((string)$row['begin'], 0, 5) . " - " . substr((string)$row['end'], 0, 5) . "</span>";
+            echo "</div>";
             Html::showSimpleForm(self::getFormURL(), 'purge', __('Delete permanently'), ['id' => $row['id']]);
-            echo "</td></tr>";
+            echo "</div>";
         }
+        echo "</div>";
 
-        echo "<tr class='tab_bg_2'><td colspan='5'>";
+        echo "<div class='appointment-office-hours__form'>";
         echo "<form method='post' action='" . self::getFormURL() . "'>";
         echo Html::hidden('appointmenttargets_id', ['value' => $appointmenttargets_id]);
+        echo "<label><span>" . __('Day') . "</span>";
         Dropdown::showFromArray('day', $days, ['display' => true]);
-        echo "&nbsp;<input type='time' name='begin' value='09:00' required>";
-        echo "&nbsp;<input type='time' name='end' value='17:00' required>";
-        echo "&nbsp;<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='btn btn-secondary'>";
+        echo "</label>";
+        echo "<label><span>" . __('Start') . "</span><input type='time' name='begin' value='09:00' required></label>";
+        echo "<label><span>" . __('End') . "</span><input type='time' name='end' value='17:00' required></label>";
+        echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='btn btn-secondary'>";
         Html::closeForm();
-        echo "</td></tr>";
-        echo "</table></div>";
+        echo "</div>";
     }
 
     public static function isAvailable($appointmenttargets_id, $begin, $end)
@@ -110,7 +112,7 @@ class AppointmentAvailability extends CommonDBChild
             return false;
         }
 
-        if (AppointmentAvailabilityException::hasOpeningException($appointmenttargets_id, $begin, $end)) {
+        if (AppointmentAvailabilityException::hasCoveringOpeningException($appointmenttargets_id, $begin, $end)) {
             return true;
         }
 

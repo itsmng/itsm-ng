@@ -1,12 +1,14 @@
-/* global FullCalendar */
-var ITSMReservationCalendar = {
-  calendar: null,
-  options: {},
+/* global FullCalendar, FullCalendarLocales */
+class ReservationCalendar {
+  constructor() {
+    this.calendar = null;
+    this.options = {};
+  }
 
-  display: function (params) {
+  display(params) {
     ITSMReservationCalendar.options = params || {};
 
-    var calendarEl = document.getElementById("reservation-calendar");
+    const calendarEl = document.getElementById("reservation-calendar");
     if (!calendarEl || typeof FullCalendar === "undefined") {
       return;
     }
@@ -51,8 +53,8 @@ var ITSMReservationCalendar = {
         },
       },
       eventRender: function (info) {
-        var event = info.event;
-        var props = event.extendedProps || {};
+        const event = info.event;
+        const props = event.extendedProps || {};
 
         info.el.setAttribute("data-testid", "reservation-calendar-event");
         info.el.setAttribute("data-reservation-id", event.id);
@@ -79,7 +81,7 @@ var ITSMReservationCalendar = {
         ITSMReservationCalendar.calendar.unselect();
       },
       eventClick: function (info) {
-        var props = info.event.extendedProps || {};
+        const props = info.event.extendedProps || {};
         info.jsEvent.preventDefault();
 
         if (props.can_edit) {
@@ -96,17 +98,17 @@ var ITSMReservationCalendar = {
       },
     });
 
-    var loadedLocales = typeof FullCalendarLocales !== "undefined" ? Object.keys(FullCalendarLocales) : [];
+    const loadedLocales = typeof FullCalendarLocales !== "undefined" ? Object.keys(FullCalendarLocales) : [];
     if (loadedLocales.length === 1) {
       ITSMReservationCalendar.calendar.setOption("locale", loadedLocales[0]);
     }
 
     ITSMReservationCalendar.calendar.render();
-  },
+  }
 
-  openForm: function (params) {
-    var dialog = $("<div class='reservation-calendar-dialog'></div>");
-    var data = Object.assign({ action: "get_form" }, params || {});
+  openForm(params) {
+    const dialog = $("<div class='reservation-calendar-dialog'></div>");
+    const data = Object.assign({ action: "get_form" }, params || {});
 
     dialog.dialog({
       modal: true,
@@ -128,10 +130,10 @@ var ITSMReservationCalendar = {
         dialog.dialog("destroy").remove();
       },
     });
-  },
+  }
 
-  bindForm: function (dialog) {
-    var clickedButton = null;
+  bindForm(dialog) {
+    let clickedButton = null;
 
     dialog.find("button, input[type=submit]").on("click", function () {
       clickedButton = this;
@@ -140,14 +142,14 @@ var ITSMReservationCalendar = {
     dialog.find("form").on("submit", function (event) {
       event.preventDefault();
 
-      var form = $(this);
-      var data = form.serializeArray();
+      const form = $(this);
+      const data = form.serializeArray();
       data.push({ name: "action", value: "save" });
 
       if (clickedButton && clickedButton.name) {
         data.push({ name: clickedButton.name, value: clickedButton.value || "1" });
       } else {
-        var defaultButton = form.find("button[name=add], input[name=add], button[name=update], input[name=update]").first();
+        const defaultButton = form.find("button[name=add], input[name=add], button[name=update], input[name=update]").first();
         if (defaultButton.length > 0) {
           data.push({ name: defaultButton.attr("name"), value: defaultButton.val() || "1" });
         }
@@ -173,16 +175,16 @@ var ITSMReservationCalendar = {
         },
       });
     });
-  },
+  }
 
-  refresh: function () {
+  refresh() {
     if (ITSMReservationCalendar.calendar) {
       ITSMReservationCalendar.calendar.refetchEvents();
     }
-  },
+  }
 
-  updateEventTimes: function (info) {
-    var event = info.event;
+  updateEventTimes(info) {
+    const event = info.event;
 
     $.ajax({
       url: ITSMReservationCalendar.options.ajax_url,
@@ -213,10 +215,10 @@ var ITSMReservationCalendar = {
         info.revert();
       },
     });
-  },
+  }
 
-  formatDate: function (date) {
-    var pad = function (value) {
+  formatDate(date) {
+    const pad = function (value) {
       return value < 10 ? "0" + value : value;
     };
 
@@ -232,5 +234,8 @@ var ITSMReservationCalendar = {
       pad(date.getMinutes()) +
       ":00"
     );
-  },
-};
+  }
+}
+
+const ITSMReservationCalendar = new ReservationCalendar();
+window.ITSMReservationCalendar = ITSMReservationCalendar;

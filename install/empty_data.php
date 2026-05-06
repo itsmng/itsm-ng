@@ -3811,11 +3811,6 @@ $tables['glpi_notificationtargets'] = [
       'type'             => '1',
       'notifications_id' => '72',
    ], [
-      'id'               => '142',
-      'items_id'         => '10241',
-      'type'             => '1',
-      'notifications_id' => '72',
-   ], [
       'id'               => '143',
       'items_id'         => '3',
       'type'             => '1',
@@ -3826,11 +3821,6 @@ $tables['glpi_notificationtargets'] = [
       'type'             => '1',
       'notifications_id' => '73',
    ], [
-      'id'               => '145',
-      'items_id'         => '10241',
-      'type'             => '1',
-      'notifications_id' => '73',
-   ], [
       'id'               => '146',
       'items_id'         => '3',
       'type'             => '1',
@@ -3838,11 +3828,6 @@ $tables['glpi_notificationtargets'] = [
    ], [
       'id'               => '147',
       'items_id'         => '10240',
-      'type'             => '1',
-      'notifications_id' => '74',
-   ], [
-      'id'               => '148',
-      'items_id'         => '10241',
       'type'             => '1',
       'notifications_id' => '74',
    ],
@@ -4831,16 +4816,14 @@ style="color: #8b8c8f; font-weight: bold; text-decoration: underline;"&gt;
       'subject'                  => '##appointment.action##',
       'content_text'             => '##lang.appointment.title##: ##appointment.title##
 ##lang.appointment.requester##: ##appointment.requester##
-##lang.appointment.technician##: ##appointment.technician##
-##lang.appointment.group##: ##appointment.group##
+##lang.appointment.target##: ##appointment.target##
 ##lang.appointment.begin##: ##appointment.begin##
 ##lang.appointment.end##: ##appointment.end##
 ##lang.appointment.comment##: ##appointment.comment##
 ##appointment.url##',
       'content_html'             => '&lt;p&gt;&lt;strong&gt;##appointment.title##&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;##lang.appointment.requester##: ##appointment.requester##&lt;br /&gt;
-##lang.appointment.technician##: ##appointment.technician##&lt;br /&gt;
-##lang.appointment.group##: ##appointment.group##&lt;br /&gt;
+##lang.appointment.target##: ##appointment.target##&lt;br /&gt;
 ##lang.appointment.begin##: ##appointment.begin##&lt;br /&gt;
 ##lang.appointment.end##: ##appointment.end##&lt;br /&gt;
 ##lang.appointment.comment##: ##appointment.comment##&lt;/p&gt;
