@@ -2,6 +2,7 @@ import {
     createColumnHelper,
     createTable,
     getCoreRowModel,
+    getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
 } from '@tanstack/table-core';
@@ -41,6 +42,7 @@ import { batch, signal } from '@preact/signals';
         const trash = toolbar.trash || {};
         const view = rawConfig.view || {};
         const exportConfig = rawConfig.export || {};
+        const search = rawConfig.search || {};
 
         return {
             id: String(rawConfig.id),
@@ -75,6 +77,10 @@ import { batch, signal } from '@preact/signals';
                 enabled: exportConfig.enabled !== false,
                 target: exportConfig.target || null,
                 params: exportConfig.params || null,
+            },
+            search: {
+                enabled: !!search.enabled,
+                placeholder: search.placeholder || 'Search',
             },
         };
     };
@@ -117,6 +123,7 @@ import { batch, signal } from '@preact/signals';
         const exportParams = config.export.params || null;
         const hasServerExport = !!(exportTarget && exportParams);
         const canExport = showExport && hasServerExport;
+        const searchEnabled = !!(config.search && config.search.enabled);
         const tableStateSignal = signal({});
         const tableDataSignal = signal([]);
         const serverTotalSignal = signal(null);
@@ -218,6 +225,9 @@ import { batch, signal } from '@preact/signals';
                 fetchUrl.searchParams.set('sort', sorting[0].id);
                 fetchUrl.searchParams.set('order', sorting[0].desc ? 'desc' : 'asc');
             }
+            if (state.globalFilter) {
+                fetchUrl.searchParams.set('search', state.globalFilter);
+            }
 
             try {
                 const response = await fetch(fetchUrl.toString());
@@ -257,18 +267,29 @@ import { batch, signal } from '@preact/signals';
 
         const updateTableState = (updater) => {
             const currentState = tableStateSignal.value;
-            const newState = typeof updater === 'function' ? updater(currentState) : updater;
+            let newState = typeof updater === 'function' ? updater(currentState) : updater;
             const paginationChanged = hasTableStateChanged(currentState, newState, 'pagination');
             const sortingChanged = hasTableStateChanged(currentState, newState, 'sorting');
+            const searchChanged = hasTableStateChanged(currentState, newState, 'globalFilter');
 
-            if (url && paginationChanged) {
+            if (searchChanged) {
+                newState = {
+                    ...newState,
+                    pagination: {
+                        ...newState.pagination,
+                        pageIndex: 0,
+                    },
+                };
+            }
+
+            if (url && (paginationChanged || searchChanged)) {
                 massiveActionSelectionSignal.value = [];
             }
 
             tableStateSignal.value = newState;
             storeState(newState);
 
-            if (url && (paginationChanged || sortingChanged)) {
+            if (url && (paginationChanged || sortingChanged || searchChanged)) {
                 fetchData(newState);
             }
         };
@@ -286,6 +307,7 @@ import { batch, signal } from '@preact/signals';
                 state: {},
                 onStateChange: updateTableState,
                 getCoreRowModel: getCoreRowModel(),
+                getFilteredRowModel: getFilteredRowModel(),
                 getPaginationRowModel: getPaginationRowModel(),
                 getSortedRowModel: getSortedRowModel(),
                 data: initialData,
@@ -356,10 +378,12 @@ import { batch, signal } from '@preact/signals';
             columns,
             manualPagination: !!url,
             manualSorting: !!url,
+            manualFiltering: !!url,
             initialState: {
                 pagination: {
                     pageSize,
                 },
+                globalFilter: '',
             },
         });
 
@@ -877,6 +901,18 @@ import { batch, signal } from '@preact/signals';
                             )}
                         </div>
                     </div>
+                    {searchEnabled && (
+                        <div class="float-left search">
+                            <input
+                                type="search"
+                                class="form-control search-input"
+                                value={table.getState().globalFilter || ''}
+                                placeholder={__(config.search.placeholder)}
+                                aria-label={__(config.search.placeholder)}
+                                onInput={(event) => table.setGlobalFilter(event.target.value)}
+                            />
+                        </div>
+                    )}
                     <div class="float-right btn-group columns columns-right">
                         {canTrash && (
                             <button

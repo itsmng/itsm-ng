@@ -595,7 +595,6 @@ $RELATION = [
       '_glpi_groups_rssfeeds'      => 'groups_id',
       '_glpi_groups_tickets'       => 'groups_id',
       '_glpi_groups_users'         => 'groups_id',
-      'glpi_appointments'          => 'groups_id_tech',
       'glpi_itilcategories'        => 'groups_id',
       'glpi_lines'                 => 'groups_id',
       'glpi_monitors'              => [
@@ -1316,7 +1315,6 @@ $RELATION = [
       'glpi_lines'                    => 'users_id',
       'glpi_appointments'             => [
          'users_id_requester',
-         'users_id_tech',
       ],
       'glpi_monitors'                 => [
          'users_id_tech',
