@@ -246,6 +246,16 @@ class RuleTicket extends Rule
                             $output['_solutiontemplates_id'] = $action->fields["value"];
                         }
 
+                        // special case of task template
+                        if ($action->fields["field"] === 'task_template') {
+                            $output['_tasktemplates_id'] = [$action->fields["value"]];
+                        }
+
+                        // special case of followup template
+                        if ($action->fields["field"] === 'followup_template') {
+                            $output['_itilfollowuptemplates_id'] = $action->fields["value"];
+                        }
+
                         // Remove values that may have been added by any "append" rule action on same actor field.
                         // Appended actors are stored on `_additional_*` keys.
                         $actions = $this->getActions();
@@ -842,6 +852,16 @@ class RuleTicket extends Rule
         $actions['solution_template']['type']                  = 'dropdown';
         $actions['solution_template']['table']                 = 'glpi_solutiontemplates';
         $actions['solution_template']['force_actions']         = ['assign'];
+
+        $actions['task_template']['name']                     = TaskTemplate::getTypeName(1);
+        $actions['task_template']['type']                     = 'dropdown';
+        $actions['task_template']['table']                    = 'glpi_tasktemplates';
+        $actions['task_template']['force_actions']            = ['assign'];
+
+        $actions['followup_template']['name']                 = ITILFollowupTemplate::getTypeName(1);
+        $actions['followup_template']['type']                 = 'dropdown';
+        $actions['followup_template']['table']                = 'glpi_itilfollowuptemplates';
+        $actions['followup_template']['force_actions']        = ['assign'];
 
         return $actions;
     }
