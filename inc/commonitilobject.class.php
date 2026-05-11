@@ -1271,20 +1271,9 @@ abstract class CommonITILObject extends CommonDBTM
             $this->input = $this->addFiles($this->input, $options);
         }
 
-        // Handle deferred solution addition (for solution templates added by rule)
-        if (isset($this->input['_solutiontemplates_id'])) {
-            $template = new SolutionTemplate();
-            if ($template->getFromDB($this->input['_solutiontemplates_id'])) {
-                $solution = new ITILSolution();
-                $solution->add([
-                   "itemtype" => static::getType(),
-                   "solutiontypes_id" => $template->fields['solutiontypes_id'],
-                   "content" => Toolbox::addslashes_deep($template->fields['content']),
-                   "status" => CommonITILValidation::WAITING,
-                   "items_id" => $this->fields['id']
-                ]);
-            }
-        }
+        $this->addSolutionFromTemplate();
+        $this->addTasksFromTemplates();
+        $this->addFollowupFromTemplate();
     }
 
 
@@ -2076,49 +2065,9 @@ abstract class CommonITILObject extends CommonDBTM
 
     public function post_addItem()
     {
-
-        // Add tasks in tasktemplates if defined in itiltemplate
-        if (
-            isset($this->input['_tasktemplates_id'])
-            && is_array($this->input['_tasktemplates_id'])
-            && count($this->input['_tasktemplates_id'])
-        ) {
-            $tasktemplate = new TaskTemplate();
-            $itiltask_class = $this->getType() . 'Task';
-            $itiltask   = new $itiltask_class();
-            foreach ($this->input['_tasktemplates_id'] as $tasktemplates_id) {
-                $tasktemplate->getFromDB($tasktemplates_id);
-                $tasktemplate_content = Toolbox::addslashes_deep($tasktemplate->fields["content"]);
-                $itiltask->add([
-                   'tasktemplates_id'            => $tasktemplates_id,
-                   'content'                     => $tasktemplate_content,
-                   'taskcategories_id'           => $tasktemplate->fields['taskcategories_id'],
-                   'actiontime'                  => $tasktemplate->fields['actiontime'],
-                   'state'                       => $tasktemplate->fields['state'],
-                   $this->getForeignKeyField()   => $this->fields['id'],
-                   'date'                        => $this->fields['date'],
-                   'is_private'                  => $tasktemplate->fields['is_private'],
-                   'users_id_tech'               => $tasktemplate->fields['users_id_tech'],
-                   'groups_id_tech'              => $tasktemplate->fields['groups_id_tech'],
-                   '_disablenotif'               => true
-                ]);
-            }
-        }
-
-        // Handle deferred solution addition (for solution templates added by rule)
-        if (isset($this->input['_solutiontemplates_id'])) {
-            $template = new SolutionTemplate();
-            if ($template->getFromDB($this->input['_solutiontemplates_id'])) {
-                $solution = new ITILSolution();
-                $solution->add([
-                   "itemtype" => static::getType(),
-                   "solutiontypes_id" => $template->fields['solutiontypes_id'],
-                   "content" => Toolbox::addslashes_deep($template->fields['content']),
-                   "status" => CommonITILValidation::WAITING,
-                   "items_id" => $this->fields['id']
-                ]);
-            }
-        }
+        $this->addTasksFromTemplates();
+        $this->addFollowupFromTemplate();
+        $this->addSolutionFromTemplate();
 
         // Add document if needed, without notification for file input
         $this->input = $this->addFiles($this->input, ['force_update' => true]);
@@ -2410,6 +2359,86 @@ abstract class CommonITILObject extends CommonDBTM
 
         // Additional actors
         $this->addAdditionalActors($this->input);
+    }
+
+    private function addSolutionFromTemplate(): void
+    {
+        if (!isset($this->input['_solutiontemplates_id'])) {
+            return;
+        }
+
+        $template = new SolutionTemplate();
+        if (!$template->getFromDB($this->input['_solutiontemplates_id'])) {
+            return;
+        }
+
+        $solution = new ITILSolution();
+        $solution->add([
+           "itemtype" => static::getType(),
+           "solutiontypes_id" => $template->fields['solutiontypes_id'],
+           "content" => Toolbox::addslashes_deep($template->fields['content']),
+           "status" => CommonITILValidation::WAITING,
+           "items_id" => $this->fields['id']
+        ]);
+    }
+
+    private function addTasksFromTemplates(): void
+    {
+        // Add tasks from templates if defined in ITIL template or ticket rules.
+        if (
+            !isset($this->input['_tasktemplates_id'])
+            || !is_array($this->input['_tasktemplates_id'])
+            || !count($this->input['_tasktemplates_id'])
+        ) {
+            return;
+        }
+
+        $tasktemplate = new TaskTemplate();
+        $itiltask_class = $this->getType() . 'Task';
+        $itiltask = new $itiltask_class();
+
+        foreach ($this->input['_tasktemplates_id'] as $tasktemplates_id) {
+            if (!$tasktemplate->getFromDB($tasktemplates_id)) {
+                continue;
+            }
+
+            $tasktemplate_content = Toolbox::addslashes_deep($tasktemplate->fields["content"]);
+            $itiltask->add([
+               'tasktemplates_id'            => $tasktemplates_id,
+               'content'                     => $tasktemplate_content,
+               'taskcategories_id'           => $tasktemplate->fields['taskcategories_id'],
+               'actiontime'                  => $tasktemplate->fields['actiontime'],
+               'state'                       => $tasktemplate->fields['state'],
+               $this->getForeignKeyField()   => $this->fields['id'],
+               'date'                        => $this->fields['date'],
+               'is_private'                  => $tasktemplate->fields['is_private'],
+               'users_id_tech'               => $tasktemplate->fields['users_id_tech'],
+               'groups_id_tech'              => $tasktemplate->fields['groups_id_tech'],
+               '_disablenotif'               => true
+            ]);
+        }
+    }
+
+    private function addFollowupFromTemplate(): void
+    {
+        if (!isset($this->input['_itilfollowuptemplates_id'])) {
+            return;
+        }
+
+        $template = new ITILFollowupTemplate();
+        if (!$template->getFromDB($this->input['_itilfollowuptemplates_id'])) {
+            return;
+        }
+
+        $followup = new ITILFollowup();
+        $followup->add([
+           'itemtype'        => static::getType(),
+           'items_id'        => $this->fields['id'],
+           'content'         => Toolbox::addslashes_deep($template->fields['content']),
+           'requesttypes_id' => $template->fields['requesttypes_id'],
+           'is_private'      => $template->fields['is_private'],
+           '_disablenotif'   => true
+        ]);
     }
 
     /**
