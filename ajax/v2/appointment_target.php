@@ -13,10 +13,10 @@ if (!Appointment::canView()) {
 }
 
 $offset = isset($_GET['offset']) ? max(0, (int) $_GET['offset']) : 0;
-$limit  = isset($_GET['limit']) ? max(1, (int) $_GET['limit']) : (int) $_SESSION['glpilist_limit'];
+$limit = isset($_GET['limit']) ? max(1, (int) $_GET['limit']) : (int) $_SESSION['glpilist_limit'];
 $search = trim((string) ($_GET['search'] ?? ''));
-$sort   = (string) ($_GET['sort'] ?? 'target');
-$order  = strtolower((string) ($_GET['order'] ?? 'asc')) === 'desc' ? 'DESC' : 'ASC';
+$sort = (string) ($_GET['sort'] ?? 'target');
+$order = strtolower((string) ($_GET['order'] ?? 'asc')) === 'desc' ? 'DESC' : 'ASC';
 
 $total = 0;
 $rows = [];
@@ -32,44 +32,44 @@ foreach (['Group', 'User'] as $itemtype) {
     $itemtable = getTableForItemType($itemtype);
     $itemname = $item->getNameField();
     $where = [
-       AppointmentTarget::getTable() . '.itemtype' => $itemtype,
-       AppointmentTarget::getTable() . '.is_active' => 1,
-       AppointmentTarget::getTable() . '.is_deleted' => 0,
+        AppointmentTarget::getTable() . '.itemtype' => $itemtype,
+        AppointmentTarget::getTable() . '.is_active' => 1,
+        AppointmentTarget::getTable() . '.is_deleted' => 0,
     ] + getEntitiesRestrictCriteria(AppointmentTarget::getTable(), 'entities_id', $_SESSION['glpiactiveentities'], true);
 
     if ($search !== '') {
         $like = Search::makeTextSearchValue($search);
         $where[] = [
-           'OR' => [
-              "$itemtable.$itemname" => ['LIKE', $like],
-              'glpi_entities.completename' => ['LIKE', $like],
-              AppointmentTarget::getTable() . '.comment' => ['LIKE', $like],
-              AppointmentTarget::getTable() . '.itemtype' => ['LIKE', $like],
-           ],
+            'OR' => [
+                "$itemtable.$itemname" => ['LIKE', $like],
+                'glpi_entities.completename' => ['LIKE', $like],
+                AppointmentTarget::getTable() . '.comment' => ['LIKE', $like],
+                AppointmentTarget::getTable() . '.itemtype' => ['LIKE', $like],
+            ],
         ];
     }
 
     $joins = [
-       $itemtable => [
-          'ON' => [
-             AppointmentTarget::getTable() => 'items_id',
-             $itemtable => 'id',
-          ],
-       ],
-       'glpi_entities' => [
-          'ON' => [
-             AppointmentTarget::getTable() => 'entities_id',
-             'glpi_entities' => 'id',
-          ],
-       ],
+        $itemtable => [
+            'ON' => [
+                AppointmentTarget::getTable() => 'items_id',
+                $itemtable => 'id',
+            ],
+        ],
+        'glpi_entities' => [
+            'ON' => [
+                AppointmentTarget::getTable() => 'entities_id',
+                'glpi_entities' => 'id',
+            ],
+        ],
     ];
 
     $count = $DB->request([
-       'SELECT' => ['COUNT' => AppointmentTarget::getTable() . '.id AS cpt'],
-       'FROM' => AppointmentTarget::getTable(),
-       'INNER JOIN' => [$itemtable => $joins[$itemtable]],
-       'LEFT JOIN' => ['glpi_entities' => $joins['glpi_entities']],
-       'WHERE' => $where,
+        'SELECT' => ['COUNT' => AppointmentTarget::getTable() . '.id AS cpt'],
+        'FROM' => AppointmentTarget::getTable(),
+        'INNER JOIN' => [$itemtable => $joins[$itemtable]],
+        'LEFT JOIN' => ['glpi_entities' => $joins['glpi_entities']],
+        'WHERE' => $where,
     ])->next();
     $type_total = (int) ($count['cpt'] ?? 0);
     $total += $type_total;
@@ -90,18 +90,18 @@ foreach (['Group', 'User'] as $itemtype) {
     }
 
     $iterator = $DB->request([
-       'SELECT' => [
-          AppointmentTarget::getTable() . '.*',
-          "$itemtable.$itemname AS target_name",
-          'glpi_entities.completename AS entity_name',
-       ],
-       'FROM' => AppointmentTarget::getTable(),
-       'INNER JOIN' => [$itemtable => $joins[$itemtable]],
-       'LEFT JOIN' => ['glpi_entities' => $joins['glpi_entities']],
-       'WHERE' => $where,
-       'ORDERBY' => [$order_field . ' ' . $order, AppointmentTarget::getTable() . '.id'],
-       'START' => $remaining_offset,
-       'LIMIT' => $remaining_limit,
+        'SELECT' => [
+            AppointmentTarget::getTable() . '.*',
+            "$itemtable.$itemname AS target_name",
+            'glpi_entities.completename AS entity_name',
+        ],
+        'FROM' => AppointmentTarget::getTable(),
+        'INNER JOIN' => [$itemtable => $joins[$itemtable]],
+        'LEFT JOIN' => ['glpi_entities' => $joins['glpi_entities']],
+        'WHERE' => $where,
+        'ORDERBY' => [$order_field . ' ' . $order, AppointmentTarget::getTable() . '.id'],
+        'START' => $remaining_offset,
+        'LIMIT' => $remaining_limit,
     ]);
 
     $before = count($rows);
@@ -116,9 +116,9 @@ foreach (['Group', 'User'] as $itemtype) {
         $target .= "<span>" . Html::clean($row['target_name']) . "</span></a>";
 
         $rows[] = [
-           'target' => $target,
-           'entity' => Html::clean($row['entity_name']),
-           'comment' => Html::clean($row['comment']),
+            'target' => $target,
+            'entity' => Html::clean($row['entity_name']),
+            'comment' => Html::clean($row['comment']),
         ];
     }
 
@@ -127,6 +127,6 @@ foreach (['Group', 'User'] as $itemtype) {
 }
 
 echo json_encode([
-   'total' => $total,
-   'rows' => $rows,
+    'total' => $total,
+    'rows' => $rows,
 ]);
