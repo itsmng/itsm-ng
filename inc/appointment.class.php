@@ -61,7 +61,7 @@ class Appointment extends CommonDBTM
 
     public function canPurgeItem()
     {
-        return Session::haveRight(self::$rightname, UPDATE)
+        return (Session::haveRightsOr(self::$rightname, [UPDATE, PURGE]) && parent::canPurgeItem())
             || (
                 isset($this->fields['users_id_requester'])
                 && (int)$this->fields['users_id_requester'] === (int)Session::getLoginUserID()
@@ -342,6 +342,10 @@ class Appointment extends CommonDBTM
                 Html::displayNotFoundError();
                 return false;
             }
+            if (!$target->canAccessEntity()) {
+                Html::displayRightError();
+                return false;
+            }
             $title = AppointmentTarget::getTargetLabel($target->fields);
             $can_book = self::canCreate();
         }
@@ -399,12 +403,12 @@ class Appointment extends CommonDBTM
 
     public function showForm($ID, $options = [])
     {
-        if (!self::canCreate()) {
+        $is_new = $this->isNewID($ID);
+        if ($is_new && !self::canCreate()) {
             return false;
         }
 
         $this->initForm($ID, $options);
-        $is_new = $this->isNewID($ID);
         $canedit = $is_new ? self::canCreate() : $this->can($ID, UPDATE);
         if ($is_new) {
             $this->fields['appointmenttargets_id'] = $options['appointmenttargets_id'] ?? 0;
