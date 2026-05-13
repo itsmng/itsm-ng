@@ -79,13 +79,13 @@ abstract class NotificationEventAbstract
             );
 
             static::extraRaise([
-               'event'              => $event,
-               'item'               => $item,
-               'options'            => $options,
-               'data'               => $data,
-               'notificationtarget' => $notificationtarget,
-               'template'           => $template,
-               'notify_me'          => $notify_me
+                'event' => $event,
+                'item' => $item,
+                'options' => $options,
+                'data' => $data,
+                'notificationtarget' => $notificationtarget,
+                'template' => $template,
+                'notify_me' => $notify_me
             ]);
 
             // get original timezone
@@ -100,17 +100,17 @@ abstract class NotificationEventAbstract
                     $key = $users_infos[static::getTargetFieldName()];
                     if (
                         $label
-                          || $notificationtarget->validateSendTo($event, $users_infos, $notify_me, $emitter)
+                        || $notificationtarget->validateSendTo($event, $users_infos, $notify_me, $emitter)
                     ) {
                         //If the user have not yet been notified
                         if (!isset($processed[$users_infos['language']][$key])) {
                             //If ther user's language is the same as the template's one
                             if (
                                 isset($notprocessed[$users_infos['language']]
-                                                          [$key])
+                                [$key])
                             ) {
                                 unset($notprocessed[$users_infos['language']]
-                                                           [$key]);
+                                [$key]);
                             }
                             $options['item'] = $item;
 
@@ -143,19 +143,19 @@ abstract class NotificationEventAbstract
                                         $options
                                     );
                                     $send_data['_notificationtemplates_id'] = $data['notificationtemplates_id'];
-                                    $send_data['_itemtype']                 = $item->getType();
-                                    $send_data['_items_id']                 = method_exists($item, "getID")
-                                       ? $item->getID()
-                                       : 0;
-                                    $send_data['_entities_id']              = $entity;
-                                    $send_data['mode']                      = $data['mode'];
+                                    $send_data['_itemtype'] = $item->getType();
+                                    $send_data['_items_id'] = method_exists($item, "getID")
+                                        ? $item->getID()
+                                        : 0;
+                                    $send_data['_entities_id'] = $entity;
+                                    $send_data['mode'] = $data['mode'];
                                     $input = [];
                                     if (property_exists($item, 'input') && is_array($item->input)) {
                                         $input = $item->input;
                                     }
-                                    $send_data['_locations_id']             = $input['locations_id'] ?? null;
-                                    $send_data['_groups_id']                = $input['_groups_id_requester'] ?? null;
-                                    $send_data['_itilcategories_id']        = $input['itilcategories_id'] ?? null;
+                                    $send_data['_locations_id'] = $input['locations_id'] ?? null;
+                                    $send_data['_groups_id'] = $input['_groups_id_requester'] ?? null;
+                                    $send_data['_itilcategories_id'] = $input['itilcategories_id'] ?? null;
 
                                     if (array_key_exists('chat', $users_infos)) {
                                         Notification::sendChat($send_data);
@@ -177,10 +177,10 @@ abstract class NotificationEventAbstract
                                     echo "</tr>";
                                 }
                                 $processed[$users_infos['language']][$key]
-                                                                          = $users_infos;
+                                    = $users_infos;
                             } else {
                                 $notprocessed[$users_infos['language']][$key]
-                                                                             = $users_infos;
+                                    = $users_infos;
                             }
                         }
                     }
