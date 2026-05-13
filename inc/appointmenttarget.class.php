@@ -43,6 +43,12 @@ class AppointmentTarget extends CommonDBTM
         return Session::haveRight(self::$rightname, UPDATE);
     }
 
+    public function canAccessEntity()
+    {
+        return isset($this->fields['entities_id'])
+            && Session::haveAccessToEntity($this->fields['entities_id'], $this->fields['is_recursive'] ?? 0);
+    }
+
     public static function getForbiddenActionsForMenu()
     {
         return ['add'];

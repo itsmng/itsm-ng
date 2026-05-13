@@ -44,17 +44,20 @@ class AppointmentAvailabilityException extends CommonDBChild
 
     public function canUpdateItem()
     {
-        return Session::haveRight(self::$rightname, UPDATE);
+        return Session::haveRight(self::$rightname, UPDATE)
+            && parent::canUpdateItem();
     }
 
     public function canDeleteItem()
     {
-        return Session::haveRight(self::$rightname, UPDATE);
+        return Session::haveRight(self::$rightname, UPDATE)
+            && parent::canDeleteItem();
     }
 
     public function canPurgeItem()
     {
-        return Session::haveRight(self::$rightname, UPDATE);
+        return Session::haveRight(self::$rightname, UPDATE)
+            && parent::canPurgeItem();
     }
 
     public function isEntityAssign()
@@ -64,6 +67,11 @@ class AppointmentAvailabilityException extends CommonDBChild
 
     public function prepareInputForAdd($input)
     {
+        $input = parent::prepareInputForAdd($input);
+        if ($input === false || !$this->canAccessTargetFromInput($input)) {
+            return false;
+        }
+
         if (empty($input['plan'])) {
             return false;
         }
@@ -77,6 +85,11 @@ class AppointmentAvailabilityException extends CommonDBChild
 
     public function prepareInputForUpdate($input)
     {
+        $input = parent::prepareInputForUpdate($input);
+        if ($input === false || !$this->canAccessTargetFromInput($input)) {
+            return false;
+        }
+
         if (isset($input['plan'])) {
             Toolbox::manageBeginAndEndPlanDates($input['plan']);
             $input['begin'] = $input['plan']['begin'];
@@ -84,6 +97,22 @@ class AppointmentAvailabilityException extends CommonDBChild
             unset($input['plan']);
         }
         return $input;
+    }
+
+    private function canAccessTargetFromInput(array $input)
+    {
+        $appointmenttargets_id = (int)($input[self::$items_id] ?? $this->fields[self::$items_id] ?? 0);
+        if ($appointmenttargets_id <= 0) {
+            return false;
+        }
+
+        $target = new AppointmentTarget();
+        if (!$target->getFromDB($appointmenttargets_id) || !$target->canAccessEntity()) {
+            Session::addMessageAfterRedirect(__('Appointment target is not available'), false, ERROR);
+            return false;
+        }
+
+        return true;
     }
 
     public static function showForTarget($appointmenttargets_id)

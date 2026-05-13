@@ -27,6 +27,9 @@ function appointment_ajax_get_schedule_events($appointmenttargets_id, $start, $e
     if (!$target->getFromDB($appointmenttargets_id)) {
         return $events;
     }
+    if (!$target->canAccessEntity()) {
+        return $events;
+    }
 
     $days = Toolbox::getDaysOfWeekArray();
     $availabilities = $DB->request([

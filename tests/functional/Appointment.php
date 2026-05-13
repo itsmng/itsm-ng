@@ -175,6 +175,66 @@ class Appointment extends \DbTestCase
         ))->isFalse();
     }
 
+    public function testAvailabilityExceptionRejectsInaccessibleTargetOnAdd()
+    {
+        $this->login();
+        $this->setEntity('_test_root_entity', true);
+        $target_entity_id = getItemByTypeName('Entity', '_test_child_2', true);
+        [, $appointmenttargets_id] = $this->createGroupTarget($target_entity_id, 0);
+
+        $this->setEntity('_test_child_1', false);
+
+        $exception = new \AppointmentAvailabilityException();
+        $this->boolean($exception->add([
+           'appointmenttargets_id' => $appointmenttargets_id,
+           'plan'                  => [
+              'begin' => '2030-01-07 10:30:00',
+              'end'   => '2030-01-07 10:45:00',
+           ],
+           'is_available'          => 0,
+        ]) === false)->isTrue();
+        $this->hasSessionMessages(ERROR, [
+           'Appointment target is not available',
+        ]);
+    }
+
+    public function testAvailabilityExceptionRejectsInaccessibleTargetOnUpdateRights()
+    {
+        $this->login();
+        $this->setEntity('_test_root_entity', true);
+        $target_entity_id = getItemByTypeName('Entity', '_test_child_2', true);
+        [, $appointmenttargets_id] = $this->createGroupTarget($target_entity_id, 0);
+
+        $exception = new \AppointmentAvailabilityException();
+        $exceptions_id = (int)$exception->add([
+           'appointmenttargets_id' => $appointmenttargets_id,
+           'plan'                  => [
+              'begin' => '2030-01-07 10:30:00',
+              'end'   => '2030-01-07 10:45:00',
+           ],
+           'is_available'          => 0,
+        ]);
+        $this->integer($exceptions_id)->isGreaterThan(0);
+
+        $this->setEntity('_test_child_1', false);
+
+        $restricted_exception = new \AppointmentAvailabilityException();
+        $this->boolean($restricted_exception->getFromDB($exceptions_id))->isTrue();
+        $this->boolean($restricted_exception->canUpdateItem())->isFalse();
+        $this->boolean($restricted_exception->canDeleteItem())->isFalse();
+        $this->boolean($restricted_exception->canPurgeItem())->isFalse();
+        $this->boolean($restricted_exception->update([
+           'id'   => $exceptions_id,
+           'plan' => [
+              'begin' => '2030-01-07 11:30:00',
+              'end'   => '2030-01-07 11:45:00',
+           ],
+        ]))->isFalse();
+        $this->hasSessionMessages(ERROR, [
+           'Appointment target is not available',
+        ]);
+    }
+
     public function testAddCompletesTargetFields()
     {
         $this->login();

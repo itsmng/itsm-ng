@@ -2,7 +2,7 @@
 
 include('../inc/includes.php');
 
-Session::checkRight('appointment', CREATE);
+Session::checkLoginUser();
 
 $appointment = new Appointment();
 if (isset($_POST['add'])) {
