@@ -1594,6 +1594,7 @@ class Html
 
         // AJAX library
         echo Html::script('public/lib/base.js');
+        echo Html::script("node_modules/ckeditor5/dist/browser/ckeditor5.umd.js");
 
         // Locales
         $locales_domains = ['glpi' => ITSM_VERSION]; // base domain
@@ -2062,7 +2063,6 @@ JAVASCRIPT
         echo Html::script("vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js");
         echo Html::script("src/ngFunctions.js");
         echo Html::script("node_modules/gridstack/dist/gridstack-all.js");
-        echo Html::script("node_modules/ckeditor5/dist/browser/ckeditor5.umd.js");
         echo "</body></html>";
         if (!$keepDB) {
             closeDBConnections();
