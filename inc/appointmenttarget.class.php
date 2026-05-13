@@ -27,9 +27,9 @@ class AppointmentTarget extends CommonDBTM
         }
 
         return [
-           'title' => static::getMenuName(),
-           'page'  => $CFG_GLPI['root_doc'] . '/front/appointment.php',
-           'icon'  => Appointment::getIcon(),
+            'title' => static::getMenuName(),
+            'page' => $CFG_GLPI['root_doc'] . '/front/appointment.php',
+            'icon' => Appointment::getIcon(),
         ];
     }
 
@@ -57,7 +57,7 @@ class AppointmentTarget extends CommonDBTM
         }
 
         return [
-           'showall' => $CFG_GLPI['root_doc'] . '/front/appointment.php'
+            'showall' => $CFG_GLPI['root_doc'] . '/front/appointment.php'
         ];
     }
 
@@ -86,8 +86,8 @@ class AppointmentTarget extends CommonDBTM
     public function getFromDBByItem($itemtype, $items_id)
     {
         return $this->getFromDBByCrit([
-           'itemtype' => $itemtype,
-           'items_id' => $items_id,
+            'itemtype' => $itemtype,
+            'items_id' => $items_id,
         ]);
     }
 
@@ -103,7 +103,7 @@ class AppointmentTarget extends CommonDBTM
 
     private function prepareEntityInput(array $input)
     {
-        if (!isset($input['entities_id']) || (int)$input['entities_id'] < 0) {
+        if (!isset($input['entities_id']) || (int) $input['entities_id'] < 0) {
             $input['entities_id'] = $_SESSION['glpiactive_entity'] ?? 0;
         }
 
@@ -117,9 +117,9 @@ class AppointmentTarget extends CommonDBTM
     public function cleanDBonPurge()
     {
         $this->deleteChildrenAndRelationsFromDb([
-           Appointment::class,
-           AppointmentAvailability::class,
-           AppointmentAvailabilityException::class,
+            Appointment::class,
+            AppointmentAvailability::class,
+            AppointmentAvailabilityException::class,
         ]);
     }
 
@@ -149,8 +149,8 @@ class AppointmentTarget extends CommonDBTM
                 'update',
                 $target->fields['is_active'] ? __('Make unavailable') : __('Make available'),
                 [
-                  'id'        => $target->fields['id'],
-                  'is_active' => $target->fields['is_active'] ? 0 : 1,
+                    'id' => $target->fields['id'],
+                    'is_active' => $target->fields['is_active'] ? 0 : 1,
                 ]
             );
             echo "</div><div>";
@@ -171,13 +171,13 @@ class AppointmentTarget extends CommonDBTM
                 'add',
                 __('Authorize appointments'),
                 [
-                  'itemtype'     => $item->getType(),
-                  'items_id'     => $item->getID(),
-                  'entities_id'  => method_exists($item, 'getEntityID') && $item->getEntityID() >= 0
-                     ? $item->getEntityID()
-                     : $_SESSION['glpiactive_entity'],
-                  'is_recursive' => method_exists($item, 'isRecursive') ? (int)$item->isRecursive() : 0,
-                  'is_active'    => 1,
+                    'itemtype' => $item->getType(),
+                    'items_id' => $item->getID(),
+                    'entities_id' => method_exists($item, 'getEntityID') && $item->getEntityID() >= 0
+                        ? $item->getEntityID()
+                        : $_SESSION['glpiactive_entity'],
+                    'is_recursive' => method_exists($item, 'isRecursive') ? (int) $item->isRecursive() : 0,
+                    'is_active' => 1,
                 ]
             );
             echo "</div>";
@@ -203,11 +203,11 @@ class AppointmentTarget extends CommonDBTM
             echo "</div>";
 
             $options = [
-               'appointmenttargets_id' => (int)$target->fields['id'],
-               'ajax_url'              => $CFG_GLPI['root_doc'] . '/ajax/v2/appointment.php',
-               'planning_begin'         => $CFG_GLPI['planning_begin'] ?? '08:00:00',
-               'planning_end'           => $CFG_GLPI['planning_end'] ?? '20:00:00',
-               'initial_date'           => date('Y-m-d'),
+                'appointmenttargets_id' => (int) $target->fields['id'],
+                'ajax_url' => $CFG_GLPI['root_doc'] . '/ajax/v2/appointment.php',
+                'planning_begin' => $CFG_GLPI['planning_begin'] ?? '08:00:00',
+                'planning_end' => $CFG_GLPI['planning_end'] ?? '20:00:00',
+                'initial_date' => date('Y-m-d'),
             ];
             echo Html::scriptBlock('$(function() { ITSMAppointmentCalendar.displayTargetManager(' . json_encode($options) . '); });');
         }
@@ -246,29 +246,29 @@ class AppointmentTarget extends CommonDBTM
     {
         $tab = [];
         $tab[] = [
-           'id'       => 'common',
-           'name'     => __('Characteristics')
+            'id' => 'common',
+            'name' => __('Characteristics')
         ];
         $tab[] = [
-           'id'       => 1,
-           'table'    => $this->getTable(),
-           'field'    => 'itemtype',
-           'name'     => __('Item type'),
-           'datatype' => 'string'
+            'id' => 1,
+            'table' => $this->getTable(),
+            'field' => 'itemtype',
+            'name' => __('Item type'),
+            'datatype' => 'string'
         ];
         $tab[] = [
-           'id'       => 2,
-           'table'    => $this->getTable(),
-           'field'    => 'is_active',
-           'name'     => __('Active'),
-           'datatype' => 'bool'
+            'id' => 2,
+            'table' => $this->getTable(),
+            'field' => 'is_active',
+            'name' => __('Active'),
+            'datatype' => 'bool'
         ];
         $tab[] = [
-           'id'       => 80,
-           'table'    => 'glpi_entities',
-           'field'    => 'completename',
-           'name'     => Entity::getTypeName(1),
-           'datatype' => 'dropdown'
+            'id' => 80,
+            'table' => 'glpi_entities',
+            'field' => 'completename',
+            'name' => Entity::getTypeName(1),
+            'datatype' => 'dropdown'
         ];
         return $tab;
     }
