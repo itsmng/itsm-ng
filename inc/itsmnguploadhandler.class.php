@@ -211,20 +211,48 @@ class ItsmngUploadHandler
             $name = $file['name'];
         }
         $doc = new Document();
-        $newDoc['filepath'] = ItsmngUploadHandler::uploadFile(
-            $file['path'],
-            $file['name'],
-            ItsmngUploadHandler::UPLOAD
-        );
-        $newDoc['filename'] = $file['name'];
         $newDoc['name'] = $name;
-        $newDoc['mime'] = $file['format'];
-        $doc->add($newDoc);
+        $newDoc['_uploaded_file'] = self::getUploadedFileDescriptor($file);
+        if ($newDoc['_uploaded_file'] !== false) {
+            $doc->add($newDoc);
+        }
         return $doc;
+    }
+
+    public static function getUploadedFileDescriptor(array $file)
+    {
+        $path = $file['path'] ?? '';
+        $realpath = realpath($path);
+        $tmp_dir = realpath(GLPI_TMP_DIR);
+
+        if (
+            $realpath === false
+            || $tmp_dir === false
+            || !is_file($realpath)
+            || !Toolbox::startsWith($realpath, $tmp_dir . DIRECTORY_SEPARATOR)
+        ) {
+            Session::addMessageAfterRedirect(
+                __('Invalid uploaded file'),
+                false,
+                ERROR
+            );
+            return false;
+        }
+
+        return [
+            'name'     => $file['name'] ?? basename($realpath),
+            'tmp_name' => $realpath,
+            'type'     => $file['format'] ?? '',
+            'error'    => UPLOAD_ERR_OK,
+        ];
     }
 
     public static function linkDocToItem($id, $entity, $isRecursive, $itemType, $itemId, $userId)
     {
+        if ((int) $id <= 0) {
+            return;
+        }
+
         $docItem = new Document_Item();
         $docItem->add([
             'documents_id' => $id,

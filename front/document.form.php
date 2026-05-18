@@ -115,12 +115,7 @@ if (isset($_POST["add"])) {
 
     if ((isset($_POST['files']) && $_POST['files'] != '[]')) {
         $file = json_decode(stripslashes($_POST['files']), true)[0];
-        $_POST['filename'] = $file['name'];
-        $_POST['filepath'] = ItsmngUploadHandler::uploadFile(
-            $file['path'],
-            $file['name'],
-            ItsmngUploadHandler::UPLOAD
-        );
+        $_POST['_uploaded_file'] = ItsmngUploadHandler::getUploadedFileDescriptor($file);
     }
     if ($doc->update($_POST)) {
         Event::log(

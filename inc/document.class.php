@@ -50,11 +50,18 @@ class Document extends CommonDBTM
     public static $rightname                   = 'document';
     public static $tag_prefix                  = '#';
     protected $usenotepad               = true;
+    private $file_copy_source = null;
 
 
     public static function getTypeName($nb = 0)
     {
         return _n('Document', 'Documents', $nb);
+    }
+
+
+    public function setFileCopySource(Document $source): void
+    {
+        $this->file_copy_source = $source;
     }
 
 
@@ -216,13 +223,22 @@ class Document extends CommonDBTM
     {
         global $CFG_GLPI;
 
-        // security (don't accept filename from $_REQUEST)
-        if (array_key_exists('filename', $_REQUEST)) {
-            unset($input['filename']);
-        }
+        $input = $this->filterFields($input);
+
+        // current_filename is not necessary for a new item, but keeping a
+        // request-provided value can lead to wrong file deletion in move*().
+        $input['current_filename'] = '';
 
         if ($uid = Session::getLoginUserID()) {
             $input["users_id"] = Session::getLoginUserID();
+        }
+
+        if ($this->file_copy_source instanceof self) {
+            $input['filename'] = $this->file_copy_source->fields['filename'];
+            $input['filepath'] = $this->file_copy_source->fields['filepath'];
+            $input['sha1sum']  = $this->file_copy_source->fields['sha1sum'];
+            $input['mime']     = $this->file_copy_source->fields['mime'];
+            $this->file_copy_source = null;
         }
 
         // Create a doc only selecting a file from a item form
@@ -252,14 +268,13 @@ class Document extends CommonDBTM
         }
 
         $upload_ok = false;
-        if (isset($input["_filename"]) && !(empty($input["_filename"]) == 1)) {
+        if (isset($input['_uploaded_file']) && is_array($input['_uploaded_file'])) {
+            $upload_ok = $this->uploadDocument($input, $input['_uploaded_file']);
+        } elseif (isset($input["_filename"]) && !(empty($input["_filename"]) == 1)) {
             $upload_ok = $this->moveDocument($input, stripslashes((string) array_shift($input["_filename"])));
         } elseif (isset($input["upload_file"]) && !empty($input["upload_file"])) {
             // Move doc from upload dir
             $upload_ok = $this->moveUploadedDocument($input, $input["upload_file"]);
-        } elseif (isset($input['filepath']) && file_exists(GLPI_DOC_DIR . '/' . $input['filepath'])) {
-            // Document is created using an existing document file
-            $upload_ok = true;
         }
 
         // Tag
@@ -285,6 +300,7 @@ class Document extends CommonDBTM
         }
 
         unset($input["upload_file"]);
+        unset($input['_uploaded_file']);
 
         // Don't add if no file
         if (
@@ -374,14 +390,22 @@ class Document extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
+        $input = $this->filterFields($input);
 
-        // security (don't accept filename from $_REQUEST)
-        if (array_key_exists('filename', $_REQUEST)) {
-            unset($input['filename']);
-        }
+        if (
+            isset($input['current_filepath'])
+            || isset($input['_uploaded_file'])
+            || isset($input['_filename'])
+            || isset($input['upload_file'])
+        ) {
+            // Always use the values stored in DB to prevent arbitrary file
+            // deletion or replacement using request-controlled paths.
+            $input['current_filepath'] = $this->fields['filepath'];
+            $input['current_filename'] = $this->fields['filename'];
 
-        if (isset($input['current_filepath'])) {
-            if (isset($input["_filename"]) && !empty($input["_filename"]) == 1) {
+            if (isset($input['_uploaded_file']) && is_array($input['_uploaded_file'])) {
+                $this->uploadDocument($input, $input['_uploaded_file']);
+            } elseif (isset($input["_filename"]) && !empty($input["_filename"]) == 1) {
                 $this->moveDocument($input, stripslashes((string) array_shift($input["_filename"])));
             } elseif (isset($input["upload_file"]) && !empty($input["upload_file"])) {
                 // Move doc from upload dir
@@ -391,6 +415,7 @@ class Document extends CommonDBTM
 
         unset($input['current_filepath']);
         unset($input['current_filename']);
+        unset($input['_uploaded_file']);
 
         if (isset($input['link']) && !empty($input['link'])  && !Toolbox::isValidWebUrl($input['link'])) {
             Session::addMessageAfterRedirect(
@@ -404,6 +429,26 @@ class Document extends CommonDBTM
         return $input;
     }
 
+    /**
+     * Remove fields that must only be produced by server-side upload handling.
+     *
+     * @param array<string, mixed> $input
+     * @return array<string, mixed>
+    **/
+    private function filterFields(array $input): array
+    {
+        if (array_key_exists('filename', $_REQUEST)) {
+            unset($input['filename']);
+        }
+
+        foreach (['filepath', 'sha1sum'] as $field) {
+            if (array_key_exists($field, $input)) {
+                unset($input[$field]);
+            }
+        }
+
+        return $input;
+    }
 
     /**
      * Print the document form

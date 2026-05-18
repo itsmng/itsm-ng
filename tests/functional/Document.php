@@ -112,16 +112,17 @@ class Document extends DbTestCase
 
         $doc = $this->newTestedInstance;
         $this->array($this->testedInstance->prepareInputForAdd($input))
-           ->hasSize(3)
-           ->hasKeys(['tag', 'filename', 'name'])
+           ->hasSize(4)
+           ->hasKeys(['tag', 'filename', 'name', 'current_filename'])
            ->variable['filename']->isEqualTo('A_name.pdf')
-           ->variable['name']->isEqualTo('A_name.pdf');
+           ->variable['name']->isEqualTo('A_name.pdf')
+           ->variable['current_filename']->isEqualTo('');
 
         $this->login();
         $uid = getItemByTypeName('User', TU_USER, true);
         $this->array($this->testedInstance->prepareInputForAdd($input))
-           ->hasSize(4)
-           ->hasKeys(['users_id', 'tag', 'filename', 'name'])
+           ->hasSize(5)
+           ->hasKeys(['users_id', 'tag', 'filename', 'name', 'current_filename'])
            ->variable['users_id']->isEqualTo($uid);
 
         $item = new \Computer();
@@ -142,12 +143,43 @@ class Document extends DbTestCase
         $input['upload_file'] = 'filename.ext';
 
         $this->array($mdoc->prepareInputForAdd($input))
-           ->hasSize(6)
-           ->hasKeys(['users_id', 'tag', 'itemtype', 'items_id', 'filename', 'name'])
+           ->hasSize(7)
+           ->hasKeys(['users_id', 'tag', 'itemtype', 'items_id', 'filename', 'name', 'current_filename'])
            ->variable['users_id']->isEqualTo($uid)
            ->string['itemtype']->isIdenticalTo('Computer')
            ->variable['items_id']->isEqualTo($cid)
            ->string['name']->isIdenticalTo('Document: Computer - Documented Computer');
+    }
+
+    public function testPrepareInputForAddIgnoreBlacklistedFields()
+    {
+        $input = [
+           'name'     => 'legit name',
+           'filepath' => '_dumps/dump.sql',
+           'sha1sum'  => 'bad',
+        ];
+
+        $this->array($this->newTestedInstance->prepareInputForAdd($input))
+           ->notHasKeys(['filepath', 'sha1sum']);
+    }
+
+    public function testPrepareInputForUpdateIgnoreBlacklistedFields()
+    {
+        $doc = $this->newTestedInstance;
+        $doc->fields = [
+           'filepath' => 'TXT/current.txt',
+           'filename' => 'current.txt',
+        ];
+
+        $input = [
+           'id'       => 1,
+           'name'     => 'legit name',
+           'filepath' => '_dumps/dump.sql',
+           'sha1sum'  => 'bad',
+        ];
+
+        $this->array($doc->prepareInputForUpdate($input))
+           ->notHasKeys(['filepath', 'sha1sum']);
     }
 
     /** Cannot work without a real document uploaded.
