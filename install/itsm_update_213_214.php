@@ -55,6 +55,32 @@ function update213to214(): bool
         );
     }
 
+    $migration->displayMessage("Add group restrictions for task and solution templates");
+
+    $DB->queryOrDie(
+        "CREATE TABLE IF NOT EXISTS `glpi_groups_tasktemplates` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `tasktemplates_id` int(11) NOT NULL DEFAULT '0',
+            `groups_id` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `unicity` (`tasktemplates_id`,`groups_id`),
+            KEY `groups_id` (`groups_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci",
+        $DB->error()
+    );
+
+    $DB->queryOrDie(
+        "CREATE TABLE IF NOT EXISTS `glpi_groups_solutiontemplates` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `solutiontemplates_id` int(11) NOT NULL DEFAULT '0',
+            `groups_id` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `unicity` (`solutiontemplates_id`,`groups_id`),
+            KEY `groups_id` (`groups_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci",
+        $DB->error()
+    );
+
     $migration->executeMigration();
     return true;
 }

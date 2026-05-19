@@ -3208,6 +3208,58 @@ LOCK TABLES `glpi_groups_rssfeeds` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `glpi_groups_solutiontemplates`
+--
+
+DROP TABLE IF EXISTS `glpi_groups_solutiontemplates`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `glpi_groups_solutiontemplates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `solutiontemplates_id` int(11) NOT NULL DEFAULT '0',
+  `groups_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unicity` (`solutiontemplates_id`,`groups_id`),
+  KEY `groups_id` (`groups_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `glpi_groups_solutiontemplates`
+--
+
+LOCK TABLES `glpi_groups_solutiontemplates` WRITE;
+/*!40000 ALTER TABLE `glpi_groups_solutiontemplates` DISABLE KEYS */;
+/*!40000 ALTER TABLE `glpi_groups_solutiontemplates` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `glpi_groups_tasktemplates`
+--
+
+DROP TABLE IF EXISTS `glpi_groups_tasktemplates`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `glpi_groups_tasktemplates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tasktemplates_id` int(11) NOT NULL DEFAULT '0',
+  `groups_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unicity` (`tasktemplates_id`,`groups_id`),
+  KEY `groups_id` (`groups_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `glpi_groups_tasktemplates`
+--
+
+LOCK TABLES `glpi_groups_tasktemplates` WRITE;
+/*!40000 ALTER TABLE `glpi_groups_tasktemplates` DISABLE KEYS */;
+/*!40000 ALTER TABLE `glpi_groups_tasktemplates` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `glpi_groups_tickets`
 --
 
