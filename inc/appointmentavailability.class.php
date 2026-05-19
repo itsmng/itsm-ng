@@ -32,6 +32,27 @@ class AppointmentAvailability extends CommonDBChild
         return false;
     }
 
+    public function canUpdateItem()
+    {
+        return Session::haveRight(self::$rightname, UPDATE)
+            && $this->canAccessTarget(false)
+            && parent::canUpdateItem();
+    }
+
+    public function canDeleteItem()
+    {
+        return Session::haveRight(self::$rightname, UPDATE)
+            && $this->canAccessTarget(false)
+            && parent::canDeleteItem();
+    }
+
+    public function canPurgeItem()
+    {
+        return Session::haveRight(self::$rightname, UPDATE)
+            && $this->canAccessTarget(false)
+            && parent::canPurgeItem();
+    }
+
     public static function prepareInputTimes(array $input)
     {
         foreach (['begin', 'end'] as $field) {
@@ -44,12 +65,85 @@ class AppointmentAvailability extends CommonDBChild
 
     public function prepareInputForAdd($input)
     {
-        return self::prepareInputTimes($input);
+        $input = parent::prepareInputForAdd($input);
+        if ($input === false) {
+            return false;
+        }
+
+        $input = self::prepareInputTimes($input);
+        if (!$this->validateInput($input)) {
+            return false;
+        }
+
+        return $input;
     }
 
     public function prepareInputForUpdate($input)
     {
-        return self::prepareInputTimes($input);
+        $input = parent::prepareInputForUpdate($input);
+        if ($input === false) {
+            return false;
+        }
+
+        $normalized = self::prepareInputTimes($input);
+        $candidate = array_merge($this->fields, $normalized);
+        if (!$this->validateInput($candidate)) {
+            return false;
+        }
+
+        return $normalized;
+    }
+
+    private function validateInput(array $input)
+    {
+        $appointmenttargets_id = (int)($input[self::$items_id] ?? 0);
+        if ($appointmenttargets_id <= 0) {
+            return false;
+        }
+
+        if (!$this->canAccessTarget(true, $appointmenttargets_id)) {
+            return false;
+        }
+
+        if (!isset($input['day']) || !array_key_exists((int)$input['day'], Toolbox::getDaysOfWeekArray())) {
+            Session::addMessageAfterRedirect(__('Invalid day'), false, ERROR);
+            return false;
+        }
+
+        foreach (['begin', 'end'] as $field) {
+            if (
+                empty($input[$field])
+                || !preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/', (string)$input[$field])
+            ) {
+                Session::addMessageAfterRedirect(__('Invalid time'), false, ERROR);
+                return false;
+            }
+        }
+
+        if (strtotime((string)$input['begin']) >= strtotime((string)$input['end'])) {
+            Session::addMessageAfterRedirect(__('Error in entering dates. The starting date is later than the ending date'), false, ERROR);
+            return false;
+        }
+
+        return true;
+    }
+
+    private function canAccessTarget(bool $add_message, ?int $appointmenttargets_id = null)
+    {
+        $appointmenttargets_id = $appointmenttargets_id ?? (int)($this->fields[self::$items_id] ?? 0);
+        if ($appointmenttargets_id <= 0) {
+            return false;
+        }
+
+        $target = new AppointmentTarget();
+        if (!$target->getFromDB($appointmenttargets_id) || !$target->canAccessEntity()) {
+            if ($add_message) {
+                Session::addMessageAfterRedirect(__('Appointment target is not available'), false, ERROR);
+            }
+            return false;
+        }
+
+        return true;
     }
 
     public static function showForTarget($appointmenttargets_id)

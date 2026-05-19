@@ -235,6 +235,46 @@ class Appointment extends \DbTestCase
         ]);
     }
 
+    public function testAvailabilityRejectsInvalidRulesAndInaccessibleTarget()
+    {
+        $this->login();
+        $this->setEntity('_test_root_entity', true);
+        $target_entity_id = getItemByTypeName('Entity', '_test_child_2', true);
+        [, $appointmenttargets_id] = $this->createGroupTarget($target_entity_id, 0);
+
+        $availability = new \AppointmentAvailability();
+        $this->boolean($availability->add([
+           'appointmenttargets_id' => $appointmenttargets_id,
+           'day'                   => 8,
+           'begin'                 => '09:00',
+           'end'                   => '17:00',
+        ]) === false)->isTrue();
+        $this->hasSessionMessages(ERROR, [
+           'Invalid day',
+        ]);
+
+        $this->boolean($availability->add([
+           'appointmenttargets_id' => $appointmenttargets_id,
+           'day'                   => self::MONDAY,
+           'begin'                 => '17:00',
+           'end'                   => '09:00',
+        ]) === false)->isTrue();
+        $this->hasSessionMessages(ERROR, [
+           'Error in entering dates. The starting date is later than the ending date',
+        ]);
+
+        $this->setEntity('_test_child_1', false);
+        $this->boolean($availability->add([
+           'appointmenttargets_id' => $appointmenttargets_id,
+           'day'                   => self::MONDAY,
+           'begin'                 => '09:00',
+           'end'                   => '17:00',
+        ]) === false)->isTrue();
+        $this->hasSessionMessages(ERROR, [
+           'Appointment target is not available',
+        ]);
+    }
+
     public function testAddCompletesTargetFields()
     {
         $this->login();

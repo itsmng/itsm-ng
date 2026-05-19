@@ -191,9 +191,10 @@ if ($_REQUEST['action'] === 'save') {
     ob_start();
     if (isset($_POST['purge'])) {
         $reservationitems_id = key($_POST['items'] ?? []);
-        if (!empty($_POST['id']) && $reservation->delete($_POST, 1)) {
+        $id = (int) ($_POST['id'] ?? 0);
+        if ($id > 0 && $reservation->getFromDB($id) && $reservation->can($id, PURGE) && $reservation->delete($_POST, 1)) {
             Event::log(
-                $_POST['id'],
+                $id,
                 "reservation",
                 4,
                 "inventory",
@@ -206,6 +207,7 @@ if ($_REQUEST['action'] === 'save') {
             $success = true;
         }
     } elseif (isset($_POST['update'])) {
+        $id = (int) ($_POST['id'] ?? 0);
         Toolbox::manageBeginAndEndPlanDates($_POST['resa']);
         $_POST['_target'] = Reservation::getFormURL();
         $_POST['_item'] = key($_POST['items'] ?? []);
@@ -214,9 +216,17 @@ if ($_REQUEST['action'] === 'save') {
         $_POST['_ajax_reservation'] = 1;
 
         if (
-            Session::haveRight("reservation", UPDATE)
-            || (Session::getLoginUserID() == ($_POST["users_id"] ?? 0))
+            $id > 0
+            && $reservation->getFromDB($id)
+            && $reservation->canEdit($id)
+            && (
+                Session::haveRight("reservation", UPDATE)
+                || (int)$reservation->fields['users_id'] === (int)Session::getLoginUserID()
+            )
         ) {
+            if (!Session::haveRight("reservation", UPDATE)) {
+                $_POST['users_id'] = $reservation->fields['users_id'];
+            }
             $success = (bool)$reservation->update($_POST);
         }
     } elseif (isset($_POST['add'])) {

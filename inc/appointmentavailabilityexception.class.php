@@ -45,18 +45,21 @@ class AppointmentAvailabilityException extends CommonDBChild
     public function canUpdateItem()
     {
         return Session::haveRight(self::$rightname, UPDATE)
+            && $this->canAccessTarget(false)
             && parent::canUpdateItem();
     }
 
     public function canDeleteItem()
     {
         return Session::haveRight(self::$rightname, UPDATE)
+            && $this->canAccessTarget(false)
             && parent::canDeleteItem();
     }
 
     public function canPurgeItem()
     {
         return Session::haveRight(self::$rightname, UPDATE)
+            && $this->canAccessTarget(false)
             && parent::canPurgeItem();
     }
 
@@ -102,13 +105,21 @@ class AppointmentAvailabilityException extends CommonDBChild
     private function canAccessTargetFromInput(array $input)
     {
         $appointmenttargets_id = (int)($input[self::$items_id] ?? $this->fields[self::$items_id] ?? 0);
+        return $this->canAccessTarget(true, $appointmenttargets_id);
+    }
+
+    private function canAccessTarget(bool $add_message, ?int $appointmenttargets_id = null)
+    {
+        $appointmenttargets_id = $appointmenttargets_id ?? (int)($this->fields[self::$items_id] ?? 0);
         if ($appointmenttargets_id <= 0) {
             return false;
         }
 
         $target = new AppointmentTarget();
         if (!$target->getFromDB($appointmenttargets_id) || !$target->canAccessEntity()) {
-            Session::addMessageAfterRedirect(__('Appointment target is not available'), false, ERROR);
+            if ($add_message) {
+                Session::addMessageAfterRedirect(__('Appointment target is not available'), false, ERROR);
+            }
             return false;
         }
 
