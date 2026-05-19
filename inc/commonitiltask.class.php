@@ -206,15 +206,21 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $restrict = [$item->getForeignKeyField() => $item->getID()];
+                $must_hide_private_ticket_content = $item instanceof Ticket
+                    && $item->shouldHidePrivateTicketContentFromCurrentUser();
 
                 if (
                     $this->maybePrivate()
-                    && !$this->canViewPrivates()
+                    && ($must_hide_private_ticket_content || !$this->canViewPrivates())
                 ) {
-                    $restrict['OR'] = [
-                       'is_private'   => 0,
-                       'users_id'     => Session::getLoginUserID()
-                    ];
+                    if ($must_hide_private_ticket_content) {
+                        $restrict['is_private'] = 0;
+                    } else {
+                        $restrict['OR'] = [
+                           'is_private' => 0,
+                           'users_id'   => Session::getLoginUserID()
+                        ];
+                    }
                 }
                 $nb = countElementsInTable($this->getTable(), $restrict);
             }
@@ -295,6 +301,14 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             && !$input["_job"]->getFromDB($input[$input["_job"]->getForeignKeyField()])
         ) {
             return false;
+        }
+        if (
+            isset($input['is_private'])
+            && $input["_job"] instanceof Ticket
+            && $input["_job"]->shouldHidePrivateTicketContentFromCurrentUser()
+            && (int)$input['is_private'] === 1
+        ) {
+            $input['is_private'] = 0;
         }
 
         if (isset($input["plan"])) {
@@ -518,6 +532,13 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             $input["date"] = $_SESSION["glpi_currenttime"];
         }
         if (!isset($input["is_private"])) {
+            $input['is_private'] = 0;
+        }
+        if (
+            $input["_job"] instanceof Ticket
+            && $input["_job"]->shouldHidePrivateTicketContentFromCurrentUser()
+            && (int)$input['is_private'] === 1
+        ) {
             $input['is_private'] = 0;
         }
 
@@ -1600,6 +1621,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
         $canplan = (!$item->isStatusExists(CommonITILObject::PLANNED)
             || $item->isAllowedStatus($item->fields['status'], CommonITILObject::PLANNED));
         $rand = mt_rand();
+        $hide_private_for_requester = $item->shouldHidePrivateTicketContentFromCurrentUser();
 
         $planLabel = __('Plan this task');
 
@@ -1630,6 +1652,11 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'name' => $fkfield,
                        'value' => $this->fields[$fkfield],
                     ],
+                    $hide_private_for_requester ? [
+                       'type' => 'hidden',
+                       'name' => 'is_private',
+                       'value' => 0,
+                    ] : [],
                     '' => [
                        'type' => 'richtextarea',
                        'name' => 'content',
@@ -1711,7 +1738,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        ],
                        'value' => Planning::TODO,
                     ] : [],
-                    __('Private') => ($this->maybePrivate()) ? [
+                    __('Private') => ($this->maybePrivate() && !$hide_private_for_requester) ? [
                        'type' => 'checkbox',
                        'id' => 'checkboxForIsPrivate',
                        'name' => 'is_private',
@@ -1780,27 +1807,29 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
               ]
            ]
         ];
-        $entity = Session::getActiveEntity();
-        echo Html::scriptBlock(
-            <<<JS
-         function showPlanUpdate{$rand}() {
-            $.ajax({
-               url: "{$CFG_GLPI["root_doc"]}/ajax/planning.php",
-               type: "POST",
-               data: {
-                  action: 'add_event_classic_form',
-                  form: 'followups',
-                  entity: {$entity},
-                  itemtype: 'TicketTask',
-                  items_id: {$item->getID()}
-               }
+        if ($canplan && !isCommandLine()) {
+            $entity = Session::getActiveEntity();
+            echo Html::scriptBlock(
+                <<<JS
+             function showPlanUpdate{$rand}() {
+                $.ajax({
+                   url: "{$CFG_GLPI["root_doc"]}/ajax/planning.php",
+                   type: "POST",
+                   data: {
+                      action: 'add_event_classic_form',
+                      form: 'followups',
+                      entity: {$entity},
+                      itemtype: 'TicketTask',
+                      items_id: {$item->getID()}
+                   }
+                 }
+                ).done(function(data) {
+                   $('#plan{$rand}').replaceWith(data);
+                });
              }
-            ).done(function(data) {
-               $('#plan{$rand}').replaceWith(data);
-            });
-         }
-      JS
-        );
+          JS
+            );
+        }
         renderTwigForm($form, '', $this->fields);
         return true;
     }

@@ -114,9 +114,9 @@ class Entity extends CommonTreeDropdown
           'inquest_duration','inquest_URL',
           'max_closedate', 'tickettemplates_id',
           'changetemplates_id', 'problemtemplates_id',
-           'suppliers_as_private', 'autopurge_delay', 'anonymize_support_agents',
-           'lock_ticket_date'
-        ],
+          'suppliers_as_private', 'autopurge_delay', 'anonymize_support_agents',
+          'lock_ticket_date', 'requesters_private_ticket_content'
+       ],
        // Configuration
        'config' => ['enable_custom_css', 'custom_css_code']
     ];
@@ -2362,6 +2362,10 @@ class Entity extends CommonTreeDropdown
         if ($ID == 0) { // Remove parent option for root entity
             unset($lockTicketDateValues[self::CONFIG_PARENT]);
         }
+        $hidePrivateTicketContentValues = self::getHidePrivateTicketContentForRequestersValues();
+        if ($ID == 0) { // Remove parent option for root entity
+            unset($hidePrivateTicketContentValues[self::CONFIG_PARENT]);
+        }
 
         $form = [
            'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
@@ -2460,26 +2464,35 @@ class Entity extends CommonTreeDropdown
                        'after' => ($ID > 0 && ($entity->getField('suppliers_as_private') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('suppliers_as_private', ['suppliers_as_private' => self::getUsedConfig('suppliers_as_private', $ID)]), false, false) : '',
                   ],
-                   __('Anonymize support agents') => [
-                        'type'  => 'select',
-                        'name'  => 'anonymize_support_agents',
-                        'value' => $entity->fields["anonymize_support_agents"],
-                        'values' => $anonymizeValues,
-                        'col_lg' => 6,
-                        'after' => ($ID > 0 && ($entity->getField('anonymize_support_agents') == self::CONFIG_PARENT)) ?
-                                   self::inheritedValue(self::getSpecificValueToDisplay('anonymize_support_agents', ['anonymize_support_agents' => self::getUsedConfig('anonymize_support_agents', $ID)]), false, false) : '',
-                   ],
-                   __('Lock ticket creation date') => [
-                        'type'  => 'select',
-                        'name'  => 'lock_ticket_date',
-                        'value' => $entity->fields["lock_ticket_date"],
-                        'values' => $lockTicketDateValues,
-                        'col_lg' => 6,
-                        'after' => ($ID > 0 && ($entity->getField('lock_ticket_date') == self::CONFIG_PARENT)) ?
-                                   self::inheritedValue(self::getSpecificValueToDisplay('lock_ticket_date', ['lock_ticket_date' => self::getUsedConfig('lock_ticket_date', $ID)]), false, false) : '',
-                   ],
-                ]
-               ],
+                  __('Anonymize support agents') => [
+                       'type'  => 'select',
+                       'name'  => 'anonymize_support_agents',
+                       'value' => $entity->fields["anonymize_support_agents"],
+                       'values' => $anonymizeValues,
+                       'col_lg' => 6,
+                       'after' => ($ID > 0 && ($entity->getField('anonymize_support_agents') == self::CONFIG_PARENT)) ?
+                                  self::inheritedValue(self::getSpecificValueToDisplay('anonymize_support_agents', ['anonymize_support_agents' => self::getUsedConfig('anonymize_support_agents', $ID)]), false, false) : '',
+                  ],
+                  __('Lock ticket creation date') => [
+                       'type'  => 'select',
+                       'name'  => 'lock_ticket_date',
+                       'value' => $entity->fields["lock_ticket_date"],
+                       'values' => $lockTicketDateValues,
+                       'col_lg' => 6,
+                       'after' => ($ID > 0 && ($entity->getField('lock_ticket_date') == self::CONFIG_PARENT)) ?
+                                  self::inheritedValue(self::getSpecificValueToDisplay('lock_ticket_date', ['lock_ticket_date' => self::getUsedConfig('lock_ticket_date', $ID)]), false, false) : '',
+                  ],
+                  __('Hide private followups and tasks from requesters') => [
+                       'type'  => 'select',
+                       'name'  => 'requesters_private_ticket_content',
+                       'value' => $entity->fields['requesters_private_ticket_content'],
+                       'values' => $hidePrivateTicketContentValues,
+                       'col_lg' => 6,
+                       'after' => ($ID > 0 && ($entity->getField('requesters_private_ticket_content') == self::CONFIG_PARENT)) ?
+                                  self::inheritedValue(self::getSpecificValueToDisplay('requesters_private_ticket_content', ['requesters_private_ticket_content' => self::getUsedConfig('requesters_private_ticket_content', $ID)]), false, false) : '',
+                  ],
+               ]
+              ],
               __('Automatic closing configuration') => [
                'visible' => true,
                'inputs' => [
@@ -2855,6 +2868,21 @@ class Entity extends CommonTreeDropdown
            self::CONFIG_PARENT => __('Inheritance of the parent entity'),
            0                   => __('No'),
            1                   => __('Yes'),
+        ];
+    }
+
+    /**
+     * Get values for requesters_private_ticket_content
+     *
+     * @return array
+    **/
+    public static function getHidePrivateTicketContentForRequestersValues()
+    {
+
+        return [
+           self::CONFIG_PARENT => __('Inheritance of the parent entity'),
+           0 => __('No'),
+           1 => __('Yes'),
         ];
     }
 

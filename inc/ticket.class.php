@@ -6424,10 +6424,6 @@ class Ticket extends CommonITILObject
             ];
             $values = [];
             $job = new Ticket();
-            $showprivate = false;
-            if (Session::haveRight('followup', ITILFollowup::SEEPRIVATE)) {
-                $showprivate = true;
-            }
             while ($data = $iterator->next()) {
                 $newValue = [];
                 $rand = mt_rand();
@@ -6506,13 +6502,17 @@ class Ticket extends CommonITILObject
                     }
                     $link   .= "'>";
                     $link   .= "<span class='b'>" . $job->getNameID() . "</span></a>";
+                    $ticket_showprivate = $job->canCurrentUserAccessPrivateITILContent(
+                        ITILFollowup::$rightname,
+                        ITILFollowup::SEEPRIVATE
+                    );
                     $link    = sprintf(
                         __('%1$s (%2$s)'),
                         $link,
                         sprintf(
                             __('%1$s - %2$s'),
-                            $job->numberOfFollowups($showprivate),
-                            $job->numberOfTasks($showprivate)
+                            $job->numberOfFollowups($ticket_showprivate),
+                            $job->numberOfTasks($ticket_showprivate)
                         )
                     );
                     $content = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode(
@@ -7053,11 +7053,6 @@ class Ticket extends CommonITILObject
         // Should be called in a <table>-segment
         // Print links or not in case of user view
         // Make new job object and fill it from database, if success, print it
-        $showprivate = false;
-        if (Session::haveRight('followup', ITILFollowup::SEEPRIVATE)) {
-            $showprivate = true;
-        }
-
         $job  = new self();
         $rand = mt_rand();
         if ($job->getFromDBwithData($ID, 0)) {
@@ -7133,13 +7128,17 @@ class Ticket extends CommonITILObject
             }
             $link   .= "'>";
             $link   .= "<span class='b'>" . $job->getNameID() . "</span></a>";
+            $ticket_showprivate = $job->canCurrentUserAccessPrivateITILContent(
+                ITILFollowup::$rightname,
+                ITILFollowup::SEEPRIVATE
+            );
             $link    = sprintf(
                 __('%1$s (%2$s)'),
                 $link,
                 sprintf(
                     __('%1$s - %2$s'),
-                    $job->numberOfFollowups($showprivate),
-                    $job->numberOfTasks($showprivate)
+                    $job->numberOfFollowups($ticket_showprivate),
+                    $job->numberOfTasks($ticket_showprivate)
                 )
             );
             $content = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode(
