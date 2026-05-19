@@ -41,13 +41,27 @@ function update213to220(): bool
     /** @global Migration $migration */
     global $DB, $migration;
 
+    if (!$DB->fieldExists('glpi_entities', 'lock_ticket_date')) {
+        $migration->addField(
+            'glpi_entities',
+            'lock_ticket_date',
+            "tinyint(1) NOT NULL DEFAULT '-2'",
+            [
+               'after'     => 'anonymize_support_agents',
+               'value'     => -2,  // Inherit as default value
+               'update'    => 0,   // Not enabled for root entity
+               'condition' => 'WHERE `id` = 0',
+            ]
+        );
+    }
+
     if (!$DB->fieldExists('glpi_entities', 'requesters_private_ticket_content')) {
         $migration->addField(
             'glpi_entities',
             'requesters_private_ticket_content',
             'integer',
             [
-               'after'     => 'anonymize_support_agents',
+               'after'     => 'lock_ticket_date',
                'value'     => -2,  // Inherit as default value
                'update'    => 0,   // Not enabled for root entity
                'condition' => 'WHERE `id` = 0',
