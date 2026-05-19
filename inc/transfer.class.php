@@ -2092,10 +2092,12 @@ class Transfer extends CommonDBTM {
                   // not found : copy doc
                   if ($newdocID < 0) {
                      // 1 - create new item
+                     $source_document = clone $document;
                      unset($document->fields['id']);
                      $input    = $document->fields;
                      // Not set new entity Do by transferItem
                      unset($document->fields);
+                     $document->setFileCopySource($source_document);
                      $newdocID = $document->add(Toolbox::addslashes_deep($input));
                      // 2 - transfer as copy
                      $this->transferItem('Document', $item_ID, $newdocID);

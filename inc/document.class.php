@@ -49,10 +49,16 @@ class Document extends CommonDBTM {
    static $rightname                   = 'document';
    static $tag_prefix                  = '#';
    protected $usenotepad               = true;
+   private $file_copy_source           = null;
 
 
    static function getTypeName($nb = 0) {
       return _n('Document', 'Documents', $nb);
+   }
+
+
+   function setFileCopySource(Document $source) {
+      $this->file_copy_source = $source;
    }
 
 
@@ -194,13 +200,23 @@ class Document extends CommonDBTM {
    function prepareInputForAdd($input) {
       global $CFG_GLPI;
 
-      // security (don't accept filename from $_REQUEST)
-      if (array_key_exists('filename', $_REQUEST)) {
-         unset($input['filename']);
-      }
+      $input = $this->filterFields($input);
+
+      // current_* fields are not necessary for a new item, but keeping
+      // request-provided values can lead to wrong file deletion in move*().
+      $input['current_filepath'] = '';
+      $input['current_filename'] = '';
 
       if ($uid = Session::getLoginUserID()) {
          $input["users_id"] = Session::getLoginUserID();
+      }
+
+      if ($this->file_copy_source instanceof self) {
+         $input['filename'] = $this->file_copy_source->fields['filename'];
+         $input['filepath'] = $this->file_copy_source->fields['filepath'];
+         $input['sha1sum']  = $this->file_copy_source->fields['sha1sum'];
+         $input['mime']     = $this->file_copy_source->fields['mime'];
+         $this->file_copy_source = null;
       }
 
       // Create a doc only selecting a file from a item form
@@ -230,9 +246,6 @@ class Document extends CommonDBTM {
       } else if (isset($input["upload_file"]) && !empty($input["upload_file"])) {
          // Move doc from upload dir
          $upload_ok = $this->moveUploadedDocument($input, $input["upload_file"]);
-      } else if (isset($input['filepath']) && file_exists(GLPI_DOC_DIR.'/'.$input['filepath'])) {
-         // Document is created using an existing document file
-         $upload_ok = true;
       }
 
       // Tag
@@ -256,6 +269,7 @@ class Document extends CommonDBTM {
       }
 
       unset($input["upload_file"]);
+      unset($input['current_filepath']);
 
       // Don't add if no file
       if (isset($input["_only_if_upload_succeed"])
@@ -331,12 +345,16 @@ class Document extends CommonDBTM {
 
    function prepareInputForUpdate($input) {
 
-      // security (don't accept filename from $_REQUEST)
-      if (array_key_exists('filename', $_REQUEST)) {
-         unset($input['filename']);
-      }
+      $input = $this->filterFields($input);
 
-      if (isset($input['current_filepath'])) {
+      if (isset($input['current_filepath'])
+          || isset($input["_filename"])
+          || isset($input["upload_file"])) {
+         // Always use the values stored in DB to prevent arbitrary file
+         // deletion or replacement using request-controlled paths.
+         $input['current_filepath'] = $this->fields['filepath'];
+         $input['current_filename'] = $this->fields['filename'];
+
          if (isset($input["_filename"]) && !empty($input["_filename"]) == 1) {
             $this->moveDocument($input, stripslashes(array_shift($input["_filename"])));
          } else if (isset($input["upload_file"]) && !empty($input["upload_file"])) {
@@ -355,6 +373,28 @@ class Document extends CommonDBTM {
             ERROR
          );
          return false;
+      }
+
+      return $input;
+   }
+
+
+   /**
+    * Remove fields that must only be produced by server-side upload handling.
+    *
+    * @param array $input
+    *
+    * @return array
+   **/
+   private function filterFields(array $input): array {
+      if (array_key_exists('filename', $_REQUEST)) {
+         unset($input['filename']);
+      }
+
+      foreach (['filepath', 'sha1sum'] as $field) {
+         if (array_key_exists($field, $input)) {
+            unset($input[$field]);
+         }
       }
 
       return $input;
