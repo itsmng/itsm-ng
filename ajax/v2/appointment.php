@@ -123,7 +123,7 @@ if ($_REQUEST['action'] === 'get_events') {
                 ],
             ],
         ],
-        'WHERE' => $where + getEntitiesRestrictCriteria('glpi_appointments', 'entities_id', $_SESSION['glpiactiveentities']),
+        'WHERE' => $where + getEntitiesRestrictCriteria('glpi_appointments', 'entities_id', $_SESSION['glpiactiveentities'], true),
         'ORDER' => 'glpi_appointments.begin',
     ]);
 
@@ -198,7 +198,7 @@ if ($_REQUEST['action'] === 'get_target_events') {
             'end' => ['>', $start],
             'begin' => ['<', $end],
             'is_deleted' => 0,
-        ] + getEntitiesRestrictCriteria('glpi_appointments', 'entities_id', $_SESSION['glpiactiveentities']),
+        ] + getEntitiesRestrictCriteria('glpi_appointments', 'entities_id', $_SESSION['glpiactiveentities'], true),
         'ORDER' => 'begin',
     ]);
     $appointment = new Appointment();
@@ -258,7 +258,18 @@ if ($_REQUEST['action'] === 'get_form') {
     $appointment = new Appointment();
     $id = (int) ($_REQUEST['id'] ?? 0);
     if ($id > 0) {
-        $appointment->showForm($id, []);
+        if (
+            $appointment->getFromDB($id)
+            && $appointment->can($id, READ)
+            && (
+                Session::haveRight('appointment', UPDATE)
+                || (int) $appointment->fields['users_id_requester'] === (int) Session::getLoginUserID()
+            )
+        ) {
+            $appointment->showForm($id, []);
+        } else {
+            echo "<div class='appointment-calendar-form-error'>" . __("You don't have permission to perform this action.") . "</div>";
+        }
     } else {
         $appointment->showForm('', [
             'appointmenttargets_id' => (int) ($_REQUEST['appointmenttargets_id'] ?? 0),
@@ -277,15 +288,19 @@ if ($_REQUEST['action'] === 'save') {
     $success = false;
     ob_start();
     if (isset($_POST['purge']) && !empty($_POST['id'])) {
-        if ($appointment->getFromDB((int) $_POST['id']) && $appointment->canPurgeItem()) {
+        $id = (int) $_POST['id'];
+        if ($appointment->getFromDB($id) && $appointment->can($id, READ) && $appointment->canPurgeItem()) {
             $success = (bool) $appointment->delete(['id' => (int) $_POST['id']], 1);
         }
     } elseif (isset($_POST['update']) && !empty($_POST['id'])) {
-        if ($appointment->getFromDB((int) $_POST['id']) && $appointment->canUpdateItem()) {
+        $id = (int) $_POST['id'];
+        if ($appointment->getFromDB($id) && $appointment->can($id, UPDATE)) {
             $success = (bool) $appointment->update($_POST);
         }
     } elseif (isset($_POST['add'])) {
-        $success = (bool) $appointment->add($_POST);
+        if ($appointment->can(-1, CREATE, $_POST)) {
+            $success = (bool) $appointment->add($_POST);
+        }
     }
     $output = ob_get_clean();
 

@@ -563,7 +563,7 @@ class Appointment extends CommonDBTM
                  ],
               ],
            ],
-           'WHERE' => $where + getEntitiesRestrictCriteria(self::getTable(), 'entities_id', $_SESSION['glpiactiveentities']),
+           'WHERE' => $where + getEntitiesRestrictCriteria(self::getTable(), 'entities_id', $_SESSION['glpiactiveentities'], true),
            'ORDER' => 'begin',
         ]);
 
