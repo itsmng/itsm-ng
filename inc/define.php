@@ -387,7 +387,7 @@ $CFG_GLPI["notificationtemplates_types"]  = [
    'CartridgeItem', 'Change', 'ConsumableItem',
    'Contract', 'CronTask', 'DBConnection',
    'FieldUnicity', 'Infocom', 'MailCollector',
-   'ObjectLock', 'PlanningRecall', 'Problem',
+   'ObjectLock', 'PlanningRecall', 'Problem', 'Appointment',
    'Project', 'ProjectTask', 'Reservation',
    'SoftwareLicense', 'Ticket', 'User',
    'SavedSearch_Alert', 'Certificate',
@@ -429,7 +429,7 @@ $CFG_GLPI["rulecollections_types"]        = [
 $CFG_GLPI['planning_types']               = [
    'ChangeTask', 'ProblemTask', 'Reminder',
    'TicketTask', 'ProjectTask', 'PlanningExternalEvent',
-   'Holiday'
+   'Holiday', 'Appointment'
 ];
 $CFG_GLPI['planning_add_types']           = ['PlanningExternalEvent'];
 

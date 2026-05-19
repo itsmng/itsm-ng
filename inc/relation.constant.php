@@ -530,6 +530,8 @@ $RELATION = [
       'glpi_projects'                    => 'entities_id',
       '_glpi_projecttasks'               => 'entities_id',
       'glpi_projecttasktemplates'        => 'entities_id',
+      'glpi_appointments'                => 'entities_id',
+      '_glpi_appointmenttargets'         => 'entities_id',
       'glpi_queuednotifications'         => 'entities_id',
       'glpi_queuedchats'                 => 'entities_id',
       'glpi_racks'                       => 'entities_id',
@@ -949,6 +951,12 @@ $RELATION = [
       '_glpi_vobjects' => ['items_id', 'itemtype'],
    ],
 
+   'glpi_appointmenttargets' => [
+      '_glpi_appointments'                         => 'appointmenttargets_id',
+      '_glpi_appointmentavailabilities'            => 'appointmenttargets_id',
+      '_glpi_appointmentavailabilityexceptions'    => 'appointmenttargets_id',
+   ],
+
    'glpi_plugs' => [
       '_glpi_pdus_plugs' => 'pdus_id',
    ],
@@ -1305,6 +1313,9 @@ $RELATION = [
       '_glpi_knowbaseitems_users'     => 'users_id',
       'glpi_knowbaseitemtranslations' => 'users_id',
       'glpi_lines'                    => 'users_id',
+      'glpi_appointments'             => [
+         'users_id_requester',
+      ],
       'glpi_monitors'                 => [
          'users_id_tech',
          'users_id',

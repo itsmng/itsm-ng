@@ -84,8 +84,7 @@ class NotificationMailing extends DbTestCase
         unset($row['create_time']);
         unset($row['send_time']);
 
-        $this->array($row)
-           ->isIdenticalTo([
+        $expected = [
               'itemtype'                 => 'NotificationMailing',
               'items_id'                 => 1,
               'notificationtemplates_id' => 0,
@@ -105,7 +104,12 @@ class NotificationMailing extends DbTestCase
               'body_text'                => 'Hello, this is a test notification.',
               'messageid'                => null,
               'documents'                => '',
-              'mode'                     => 'mailing'
-           ]);
+        ];
+        if (array_key_exists('generated_attachments', $row)) {
+            $expected['generated_attachments'] = '';
+        }
+        $expected['mode'] = 'mailing';
+
+        $this->array($row)->isIdenticalTo($expected);
     }
 }
