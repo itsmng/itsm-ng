@@ -4102,7 +4102,7 @@ class CommonDBTM extends CommonGLPI
      *
      * @return array
      */
-    private static function getLastHistoryUserSearchOption(string $table, string $itemtype): array
+    public static function getLastHistoryUserSearchOption(string $table, string $itemtype): array
     {
         global $DB;
 
