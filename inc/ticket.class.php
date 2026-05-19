@@ -4989,6 +4989,11 @@ class Ticket extends CommonITILObject
             && !($hiddenFields['_users_id_assign'] ?? false)
             && !$this->isUser(CommonITILActor::ASSIGN, Session::getLoginUserID())
             && $assignAllowed;
+        $canSelfObserver = !$isNew
+            && !$isClosed
+            && !($hiddenFields['_users_id_observer'] ?? false)
+            && !$this->isUser(CommonITILActor::OBSERVER, Session::getLoginUserID())
+            && !$this->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID());
 
         $roleDefinitions = [
             [
@@ -5015,6 +5020,7 @@ class Ticket extends CommonITILObject
                 'help'          => !$isNew && !$isClosed && $canAdmin ? __('New actors are added when you save the ticket.') : '',
                 'allowAdd'      => !$isClosed && $canAdmin,
                 'removable'     => !$isClosed && $canAdmin,
+                'selfAssign'    => $canSelfObserver,
                 'allowedTypes'  => ['user', 'group'],
             ],
             [
@@ -5120,7 +5126,7 @@ class Ticket extends CommonITILObject
                 'selfAssign'  => !empty($panelDefinition['selfAssign']) ? [
                     'fieldName'  => $this->getForeignKeyField(),
                     'itemId'     => $ID,
-                    'buttonName' => 'addme_assign',
+                    'buttonName' => 'addme_' . $panelDefinition['actorType'],
                     'label'      => __('Associate myself'),
                 ] : null,
             ];
