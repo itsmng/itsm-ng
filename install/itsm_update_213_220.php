@@ -32,11 +32,11 @@
  */
 
 /**
- * Update ITSM-NG from 2.1.3 to 2.1.4
+ * Update ITSM-NG from 2.1.3 to 2.2.0
  *
  * @return bool for success (will die for most error)
  **/
-function update213to214(): bool
+function update213to220(): bool
 {
     /** @global Migration $migration */
     global $DB, $migration;
