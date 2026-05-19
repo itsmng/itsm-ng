@@ -2548,7 +2548,7 @@ class Ticket extends DbTestCase
             $output = ob_get_clean();
 
             $this->string($output)->match(
-                '/<input[^>]*type="datetime-local"[^>]*name="date"[^>]*disabled=""/'
+                '/<input[^>]*type="datetime-local"[^>]*disabled=""[^>]*aria-label="date"/'
             );
 
             $this->boolean($entity->update([
@@ -2563,7 +2563,7 @@ class Ticket extends DbTestCase
             $output = ob_get_clean();
 
             $this->integer((int) preg_match(
-                '/<input[^>]*type="datetime-local"[^>]*name="date"[^>]*disabled=""/',
+                '/<input[^>]*type="datetime-local"[^>]*disabled=""[^>]*aria-label="date"/',
                 $output
             ))->isEqualTo(0);
         } finally {
