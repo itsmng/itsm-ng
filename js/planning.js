@@ -142,6 +142,22 @@ var GLPIPlanning = {
           element.append('<div class="content">' + content + "</div>");
         }
 
+        // ITIL tasks expose completion status in the event title so it is visible in every view.
+        if (["TicketTask", "ProblemTask", "ChangeTask"].indexOf(extProps.itemtype) >= 0 && extProps.state !== "") {
+          var checkboxClass = extProps.state == 2 ? " is-checked" : "";
+          var titleTargets = element.find(".fc-title, .fc-list-item-title");
+          titleTargets.prepend(
+            '<span class="itil-planning-checkbox' +
+              checkboxClass +
+              '" title="' +
+              __("Completion status") +
+              '" aria-hidden="true"></span>'
+          );
+          if (extProps.state_label) {
+            titleTargets.append(' <span class="itil-task-state">(' + $("<div/>").text(extProps.state_label).html() + ")</span>");
+          }
+        }
+
         // add icon if exists
         if ("icon" in extProps) {
           var icon_alt = "";
@@ -162,7 +178,7 @@ var GLPIPlanning = {
           added_classes += end.toDateString() === now.toDateString() ? " event_today" : "";
         }
         if (extProps.state != "") {
-          added_classes += extProps.state == 0 ? " event_info" : extProps.state == 1 ? " event_todo" : extProps.state == 2 ? " event_done" : "";
+          added_classes += extProps.state == 0 ? " event_info" : extProps.state == 1 ? " event_todo" : extProps.state == 2 ? " event_done" : extProps.state == 3 ? " event_cancelled" : "";
         }
         if (added_classes != "") {
           element.addClass(added_classes);

@@ -2372,6 +2372,46 @@ a.icon_nav_move {
       }
    }
 
+   .event_cancelled .ui-widget-content {
+      color: #747474;
+      text-decoration: line-through;
+
+      a {
+         color: #747474;
+      }
+   }
+
+   .itil-planning-checkbox {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      margin-right: 5px;
+      border: 2px solid #3f4b57;
+      border-radius: 2px;
+      background: #fff;
+      color: #fff;
+      line-height: 1;
+      vertical-align: -2px;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, .75);
+
+      &.is-checked {
+         border-color: #1f7a3f;
+         background: #1f7a3f;
+
+         &::before {
+            content: "\2713";
+            font-size: 11px;
+            font-weight: bold;
+         }
+      }
+   }
+
+   .itil-task-state {
+      font-weight: normal;
+   }
+
    .fc-event {
       font-weight: normal;
       display: block;
@@ -4121,6 +4161,10 @@ a.copyright {
       &.state_2 {
          cursor: pointer;
          background-image: url(../pics/timeline/done.png);
+      }
+
+      &.state_3 {
+         background-image: url(../pics/timeline/delete.png);
       }
    }
 

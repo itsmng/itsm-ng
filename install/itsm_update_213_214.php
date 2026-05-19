@@ -81,6 +81,17 @@ function update213to214(): bool
         $DB->error()
     );
 
+    $task_tables = [
+        'glpi_tickettasks'  => 'tickets_id',
+        'glpi_problemtasks' => 'problems_id',
+        'glpi_changetasks'  => 'changes_id',
+    ];
+
+    foreach ($task_tables as $table => $after) {
+        $migration->addField($table, 'title', 'string', ['after' => $after]);
+    }
+    $migration->addField('glpi_tasktemplates', 'title', 'string', ['after' => 'name']);
+
     $migration->executeMigration();
     return true;
 }

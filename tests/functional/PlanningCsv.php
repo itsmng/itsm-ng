@@ -128,6 +128,26 @@ class PlanningCsv extends \DbTestCase
             $date->add(new \DateInterval('P1Y'));
         }
 
+        $explicit_begin = new \DateTime();
+        $explicit_begin->add(new \DateInterval('P9M'));
+        $explicit_end = clone $explicit_begin;
+        $explicit_end->add(new \DateInterval('P1D'));
+        $input = [
+           'title'           => 'Explicit task title',
+           'content'         => 'Task body should not be used in CSV title',
+           'state'           => \Planning::TODO,
+           'tickets_id'      => $tid,
+           'users_id_tech'   => \Session::getLoginUserID(),
+           'begin'           => $explicit_begin->format('Y-m-d H:i:s'),
+           'end'             => $explicit_end->format('Y-m-d H:i:s'),
+           'actiontime'      => DAY_TIMESTAMP
+        ];
+        $ttid = (int)$task->add($input);
+        $this->integer($ttid)->isGreaterThan(0);
+        $input['id'] = $ttid;
+        $input['expected_title'] = 'Explicit task title';
+        $tasks[] = $input;
+
         $csv = new \PlanningCsv(\Session::getLoginUserID(), 0);
 
         $user = new \User();
@@ -147,7 +167,7 @@ class PlanningCsv extends \DbTestCase
         foreach ($tasks as $input) {
             $expected[] = [
                'actor'     => $user->getFriendlyName(),
-               'title'     => 'ticket title',
+               'title'     => $input['expected_title'] ?? 'ticket title',
                'itemtype'  => 'Ticket task',
                'items_id'  => (string)$input['id'],
                'begindate' => $input['begin'],
@@ -160,7 +180,8 @@ class PlanningCsv extends \DbTestCase
         $sexpected = "\"Actor\";\"Title\";\"Item type\";\"Item id\";\"Begin date\";\"End date\"".$csv->eol;
         $sexpected .= "\"".$user->getFriendlyName()."\";\"This is a \"\"test\"\"\";\"Reminder\";\"$rid\";\"$fbegin\";\"$fend\"{$csv->eol}";
         foreach ($tasks as $input) {
-            $sexpected .= "\"".$user->getFriendlyName()."\";\"ticket title\";\"Ticket task\";\"{$input['id']}\";\"{$input['begin']}\";\"{$input['end']}\"{$csv->eol}";
+            $title = $input['expected_title'] ?? 'ticket title';
+            $sexpected .= "\"".$user->getFriendlyName()."\";\"$title\";\"Ticket task\";\"{$input['id']}\";\"{$input['begin']}\";\"{$input['end']}\"{$csv->eol}";
         }
         $this->output(
             function () use ($csv) {

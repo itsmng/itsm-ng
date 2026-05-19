@@ -72,6 +72,8 @@ class Planning extends CommonGLPI
     public const INFO = 0;
     public const TODO = 1;
     public const DONE = 2;
+    public const CANCELLED = 3;
+    public const HOLIDAY_DEFAULT_COLOR = '#b9b9b9';
 
     /**
      * @since 0.85
@@ -240,6 +242,9 @@ class Planning extends CommonGLPI
 
             case static::DONE:
                 return __('Done');
+
+            case static::CANCELLED:
+                return __('Cancelled');
         }
     }
 
@@ -257,7 +262,8 @@ class Planning extends CommonGLPI
 
         $values = [static::INFO => _n('Information', 'Information', 1),
                         static::TODO => __('To do'),
-                        static::DONE => __('Done')];
+                        static::DONE => __('Done'),
+                        static::CANCELLED => __('Cancelled')];
 
         return Dropdown::showFromArray($name, $values, array_merge(['value'   => $value,
                                                                     'display' => $display], $options));
@@ -820,10 +826,14 @@ class Planning extends CommonGLPI
             if (in_array($planning_type, ['NotPlanned', 'OnlyBgEvents']) || $planning_type::canView()) {
                 if (!isset($filters[$planning_type])) {
                     $filters[$planning_type] = [
-                       'color'   => self::getPaletteColor('ev', $index_color),
+                       'color'   => $planning_type === 'Holiday'
+                          ? self::HOLIDAY_DEFAULT_COLOR
+                          : self::getPaletteColor('ev', $index_color),
                        'display' => !in_array($planning_type, ['NotPlanned', 'OnlyBgEvents']),
                        'type'    => 'event_filter'
                     ];
+                } elseif ($planning_type === 'Holiday' && $filters[$planning_type]['color'] === '#8C5344') {
+                    $filters[$planning_type]['color'] = self::HOLIDAY_DEFAULT_COLOR;
                 }
                 $index_color++;
             }
@@ -1871,6 +1881,33 @@ class Planning extends CommonGLPI
             }
             if ($_SESSION['glpi_plannings']['filters'][$planning_type]['display']) {
                 $event_type_color = $_SESSION['glpi_plannings']['filters'][$planning_type]['color'];
+
+                if ($planning_type === 'Holiday') {
+                    $planning_params = $param;
+                    $planning_params['color'] = $event_type_color;
+                    $planning_params['event_type_color'] = $event_type_color;
+                    $planning_params['resourceIds'] = [];
+
+                    foreach ($_SESSION['glpi_plannings']['plannings'] as $actor => $actor_params) {
+                        if ($actor_params['type'] !== 'external' && $actor_params['display']) {
+                            if ($actor_params['type'] === 'group_users') {
+                                foreach (array_keys($actor_params['users']) as $planning_id_user) {
+                                    $planning_params['resourceIds'][] = 'gu_' . $planning_id_user;
+                                }
+                                continue;
+                            }
+                            $planning_params['resourceIds'][] = $actor;
+                        }
+                    }
+                    $planning_params['resourceIds'] = array_values(array_unique($planning_params['resourceIds']));
+                    if (count($planning_params['resourceIds']) === 0) {
+                        continue;
+                    }
+
+                    $raw_events = array_merge($raw_events, $planning_type::populatePlanning($planning_params));
+                    continue;
+                }
+
                 foreach ($_SESSION['glpi_plannings']['plannings'] as $actor => $actor_params) {
                     if ($actor_params['type'] == 'external') {
                         continue; // Ignore external calendars
@@ -1966,7 +2003,11 @@ class Planning extends CommonGLPI
                'resourceId'  => $event['resourceId'] ?? "",
                'priority'    => $event['priority'] ?? "",
                'state'       => $event['state'] ?? "",
+               'state_label' => $event['state_label'] ?? "",
             ];
+            if (isset($event['resourceIds'])) {
+                $new_event['resourceIds'] = $event['resourceIds'];
+            }
 
             // if we can't update the event, pass the editable key
             if (!$event['editable']) {

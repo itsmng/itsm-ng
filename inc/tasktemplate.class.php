@@ -105,6 +105,13 @@ class TaskTemplate extends CommonDropdown
               'col_lg' => 12,
               'col_md' => 12,
            ],
+           __('Task title') => [
+              'name'  => 'title',
+              'type'  => 'text',
+              'value' => $this->fields['title'] ?? '',
+              'col_lg' => 12,
+              'col_md' => 12,
+           ],
            TaskCategory::getTypeName(1) => [
               'name'  => 'taskcategories_id',
               'type'  => 'select',
@@ -156,6 +163,14 @@ class TaskTemplate extends CommonDropdown
     public function rawSearchOptions()
     {
         $tab = parent::rawSearchOptions();
+
+        $tab[] = [
+           'id'                 => '11',
+           'name'               => __('Task title'),
+           'field'              => 'title',
+           'table'              => $this->getTable(),
+           'datatype'           => 'string'
+        ];
 
         $tab[] = [
            'id'                 => '4',
