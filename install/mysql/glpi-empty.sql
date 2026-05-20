@@ -81,10 +81,10 @@ CREATE TABLE `glpi_appointmentavailabilities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-### Dump table glpi_appointmentavailabilityexceptions
+### Dump table glpi_appointmentunavailabilities
 
-DROP TABLE IF EXISTS `glpi_appointmentavailabilityexceptions`;
-CREATE TABLE `glpi_appointmentavailabilityexceptions` (
+DROP TABLE IF EXISTS `glpi_appointmentunavailabilities`;
+CREATE TABLE `glpi_appointmentunavailabilities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `appointmenttargets_id` int(11) NOT NULL DEFAULT '0',
   `begin` timestamp NULL DEFAULT NULL,

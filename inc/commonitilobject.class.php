@@ -283,7 +283,6 @@ abstract class CommonITILObject extends CommonDBTM
         }
 
         $has_support_side_access = Session::haveRight(Ticket::$rightname, Ticket::READALL)
-            || Session::haveRight(Ticket::$rightname, Ticket::READASSIGN)
             || $this->isUser(CommonITILActor::ASSIGN, $user_id)
             || (
                 isset($_SESSION['glpigroups'])

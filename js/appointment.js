@@ -23,7 +23,7 @@ class AppointmentCalendar {
       selectMirror: true,
       selectOverlap: function (event) {
         const props = event.extendedProps || {};
-        return props.type === "availability" || (props.type === "exception" && props.is_available);
+        return props.type === "availability" || (props.type === "unavailability" && props.is_available);
       },
       selectAllow: function (info) {
         return ITSMAppointmentCalendar.isSelectionBookable(info);
@@ -65,8 +65,8 @@ class AppointmentCalendar {
         }
         if (props.type === "availability") {
           info.el.setAttribute("data-appointment-availability-id", String(info.event.id).replace("availability-", ""));
-        } else if (props.type === "exception") {
-          info.el.setAttribute("data-appointment-exception-id", props.exception_id);
+        } else if (props.type === "unavailability") {
+          info.el.setAttribute("data-appointment-unavailability-id", props.unavailability_id);
         } else {
           info.el.setAttribute("data-appointment-id", info.event.id);
         }
@@ -170,14 +170,14 @@ class AppointmentCalendar {
         }
         if (props.type === "availability") {
           info.el.setAttribute("data-appointment-availability-id", String(info.event.id).replace("availability-", ""));
-        } else if (props.type === "exception") {
-          info.el.setAttribute("data-appointment-exception-id", props.exception_id);
+        } else if (props.type === "unavailability") {
+          info.el.setAttribute("data-appointment-unavailability-id", props.unavailability_id);
         } else if (props.type === "appointment") {
           info.el.setAttribute("data-appointment-id", props.appointment_id);
         }
       },
       select: function (info) {
-        ITSMAppointmentCalendar.openExceptionForm({
+        ITSMAppointmentCalendar.openUnavailabilityForm({
           appointmenttargets_id: ITSMAppointmentCalendar.options.appointmenttargets_id,
           begin: ITSMAppointmentCalendar.formatDate(info.start),
           end: ITSMAppointmentCalendar.formatDate(info.end),
@@ -188,17 +188,17 @@ class AppointmentCalendar {
       eventClick: function (info) {
         const props = info.event.extendedProps || {};
         info.jsEvent.preventDefault();
-        if (props.type === "exception" && props.can_edit) {
-          ITSMAppointmentCalendar.openExceptionForm({ id: props.exception_id });
+        if (props.type === "unavailability" && props.can_edit) {
+          ITSMAppointmentCalendar.openUnavailabilityForm({ id: props.unavailability_id });
         } else if (props.type === "appointment" && props.can_edit) {
           ITSMAppointmentCalendar.openForm({ id: props.appointment_id });
         }
       },
       eventDrop: function (info) {
-        ITSMAppointmentCalendar.updateExceptionTimes(info);
+        ITSMAppointmentCalendar.updateUnavailabilityTimes(info);
       },
       eventResize: function (info) {
-        ITSMAppointmentCalendar.updateExceptionTimes(info);
+        ITSMAppointmentCalendar.updateUnavailabilityTimes(info);
       },
     });
 
@@ -312,9 +312,9 @@ class AppointmentCalendar {
     });
   }
 
-  openExceptionForm(params) {
+  openUnavailabilityForm(params) {
     const dialog = $("<div class='appointment-calendar-dialog'></div>");
-    const data = Object.assign({ action: "get_exception_form" }, params || {});
+    const data = Object.assign({ action: "get_unavailability_form" }, params || {});
 
     dialog.dialog({
       modal: true,
@@ -323,7 +323,7 @@ class AppointmentCalendar {
       title: __("Unavailability"),
       open: function () {
         dialog.load(ITSMAppointmentCalendar.options.ajax_url, data, function () {
-          ITSMAppointmentCalendar.bindExceptionForm(dialog);
+          ITSMAppointmentCalendar.bindUnavailabilityForm(dialog);
           dialog.dialog("option", "position", {
             my: "center",
             at: "center",
@@ -338,7 +338,7 @@ class AppointmentCalendar {
     });
   }
 
-  bindExceptionForm(dialog) {
+  bindUnavailabilityForm(dialog) {
     let clickedButton = null;
 
     dialog.find("button, input[type=submit]").on("click", function () {
@@ -350,7 +350,7 @@ class AppointmentCalendar {
 
       const form = $(this);
       const data = form.serializeArray();
-      data.push({ name: "action", value: "save_exception" });
+      data.push({ name: "action", value: "save_unavailability" });
 
       if (clickedButton && clickedButton.name) {
         data.push({ name: clickedButton.name, value: clickedButton.value || "1" });
@@ -421,11 +421,11 @@ class AppointmentCalendar {
     });
   }
 
-  updateExceptionTimes(info) {
+  updateUnavailabilityTimes(info) {
     const event = info.event;
     const props = event.extendedProps || {};
 
-    if (props.type !== "exception" || !props.can_edit) {
+    if (props.type !== "unavailability" || !props.can_edit) {
       info.revert();
       return;
     }
@@ -435,8 +435,8 @@ class AppointmentCalendar {
       type: "POST",
       dataType: "json",
       data: {
-        action: "update_exception_times",
-        id: props.exception_id,
+        action: "update_unavailability_times",
+        id: props.unavailability_id,
         begin: ITSMAppointmentCalendar.formatDate(event.start),
         end: ITSMAppointmentCalendar.formatDate(event.end),
       },
@@ -476,7 +476,7 @@ class AppointmentCalendar {
     }
 
     let coveredByAvailability = false;
-    let coveredByOpeningException = false;
+    let coveredByOpeningUnavailability = false;
 
     for (const event of ITSMAppointmentCalendar.calendar.getEvents()) {
       const props = event.extendedProps || {};
@@ -485,7 +485,7 @@ class AppointmentCalendar {
         return false;
       }
 
-      if (props.type !== "exception" || !ITSMAppointmentCalendar.eventsOverlap(start, end, event.start, event.end)) {
+      if (props.type !== "unavailability" || !ITSMAppointmentCalendar.eventsOverlap(start, end, event.start, event.end)) {
         continue;
       }
 
@@ -494,11 +494,11 @@ class AppointmentCalendar {
       }
 
       if (props.is_available && ITSMAppointmentCalendar.eventCovers(start, end, event.start, event.end)) {
-        coveredByOpeningException = true;
+        coveredByOpeningUnavailability = true;
       }
     }
 
-    if (coveredByOpeningException) {
+    if (coveredByOpeningUnavailability) {
       return true;
     }
 

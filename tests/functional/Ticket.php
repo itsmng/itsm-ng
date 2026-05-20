@@ -3927,6 +3927,22 @@ class Ticket extends DbTestCase
         );
     }
 
+    private function setSelfServiceTicketRight(int $right): void
+    {
+        global $DB;
+
+        $DB->update(
+            'glpi_profilerights',
+            [
+               'rights' => $right
+            ],
+            [
+               'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
+               'name'        => \Ticket::$rightname,
+            ]
+        );
+    }
+
     private function getSelfServiceRightValue(string $rightname): int
     {
         global $DB;
@@ -4280,6 +4296,54 @@ class Ticket extends DbTestCase
             $this->boolean((bool)$fup->canViewItem())->isTrue();
         } finally {
             $this->login();
+            $this->setSelfServiceFollowupRight($old_followup_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testRequesterWithReadAssignStillCannotViewPrivateTicketFollowupWhenNotAssigned()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_followup_right = $this->getSelfServiceRightValue(\ITILFollowup::$rightname);
+        $old_ticket_right = $this->getSelfServiceRightValue(\Ticket::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceTicketRight(\Ticket::READMY | \Ticket::READASSIGN);
+            $this->setSelfServiceFollowupRight(\ITILFollowup::SEEPUBLIC | \ITILFollowup::SEEPRIVATE);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'requester readassign private followup policy',
+               'content'             => 'requester readassign private followup policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            $fup = new \ITILFollowup();
+            $fup_id = (int)$fup->add([
+               'itemtype'   => \Ticket::class,
+               'items_id'   => $ticket_id,
+               'content'    => 'private followup for requester with readassign',
+               'is_private' => 1,
+            ]);
+            $this->integer($fup_id)->isGreaterThan(0);
+
+            $this->login('post-only', 'postonly');
+            $fup = new \ITILFollowup();
+            $this->boolean($fup->getFromDB($fup_id))->isTrue();
+            $this->boolean((bool)$fup->canViewItem())->isFalse();
+        } finally {
+            $this->login();
+            $this->setSelfServiceTicketRight($old_ticket_right);
             $this->setSelfServiceFollowupRight($old_followup_right);
             $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
         }

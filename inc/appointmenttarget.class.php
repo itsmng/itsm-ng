@@ -140,7 +140,7 @@ class AppointmentTarget extends CommonDBTM
         $this->deleteChildrenAndRelationsFromDb([
             Appointment::class,
             AppointmentAvailability::class,
-            AppointmentAvailabilityException::class,
+            AppointmentUnavailability::class,
         ]);
     }
 
@@ -217,7 +217,7 @@ class AppointmentTarget extends CommonDBTM
             echo "</aside>";
             echo "<section class='appointment-target-calendar'>";
             echo "<div class='appointment-target-calendar__heading'>";
-            echo "<h3>" . AppointmentAvailabilityException::getTypeName(Session::getPluralNumber()) . "</h3>";
+            echo "<h3>" . AppointmentUnavailability::getTypeName(Session::getPluralNumber()) . "</h3>";
             echo "</div>";
             echo "<div id='appointment-target-calendar'></div>";
             echo "</section>";

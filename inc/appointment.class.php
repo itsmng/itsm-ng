@@ -43,6 +43,19 @@ class Appointment extends CommonDBTM
             || Session::haveRight(self::$rightname, UPDATE);
     }
 
+    public function canViewItem()
+    {
+        if (!parent::canViewItem()) {
+            return false;
+        }
+
+        return Session::haveRightsOr(self::$rightname, [READ, UPDATE, PURGE])
+            || (
+                isset($this->fields['users_id_requester'])
+                && (int)$this->fields['users_id_requester'] === (int)Session::getLoginUserID()
+            );
+    }
+
     public static function canUpdate()
     {
         return Session::haveRightsOr(self::$rightname, [CREATE, UPDATE]);

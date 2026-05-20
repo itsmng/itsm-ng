@@ -50,15 +50,15 @@ export interface SeedAppointmentScheduleOptions {
   day?: number;
   availabilityBegin?: string;
   availabilityEnd?: string;
-  exceptionBegin?: string;
-  exceptionEnd?: string;
+  unavailabilityBegin?: string;
+  unavailabilityEnd?: string;
 }
 
 export interface SeedAppointmentScheduleResult {
   groupId: number;
   targetId: number;
   availabilityId: number;
-  exceptionId: number;
+  unavailabilityId: number;
   day: number;
   date: string;
   userId: number;
@@ -374,11 +374,11 @@ export async function seedAppointmentSchedule(
     const selectedDate = new Date(today);
     selectedDate.setDate(today.getDate() + ((day - today.getDay() + 7) % 7));
     const date = selectedDate.toISOString().slice(0, 10);
-    const exceptionId = await createItem(request, session, 'AppointmentAvailabilityException', {
+    const unavailabilityId = await createItem(request, session, 'AppointmentUnavailability', {
       appointmenttargets_id: targetId,
       plan: {
-        begin: options.exceptionBegin ?? `${date} 13:00:00`,
-        end: options.exceptionEnd ?? `${date} 14:00:00`,
+        begin: options.unavailabilityBegin ?? `${date} 13:00:00`,
+        end: options.unavailabilityEnd ?? `${date} 14:00:00`,
       },
       is_available: 0,
       comment: `E2E unavailable block ${suffix}`,
@@ -388,7 +388,7 @@ export async function seedAppointmentSchedule(
       groupId,
       targetId,
       availabilityId,
-      exceptionId,
+      unavailabilityId,
       day,
       date,
       userId: session.userId,
@@ -404,8 +404,8 @@ export async function seedAppointment(
 ): Promise<SeedAppointmentResult> {
   const schedule = await seedAppointmentSchedule(request, {
     ...options,
-    exceptionBegin: options.exceptionBegin ?? `${localAppointmentDate(options.day)} 16:00:00`,
-    exceptionEnd: options.exceptionEnd ?? `${localAppointmentDate(options.day)} 17:00:00`,
+    unavailabilityBegin: options.unavailabilityBegin ?? `${localAppointmentDate(options.day)} 16:00:00`,
+    unavailabilityEnd: options.unavailabilityEnd ?? `${localAppointmentDate(options.day)} 17:00:00`,
   });
   const session = await initApiSession(request);
 
