@@ -13,12 +13,12 @@ if (!Session::haveRight(ReservationItem::$rightname, ReservationItem::RESERVEANI
 }
 
 $offset = isset($_GET['offset']) ? max(0, (int) $_GET['offset']) : 0;
-$limit  = isset($_GET['limit']) ? max(1, (int) $_GET['limit']) : (int) $_SESSION['glpilist_limit'];
+$limit = isset($_GET['limit']) ? max(1, (int) $_GET['limit']) : (int) $_SESSION['glpilist_limit'];
 $search = trim((string) ($_GET['search'] ?? ''));
-$sort   = (string) ($_GET['sort'] ?? 'item');
-$order  = strtolower((string) ($_GET['order'] ?? 'asc')) === 'desc' ? 'DESC' : 'ASC';
-$begin  = trim((string) ($_GET['begin'] ?? ''));
-$end    = trim((string) ($_GET['end'] ?? ''));
+$sort = (string) ($_GET['sort'] ?? 'item');
+$order = strtolower((string) ($_GET['order'] ?? 'asc')) === 'desc' ? 'DESC' : 'ASC';
+$begin = trim((string) ($_GET['begin'] ?? ''));
+$end = trim((string) ($_GET['end'] ?? ''));
 $reservation_types = trim((string) ($_GET['reservation_types'] ?? ''));
 $showentity = Session::isMultiEntitiesMode();
 
@@ -44,64 +44,64 @@ $buildCriteria = function ($itemtype, $count = false) use ($DB, $search, $sort, 
     }
 
     $select = $count ? ['COUNT DISTINCT' => 'glpi_reservationitems.id AS cpt'] : [
-       'glpi_reservationitems.id',
-       'glpi_reservationitems.comment',
-       'glpi_reservationitems.items_id AS items_id',
-       "$itemtable.$itemname AS name",
-       "$itemtable.entities_id AS entities_id",
-       $otherserial,
-       'glpi_locations.completename AS location_name',
+        'glpi_reservationitems.id',
+        'glpi_reservationitems.comment',
+        'glpi_reservationitems.items_id AS items_id',
+        "$itemtable.$itemname AS name",
+        "$itemtable.entities_id AS entities_id",
+        $otherserial,
+        'glpi_locations.completename AS location_name',
     ];
 
     $criteria = [
-       'SELECT' => $select,
-       'FROM' => ReservationItem::getTable(),
-       'INNER JOIN' => [
-          $itemtable => [
-             'ON' => [
-                'glpi_reservationitems' => 'items_id',
-                $itemtable => 'id',
-                [
-                   'AND' => [
-                      'glpi_reservationitems.itemtype' => $itemtype,
-                   ],
+        'SELECT' => $select,
+        'FROM' => ReservationItem::getTable(),
+        'INNER JOIN' => [
+            $itemtable => [
+                'ON' => [
+                    'glpi_reservationitems' => 'items_id',
+                    $itemtable => 'id',
+                    [
+                        'AND' => [
+                            'glpi_reservationitems.itemtype' => $itemtype,
+                        ],
+                    ],
                 ],
-             ],
-          ],
-       ],
-       'LEFT JOIN' => [
-          'glpi_locations' => [
-             'ON' => [
-                $itemtable => 'locations_id',
-                'glpi_locations' => 'id',
-             ],
-          ],
-          'glpi_entities' => [
-             'ON' => [
-                $itemtable => 'entities_id',
-                'glpi_entities' => 'id',
-             ],
-          ],
-       ],
-       'WHERE' => [
-          'glpi_reservationitems.is_active' => 1,
-          'glpi_reservationitems.is_deleted' => 0,
-          "$itemtable.is_deleted" => 0,
-       ] + getEntitiesRestrictCriteria($itemtable, '', $_SESSION['glpiactiveentities'], $item->maybeRecursive()),
+            ],
+        ],
+        'LEFT JOIN' => [
+            'glpi_locations' => [
+                'ON' => [
+                    $itemtable => 'locations_id',
+                    'glpi_locations' => 'id',
+                ],
+            ],
+            'glpi_entities' => [
+                'ON' => [
+                    $itemtable => 'entities_id',
+                    'glpi_entities' => 'id',
+                ],
+            ],
+        ],
+        'WHERE' => [
+            'glpi_reservationitems.is_active' => 1,
+            'glpi_reservationitems.is_deleted' => 0,
+            "$itemtable.is_deleted" => 0,
+        ] + getEntitiesRestrictCriteria($itemtable, '', $_SESSION['glpiactiveentities'], $item->maybeRecursive()),
     ];
 
     if ($begin !== '' && $end !== '') {
         $criteria['LEFT JOIN']['glpi_reservations'] = [
-           'ON' => [
-              'glpi_reservationitems' => 'id',
-              'glpi_reservations' => 'reservationitems_id',
-              [
-                 'AND' => [
-                    'glpi_reservations.end' => ['>=', $begin],
-                    'glpi_reservations.begin' => ['<=', $end],
-                 ],
-              ],
-           ],
+            'ON' => [
+                'glpi_reservationitems' => 'id',
+                'glpi_reservations' => 'reservationitems_id',
+                [
+                    'AND' => [
+                        'glpi_reservations.end' => ['>', $begin],
+                        'glpi_reservations.begin' => ['<', $end],
+                    ],
+                ],
+            ],
         ];
         $criteria['WHERE'][] = ['glpi_reservations.id' => null];
     }
@@ -115,10 +115,10 @@ $buildCriteria = function ($itemtype, $count = false) use ($DB, $search, $sort, 
 
     if ($itemtype === 'Peripheral') {
         $criteria['LEFT JOIN']['glpi_peripheraltypes'] = [
-           'ON' => [
-              'glpi_peripherals' => 'peripheraltypes_id',
-              'glpi_peripheraltypes' => 'id',
-           ],
+            'ON' => [
+                'glpi_peripherals' => 'peripheraltypes_id',
+                'glpi_peripheraltypes' => 'id',
+            ],
         ];
         if (!$count) {
             $criteria['SELECT'][] = 'glpi_peripheraltypes.name AS peripheraltype_name';
@@ -131,11 +131,11 @@ $buildCriteria = function ($itemtype, $count = false) use ($DB, $search, $sort, 
     if ($search !== '') {
         $like = Search::makeTextSearchValue($search);
         $or = [
-           "$itemtable.$itemname" => ['LIKE', $like],
-           'glpi_locations.completename' => ['LIKE', $like],
-           'glpi_entities.completename' => ['LIKE', $like],
-           'glpi_reservationitems.comment' => ['LIKE', $like],
-           'glpi_reservationitems.itemtype' => ['LIKE', $like],
+            "$itemtable.$itemname" => ['LIKE', $like],
+            'glpi_locations.completename' => ['LIKE', $like],
+            'glpi_entities.completename' => ['LIKE', $like],
+            'glpi_reservationitems.comment' => ['LIKE', $like],
+            'glpi_reservationitems.itemtype' => ['LIKE', $like],
         ];
         if ($item->isField('otherserial')) {
             $or["$itemtable.otherserial"] = ['LIKE', $like];
@@ -199,8 +199,8 @@ foreach ($CFG_GLPI['reservation_types'] as $itemtype) {
     $before = count($rows);
     foreach ($DB->request($criteria) as $row) {
         $typename = $itemtype === 'Peripheral' && !empty($row['peripheraltype_name'])
-           ? $row['peripheraltype_name']
-           : $item->getTypeName();
+            ? $row['peripheraltype_name']
+            : $item->getTypeName();
         $icon = is_a($itemtype, CommonGLPI::class, true) ? $itemtype::getIcon() : 'fas fa-desktop';
 
         $item_cell = "<a href='reservation.php?reservationitems_id=" . (int) $row['id'] . "' class='text-decoration-none'>";
@@ -236,9 +236,9 @@ foreach ($CFG_GLPI['reservation_types'] as $itemtype) {
         }
 
         $table_row = [
-           'item' => $item_cell,
-           'location' => $location_cell,
-           'comment' => $comment_cell,
+            'item' => $item_cell,
+            'location' => $location_cell,
+            'comment' => $comment_cell,
         ];
         if ($showentity) {
             $table_row['entity'] = "<div class='d-flex align-items-center'><i class='fas fa-building text-warning me-2'></i><small>"
@@ -252,6 +252,6 @@ foreach ($CFG_GLPI['reservation_types'] as $itemtype) {
 }
 
 echo json_encode([
-   'total' => $total,
-   'rows' => $rows,
+    'total' => $total,
+    'rows' => $rows,
 ]);

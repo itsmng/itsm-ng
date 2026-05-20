@@ -50,7 +50,7 @@ test('opens booking form only for selectable appointment availability', async ({
   await page.goto(`/front/appointment.php?appointmenttargets_id=${seed.targetId}`);
   await expect(page.locator('#appointment-calendar')).toBeVisible();
   await expect(page.locator('[data-appointment-event-type="availability"]')).toHaveCount(1);
-  await expect(page.locator('[data-appointment-event-type="exception"]')).toHaveCount(1);
+  await expect(page.locator('[data-appointment-event-type="unavailability"]')).toHaveCount(1);
 
   await selectAppointmentCalendarSlot(page, date, '08:00:00');
   await expectNoAppointmentDialog(page);

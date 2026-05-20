@@ -14,7 +14,7 @@ function appointment_ajax_date($value): string
     return date('Y-m-d H:i:s', $time === false ? time() : $time);
 }
 
-function appointment_ajax_get_schedule_events($appointmenttargets_id, $start, $end, $editable_exceptions = false): array
+function appointment_ajax_get_schedule_events($appointmenttargets_id, $start, $end, $editable_unavailabilities = false): array
 {
     global $DB;
 
@@ -56,8 +56,8 @@ function appointment_ajax_get_schedule_events($appointmenttargets_id, $start, $e
         ];
     }
 
-    $exceptions = $DB->request([
-        'FROM' => AppointmentAvailabilityException::getTable(),
+    $unavailabilities = $DB->request([
+        'FROM' => AppointmentUnavailability::getTable(),
         'WHERE' => [
             'appointmenttargets_id' => $appointmenttargets_id,
             'end' => ['>', $start],
@@ -65,22 +65,22 @@ function appointment_ajax_get_schedule_events($appointmenttargets_id, $start, $e
         ],
         'ORDER' => 'begin',
     ]);
-    $exception = new AppointmentAvailabilityException();
-    foreach ($exceptions as $row) {
-        $can_edit = $editable_exceptions && $exception->getFromDB($row['id']) && $exception->canUpdateItem();
+    $unavailability = new AppointmentUnavailability();
+    foreach ($unavailabilities as $row) {
+        $can_edit = $editable_unavailabilities && $unavailability->getFromDB($row['id']) && $unavailability->canUpdateItem();
         $is_available = (int) $row['is_available'] === 1;
         $events[] = [
-            'id' => 'exception-' . $row['id'],
+            'id' => 'unavailability-' . $row['id'],
             'title' => $is_available ? __('Available') : __('Unavailable'),
             'start' => $row['begin'],
             'end' => $row['end'],
             'editable' => $can_edit,
             'durationEditable' => $can_edit,
             'startEditable' => $can_edit,
-            'classNames' => [$is_available ? 'appointment-exception-open' : 'appointment-exception-closed'],
+            'classNames' => [$is_available ? 'appointment-unavailability-open' : 'appointment-unavailability-closed'],
             'extendedProps' => [
-                'type' => 'exception',
-                'exception_id' => (int) $row['id'],
+                'type' => 'unavailability',
+                'unavailability_id' => (int) $row['id'],
                 'is_available' => $is_available,
                 'comment' => $row['comment'],
                 'can_edit' => $can_edit,
@@ -227,7 +227,7 @@ if ($_REQUEST['action'] === 'get_target_events') {
     exit;
 }
 
-if ($_REQUEST['action'] === 'get_exception_form') {
+if ($_REQUEST['action'] === 'get_unavailability_form') {
     Html::header_nocache();
     header('Content-Type: text/html; charset=UTF-8');
     if (!Session::haveRight('appointment', UPDATE)) {
@@ -235,12 +235,12 @@ if ($_REQUEST['action'] === 'get_exception_form') {
         exit;
     }
 
-    $exception = new AppointmentAvailabilityException();
+    $unavailability = new AppointmentUnavailability();
     $id = (int) ($_REQUEST['id'] ?? 0);
     if ($id > 0) {
-        $exception->showForm($id, []);
+        $unavailability->showForm($id, []);
     } else {
-        $exception->showForm('', [
+        $unavailability->showForm('', [
             'appointmenttargets_id' => (int) ($_REQUEST['appointmenttargets_id'] ?? 0),
             'begin' => appointment_ajax_date($_REQUEST['begin'] ?? null),
             'end' => appointment_ajax_date($_REQUEST['end'] ?? null),
@@ -311,27 +311,27 @@ if ($_REQUEST['action'] === 'save') {
     exit;
 }
 
-if ($_REQUEST['action'] === 'save_exception') {
+if ($_REQUEST['action'] === 'save_unavailability') {
     Session::checkRight('appointment', UPDATE);
     header('Content-Type: application/json; charset=UTF-8');
 
-    $exception = new AppointmentAvailabilityException();
+    $unavailability = new AppointmentUnavailability();
     $success = false;
     ob_start();
     if (isset($_POST['purge']) && !empty($_POST['id'])) {
-        if ($exception->getFromDB((int) $_POST['id']) && $exception->canPurgeItem()) {
-            $success = (bool) $exception->delete(['id' => (int) $_POST['id']], 1);
+        if ($unavailability->getFromDB((int) $_POST['id']) && $unavailability->canPurgeItem()) {
+            $success = (bool) $unavailability->delete(['id' => (int) $_POST['id']], 1);
         } else {
             echo "<div class='appointment-calendar-form-error'>" . __("You don't have permission to perform this action.") . "</div>";
         }
     } elseif (isset($_POST['update']) && !empty($_POST['id'])) {
-        if ($exception->getFromDB((int) $_POST['id']) && $exception->canUpdateItem()) {
-            $success = (bool) $exception->update($_POST);
+        if ($unavailability->getFromDB((int) $_POST['id']) && $unavailability->canUpdateItem()) {
+            $success = (bool) $unavailability->update($_POST);
         } else {
             echo "<div class='appointment-calendar-form-error'>" . __("You don't have permission to perform this action.") . "</div>";
         }
     } elseif (isset($_POST['add'])) {
-        $success = (bool) $exception->add($_POST);
+        $success = (bool) $unavailability->add($_POST);
     }
     $output = ob_get_clean();
 
@@ -367,16 +367,16 @@ if ($_REQUEST['action'] === 'update_times') {
     exit;
 }
 
-if ($_REQUEST['action'] === 'update_exception_times') {
+if ($_REQUEST['action'] === 'update_unavailability_times') {
     Session::checkRight('appointment', UPDATE);
     header('Content-Type: application/json; charset=UTF-8');
 
-    $exception = new AppointmentAvailabilityException();
+    $unavailability = new AppointmentUnavailability();
     $success = false;
     ob_start();
     $id = (int) ($_POST['id'] ?? 0);
-    if ($id > 0 && $exception->getFromDB($id) && $exception->canUpdateItem()) {
-        $success = (bool) $exception->update([
+    if ($id > 0 && $unavailability->getFromDB($id) && $unavailability->canUpdateItem()) {
+        $success = (bool) $unavailability->update([
             'id' => $id,
             'plan' => [
                 'begin' => appointment_ajax_date($_POST['begin'] ?? null),

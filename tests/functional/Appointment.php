@@ -44,19 +44,19 @@ class Appointment extends \DbTestCase
         }
 
         $group = new \Group();
-        $groups_id = (int)$group->add([
-           'name'        => 'Appointment target group',
-           'entities_id' => $entities_id,
+        $groups_id = (int) $group->add([
+            'name' => 'Appointment target group',
+            'entities_id' => $entities_id,
         ]);
         $this->integer($groups_id)->isGreaterThan(0);
 
         $target = new \AppointmentTarget();
-        $appointmenttargets_id = (int)$target->add([
-           'itemtype'     => 'Group',
-           'items_id'     => $groups_id,
-           'entities_id'  => $entities_id,
-           'is_recursive' => $is_recursive,
-           'is_active'    => 1,
+        $appointmenttargets_id = (int) $target->add([
+            'itemtype' => 'Group',
+            'items_id' => $groups_id,
+            'entities_id' => $entities_id,
+            'is_recursive' => $is_recursive,
+            'is_active' => 1,
         ]);
         $this->integer($appointmenttargets_id)->isGreaterThan(0);
 
@@ -67,12 +67,12 @@ class Appointment extends \DbTestCase
     {
         $users_id = getItemByTypeName('User', 'normal', true);
         $target = new \AppointmentTarget();
-        $appointmenttargets_id = (int)$target->add([
-           'itemtype'     => 'User',
-           'items_id'     => $users_id,
-           'entities_id'  => getItemByTypeName('Entity', '_test_root_entity', true),
-           'is_recursive' => 1,
-           'is_active'    => 1,
+        $appointmenttargets_id = (int) $target->add([
+            'itemtype' => 'User',
+            'items_id' => $users_id,
+            'entities_id' => getItemByTypeName('Entity', '_test_root_entity', true),
+            'is_recursive' => 1,
+            'is_active' => 1,
         ]);
         $this->integer($appointmenttargets_id)->isGreaterThan(0);
 
@@ -82,11 +82,11 @@ class Appointment extends \DbTestCase
     private function addAvailability(int $appointmenttargets_id, int $day = self::MONDAY): int
     {
         $availability = new \AppointmentAvailability();
-        $id = (int)$availability->add([
-           'appointmenttargets_id' => $appointmenttargets_id,
-           'day'                   => $day,
-           'begin'                 => '09:00',
-           'end'                   => '17:00',
+        $id = (int) $availability->add([
+            'appointmenttargets_id' => $appointmenttargets_id,
+            'day' => $day,
+            'begin' => '09:00',
+            'end' => '17:00',
         ]);
 
         $this->integer($id)->isGreaterThan(0);
@@ -105,17 +105,50 @@ class Appointment extends \DbTestCase
         $appointment = new \Appointment();
 
         return $appointment->add($input + [
-           'name'                  => 'Appointment test',
-           'appointmenttargets_id' => $appointmenttargets_id,
-           'plan'                  => [
-              'begin' => $begin,
-              'end'   => $end,
-           ],
-           '_disablenotif'         => true,
+            'name' => 'Appointment test',
+            'appointmenttargets_id' => $appointmenttargets_id,
+            'plan' => [
+                'begin' => $begin,
+                'end' => $end,
+            ],
+            '_disablenotif' => true,
         ]);
     }
 
-    public function testAvailabilityRulesAndExceptions()
+    private function setSelfServiceAppointmentRight(int $right): void
+    {
+        global $DB;
+
+        $DB->update(
+            'glpi_profilerights',
+            [
+                'rights' => $right
+            ],
+            [
+                'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
+                'name' => \Appointment::$rightname,
+            ]
+        );
+    }
+
+    private function getSelfServiceAppointmentRight(): int
+    {
+        global $DB;
+
+        $iterator = $DB->request([
+            'SELECT' => ['rights'],
+            'FROM' => 'glpi_profilerights',
+            'WHERE' => [
+                'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
+                'name' => \Appointment::$rightname,
+            ]
+        ]);
+
+        $row = $iterator->next();
+        return (int) $row['rights'];
+    }
+
+    public function testAvailabilityRulesAndUnavailabilities()
     {
         $this->login();
         [, $appointmenttargets_id] = $this->createGroupTarget();
@@ -139,14 +172,14 @@ class Appointment extends \DbTestCase
             '2030-01-08 10:00:00'
         ))->isFalse();
 
-        $exception = new \AppointmentAvailabilityException();
-        $this->integer((int)$exception->add([
-           'appointmenttargets_id' => $appointmenttargets_id,
-           'plan'                  => [
-              'begin' => '2030-01-07 10:30:00',
-              'end'   => '2030-01-07 10:45:00',
-           ],
-           'is_available'          => 0,
+        $unavailability = new \AppointmentUnavailability();
+        $this->integer((int) $unavailability->add([
+            'appointmenttargets_id' => $appointmenttargets_id,
+            'plan' => [
+                'begin' => '2030-01-07 10:30:00',
+                'end' => '2030-01-07 10:45:00',
+            ],
+            'is_available' => 0,
         ]))->isGreaterThan(0);
 
         $this->boolean(\AppointmentAvailability::isAvailable(
@@ -155,13 +188,13 @@ class Appointment extends \DbTestCase
             '2030-01-07 11:00:00'
         ))->isFalse();
 
-        $this->integer((int)$exception->add([
-           'appointmenttargets_id' => $appointmenttargets_id,
-           'plan'                  => [
-              'begin' => '2030-01-08 10:00:00',
-              'end'   => '2030-01-08 11:00:00',
-           ],
-           'is_available'          => 1,
+        $this->integer((int) $unavailability->add([
+            'appointmenttargets_id' => $appointmenttargets_id,
+            'plan' => [
+                'begin' => '2030-01-08 10:00:00',
+                'end' => '2030-01-08 11:00:00',
+            ],
+            'is_available' => 1,
         ]))->isGreaterThan(0);
 
         $this->boolean(\AppointmentAvailability::isAvailable(
@@ -177,7 +210,7 @@ class Appointment extends \DbTestCase
         ))->isFalse();
     }
 
-    public function testAvailabilityExceptionRejectsInaccessibleTargetOnAdd()
+    public function testAvailabilityUnavailabilityRejectsInaccessibleTargetOnAdd()
     {
         $this->login();
         $this->setEntity('_test_root_entity', true);
@@ -186,54 +219,54 @@ class Appointment extends \DbTestCase
 
         $this->setEntity('_test_child_1', false);
 
-        $exception = new \AppointmentAvailabilityException();
-        $this->boolean($exception->add([
-           'appointmenttargets_id' => $appointmenttargets_id,
-           'plan'                  => [
-              'begin' => '2030-01-07 10:30:00',
-              'end'   => '2030-01-07 10:45:00',
-           ],
-           'is_available'          => 0,
+        $unavailability = new \AppointmentUnavailability();
+        $this->boolean($unavailability->add([
+            'appointmenttargets_id' => $appointmenttargets_id,
+            'plan' => [
+                'begin' => '2030-01-07 10:30:00',
+                'end' => '2030-01-07 10:45:00',
+            ],
+            'is_available' => 0,
         ]) === false)->isTrue();
         $this->hasSessionMessages(ERROR, [
-           'Appointment target is not available',
+            'Appointment target is not available',
         ]);
     }
 
-    public function testAvailabilityExceptionRejectsInaccessibleTargetOnUpdateRights()
+    public function testAvailabilityUnavailabilityRejectsInaccessibleTargetOnUpdateRights()
     {
         $this->login();
         $this->setEntity('_test_root_entity', true);
         $target_entity_id = getItemByTypeName('Entity', '_test_child_2', true);
         [, $appointmenttargets_id] = $this->createGroupTarget($target_entity_id, 0);
 
-        $exception = new \AppointmentAvailabilityException();
-        $exceptions_id = (int)$exception->add([
-           'appointmenttargets_id' => $appointmenttargets_id,
-           'plan'                  => [
-              'begin' => '2030-01-07 10:30:00',
-              'end'   => '2030-01-07 10:45:00',
-           ],
-           'is_available'          => 0,
+        $unavailability = new \AppointmentUnavailability();
+        $unavailabilities_id = (int) $unavailability->add([
+            'appointmenttargets_id' => $appointmenttargets_id,
+            'plan' => [
+                'begin' => '2030-01-07 10:30:00',
+                'end' => '2030-01-07 10:45:00',
+            ],
+            'is_available' => 0,
         ]);
-        $this->integer($exceptions_id)->isGreaterThan(0);
+        $this->integer($unavailabilities_id)->isGreaterThan(0);
 
         $this->setEntity('_test_child_1', false);
 
-        $restricted_exception = new \AppointmentAvailabilityException();
-        $this->boolean($restricted_exception->getFromDB($exceptions_id))->isTrue();
-        $this->boolean($restricted_exception->canUpdateItem())->isFalse();
-        $this->boolean($restricted_exception->canDeleteItem())->isFalse();
-        $this->boolean($restricted_exception->canPurgeItem())->isFalse();
-        $this->boolean($restricted_exception->update([
-           'id'   => $exceptions_id,
-           'plan' => [
-              'begin' => '2030-01-07 11:30:00',
-              'end'   => '2030-01-07 11:45:00',
-           ],
+        $restricted_unavailability = new \AppointmentUnavailability();
+        $this->boolean($restricted_unavailability->getFromDB($unavailabilities_id))->isTrue();
+        $this->boolean($restricted_unavailability->canUpdateItem())->isFalse();
+        $this->boolean($restricted_unavailability->canDeleteItem())->isFalse();
+        $this->boolean($restricted_unavailability->canPurgeItem())->isFalse();
+        $this->boolean($restricted_unavailability->update([
+            'id' => $unavailabilities_id,
+            'plan' => [
+                'begin' => '2030-01-07 11:30:00',
+                'end' => '2030-01-07 11:45:00',
+            ],
         ]))->isFalse();
         $this->hasSessionMessages(ERROR, [
-           'Appointment target is not available',
+            'Appointment target is not available',
         ]);
     }
 
@@ -285,34 +318,34 @@ class Appointment extends \DbTestCase
 
         $availability = new \AppointmentAvailability();
         $this->boolean($availability->add([
-           'appointmenttargets_id' => $appointmenttargets_id,
-           'day'                   => 8,
-           'begin'                 => '09:00',
-           'end'                   => '17:00',
+            'appointmenttargets_id' => $appointmenttargets_id,
+            'day' => 8,
+            'begin' => '09:00',
+            'end' => '17:00',
         ]) === false)->isTrue();
         $this->hasSessionMessages(ERROR, [
-           'Invalid day',
+            'Invalid day',
         ]);
 
         $this->boolean($availability->add([
-           'appointmenttargets_id' => $appointmenttargets_id,
-           'day'                   => self::MONDAY,
-           'begin'                 => '17:00',
-           'end'                   => '09:00',
+            'appointmenttargets_id' => $appointmenttargets_id,
+            'day' => self::MONDAY,
+            'begin' => '17:00',
+            'end' => '09:00',
         ]) === false)->isTrue();
         $this->hasSessionMessages(ERROR, [
-           'Error in entering dates. The starting date is later than the ending date',
+            'Error in entering dates. The starting date is later than the ending date',
         ]);
 
         $this->setEntity('_test_child_1', false);
         $this->boolean($availability->add([
-           'appointmenttargets_id' => $appointmenttargets_id,
-           'day'                   => self::MONDAY,
-           'begin'                 => '09:00',
-           'end'                   => '17:00',
+            'appointmenttargets_id' => $appointmenttargets_id,
+            'day' => self::MONDAY,
+            'begin' => '09:00',
+            'end' => '17:00',
         ]) === false)->isTrue();
         $this->hasSessionMessages(ERROR, [
-           'Appointment target is not available',
+            'Appointment target is not available',
         ]);
     }
 
@@ -323,26 +356,26 @@ class Appointment extends \DbTestCase
         $this->addAvailability($appointmenttargets_id);
 
         $appointment = new \Appointment();
-        $appointments_id = (int)$appointment->add([
-           'name'                  => 'Target-backed appointment',
-           'appointmenttargets_id' => $appointmenttargets_id,
-           'plan'                  => [
-              'begin' => '2030-01-07 10:00:00',
-              'end'   => '2030-01-07 11:00:00',
-           ],
-           '_disablenotif'         => true,
+        $appointments_id = (int) $appointment->add([
+            'name' => 'Target-backed appointment',
+            'appointmenttargets_id' => $appointmenttargets_id,
+            'plan' => [
+                'begin' => '2030-01-07 10:00:00',
+                'end' => '2030-01-07 11:00:00',
+            ],
+            '_disablenotif' => true,
         ]);
 
         $this->integer($appointments_id)->isGreaterThan(0);
         $this->boolean($appointment->getFromDB($appointments_id))->isTrue();
         $this->array($appointment->fields)
-           ->integer['appointmenttargets_id']->isEqualTo($appointmenttargets_id)
-           ->integer['users_id_requester']->isEqualTo(\Session::getLoginUserID())
-           ->integer['entities_id']->isEqualTo(getItemByTypeName('Entity', '_test_root_entity', true))
-           ->integer['is_recursive']->isEqualTo(1)
-           ->integer['state']->isEqualTo(\Planning::INFO)
-           ->string['begin']->isEqualTo('2030-01-07 10:00:00')
-           ->string['end']->isEqualTo('2030-01-07 11:00:00');
+            ->integer['appointmenttargets_id']->isEqualTo($appointmenttargets_id)
+            ->integer['users_id_requester']->isEqualTo(\Session::getLoginUserID())
+            ->integer['entities_id']->isEqualTo(getItemByTypeName('Entity', '_test_root_entity', true))
+            ->integer['is_recursive']->isEqualTo(1)
+            ->integer['state']->isEqualTo(\Planning::INFO)
+            ->string['begin']->isEqualTo('2030-01-07 10:00:00')
+            ->string['end']->isEqualTo('2030-01-07 11:00:00');
     }
 
     public function testUpdateCompletesTargetFieldsWhenRetargeting()
@@ -356,25 +389,25 @@ class Appointment extends \DbTestCase
         $this->addAvailability($second_target_id);
 
         $appointment = new \Appointment();
-        $appointments_id = (int)$this->addAppointment($first_target_id);
+        $appointments_id = (int) $this->addAppointment($first_target_id);
         $this->integer($appointments_id)->isGreaterThan(0);
 
         $this->boolean($appointment->getFromDB($appointments_id))->isTrue();
-        $this->integer((int)$appointment->fields['entities_id'])
-           ->isEqualTo(getItemByTypeName('Entity', '_test_root_entity', true));
-        $this->integer((int)$appointment->fields['is_recursive'])->isEqualTo(1);
+        $this->integer((int) $appointment->fields['entities_id'])
+            ->isEqualTo(getItemByTypeName('Entity', '_test_root_entity', true));
+        $this->integer((int) $appointment->fields['is_recursive'])->isEqualTo(1);
 
         $this->boolean($appointment->update([
-           'id'                    => $appointments_id,
-           'appointmenttargets_id' => $second_target_id,
-           '_disablenotif'         => true,
+            'id' => $appointments_id,
+            'appointmenttargets_id' => $second_target_id,
+            '_disablenotif' => true,
         ]))->isTrue();
 
         $this->boolean($appointment->getFromDB($appointments_id))->isTrue();
         $this->array($appointment->fields)
-           ->integer['appointmenttargets_id']->isEqualTo($second_target_id)
-           ->integer['entities_id']->isEqualTo($child_entity_id)
-           ->integer['is_recursive']->isEqualTo(0);
+            ->integer['appointmenttargets_id']->isEqualTo($second_target_id)
+            ->integer['entities_id']->isEqualTo($child_entity_id)
+            ->integer['is_recursive']->isEqualTo(0);
     }
 
     public function testRejectsOverlappingAppointmentForSameTarget()
@@ -383,7 +416,7 @@ class Appointment extends \DbTestCase
         [, $appointmenttargets_id] = $this->createGroupTarget();
         $this->addAvailability($appointmenttargets_id);
 
-        $this->integer((int)$this->addAppointment($appointmenttargets_id))->isGreaterThan(0);
+        $this->integer((int) $this->addAppointment($appointmenttargets_id))->isGreaterThan(0);
         $overlap_result = $this->addAppointment(
             $appointmenttargets_id,
             '2030-01-07 10:30:00',
@@ -391,14 +424,54 @@ class Appointment extends \DbTestCase
         );
         $this->boolean($overlap_result === false)->isTrue();
         $this->hasSessionMessages(ERROR, [
-           'The selected appointment target is already booked for this timeframe',
+            'The selected appointment target is already booked for this timeframe',
         ]);
 
-        $this->integer((int)$this->addAppointment(
+        $this->integer((int) $this->addAppointment(
             $appointmenttargets_id,
             '2030-01-07 11:00:00',
             '2030-01-07 12:00:00'
         ))->isGreaterThan(0);
+    }
+
+    public function testCreateOnlyUserCanOnlyViewOwnAppointmentDetails()
+    {
+        $this->login();
+        [, $appointmenttargets_id] = $this->createGroupTarget();
+        $this->addAvailability($appointmenttargets_id);
+
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $normal_id = getItemByTypeName('User', 'normal', true);
+        $own_appointment_id = (int) $this->addAppointment(
+            $appointmenttargets_id,
+            '2030-01-07 10:00:00',
+            '2030-01-07 11:00:00',
+            ['users_id_requester' => $post_only_id]
+        );
+        $other_appointment_id = (int) $this->addAppointment(
+            $appointmenttargets_id,
+            '2030-01-07 11:00:00',
+            '2030-01-07 12:00:00',
+            ['users_id_requester' => $normal_id]
+        );
+        $this->integer($own_appointment_id)->isGreaterThan(0);
+        $this->integer($other_appointment_id)->isGreaterThan(0);
+
+        $old_appointment_right = $this->getSelfServiceAppointmentRight();
+
+        try {
+            $this->setSelfServiceAppointmentRight(CREATE);
+            $this->login('post-only', 'postonly');
+
+            $appointment = new \Appointment();
+            $this->boolean($appointment->can($own_appointment_id, READ))->isTrue();
+
+            $other_appointment = new \Appointment();
+            $this->boolean($other_appointment->can($other_appointment_id, READ))->isFalse();
+        } finally {
+            $this->login();
+            $this->setSelfServiceAppointmentRight($old_appointment_right);
+        }
     }
 
     public function testPopulatePlanningReturnsAppointmentForRequesterAndGroup()
@@ -406,30 +479,30 @@ class Appointment extends \DbTestCase
         $this->login();
         [, $appointmenttargets_id, $groups_id] = $this->createGroupTarget();
         $this->addAvailability($appointmenttargets_id);
-        $appointments_id = (int)$this->addAppointment($appointmenttargets_id);
+        $appointments_id = (int) $this->addAppointment($appointmenttargets_id);
 
         $group_events = \Appointment::populatePlanning([
-           'whogroup' => $groups_id,
-           'begin'    => '2030-01-07 00:00:00',
-           'end'      => '2030-01-08 00:00:00',
-           'color'    => '#ff0000',
+            'whogroup' => $groups_id,
+            'begin' => '2030-01-07 00:00:00',
+            'end' => '2030-01-08 00:00:00',
+            'color' => '#ff0000',
         ]);
         $this->array($group_events)->hasSize(1);
 
         $event = reset($group_events);
         $this->array($event)
-           ->integer['appointments_id']->isEqualTo($appointments_id)
-           ->integer['id']->isEqualTo($appointments_id)
-           ->string['itemtype']->isEqualTo('Appointment')
-           ->string['name']->isEqualTo('Appointment test')
-           ->string['begin']->isEqualTo('2030-01-07 10:00:00')
-           ->string['end']->isEqualTo('2030-01-07 11:00:00')
-           ->string['color']->isEqualTo('#ff0000');
+            ->integer['appointments_id']->isEqualTo($appointments_id)
+            ->integer['id']->isEqualTo($appointments_id)
+            ->string['itemtype']->isEqualTo('Appointment')
+            ->string['name']->isEqualTo('Appointment test')
+            ->string['begin']->isEqualTo('2030-01-07 10:00:00')
+            ->string['end']->isEqualTo('2030-01-07 11:00:00')
+            ->string['color']->isEqualTo('#ff0000');
 
         $requester_events = \Appointment::populatePlanning([
-           'who'   => \Session::getLoginUserID(),
-           'begin' => '2030-01-07 00:00:00',
-           'end'   => '2030-01-08 00:00:00',
+            'who' => \Session::getLoginUserID(),
+            'begin' => '2030-01-07 00:00:00',
+            'end' => '2030-01-08 00:00:00',
         ]);
         $this->array($requester_events)->hasSize(1);
         $requester_event = reset($requester_events);
@@ -441,12 +514,12 @@ class Appointment extends \DbTestCase
         $this->login();
         [, $appointmenttargets_id, $users_id] = $this->createUserTarget();
         $this->addAvailability($appointmenttargets_id);
-        $appointments_id = (int)$this->addAppointment($appointmenttargets_id);
+        $appointments_id = (int) $this->addAppointment($appointmenttargets_id);
 
         $receiver_events = \Appointment::populatePlanning([
-           'who'   => $users_id,
-           'begin' => '2030-01-07 00:00:00',
-           'end'   => '2030-01-08 00:00:00',
+            'who' => $users_id,
+            'begin' => '2030-01-07 00:00:00',
+            'end' => '2030-01-08 00:00:00',
         ]);
         $this->array($receiver_events)->hasSize(1);
         $receiver_event = reset($receiver_events);
@@ -454,9 +527,9 @@ class Appointment extends \DbTestCase
         $this->integer($receiver_event['users_id'])->isEqualTo($users_id);
 
         $requester_events = \Appointment::populatePlanning([
-           'who'   => \Session::getLoginUserID(),
-           'begin' => '2030-01-07 00:00:00',
-           'end'   => '2030-01-08 00:00:00',
+            'who' => \Session::getLoginUserID(),
+            'begin' => '2030-01-07 00:00:00',
+            'end' => '2030-01-08 00:00:00',
         ]);
         $this->array($requester_events)->hasSize(1);
         $requester_event = reset($requester_events);

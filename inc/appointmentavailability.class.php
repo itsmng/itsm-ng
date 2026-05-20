@@ -217,11 +217,11 @@ class AppointmentAvailability extends CommonDBChild
             return false;
         }
 
-        if (AppointmentAvailabilityException::hasBlockingException($appointmenttargets_id, $begin, $end)) {
+        if (AppointmentUnavailability::hasBlockingUnavailability($appointmenttargets_id, $begin, $end)) {
             return false;
         }
 
-        if (AppointmentAvailabilityException::hasCoveringOpeningException($appointmenttargets_id, $begin, $end)) {
+        if (AppointmentUnavailability::hasCoveringOpeningUnavailability($appointmenttargets_id, $begin, $end)) {
             return true;
         }
 

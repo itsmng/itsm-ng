@@ -4,7 +4,7 @@ if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
 
-class AppointmentAvailabilityException extends CommonDBChild
+class AppointmentUnavailability extends CommonDBChild
 {
     public static $itemtype = 'AppointmentTarget';
     public static $items_id = 'appointmenttargets_id';
@@ -252,17 +252,17 @@ class AppointmentAvailabilityException extends CommonDBChild
         renderTwigForm($form, '', $this->fields);
     }
 
-    public static function hasBlockingException($appointmenttargets_id, $begin, $end)
+    public static function hasBlockingUnavailability($appointmenttargets_id, $begin, $end)
     {
-        return self::hasException($appointmenttargets_id, $begin, $end, 0);
+        return self::hasUnavailability($appointmenttargets_id, $begin, $end, 0);
     }
 
-    public static function hasOpeningException($appointmenttargets_id, $begin, $end)
+    public static function hasOpeningUnavailability($appointmenttargets_id, $begin, $end)
     {
-        return self::hasException($appointmenttargets_id, $begin, $end, 1);
+        return self::hasUnavailability($appointmenttargets_id, $begin, $end, 1);
     }
 
-    public static function hasCoveringOpeningException($appointmenttargets_id, $begin, $end)
+    public static function hasCoveringOpeningUnavailability($appointmenttargets_id, $begin, $end)
     {
         global $DB;
 
@@ -280,7 +280,7 @@ class AppointmentAvailabilityException extends CommonDBChild
         return (int) $row['cpt'] > 0;
     }
 
-    private static function hasException($appointmenttargets_id, $begin, $end, $is_available)
+    private static function hasUnavailability($appointmenttargets_id, $begin, $end, $is_available)
     {
         global $DB;
 
