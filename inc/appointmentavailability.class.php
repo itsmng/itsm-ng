@@ -20,6 +20,21 @@ class AppointmentAvailability extends CommonDBChild
         return Session::haveRight(self::$rightname, UPDATE);
     }
 
+    public static function canUpdate()
+    {
+        return Session::haveRight(self::$rightname, UPDATE);
+    }
+
+    public static function canDelete()
+    {
+        return Session::haveRight(self::$rightname, UPDATE);
+    }
+
+    public static function canPurge()
+    {
+        return Session::haveRight(self::$rightname, UPDATE);
+    }
+
     public static function canView()
     {
         return Session::haveRight(self::$rightname, READ)

@@ -7718,6 +7718,7 @@ abstract class CommonITILObject extends CommonDBTM
                 ) {
                     $eigth_column .= ITILFollowup::showShortForITILObject($item->fields["id"], static::class);
                 } else {
+                    $task_class = $item->getType() . 'Task';
                     $eigth_column  = sprintf(
                         __('%1$s (%2$s)'),
                         $eigth_column,
@@ -7731,8 +7732,8 @@ abstract class CommonITILObject extends CommonDBTM
                             ),
                             $item->numberOfTasks(
                                 $item->canCurrentUserAccessPrivateITILContent(
-                                    ITILFollowup::$rightname,
-                                    ITILFollowup::SEEPRIVATE
+                                    $task_class::$rightname,
+                                    CommonITILTask::SEEPRIVATE
                                 )
                             )
                         )
