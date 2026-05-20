@@ -151,8 +151,8 @@ function update213to220(): bool
         $DB->queryOrDie($query, '2.2.0 add appointment availabilities');
     }
 
-    if (!$DB->tableExists('glpi_appointmentavailabilityexceptions')) {
-        $query = "CREATE TABLE `glpi_appointmentavailabilityexceptions` (
+    if (!$DB->tableExists('glpi_appointmentunavailabilities')) {
+        $query = "CREATE TABLE `glpi_appointmentunavailabilities` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `appointmenttargets_id` int(11) NOT NULL DEFAULT '0',
           `begin` timestamp NULL DEFAULT NULL,
@@ -272,7 +272,7 @@ function update213to220(): bool
         }
     }
 
-    $migration->addRight('appointment', ALLSTANDARDRIGHT, [
+    $migration->addRight('appointment', CREATE, [
        'planning' => Planning::READMY
     ]);
 

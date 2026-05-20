@@ -954,7 +954,7 @@ $RELATION = [
    'glpi_appointmenttargets' => [
       '_glpi_appointments'                         => 'appointmenttargets_id',
       '_glpi_appointmentavailabilities'            => 'appointmenttargets_id',
-      '_glpi_appointmentavailabilityexceptions'    => 'appointmenttargets_id',
+      '_glpi_appointmentunavailabilities'          => 'appointmenttargets_id',
    ],
 
    'glpi_plugs' => [
