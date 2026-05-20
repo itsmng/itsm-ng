@@ -4681,6 +4681,65 @@ class Ticket extends DbTestCase
         }
     }
 
+    public function testShortListCountsUseDedicatedPrivateFollowupAndTaskRights()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_followup_right = $this->getSelfServiceRightValue(\ITILFollowup::$rightname);
+        $old_task_right = $this->getSelfServiceRightValue(\TicketTask::$rightname);
+
+        try {
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'private count rights split',
+               'content'             => 'private count rights split',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            foreach ([0, 1] as $is_private) {
+                $followup = new \ITILFollowup();
+                $this->integer((int)$followup->add([
+                   'itemtype'   => \Ticket::class,
+                   'items_id'   => $ticket_id,
+                   'content'    => 'counted followup ' . $is_private,
+                   'is_private' => $is_private,
+                ]))->isGreaterThan(0);
+
+                $task = new \TicketTask();
+                $this->integer((int)$task->add([
+                   'tickets_id'  => $ticket_id,
+                   'content'     => 'counted task ' . $is_private,
+                   'is_private'  => $is_private,
+                ]))->isGreaterThan(0);
+            }
+
+            $this->setSelfServiceFollowupRight(\ITILFollowup::SEEPUBLIC | \ITILFollowup::SEEPRIVATE);
+            $this->setSelfServiceTaskRight(\TicketTask::SEEPUBLIC);
+            $this->login('post-only', 'postonly');
+            ob_start();
+            \Ticket::showShort($ticket_id);
+            $output = ob_get_clean();
+            $this->string($output)->contains('2 - 1');
+
+            $this->login();
+            $this->setSelfServiceFollowupRight(\ITILFollowup::SEEPUBLIC);
+            $this->setSelfServiceTaskRight(\TicketTask::SEEPUBLIC | \TicketTask::SEEPRIVATE);
+            $this->login('post-only', 'postonly');
+            ob_start();
+            \Ticket::showShort($ticket_id);
+            $output = ob_get_clean();
+            $this->string($output)->contains('1 - 2');
+        } finally {
+            $this->login();
+            $this->setSelfServiceFollowupRight($old_followup_right);
+            $this->setSelfServiceTaskRight($old_task_right);
+        }
+    }
+
     protected function convertContentForTicketProvider(): iterable
     {
         yield [
