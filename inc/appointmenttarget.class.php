@@ -43,6 +43,21 @@ class AppointmentTarget extends CommonDBTM
         return Session::haveRight(self::$rightname, UPDATE);
     }
 
+    public static function canUpdate()
+    {
+        return Session::haveRight(self::$rightname, UPDATE);
+    }
+
+    public static function canDelete()
+    {
+        return Session::haveRight(self::$rightname, UPDATE);
+    }
+
+    public static function canPurge()
+    {
+        return Session::haveRight(self::$rightname, UPDATE);
+    }
+
     public function canAccessEntity()
     {
         return isset($this->fields['entities_id'])

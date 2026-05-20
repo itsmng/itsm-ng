@@ -79,7 +79,7 @@ class Appointment extends \DbTestCase
         return [$target, $appointmenttargets_id, $users_id];
     }
 
-    private function addAvailability(int $appointmenttargets_id, int $day = self::MONDAY): void
+    private function addAvailability(int $appointmenttargets_id, int $day = self::MONDAY): int
     {
         $availability = new \AppointmentAvailability();
         $id = (int)$availability->add([
@@ -92,6 +92,8 @@ class Appointment extends \DbTestCase
         $this->integer($id)->isGreaterThan(0);
         $this->string($availability->fields['begin'])->isEqualTo('09:00:00');
         $this->string($availability->fields['end'])->isEqualTo('17:00:00');
+
+        return $id;
     }
 
     private function addAppointment(
@@ -233,6 +235,45 @@ class Appointment extends \DbTestCase
         $this->hasSessionMessages(ERROR, [
            'Appointment target is not available',
         ]);
+    }
+
+    public function testTargetMutationRightsRejectInaccessibleEntity()
+    {
+        $this->login();
+        $this->setEntity('_test_root_entity', true);
+        $target_entity_id = getItemByTypeName('Entity', '_test_child_2', true);
+        [, $appointmenttargets_id] = $this->createGroupTarget($target_entity_id, 0);
+
+        $target = new \AppointmentTarget();
+        $this->boolean($target->can($appointmenttargets_id, UPDATE))->isTrue();
+        $this->boolean($target->can($appointmenttargets_id, PURGE))->isTrue();
+
+        $this->setEntity('_test_child_1', false);
+
+        $restricted_target = new \AppointmentTarget();
+        $this->boolean($restricted_target->getFromDB($appointmenttargets_id))->isTrue();
+        $this->boolean($restricted_target->can($appointmenttargets_id, UPDATE))->isFalse();
+        $this->boolean($restricted_target->can($appointmenttargets_id, PURGE))->isFalse();
+    }
+
+    public function testAvailabilityMutationRightsRejectInaccessibleTarget()
+    {
+        $this->login();
+        $this->setEntity('_test_root_entity', true);
+        $target_entity_id = getItemByTypeName('Entity', '_test_child_2', true);
+        [, $appointmenttargets_id] = $this->createGroupTarget($target_entity_id, 0);
+        $availability_id = $this->addAvailability($appointmenttargets_id);
+
+        $availability = new \AppointmentAvailability();
+        $this->boolean($availability->can($availability_id, UPDATE))->isTrue();
+        $this->boolean($availability->can($availability_id, PURGE))->isTrue();
+
+        $this->setEntity('_test_child_1', false);
+
+        $restricted_availability = new \AppointmentAvailability();
+        $this->boolean($restricted_availability->getFromDB($availability_id))->isTrue();
+        $this->boolean($restricted_availability->can($availability_id, UPDATE))->isFalse();
+        $this->boolean($restricted_availability->can($availability_id, PURGE))->isFalse();
     }
 
     public function testAvailabilityRejectsInvalidRulesAndInaccessibleTarget()
