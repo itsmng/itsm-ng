@@ -277,10 +277,8 @@ class Appointment extends CommonDBTM
         $description = Html::clean($this->getField('text'));
         $url = $CFG_GLPI['url_base'] . self::getFormURLWithID($this->getID());
 
-        $date_begin = new DateTime($this->getField('begin'));
-        $date_begin->setTimezone(new DateTimeZone('UTC'));
-        $date_end = new DateTime($this->getField('end'));
-        $date_end->setTimezone(new DateTimeZone('UTC'));
+        $date_begin = (new DateTime($this->getField('begin')))->format('Ymd\THis');
+        $date_end = (new DateTime($this->getField('end')))->format('Ymd\THis');
         $date_stamp = new DateTime($_SESSION['glpi_currenttime'] ?? 'now');
         $date_stamp->setTimezone(new DateTimeZone('UTC'));
 
