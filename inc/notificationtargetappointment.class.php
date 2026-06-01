@@ -39,6 +39,20 @@ class NotificationTargetAppointment extends NotificationTarget
         }
     }
 
+    public function addItemAuthor()
+    {
+        $user = new User();
+        if (
+            $this->obj
+            && $user->getFromDB($this->obj->getField('users_id_requester'))
+        ) {
+            $this->addToRecipientsList([
+               'language' => $user->getField('language'),
+               'users_id' => $user->getField('id')
+            ]);
+        }
+    }
+
     public function addAdditionnalUserInfo(array $data)
     {
         return [

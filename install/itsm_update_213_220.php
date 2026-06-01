@@ -155,8 +155,8 @@ function update213to220(): bool
         $query = "CREATE TABLE `glpi_appointmentunavailabilities` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `appointmenttargets_id` int(11) NOT NULL DEFAULT '0',
-          `begin` timestamp NULL DEFAULT NULL,
-          `end` timestamp NULL DEFAULT NULL,
+          `begin` datetime DEFAULT NULL,
+          `end` datetime DEFAULT NULL,
           `is_available` tinyint(1) NOT NULL DEFAULT '0',
           `comment` text COLLATE utf8_unicode_ci,
           PRIMARY KEY (`id`),
@@ -179,8 +179,8 @@ function update213to220(): bool
           `users_id_requester` int(11) NOT NULL DEFAULT '0',
           `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
           `text` text COLLATE utf8_unicode_ci,
-          `begin` timestamp NULL DEFAULT NULL,
-          `end` timestamp NULL DEFAULT NULL,
+          `begin` datetime DEFAULT NULL,
+          `end` datetime DEFAULT NULL,
           `state` int(11) NOT NULL DEFAULT '0',
           `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
           `date_mod` timestamp NULL DEFAULT NULL,
@@ -275,6 +275,25 @@ function update213to220(): bool
     $migration->addRight('appointment', CREATE, [
        'planning' => Planning::READMY
     ]);
+
+    $DB->updateOrDie(
+        'glpi_profilerights',
+        [
+          'rights' => new QueryExpression($DB->quoteName('rights') . ' | ' . UPDATE),
+        ],
+        [
+          'name'        => 'appointment',
+          'profiles_id' => new QuerySubQuery([
+             'SELECT' => 'profiles_id',
+             'FROM'   => 'glpi_profilerights',
+             'WHERE'  => [
+                'name' => 'config',
+                new QueryExpression($DB->quoteName('rights') . ' & ' . (READ | UPDATE) . ' = ' . (READ | UPDATE)),
+             ],
+          ]),
+        ],
+        '2.2.0 add appointment management rights'
+    );
 
     $migration->executeMigration();
     return true;
