@@ -65,3 +65,25 @@
     }
 }
 </script>
+<script>
+(function() {
+    const tableElement = document.getElementById({{ id|json_encode|raw }});
+    const initTable = function() {
+        if (
+            tableElement
+            && window.ITSMTable
+            && typeof window.ITSMTable.initAll === 'function'
+        ) {
+            window.ITSMTable.initAll(tableElement);
+        }
+    };
+
+    if (window.ITSMTable && typeof window.ITSMTable.initAll === 'function') {
+        initTable();
+    } else if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTable, { once: true });
+    } else {
+        window.setTimeout(initTable, 0);
+    }
+})();
+</script>
