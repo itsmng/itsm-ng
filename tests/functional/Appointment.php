@@ -378,6 +378,24 @@ class Appointment extends \DbTestCase
             ->string['end']->isEqualTo('2030-01-07 11:00:00');
     }
 
+    public function testIcalAttachmentKeepsAppointmentWallClockTime()
+    {
+        $this->login();
+        [, $appointmenttargets_id] = $this->createGroupTarget();
+        $this->addAvailability($appointmenttargets_id);
+
+        $appointment = new \Appointment();
+        $appointments_id = (int) $this->addAppointment($appointmenttargets_id);
+        $this->integer($appointments_id)->isGreaterThan(0);
+        $this->boolean($appointment->getFromDB($appointments_id))->isTrue();
+
+        $attachment = $appointment->getIcalAttachment('new');
+        $this->string($attachment['content'])->contains('DTSTART:20300107T100000');
+        $this->string($attachment['content'])->contains('DTEND:20300107T110000');
+        $this->string($attachment['content'])->notContains('DTSTART:20300107T100000Z');
+        $this->string($attachment['content'])->notContains('DTEND:20300107T110000Z');
+    }
+
     public function testUpdateCompletesTargetFieldsWhenRetargeting()
     {
         $this->login();
