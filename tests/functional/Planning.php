@@ -182,4 +182,85 @@ class Planning extends \DbTestCase
             }
         }
     }
+
+    public function testHolidayPlanningEvents()
+    {
+        $this->login();
+
+        $session_backup = $_SESSION['glpi_plannings'];
+
+        \Planning::initSessionForCurrentUser();
+        foreach ($_SESSION['glpi_plannings']['filters'] as $itemtype => $filter) {
+            $_SESSION['glpi_plannings']['filters'][$itemtype]['display'] = false;
+        }
+        $_SESSION['glpi_plannings']['filters']['Holiday']['display'] = true;
+        $_SESSION['glpi_plannings']['filters']['Holiday']['color'] = \Planning::HOLIDAY_DEFAULT_COLOR;
+        $_SESSION['glpi_plannings']['plannings'] = [
+           'user_' . \Session::getLoginUserID() => [
+              'color'   => \Planning::getPaletteColor('bg', 0),
+              'display' => true,
+              'type'    => 'user',
+           ],
+        ];
+
+        $holiday = new \Holiday();
+        $holidays_id = (int)$holiday->add([
+           'name'         => 'Planning test close time',
+           'entities_id'  => getItemByTypeName('Entity', '_test_root_entity', true),
+           'is_recursive' => 1,
+           'begin_date'   => '2026-04-29',
+           'end_date'     => '2026-04-30',
+           'is_perpetual' => 0,
+        ]);
+        $this->integer($holidays_id)->isGreaterThan(0);
+
+        $events = \Planning::constructEventsArray([
+           'start' => '2026-04-01 00:00:00',
+           'end'   => '2026-04-30 23:59:59',
+        ]);
+
+        $_SESSION['glpi_plannings'] = $session_backup;
+
+        $this->array($events)->hasSize(1);
+        $this->array($events[0])
+           ->string['title']->isEqualTo('Planning test close time')
+           ->string['start']->isEqualTo('2026-04-29')
+           ->string['end']->isEqualTo('2026-05-01')
+           ->string['color']->isEqualTo(\Planning::HOLIDAY_DEFAULT_COLOR)
+           ->string['borderColor']->isEqualTo(\Planning::HOLIDAY_DEFAULT_COLOR)
+           ->string['itemtype']->isEqualTo('Holiday')
+           ->boolean['editable']->isFalse();
+        $this->integer((int)$events[0]['items_id'])
+           ->isEqualTo($holidays_id);
+        $this->array($events[0])
+           ->hasKey('resourceIds');
+        $this->array($events[0]['resourceIds'])
+           ->contains('user_' . \Session::getLoginUserID());
+    }
+
+    public function testHolidayDefaultColor()
+    {
+        $this->login();
+
+        $session_backup = $_SESSION['glpi_plannings'];
+        unset($_SESSION['glpi_plannings']['filters']['Holiday']);
+
+        \Planning::initSessionForCurrentUser();
+        $this->array($_SESSION['glpi_plannings']['filters'])
+           ->hasKey('Holiday');
+        $this->string($_SESSION['glpi_plannings']['filters']['Holiday']['color'])
+           ->isEqualTo(\Planning::HOLIDAY_DEFAULT_COLOR);
+
+        $_SESSION['glpi_plannings']['filters']['Holiday']['color'] = '#8C5344';
+        \Planning::initSessionForCurrentUser();
+        $this->string($_SESSION['glpi_plannings']['filters']['Holiday']['color'])
+           ->isEqualTo(\Planning::HOLIDAY_DEFAULT_COLOR);
+
+        $_SESSION['glpi_plannings']['filters']['Holiday']['color'] = '#123456';
+        \Planning::initSessionForCurrentUser();
+        $this->string($_SESSION['glpi_plannings']['filters']['Holiday']['color'])
+           ->isEqualTo('#123456');
+
+        $_SESSION['glpi_plannings'] = $session_backup;
+    }
 }

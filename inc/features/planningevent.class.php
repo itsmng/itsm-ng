@@ -876,7 +876,15 @@ trait PlanningEvent
                 $out .= "&amp;forcetab=" . $itemtype . "$1";
             }
             $out .= "'>";
-            $out .= Html::resume_text($val["name"], 80) . '</a>';
+            $name = $val["name"];
+            if (
+                $item instanceof CommonITILTask
+                && empty($val['task_title'])
+                && !empty($val['parent_name'])
+            ) {
+                $name = $val['parent_name'];
+            }
+            $out .= Html::resume_text($name, 80) . '</a>';
 
             return $out;
         }

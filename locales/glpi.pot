@@ -29963,3 +29963,51 @@ msgstr ""
 
 msgid "Group users"
 msgstr ""
+
+msgid "Appointment"
+msgid_plural "Appointments"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Appointment target"
+msgid_plural "Appointment targets"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Appointment availability"
+msgid_plural "Appointment availabilities"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Unavailability"
+msgid_plural "Unavailabilities"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Appointment target is not available"
+msgstr ""
+
+msgid "The selected timeframe is outside appointment availability"
+msgstr ""
+
+msgid "The selected appointment target is already booked for this timeframe"
+msgstr ""
+
+msgid "Office hours"
+msgstr ""
+
+msgid "Booked"
+msgstr ""
+
+#, php-format
+msgid "Booked: %s"
+msgstr ""
+
+msgid "Prohibit appointments"
+msgstr ""
+
+msgid "Existing appointments and availability rules will be removed."
+msgstr ""
+
+msgid "Authorize appointments"
+msgstr ""

@@ -45,6 +45,93 @@ CREATE TABLE `glpi_alerts` (
   KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+### Dump table glpi_appointmenttargets
+
+DROP TABLE IF EXISTS `glpi_appointmenttargets`;
+CREATE TABLE `glpi_appointmenttargets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `itemtype` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `items_id` int(11) NOT NULL DEFAULT '0',
+  `entities_id` int(11) NOT NULL DEFAULT '0',
+  `is_recursive` tinyint(1) NOT NULL DEFAULT '0',
+  `comment` text COLLATE utf8_unicode_ci,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item` (`itemtype`,`items_id`),
+  KEY `entities_id` (`entities_id`),
+  KEY `is_recursive` (`is_recursive`),
+  KEY `is_active` (`is_active`),
+  KEY `is_deleted` (`is_deleted`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+### Dump table glpi_appointmentavailabilities
+
+DROP TABLE IF EXISTS `glpi_appointmentavailabilities`;
+CREATE TABLE `glpi_appointmentavailabilities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `appointmenttargets_id` int(11) NOT NULL DEFAULT '0',
+  `day` tinyint(1) NOT NULL DEFAULT '1',
+  `begin` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `appointmenttargets_id` (`appointmenttargets_id`),
+  KEY `day` (`day`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+### Dump table glpi_appointmentunavailabilities
+
+DROP TABLE IF EXISTS `glpi_appointmentunavailabilities`;
+CREATE TABLE `glpi_appointmentunavailabilities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `appointmenttargets_id` int(11) NOT NULL DEFAULT '0',
+  `begin` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  `is_available` tinyint(1) NOT NULL DEFAULT '0',
+  `comment` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`id`),
+  KEY `appointmenttargets_id` (`appointmenttargets_id`),
+  KEY `begin` (`begin`),
+  KEY `end` (`end`),
+  KEY `is_available` (`is_available`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+### Dump table glpi_appointments
+
+DROP TABLE IF EXISTS `glpi_appointments`;
+CREATE TABLE `glpi_appointments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `appointmenttargets_id` int(11) NOT NULL DEFAULT '0',
+  `entities_id` int(11) NOT NULL DEFAULT '0',
+  `is_recursive` tinyint(1) NOT NULL DEFAULT '0',
+  `date` timestamp NULL DEFAULT NULL,
+  `users_id_requester` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `text` text COLLATE utf8_unicode_ci,
+  `begin` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  `state` int(11) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `date_mod` timestamp NULL DEFAULT NULL,
+  `date_creation` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uuid` (`uuid`),
+  KEY `appointmenttargets_id` (`appointmenttargets_id`),
+  KEY `entities_id` (`entities_id`),
+  KEY `is_recursive` (`is_recursive`),
+  KEY `users_id_requester` (`users_id_requester`),
+  KEY `begin` (`begin`),
+  KEY `end` (`end`),
+  KEY `is_deleted` (`is_deleted`),
+  KEY `date_mod` (`date_mod`),
+  KEY `date_creation` (`date_creation`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 ### Dump table glpi_notificationchatconfigs
 
 DROP TABLE IF EXISTS `glpi_notificationchatconfigs`;
@@ -761,6 +848,7 @@ CREATE TABLE `glpi_changetasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `changes_id` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `taskcategories_id` int(11) NOT NULL DEFAULT '0',
   `state` int(11) NOT NULL DEFAULT '0',
   `date` timestamp NULL DEFAULT NULL,
@@ -2532,6 +2620,8 @@ CREATE TABLE `glpi_entities` (
   `autofill_decommission_date` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '-2',
   `suppliers_as_private` int(11) NOT NULL DEFAULT '-2',
   `anonymize_support_agents` int(11) NOT NULL DEFAULT '-2',
+  `lock_ticket_date` tinyint(1) NOT NULL DEFAULT '-2',
+  `requesters_private_ticket_content` int(11) NOT NULL DEFAULT '-2',
   `enable_custom_css` int(11) NOT NULL DEFAULT '-2',
   `custom_css_code` text COLLATE utf8_unicode_ci,
   `latitude` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -2800,6 +2890,32 @@ CREATE TABLE `glpi_groups_rssfeeds` (
   KEY `groups_id` (`groups_id`),
   KEY `entities_id` (`entities_id`),
   KEY `is_recursive` (`is_recursive`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+### Dump table glpi_groups_solutiontemplates
+
+DROP TABLE IF EXISTS `glpi_groups_solutiontemplates`;
+CREATE TABLE `glpi_groups_solutiontemplates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `solutiontemplates_id` int(11) NOT NULL DEFAULT '0',
+  `groups_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unicity` (`solutiontemplates_id`,`groups_id`),
+  KEY `groups_id` (`groups_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+### Dump table glpi_groups_tasktemplates
+
+DROP TABLE IF EXISTS `glpi_groups_tasktemplates`;
+CREATE TABLE `glpi_groups_tasktemplates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tasktemplates_id` int(11) NOT NULL DEFAULT '0',
+  `groups_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unicity` (`tasktemplates_id`,`groups_id`),
+  KEY `groups_id` (`groups_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
@@ -5138,6 +5254,7 @@ CREATE TABLE `glpi_problemtasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `problems_id` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `taskcategories_id` int(11) NOT NULL DEFAULT '0',
   `date` timestamp NULL DEFAULT NULL,
   `begin` timestamp NULL DEFAULT NULL,
@@ -5568,6 +5685,7 @@ CREATE TABLE `glpi_queuednotifications` (
   `body_text` longtext COLLATE utf8_unicode_ci,
   `messageid` text COLLATE utf8_unicode_ci,
   `documents` text COLLATE utf8_unicode_ci,
+  `generated_attachments` text COLLATE utf8_unicode_ci,
   `mode` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'See Notification_NotificationTemplate::MODE_* constants',
   PRIMARY KEY (`id`),
   KEY `item` (`itemtype`,`items_id`,`notificationtemplates_id`),
@@ -5606,6 +5724,7 @@ CREATE TABLE `glpi_queuednotifications` (
   `body_text` longtext COLLATE utf8_unicode_ci,
   `messageid` text COLLATE utf8_unicode_ci,
   `documents` text COLLATE utf8_unicode_ci,
+  `generated_attachments` text COLLATE utf8_unicode_ci,
   `mode` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'See Notification_NotificationTemplate::MODE_* constants',
   PRIMARY KEY (`id`),
   KEY `item` (`itemtype`,`items_id`,`notificationtemplates_id`),
@@ -6541,6 +6660,7 @@ CREATE TABLE `glpi_tasktemplates` (
   `entities_id` int(11) NOT NULL DEFAULT '0',
   `is_recursive` tinyint(1) NOT NULL DEFAULT '0',
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `content` text COLLATE utf8_unicode_ci,
   `taskcategories_id` int(11) NOT NULL DEFAULT '0',
   `actiontime` int(11) NOT NULL DEFAULT '0',
@@ -6747,6 +6867,7 @@ CREATE TABLE `glpi_tickettasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `tickets_id` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `taskcategories_id` int(11) NOT NULL DEFAULT '0',
   `date` timestamp NULL DEFAULT NULL,
   `users_id` int(11) NOT NULL DEFAULT '0',

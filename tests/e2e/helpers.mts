@@ -20,6 +20,64 @@ export interface SeedTicketResult {
 
 export type ActorPanelRole = 'requester' | 'observer' | 'assign';
 
+export interface SeedReservationOptions {
+  begin?: string;
+  end?: string;
+  reservationItemId?: number;
+  computerId?: number;
+  computerName?: string;
+}
+
+export interface SeedReservationResult {
+  computerId: number;
+  computerName: string;
+  reservationItemId: number;
+  reservationId: number;
+  reservationBegin: string;
+  reservationEnd: string;
+  reservationComment: string;
+  userId: number;
+}
+
+export interface ReservationApiItem {
+  id: number | string;
+  begin?: string;
+  end?: string;
+  reservationitems_id?: number | string;
+}
+
+export interface SeedAppointmentScheduleOptions {
+  day?: number;
+  availabilityBegin?: string;
+  availabilityEnd?: string;
+  unavailabilityBegin?: string;
+  unavailabilityEnd?: string;
+}
+
+export interface SeedAppointmentScheduleResult {
+  groupId: number;
+  targetId: number;
+  availabilityId: number;
+  unavailabilityId: number;
+  day: number;
+  date: string;
+  userId: number;
+}
+
+export interface SeedAppointmentOptions extends SeedAppointmentScheduleOptions {
+  name?: string;
+  begin?: string;
+  end?: string;
+  requesterId?: number;
+}
+
+export interface SeedAppointmentResult extends SeedAppointmentScheduleResult {
+  appointmentId: number;
+  appointmentName: string;
+  appointmentBegin: string;
+  appointmentEnd: string;
+}
+
 interface ApiSession {
   apiUrl: string;
   sessionToken: string;
@@ -217,6 +275,174 @@ export async function seedTicket(request: APIRequestContext, options: SeedTicket
   } finally {
     await closeApiSession(request, session);
   }
+}
+
+export async function seedReservation(
+  request: APIRequestContext,
+  options: SeedReservationOptions = {}
+): Promise<SeedReservationResult> {
+  const session = await initApiSession(request);
+
+  try {
+    const suffix = `${Date.now()}-${Math.random().toString(16).slice(2, 10)}`;
+    const computerName = options.computerName ?? `E2E Reservable Computer ${suffix}`;
+    const reservationBegin = options.begin ?? '2030-05-01 10:00:00';
+    const reservationEnd = options.end ?? '2030-05-01 11:00:00';
+    const reservationComment = `E2E reservation ${suffix}`;
+
+    const computerId = options.computerId ?? (await createItem(request, session, 'Computer', {
+      name: computerName,
+      entities_id: 0,
+      is_recursive: 0,
+    }));
+
+    const reservationItemId = options.reservationItemId ?? (await createItem(request, session, 'ReservationItem', {
+      itemtype: 'Computer',
+      items_id: computerId,
+      entities_id: 0,
+      is_recursive: 0,
+      is_active: 1,
+      is_deleted: 0,
+      comment: reservationComment,
+    }));
+
+    const reservationId = await createItem(request, session, 'Reservation', {
+      reservationitems_id: reservationItemId,
+      begin: reservationBegin,
+      end: reservationEnd,
+      users_id: session.userId,
+      comment: reservationComment,
+      _ajax_reservation: 1,
+    });
+
+    return {
+      computerId,
+      computerName,
+      reservationItemId,
+      reservationId,
+      reservationBegin,
+      reservationEnd,
+      reservationComment,
+      userId: session.userId,
+    };
+  } finally {
+    await closeApiSession(request, session);
+  }
+}
+
+export async function getReservation(request: APIRequestContext, reservationId: number): Promise<ReservationApiItem> {
+  const session = await initApiSession(request);
+
+  try {
+    return await getItem<ReservationApiItem>(request, session, 'Reservation', reservationId);
+  } finally {
+    await closeApiSession(request, session);
+  }
+}
+
+export async function seedAppointmentSchedule(
+  request: APIRequestContext,
+  options: SeedAppointmentScheduleOptions = {}
+): Promise<SeedAppointmentScheduleResult> {
+  const session = await initApiSession(request);
+
+  try {
+    const suffix = `${Date.now()}-${Math.random().toString(16).slice(2, 10)}`;
+    const day = options.day ?? new Date().getDay();
+    const groupId = await createItem(request, session, 'Group', {
+      name: `E2E Appointment Group ${suffix}`,
+      entities_id: 0,
+      is_recursive: 0,
+    });
+    const targetId = await createItem(request, session, 'AppointmentTarget', {
+      itemtype: 'Group',
+      items_id: groupId,
+      entities_id: 0,
+      is_recursive: 0,
+      is_active: 1,
+      is_deleted: 0,
+      comment: `E2E appointment target ${suffix}`,
+    });
+    const availabilityId = await createItem(request, session, 'AppointmentAvailability', {
+      appointmenttargets_id: targetId,
+      day,
+      begin: options.availabilityBegin ?? '09:00:00',
+      end: options.availabilityEnd ?? '17:00:00',
+    });
+
+    const today = new Date();
+    const selectedDate = new Date(today);
+    selectedDate.setDate(today.getDate() + ((day - today.getDay() + 7) % 7));
+    const date = selectedDate.toISOString().slice(0, 10);
+    const unavailabilityId = await createItem(request, session, 'AppointmentUnavailability', {
+      appointmenttargets_id: targetId,
+      plan: {
+        begin: options.unavailabilityBegin ?? `${date} 13:00:00`,
+        end: options.unavailabilityEnd ?? `${date} 14:00:00`,
+      },
+      is_available: 0,
+      comment: `E2E unavailable block ${suffix}`,
+    });
+
+    return {
+      groupId,
+      targetId,
+      availabilityId,
+      unavailabilityId,
+      day,
+      date,
+      userId: session.userId,
+    };
+  } finally {
+    await closeApiSession(request, session);
+  }
+}
+
+export async function seedAppointment(
+  request: APIRequestContext,
+  options: SeedAppointmentOptions = {}
+): Promise<SeedAppointmentResult> {
+  const schedule = await seedAppointmentSchedule(request, {
+    ...options,
+    unavailabilityBegin: options.unavailabilityBegin ?? `${localAppointmentDate(options.day)} 16:00:00`,
+    unavailabilityEnd: options.unavailabilityEnd ?? `${localAppointmentDate(options.day)} 17:00:00`,
+  });
+  const session = await initApiSession(request);
+
+  try {
+    const suffix = `${Date.now()}-${Math.random().toString(16).slice(2, 10)}`;
+    const appointmentName = options.name ?? `E2E Appointment ${suffix}`;
+    const appointmentBegin = options.begin ?? `${schedule.date} 10:00:00`;
+    const appointmentEnd = options.end ?? `${schedule.date} 11:00:00`;
+    const appointmentId = await createItem(request, session, 'Appointment', {
+      name: appointmentName,
+      appointmenttargets_id: schedule.targetId,
+      users_id_requester: options.requesterId ?? session.userId,
+      plan: {
+        begin: appointmentBegin,
+        end: appointmentEnd,
+      },
+      text: `E2E appointment body ${suffix}`,
+    });
+
+    return {
+      ...schedule,
+      appointmentId,
+      appointmentName,
+      appointmentBegin,
+      appointmentEnd,
+      userId: session.userId,
+    };
+  } finally {
+    await closeApiSession(request, session);
+  }
+}
+
+function localAppointmentDate(day = new Date().getDay()): string {
+  const today = new Date();
+  const selectedDate = new Date(today);
+  selectedDate.setDate(today.getDate() + ((day - today.getDay() + 7) % 7));
+  return selectedDate.toISOString().slice(0, 10);
 }
 
 function getCollectionItems(data: unknown): Array<Record<string, unknown>> {

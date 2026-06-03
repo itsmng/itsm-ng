@@ -150,7 +150,7 @@ class Reservation extends CommonDBChild
 
         $item = 0;
         if (isset($input['_item'])) {
-            $item = $_POST['_item'];
+            $item = $input['_item'];
         }
 
         // Save fields
@@ -241,7 +241,7 @@ class Reservation extends CommonDBChild
 
         parent::post_addItem();
 
-        if (isset($this->fields['reservationitems_id'])) {
+        if (isset($this->fields['reservationitems_id']) && !isset($this->input['_ajax_reservation'])) {
             if (strpos((string) $_SERVER['REQUEST_URI'], '/plugins/formcreator/front/') !== false ||
                 (isset($_SESSION['glpiactiveprofile']['interface']) &&
                 $_SESSION['glpiactiveprofile']['interface'] == 'helpdesk')) {
@@ -452,46 +452,16 @@ class Reservation extends CommonDBChild
             return false;
         }
 
-        $datetime = new Datetime();
-
-        if (!isset($_GET["mois_courant"])) {
-            $mois_courant = intval($datetime->format("m"));
-        } else {
-            $mois_courant = $_GET["mois_courant"];
-        }
-
-        if (!isset($_GET["annee_courante"])) {
-            $annee_courante = $datetime->format("Y");
-        } else {
-            $annee_courante = $_GET["annee_courante"];
-        }
-
-        $mois_courant     = intval($mois_courant);
-        $mois_suivant     = $mois_courant + 1;
-        $mois_precedent   = $mois_courant - 1;
-        $annee_suivante   = $annee_courante;
-        $annee_precedente = $annee_courante;
-
-        if ($mois_precedent == 0) {
-            $mois_precedent   = 12;
-            $annee_precedente--;
-        }
-
-        if ($mois_suivant == 13) {
-            $mois_suivant   = 1;
-            $annee_suivante++;
-        }
-
-        $monthsarray   = Toolbox::getMonthsOfYearArray();
-
-        $str_suivant   = "?reservationitems_id=$ID&amp;mois_courant=$mois_suivant&amp;" .
-                          "annee_courante=$annee_suivante";
-        $str_precedent = "?reservationitems_id=$ID&amp;mois_courant=$mois_precedent&amp;" .
-                          "annee_courante=$annee_precedente";
-
+        $ID = (int)$ID;
+        $calendar_title = __('All reservable devices');
+        $item_label = '';
+        $can_reserve = false;
         if (!empty($ID)) {
             $m = new ReservationItem();
-            $m->getFromDB($ID);
+            if (!$m->getFromDB($ID)) {
+                Html::displayNotFoundError();
+                return false;
+            }
 
             if ((!isset($m->fields['is_active'])) || !$m->fields['is_active']) {
                 echo "<div class='center'>";
@@ -513,165 +483,57 @@ class Reservation extends CommonDBChild
                 if ($item->getFromDB($m->fields["items_id"])) {
                     $name = $item->getName();
                 }
-                $name = sprintf(__('%1$s - %2$s'), $type, $name);
             }
 
-            $all = "<a class='vsubmit' href='reservation.php?reservationitems_id=&amp;mois_courant=" .
-                     "$mois_courant&amp;annee_courante=$annee_courante'>" . __('Show all') . "</a>";
-        } else {
-            $type = "";
-            $name = __('All reservable devices');
-            $all  = "&nbsp;";
+            $item_label = sprintf(__('%1$s - %2$s'), $type, $name);
+            $calendar_title = $item_label;
+            $can_reserve = true;
         }
 
-        echo "<div class='center'><table class='tab_glpi' aria-label='Reservation'><tr><td>";
-        echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/reservation.png' alt=''></td>";
-        echo "<td class ='b'>" . $name . "</td></tr>";
-        echo "<tr><td colspan='2' class ='center'>$all</td></tr></table></div><br>\n";
-
-        // Check bisextile years
-        if (($annee_courante % 4) == 0) {
-            $fev = 29;
-        } else {
-            $fev = 28;
-        }
-        $nb_jour = [31, $fev, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-        // Datas used to put right information in columns
-        $jour_debut_mois = date("w", mktime(0, 0, 0, $mois_courant, 1, $annee_courante));
-        if ($jour_debut_mois == 0) {
-            $jour_debut_mois = 7;
-        }
-        $jour_fin_mois = date("w", mktime(
-            0,
-            0,
-            0,
-            $mois_courant,
-            $nb_jour[$mois_courant - 1],
-            $annee_courante
-        ));
-
-        echo "<div class='center'>";
-        echo "<table class='tab_glpi' aria-label='Reservation'><tr><td><a href='reservation.php" . $str_precedent . "'>";
-        echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/left.png' alt=\"" . __s('Previous') .
-               "\" title=\"" . __s('Previous') . "\"></a></td>";
-        echo "<td class='b'>" . sprintf(__('%1$s %2$s'), $monthsarray[$mois_courant], $annee_courante) .
-             "</td>";
-        echo "<td><a href='reservation.php" . $str_suivant . "'>";
-        echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/right.png' alt=\"" . __s('Next') .
-               "\" title=\"" . __s('Next') . "\"></a></td></tr></table>\n";
-
-        // test
-        echo "<table width='90%' class='tab_glpi'><tr><td class='top' width='100px'>";
-
-        echo "<table aria-label='Test'><tr><td width='100px' class='top'>";
-
-        // today date
-        $today = getdate(time());
-        $mois  = $today["mon"];
-        $annee = $today["year"];
-
-        $annee_avant = $annee_courante - 1;
-        $annee_apres = $annee_courante + 1;
-
-        echo "<div class='calendrier_mois'>";
-        echo "<div class='center b'>$annee_avant</div>";
-
-        for ($i = $mois_courant; $i < 13; $i++) {
-            echo "<div class='calendrier_case2'>";
-            echo "<a href='reservation.php?reservationitems_id=$ID&amp;mois_courant=$i&amp;" .
-                  "annee_courante=$annee_avant'>" . $monthsarray[$i] . "</a></div>";
+        $initial_date = date('Y-m-d');
+        if (isset($_GET['mois_courant'], $_GET['annee_courante'])) {
+            $initial_date = sprintf(
+                '%04d-%02d-01',
+                (int)$_GET['annee_courante'],
+                (int)$_GET['mois_courant']
+            );
         }
 
-        echo "<div class='center b'>$annee_courante</div>";
+        $options = [
+           'reservationitems_id' => $ID,
+           'can_reserve'         => $can_reserve,
+           'initial_date'        => $initial_date,
+           'title'               => $calendar_title,
+           'item_label'          => $item_label,
+           'all_url'             => $CFG_GLPI['root_doc'] . '/front/reservation.php?reservationitems_id=',
+           'ajax_url'            => $CFG_GLPI['root_doc'] . '/ajax/reservation.php',
+           'form_url'            => self::getReservationFormURL(),
+           'planning_begin'      => $CFG_GLPI['planning_begin'] ?? '08:00:00',
+           'planning_end'        => $CFG_GLPI['planning_end'] ?? '20:00:00',
+        ];
 
-        for ($i = 1; $i < 13; $i++) {
-            if ($i == $mois_courant) {
-                echo "<div class='calendrier_case1 b'>" . $monthsarray[$i] . "</div>\n";
-            } else {
-                echo "<div class='calendrier_case2'>";
-                echo "<a href='reservation.php?reservationitems_id=$ID&amp;mois_courant=$i&amp;" .
-                      "annee_courante=$annee_courante'>" . $monthsarray[$i] . "</a></div>\n";
-            }
-        }
-        echo "<div class='center b'>$annee_apres</div>\n";
+        echo Html::css('public/lib/fullcalendar.css', ['media' => '']);
+        echo Html::script('public/lib/fullcalendar.js');
+        echo Html::script('js/reservation.js');
 
-        for ($i = 1; $i < $mois_courant + 1; $i++) {
-            echo "<div class='calendrier_case2'>";
-            echo "<a href='reservation.php?reservationitems_id=$ID&amp;mois_courant=$i&amp;" .
-                  "annee_courante=$annee_apres'>" . $monthsarray[$i] . "</a></div>\n";
+        echo "<div class='reservation-calendar-shell'>";
+        echo "<div class='reservation-calendar-header'>";
+        echo "<div class='reservation-calendar-title'>";
+        echo "<div>";
+        echo "<h2>" . htmlspecialchars($calendar_title) . "</h2>";
+        if (!empty($item_label)) {
+            echo "<a href='" . $CFG_GLPI['root_doc'] . "/front/reservation.php?reservationitems_id='>";
+            echo __('Show all') . "</a>";
         }
         echo "</div>";
-        echo "</td></tr></table>";
-        echo "</td><td class='top' width='100%'>";
+        echo "</div>";
+        echo "</div>";
+        echo "<div id='reservation-calendar'></div>";
+        echo "</div>";
 
-        // test
-        echo "<table width='100%' class='tab_cadre' aria-label='Days'><tr>";
-        echo "<th width='14%'>" . __('Monday') . "</th>";
-        echo "<th width='14%'>" . __('Tuesday') . "</th>";
-        echo "<th width='14%'>" . __('Wednesday') . "</th>";
-        echo "<th width='14%'>" . __('Thursday') . "</th>";
-        echo "<th width='14%'>" . __('Friday') . "</th>";
-        echo "<th width='14%'>" . __('Saturday') . "</th>";
-        echo "<th width='14%'>" . __('Sunday') . "</th>";
-        echo "</tr>\n";
-        echo "<tr class='tab_bg_3' >";
-
-        // Insert blank cell before the first day of the month
-        for ($i = 1; $i < $jour_debut_mois; $i++) {
-            echo "<td class='calendrier_case_white'>&nbsp;</td>";
-        }
-
-        // voici le remplissage proprement dit
-        if (($mois_courant < 10) && (strlen($mois_courant) == 1)) {
-            $mois_courant = "0" . $mois_courant;
-        }
-
-        for ($i = 1; $i < $nb_jour[$mois_courant - 1] + 1; $i++) {
-            if ($i < 10) {
-                $ii = "0" . $i;
-            } else {
-                $ii = $i;
-            }
-
-            echo "<td class='top' height='100px'>";
-            echo "<table class='center' width='100%' aria-label='Calendar Day'><tr><td class='center'>";
-            echo "<span class='calendrier_jour'>" . $i . "</span></td></tr>\n";
-
-            if (!empty($ID)) {
-                echo "<tr><td class='center'>";
-                $formatted_date = $annee_courante . "-" . $mois_courant . "-" . $ii;
-                $alt_text = sprintf(__s('Reserve: %s'), $formatted_date);
-                echo "<a href='" . self::getReservationFormURL() . "?id=&amp;item[$ID]=$ID&amp;" .
-                      "begin=" . $formatted_date . " 12:00:00'>";
-                echo "<img  src='" . $CFG_GLPI["root_doc"] . "/pics/addresa.png' alt=\"" . $alt_text .
-                      "\" title=\"" . $alt_text . "\"></a></td></tr>\n";
-            }
-
-
-            echo "<tr><td>";
-            self::displayReservationDay($ID, $annee_courante . "-" . $mois_courant . "-" . $ii);
-            echo "</td></tr></table>\n";
-            echo "</td>";
-
-            // il ne faut pas oublie d'aller a la ligne suivante en fin de semaine
-            if ((($i + $jour_debut_mois) % 7) == 1) {
-                echo "</tr>\n";
-                if ($i != $nb_jour[$mois_courant - 1]) {
-                    echo "<tr class='tab_bg_3'>";
-                }
-            }
-        }
-
-        // on recommence pour finir le tableau proprement pour les m???es raisons
-        if ($jour_fin_mois != 0) {
-            for ($i = 0; $i < 7 - $jour_fin_mois; $i++) {
-                echo "<td class='calendrier_case_white'>&nbsp;</td>";
-            }
-        }
-
-        echo "</tr></table>\n";
-        echo "</td></tr></table></div>\n";
+        echo Html::scriptBlock(
+            '$(function() { ITSMReservationCalendar.display(' . json_encode($options) . '); });'
+        );
     }
 
 

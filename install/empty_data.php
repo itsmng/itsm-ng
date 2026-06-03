@@ -2098,6 +2098,8 @@ $tables['glpi_entities'] = [
       'suppliers_as_private'                 => 0,
       'enable_custom_css'                    => 0,
       'anonymize_support_agents'             => 0,
+      'lock_ticket_date'                     => 0,
+      'requesters_private_ticket_content'    => 0,
    ],
 ];
 
@@ -2714,6 +2716,27 @@ $tables['glpi_notifications'] = [
       'event'        => 'passwordexpires',
       'is_recursive' => 1,
       'is_active'    => 1,
+   ], [
+      'id'           => 72,
+      'name'         => 'New Appointment',
+      'itemtype'     => 'Appointment',
+      'event'        => 'new',
+      'is_recursive' => 1,
+      'is_active'    => 1,
+   ], [
+      'id'           => 73,
+      'name'         => 'Update Appointment',
+      'itemtype'     => 'Appointment',
+      'event'        => 'update',
+      'is_recursive' => 1,
+      'is_active'    => 1,
+   ], [
+      'id'           => 74,
+      'name'         => 'Delete Appointment',
+      'itemtype'     => 'Appointment',
+      'event'        => 'delete',
+      'is_recursive' => 1,
+      'is_active'    => 1,
    ],
 ];
 
@@ -3073,6 +3096,21 @@ $tables['glpi_notifications_notificationtemplates'] = [
       'notifications_id'         =>  '71',
       'mode'                     =>  'mailing',
       'notificationtemplates_id' =>  28,
+   ], [
+      'id'                       => 72,
+      'notifications_id'         =>  '72',
+      'mode'                     =>  'mailing',
+      'notificationtemplates_id' =>  29,
+   ], [
+      'id'                       => 73,
+      'notifications_id'         =>  '73',
+      'mode'                     =>  'mailing',
+      'notificationtemplates_id' =>  29,
+   ], [
+      'id'                       => 74,
+      'notifications_id'         =>  '74',
+      'mode'                     =>  'mailing',
+      'notificationtemplates_id' =>  29,
    ],
 ];
 
@@ -3762,6 +3800,36 @@ $tables['glpi_notificationtargets'] = [
       'items_id'         => '1',
       'type'             => '1',
       'notifications_id' => '71',
+   ], [
+      'id'               => '140',
+      'items_id'         => '3',
+      'type'             => '1',
+      'notifications_id' => '72',
+   ], [
+      'id'               => '141',
+      'items_id'         => '10240',
+      'type'             => '1',
+      'notifications_id' => '72',
+   ], [
+      'id'               => '143',
+      'items_id'         => '3',
+      'type'             => '1',
+      'notifications_id' => '73',
+   ], [
+      'id'               => '144',
+      'items_id'         => '10240',
+      'type'             => '1',
+      'notifications_id' => '73',
+   ], [
+      'id'               => '146',
+      'items_id'         => '3',
+      'type'             => '1',
+      'notifications_id' => '74',
+   ], [
+      'id'               => '147',
+      'items_id'         => '10240',
+      'type'             => '1',
+      'notifications_id' => '74',
    ],
 ];
 
@@ -3874,6 +3942,10 @@ $tables['glpi_notificationtemplates'] = [
       'id'       => '27',
       'name'     => 'Password expires alert',
       'itemtype' => 'User',
+   ], [
+      'id'       => '29',
+      'name'     => 'Appointments',
+      'itemtype' => 'Appointment',
    ],
 ];
 
@@ -4737,6 +4809,25 @@ style="color: #8b8c8f; font-weight: bold; text-decoration: underline;"&gt;
 &lt;ul&gt;##FOREACHplugins##
 &lt;li&gt;##plugin.name## :##plugin.old_version## -&gt; ##plugin.version##&lt;/li&gt;
 ##ENDFOREACHplugins##&lt;/ul&gt;'
+   ], [
+      'id'                       => '29',
+      'notificationtemplates_id' => '29',
+      'language'                 => '',
+      'subject'                  => '##appointment.action##',
+      'content_text'             => '##lang.appointment.title##: ##appointment.title##
+##lang.appointment.requester##: ##appointment.requester##
+##lang.appointment.target##: ##appointment.target##
+##lang.appointment.begin##: ##appointment.begin##
+##lang.appointment.end##: ##appointment.end##
+##lang.appointment.comment##: ##appointment.comment##
+##appointment.url##',
+      'content_html'             => '&lt;p&gt;&lt;strong&gt;##appointment.title##&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;##lang.appointment.requester##: ##appointment.requester##&lt;br /&gt;
+##lang.appointment.target##: ##appointment.target##&lt;br /&gt;
+##lang.appointment.begin##: ##appointment.begin##&lt;br /&gt;
+##lang.appointment.end##: ##appointment.end##&lt;br /&gt;
+##lang.appointment.comment##: ##appointment.comment##&lt;/p&gt;
+&lt;p&gt;&lt;a href="##appointment.url##"&gt;##appointment.url##&lt;/a&gt;&lt;/p&gt;'
    ],
 ];
 
@@ -7364,6 +7455,38 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '8',
       'name'        => 'externalevent',
+      'rights'      => 1,
+   ], [
+      'profiles_id' => '1',
+      'name'        => 'appointment',
+      'rights'      => 4,
+   ], [
+      'profiles_id' => '2',
+      'name'        => 'appointment',
+      'rights'      => 5,
+   ], [
+      'profiles_id' => '3',
+      'name'        => 'appointment',
+      'rights'      => 31,
+   ], [
+      'profiles_id' => '4',
+      'name'        => 'appointment',
+      'rights'      => 31,
+   ], [
+      'profiles_id' => '5',
+      'name'        => 'appointment',
+      'rights'      => 0,
+   ], [
+      'profiles_id' => '6',
+      'name'        => 'appointment',
+      'rights'      => 5,
+   ], [
+      'profiles_id' => '7',
+      'name'        => 'appointment',
+      'rights'      => 31,
+   ], [
+      'profiles_id' => '8',
+      'name'        => 'appointment',
       'rights'      => 1,
    ], [
       'profiles_id' => '1',

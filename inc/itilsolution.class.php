@@ -195,6 +195,7 @@ class ITILSolution extends CommonDBChild
                        'name' => 'solutiontemplates_id',
                        'id' => 'DropdownForSolutionTemplate',
                        'itemtype' => SolutionTemplate::class,
+                       'condition' => SolutionTemplate::getGroupVisibilityCondition(),
                        'actions' => getItemActionButtons(['info', 'add'], SolutionTemplate::class),
                        'hooks' => [
                           'change' => <<<JS
