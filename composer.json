@@ -99,11 +99,5 @@
             "@php -r \"file_put_contents('.composer.hash', sha1_file('composer.lock'));\"",
             "patch -f -p1 -d vendor/laminas/laminas-mail/ < tools/laminas-mail-128.patch || echo 'Error applying patch, retrieving some mail attachement could fail'"
         ]
-    },
-    "repositories": {
-        "htmlawed": {
-            "type": "composer",
-            "url": "https://www.bioinformatics.org/phplabware/downloads/"
-        }
     }
 }
