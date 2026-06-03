@@ -34,6 +34,7 @@ include ('../inc/includes.php');
 Session::checkRight("config", READ);
 
 if (isset($_GET['check_version'])) {
+    Session::checkRight("config", UPDATE);
     Session::addMessageAfterRedirect(
         Toolbox::checkNewVersionAvailable()
     );
@@ -43,10 +44,12 @@ if (isset($_GET['check_version'])) {
 $config = new Config();
 $_POST['id'] = 1;
 if (!empty($_POST["update_auth"])) {
+   Session::checkRight("config", UPDATE);
    $config->update($_POST);
    Html::back();
 }
 if (!empty($_POST["update"])) {
+   Session::checkRight("config", UPDATE);
    $context = array_key_exists('config_context', $_POST) ? $_POST['config_context'] : 'core';
 
    $glpikey = new GLPIKey();

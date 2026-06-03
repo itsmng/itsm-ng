@@ -1540,7 +1540,18 @@ class Planning extends CommonGLPI {
     * @return mixed the id (integer) or false if it failed
     */
    static function cloneEvent(array $event = []) {
-      $item = new $event['old_itemtype'];
+      global $CFG_GLPI;
+
+      if (!isset($event['old_itemtype'], $event['old_items_id'], $event['start'], $event['end'])
+          || !in_array($event['old_itemtype'], $CFG_GLPI['planning_types'], true)
+          || !($item = getItemForItemtype($event['old_itemtype']))) {
+         return false;
+      }
+
+      if (!$item->can((int) $event['old_items_id'], READ)) {
+         return false;
+      }
+
       $item->getFromDB((int) $event['old_items_id']);
 
       $input = array_merge($item->fields, [
@@ -1566,6 +1577,9 @@ class Planning extends CommonGLPI {
             case "user":
                $key = isset($item->fields['users_id_tech']) ? "users_id_tech" : "users_id";
                break;
+
+            default:
+               return false;
          }
 
          unset(
@@ -1576,6 +1590,10 @@ class Planning extends CommonGLPI {
          );
 
          $input[$key] = $event['actor']['items_id'];
+      }
+
+      if (!$item->can(-1, CREATE, $input)) {
+         return false;
       }
 
       $new_items_id = $item->add(Toolbox::addslashes_deep($input));
@@ -1605,7 +1623,17 @@ class Planning extends CommonGLPI {
     * @return bool
     */
    static function deleteEvent(array $event = []):bool {
-      $item = new $event['itemtype'];
+      global $CFG_GLPI;
+
+      if (!isset($event['itemtype'], $event['items_id'])
+          || !in_array($event['itemtype'], $CFG_GLPI['planning_types'], true)
+          || !($item = getItemForItemtype($event['itemtype']))) {
+         return false;
+      }
+
+      if (!$item->can((int) $event['items_id'], $item->maybeDeleted() ? DELETE : PURGE)) {
+         return false;
+      }
 
       if (isset($event['day'])
           && isset($event['instance'])
