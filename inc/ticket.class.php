@@ -7665,7 +7665,7 @@ class Ticket extends CommonITILObject
             foreach ($matches[1] as $src) {
                 // Set tag if image matches
                 foreach ($files as $data => $filename) {
-                    if (preg_match("/" . $data . "/i", $src)) {
+                    if (preg_match("/" . preg_quote($data, '/') . "/i", $src)) {
                         $html = preg_replace("/<img[^>]*src=['|\"]" . preg_quote($src, '/') . "['|\"][^>]*\>/s", "<p>" . Document::getImageTag($tags[$filename]) . "</p>", (string) $html);
                     }
                 }

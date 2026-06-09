@@ -78,6 +78,29 @@ include_once(GLPI_ROOT . "/inc/autoload.function.php");
        'GLPI_USE_IDOR_CHECK'            => '1',
        'GLPI_IDOR_EXPIRES'              => '7200',
        'GLPI_ALLOW_IFRAME_IN_RICH_TEXT' => false,
+       'GLPI_SERVERSIDE_URL_ALLOWLIST'  => [
+          // Based on https://github.com/symfony/symfony/blob/7.3/src/Symfony/Component/Validator/Constraints/UrlValidator.php
+          '~^
+                        (http|https|feed)://                                                # protocol
+                        (
+                            (?:
+                                (?:xn--[a-z0-9-]++\.)*+xn--[a-z0-9-]++                      # a domain name using punycode
+                                    |
+                                (?:[\pL\pN\pS\pM\-\_]++\.)+[\pL\pN\pM]++                    # a multi-level domain name
+                                    |
+                                [a-z0-9\-\_]++                                              # a single-level domain name
+                            )\.?
+                                |                                                           # or
+                            \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}                              # an IP address
+                                |                                                           # or
+                            \[
+                                (?:(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){6})(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:::(?:(?:(?:[0-9a-f]{1,4})):){5})(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:[0-9a-f]{1,4})))?::(?:(?:(?:[0-9a-f]{1,4})):){4})(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,1}(?:(?:[0-9a-f]{1,4})))?::(?:(?:(?:[0-9a-f]{1,4})):){3})(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,2}(?:(?:[0-9a-f]{1,4})))?::(?:(?:(?:[0-9a-f]{1,4})):){2})(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,3}(?:(?:[0-9a-f]{1,4})))?::(?:(?:[0-9a-f]{1,4})):)(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,4}(?:(?:[0-9a-f]{1,4})))?::)(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,5}(?:(?:[0-9a-f]{1,4})))?::)(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,6}(?:(?:[0-9a-f]{1,4})))?::))))
+                            \]                                                              # an IPv6 address
+                        )
+                        (?:/ (?:[\pL\pN\pS\pM\-._\~!$&\'()*+,;=:@]|%[0-9A-Fa-f]{2})* )*     # a path
+                        (?:\? (?:[\pL\pN\-._\~!$&\'\[\]()*+,;=:@/?]|%[0-9A-Fa-f]{2})* )?    # a query (optional)
+                    $~ixuD',
+       ],
 
        // Constants related to GLPI Project / GLPI Network external services
        'GLPI_TELEMETRY_URI'                => 'https://telemetry.glpi-project.org', // Telemetry project URL
@@ -95,6 +118,14 @@ include_once(GLPI_ROOT . "/inc/autoload.function.php");
        // TODO GLPI_FORCE_EMPTY_SQL_MODE need to be set to 0 after review of all sql queries
        'GLPI_FORCE_EMPTY_SQL_MODE'   => '1', // for compatibility with mysql 5.7
     ];
+
+    if (defined('TU_USER')) {
+        // calendar mockups
+        $constants['GLPI_SERVERSIDE_URL_ALLOWLIST'][] = '/^file:\/\/.*\.ics$/';
+
+        // Fork-specific RSS feed fixture server.
+        $constants['GLPI_SERVERSIDE_URL_ALLOWLIST'][] = '~^http://127\.0\.0\.1:\d+/tests/fixtures/rssfeed\.xml$~';
+    }
 
     // Define constants values based on server env variables (i.e. defined using apache SetEnv directive)
     foreach (array_keys($constants) as $name) {
@@ -119,20 +150,22 @@ include_once(GLPI_ROOT . "/inc/autoload.function.php");
     // This logic is quiet simple and is not made to handle chain inheritance.
     $inherit_pattern = '/\{(?<name>GLPI_[\w]+)\}/';
     foreach ($constants as $key => $value) {
-        if (!defined($key) && !preg_match($inherit_pattern, $value)) {
+        if (!defined($key) && (!is_string($value) || !preg_match($inherit_pattern, $value))) {
             define($key, $value);
         }
     }
     foreach ($constants as $key => $value) {
         if (!defined($key)) {
             // Replace {GLPI_*} by value of corresponding constant
-            $value = preg_replace_callback(
-                '/\{(?<name>GLPI_[\w]+)\}/',
-                function ($matches) {
-                    return defined($matches['name']) ? constant($matches['name']) : '';
-                },
-                $value
-            );
+            if (is_string($value)) {
+                $value = preg_replace_callback(
+                    '/\{(?<name>GLPI_[\w]+)\}/',
+                    function ($matches) {
+                        return defined($matches['name']) ? constant($matches['name']) : '';
+                    },
+                    $value
+                );
+            }
 
             define($key, $value);
         }

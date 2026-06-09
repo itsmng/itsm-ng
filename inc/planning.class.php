@@ -1251,11 +1251,11 @@ class Planning extends CommonGLPI
 
     public static function editEventForm($params = [])
     {
-        if (!$params['itemtype'] instanceof CommonDBTM) {
-            echo "<div class='center'>";
-            echo "<a href='" . $params['url'] . "'>" . __("View this item in his context") . "</a>";
-            echo "</div>";
-            echo "<hr>";
+        $item = getItemForItemtype($params['itemtype']);
+        if ($item instanceof CommonDBTM) {
+            $item->getFromDB((int) $params['id']);
+            $url = $item->getLinkURL();
+
             $rand = mt_rand();
             $options = [
                'from_planning_edit_ajax' => true,
@@ -1265,8 +1265,13 @@ class Planning extends CommonGLPI
             if (isset($params['parentitemtype'])) {
                 $options['parent'] = getItemForItemtype($params['parentitemtype']);
                 $options['parent']->getFromDB($params['parentid']);
+                $url = $options['parent']->getLinkURL();
             }
-            $item = getItemForItemtype($params['itemtype']);
+
+            echo "<div class='center'>";
+            echo "<a href='" . $url . "'>" . __("View this item in his context") . "</a>";
+            echo "</div>";
+            echo "<hr>";
             $item->showForm(intval($params['id']), $options);
             $callback = "$('.ui-dialog-content').dialog('close');
                       GLPIPlanning.refresh();

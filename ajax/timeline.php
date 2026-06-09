@@ -47,22 +47,25 @@ if (($_POST['action'] ?? null) === 'change_task_state') {
 
     $taskClass = $parent->getType() . "Task";
     $task = new $taskClass();
-    $task->getFromDB(intval($_POST['tasks_id']));
+    if (!$task->getFromDB(intval($_POST['tasks_id'])) || !$task->canUpdateItem()) {
+        http_response_code(403);
+        die();
+    }
     if (!in_array($task->fields['state'], [0, Planning::INFO])) {
         $new_state = ($task->fields['state'] == Planning::DONE)
                           ? Planning::TODO
                           : Planning::DONE;
-        $new_label = Planning::getState($new_state);
-        echo json_encode([
-           'state'  => $new_state,
-           'label'  => $new_label
-        ]);
-
         $foreignKey = $parent->getForeignKeyField();
         $task->update([
            'id'        => intval($_POST['tasks_id']),
            $foreignKey => intval($_POST[$foreignKey]),
-           'state'     => $new_state
+           'state'     => $new_state,
+           'users_id_editor' => Session::getLoginUserID(),
+        ]);
+        $new_label = Planning::getState($new_state);
+        echo json_encode([
+           'state'  => $task->fields['state'],
+           'label'  => $new_label
         ]);
     }
 } elseif (($_REQUEST['action'] ?? null) === 'viewsubitem') {
@@ -76,8 +79,37 @@ if (($_POST['action'] ?? null) === 'change_task_state') {
         exit();
     }
 
+    $denied = false;
     $item = getItemForItemtype($_REQUEST['type']);
+    if (!$item || !$item->canView()) {
+        $denied = true;
+    }
     $parent = getItemForItemtype($_REQUEST['parenttype']);
+    if (!$parent instanceof CommonITILObject) {
+        trigger_error(
+            sprintf('%s is not a valid item type.', $_REQUEST['parenttype']),
+            E_USER_WARNING
+        );
+        exit();
+    }
+
+    if (
+        isset($_REQUEST[$parent->getForeignKeyField()])
+        && !$parent->can($_REQUEST[$parent->getForeignKeyField()], READ)
+    ) {
+        $denied = true;
+    }
+
+    $id = isset($_REQUEST['id']) && (int)$_REQUEST['id'] > 0 ? $_REQUEST['id'] : null;
+    if (!$item || !$item->can($id, READ)) {
+        $denied = true;
+    }
+
+    if ($denied) {
+        echo __('Access denied');
+        Html::ajaxFooter();
+        exit();
+    }
 
     $manage_locks = static function ($itemtype, $items_id) {
         $ol = ObjectLock::isLocked($itemtype, $items_id);

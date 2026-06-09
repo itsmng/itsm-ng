@@ -1714,6 +1714,33 @@ class Toolbox
 
 
     /**
+     * Check an URL is safe.
+     * Used to mitigate SSRF exploits.
+     *
+     * @param string $url       URL to check
+     * @param array  $allowlist Allowlist regexes
+     *
+     * @return bool
+     */
+    public static function isUrlSafe(string $url, array $allowlist = GLPI_SERVERSIDE_URL_ALLOWLIST): bool
+    {
+        foreach ($allowlist as $allow_regex) {
+            $result = preg_match($allow_regex, $url);
+            if ($result === false) {
+                trigger_error(
+                    sprintf('Unable to validate URL safeness. Following regex is probably invalid: "%s".', $allow_regex),
+                    E_USER_WARNING
+                );
+            } elseif ($result === 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Get a web page. Use proxy if configured
      *
      * @param string  $url    URL to retrieve
@@ -1724,7 +1751,8 @@ class Toolbox
     **/
     public static function getURLContent($url, &$msgerr = null, $rec = 0)
     {
-        $content = self::callCurl($url);
+        $curl_error = null;
+        $content = self::callCurl($url, [], $msgerr, $curl_error, true);
         return $content;
     }
 
@@ -1735,12 +1763,22 @@ class Toolbox
      * @param array  $eopts       Extra curl opts
      * @param string $msgerr      will contains a human readable error string if an error occurs of url returns empty contents
      * @param string $curl_error  will contains original curl error string if an error occurs
+     * @param bool   $check_url_safeness indicates whether the URL has to be filtered by safety checks
      *
      * @return string
      */
-    public static function callCurl($url, array $eopts = [], &$msgerr = null, &$curl_error = null)
+    public static function callCurl($url, array $eopts = [], &$msgerr = null, &$curl_error = null, bool $check_url_safeness = false)
     {
         global $CFG_GLPI;
+
+        if ($check_url_safeness && !self::isUrlSafe($url)) {
+            $msgerr = sprintf(
+                __('URL "%s" is not considered safe and cannot be fetched from ITSM-NG server.'),
+                $url
+            );
+            trigger_error(sprintf('Unsafe URL "%s" fetching has been blocked.', $url), E_USER_NOTICE);
+            return '';
+        }
 
         $content = "";
         $taburl  = parse_url($url);
@@ -3734,13 +3772,30 @@ HTML;
      */
     public static function isValidWebUrl($url): bool
     {
-        // Verify absence of known disallowed characters.
-        // It is still possible to have false positives, but a fireproof check would be too complex
-        // (or would require usage of a dedicated lib).
-        return (preg_match(
-            "/^(?:http[s]?:\/\/(?:[^\s`!(){};'\",<>«»“”‘’+]+|[^\s`!()\[\]{};:'\".,<>?«»“”‘’+]))$/iu",
-            $url
-        ) === 1);
+        // Based on https://github.com/symfony/symfony/blob/7.3/src/Symfony/Component/Validator/Constraints/UrlValidator.php
+        $pattern = '~^
+            (http|https)://
+            (((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+:)?((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+)@)?
+            (
+                (?:
+                    (?:xn--[a-z0-9-]++\.)*+xn--[a-z0-9-]++
+                    |
+                    (?:[\pL\pN\pS\pM\-\_]++\.)+[\pL\pN\pM]++
+                    |
+                    [a-z0-9\-\_]++
+                )\.?
+                |
+                \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}
+                |
+                \[ [0-9a-f:.]++ \]
+            )
+            (:[0-9]+)?
+            (?:/ (?:[\pL\pN\pS\pM\-._\~!$&\'()*+,;=:@]|%[0-9A-Fa-f]{2})* )*
+            (?:\? (?:[\pL\pN\-._\~!$&\'\[\]()*+,;=:@/?]|%[0-9A-Fa-f]{2})* )?
+            (?:\# (?:[\pL\pN\-._\~!$&\'()*+,;=:@/?]|%[0-9A-Fa-f]{2})* )?
+        $~ixuD';
+
+        return (preg_match($pattern, $url) === 1);
     }
 
     /**

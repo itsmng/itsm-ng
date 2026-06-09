@@ -36,7 +36,7 @@
  */
 
 // here we are going to try to unlock the given object
-// url should be of the form: 'http://.../.../unlockobject.php?unlock=1[&force=1]&id=xxxxxx'
+// url should be of the form: 'http://.../.../unlockobject.php?unlock=1&id=xxxxxx'
 // or url should be of the form 'http://.../.../unlockobject.php?requestunlock=1&id=xxxxxx'
 // to send notification to locker of object
 
@@ -50,19 +50,20 @@ $ret = 0;
 if (isset($_POST['unlock']) && isset($_POST["id"])) {
     // then we may have something to unlock
     $ol = new ObjectLock();
+    if (!$ol->can($_POST["id"], PURGE)) {
+        Toolbox::throwError(400, 'Not allowed', 'string');
+    }
     if (
         $ol->getFromDB($_POST["id"])
         && $ol->deleteFromDB(1)
     ) {
-        if (isset($_POST['force'])) {
-            Log::history(
-                $ol->fields['items_id'],
-                $ol->fields['itemtype'],
-                [0, '', ''],
-                0,
-                Log::HISTORY_UNLOCK_ITEM
-            );
-        }
+        Log::history(
+            $ol->fields['items_id'],
+            $ol->fields['itemtype'],
+            [0, '', ''],
+            0,
+            Log::HISTORY_UNLOCK_ITEM
+        );
         $ret = 1;
     }
 } elseif (
