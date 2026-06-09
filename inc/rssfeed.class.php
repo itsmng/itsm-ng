@@ -818,14 +818,9 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
     **/
    function showDiscoveredFeeds() {
 
-      $feed = new SimplePie();
-      $feed->set_cache_location(GLPI_RSS_DIR);
-      $feed->enable_cache(false);
-      $feed->set_feed_url($this->fields['url']);
-      $feed->init();
-      $feed->handle_content_type();
+      $feed = self::getRSSFeed($this->fields['url']);
 
-      if ($feed->error()) {
+      if (!$feed || $feed->error()) {
          return false;
       }
 
@@ -858,9 +853,25 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
    static function getRSSFeed($url, $cache_duration = DAY_TIMESTAMP) {
       global $CFG_GLPI;
 
+      if (!Toolbox::isUrlSafe($url)) {
+         return false;
+      }
+
+      $error_msg  = null;
+      $curl_error = null;
+      $raw_data = Toolbox::callCurl($url, [], $error_msg, $curl_error, true);
+      if (empty($raw_data)) {
+         return false;
+      }
+
+      $doc = new DOMDocument();
+      if (!@$doc->loadXML($raw_data)) {
+         return false;
+      }
+
       $feed = new SimplePie();
-      $feed->set_cache_location(GLPI_RSS_DIR);
-      $feed->set_cache_duration($cache_duration);
+      $feed->enable_cache(false);
+      $feed->set_raw_data($raw_data);
 
       // proxy support
       if (!empty($CFG_GLPI["proxy_name"])) {
@@ -875,8 +886,6 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria {
          $feed->set_curl_options($prx_opt);
       }
 
-      $feed->enable_cache(true);
-      $feed->set_feed_url($url);
       $feed->force_feed(true);
       // Initialize the whole SimplePie object.  Read the feed, process it, parse it, cache it, and
       // all that other good stuff.  The feed's information will not be available to SimplePie before

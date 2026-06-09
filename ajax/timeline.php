@@ -73,8 +73,34 @@ if (($_POST['action'] ?? null) === 'change_task_state') {
       exit();
    }
 
+   $denied = false;
    $item = getItemForItemtype($_REQUEST['type']);
+   if (!$item || !$item->canView()) {
+      $denied = true;
+   }
+
    $parent = getItemForItemtype($_REQUEST['parenttype']);
+   if (!$parent instanceof CommonITILObject) {
+      echo __('Access denied');
+      Html::ajaxFooter();
+      exit();
+   }
+
+   if (isset($_REQUEST[$parent->getForeignKeyField()])
+       && !$parent->can($_REQUEST[$parent->getForeignKeyField()], READ)) {
+      $denied = true;
+   }
+
+   $id = isset($_REQUEST['id']) && (int)$_REQUEST['id'] > 0 ? $_REQUEST['id'] : null;
+   if (!$item || !$item->can($id, READ)) {
+      $denied = true;
+   }
+
+   if ($denied) {
+      echo __('Access denied');
+      Html::ajaxFooter();
+      exit();
+   }
 
    $manage_locks = static function($itemtype, $items_id) {
       $ol = ObjectLock::isLocked($itemtype, $items_id );

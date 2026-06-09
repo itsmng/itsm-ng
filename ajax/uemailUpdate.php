@@ -50,11 +50,17 @@ if ((isset($_POST['field']) && ($_POST["value"] > 0))
    $emails        = [];
    if (isset($_POST['typefield']) && ($_POST['typefield'] == 'supplier')) {
       $supplier = new Supplier();
+      if (!empty($_POST["value"]) && !$supplier->can($_POST["value"], READ)) {
+         throw new \RuntimeException('Not allowed');
+      }
       if ($supplier->getFromDB($_POST["value"])) {
          $default_email = $supplier->fields['email'];
       }
    } else {
       $user          = new User();
+      if (!empty($_POST["value"]) && !$user->can($_POST["value"], READ)) {
+         throw new \RuntimeException('Not allowed');
+      }
       if ($user->getFromDB($_POST["value"])) {
          $default_email = $user->getDefaultEmail();
          $emails        = $user->getAllEmails();
@@ -73,8 +79,7 @@ if ((isset($_POST['field']) && ($_POST["value"] > 0))
       $default_notif = $_POST['use_notification'][$user_index];
    }
 
-   if (isset($_POST['alternative_email'][$user_index])
-       && !empty($_POST['alternative_email'][$user_index])
+   if (!empty($_POST['alternative_email'][$user_index])
        && empty($default_email)) {
 
       if (NotificationMailing::isUserAddressValid($_POST['alternative_email'][$user_index])) {

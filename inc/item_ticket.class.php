@@ -312,6 +312,7 @@ class Item_Ticket extends CommonItilObject_Item {
       $js  = " function itemAction$rand(action, itemtype, items_id) {";
       $js .= "    $.ajax({
                      url: '".$CFG_GLPI['root_doc']."/ajax/itemTicket.php',
+                     type: 'POST',
                      dataType: 'html',
                      data: {'action'     : action,
                             'rand'       : $rand,

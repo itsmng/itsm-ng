@@ -1646,6 +1646,35 @@ class Toolbox {
 
 
    /**
+    * Check whether an URL is safe to fetch from the server.
+    * Used to mitigate SSRF exploits.
+    *
+    * @since 9.5.0
+    *
+    * @param string $url        URL to check
+    * @param array  $allowlist  Allowlist regex list
+    *
+    * @return bool
+   **/
+   public static function isUrlSafe($url, array $allowlist = GLPI_SERVERSIDE_URL_ALLOWLIST) {
+
+      foreach ($allowlist as $allow_regex) {
+         $result = preg_match($allow_regex, $url);
+         if ($result === false) {
+            trigger_error(
+               sprintf('Unable to validate URL safeness. Following regex is probably invalid: "%s".', $allow_regex),
+               E_USER_WARNING
+            );
+         } else if ($result === 1) {
+            return true;
+         }
+      }
+
+      return false;
+   }
+
+
+   /**
     * Get a web page. Use proxy if configured
     *
     * @param string  $url    URL to retrieve
@@ -1655,7 +1684,8 @@ class Toolbox {
     * @return string content of the page (or empty)
    **/
    static function getURLContent ($url, &$msgerr = null, $rec = 0) {
-      $content = self::callCurl($url);
+      $curl_error = null;
+      $content = self::callCurl($url, [], $msgerr, $curl_error, true);
       return $content;
    }
 
@@ -1665,12 +1695,30 @@ class Toolbox {
     * @param string $url         URL to retrieve
     * @param array  $eopts       Extra curl opts
     * @param string $msgerr      will contains a human readable error string if an error occurs of url returns empty contents
-    * @param string $curl_error  will contains original curl error string if an error occurs
+    * @param string $curl_error           will contains original curl error string if an error occurs
+    * @param bool   $check_url_safeness   whether URL safety checks have to be applied
+    * @param array  $curl_info            will contains contents provided by `curl_getinfo`
     *
     * @return string
     */
-   public static function callCurl($url, array $eopts = [], &$msgerr = null, &$curl_error = null) {
+   public static function callCurl(
+      $url,
+      array $eopts = [],
+      &$msgerr = null,
+      &$curl_error = null,
+      $check_url_safeness = false,
+      array &$curl_info = null
+   ) {
       global $CFG_GLPI;
+
+      if ($check_url_safeness && !self::isUrlSafe($url)) {
+         $msgerr = sprintf(
+            __('URL "%s" is not considered safe and cannot be fetched from GLPI server.'),
+            $url
+         );
+         Toolbox::logWarning(sprintf('Unsafe URL "%s" fetching has been blocked.', $url));
+         return '';
+      }
 
       $content = "";
       $taburl  = parse_url($url);
@@ -1690,6 +1738,10 @@ class Toolbox {
          CURLOPT_RETURNTRANSFER  => 1,
          CURLOPT_CONNECTTIMEOUT  => 5,
       ] + $eopts;
+
+      if ($check_url_safeness) {
+         $opts[CURLOPT_FOLLOWLOCATION] = false;
+      }
 
       if (!empty($CFG_GLPI["proxy_name"])) {
          // Connection using proxy
@@ -1716,6 +1768,8 @@ class Toolbox {
       curl_setopt_array($ch, $opts);
       $content = curl_exec($ch);
       $curl_error = curl_error($ch) ?: null;
+      $curl_info = curl_getinfo($ch);
+      $curl_redirect = $curl_info['redirect_url'] ?? null;
       curl_close($ch);
 
       if ($curl_error !== null) {
@@ -1733,6 +1787,8 @@ class Toolbox {
             );
          }
          $content = '';
+      } else if (!empty($curl_redirect)) {
+         return self::callCurl($curl_redirect, $eopts, $msgerr, $curl_error, $check_url_safeness, $curl_info);
       } else if (empty($content)) {
          $msgerr = __('No data available on the web site');
       }

@@ -2029,9 +2029,10 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
          }
          $allstates = $projectstate->find($restrict, ['is_finished ASC', 'id']);
          foreach ($allstates as $state) {
+            $header_color = preg_match('/^#[0-9a-f]{6}$/i', $state['color'] ?? '') ? $state['color'] : '';
             $columns['projectstates_id'][$state['id']] = [
-               'name'         => $state['name'],
-               'header_color' => $state['color']
+               'name'         => Html::entities_deep($state['name']),
+               'header_color' => $header_color
             ];
          }
          return $columns['projectstates_id'];
@@ -2160,7 +2161,9 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
                      return ($e['id'] == $teammember['items_id']);
                   });
                   if (count($matches)) {
-                     $item['_team'][] = array_merge($teammember, reset($matches));
+                     $match = reset($matches);
+                     $match['name'] = Html::entities_deep($match['name']);
+                     $item['_team'][] = array_merge($teammember, $match);
                   }
                   break;
                case 'User':
@@ -2172,7 +2175,9 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
                      $match = reset($contact_matches);
                      // contact -> name, user -> realname
                      $realname = $match['name'] ?? $match['realname'] ?? "";
-                     $match['name'] = formatUserName($match['id'], '', $realname, $match['firstname']);
+                     $match['name'] = Html::entities_deep(
+                        formatUserName($match['id'], '', $realname, $match['firstname'])
+                     );
                      $item['_team'][] = array_merge($teammember, $match);
                   }
                   break;
@@ -2208,7 +2213,9 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
                      return ($e['id'] == $teammember['items_id']);
                   });
                   if (count($matches)) {
-                     $item['_team'][] = array_merge($teammember, reset($matches));
+                     $match = reset($matches);
+                     $match['name'] = Html::entities_deep($match['name']);
+                     $item['_team'][] = array_merge($teammember, $match);
                   }
                   break;
                case 'User':
@@ -2219,9 +2226,13 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
                   if (count($contact_matches)) {
                      $match = reset($contact_matches);
                      if ($teammember['itemtype'] === 'User') {
-                        $match['name'] = formatUserName($match['id'], '', $match['realname'], $match['firstname']);
+                        $match['name'] = Html::entities_deep(
+                           formatUserName($match['id'], '', $match['realname'], $match['firstname'])
+                        );
                      } else {
-                        $match['name'] = formatUserName($match['id'], '', $match['name'], $match['firstname']);
+                        $match['name'] = Html::entities_deep(
+                           formatUserName($match['id'], '', $match['name'], $match['firstname'])
+                        );
                      }
                      $item['_team'][] = array_merge($teammember, $match);
                   }
@@ -2270,7 +2281,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
          $itemtype = $item['_itemtype'];
          $card = [
             'id'        => "{$itemtype}-{$item['id']}",
-            'title'     => Html::link($item['name'], $itemtype::getFormURLWithID($item['id']))
+            'title'     => Html::link(Html::entities_deep($item['name']), $itemtype::getFormURLWithID($item['id']))
          ];
 
          $content = "<div class='kanban-plugin-content'>";
@@ -2286,7 +2297,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
          $content .= "<div class='kanban-core-content'>";
          if (isset($item['_parents_id'])) {
             $childref = $itemtype === 'Project' ? __('Subproject') : __('Subtask');
-            $parentname = $item['_parent_name'] ?? $item['_parents_id'];
+            $parentname = Html::entities_deep($item['_parent_name'] ?? $item['_parents_id']);
 
             $content .= "<div>";
             $content .= Html::link(sprintf(__('%s of %s'), $childref, $parentname), Project::getFormURLWithID($item['_parents_id']));
@@ -2297,7 +2308,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria {
             $typematches = array_filter($alltypes, function($t) use ($item){
                return $t['id'] === $item['projecttasktypes_id'];
             });
-            $content .= reset($typematches)['name'] . '&nbsp;';
+            $content .= Html::entities_deep(reset($typematches)['name']) . '&nbsp;';
          }
          if (array_key_exists('is_milestone', $item) && $item['is_milestone']) {
             $content .= "&nbsp;<i class='fas fa-map-signs' title='" . __('Milestone') . "'></i>&nbsp;";

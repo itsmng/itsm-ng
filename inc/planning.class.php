@@ -1202,22 +1202,29 @@ class Planning extends CommonGLPI {
 
 
    static function editEventForm($params = []) {
-      if (!$params['itemtype'] instanceof CommonDBTM) {
-         echo "<div class='center'>";
-         echo "<a href='".$params['url']."'>".__("View this item in his context")."</a>";
-         echo "</div>";
-         echo "<hr>";
-         $rand = mt_rand();
+      $item = getItemForItemtype($params['itemtype']);
+      if ($item instanceof CommonDBTM) {
+         $item->getFromDB((int)$params['id']);
+         $url = $item->getLinkURL();
+
          $options = [
             'from_planning_edit_ajax' => true,
-            'formoptions'             => "id='edit_event_form$rand'",
+            'formoptions'             => '',
             'start'                   => date("Y-m-d", strtotime($params['start']))
          ];
          if (isset($params['parentitemtype'])) {
             $options['parent'] = getItemForItemtype($params['parentitemtype']);
             $options['parent']->getFromDB($params['parentid']);
+            $url = $options['parent']->getLinkURL();
          }
-         $item = getItemForItemtype($params['itemtype']);
+
+         echo "<div class='center'>";
+         echo Html::link(__("View this item in his context"), $url);
+         echo "</div>";
+         echo "<hr>";
+
+         $rand = mt_rand();
+         $options['formoptions'] = "id='edit_event_form$rand'";
          $item->showForm(intval($params['id']), $options);
          $callback = "$('.ui-dialog-content').dialog('close');
                       GLPIPlanning.refresh();

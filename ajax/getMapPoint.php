@@ -45,9 +45,15 @@ if (!isset($_POST['itemtype']) || !isset($_POST['items_id']) || (int)$_POST['ite
 } else {
    $itemtype = $_POST['itemtype'];
    $items_id = $_POST['items_id'];
+   $item = getItemForItemtype($itemtype);
+   if (!$item) {
+      $result = [
+         'success'   => false,
+         'message'   => __('Not allowed')
+      ];
+   }
 
-   if ($itemtype != Location::getType()) {
-      $item = new $itemtype();
+   if (!count($result) && $itemtype != Location::getType()) {
       $found = $item->getFromDB($items_id);
       if ($found && isset($item->fields['locations_id']) && (int)$item->fields['locations_id'] > 0) {
          $itemtype = Location::getType();
@@ -61,7 +67,15 @@ if (!isset($_POST['itemtype']) || !isset($_POST['items_id']) || (int)$_POST['ite
    }
 
    if (!count($result)) {
-      $item = new $itemtype();
+      $item = getItemForItemtype($itemtype);
+      if (!$item || !$item->can($items_id, READ)) {
+         $result = [
+            'success'   => false,
+            'message'   => __('Not allowed')
+         ];
+         echo json_encode($result);
+         return;
+      }
       $item->getFromDB($items_id);
       if (!empty($item->fields['latitude']) && !empty($item->fields['longitude'])) {
          $result = [

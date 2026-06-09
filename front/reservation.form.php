@@ -45,21 +45,20 @@ if (Session::getCurrentInterface() == "helpdesk") {
 }
 
 if (isset($_POST["update"])) {
+   $rr->check($_POST["id"], UPDATE);
    list($begin_year,$begin_month) = explode("-", $_POST['resa']["begin"]);
    Toolbox::manageBeginAndEndPlanDates($_POST['resa']);
-   if (Session::haveRight("reservation", UPDATE)
-       || (Session::getLoginUserID() == $_POST["users_id"])) {
-      $_POST['_target'] = $_SERVER['PHP_SELF'];
-      $_POST['_item']   = key($_POST["items"]);
-      $_POST['begin']   = $_POST['resa']["begin"];
-      $_POST['end']     = $_POST['resa']["end"];
-      if ($rr->update($_POST)) {
-         Html::redirect($CFG_GLPI["root_doc"]."/front/reservation.php?reservationitems_id=".
-                        $_POST['_item']."&mois_courant=$begin_month&annee_courante=$begin_year");
-      }
+   $_POST['_target'] = $_SERVER['PHP_SELF'];
+   $_POST['_item']   = key($_POST["items"]);
+   $_POST['begin']   = $_POST['resa']["begin"];
+   $_POST['end']     = $_POST['resa']["end"];
+   if ($rr->update($_POST)) {
+      Html::redirect($CFG_GLPI["root_doc"]."/front/reservation.php?reservationitems_id=".
+                     $_POST['_item']."&mois_courant=$begin_month&annee_courante=$begin_year");
    }
 
 } else if (isset($_POST["purge"])) {
+   $rr->check($_POST["id"], PURGE);
    $reservationitems_id = key($_POST["items"]);
    if ($rr->delete($_POST, 1)) {
       Event::log($_POST["id"], "reservation", 4, "inventory",
@@ -73,6 +72,7 @@ if (isset($_POST["update"])) {
                   "$reservationitems_id&mois_courant=$begin_month&annee_courante=$begin_year");
 
 } else if (isset($_POST["add"])) {
+   Session::checkRight('reservation', ReservationItem::RESERVEANITEM);
    $all_ok              = true;
    $reservationitems_id = 0;
    if (empty($_POST['users_id'])) {
@@ -140,6 +140,9 @@ if (isset($_POST["update"])) {
    }
 
 } else if (isset($_GET["id"])) {
+   if (!empty($_GET["id"])) {
+      $rr->check($_GET["id"], UPDATE);
+   }
    if (!isset($_GET['begin'])) {
       $_GET['begin'] = date('Y-m-d H:00:00');
    }

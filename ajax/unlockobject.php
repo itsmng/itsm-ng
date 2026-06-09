@@ -49,13 +49,20 @@ $ret = 0;
 if (isset($_POST['unlock']) && isset($_POST["id"])) {
    // then we may have something to unlock
    $ol = new ObjectLock();
-   if ($ol->getFromDB($_POST["id"])
-       && $ol->deleteFromDB(1)) {
-      if (isset($_POST['force'])) {
-         Log::history($ol->fields['items_id'], $ol->fields['itemtype'], [0, '', ''], 0,
-                      Log::HISTORY_UNLOCK_ITEM);
+   if ($ol->getFromDB($_POST["id"])) {
+      $locked_item = getItemForItemtype($ol->fields['itemtype']);
+      if (!$locked_item
+          || (!$locked_item->can($ol->fields['items_id'], UPDATE)
+              && !$locked_item->can($ol->fields['items_id'], DELETE)
+              && !$locked_item->can($ol->fields['items_id'], PURGE))) {
+         Toolbox::throwError(403, 'Not allowed', 'string');
       }
-      $ret = 1;
+
+      if ($ol->deleteFromDB(1)) {
+         Log::history($ol->fields['items_id'], $ol->fields['itemtype'], [0, '', ''], 0,
+                    Log::HISTORY_UNLOCK_ITEM);
+         $ret = 1;
+      }
    }
 
 } else if (isset($_POST['requestunlock'])
