@@ -50,17 +50,30 @@ if (isset($_POST['unlock']) && isset($_POST["id"])) {
    // then we may have something to unlock
    $ol = new ObjectLock();
    if ($ol->getFromDB($_POST["id"])) {
-      $locked_item = getItemForItemtype($ol->fields['itemtype']);
-      if (!$locked_item
-          || (!$locked_item->can($ol->fields['items_id'], UPDATE)
-              && !$locked_item->can($ol->fields['items_id'], DELETE)
-              && !$locked_item->can($ol->fields['items_id'], PURGE))) {
-         Toolbox::throwError(403, 'Not allowed', 'string');
+      $itemtype = $ol->fields['itemtype'];
+      $locked_item = getItemForItemtype($itemtype);
+      $profile_rights = $_SESSION['glpilocksavedprofile'][strtolower((string) $itemtype)] ?? 0;
+      $has_unlock_right = ($locked_item instanceof CommonDBTM)
+         && (
+            ((int) $profile_rights & UNLOCK)
+            || Session::haveRight($itemtype::$rightname, UNLOCK)
+         );
+      $is_owner = (int) $ol->fields['users_id'] === Session::getLoginUserID();
+
+      if (!$is_owner && !$has_unlock_right) {
+         Toolbox::throwError(400, 'Not allowed', 'string');
       }
 
       if ($ol->deleteFromDB(1)) {
-         Log::history($ol->fields['items_id'], $ol->fields['itemtype'], [0, '', ''], 0,
-                    Log::HISTORY_UNLOCK_ITEM);
+         if (isset($_POST['force'])) {
+            Log::history(
+               $ol->fields['items_id'],
+               $ol->fields['itemtype'],
+               [0, '', ''],
+               0,
+               Log::HISTORY_UNLOCK_ITEM
+            );
+         }
          $ret = 1;
       }
    }

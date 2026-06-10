@@ -1651,12 +1651,22 @@ class Toolbox {
     *
     * @since 9.5.0
     *
-    * @param string $url        URL to check
-    * @param array  $allowlist  Allowlist regex list
+    * @param string       $url       URL to check
+    * @param array|string $allowlist Allowlist regexes
     *
     * @return bool
    **/
-   public static function isUrlSafe($url, array $allowlist = GLPI_SERVERSIDE_URL_ALLOWLIST) {
+   public static function isUrlSafe($url, $allowlist = GLPI_SERVERSIDE_URL_ALLOWLIST) {
+
+      if (is_string($allowlist)) {
+         $decoded_allowlist = json_decode($allowlist, true);
+         $allowlist = is_array($decoded_allowlist) ? $decoded_allowlist : [$allowlist];
+      }
+
+      if (!is_array($allowlist)) {
+         trigger_error('Unable to validate URL safeness. Allowlist must be an array of regexes.', E_USER_WARNING);
+         return false;
+      }
 
       foreach ($allowlist as $allow_regex) {
          $result = preg_match($allow_regex, $url);
@@ -3600,13 +3610,45 @@ HTML;
     * @return boolean
     */
    public static function isValidWebUrl($url): bool {
-      // Verify absence of known disallowed characters.
-      // It is still possible to have false positives, but a fireproof check would be too complex
-      // (or would require usage of a dedicated lib).
-      return (preg_match(
-         "/^(?:http[s]?:\/\/(?:[^\s`!(){};'\",<>«»“”‘’+]+|[^\s`!()\[\]{};:'\".,<>?«»“”‘’+]))$/iu",
+      $url_parts_pattern = '
+         (?:/ (?:[\pL\pN\pS\pM\-._\~!$&\'()*+,;=:@]|%[0-9A-Fa-f]{2})* )*
+         (?:\? (?:[\pL\pN\-._\~!$&\'\[\]()*+,;=:@/?]|%[0-9A-Fa-f]{2})* )?
+         (?:\# (?:[\pL\pN\-._\~!$&\'()*+,;=:@/?]|%[0-9A-Fa-f]{2})* )?
+      ';
+
+      if (preg_match(
+         '~^
+            (http|https)://
+            (?:[0-9a-f]{0,4}:){2,}[0-9a-f]{0,4}
+            ' . $url_parts_pattern . '
+         $~ixuD',
          $url
-      ) === 1);
+      ) === 1) {
+         return true;
+      }
+
+      // Based on https://github.com/symfony/symfony/blob/7.3/src/Symfony/Component/Validator/Constraints/UrlValidator.php
+      $pattern = '~^
+         (http|https)://
+         (((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+:)?((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+)@)?
+         (
+            (?:
+               (?:xn--[a-z0-9-]++\.)*+xn--[a-z0-9-]++
+               |
+               (?:[\pL\pN\pS\pM\-\_]++\.)+[\pL\pN\pM]++
+               |
+               [a-z0-9\-\_]++
+            )\.?
+            |
+            \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}
+            |
+            \[ [0-9a-f:.]++ \]
+         )
+         (:[0-9]+)?
+         ' . $url_parts_pattern . '
+      $~ixuD';
+
+      return (preg_match($pattern, $url) === 1);
    }
 
    /**

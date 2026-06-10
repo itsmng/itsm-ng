@@ -39,8 +39,10 @@ if (strpos($_SERVER['PHP_SELF'], "uemailUpdate.php")) {
 
 Session::checkLoginUser();
 
-if ((isset($_POST['field']) && ($_POST["value"] > 0))
-    || (isset($_POST['allow_email']) && $_POST['allow_email'])) {
+$value = (int) ($_POST["value"] ?? 0);
+$allow_email = !empty($_POST['allow_email']);
+
+if (isset($_POST['field']) && ($value > 0 || $allow_email)) {
 
    if (preg_match('/[^a-z_\-0-9]/i', $_POST['field'])) {
       throw new \RuntimeException('Invalid field provided!');
@@ -50,20 +52,24 @@ if ((isset($_POST['field']) && ($_POST["value"] > 0))
    $emails        = [];
    if (isset($_POST['typefield']) && ($_POST['typefield'] == 'supplier')) {
       $supplier = new Supplier();
-      if (!empty($_POST["value"]) && !$supplier->can($_POST["value"], READ)) {
-         throw new \RuntimeException('Not allowed');
-      }
-      if ($supplier->getFromDB($_POST["value"])) {
-         $default_email = $supplier->fields['email'];
+      if ($value > 0) {
+         if (!$supplier->can($value, READ)) {
+            throw new \RuntimeException('Not allowed');
+         }
+         if ($supplier->getFromDB($value)) {
+            $default_email = $supplier->fields['email'];
+         }
       }
    } else {
       $user          = new User();
-      if (!empty($_POST["value"]) && !$user->can($_POST["value"], READ)) {
-         throw new \RuntimeException('Not allowed');
-      }
-      if ($user->getFromDB($_POST["value"])) {
-         $default_email = $user->getDefaultEmail();
-         $emails        = $user->getAllEmails();
+      if ($value > 0) {
+         if (!$user->can($value, READ)) {
+            throw new \RuntimeException('Not allowed');
+         }
+         if ($user->getFromDB($value)) {
+            $default_email = $user->getDefaultEmail();
+            $emails        = $user->getAllEmails();
+         }
       }
    }
 
