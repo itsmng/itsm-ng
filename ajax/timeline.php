@@ -79,7 +79,8 @@ if (($_POST['action'] ?? null) === 'change_task_state') {
         exit();
     }
 
-    $item = getItemForItemtype($_REQUEST['type']);
+    $itemtype = $_REQUEST['type'] === 'Solution' ? ITILSolution::class : $_REQUEST['type'];
+    $item = getItemForItemtype($itemtype);
     $denied = !$item;
     $parent = getItemForItemtype($_REQUEST['parenttype']);
     if (!$parent instanceof CommonITILObject) {
