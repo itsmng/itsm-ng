@@ -134,14 +134,23 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         // Handle context for the starting node
         $context_em = new \ImpactContext();
-        $context_data = $data['context'];
+        $context_data = $data['context'] ?? [];
 
         // Get id and type from node_id (e.g. Computer::4 -> [Computer, 4])
-        $start_node_details = explode(Impact::NODE_ID_DELIMITER, $context_data['node_id']);
+        $start_node_details = explode(Impact::NODE_ID_DELIMITER, (string) ($context_data['node_id'] ?? ''));
+        if (
+            count($start_node_details) !== 2
+            || empty($start_node_details[0])
+            || empty($start_node_details[1])
+        ) {
+            Toolbox::throwError(400, "Invalid context node");
+        }
 
         // Get impact_item for this node
-        $item = new $start_node_details[0]();
-        $item->getFromDB($start_node_details[1]);
+        $item = getItemForItemtype($start_node_details[0]);
+        if (!$item || !$item->getFromDB((int) $start_node_details[1])) {
+            Toolbox::throwError(400, "Context object doesn't exist");
+        }
         $impact_item = \ImpactItem::findForItem($item);
         $start_node_impact_item_id = $impact_item->fields['id'];
         $readonly = !$item->can($item->fields['id'], UPDATE);

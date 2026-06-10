@@ -79,11 +79,8 @@ if (($_POST['action'] ?? null) === 'change_task_state') {
         exit();
     }
 
-    $denied = false;
     $item = getItemForItemtype($_REQUEST['type']);
-    if (!$item || !$item->canView()) {
-        $denied = true;
-    }
+    $denied = !$item;
     $parent = getItemForItemtype($_REQUEST['parenttype']);
     if (!$parent instanceof CommonITILObject) {
         trigger_error(
@@ -93,16 +90,28 @@ if (($_POST['action'] ?? null) === 'change_task_state') {
         exit();
     }
 
+    $foreignKey = $parent->getForeignKeyField();
     if (
-        isset($_REQUEST[$parent->getForeignKeyField()])
-        && !$parent->can($_REQUEST[$parent->getForeignKeyField()], READ)
+        !isset($_REQUEST[$foreignKey])
+        || !$parent->can((int) $_REQUEST[$foreignKey], READ)
     ) {
         $denied = true;
     }
 
-    $id = isset($_REQUEST['id']) && (int)$_REQUEST['id'] > 0 ? $_REQUEST['id'] : null;
-    if (!$item || !$item->can($id, READ)) {
-        $denied = true;
+    $id = isset($_REQUEST['id']) ? (int) $_REQUEST['id'] : -1;
+    if (!$denied) {
+        if ($id > 0) {
+            $denied = !$item->can($id, READ);
+        } elseif ($item instanceof Document_Item) {
+            $denied = !$parent->canAddItem('Document');
+        } else {
+            $params = [
+               $foreignKey => $parent->getID(),
+               'itemtype'  => $parent->getType(),
+               'items_id'  => $parent->getID(),
+            ];
+            $denied = !$item->can(-1, CREATE, $params);
+        }
     }
 
     if ($denied) {

@@ -69,11 +69,6 @@ if (isset($_REQUEST['action'])) {
 
             if (!empty($input['mail_server'])) {
                 $input["host"] = Toolbox::constructMailServerConfig($input);
-                if (!isset($input['passwd'])) {
-                    throw new \RuntimeException(
-                        __('Password is required to list mail folders.')
-                    );
-                }
             }
 
             if (!isset($input['errors'])) {
