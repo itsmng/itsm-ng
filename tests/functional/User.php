@@ -611,6 +611,33 @@ class User extends \DbTestCase
            ->string['name']->isIdenticalTo($name);
     }
 
+    public function testChangeAuthMethodClearsLdapIdentityWhenSwitchingToInternal()
+    {
+        $this->login();
+
+        $user = $this->newTestedInstance;
+        $user_id = (int)$user->add([
+           'name'       => 'ldap_to_internal_' . mt_rand(),
+           'authtype'   => \Auth::LDAP,
+           'auths_id'   => 1,
+           'user_dn'    => 'uid=ldap_to_internal,dc=test,dc=glpi-project,dc=org',
+           'sync_field' => 'ldap-sync-value',
+           'date_sync'  => $_SESSION['glpi_currenttime'],
+        ]);
+        $this->integer($user_id)->isGreaterThan(0);
+
+        $this->boolean(\User::changeAuthMethod([$user_id], \Auth::DB_GLPI, 0))->isTrue();
+
+        $this->boolean($user->getFromDB($user_id))->isTrue();
+        $this->array($user->fields)
+           ->integer['authtype']->isIdenticalTo(\Auth::DB_GLPI)
+           ->integer['auths_id']->isIdenticalTo(0)
+           ->integer['is_deleted_ldap']->isIdenticalTo(0);
+        $this->variable($user->fields['user_dn'])->isNull();
+        $this->variable($user->fields['sync_field'])->isNull();
+        $this->variable($user->fields['date_sync'])->isNull();
+    }
+
     protected function rawNameProvider()
     {
         return [
