@@ -35,13 +35,6 @@ class ReservationCalendar {
         center: "title",
         right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
       },
-      buttonText: {
-        today: __("Today"),
-        month: __("Month"),
-        week: __("Week"),
-        day: __("Day"),
-        list: __("List"),
-      },
       events: {
         url: ITSMReservationCalendar.options.ajax_url,
         type: "POST",
