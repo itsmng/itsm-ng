@@ -208,7 +208,7 @@ class AppointmentTarget extends CommonDBTM
 
         if ($exists) {
             echo Html::css('public/lib/fullcalendar.css', ['media' => '']);
-            echo Html::script('public/lib/fullcalendar.js');
+            echo Html::fullCalendarScripts();
             echo Html::script('js/appointment.js');
 
             echo "<div class='appointment-target-admin__body'>";

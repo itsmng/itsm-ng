@@ -5699,6 +5699,31 @@ JAVASCRIPT;
 
 
     /**
+     * Returns FullCalendar script tags, including the current locale when available.
+     *
+     * @return string
+     */
+    public static function fullCalendarScripts()
+    {
+        global $CFG_GLPI;
+
+        $scripts = [self::script('public/lib/fullcalendar.js')];
+        if (isset($_SESSION['glpilanguage'])) {
+            foreach ([2, 3] as $loc) {
+                $filename = "public/lib/fullcalendar/locales/" .
+                   strtolower((string) $CFG_GLPI["languages"][$_SESSION['glpilanguage']][$loc]) . ".js";
+                if (file_exists(GLPI_ROOT . '/' . $filename)) {
+                    $scripts[] = self::script($filename);
+                    break;
+                }
+            }
+        }
+
+        return implode("\n", $scripts);
+    }
+
+
+    /**
      * Creates a link element for CSS stylesheets.
      *
      * @since 0.85

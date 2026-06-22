@@ -40,13 +40,6 @@ class AppointmentCalendar {
         center: "title",
         right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
       },
-      buttonText: {
-        today: __("Today"),
-        month: __("Month"),
-        week: __("Week"),
-        day: __("Day"),
-        list: __("List"),
-      },
       events: {
         url: ITSMAppointmentCalendar.options.ajax_url,
         type: "POST",
@@ -143,12 +136,6 @@ class AppointmentCalendar {
         left: "prev,next today",
         center: "title",
         right: "timeGridWeek,timeGridDay,listWeek",
-      },
-      buttonText: {
-        today: __("Today"),
-        week: __("Week"),
-        day: __("Day"),
-        list: __("List"),
       },
       events: {
         url: ITSMAppointmentCalendar.options.ajax_url,
