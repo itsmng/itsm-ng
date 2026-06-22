@@ -373,7 +373,7 @@ class Appointment extends CommonDBTM
         ];
 
         echo Html::css('public/lib/fullcalendar.css', ['media' => '']);
-        echo Html::script('public/lib/fullcalendar.js');
+        echo Html::fullCalendarScripts();
         echo Html::script('js/appointment.js', ['version' => ITSM_VERSION . '-appointment-search']);
 
         echo "<div class='appointment-calendar-shell'>";
