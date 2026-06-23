@@ -232,12 +232,13 @@ class AppointmentCalendar {
   openForm(params) {
     const dialog = $("<div class='appointment-calendar-dialog'></div>");
     const data = Object.assign({ action: "get_form" }, params || {});
+    const title = ITSMAppointmentCalendar.options.appointment_title || __("Appointment");
 
     dialog.dialog({
       modal: true,
       width: Math.min($(window).width() - 40, 760),
       maxHeight: $(window).height() - 80,
-      title: __("Appointment"),
+      title: title,
       open: function () {
         dialog.load(ITSMAppointmentCalendar.options.ajax_url, data, function () {
           ITSMAppointmentCalendar.bindForm(dialog);
@@ -302,12 +303,13 @@ class AppointmentCalendar {
   openUnavailabilityForm(params) {
     const dialog = $("<div class='appointment-calendar-dialog'></div>");
     const data = Object.assign({ action: "get_unavailability_form" }, params || {});
+    const title = ITSMAppointmentCalendar.options.unavailability_title || __("Unavailability");
 
     dialog.dialog({
       modal: true,
       width: Math.min($(window).width() - 40, 680),
       maxHeight: $(window).height() - 80,
-      title: __("Unavailability"),
+      title: title,
       open: function () {
         dialog.load(ITSMAppointmentCalendar.options.ajax_url, data, function () {
           ITSMAppointmentCalendar.bindUnavailabilityForm(dialog);
@@ -398,7 +400,7 @@ class AppointmentCalendar {
           $("<div></div>").html(response.html).dialog({
             modal: true,
             width: "auto",
-            title: __("Appointment"),
+            title: ITSMAppointmentCalendar.options.appointment_title || __("Appointment"),
           });
         }
       },
@@ -437,7 +439,7 @@ class AppointmentCalendar {
           $("<div></div>").html(response.html).dialog({
             modal: true,
             width: "auto",
-            title: __("Unavailability"),
+            title: ITSMAppointmentCalendar.options.unavailability_title || __("Unavailability"),
           });
         }
       },
