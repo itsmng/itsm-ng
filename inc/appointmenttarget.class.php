@@ -229,6 +229,8 @@ class AppointmentTarget extends CommonDBTM
                 'planning_begin' => $CFG_GLPI['planning_begin'] ?? '08:00:00',
                 'planning_end' => $CFG_GLPI['planning_end'] ?? '20:00:00',
                 'initial_date' => date('Y-m-d'),
+                'appointment_title' => Appointment::getTypeName(1),
+                'unavailability_title' => AppointmentUnavailability::getTypeName(1),
             ];
             echo Html::scriptBlock('$(function() { ITSMAppointmentCalendar.displayTargetManager(' . json_encode($options) . '); });');
         }

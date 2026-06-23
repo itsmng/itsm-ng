@@ -366,6 +366,8 @@ class Appointment extends CommonDBTM
            'can_book'              => $can_book,
            'initial_date'          => date('Y-m-d'),
            'title'                 => $title,
+           'appointment_title'     => self::getTypeName(1),
+           'unavailability_title'  => AppointmentUnavailability::getTypeName(1),
            'ajax_url'              => $CFG_GLPI['root_doc'] . '/ajax/v2/appointment.php',
            'all_url'               => $CFG_GLPI['root_doc'] . '/front/appointment.php',
            'planning_begin'         => $CFG_GLPI['planning_begin'] ?? '08:00:00',
