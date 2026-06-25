@@ -252,6 +252,9 @@ class Rack extends CommonDBTM
                        'type' => 'select',
                        'id' => 'dcrooms_dropdown_id',
                        'itemtype' => DCRoom::class,
+                       'condition' => [
+                          'entities_id' => $this->fields['entities_id'],
+                       ],
                        'value' => $this->fields['dcrooms_id'],
                        'hooks' => [
                           'change' => $loadDcPositionHook
