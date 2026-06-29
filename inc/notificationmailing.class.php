@@ -93,6 +93,15 @@ class NotificationMailing implements NotificationInterface
 
         $mmail = new GLPIMailer();
 
+        $smtp_test = null;
+        if ($CFG_GLPI["smtp_mode"] != MAIL_MAIL) {
+            $smtp_test = self::testSMTPConnection($mmail);
+            if (!$smtp_test['success']) {
+                Session::addMessageAfterRedirect($smtp_test['message'], false, ERROR);
+                return false;
+            }
+        }
+
         $mmail->AddCustomHeader("Auto-Submitted: auto-generated");
         // For exchange
         $mmail->AddCustomHeader("X-Auto-Response-Suppress: OOF, DR, NDR, RN, NRN");
@@ -112,16 +121,138 @@ class NotificationMailing implements NotificationInterface
         $mmail->Body    = $text;
 
         if (!$mmail->Send()) {
+            $lines = [__('Failed to send test email to administrator')];
+            if (!empty($mmail->ErrorInfo)) {
+                $lines[] = sprintf(__('PHPMailer error: %1$s'), $mmail->ErrorInfo);
+            }
+
             Session::addMessageAfterRedirect(
-                __('Failed to send test email to administrator'),
+                implode('<br/>', array_map(function ($line) {
+                    return nl2br(Html::entities_deep($line));
+                }, $lines)),
                 false,
                 ERROR
             );
             return false;
         } else {
-            Session::addMessageAfterRedirect(__('Test email sent to administrator'));
+            $message = __('Test email sent to administrator');
+            if ($smtp_test !== null) {
+                $message = implode('<br/>', array_map(function ($line) {
+                    return nl2br(Html::entities_deep($line));
+                }, [
+                    __('SMTP connection successful'),
+                    $message,
+                ]));
+            }
+            Session::addMessageAfterRedirect($message);
             return true;
         }
+    }
+
+
+    private static function testSMTPConnection(GLPIMailer $mailer)
+    {
+        $debug = [];
+        $previous_debug = $mailer->SMTPDebug;
+        $previous_debug_output = $mailer->Debugoutput;
+
+        $mailer->SMTPDebug = \PHPMailer\PHPMailer\SMTP::DEBUG_CONNECTION;
+        $mailer->Debugoutput = function ($message, $level) use (&$debug) {
+            $message = trim((string) $message);
+            if ($message !== '') {
+                $debug[] = sprintf('%1$s - %2$s', $level, $message);
+            }
+        };
+
+        $success = false;
+        $exception = null;
+
+        try {
+            $success = $mailer->smtpConnect($mailer->SMTPOptions);
+        } catch (\Throwable $e) {
+            $exception = $e;
+        }
+
+        $smtp_error = $mailer->getSMTPInstance()->getError();
+        $mailer->smtpClose();
+
+        $mailer->SMTPDebug = $previous_debug;
+        $mailer->Debugoutput = $previous_debug_output;
+
+        if ($success) {
+            return [
+                'success' => true,
+                'message' => '',
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => implode(
+                '<br/>',
+                array_map(
+                    function ($line) {
+                        return nl2br(Html::entities_deep($line));
+                    },
+                    self::getSMTPDiagnosticLines($mailer, $smtp_error, $exception, $debug)
+                )
+            ),
+        ];
+    }
+
+
+    private static function getSMTPDiagnosticLines(GLPIMailer $mailer, array $smtp_error, $exception, array $debug)
+    {
+        global $CFG_GLPI;
+
+        $security = __('None');
+        if ($CFG_GLPI['smtp_mode'] == MAIL_SMTPSSL) {
+            $security = 'SSL';
+        } elseif ($CFG_GLPI['smtp_mode'] == MAIL_SMTPTLS) {
+            $security = 'TLS';
+        }
+
+        $lines = [
+            __('SMTP connection failed'),
+            sprintf(__('SMTP server: %1$s:%2$s'), $CFG_GLPI['smtp_host'], $CFG_GLPI['smtp_port']),
+            sprintf(__('SMTP security: %1$s'), $security),
+            sprintf(__('Certificate check: %1$s'), $CFG_GLPI['smtp_check_certificate'] ? __('Yes') : __('No')),
+            sprintf(
+                __('SMTP authentication: %1$s'),
+                $CFG_GLPI['smtp_username'] !== '' ? sprintf(__('enabled for %1$s'), $CFG_GLPI['smtp_username']) : __('disabled')
+            ),
+        ];
+
+        if (!empty($mailer->ErrorInfo)) {
+            $lines[] = sprintf(__('PHPMailer error: %1$s'), $mailer->ErrorInfo);
+        }
+
+        if ($exception !== null) {
+            $lines[] = sprintf(__('Exception: %1$s'), $exception->getMessage());
+        }
+
+        if (!empty($smtp_error['error'])) {
+            $lines[] = sprintf(__('SMTP error: %1$s'), $smtp_error['error']);
+        }
+        if (!empty($smtp_error['detail'])) {
+            $lines[] = sprintf(__('SMTP detail: %1$s'), $smtp_error['detail']);
+        }
+        if (!empty($smtp_error['smtp_code'])) {
+            $lines[] = sprintf(__('SMTP code: %1$s'), $smtp_error['smtp_code']);
+        }
+        if (!empty($smtp_error['smtp_code_ex'])) {
+            $lines[] = sprintf(__('SMTP extended code: %1$s'), $smtp_error['smtp_code_ex']);
+        }
+
+        $debug = array_slice($debug, -20);
+        if (count($debug) > 0) {
+            $lines[] = __('Last SMTP debug lines:');
+            foreach ($debug as $debug_line) {
+                $lines[] = $debug_line;
+            }
+        }
+
+        return $lines;
     }
 
 
