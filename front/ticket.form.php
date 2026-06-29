@@ -156,7 +156,10 @@ if (isset($_POST["add"])) {
     }
     $track->redirectToList();
 } elseif (isset($_POST["restore"])) {
-    $track->check($_POST['id'], DELETE);
+    $track->getFromDB($_POST['id']);
+    if (!$track->canRequesterUpdateItem()) {
+        Html::displayRightError();
+    }
     if ($track->restore($_POST)) {
         Event::log(
             $_POST["id"],
