@@ -49,11 +49,7 @@ class Appointment extends CommonDBTM
             return false;
         }
 
-        return Session::haveRightsOr(self::$rightname, [READ, UPDATE, PURGE])
-            || (
-                isset($this->fields['users_id_requester'])
-                && (int)$this->fields['users_id_requester'] === (int)Session::getLoginUserID()
-            );
+        return $this->canViewAppointmentDetails();
     }
 
     public static function canUpdate()
@@ -63,10 +59,6 @@ class Appointment extends CommonDBTM
 
     public function canUpdateItem()
     {
-        if (Session::haveRight(self::$rightname, UPDATE)) {
-            return parent::canUpdateItem();
-        }
-
         return isset($this->fields['users_id_requester'])
             && (int)$this->fields['users_id_requester'] === (int)Session::getLoginUserID()
             && strtotime((string)$this->fields['begin']) > time();
@@ -74,12 +66,25 @@ class Appointment extends CommonDBTM
 
     public function canPurgeItem()
     {
-        return (Session::haveRightsOr(self::$rightname, [UPDATE, PURGE]) && parent::canPurgeItem())
-            || (
-                isset($this->fields['users_id_requester'])
-                && (int)$this->fields['users_id_requester'] === (int)Session::getLoginUserID()
-                && strtotime((string)$this->fields['begin']) > time()
-            );
+        return isset($this->fields['users_id_requester'])
+            && (int)$this->fields['users_id_requester'] === (int)Session::getLoginUserID()
+            && strtotime((string)$this->fields['begin']) > time();
+    }
+
+    public function canViewAppointmentDetails(?int $users_id = null): bool
+    {
+        $users_id = $users_id ?? (int)Session::getLoginUserID();
+        if ($users_id <= 0) {
+            return false;
+        }
+
+        return (
+            isset($this->fields['users_id_requester'])
+            && (int)$this->fields['users_id_requester'] === $users_id
+        ) || (
+            isset($this->fields['users_id'])
+            && (int)$this->fields['users_id'] === $users_id
+        );
     }
 
     public function prepareInputForAdd($input)
@@ -99,10 +104,16 @@ class Appointment extends CommonDBTM
             $input['users_id_requester'] = Session::getLoginUserID();
         }
 
+        if (!$this->validateBookingDates($input)) {
+            return false;
+        }
+
+        $input['_appointment_users_id_provided'] = array_key_exists('users_id', $input);
         $input = $this->completeTargetFields($input);
         if ($input === false || !$this->validateBookingInput($input)) {
             return false;
         }
+        unset($input['_appointment_users_id_provided']);
 
         if (empty($input['name'])) {
             $input['name'] = __('Appointment');
@@ -130,6 +141,11 @@ class Appointment extends CommonDBTM
         }
 
         $candidate = array_merge($this->fields, $input);
+        $candidate['_appointment_users_id_provided'] = array_key_exists('users_id', $input);
+        if (!$this->validateBookingDates($candidate)) {
+            return false;
+        }
+
         $candidate = $this->completeTargetFields($candidate);
         if ($candidate === false || !$this->validateBookingInput($candidate)) {
             return false;
@@ -137,6 +153,8 @@ class Appointment extends CommonDBTM
 
         $input['entities_id'] = $candidate['entities_id'];
         $input['is_recursive'] = $candidate['is_recursive'];
+        $input['appointmenttargets_id'] = $candidate['appointmenttargets_id'];
+        $input['users_id'] = $candidate['users_id'];
 
         return $input;
     }
@@ -157,13 +175,57 @@ class Appointment extends CommonDBTM
             return false;
         }
 
-        $input['entities_id'] = $target->fields['entities_id'];
-        $input['is_recursive'] = $target->fields['is_recursive'];
+        if ($target->fields['itemtype'] === 'Group') {
+            $target_fields = $this->resolveGroupTargetForBooking($target->fields, $input);
+            if ($target_fields === false) {
+                return false;
+            }
+        } else {
+            $target_fields = $target->fields;
+        }
+
+        if ($target_fields['itemtype'] !== 'User') {
+            Session::addMessageAfterRedirect(__('Appointment target is not available'), false, ERROR);
+            return false;
+        }
+
+        $input['appointmenttargets_id'] = (int)$target_fields['id'];
+        $input['users_id'] = (int)$target_fields['items_id'];
+        $input['entities_id'] = $target_fields['entities_id'];
+        $input['is_recursive'] = $target_fields['is_recursive'];
 
         return $input;
     }
 
-    private function validateBookingInput(array $input)
+    private function resolveGroupTargetForBooking(array $group_target, array $input)
+    {
+        $selected_users_id = !empty($input['_appointment_users_id_provided'])
+            ? (int)($input['users_id'] ?? 0)
+            : 0;
+        $member_targets = AppointmentTarget::getGroupMemberTargetRows($group_target);
+
+        if ($selected_users_id > 0) {
+            foreach ($member_targets as $member_target) {
+                if ((int)$member_target['items_id'] === $selected_users_id) {
+                    return $member_target;
+                }
+            }
+
+            Session::addMessageAfterRedirect(__('Appointment target is not available'), false, ERROR);
+            return false;
+        }
+
+        foreach ($member_targets as $member_target) {
+            if ($this->isBookableForTarget($member_target, $input)) {
+                return $member_target;
+            }
+        }
+
+        Session::addMessageAfterRedirect(__('No technician is available for the selected timeframe'), false, ERROR);
+        return false;
+    }
+
+    private function validateBookingDates(array $input)
     {
         if (
             empty($input['begin'])
@@ -174,6 +236,11 @@ class Appointment extends CommonDBTM
             return false;
         }
 
+        return true;
+    }
+
+    private function validateBookingInput(array $input)
+    {
         if (!AppointmentAvailability::isAvailable($input['appointmenttargets_id'], $input['begin'], $input['end'])) {
             Session::addMessageAfterRedirect(__('The selected timeframe is outside appointment availability'), false, ERROR);
             return false;
@@ -185,17 +252,28 @@ class Appointment extends CommonDBTM
         }
 
         $target = self::getTargetForAppointmentInput($input);
-        if ($target && $target['itemtype'] === 'User') {
-            $except = [];
-            if (!empty($input['id'])) {
-                $except[self::class] = [(int)$input['id']];
-            }
-            if (Planning::checkAlreadyPlanned($target['items_id'], $input['begin'], $input['end'], $except)) {
-                return false;
-            }
+        if ($target && $target['itemtype'] === 'User' && $this->isUserAlreadyPlanned($target, $input)) {
+            return false;
         }
 
         return true;
+    }
+
+    private function isBookableForTarget(array $target, array $input)
+    {
+        return AppointmentAvailability::isAvailable($target['id'], $input['begin'], $input['end'])
+            && !$this->isTargetBooked(array_merge($input, ['appointmenttargets_id' => $target['id']]))
+            && !$this->isUserAlreadyPlanned($target, $input);
+    }
+
+    private function isUserAlreadyPlanned(array $target, array $input)
+    {
+        $except = [];
+        if (!empty($input['id'])) {
+            $except[self::class] = [(int)$input['id']];
+        }
+
+        return Planning::checkAlreadyPlanned($target['items_id'], $input['begin'], $input['end'], $except);
     }
 
     private function isTargetBooked(array $input)
@@ -347,6 +425,7 @@ class Appointment extends CommonDBTM
         $appointmenttargets_id = (int)$appointmenttargets_id;
         $title = self::getTypeName(Session::getPluralNumber());
         $can_book = false;
+        $target = null;
         if ($appointmenttargets_id > 0) {
             $target = new AppointmentTarget();
             if (!$target->getFromDB($appointmenttargets_id)) {
@@ -369,21 +448,37 @@ class Appointment extends CommonDBTM
            'appointment_title'     => self::getTypeName(1),
            'unavailability_title'  => AppointmentUnavailability::getTypeName(1),
            'ajax_url'              => $CFG_GLPI['root_doc'] . '/ajax/v2/appointment.php',
+           'select2_url'           => $CFG_GLPI['root_doc'] . '/node_modules/select2/dist/js/select2.min.js',
            'all_url'               => $CFG_GLPI['root_doc'] . '/front/appointment.php',
            'planning_begin'         => $CFG_GLPI['planning_begin'] ?? '08:00:00',
            'planning_end'           => $CFG_GLPI['planning_end'] ?? '20:00:00',
+           'book_with_group_label'  => __('Book with group'),
+           'technician_placeholder' => __('Search a technician'),
         ];
 
         echo Html::css('public/lib/fullcalendar.css', ['media' => '']);
         echo Html::fullCalendarScripts();
-        echo Html::script('js/appointment.js', ['version' => ITSM_VERSION . '-appointment-search']);
+        echo Html::script('js/appointment.js', ['version' => ITSM_VERSION . '-appointment-target-search']);
 
         echo "<div class='appointment-calendar-shell'>";
-        echo "<div class='appointment-calendar-header'><h2>" . Html::clean($title) . "</h2>";
-        if ($appointmenttargets_id > 0) {
-            echo "<a href='" . $CFG_GLPI['root_doc'] . "/front/appointment.php'>" . __('Show all') . "</a>";
+        echo "<div class='appointment-calendar-header'>";
+        echo "<h2>" . Html::clean($title) . "</h2>";
+        echo "<div class='appointment-calendar-header__actions'>";
+        if ($appointmenttargets_id > 0 && $target !== null && $target->fields['itemtype'] === 'Group') {
+            echo "<div class='appointment-calendar-target-switcher'>";
+            echo "<label for='appointment-calendar-target-picker'>" . __('Technician') . "</label>";
+            echo "<select id='appointment-calendar-target-picker'>";
+            echo "<option value='" . (int)$appointmenttargets_id . "'>" . Html::clean(__('Book with group')) . "</option>";
+            echo "</select></div>";
         }
-        echo "</div><div id='appointment-calendar'></div></div>";
+        echo "</div>";
+        echo "</div>";
+        if ($appointmenttargets_id > 0) {
+            echo "<div class='appointment-calendar-show-all'>";
+            echo "<a href='" . $CFG_GLPI['root_doc'] . "/front/appointment.php'>" . __('Show all') . "</a>";
+            echo "</div>";
+        }
+        echo "<div id='appointment-calendar'></div></div>";
         echo Html::scriptBlock('$(function() { ITSMAppointmentCalendar.display(' . json_encode($options) . '); });');
     }
 
@@ -546,17 +641,18 @@ class Appointment extends CommonDBTM
             $where[] = [
                'OR' => [
                   self::getTable() . '.users_id_requester' => (int)$options['who'],
-                  [
-                     'AND' => [
-                        AppointmentTarget::getTable() . '.itemtype' => 'User',
-                        AppointmentTarget::getTable() . '.items_id' => (int)$options['who'],
-                     ],
-                  ],
+                  self::getTable() . '.users_id' => (int)$options['who'],
                ]
             ];
         } elseif (!empty($options['whogroup'])) {
-            $where[AppointmentTarget::getTable() . '.itemtype'] = 'Group';
-            $where[AppointmentTarget::getTable() . '.items_id'] = (int)$options['whogroup'];
+            $users = [];
+            foreach (Group_User::getGroupUsers((int)$options['whogroup']) as $user) {
+                $users[] = (int)$user['id'];
+            }
+            if (count($users) === 0) {
+                return $events;
+            }
+            $where[self::getTable() . '.users_id'] = $users;
         } else {
             return $events;
         }
@@ -564,8 +660,6 @@ class Appointment extends CommonDBTM
         $iterator = $DB->request([
            'SELECT' => [
               self::getTable() . '.*',
-              AppointmentTarget::getTable() . '.itemtype AS target_itemtype',
-              AppointmentTarget::getTable() . '.items_id AS target_items_id',
            ],
            'FROM' => self::getTable(),
            'INNER JOIN' => [
@@ -587,9 +681,9 @@ class Appointment extends CommonDBTM
                 continue;
             }
 
-            $users_id = (int)$row['users_id_requester'];
-            if ($row['target_itemtype'] === 'User') {
-                $users_id = (int)$row['target_items_id'];
+            $users_id = (int)($row['users_id'] ?? 0);
+            if ($users_id <= 0) {
+                $users_id = (int)$row['users_id_requester'];
             }
 
             $key = $row['begin'] . '$$Appointment$$' . $row['id'] . '$$' . ($options['who'] ?? 0) . '$$' . ($options['whogroup'] ?? 0);
