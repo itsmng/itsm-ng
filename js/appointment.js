@@ -7,6 +7,7 @@ class AppointmentCalendar {
 
   display(params) {
     ITSMAppointmentCalendar.options = params || {};
+    ITSMAppointmentCalendar.bindTargetPicker();
 
     const calendarEl = document.getElementById("appointment-calendar");
     if (!calendarEl || typeof FullCalendar === "undefined") {
@@ -46,7 +47,7 @@ class AppointmentCalendar {
         extraParams: function () {
           return {
             action: "get_events",
-            appointmenttargets_id: ITSMAppointmentCalendar.options.appointmenttargets_id,
+            appointmenttargets_id: ITSMAppointmentCalendar.getEffectiveAppointmentTargetId(),
           };
         },
       },
@@ -77,7 +78,7 @@ class AppointmentCalendar {
           return;
         }
         ITSMAppointmentCalendar.openForm({
-          appointmenttargets_id: ITSMAppointmentCalendar.options.appointmenttargets_id,
+          appointmenttargets_id: ITSMAppointmentCalendar.getEffectiveAppointmentTargetId(),
           begin: ITSMAppointmentCalendar.formatDate(info.start),
           end: ITSMAppointmentCalendar.formatDate(info.end),
         });
@@ -89,7 +90,7 @@ class AppointmentCalendar {
         if (props.type && props.type !== "appointment") {
           return;
         }
-        if (props.can_edit) {
+        if (props.can_view_details) {
           ITSMAppointmentCalendar.openForm({ id: info.event.id });
         }
       },
@@ -106,6 +107,68 @@ class AppointmentCalendar {
       ITSMAppointmentCalendar.calendar.setOption("locale", loadedLocales[0]);
     }
     ITSMAppointmentCalendar.calendar.render();
+    ITSMAppointmentCalendar.bindAppointmentEventClicks(calendarEl);
+  }
+
+  bindTargetPicker() {
+    const picker = $("#appointment-calendar-target-picker");
+    if (picker.length === 0) {
+      ITSMAppointmentCalendar.options.selected_appointmenttargets_id = ITSMAppointmentCalendar.options.appointmenttargets_id;
+      return;
+    }
+
+    ITSMAppointmentCalendar.options.selected_appointmenttargets_id = picker.val();
+    picker.off("change.appointmentTargetPicker");
+    picker.on("change.appointmentTargetPicker", function () {
+      ITSMAppointmentCalendar.options.selected_appointmenttargets_id = $(this).val();
+      ITSMAppointmentCalendar.refresh();
+    });
+
+    ITSMAppointmentCalendar.enhanceTargetPicker(picker);
+  }
+
+  getEffectiveAppointmentTargetId() {
+    return ITSMAppointmentCalendar.options.selected_appointmenttargets_id || ITSMAppointmentCalendar.options.appointmenttargets_id;
+  }
+
+  enhanceTargetPicker(picker) {
+    const initialize = function () {
+      if (typeof picker.select2 !== "function") {
+        return;
+      }
+
+      picker.select2({
+        theme: "bootstrap-5",
+        width: "resolve",
+        placeholder: ITSMAppointmentCalendar.options.technician_placeholder || __("Search a technician"),
+        allowClear: false,
+        ajax: {
+          url: ITSMAppointmentCalendar.options.ajax_url,
+          type: "POST",
+          dataType: "json",
+          delay: 250,
+          data: function (params) {
+            return {
+              action: "get_group_member_targets",
+              appointmenttargets_id: ITSMAppointmentCalendar.options.appointmenttargets_id,
+              searchText: params.term || "",
+              page: params.page || 1,
+              page_limit: 50,
+            };
+          },
+          processResults: function (data) {
+            return data || { results: [], pagination: { more: false } };
+          },
+        },
+      });
+    };
+
+    if (typeof picker.select2 === "function") {
+      initialize();
+      return;
+    }
+
+    $.getScript(ITSMAppointmentCalendar.options.select2_url, initialize);
   }
 
   displayTargetManager(params) {
@@ -177,7 +240,7 @@ class AppointmentCalendar {
         info.jsEvent.preventDefault();
         if (props.type === "unavailability" && props.can_edit) {
           ITSMAppointmentCalendar.openUnavailabilityForm({ id: props.unavailability_id });
-        } else if (props.type === "appointment" && props.can_edit) {
+        } else if (props.type === "appointment" && props.can_view_details) {
           ITSMAppointmentCalendar.openForm({ id: props.appointment_id });
         }
       },
@@ -194,6 +257,46 @@ class AppointmentCalendar {
       ITSMAppointmentCalendar.calendar.setOption("locale", loadedLocales[0]);
     }
     ITSMAppointmentCalendar.calendar.render();
+    ITSMAppointmentCalendar.bindAppointmentEventClicks(calendarEl);
+  }
+
+  bindAppointmentEventClicks(calendarEl) {
+    if (calendarEl._appointmentEventClickHandler) {
+      calendarEl.removeEventListener("click", calendarEl._appointmentEventClickHandler, true);
+    }
+
+    calendarEl._appointmentEventClickHandler = function (event) {
+      if (!(event.target instanceof Element)) {
+        return;
+      }
+
+      const target = event.target.closest("[data-appointment-id]");
+      if (!target || !calendarEl.contains(target)) {
+        return;
+      }
+
+      const appointmentId = String(target.getAttribute("data-appointment-id") || "");
+      if (appointmentId === "") {
+        return;
+      }
+
+      const calendarEvent = ITSMAppointmentCalendar.calendar
+        ? ITSMAppointmentCalendar.calendar.getEventById(appointmentId)
+        : null;
+      const props = calendarEvent ? calendarEvent.extendedProps || {} : {};
+      if (calendarEvent && props.type && props.type !== "appointment") {
+        return;
+      }
+      if (calendarEvent && props.can_view_details === false) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      ITSMAppointmentCalendar.openForm({ id: appointmentId });
+    };
+
+    calendarEl.addEventListener("click", calendarEl._appointmentEventClickHandler, true);
   }
 
   bindTargetSearch() {
@@ -499,6 +602,11 @@ class AppointmentCalendar {
       const props = event.extendedProps || {};
       if (props.type !== "availability" || Number(props.day) !== selectionDay) {
         continue;
+      }
+
+      if (ITSMAppointmentCalendar.eventCovers(start, end, event.start, event.end)) {
+        coveredByAvailability = true;
+        break;
       }
 
       const availabilityStart = ITSMAppointmentCalendar.timeToSeconds(props.begin);

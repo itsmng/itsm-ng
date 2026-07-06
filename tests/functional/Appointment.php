@@ -50,6 +50,18 @@ class Appointment extends \DbTestCase
         ]);
         $this->integer($groups_id)->isGreaterThan(0);
 
+        $user = new \User();
+        $users_id = (int) $user->add([
+            'name' => 'appointment-member-' . $this->getUniqueString(),
+            'authtype' => \Auth::DB_GLPI,
+        ]);
+        $this->integer($users_id)->isGreaterThan(0);
+        $group_user = new \Group_User();
+        $this->integer((int) $group_user->add([
+            'groups_id' => $groups_id,
+            'users_id' => $users_id,
+        ]))->isGreaterThan(0);
+
         $target = new \AppointmentTarget();
         $appointmenttargets_id = (int) $target->add([
             'itemtype' => 'Group',
@@ -60,21 +72,35 @@ class Appointment extends \DbTestCase
         ]);
         $this->integer($appointmenttargets_id)->isGreaterThan(0);
 
-        return [$target, $appointmenttargets_id, $groups_id];
+        $user_target = new \AppointmentTarget();
+        $user_target_id = (int) $user_target->add([
+            'itemtype' => 'User',
+            'items_id' => $users_id,
+            'entities_id' => $entities_id,
+            'is_recursive' => $is_recursive,
+            'is_active' => 1,
+        ]);
+        $this->integer($user_target_id)->isGreaterThan(0);
+
+        return [$target, $appointmenttargets_id, $groups_id, $user_target_id, $users_id];
     }
 
     private function createUserTarget(): array
     {
         $users_id = getItemByTypeName('User', 'normal', true);
         $target = new \AppointmentTarget();
-        $appointmenttargets_id = (int) $target->add([
-            'itemtype' => 'User',
-            'items_id' => $users_id,
-            'entities_id' => getItemByTypeName('Entity', '_test_root_entity', true),
-            'is_recursive' => 1,
-            'is_active' => 1,
-        ]);
-        $this->integer($appointmenttargets_id)->isGreaterThan(0);
+        if (!$target->getFromDBByItem('User', $users_id)) {
+            $appointmenttargets_id = (int) $target->add([
+                'itemtype' => 'User',
+                'items_id' => $users_id,
+                'entities_id' => getItemByTypeName('Entity', '_test_root_entity', true),
+                'is_recursive' => 1,
+                'is_active' => 1,
+            ]);
+            $this->integer($appointmenttargets_id)->isGreaterThan(0);
+        } else {
+            $appointmenttargets_id = (int) $target->fields['id'];
+        }
 
         return [$target, $appointmenttargets_id, $users_id];
     }
@@ -92,6 +118,19 @@ class Appointment extends \DbTestCase
         $this->integer($id)->isGreaterThan(0);
         $this->string($availability->fields['begin'])->isEqualTo('09:00:00');
         $this->string($availability->fields['end'])->isEqualTo('17:00:00');
+
+        $target = new \AppointmentTarget();
+        if ($target->getFromDB($appointmenttargets_id) && $target->fields['itemtype'] === 'Group') {
+            foreach (\AppointmentTarget::getGroupMemberTargetRows($target->fields) as $member_target) {
+                $member_availability = new \AppointmentAvailability();
+                $this->integer((int) $member_availability->add([
+                    'appointmenttargets_id' => $member_target['id'],
+                    'day' => $day,
+                    'begin' => '09:00',
+                    'end' => '17:00',
+                ]))->isGreaterThan(0);
+            }
+        }
 
         return $id;
     }
@@ -352,7 +391,7 @@ class Appointment extends \DbTestCase
     public function testAddCompletesTargetFields()
     {
         $this->login();
-        [, $appointmenttargets_id, $groups_id] = $this->createGroupTarget();
+        [, $appointmenttargets_id,, $user_target_id, $users_id] = $this->createGroupTarget();
         $this->addAvailability($appointmenttargets_id);
 
         $appointment = new \Appointment();
@@ -369,7 +408,8 @@ class Appointment extends \DbTestCase
         $this->integer($appointments_id)->isGreaterThan(0);
         $this->boolean($appointment->getFromDB($appointments_id))->isTrue();
         $this->array($appointment->fields)
-            ->integer['appointmenttargets_id']->isEqualTo($appointmenttargets_id)
+            ->integer['appointmenttargets_id']->isEqualTo($user_target_id)
+            ->integer['users_id']->isEqualTo($users_id)
             ->integer['users_id_requester']->isEqualTo(\Session::getLoginUserID())
             ->integer['entities_id']->isEqualTo(getItemByTypeName('Entity', '_test_root_entity', true))
             ->integer['is_recursive']->isEqualTo(1)
@@ -399,11 +439,11 @@ class Appointment extends \DbTestCase
     public function testUpdateCompletesTargetFieldsWhenRetargeting()
     {
         $this->login();
-        [, $first_target_id] = $this->createGroupTarget();
+        [, $first_target_id,, $first_user_target_id] = $this->createGroupTarget();
         $this->addAvailability($first_target_id);
 
         $child_entity_id = getItemByTypeName('Entity', '_test_child_1', true);
-        [, $second_target_id] = $this->createGroupTarget($child_entity_id, 0);
+        [, $second_target_id,, $second_user_target_id, $second_users_id] = $this->createGroupTarget($child_entity_id, 0);
         $this->addAvailability($second_target_id);
 
         $appointment = new \Appointment();
@@ -411,6 +451,7 @@ class Appointment extends \DbTestCase
         $this->integer($appointments_id)->isGreaterThan(0);
 
         $this->boolean($appointment->getFromDB($appointments_id))->isTrue();
+        $this->integer((int) $appointment->fields['appointmenttargets_id'])->isEqualTo($first_user_target_id);
         $this->integer((int) $appointment->fields['entities_id'])
             ->isEqualTo(getItemByTypeName('Entity', '_test_root_entity', true));
         $this->integer((int) $appointment->fields['is_recursive'])->isEqualTo(1);
@@ -423,7 +464,8 @@ class Appointment extends \DbTestCase
 
         $this->boolean($appointment->getFromDB($appointments_id))->isTrue();
         $this->array($appointment->fields)
-            ->integer['appointmenttargets_id']->isEqualTo($second_target_id)
+            ->integer['appointmenttargets_id']->isEqualTo($second_user_target_id)
+            ->integer['users_id']->isEqualTo($second_users_id)
             ->integer['entities_id']->isEqualTo($child_entity_id)
             ->integer['is_recursive']->isEqualTo(0);
     }
@@ -442,7 +484,7 @@ class Appointment extends \DbTestCase
         );
         $this->boolean($overlap_result === false)->isTrue();
         $this->hasSessionMessages(ERROR, [
-            'The selected appointment target is already booked for this timeframe',
+            'No technician is available for the selected timeframe',
         ]);
 
         $this->integer((int) $this->addAppointment(
@@ -490,6 +532,28 @@ class Appointment extends \DbTestCase
             $this->login();
             $this->setSelfServiceAppointmentRight($old_appointment_right);
         }
+    }
+
+    public function testAppointmentManagerCannotViewOrModifyOtherUserAppointmentDetails()
+    {
+        $this->login();
+        [, $appointmenttargets_id] = $this->createGroupTarget();
+        $this->addAvailability($appointmenttargets_id);
+
+        $normal_id = getItemByTypeName('User', 'normal', true);
+        $other_appointment_id = (int) $this->addAppointment(
+            $appointmenttargets_id,
+            '2030-01-07 10:00:00',
+            '2030-01-07 11:00:00',
+            ['users_id_requester' => $normal_id]
+        );
+        $this->integer($other_appointment_id)->isGreaterThan(0);
+
+        $other_appointment = new \Appointment();
+        $this->boolean($other_appointment->can($other_appointment_id, READ))->isFalse();
+        $this->boolean($other_appointment->can($other_appointment_id, UPDATE))->isFalse();
+        $this->boolean($other_appointment->getFromDB($other_appointment_id))->isTrue();
+        $this->boolean($other_appointment->canPurgeItem())->isFalse();
     }
 
     public function testPopulatePlanningReturnsAppointmentForRequesterAndGroup()
