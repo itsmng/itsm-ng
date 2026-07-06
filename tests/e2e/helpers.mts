@@ -57,6 +57,7 @@ export interface SeedAppointmentScheduleOptions {
 export interface SeedAppointmentScheduleResult {
   groupId: number;
   targetId: number;
+  memberTargetId: number;
   availabilityId: number;
   unavailabilityId: number;
   day: number;
@@ -354,6 +355,14 @@ export async function seedAppointmentSchedule(
       entities_id: 0,
       is_recursive: 0,
     });
+    const memberId = await createItem(request, session, 'User', {
+      name: `e2e-appointment-member-${suffix}`,
+      authtype: 1,
+    });
+    await createItem(request, session, 'Group_User', {
+      groups_id: groupId,
+      users_id: memberId,
+    });
     const targetId = await createItem(request, session, 'AppointmentTarget', {
       itemtype: 'Group',
       items_id: groupId,
@@ -363,8 +372,17 @@ export async function seedAppointmentSchedule(
       is_deleted: 0,
       comment: `E2E appointment target ${suffix}`,
     });
+    const memberTargetId = await createItem(request, session, 'AppointmentTarget', {
+      itemtype: 'User',
+      items_id: memberId,
+      entities_id: 0,
+      is_recursive: 0,
+      is_active: 1,
+      is_deleted: 0,
+      comment: `E2E appointment member target ${suffix}`,
+    });
     const availabilityId = await createItem(request, session, 'AppointmentAvailability', {
-      appointmenttargets_id: targetId,
+      appointmenttargets_id: memberTargetId,
       day,
       begin: options.availabilityBegin ?? '09:00:00',
       end: options.availabilityEnd ?? '17:00:00',
@@ -375,7 +393,7 @@ export async function seedAppointmentSchedule(
     selectedDate.setDate(today.getDate() + ((day - today.getDay() + 7) % 7));
     const date = selectedDate.toISOString().slice(0, 10);
     const unavailabilityId = await createItem(request, session, 'AppointmentUnavailability', {
-      appointmenttargets_id: targetId,
+      appointmenttargets_id: memberTargetId,
       plan: {
         begin: options.unavailabilityBegin ?? `${date} 13:00:00`,
         end: options.unavailabilityEnd ?? `${date} 14:00:00`,
@@ -387,11 +405,12 @@ export async function seedAppointmentSchedule(
     return {
       groupId,
       targetId,
+      memberTargetId,
       availabilityId,
       unavailabilityId,
       day,
       date,
-      userId: session.userId,
+      userId: memberId,
     };
   } finally {
     await closeApiSession(request, session);

@@ -265,6 +265,84 @@ class AppointmentTarget extends CommonDBTM
         return '';
     }
 
+    public static function getGroupMemberTargetRows(array $group_target)
+    {
+        return self::searchGroupMemberTargetRows($group_target)['rows'];
+    }
+
+    public static function searchGroupMemberTargetRows(array $group_target, string $search = '', int $page = 1, int $limit = 50)
+    {
+        global $DB;
+
+        if (($group_target['itemtype'] ?? '') !== 'Group') {
+            return ['rows' => [], 'total' => 0];
+        }
+
+        $page = max(1, $page);
+        $limit = max(1, min(100, $limit));
+        $start = ($page - 1) * $limit;
+        $where = [
+            self::getTable() . '.itemtype' => 'User',
+            self::getTable() . '.is_active' => 1,
+            self::getTable() . '.is_deleted' => 0,
+            Group_User::getTable() . '.groups_id' => (int)$group_target['items_id'],
+        ] + getEntitiesRestrictCriteria(self::getTable(), 'entities_id', $_SESSION['glpiactiveentities'], true);
+
+        if ($search !== '') {
+            $like = Search::makeTextSearchValue($search);
+            $where[] = [
+                'OR' => [
+                    User::getTable() . '.name' => ['LIKE', $like],
+                    User::getTable() . '.realname' => ['LIKE', $like],
+                    User::getTable() . '.firstname' => ['LIKE', $like],
+                ],
+            ];
+        }
+
+        $join = [
+            Group_User::getTable() => [
+                'ON' => [
+                    self::getTable() => 'items_id',
+                    Group_User::getTable() => 'users_id',
+                ],
+            ],
+            User::getTable() => [
+                'ON' => [
+                    Group_User::getTable() => 'users_id',
+                    User::getTable() => 'id',
+                ],
+            ],
+        ];
+
+        $count = $DB->request([
+            'SELECT' => ['COUNT' => self::getTable() . '.id AS cpt'],
+            'FROM' => self::getTable(),
+            'INNER JOIN' => $join,
+            'WHERE' => $where,
+        ])->next();
+
+        $rows = [];
+        $iterator = $DB->request([
+            'SELECT' => [self::getTable() . '.*'],
+            'FROM' => self::getTable(),
+            'INNER JOIN' => $join,
+            'WHERE' => $where,
+            'ORDERBY' => [User::getTable() . '.name', self::getTable() . '.id'],
+            'START' => $start,
+            'LIMIT' => $limit,
+        ]);
+        foreach ($iterator as $row) {
+            if (Session::haveAccessToEntity($row['entities_id'], $row['is_recursive'])) {
+                $rows[] = $row;
+            }
+        }
+
+        return [
+            'rows' => $rows,
+            'total' => (int)($count['cpt'] ?? 0),
+        ];
+    }
+
     public function rawSearchOptions()
     {
         $tab = [];

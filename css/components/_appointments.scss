@@ -48,6 +48,65 @@
   }
 }
 
+.appointment-calendar-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+  margin-bottom: 4px;
+
+  h2 {
+    flex: 1 1 280px;
+    margin: 0;
+    min-width: 0;
+  }
+}
+
+.appointment-calendar-header__actions {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px 14px;
+  min-width: 0;
+}
+
+.appointment-calendar-show-all {
+  margin-bottom: 12px;
+}
+
+.appointment-calendar-target-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 0;
+  min-width: 0;
+
+  label {
+    margin: 0;
+    font-weight: 700;
+    color: #343a46;
+  }
+
+  select {
+    width: min(300px, 100%);
+    min-height: 34px;
+  }
+
+  .select2,
+  .select2-container {
+    width: min(360px, 100%) !important;
+    min-width: min(280px, 100%);
+  }
+
+  .select2-selection__rendered {
+    min-width: 0;
+  }
+}
+
 .appointment-target-list__empty {
   display: none;
 }
@@ -288,6 +347,27 @@
 }
 
 @media (max-width: 900px) {
+
+  .appointment-calendar-header,
+  .appointment-calendar-header__actions,
+  .appointment-calendar-target-switcher {
+    justify-content: stretch;
+  }
+
+  .appointment-calendar-header__actions,
+  .appointment-calendar-target-switcher {
+    width: 100%;
+  }
+
+  .appointment-calendar-target-switcher {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+
+    .select2,
+    .select2-container {
+      width: 100% !important;
+    }
+  }
 
   .appointment-target-admin__header,
   .appointment-target-admin__actions {
