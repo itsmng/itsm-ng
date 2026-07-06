@@ -254,7 +254,8 @@ abstract class CommonITILObject extends CommonDBTM
 
     /**
      * Check if private ticket content must be hidden for current user.
-     * Applies only to tickets and requester-side access without support-side access.
+     * Applies only to tickets and requester-side access without assigned-side access
+     * or observer-side access with global ticket read rights.
      *
      * @return bool
      */
@@ -282,14 +283,21 @@ abstract class CommonITILObject extends CommonDBTM
             return false;
         }
 
-        $has_support_side_access = Session::haveRight(Ticket::$rightname, Ticket::READALL)
-            || $this->isUser(CommonITILActor::ASSIGN, $user_id)
+        $has_assigned_side_access = $this->isUser(CommonITILActor::ASSIGN, $user_id)
             || (
                 isset($_SESSION['glpigroups'])
                 && $this->haveAGroup(CommonITILActor::ASSIGN, $_SESSION['glpigroups'])
             );
+        $has_observer_side_access = Session::haveRight(Ticket::$rightname, Ticket::READALL)
+            && (
+                $this->isUser(CommonITILActor::OBSERVER, $user_id)
+                || (
+                    isset($_SESSION['glpigroups'])
+                    && $this->haveAGroup(CommonITILActor::OBSERVER, $_SESSION['glpigroups'])
+                )
+            );
 
-        return !$has_support_side_access;
+        return !($has_assigned_side_access || $has_observer_side_access);
     }
 
     /**
