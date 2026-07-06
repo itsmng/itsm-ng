@@ -36,7 +36,7 @@
  */
 
 // here we are going to try to unlock the given object
-// url should be of the form: 'http://.../.../unlockobject.php?unlock=1[&force=1]&id=xxxxxx'
+// url should be of the form: 'http://.../.../unlockobject.php?unlock=1&id=xxxxxx'
 // or url should be of the form 'http://.../.../unlockobject.php?requestunlock=1&id=xxxxxx'
 // to send notification to locker of object
 
@@ -52,18 +52,33 @@ if (isset($_POST['unlock']) && isset($_POST["id"])) {
     $ol = new ObjectLock();
     if (
         $ol->getFromDB($_POST["id"])
-        && $ol->deleteFromDB(1)
     ) {
-        if (isset($_POST['force'])) {
-            Log::history(
-                $ol->fields['items_id'],
-                $ol->fields['itemtype'],
-                [0, '', ''],
-                0,
-                Log::HISTORY_UNLOCK_ITEM
+        $itemtype = $ol->fields['itemtype'];
+        $locked_item = getItemForItemtype($itemtype);
+        $profile_rights = $_SESSION['glpilocksavedprofile'][strtolower((string) $itemtype)] ?? 0;
+        $has_unlock_right = ($locked_item instanceof CommonDBTM)
+            && (
+                ((int) $profile_rights & UNLOCK)
+                || Session::haveRight($itemtype::$rightname, UNLOCK)
             );
+        $is_owner = (int) $ol->fields['users_id'] === Session::getLoginUserID();
+
+        if (!$is_owner && !$has_unlock_right) {
+            Toolbox::throwError(400, 'Not allowed', 'string');
         }
-        $ret = 1;
+
+        if ($ol->deleteFromDB(1)) {
+            if (isset($_POST['force'])) {
+                Log::history(
+                    $ol->fields['items_id'],
+                    $ol->fields['itemtype'],
+                    [0, '', ''],
+                    0,
+                    Log::HISTORY_UNLOCK_ITEM
+                );
+            }
+            $ret = 1;
+        }
     }
 } elseif (
     isset($_POST['requestunlock'])

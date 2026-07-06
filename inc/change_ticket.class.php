@@ -268,54 +268,226 @@ class Change_Ticket extends CommonDBRelation
         }
 
         if ($canedit) {
-            echo "<div class='firstbloc'>";
-            echo "<form aria-label='Add a ticket' name='changeticket_form$rand' id='changeticket_form$rand' method='post'
-                action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
-
-            echo "<table class='tab_cadre_fixe' aria-label='Add a ticket'>";
-            echo "<tr class='tab_bg_2'><th colspan='2'>" . __('Add a ticket') . "</th></tr>";
-
-            echo "<tr class='tab_bg_2'><td>";
-            echo "<input type='hidden' name='changes_id' value='$ID'>";
-            $ticketDropdown = Ticket::dropdown([
-               'used'        => $used,
-               'entity'      => $change->getEntityID(),
-               'entity_sons' => $change->isRecursive(),
-               'displaywith' => ['id'],
-               'condition'   => Ticket::getOpenCriteria()
-            ]);
-            echo $ticketDropdown;
-            echo "</td><td class='center'>";
-            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
-            echo "</td></tr>";
-
-            echo "</table>";
-            Html::closeForm();
-            echo "</div>";
+            $form = [
+               'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+               'buttons' => [
+                  [
+                     'name' => 'add',
+                     'value' => _sx('button', 'Add'),
+                     'class' => 'btn btn-secondary',
+                  ]
+               ],
+               'content' => [
+                  __('Add a ticket') => [
+                     'visible' => true,
+                     'inputs' => [
+                        [
+                           'type' => 'hidden',
+                           'name' => 'changes_id',
+                           'value' => $ID,
+                        ],
+                        Ticket::getTypeName(1) => [
+                           'type' => 'select',
+                           'name' => 'tickets_id',
+                           'itemtype' => Ticket::class,
+                           'used' => $used,
+                           'condition' => Ticket::getOpenCriteria() + [
+                              'entities_id' => $change->getEntityID(),
+                              'is_recursive' => $change->isRecursive(),
+                           ],
+                           'col_lg' => 12,
+                           'col_md' => 12,
+                           'actions' => getItemActionButtons(['info'], Ticket::class),
+                        ],
+                     ]
+                  ]
+               ]
+            ];
+            renderTwigForm($form);
         }
 
-        echo "<div class='spaced'>";
+        $massiveActionContainerID = 'TableFor' . __CLASS__ . $rand;
         if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams
-               = ['num_displayed'    => min($_SESSION['glpilist_limit'], $numrows),
-                       'specific_actions' => ['purge' => _x('button', 'Delete permanently'),
-                                                    __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'solveticket'
-                                                           => __('Solve tickets'),
-                                                    __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_task'
-                                                           => __('Add a new task')],
-                        'container'        => 'mass' . __CLASS__ . $rand,
-                        'extraparams'      => ['changes_id' => $change->getID()],
-                        'width'            => 1000,
-                        'height'           => 500];
+            $massiveactionparams = [
+               'container'        => $massiveActionContainerID,
+               'display_arrow'    => false,
+               'specific_actions' => [
+                  'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
+                  __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'solveticket' => __('Solve tickets'),
+                  __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'add_task' => __('Add a new task'),
+               ],
+               'extraparams'      => ['changes_id' => $change->getID()],
+               'width'            => 1000,
+               'height'           => 500,
+            ];
             Html::showMassiveActions($massiveactionparams);
         }
 
-        echo "<table class='tab_cadre_fixehov' aria-label='Ticket Table'>";
-        echo "<tr class='noHover'><th colspan='12'>" . Ticket::getTypeName($numrows) . "</th>";
-        echo "</tr>";
+        $fields = [
+           __('Status'),
+           _n('Date', 'Dates', 1),
+           __('Last update'),
+           __('Priority'),
+           _n('Requester', 'Requesters', 1),
+           __('Assigned'),
+           __('Category'),
+           __('Title'),
+           __('Planification'),
+        ];
+        if (count($_SESSION["glpiactiveentities"]) > 1) {
+            $fields[] = Entity::getTypeName(Session::getPluralNumber());
+        }
+
+        $values = [];
+        $massive_action = [];
+        foreach ($tickets as $data) {
+            $ticket = new Ticket();
+            $ticket->getFromDB($data['id']);
+
+            $newValue = [];
+            $newValue[] = sprintf(__('%1$s: %2$s'), __('ID'), $data["id"])
+               . "&nbsp;" . CommonITILObject::getStatusIcon($data["status"]);
+
+            if ($data['status'] == CommonITILObject::CLOSED) {
+                $newValue[] = sprintf(__('Closed on %s'), '<br>') . Html::convDateTime($data['closedate']);
+            } elseif ($data['status'] == CommonITILObject::SOLVED) {
+                $newValue[] = sprintf(__('Solved on %s'), '<br>') . Html::convDateTime($data['solvedate']);
+            } elseif ($data['begin_waiting_date']) {
+                $newValue[] = sprintf(__('Put on hold on %s'), '<br>') . Html::convDateTime($data['begin_waiting_date']);
+            } elseif ($data['time_to_resolve']) {
+                $newValue[] = sprintf(__('%1$s: %2$s'), __('Time to resolve'), '<br>') . Html::convDateTime($data['time_to_resolve']);
+            } else {
+                $newValue[] = sprintf(__('Opened on %s'), '<br>') . Html::convDateTime($data['date']);
+            }
+
+            $newValue[] = Html::convDateTime($data["date_mod"]);
+            $newValue[] = CommonITILObject::getPriorityName($data["priority"]);
+
+            $cell = '';
+            foreach ($ticket->getUsers(CommonITILActor::REQUESTER) as $d) {
+                $userdata = getUserName($d["users_id"], 2);
+                $cell .= sprintf(
+                    __('%1$s %2$s'),
+                    "<span class='b'>" . $userdata['name'] . "</span>",
+                    Html::showToolTip(
+                        $userdata["comment"],
+                        [
+                           'link' => $userdata["link"],
+                           'display' => false,
+                        ]
+                    )
+                );
+                $cell .= "<br>";
+            }
+            foreach ($ticket->getGroups(CommonITILActor::REQUESTER) as $d) {
+                $cell .= Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
+                $cell .= "<br>";
+            }
+            $newValue[] = $cell;
+
+            $cell = '';
+            $entity = $ticket->getEntityID();
+            $anonymize_helpdesk = Entity::getUsedConfig('anonymize_support_agents', $entity)
+               && Session::getCurrentInterface() == 'helpdesk';
+            foreach ($ticket->getUsers(CommonITILActor::ASSIGN) as $d) {
+                if ($anonymize_helpdesk) {
+                    $cell .= __("Helpdesk");
+                } else {
+                    $userdata = getUserName($d["users_id"], 2);
+                    $cell .= sprintf(
+                        __('%1$s %2$s'),
+                        "<span class='b'>" . $userdata['name'] . "</span>",
+                        Html::showToolTip(
+                            $userdata["comment"],
+                            [
+                               'link' => $userdata["link"],
+                               'display' => false,
+                            ]
+                        )
+                    );
+                }
+                $cell .= "<br>";
+            }
+            foreach ($ticket->getGroups(CommonITILActor::ASSIGN) as $d) {
+                if ($anonymize_helpdesk) {
+                    $cell .= __("Helpdesk group");
+                } else {
+                    $cell .= Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
+                }
+                $cell .= "<br>";
+            }
+            foreach ($ticket->getSuppliers(CommonITILActor::ASSIGN) as $d) {
+                $cell .= Dropdown::getDropdownName("glpi_suppliers", $d["suppliers_id"]);
+                $cell .= "<br>";
+            }
+            $newValue[] = $cell;
+
+            $newValue[] = Dropdown::getDropdownName('glpi_itilcategories', $ticket->fields["itilcategories_id"]);
+            $newValue[] = ($ticket->canViewItem())
+               ? "<a id='" . $ticket->getType() . $ticket->fields["id"] . "$rand' href=\"" . $ticket->getLinkURL()
+                  . "\">" . $ticket->getName() . "</a>"
+               : $ticket->getName();
+
+            $cell = '';
+            $planned_infos = '';
+            $tasktype = $ticket->getType() . "Task";
+            $plan = new $tasktype();
+            $items = [];
+            $result = $DB->request([
+               'FROM'  => $plan->getTable(),
+               'WHERE' => [
+                  $ticket->getForeignKeyField() => $ticket->fields['id'],
+               ],
+            ]);
+            foreach ($result as $plan) {
+                if (isset($plan['begin']) && $plan['begin']) {
+                    $items[$plan['id']] = $plan['id'];
+                    $planned_infos .= sprintf(__('From %s') . '<br>', Html::convDateTime($plan['begin']));
+                    $planned_infos .= sprintf(__('To %s') . '<br>', Html::convDateTime($plan['end']));
+                    if ($plan['users_id_tech']) {
+                        $planned_infos .= sprintf(__('By %s') . '<br>', getUserName($plan['users_id_tech']));
+                    }
+                    $planned_infos .= "<br>";
+                }
+            }
+
+            $cell = count($items);
+            if ($cell) {
+                $cell = "<span class='pointer'
+                              id='" . $ticket->getType() . $ticket->fields["id"] . "planning$rand'>" .
+                                  $cell . '</span>';
+                $cell = sprintf(
+                    __('%1$s %2$s'),
+                    $cell,
+                    Html::showToolTip(
+                        $planned_infos,
+                        [
+                           'display' => false,
+                           'applyto' => $ticket->getType() .
+                              $ticket->fields["id"] .
+                              "planning" . $rand
+                        ]
+                    )
+                );
+            }
+            $newValue[] = $cell;
+
+            if (count($_SESSION["glpiactiveentities"]) > 1) {
+                $newValue[] = Dropdown::getDropdownName('glpi_entities', $data['entities_id']);
+            }
+
+            $values[] = $newValue;
+            $massive_action[] = sprintf('item[%s][%s]', self::class, $data['linkid']);
+        }
+
+        renderTwigTemplate('table.twig', [
+           'id' => $massiveActionContainerID,
+           'fields' => $fields,
+           'values' => $values,
+           'massive_action' => $massive_action,
+        ]);
+
         if ($numrows) {
-            Ticket::commonListHeader(Search::HTML_OUTPUT, 'mass' . __CLASS__ . $rand);
             Session::initNavigateListItems(
                 'Ticket',
                 //TRANS : %1$s is the itemtype name,
@@ -326,29 +498,10 @@ class Change_Ticket extends CommonDBRelation
                     $change->fields["name"]
                 )
             );
-
-            $i = 0;
             foreach ($tickets as $data) {
                 Session::addToNavigateListItems('Ticket', $data["id"]);
-                Ticket::showShort(
-                    $data['id'],
-                    [
-                      'row_num'                => $i,
-                      'type_for_massiveaction' => __CLASS__,
-                      'id_for_massiveaction'   => $data['linkid']
-                    ]
-                );
-                $i++;
             }
-            Ticket::commonListHeader(Search::HTML_OUTPUT, 'mass' . __CLASS__ . $rand);
         }
-        echo "</table>";
-        if ($canedit && $numrows) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        }
-        echo "</div>";
     }
 
 

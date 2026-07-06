@@ -54,8 +54,9 @@ if (
     && isset($_POST['items_id']) && ($_POST['items_id'] > 0)
 ) {
     // Security
-    if (!class_exists($_POST['itemtype'])) {
-        exit();
+    $item = getItemForItemtype($_POST['itemtype']);
+    if (!$item || !$item->can($_POST['items_id'], READ)) {
+        Toolbox::throwError(403, 'Not allowed', 'string');
     }
 
     $days   = 3;

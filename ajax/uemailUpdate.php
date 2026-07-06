@@ -40,9 +40,12 @@ if (strpos($_SERVER['PHP_SELF'], "uemailUpdate.php")) {
 
 Session::checkLoginUser();
 
+$value = (int) ($_POST["value"] ?? 0);
+$allow_email = !empty($_POST['allow_email']);
+
 if (
-    (isset($_POST['field']) && ($_POST["value"] > 0))
-    || (isset($_POST['allow_email']) && $_POST['allow_email'])
+    isset($_POST['field'])
+    && ($value > 0 || $allow_email)
 ) {
     if (preg_match('/[^a-z_\-0-9]/i', $_POST['field'])) {
         throw new \RuntimeException('Invalid field provided!');
@@ -52,14 +55,24 @@ if (
     $emails        = [];
     if (isset($_POST['typefield']) && ($_POST['typefield'] == 'supplier')) {
         $supplier = new Supplier();
-        if ($supplier->getFromDB($_POST["value"])) {
-            $default_email = $supplier->fields['email'];
+        if ($value > 0) {
+            if (!$supplier->can($value, READ)) {
+                throw new \RuntimeException('Not allowed');
+            }
+            if ($supplier->getFromDB($value)) {
+                $default_email = $supplier->fields['email'];
+            }
         }
     } else {
         $user          = new User();
-        if ($user->getFromDB($_POST["value"])) {
-            $default_email = $user->getDefaultEmail();
-            $emails        = $user->getAllEmails();
+        if ($value > 0) {
+            if (!$user->can($value, READ)) {
+                throw new \RuntimeException('Not allowed');
+            }
+            if ($user->getFromDB($value)) {
+                $default_email = $user->getDefaultEmail();
+                $emails        = $user->getAllEmails();
+            }
         }
     }
 
@@ -76,8 +89,7 @@ if (
     }
 
     if (
-        isset($_POST['alternative_email'][$user_index])
-        && !empty($_POST['alternative_email'][$user_index])
+        !empty($_POST['alternative_email'][$user_index])
         && empty($default_email)
     ) {
         if (NotificationMailing::isUserAddressValid($_POST['alternative_email'][$user_index])) {

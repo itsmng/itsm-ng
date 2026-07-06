@@ -71,10 +71,20 @@ if (isset($_POST["add"])) {
     }
     Html::back();
 } elseif (isset($_POST["delete"])) {
-    $item_ticket = new Item_Ticket();
-    $item_ticket->deleteByCriteria(['tickets_id' => $_POST['tickets_id'],
-                                    'items_id'   => $_POST['items_id'],
-                                    'itemtype'   => $_POST['itemtype']]);
+    $iterator = $DB->request([
+       'FROM'   => Item_Ticket::getTable(),
+       'WHERE'  => [
+          'tickets_id' => $_POST['tickets_id'],
+          'items_id'   => $_POST['items_id'],
+          'itemtype'   => $_POST['itemtype'],
+       ],
+    ]);
+
+    while ($data = $iterator->next()) {
+        if ($item->can($data['id'], DELETE)) {
+            $item->delete(['id' => $data['id']]);
+        }
+    }
     Html::back();
 }
 

@@ -43,6 +43,7 @@ class Planning extends \DbTestCase
 
         $input = [
            'name'  => "test event to clone",
+           'entities_id' => getItemByTypeName('Entity', '_test_root_entity', true),
            'plan'  => [
               'begin'     => date('Y-m-d H:i:s'),
               '_duration' => 2 * HOUR_TIMESTAMP

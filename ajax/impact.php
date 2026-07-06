@@ -48,18 +48,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
     // GET request: build the impact graph for a given asset
     case 'GET':
         $action = $_GET["action"]  ?? "";
+        $itemtype = $_GET["itemtype"] ?? "";
+
+        if (empty($itemtype)) {
+            Toolbox::throwError(400, "Missing itemtype");
+        }
+
+        $item = getItemForItemtype($itemtype);
+        if (!$item || !$item->canView()) {
+            Toolbox::throwError(403, "Not allowed");
+        }
 
         switch ($action) {
             case "search":
-                $itemtype = $_GET["itemtype"] ?? "";
                 $used     = $_GET["used"]     ?? "[]";
                 $filter   = $_GET["filter"]   ?? "";
                 $page     = $_GET["page"]     ?? 0;
-
-                // Check required params
-                if (empty($itemtype)) {
-                    Toolbox::throwError(400, "Missing itemtype");
-                }
 
                 // Execute search
                 $assets = Impact::searchAsset($itemtype, json_decode($used), $filter, $page);
@@ -68,22 +72,24 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
 
             case 'load':
-                $itemtype = $_GET["itemtype"]  ?? "";
                 $items_id = $_GET["items_id"]  ?? "";
                 $view     = $_GET["view"]      ?? "graph";
 
                 // Check required params
-                if (empty($itemtype) || empty($items_id)) {
-                    Toolbox::throwError(400, "Missing itemtype or items_id");
+                if (empty($items_id)) {
+                    Toolbox::throwError(400, "Missing items_id");
                 }
 
-                // Check that the the target asset exist
+                if (!$item->can($items_id, READ)) {
+                    Toolbox::throwError(403, "Not allowed");
+                }
+
+                // Check that the target asset exists
                 if (!Impact::assetExist($itemtype, $items_id)) {
                     Toolbox::throwError(400, "Object[class=$itemtype, id=$items_id] doesn't exist");
                 }
 
                 // Prepare graph
-                $item = new $itemtype();
                 $item->getFromDB($items_id);
                 $graph = Impact::buildGraph($item);
                 $params = Impact::prepareParams($item);
@@ -128,14 +134,23 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         // Handle context for the starting node
         $context_em = new \ImpactContext();
-        $context_data = $data['context'];
+        $context_data = $data['context'] ?? [];
 
         // Get id and type from node_id (e.g. Computer::4 -> [Computer, 4])
-        $start_node_details = explode(Impact::NODE_ID_DELIMITER, $context_data['node_id']);
+        $start_node_details = explode(Impact::NODE_ID_DELIMITER, (string) ($context_data['node_id'] ?? ''));
+        if (
+            count($start_node_details) !== 2
+            || empty($start_node_details[0])
+            || empty($start_node_details[1])
+        ) {
+            Toolbox::throwError(400, "Invalid context node");
+        }
 
         // Get impact_item for this node
-        $item = new $start_node_details[0]();
-        $item->getFromDB($start_node_details[1]);
+        $item = getItemForItemtype($start_node_details[0]);
+        if (!$item || !$item->getFromDB((int) $start_node_details[1])) {
+            Toolbox::throwError(400, "Context object doesn't exist");
+        }
         $impact_item = \ImpactItem::findForItem($item);
         $start_node_impact_item_id = $impact_item->fields['id'];
         $readonly = !$item->can($item->fields['id'], UPDATE);
