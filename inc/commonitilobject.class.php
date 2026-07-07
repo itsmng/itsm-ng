@@ -2164,9 +2164,9 @@ abstract class CommonITILObject extends CommonDBTM
 
     public function post_addItem()
     {
-      $this->addTasksFromTemplates();
-      $this->addFollowupFromTemplate();
-      $this->addSolutionFromTemplate();
+        $this->addTasksFromTemplates();
+        $this->addFollowupFromTemplate();
+        $this->addSolutionFromTemplate();
 
         // Add document if needed, without notification for file input
         $this->input = $this->addFiles($this->input, ['force_update' => true]);
@@ -2501,11 +2501,11 @@ abstract class CommonITILObject extends CommonDBTM
                 continue;
             }
 
-         $tasktemplate_content = Toolbox::addslashes_deep($tasktemplate->fields["content"]);
-         $itiltask->add([
-            'tasktemplates_id'            => $tasktemplates_id,
-            'title'                       => $tasktemplate->fields['title'] ?? '',
-            'content'                     => $tasktemplate_content,
+            $tasktemplate_content = Toolbox::addslashes_deep($tasktemplate->fields["content"]);
+            $itiltask->add([
+               'tasktemplates_id'            => $tasktemplates_id,
+               'title'                       => $tasktemplate->fields['title'] ?? '',
+               'content'                     => $tasktemplate_content,
                'taskcategories_id'           => $tasktemplate->fields['taskcategories_id'],
                'actiontime'                  => $tasktemplate->fields['actiontime'],
                'state'                       => $tasktemplate->fields['state'],

@@ -39,9 +39,12 @@
 function update213to220(): bool
 {
     /** @global Migration $migration */
-   global $DB, $migration;
+    global $DB, $migration;
 
-   if (!$DB->fieldExists('glpi_entities', 'lock_ticket_date')) {
+    $migration->displayTitle(sprintf(__('Update to %s'), '2.2.0'));
+    $migration->setVersion('2.2.0');
+
+    if (!$DB->fieldExists('glpi_entities', 'lock_ticket_date')) {
         $migration->addField(
             'glpi_entities',
             'lock_ticket_date',
@@ -55,7 +58,7 @@ function update213to220(): bool
         );
     }
 
-   if (!$DB->fieldExists('glpi_entities', 'requesters_private_ticket_content')) {
+    if (!$DB->fieldExists('glpi_entities', 'requesters_private_ticket_content')) {
         $migration->addField(
             'glpi_entities',
             'requesters_private_ticket_content',
@@ -66,10 +69,10 @@ function update213to220(): bool
                'update'    => 0,   // Not enabled for root entity
                'condition' => 'WHERE `id` = 0',
             ]
-      );
-   }
+        );
+    }
 
-   $migration->displayMessage("Add group restrictions for task and solution templates");
+    $migration->displayMessage("Add group restrictions for task and solution templates");
 
     $DB->queryOrDie(
         "CREATE TABLE IF NOT EXISTS `glpi_groups_tasktemplates` (
@@ -92,10 +95,10 @@ function update213to220(): bool
             UNIQUE KEY `unicity` (`solutiontemplates_id`,`groups_id`),
             KEY `groups_id` (`groups_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci",
-      $DB->error()
-   );
+        $DB->error()
+    );
 
-   $task_tables = [
+    $task_tables = [
         'glpi_tickettasks'  => 'tickets_id',
         'glpi_problemtasks' => 'problems_id',
         'glpi_changetasks'  => 'changes_id',
@@ -103,8 +106,8 @@ function update213to220(): bool
 
     foreach ($task_tables as $table => $after) {
         $migration->addField($table, 'title', 'string', ['after' => $after]);
-   }
-   $migration->addField('glpi_tasktemplates', 'title', 'string', ['after' => 'name']);
+    }
+    $migration->addField('glpi_tasktemplates', 'title', 'string', ['after' => 'name']);
 
     $migration->addField('glpi_queuednotifications', 'generated_attachments', 'text');
 
@@ -271,27 +274,35 @@ function update213to220(): bool
         }
     }
 
-   $migration->addRight('appointment', CREATE, [
-      'planning' => Planning::READMY
-   ]);
+    $migration->addRight('appointment', CREATE, [
+       'planning' => Planning::READMY
+    ]);
 
     $DB->updateOrDie(
-        'glpi_profilerights',
+        'glpi_profilerights AS appointment_right',
         [
-          'rights' => new QueryExpression($DB->quoteName('rights') . ' | ' . UPDATE),
+          'appointment_right.rights' => new QueryExpression(
+              $DB->quoteName('appointment_right.rights') . ' | ' . UPDATE
+          ),
         ],
         [
-          'name'        => 'appointment',
-          'profiles_id' => new QuerySubQuery([
-             'SELECT' => 'profiles_id',
-             'FROM'   => 'glpi_profilerights',
-             'WHERE'  => [
-                'name' => 'config',
-                new QueryExpression($DB->quoteName('rights') . ' & ' . (READ | UPDATE) . ' = ' . (READ | UPDATE)),
+          'appointment_right.name' => 'appointment',
+          'config_right.name'     => 'config',
+          new QueryExpression(
+              '(' . $DB->quoteName('config_right.rights') . ' & ' . (READ | UPDATE) . ') = ' . (READ | UPDATE)
+          ),
+        ],
+        '2.2.0 add appointment management rights',
+        [
+          'INNER JOIN' => [
+             'glpi_profilerights AS config_right' => [
+                'FKEY' => [
+                   'appointment_right' => 'profiles_id',
+                   'config_right'     => 'profiles_id',
+                ],
              ],
-          ]),
-        ],
-        '2.2.0 add appointment management rights'
+          ],
+        ]
     );
 
     $migration->executeMigration();

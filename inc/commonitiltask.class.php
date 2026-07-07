@@ -566,19 +566,19 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
             $input['is_private'] = 0;
         }
         if (
-         $input["_job"] instanceof Ticket
-         && $input["_job"]->shouldHidePrivateTicketContentFromCurrentUser()
-         && (int)$input['is_private'] === 1
-      ) {
-         $input['is_private'] = 0;
-      }
-      if (
-         isset($input['tasktemplates_id'])
-         && (int)$input['tasktemplates_id'] > 0
-         && !TaskTemplate::isVisibleForCurrentUser((int)$input['tasktemplates_id'])
-      ) {
-         $input['tasktemplates_id'] = 0;
-      }
+            $input["_job"] instanceof Ticket
+            && $input["_job"]->shouldHidePrivateTicketContentFromCurrentUser()
+            && (int)$input['is_private'] === 1
+        ) {
+            $input['is_private'] = 0;
+        }
+        if (
+            isset($input['tasktemplates_id'])
+            && (int)$input['tasktemplates_id'] > 0
+            && !TaskTemplate::isVisibleForCurrentUser((int)$input['tasktemplates_id'])
+        ) {
+            $input['tasktemplates_id'] = 0;
+        }
 
         $input['timeline_position'] = CommonITILObject::TIMELINE_LEFT;
         if (isset($input["users_id"])) {
@@ -1732,20 +1732,20 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'name' => $fkfield,
                        'value' => $this->fields[$fkfield],
                     ],
-                  $hide_private_for_requester ? [
-                     'type' => 'hidden',
-                     'name' => 'is_private',
-                     'value' => 0,
-                  ] : [],
-                  __('Title') => [
+                    $hide_private_for_requester ? [
+                       'type' => 'hidden',
+                       'name' => 'is_private',
+                       'value' => 0,
+                    ] : [],
+                    __('Title') => [
                        'type' => 'text',
                        'name' => 'title',
                        'id' => 'InputForTaskTitle',
                        'value' => $this->fields['title'] ?? '',
                        'placeholder' => $title_placeholder,
                        'col_lg' => 12,
-                     'col_md' => 12,
-                  ],
+                       'col_md' => 12,
+                    ],
                     '' => [
                        'type' => 'richtextarea',
                        'name' => 'content',
