@@ -279,22 +279,30 @@ function update213to220(): bool
     ]);
 
     $DB->updateOrDie(
-        'glpi_profilerights',
+        'glpi_profilerights AS appointment_right',
         [
-          'rights' => new QueryExpression($DB->quoteName('rights') . ' | ' . UPDATE),
+          'appointment_right.rights' => new QueryExpression(
+              $DB->quoteName('appointment_right.rights') . ' | ' . UPDATE
+          ),
         ],
         [
-          'name'        => 'appointment',
-          'profiles_id' => new QuerySubQuery([
-             'SELECT' => 'profiles_id',
-             'FROM'   => 'glpi_profilerights',
-             'WHERE'  => [
-                'name' => 'config',
-                new QueryExpression($DB->quoteName('rights') . ' & ' . (READ | UPDATE) . ' = ' . (READ | UPDATE)),
+          'appointment_right.name' => 'appointment',
+          'config_right.name'     => 'config',
+          new QueryExpression(
+              '(' . $DB->quoteName('config_right.rights') . ' & ' . (READ | UPDATE) . ') = ' . (READ | UPDATE)
+          ),
+        ],
+        '2.2.0 add appointment management rights',
+        [
+          'INNER JOIN' => [
+             'glpi_profilerights AS config_right' => [
+                'FKEY' => [
+                   'appointment_right' => 'profiles_id',
+                   'config_right'     => 'profiles_id',
+                ],
              ],
-          ]),
-        ],
-        '2.2.0 add appointment management rights'
+          ],
+        ]
     );
 
     $migration->executeMigration();
