@@ -33,7 +33,7 @@
 
 // Last version of GLPI only for plugin compatibility
 define('GLPI_VERSION', '9.5.13');
-define('ITSM_VERSION', '2.1.6');
+define('ITSM_VERSION', '2.2.0');
 if (substr(ITSM_VERSION, -4) === '-dev') {
     //for dev version
     define('ITSM_PREVER', str_replace('-dev', '', ITSM_VERSION));
@@ -43,7 +43,7 @@ if (substr(ITSM_VERSION, -4) === '-dev') {
     );
 } else {
     //for stable version
-    define("ITSM_SCHEMA_VERSION", '2.1.3');
+    define("ITSM_SCHEMA_VERSION", '2.2.0');
 }
 
 // Current version of ITSM-NG
@@ -387,7 +387,7 @@ $CFG_GLPI["notificationtemplates_types"]  = [
    'CartridgeItem', 'Change', 'ConsumableItem',
    'Contract', 'CronTask', 'DBConnection',
    'FieldUnicity', 'Infocom', 'MailCollector',
-   'ObjectLock', 'PlanningRecall', 'Problem',
+   'ObjectLock', 'PlanningRecall', 'Problem', 'Appointment',
    'Project', 'ProjectTask', 'Reservation',
    'SoftwareLicense', 'Ticket', 'User',
    'SavedSearch_Alert', 'Certificate',
@@ -428,7 +428,8 @@ $CFG_GLPI["rulecollections_types"]        = [
 // Items which can planned something
 $CFG_GLPI['planning_types']               = [
    'ChangeTask', 'ProblemTask', 'Reminder',
-   'TicketTask', 'ProjectTask', 'PlanningExternalEvent'
+   'TicketTask', 'ProjectTask', 'PlanningExternalEvent',
+   'Holiday', 'Appointment'
 ];
 $CFG_GLPI['planning_add_types']           = ['PlanningExternalEvent'];
 

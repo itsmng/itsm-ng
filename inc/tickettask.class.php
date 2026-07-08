@@ -91,6 +91,15 @@ class TicketTask extends CommonITILTask
             return false;
         }
 
+        $ticket = new Ticket();
+        if (
+            $ticket->getFromDB($this->fields['tickets_id'])
+            && (int)$this->fields['is_private'] === 1
+            && $ticket->shouldHidePrivateTicketContentFromCurrentUser()
+        ) {
+            return false;
+        }
+
         if (Session::haveRight(self::$rightname, parent::SEEPRIVATE)) {
             return true;
         }
@@ -173,6 +182,12 @@ class TicketTask extends CommonITILTask
         ) {
             return false;
         }
+        if (
+            (int)$this->fields['is_private'] === 1
+            && $ticket->shouldHidePrivateTicketContentFromCurrentUser()
+        ) {
+            return false;
+        }
 
         if (
             ($this->fields["users_id"] != Session::getLoginUserID())
@@ -196,6 +211,12 @@ class TicketTask extends CommonITILTask
         if (
             $ticket->getFromDB($this->fields['tickets_id'])
             && in_array($ticket->fields['status'], $ticket->getClosedStatusArray())
+        ) {
+            return false;
+        }
+        if (
+            (int)$this->fields['is_private'] === 1
+            && $ticket->shouldHidePrivateTicketContentFromCurrentUser()
         ) {
             return false;
         }

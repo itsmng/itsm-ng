@@ -295,6 +295,9 @@ class NotificationMailing implements NotificationInterface
         if (isset($options['documents'])) {
             $data['documents'] = $options['documents'];
         }
+        if (isset($options['generated_attachments'])) {
+            $data['generated_attachments'] = $options['generated_attachments'];
+        }
 
         $data['mode'] = Notification_NotificationTemplate::MODE_MAIL;
 

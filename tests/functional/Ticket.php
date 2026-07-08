@@ -2474,6 +2474,106 @@ class Ticket extends DbTestCase
         $this->boolean($ticket->isAlreadyTakenIntoAccount())->isTrue();
     }
 
+    public function testLockTicketDatePreventsUpdate()
+    {
+        $this->login();
+        $this->setEntity('Root entity', true);
+
+        $entity = new \Entity();
+        $this->boolean($entity->update([
+           'id' => 0,
+           'lock_ticket_date' => 1,
+        ]))->isTrue();
+
+        $ticket = new \Ticket();
+        $original_date = date('Y-m-d H:i:s', time() - DAY_TIMESTAMP);
+        $tickets_id = $ticket->add([
+           'name'        => 'test locked ticket date',
+           'content'     => 'test locked ticket date',
+           'entities_id' => 0,
+           'date'        => $original_date,
+        ]);
+        $this->integer((int)$tickets_id)->isGreaterThan(0);
+        $this->boolean($ticket->getFromDB($tickets_id))->isTrue();
+        $this->string($ticket->fields['date'])->isEqualTo($original_date);
+
+        $new_date = date('Y-m-d H:i:s', time());
+        $this->boolean(
+            $ticket->update([
+               'id'   => $tickets_id,
+               'name' => 'test locked ticket date updated',
+               'date' => $new_date,
+            ])
+        );
+        $this->boolean($ticket->getFromDB($tickets_id))->isTrue();
+        $this->string($ticket->fields['name'])->isEqualTo('test locked ticket date updated');
+        $this->string($ticket->fields['date'])->isEqualTo($original_date);
+
+        $this->array($_SESSION)->hasKey('MESSAGE_AFTER_REDIRECT');
+        $this->array($_SESSION['MESSAGE_AFTER_REDIRECT'])->hasKey(ERROR);
+        $this->array($_SESSION['MESSAGE_AFTER_REDIRECT'][ERROR])
+           ->contains('Ticket creation date modification is not allowed for this entity.');
+        \Html::displayMessageAfterRedirect();
+
+        $this->boolean($entity->update([
+           'id' => 0,
+           'lock_ticket_date' => 0,
+        ]))->isTrue();
+    }
+
+    public function testLockTicketDateDisablesOpeningDateFieldInForm()
+    {
+        $this->login();
+        $this->setEntity('Root entity', true);
+
+        $entity = new \Entity();
+        $this->boolean($entity->update([
+           'id' => 0,
+           'lock_ticket_date' => 1,
+        ]))->isTrue();
+        try {
+            $ticket = new \Ticket();
+            $tickets_id = $ticket->add([
+               'name'        => 'test locked ticket date form',
+               'content'     => 'test locked ticket date form',
+               'entities_id' => 0,
+            ]);
+            $this->integer((int) $tickets_id)->isGreaterThan(0);
+            $this->boolean($ticket->getFromDB($tickets_id))->isTrue();
+
+            $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+
+            ob_start();
+            $ticket->showForm($ticket->getID());
+            $output = ob_get_clean();
+
+            $this->string($output)->match(
+                '/<input[^>]*type="datetime-local"[^>]*disabled=""[^>]*aria-label="date"/'
+            );
+
+            $this->boolean($entity->update([
+               'id' => 0,
+               'lock_ticket_date' => 0,
+            ]))->isTrue();
+
+            $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+
+            ob_start();
+            $ticket->showForm($ticket->getID());
+            $output = ob_get_clean();
+
+            $this->integer((int) preg_match(
+                '/<input[^>]*type="datetime-local"[^>]*disabled=""[^>]*aria-label="date"/',
+                $output
+            ))->isEqualTo(0);
+        } finally {
+            $entity->update([
+               'id' => 0,
+               'lock_ticket_date' => 0,
+            ]);
+        }
+    }
+
     public function testCronCloseTicket()
     {
         global $DB;
@@ -3811,6 +3911,64 @@ class Ticket extends DbTestCase
         );
     }
 
+    protected function setSelfServiceTaskRight(int $right): void
+    {
+        global $DB;
+
+        $DB->update(
+            'glpi_profilerights',
+            [
+               'rights' => $right
+            ],
+            [
+               'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
+               'name'        => \TicketTask::$rightname,
+            ]
+        );
+    }
+
+    private function setSelfServiceTicketRight(int $right): void
+    {
+        global $DB;
+
+        $DB->update(
+            'glpi_profilerights',
+            [
+               'rights' => $right
+            ],
+            [
+               'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
+               'name'        => \Ticket::$rightname,
+            ]
+        );
+    }
+
+    private function getSelfServiceRightValue(string $rightname): int
+    {
+        global $DB;
+
+        $iterator = $DB->request([
+           'SELECT' => ['rights'],
+           'FROM'   => 'glpi_profilerights',
+           'WHERE'  => [
+              'profiles_id' => getItemByTypeName('Profile', 'Self-Service', true),
+              'name'        => $rightname,
+           ]
+        ]);
+
+        $row = $iterator->next();
+        return (int)$row['rights'];
+    }
+
+    private function setEntityRequesterPrivateTicketContentPolicy(int $entities_id, int $value): void
+    {
+        $entity = new \Entity();
+        $this->boolean($entity->update([
+           'id' => $entities_id,
+           'requesters_private_ticket_content' => $value,
+        ]))->isTrue();
+    }
+
     public function testCanAddFollowupsAsAssigned()
     {
         $post_only_id = getItemByTypeName('User', 'post-only', true);
@@ -4012,6 +4170,735 @@ class Ticket extends DbTestCase
         $this->login('post-only', 'postonly');
         $this->boolean((bool)$ticket_unassigned->canAddFollowups())->isFalse();
         $this->boolean((bool)$ticket_assigned->canAddFollowups())->isTrue();
+    }
+
+    public function testRequesterCannotViewOrSetPrivateTicketFollowupWhenPolicyEnabled()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_followup_right = $this->getSelfServiceRightValue(\ITILFollowup::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceFollowupRight(
+                \ITILFollowup::SEEPUBLIC
+                | \ITILFollowup::SEEPRIVATE
+                | \ITILFollowup::ADDMYTICKET
+                | \ITILFollowup::UPDATEMY
+            );
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'requester private followup policy',
+               'content'             => 'requester private followup policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            $private_fup = new \ITILFollowup();
+            $private_fup_id = (int)$private_fup->add([
+               'itemtype'   => \Ticket::class,
+               'items_id'   => $ticket_id,
+               'content'    => 'private followup',
+               'is_private' => 1,
+            ]);
+            $this->integer($private_fup_id)->isGreaterThan(0);
+
+            $public_fup = new \ITILFollowup();
+            $public_fup_id = (int)$public_fup->add([
+               'itemtype'   => \Ticket::class,
+               'items_id'   => $ticket_id,
+               'content'    => 'public followup',
+               'is_private' => 0,
+            ]);
+            $this->integer($public_fup_id)->isGreaterThan(0);
+
+            $this->login('post-only', 'postonly');
+
+            $private_fup = new \ITILFollowup();
+            $this->boolean($private_fup->getFromDB($private_fup_id))->isTrue();
+            $this->boolean((bool)$private_fup->canViewItem())->isFalse();
+
+            $public_fup = new \ITILFollowup();
+            $this->boolean($public_fup->getFromDB($public_fup_id))->isTrue();
+            $this->boolean((bool)$public_fup->canViewItem())->isTrue();
+
+            $requester_fup = new \ITILFollowup();
+            $requester_fup_id = (int)$requester_fup->add([
+               'itemtype'   => \Ticket::class,
+               'items_id'   => $ticket_id,
+               'content'    => 'requester followup add private',
+               'is_private' => 1,
+            ]);
+            $this->integer($requester_fup_id)->isGreaterThan(0);
+            $this->boolean($requester_fup->getFromDB($requester_fup_id))->isTrue();
+            $this->integer((int)$requester_fup->fields['is_private'])->isEqualTo(0);
+
+            $this->boolean($requester_fup->update([
+               'id'         => $requester_fup_id,
+               'content'    => 'requester followup update private',
+               'is_private' => 1,
+            ]))->isTrue();
+            $this->boolean($requester_fup->getFromDB($requester_fup_id))->isTrue();
+            $this->integer((int)$requester_fup->fields['is_private'])->isEqualTo(0);
+        } finally {
+            $this->login();
+            $this->setSelfServiceFollowupRight($old_followup_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testRequesterAssignedStillSeesPrivateTicketFollowupWhenPolicyEnabled()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_followup_right = $this->getSelfServiceRightValue(\ITILFollowup::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceFollowupRight(\ITILFollowup::SEEPUBLIC | \ITILFollowup::SEEPRIVATE);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'mixed requester+assign private followup policy',
+               'content'             => 'mixed requester+assign private followup policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+               '_users_id_assign'    => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            $fup = new \ITILFollowup();
+            $fup_id = (int)$fup->add([
+               'itemtype'   => \Ticket::class,
+               'items_id'   => $ticket_id,
+               'content'    => 'private followup for mixed actor',
+               'is_private' => 1,
+            ]);
+            $this->integer($fup_id)->isGreaterThan(0);
+
+            $this->login('post-only', 'postonly');
+            $fup = new \ITILFollowup();
+            $this->boolean($fup->getFromDB($fup_id))->isTrue();
+            $this->boolean((bool)$fup->canViewItem())->isTrue();
+        } finally {
+            $this->login();
+            $this->setSelfServiceFollowupRight($old_followup_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testRequesterWithReadAssignStillCannotViewPrivateTicketFollowupWhenNotAssigned()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_followup_right = $this->getSelfServiceRightValue(\ITILFollowup::$rightname);
+        $old_ticket_right = $this->getSelfServiceRightValue(\Ticket::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceTicketRight(\Ticket::READMY | \Ticket::READASSIGN);
+            $this->setSelfServiceFollowupRight(\ITILFollowup::SEEPUBLIC | \ITILFollowup::SEEPRIVATE);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'requester readassign private followup policy',
+               'content'             => 'requester readassign private followup policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            $fup = new \ITILFollowup();
+            $fup_id = (int)$fup->add([
+               'itemtype'   => \Ticket::class,
+               'items_id'   => $ticket_id,
+               'content'    => 'private followup for requester with readassign',
+               'is_private' => 1,
+            ]);
+            $this->integer($fup_id)->isGreaterThan(0);
+
+            $this->login('post-only', 'postonly');
+            $fup = new \ITILFollowup();
+            $this->boolean($fup->getFromDB($fup_id))->isTrue();
+            $this->boolean((bool)$fup->canViewItem())->isFalse();
+        } finally {
+            $this->login();
+            $this->setSelfServiceTicketRight($old_ticket_right);
+            $this->setSelfServiceFollowupRight($old_followup_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testRequesterWithReadAllStillCannotViewPrivateTicketFollowupWhenNotAssigned()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_followup_right = $this->getSelfServiceRightValue(\ITILFollowup::$rightname);
+        $old_ticket_right = $this->getSelfServiceRightValue(\Ticket::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceTicketRight(\Ticket::READALL);
+            $this->setSelfServiceFollowupRight(\ITILFollowup::SEEPUBLIC | \ITILFollowup::SEEPRIVATE);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'requester readall private followup policy',
+               'content'             => 'requester readall private followup policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            $fup = new \ITILFollowup();
+            $fup_id = (int)$fup->add([
+               'itemtype'   => \Ticket::class,
+               'items_id'   => $ticket_id,
+               'content'    => 'private followup for requester with readall',
+               'is_private' => 1,
+            ]);
+            $this->integer($fup_id)->isGreaterThan(0);
+
+            $this->login('post-only', 'postonly');
+            $fup = new \ITILFollowup();
+            $this->boolean($fup->getFromDB($fup_id))->isTrue();
+            $this->boolean((bool)$fup->canViewItem())->isFalse();
+        } finally {
+            $this->login();
+            $this->setSelfServiceTicketRight($old_ticket_right);
+            $this->setSelfServiceFollowupRight($old_followup_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testRequesterWithReadAllCanViewPrivateTicketFollowupWhenObserver()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_followup_right = $this->getSelfServiceRightValue(\ITILFollowup::$rightname);
+        $old_ticket_right = $this->getSelfServiceRightValue(\Ticket::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceTicketRight(\Ticket::READALL);
+            $this->setSelfServiceFollowupRight(\ITILFollowup::SEEPUBLIC | \ITILFollowup::SEEPRIVATE);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'requester readall observer private followup policy',
+               'content'             => 'requester readall observer private followup policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+               '_users_id_observer'  => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            $fup = new \ITILFollowup();
+            $fup_id = (int)$fup->add([
+               'itemtype'   => \Ticket::class,
+               'items_id'   => $ticket_id,
+               'content'    => 'private followup for requester observer with readall',
+               'is_private' => 1,
+            ]);
+            $this->integer($fup_id)->isGreaterThan(0);
+
+            $this->login('post-only', 'postonly');
+            $fup = new \ITILFollowup();
+            $this->boolean($fup->getFromDB($fup_id))->isTrue();
+            $this->boolean((bool)$fup->canViewItem())->isTrue();
+        } finally {
+            $this->login();
+            $this->setSelfServiceTicketRight($old_ticket_right);
+            $this->setSelfServiceFollowupRight($old_followup_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testRequesterFollowupFormHidesPrivateToggleWhenPolicyEnabled()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_followup_right = $this->getSelfServiceRightValue(\ITILFollowup::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceFollowupRight(
+                \ITILFollowup::SEEPUBLIC
+                | \ITILFollowup::SEEPRIVATE
+                | \ITILFollowup::ADDMYTICKET
+                | \ITILFollowup::UPDATEMY
+            );
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'requester followup form private policy',
+               'content'             => 'requester followup form private policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+            $this->boolean($ticket->getFromDB($ticket_id))->isTrue();
+
+            $this->login('post-only', 'postonly');
+            $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+
+            ob_start();
+            $followup = new \ITILFollowup();
+            $followup->showForm(0, ['item' => $ticket]);
+            $output = ob_get_clean();
+
+            $this->integer(preg_match('/id=["\']is_privateswitch["\']/', $output))->isEqualTo(0);
+        } finally {
+            $this->login();
+            $this->setSelfServiceFollowupRight($old_followup_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testRequesterCannotViewOrSetPrivateTicketTaskWhenPolicyEnabled()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_task_right = $this->getSelfServiceRightValue(\TicketTask::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceTaskRight(
+                \TicketTask::SEEPUBLIC
+                | \TicketTask::SEEPRIVATE
+                | \TicketTask::ADDALLITEM
+            );
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'requester private task policy',
+               'content'             => 'requester private task policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            $private_task = new \TicketTask();
+            $private_task_id = (int)$private_task->add([
+               'tickets_id'  => $ticket_id,
+               'content'     => 'private task',
+               'is_private'  => 1,
+            ]);
+            $this->integer($private_task_id)->isGreaterThan(0);
+
+            $public_task = new \TicketTask();
+            $public_task_id = (int)$public_task->add([
+               'tickets_id'  => $ticket_id,
+               'content'     => 'public task',
+               'is_private'  => 0,
+            ]);
+            $this->integer($public_task_id)->isGreaterThan(0);
+
+            $this->login('post-only', 'postonly');
+
+            $private_task = new \TicketTask();
+            $this->boolean($private_task->getFromDB($private_task_id))->isTrue();
+            $this->boolean((bool)$private_task->canViewItem())->isFalse();
+
+            $public_task = new \TicketTask();
+            $this->boolean($public_task->getFromDB($public_task_id))->isTrue();
+            $this->boolean((bool)$public_task->canViewItem())->isTrue();
+
+            $requester_task = new \TicketTask();
+            $requester_task_id = (int)$requester_task->add([
+               'tickets_id' => $ticket_id,
+               'content'    => 'requester task add private',
+               'is_private' => 1,
+            ]);
+            $this->integer($requester_task_id)->isGreaterThan(0);
+            $this->boolean($requester_task->getFromDB($requester_task_id))->isTrue();
+            $this->integer((int)$requester_task->fields['is_private'])->isEqualTo(0);
+
+            $this->boolean($requester_task->update([
+               'id'         => $requester_task_id,
+               'tickets_id' => $ticket_id,
+               'content'    => 'requester task update private',
+               'is_private' => 1,
+            ]))->isTrue();
+            $this->boolean($requester_task->getFromDB($requester_task_id))->isTrue();
+            $this->integer((int)$requester_task->fields['is_private'])->isEqualTo(0);
+        } finally {
+            $this->login();
+            $this->setSelfServiceTaskRight($old_task_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testRequesterTaskFormHidesPrivateToggleWhenPolicyEnabled()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_task_right = $this->getSelfServiceRightValue(\TicketTask::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceTaskRight(
+                \TicketTask::SEEPUBLIC
+                | \TicketTask::SEEPRIVATE
+                | \TicketTask::ADDALLITEM
+            );
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'requester task form private policy',
+               'content'             => 'requester task form private policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+            $this->boolean($ticket->getFromDB($ticket_id))->isTrue();
+
+            $this->login('post-only', 'postonly');
+            $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+
+            ob_start();
+            $task = new \TicketTask();
+            $task->getEmpty();
+            $task->showForm(0, ['parent' => $ticket]);
+            $output = ob_get_clean();
+
+            $this->integer(preg_match('/id=["\']checkboxForIsPrivate["\']/', $output))->isEqualTo(0);
+            $this->integer(
+                preg_match('/type=["\']hidden["\'][^>]*name=["\']is_private["\']|name=["\']is_private["\'][^>]*type=["\']hidden["\']/', $output)
+            )->isEqualTo(1);
+        } finally {
+            $this->login();
+            $this->setSelfServiceTaskRight($old_task_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testRequesterAssignedStillSeesPrivateTicketTaskWhenPolicyEnabled()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_task_right = $this->getSelfServiceRightValue(\TicketTask::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceTaskRight(\TicketTask::SEEPUBLIC | \TicketTask::SEEPRIVATE);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'mixed requester+assign private task policy',
+               'content'             => 'mixed requester+assign private task policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+               '_users_id_assign'    => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            $task = new \TicketTask();
+            $task_id = (int)$task->add([
+               'tickets_id' => $ticket_id,
+               'content'    => 'private task for mixed actor',
+               'is_private' => 1,
+            ]);
+            $this->integer($task_id)->isGreaterThan(0);
+
+            $this->login('post-only', 'postonly');
+            $task = new \TicketTask();
+            $this->boolean($task->getFromDB($task_id))->isTrue();
+            $this->boolean((bool)$task->canViewItem())->isTrue();
+        } finally {
+            $this->login();
+            $this->setSelfServiceTaskRight($old_task_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testTechnicianCanViewAndSetPrivateTicketFollowupWhenPolicyEnabled()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'technician private followup policy',
+               'content'             => 'technician private followup policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+            $this->boolean($ticket->getFromDB($ticket_id))->isTrue();
+
+            $private_fup = new \ITILFollowup();
+            $private_fup_id = (int)$private_fup->add([
+               'itemtype'   => \Ticket::class,
+               'items_id'   => $ticket_id,
+               'content'    => 'private followup for technician',
+               'is_private' => 1,
+            ]);
+            $this->integer($private_fup_id)->isGreaterThan(0);
+
+            $this->login('tech', 'tech');
+
+            $private_fup = new \ITILFollowup();
+            $this->boolean($private_fup->getFromDB($private_fup_id))->isTrue();
+            $this->boolean((bool)$private_fup->canViewItem())->isTrue();
+
+            $technician_fup = new \ITILFollowup();
+            $technician_fup_id = (int)$technician_fup->add([
+               'itemtype'   => \Ticket::class,
+               'items_id'   => $ticket_id,
+               'content'    => 'technician followup add private',
+               'is_private' => 1,
+            ]);
+            $this->integer($technician_fup_id)->isGreaterThan(0);
+            $this->boolean($technician_fup->getFromDB($technician_fup_id))->isTrue();
+            $this->integer((int)$technician_fup->fields['is_private'])->isEqualTo(1);
+
+            $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+
+            ob_start();
+            $followup = new \ITILFollowup();
+            $followup->showForm(0, ['item' => $ticket]);
+            $output = ob_get_clean();
+
+            $this->integer(preg_match('/id=["\']is_privateswitch["\']/', $output))->isEqualTo(1);
+        } finally {
+            $this->login();
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testTechnicianCanViewAndSetPrivateTicketTaskWhenPolicyEnabled()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'technician private task policy',
+               'content'             => 'technician private task policy',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+            $this->boolean($ticket->getFromDB($ticket_id))->isTrue();
+
+            $private_task = new \TicketTask();
+            $private_task_id = (int)$private_task->add([
+               'tickets_id'  => $ticket_id,
+               'content'     => 'private task for technician',
+               'is_private'  => 1,
+            ]);
+            $this->integer($private_task_id)->isGreaterThan(0);
+
+            $this->login('tech', 'tech');
+
+            $private_task = new \TicketTask();
+            $this->boolean($private_task->getFromDB($private_task_id))->isTrue();
+            $this->boolean((bool)$private_task->canViewItem())->isTrue();
+
+            $technician_task = new \TicketTask();
+            $technician_task_id = (int)$technician_task->add([
+               'tickets_id' => $ticket_id,
+               'content'    => 'technician task add private',
+               'is_private' => 1,
+            ]);
+            $this->integer($technician_task_id)->isGreaterThan(0);
+            $this->boolean($technician_task->getFromDB($technician_task_id))->isTrue();
+            $this->integer((int)$technician_task->fields['is_private'])->isEqualTo(1);
+
+            $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+
+            ob_start();
+            $task = new \TicketTask();
+            $task->getEmpty();
+            $task->showForm(0, ['parent' => $ticket]);
+            $output = ob_get_clean();
+
+            $this->integer(preg_match('/id=["\']checkboxForIsPrivate["\']/', $output))->isEqualTo(1);
+        } finally {
+            $this->login();
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testRequesterPolicyAppliesToAssociatedDocumentCriteria()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_followup_right = $this->getSelfServiceRightValue(\ITILFollowup::$rightname);
+        $old_task_right = $this->getSelfServiceRightValue(\TicketTask::$rightname);
+
+        $entity = new \Entity();
+        $this->boolean($entity->getFromDB($entity_id))->isTrue();
+        $old_policy_value = (int)$entity->fields['requesters_private_ticket_content'];
+
+        try {
+            $this->setSelfServiceFollowupRight(\ITILFollowup::SEEPUBLIC | \ITILFollowup::SEEPRIVATE);
+            $this->setSelfServiceTaskRight(\TicketTask::SEEPUBLIC | \TicketTask::SEEPRIVATE);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, 1);
+
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'requester policy document criteria',
+               'content'             => 'requester policy document criteria',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            $this->login('post-only', 'postonly');
+            $this->boolean($ticket->getFromDB($ticket_id))->isTrue();
+
+            $crit = $ticket->getAssociatedDocumentsCriteria(false);
+            $it = new \DBmysqlIterator(null);
+            $it->execute('glpi_tickets', $crit);
+            $sql = $it->getSql();
+
+            $this->string($sql)->contains("FROM `glpi_itilfollowups` WHERE");
+            $this->string($sql)->contains("`glpi_itilfollowups`.`items_id` = '" . $ticket_id . "' AND `is_private` = '0'");
+            $this->string($sql)->contains("FROM `glpi_tickettasks` WHERE");
+            $this->string($sql)->contains("`tickets_id` = '" . $ticket_id . "' AND `is_private` = '0'");
+        } finally {
+            $this->login();
+            $this->setSelfServiceFollowupRight($old_followup_right);
+            $this->setSelfServiceTaskRight($old_task_right);
+            $this->setEntityRequesterPrivateTicketContentPolicy($entity_id, $old_policy_value);
+        }
+    }
+
+    public function testShortListCountsUseDedicatedPrivateFollowupAndTaskRights()
+    {
+        $this->login();
+
+        $entity_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $post_only_id = getItemByTypeName('User', 'post-only', true);
+        $old_followup_right = $this->getSelfServiceRightValue(\ITILFollowup::$rightname);
+        $old_task_right = $this->getSelfServiceRightValue(\TicketTask::$rightname);
+
+        try {
+            $ticket = new \Ticket();
+            $ticket_id = (int)$ticket->add([
+               'name'                => 'private count rights split',
+               'content'             => 'private count rights split',
+               'entities_id'         => $entity_id,
+               '_users_id_requester' => $post_only_id,
+            ]);
+            $this->integer($ticket_id)->isGreaterThan(0);
+
+            foreach ([0, 1] as $is_private) {
+                $followup = new \ITILFollowup();
+                $this->integer((int)$followup->add([
+                   'itemtype'   => \Ticket::class,
+                   'items_id'   => $ticket_id,
+                   'content'    => 'counted followup ' . $is_private,
+                   'is_private' => $is_private,
+                ]))->isGreaterThan(0);
+
+                $task = new \TicketTask();
+                $this->integer((int)$task->add([
+                   'tickets_id'  => $ticket_id,
+                   'content'     => 'counted task ' . $is_private,
+                   'is_private'  => $is_private,
+                ]))->isGreaterThan(0);
+            }
+
+            $this->setSelfServiceFollowupRight(\ITILFollowup::SEEPUBLIC | \ITILFollowup::SEEPRIVATE);
+            $this->setSelfServiceTaskRight(\TicketTask::SEEPUBLIC);
+            $this->login('post-only', 'postonly');
+            ob_start();
+            \Ticket::showShort($ticket_id);
+            $output = ob_get_clean();
+            $this->string($output)->contains('2 - 1');
+
+            $this->login();
+            $this->setSelfServiceFollowupRight(\ITILFollowup::SEEPUBLIC);
+            $this->setSelfServiceTaskRight(\TicketTask::SEEPUBLIC | \TicketTask::SEEPRIVATE);
+            $this->login('post-only', 'postonly');
+            ob_start();
+            \Ticket::showShort($ticket_id);
+            $output = ob_get_clean();
+            $this->string($output)->contains('1 - 2');
+        } finally {
+            $this->login();
+            $this->setSelfServiceFollowupRight($old_followup_right);
+            $this->setSelfServiceTaskRight($old_task_right);
+        }
     }
 
     protected function convertContentForTicketProvider(): iterable

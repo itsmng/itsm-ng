@@ -25159,6 +25159,72 @@ msgstr "Personnalisé"
 msgid "Months"
 msgstr "Mois"
 
+#: inc/commontemplategrouprestriction.class.php
+msgid "Allowed groups"
+msgstr "Groupes autorisés"
+
+#: inc/commontemplategrouprestriction.class.php
+msgid "Add a group restriction"
+msgstr "Ajouter une restriction de groupe"
+
+#: front/group_tasktemplate.form.php
+#, php-format
+msgid "%s adds a group restriction on a task template"
+msgstr "%s ajoute une restriction de groupe sur un modèle de tâche"
+
+#: front/group_solutiontemplate.form.php
+#, php-format
+msgid "%s adds a group restriction on a solution template"
+msgstr "%s ajoute une restriction de groupe sur un modèle de solution"
+
+msgid "Appointment"
+msgid_plural "Appointments"
+msgstr[0] "Rendez-vous"
+msgstr[1] "Rendez-vous"
+
+msgid "Appointment target"
+msgid_plural "Appointment targets"
+msgstr[0] "Cible de rendez-vous"
+msgstr[1] "Cibles de rendez-vous"
+
+msgid "Appointment availability"
+msgid_plural "Appointment availabilities"
+msgstr[0] "Disponibilité de rendez-vous"
+msgstr[1] "Disponibilités de rendez-vous"
+
+msgid "Unavailability"
+msgid_plural "Unavailabilities"
+msgstr[0] "Indisponibilité"
+msgstr[1] "Indisponibilités"
+
+msgid "Appointment target is not available"
+msgstr "La cible de rendez-vous n'est pas disponible"
+
+msgid "The selected timeframe is outside appointment availability"
+msgstr "Le créneau sélectionné est en dehors des disponibilités de rendez-vous"
+
+msgid "The selected appointment target is already booked for this timeframe"
+msgstr "La cible de rendez-vous sélectionnée est déjà réservée pour ce créneau"
+
+msgid "Office hours"
+msgstr "Heures d'ouverture"
+
+msgid "Booked"
+msgstr "Réservé"
+
+#, php-format
+msgid "Booked: %s"
+msgstr "Réservé : %s"
+
+msgid "Prohibit appointments"
+msgstr "Interdire les rendez-vous"
+
+msgid "Existing appointments and availability rules will be removed."
+msgstr "Les rendez-vous existants et les règles de disponibilité seront supprimés."
+
+msgid "Authorize appointments"
+msgstr "Autoriser les rendez-vous"
+
 #~ msgid ""
 #~ "No time zones are available. Please check your database configuration."
 #~ msgstr ""

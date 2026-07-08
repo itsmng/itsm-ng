@@ -253,6 +253,105 @@ abstract class CommonITILObject extends CommonDBTM
     }
 
     /**
+     * Check if private ticket content must be hidden for current user.
+     * Applies only to tickets and requester-side access without assigned-side access
+     * or observer-side access with global ticket read rights.
+     *
+     * @return bool
+     */
+    public function shouldHidePrivateTicketContentFromCurrentUser(): bool
+    {
+        if (
+            !$this instanceof Ticket
+            || !isset($this->fields['entities_id'])
+            || (int)Entity::getUsedConfig('requesters_private_ticket_content', (int)$this->fields['entities_id']) !== 1
+        ) {
+            return false;
+        }
+
+        $user_id = Session::getLoginUserID();
+        if ((int)$user_id <= 0) {
+            return false;
+        }
+
+        $is_requester_side = $this->isUser(CommonITILActor::REQUESTER, $user_id)
+            || (
+                isset($_SESSION['glpigroups'])
+                && $this->haveAGroup(CommonITILActor::REQUESTER, $_SESSION['glpigroups'])
+            );
+        if (!$is_requester_side) {
+            return false;
+        }
+
+        $has_assigned_side_access = $this->isUser(CommonITILActor::ASSIGN, $user_id)
+            || (
+                isset($_SESSION['glpigroups'])
+                && $this->haveAGroup(CommonITILActor::ASSIGN, $_SESSION['glpigroups'])
+            );
+        $has_observer_side_access = Session::haveRight(Ticket::$rightname, Ticket::READALL)
+            && (
+                $this->isUser(CommonITILActor::OBSERVER, $user_id)
+                || (
+                    isset($_SESSION['glpigroups'])
+                    && $this->haveAGroup(CommonITILActor::OBSERVER, $_SESSION['glpigroups'])
+                )
+            );
+
+        return !($has_assigned_side_access || $has_observer_side_access);
+    }
+
+    /**
+     * Check if current user can access private ITIL content for current item.
+     * Combines private right and ticket requester-side policy.
+     *
+     * @param string $rightname
+     * @param int    $private_right
+     *
+     * @return bool
+     */
+    public function canCurrentUserAccessPrivateITILContent(string $rightname, int $private_right): bool
+    {
+        return Session::haveRight($rightname, $private_right)
+            && !$this->shouldHidePrivateTicketContentFromCurrentUser();
+    }
+
+    /**
+     * Get SQL criteria used to restrict private ITIL content visibility for current user.
+     *
+     * @param string $rightname
+     * @param int    $private_right
+     * @param bool   $allow_own_private
+     * @param int    $owner_users_id
+     *
+     * @return array
+     */
+    public function getCurrentUserPrivateITILContentRestriction(
+        string $rightname,
+        int $private_right,
+        bool $allow_own_private = true,
+        int $owner_users_id = 0
+    ): array {
+        if ($this->canCurrentUserAccessPrivateITILContent($rightname, $private_right)) {
+            return [];
+        }
+
+        if ($this->shouldHidePrivateTicketContentFromCurrentUser()) {
+            return ['is_private' => 0];
+        }
+
+        if ($allow_own_private) {
+            return [
+               'OR' => [
+                  'is_private' => 0,
+                  'users_id'   => $owner_users_id > 0 ? $owner_users_id : Session::getLoginUserID(),
+               ]
+            ];
+        }
+
+        return ['is_private' => 0];
+    }
+
+    /**
      * Check if the given users is a validator
      * @param int $users_id
      * @return bool
@@ -1271,20 +1370,9 @@ abstract class CommonITILObject extends CommonDBTM
             $this->input = $this->addFiles($this->input, $options);
         }
 
-        // Handle deferred solution addition (for solution templates added by rule)
-        if (isset($this->input['_solutiontemplates_id'])) {
-            $template = new SolutionTemplate();
-            if ($template->getFromDB($this->input['_solutiontemplates_id'])) {
-                $solution = new ITILSolution();
-                $solution->add([
-                   "itemtype" => static::getType(),
-                   "solutiontypes_id" => $template->fields['solutiontypes_id'],
-                   "content" => Toolbox::addslashes_deep($template->fields['content']),
-                   "status" => CommonITILValidation::WAITING,
-                   "items_id" => $this->fields['id']
-                ]);
-            }
-        }
+        $this->addSolutionFromTemplate();
+        $this->addTasksFromTemplates();
+        $this->addFollowupFromTemplate();
     }
 
 
@@ -2076,49 +2164,9 @@ abstract class CommonITILObject extends CommonDBTM
 
     public function post_addItem()
     {
-
-        // Add tasks in tasktemplates if defined in itiltemplate
-        if (
-            isset($this->input['_tasktemplates_id'])
-            && is_array($this->input['_tasktemplates_id'])
-            && count($this->input['_tasktemplates_id'])
-        ) {
-            $tasktemplate = new TaskTemplate();
-            $itiltask_class = $this->getType() . 'Task';
-            $itiltask   = new $itiltask_class();
-            foreach ($this->input['_tasktemplates_id'] as $tasktemplates_id) {
-                $tasktemplate->getFromDB($tasktemplates_id);
-                $tasktemplate_content = Toolbox::addslashes_deep($tasktemplate->fields["content"]);
-                $itiltask->add([
-                   'tasktemplates_id'            => $tasktemplates_id,
-                   'content'                     => $tasktemplate_content,
-                   'taskcategories_id'           => $tasktemplate->fields['taskcategories_id'],
-                   'actiontime'                  => $tasktemplate->fields['actiontime'],
-                   'state'                       => $tasktemplate->fields['state'],
-                   $this->getForeignKeyField()   => $this->fields['id'],
-                   'date'                        => $this->fields['date'],
-                   'is_private'                  => $tasktemplate->fields['is_private'],
-                   'users_id_tech'               => $tasktemplate->fields['users_id_tech'],
-                   'groups_id_tech'              => $tasktemplate->fields['groups_id_tech'],
-                   '_disablenotif'               => true
-                ]);
-            }
-        }
-
-        // Handle deferred solution addition (for solution templates added by rule)
-        if (isset($this->input['_solutiontemplates_id'])) {
-            $template = new SolutionTemplate();
-            if ($template->getFromDB($this->input['_solutiontemplates_id'])) {
-                $solution = new ITILSolution();
-                $solution->add([
-                   "itemtype" => static::getType(),
-                   "solutiontypes_id" => $template->fields['solutiontypes_id'],
-                   "content" => Toolbox::addslashes_deep($template->fields['content']),
-                   "status" => CommonITILValidation::WAITING,
-                   "items_id" => $this->fields['id']
-                ]);
-            }
-        }
+        $this->addTasksFromTemplates();
+        $this->addFollowupFromTemplate();
+        $this->addSolutionFromTemplate();
 
         // Add document if needed, without notification for file input
         $this->input = $this->addFiles($this->input, ['force_update' => true]);
@@ -2410,6 +2458,87 @@ abstract class CommonITILObject extends CommonDBTM
 
         // Additional actors
         $this->addAdditionalActors($this->input);
+    }
+
+    private function addSolutionFromTemplate(): void
+    {
+        if (!isset($this->input['_solutiontemplates_id'])) {
+            return;
+        }
+
+        $template = new SolutionTemplate();
+        if (!$template->getFromDB($this->input['_solutiontemplates_id'])) {
+            return;
+        }
+
+        $solution = new ITILSolution();
+        $solution->add([
+           "itemtype" => static::getType(),
+           "solutiontypes_id" => $template->fields['solutiontypes_id'],
+           "content" => Toolbox::addslashes_deep($template->fields['content']),
+           "status" => CommonITILValidation::WAITING,
+           "items_id" => $this->fields['id']
+        ]);
+    }
+
+    private function addTasksFromTemplates(): void
+    {
+        // Add tasks from templates if defined in ITIL template or ticket rules.
+        if (
+            !isset($this->input['_tasktemplates_id'])
+            || !is_array($this->input['_tasktemplates_id'])
+            || !count($this->input['_tasktemplates_id'])
+        ) {
+            return;
+        }
+
+        $tasktemplate = new TaskTemplate();
+        $itiltask_class = $this->getType() . 'Task';
+        $itiltask = new $itiltask_class();
+
+        foreach ($this->input['_tasktemplates_id'] as $tasktemplates_id) {
+            if (!$tasktemplate->getFromDB($tasktemplates_id)) {
+                continue;
+            }
+
+            $tasktemplate_content = Toolbox::addslashes_deep($tasktemplate->fields["content"]);
+            $itiltask->add([
+               'tasktemplates_id'            => $tasktemplates_id,
+               'title'                       => $tasktemplate->fields['title'] ?? '',
+               'content'                     => $tasktemplate_content,
+               'taskcategories_id'           => $tasktemplate->fields['taskcategories_id'],
+               'actiontime'                  => $tasktemplate->fields['actiontime'],
+               'state'                       => $tasktemplate->fields['state'],
+               $this->getForeignKeyField()   => $this->fields['id'],
+               'date'                        => $this->fields['date'],
+               'is_private'                  => $tasktemplate->fields['is_private'],
+               'users_id_tech'               => $tasktemplate->fields['users_id_tech'],
+               'groups_id_tech'              => $tasktemplate->fields['groups_id_tech'],
+               '_disablenotif'               => true
+            ]);
+        }
+    }
+
+    private function addFollowupFromTemplate(): void
+    {
+        if (!isset($this->input['_itilfollowuptemplates_id'])) {
+            return;
+        }
+
+        $template = new ITILFollowupTemplate();
+        if (!$template->getFromDB($this->input['_itilfollowuptemplates_id'])) {
+            return;
+        }
+
+        $followup = new ITILFollowup();
+        $followup->add([
+           'itemtype'        => static::getType(),
+           'items_id'        => $this->fields['id'],
+           'content'         => Toolbox::addslashes_deep($template->fields['content']),
+           'requesttypes_id' => $template->fields['requesttypes_id'],
+           'is_private'      => $template->fields['is_private'],
+           '_disablenotif'   => true
+        ]);
     }
 
     /**
@@ -7365,7 +7494,6 @@ abstract class CommonITILObject extends CommonDBTM
 
         $candelete   = static::canDelete();
         $canupdate   = Session::haveRight(static::$rightname, UPDATE);
-        $showprivate = Session::haveRight('followup', ITILFollowup::SEEPRIVATE);
         $align       = "class='left'";
         $align_desc  = "class='left";
 
@@ -7597,13 +7725,24 @@ abstract class CommonITILObject extends CommonDBTM
                 ) {
                     $eigth_column .= ITILFollowup::showShortForITILObject($item->fields["id"], static::class);
                 } else {
+                    $task_class = $item->getType() . 'Task';
                     $eigth_column  = sprintf(
                         __('%1$s (%2$s)'),
                         $eigth_column,
                         sprintf(
                             __('%1$s - %2$s'),
-                            $item->numberOfFollowups($showprivate),
-                            $item->numberOfTasks($showprivate)
+                            $item->numberOfFollowups(
+                                $item->canCurrentUserAccessPrivateITILContent(
+                                    ITILFollowup::$rightname,
+                                    ITILFollowup::SEEPRIVATE
+                                )
+                            ),
+                            $item->numberOfTasks(
+                                $item->canCurrentUserAccessPrivateITILContent(
+                                    $task_class::$rightname,
+                                    CommonITILTask::SEEPRIVATE
+                                )
+                            )
                         )
                     );
                 }
@@ -7985,7 +8124,7 @@ abstract class CommonITILObject extends CommonDBTM
                   '$foreignKey': " . $this->fields['id'] . "
                 })
                 .done(function(response) {
-                  $(target).removeClass('state_1 state_2')
+                  $(target).removeClass('state_1 state_2 state_3')
                            .addClass('state_'+response.state)
                            .attr('data-state', response.state)
                            .attr('title', response.label);
@@ -8201,7 +8340,8 @@ abstract class CommonITILObject extends CommonDBTM
             if ($total_tasks > 0) {
                 $states = [Planning::INFO => __('Information tasks: %s %%'),
                            Planning::TODO => __('Todo tasks: %s %%'),
-                           Planning::DONE => __('Done tasks: %s %% ')];
+                           Planning::DONE => __('Done tasks: %s %% '),
+                           Planning::CANCELLED => __('Cancelled tasks: %s %% ')];
                 echo "<h3 style='font-family: $font;'>";
                 foreach ($states as $state => $string) {
                     $criteria = [$foreignKey => $this->fields['id'],
@@ -8257,11 +8397,22 @@ abstract class CommonITILObject extends CommonDBTM
 
         //checks rights
         $restrict_fup = $restrict_task = [];
-        if (!Session::haveRight("followup", ITILFollowup::SEEPRIVATE)) {
+        $must_hide_private_ticket_content = $this->shouldHidePrivateTicketContentFromCurrentUser();
+        $can_view_private_followups = $this->canCurrentUserAccessPrivateITILContent(
+            ITILFollowup::$rightname,
+            ITILFollowup::SEEPRIVATE
+        );
+        $can_view_private_tasks = $this->canCurrentUserAccessPrivateITILContent(
+            $task_obj::$rightname,
+            CommonITILTask::SEEPRIVATE
+        );
+        if ($must_hide_private_ticket_content) {
+            $restrict_fup = ['is_private' => 0];
+        } elseif (!$can_view_private_followups) {
             $restrict_fup = [
                'OR' => [
-                  'is_private'   => 0,
-                  'users_id'     => Session::getLoginUserID()
+                  'is_private' => 0,
+                  'users_id'   => Session::getLoginUserID()
                ]
             ];
         }
@@ -8269,15 +8420,19 @@ abstract class CommonITILObject extends CommonDBTM
         $restrict_fup['itemtype'] = static::getType();
         $restrict_fup['items_id'] = $this->getID();
 
-        if ($task_obj->maybePrivate() && !Session::haveRight("task", CommonITILTask::SEEPRIVATE)) {
-            $restrict_task = [
-               'OR' => [
-                  'is_private'   => 0,
-                  'users_id'     => Session::getCurrentInterface() == "central"
-                                       ? Session::getLoginUserID()
-                                       : 0
-               ]
-            ];
+        if ($task_obj->maybePrivate()) {
+            if ($must_hide_private_ticket_content) {
+                $restrict_task = ['is_private' => 0];
+            } elseif (!$can_view_private_tasks) {
+                $restrict_task = [
+                   'OR' => [
+                      'is_private' => 0,
+                      'users_id'   => Session::getCurrentInterface() == "central"
+                          ? Session::getLoginUserID()
+                          : 0
+                   ]
+                ];
+            }
         }
 
         //add followups to timeline
@@ -8652,6 +8807,12 @@ abstract class CommonITILObject extends CommonDBTM
             }
 
             if (isset($item_i['content'])) {
+                if (is_subclass_of($item['type'], CommonITILTask::class)) {
+                    $task_title = CommonITILTask::getTitleToDisplay($item_i);
+                    if ($task_title !== '') {
+                        echo "<div class='item_title'>" . Html::entities_deep($task_title) . "</div>";
+                    }
+                }
                 $content = $item_i['content'];
                 $content = Toolbox::getHtmlToDisplay($content);
                 $content = autolink($content, false);
@@ -9635,6 +9796,8 @@ abstract class CommonITILObject extends CommonDBTM
     public function getAssociatedDocumentsCriteria($bypass_rights = false): array
     {
         $task_class = $this->getType() . 'Task';
+        $must_hide_private_ticket_content = !$bypass_rights
+            && $this->shouldHidePrivateTicketContentFromCurrentUser();
 
         $or_crits = [
            // documents associated to ITIL item directly
@@ -9650,7 +9813,13 @@ abstract class CommonITILObject extends CommonDBTM
                ITILFollowup::getTableField('itemtype') => $this->getType(),
                ITILFollowup::getTableField('items_id') => $this->getID(),
             ];
-            if (!$bypass_rights && !Session::haveRight(ITILFollowup::$rightname, ITILFollowup::SEEPRIVATE)) {
+            $can_view_private_followups = $this->canCurrentUserAccessPrivateITILContent(
+                ITILFollowup::$rightname,
+                ITILFollowup::SEEPRIVATE
+            );
+            if ($must_hide_private_ticket_content) {
+                $fup_crits['is_private'] = 0;
+            } elseif (!$bypass_rights && !$can_view_private_followups) {
                 $fup_crits[] = [
                    'OR' => ['is_private' => 0, 'users_id' => Session::getLoginUserID()],
                 ];
@@ -9689,7 +9858,13 @@ abstract class CommonITILObject extends CommonDBTM
             $tasks_crit = [
                $this->getForeignKeyField() => $this->getID(),
             ];
-            if (!$bypass_rights && !Session::haveRight($task_class::$rightname, CommonITILTask::SEEPRIVATE)) {
+            $can_view_private_tasks = $this->canCurrentUserAccessPrivateITILContent(
+                $task_class::$rightname,
+                CommonITILTask::SEEPRIVATE
+            );
+            if ($must_hide_private_ticket_content) {
+                $tasks_crit['is_private'] = 0;
+            } elseif (!$bypass_rights && !$can_view_private_tasks) {
                 $tasks_crit[] = [
                    'OR' => ['is_private' => 0, 'users_id' => Session::getLoginUserID()],
                 ];
