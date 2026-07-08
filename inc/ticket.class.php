@@ -5495,18 +5495,12 @@ class Ticket extends CommonITILObject
                           ) : '',
                     ] : [],
                     __('Time to own') => [
-                     'type' => 'datetime-local',
-                     'name' => 'time_to_own',
-                     'id' => rand(),
-                     'value' => $this->fields["time_to_own"],
-                     'col_lg' => 6,
-                    ],
-                    __('SLA') . ' (' . __('Time to own') . ')' => [
-                        'content' => (function () use ($tt, $canupdate) {
-                            ob_start();
-                            (new SLA())->showForTicket($this, SLM::TTO, $tt, $canupdate);
-                            return ob_get_clean();
-                        })(),
+                       'content' => (function () use ($tt, $canupdate) {
+                           ob_start();
+                           (new SLA())->showForTicket($this, SLM::TTO, $tt, $canupdate);
+                           return ob_get_clean();
+                       })(),
+                       'col_lg' => 6,
                     ],
                     __('Time to resolve') => [
                      'type' => 'datetime-local',
@@ -5515,40 +5509,19 @@ class Ticket extends CommonITILObject
                      'value' => $this->fields["time_to_resolve"],
                      'col_lg' => 6
                     ],
-                    __('SLA') . ' (' . __('Time to resolve') . ')' => [
-                    'content' => (function () use ($tt, $canupdate) {
-                        ob_start();
-                        (new SLA())->showForTicket($this, SLM::TTR, $tt, $canupdate);
-                        return ob_get_clean();
-                    })(),
-                    ],
                     __('Internal time to own') => [
                      'type' => 'datetime-local',
-                     'name' => 'time_to_resolve',
+                     'name' => 'internal_time_to_own',
                      'id' => rand(),
-                     'value' => $this->fields["time_to_resolve"],
+                     'value' => $this->fields["internal_time_to_own"],
                      'col_lg' => 6
-                    ],
-                    __('SLA') . ' (' . __('Internal time to own') . ')' => [
-                    'content' => (function () use ($tt, $canupdate) {
-                        ob_start();
-                        (new OLA())->showForTicket($this, SLM::TTO, $tt, $canupdate);
-                        return ob_get_clean();
-                    })(),
                     ],
                     __('Internal time to resolve') => [
                      'type' => 'datetime-local',
-                     'name' => 'time_to_resolve',
+                     'name' => 'internal_time_to_resolve',
                      'id' => rand(),
-                     'value' => $this->fields["time_to_resolve"],
+                     'value' => $this->fields["internal_time_to_resolve"],
                      'col_lg' => 6
-                    ],
-                    __('SLA') . ' (' . __('Internal time to resolve') . ')' => [
-                    'content' => (function () use ($tt, $canupdate) {
-                        ob_start();
-                        (new OLA())->showForTicket($this, SLM::TTR, $tt, $canupdate);
-                        return ob_get_clean();
-                    })(),
                     ],
                  ]
               ],

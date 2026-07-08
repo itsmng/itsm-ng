@@ -272,8 +272,6 @@ abstract class LevelAgreement extends CommonDBChild
         list($dateField, $laField) = static::getFieldNames($type);
         $rand = mt_rand();
         $pre  = static::$prefix;
-        echo "<table width='100%' aria-label ='Ticket'>";
-        echo "<tr class='tab_bg_1'>";
 
         if (!isset($ticket->fields[$dateField]) || $ticket->fields[$dateField] == 'NULL') {
             $ticket->fields[$dateField] = '';
@@ -281,18 +279,17 @@ abstract class LevelAgreement extends CommonDBChild
 
         if ($ticket->fields['id']) {
             if ($this->getDataForTicket($ticket->fields['id'], $type)) {
-                echo "<td style='width: 105px'>";
                 echo $tt->getBeginHiddenFieldValue($dateField);
-                echo Html::convDateTime($ticket->fields[$dateField]);
+                echo "<span class='form-control form-control-sm'>" . Html::convDateTime($ticket->fields[$dateField]) . "</span>";
                 echo $tt->getEndHiddenFieldValue($dateField, $ticket);
-                echo "</td>";
-                echo "<td>";
                 echo $tt->getBeginHiddenFieldText($laField);
-                echo "<i class='fas fa-stopwatch slt' aria-hidden='true'></i>";
-                echo Dropdown::getDropdownName(
+                echo "<span class='input-group-text'>";
+                echo "<i class='fas fa-stopwatch me-1' aria-hidden='true'></i>";
+                echo "<span>" . Dropdown::getDropdownName(
                     static::getTable(),
                     $ticket->fields[$laField]
-                ) . "&nbsp;";
+                ) . "</span>";
+                echo "</span>";
                 echo Html::hidden($laField, ['value' => $ticket->fields[$laField]]);
                 $obj = new static();
                 $obj->getFromDB($ticket->fields[$laField]);
@@ -342,18 +339,16 @@ abstract class LevelAgreement extends CommonDBChild
                                    " . json_encode(array_merge($fields, ['delete_date' => 0])) . ");
                   }
                }");
-                    echo "<a class='fa fa-times-circle pointer'
+                    echo "<button type='button' class='btn btn-outline-secondary'
                         onclick='delete_date$type$rand(event)'
-                        title='" . _sx('button', 'Delete permanently') . "'>";
-                    echo "<span class='sr-only'>" . _x('button', 'Delete permanently') . "</span>";
-                    echo "</a>";
+                        title='" . _sx('button', 'Delete permanently') . "'
+                        aria-label='" . _x('button', 'Delete permanently') . "'>";
+                    echo "<i class='fa fa-times-circle' aria-hidden='true'></i>";
+                    echo "</button>";
                 }
                 echo $tt->getEndHiddenFieldText($laField);
-                echo "</td>";
             } else {
-                echo "<td width='200px'>";
                 echo $tt->getBeginHiddenFieldValue($dateField);
-                echo "<span class='assign_la'>";
                 if ($canupdate) {
                     renderTwigTemplate('macros/input.twig', [
                        'type'      => 'datetime-local',
@@ -363,7 +358,6 @@ abstract class LevelAgreement extends CommonDBChild
                 } else {
                     echo Html::convDateTime($ticket->fields[$dateField]);
                 }
-                echo "</span>";
                 echo $tt->getEndHiddenFieldValue($dateField, $ticket);
                 $data     = $this->find(
                     ['type' => $type] + getEntitiesRestrictCriteria('', '', $ticket->fields['entities_id'], true)
@@ -373,43 +367,38 @@ abstract class LevelAgreement extends CommonDBChild
                     && !empty($data)
                 ) {
                     echo $tt->getBeginHiddenFieldText($laField);
-                    echo "<span id='la_action$type$rand' class='assign_la'>";
-                    echo "<a " . Html::addConfirmationOnAction(
+                    echo "<span id='la_action$type$rand'>";
+                    echo "<button type='button' " . Html::addConfirmationOnAction(
                         $this->getAddConfirmation(),
-                        "cleanhide('la_action$type$rand');cleandisplay('la_choice$type$rand');"
+                        "document.getElementById('la_action$type$rand').style.display='none';document.getElementById('la_choice$type$rand').style.display='inline-flex';"
                     ) .
-                         " class='pointer' title='" . static::getTypeName() . "'>
-                    <i class='fas fa-stopwatch slt' aria-hidden='true'></i></a>";
+                         " class='btn btn-outline-secondary' title='" . static::getTypeName() . "' aria-label='" . static::getTypeName() . "'>
+                    <i class='fas fa-stopwatch' aria-hidden='true'></i></button>";
                     echo "</span>";
-                    echo "<span id='la_choice$type$rand' style='display:none' class='assign_la'>";
-                    echo "<i class='fas fa-stopwatch slt' aria-hidden='true'></i>";
-                    echo "<span class='b'>" . static::getTypeName() . "</span>&nbsp;";
-                    renderTwigTemplate('macros/input.twig', [
-                       'type'      => 'select',
+                    echo "<span id='la_choice$type$rand' style='display:none'>";
+                    echo "<span class='input-group-text'><i class='fas fa-stopwatch me-1' aria-hidden='true'></i>" . static::getTypeName() . "</span>";
+                    echo static::dropdown([
                        'name'      => $laField,
-                       'values'    => getOptionForItems($this::class, ['type' => $type]),
-                       'value'     => $ticket->fields[$laField],
-                       ($tt->isMandatoryField($dateField) ? 'required' : '') => true,
-                       ($canupdate ? null : 'disabled') => true,
+                       'conditions' => [
+                          'type'        => $type,
+                          'entities_id' => $ticket->fields["entities_id"],
+                       ],
                     ]);
                     echo "</span>";
                     echo $tt->getEndHiddenFieldText($laField);
                 }
-                echo "</td>";
             }
         } else { // New Ticket
-            echo "<td>";
             echo $tt->getBeginHiddenFieldValue($dateField);
             renderTwigTemplate('macros/input.twig', [
-               'type'      => 'select',
-               'name'      => $laField,
-               'values'    => getOptionForItems($this::class, ['type' => $type]),
-               'value'     => $ticket->fields[$laField],
+               'type'      => 'datetime-local',
+               'name'      => $dateField,
+               'value'     => $ticket->fields[$dateField],
+               'maybeempty' => false,
                ($tt->isMandatoryField($dateField) ? 'required' : '') => true,
                ($canupdate ? null : 'disabled') => true,
             ]);
             echo $tt->getEndHiddenFieldValue($dateField, $ticket);
-            echo "</td>";
             $data     = $this->find(
                 ['type' => $type] + getEntitiesRestrictCriteria('', '', $ticket->fields['entities_id'], true)
             );
@@ -418,28 +407,22 @@ abstract class LevelAgreement extends CommonDBChild
                 && !empty($data)
             ) {
                 echo $tt->getBeginHiddenFieldText($laField);
-                if (!$tt->isHiddenField($laField) || $tt->isPredefinedField($laField)) {
-                    echo "<th>" . sprintf(
-                        __('%1$s%2$s'),
-                        static::getTypeName(),
-                        $tt->getMandatoryMark($laField)
-                    ) . "</th>";
-                }
-                echo $tt->getEndHiddenFieldText($laField);
-                echo "<td class='nopadding'>" . $tt->getBeginHiddenFieldValue($laField);
-                static::dropdown([
+                echo "<span class='input-group-text'><i class='fas fa-stopwatch me-1' aria-hidden='true'></i>" .
+                    sprintf(__('%1$s%2$s'), static::getTypeName(), $tt->getMandatoryMark($laField)) .
+                "</span>";
+                echo $tt->getBeginHiddenFieldValue($laField);
+                echo static::dropdown([
                    'name'      => $laField,
-                   'entity'    => $ticket->fields["entities_id"],
                    'value'     => isset($ticket->fields[$laField]) ? $ticket->fields[$laField] : 0,
-                   'condition' => ['type' => $type]
+                   'conditions' => [
+                      'type'        => $type,
+                      'entities_id' => $ticket->fields["entities_id"],
+                   ],
                 ]);
                 echo $tt->getEndHiddenFieldValue($laField, $ticket);
-                echo "</td>";
+                echo $tt->getEndHiddenFieldText($laField);
             }
         }
-
-        echo "</tr>";
-        echo "</table>";
     }
 
 
