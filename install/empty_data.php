@@ -3068,11 +3068,6 @@ $tables['glpi_notifications_notificationtemplates'] = [
       'notifications_id'         =>  '70',
       'mode'                     =>  'mailing',
       'notificationtemplates_id' =>  27,
-   ], [
-      'id'                       => 71,
-      'notifications_id'         =>  '71',
-      'mode'                     =>  'mailing',
-      'notificationtemplates_id' =>  28,
    ],
 ];
 
@@ -3757,11 +3752,6 @@ $tables['glpi_notificationtargets'] = [
       'items_id'         => '19',
       'type'             => '1',
       'notifications_id' => '70',
-   ], [
-      'id'               => '139',
-      'items_id'         => '1',
-      'type'             => '1',
-      'notifications_id' => '71',
    ],
 ];
 
@@ -4722,21 +4712,6 @@ style="color: #8b8c8f; font-weight: bold; text-decoration: underline;"&gt;
 ##ENDIFuser.account.lock.date##
 
 &lt;p&gt;##lang.password.update.link## &lt;a href="##user.password.update.url##"&gt;##user.password.update.url##&lt;/a&gt;&lt;/p&gt;',
-
-   ], [
-      'id'                       => '28',
-      'notificationtemplates_id' => '28',
-      'language'                 => '',
-      'subject'                  => '##lang.plugins_updates_available##',
-      'content_text'             => '##lang.plugins_updates_available##
-
-##FOREACHplugins##
-##plugin.name## :##plugin.old_version## -&gt; ##plugin.version##
-##ENDFOREACHplugins##',
-      'content_html'             => '&lt;p&gt;##lang.plugins_updates_available##&lt;/p&gt;
-&lt;ul&gt;##FOREACHplugins##
-&lt;li&gt;##plugin.name## :##plugin.old_version## -&gt; ##plugin.version##&lt;/li&gt;
-##ENDFOREACHplugins##&lt;/ul&gt;'
    ],
 ];
 
