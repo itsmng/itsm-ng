@@ -791,6 +791,37 @@ class User extends CommonDBTM
     }
 
 
+    /**
+     * Clone the profile and group memberships associated with the source user.
+     *
+     * @param User $source  User being cloned
+     * @param bool $history Whether to log the clone
+     *
+     * @return void
+     */
+    public function post_clone($source, $history)
+    {
+        parent::post_clone($source, $history);
+
+        foreach ([Profile_User::class, Group_User::class] as $relation_class) {
+            $relation = new $relation_class();
+            $user_field = $relation_class::getItemField($this->getType());
+
+            // User creation may add default or rule-based memberships.
+            // Remove them so the cloned memberships exactly match the source.
+            $relation->deleteByCriteria(
+                [$user_field => $this->getID()],
+                true,
+                $history
+            );
+
+            foreach ($relation_class::getItemsAssociatedTo($source->getType(), $source->getID()) as $source_relation) {
+                $source_relation->clone([$user_field => $this->getID()], $history);
+            }
+        }
+    }
+
+
     public function prepareInputForUpdate($input)
     {
         global $CFG_GLPI;

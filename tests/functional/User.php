@@ -541,6 +541,89 @@ class User extends \DbTestCase
         }
     }
 
+    public function testCloneCopiesProfilesAndGroups()
+    {
+        global $DB;
+
+        $this->login();
+        $this->setEntity('_test_root_entity', true);
+
+        $user = getItemByTypeName('User', TU_USER);
+        $users_id = $user->getID();
+        $entities_id = (int)getItemByTypeName('Entity', '_test_child_1', true);
+
+        $profile_user = new \Profile_User();
+        $profile_users_id = $profile_user->add([
+           'users_id'           => $users_id,
+           'profiles_id'        => 3,
+           'entities_id'        => $entities_id,
+           'is_recursive'       => 0,
+           'is_dynamic'         => 1,
+           'is_default_profile' => 0,
+        ]);
+        $this->integer($profile_users_id)->isGreaterThan(0);
+
+        $group = new \Group();
+        $groups_id = $group->add([
+           'name'         => 'Group copied with user',
+           'entities_id'  => $entities_id,
+           'is_recursive' => 0,
+        ]);
+        $this->integer($groups_id)->isGreaterThan(0);
+
+        $group_user = new \Group_User();
+        $group_users_id = $group_user->add([
+           'users_id'        => $users_id,
+           'groups_id'       => $groups_id,
+           'is_dynamic'      => 1,
+           'is_manager'      => 1,
+           'is_userdelegate' => 1,
+        ]);
+        $this->integer($group_users_id)->isGreaterThan(0);
+
+        $get_relations = static function ($table, $users_id, array $fields) use ($DB) {
+            $relations = [];
+            foreach ($DB->request([
+               'SELECT' => $fields,
+               'FROM'   => $table,
+               'WHERE'  => ['users_id' => $users_id],
+            ]) as $relation) {
+                $relations[] = $relation;
+            }
+            usort(
+                $relations,
+                static fn($left, $right) => strcmp(json_encode($left), json_encode($right))
+            );
+            return $relations;
+        };
+
+        $profile_fields = [
+           'profiles_id',
+           'entities_id',
+           'is_recursive',
+           'is_dynamic',
+           'is_default_profile',
+        ];
+        $group_fields = [
+           'groups_id',
+           'is_dynamic',
+           'is_manager',
+           'is_userdelegate',
+        ];
+        $source_profiles = $get_relations(\Profile_User::getTable(), $users_id, $profile_fields);
+        $source_groups = $get_relations(\Group_User::getTable(), $users_id, $group_fields);
+
+        $cloned_users_id = $user->clone();
+        $this->integer($cloned_users_id)->isGreaterThan($users_id);
+
+        $this->array(
+            $get_relations(\Profile_User::getTable(), $cloned_users_id, $profile_fields)
+        )->isIdenticalTo($source_profiles);
+        $this->array(
+            $get_relations(\Group_User::getTable(), $cloned_users_id, $group_fields)
+        )->isIdenticalTo($source_groups);
+    }
+
     public function testGetFromDBbyDn()
     {
         $user = $this->newTestedInstance;
