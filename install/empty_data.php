@@ -5517,6 +5517,10 @@ $tables['glpi_profilerights'] = [
       'name'        => 'solutiontemplate',
       'rights'      => '23',
    ], [
+      'profiles_id' => '4',
+      'name'        => 'followuptemplate',
+      'rights'      => '23',
+   ], [
       'profiles_id' => '3',
       'name'        => 'calendar',
       'rights'      => '23',
@@ -5783,6 +5787,10 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '4',
       'name'        => 'notification',
+      'rights'      => '23',
+   ], [
+      'profiles_id' => '4',
+      'name'        => 'notificationtemplate',
       'rights'      => '23',
    ], [
       'profiles_id' => '4',
@@ -7355,7 +7363,7 @@ $tables['glpi_profilerights'] = [
    ], [
       'profiles_id' => '4',
       'name'        => 'dashboard',
-      'rights'      => 23,
+      'rights'      => 1047,
    ], [
       'profiles_id' => '5',
       'name'        => 'dashboard',
