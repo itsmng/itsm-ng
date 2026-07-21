@@ -193,4 +193,31 @@ class Profile extends DbTestCase
         }
 
     }
+
+
+    public function testCloneCopiesRights()
+    {
+        $profile = new \Profile();
+        $profiles_id = $profile->add([
+           'name'      => 'Profile to clone',
+           'interface' => 'standard',
+        ]);
+        $this->integer($profiles_id)->isGreaterThan(0);
+
+        \ProfileRight::updateProfileRights($profiles_id, [
+           'computer' => READ | CREATE | UPDATE,
+           'ticket'   => READ | CREATE | UPDATE | DELETE,
+        ]);
+        $this->boolean($profile->getFromDB($profiles_id))->isTrue();
+
+        $cloned_profiles_id = $profile->clone();
+        $this->integer($cloned_profiles_id)->isGreaterThan($profiles_id);
+
+        $source_rights = \ProfileRight::getProfileRights($profiles_id);
+        $cloned_rights = \ProfileRight::getProfileRights($cloned_profiles_id);
+        ksort($source_rights);
+        ksort($cloned_rights);
+
+        $this->array($cloned_rights)->isIdenticalTo($source_rights);
+    }
 }

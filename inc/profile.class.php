@@ -261,6 +261,25 @@ class Profile extends CommonDBTM
     }
 
 
+    /**
+     * Clone the rights associated with the source profile.
+     *
+     * @param Profile $source  Profile being cloned
+     * @param bool    $history Whether to log the clone
+     *
+     * @return void
+     */
+    public function post_clone($source, $history)
+    {
+        parent::post_clone($source, $history);
+
+        ProfileRight::updateProfileRights(
+            $this->getID(),
+            ProfileRight::getProfileRights($source->getID())
+        );
+    }
+
+
     public function cleanDBonPurge()
     {
 
