@@ -356,7 +356,12 @@ abstract class LevelAgreement extends CommonDBChild
                        'value'     => $ticket->fields[$dateField],
                     ]);
                 } else {
-                    echo Html::convDateTime($ticket->fields[$dateField]);
+                    renderTwigTemplate('macros/input.twig', [
+                       'type'      => 'datetime-local',
+                       'name'      => $dateField,
+                       'value'     => $ticket->fields[$dateField],
+                       'disabled'  => true,
+                    ]);
                 }
                 echo $tt->getEndHiddenFieldValue($dateField, $ticket);
                 $data     = $this->find(
