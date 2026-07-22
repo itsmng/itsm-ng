@@ -2331,13 +2331,12 @@ class Dropdown
             $post['permit_select_parent'] = false;
         }
 
+        $condition = [];
         if (isset($post['condition']) && !empty($post['condition']) && !is_array($post['condition'])) {
             // Retreive conditions from SESSION using its key
             $key = $post['condition'];
             if (isset($_SESSION['glpicondition']) && isset($_SESSION['glpicondition'][$key])) {
-                $post['condition'] = $_SESSION['glpicondition'][$key];
-            } else {
-                $post['condition'] = [];
+                $condition = $_SESSION['glpicondition'][$key];
             }
         }
 
@@ -2376,8 +2375,8 @@ class Dropdown
             $toadd = [];
         }
 
-        if (isset($post['condition']) && ($post['condition'] != '')) {
-            $where = array_merge($where, $post['condition']);
+        if (!empty($condition)) {
+            $where = array_merge($where, $condition);
         }
 
         $one_item = -1;

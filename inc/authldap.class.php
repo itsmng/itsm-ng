@@ -293,6 +293,16 @@ class AuthLDAP extends CommonDBTM
                         // Is recursive is in the main form and thus, don't pass through
                         // zero_on_empty mechanism inside massive action form ...
                         $is_recursive = (empty($input['ldap_import_recursive'][$id]) ? 0 : 1);
+                        $common_input = [
+                            'entities_id'  => $entity,
+                            'is_recursive' => $is_recursive,
+                        ];
+                        if (!$group->can(-1, CREATE, $common_input)) {
+                            $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
+                            $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                            continue;
+                        }
+
                         $options = [
                             'authldaps_id' => $_SESSION['ldap_server'],
                             'entities_id' => $entity,
@@ -3910,7 +3920,8 @@ class AuthLDAP extends CommonDBTM
                         $value = substr((string) $value, $begin, $length - $end - $begin);
                     }
                     $counter++;
-                    $filter .= '(' . $authldap->fields[$criteria] . '=' . ($begin ? '' : '*') . $value . ($end ? '' : '*') . ')';
+                    $filter .= '(' . $authldap->fields[$criteria] . '=' . ($begin ? '' : '*')
+                        . ldap_escape($value, '', LDAP_ESCAPE_FILTER) . ($end ? '' : '*') . ')';
                 }
             }
         } else {

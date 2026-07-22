@@ -353,6 +353,7 @@ class Group extends CommonTreeDropdown
         $buttons = [];
         if (
             Group::canUpdate()
+            && $this->can($this->getID(), UPDATE)
             && Session::haveRight("user", User::UPDATEAUTHENT)
             && AuthLDAP::useAuthLdap()
         ) {

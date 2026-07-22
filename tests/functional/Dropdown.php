@@ -1374,10 +1374,14 @@ class Dropdown extends DbTestCase
               'selection_text'
            ]);
 
-        //use a array condition
+        //use a string condition
+        // Put condition in session and post its key
+        $condition = ['name' => ['LIKE', "%3%"]];
+        $condition_key = sha1(serialize($condition));
+        $_SESSION['glpicondition'][$condition_key] = $condition;
         $post = [
            'itemtype'              => $location::getType(),
-           'condition'             => ['name' => ['LIKE', "%3%"]],
+           'condition'             => $condition_key,
            'display_emptychoice'   => true,
            'entity_restrict'       => 0,
            'page'                  => 1,
@@ -1392,23 +1396,10 @@ class Dropdown extends DbTestCase
            ->array['results'];
         $this->integer(count((array)$values['results']))->isGreaterThanOrEqualTo(2);
 
-        //use a string condition
-        // Put condition in session and post its key
-        $condition_key = sha1(serialize($post['condition']));
-        $_SESSION['glpicondition'][$condition_key] = $post['condition'];
-        $post['condition'] = $condition_key;
-        $values = \Dropdown::getDropdownValue($post);
-        $values = (array)json_decode($values);
-
-        $this->array($values)
-           ->integer['count']->isEqualTo(2)
-           ->array['results'];
-        $this->integer(count((array)$values['results']))->isGreaterThanOrEqualTo(2);
-
         //use a condition that does not exists in session
         $post = [
            'itemtype'              => $location::getType(),
-           'condition'             => '`name` LIKE "%4%"',
+           'condition'             => 'not_in_session',
            'display_emptychoice'   => true,
            'entity_restrict'       => 0,
            'page'                  => 1,
