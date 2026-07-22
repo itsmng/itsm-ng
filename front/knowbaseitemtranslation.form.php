@@ -38,12 +38,15 @@ include ('../inc/includes.php');
 
 $translation = new KnowbaseItemTranslation();
 if (isset($_POST['add'])) {
+   $translation->check(-1, CREATE, $_POST);
    $translation->add($_POST);
    Html::back();
 } else if (isset($_POST['update'])) {
+   $translation->check($_POST['id'], UPDATE, $_POST);
    $translation->update($_POST);
    Html::back();
 } else if (isset($_POST["purge"])) {
+   $translation->check($_POST['id'], PURGE, $_POST);
    $translation->delete($_POST, true);
    Html::redirect(KnowbaseItem::getFormURLWithID($_POST['knowbaseitems_id']));
 } else if (isset($_GET["id"]) and isset($_GET['to_rev'])) {

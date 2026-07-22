@@ -38,6 +38,60 @@ if (!defined('GLPI_ROOT')) {
 /// since version 9.2
 class KnowbaseItem_Comment extends CommonDBTM {
 
+   static function canCreate() {
+      return Session::haveRight(KnowbaseItem::$rightname, KnowbaseItem::COMMENTS);
+   }
+
+   static function canView() {
+      return Session::haveRight(KnowbaseItem::$rightname, KnowbaseItem::COMMENTS);
+   }
+
+   static function canUpdate() {
+      return Session::haveRight(KnowbaseItem::$rightname, KnowbaseItem::COMMENTS);
+   }
+
+   static function canDelete() {
+      return Session::haveRight(KnowbaseItem::$rightname, KnowbaseItem::COMMENTS);
+   }
+
+   static function canPurge() {
+      return self::canDelete();
+   }
+
+   function canCreateItem() {
+      return $this->canComment();
+   }
+
+   function canViewItem() {
+      return $this->canComment();
+   }
+
+   function canUpdateItem() {
+      if (!$this->canComment()) {
+         return false;
+      }
+
+      return Session::getLoginUserID() === $this->fields['users_id']
+         || Session::haveRight(KnowbaseItem::$rightname, KnowbaseItem::KNOWBASEADMIN);
+   }
+
+   function canDeleteItem() {
+      return $this->canUpdateItem();
+   }
+
+   function canPurgeItem() {
+      return $this->canDeleteItem();
+   }
+
+   private function canComment() {
+      $kbitem = new KnowbaseItem();
+      if (!$kbitem->getFromDB($this->fields['knowbaseitems_id'])) {
+         return false;
+      }
+
+      return $kbitem->canComment();
+   }
+
    static function getTypeName($nb = 0) {
       return _n('Comment', 'Comments', $nb);
    }

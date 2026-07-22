@@ -672,6 +672,10 @@ class User extends CommonDBTM {
          $input["profiles_id"] = 0;
       }
 
+      if (isset($input['use_mode']) && !Config::canUpdate()) {
+         unset($input['use_mode']);
+      }
+
       return $input;
    }
 
@@ -764,7 +768,18 @@ class User extends CommonDBTM {
             $newPicture = true;
          }
          if ($newPicture) {
-            $fullpath = GLPI_TMP_DIR."/".$input["_picture"];
+            $tmp_dir = realpath(GLPI_TMP_DIR);
+            $fullpath = realpath(GLPI_TMP_DIR."/".$input["_picture"]);
+            if ($tmp_dir === false
+                || $fullpath === false
+                || !Toolbox::startsWith($fullpath, $tmp_dir . DIRECTORY_SEPARATOR)) {
+               trigger_error(
+                  sprintf('Invalid picture path `%s`', $input['_picture']),
+                  E_USER_WARNING
+               );
+               return false;
+            }
+
             if (Document::isImage($fullpath)) {
                // Unlink old picture (clean on changing format)
                self::dropPictureFiles($this->fields['picture']);
@@ -871,11 +886,14 @@ class User extends CommonDBTM {
           }
       }
 
-      // blank password when authtype changes
-      if (isset($input["authtype"])
-          && $input["authtype"] != Auth::DB_GLPI
-          && $input["authtype"] != $this->getField('authtype')) {
-         $input["password"] = "";
+      if (isset($input['authtype'])) {
+         if (Session::getLoginUserID() !== false
+             && !Session::haveRight(self::$rightname, self::UPDATEAUTHENT)) {
+            unset($input['authtype']);
+         } else if ($input['authtype'] != Auth::DB_GLPI
+                    && $input['authtype'] != $this->getField('authtype')) {
+            $input['password'] = '';
+         }
       }
 
       // Update User in the database
@@ -924,6 +942,10 @@ class User extends CommonDBTM {
       }
 
       // Manage preferences fields
+      if (isset($input['use_mode']) && !Config::canUpdate()) {
+         unset($input['use_mode']);
+      }
+
       if (Session::getLoginUserID() == $input['id']) {
          if (isset($input['use_mode'])
              && ($_SESSION['glpi_use_mode'] !=  $input['use_mode'])) {
@@ -3174,10 +3196,19 @@ JAVASCRIPT;
                return;
             }
             if (Session::haveRight(self::$rightname, self::UPDATEAUTHENT)) {
-               if (User::changeAuthMethod($ids, $input["authtype"], $input["auths_id"])) {
-                  $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_OK);
-               } else {
-                  $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_KO);
+               foreach ($ids as $id) {
+                  $user = new User();
+                  if (!$user->can($id, UPDATE)) {
+                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
+                     $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                     continue;
+                  }
+
+                  if (User::changeAuthMethod([$id], $input["authtype"], $input["auths_id"])) {
+                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
+                  } else {
+                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                  }
                }
             } else {
                $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_NORIGHT);

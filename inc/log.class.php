@@ -1211,17 +1211,31 @@ class Log extends CommonDBTM {
       if (isset($filters['affected_fields']) && !empty($filters['affected_fields'])) {
          $affected_field_crit = [];
          foreach ($filters['affected_fields'] as $index => $affected_field) {
+            $index = (int) $index;
             $affected_field_crit[$index] = [];
             foreach (explode(";", $affected_field) as $var) {
                if (1 === preg_match('/^(?P<key>.+):(?P<operator>.*):(?P<values>.+)$/', $var, $matches)) {
                   $key = $matches['key'];
+                  $allowed_keys = ['linked_action', 'id_search_option', 'itemtype_link'];
+                  if (!in_array($key, $allowed_keys, true)) {
+                     continue;
+                  }
+
                   $operator = $matches['operator'];
+                  if (!empty($operator) && $operator != 'NOT') {
+                     throw new RuntimeException('Invalid operator: ' . $operator);
+                  }
+
                   // Each field can have multiple values for a given filter
                   $values = explode(',', $matches['values']);
 
                   // linked_action and id_search_option are stored as integers
                   if (in_array($key, ['linked_action', 'id_search_option'])) {
                      $values = array_map('intval', $values);
+                  } else if ($key === 'itemtype_link') {
+                     $values = array_filter($values, function ($value) {
+                        return getItemForItemtype($value) !== false;
+                     });
                   }
 
                   if (!empty($operator)) {
@@ -1231,10 +1245,15 @@ class Log extends CommonDBTM {
                   }
                }
             }
+            if (empty($affected_field_crit[$index])) {
+               unset($affected_field_crit[$index]);
+            }
          }
-         $sql_filters[] = [
-            'OR' => $affected_field_crit
-         ];
+         if ($affected_field_crit !== []) {
+            $sql_filters[] = [
+               'OR' => $affected_field_crit
+            ];
+         }
       }
 
       if (isset($filters['date']) && !empty($filters['date'])) {

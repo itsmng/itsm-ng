@@ -48,13 +48,6 @@ class QueuedNotification extends CommonDBTM {
       return __('Notification queue');
    }
 
-
-   static function canCreate() {
-      // Everybody can create : human and cron
-      return Session::getLoginUserID(false);
-   }
-
-
    static function getForbiddenActionsForMenu() {
       return ['add'];
    }
