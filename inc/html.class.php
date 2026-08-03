@@ -6029,7 +6029,8 @@ JAVASCRIPT;
                   var progress = parseInt(data.loaded / data.total * 100, 10);
                   $('#progress{$p['rand']}')
                      .show()
-                  .filter('.uploadbar')
+                  .find('.uploadbar')
+                     .stop(true, true)
                      .css({
                         width: progress + '%'
                      })
