@@ -496,7 +496,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                        'type' => 'select',
                        'name' => 'is_private',
                        'values' => [__('Public'), __('Private')],
-                       'value' => $this->fields['is_private'] ?? 0,
+                       'value' => $this->fields['is_private'] ?? 1,
                     ] : [
                        'content' => $this->fields['is_private'] ? __('Private') : __('Public')
                     ],
