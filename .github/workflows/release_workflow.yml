@@ -20,7 +20,7 @@ jobs:
       TAG: ${{ github.ref_name }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: check if version is set
         run:  grep -q "define('ITSM_VERSION', '${TAG#v}');" inc/define.php && echo "Version correspondante" || { echo "La version dans inc/define.php n'est pas bonne"; exit 5; }
@@ -33,7 +33,7 @@ jobs:
           coverage: none
 
       - name: Install NodeJS
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '20'
 
