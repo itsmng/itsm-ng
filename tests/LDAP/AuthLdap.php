@@ -161,6 +161,48 @@ class AuthLDAP extends DbTestCase
         $this->variable($ldap->fields['sync_field'])->isNull();
     }
 
+    public function testActiveDirectoryPreconfigIsAppliedToNewItemTabs()
+    {
+        $previous_get = $_GET;
+        $_GET['preconfig'] = 'AD';
+
+        foreach ([2, 3] as $tabnum) {
+            $ldap = new \mock\AuthLDAP();
+            $this->calling($ldap)->showFormUserConfig = null;
+            $this->calling($ldap)->showFormGroupsConfig = null;
+
+            $this->boolean(\AuthLDAP::displayTabContentForItem($ldap, $tabnum))->isTrue();
+            $this->array($ldap->fields)
+               ->string['realname_field']->isIdenticalTo('sn')
+               ->string['phone2_field']->isIdenticalTo('othertelephone')
+               ->string['group_field']->isIdenticalTo('memberof')
+               ->integer['group_search_type']->isIdenticalTo(\AuthLDAP::GROUP_SEARCH_USER)
+               ->integer['use_dn']->isIdenticalTo(1);
+        }
+
+        $_GET = $previous_get;
+    }
+
+    public function testActiveDirectoryPreconfigIsAppliedWhenAddingDirectory()
+    {
+        $ldap = new \AuthLDAP();
+        $input = $ldap->prepareInputForAdd([
+            'name' => 'Active Directory',
+            'login_field' => 'customaccountname',
+            '_preconfig' => 'AD',
+        ]);
+
+        $this->array($input)->notHasKey('_preconfig');
+        $this->string($input['name'])->isIdenticalTo('Active Directory');
+        $this->string($input['login_field'])->isIdenticalTo('customaccountname');
+        $this->string($input['realname_field'])->isIdenticalTo('sn');
+        $this->string($input['phone2_field'])->isIdenticalTo('othertelephone');
+        $this->string($input['group_field'])->isIdenticalTo('memberof');
+        $this->string($input['group_condition'])->isNotEmpty();
+        $this->integer($input['group_search_type'])->isIdenticalTo(\AuthLDAP::GROUP_SEARCH_USER);
+        $this->integer($input['use_dn'])->isIdenticalTo(1);
+    }
+
     public function testPrepareInputForUpdate()
     {
         $ldap   = new \mock\AuthLDAP();

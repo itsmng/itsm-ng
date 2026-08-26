@@ -368,10 +368,7 @@ class AuthLDAP extends CommonDBTM
             return false;
         }
         if ($this->isNewID($ID)) {
-            $this->getEmpty();
-            if (isset($options['preconfig'])) {
-                $this->preconfig($options['preconfig']);
-            }
+            $this->loadNewDirectoryDefaults($options);
         } else {
             $this->getFromDB($ID);
         }
@@ -389,6 +386,11 @@ class AuthLDAP extends CommonDBTM
                                 'name' => 'id',
                                 'value' => $ID
                             ],
+                            isset($options['preconfig']) ? [
+                                'type' => 'hidden',
+                                'name' => '_preconfig',
+                                'value' => $options['preconfig'],
+                            ] : [],
                             __('Preconfiguration') => $this->isNewID($ID) ? [
                                 'content' => <<<HTML
                             <a href='{$this->getFormURL()}?preconfig=AD'>Active Directory</a>
@@ -475,6 +477,21 @@ class AuthLDAP extends CommonDBTM
             echo "<p>" . __('Impossible to use LDAP as external source of connection') . "</p>" .
                 "</td></tr></table>";
             echo "</div>";
+        }
+    }
+
+    /**
+     * Load the default values used while creating an LDAP directory.
+     *
+     * @param array $options Form or tab request options
+     *
+     * @return void
+     */
+    private function loadNewDirectoryDefaults(array $options = [])
+    {
+        $this->getEmpty();
+        if (isset($options['preconfig'])) {
+            $this->preconfig($options['preconfig']);
         }
     }
 
@@ -4042,6 +4059,13 @@ class AuthLDAP extends CommonDBTM
     public function prepareInputForAdd($input)
     {
 
+        if (isset($input['_preconfig'])) {
+            $preset = new self();
+            $preset->preconfig($input['_preconfig']);
+            $input = array_replace($preset->fields, $input);
+            unset($input['_preconfig']);
+        }
+
         //If it's the first ldap directory then set it as the default directory
         if (!self::getNumberOfServers()) {
             $input['is_default'] = 1;
@@ -4199,6 +4223,10 @@ class AuthLDAP extends CommonDBTM
      */
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
+
+        if ($item instanceof self && $item->isNewID($item->getID())) {
+            $item->loadNewDirectoryDefaults($_GET);
+        }
 
         switch ($tabnum) {
             case 1:
