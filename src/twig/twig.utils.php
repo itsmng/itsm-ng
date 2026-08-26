@@ -112,9 +112,10 @@ function expandForm($form, $fields = [], $template = null)
         $item = new ($form["itemtype"])();
         $isNew =
             !isset($fields["id"]) ||
-            intval($fields["id"]) <= 0 ||
+            $item::isNewID($fields["id"]) ||
             (isset($fields["withtemplate"]) && $fields["withtemplate"] == 2);
         $isDeleted = isset($fields["is_deleted"]) && $fields["is_deleted"];
+        $canDelete = !isset($fields["candel"]) || $fields["candel"];
 
         $form["buttons"] = [
             $isNew
@@ -132,7 +133,7 @@ function expandForm($form, $fields = [], $template = null)
                         "value" => __("Update"),
                     ]
                     : []),
-            !$isNew && ($isDeleted || !isset($fields["is_deleted"]))
+            $canDelete && !$isNew && ($isDeleted || !isset($fields["is_deleted"]))
                 ? ($item::canPurge()
                     ? [
                         "class" => "btn btn-danger",
@@ -147,7 +148,7 @@ function expandForm($form, $fields = [], $template = null)
                         "value" => __("Put in trashbin"),
                     ]
                     : []),
-            $isDeleted && $item::canDelete()
+            $canDelete && $isDeleted && $item::canDelete()
                 ? [
                     "class" => "btn btn-success",
                     "name" => "restore",

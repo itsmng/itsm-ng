@@ -116,6 +116,24 @@ class Entity extends DbTestCase
            ->integer['entities_id']->isIdenticalTo(0);
     }
 
+    public function testRootEntityFormUsesUpdateButton()
+    {
+        $this->login();
+        $_SESSION['glpiactiveprofile']['entity'] = READ | UPDATE;
+        $_SESSION['glpiactiveentities'] = [0];
+
+        $entity = new \Entity();
+
+        ob_start();
+        $entity->showForm(0, ['candel' => false]);
+        $html = ob_get_clean();
+
+        $this->string($html)->contains("name='update'");
+        $this->string($html)->notContains("name='add'");
+        $this->string($html)->notContains("name='delete'");
+        $this->string($html)->notContains("name='purge'");
+    }
+
     /**
      * Run getSonsOf tests
      *

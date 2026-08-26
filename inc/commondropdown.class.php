@@ -298,11 +298,16 @@ abstract class CommonDropdown extends CommonDBTM
             $form['content'][__('New item') . ' - ' . $this->getTypeName()]['inputs'],
             $fields
         );
-        renderTwigForm($form, '', $this->fields);
 
         if (isset($this->fields['is_protected']) && $this->fields['is_protected']) {
             $options['candel'] = false;
         }
+
+        $form_fields = $this->fields;
+        if (isset($options['candel'])) {
+            $form_fields['candel'] = $options['candel'];
+        }
+        renderTwigForm($form, '', $form_fields);
 
         return true;
     }
