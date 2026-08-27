@@ -831,6 +831,28 @@ class Search extends DbTestCase
            ->notContains('datetime-local');
     }
 
+    public function testGroupSearchValueInputContainsMyGroups()
+    {
+        foreach (['Ticket', 'Computer'] as $itemtype) {
+            $searchopt = \Search::getOptions($itemtype);
+
+            ob_start();
+            \Search::displaySearchoptionValue([
+               'searchtype' => 'equals',
+               'searchopt'  => $searchopt[71],
+               'value'      => '',
+               'p'          => [],
+               'num'        => 0,
+               'itemtype'   => $itemtype,
+            ]);
+            $input = ob_get_clean();
+
+            $this->string($input)
+               ->contains('value="mygroups"')
+               ->contains(__('My groups'));
+        }
+    }
+
     /**
      * Test that searchOptions throws an exception when it finds a duplicate
      *

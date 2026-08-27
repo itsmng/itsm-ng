@@ -5301,6 +5301,7 @@ class CommonDBTM extends CommonGLPI
                     } else {
                         $values = getOptionForItems($itemtype, $options['condition'] ?? []);
                     }
+                    $values = ($searchoptions['toadd'] ?? []) + $values;
                     return renderTwigTemplate('macros/input.twig', [
                        'type' => 'select',
                        'name' => $name,
