@@ -298,6 +298,11 @@ class Entity extends CommonTreeDropdown
     **/
     public function prepareInputForUpdate($input)
     {
+        $is_root_entity = isset($input['id']) && $input['id'] == 0;
+        if ($is_root_entity) {
+            // Normalize before tree validation to avoid treating root as its own parent.
+            $input['entities_id'] = -1;
+        }
 
         $input = parent::prepareInputForUpdate($input);
 
@@ -317,7 +322,7 @@ class Entity extends CommonTreeDropdown
         }
 
         // Force entities_id = -1 for root entity
-        if ($input['id'] == 0) {
+        if ($is_root_entity) {
             $input['entities_id'] = -1;
             $input['level']       = 1;
         }
@@ -2082,6 +2087,10 @@ class Entity extends CommonTreeDropdown
 
     public function getAdditionalFields()
     {
+        if (!$this->isNewID($this->getID()) && $this->getID() == 0) {
+            return [];
+        }
+
         return [
            __('As child of') => [
               'name'  => $this->getForeignKeyField(),
