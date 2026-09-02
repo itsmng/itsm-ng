@@ -39,6 +39,38 @@ use org\bovigo\vfs\vfsStream;
 
 class Html extends \GLPITestCase
 {
+    public function testShowToolTipOnClickUsesNativePopover()
+    {
+        $output = \Html::showToolTip(
+            '<p>Full ticket description</p>',
+            [
+              'display'   => false,
+              'autoclose' => false,
+              'onclick'   => true,
+              'awesome-class' => 'fa-comments',
+            ]
+        );
+        $output = preg_replace('/tooltip\d+/', 'tooltipRAND', $output);
+
+        $this->string($output)
+            ->contains("<button type='button' id='tooltipRAND'")
+            ->contains("class='fas fa-comments pointer'")
+            ->contains('appearance: none; padding: 0; border: 0; background: none;')
+            ->contains('anchor-name: --tooltipRAND')
+            ->contains("popovertarget='contenttooltipRAND'")
+            ->contains(
+                "<div id='contenttooltipRAND' "
+                . "class='qtip-shadow qtip-bootstrap' "
+                . "style='position-anchor: --tooltipRAND; position-area: top span-right; "
+            )
+            ->contains('inset-block: auto 0; inset-inline: 0 auto;')
+            ->contains('margin: 0 0 6px;')
+            ->contains('position-try-fallbacks: flip-block')
+            ->contains('<p>Full ticket description</p></div>')
+            ->notContains('.qtip(')
+            ->notContains("class='invisible'");
+    }
+
     public function testConvDate()
     {
         $this->variable(\Html::convDate(null))->isNull();

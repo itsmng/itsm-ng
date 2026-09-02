@@ -3960,6 +3960,10 @@ JS;
         if (!empty($param['popup'])) {
             $param['link'] = '#';
         }
+        $native_popover = $param['onclick']
+            && empty($param['applyto'])
+            && empty($param['link'])
+            && !isset($param['img']);
 
         if (empty($param['applyto'])) {
             if (!empty($param['link'])) {
@@ -3975,7 +3979,17 @@ JS;
                 }
                 $out .= '>';
             }
-            if (isset($param['img'])) {
+            if ($native_popover) {
+                if (empty($param['contentid'])) {
+                    $param['contentid'] = "contenttooltip$rand";
+                }
+                $out .= "<button type='button' id='tooltip$rand' "
+                    . "class='fas {$param['awesome-class']} pointer' "
+                    . "style='appearance: none; padding: 0; border: 0; background: none; "
+                    . "color: inherit; line-height: inherit; anchor-name: --tooltip$rand' "
+                    . "popovertarget='" . $param['contentid'] . "' "
+                    . "aria-label='" . htmlspecialchars(__('Show full content'), ENT_QUOTES) . "'></button>";
+            } elseif (isset($param['img'])) {
                 //for compatibility. Use fontawesome instead.
                 $out .= "<img id='tooltip$rand' src='" . $param['img'] . "' class='pointer'>";
             } else {
@@ -3993,7 +4007,18 @@ JS;
             $param['contentid'] = "content" . $param['applyto'];
         }
 
-        $out .= "<div id='" . $param['contentid'] . "' class='invisible'>$content</div>";
+        if ($native_popover) {
+            $out .= "<div id='" . $param['contentid']
+                . "' class='qtip-shadow qtip-bootstrap' "
+                . "style='position-anchor: --tooltip$rand; position-area: top span-right; "
+                . "inset-block: auto 0; inset-inline: 0 auto; width: max-content; "
+                . "max-width: 380px; max-height: calc(100vh - 12px); margin: 0 0 6px; "
+                . "padding: 9px 14px; overflow: auto; "
+                . "position-try-fallbacks: flip-block' "
+                . "popover>$content</div>";
+        } else {
+            $out .= "<div id='" . $param['contentid'] . "' class='invisible'>$content</div>";
+        }
         if (!empty($param['popup'])) {
             $out .= Ajax::createIframeModalWindow(
                 'tooltippopup' . $rand,
