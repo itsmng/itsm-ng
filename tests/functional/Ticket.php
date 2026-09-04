@@ -1120,6 +1120,31 @@ class Ticket extends DbTestCase
         );
     }
 
+    public function testPostOnlyCanLoadOwnNotificationEmail()
+    {
+        $this->login('post-only', 'postonly');
+
+        $previous_post = $_POST;
+        try {
+            $_POST = [
+                'value'            => \Session::getLoginUserID(),
+                'field'            => '_users_id_requester_notif',
+                'use_notification' => [1],
+            ];
+
+            ob_start();
+            try {
+                include GLPI_ROOT . '/ajax/uemailUpdate.php';
+            } finally {
+                $output = ob_get_clean();
+            }
+
+            $this->string($output)->contains('Email followup');
+        } finally {
+            $_POST = $previous_post;
+        }
+    }
+
     public function testFormTech()
     {
         $output_level = ob_get_level();
