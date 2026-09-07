@@ -16645,6 +16645,14 @@ msgstr ""
 msgid "Anonymize support agents"
 msgstr ""
 
+#: inc/entity.class.php:2478
+msgid "Lock ticket creation date"
+msgstr ""
+
+#: inc/commonitilobject.class.php:1312
+msgid "Ticket creation date modification is not allowed for this entity."
+msgstr ""
+
 #: inc/entity.class.php:2609 inc/entity.class.php:2304
 #: inc/entity.class.php:2304
 msgid "Automatic closing configuration"
