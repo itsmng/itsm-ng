@@ -427,6 +427,12 @@ class Oidc extends CommonDBTM
             $input['_ruleright_process'] = true;
             $user->update(Toolbox::addslashes_deep($input));
         }
+
+        $DB->update(
+            "glpi_users",
+            ["last_login" => $_SESSION["glpi_currenttime"]],
+            ["id" => $id],
+        );
     }
 
     /**
