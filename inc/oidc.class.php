@@ -411,6 +411,12 @@ class Oidc extends CommonDBTM
                 ["id" => $user_id],
             );
         }
+
+        $DB->update(
+            "glpi_users",
+            ["last_login" => $_SESSION["glpi_currenttime"]],
+            ["id" => $id],
+        );
     }
 
     /**
