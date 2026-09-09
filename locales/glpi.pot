@@ -16649,6 +16649,10 @@ msgstr ""
 msgid "Lock ticket creation date"
 msgstr ""
 
+#: inc/entity.class.php:2485
+msgid "Hide private followups and tasks from requesters"
+msgstr ""
+
 #: inc/commonitilobject.class.php:1312
 msgid "Ticket creation date modification is not allowed for this entity."
 msgstr ""

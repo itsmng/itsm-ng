@@ -12952,6 +12952,10 @@ msgstr "Anonymiser les agents de support"
 msgid "Lock ticket creation date"
 msgstr "Verrouiller la date de création du ticket"
 
+#: inc/entity.class.php:2485
+msgid "Hide private followups and tasks from requesters"
+msgstr "Masquer aux demandeurs les suivis et tâches privés"
+
 #: inc/commonitilobject.class.php:1312
 msgid "Ticket creation date modification is not allowed for this entity."
 msgstr "La modification de la date de création du ticket n'est pas autorisée pour cette entité."
