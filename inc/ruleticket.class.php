@@ -306,11 +306,19 @@ class RuleTicket extends Rule
                         break;
 
                     case 'defaultfromuser':
-                        if (
-                            ($action->fields['field'] == '_groups_id_requester')
-                              &&  isset($output['users_default_groups'])
-                        ) {
-                            $output['_groups_id_requester'] = $output['users_default_groups'];
+                        if ($action->fields['field'] == '_groups_id_requester') {
+                            if (isset($output['_users_id_requester'])) {
+                                $users_id = is_array($output['_users_id_requester'])
+                                    ? reset($output['_users_id_requester'])
+                                    : $output['_users_id_requester'];
+
+                                $user = new User();
+                                if ($user->getFromDB($users_id)) {
+                                    $output['_groups_id_requester'] = $user->fields['groups_id'];
+                                }
+                            } elseif (isset($output['users_default_groups'])) {
+                                $output['_groups_id_requester'] = $output['users_default_groups'];
+                            }
                         }
                         break;
 

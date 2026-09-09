@@ -737,7 +737,7 @@ class RuleTicket extends DbTestCase
         )->isTrue();
     }
 
-    public function testGroupRequesterAssignFromDefaultUserOnCreate()
+    public function testGroupRequesterAssignFromDefaultUserAfterRequesterRuleActionOnCreate()
     {
         $this->login();
 
@@ -765,6 +765,17 @@ class RuleTicket extends DbTestCase
         ]);
         $this->checkInput($rulecrit, $crit_id, $crit_input);
 
+        $users_id = getItemByTypeName('User', 'tech', true);
+
+        //assign requester before copying its default group
+        $action_id = $ruleaction->add($action_input = [
+           'rules_id'    => $ruletid,
+           'action_type' => 'assign',
+           'field'       => '_users_id_requester',
+           'value'       => $users_id,
+        ]);
+        $this->checkInput($ruleaction, $action_id, $action_input);
+
         //create action to put default user group as group requester
         $action_id = $ruleaction->add($action_input = [
            'rules_id'    => $ruletid,
@@ -784,7 +795,7 @@ class RuleTicket extends DbTestCase
 
         //Load user tech
         $user = new \User();
-        $user->getFromDB(getItemByTypeName('User', 'tech', true));
+        $user->getFromDB($users_id);
 
         //add user to group
         $group_user = new Group_User();
@@ -801,12 +812,20 @@ class RuleTicket extends DbTestCase
         // Check ticket that trigger rule on creation
         $ticket = new \Ticket();
         $tickets_id = $ticket->add($ticket_input = [
-           'name'             => 'Add group requester if requester have default group',
-           'content'          => 'test',
-           '_users_id_requester' => $user->fields['id']
+           'name'    => 'Add group requester from requester assigned by rule',
+           'content' => 'test',
         ]);
-        unset($ticket_input['_users_id_requester']); // _users_id_requester is stored in glpi_tickets_users table, so remove it
         $this->checkInput($ticket, $tickets_id, $ticket_input);
+
+        //load requester assigned by rule
+        $ticketUser = new \Ticket_User();
+        $this->boolean(
+            $ticketUser->getFromDBByCrit([
+              'tickets_id' => $tickets_id,
+              'users_id'   => $users_id,
+              'type'       => \CommonITILActor::REQUESTER,
+         ])
+        )->isTrue();
 
         //load TicketGroup
         $ticketGroup = new \Group_Ticket();
