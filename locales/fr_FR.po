@@ -25194,6 +25194,18 @@ msgid_plural "Appointments"
 msgstr[0] "Rendez-vous"
 msgstr[1] "Rendez-vous"
 
+#: inc/notificationtargetappointment.class.php:14
+msgid "New appointment"
+msgstr "Nouveau rendez-vous"
+
+#: inc/notificationtargetappointment.class.php:15
+msgid "Update of an appointment"
+msgstr "Mise à jour d'un rendez-vous"
+
+#: inc/notificationtargetappointment.class.php:16
+msgid "Deletion of an appointment"
+msgstr "Suppression d'un rendez-vous"
+
 msgid "Appointment target"
 msgid_plural "Appointment targets"
 msgstr[0] "Cible de rendez-vous"
