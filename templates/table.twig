@@ -62,6 +62,10 @@
         "enabled": {{ show_export is defined ? (show_export ? "true" : "false") : "true" }},
         "target": {{ export_target is defined ? export_target|json_encode|raw : "null" }},
         "params": {{ export_params is defined ? export_params|json_encode|raw : "null" }}
+    },
+    "search": {
+        "enabled": {{ search is defined and search ? "true" : "false" }},
+        "placeholder": {{ search_placeholder is defined ? search_placeholder|json_encode|raw : "Search"|json_encode|raw }}
     }
 }
 </script>

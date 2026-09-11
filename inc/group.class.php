@@ -104,6 +104,8 @@ class Group extends CommonTreeDropdown
               Group_Problem::class,
               Group_Reminder::class,
               Group_RSSFeed::class,
+              Group_SolutionTemplate::class,
+              Group_TaskTemplate::class,
               Group_Ticket::class,
               Group_User::class,
               ProjectTaskTeam::class,
@@ -210,6 +212,7 @@ class Group extends CommonTreeDropdown
         }
         $this->addStandardTab('Item_Problem', $ong, $options);
         $this->addStandardTab('Change_Item', $ong, $options);
+        $this->addStandardTab('AppointmentTarget', $ong, $options);
         $this->addStandardTab('Notepad', $ong, $options);
         $this->addStandardTab('Log', $ong, $options);
         return $ong;

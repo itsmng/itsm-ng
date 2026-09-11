@@ -122,7 +122,18 @@ class ITILFollowup extends CommonDBChild
         if (!$itilobject->can($this->getField('items_id'), READ)) {
             return false;
         }
-        if (Session::haveRight(self::$rightname, self::SEEPRIVATE)) {
+
+        $can_view_private = $itilobject->canCurrentUserAccessPrivateITILContent(
+            self::$rightname,
+            self::SEEPRIVATE
+        );
+        if (
+            $itilobject->shouldHidePrivateTicketContentFromCurrentUser()
+            && (int)$this->fields['is_private'] === 1
+        ) {
+            return false;
+        }
+        if ($can_view_private) {
             return true;
         }
         if (
@@ -172,6 +183,12 @@ class ITILFollowup extends CommonDBChild
         if (!$itilobject->can($this->getField('items_id'), READ)) {
             return false;
         }
+        if (
+            $itilobject->shouldHidePrivateTicketContentFromCurrentUser()
+            && (int)$this->fields['is_private'] === 1
+        ) {
+            return false;
+        }
 
         if (Session::haveRight(self::$rightname, PURGE)) {
             return true;
@@ -193,6 +210,12 @@ class ITILFollowup extends CommonDBChild
 
         $itilobject = new $this->fields['itemtype']();
         if (!$itilobject->can($this->getField('items_id'), READ)) {
+            return false;
+        }
+        if (
+            $itilobject->shouldHidePrivateTicketContentFromCurrentUser()
+            && (int)$this->fields['is_private'] === 1
+        ) {
             return false;
         }
 
@@ -437,6 +460,13 @@ class ITILFollowup extends CommonDBChild
         if (!isset($input["is_private"])) {
             $input['is_private'] = 0;
         }
+        if (
+            $input["_job"] instanceof Ticket
+            && $input["_job"]->shouldHidePrivateTicketContentFromCurrentUser()
+            && (int)$input['is_private'] === 1
+        ) {
+            $input['is_private'] = 0;
+        }
 
         if (isset($input["add_reopen"])) {
             if ($input["content"] == '') {
@@ -490,6 +520,15 @@ class ITILFollowup extends CommonDBChild
             && isset($input['content']) && ($input['content'] != $this->fields['content'])
         ) {
             $input["users_id_editor"] = $uid;
+        }
+
+        if (
+            isset($input['is_private'])
+            && $input["_job"] instanceof Ticket
+            && $input["_job"]->shouldHidePrivateTicketContentFromCurrentUser()
+            && (int)$input['is_private'] === 1
+        ) {
+            $input['is_private'] = 0;
         }
 
         return $input;
@@ -990,6 +1029,7 @@ class ITILFollowup extends CommonDBChild
         $requester = ($item->isUser(CommonITILActor::REQUESTER, Session::getLoginUserID())
                       || (isset($_SESSION["glpigroups"])
                           && $item->haveAGroup(CommonITILActor::REQUESTER, $_SESSION['glpigroups'])));
+        $hide_private_for_requester = $item->shouldHidePrivateTicketContentFromCurrentUser();
 
         $reopen_case = false;
         if ($this->isNewID($ID)) {
@@ -1033,6 +1073,11 @@ class ITILFollowup extends CommonDBChild
                            'name' => 'items_id',
                            'value' => $item->getID(),
                         ],
+                        $hide_private_for_requester ? [
+                           'type' => 'hidden',
+                           'name' => 'is_private',
+                           'value' => 0,
+                        ] : [],
                         $reopen_case ? [
                            'type' => 'hidden',
                            'name' => 'add_reopen',
@@ -1085,12 +1130,12 @@ class ITILFollowup extends CommonDBChild
                            'values' => getOptionForItems(RequestType::class, ['is_active' => 1, 'is_itilfollowup' => 1]),
                            'actions' => getItemActionButtons(['info', 'add'], RequestType::class),
                         ],
-                        __('Private') => [
+                        __('Private') => !$hide_private_for_requester ? [
                            'type' => 'checkbox',
                            'id' => 'is_privateswitch',
                            'name' => 'is_private',
                            'value' => $this->fields["is_private"]
-                        ],
+                        ] : [],
                         sprintf(__('%1$s (%2$s)'), __('File'), Document::getMaxUploadSize()) => [
                            'type' => 'file',
                            'name' => 'files',
@@ -1237,10 +1282,19 @@ class ITILFollowup extends CommonDBChild
            'itemtype'  => $itemtype,
            'items_id'  => $ID
         ];
-        if (!$showprivate) {
+        if ($itemtype === Ticket::class) {
+            $ticket = new Ticket();
+            if ($ticket->getFromDB($ID)) {
+                $where += $ticket->getCurrentUserPrivateITILContentRestriction(
+                    self::$rightname,
+                    self::SEEPRIVATE,
+                    true
+                );
+            }
+        } elseif (!$showprivate) {
             $where['OR'] = [
-               'is_private'   => 0,
-               'users_id'     => Session::getLoginUserID()
+               'is_private' => 0,
+               'users_id'   => Session::getLoginUserID()
             ];
         }
 
