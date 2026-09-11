@@ -29981,6 +29981,18 @@ msgid_plural "Appointments"
 msgstr[0] ""
 msgstr[1] ""
 
+#: inc/notificationtargetappointment.class.php:14
+msgid "New appointment"
+msgstr ""
+
+#: inc/notificationtargetappointment.class.php:15
+msgid "Update of an appointment"
+msgstr ""
+
+#: inc/notificationtargetappointment.class.php:16
+msgid "Deletion of an appointment"
+msgstr ""
+
 msgid "Appointment target"
 msgid_plural "Appointment targets"
 msgstr[0] ""
