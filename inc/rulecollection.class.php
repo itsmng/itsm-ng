@@ -115,8 +115,9 @@ class RuleCollection extends CommonDBTM
             'childrens' => $children,
         ]);
 
-        $iterator = $DB->request($restrict);
-        return count($iterator);
+        unset($restrict['ORDER']);
+        $restrict['SELECT'] = ['COUNT' => 'glpi_rules.id AS total'];
+        return (int) $DB->request($restrict)->next()['total'];
     }
 
 
@@ -483,14 +484,6 @@ class RuleCollection extends CommonDBTM
         }
 
         $nb         = $this->getCollectionSize($p['inherited'], $p['condition'], $p['childrens']);
-        $p['start'] = (isset($options["start"]) ? $options["start"] : 0);
-
-        if ($p['start'] >= $nb) {
-            $p['start'] = 0;
-        }
-
-        $p['limit'] = $_SESSION['glpilist_limit'];
-        $this->getCollectionPart($p);
 
         if ($canedit && $nb) {
             $massiveactionparams = [
@@ -519,59 +512,19 @@ class RuleCollection extends CommonDBTM
             $fields[] = __('Actions');
         }
 
-        $values = [];
-        $massiveActionValues = [];
-        foreach ($this->RuleList->list as $idx => $rule) {
-            $newValue = [];
-            $rule->getFromDB($rule->getID());
-            $newValue[] = $rule->getLink(['withtype' => true]);
-            $newValue[] = $rule->fields['description'];
-            if ($use_conditions) {
-                $newValue[] = $rule->getConditionName($rule->fields['condition']);
-            }
-            $newValue[] = $rule->fields['is_active'];
-            if ($display_entities) {
-                $newValue[] = Dropdown::getDropdownName(
-                    "glpi_entities",
-                    $rule->fields['entities_id']
-                );
-            } elseif ($rule->can_sort && $canedit) {
-                $active_condition = $rule->fields['condition'];
-                ob_start();
-                if ($idx > 0) {
-                    Html::showSimpleForm(
-                        $target,
-                        ['action' => 'up',
-                        'condition' => $active_condition],
-                        '',
-                        ['type' => $rule->fields["sub_type"],
-                        'id'   => $rule->fields["id"],],
-                        $CFG_GLPI["root_doc"]."/pics/deplier_up.png"
-                    );
-                }
-                if ($idx < count($this->RuleList->list) - 1) {
-                    Html::showSimpleForm(
-                        $target,
-                        ['action' => 'down',
-                        'condition' => $active_condition],
-                        '',
-                        ['type' => $rule->fields["sub_type"],
-                        'id'   => $rule->fields["id"]],
-                        $CFG_GLPI["root_doc"]."/pics/deplier_down.png"
-                    );
-                }
-                $newValue[] = ob_get_clean();
-            }
-
-            $values[] = $newValue;
-            $massiveActionValues[] = sprintf('item[%s][%s]', $rule->getType(), $rule->getID());
-        }
-
         renderTwigTemplate('table.twig', [
             'id' => 'ruleCollectionTable',
+            'state_key' => $this->getType() . '_' . $p['inherited'] . '_' . $p['childrens']
+                . '_' . $p['condition'],
             'fields' => $fields,
-            'values' => $values,
-            'massive_action' => $massiveActionValues,
+            'url' => $CFG_GLPI['root_doc'] . '/ajax/v2/rulecollection.php?' . http_build_query([
+                'collection' => $this->getType(),
+                'inherited' => $p['inherited'],
+                'childrens' => $p['childrens'],
+                'condition' => $p['condition'],
+            ]),
+            'pageSize' => (int) $_SESSION['glpilist_limit'],
+            'massive_action' => [],
         ]);
 
         Html::closeForm();
@@ -606,6 +559,110 @@ class RuleCollection extends CommonDBTM
         echo "<div class='spaced'>";
         $this->showAdditionalInformationsInForm($target);
         echo "</div>";
+    }
+
+
+    /**
+     * Return one page for the rule list's remote table data source.
+     */
+    public function getPaginatedRules(array $options = [])
+    {
+        global $DB, $CFG_GLPI;
+
+        $this->checkGlobal(READ);
+        if ($this->isRuleEntityAssigned()) {
+            $this->setEntity($_SESSION['glpiactive_entity']);
+        }
+        $rule = $this->getRuleClass();
+        $p = [
+            'active' => false,
+            'inherited' => $this->isRuleRecursive() ? (int) !empty($options['inherited']) : 1,
+            'childrens' => $this->isRuleRecursive() ? (int) !empty($options['childrens']) : 0,
+            'condition' => $rule->useConditions() ? max(0, (int) ($options['condition'] ?? 0)) : 0,
+        ];
+        $display_entities = $this->isRuleRecursive() && ($p['inherited'] || $p['childrens']);
+        $canedit = self::canUpdate() && !$display_entities;
+        $use_conditions = $rule->useConditions();
+        $target = $rule->getSearchURL();
+        $criteria = $this->getRuleListCriteria($p);
+        $count_criteria = $criteria;
+        unset($count_criteria['ORDER']);
+        $count_criteria['SELECT'] = [
+            'COUNT' => 'glpi_rules.id AS total',
+            'MIN' => 'glpi_rules.ranking AS first_rank',
+            'MAX' => 'glpi_rules.ranking AS last_rank',
+        ];
+        $summary = $DB->request($count_criteria)->next();
+
+        $sort_fields = ['glpi_rules.name', 'glpi_rules.description'];
+        if ($use_conditions) {
+            $sort_fields[] = 'glpi_rules.condition';
+        }
+        $sort_fields[] = 'glpi_rules.is_active';
+        if ($display_entities) {
+            $sort_fields[] = 'glpi_entities.completename';
+        }
+        $sort = (string) ($options['sort'] ?? '');
+        if (ctype_digit($sort) && isset($sort_fields[(int) $sort])) {
+            $criteria['ORDER'] = [
+                $sort_fields[(int) $sort] . (strtolower($options['order'] ?? 'asc') === 'desc' ? ' DESC' : ' ASC'),
+            ];
+        }
+        $criteria['ORDER'][] = 'glpi_rules.id ASC';
+        $criteria['START'] = max(0, (int) ($options['offset'] ?? 0));
+        $criteria['LIMIT'] = max(1, min(10000, (int) ($options['limit'] ?? $_SESSION['glpilist_limit'])));
+
+        $values = [];
+        foreach ($DB->request($criteria) as $data) {
+            $newValue = [];
+            $rule = $this->getRuleClass();
+            $rule->fields = $data;
+            $newValue[] = $rule->getLink(['withtype' => true]);
+            $newValue[] = $rule->fields['description'];
+            if ($use_conditions) {
+                $newValue[] = $rule->getConditionName($rule->fields['condition']);
+            }
+            $newValue[] = $rule->fields['is_active'];
+            if ($display_entities) {
+                $newValue[] = Dropdown::getDropdownName(
+                    "glpi_entities",
+                    $rule->fields['entities_id']
+                );
+            } elseif ($rule->can_sort && $canedit) {
+                $active_condition = $rule->fields['condition'];
+                ob_start();
+                if ($rule->fields['ranking'] > $summary['first_rank']) {
+                    Html::showSimpleForm(
+                        $target,
+                        ['action' => 'up',
+                        'condition' => $active_condition],
+                        '',
+                        ['type' => $rule->fields["sub_type"],
+                        'id'   => $rule->fields["id"],],
+                        $CFG_GLPI["root_doc"]."/pics/deplier_up.png"
+                    );
+                }
+                if ($rule->fields['ranking'] < $summary['last_rank']) {
+                    Html::showSimpleForm(
+                        $target,
+                        ['action' => 'down',
+                        'condition' => $active_condition],
+                        '',
+                        ['type' => $rule->fields["sub_type"],
+                        'id'   => $rule->fields["id"]],
+                        $CFG_GLPI["root_doc"]."/pics/deplier_down.png"
+                    );
+                }
+                $newValue[] = ob_get_clean();
+            }
+
+            if ($canedit) {
+                $newValue['value'] = sprintf('item[%s][%s]', $rule->getType(), $rule->getID());
+            }
+            $values[] = $newValue;
+        }
+
+        return ['total' => (int) $summary['total'], 'rows' => $values];
     }
 
 
