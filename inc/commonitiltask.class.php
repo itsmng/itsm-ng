@@ -1760,7 +1760,9 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'id' => 'TaskTemplateDropdown',
                        'values' => getOptionForItems(
                            TaskTemplate::class,
-                           TaskTemplate::getGroupVisibilityCondition()
+                           Dropdown::addNewCondition(
+                               TaskTemplate::getGroupVisibilityCondition()
+                           )
                        ),
                        'actions' => getItemActionButtons(['info', 'add'], TaskTemplate::class),
                        'hooks' => [
