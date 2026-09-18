@@ -43,7 +43,7 @@ if (substr(ITSM_VERSION, -4) === '-dev') {
     );
 } else {
     //for stable version
-   define("ITSM_SCHEMA_VERSION", '2.2.0');
+    define("ITSM_SCHEMA_VERSION", '2.2.0');
 }
 
 // Current version of ITSM-NG

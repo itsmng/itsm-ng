@@ -6,16 +6,16 @@
     <input type="text" class="form-control form-control-sm {{ attributes.class }}" id="{{ input_id }}" data-input
       {% for name, value in attributes|filter((v, k) => k not in ['name', 'type', 'id', 'class', 'value']) %} {{name}}="{{value}}" {% endfor %}
       value="{{ attributes.value|replace({'T': ' '}) }}" aria-label="{{ attributes.name }}"/>
-    <button type="button" class="btn btn-sm border" data-toggle aria-label="{{ 'Select Date'|trans }}" {{ attributes.disabled or attributes.readonly ? 'disabled' : '' }}>
+    <button type="button" class="btn btn-sm border" data-toggle aria-label="{{ 'Select Date'|trans }}" {{ attributes.disabled is defined or attributes.readonly is defined ? 'disabled' : '' }}>
       <i class="far fa-calendar-alt" aria-hidden="true"></i>
     </button>
     {% if not attributes.required %}
-      <button type="button" class="btn btn-sm border" data-clear aria-label="{{ 'Clear'|trans }}" {{ attributes.disabled or attributes.readonly ? 'disabled' : '' }}>
+      <button type="button" class="btn btn-sm border" data-clear aria-label="{{ 'Clear'|trans }}" {{ attributes.disabled is defined or attributes.readonly is defined ? 'disabled' : '' }}>
         <i class="fa fa-times-circle" aria-hidden="true"></i>
       </button>
     {% endif %}
   </div>
-  <input type="hidden" id="{{ hidden_id }}" name="{{ attributes.name }}" value="{{ attributes.value|replace({'T': ' '}) }}" {{attributes.disabled ? 'disabled' : ''}}>
+  <input type="hidden" id="{{ hidden_id }}" name="{{ attributes.name }}" value="{{ attributes.value|replace({'T': ' '}) }}" {{attributes.disabled is defined ? 'disabled' : ''}}>
   <script>
     $(function() {
       const visibleInput = document.getElementById({{ input_id|json_encode|raw }});

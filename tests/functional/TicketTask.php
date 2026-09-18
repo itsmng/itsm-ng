@@ -115,7 +115,8 @@ class TicketTask extends DbTestCase
         $this->integer($xpath->query('//form[@id="planning_edit_test"]')->length)->isEqualTo(1);
         $this->string($xpath->query('//select[@name="state"]/option[@selected]')->item(0)->getAttribute('value'))
             ->isEqualTo((string)\Planning::DONE);
-        $this->string($xpath->query('//select[@name="tasktemplates_id"]/option[@selected]')->item(0)->getAttribute('value'))
+        $this->integer($xpath->query('//select[@name="tasktemplates_id"]//option[@selected]')->length)->isEqualTo(1);
+        $this->string($xpath->query('//select[@name="tasktemplates_id"]//option[@selected]')->item(0)->getAttribute('value'))
             ->isEqualTo((string)$template_id);
         $this->string($xpath->query('//select[@name="actiontime"]/option[@selected]')->item(0)->getAttribute('value'))
             ->isEqualTo('4020');
