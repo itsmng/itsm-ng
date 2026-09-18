@@ -376,8 +376,8 @@ class Entity extends DbTestCase
 
     }
 
-   public function testLockTicketDateInheritance()
-   {
+    public function testLockTicketDateInheritance()
+    {
         $this->login();
 
         $root    = getItemByTypeName('Entity', 'Root entity', true);
@@ -386,7 +386,7 @@ class Entity extends DbTestCase
         $child_2 = getItemByTypeName('Entity', '_test_child_2', true);
 
         $entity = new \Entity();
-      try {
+        try {
             $this->boolean($entity->update([
                'id'               => $root,
                'lock_ticket_date' => 1,
@@ -464,24 +464,24 @@ class Entity extends DbTestCase
                'id'               => $root,
                'lock_ticket_date' => 0,
             ]);
-         }
-      }
+        }
+    }
 
-   public function testGetUsedConfigHidePrivateTicketContentForRequesters()
-   {
-      $this->login();
+    public function testGetUsedConfigHidePrivateTicketContentForRequesters()
+    {
+        $this->login();
 
-      $root    = getItemByTypeName('Entity', 'Root entity', true);
-      $parent  = getItemByTypeName('Entity', '_test_root_entity', true);
-      $child_1 = getItemByTypeName('Entity', '_test_child_1', true);
-      $child_2 = getItemByTypeName('Entity', '_test_child_2', true);
+        $root    = getItemByTypeName('Entity', 'Root entity', true);
+        $parent  = getItemByTypeName('Entity', '_test_root_entity', true);
+        $child_1 = getItemByTypeName('Entity', '_test_child_1', true);
+        $child_2 = getItemByTypeName('Entity', '_test_child_2', true);
 
-      $entity = new \Entity();
+        $entity = new \Entity();
 
-      $this->boolean($entity->update([
-           'id' => $root,
-           'requesters_private_ticket_content' => 0,
-        ]))->isTrue();
+        $this->boolean($entity->update([
+             'id' => $root,
+             'requesters_private_ticket_content' => 0,
+          ]))->isTrue();
         $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $parent))->isEqualTo(0);
         $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_1))->isEqualTo(0);
         $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_2))->isEqualTo(0);
@@ -507,9 +507,9 @@ class Entity extends DbTestCase
            'requesters_private_ticket_content' => 0,
         ]))->isTrue();
         $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $parent))->isEqualTo(1);
-      $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_1))->isEqualTo(0);
-      $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_2))->isEqualTo(0);
-   }
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_1))->isEqualTo(0);
+        $this->integer((int)\Entity::getUsedConfig('requesters_private_ticket_content', $child_2))->isEqualTo(0);
+    }
 
 
     protected function customCssProvider()

@@ -1862,13 +1862,13 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'type' => 'select',
                        'id' => 'DropdownForActionTime',
                        'name' => 'actiontime',
-                       'value' => $this->fields['actiontime'],
+                       'value' => (int)$this->fields['actiontime'],
                        'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
                           'min'             => 0,
                           'max'             => 100 * HOUR_TIMESTAMP,
                           'step'            => 15 * MINUTE_TIMESTAMP,
                           'addfirstminutes' => true,
-                          'toadd'           => [$this->fields['actiontime']],
+                          'toadd'           => [(int)$this->fields['actiontime']],
                        ])
                     ],
                     User::getTypeName(1) => [

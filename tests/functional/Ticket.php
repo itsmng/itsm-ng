@@ -2572,9 +2572,16 @@ class Ticket extends DbTestCase
             $ticket->showForm($ticket->getID());
             $output = ob_get_clean();
 
-            $this->string($output)->match(
-                '/<input[^>]*type="datetime-local"[^>]*disabled=""[^>]*aria-label="date"/'
-            );
+            $document = new \DOMDocument();
+            $previous = libxml_use_internal_errors(true);
+            $document->loadHTML($output);
+            libxml_clear_errors();
+            libxml_use_internal_errors($previous);
+            $xpath = new \DOMXPath($document);
+            $this->integer($xpath->query('//input[@type="text" and @aria-label="date" and @disabled]')->length)
+                ->isEqualTo(1);
+            $this->integer($xpath->query('//input[@type="hidden" and @name="date" and @disabled]')->length)
+                ->isEqualTo(1);
 
             $this->boolean($entity->update([
                'id' => 0,
@@ -2587,10 +2594,15 @@ class Ticket extends DbTestCase
             $ticket->showForm($ticket->getID());
             $output = ob_get_clean();
 
-            $this->integer((int) preg_match(
-                '/<input[^>]*type="datetime-local"[^>]*disabled=""[^>]*aria-label="date"/',
-                $output
-            ))->isEqualTo(0);
+            $previous = libxml_use_internal_errors(true);
+            $document->loadHTML($output);
+            libxml_clear_errors();
+            libxml_use_internal_errors($previous);
+            $xpath = new \DOMXPath($document);
+            $this->integer($xpath->query('//input[@type="text" and @aria-label="date" and not(@disabled)]')->length)
+                ->isEqualTo(1);
+            $this->integer($xpath->query('//input[@type="hidden" and @name="date" and not(@disabled)]')->length)
+                ->isEqualTo(1);
         } finally {
             $entity->update([
                'id' => 0,
