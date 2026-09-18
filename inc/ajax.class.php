@@ -79,9 +79,8 @@ class Ajax
             }
         }
 
-        $out  = "<script src='{$CFG_GLPI['root_doc']}/node_modules/jquery/dist/jquery.min.js'></script>";
-        $out  .= "<script src='{$CFG_GLPI['root_doc']}/node_modules/jquery-ui/dist/jquery-ui.min.js'></script>";
-        $out  .= "<script type='text/javascript'>\n";
+        // The host page already loads jQuery UI; reloading it loses existing dialog instances.
+        $out = "<script type='text/javascript'>\n";
         $container = '';
         if (!empty($param['container'])) {
             $container = Html::jsGetElementbyID(Html::cleanId($param['container']));

@@ -1273,6 +1273,7 @@ class Planning extends CommonGLPI
             $options = [
                'from_planning_edit_ajax' => true,
                'formoptions'             => "id='edit_event_form$rand'",
+               'attributes'              => ['id' => "edit_event_form$rand"],
                'start'                   => date("Y-m-d", strtotime((string) $params['start']))
             ];
             if (isset($params['parentitemtype'])) {
@@ -1286,7 +1287,7 @@ class Planning extends CommonGLPI
             echo "</div>";
             echo "<hr>";
             $item->showForm(intval($params['id']), $options);
-            $callback = "$('.ui-dialog-content').dialog('close');
+            $callback = "$('#edit_event_form$rand').closest('.ui-dialog-content').dialog('close');
                       GLPIPlanning.refresh();
                       displayAjaxMessageAfterRedirect();";
             Html::ajaxForm("#edit_event_form$rand", $callback);
@@ -1532,13 +1533,8 @@ class Planning extends CommonGLPI
 
         $display_dates = $params['_display_dates'] ?? true;
 
-        $mintime = $CFG_GLPI["planning_begin"];
         if (isset($params["begin"]) && !empty($params["begin"])) {
             $begin = $params["begin"];
-            $begintime = date("H:i:s", strtotime((string) $begin));
-            if ($begintime < $mintime) {
-                $mintime = $begintime;
-            }
         } else {
             $ts = $CFG_GLPI['time_step'] * 60; // passage en minutes
             $time = time() + $ts - 60;
@@ -1556,13 +1552,10 @@ class Planning extends CommonGLPI
 
         if ($display_dates) {
             echo "<tr class='tab_bg_2'><td>" . __('Start date') . "</td><td>";
-            renderTwigTemplate('macros/input.twig', [
-               'name'        => 'plan[begin]',
-               'type'        => 'datetime-local',
+            Html::showDateTimeField('plan[begin]', [
                'value'       => $begin,
                'required'    => true,
-               'min'         => $mintime,
-               'max'         => $CFG_GLPI["planning_end"],
+               'maybeempty'  => false,
             ]);
             echo "</td></tr>";
         }
@@ -2039,6 +2032,8 @@ class Planning extends CommonGLPI
                'ajaxurl'     => $event['ajaxurl'] ?? "",
                'itemtype'    => $event['itemtype'] ?? "",
                'parentitemtype' => $event['parentitemtype'] ?? "",
+               'parentid'    => $event['parentid'] ?? "",
+               'can_complete' => $event['can_complete'] ?? false,
                'items_id'    => $event['id'] ?? "",
                'resourceId'  => $event['resourceId'] ?? "",
                'priority'    => $event['priority'] ?? "",
