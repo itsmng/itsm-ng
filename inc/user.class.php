@@ -283,6 +283,7 @@ class User extends CommonDBTM
         $this->addStandardTab('Change_Item', $ong, $options);
         $this->addStandardTab('Document_Item', $ong, $options);
         $this->addStandardTab('Reservation', $ong, $options);
+        $this->addStandardTab('AppointmentTarget', $ong, $options);
         $this->addStandardTab('Auth', $ong, $options);
         $this->addStandardTab('Link', $ong, $options);
         $this->addStandardTab('Certificate_Item', $ong, $options);

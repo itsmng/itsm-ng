@@ -1711,7 +1711,7 @@ JAVASCRIPT
               'title' => __('Tools'),
               'types' => [
                  'Project', 'Reminder', 'RSSFeed', 'KnowbaseItem',
-                 'ReservationItem', 'Report', 'MigrationCleaner',
+                 'ReservationItem', 'AppointmentTarget', 'Report', 'MigrationCleaner',
                  'SavedSearch', 'Impact'
               ]
            ],
@@ -3274,18 +3274,18 @@ JS;
            ? " disabled='disabled'"
            : "";
         $clear    = $p['maybeempty'] && $p['canedit']
-           ? "<a data-clear  title='" . __s('Clear') . "'>
-               <i class='fa fa-times-circle pointer'></i>
-            </a>"
+           ? "<button type='button' class='btn btn-sm border' data-clear aria-label='" . __s('Clear') . "'>
+               <i class='fa fa-times-circle' aria-hidden='true'></i>
+            </button>"
            : "";
 
         $output = <<<HTML
-         <div class="no-wrap flatpickr" id="showdate{$p['rand']}">
-            <input type="text" name="{$name}" value="{$p['value']}"
+         <div class="flatpickr input-group flex-nowrap w-100" id="showdate{$p['rand']}">
+            <input type="text" class="form-control form-control-sm" name="{$name}" value="{$p['value']}"
                    {$required} {$disabled} data-input>
-            <a class="input-button" data-toggle>
-               <i class="far fa-calendar-alt fa-lg pointer" title="Select Date"></i>
-            </a>
+            <button type="button" class="btn btn-sm border" data-toggle {$disabled} aria-label="Select Date">
+               <i class="far fa-calendar-alt" aria-hidden="true"></i>
+            </button>
             $clear
          </div>
 HTML;
@@ -5724,6 +5724,31 @@ JAVASCRIPT;
 
 
     /**
+     * Returns FullCalendar script tags, including the current locale when available.
+     *
+     * @return string
+     */
+    public static function fullCalendarScripts()
+    {
+        global $CFG_GLPI;
+
+        $scripts = [self::script('public/lib/fullcalendar.js')];
+        if (isset($_SESSION['glpilanguage'])) {
+            foreach ([2, 3] as $loc) {
+                $filename = "public/lib/fullcalendar/locales/" .
+                   strtolower((string) $CFG_GLPI["languages"][$_SESSION['glpilanguage']][$loc]) . ".js";
+                if (file_exists(GLPI_ROOT . '/' . $filename)) {
+                    $scripts[] = self::script($filename);
+                    break;
+                }
+            }
+        }
+
+        return implode("\n", $scripts);
+    }
+
+
+    /**
      * Creates a link element for CSS stylesheets.
      *
      * @since 0.85
@@ -6464,7 +6489,7 @@ JAVASCRIPT;
         echo Html::scriptBlock("
       $(function() {
          var lastClicked = null;
-         $('input[type=submit], button[type=submit]').click(function(e) {
+         $('$selector').on('click', ':submit', function(e) {
             e = e || event;
             lastClicked = e.target || e.srcElement;
          });
@@ -6473,11 +6498,14 @@ JAVASCRIPT;
             e.preventDefault();
             var form = $(this);
             var formData = form.closest('form').serializeArray();
-            //push submit button
-            formData.push({
-               name: $(lastClicked).attr('name'),
-               value: $(lastClicked).val()
-            });
+            // Include implicit submit buttons from Twig forms as well as keyboard submissions.
+            var submitter = (e.originalEvent && e.originalEvent.submitter) || lastClicked;
+            if (submitter && submitter.name) {
+               formData.push({
+                  name: submitter.name,
+                  value: $(submitter).val()
+               });
+            }
 
             $.ajax({
                url: form.attr('action'),

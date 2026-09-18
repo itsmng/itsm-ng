@@ -57,6 +57,43 @@ class TaskTemplate extends CommonDropdown
     }
 
 
+    public function defineTabs($options = [])
+    {
+
+        $ong = [];
+        $this->addDefaultFormTab($ong);
+        $this->addStandardTab(Group_TaskTemplate::class, $ong, $options);
+        if ($this->dohistory) {
+            $this->addStandardTab('Log', $ong, $options);
+        }
+        if (DropdownTranslation::canBeTranslated($this)) {
+            $this->addStandardTab('DropdownTranslation', $ong, $options);
+        }
+
+        return $ong;
+    }
+
+
+    public function cleanDBonPurge()
+    {
+        $this->deleteChildrenAndRelationsFromDb([
+           Group_TaskTemplate::class,
+        ]);
+    }
+
+
+    public static function getGroupVisibilityCondition(?array $groups_ids = null): array
+    {
+        return Group_TaskTemplate::getItemRestrictionCondition($groups_ids);
+    }
+
+
+    public static function isVisibleForCurrentUser(int $id): bool
+    {
+        return Group_TaskTemplate::canAccessItem($id);
+    }
+
+
     public function getAdditionalFields()
     {
 
@@ -65,6 +102,13 @@ class TaskTemplate extends CommonDropdown
               'name'  => 'content',
               'type'  => 'richtextarea',
               'value' => $this->fields['content'],
+              'col_lg' => 12,
+              'col_md' => 12,
+           ],
+           __('Task title') => [
+              'name'  => 'title',
+              'type'  => 'text',
+              'value' => $this->fields['title'] ?? '',
               'col_lg' => 12,
               'col_md' => 12,
            ],
@@ -119,6 +163,14 @@ class TaskTemplate extends CommonDropdown
     public function rawSearchOptions()
     {
         $tab = parent::rawSearchOptions();
+
+        $tab[] = [
+           'id'                 => '11',
+           'name'               => __('Task title'),
+           'field'              => 'title',
+           'table'              => $this->getTable(),
+           'datatype'           => 'string'
+        ];
 
         $tab[] = [
            'id'                 => '4',

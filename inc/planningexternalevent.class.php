@@ -276,8 +276,9 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
                           'values' => [
                               Planning::INFO => _n('Information', 'Information', 1),
                               Planning::TODO => __('To do'),
-                              Planning::DONE => __('Done')
-                          ],
+                              Planning::DONE => __('Done'),
+                              Planning::CANCELLED => __('Cancelled')
+                           ],
                           'value' => $this->fields['state'],
                           $canedit ? '' : 'disabled' => true,
                       ],

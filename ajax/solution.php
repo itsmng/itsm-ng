@@ -42,10 +42,16 @@ Session::checkLoginUser();
 if (isset($_POST['value']) && ($_POST['value'] > 0)) {
     $template = new SolutionTemplate();
 
-    if ($template->getFromDB($_POST['value'])) {
+    if (
+        $template->getFromDB($_POST['value'])
+        && SolutionTemplate::isVisibleForCurrentUser((int)$_POST['value'])
+    ) {
         $fields = $template->fields;
         $fields['content'] = htmlspecialchars_decode($fields['content']);
         echo json_encode($fields);
+    } else {
+        http_response_code(403);
+        echo json_encode([]);
     }
 } else {
     echo json_encode([]);

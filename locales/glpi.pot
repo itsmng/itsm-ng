@@ -16645,6 +16645,18 @@ msgstr ""
 msgid "Anonymize support agents"
 msgstr ""
 
+#: inc/entity.class.php:2478
+msgid "Lock ticket creation date"
+msgstr ""
+
+#: inc/entity.class.php:2485
+msgid "Hide private followups and tasks from requesters"
+msgstr ""
+
+#: inc/commonitilobject.class.php:1312
+msgid "Ticket creation date modification is not allowed for this entity."
+msgstr ""
+
 #: inc/entity.class.php:2609 inc/entity.class.php:2304
 #: inc/entity.class.php:2304
 msgid "Automatic closing configuration"
@@ -29962,4 +29974,64 @@ msgid "Approver group"
 msgstr ""
 
 msgid "Group users"
+msgstr ""
+
+msgid "Appointment"
+msgid_plural "Appointments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/notificationtargetappointment.class.php:14
+msgid "New appointment"
+msgstr ""
+
+#: inc/notificationtargetappointment.class.php:15
+msgid "Update of an appointment"
+msgstr ""
+
+#: inc/notificationtargetappointment.class.php:16
+msgid "Deletion of an appointment"
+msgstr ""
+
+msgid "Appointment target"
+msgid_plural "Appointment targets"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Appointment availability"
+msgid_plural "Appointment availabilities"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Unavailability"
+msgid_plural "Unavailabilities"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Appointment target is not available"
+msgstr ""
+
+msgid "The selected timeframe is outside appointment availability"
+msgstr ""
+
+msgid "The selected appointment target is already booked for this timeframe"
+msgstr ""
+
+msgid "Office hours"
+msgstr ""
+
+msgid "Booked"
+msgstr ""
+
+#, php-format
+msgid "Booked: %s"
+msgstr ""
+
+msgid "Prohibit appointments"
+msgstr ""
+
+msgid "Existing appointments and availability rules will be removed."
+msgstr ""
+
+msgid "Authorize appointments"
 msgstr ""

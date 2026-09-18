@@ -432,6 +432,7 @@ class Html extends \GLPITestCase
            'RSSFeed',
            'KnowbaseItem',
            'ReservationItem',
+           'AppointmentTarget',
            'Report',
            'MigrationCleaner',
            'SavedSearch',

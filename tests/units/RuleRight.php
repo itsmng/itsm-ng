@@ -215,4 +215,93 @@ class RuleRight extends DbTestCase
         // Clean session
         $this->login();
     }
+
+    protected function defaultPreferencesProvider()
+    {
+        return [
+            'new recursive access' => [true, true],
+            'inaccessible default entity' => [false, true],
+            'unassigned default profile' => [true, false],
+        ];
+    }
+
+    /**
+     * @dataProvider defaultPreferencesProvider
+     */
+    public function testDefaultPreferencesOnFirstLogin($validEntity, $validProfile)
+    {
+        global $DB;
+
+        $this->login();
+        $parent = getItemByTypeName('Entity', '_test_root_entity', true);
+        $child = getItemByTypeName('Entity', '_test_child_1', true);
+        $user = new \User();
+        $login = 'rule_default_preferences_' . (int)$validEntity . '_' . (int)$validProfile;
+        $id = $user->add([
+            'name' => $login,
+            'password' => TU_PASS,
+            'password2' => TU_PASS,
+            'authtype' => \Auth::DB_GLPI,
+            'is_active' => 1,
+        ]);
+        $this->integer($id)->isGreaterThan(0);
+        // Start without permissions or preferences from a previous login.
+        $DB->delete('glpi_profiles_users', ['users_id' => $id]);
+        $DB->update('glpi_users', ['entities_id' => 0, 'profiles_id' => 0], ['id' => $id]);
+        $this->array(\Profile_User::getUserEntities($id))->isEmpty();
+        $this->array(\Profile_User::getUserProfiles($id))->isEmpty();
+
+        // Separate matching rules assign rights and default preferences.
+        foreach ([
+            ['entities_id' => $parent, 'profiles_id' => 1, 'is_recursive' => 1],
+            ['_entities_id_default' => $validEntity ? $child : 0,
+             '_profiles_id_default' => $validProfile ? 1 : 4],
+        ] as $index => $actions) {
+            $rule = new \RuleRight();
+            $ruleId = $rule->add([
+                'name' => 'Default preferences rule ' . $index,
+                'sub_type' => 'RuleRight',
+                'match' => 'AND',
+                'is_active' => 1,
+                'entities_id' => 0,
+                'is_recursive' => 1,
+            ]);
+            $this->integer($ruleId)->isGreaterThan(0);
+            $this->integer((new \RuleCriteria())->add([
+                'rules_id' => $ruleId,
+                'criteria' => 'LOGIN',
+                'condition' => \Rule::PATTERN_IS,
+                'pattern' => $login,
+            ]))->isGreaterThan(0);
+            foreach ($actions as $field => $value) {
+                $this->integer((new \RuleAction())->add([
+                    'rules_id' => $ruleId,
+                    'action_type' => 'assign',
+                    'field' => $field,
+                    'value' => $value,
+                ]))->isGreaterThan(0);
+            }
+        }
+        $rules = \SingletonRuleList::getInstance('RuleRight', 0);
+        $rules->load = 0;
+        $rules->list = [];
+
+        try {
+            // Both the first login and subsequent logins must select the same defaults.
+            for ($attempt = 0; $attempt < 2; $attempt++) {
+                $this->login($login, TU_PASS, false);
+                $this->boolean($user->getFromDB($id))->isTrue();
+                $this->integer((int)$user->fields['entities_id'])->isEqualTo($validEntity ? $child : 0);
+                $this->integer((int)$user->fields['profiles_id'])->isEqualTo($validProfile ? 1 : 0);
+                $this->integer((int)$_SESSION['glpidefault_entity'])->isEqualTo($validEntity ? $child : 0);
+                $this->integer((int)$_SESSION['glpiactive_entity'])->isEqualTo($validEntity ? $child : $parent);
+                $this->integer((int)$_SESSION['glpiactiveprofile']['id'])->isEqualTo(1);
+                $this->array(\Profile_User::getUserEntities($id))->contains($child)->notContains(0);
+                $this->array(\Profile_User::getForUser($id, true))->hasSize(1);
+            }
+        } finally {
+            $rules->load = 0;
+            $rules->list = [];
+        }
+    }
 }

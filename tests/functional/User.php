@@ -592,7 +592,7 @@ class User extends \DbTestCase
             }
             usort(
                 $relations,
-                static fn($left, $right) => strcmp(json_encode($left), json_encode($right))
+                static fn ($left, $right) => strcmp(json_encode($left), json_encode($right))
             );
             return $relations;
         };

@@ -45,7 +45,14 @@ Session::checkLoginUser();
 
 if (isset($_POST['tasktemplates_id']) && ($_POST['tasktemplates_id'] > 0)) {
     $template = new TaskTemplate();
-    $template->getFromDB($_POST['tasktemplates_id']);
+    if (
+        !$template->getFromDB($_POST['tasktemplates_id'])
+        || !TaskTemplate::isVisibleForCurrentUser((int)$_POST['tasktemplates_id'])
+    ) {
+        http_response_code(403);
+        echo json_encode([]);
+        return;
+    }
 
     if (DropdownTranslation::isDropdownTranslationActive()) {
         $template->fields['content'] = DropdownTranslation::getTranslatedValue(
@@ -59,4 +66,6 @@ if (isset($_POST['tasktemplates_id']) && ($_POST['tasktemplates_id'] > 0)) {
 
     $template->fields = array_map('html_entity_decode', $template->fields);
     echo json_encode($template->fields);
+} else {
+    echo json_encode([]);
 }

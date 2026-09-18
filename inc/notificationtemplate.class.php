@@ -626,6 +626,9 @@ class NotificationTemplate extends CommonDBTM
         if (isset($target->obj->documents)) {
             $mailing_options['documents'] = $target->obj->documents;
         }
+        if (method_exists($target, 'getGeneratedAttachments')) {
+            $mailing_options['generated_attachments'] = $target->getGeneratedAttachments($options['event'] ?? '', $options, $user_infos);
+        }
 
         return $mailing_options;
     }
