@@ -3274,18 +3274,18 @@ JS;
            ? " disabled='disabled'"
            : "";
         $clear    = $p['maybeempty'] && $p['canedit']
-           ? "<a data-clear  title='" . __s('Clear') . "'>
-               <i class='fa fa-times-circle pointer'></i>
-            </a>"
+           ? "<button type='button' class='btn btn-sm border' data-clear aria-label='" . __s('Clear') . "'>
+               <i class='fa fa-times-circle' aria-hidden='true'></i>
+            </button>"
            : "";
 
         $output = <<<HTML
-         <div class="no-wrap flatpickr" id="showdate{$p['rand']}">
-            <input type="text" name="{$name}" value="{$p['value']}"
+         <div class="flatpickr input-group flex-nowrap w-100" id="showdate{$p['rand']}">
+            <input type="text" class="form-control form-control-sm" name="{$name}" value="{$p['value']}"
                    {$required} {$disabled} data-input>
-            <a class="input-button" data-toggle>
-               <i class="far fa-calendar-alt fa-lg pointer" title="Select Date"></i>
-            </a>
+            <button type="button" class="btn btn-sm border" data-toggle {$disabled} aria-label="Select Date">
+               <i class="far fa-calendar-alt" aria-hidden="true"></i>
+            </button>
             $clear
          </div>
 HTML;
@@ -6464,7 +6464,7 @@ JAVASCRIPT;
         echo Html::scriptBlock("
       $(function() {
          var lastClicked = null;
-         $('input[type=submit], button[type=submit]').click(function(e) {
+         $('$selector').on('click', ':submit', function(e) {
             e = e || event;
             lastClicked = e.target || e.srcElement;
          });
@@ -6473,11 +6473,14 @@ JAVASCRIPT;
             e.preventDefault();
             var form = $(this);
             var formData = form.closest('form').serializeArray();
-            //push submit button
-            formData.push({
-               name: $(lastClicked).attr('name'),
-               value: $(lastClicked).val()
-            });
+            // Include implicit submit buttons from Twig forms as well as keyboard submissions.
+            var submitter = (e.originalEvent && e.originalEvent.submitter) || lastClicked;
+            if (submitter && submitter.name) {
+               formData.push({
+                  name: submitter.name,
+                  value: $(submitter).val()
+               });
+            }
 
             $.ajax({
                url: form.attr('action'),

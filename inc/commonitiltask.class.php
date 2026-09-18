@@ -305,6 +305,15 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
 
         Toolbox::manageBeginAndEndPlanDates($input['plan']);
 
+        // Unchanged schedule fields must not overwrite an independently edited task duration.
+        if (
+            isset($input['plan']['begin'], $input['plan']['end'])
+            && $input['plan']['begin'] === $this->fields['begin']
+            && $input['plan']['end'] === $this->fields['end']
+        ) {
+            unset($input['plan']);
+        }
+
         if (isset($input['_planningrecall'])) {
             PlanningRecall::manageDatas($input['_planningrecall']);
         }
@@ -1292,6 +1301,9 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                         $interv[$key]['color']            = $options['color'];
                         $interv[$key]['event_type_color'] = $options['event_type_color'];
                         $interv[$key]['itemtype']         = $itemtype;
+                        $interv[$key]['parentitemtype']   = $parentitemtype;
+                        $interv[$key]['parentid']         = $parentitem->getID();
+                        $interv[$key]['can_complete']     = $item->can($data['id'], UPDATE);
                         $url_id = $item->fields[$parentitem->getForeignKeyField()];
                         if (!$options['genical']) {
                             $interv[$key]["url"] = $parentitemtype::getFormURLWithID($url_id);
@@ -1679,7 +1691,6 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
         if (isset($options['parent']) && !empty($options['parent'])) {
             $item = $options['parent'];
         }
-        $options['formoptions'] = ($options['formoptions'] ?? '') . ' data-track-changes=true';
 
         $fkfield = $item->getForeignKeyField();
 
@@ -1702,12 +1713,16 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
         $rand = mt_rand();
         $hide_private_for_requester = $item->shouldHidePrivateTicketContentFromCurrentUser();
 
+        $has_planning = !empty($this->fields['begin']);
         $planLabel = __('Plan this task');
         $title_placeholder = self::getTitleToDisplay($this->fields);
+        $planning_content = "<div id='plan$rand' onclick='showPlanUpdate$rand()'>"
+            . "<span class='btn btn-secondary'>$planLabel</span></div>";
 
         $form = [
            'action' => $this->getFormURL(),
            'itemtype' => $this::class,
+           'attributes' => ($options['attributes'] ?? []) + ['data-track-changes' => 'true'],
            'content' => [
               $this->getTypeName() => [
                  'visible' => true,
@@ -1758,6 +1773,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'type' => 'select',
                        'name' => 'tasktemplates_id',
                        'id' => 'TaskTemplateDropdown',
+                       'value' => $this->fields['tasktemplates_id'] ?? 0,
                        'values' => getOptionForItems(
                            TaskTemplate::class,
                            Dropdown::addNewCondition(
@@ -1834,7 +1850,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                           Planning::DONE => __('Done'),
                           Planning::CANCELLED => __('Cancelled')
                        ],
-                       'value' => Planning::TODO,
+                       'value' => $this->fields['state'],
                     ] : [],
                     __('Private') => ($this->maybePrivate() && !$hide_private_for_requester) ? [
                        'type' => 'checkbox',
@@ -1846,11 +1862,13 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'type' => 'select',
                        'id' => 'DropdownForActionTime',
                        'name' => 'actiontime',
+                       'value' => $this->fields['actiontime'],
                        'values' => [Dropdown::EMPTY_VALUE] + Timezone::GetTimeStamp([
                           'min'             => 0,
                           'max'             => 100 * HOUR_TIMESTAMP,
                           'step'            => 15 * MINUTE_TIMESTAMP,
                           'addfirstminutes' => true,
+                          'toadd'           => [$this->fields['actiontime']],
                        ])
                     ],
                     User::getTypeName(1) => [
@@ -1885,27 +1903,44 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'col_lg' => 12,
                        'col_md' => 12,
                     ],
-                    __('Planning') => $canplan ? [
-                       'content' => <<<HTML
-                        <div id="plan{$rand}" onClick="showPlanUpdate{$rand}()">
-                           <span class="btn btn-secondary">$planLabel</span>
-                        </div>
-                     HTML,
+                    __('Planning') => $canplan && !$has_planning ? [
+                       'content' => $planning_content,
                        'col_lg' => 12,
                        'col_md' => 12,
                     ] : [],
-                    __('Status') => [
+                    $item->getTypeName(1) . ' - ' . __('Status') => empty($options['from_planning_edit_ajax']) ? [
                        'type' => 'select',
                        'name' => '_status',
                        'values' => $item->getAllowedStatusArray($item->fields['status']),
                        'value' => $item->getField('status'),
                        'required' => true,
-                    ],
+                    ] : [],
                  ]
               ]
            ]
         ];
-        if ($canplan && !isCommandLine()) {
+        if ($canplan && $has_planning) {
+            $form['content'][__('Planning')] = [
+                'visible' => true,
+                'inputs' => [
+                    __('Start date') => [
+                        'type' => 'datetime-local',
+                        'name' => 'plan[begin]',
+                        'value' => $this->fields['begin'],
+                        'required' => true,
+                        'col_lg' => 6,
+                    ],
+                    __('End date') => [
+                        'type' => 'datetime-local',
+                        'name' => 'plan[end]',
+                        'value' => $this->fields['end'],
+                        'required' => true,
+                        'col_lg' => 6,
+                    ],
+                ],
+            ];
+        }
+        if ($canplan && !$has_planning && !isCommandLine()) {
             $entity = Session::getActiveEntity();
             echo Html::scriptBlock(
                 <<<JS
@@ -1917,8 +1952,8 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                       action: 'add_event_classic_form',
                       form: 'followups',
                       entity: {$entity},
-                      itemtype: 'TicketTask',
-                      items_id: {$item->getID()}
+                      itemtype: '{$this->getType()}',
+                      items_id: {$ID}
                    }
                  }
                 ).done(function(data) {

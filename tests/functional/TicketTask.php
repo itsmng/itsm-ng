@@ -73,6 +73,91 @@ class TicketTask extends DbTestCase
         return ($as_object ? $ticket : $tid);
     }
 
+    public function testPlanningEditFormPreservesTaskValues()
+    {
+        $this->login();
+        $ticket = $this->getNewTicket(true);
+        $template = new \TaskTemplate();
+        $this->integer($template_id = $template->add([
+            'name' => 'Planning edit template',
+            'content' => 'Template content',
+            'entities_id' => $ticket->fields['entities_id'],
+        ]))->isGreaterThan(0);
+
+        $task = new \TicketTask();
+        $this->integer($task_id = $task->add([
+            'tickets_id' => $ticket->getID(),
+            'content' => 'Scheduled task',
+            'state' => \Planning::DONE,
+            'tasktemplates_id' => $template_id,
+            'users_id_tech' => \Session::getLoginUserID(),
+            'plan' => [
+                'begin' => '2030-05-01 10:15:00',
+                'end' => '2030-05-01 11:22:00',
+            ],
+        ]))->isGreaterThan(0);
+
+        ob_start();
+        $task->showForm($task_id, [
+            'parent' => $ticket,
+            'from_planning_edit_ajax' => true,
+            'attributes' => ['id' => 'planning_edit_test'],
+        ]);
+        $html = ob_get_clean();
+
+        $document = new \DOMDocument();
+        $previous = libxml_use_internal_errors(true);
+        $document->loadHTML($html);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+        $xpath = new \DOMXPath($document);
+
+        $this->integer($xpath->query('//form[@id="planning_edit_test"]')->length)->isEqualTo(1);
+        $this->string($xpath->query('//select[@name="state"]/option[@selected]')->item(0)->getAttribute('value'))
+            ->isEqualTo((string)\Planning::DONE);
+        $this->string($xpath->query('//select[@name="tasktemplates_id"]/option[@selected]')->item(0)->getAttribute('value'))
+            ->isEqualTo((string)$template_id);
+        $this->string($xpath->query('//select[@name="actiontime"]/option[@selected]')->item(0)->getAttribute('value'))
+            ->isEqualTo('4020');
+        $this->integer($xpath->query('//select[@name="_status"]')->length)->isEqualTo(0);
+        $this->string($xpath->query('//input[@name="plan[begin]"]')->item(0)->getAttribute('value'))
+            ->isEqualTo('2030-05-01 10:15:00');
+        $this->string($xpath->query('//input[@name="plan[end]"]')->item(0)->getAttribute('value'))
+            ->isEqualTo('2030-05-01 11:22:00');
+        $this->integer($xpath->query('//select[@name="plan[_duration]"]')->length)->isEqualTo(0);
+        $this->string($html)->contains('enableTime: true');
+        $this->string($html)->notContains('/node_modules/jquery/dist/jquery.min.js');
+
+        $input = [
+            'id' => $task_id,
+            'tickets_id' => $ticket->getID(),
+            'title' => 'Title-only edit',
+            'actiontime' => 4020,
+            'plan' => [
+                'begin' => '2030-05-01 10:15:00',
+                'end' => '2030-05-01 11:22:00',
+            ],
+        ];
+        $this->boolean($task->update($input))->isTrue();
+        $this->boolean($task->getFromDB($task_id))->isTrue();
+        $this->string($task->fields['end'])->isEqualTo('2030-05-01 11:22:00');
+        $this->integer((int)$task->fields['actiontime'])->isEqualTo(4020);
+
+        $input['actiontime'] = 1800;
+        $input['tasktemplates_id'] = $template_id;
+        $this->boolean($task->update($input))->isTrue();
+        $this->boolean($task->getFromDB($task_id))->isTrue();
+        $this->string($task->fields['end'])->isEqualTo('2030-05-01 11:22:00');
+        $this->integer((int)$task->fields['actiontime'])->isEqualTo(1800);
+
+        $input['users_id_tech'] = \Session::getLoginUserID();
+        $input['plan']['end'] = '2030-05-01 11:29:00';
+        $this->boolean($task->update($input))->isTrue();
+        $this->boolean($task->getFromDB($task_id))->isTrue();
+        $this->string($task->fields['end'])->isEqualTo('2030-05-01 11:29:00');
+        $this->integer((int)$task->fields['actiontime'])->isEqualTo(4440);
+    }
+
     public function testSchedulingAndRecall()
     {
         $this->login();

@@ -1,4 +1,4 @@
-/* global FullCalendar, FullCalendarLocales, FullCalendarInteraction */
+/* global FullCalendar, FullCalendarLocales, FullCalendarInteraction, displayAjaxMessageAfterRedirect */
 class PlanningCalendar {
   constructor() {
     this.calendar = null;
@@ -145,14 +145,47 @@ class PlanningCalendar {
         // ITIL tasks expose completion status in the event title so it is visible in every view.
         if (["TicketTask", "ProblemTask", "ChangeTask"].indexOf(extProps.itemtype) >= 0 && extProps.state !== "") {
           var checkboxClass = extProps.state == 2 ? " is-checked" : "";
+          const canComplete = extProps.can_complete && extProps.state != 0;
           var titleTargets = element.find(".fc-title, .fc-list-item-title");
           titleTargets.prepend(
             '<span class="itil-planning-checkbox' +
               checkboxClass +
               '" title="' +
               __("Completion status") +
-              '" aria-hidden="true"></span>'
+              '" role="checkbox" aria-checked="' + (extProps.state == 2) +
+              '" aria-label="' + __("Completion status") + '" aria-disabled="' + !canComplete +
+              '" tabindex="' + (canComplete ? 0 : -1) + '"></span>'
           );
+          element.find(".itil-planning-checkbox").on("mousedown pointerdown", function (e) {
+            e.stopPropagation();
+          }).on("click keydown", function (e) {
+            if (e.type === "keydown" && e.key !== " " && e.key !== "Enter") {
+              return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            if (!canComplete || element.data("completing")) {
+              return;
+            }
+            element.data("completing", true);
+            const parentKeys = { Ticket: "tickets_id", Problem: "problems_id", Change: "changes_id" };
+            const data = {
+              action: "change_task_state",
+              tasks_id: extProps.items_id,
+              parenttype: extProps.parentitemtype,
+            };
+            data[parentKeys[extProps.parentitemtype]] = extProps.parentid;
+            $.ajax({
+              url: CFG_GLPI.root_doc + "/ajax/timeline.php",
+              type: "POST",
+              dataType: "json",
+              data: data,
+            }).always(function () {
+              element.removeData("completing");
+              GLPIPlanning.refresh();
+              displayAjaxMessageAfterRedirect();
+            });
+          });
           if (extProps.state_label) {
             titleTargets.append(' <span class="itil-task-state">(' + $("<div/>").text(extProps.state_label).html() + ")</span>");
           }
@@ -518,31 +551,45 @@ class PlanningCalendar {
         }
       },
       eventClick: function (info) {
+        if ($(info.jsEvent.target).closest(".itil-planning-checkbox").length) {
+          info.jsEvent.preventDefault();
+          return;
+        }
         const event = info.event;
         const editable = event.extendedProps._editable; // do not know why editable property is not available
         if (event.extendedProps.ajaxurl && editable && !disable_edit) {
           const start = event.start;
           const ajaxurl = event.extendedProps.ajaxurl + "&start=" + start.toISOString();
           info.jsEvent.preventDefault(); // don't let the browser navigate
-          $("<div></div>")
+          if ($(".planning-event-editor").length) {
+            return;
+          }
+          $("<div class='planning-event-editor'></div>")
             .dialog({
               modal: true,
-              width: "auto",
+              width: Math.min(1000, $(window).width() - 40),
               height: "auto",
+              maxHeight: $(window).height() - 40,
+              position: { my: "center", at: "center", of: window },
               close: function () {
+                $(this).find("textarea").each(function () {
+                  const editor = window[this.id];
+                  if (editor && typeof editor.destroy === "function") {
+                    editor.destroy().catch(console.error);
+                    delete window[this.id];
+                  }
+                });
+                $(this).find(".flatpickr, input").each(function () {
+                  if (this._flatpickr) {
+                    this._flatpickr.destroy();
+                  }
+                });
+                $(this).dialog("destroy").remove();
                 GLPIPlanning.refresh();
               },
             })
             .load(ajaxurl, function () {
-              $(this).dialog({
-                position: {
-                  my: "center",
-                  at: "center",
-                  viewport: $(window),
-                  of: $("#page"),
-                  collision: "fit",
-                },
-              });
+              $(this).dialog("option", "position", { my: "center", at: "center", of: window });
             });
         }
       },
