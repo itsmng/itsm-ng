@@ -4820,6 +4820,10 @@ msgstr "Affichage dynamique"
 msgid "Page size for dropdown (paging using scroll)"
 msgstr "Taille par défaut pour les listes déroulantes"
 
+#: inc/config.class.php:411
+msgid "Allow selecting users before their account validity starts"
+msgstr "Autoriser la sélection des utilisateurs avant le début de validité de leur compte"
+
 #: inc/config.class.php:383 inc/config.class.php:390
 msgid "Autocompletion of text fields"
 msgstr "Complétion automatique des champs texte"

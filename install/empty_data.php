@@ -133,6 +133,7 @@ $default_prefs = [
    'text_login'                              => '',
    'founded_new_version'                     => '',
    'dropdown_max'                            => '100',
+   'allow_future_users_in_dropdowns'         => '0',
    'ajax_wildcard'                           => '*',
    'ajax_limit_count'                        => '10',
    'use_ajax_autocompletion'                 => '1',

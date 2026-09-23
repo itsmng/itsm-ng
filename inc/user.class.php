@@ -3819,7 +3819,7 @@ class User extends CommonDBTM
         $with_no_right = 0,
         array $conditions = []
     ) {
-        global $DB;
+        global $DB, $CFG_GLPI;
 
         // No entity define : use active ones
         if ($entity_restrict < 0) {
@@ -4051,12 +4051,6 @@ class User extends CommonDBTM
                   'glpi_users.is_active'  => 1,
                   [
                      'OR' => [
-                        ['glpi_users.begin_date' => null],
-                        ['glpi_users.begin_date' => ['<', new QueryExpression('NOW()')]]
-                     ]
-                  ],
-                  [
-                     'OR' => [
                         ['glpi_users.end_date' => null],
                         ['glpi_users.end_date' => ['>', new QueryExpression('NOW()')]]
                      ]
@@ -4064,6 +4058,14 @@ class User extends CommonDBTM
 
                 ]
             );
+            if (empty($CFG_GLPI['allow_future_users_in_dropdowns'])) {
+                $WHERE[] = [
+                    'OR' => [
+                        ['glpi_users.begin_date' => null],
+                        ['glpi_users.begin_date' => ['<', new QueryExpression('NOW()')]]
+                    ]
+                ];
+            }
         }
 
         if (
