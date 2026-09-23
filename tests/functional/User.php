@@ -37,6 +37,85 @@ namespace tests\units;
 
 class User extends \DbTestCase
 {
+    protected function selectableValidityProvider()
+    {
+        return [
+            'unlimited' => [null, null, 1, 0, true],
+            'current' => ['-2 weeks', '+2 weeks', 1, 0, true],
+            'future' => ['+2 weeks', null, 1, 0, true],
+            'future bounded' => ['+2 weeks', '+4 weeks', 1, 0, true],
+            'expired' => ['-4 weeks', '-2 weeks', 1, 0, false],
+            'disabled future' => ['+2 weeks', null, 0, 0, false],
+            'deleted future' => ['+2 weeks', null, 1, 1, false],
+        ];
+    }
+
+    /**
+     * @dataProvider selectableValidityProvider
+     */
+    public function testSelectableValidity($begin, $end, $active, $deleted, $expected)
+    {
+        global $DB, $CFG_GLPI;
+
+        $this->login();
+        $user = getItemByTypeName('User', TU_USER);
+        $id = (int)$user->getID();
+        $this->boolean($DB->update('glpi_users', [
+            'begin_date' => $begin === null ? null : date('Y-m-d H:i:s', strtotime($begin)),
+            'end_date' => $end === null ? null : date('Y-m-d H:i:s', strtotime($end)),
+            'is_active' => $active,
+            'is_deleted' => $deleted,
+        ], ['id' => $id]))->isTrue();
+
+        $config = $CFG_GLPI;
+        try {
+            foreach ([null, '0', '1'] as $setting) {
+                if ($setting === null) {
+                    unset($CFG_GLPI['allow_future_users_in_dropdowns']);
+                } else {
+                    $CFG_GLPI['allow_future_users_in_dropdowns'] = $setting;
+                }
+                $selectable = $expected && ($setting === '1' || $begin === null || strtotime($begin) < time());
+                $rows = iterator_to_array(\User::getSqlSearchResult(false, 'all'));
+                $this->boolean(in_array($id, array_column($rows, 'id')))->isEqualTo($selectable);
+
+                // The asset and group forms use this helper rather than the AJAX dropdown.
+                $this->boolean(array_key_exists($id, getOptionsForUsers('all')))->isEqualTo($selectable);
+
+                $rows = iterator_to_array(\User::getSqlSearchResult(false, 'all', -1, 0, [$id]));
+                $this->boolean(in_array($id, array_column($rows, 'id')))->isFalse();
+
+                $rows = iterator_to_array(\User::getSqlSearchResult(false, 'all', PHP_INT_MAX));
+                $this->boolean(in_array($id, array_column($rows, 'id')))->isFalse();
+            }
+        } finally {
+            $CFG_GLPI = $config;
+        }
+    }
+
+    public function testFutureValidityStillBlocksLogin()
+    {
+        global $DB, $CFG_GLPI;
+
+        $config = $CFG_GLPI;
+        $CFG_GLPI['allow_future_users_in_dropdowns'] = 1;
+        try {
+            $user = getItemByTypeName('User', TU_USER);
+            $this->boolean($DB->update('glpi_users', [
+                'begin_date' => date('Y-m-d H:i:s', strtotime('+2 weeks')),
+            ], ['id' => $user->getID()]))->isTrue();
+            $this->login(TU_USER, TU_PASS, true, false);
+            $this->boolean(isset($_SESSION['glpiID']))->isFalse();
+
+            $this->boolean($DB->update('glpi_users', [
+                'begin_date' => date('Y-m-d H:i:s', strtotime('-1 day')),
+            ], ['id' => $user->getID()]))->isTrue();
+            $this->login();
+        } finally {
+            $CFG_GLPI = $config;
+        }
+    }
+
     public function testGenerateUserToken()
     {
         $user = getItemByTypeName('User', TU_USER);

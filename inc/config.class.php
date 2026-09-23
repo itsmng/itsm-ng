@@ -408,6 +408,12 @@ class Config extends CommonDBTM
                           'max' => 200,
                           'col_lg' => 6,
                       ],
+                      __('Allow selecting users before their account validity starts') => [
+                          'name' => 'allow_future_users_in_dropdowns',
+                          'type' => 'checkbox',
+                          'value' => $CFG_GLPI['allow_future_users_in_dropdowns'] ?? 0,
+                          'col_lg' => 12,
+                      ],
                       __('Autocompletion of text fields') => [
                         'name' => 'use_ajax_autocompletion',
                         'type' => 'checkbox',
