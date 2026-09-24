@@ -2636,10 +2636,20 @@ class User extends CommonDBTM
                       'col_lg' => 6,
                    ] : [],
                    __('Responsible') => ($higherrights) ? [
-                      'type' => 'select',
                       'name' => 'users_id_supervisor',
-                      'values' => getOptionsForUsers('all'),
+                      'type' => 'select',
+                      'values' => [0 => Dropdown::EMPTY_VALUE] + ($this->fields['users_id_supervisor'] ? [
+                         $this->fields['users_id_supervisor'] => getUserName($this->fields['users_id_supervisor']),
+                      ] : []),
                       'value' => $this->fields['users_id_supervisor'],
+                      'ajax' => [
+                         'url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownUsers.php',
+                         'type' => 'POST',
+                         'data' => [
+                            'right' => 'all',
+                            'entity_restrict' => -1,
+                         ],
+                      ],
                       'col_lg' => 6,
                    ] : [],
                 ]

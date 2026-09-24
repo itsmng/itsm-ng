@@ -3916,6 +3916,9 @@ class Dropdown
 
         $ret['results'] = $results;
         $ret['count']   = $count;
+        $ret['pagination'] = [
+           'more' => count($result) >= (int)$post['page_limit'],
+        ];
 
         return ($json === true) ? json_encode($ret) : $ret;
     }

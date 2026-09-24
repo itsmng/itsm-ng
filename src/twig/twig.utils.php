@@ -63,6 +63,20 @@ function expandSelect(&$select, $fields = [])
             $select["noLib"] = $fields["noLib"];
         }
     }
+    if (
+        ($select['ajax']['url'] ?? null) === $CFG_GLPI['root_doc'] . '/ajax/getDropdownUsers.php'
+        && !isset($select['ajax']['data']['_idor_token'])
+    ) {
+        $select['ajax']['data'] = ($select['ajax']['data'] ?? []) + [
+            'right' => 'all',
+            'entity_restrict' => -1,
+        ];
+        $select['ajax']['data']['_idor_token'] = Session::getNewIDORToken('User', [
+            'right' => $select['ajax']['data']['right'],
+            'entity_restrict' => $select['ajax']['data']['entity_restrict'],
+        ]);
+    }
+
     return $select;
 }
 
