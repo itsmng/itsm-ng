@@ -40,6 +40,38 @@ use Generator;
 
 class Dropdown extends DbTestCase
 {
+    public function testExpandSelectGeneratesUserDropdownToken()
+    {
+        global $CFG_GLPI;
+
+        $select = [
+            'type' => 'select',
+            'values' => [],
+            'ajax' => [
+                'url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownUsers.php',
+                'data' => ['right' => 'own_ticket', 'entity_restrict' => '42'],
+            ],
+        ];
+        \expandSelect($select);
+        $data = $select['ajax']['data'] + ['itemtype' => 'User'];
+        $this->boolean(\Session::validateIDOR($data))->isTrue();
+        foreach (['right' => 'all', 'entity_restrict' => '-1', 'itemtype' => 'Group'] as $key => $value) {
+            $this->boolean(\Session::validateIDOR(array_replace($data, [$key => $value])))->isFalse();
+        }
+
+        $token = $data['_idor_token'];
+        \expandSelect($select);
+        $this->string($select['ajax']['data']['_idor_token'])->isEqualTo($token);
+
+        $select['ajax'] = ['url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownUsers.php'];
+        \expandSelect($select);
+        $this->boolean(\Session::validateIDOR($select['ajax']['data'] + ['itemtype' => 'User']))->isTrue();
+
+        $select['ajax'] = ['url' => 'https://example.com/ajax/getDropdownUsers.php'];
+        \expandSelect($select);
+        $this->array($select['ajax'])->notHasKey('data');
+    }
+
     public function testGetItemActionButtonsHonorsItemRights()
     {
         $_SESSION['glpiactiveprofile'][\RequestType::$rightname] = READ | CREATE;
