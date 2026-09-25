@@ -2368,6 +2368,28 @@ class Entity extends CommonTreeDropdown
             unset($hidePrivateTicketContentValues[self::CONFIG_PARENT]);
         }
 
+        $inheritedSurvey = '';
+        if ($ID > 0) {
+            $parent = $entity->getField('entities_id');
+            $rate = self::getUsedConfig('inquest_config', $parent, 'inquest_rate');
+            $summary = __('Disabled');
+            if ($rate > 0) {
+                $type = self::getUsedConfig('inquest_config', $parent);
+                $delay = self::getUsedConfig('inquest_config', $parent, 'inquest_delay');
+                $summary = TicketSatisfaction::getTypeInquestName($type) . '<br>'
+                    . sprintf(_n('%d day', '%d days', $delay), $delay) . '<br>'
+                    . sprintf(__('%d%%'), $rate);
+                if ($type == 2) {
+                    $summary .= '<br>' . htmlspecialchars(
+                        self::getUsedConfig('inquest_config', $parent, 'inquest_URL'),
+                        ENT_QUOTES,
+                        'UTF-8'
+                    );
+                }
+            }
+            $inheritedSurvey = self::inheritedValue($summary, false, false);
+        }
+
         $form = [
            'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
            'buttons' => [
@@ -2493,9 +2515,9 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'autoclose_delay',
                        'value' => $entity->fields['autoclose_delay'],
-                       'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
+                       'values' => (($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : []) +
                           [self::CONFIG_NEVER => __('Never')] +
-                          range(1, 99),
+                          array_combine(range(1, 99), range(1, 99)),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('autoclose_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('autoclose_delay', ['autoclose_delay' => self::getUsedConfig('autoclose_delay', $ID)]), false, false) : ''),
                        'col_lg' => 6,
@@ -2504,9 +2526,9 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'autopurge_delay',
                        'value' => $entity->fields['autopurge_delay'],
-                       'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
+                       'values' => (($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : []) +
                           [self::CONFIG_NEVER => __('Never')] +
-                          range(1, 3650),
+                          array_combine(range(1, 3650), range(1, 3650)),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('autopurge_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('autopurge_delay', ['autopurge_delay' => self::getUsedConfig('autopurge_delay', $ID)]), false, false) : ''),
                        'col_lg' => 6,
@@ -2524,25 +2546,22 @@ class Entity extends CommonTreeDropdown
                   __('Configuring the satisfaction survey') => [
                        'type'  => 'select',
                        'name'  => 'inquest_config',
-                       'value' => $entity->fields['inquest_config'],
-                       'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
+                       'value' => ($ID == 0 && $entity->fields['inquest_config'] == self::CONFIG_PARENT)
+                           ? 1 : $entity->fields['inquest_config'],
+                       'id' => 'entity_inquest_config_' . $ID,
+                       'values' => (($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : []) +
                           [1 => __('Internal survey')] +
                           [2 => __('External survey')],
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('inquest_config') == self::CONFIG_PARENT)) ?
-                                  self::inheritedValue(self::getSpecificValueToDisplay('inquest_config', ['inquest_config' => self::getUsedConfig('inquest_config', $ID)]), false, false) : '',
+                       'after' => $inheritedSurvey,
                   ],
                   __('Create survey after') => [
                        'type'  => 'select',
                        'name'  => 'inquest_delay',
                        'value' => $entity->getfield('inquest_delay'),
-                       'values' => array_merge(
-                           ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
-                           [self::CONFIG_NEVER => __('As soon as possible')],
-                           range(1, 99)
-                       ),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('inquest_delay') == self::CONFIG_PARENT)) ?
-                                  ' ' . self::inheritedValue(self::getSpecificValueToDisplay('inquest_delay', ['inquest_delay' => self::getUsedConfig('inquest_delay', $ID)]), false, false) : ''),
+                       'values' => [0 => __('As soon as possible')] +
+                          array_combine(range(1, 99), range(1, 99)),
+                       'after' => __('days'),
                        'col_lg' => 6,
                   ],
                   __('Rate to trigger survey') => [
@@ -2553,8 +2572,7 @@ class Entity extends CommonTreeDropdown
                        'min'   => 0,
                        'max'   => 100,
                        'step'  => 1,
-                       'after' => '%' . (($ID > 0 && ($entity->getField('inquest_rate') == self::CONFIG_PARENT)) ?
-                                  ' ' . self::inheritedValue(self::getUsedConfig('inquest_rate', $ID) . '%', false, false) : ''),
+                       'after' => '%',
                   ],
                   __('Duration of survey') => [
                        'type'  => 'number',
@@ -2564,8 +2582,13 @@ class Entity extends CommonTreeDropdown
                        'min'   => 0,
                        'max'   => 180,
                        'step'  => 1,
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('inquest_duration') == self::CONFIG_PARENT)) ?
-                                  ' ' . self::inheritedValue(self::getUsedConfig('inquest_duration', $ID) . ' ' . __('days'), false, false) : ''),
+                       'after' => __('days'),
+                  ],
+                  __('URL') => [
+                       'type'  => 'text',
+                       'name'  => 'inquest_URL',
+                       'value' => $entity->getField('inquest_URL'),
+                       'col_lg' => 12,
                   ],
                   __('For tickets closed after') => [
                        'type'  => 'datetime-local',
@@ -2578,6 +2601,26 @@ class Entity extends CommonTreeDropdown
            ]
         ];
         renderTwigForm($form);
+
+        echo Html::scriptBlock(<<<JAVASCRIPT
+            $(function () {
+                const selector = $('#entity_inquest_config_{$ID}');
+                const form = selector.closest('form');
+                const updateSurveyFields = function () {
+                    const mode = Number(selector.val());
+                    ['inquest_delay', 'inquest_rate', 'inquest_duration', 'max_closedate', 'inquest_URL'].forEach(function (name) {
+                        const input = form.find('[name="' + name + '"]');
+                        const visible = mode > 0 && (name !== 'inquest_URL' || mode === 2);
+                        const wrapper = input.closest('.row > div');
+                        wrapper.find(':input').prop('disabled', !visible);
+                        wrapper.toggle(visible);
+                    });
+                    selector.closest('[data-dropdown-group]').find('.inheritedValue').toggle(mode < 0);
+                };
+                selector.on('change', updateSurveyFields);
+                updateSurveyFields();
+            });
+JAVASCRIPT);
 
         Plugin::doHook("pre_item_form", ['item' => $entity, 'options' => []]);
         Plugin::doHook("post_item_form", ['item' => $entity, 'options' => &$options]);
