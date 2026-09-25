@@ -5,6 +5,7 @@ import { expect, type APIRequestContext, type APIResponse, type Locator, type Pa
 
 export interface SeedTicketOptions {
   withTaskState?: 'todo' | 'done';
+  withoutActors?: boolean;
 }
 
 export interface SeedTicketResult {
@@ -241,8 +242,9 @@ export async function seedTicket(request: APIRequestContext, options: SeedTicket
       name: ticketName,
       content: ticketContent,
       description: ticketContent,
-      _users_id_requester: session.userId,
-      _users_id_assign: session.userId,
+      ...(options.withoutActors ? { _auto_import: true } : {}),
+      _users_id_requester: options.withoutActors ? 0 : session.userId,
+      _users_id_assign: options.withoutActors ? 0 : session.userId,
     });
 
     const result: SeedTicketResult = {

@@ -5354,6 +5354,7 @@ class CommonDBTM extends CommonGLPI
                        'type' => 'select',
                        'name' => $name,
                        ...$values,
+                       'toadd' => $options['toadd'] ?? $searchoptions['toadd'] ?? [],
                        'value' => $value,
                     ]);
                 case "right":
