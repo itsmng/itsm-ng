@@ -39,6 +39,52 @@ use DbTestCase;
 
 class CronTask extends DbTestCase
 {
+    public function testPaginatedLogs()
+    {
+        global $DB;
+
+        $this->login();
+        $task = new \CronTask();
+        $this->boolean($task->getFromDBByCrit(['name' => 'mailgate']))->isTrue();
+        $id = $task->getID();
+        $DB->delete('glpi_crontasklogs', ['crontasks_id' => $id]);
+        $insert = function ($state, $parent = 0, $volume = 0) use ($DB, $id) {
+            $DB->insert('glpi_crontasklogs', [
+                'crontasks_id' => $id,
+                'crontasklogs_id' => $parent,
+                'date' => '2026-09-25 10:00:00',
+                'state' => $state,
+                'elapsed' => 1.5,
+                'volume' => $volume,
+                'content' => '<script>test</script>',
+            ]);
+            return (int) $DB->insertId();
+        };
+        $run = $insert(\CronTaskLog::STATE_START);
+        $insert(\CronTaskLog::STATE_RUN, $run);
+        $insert(\CronTaskLog::STATE_STOP, $run, 1);
+        $insert(\CronTaskLog::STATE_ERROR, $run, 2);
+        $insert(\CronTaskLog::STATE_STOP, $run, 3);
+
+        $page = $task->getPaginatedLogs(['limit' => 2]);
+        $this->integer((int) $page['total'])->isEqualTo(3);
+        $this->array(array_column($page['rows'], 'volume'))->isEqualTo([3, 2]);
+        $this->string($page['rows'][0]['content'])->isEqualTo('&lt;script&gt;test&lt;/script&gt;');
+        $page = $task->getPaginatedLogs(['limit' => 2, 'offset' => 2]);
+        $this->integer((int) $page['total'])->isEqualTo(3);
+        $this->array(array_column($page['rows'], 'volume'))->isEqualTo([1]);
+        $page = $task->getPaginatedLogs(['limit' => 2, 'sort' => 'volume', 'order' => 'asc']);
+        $this->array(array_column($page['rows'], 'volume'))->isEqualTo([1, 2]);
+        $page = $task->getPaginatedLogs(['crontasklogs_id' => $run, 'limit' => 2, 'offset' => 2]);
+        $this->integer((int) $page['total'])->isEqualTo(5);
+        $this->array(array_column($page['rows'], 'volume'))->isEqualTo([1, 2]);
+
+        $DB->update('glpi_crontasklogs', ['crontasks_id' => $id + 100000], ['crontasks_id' => $id]);
+        $page = $task->getPaginatedLogs(['crontasklogs_id' => $run]);
+        $this->integer((int) $page['total'])->isEqualTo(0);
+        $this->array($page['rows'])->isEmpty();
+    }
+
     protected function registerProvider()
     {
         return [
