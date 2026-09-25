@@ -178,7 +178,7 @@ class Notification_NotificationTemplate extends CommonDBRelation
                 "{$data['mode']} ($mode)" :
                 $mode['label'];
             $values[] = [
-                'id' => $notiftpl->getID(),
+                'id' => $notiftpl->getLink(),
                 'name' => $tpl_link,
                 'mode' => $mode,
             ];
