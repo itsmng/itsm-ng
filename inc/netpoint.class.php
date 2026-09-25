@@ -55,7 +55,7 @@ class Netpoint extends CommonDropdown
            Location::getTypeName(1) => [
               'name'  => 'locations_id',
               'type'  => 'select',
-              'values' => getOptionForItems('Location'),
+              ...getAjaxDropdownOptions('Location'),
               'value' => $this->fields['locations_id'],
               'actions' => getItemActionButtons(['info', 'add'], 'Location')
            ],

@@ -174,7 +174,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                    Software::getTypeName() => [
                       'type' => 'select',
                       'name' => Software::getForeignKeyField(),
-                      'values' => getOptionForItems(
+                      ...getAjaxDropdownOptions(
                           Software::class,
                           [
                             'is_deleted' => 0,
@@ -199,14 +199,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                                  softwares_id: val,
                               },
                               success: function(data) {
-                                 const jsonData = JSON.parse(data);
-                                 jsonData[0] = '-----';
-                                 for (const key in jsonData) {
-                                    const option = document.createElement('option');
-                                    option.value = key;
-                                    option.text = jsonData[key];
-                                    select.appendChild(option);
-                                 }
+                                 setAjaxDropdownOptions(select, JSON.parse(data));
                               }
                            });
                         }
@@ -1086,14 +1079,8 @@ class Item_SoftwareVersion extends CommonDBRelation
                                  },
                                  dataType: 'json',
                                  success: function(data) {
-
                                     $('#dropdownForSoftwareVersion').prop('disabled', false);
-                                    $('#dropdownForSoftwareVersion').empty();
-                                    for (const [key, value] of Object.entries(data)) {
-                                       $('#dropdownForSoftwareVersion').append(
-                                          $('<option></option>').val(key).html(value)
-                                       )
-                                    }
+                                    setAjaxDropdownOptions('#dropdownForSoftwareVersion', data);
                                  },
                               });
                            JS,
@@ -1103,7 +1090,7 @@ class Item_SoftwareVersion extends CommonDBRelation
                            'type' => 'select',
                            'id' => 'dropdownForSoftwareVersion',
                            'name' => 'softwareversions_id',
-                           'values' => getOptionForItems('Software', ['entities_id' => $entities_id]),
+                           ...getAjaxDropdownOptions(SoftwareVersion::class, ['softwares_id' => 0]),
                            'col_lg' => 6,
                            'disabled' => true,
                         ],
@@ -1197,13 +1184,6 @@ class Item_SoftwareVersion extends CommonDBRelation
             (empty($withtemplate) || ($withtemplate != 2))
             && $canedit
         ) {
-            $allOptions = getOptionForItems(Software::class, ['entities_id' => $entities_id, 'is_template' => 0]);
-            $options = [];
-            foreach ($installedSoftware as $id) {
-                if (isset($allOptions[$id])) {
-                    $options[$id] = $allOptions[$id];
-                }
-            }
             $form = [
                'action' => Item_SoftwareLicense::getFormURL(),
                'buttons' => [

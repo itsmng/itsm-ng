@@ -258,7 +258,7 @@ class Software extends CommonDBTM
                        'name' => 'manufacturers_id',
                        'type' => 'select',
                        'value' => $this->fields['manufacturers_id'],
-                       'values' => getOptionForItems("Manufacturer"),
+                       ...getAjaxDropdownOptions("Manufacturer"),
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
                      __('Location') => [
@@ -272,14 +272,14 @@ class Software extends CommonDBTM
                        'name' => 'softwarecategories_id',
                        'type' => 'select',
                        'value' => $this->fields['softwarecategories_id'],
-                       'values' => getOptionForItems("SoftwareCategory"),
+                       ...getAjaxDropdownOptions("SoftwareCategory"),
                        'actions' => getItemActionButtons(['info', 'add'], "SoftwareCategory"),
                     ],
                     __("Technician in charge of the software") => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
                        'value' => $this->fields['users_id_tech'],
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     __("Associable to a ticket") => [
@@ -299,7 +299,7 @@ class Software extends CommonDBTM
                        'name' => 'users_id',
                        'type' => 'select',
                        'value' => $this->fields['users_id'],
-                       'values' => getOptionForItems("User", ['entities_id' => $this->fields['entities_id']]), // NEED right => all
+                       ...getAjaxDropdownOptions("User", ['entities_id' => $this->fields['entities_id']]), // NEED right => all
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                      __("Group") => [
@@ -330,7 +330,7 @@ class Software extends CommonDBTM
                        'name' => 'softwares_id',
                        'type' => 'select',
                        'value' => $this->fields['softwares_id'],
-                       'values' => getOptionForItems("Software"),
+                       ...getAjaxDropdownOptions("Software"),
                     ],
                  ]
               ]
@@ -752,6 +752,7 @@ class Software extends CommonDBTM
         $rand = Dropdown::show('Software', ['condition' => $where]);
 
         $paramsselsoft = ['softwares_id' => '__VALUE__',
+                               '_render_dropdown' => true,
                                'myname'       => $myname];
 
         Ajax::updateItemOnSelectEvent(

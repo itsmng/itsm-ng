@@ -1606,7 +1606,8 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'authldaps_id',
                        'value' => $entity->getField('authldaps_id'),
-                       'values' => array_merge([__('Default server')], getOptionForItems(AuthLDAP::class, ['is_active' => 1], false)),
+                       ...getAjaxDropdownOptions(AuthLDAP::class, ['is_active' => 1]),
+                       'emptylabel' => __('Default server'),
                        'col_lg' => 12,
                        'col_md' => 12,
                        'actions' => getItemActionButtons(['info'], AuthLDAP::class),
@@ -2385,10 +2386,8 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'tickettemplates_id',
                        'value' => $entity->getField('tickettemplates_id'),
-                       'values' => array_merge(
-                           ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
-                           getOptionForItems(TicketTemplate::class)
-                       ),
+                       ...getAjaxDropdownOptions(TicketTemplate::class),
+                       'toadd' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
                        'actions' => getItemActionButtons(['info', 'add'], TicketTemplate::class),
                        'after' => ($ID > 0 && ($entity->getField('tickettemplates_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('tickettemplates_id', ['tickettemplates_id' => self::getUsedConfig('tickettemplates_id', $ID)]), false, false) : '',
@@ -2397,10 +2396,8 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'changetemplates_id',
                        'value' => $entity->getField('changetemplates_id'),
-                       'values' => array_merge(
-                           ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
-                           getOptionForItems(ChangeTemplate::class)
-                       ),
+                       ...getAjaxDropdownOptions(ChangeTemplate::class),
+                       'toadd' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
                        'actions' => getItemActionButtons(['info', 'add'], ChangeTemplate::class),
                        'after' => ($ID > 0 && ($entity->getField('changetemplates_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('changetemplates_id', ['changetemplates_id' => self::getUsedConfig('changetemplates_id', $ID)]), false, false) : '',
@@ -2409,10 +2406,8 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'problemtemplates_id',
                        'value' => $entity->getField('problemtemplates_id'),
-                       'values' => array_merge(
-                           ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
-                           getOptionForItems(ProblemTemplate::class)
-                       ),
+                       ...getAjaxDropdownOptions(ProblemTemplate::class),
+                       'toadd' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
                        'actions' => getItemActionButtons(['info', 'add'], ProblemTemplate::class),
                        'after' => ($ID > 0 && ($entity->getField('problemtemplates_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('problemtemplates_id', ['problemtemplates_id' => self::getUsedConfig('problemtemplates_id', $ID)]), false, false) : '',
@@ -2426,11 +2421,9 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'calendars_id',
                        'value' => $entity->getField('calendars_id'),
-                       'values' => array_merge(
-                           [__('24/7')],
-                           ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
-                           getOptionForItems(Calendar::class, [], false)
-                       ),
+                       ...getAjaxDropdownOptions(Calendar::class),
+                       'emptylabel' => __('24/7'),
+                       'toadd' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
                        'actions' => getItemActionButtons(['info', 'add'], Calendar::class),
                        'col_lg' => 6,
                        'after' => ($ID > 0 && ($entity->getField('calendars_id') == self::CONFIG_PARENT)) ?

@@ -113,7 +113,7 @@ class Calendar extends CommonDropdown
                    'input' => [
                       'type'  => 'select',
                       'name'  => 'entities_id',
-                      'values' => getOptionForItems(Entity::class),
+                      ...getAjaxDropdownOptions(Entity::class),
                       'col_lg' => 12,
                       'col_md' => 12,
                       'actions' => getItemActionButtons(['info', 'add'], Appliance::class)

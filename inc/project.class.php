@@ -1580,7 +1580,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                     _x('item', 'State') => [
                        'type' => 'select',
                        'name' => 'projectstates_id',
-                       'values' => getOptionForItems(ProjectState::class),
+                       ...getAjaxDropdownOptions(ProjectState::class),
                        'value' => $this->fields['projectstates_id'],
                        'actions' => getItemActionButtons(['info', 'add'], ProjectState::class)
                     ],
@@ -1597,7 +1597,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                     _n('Type', 'Types', 1) => [
                        'type' => 'select',
                        'name' => 'projecttypes_id',
-                       'values' => getOptionForItems(ProjectType::class),
+                       ...getAjaxDropdownOptions(ProjectType::class),
                        'value' => $this->fields['projecttypes_id'],
                     ],
                     __('Show on global GANTT') => [
@@ -1627,7 +1627,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                     User::getTypeName() => [
                        'type' => 'select',
                        'name' => 'users_id',
-                       'values' => getOptionsForUsers('see_project', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('see_project', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $ID ? $this->fields["users_id"] : Session::getLoginUserID(),
                        'col_lg' => 6,
                     ],

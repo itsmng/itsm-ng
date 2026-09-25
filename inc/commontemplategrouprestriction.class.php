@@ -184,7 +184,7 @@ abstract class CommonTemplateGroupRestriction extends CommonDBRelation
                 ];
             }
 
-            $options = getOptionForItems(Group::class, $conditions);
+            $options = getAjaxDropdownOptions(Group::class, $conditions);
             if (count($options)) {
                 $form = [
                    'action'  => Toolbox::getItemTypeFormURL(static::class),
@@ -206,7 +206,7 @@ abstract class CommonTemplateGroupRestriction extends CommonDBRelation
                          Group::getTypeName(1) => [
                             'type'    => 'select',
                             'name'    => 'groups_id',
-                            'values'  => $options,
+                            ...$options,
                             'actions' => getItemActionButtons(['info', 'add'], Group::class),
                          ],
                          ],

@@ -1700,7 +1700,7 @@ class Auth extends CommonGLPI
                           'type' => 'select',
                           'name' => 'ssovariables_id',
                           'value' => $CFG_GLPI["ssovariables_id"],
-                          'values' => getOptionForItems('SsoVariable'),
+                          ...getAjaxDropdownOptions('SsoVariable'),
                           'actions' => getItemActionButtons(['info', 'add'], 'SsoVariable'),
                           'col_lg' => 6,
                        ],

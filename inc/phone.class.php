@@ -199,14 +199,14 @@ class Phone extends CommonDBTM
                     __("Technician in charge of the hardware") => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id_tech'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     Manufacturer::getTypeName(1) => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields['manufacturers_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
@@ -221,7 +221,7 @@ class Phone extends CommonDBTM
                     _n('Model', 'Models', 1) => [
                        'name' => 'phonemodels_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('PhoneModel'),
+                       ...getAjaxDropdownOptions('PhoneModel'),
                        'value' => $this->fields['phonemodels_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "PhoneModel"),
                     ],
@@ -248,7 +248,7 @@ class Phone extends CommonDBTM
                     User::getTypeName(1) => [
                        'name' => 'users_id',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('all', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
@@ -278,7 +278,7 @@ class Phone extends CommonDBTM
                     PhonePowerSupply::getTypeName(1) => [
                        'name' => 'phonepowersupplies_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('PhonePowerSupply'),
+                       ...getAjaxDropdownOptions('PhonePowerSupply'),
                        'value' => $this->fields['phonepowersupplies_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "PhonePowerSupply"),
                     ],

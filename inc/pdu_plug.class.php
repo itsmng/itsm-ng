@@ -139,7 +139,7 @@ class Pdu_Plug extends CommonDBRelation
                         __('Add a new plug') => [
                            'type' => 'select',
                            'name' => 'plugs_id',
-                           'values' => getOptionForItems(Plug::class),
+                           ...getAjaxDropdownOptions(Plug::class),
                            'actions' => getItemActionButtons(['info', 'add'], Plug::class),
                         ],
                         __('Number') => [

@@ -99,14 +99,14 @@ class DCRoom extends CommonDBTM
                           'id' => 'dropdown_locations_id',
                           'name' => 'locations_id',
                           'value' => $this->fields["locations_id"] ?? $options['locations_id'] ?? 0,
-                          'values' => getOptionForItems(Location::class),
+                          ...getAjaxDropdownOptions(Location::class),
                       ],
                       Datacenter::getTypeName(1) => [
                           'type' => 'select',
                           'id' => 'dropdown_datacenters_id',
                           'name' => 'datacenters_id',
                           'value' => $this->fields["datacenters_id"] ?? $options['datacenters_id'] ?? 0,
-                          'values' => getOptionForItems(Datacenter::class),
+                          ...getAjaxDropdownOptions(Datacenter::class),
                           'hooks' => [
                               'change' => <<<JS
                             var datacenter = $(this).val();

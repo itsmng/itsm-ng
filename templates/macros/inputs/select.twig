@@ -11,14 +11,18 @@
 {% endmacro %}
 
 {% macro select(attributes) %}
+  {% set attributes = attributes|prepare_select %}
   {% if not attributes.id %}
     {% set id = random() %}
   {% else %}
     {% set id = attributes.id %}
   {% endif %}
+  {% if not attributes._actions_in_wrapper and (attributes.itemtype or attributes.actions) %}
+  <div data-dropdown-group class="d-flex flex-nowrap w-100 align-items-center {% if attributes.actions %}input-group{% endif %}">
+  {% endif %}
   <select class='no-print form-select form-select-sm {{attributes.class}}' id="{{id}}" {{ attributes.multiple ? 'multiple="multiple"' : '' }}
     {% for name, value in attributes %}
-      {% if name not in  ['values', 'value', 'class', 'multiple', 'condition', 'conditions', 'used', 'ajax', 'itemtype']%}
+      {% if name not in  ['_actions_in_wrapper', 'actions', 'values', 'value', 'class', 'multiple', 'condition', 'conditions', 'used', 'ajax', 'itemtype', 'entity_restrict', 'right', 'display_emptychoice', 'emptylabel', 'toadd', 'permit_select_parent', 'groups_id', 'inactive_deleted', 'with_no_right']%}
         {{name}}="{{value}}"
       {% endif %}
     {% endfor %}
@@ -33,6 +37,10 @@
       {% endif %}
     {% endfor %}
   </select>
+  {% if not attributes._actions_in_wrapper and (attributes.itemtype or attributes.actions) %}
+    {% include 'macros/dropdownActions.twig' with {'actions': attributes.actions} only %}
+  </div>
+  {% endif %}
   {% if attributes.noLib is not defined or attributes.noLib == false %}
   <script>
       $(function() {
@@ -45,24 +53,9 @@
                 return {
                     searchText: params.term,
                     page: params.page || 1,
-                    page_limit: 500,
+                    page_limit: 100,
                     ...data
                 };
-            };
-            params.initSelection = function (element, callback) {
-                const id = $(element).val();
-                if (id !== '') {
-                    $.ajax({
-                        url: params.url,
-                        dataType: 'json',
-                        data: {
-                            id: id,
-                            ...data
-                        }
-                    }).done(function(data) {
-                        callback(data);
-                    });
-                }
             };
         {% endif %}
         $.getScript('{{root_doc}}/node_modules/select2/dist/js/select2.min.js', function() {

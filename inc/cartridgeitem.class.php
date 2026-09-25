@@ -208,7 +208,7 @@ class CartridgeItem extends CommonDBTM
                     _n('Type', 'Types', 1) => [
                        'name' => 'cartridgeitemtypes_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('CartridgeItemType'),
+                       ...getAjaxDropdownOptions('CartridgeItemType'),
                        'value' => $this->fields["cartridgeitemtypes_id"] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "CartridgeItemType"),
                     ],
@@ -220,14 +220,14 @@ class CartridgeItem extends CommonDBTM
                     Manufacturer::getTypeName(1) => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields["manufacturers_id"] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
                     __('Technician in charge of the hardware') => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'entity' => $this->fields["entities_id"],
                        'value' => $this->fields["users_id_tech"] ?? '',
                        'actions' => getItemActionButtons(['info'], "User"),
@@ -240,7 +240,7 @@ class CartridgeItem extends CommonDBTM
                     __('Group in charge of the hardware') => [
                        'name' => 'groups_id_tech',
                        'type' => 'select',
-                       'values' => getOptionForItems('Group', ['is_assign' => 1,]),
+                       ...getAjaxDropdownOptions('Group', ['is_assign' => 1,]),
                        'value' => $this->fields["groups_id_tech"] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "Group"),
                     ],

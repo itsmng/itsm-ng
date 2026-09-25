@@ -47,7 +47,7 @@ class SoftwareLicenseType extends CommonTreeDropdown
            __('As child of') => [
               'name'  => $this->getForeignKeyField(),
               'type'  => 'select',
-              'values' => getOptionForItems('SoftwareLicenseType', ['NOT' => ['id' => $this->getID()]]),
+              ...getAjaxDropdownOptions('SoftwareLicenseType', ['NOT' => ['id' => $this->getID()]]),
               'value' => $this->fields[$this->getForeignKeyField()]
            ]
         ];

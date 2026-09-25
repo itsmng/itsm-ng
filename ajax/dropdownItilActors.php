@@ -112,9 +112,7 @@ if (isset($_POST["type"])
                     'change' => implode("\n", $hook_lines),
                 ];
                 renderTwigTemplate('macros/input.twig', expandSelect($selectOptions, [
-                    'condition' => [
-                        'entities_id' => $options['entity'],
-                    ],
+                    'entities_id' => $options['entity'],
                 ]));
 
                 // Display active tickets for a tech
@@ -181,9 +179,7 @@ if (isset($_POST["type"])
                     'itemtype'    => Group::class,
                 ];
                 renderTwigTemplate('macros/input.twig', expandSelect($selectOptions, [
-                    'condition' => [
-                        'entities_id' => $param['entity'],
-                    ],
+                    'entities_id' => $param['entity'],
                 ]));
 
                 if (($_POST["itemtype"] == 'Ticket')
@@ -246,9 +242,7 @@ if (isset($_POST["type"])
                     'change' => implode("\n", $hook_lines),
                 ];
                 renderTwigTemplate('macros/input.twig', expandSelect($selectOptions, [
-                    'condition' => [
-                        'entities_id' => $options['entity'],
-                    ],
+                    'entities_id' => $options['entity'],
                 ]));
                 // Display active tickets for a supplier
                 // Need to update information on dropdown changes

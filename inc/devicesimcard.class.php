@@ -54,7 +54,7 @@ class DeviceSimcard extends CommonDevice
               _n('Type', 'Types', 1) => [
                  'name'  => 'devicesimcardtypes_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceSimcardType'),
+                 ...getAjaxDropdownOptions('DeviceSimcardType'),
                  'value' => $this->fields['devicesimcardtypes_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceSimcardType')
               ],

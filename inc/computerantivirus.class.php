@@ -339,7 +339,7 @@ class ComputerAntivirus extends CommonDBChild
                     Manufacturer::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'manufacturers_id',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields['manufacturers_id'],
                     ],
                     __('Up to date') => [

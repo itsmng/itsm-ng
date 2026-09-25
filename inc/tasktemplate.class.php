@@ -144,7 +144,7 @@ class TaskTemplate extends CommonDropdown
            __('By') => [
               'name'  => 'users_id_tech',
               'type'  => 'select',
-              'values' => getOptionsForUsers('own_ticket'),
+              ...getAjaxUserDropdownOptions('own_ticket'),
               'value' => $this->fields['users_id_tech'],
               'actions' => getItemActionButtons(['info'], User::class),
            ],

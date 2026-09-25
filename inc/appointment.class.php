@@ -566,7 +566,7 @@ class Appointment extends CommonDBTM
                     __('Requester') => Session::haveRight(self::$rightname, UPDATE) ? [
                        'type'   => 'select',
                        'name'   => 'users_id_requester',
-                       'values' => getOptionsForUsers('all'),
+                       ...getAjaxUserDropdownOptions('all'),
                        'value'  => $this->fields['users_id_requester'],
                     ] : [
                        'content' => getUserName($this->fields['users_id_requester']),

@@ -559,7 +559,7 @@ class RuleAction extends CommonDBChild
                                 'type' => 'select',
                                 'name' => 'value',
                                 'value' => $param['value'],
-                                'values' => getOptionForItems(getItemTypeForTable($table), $param['condition'] ?? []),
+                                ...getAjaxDropdownOptions(getItemTypeForTable($table), $param['condition'] ?? []),
                             ]);
                             $display = true;
                             break;
@@ -581,7 +581,7 @@ class RuleAction extends CommonDBChild
                                 'type' => 'select',
                                 'name' => 'value',
                                 'value' => $param['value'],
-                                'values' => getOptionsForUsers('own_ticket'),
+                                ...getAjaxUserDropdownOptions('own_ticket'),
                             ]);
                             $display = true;
                             break;
@@ -593,7 +593,7 @@ class RuleAction extends CommonDBChild
                                 'type' => 'select',
                                 'name' => 'value',
                                 'value' => $param['value'],
-                                'values' => getOptionsForUsers('all'),
+                                ...getAjaxUserDropdownOptions('all'),
                             ]);
                             $display = true;
                             break;
@@ -685,14 +685,14 @@ class RuleAction extends CommonDBChild
                                     $used[] = $data['value'];
                                 }
                             }
-                            $options = getOptionsForUsers(['validate_incident','validate_request']);
+                            $options = getAjaxUserDropdownOptions(['validate_incident','validate_request']);
                             foreach ($used as $key => $value) {
-                                unset($options[$value]);
+                                $options['used'][] = $value;
                             }
                             renderTwigTemplate('macros/input.twig', [
                                 'type' => 'select',
                                 'name' => 'value',
-                                'values' => $options,
+                                ...$options,
                                 'value' => $param['value'],
                             ]);
                             $display        = true;
@@ -725,7 +725,7 @@ class RuleAction extends CommonDBChild
                             renderTwigTemplate('macros/input.twig', [
                                 'type' => 'select',
                                 'name' => 'value',
-                                'values' => getOptionForItems('Group', $param['condition'] ?? []),
+                                ...getAjaxDropdownOptions('Group', $param['condition'] ?? []),
                                 'value' => $param['value'],
                             ]);
                             $display            = true;

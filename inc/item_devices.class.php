@@ -385,7 +385,7 @@ class Item_Devices extends CommonDBRelation
                    'datatype'   => 'dropdown',
                    'formContent' => [
                       'type' => 'select',
-                      'values' => getOptionForItems(Location::class),
+                      ...getAjaxDropdownOptions(Location::class),
                       'actions' => getItemActionButtons(['info', 'add'], Location::class),
                    ]
                 ];
@@ -399,7 +399,7 @@ class Item_Devices extends CommonDBRelation
                    'datatype'   => 'dropdown',
                    'formContent' => [
                       'type' => 'select',
-                      'values' => getOptionForItems(State::class),
+                      ...getAjaxDropdownOptions(State::class),
                       'actions' => getItemActionButtons(['info', 'add'], State::class),
                    ]
                 ];
@@ -733,17 +733,7 @@ class Item_Devices extends CommonDBRelation
                                     },
                                     type: 'POST',
                                     success: function(data) {
-                                       const jsonDatas = JSON.parse(data);
-                                       for (const key in jsonDatas) {
-                                          if (typeof(jsonDatas[key]) == 'object') {
-                                            $('select[name="devices_id"]').append('<optgroup label="' + key + '"></optgroup>');
-                                            for (const child in jsonDatas[key]) {
-                                              $('select[name="devices_id"] optgroup').last().append('<option value="' + child + '">' + jsonDatas[key][child] + '</option>');
-                                            }
-                                          } else {
-                                              $('select[name="devices_id"]').append('<option value="' + key + '">' + jsonDatas[key] + '</option>');
-                                          }
-                                       }
+                                       setAjaxDropdownOptions("select[name=\"devices_id\"]", typeof data === 'string' ? JSON.parse(data) : data);
                                     }
                                  });
                               }
@@ -1587,7 +1577,7 @@ class Item_Devices extends CommonDBRelation
                     _n('Component', 'Components', 1) => (false === $device) ? [
                        'type' => 'select',
                        'name' => $this->getDeviceForeignKey(),
-                       'values' => getOptionForItems($this->getDeviceType(), [], true, true),
+                       ...getAjaxDropdownOptions($this->getDeviceType(), [], true, true),
                        'actions' => getItemActionButtons(['info', 'add'], $this->getDeviceType())
                     ] : [
                        'content' => $device->getLink(),

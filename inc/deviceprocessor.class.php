@@ -82,7 +82,7 @@ class DeviceProcessor extends CommonDevice
               _n('Model', 'Models', 1) => [
                  'name'  => 'deviceprocessormodels_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceProcessorModel'),
+                 ...getAjaxDropdownOptions('DeviceProcessorModel'),
                  'value' => $this->fields['deviceprocessormodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceProcessorModel')
               ]

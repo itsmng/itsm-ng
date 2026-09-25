@@ -257,7 +257,7 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
                       User::getTypeName(1) => [
                           'type' => 'select',
                           'name' => 'users_id',
-                          'values' => getOptionsForUsers('all'),
+                          ...getAjaxUserDropdownOptions('all'),
                           'value' => $this->fields['users_id'],
                           $canedit ? '' : 'disabled' => true,
 
@@ -265,7 +265,7 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
                       __('Guests') => [
                           'type' => 'select',
                           'name' => 'users_id_guests[]',
-                          'values' => getOptionsForUsers('all', [], false),
+                          ...getAjaxUserDropdownOptions('all', [], false),
                           'value' => $this->fields['users_id_guests'],
                           'multiple' => true,
                           'after' => "<i class='fas fa-info-circle' title='" . __('Each guest will have a read-only copy of this event') . "'></i>",

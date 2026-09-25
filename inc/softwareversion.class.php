@@ -143,7 +143,7 @@ class SoftwareVersion extends CommonDBChild
                     OperatingSystem::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'operatingsystems_id',
-                       'values' => getOptionForItems('OperatingSystem'),
+                       ...getAjaxDropdownOptions('OperatingSystem'),
                        'value' => $this->fields["operatingsystems_id"] ?? 0,
                     ],
                     __('Status') => [

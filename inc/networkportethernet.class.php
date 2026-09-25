@@ -170,12 +170,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
                         with_empty: true
                      },
                      success: function(data) {
-                        const jsonData = JSON.parse(data);
-
-                        $('#NetworkPortConnect_items_id').empty();
-                        for (const key in jsonData) {
-                           $('#NetworkPortConnect_items_id').append('<option value="' + key + '">' + jsonData[key] + '</option>');
-                        }
+                        setAjaxDropdownOptions("#NetworkPortConnect_items_id", typeof data === 'string' ? JSON.parse(data) : data);
                      }
                   });
                JS,

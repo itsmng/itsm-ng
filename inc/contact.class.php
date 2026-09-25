@@ -214,14 +214,14 @@ class Contact extends CommonDBTM
                           __('Type') => [
                               'name' => 'contacttypes_id',
                               'type' => 'select',
-                              'values' => getOptionForItems("contacttype"),
+                              ...getAjaxDropdownOptions("contacttype"),
                               'value' => $this->fields['contacttypes_id'],
                               'actions' => getItemActionButtons(['info', 'add'], "contacttype"),
                           ],
                           __('Title') => [
                               'name' => 'usertitles_id',
                               'type' => 'select',
-                              'values' => getOptionForItems("usertitle"),
+                              ...getAjaxDropdownOptions("usertitle"),
                               'value' => $this->fields['usertitles_id'],
                               'actions' => getItemActionButtons(['info', 'add'], "usertitle"),
                           ],

@@ -219,7 +219,7 @@ class Contract extends CommonDBTM
                     ContractType::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'contracttypes_id',
-                       'values' => getOptionForItems('ContractType'),
+                       ...getAjaxDropdownOptions('ContractType'),
                        'value' => $this->fields['contracttypes_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "contracttype"),
                     ],

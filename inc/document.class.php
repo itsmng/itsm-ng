@@ -504,7 +504,7 @@ class Document extends CommonDBTM
                     __('Heading') => [
                        'type' => 'select',
                        'name' => 'documentcategories_id',
-                       'values' => getOptionForItems('DocumentCategory'),
+                       ...getAjaxDropdownOptions('DocumentCategory'),
                        'value' => $this->fields["documentcategories_id"],
                        'actions' => getItemActionButtons(['info', 'add'], 'DocumentCategory')
                     ],
@@ -1616,38 +1616,30 @@ class Document extends CommonDBTM
             $subwhere['NOT'] = ['id' => array_merge([0], $p['used'])];
         }
 
-        $criteria = [
-           'FROM'   => 'glpi_documentcategories',
-           'WHERE'  => [
-              'id' => new QuerySubQuery([
-                 'SELECT'          => 'documentcategories_id',
-                 'DISTINCT'        => true,
-                 'FROM'            => 'glpi_documents',
-                 'WHERE'           => $subwhere
-              ])
-           ],
-           'ORDER'  => 'name'
+        $headingConditions = [
+            'id' => new QuerySubQuery([
+                'SELECT' => 'documentcategories_id',
+                'DISTINCT' => true,
+                'FROM' => 'glpi_documents',
+                'WHERE' => $subwhere,
+            ]),
         ];
-        $iterator = $DB->request($criteria);
-
-        $values = [];
-        while ($data = $iterator->next()) {
-            $values[$data['id']] = $data['name'];
-        }
         $entity = Session::getActiveEntity();
 
-        $initial_docs = getItemByEntity(
+        $initial_docs = getAjaxDropdownOptionsByEntity(
             Document::class,
             $p['entity'] !== '' ? $p['entity'] : $entity,
-            ['glpi_documents.documentcategories_id' => 0]
+            ['glpi_documents.documentcategories_id' => 0],
+            $p['used']
         );
+        $usedJson = json_encode(array_values($p['used']));
 
         $inputs = [
            __('Heading') => [
               'type' => 'select',
               'id' => 'selectForMaRubDocId',
               'name' => '_rubdoc',
-              'values' => [Dropdown::EMPTY_VALUE] + $values,
+              ...getAjaxDropdownOptions(DocumentCategory::class, $headingConditions),
               'col_lg' => 12,
               'col_md' => 12,
               'hooks' => [
@@ -1657,13 +1649,9 @@ class Document extends CommonDBTM
                $.ajax({
                   url: "{$CFG_GLPI['root_doc']}/ajax/dropdownRubDocument.php",
                   method: "POST",
-                  data: {rubdoc: rubdoc, entity: entity},
+                  data: {rubdoc: rubdoc, entity: entity, used: $usedJson},
                   success: function(data) {
-                     const jsonData = JSON.parse(data);
-                     $('#selectForMaDocumentId').empty();
-                     for (const i in jsonData) {
-                        $('#selectForMaDocumentId').append('<option value="' + i + '">' + jsonData[i] + '</option>');
-                     }
+                     setAjaxDropdownOptions("#selectForMaDocumentId", typeof data === 'string' ? JSON.parse(data) : data);
                   }
                });
                JS,
@@ -1673,7 +1661,7 @@ class Document extends CommonDBTM
               'type' => 'select',
               'id' => 'selectForMaDocumentId',
               'name' => 'peer_documents_id',
-              'values' => $initial_docs,
+              ...$initial_docs,
               'itemtype' => Document::class,
               'col_lg' => 12,
               'col_md' => 12,

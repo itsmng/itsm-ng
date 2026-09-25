@@ -203,28 +203,7 @@ class Item_Cluster extends CommonDBRelation
             },
             type: 'POST',
             success: function(data) {
-                const jsonData = JSON.parse(data);
-                $('#dropdown_items_id').empty();
-                for (const [key, value] of Object.entries(jsonData)) {
-                    if (typeof value === 'object') {
-                        // add optgroup
-                        let group = $('<optgroup>', {
-                            label: key
-                        });
-                        $('#dropdown_items_id').append(group);
-                        for (const [key2, value2] of Object.entries(value)) {
-                            group.append($('<option>', {
-                                value: key2,
-                                text: value2
-                            }));
-                        }
-                    } else {
-                        $('#dropdown_items_id').append($('<option>', {
-                            value: key,
-                            text: value
-                        }));
-                    }
-                }
+               setAjaxDropdownOptions("#dropdown_items_id", typeof data === 'string' ? JSON.parse(data) : data);
             }
         });
       JS;

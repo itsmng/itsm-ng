@@ -125,8 +125,9 @@ class SLM extends CommonDBTM
                     __('Calendar') => [
                        'name' => 'calendars_id',
                        'type' => 'select',
-                       'values' => [-1 => __('Calendar of the ticket'), 0 => __('24/7')] +
-                           getItemByEntity(Calendar::class, Session::getActiveEntity()),
+                       ...getAjaxDropdownOptionsByEntity(Calendar::class, Session::getActiveEntity()),
+                       'toadd' => [-1 => __('Calendar of the ticket'), 0 => __('24/7')],
+                       'display_emptychoice' => false,
                        'value' => $this->fields['calendars_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "Calendar"),
                     ],

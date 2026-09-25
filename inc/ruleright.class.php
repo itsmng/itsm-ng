@@ -90,7 +90,7 @@ class RuleRight extends Rule
                        'type'  => 'select',
                        'name'  => 'profiles_id',
                        'value' => '',
-                       'values' => getOptionForItems(Profile::class),
+                       ...getAjaxDropdownOptions(Profile::class),
                     ],
                     __('Recursive') => [
                        'type'  => 'checkbox',

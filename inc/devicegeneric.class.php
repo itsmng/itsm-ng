@@ -55,7 +55,7 @@ class DeviceGeneric extends CommonDevice
               _n('Type', 'Types', 1) => [
                  'name'  => 'devicegenerictypes_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceGenericType'),
+                 ...getAjaxDropdownOptions('DeviceGenericType'),
                  'value' => $this->fields['devicegenerictypes_id'],
                  'actions' => getItemActionButtons(['add', 'info'], 'DeviceGenericType')
               ]

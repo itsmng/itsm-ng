@@ -62,14 +62,14 @@ class ProjectTaskTemplate extends CommonDropdown
            _x('item', 'State') => [
               'name'  => 'projectstates_id',
               'type'  => 'select',
-              'values' => getOptionForItems('ProjectState'),
+              ...getAjaxDropdownOptions('ProjectState'),
               'value' => $this->fields['projectstates_id'],
               'actions' => getItemActionButtons(['info', 'add'], 'ProjectState')
            ],
            _n('Type', 'Types', 1) => [
               'name'  => 'projecttasktypes_id',
               'type'  => 'select',
-              'values' => getOptionForItems('ProjectTaskType'),
+              ...getAjaxDropdownOptions('ProjectTaskType'),
               'value' => $this->fields['projecttasktypes_id'],
               'actions' => getItemActionButtons(['info', 'add'], 'ProjectTaskType')
            ],

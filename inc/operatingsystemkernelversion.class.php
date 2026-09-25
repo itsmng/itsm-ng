@@ -50,7 +50,7 @@ class OperatingSystemKernelVersion extends CommonDropdown
         $fields[OperatingSystemKernel::getTypeName(1)] = [
            'name'   => 'operatingsystemkernels_id',
            'type'   => 'select',
-           'values' => getOptionForItems('OperatingSystemKernel'),
+           ...getAjaxDropdownOptions('OperatingSystemKernel'),
            'value'  => $this->fields['operatingsystemkernels_id'] ?? null
         ];
 

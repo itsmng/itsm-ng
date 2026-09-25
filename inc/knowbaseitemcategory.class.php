@@ -51,7 +51,7 @@ class KnowbaseItemCategory extends CommonTreeDropdown
            __('As child of') => [
               'name'  => $this->getForeignKeyField(),
               'type'  => 'select',
-              'values'  => getOptionForItems('KnowbaseItemCategory', ['NOT' => ['id' => $this->getID()]]),
+              ...getAjaxDropdownOptions('KnowbaseItemCategory', ['NOT' => ['id' => $this->getID()]]),
               'value' => $this->fields[$this->getForeignKeyField()],
            ]
         ];

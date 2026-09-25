@@ -148,7 +148,7 @@ class Contact_Supplier extends CommonDBRelation
                         '' => [
                            'type' => 'select',
                            'name' => 'suppliers_id',
-                           'values' => getOptionForItems('Supplier', [
+                           ...getAjaxDropdownOptions('Supplier', [
                               'is_active' => true
                            ], true, false, $used),
                            'actions' => getItemActionButtons(['info'], 'Supplier'),
@@ -259,9 +259,9 @@ class Contact_Supplier extends CommonDBRelation
         $number = count($iterator);
 
         $contacts = [];
-        $options = getItemByEntity(Contact::class, $supplier->fields['entities_id']);
+        $options = getAjaxDropdownOptionsByEntity(Contact::class, $supplier->fields['entities_id']);
         while ($data = $iterator->next()) {
-            unset($options[$data['id']]);
+            $options['used'][] = $data['id'];
             $contacts[$data['linkid']] = $data;
         };
 
@@ -288,7 +288,7 @@ class Contact_Supplier extends CommonDBRelation
                         '' => [
                            'type' => 'select',
                            'name' => 'contacts_id',
-                           'values' => $options,
+                           ...$options,
                            'actions' => getItemActionButtons(['info'], 'Contact'),
                            'col_lg' => 12,
                            'col_md' => 12,

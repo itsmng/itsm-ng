@@ -1774,7 +1774,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'name' => 'tasktemplates_id',
                        'id' => 'TaskTemplateDropdown',
                        'value' => $this->fields['tasktemplates_id'] ?? 0,
-                       'values' => getOptionForItems(
+                       ...getAjaxDropdownOptions(
                            TaskTemplate::class,
                            Dropdown::addNewCondition(
                                TaskTemplate::getGroupVisibilityCondition()
@@ -1809,7 +1809,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                               // set textarea content
                               TextAreaForTaskContent.setData(data.content);
                               // set category
-                              $("#DropdownForTaskCategory").val(taskcategories_id);
+                              setAjaxDropdownValue('#DropdownForTaskCategory', taskcategories_id, data.taskcategories_name);
                               // set action time
                               $("#DropdownForActionTime").val(actiontime);
                               // set is_private
@@ -1818,9 +1818,9 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                                     ? false
                                     : true);
                               // set users_tech
-                              $("#DropdownForUserTechTask").val(user_tech);
+                              setAjaxDropdownValue('#DropdownForUserTechTask', user_tech, data.users_name);
                               // set group_tech
-                              $("#DropdownForGroupTechTask").val(group_tech);
+                              setAjaxDropdownValue('#DropdownForGroupTechTask', group_tech, data.groups_name);
                               // set state
                               $("#DropdownStateTask").val(data.state);
                            });
@@ -1836,7 +1836,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'type' => 'select',
                        'name' => 'taskcategories_id',
                        'id' => 'DropdownForTaskCategory',
-                       'values' => getOptionForItems(TaskCategory::class),
+                       ...getAjaxDropdownOptions(TaskCategory::class),
                        'value' => $this->fields['taskcategories_id'],
                        'actions' => getItemActionButtons(['info', 'add'], TaskCategory::class),
                     ],
@@ -1875,7 +1875,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'type' => 'select',
                        'name' => 'users_id_tech',
                        'id' => 'DropdownForUserTechTask',
-                       'values' => getOptionsForUsers('own_ticket', ["entities_id" => $item->fields["entities_id"]]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ["entities_id" => $item->fields["entities_id"]]),
                        'value' => (($ID > -1) ? $this->fields["users_id_tech"] : Session::getLoginUserID()),
                        'actions' => getItemActionButtons(['info'], User::class),
                        'after' => <<<HTML
@@ -1889,7 +1889,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
                        'type' => 'select',
                        'name' => 'groups_id_tech',
                        'id' => 'DropdownForGroupTechTask',
-                       'values' => getOptionForItems(Group::class),
+                       ...getAjaxDropdownOptions(Group::class),
                        'value' => ($ID > -1) ? $this->fields["groups_id_tech"] : Dropdown::EMPTY_VALUE,
                        'actions' => getItemActionButtons(['info', 'add'], Group::class),
                     ],
@@ -1977,7 +1977,7 @@ abstract class CommonITILTask extends CommonDBTM implements CalDAVCompatibleItem
            __('Category') => [
               'name' => 'taskcategories_id',
               'type' => 'select',
-              'values' => getOptionForItems(TaskCategory::class, ['is_active' => 1]),
+              ...getAjaxDropdownOptions(TaskCategory::class, ['is_active' => 1]),
               'actions' => getItemActionButtons(['info', 'add'], TaskCategory::class),
               'col_lg' => 12,
               'col_md' => 12,

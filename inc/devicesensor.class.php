@@ -57,7 +57,7 @@ class DeviceSensor extends CommonDevice
               _n('Type', 'Types', 1) => [
                  'name'  => 'devicesensortypes_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceSensorType'),
+                 ...getAjaxDropdownOptions('DeviceSensorType'),
                  'value' => $this->fields['devicesensortypes_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceSensorType')
               ]
