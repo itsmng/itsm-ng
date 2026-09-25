@@ -775,7 +775,9 @@ import { batch, signal } from '@preact/signals';
                 <div class="fixed-table-pagination">
                     <div class="float-left pagination-detail">
                         <span class="pagination-info">
-                            Showing {Math.min(totalRows, currentPageSize)} of {totalRows} entries
+                            {window.__('Showing %1$s of %2$s entries')
+                                .replace('%1$s', Math.min(totalRows, currentPageSize))
+                                .replace('%2$s', totalRows)}
                         </span>
                         {renderPageSizeDropdown()}
                     </div>
@@ -825,7 +827,10 @@ import { batch, signal } from '@preact/signals';
                 <div class="fixed-table-pagination">
                     <div class="float-left pagination-detail">
                         <span class="pagination-info">
-                            Showing {startRow} to {endRow} of {totalRows} entries
+                            {window.__('Showing %1$s to %2$s of %3$s entries')
+                                .replace('%1$s', startRow)
+                                .replace('%2$s', endRow)
+                                .replace('%3$s', totalRows)}
                         </span>
                         {renderPageSizeDropdown()}
                     </div>
@@ -1019,7 +1024,7 @@ import { batch, signal } from '@preact/signals';
                                 <tbody class="table-light">
                                     <tr class="no-records-found">
                                         <td colspan={table.getAllColumns().length}>
-                                            No matching records found
+                                            {window.__('No matching records found')}
                                         </td>
                                     </tr>
                                 </tbody>

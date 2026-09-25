@@ -5793,7 +5793,7 @@ class Ticket extends CommonITILObject
                      'col_lg' => 6,
                   ],
 
-                  __('Associated elements') =>
+                  _n('Associated element', 'Associated elements', Session::getPluralNumber()) =>
                   (($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] != 0)
                       && (count($_SESSION["glpiactiveprofile"]["helpdesk_item_type"])))
                       && (!$tt->isHiddenField('items_id')) ?
